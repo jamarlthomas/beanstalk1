@@ -1,2 +1,0 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_SocialMedia_GooglePlus_GooglePlusButton" Codebehind="~/CMSWebParts/SocialMedia/GooglePlus/GooglePlusButton.ascx.cs" %>
-<asp:Literal runat="server" ID="ltlPluginCode" EnableViewState="false" />

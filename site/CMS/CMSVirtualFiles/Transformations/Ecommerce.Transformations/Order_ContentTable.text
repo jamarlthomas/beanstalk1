@@ -1,9 +1,0 @@
-﻿<tr>
-	<td style="text-align: left;">{%(IsProductOption) ? "&nbsp;&nbsp;&nbsp;" : ""%}{% HTMLEncode(Localize(SKUName))%}
-	{% HTMLEncode((CartItemText != "") ? " '" + CartItemText + "' " : "")%}
-	{% HTMLEncode(SKUNumber)%}</td>
-	<td style="text-align: right; vertical-align: top;">{%(IsProductOption && !IsAccessoryProduct) ? "" : Units %}</td>
-	<td style="text-align: right; vertical-align: top;">{%(IsProductOption && !IsAccessoryProduct) ? "" : HTMLEncode((UnitPrice - UnitTotalDiscount).Format(Currency.CurrencyFormatString)) |(user)administrator|(hash)7b2c851f26a9ddf091841c303d9b65d06b328c6df755080d38155d0545f3a581%}</td>
-	<td style="text-align: right; vertical-align: top;">{%(IsProductOption && !IsAccessoryProduct) ? "" : HTMLEncode(TotalTax.Format(Currency.CurrencyFormatString)) |(user)administrator|(hash)dcb3ea03aaa20e6dcedd78ff4b77cb6148d7cd9e8717120a4f0c6801fe784275%}</td>
-	<td style="text-align: right; vertical-align: top;">{%(IsProductOption && !IsAccessoryProduct) ? "" : HTMLEncode(TotalPrice.Format(Currency.CurrencyFormatString)) |(user)administrator|(hash)9b932f29da137963d423904a16b195811b822422b199607ef78c8f83c7e4ee35%}</td>
-</tr>

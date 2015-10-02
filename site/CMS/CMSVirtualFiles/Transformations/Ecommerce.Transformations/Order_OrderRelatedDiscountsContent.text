@@ -1,4 +1,0 @@
-﻿<tr>
-<td style="padding: 0px 8px 0px 5px; text-align: left;">{%HTMLEncode(Localize(Name))%}</td>
-<td style="vertical-align: top;">&ndash;&nbsp;{%HTMLEncode(Value.Format(Currency.CurrencyFormatString))|(user)administrator|(hash)47c08fc46c7ee5fd15af7541798bf59be099e4bc49ddeb1b5d55480f4205b925%}</td>
-</tr>
