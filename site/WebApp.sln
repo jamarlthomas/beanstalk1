@@ -1,14 +1,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSApp", "CMS\CMSApp.csproj", "{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSApp_MVC", "CMS\CMSApp_MVC.csproj", "{EF510AB9-7BEB-4B8B-A88E-BD1AE1989E8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSApp_AppCode", "CMS\CMSApp_AppCode.csproj", "{92B0A977-72C4-4616-9E24-6D851212A82D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{EEEE1597-06F2-4576-9FF9-4F5F17A4C778}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{AE328D4A-29EA-4B88-A514-9F1448D3F649}"
 	ProjectSection(SolutionItems) = preProject
 		Lib\AjaxControlToolkit.dll = Lib\AjaxControlToolkit.dll
 		Lib\AjaxMin.dll = Lib\AjaxMin.dll
@@ -228,7 +226,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{EEEE1597-06F
 		Lib\Ude.dll = Lib\Ude.dll
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure", "Azure", "{B6447663-6230-4C2F-9A6C-9447A6D507B7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure", "Azure", "{A2F1A40C-EFFC-4EE9-A892-F4E2B167B24B}"
 	ProjectSection(SolutionItems) = preProject
 		Lib\Azure\Microsoft.Data.Edm.dll = Lib\Azure\Microsoft.Data.Edm.dll
 		Lib\Azure\Microsoft.Data.Edm.xml = Lib\Azure\Microsoft.Data.Edm.xml
@@ -244,7 +242,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure", "Azure", "{B6447663
 		Lib\Azure\System.Spatial.xml = Lib\Azure\System.Spatial.xml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC", "MVC", "{41785A52-C372-434D-A121-ED710F09A0C2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC", "MVC", "{97CF41E8-2281-4AFE-81EA-55884A23FD2B}"
 	ProjectSection(SolutionItems) = preProject
 		Lib\MVC\CMS.Mvc4.Impl.dll = Lib\MVC\CMS.Mvc4.Impl.dll
 		Lib\MVC\Microsoft.Web.Infrastructure.dll = Lib\MVC\Microsoft.Web.Infrastructure.dll
@@ -275,14 +273,16 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF510AB9-7BEB-4B8B-A88E-BD1AE1989E8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF510AB9-7BEB-4B8B-A88E-BD1AE1989E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF510AB9-7BEB-4B8B-A88E-BD1AE1989E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF510AB9-7BEB-4B8B-A88E-BD1AE1989E8E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{92B0A977-72C4-4616-9E24-6D851212A82D}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{92B0A977-72C4-4616-9E24-6D851212A82D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92B0A977-72C4-4616-9E24-6D851212A82D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92B0A977-72C4-4616-9E24-6D851212A82D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92B0A977-72C4-4616-9E24-6D851212A82D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
@@ -290,7 +290,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{B6447663-6230-4C2F-9A6C-9447A6D507B7} = {EEEE1597-06F2-4576-9FF9-4F5F17A4C778}
-		{41785A52-C372-434D-A121-ED710F09A0C2} = {EEEE1597-06F2-4576-9FF9-4F5F17A4C778}
+		{A2F1A40C-EFFC-4EE9-A892-F4E2B167B24B} = {AE328D4A-29EA-4B88-A514-9F1448D3F649}
+		{97CF41E8-2281-4AFE-81EA-55884A23FD2B} = {AE328D4A-29EA-4B88-A514-9F1448D3F649}
 	EndGlobalSection
 EndGlobal

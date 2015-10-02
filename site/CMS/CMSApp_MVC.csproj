@@ -126,17 +126,8 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Views\CorporateSite\News\Detail.cshtml" />
     <Content Include="Views\CorporateSite\News\List.cshtml" />

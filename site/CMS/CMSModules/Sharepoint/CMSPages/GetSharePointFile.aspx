@@ -1,0 +1,1 @@
+<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_SharePoint_CMSPages_GetSharePointFile" EnableSessionState="ReadOnly" Codebehind="GetSharePointFile.aspx.cs" %>
