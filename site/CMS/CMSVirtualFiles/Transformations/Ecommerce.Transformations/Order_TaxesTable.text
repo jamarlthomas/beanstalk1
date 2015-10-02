@@ -1,0 +1,4 @@
+﻿<tr>
+<td style="padding: 0px 8px 0px 8px;">{%HTMLEncode(Localize(TaxClassDisplayName))%}</td>
+<td>{%HTMLEncode(TaxSummary.Format(Currency.CurrencyFormatString))|(user)administrator|(hash)a7c1a73268407c1fc98d2cebb13b8c7b8e8b0e33329d3ef6ae8cb26740356335%}</td>
+</tr>

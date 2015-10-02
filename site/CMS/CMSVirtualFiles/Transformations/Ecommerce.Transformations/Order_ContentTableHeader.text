@@ -1,0 +1,11 @@
+﻿<table class="productsList" width="100%" cellspacing="0" cellpadding="2" style="text-align: right">
+  <thead>
+    <tr>
+      <th style="text-align: left; padding-top: 21px;">{%GetResourceString("InvoiceTemplate.SKUName")|(user)administrator|(hash)7aab1f8fa0fd174f346c3ac6e874c20975094afbd60fa4be2b04a9f4a3ff9901%}</th>
+      <th style="text-align: right; padding: 21px 2px 2px 2px;">{%GetResourceString("InvoiceTemplate.SKUUnits")|(user)administrator|(hash)d8b692b19265de130a36b012c0875de71a63e8df95ded1cccb1bb037de8611ed%}</th>
+      <th style="text-align: right; padding: 2px;">{%GetResourceString("InvoiceTemplate.SKUPrice")|(user)administrator|(hash)1d10f6a42bc9ae0abcd0304cdeffa476027979855024e15b87ffd6afa400d55b%}</th>
+      <th style="text-align: right; padding: 21px 2px 2px 2px;">{%GetResourceString("InvoiceTemplate.Tax")|(user)administrator|(hash)eac99efeb4896ab552bf4397e69042c473856dd4e419d6212d42e5dddef7faf4%}</th>
+      <th style="text-align: right; padding-top: 21px;">{%GetResourceString("InvoiceTemplate.Subtotal")|(user)administrator|(hash)622bf6879a1da00eddc72e5dba1332bda44a5de96dc437f5dd4a3d5a0b202ee2%}</th>
+    </tr>
+  </thead>
+  <tbody>

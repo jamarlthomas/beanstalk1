@@ -1,0 +1,4 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMS.Controls.CMSTransformation" %><%@ Register TagPrefix="cms" Namespace="CMS.Controls" Assembly="CMS.Controls" %>
+<%@ Register TagPrefix="cc1" Namespace="CMS.Controls" Assembly="CMS.Controls" %><a style="text-decoration: none;" href="<%# GetAbsoluteUrl(GetAttachmentUrl(Eval("AttachmentName"), Eval("NodeAliasPath")), Eval<int>("AttachmentSiteID")) %>" rel="fancybox" rev="<%# Eval("AttachmentID") %>" title="<%# Eval("AttachmentName", true) %>">
+<%# IfCompare(ImageHelper.IsImage((string)Eval("AttachmentExtension")), true, GetAttachmentIcon("AttachmentGUID"), "<img style=\"border: none;\" src=\"" + GetAbsoluteUrl(GetAttachmentUrl(Eval("AttachmentName"), Eval("NodeAliasPath")), Eval<int>("AttachmentSiteID")) + "?maxsidesize=150\" alt=\"" + Eval("AttachmentTitle", true) + "\" />") %>
+</a>

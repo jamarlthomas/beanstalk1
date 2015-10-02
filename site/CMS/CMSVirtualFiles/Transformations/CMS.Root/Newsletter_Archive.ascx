@@ -1,0 +1,2 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMS.Controls.CMSTransformation" %><%@ Register TagPrefix="cms" Namespace="CMS.Controls" Assembly="CMS.Controls" %>
+<%@ Register TagPrefix="cc1" Namespace="CMS.Controls" Assembly="CMS.Controls" %><%#  FormatDateTime(Eval("IssueMailoutTime"),"d") %> - <a href="~/CMSModules/Newsletters/CMSPages/GetNewsletterIssue.aspx?issueId=<%# Eval("IssueID")%>" target="_blank"><%# Eval("IssueSubject",true) %></a> <br />

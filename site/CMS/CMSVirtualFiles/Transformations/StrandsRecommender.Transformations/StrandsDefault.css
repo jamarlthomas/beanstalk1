@@ -1,0 +1,40 @@
+﻿.customTemplate .strandsLogo {
+  text-align: center;
+}
+
+.customTemplate h1 {
+  font-size: 15px;
+  color: white;
+  background-color: #9BC02B;
+  padding: 0px 5px;
+}
+
+.customTemplate * {
+  font-family: arial;
+  padding: 0;
+  margin: 0;
+}
+
+.customTemplate {
+  border: 1px solid #718C1F;
+  display: inline-block;
+  margin:10px;
+}
+
+.customTemplate td{
+  text-align: center;
+  vertical-align:middle;
+  padding:10px;
+  font-size:12px;
+  line-height:16px;
+}
+
+.customTemplate img {
+  max-width: 120px;
+}
+
+.customTemplate a:link, .customTemplate a:hover, .customTemplate a:visited {
+  color:#495BBD;
+  max-width:120px;
+  display:inline-block;
+}

@@ -1,0 +1,2 @@
+﻿<span style="color:#FF0000">Error message: {{html Message}}</span><a href="#" onclick="${Delete}" > [X]</a>
+

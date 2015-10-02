@@ -1,0 +1,38 @@
+﻿{%/*  
+
+For more information about custom layout transformation, please refer to our documentation: https://docs.kentico.com/x/CYJsAw
+For available fields, please refer to Strands Recommender documentation: http://recommender.strands.com/developers/#advRenderer
+
+*/|(user)administrator|(hash)0540ad5bf8ec9c7eba8589beadf69b03610f6ef42d8881ff73553adc5563ac2d%}
+<div class="customTemplate">
+  <h1>
+    Recommendation title
+  </h1>
+  <table>
+    <tbody>
+      <tr>
+        {{each(i, rec) recommendations}}
+        <td>
+          <div>
+            <a href="${rec.metadata.link}" onclick="SBS.Tracking.onRecClick('${rec.itemId}','${tpl}','${rrq}');return true;" >
+              <img src="${rec.metadata.picture}" alt="${rec.metadata.name}" />
+            </a>
+          </div>
+          <a href="${rec.metadata.link}" onclick="SBS.Tracking.onRecClick('${rec.itemId}','${tpl}','${rrq}');return true;">
+            ${rec.metadata.name}
+          </a>
+          <br />
+          <a href="${rec.metadata.link}" onclick="SBS.Tracking.onRecClick('${rec.itemId}','${tpl}','${rrq}');return true;">
+            {% ECommerceContext.CurrentCurrency != null ? string.FormatString(ECommerceContext.CurrentCurrency.CurrencyFormatString, "${rec.metadata.price}") : "${rec.metadata.price}" |(user)administrator|(hash)a8e785dc130b82e9d41e7e3dfd3f8be8555835478f0d1737c660525419dc3fcd%}
+          </a>
+        </td>
+        {{/each}}
+      </tr>
+    </tbody>
+  </table>
+  <div class="strandsLogo">
+    <a href="http://recommender.strands.com">
+      <img src="http://recommender.strands.com/img-new/powered_strands.png" border="0">
+    </a>
+  </div>
+</div>

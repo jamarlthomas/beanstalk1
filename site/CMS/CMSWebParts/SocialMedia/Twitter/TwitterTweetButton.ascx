@@ -1,0 +1,2 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/SocialMedia/Twitter/TwitterTweetButton.ascx.cs" Inherits="CMSWebParts_SocialMedia_Twitter_TwitterTweetButton" %>
+<asp:Literal runat="server" ID="ltlTweetButtonCode" EnableViewState="false" />

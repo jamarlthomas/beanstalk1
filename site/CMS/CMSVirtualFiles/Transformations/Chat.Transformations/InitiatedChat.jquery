@@ -1,0 +1,16 @@
+﻿{{if MessagesTemplate}}
+  <div class="InitiateChatMessage">${Text}</div>
+{{else}}
+<div class="InitiatedChatBubble">
+  <div class="InitiateChatSupporterName">
+    ${InitiatorName}
+  </div>
+  <div class="InitiateChatMessages">
+    {{html Messages}}
+  </div>
+  <div class="InitiateChatButtons">
+      <a href="#" onclick="${Accept}" class="InitiateChatAcceptButton">{$chat.initiatechat.accept$}</a>
+      <a href="#" onclick="${Reject}" class="InitiateChatRejectButton">{$chat.initiatechat.reject$}</a>
+  </div>
+</div>
+{{/if}}

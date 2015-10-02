@@ -1,0 +1,2 @@
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_SocialMedia_LinkedIn_LinkedInRecommendButton" Codebehind="~/CMSWebParts/SocialMedia/LinkedIn/LinkedInRecommendButton.ascx.cs" %>
+<asp:Literal runat="server" ID="ltlButtonCode" EnableViewState="false" />

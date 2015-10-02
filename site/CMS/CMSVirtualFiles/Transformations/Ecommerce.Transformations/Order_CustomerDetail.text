@@ -1,0 +1,3 @@
+﻿{%IfEmpty(CustomerFirstName + CustomerLastName, "", "<em>" + HTMLEncode(Localize(CustomerFirstName)) + " " + HTMLEncode(Localize(CustomerLastName)) + "</em><br/>") %} 
+{%IfEmpty(CustomerEmail, "", "<a href=\"mailto:" + HTMLEncode(Localize(CustomerEmail)) + "\">" + HTMLEncode(Localize(CustomerEmail)) +"</a><br/>")%}
+{%IfEmpty(CustomerPhone, "", HTMLEncode(Localize(CustomerPhone)) + "<br />")%}

@@ -1,0 +1,2 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMS.Controls.CMSTransformation" %><%@ Register TagPrefix="cms" Namespace="CMS.Controls" Assembly="CMS.Controls" %>
+<%@ Register TagPrefix="cc1" Namespace="CMS.Controls" Assembly="CMS.Controls" %><a href="<%# GetDocumentUrl() %>" rel="lightbox" rev="<%# Eval("NodeAliasPath") %>" title="<%# Eval("FileDescription", true) %>"><img src="<%# GetFileUrl("FileAttachment") %>?maxsidesize=150" alt="<%# Eval("FileName", true) %>" /></a>

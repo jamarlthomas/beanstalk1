@@ -1,0 +1,1 @@
+﻿{{if IsCurrentUser}}<span style="color:#0000FF">${Nickname}</span> {{else}}<a href="#" onclick="${OnClick}" target="_blank">${Nickname}</a>{{/if}}

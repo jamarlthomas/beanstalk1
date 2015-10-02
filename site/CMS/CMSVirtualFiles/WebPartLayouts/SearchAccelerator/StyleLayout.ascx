@@ -1,0 +1,2 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_SmartSearch_SearchAccelerator_CMSWebDeploy_483"    CodeFile="~/CMSVirtualFiles/WebPartLayouts/SearchAccelerator/StyleLayout.ascx.cs" %>
+<cms:CMSButton runat="server" ID="btnAcc" EnableViewState="false" />

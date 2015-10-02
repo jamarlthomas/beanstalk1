@@ -1,0 +1,9 @@
+﻿<div class="content-block-25">
+{% HTMLEncode(Localize(AddressPersonalName))%}<br/>
+{% HTMLEncode(Localize(AddressLine1))%}<br/>
+{% IfEmpty(AddressLine2 ,"" , HTMLEncode(Localize(AddressLine2)) + "<br/>")%}
+{% HTMLEncode(Localize(AddressCity))%}{% IfEmpty(AddressState.StateDisplayName, " ",", " + HTMLEncode(Localize(AddressState.StateDisplayName)))|(user)administrator|(hash)05055a04be6112f7facc9638e86b33a16ae82134c3a70deae74e44dc4cda7525%}
+{% HTMLEncode(Localize(AddressZip))%} <br/>
+{% HTMLEncode(Localize(AddressCountry.CountryDisplayName))|(user)administrator|(hash)86d26a312949d36e561281798b0f5b604a88d825956b417aa8f791b853559fc2%}<br/>
+{% IfEmpty(AddressPhone, "", HTMLEncode(Localize(AddressPhone)) + "<br/>")%}
+</div>

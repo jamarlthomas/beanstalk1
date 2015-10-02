@@ -1,0 +1,7 @@
+﻿{%IfEmpty(
+  CustomerCompany + CustomerOrganizationID + CustomerTaxRegistrationID, 
+  "",
+  IfEmpty(CustomerCompany, "", HTMLEncode(CustomerCompany) + "<br/>") +
+  Localize("{$customers_edit.lblorganizationid$} ") + IfEmpty(CustomerOrganizationID, Localize("{$general.na$}"), HTMLEncode(CustomerOrganizationID)) + "<br />" +
+  Localize("{$customers_edit.lbltaxregistrationid$} ") + IfEmpty(CustomerTaxRegistrationID, Localize("{$general.na$}"), HTMLEncode(CustomerTaxRegistrationID)) + "<br/>")
+|(user)administrator|(hash)d7d9dc868f2308a99f64a29c485a1947dc82aea9a5a24d9eb98d017b4caa6801%}

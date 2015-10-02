@@ -1,0 +1,10 @@
+﻿{{if LiveSupport}}
+    <input type="button" value="{$chat.supportrequest.openchat$}" />
+{{else}}
+    {{if EmailEnabled}}
+      <input type="button" value="{$chat.supportrequest.emailavailable$}" />
+    {{else}}
+      <input type="button" value="{$chat.supportrequest.unavailable$}" />
+    {{/if}}
+{{/if}}
+
