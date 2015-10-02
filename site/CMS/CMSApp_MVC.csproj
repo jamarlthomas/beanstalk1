@@ -118,14 +118,10 @@
     <Compile Include="Controllers\CorporateSite\NewsController.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModuleMetadata.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModule.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Models\CorporateSite\News.cs" />
     <Compile Include="Properties\MvcAssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Global.asax" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
