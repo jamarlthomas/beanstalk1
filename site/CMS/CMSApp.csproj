@@ -1933,7 +1933,6 @@
     <Content Include="CMSAdminControls\UI\Macros\MacroDesigner.ascx" />
     <Content Include="CMSAdminControls\UI\PageElements\AnchorDropup.ascx" />
     <Content Include="CMSAdminControls\UI\UniGrid\Controls\MassActions.ascx" />
-    <Content Include="CMSAPIExamples\Code\SharePoint\Default.aspx" />
     <Content Include="CMSDependencies\Newtonsoft.Json.4.5.0.0\Newtonsoft.Json.dll" />
     <Content Include="CMSDependencies\System.Net.Http.2.0.0.0\System.Net.Http.dll" />
     <Content Include="CMSDependencies\System.Net.Http.Formatting.4.0.0.0\System.Net.Http.Formatting.dll" />
@@ -2017,9 +2016,6 @@
     <Content Include="CMSAdminControls\UI\Macros\Dialogs\Default.aspx" />
     <Content Include="CMSAdminControls\UI\Macros\Dialogs\Header.aspx" />
     <Content Include="CMSAdminControls\UI\UserMenu.ascx" />
-    <Content Include="CMSAPIExamples\Code\Documents\Workflow\VersioningWithoutWorkflow\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\SocialMarketing\Facebook\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\SocialMarketing\Twitter\Default.aspx" />
     <Content Include="CMSDesk\Default.aspx" />
     <Content Include="CMSFormControls\Metafiles\MetaFileListControl.ascx" />
     <Content Include="CMSFormControls\ChangeStylesheetLanguage.ascx" />
@@ -2029,8 +2025,6 @@
     <Content Include="CMSFormControls\System\FieldMacroRuleEditor.ascx" />
     <Content Include="CMSFormControls\System\OptionsDesigner.ascx" />
     <Content Include="CMSFormControls\System\UIElementPropertiesEditor.ascx" />
-    <Content Include="CMSAPIExamples\Code\Administration\IntegrationBus\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\OnlineMarketing\Automation\Default.aspx" />
     <Content Include="CMSFormControls\Basic\SelectConnectionString.ascx" />
     <Content Include="CMSAdminControls\Basic\ThreeStateCheckBox.ascx" />
     <Content Include="CMSAdminControls\Calendar\Calendar.aspx" />
@@ -2068,8 +2062,6 @@
     <Content Include="CMSAdminControls\UI\UniMenu\UniGraphToolbar\NodesGroup.ascx" />
     <Content Include="CMSAdminControls\UI\WebServiceChecker.ascx" />
     <Content Include="CMSAdminControls\Validation\AccessibilityValidator.ascx" />
-    <Content Include="CMSAPIExamples\Code\Ecommerce\Files\file.png" />
-    <Content Include="CMSAPIExamples\Pages\Main.aspx" />
     <Content Include="CMSEdit\Default.aspx" />
     <Content Include="CMSFormControls\Captcha\ReCaptcha.ascx" />
     <Content Include="CMSFormControls\Classes\AssemblyClassSelector.ascx" />
@@ -5058,34 +5050,6 @@
     <Compile Include="CMSAdminControls\UI\UserMenu.ascx.designer.cs">
       <DependentUpon>UserMenu.ascx</DependentUpon>
     </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Workflow\VersioningWithoutWorkflow\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Workflow\VersioningWithoutWorkflow\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\SharePoint\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\SharePoint\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\SocialMarketing\Facebook\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\SocialMarketing\Facebook\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\SocialMarketing\Twitter\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\SocialMarketing\Twitter\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
     <Compile Include="CMSFormControls\Inputs\TextBox.ascx.cs">
       <DependentUpon>TextBox.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -5176,20 +5140,6 @@
     </Compile>
     <Compile Include="CMSFormControls\System\UIElementPropertiesEditor.ascx.designer.cs">
       <DependentUpon>UIElementPropertiesEditor.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\IntegrationBus\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\IntegrationBus\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\OnlineMarketing\Automation\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\OnlineMarketing\Automation\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSFormControls\Basic\SelectConnectionString.ascx.cs">
       <DependentUpon>SelectConnectionString.ascx</DependentUpon>
@@ -5354,27 +5304,6 @@
     </Compile>
     <Compile Include="CMSAdminControls\Validation\AccessibilityValidator.ascx.designer.cs">
       <DependentUpon>AccessibilityValidator.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Workflow\Advanced\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Workflow\Advanced\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\OnlineMarketing\ContactManagement\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\OnlineMarketing\ContactManagement\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Pages\Main.aspx.cs">
-      <DependentUpon>Main.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Pages\Main.aspx.designer.cs">
-      <DependentUpon>Main.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSEdit\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -9462,398 +9391,6 @@
     </Compile>
     <Compile Include="CMSAdminControls\Wizard\Header.ascx.designer.cs">
       <DependentUpon>Header.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Advanced\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Advanced\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Attachments\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Attachments\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Basics\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Basics\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\DocumentAliases\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\DocumentAliases\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Relationships\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Relationships\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Security\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Security\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Workflow\Basics\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Workflow\Basics\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Categories\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Categories\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\Countries\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\Countries\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\CSSStyleSheets\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\CSSStyleSheets\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\Cultures\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\Cultures\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\CustomTables\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\CustomTables\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\FormControls\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\FormControls\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\InlineControls\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\InlineControls\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\Notifications\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\Notifications\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\PageLayouts\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\PageLayouts\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\PageTemplates\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\PageTemplates\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Sites\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Sites\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Tags\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Tags\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\TimeZones\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\TimeZones\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\Webparts\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\Webparts\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\WebTemplates\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\WebTemplates\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\Widgets\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\Widgets\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\Workflows\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\Workflows\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Tools\AbuseReport\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Tools\AbuseReport\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Community\Avatars\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Community\Avatars\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\Badges\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\Badges\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\BadWords\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\BadWords\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\BannedIP\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\BannedIP\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Blogs\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Documents\Blogs\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Tools\Events\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Tools\Events\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Ecommerce\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Ecommerce\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\EventLog\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\EventLog\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Community\Forums\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Community\Forums\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Community\Friends\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Community\Friends\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Community\Groups\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Community\Groups\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Tools\ImportExport\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Tools\ImportExport\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\Membership\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\Membership\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Community\MessageBoards\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Community\MessageBoards\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Community\Messaging\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Community\Messaging\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\OnlineMarketing\Newsletters\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\OnlineMarketing\Newsletters\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\ObjectVersioning\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\ObjectVersioning\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Tools\Polls\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Tools\Polls\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Tools\ProjectManagement\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Tools\ProjectManagement\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Tools\Reporting\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Tools\Reporting\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\ScheduledTasks\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\ScheduledTasks\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\SmartSearch\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\SmartSearch\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Tools\Staging\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Tools\Staging\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\WebFarm\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Administration\WebFarm\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Settings\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Settings\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Controls\APIExample.ascx.cs">
-      <DependentUpon>APIExample.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Controls\APIExample.ascx.designer.cs">
-      <DependentUpon>APIExample.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Tools\MediaLibrary\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Tools\MediaLibrary\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\Modules\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Code\Development\Modules\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Pages\APIExamplesPage.Master.cs">
-      <DependentUpon>APIExamplesPage.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Pages\APIExamplesPage.Master.designer.cs">
-      <DependentUpon>APIExamplesPage.Master</DependentUpon>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Pages\Menu.aspx.cs">
-      <DependentUpon>Menu.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CMSAPIExamples\Pages\Menu.aspx.designer.cs">
-      <DependentUpon>Menu.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\Admin\accessdenied.aspx.designer.cs">
       <DependentUpon>accessdenied.aspx</DependentUpon>
@@ -24265,7 +23802,6 @@
     <Content Include="CMSAdminControls\CodeMirror\theme\elegant.css" />
     <Content Include="CMSAdminControls\CodeMirror\theme\neat.css" />
     <Content Include="CMSAdminControls\CodeMirror\theme\night.css" />
-    <Content Include="CMSAPIExamples\Code\Documents\Workflow\Advanced\Default.aspx" />
     <Content Include="CMSFormControls\Filters\DateTimeFilter.ascx" />
     <Content Include="CMSModules\Categories\Controls\Categories.xml" />
     <Content Include="CMSAdminControls\ContextMenus\ReportContextMenu.ascx" />
@@ -24274,20 +23810,6 @@
     <Content Include="CMSAdminControls\Validation\CssValidator.ascx" />
     <Content Include="CMSAdminControls\Validation\HTMLValidator.ascx" />
     <Content Include="CMSAdminControls\Validation\LinkChecker.ascx" />
-    <Content Include="CMSAPIExamples\Code\Documents\Advanced\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Documents\Attachments\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Documents\Attachments\Files\file.png" />
-    <Content Include="CMSAPIExamples\Code\Documents\Basics\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Documents\Relationships\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Documents\Security\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Documents\Workflow\Basics\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Development\Workflows\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Administration\BadWords\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Administration\EventLog\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Tools\ImportExport\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Community\Messaging\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Development\ObjectVersioning\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Tools\Staging\Default.aspx" />
     <Content Include="CMSFormControls\Captcha\SimpleCaptcha.ascx" />
     <Content Include="CMSFormControls\Documents\DocumentURLPath.ascx" />
     <Content Include="CMSFormControls\Macros\ConditionBuilder.aspx" />
@@ -24393,45 +23915,6 @@
     <Content Include="CMSAdminControls\UI\UniGrid\Controls\UniGridMenu.ascx" />
     <Content Include="CMSModules\Content\Controls\Filters\ObjectsRecycleBinFilter.ascx" />
     <Content Include="CMSAdminControls\UI\UniMenu\UniMenu.js" />
-    <Content Include="CMSAPIExamples\Code\Documents\DocumentAliases\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Documents\Categories\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Development\Countries\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Development\CSSStyleSheets\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Development\Cultures\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Development\CustomTables\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Development\FormControls\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Development\InlineControls\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Development\Notifications\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Development\PageLayouts\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Development\PageTemplates\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Sites\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Documents\Tags\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Development\TimeZones\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Development\Webparts\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Development\WebTemplates\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Development\Widgets\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Tools\AbuseReport\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Community\Avatars\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Community\Avatars\Files\avatar_man.jpg" />
-    <Content Include="CMSAPIExamples\Code\Administration\Badges\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Administration\BannedIP\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Documents\Blogs\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Tools\Events\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Ecommerce\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Community\Forums\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Community\Friends\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Community\Groups\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Tools\MediaLibrary\Files\Powered_by_kentico2.gif" />
-    <Content Include="CMSAPIExamples\Code\Administration\Membership\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Community\MessageBoards\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\OnlineMarketing\Newsletters\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Tools\Polls\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Tools\ProjectManagement\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Tools\Reporting\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Administration\ScheduledTasks\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Administration\SmartSearch\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Administration\WebFarm\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Settings\Default.aspx" />
     <Content Include="CMSFormControls\Basic\NumericUpDown.ascx" />
     <Content Include="CMSAdminControls\Basic\OrderByControl.ascx" />
     <Content Include="CMSFormControls\Captcha\LogicCaptcha.ascx" />
@@ -24680,14 +24163,6 @@
     <Content Include="CMSModules\Content\Controls\Filters\RecycleBinFilter.ascx" />
     <Content Include="CMSAdminControls\UI\UniGrid\Filters\TextSimpleFilter.ascx" />
     <Content Include="CMSAdminControls\UI\UniGrid\Filters\TimeSimpleFilter.ascx" />
-    <Content Include="CMSAPIExamples\Controls\APIExample.ascx" />
-    <Content Include="CMSAPIExamples\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Tools\MediaLibrary\Default.aspx" />
-    <Content Include="CMSAPIExamples\Code\Development\Modules\Default.aspx" />
-    <Content Include="CMSAPIExamples\Pages\Menu.aspx" />
-    <Content Include="CMSAPIExamples\Pages\Menu.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="CMSFormControls\Basic\BBEditorControl.ascx" />
     <Content Include="CMSFormControls\Basic\CalendarControl.ascx" />
     <Content Include="CMSFormControls\Basic\CheckBoxControl.ascx" />
@@ -25089,9 +24564,7 @@
     <Content Include="App_Themes\Default\DesignMode.skin" />
     <Content Include="CMSModules\Newsletters\CMSPages\Track.ashx" />
     <Content Include="CMSModules\Newsletters\CMSPages\Redirect.ashx" />
-    <Content Include="CMSAPIExamples\Pages\APIExamplesPage.Master" />
     <Content Include="CMSAdminControls\ModalCalendar\Themes\Web.config" />
-    <Content Include="CMSAPIExamples\Web.config" />
     <Content Include="App_Data\Templates\BlankSiteAspx\Template.zip" />
     <Content Include="App_Data\Templates\BlankSite\Template.zip" />
     <Content Include="App_Data\Templates\CommunitySite\Template.zip" />
@@ -25218,8 +24691,6 @@
     <Content Include="App_Themes\Default\CMSModules\cms.sharepoint.less" />
     <Content Include="App_Themes\Default\CMSModules\cms.ecommerce\cms.ecommerce.products.less" />
     <Content Include="App_Themes\Default\CMSModules\cms.socialmarketing\cms.socialmarketing.linkedin.less" />
-    <Content Include="CMSAPIExamples\Code\Tools\ImportExport\Packages\APIExample_Site.zip" />
-    <Content Include="CMSAPIExamples\Code\Tools\ImportExport\Packages\APIExample_User.zip" />
     <Content Include="CMSModules\BannerManagement\CMSPages\BannerRedirect.ashx" />
     <Content Include="CMSModules\Chat\CMSPages\ChatSettings.ashx" />
     <Content Include="CMSEdit\web.config" />
@@ -25356,7 +24827,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="CMSAPIExamples\Code\OnlineMarketing\ContactManagement\Default.aspx" />
     <Content Include="CMSModules\ContactManagement\Controls\UI\ActivityDetails\PurchasedProduct.ascx" />
     <Content Include="CMSModules\ContactManagement\Controls\UI\Contact\ContactGroups.ascx" />
     <Content Include="CMSModules\ContactManagement\Controls\UI\Contact\Scoring.ascx" />
