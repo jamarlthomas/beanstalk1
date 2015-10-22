@@ -1,5 +1,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSApp", "CMS\CMSApp.csproj", "{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSApp_MVC", "CMS\CMSApp_MVC.csproj", "{EF510AB9-7BEB-4B8B-A88E-BD1AE1989E8E}"
@@ -265,6 +267,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC", "MVC", "{E2430284-031
 		Lib\MVC\System.Web.WebPages.Razor.dll = Lib\MVC\System.Web.WebPages.Razor.dll
 		Lib\MVC\System.Web.WebPages.Razor.xml = Lib\MVC\System.Web.WebPages.Razor.xml
 		Lib\MVC\System.Web.WebPages.xml = Lib\MVC\System.Web.WebPages.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9E5B66C9-14F4-453F-8E8F-D2A930C1E945}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Global
