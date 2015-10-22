@@ -42,3 +42,5 @@ build/
 *.pidb
 *.log
 *.sc
+templates/node_modules/
+templates/bower_components/
