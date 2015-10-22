@@ -128,6 +128,18 @@
     <Compile Include="Controllers\CorporateSite\NewsController.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModuleMetadata.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModule.cs" />
+    <Compile Include="Models\Afton\InsightsResources.cs" />
+    <Compile Include="Models\Afton\GenericPage.cs" />
+    <Compile Include="Models\Afton\FAQTopic.cs" />
+    <Compile Include="Models\Afton\FAQItem.cs" />
+    <Compile Include="Models\Afton\Document.cs" />
+    <Compile Include="Models\Afton\DocumentType.cs" />
+    <Compile Include="Models\Afton\Product.cs" />
+    <Compile Include="Models\Afton\SolutionBusinessUnit.cs" />
+    <Compile Include="Models\Afton\Solution.cs" />
+    <Compile Include="Models\Afton\GenericModel.cs" />
+    <Compile Include="Models\Afton\HeroContent.cs" />
+    <Compile Include="Models\Afton\Home.cs" />
     <Compile Include="Models\CorporateSite\News.cs" />
     <Compile Include="Properties\MvcAssemblyInfo.cs" />
   </ItemGroup>
