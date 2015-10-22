@@ -1,0 +1,37 @@
+@import "bower_components/breakpoint-sass/stylesheets/breakpoint";
+@import "bower_components/susy/sass/susy";
+
+
+$susy: (
+  columns: 12,
+  gutters: .32,
+  container: 1260px,
+  //gutter-position: inside, //before | after | split | inside | inside-static
+  global-box-sizing: border-box,
+  //debug: (image: show)
+);
+
+@include border-box-sizing;
+
+//breakpoints
+$bp1: 885px max-width;
+$bp2: 710px max-width;
+$bp3: 560px max-width;
+
+@mixin gridContainer {
+    padding: 0px 10px;
+    @include container;
+}
+
+
+@mixin cf {
+  &:after {
+    content: " ";
+    display: block;
+    clear: both;
+  }
+}
+
+
+
+
