@@ -56,6 +56,23 @@ namespace CMS.DocumentEngine.Types
 
 
 		/// <summary>
+		/// 
+		/// </summary>
+		[DatabaseField]
+		public string Title
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("Title"), "");
+			}
+			set
+			{
+				SetValue("Title", value);
+			}
+		}
+
+
+		/// <summary>
 		/// Abstract.
 		/// </summary>
 		[DatabaseField]
@@ -85,23 +102,6 @@ namespace CMS.DocumentEngine.Types
 			set
 			{
 				SetValue("Copy", value);
-			}
-		}
-
-
-		/// <summary>
-		/// 
-		/// </summary>
-		[DatabaseField]
-		public string Title
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Title"), "");
-			}
-			set
-			{
-				SetValue("Title", value);
 			}
 		}
 

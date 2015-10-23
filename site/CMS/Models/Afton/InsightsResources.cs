@@ -56,23 +56,6 @@ namespace CMS.DocumentEngine.Types
 
 
 		/// <summary>
-		/// Featured Content List.
-		/// </summary>
-		[DatabaseField]
-		public string FeaturedContentList
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("FeaturedContentList"), "");
-			}
-			set
-			{
-				SetValue("FeaturedContentList", value);
-			}
-		}
-
-
-		/// <summary>
 		/// 
 		/// </summary>
 		[DatabaseField]
@@ -102,6 +85,23 @@ namespace CMS.DocumentEngine.Types
 			set
 			{
 				SetValue("Description", value);
+			}
+		}
+
+
+		/// <summary>
+		/// Featured Content List.
+		/// </summary>
+		[DatabaseField]
+		public string FeaturedContentList
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("FeaturedContentList"), "");
+			}
+			set
+			{
+				SetValue("FeaturedContentList", value);
 			}
 		}
 

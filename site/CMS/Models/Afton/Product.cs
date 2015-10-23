@@ -56,6 +56,57 @@ namespace CMS.DocumentEngine.Types
 
 
 		/// <summary>
+		/// 
+		/// </summary>
+		[DatabaseField]
+		public string Title
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("Title"), "");
+			}
+			set
+			{
+				SetValue("Title", value);
+			}
+		}
+
+
+		/// <summary>
+		/// Description.
+		/// </summary>
+		[DatabaseField]
+		public string Description
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("Description"), "");
+			}
+			set
+			{
+				SetValue("Description", value);
+			}
+		}
+
+
+		/// <summary>
+		/// Region.
+		/// </summary>
+		[DatabaseField]
+		public string Region
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("Region"), "");
+			}
+			set
+			{
+				SetValue("Region", value);
+			}
+		}
+
+
+		/// <summary>
 		/// Benefits.
 		/// </summary>
 		[DatabaseField]
@@ -153,40 +204,6 @@ namespace CMS.DocumentEngine.Types
 			set
 			{
 				SetValue("Comparison", value);
-			}
-		}
-
-
-		/// <summary>
-		/// Description.
-		/// </summary>
-		[DatabaseField]
-		public string Description
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Description"), "");
-			}
-			set
-			{
-				SetValue("Description", value);
-			}
-		}
-
-
-		/// <summary>
-		/// 
-		/// </summary>
-		[DatabaseField]
-		public string Title
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Title"), "");
-			}
-			set
-			{
-				SetValue("Title", value);
 			}
 		}
 

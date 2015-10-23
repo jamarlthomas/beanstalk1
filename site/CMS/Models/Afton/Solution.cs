@@ -73,23 +73,6 @@ namespace CMS.DocumentEngine.Types
 
 
 		/// <summary>
-		/// Description.
-		/// </summary>
-		[DatabaseField]
-		public string Description
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Description"), "");
-			}
-			set
-			{
-				SetValue("Description", value);
-			}
-		}
-
-
-		/// <summary>
 		/// HeroImage.
 		/// </summary>
 		[DatabaseField]
@@ -102,6 +85,40 @@ namespace CMS.DocumentEngine.Types
 			set
 			{
 				SetValue("HeroImage", value);
+			}
+		}
+
+
+		/// <summary>
+		/// NavigationIcon.
+		/// </summary>
+		[DatabaseField]
+		public string NavigationIcon
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("NavigationIcon"), "");
+			}
+			set
+			{
+				SetValue("NavigationIcon", value);
+			}
+		}
+
+
+		/// <summary>
+		/// Description.
+		/// </summary>
+		[DatabaseField]
+		public string Description
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("Description"), "");
+			}
+			set
+			{
+				SetValue("Description", value);
 			}
 		}
 

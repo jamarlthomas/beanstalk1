@@ -56,18 +56,18 @@ namespace CMS.DocumentEngine.Types
 
 
 		/// <summary>
-		/// Theme.
+		/// 
 		/// </summary>
 		[DatabaseField]
-		public string Theme
+		public string Title
 		{
 			get
 			{
-				return ValidationHelper.GetString(GetValue("Theme"), "");
+				return ValidationHelper.GetString(GetValue("Title"), "");
 			}
 			set
 			{
-				SetValue("Theme", value);
+				SetValue("Title", value);
 			}
 		}
 
@@ -85,6 +85,23 @@ namespace CMS.DocumentEngine.Types
 			set
 			{
 				SetValue("HeroImage", value);
+			}
+		}
+
+
+		/// <summary>
+		/// Description.
+		/// </summary>
+		[DatabaseField]
+		public string Description
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("Description"), "");
+			}
+			set
+			{
+				SetValue("Description", value);
 			}
 		}
 
@@ -141,35 +158,18 @@ namespace CMS.DocumentEngine.Types
 
 
 		/// <summary>
-		/// 
+		/// Theme.
 		/// </summary>
 		[DatabaseField]
-		public string Title
+		public string Theme
 		{
 			get
 			{
-				return ValidationHelper.GetString(GetValue("Title"), "");
+				return ValidationHelper.GetString(GetValue("Theme"), "");
 			}
 			set
 			{
-				SetValue("Title", value);
-			}
-		}
-
-
-		/// <summary>
-		/// Description.
-		/// </summary>
-		[DatabaseField]
-		public string Description
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Description"), "");
-			}
-			set
-			{
-				SetValue("Description", value);
+				SetValue("Theme", value);
 			}
 		}
 
