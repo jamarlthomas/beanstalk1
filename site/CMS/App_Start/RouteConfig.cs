@@ -18,6 +18,7 @@ namespace CMS.Mvc
         /// <param name="routes">The routes collection</param>
         public static void RegisterRoutes(RouteCollection routes)
         {
+            routes.MapMvcAttributeRoutes();
             /*
              * Add your custom routes registration here
              */
