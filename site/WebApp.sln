@@ -276,6 +276,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9E5B66
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Afton.Infrastructure", "Afton.Infrastructure\Afton.Infrastructure.csproj", "{0A963969-057A-4F66-B3FF-4248E5C82DBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -294,6 +296,10 @@ Global
 		{92B0A977-72C4-4616-9E24-6D851212A82D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92B0A977-72C4-4616-9E24-6D851212A82D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92B0A977-72C4-4616-9E24-6D851212A82D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A963969-057A-4F66-B3FF-4248E5C82DBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A963969-057A-4F66-B3FF-4248E5C82DBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A963969-057A-4F66-B3FF-4248E5C82DBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A963969-057A-4F66-B3FF-4248E5C82DBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
