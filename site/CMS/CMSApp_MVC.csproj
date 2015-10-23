@@ -15,7 +15,7 @@
     <AssemblyName>CMSApp_MVC</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -151,6 +151,7 @@
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
     <Compile Include="Controllers\Afton\HomeController.cs" />
+    <Compile Include="Controllers\Afton\MasterController.cs" />
     <Compile Include="Infrastructure\UIMappingConfiguration.cs" />
     <Compile Include="Controllers\CorporateSite\NewsController.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModuleMetadata.cs" />
@@ -207,6 +208,8 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Views\Afton\Shared\Master.cshtml" />
+    <Content Include="Views\Afton\Auxiliary\Index.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -223,9 +226,8 @@
     <Folder Include="Providers\" />
     <Folder Include="ViewModels\Master\" />
     <Folder Include="ViewModels\Shared\" />
-    <Folder Include="Views\Afton\Auxiliary\" />
     <Folder Include="Views\Afton\Master\" />
-    <Folder Include="Views\Afton\Shared\" />
+    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CorporateSite\News\Detail.cshtml" />
@@ -233,9 +235,9 @@
     <Content Include="Views\CorporateSite\Shared\Master.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Afton.Infrastructure\Afton.Infrastructure.csproj">
-      <Project>{0a963969-057a-4f66-b3ff-4248e5c82dbb}</Project>
-      <Name>Afton.Infrastructure</Name>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{b65e6a8f-0c74-42ff-aabe-74b85e8e2758}</Project>
+      <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -252,12 +254,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>54435</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost:54436/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
