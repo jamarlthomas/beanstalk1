@@ -156,12 +156,17 @@
     <Compile Include="Controllers\CorporateSite\NewsController.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModuleMetadata.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModule.cs" />
+    <Compile Include="Interfaces\IContentMenuItemProvider.cs" />
+    <Compile Include="Interfaces\IPagesMenuItemProvider.cs" />
+    <Compile Include="Helpers\ContentHelper.cs" />
     <Compile Include="Models\Afton\InsightsResources.cs" />
     <Compile Include="Models\Afton\GenericPage.cs" />
     <Compile Include="Models\Afton\FAQTopic.cs" />
     <Compile Include="Models\Afton\FAQItem.cs" />
     <Compile Include="Models\Afton\Document.cs" />
     <Compile Include="Models\Afton\DocumentType.cs" />
+    <Compile Include="Models\Afton\Master\ContentMenuItem.cs" />
+    <Compile Include="Models\Afton\Master\PagesMenuItem.cs" />
     <Compile Include="Models\Afton\Product.cs" />
     <Compile Include="Models\Afton\SolutionBusinessUnit.cs" />
     <Compile Include="Models\Afton\Solution.cs" />
@@ -170,6 +175,10 @@
     <Compile Include="Models\Afton\Home.cs" />
     <Compile Include="Models\CorporateSite\News.cs" />
     <Compile Include="Properties\MvcAssemblyInfo.cs" />
+    <Compile Include="Providers\ContentMenuItemProvider.cs" />
+    <Compile Include="Providers\PagesMenuItemProvider.cs" />
+    <Compile Include="ViewModels\Master\PagesMenuItemViewModel.cs" />
+    <Compile Include="ViewModels\Master\ContentMenuItemViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -220,11 +229,7 @@
   <ItemGroup>
     <Folder Include="Infrastructure\Enums\" />
     <Folder Include="Infrastructure\Helpers\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Models\Afton\Master\" />
     <Folder Include="Models\Afton\Shared\" />
-    <Folder Include="Providers\" />
-    <Folder Include="ViewModels\Master\" />
     <Folder Include="ViewModels\Shared\" />
     <Folder Include="Views\Afton\Master\" />
     <Folder Include="Views\Home\" />
