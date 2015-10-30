@@ -5,11 +5,10 @@ using System.Web;
 
 namespace CMS.Mvc.ViewModels.Master
 {
-    public class ContentMenuItemViewModel
+    public class MegaMenuLinkItemViewModel
     {
         public string Title { get; set; }
         public string Reference { get; set; }
-        public List<MegaMenuThumbnailedItemViewModel> ThumbnailedMenuItems { get; set; }
-        public MegaMenuLinkItemViewModel SolutionsLink { get; set; }
+        public List<MegaMenuSolutionBusinessUnitViewModel> Solutions { get; set; }
     }
 }
