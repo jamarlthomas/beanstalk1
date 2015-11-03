@@ -7,7 +7,7 @@ namespace CMS.Mvc.Controllers.Afton
         // GET: Home
         public ActionResult Index()
         {
-            return View();
+            return View("~/Views/Afton/Home/Index.cshtml");
         }
     }
 }

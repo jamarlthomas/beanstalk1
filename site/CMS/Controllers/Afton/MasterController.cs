@@ -3,6 +3,7 @@ using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Master;
 using System.Web.Mvc;
+using System.Linq;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -10,25 +11,52 @@ namespace CMS.Mvc.Controllers.Afton
     {
         private readonly IContentMenuItemProvider _contentMenuItemProvider;
         private readonly IPagesMenuItemProvider _pagesMenuItemProvider;
+        private readonly IMegaMenuThumbnailedItemProvider _megaMenuThumbnailedItemProvider;
+        private readonly IMegaMenuLinkItemProvider _megaMenuLinkItemProvider;
+        private readonly ISolutionBusinessUnitProvider _solutionBusinessUnitProvider;
 
-        public MasterController(IContentMenuItemProvider contentMenuItemProvider, IPagesMenuItemProvider pagesMenuItemProvider)
+        public MasterController(IContentMenuItemProvider contentMenuItemProvider,
+            IPagesMenuItemProvider pagesMenuItemProvider,
+            IMegaMenuThumbnailedItemProvider megaMenuThumbnailedItemProvider,
+            IMegaMenuLinkItemProvider megaMenuLinkItemProvider,
+            ISolutionBusinessUnitProvider solutionBusinessUnitProvider)
         {
             _contentMenuItemProvider = contentMenuItemProvider;
             _pagesMenuItemProvider = pagesMenuItemProvider;
+            _megaMenuThumbnailedItemProvider = megaMenuThumbnailedItemProvider;
+            _megaMenuLinkItemProvider = megaMenuLinkItemProvider;
+            _solutionBusinessUnitProvider = solutionBusinessUnitProvider;
+
         }
 
         public MasterController()
         {
             _contentMenuItemProvider = new ContentMenuItemProvider();
             _pagesMenuItemProvider = new PagesMenuItemProvider();
+            _megaMenuThumbnailedItemProvider = new MegaMenuThumbnailedItemProvider();
+            _megaMenuLinkItemProvider = new MegaMenuLinkItemProvider();
+            _solutionBusinessUnitProvider = new SolutionBusinessUnitProvider();
         }
 
-        [Route("Master")]
+        [ChildActionOnly]
         public ActionResult Index()
         {
-            var pagesMenuItems = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems());
-            var contentMenuItems = MapData<ContentMenuItem, ContentMenuItemViewModel>(_contentMenuItemProvider.GetContentMenuItems());
-            return View("~/Views/Afton/Shared/Master.cshtml");
+            var mainNavList = MapData<ContentMenuItem, ContentMenuItemViewModel>(_contentMenuItemProvider.GetContentMenuItems());
+            foreach (var contentMenuItem in mainNavList)
+            {
+                contentMenuItem.ThumbnailedMenuItems = MapData<MegaMenuThumbnailedItem, MegaMenuThumbnailedItemViewModel>(_megaMenuThumbnailedItemProvider.GetMegaMenuThumbnailedItems(contentMenuItem.Title));
+                var solutionLink = _megaMenuLinkItemProvider.GetMegaMenuLinkItems(contentMenuItem.Title).FirstOrDefault();
+                if (solutionLink != null)
+                {
+                    contentMenuItem.SolutionsLink = MapData<MegaMenuLinkItem, MegaMenuLinkItemViewModel>(solutionLink);
+                    contentMenuItem.SolutionsLink.Solutions = MapData<SolutionBusinessUnit, MegaMenuSolutionBusinessUnitViewModel>(_solutionBusinessUnitProvider.GetSolutionBusinessUnits(contentMenuItem.Title));
+                }
+            }
+            return PartialView("~/Views/Afton/Master/_master.cshtml", new MasterViewModel
+            {
+                MainNavList = mainNavList,
+                UtilityNavList = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems())
+            });
         }
     }
 }

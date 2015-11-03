@@ -6,6 +6,8 @@ using CMS;
 using CMS.Core;
 using CMS.DataEngine;
 using CMS.Mvc;
+using CMS.Mvc.App_Start;
+using System.Web.Optimization;
 
 [assembly: RegisterModule(typeof(CMS_MvcModule))]
 
@@ -35,6 +37,7 @@ namespace CMS.Mvc
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
     }
 }

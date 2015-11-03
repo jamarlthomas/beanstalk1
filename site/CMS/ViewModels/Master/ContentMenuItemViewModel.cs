@@ -9,5 +9,7 @@ namespace CMS.Mvc.ViewModels.Master
     {
         public string Title { get; set; }
         public string Reference { get; set; }
+        public List<MegaMenuThumbnailedItemViewModel> ThumbnailedMenuItems { get; set; }
+        public MegaMenuLinkItemViewModel SolutionsLink { get; set; }
     }
 }
