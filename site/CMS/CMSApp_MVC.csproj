@@ -184,6 +184,8 @@
     <Compile Include="Models\Afton\Master\MegaMenuThumbnailedItem.cs" />
     <Compile Include="Models\Afton\Master\ContentMenuItem.cs" />
     <Compile Include="Models\Afton\Master\PagesMenuItem.cs" />
+    <Compile Include="Models\Afton\Event.cs" />
+    <Compile Include="Models\Afton\CustomNews.cs" />
     <Compile Include="Models\Afton\Product.cs" />
     <Compile Include="Models\Afton\SolutionBusinessUnit.cs" />
     <Compile Include="Models\Afton\Solution.cs" />
