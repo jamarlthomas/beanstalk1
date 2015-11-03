@@ -28,7 +28,7 @@ namespace CMS.Mvc.Controllers.Afton
         {
             var pagesMenuItems = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems());
             var contentMenuItems = MapData<ContentMenuItem, ContentMenuItemViewModel>(_contentMenuItemProvider.GetContentMenuItems());
-            return View();
+            return View("~/Views/Afton/Shared/Master.cshtml");
         }
     }
 }
