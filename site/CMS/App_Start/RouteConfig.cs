@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using CMS.Mvc.Helpers;
+using Infrastructure.Localization;
 
 namespace CMS.Mvc
 {
@@ -18,7 +21,28 @@ namespace CMS.Mvc
         /// <param name="routes">The routes collection</param>
         public static void RegisterRoutes(RouteCollection routes)
         {
-            routes.MapMvcAttributeRoutes();
+            /*
+            RouteValueTranslationProvider firstLevelTranslator = new RouteValueTranslationProvider(
+                new List<TranslationItem>()
+                {
+                    new TranslationItem(CultureInfo.GetCultureInfo("nl-NL"), "Home", "Thuis"),
+                    new TranslationItem(CultureInfo.GetCultureInfo("es-ES"), "Home", "Domicilio")
+                }
+                );
+
+            routes.MapTranslatedRoute(
+                "TranslationRoute",
+                "{controller}/{action}/{name}",
+                new {controller = "Home", action = "Index", name = ""},
+                new {controller = firstLevelTranslator, action = firstLevelTranslator, name = firstLevelTranslator},
+                true
+                );
+            */
+            //routes.MapMvcAttributeRoutes();
+            routes.MapRoute(name: "Default",
+                url: "{controller}/{action}/{id}",
+                defaults: new {controller = "Home", action = "Index", id = UrlParameter.Optional});
+
             /*
              * Add your custom routes registration here
              */
