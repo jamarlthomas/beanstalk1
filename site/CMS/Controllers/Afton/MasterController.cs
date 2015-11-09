@@ -38,7 +38,7 @@ namespace CMS.Mvc.Controllers.Afton
             _solutionBusinessUnitProvider = new SolutionBusinessUnitProvider();
         }
 
-        [ChildActionOnly]
+        [Route("Master")]
         public ActionResult Index()
         {
             var mainNavList = MapData<ContentMenuItem, ContentMenuItemViewModel>(_contentMenuItemProvider.GetContentMenuItems());
