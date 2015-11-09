@@ -12,14 +12,15 @@ namespace CMS.Mvc.Helpers
         {
             if (PortalContext.ViewMode == ViewModeEnum.Preview)
             {
-                var treeNodes = DocumentHelper.GetDocuments(className).OnCurrentSite().Published()
+                var treeNodes = DocumentHelper.GetDocuments(className).Published()
                     .OrderBy("NodeLevel", "NodeOrder", "NodeName");
                 return treeNodes.Select(item => (T)item).Where(i => i != null).ToList();
             }
             else
             {
                 var tree = new TreeProvider();
-                var treeNodes = tree.SelectNodes(className).OnCurrentSite().Published()
+                var baseNodes = tree.SelectNodes(className);
+                var treeNodes = baseNodes.Published()
                     .OrderBy("NodeLevel", "NodeOrder", "NodeName");
                 return treeNodes.Select(item => (T)item).Where(i => i != null).ToList();
             }
