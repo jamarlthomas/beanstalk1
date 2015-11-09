@@ -31,7 +31,7 @@ namespace CMS.Mvc.Helpers
             docName = docName.Replace(' ', '-');
             if (PortalContext.ViewMode == ViewModeEnum.Preview)
             {
-                var docs = DocumentHelper.GetDocuments(childrenClassName).OnCurrentSite().Published()
+                var docs = DocumentHelper.GetDocuments(childrenClassName).Published()
                     .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                     .Where(item => item.Parent.NodeAlias.Equals(docName, StringComparison.CurrentCultureIgnoreCase));
                 return docs.Select(item => (T)item).ToList();
@@ -39,7 +39,7 @@ namespace CMS.Mvc.Helpers
             else
             {
                 var tree = new TreeProvider();
-                var docs = tree.SelectNodes(childrenClassName).OnCurrentSite().Published()
+                var docs = tree.SelectNodes(childrenClassName).Published()
                     .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                     .Where(item => item.Parent.NodeAlias.Equals(docName, StringComparison.CurrentCultureIgnoreCase));
                 return docs.Select(item => (T)item).ToList();
