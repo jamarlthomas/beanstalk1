@@ -599,7 +599,6 @@
   </ProjectExtensions>
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)..\Lib\*" "$(TargetDir)" /y /r
-xcopy "$(ProjectDir)..\Lib\MVC\*" "$(TargetDir)" /y /r
 xcopy "$(ProjectDir)..\Lib\Azure\*" "$(TargetDir)" /y /r</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
