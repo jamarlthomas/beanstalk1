@@ -14,18 +14,27 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly IMegaMenuThumbnailedItemProvider _megaMenuThumbnailedItemProvider;
         private readonly IMegaMenuLinkItemProvider _megaMenuLinkItemProvider;
         private readonly ISolutionBusinessUnitProvider _solutionBusinessUnitProvider;
+        private readonly IFooterAboutProvider _footerAboutProvider;
+        private readonly IFooterNewsEventsProvider _footerNewsEventsProvider;
+        private readonly IFooterCareersProvider _footerCareersProvider;
 
         public MasterController(IContentMenuItemProvider contentMenuItemProvider,
             IPagesMenuItemProvider pagesMenuItemProvider,
             IMegaMenuThumbnailedItemProvider megaMenuThumbnailedItemProvider,
             IMegaMenuLinkItemProvider megaMenuLinkItemProvider,
-            ISolutionBusinessUnitProvider solutionBusinessUnitProvider)
+            ISolutionBusinessUnitProvider solutionBusinessUnitProvider,
+            IFooterAboutProvider footerAboutProvider,
+            IFooterNewsEventsProvider footerNewsEventsProvider,
+            IFooterCareersProvider footerCareersProvider)
         {
             _contentMenuItemProvider = contentMenuItemProvider;
             _pagesMenuItemProvider = pagesMenuItemProvider;
             _megaMenuThumbnailedItemProvider = megaMenuThumbnailedItemProvider;
             _megaMenuLinkItemProvider = megaMenuLinkItemProvider;
             _solutionBusinessUnitProvider = solutionBusinessUnitProvider;
+            _footerAboutProvider = footerAboutProvider;
+            _footerNewsEventsProvider = footerNewsEventsProvider;
+            _footerCareersProvider = footerCareersProvider;
 
         }
 
@@ -36,6 +45,9 @@ namespace CMS.Mvc.Controllers.Afton
             _megaMenuThumbnailedItemProvider = new MegaMenuThumbnailedItemProvider();
             _megaMenuLinkItemProvider = new MegaMenuLinkItemProvider();
             _solutionBusinessUnitProvider = new SolutionBusinessUnitProvider();
+            _footerAboutProvider = new FooterAboutProvider();
+            _footerNewsEventsProvider = new FooterNewsEventsProvider();
+            _footerCareersProvider = new FooterCareersProvider();
         }
 
         [ChildActionOnly]
@@ -55,7 +67,13 @@ namespace CMS.Mvc.Controllers.Afton
             return PartialView("~/Views/Afton/Master/_master.cshtml", new MasterViewModel
             {
                 MainNavList = mainNavList,
-                UtilityNavList = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems())
+                UtilityNavList = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems()),
+                Footer = new FooterViewModel
+                {
+                    FooterAboutItems = MapData<FooterAbout, FooterAboutViewModel>(_footerAboutProvider.GetFooterAbouItems()),
+                    FooterCareersItems = MapData<FooterCareers, FooterCareersViewModel>(_footerCareersProvider.GetFooterCareersItems()),
+                    FooterNewsEventsItems = MapData<FooterNewsEvents, FooterNewsEventsViewModel>(_footerNewsEventsProvider.GetFooterNewsEventsItems())
+                }
             });
         }
     }
