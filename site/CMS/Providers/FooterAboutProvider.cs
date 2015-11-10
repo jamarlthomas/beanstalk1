@@ -7,7 +7,7 @@ namespace CMS.Mvc.Providers
 {
     public class FooterAboutProvider : IFooterAboutProvider
     {
-        public List<FooterAbout> GetFooterAbouItems()
+        public List<FooterAbout> GetFooterAboutItems()
         {
             return ContentHelper.GetDocs<FooterAbout>(FooterAbout.CLASS_NAME);
         }

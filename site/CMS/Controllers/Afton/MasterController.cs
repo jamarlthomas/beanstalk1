@@ -70,7 +70,7 @@ namespace CMS.Mvc.Controllers.Afton
                 UtilityNavList = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems()),
                 Footer = new FooterViewModel
                 {
-                    FooterAboutItems = MapData<FooterAbout, FooterAboutViewModel>(_footerAboutProvider.GetFooterAbouItems()),
+                    FooterAboutItems = MapData<FooterAbout, FooterAboutViewModel>(_footerAboutProvider.GetFooterAboutItems()),
                     FooterCareersItems = MapData<FooterCareers, FooterCareersViewModel>(_footerCareersProvider.GetFooterCareersItems()),
                     FooterNewsEventsItems = MapData<FooterNewsEvents, FooterNewsEventsViewModel>(_footerNewsEventsProvider.GetFooterNewsEventsItems())
                 }
