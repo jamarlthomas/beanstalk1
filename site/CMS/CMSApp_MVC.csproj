@@ -167,6 +167,7 @@
     <Compile Include="Controllers\CorporateSite\NewsController.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModuleMetadata.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModule.cs" />
+    <Compile Include="Interfaces\IHeroContentProvider.cs" />
     <Compile Include="Interfaces\IFooterAboutProvider.cs" />
     <Compile Include="Interfaces\IFooterCareersProvider.cs" />
     <Compile Include="Interfaces\IFooterNewsEventsProvider.cs" />
@@ -196,10 +197,11 @@
     <Compile Include="Models\Afton\SolutionBusinessUnit.cs" />
     <Compile Include="Models\Afton\Solution.cs" />
     <Compile Include="Models\Afton\GenericModel.cs" />
-    <Compile Include="Models\Afton\HeroContent.cs" />
+    <Compile Include="Models\Afton\Home\HeroContent.cs" />
     <Compile Include="Models\Afton\Home.cs" />
     <Compile Include="Models\CorporateSite\News.cs" />
     <Compile Include="Properties\MvcAssemblyInfo.cs" />
+    <Compile Include="Providers\HeroContentProvider.cs" />
     <Compile Include="Providers\FooterAboutProvider.cs" />
     <Compile Include="Providers\FooterCareersProvider.cs" />
     <Compile Include="Providers\FooterNewsEventsProvider.cs" />
@@ -208,6 +210,8 @@
     <Compile Include="Providers\SolutionBusinessUnitProvider.cs" />
     <Compile Include="Providers\ContentMenuItemProvider.cs" />
     <Compile Include="Providers\PagesMenuItemProvider.cs" />
+    <Compile Include="ViewModels\Home\HeroContentViewModel.cs" />
+    <Compile Include="ViewModels\Home\HomeViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterCareersViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterNewsEventsViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterAboutViewModel.cs" />

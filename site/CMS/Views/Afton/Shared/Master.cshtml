@@ -12,9 +12,9 @@
     @Scripts.Render("~/bundles/js")
     @Styles.Render("~/bundles/css")
     <script>
-      head.js(
-          { language_selector: "Scripts/custom/langSel.min.js" },
-          { mega_menu_drop_down: "Scripts/custom/megaMenu.min.js" },
+    head.js(
+        { language_selector: "@Url.Content("~/Scripts/custom/langSel.min.js")" },
+          { mega_menu_drop_down: "@Url.Content("~/Scripts/custom/megaMenu.min.js")" },
           {disclaimer_copyright: "assets-layout/js/copyrightDate.min.js"},
           function(){}
       ); //TODO: find copyrightDate.min.js file
