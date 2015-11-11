@@ -19,7 +19,6 @@ namespace CMS.Mvc.Controllers.Afton
             _heroContentProvider = heroContentProvider;
         }
 
-        // GET: Home
         public ActionResult Index()
         {
             var model = new HomeViewModel

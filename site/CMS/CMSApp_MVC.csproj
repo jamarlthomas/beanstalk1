@@ -15,7 +15,7 @@
     <AssemblyName>CMSApp_MVC</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -70,6 +70,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -170,12 +171,14 @@
     <Compile Include="Interfaces\IFooterAboutProvider.cs" />
     <Compile Include="Interfaces\IFooterCareersProvider.cs" />
     <Compile Include="Interfaces\IFooterNewsEventsProvider.cs" />
+    <Compile Include="Interfaces\IHeroContentProvider.cs" />
     <Compile Include="Interfaces\ISolutionBusinessUnitProvider.cs" />
     <Compile Include="Interfaces\IMegaMenuLinkItemProvider.cs" />
     <Compile Include="Interfaces\IMegaMenuThumbnailedItemProvider.cs" />
     <Compile Include="Interfaces\IContentMenuItemProvider.cs" />
     <Compile Include="Interfaces\IPagesMenuItemProvider.cs" />
     <Compile Include="Helpers\ContentHelper.cs" />
+    <Compile Include="Models\Afton\Home\HeroContent.cs" />
     <Compile Include="Models\Afton\InsightsResources.cs" />
     <Compile Include="Models\Afton\GenericPage.cs" />
     <Compile Include="Models\Afton\FAQTopic.cs" />
@@ -196,18 +199,20 @@
     <Compile Include="Models\Afton\SolutionBusinessUnit.cs" />
     <Compile Include="Models\Afton\Solution.cs" />
     <Compile Include="Models\Afton\GenericModel.cs" />
-    <Compile Include="Models\Afton\HeroContent.cs" />
     <Compile Include="Models\Afton\Home.cs" />
     <Compile Include="Models\CorporateSite\News.cs" />
     <Compile Include="Properties\MvcAssemblyInfo.cs" />
     <Compile Include="Providers\FooterAboutProvider.cs" />
     <Compile Include="Providers\FooterCareersProvider.cs" />
     <Compile Include="Providers\FooterNewsEventsProvider.cs" />
+    <Compile Include="Providers\HeroContentProvider.cs" />
     <Compile Include="Providers\MegaMenuLinkItemProvider.cs" />
     <Compile Include="Providers\MegaMenuThumbnailedItemProvider.cs" />
     <Compile Include="Providers\SolutionBusinessUnitProvider.cs" />
     <Compile Include="Providers\ContentMenuItemProvider.cs" />
     <Compile Include="Providers\PagesMenuItemProvider.cs" />
+    <Compile Include="ViewModels\Home\HeroContentViewModel.cs" />
+    <Compile Include="ViewModels\Home\HomeViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterCareersViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterNewsEventsViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterAboutViewModel.cs" />
@@ -324,23 +329,13 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>54435</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:54436/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)..\Lib\*" "$(TargetDir)" /y /r
-xcopy "$(ProjectDir)..\Lib\MVC\*" "$(TargetDir)" /y /r
 xcopy "$(ProjectDir)..\Lib\Azure\*" "$(TargetDir)" /y /r
 </PostBuildEvent>
   </PropertyGroup>

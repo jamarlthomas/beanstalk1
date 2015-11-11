@@ -536,7 +536,9 @@
   <ItemGroup>
     <WebReferences Include="Web References\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="web.config" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="CMSPages\WebAnalyticsService.asmx" />
     <Content Include="parameters.config" />
@@ -563,7 +565,14 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -599,7 +608,6 @@
   </ProjectExtensions>
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)..\Lib\*" "$(TargetDir)" /y /r
-xcopy "$(ProjectDir)..\Lib\MVC\*" "$(TargetDir)" /y /r
 xcopy "$(ProjectDir)..\Lib\Azure\*" "$(TargetDir)" /y /r</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

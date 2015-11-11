@@ -24904,7 +24904,6 @@
   </ProjectExtensions>
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)..\Lib\*" "$(TargetDir)" /y /r
-xcopy "$(ProjectDir)..\Lib\MVC\*" "$(TargetDir)" /y /r
 xcopy "$(ProjectDir)..\Lib\Azure\*" "$(TargetDir)" /y /r</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
