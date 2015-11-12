@@ -9,12 +9,12 @@
                     <li>
                         <a href="#" id="selLang" data-lang="langEnglish">English                                 </a>
                         <ul id="langDropDown" style="display: none;">
-                            <li id="langEnglish"><a href="#">English</a></li>
+                            <li id="langEnglish"><a href=@Url.Content("?lang=en-US")>English</a></li>
                             <li id="langChinese"><a href="http://translate.google.com/translate?u=http%3A%2F%2Fafton-test.azurewebsites.net%2Ftemplates%2Findex.html&amp;hl=en&amp;langpair=auto|zh-CN&amp;tbb=1&amp;ie=UTF-8">简体中文                                </a></li>
                             <li id="langDeutsch"><a href="http://translate.google.com/translate?u=http%3A%2F%2Fafton-test.azurewebsites.net%2Ftemplates%2Findex.html&amp;hl=en&amp;langpair=auto|nl&amp;tbb=1&amp;ie=UTF-8">Deutsch</a></li>
                             <li id="langJapanese"><a href="http://translate.google.com/translate?u=http%3A%2F%2Fafton-test.azurewebsites.net%2Ftemplates%2Findex.html&amp;hl=en&amp;langpair=auto|ja&amp;tbb=1&amp;ie=UTF-8">日本語</a></li>
                             <li id="langRussian"><a href="http://translate.google.com/translate?u=http%3A%2F%2Fafton-test.azurewebsites.net%2Ftemplates%2Findex.html&amp;hl=en&amp;langpair=auto|ru&amp;tbb=1&amp;ie=UTF-8">Русский</a></li>
-                            <li id="langSpanish"><a href="http://translate.google.com/translate?u=http%3A%2F%2Fafton-test.azurewebsites.net%2Ftemplates%2Findex.html&amp;hl=en&amp;langpair=auto|es&amp;tbb=1&amp;ie=UTF-8">Español</a></li>
+                            <li id="langSpanish"><a href="?lang=es-ES">Español</a></li>
                             <li id="langPortugues"><a href="http://translate.google.com/translate?u=http%3A%2F%2Fafton-test.azurewebsites.net%2Ftemplates%2Findex.html&amp;hl=en&amp;langpair=auto|pt&amp;tbb=1&amp;ie=UTF-8">Português</a></li>
                         </ul>
                     </li>
@@ -24,7 +24,10 @@
                 <ul>
                     @foreach (var item in Model.UtilityNavList)
                     {
-                        <li><a href="@item.Reference">@item.Title</a></li>
+                        <li>
+                            
+                            <a href="@Url.Content("~/" + @item.Reference)">@item.Title</a>
+                        </li>
                     }
                     <li><a href="#"><img src=@Url.Content("~/images/b-search.gif")></a></li>
                 </ul>
@@ -33,7 +36,7 @@
                 <ul>
                     @foreach (var item in Model.MainNavList)
                     {
-                        <li><a href="@item.Reference" data-mm="@item.Title">@item.Title</a></li>
+                        <li><a href="@Url.Content(@item.Reference)" data-mm="@item.Title">@item.Title</a></li>
                     }
                     @*<li><a href="#" data-mm="driveline">Driveline Additives</a></li>
                     <li><a href="#" data-mm="engine">Engine Oil Additives</a></li>

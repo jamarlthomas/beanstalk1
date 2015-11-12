@@ -17,6 +17,13 @@ namespace CMS.Mvc
         /// <param name="routes">The routes collection</param>
         public static void RegisterRoutes(RouteCollection routes)
         {
+            routes.Ignore("css/{folder}/{filename}");
+            routes.Ignore("css/{filename}");
+            routes.Ignore("Scripts/{filename}");
+            routes.Ignore("Scripts/{folder}/{filename}");
+            routes.Ignore("assets-layout/js/{filename}");
+            routes.Ignore("images/{folder}/{filename}");
+            routes.Ignore("fonts/{folder}/{filename}");
             if (ConfigurationManager.AppSettings["EnableUrlLocalization"].Equals("true",
                 StringComparison.InvariantCultureIgnoreCase))
             {
@@ -38,6 +45,7 @@ namespace CMS.Mvc
                 //    );
 
             }
+           
             routes.MapRoute(name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });
