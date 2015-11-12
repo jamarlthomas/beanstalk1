@@ -80,7 +80,8 @@ namespace Infrastructure.Localization
                 var translatedValue = prv.TranslateFrom(operationCulture, value.Value.ToString());
                 newRoute.Values.Add(value.Key, translatedValue.DefaultCultureValue);
                 // if no such translations in specified language change culture to the one that has tranlsation
-                if (!operationCulture.Equals(translatedValue.Culture)&& cultureSwitchAllowed)
+                if (translatedValue.Culture != null && !translatedValue.Culture.Equals(operationCulture) &&
+                    cultureSwitchAllowed)
                     operationCulture = translatedValue.Culture;
 
                 cultureSwitchAllowed = false;
