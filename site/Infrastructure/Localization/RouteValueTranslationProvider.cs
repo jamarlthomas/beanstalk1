@@ -44,7 +44,7 @@ namespace Infrastructure.Localization
                     return new TranslationItem(culture, translationPair.Key, foreignCultureValue);
                 }
                 //if value was not found return original one
-                return new TranslationItem(culture, foreignCultureValue, foreignCultureValue);
+                //return new TranslationItem(culture, foreignCultureValue, foreignCultureValue);
             }
 
             //try to translate from any vocabulary containing this word

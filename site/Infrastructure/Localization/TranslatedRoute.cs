@@ -68,6 +68,8 @@ namespace Infrastructure.Localization
             }
             
             CultureInfo operationCulture = GetCultureFromCookie(httpContext);
+            //to ensure all values are translated from the same culture
+            bool cultureSwitchAllowed = true;
             foreach (KeyValuePair<string, object> value in route.Values)
             {
                 //tranlsate each value in route
@@ -78,8 +80,10 @@ namespace Infrastructure.Localization
                 var translatedValue = prv.TranslateFrom(operationCulture, value.Value.ToString());
                 newRoute.Values.Add(value.Key, translatedValue.DefaultCultureValue);
                 // if no such translations in specified language change culture to the one that has tranlsation
-                if (!operationCulture.Equals(translatedValue.Culture))
+                if (!operationCulture.Equals(translatedValue.Culture)&& cultureSwitchAllowed)
                     operationCulture = translatedValue.Culture;
+
+                cultureSwitchAllowed = false;
             }
 
             if (operationCulture != null && SetDetectedCulture)
@@ -108,10 +112,8 @@ namespace Infrastructure.Localization
             return base.GetVirtualPath(requestContext, newValues);
         }
 
-       private CultureInfo GetCultureToChange(HttpContextBase context, IEnumerable<string> keyCollection)
+        private CultureInfo GetCultureToChange(HttpContextBase context, IEnumerable<string> keyCollection)
         {
-
-            CultureInfo culture = null;
             //UI forces culture change
             if (context.Request.QueryString.AllKeys.Contains("lang"))
             {
@@ -122,20 +124,19 @@ namespace Infrastructure.Localization
                         .Any(c => c.Name.Equals(qsCulture, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     //specified culture exists
-                    culture = new CultureInfo(qsCulture);
+                    CultureInfo culture = new CultureInfo(qsCulture);
                     if (keyCollection.Contains(culture.Name, StringComparer.InvariantCultureIgnoreCase))
                     {
                         //save culture in current thread
                         SetCulture(context, culture);
-                        
+                        return culture;
                     }
                 }
-                
             }
-            return culture;
+            return null;
         }
 
-       private CultureInfo GetCultureFromCookie(HttpContextBase context)
+        private CultureInfo GetCultureFromCookie(HttpContextBase context)
        {
            var cookie = context.Request.Cookies["lang"];
            if (cookie != null && CultureInfo.GetCultures(CultureTypes.AllCultures)
