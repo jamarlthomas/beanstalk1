@@ -1,4 +1,5 @@
-﻿using CMS.DocumentEngine.Types;
+﻿using System.Globalization;
+using CMS.DocumentEngine.Types;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Master;
@@ -66,6 +67,7 @@ namespace CMS.Mvc.Controllers.Afton
             }
             return PartialView("~/Views/Afton/Master/_master.cshtml", new MasterViewModel
             {
+                SelectedCulture = CultureInfo.CurrentCulture,
                 MainNavList = mainNavList,
                 UtilityNavList = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems()),
                 Footer = new FooterViewModel
