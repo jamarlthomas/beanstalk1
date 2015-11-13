@@ -45,5 +45,25 @@ namespace CMS.Mvc.Helpers
                 return docs.Select(item => (T)item).ToList();
             }
         }
+
+        public static T GetDocByName<T>(string className, string docName) where T : TreeNode, new()
+        {
+            docName = docName.Replace(' ', '-');
+            if (PortalContext.ViewMode == ViewModeEnum.Preview)
+            {
+                var doc = DocumentHelper.GetDocuments(className).Published()
+                    .OrderBy("NodeLevel", "NodeOrder", "NodeName")
+                    .FirstOrDefault(item => item.NodeAlias.Equals(docName, StringComparison.CurrentCultureIgnoreCase));
+                return (T)doc;
+            }
+            else
+            {
+                TreeProvider tree = new TreeProvider();
+                var doc = tree.SelectNodes(className).Published()
+                    .OrderBy("NodeLevel", "NodeOrder", "NodeName")
+                    .FirstOrDefault(item => item.NodeAlias.Equals(docName, StringComparison.CurrentCultureIgnoreCase));
+                return (T)doc;
+            }
+        }
     }
 }
