@@ -6,5 +6,6 @@ namespace CMS.Mvc.Interfaces
     public interface ISolutionBusinessUnitProvider
     {
         List<SolutionBusinessUnit> GetSolutionBusinessUnits(string parentAlias);
+        SolutionBusinessUnit GetSolutionBusinessUnit(string alias);
     }
 }

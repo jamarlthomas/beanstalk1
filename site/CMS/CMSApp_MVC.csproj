@@ -162,16 +162,19 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
+    <Compile Include="Controllers\Afton\SBUController.cs" />
     <Compile Include="Controllers\Afton\HomeController.cs" />
     <Compile Include="Controllers\Afton\MasterController.cs" />
+    <Compile Include="Helpers\DivideHelper.cs" />
     <Compile Include="Infrastructure\UIMappingConfiguration.cs" />
     <Compile Include="Controllers\CorporateSite\NewsController.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModuleMetadata.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModule.cs" />
+    <Compile Include="Interfaces\IHeroContentProvider.cs" />
     <Compile Include="Interfaces\IFooterAboutProvider.cs" />
     <Compile Include="Interfaces\IFooterCareersProvider.cs" />
     <Compile Include="Interfaces\IFooterNewsEventsProvider.cs" />
-    <Compile Include="Interfaces\IHeroContentProvider.cs" />
+    <Compile Include="Interfaces\IAnchorMenuItemProvider.cs" />
     <Compile Include="Interfaces\ISolutionBusinessUnitProvider.cs" />
     <Compile Include="Interfaces\IMegaMenuLinkItemProvider.cs" />
     <Compile Include="Interfaces\IMegaMenuThumbnailedItemProvider.cs" />
@@ -195,7 +198,8 @@
     <Compile Include="Models\Afton\Event.cs" />
     <Compile Include="Models\Afton\CustomNews.cs" />
     <Compile Include="Models\Afton\Product.cs" />
-    <Compile Include="Models\Afton\SolutionBusinessUnit.cs" />
+    <Compile Include="Models\Afton\SBU\AnchorMenuItem.cs" />
+    <Compile Include="Models\Afton\SBU\SolutionBusinessUnit.cs" />
     <Compile Include="Models\Afton\Solution.cs" />
     <Compile Include="Models\Afton\GenericModel.cs" />
     <Compile Include="Models\Afton\Home\HeroContent.cs" />
@@ -208,6 +212,7 @@
     <Compile Include="Providers\HeroContentProvider.cs" />
     <Compile Include="Providers\MegaMenuLinkItemProvider.cs" />
     <Compile Include="Providers\MegaMenuThumbnailedItemProvider.cs" />
+    <Compile Include="Providers\AnchorMenuItemProvider.cs" />
     <Compile Include="Providers\SolutionBusinessUnitProvider.cs" />
     <Compile Include="Providers\ContentMenuItemProvider.cs" />
     <Compile Include="Providers\PagesMenuItemProvider.cs" />
@@ -223,6 +228,8 @@
     <Compile Include="ViewModels\Master\MasterViewModel.cs" />
     <Compile Include="ViewModels\Master\PagesMenuItemViewModel.cs" />
     <Compile Include="ViewModels\Master\ContentMenuItemViewModel.cs" />
+    <Compile Include="ViewModels\SBU\AnchorMenuItemViewModel.cs" />
+    <Compile Include="ViewModels\SBU\SBUViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\normalize.min.css" />
@@ -290,6 +297,7 @@
     <Content Include="Views\Afton\Auxiliary\Index.cshtml" />
     <Content Include="Views\Afton\Home\Index.cshtml" />
     <Content Include="Views\Afton\Master\_master.cshtml" />
+    <Content Include="Views\Afton\SBU\Index.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
