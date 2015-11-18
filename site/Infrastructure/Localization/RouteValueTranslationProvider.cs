@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
+
 namespace Infrastructure.Localization
 {
     public class RouteValueTranslationProvider : IRouteValueTranslationProvider
@@ -84,10 +85,10 @@ namespace Infrastructure.Localization
             var dictionarySet = new Dictionary<string, RouteDictionary>();
             var spanish = new RouteDictionary("es-ES");
             spanish.TranslationDictionary = new Dictionary<string, string>();
-            spanish.TranslationDictionary.Add("Home", "Domicilio");
-            spanish.TranslationDictionary.Add("Index", "Indexar");
-            spanish.TranslationDictionary.Add("Auxiliary", "Asistente");
-            spanish.TranslationDictionary.Add("Images", "Imágenes");
+            spanish.AddPair("Home", "Domicilio");
+            spanish.AddPair("Index", "Indexar");
+            spanish.AddPair("Auxiliary", "Asistente");
+            spanish.AddPair("Images", "Imágenes");
             dictionarySet.Add(spanish.Culture.Name, spanish);
             var english = new RouteDictionary("en-US");
             english.TranslationDictionary = new Dictionary<string, string>();
@@ -97,6 +98,19 @@ namespace Infrastructure.Localization
             english.TranslationDictionary.Add("Images", "Images");
             dictionarySet.Add(english.Culture.Name, english);
             return dictionarySet;
+        }
+
+        public void LoadPresets(List<string> cultureList)
+        {
+            foreach (var culture in cultureList)
+            {
+                if (!RouteDictionarySet.ContainsKey(culture))
+                {
+                    RouteDictionarySet.Add(culture, new RouteDictionary(culture));
+                }
+            }
+
+            
         }
     }
 }

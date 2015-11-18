@@ -2,6 +2,8 @@
 using System.Configuration;
 using System.Web.Mvc;
 using System.Web.Routing;
+using CMS.Mvc.Helpers;
+using CMS.Mvc.Infrastructure;
 using Infrastructure.Localization;
 
 namespace CMS.Mvc
@@ -24,10 +26,14 @@ namespace CMS.Mvc
             routes.Ignore("assets-layout/js/{filename}");
             routes.Ignore("images/{folder}/{filename}");
             routes.Ignore("fonts/{folder}/{filename}");
+
+
             if (ConfigurationManager.AppSettings["EnableUrlLocalization"].Equals("true",
                 StringComparison.InvariantCultureIgnoreCase))
             {
                 var translProvider = RouteValueTranslationProvider.GetProvider();
+                //Utility.LoadTranslations(translProvider);
+
                 routes.MapTranslatedRoute(
                     "TranslationRoute",
                     "{controller}/{action}/{name}",

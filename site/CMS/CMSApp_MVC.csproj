@@ -168,6 +168,7 @@
     <Compile Include="Controllers\CorporateSite\NewsController.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModuleMetadata.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModule.cs" />
+    <Compile Include="Infrastructure\Utility.cs" />
     <Compile Include="Interfaces\IFooterAboutProvider.cs" />
     <Compile Include="Interfaces\IFooterCareersProvider.cs" />
     <Compile Include="Interfaces\IFooterNewsEventsProvider.cs" />

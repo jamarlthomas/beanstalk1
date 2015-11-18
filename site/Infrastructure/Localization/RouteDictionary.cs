@@ -17,5 +17,10 @@ namespace Infrastructure.Localization
         {
             Culture = new CultureInfo(cultureName);
         }
+
+        public void AddPair(string defaultValue, string foreignValue)
+        {
+            TranslationDictionary.Add(defaultValue, foreignValue);
+        }
     }
 }

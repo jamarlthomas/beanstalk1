@@ -152,7 +152,7 @@ namespace Infrastructure.Localization
         {
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
-
+            context.Response.Cookies.Add(new HttpCookie("CMSPreferredCulture", culture.Name));
             context.Response.Cookies.Add(new HttpCookie("lang", culture.Name));
         }
 

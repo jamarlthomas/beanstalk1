@@ -25,7 +25,7 @@ namespace CMS.Mvc.Helpers
                 return treeNodes.Select(item => (T)item).Where(i => i != null).ToList();
             }
         }
-
+      
         public static List<T> GetDocChildrenByName<T>(string childrenClassName, string docName) where T : TreeNode, new()
         {
             docName = docName.Replace(' ', '-');
@@ -43,6 +43,22 @@ namespace CMS.Mvc.Helpers
                     .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                     .Where(item => item.Parent.NodeAlias.Equals(docName, StringComparison.CurrentCultureIgnoreCase));
                 return docs.Select(item => (T)item).ToList();
+            }
+        }
+
+        public static List<TreeNode> GetAllNodes()
+        {
+            if (PortalContext.ViewMode == ViewModeEnum.Preview)
+            {
+                var docs = DocumentHelper.GetDocuments().AllCultures();
+                return docs.ToList();
+            }
+            else
+            {
+                var tree = new TreeProvider();
+                var docs = tree.SelectNodes().Published()
+                    .OrderBy("NodeLevel", "NodeOrder", "NodeName");
+                return docs.ToList();
             }
         }
     }
