@@ -27,7 +27,6 @@ namespace CMS.Mvc
             routes.Ignore("images/{folder}/{filename}");
             routes.Ignore("fonts/{folder}/{filename}");
 
-
             if (ConfigurationManager.AppSettings["EnableUrlLocalization"].Equals("true",
                 StringComparison.InvariantCultureIgnoreCase))
             {
@@ -51,7 +50,6 @@ namespace CMS.Mvc
                 //    );
 
             }
-           
             routes.MapRoute(name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });

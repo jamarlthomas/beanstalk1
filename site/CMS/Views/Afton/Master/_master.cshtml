@@ -36,7 +36,8 @@
                 <ul>
                     @foreach (var item in Model.MainNavList)
                     {
-                        <li><a href="@Url.Content(@item.Reference)" data-mm="@item.Title">@item.Title</a></li>
+                        @*<li><a href="@Url.Content(@item.Reference)" data-mm="@item.Title">@item.Title</a></li>*@
+                        <li><a href="#">@item.Title</a></li>
                     }
                     @*<li><a href="#" data-mm="driveline">Driveline Additives</a></li>
                     <li><a href="#" data-mm="engine">Engine Oil Additives</a></li>
@@ -44,7 +45,7 @@
                     <li><a href="#" data-mm="lubricant">Lubricant Components</a></li>
                     <li><a href="#">Logistics & Supply</a></li>
                     <li><a href="#">Insights & Resources</a></li>*@
-                >></ul>
+                </ul>
             </div>
         </header>
     </div>
