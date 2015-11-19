@@ -88,14 +88,14 @@ namespace Infrastructure.Localization
             spanish.AddPair("Home", "Domicilio");
             spanish.AddPair("Index", "Indexar");
             spanish.AddPair("Auxiliary", "Asistente");
-            spanish.AddPair("Images", "Imágenes");
+            //spanish.AddPair("Images", "Imágenes");
             dictionarySet.Add(spanish.Culture.Name, spanish);
             var english = new RouteDictionary("en-US");
             english.TranslationDictionary = new Dictionary<string, string>();
             english.TranslationDictionary.Add("Home", "Home");
             english.TranslationDictionary.Add("Index", "Index");
             english.TranslationDictionary.Add("Auxiliary", "Auxiliary");
-            english.TranslationDictionary.Add("Images", "Images");
+            //english.TranslationDictionary.Add("Images", "Images");
             dictionarySet.Add(english.Culture.Name, english);
             return dictionarySet;
         }
