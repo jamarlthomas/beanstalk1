@@ -1,0 +1,70 @@
+#mobileNavC1 { position: fixed; top: 0px; width: 0px; min-height: 100%; z-index: 0; background: rgba(0,0,0,0); overflow: hidden; transition: background 1s,ease; 
+
+    #mobileNavC { position: absolute; top: 0; right: -260px; width: 260px; height: 100%; background: #FFF; overflow: auto; transition: All,.8s ease;
+        
+        #menuHdrC { position: relative; width: 100%; height: 79px; border-bottom: 1px solid #4f9c36;
+            
+            #menuHdr { padding: 34px 0px 0px 16px; font: 20px HelveticaNeueLT-Light; color: #124498; }
+            
+            #menuclose { position: absolute; top: 36px; right: 16px; }
+        }
+        
+        #mainNavC {
+            
+            ul { position: relative; margin: 3px 0px 3px 0px; padding: 0px; 
+            
+                li { margin: 0px; padding: 0px; list-style: none; 
+                    
+                    a { position: relative; display: block; text-decoration: none; padding: 13px 16px; color: #124498;
+                        
+                        &:hover { background: #4f9c36; color: #FFF; }
+                        
+                    }//a
+                    
+                }//li
+                
+                //setup indicator of children
+                li.hasChildren > a { 
+                
+                    &:after { content: url(../../images/mobile-arrow.png); position: absolute; right: 26px; top: 50%; transform: translateY(-50%); }
+                        
+                        &:hover:after { content: url(../../images/mobile-arrow-o.png);  }
+                    
+                }//li.hasChildren a
+                
+            }//ul
+            
+            .hasChildren ul { position: absolute; top: 0px; display: none; z-index: 101; }    
+         
+        }//mainNavC
+        
+        
+        #utilC { border-top: 1px solid #4f9c36;
+            
+            ul { margin: 3px 0px 3px 0px; padding: 0px; 
+            
+                li { margin: 0px; padding: 0px; list-style: none; 
+                    
+                    a { display: block; text-decoration: none; padding: 13px 16px; color: #124498;
+                    
+                        &:hover { background: #4f9c36; color: #FFF; }
+                        
+                    }//a
+                    
+                }//li
+                
+            }//ul
+            
+        }//mainNavC
+        
+    }//mobileNavC
+    
+}//mobileNavC1
+
+
+//Navigation Animation
+#mobileNavC1.navToggleOpen { background: rgba(0,0,0,0.75);
+
+    #mobileNavC { right: 0px; }
+    
+}

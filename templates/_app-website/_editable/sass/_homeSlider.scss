@@ -1,0 +1,111 @@
+
+#topSliderC { position: relative; box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.13);
+
+    #topSliderArrowsC { position: absolute; top: 40%; left: 0px; width: 100%; z-index: 10; 
+
+        #lftArrow { position: absolute; left: 10px; }
+        #rtArrow { position: absolute; right: 10px; }
+        
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp2) { display: none; }  
+        
+    }//topSlideArrowsC
+    
+    
+    #topSlider { position: relative; margin: 0px auto; width: 1260px;
+    
+        #topSliderNavC { position: absolute; bottom: 10px; right: 0px; z-index: 10;
+
+            a { display: inline-block; margin-right: 10px; width: 14px; height: 14px; background: #d1d3d4;
+
+                &:hover, &.active { background: #4c9d2f; }
+
+            }//a
+            
+            //*** Breakpoints ***
+            @include breakpoint($bp3) { width: 100%; text-align: center; }  
+            
+        }//topSliderNavC
+    
+    
+        .slide { position: relative; height: 515px; overflow: auto;
+            
+            .slideTxtBoxC { width: 50%; height: 100%;
+                
+                .slideTxtBox { position: absolute; top: 50%; width: 50%; transform: translateY(-50%); text-align: center; padding: 0px 60px;
+                
+                    .slideHdr { padding-bottom: 14px; color: #0c419a; font: 40px/45px HelveticaNeueLT-Thin; 
+                        
+                        //*** Breakpoints ***                        
+                        @include breakpoint($bp1) { padding-bottom: 7px; font-size: 30px; line-height: 33px; }
+                        @include breakpoint($bp2) { font-size: 18px; line-height: 20px; }  
+                        @include breakpoint($bp3) { padding-top: 50px; font-size: 30px; line-height: 33px; }  
+                        
+                    }//slideHdr
+
+                    .slideTxt { margin-bottom: 36px; font: 18px HelveticaNeueLTStd-It;
+                    
+                        //*** Breakpoints ***
+                        @include breakpoint($bp1) { margin-bottom: 18px; font-size: 15px; line-height: 20px; } 
+                        @include breakpoint($bp2) { font-size: 12px; line-height: 16px; } 
+                        @include breakpoint($bp3) { font-size: 15px; line-height: 18px; } 
+                        
+                    }//slideTxt
+
+                    a { display: inline-block; padding: 16px 50px; text-align: center; background: #48a540; color: #FFF; text-decoration: none;
+                        &:hover { background: #0c419a; }
+
+                        img { margin-left: 24px; vertical-align: middle; 
+                            
+                            //*** Breakpoints ***
+                            @include breakpoint($bp2) { margin-left: 12px; } 
+                        
+                        }//img
+                        
+                        //*** Breakpoints ***
+                        @include breakpoint($bp1) { padding: 8px 25px; } 
+                        @include breakpoint($bp2) { padding: 5px 15px; } 
+                        
+                    }//a
+                    
+                    //*** Breakpoints ***
+                    @include breakpoint($bp2) { padding: 10px; }  
+                    @include breakpoint($bp3) { position: relative; top: 0px; transform: translateY(0); width: 100%; }  
+                    
+                }//slideTxtBox
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { float: none; width: 100%; height: auto; } 
+                
+            }//slideTxtBoxC
+            
+            
+            .slideImgBoxC { width: 50%;
+                
+                img { width: 100%; display: block; }
+            
+                //*** Breakpoints ***
+                @include breakpoint($bp1) { height: auto; } 
+                @include breakpoint($bp3) { float: none; width: 100%; } 
+                
+            }//slideImgBoxC
+            
+            
+            //*** Breakpoints ***
+            @include breakpoint($bp1) { height: auto; }    
+            
+        }//slide
+        
+        .rtLayout .slideTxtBoxC { float: right;  }
+        .rtLayout .slideImgBoxC { float: left;  }
+        .lftLayout .slideTxtBoxC { float: left;  }
+        .lftLayout .slideImgBoxC { float: right;  }        
+        
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { width: 100%; }
+        
+    }//topSlider
+        
+}//topSliderC

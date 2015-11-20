@@ -15,13 +15,15 @@
     <!--Default Scripts-->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.js"></script>
     <script src="assets-layout/js/library/jquery.animate-colors.min.js"></script>
-    <script src="assets-layout/js/custom/bgSwitch.min.js"></script>
+    <script src="assets-layout/js/library/jquery.dotdotdot.min.js"></script>
+    <script src="assets-layout/js/custom/ellipsesText.min.js"></script>
     <script src="assets-layout/js/library/head.min.js">       </script>
     <script>
       head.js(
           {language_selector: "assets-layout/js/custom/langSel.min.js"},
           {mega_menu_drop_down: "assets-layout/js/custom/megaMenu.min.js"},
-          {disclaimer_copyright: "assets-layout/js/copyrightDate.min.js"},
+          {mobile_nav: "assets-layout/js/custom/mobileNav.min.js"},
+          {disclaimer_copyright: "assets-layout/js/custom/copyrightDate.min.js"},
           function(){
               //loadCSS
               //	{LABEL: "URL/PATH"},
@@ -31,9 +33,57 @@
     </script>
   </head>
   <body>
+    <div id="mobileNavC1">
+      <div id="mobileNavC">
+        <div id="menuHdrC">
+          <div id="menuHdr">Menu</div><a href="#" id="menuclose"><img src="../../images/menuClose.gif"></a>
+        </div>
+        <div id="mainNavC">
+          <ul>
+            <li><a href="#">1 Driveline Additives</a>
+              <ul>
+                <li><a href="#">2 Driveline Additives</a>
+                  <ul>
+                    <li><a href="#"> 3 Driveline Additives</a>
+                      <ul>
+                        <li><a href="#"> 4 Driveline Additives</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li><a href="#">Driveline Products</a></li>
+                <li><a href="#">Driveline Insights & Resources</a></li>
+                <li><a href="#">Driveline Additive Solutions</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Engine Oil additives</a></li>
+            <li><a href="#">Fuel Additives</a></li>
+            <li><a href="#">Lubricant Components                     </a></li>
+            <li><a href="#">Logistics & Supply</a></li>
+            <li><a href="#">Insight & Resources</a>
+              <ul>
+                <li><a href="#">xDriveline Additives</a></li>
+                <li><a href="#">Driveline Products</a></li>
+                <li><a href="#">Driveline Insights & Resources</a></li>
+                <li><a href="#">Driveline Additive Solutions</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div id="utilC">
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">News</a></li>
+            <li><a href="#">Forum</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div id="topHeaderC">
       <div id="topHeader">
-        <header><a href="#"><img src="images/logo.gif" id="logoC" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions"></a><a href="#" id="mobileBtn" style="display: none;"><img src="images/mobileBtn.gif"></a>
+        <header><a href="#"><img src="images/logo.gif" id="dLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions"><img src="images/logo-mobile.gif" id="mLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions" style="display: none;"></a><a href="#" id="mobileBtn" style="display: none;"><img src="images/mobileBtn.gif"></a><a href="#" id="mobileSearch" style="display: none;"><img src="images/b-search.gif"></a>
           <div id="languageC">
             <ul>
               <li><a href="#" id="selLang" data-lang="langEnglish">English                                 </a>
@@ -71,12 +121,12 @@
           </div>
         </header>
       </div>
-      <div id="megaMenuC"><!-- DriveLine Mega Menu -->
-        <div id="driveline" style="display: none;" class="megaMenu">
+      <div id="megaMenuC" style="opacity: 0;"><!-- DriveLine Mega Menu -->
+        <div id="driveline" class="megaMenu">
           <div class="lftCol"><a href="#" class="photoLink"><img src="images/sample-pic-megamanu1.jpg">
               <div class="photoLinkRt">
                 <div class="mHeader">Driveline Products</div>
-                <div class="mTxt">Keeping even more of your big, dirty, dusty machines working smoothly and more efficiently for longer operating. </div>
+                <div class="mTxt">Keeping even more of your big, dirty, dusty machines working smoothly and more efficiently for longer operating.</div>
               </div></a><a href="#" class="photoLink"><img src="images/sample-pic-megamanu2.jpg">
               <div class="photoLinkRt">
                 <div class="mHeader">Driveline Insights & Resources</div>
@@ -87,21 +137,33 @@
           <div class="rtCol">
             <div class="rtColHdr">Driveline Additive Solutions</div>
             <div class="rtColLinksC"><a href="#" class="rtColLinks">
-                <div class="linkHdr">Automatic Transmissions</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Continuously Variable Transmission (CVT)</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Dual Clutch Transmission (DCT)</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Automotive Gear</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Power Steering</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Heavy Machinery</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a></div>
+                <div class="txtC">
+                  <div class="linkHdr">Automatic Transmissions</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly. </div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Continuously Variable Transmission (CVT)</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Dual Clutch Transmission (DCT)</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Automotive Gear</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Power Steering</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Heavy Machinery</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a></div>
           </div>
         </div><!-- Engline Oil Additives Mega Menu -->
-        <div id="engine" style="display: none;" class="megaMenu">
+        <div id="engine" class="megaMenu">
           <div class="lftCol"><a href="#" class="photoLink"><img src="images/sample-pic-megamanu1a.jpg">
               <div class="photoLinkRt">
                 <div class="mHeader">Engine Oil Products</div>
@@ -116,13 +178,17 @@
           <div class="rtCol">
             <div class="rtColHdr">Engine Oil Additive Solutions</div>
             <div class="rtColLinksC"><a href="#" class="rtColLinks">
-                <div class="linkHdr">Diesel Oil</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Gasoline Oil</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a></div>
+                <div class="txtC">
+                  <div class="linkHdr">Diesel Oil</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Gasoline Oil</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a></div>
           </div>
         </div><!-- Fuel Additives Mega Menu -->
-        <div id="fuel" style="display: none;" class="megaMenu">
+        <div id="fuel" class="megaMenu">
           <div class="lftCol"><a href="#" class="photoLink"><img src="images/sample-pic-megamanu1.jpg">
               <div class="photoLinkRt">
                 <div class="mHeader">Fuel Products</div>
@@ -137,19 +203,29 @@
           <div class="rtCol">
             <div class="rtColHdr">Fuel Additive Solutions</div>
             <div class="rtColLinksC"><a href="#" class="rtColLinks">
-                <div class="linkHdr">Diesel Additives</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Gasoline Additives</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Octaine Improver</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Alternative Fuels</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Home Heating Fuel</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a></div>
+                <div class="txtC">
+                  <div class="linkHdr">Diesel Additives</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Gasoline Additives</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Octaine Improver</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Alternative Fuels</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Home Heating Fuel</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a></div>
           </div>
         </div><!-- Lubricant Additives Mega Menu -->
-        <div id="lubricant" style="display: none;" class="megaMenu">
+        <div id="lubricant" class="megaMenu">
           <div class="lftCol"><a href="#" class="photoLink"><img src="images/sample-pic-megamanu1a.jpg">
               <div class="photoLinkRt">
                 <div class="mHeader">Lubricant Products</div>
@@ -164,53 +240,194 @@
           <div class="rtCol">
             <div class="rtColHdr">Lubricant Additive Solutions</div>
             <div class="rtColLinksC"><a href="#" class="rtColLinks">
-                <div class="linkHdr">Couplers</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Detergents & Corrosion Inhibritors</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Extreme Pressure Agents & Antiewear Agents</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Foam Inhibitors</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Friction Modifiers</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Pour Point Depressants</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Seal Swell Additives</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Tackiness Additives</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a><a href="#" class="rtColLinks">
-                <div class="linkHdr">Thickeners & Viscosity Index Improvers</div>
-                <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div></a></div>
+                <div class="txtC">
+                  <div class="linkHdr">Couplers</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Detergents & Corrosion Inhibritors</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Extreme Pressure Agents & Antiewear Agents</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Foam Inhibitors</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Friction Modifiers</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Pour Point Depressants</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Seal Swell Additives</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Tackiness Additives</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a><a href="#" class="rtColLinks">
+                <div class="txtC">
+                  <div class="linkHdr">Thickeners & Viscosity Index Improvers</div>
+                  <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
+                </div></a></div>
           </div>
         </div>
+      </div>
+    </div>
+    <div id="stickyFooterC">
+      <div id="stickyFooter">
+        <div id="stickyFoot"><a href="#">Contact</a></div>
       </div>
     </div>
     <div id="topSliderC">
-      <div id="topSliderNavC">
-        <div id="topSliderArrowsC"><a href="#" id="lftArrow"><img src="images/lft-slidArrow.png"></a><a href="#" id="rtArrow"><img src="images/rt-slidArrow.png"></a></div>
-        <div id="slideNavC"><a href="#" class="active">                       </a><a href="#"></a><a href="#"></a><a href="#"></a><a href="#"></a></div>
-      </div>
-      <div style="xdisplay: none;" data-desktopBG="images/slide1.jpg" data-mobileBG="images/slide1a.jpg" class="slide rtLayout">
-        <div class="slideTxtBoxC">
-          <div class="slideTxtBox">
-            <div class="slideHdr">Our culture and people are our most treasured assets</div>
-            <div class="slideTxt">A key player in the lubricant and fuel industry with over 90 years of customer collaboration.</div><a href="#">Learn More <img src="images/rt-arrow.png"></a>
+      <div id="topSliderArrowsC"><a href="#" id="lftArrow"><img src="images/lft-slidArrow.png"></a><a href="#" id="rtArrow"><img src="images/rt-slidArrow.png"></a></div>
+      <div id="topSlider">
+        <div id="topSliderNavC"><a href="#" class="active">                       </a><a href="#"></a><a href="#"> </a><a href="#"></a><a href="#"></a></div>
+        <div style="xdisplay: none;" class="slide rtLayout">                   
+          <div class="slideTxtBoxC">
+            <div class="slideTxtBox">                       
+              <div class="slideHdr">Our culture and people are our most treasured assets </div>
+              <div class="slideTxt">A key player in the lubricant and fuel industry with over 90 years of customer collaboration.</div><a href="#">Learn More <img src="images/rt-arrow.png"></a>
+            </div>
           </div>
+          <div class="slideImgBoxC"><img src="images/lft-sample1.jpg"></div>
         </div>
-      </div>
-      <div style="xdisplay: none;" data-desktopBG="images/slide2.jpg" data-mobileBG="images/slide2a.jpg" class="slide lftLayout">
-        <div class="slideTxtBoxC">
-          <div class="slideTxtBox">
-            <div class="slideHdr">Where innovative chemistry leads to customized solutions</div>
-            <div class="slideTxt">A key player in the lubricant and fuel industry with over 90 years of customer collaboration. </div><a href="#">Learn More <img src="images/rt-arrow.png"></a>
+        <div style="display: none;" class="slide lftLayout">
+          <div class="slideTxtBoxC">
+            <div class="slideTxtBox">
+              <div class="slideHdr">Where innovative chemistry leads to customized solutions</div>
+              <div class="slideTxt">A key player in the lubricant and fuel industry with over 90 years of customer collaboration. </div><a href="#">Learn More <img src="images/rt-arrow.png"></a>
+            </div>
           </div>
+          <div class="slideImgBoxC"><img src="images/rt-sample1.jpg"></div>
         </div>
       </div>
     </div>
-    <div id="content">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed urna dolor, molestie a est quis, tincidunt bibendum risus. Donec quis purus sed enim facilisis vehicula. Ut non faucibus arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nullam quis metus at lectus suscipit placerat nec sodales elit. Mauris accumsan ligula elementum nisi viverra, quis porttitor lacus viverra. Suspendisse nec hendrerit nisl, at placerat metus. Nullam pretium neque quis lorem imperdiet euismod. Proin gravida nisi ut facilisis volutpat. Nullam vitae est metus.</p>
-      <p>Pellentesque et ante tellus. Nam tristique purus neque, eget porta dui gravida ut. Suspendisse varius velit lacus, a scelerisque lectus faucibus at. Donec sed vehicula nisi. Aliquam dapibus erat sit amet ipsum tristique, id finibus justo mollis. Duis fringilla turpis eget sem molestie aliquet. In hac habitasse platea dictumst. Donec ut eros lectus. Nulla feugiat felis placerat metus auctor consequat. Donec at tempus nulla. Aenean porttitor diam cursus rutrum porttitor. Mauris eu euismod orci. Duis convallis, tellus at consequat fermentum, erat metus molestie ante, eget placerat urna nunc et ex. Donec lobortis metus ac neque consectetur tempor. Nulla dictum faucibus volutpat. Quisque molestie accumsan lectus ut dapibus.</p>
+    <div class="cardsC">
+      <div class="cards"><a href="#">
+          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+          <div class="overlayC">
+            <div class="overlay">
+              <div class="cardTitle">News</div>
+              <div class="cardHdr">Afton Chemical to exhibit and present at annual international CTI Symposium.</div>
+            </div>
+            <div class="cardDate">March 27, 2015</div>
+          </div><img src="images/sample-card1.jpg"></a><a href="#">
+          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+          <div class="overlayC">
+            <div class="overlay">
+              <div class="cardTitle">Events</div>
+              <div class="cardHdr">Afton Chemical breaks ground for its facility in Singapore.</div>
+              <div class="cardTxt">Production of the next generation of additive solutions is set to begin in January 2016.</div>
+            </div>
+          </div><img src="images/sample-card2.jpg"></a><a href="#">
+          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+          <div class="overlayC">
+            <div class="overlay">
+              <div class="cardTitle">Fact Sheet</div>
+              <div class="cardHdr">Automatic Transmissions</div>
+              <div class="cardTxt">Afton Chemical develops and manufacturers petroleum additives that enhances the performance of fuels and lubricating oils in machinery and vehicles. </div>
+            </div>
+          </div><img src="images/sample-card3.jpg"></a><a href="#">
+          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+          <div class="overlayC">                       
+            <div class="overlay">
+              <div class="cardTitle">News</div>
+              <div class="cardHdr">Afton Chemical presents at ICIS E-World event and receives prestigious award.</div>
+            </div>
+            <div class="cardDate">March 1, 2015</div>
+          </div><img src="images/sample-card1.jpg"></a><a href="#">
+          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+          <div class="overlayC">
+            <div class="overlay">
+              <div class="cardTitle">Solution</div>
+              <div class="cardHdr">Off Road: HiTec8888z</div>
+              <div class="cardTxt">Keeping even more of your big, dirty, dusty machines working smoothly and more efficiently for longer-reducing operatingcosts by being even more universal. </div>
+            </div>
+          </div><img src="images/sample-card2.jpg"></a><a href="#">
+          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+          <div class="overlayC">
+            <div class="overlay">
+              <div class="cardTitle">Solution</div>
+              <div class="cardHdr">Polartech Amide MA 408 T</div>
+              <div class="cardTxt">408T us a cost effective balance between emulsification and corrosion protection with a reduced level of free diethanola-mine, suitable for a wide range of watermix fluids.</div>
+            </div>
+          </div><img src="images/sample-card3.jpg"></a><a href="#" class="trending">
+          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+          <div class="trendIndicator">Trending Topic</div>
+          <div class="overlayC">
+            <div class="overlay">
+              <div class="cardTitle">Solution</div>
+              <div class="cardHdr">Afton Chemical trending topic headline to be placed in this designated area.</div>
+            </div>
+          </div><img src="images/sample-card1.jpg"></a><a href="#" class="trending">
+          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+          <div class="trendIndicator">Trending Topic</div>
+          <div class="overlayC">
+            <div class="overlay">
+              <div class="cardTitle">Solution</div>
+              <div class="cardHdr">Two line trending topic headline example here.</div>
+              <div class="cardTxt">Omnis es aliat. Eceaquam eossimp oreperit dolupt tum hicto volorat. </div>
+            </div>
+          </div><img src="images/sample-card2.jpg"></a><a href="#" class="trending">
+          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+          <div class="trendIndicator">Trending Topic</div>
+          <div class="overlayC">
+            <div class="overlay">
+              <div class="cardTitle">Solution</div>
+              <div class="cardHdr">One line trending headline example.</div>
+              <div class="cardTxt">Arum quia qui comnis volupta voluptas dolupta quam endicidem faccus molorios aceratia netur, cum sumque pos doluptio odist isti ut et faccatem harchilit reris.</div>
+            </div>
+          </div><img src="images/sample-card3.jpg"></a></div>
+    </div>
+    <div id="learnMoreC">
+      <div id="learnMore">
+        <div id="learnTxtC">
+          <div id="learnHdr">Learn more about our solutions.</div>
+          <div id="learnTxt">Talk with one of our sales representatives.</div>
+        </div>
+        <div id="leanMoreBtnC"><a href="#">Contact Us<img src="images/rt-arrow.png"></a></div>
+      </div>
+    </div>
+    <div id="footerC">
+      <footer>
+        <div id="btmC">
+          <div id="btmLogoC"><img src="images/btm-logo.png"></div>
+          <div id="btmNavLft"><a href="#">About</a>
+            <ul>
+              <li><a href="#">Communities</a></li>
+              <li><a href="#">History</a></li>
+              <li><a href="#">Safety</a></li>
+              <li><a href="#">Values</a></li>
+              <li><a href="#">Facilities & Locations</a></li>
+            </ul>
+          </div>
+          <div id="btmNavMid"><a href="#">News & Events</a>
+            <ul>
+              <li><a href="#">News</a></li>
+              <li><a href="#">Events</a></li>
+              <li><a href="#">Product Launches</a></li>
+              <li><a href="#">Newsletter Archives </a></li>
+              <li><a href="#">Archives</a></li>
+            </ul>
+          </div>
+          <div id="btmNavRt"><a href="#">Careers</a>
+            <ul>
+              <li><a href="#">Working at Afton</a></li>
+              <li><a href="#">Career Development</a></li>
+              <li><a href="#">Culture Matters</a></li>
+            </ul>
+          </div>
+        </div>
+        <div id="btmContactBtn" style="display:none;"><a href="#">Contact</a></div>
+        <div id="disclaimer">&copy;<span id="dateYear"></span> Afton Chemical <span class="divider">|</span><a href="#">Legal Notice</a><span class="divider">|</span><a href="#">Privacy & Terms</a><span class="divider">|</span><a href="#">Site Map</a></div>
+      </footer>
     </div>
   </body>
 </html>
