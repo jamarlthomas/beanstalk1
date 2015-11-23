@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 using CMS.Mvc.Infrastructure;
-using Infrastructure.Localization;
+using CMS.Mvc.Infrastructure.Localization;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -10,7 +10,7 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index()
         {
             var translProvider = RouteValueTranslationProvider.GetProvider();
-            Utility.LoadTranslations(translProvider);
+            TranslationsUtility.LoadTranslations(translProvider);
 
 
             return View("~/Views/Afton/Auxiliary/Index.cshtml");

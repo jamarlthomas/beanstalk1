@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Infrastructure.Localization
+namespace CMS.Mvc.Infrastructure.Localization
 {
     public class TranslationItem
     {

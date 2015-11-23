@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
-namespace Infrastructure.Localization
+
+namespace CMS.Mvc.Infrastructure.Localization
 {
     public static class RouteCollectionExtensions
     {

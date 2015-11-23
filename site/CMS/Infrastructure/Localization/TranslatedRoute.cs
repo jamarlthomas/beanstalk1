@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Infrastructure.Localization
+namespace CMS.Mvc.Infrastructure.Localization
 {
 
     public class TranslatedRoute : Route
@@ -35,7 +33,7 @@ namespace Infrastructure.Localization
         public override RouteData GetRouteData(HttpContextBase httpContext)
         {
             RouteData route = base.GetRouteData(httpContext);
-            if (route == null) return null;
+            if (route == null) return route;
             IRouteValueTranslationProvider prv;
             RouteData newRoute = new RouteData(route.Route, route.RouteHandler);
             

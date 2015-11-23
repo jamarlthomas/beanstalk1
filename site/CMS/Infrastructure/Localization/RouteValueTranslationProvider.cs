@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-
-namespace Infrastructure.Localization
+namespace CMS.Mvc.Infrastructure.Localization
 {
     public class RouteValueTranslationProvider : IRouteValueTranslationProvider
     {
@@ -59,6 +58,9 @@ namespace Infrastructure.Localization
                     return new TranslationItem(routeDictionary.Value.Culture, translationPair.Key, foreignCultureValue);
                 }
             }
+            //Try to load translation from CMS
+            TranslationItem freshTranslation = TranslationsUtility.SearchFreshTranslation(RouteDictionarySet, culture, foreignCultureValue);
+            if (freshTranslation != null) return freshTranslation;
             // return current values w/o translation
             return new TranslationItem(culture, foreignCultureValue, foreignCultureValue);
         }
@@ -73,32 +75,34 @@ namespace Infrastructure.Localization
 
         public static RouteValueTranslationProvider GetProvider()
         {
-            Dictionary<string, RouteDictionary> dictSet = LoadDictionaries();
 
-            var prv = new RouteValueTranslationProvider(dictSet);
+            var prv = new RouteValueTranslationProvider(new Dictionary<string, RouteDictionary>());
+            
+            TranslationsUtility.LoadTranslations(prv);
 
             return prv;
         }
 
-        private static Dictionary<string, RouteDictionary> LoadDictionaries()
-        {
-            var dictionarySet = new Dictionary<string, RouteDictionary>();
-            var spanish = new RouteDictionary("es-ES");
-            spanish.TranslationDictionary = new Dictionary<string, string>();
-            spanish.AddPair("Home", "Domicilio");
-            spanish.AddPair("Index", "Indexar");
-            spanish.AddPair("Auxiliary", "Asistente");
-            //spanish.AddPair("Images", "Imágenes");
-            dictionarySet.Add(spanish.Culture.Name, spanish);
-            var english = new RouteDictionary("en-US");
-            english.TranslationDictionary = new Dictionary<string, string>();
-            english.TranslationDictionary.Add("Home", "Home");
-            english.TranslationDictionary.Add("Index", "Index");
-            english.TranslationDictionary.Add("Auxiliary", "Auxiliary");
-            //english.TranslationDictionary.Add("Images", "Images");
-            dictionarySet.Add(english.Culture.Name, english);
-            return dictionarySet;
-        }
+        //private static Dictionary<string, RouteDictionary> LoadDictionaries()
+        //{
+            
+        //    var dictionarySet = new Dictionary<string, RouteDictionary>();
+        //    var spanish = new RouteDictionary("es-ES");
+        //    spanish.TranslationDictionary = new Dictionary<string, string>();
+        //    spanish.AddPair("Home", "Domicilio");
+        //    spanish.AddPair("Index", "Indexar");
+        //    spanish.AddPair("Auxiliary", "Asistente");
+        //    //spanish.AddPair("Images", "Imágenes");
+        //    dictionarySet.Add(spanish.Culture.Name, spanish);
+        //    var english = new RouteDictionary("en-US");
+        //    english.TranslationDictionary = new Dictionary<string, string>();
+        //    english.TranslationDictionary.Add("Home", "Home");
+        //    english.TranslationDictionary.Add("Index", "Index");
+        //    english.TranslationDictionary.Add("Auxiliary", "Auxiliary");
+        //    //english.TranslationDictionary.Add("Images", "Images");
+        //    dictionarySet.Add(english.Culture.Name, english);
+        //    return dictionarySet;
+        //}
 
         public void LoadPresets(List<string> cultureList)
         {

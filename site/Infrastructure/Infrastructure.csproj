@@ -75,12 +75,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Localization\IRouteValueTranslationProvider.cs" />
-    <Compile Include="Localization\RouteCollectionExtensions.cs" />
-    <Compile Include="Localization\RouteDictionary.cs" />
-    <Compile Include="Localization\TranslatedRoute.cs" />
-    <Compile Include="Localization\TranslationItem.cs" />
-    <Compile Include="Localization\RouteValueTranslationProvider.cs" />
     <Compile Include="Mapper\ExpressionsMapConfig.cs" />
     <Compile Include="Mapper\IMappingConfiguration.cs" />
     <Compile Include="Mapper\IObjectMapper.cs" />
