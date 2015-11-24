@@ -15,28 +15,24 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly IMegaMenuThumbnailedItemProvider _megaMenuThumbnailedItemProvider;
         private readonly IMegaMenuLinkItemProvider _megaMenuLinkItemProvider;
         private readonly ISolutionBusinessUnitProvider _solutionBusinessUnitProvider;
-        private readonly IFooterAboutProvider _footerAboutProvider;
-        private readonly IFooterNewsEventsProvider _footerNewsEventsProvider;
-        private readonly IFooterCareersProvider _footerCareersProvider;
+        private readonly IFooterNavCategoryProvider _footerNavCategoryProvider;
+        private readonly IFooterNavItemProvider _footerNavItemProvider;
 
         public MasterController(IContentMenuItemProvider contentMenuItemProvider,
             IPagesMenuItemProvider pagesMenuItemProvider,
             IMegaMenuThumbnailedItemProvider megaMenuThumbnailedItemProvider,
             IMegaMenuLinkItemProvider megaMenuLinkItemProvider,
             ISolutionBusinessUnitProvider solutionBusinessUnitProvider,
-            IFooterAboutProvider footerAboutProvider,
-            IFooterNewsEventsProvider footerNewsEventsProvider,
-            IFooterCareersProvider footerCareersProvider)
+            IFooterNavCategoryProvider footerNavCategoryProvider,
+            IFooterNavItemProvider footerNavItemProvider)
         {
             _contentMenuItemProvider = contentMenuItemProvider;
             _pagesMenuItemProvider = pagesMenuItemProvider;
             _megaMenuThumbnailedItemProvider = megaMenuThumbnailedItemProvider;
             _megaMenuLinkItemProvider = megaMenuLinkItemProvider;
             _solutionBusinessUnitProvider = solutionBusinessUnitProvider;
-            _footerAboutProvider = footerAboutProvider;
-            _footerNewsEventsProvider = footerNewsEventsProvider;
-            _footerCareersProvider = footerCareersProvider;
-
+            _footerNavCategoryProvider = footerNavCategoryProvider;
+            _footerNavItemProvider = footerNavItemProvider;
         }
 
         public MasterController()
@@ -46,9 +42,20 @@ namespace CMS.Mvc.Controllers.Afton
             _megaMenuThumbnailedItemProvider = new MegaMenuThumbnailedItemProvider();
             _megaMenuLinkItemProvider = new MegaMenuLinkItemProvider();
             _solutionBusinessUnitProvider = new SolutionBusinessUnitProvider();
-            _footerAboutProvider = new FooterAboutProvider();
-            _footerNewsEventsProvider = new FooterNewsEventsProvider();
-            _footerCareersProvider = new FooterCareersProvider();
+            _footerNavCategoryProvider = new FooterNavCategoryProvider();
+            _footerNavItemProvider = new FooterNavItemProvider();
+        }
+
+        [ChildActionOnly]
+        public ActionResult Footer()
+        {
+            var footer = new FooterViewModel();
+            footer.FooterNavCategories = MapData<FooterNavCategory, FooterNavCategoryViewModel>(_footerNavCategoryProvider.GetFooterNavCategoryItems());
+            foreach (var category in footer.FooterNavCategories)
+            {
+                category.FooterNavItems = MapData<FooterNavItem, FooterNavItemViewModel>(_footerNavItemProvider.GetFooterNavItems(category.Title));
+            }
+            return PartialView("~/Views/Afton/Master/_footer.cshtml", footer);
         }
 
         [ChildActionOnly]
@@ -65,17 +72,11 @@ namespace CMS.Mvc.Controllers.Afton
                     contentMenuItem.SolutionsLink.Solutions = MapData<SolutionBusinessUnit, MegaMenuSolutionBusinessUnitViewModel>(_solutionBusinessUnitProvider.GetSolutionBusinessUnits(contentMenuItem.Title));
                 }
             }
-            return PartialView("~/Views/Afton/Master/_master.cshtml", new MasterViewModel
+            return PartialView("~/Views/Afton/Master/_header.cshtml", new MasterViewModel
             {
                 SelectedCulture = CultureInfo.CurrentCulture,
                 MainNavList = mainNavList,
-                UtilityNavList = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems()),
-                Footer = new FooterViewModel
-                {
-                    FooterAboutItems = MapData<FooterAbout, FooterAboutViewModel>(_footerAboutProvider.GetFooterAboutItems()),
-                    FooterCareersItems = MapData<FooterCareers, FooterCareersViewModel>(_footerCareersProvider.GetFooterCareersItems()),
-                    FooterNewsEventsItems = MapData<FooterNewsEvents, FooterNewsEventsViewModel>(_footerNewsEventsProvider.GetFooterNewsEventsItems())
-                }
+                UtilityNavList = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems())
             });
         }
     }

@@ -5,5 +5,26 @@
     Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
 
-<h2>SBU</h2>
+<!-- image -->
+Anchor Menu:
+@foreach (var item in Model.AnchorMenu)
+{
+    <p><a href="#">@item.Title</a></p>
+}
+<hr />
+Description:
+<p>
+    <p>
+        Left part<br />
+        @Html.Raw(Model.LeftDescription)
+    </p>
+    <p>
+        Right part <br />
+        @Html.Raw(Model.RightDescription)
+    </p>
+</p>
+<hr />
+FAQ Description:
+<p>@Html.Raw(Model.FAQDescription)</p>
+<hr />
 

@@ -10,7 +10,6 @@ namespace CMS.Mvc.ViewModels.Master
     {
         public List<PagesMenuItemViewModel> UtilityNavList { get; set; }
         public List<ContentMenuItemViewModel> MainNavList { get; set; }
-        public FooterViewModel Footer { get; set; }
         public CultureInfo SelectedCulture { get; set; }
     }
 }

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace CMS.Mvc.Interfaces
 {
-    public interface IFooterAboutProvider
+    public interface IFooterNavItemProvider
     {
-        List<FooterAbout> GetFooterAboutItems();
+        List<FooterNavItem> GetFooterNavItems(string parentAlias);
     }
 }

@@ -17,21 +17,21 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(FooterCareers.CLASS_NAME, typeof(FooterCareers))]
+[assembly: RegisterDocumentType(FooterNavItem.CLASS_NAME, typeof(FooterNavItem))]
 
 namespace CMS.DocumentEngine.Types
 {
     /// <summary>
     /// Sample item class.
     /// </summary>
-    public partial class FooterCareers : TreeNode
+    public partial class FooterNavItem : TreeNode
     {
         #region "Constants"
 
         /// <summary>
         /// Class name of the item.
         /// </summary>
-        public const string CLASS_NAME = "custom.FooterCareers";
+        public const string CLASS_NAME = "custom.FooterNavItem";
 
         #endregion
 
@@ -39,18 +39,18 @@ namespace CMS.DocumentEngine.Types
         #region "Properties"
 
         /// <summary>
-        /// FooterCareersID.
+        /// FooterNavItemID.
         /// </summary>
         [DatabaseField]
-        public int FooterCareersID
+        public int FooterNavItemID
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("FooterCareersID"), 0);
+                return ValidationHelper.GetInteger(GetValue("FooterNavItemID"), 0);
             }
             set
             {
-                SetValue("FooterCareersID", value);
+                SetValue("FooterNavItemID", value);
             }
         }
 
@@ -96,7 +96,7 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Constructor.
         /// </summary>
-        public FooterCareers()
+        public FooterNavItem()
             : base(CLASS_NAME)
         {
         }

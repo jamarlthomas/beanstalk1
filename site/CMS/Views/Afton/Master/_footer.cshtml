@@ -1,0 +1,13 @@
+﻿@using CMS.Mvc.ViewModels.Master
+@model FooterViewModel
+<hr />
+@foreach (var item in Model.FooterNavCategories)
+{
+    <p>
+        @item.Title <br />
+        @foreach (var footerNavItems in item.FooterNavItems)
+        {
+            <a href="@footerNavItems.Reference">@footerNavItems.Title</a>
+        }
+    </p>
+}
