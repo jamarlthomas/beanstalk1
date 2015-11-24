@@ -17,21 +17,21 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(FooterAbout.CLASS_NAME, typeof(FooterAbout))]
+[assembly: RegisterDocumentType(FooterNavCategory.CLASS_NAME, typeof(FooterNavCategory))]
 
 namespace CMS.DocumentEngine.Types
 {
     /// <summary>
     /// Sample item class.
     /// </summary>
-    public partial class FooterAbout : TreeNode
+    public partial class FooterNavCategory : TreeNode
     {
         #region "Constants"
 
         /// <summary>
         /// Class name of the item.
         /// </summary>
-        public const string CLASS_NAME = "custom.FooterAbout";
+        public const string CLASS_NAME = "custom.FooterNavCategory";
 
         #endregion
 
@@ -39,18 +39,18 @@ namespace CMS.DocumentEngine.Types
         #region "Properties"
 
         /// <summary>
-        /// FooterAboutID.
+        /// FooterNavCategoryID.
         /// </summary>
         [DatabaseField]
-        public int FooterAboutID
+        public int FooterNavCategoryID
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("FooterAboutID"), 0);
+                return ValidationHelper.GetInteger(GetValue("FooterNavCategoryID"), 0);
             }
             set
             {
-                SetValue("FooterAboutID", value);
+                SetValue("FooterNavCategoryID", value);
             }
         }
 
@@ -71,23 +71,6 @@ namespace CMS.DocumentEngine.Types
             }
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [DatabaseField]
-        public string Reference
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("Reference"), "");
-            }
-            set
-            {
-                SetValue("Reference", value);
-            }
-        }
-
         #endregion
 
 
@@ -96,7 +79,7 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Constructor.
         /// </summary>
-        public FooterAbout()
+        public FooterNavCategory()
             : base(CLASS_NAME)
         {
         }

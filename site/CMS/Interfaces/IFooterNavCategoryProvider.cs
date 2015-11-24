@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace CMS.Mvc.Interfaces
 {
-    public interface IFooterCareersProvider
+    public interface IFooterNavCategoryProvider
     {
-        List<FooterCareers> GetFooterCareersItems();
+        List<FooterNavCategory> GetFooterNavCategoryItems();
     }
 }

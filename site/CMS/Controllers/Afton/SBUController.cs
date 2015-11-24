@@ -25,7 +25,7 @@ namespace CMS.Mvc.Controllers.Afton
             _anchorMenuItemProvider = anchorMenuItemProvider;
         }
 
-        [Route("SBU/{alias}")]
+        //[Route("SBU/{alias}")]
         public ActionResult Index(string alias)
         {
             var sbu = _solutionBusinessUnitProvider.GetSolutionBusinessUnit(alias);

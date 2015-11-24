@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CMS.Mvc.ViewModels.Master
 {
-    public class FooterCareersViewModel
+    public class FooterNavItemViewModel
     {
         public string Title { get; set; }
         public string Reference { get; set; }
