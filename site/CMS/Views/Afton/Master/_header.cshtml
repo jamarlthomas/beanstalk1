@@ -36,15 +36,8 @@
                 <ul>
                     @foreach (var item in Model.MainNavList)
                     {
-                        @*<li><a href="@Url.Content(@item.Reference)" data-mm="@item.Title">@item.Title</a></li>*@
                         <li><a href="#">@item.Title</a></li>
                     }
-                    @*<li><a href="#" data-mm="driveline">Driveline Additives</a></li>
-                    <li><a href="#" data-mm="engine">Engine Oil Additives</a></li>
-                    <li><a href="#" data-mm="fuel">Fuel Additives</a></li>
-                    <li><a href="#" data-mm="lubricant">Lubricant Components</a></li>
-                    <li><a href="#">Logistics & Supply</a></li>
-                    <li><a href="#">Insights & Resources</a></li>*@
                 </ul>
             </div>
         </header>
@@ -215,4 +208,34 @@
         </div>
     </div>
 </div>
+
+@foreach (var item in Model.UtilityNavList)
+{
+    <p><a href="@Url.Content("~/" + @item.Reference)">@item.Title</a></p>
+}
+<hr />
+@foreach (var item in Model.MainNavList)
+{
+    <p>
+        <a href="@Url.Content("~/" + @item.Reference)">@item.Title</a>
+        @foreach (var thumbnailedItem in item.ThumbnailedMenuItems)
+        {
+            @thumbnailedItem.Title <br />
+            @thumbnailedItem.Description
+        }
+        @if (item.SolutionsLink != null)
+	    {
+             <p>
+                 <a href="@Url.Content("~/" + @item.SolutionsLink.Reference)">@item.SolutionsLink.Title</a> <br />
+                 @foreach (var solution in item.SolutionsLink.Solutions)
+                 {
+                    @solution.Title <br />
+                    @solution.Description <br /><br /> 
+                 }
+             </p>  
+	    }
+    </p>
+}
+<hr />
+
 
