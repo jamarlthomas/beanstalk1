@@ -1,4 +1,4 @@
-.cardsC { background: url(../../images/bg-cards.gif);
+.cardsC {
 
     .cards { @include gridContainer; padding-top: 35px; padding-bottom: 15px;
         
@@ -40,7 +40,7 @@
                     //*** Breakpoints ***
                     @include breakpoint($bp2) { height: 107px; } 
                     
-                }//overlay                
+                }//overlay
                                     
                 .cardDate { padding-top: 5px; color: #595959; font-size: 11px; }
                 
@@ -48,6 +48,43 @@
                 @include breakpoint($bp2) { padding: 15px 15px 0px 15px; height: 160px; }
                 
             }//overlayC
+            
+            .hoverOverlayC { position: absolute; bottom: 0px; width: 100%; padding: 30px 33px 0px 15px; background: #0c419a;
+                
+                .hoverOverlay { max-height: 115px; margin-bottom: 5px; overflow: hidden;
+                
+                    .hoverOverlayTxt { color: #FFF; font-size: 18px; line-height: 27px; 
+                        
+                        //*** Breakpoints ***
+                        @include breakpoint($bp2) { font-size: 13px; line-height: 15px; } 
+                        @include breakpoint($bp3) { font-size: 18px; line-height: 22px; }
+                        @include breakpoint($bp3a) { font-size: 13px; line-height: 15px; }
+                        
+                    }//hoverOverlayTxt
+                    
+                    //*** Breakpoints ***
+                    @include breakpoint($bp2a) { height: 50px; }
+                    @include breakpoint($bp3) { height: 115px; }
+                    @include breakpoint($bp3a) { height: 50px; }
+                    
+                }//hoverOverlay
+            
+                .cardLearnMore { display: inline-block; padding: 16px 50px; background: #4c9d2f; color: #FFF;
+
+                    .icon-arrow { font-size: 14px; margin-left: 24px; vertical-align: middle;
+
+                        @include breakpoint($bp2) { margin-left: 5px; }
+
+                    }//icon-arrow
+                    
+                    //*** Breakpoints ***
+                    @include breakpoint($bp2) { padding: 5px; }
+
+                }//cardLearnMore
+                
+                @include breakpoint($bp2) { padding: 20px 15px 0px 15px; }
+                
+            }//hoverOverlayC
             
             img { display: block; width: 100%; }
           
@@ -64,6 +101,8 @@
         
         a.trending .overlayC { background: #124397!important; }
         a.trending .cardTitle, a.trending .cardHdr, a.trending .cardTxt, a.trending .cardDate { color: #FFF!important; }
+        a.trending .hoverOverlayC { background: rgba(255,255,255,.95); }
+        a.trending .hoverOverlayC .hoverOverlayTxt { color: #595959; }
         
     }//cards
     

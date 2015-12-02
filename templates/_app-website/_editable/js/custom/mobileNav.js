@@ -35,7 +35,26 @@ $( document ).ready(function() {
     
     //Close Mobile Navigation Button
     $('#menuclose').click(function(e) { e.preventDefault(); closeMobileNav(); }); 
-
+    
+    
+    //Set Mobile Nav Status to help with other clicks
+    $('#mobileNavC').hover(
+      function() {
+        $(this).addClass("hover");
+      }, function() {
+        $(this).removeClass("hover");
+      }
+    );
+    
+    //close from grayed out section
+    $('#mobileNavC1').click(function(e) { e.preventDefault(); 
+                                         
+        //Check for hover event over mobile nav
+        if(!$("#mobileNavC").hasClass("hover")){
+            closeMobileNav(); 
+        }
+    }); 
+    
     
     //Setup sub nav levels    
     $("#mobileNavC #mainNavC ul li").each(function() {
@@ -56,17 +75,25 @@ $( document ).ready(function() {
     var getNavWidth = $("#mobileNavC").width();
     var getNavPos = 0;
     
+    //store how deep we are in navigation
+    var navLevel = 0;
+    
+    
     //next nav activation
     $(".hasChildren a").click(function(e) {
         
         e.preventDefault();
-
+        
+        //fade out utilty for any inner navs
+        if(navLevel == 0){            
+            $("#mobileNavC #utilC").fadeOut(300);
+        }
+        
         //Create back button
-        var addBtns = '<li><a href="#" class="backBtn">back</a></li>'
+        var addBtns = '<li><a href="#" class="backBtn">Back</a></li>'
         
         //Get the name of the create button
         var viewBtnName = $(this).text();
-        viewBtnName = viewBtnName.replace(">", "")  
         
         //Get the link
         var viewBtnLink = $(this).attr("href")
@@ -77,19 +104,76 @@ $( document ).ready(function() {
         //Add Buttons
         $(this).parent().find("ul:first").prepend(addBtns)
         
-        //calculate new position
+        //hide menu btn
+        $("#menuHdr").css({"display":"none"});
+        
+        //update menu status
+        $("#mobileNavStatus").html(viewBtnName);
+        
+        //slide to nav and reset height
+        $("#mobileNavStatus").fadeIn(500);
+        
+        //calculate new nav position
         getNavPos = getNavPos + getNavWidth;
         
         //prep new nav into position
         $(this).parent().children().eq(1).css({"width":getNavWidth,"left": getNavWidth,"display":"block"})
         
         //slide to nav and reset height
-        $("#mobileNavC #mainNavC > ul").delay(100).animate({
+        $("#mobileNavC #mainNavC > ul").delay(150).animate({
             left: -1 * getNavPos,
         }, 500);
         
+        //update nav level
+        navLevel = navLevel + 1;
         
     });
     
+    
+    //click back button
+    $(".hasChildren").on("click", ".backBtn:first", function(e) {
+        
+        e.preventDefault();
+        
+        //Store the back btn ref
+        var thisBackBtn = $(this)
+
+        //get text for the nav status
+        var updateNavStaus = $(thisBackBtn).parent().parent().parent().parent().find("li:eq(1)").text();
+        $("#mobileNavStatus").html(updateNavStaus);
+        
+        //calculate new nav position
+        getNavPos = getNavPos - getNavWidth;
+
+        //slideNav Backwards
+        $("#mobileNavC #mainNavC > ul").animate({
+            left: -1 * getNavPos,
+        }, 500, function(){
+            
+            //hide nav item
+            $(thisBackBtn).parent().parent().css({"display":"none"})
+            
+            //remove extra nav that was added
+            $(thisBackBtn).parent().parent().find('li:lt(2)').remove();
+
+        });
+        
+        //update nav level
+        navLevel = navLevel - 1;
+        
+        //if this is level 0 change the status indicator out
+        if(navLevel == 0){ 
+            
+            //Hide status
+            $("#mobileNavStatus").css({"display":"none"});
+        
+            //Fade In Menu Item
+            $("#menuHdr").fadeIn(500);
+            
+            //display utility Nav
+            $("#mobileNavC #utilC").delay(100).fadeIn(500);
+            
+        }
+    })
     
 });

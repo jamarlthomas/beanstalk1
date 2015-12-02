@@ -1,6 +1,5 @@
 $(document).ready(function() {
-    
-    
+
     //ellipses for megamenu items left links
     $(".megaMenu .lftCol .photoLinkRt").dotdotdot({
       ellipsis	: '... ',
@@ -15,14 +14,15 @@ $(document).ready(function() {
       fallbackToLetter: true
     });
     
-    //elipses should be added activate megamenu
+    //elipses should be added, so activate megamenu
     $( "#megaMenuC .megaMenu" ).each(function() {
         $(this).css({"display":"none"})
     });
     $("#megaMenuC").css({"opacity":1.0})
     
-    //ellipses card mode
-    $(".overlay").dotdotdot({
+    
+    //ellipses for cards
+    $(".cardsC .cards a .overlay").dotdotdot({
       ellipsis	: '... ',
       wrap		: 'word',
       fallbackToLetter: true,
@@ -30,6 +30,12 @@ $(document).ready(function() {
       watch: 'window'
     });
     
-    
+
+    //ellipses for cards hover txt
+    $(".cardsC .cards a .hoverOverlay").dotdotdot({
+      ellipsis	: '... ',
+      wrap		: 'word',
+      watch: 'window'
+    });
     
 });

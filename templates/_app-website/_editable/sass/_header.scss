@@ -25,43 +25,42 @@
                 
             }//mobileBtn
             
-            #mobileSearch { position: absolute; top: 25px; right: 54px;
+            #mobileSearch { position: absolute; top: 25px; right: 54px; text-decoration: none; color: #0032a0; 
                 
-                img { height: 20px; }
+                .icon-search { font-size: 25px; }
                 
                 //*** Breakpoints ***
                 @include breakpoint($bp1) { display: block!important;  }
                 
             }//mobileSearch
 
-            #languageC { position: absolute; top: 30px; right: 35px; width: 116px; padding-bottom: 5px; background: url(../../images/icon-earth.gif) no-repeat top right; 
+            #languageC { position: absolute; top: 30px; right: 30px; width: 135px; padding: 7px 5px 5px 5px; background: #FFF; z-index: 10;
 
                 ul { margin: 0px; padding: 0px; }
                 li { margin: 0px; padding: 0px; list-style: none; }
 
                 a { display: block; color: #0c419a; text-decoration: none; font: 12px HelveticaNeueLT-Light; text-transform: uppercase; }
-
+                
                 #selLang { margin: 6px 30px 3px 0px; padding-right: 19px; background: url(../../images/down-arrow.gif) no-repeat right 4px; text-align: right;
                 
                     //*** Breakpoints ***
-                    @include breakpoint($bp1) { display: none; }
+                    @include breakpoint($bp1) { opacity: 0.0; }
                     
                 }//selLang
+                
+                .icon-language { float: right; margin-top: -24px; font-size: 26px; color: #0032a0; }//icon-language
+                
+                #langDropDown { position: relative; padding: 10px 27px 0px 0px; background: #FFF; z-index: 10; text-align: right;
 
-                #langDropDown { position: relative; margin-left: 12px; width: 85px; background: #FFF; z-index: 10; text-align: right; box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+                    a { padding: 5px;
 
-                    a { font-size: 10px; padding: 5px 5px 5px 0px;
-
-                        &:hover { background: #50a84a; color: #FFF; }
+                        &:hover { color: #48a540; }
                     }
-                    
-                    //*** Breakpoints ***
-                    @include breakpoint($bp1) { margin-left: 0px; }
                     
                 }//#langDropDown 
                 
                 //*** Breakpoints ***
-                @include breakpoint($bp1) { top: 25px; right: 97px; height: 30px; }
+                @include breakpoint($bp1) { top: 19px; right: 84px; }
                 
             }//#languageC
 
@@ -74,16 +73,18 @@
                     &:hover { color: #50a84a; }
                 }//a
                 
+                .icon-search { font-size: 25px; line-height: 20px; }
+                
                 //*** Breakpoints ***
                 @include breakpoint($bp1) { display: none; }
 
             }//#utilityNavC
 
 
-            #mainNavC { position: absolute; top: 124px; left: 10px; width: 100%;
+            #mainNavC { position: absolute; top: 124px; left: 10px; width: 1235px;
 
                 ul { margin: 0px; padding: 0px; }
-                li { margin: 0px; padding: 0px; list-style: none; float: left; width: 16.3%; }
+                li { margin: 0px; padding: 0px; list-style: none; float: left; width: 14.28%; }
 
                 a { display: block; height: 41px; text-align: center; text-decoration: none; color: #0c419a; font: 16px HelveticaNeueLT-Light; transition: 0.2s;
 

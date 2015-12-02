@@ -1,17 +1,19 @@
 #mobileNavC1 { position: fixed; top: 0px; width: 0px; min-height: 100%; z-index: 0; background: rgba(0,0,0,0); overflow: hidden; transition: background 1s,ease; 
 
-    #mobileNavC { position: absolute; top: 0; right: -260px; width: 260px; height: 100%; background: #FFF; overflow: auto; transition: All,.8s ease;
+    #mobileNavC { position: absolute; top: 0; right: -260px; width: 260px; height: 100%; background: #FFF; overflow-x: hidden; transition: All,.8s ease;
         
         #menuHdrC { position: relative; width: 100%; height: 79px; border-bottom: 1px solid #4f9c36;
             
             #menuHdr { padding: 34px 0px 0px 16px; font: 20px HelveticaNeueLT-Light; color: #124498; }
             
+            #mobileNavStatus { position: absolute; top: 55%; left: 17px; width: 184px; transform: translateY(-50%); font: 16px HelveticaNeueLT-Light; color: #124498; }
+            
             #menuclose { position: absolute; top: 36px; right: 16px; }
         }
         
-        #mainNavC {
+        #mainNavC { margin: 3px 0px 3px 0px;
             
-            ul { position: relative; margin: 3px 0px 3px 0px; padding: 0px; 
+            ul { position: relative; margin: 0px; padding: 0px; 
             
                 li { margin: 0px; padding: 0px; list-style: none; 
                     
@@ -26,15 +28,21 @@
                 //setup indicator of children
                 li.hasChildren > a { 
                 
-                    &:after { content: url(../../images/mobile-arrow.png); position: absolute; right: 26px; top: 50%; transform: translateY(-50%); }
+                    &:after { content: "\e900"; position: absolute; right: 26px; top: 50%; transform: translateY(-50%); font: 13px 'icomoon'; color: #4f9c36; }
                         
-                        &:hover:after { content: url(../../images/mobile-arrow-o.png);  }
+                        &:hover:after { color: #FFF;  }
                     
                 }//li.hasChildren a
                 
             }//ul
             
-            .hasChildren ul { position: absolute; top: 0px; display: none; z-index: 101; }    
+            .hasChildren ul { position: absolute; top: 0px; display: none; z-index: 101; }
+            
+            .backBtn { background: #b7bebf; color: #FFF;
+                
+                &:after { content: "\e900"; font: 13px 'icomoon'; xcontent: url(../../images/mobile-arrow-back.png); position: absolute; right: 26px; top: 50%; transform: translateY(-50%) rotate(180deg);  }
+                
+            }//backBtn
          
         }//mainNavC
         

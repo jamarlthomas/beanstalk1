@@ -3,10 +3,12 @@
 body { padding-top: 165px;
 
     //*** Breakpoints ***
-    @include breakpoint($bp1) { padding-top: 70px; }
+    @include breakpoint($bp1) { padding-top: 79px; }
 } 
 
 div, p, li { font: 14px/18px HelveticaNeueLTStd-Roman, Helvetica, Arial, Sans-Serif; color: #595959; }
+
+h1 { margin: 0px; padding: 0px; color: #0c419a; font-size: 24px; }
 
 a { transition: 0.8s; }
 
@@ -18,57 +20,34 @@ a { transition: 0.8s; }
 
 @import '_cards';
 
-#learnMoreC { background: #b7bebf; padding: 24px 0px; overflow: auto;
+@import '_home-learnMore';
 
-    #learnMore { margin: 0px auto; width: 674px;
-        
-        #learnTxtC { float: left; width: 425px; text-align: center; 
-            
-            #learnHdr { color: #FFF; font-size: 31px; line-height: 35px; font-family: "HelveticaNeueLT-Thin";
-            
-                //*** Breakpoints ***
-                @include breakpoint($bp3) { font-size: 21px; line-height: 24px; } 
-                
-            }//learnHdr
-            
-            #learnTxt { color: #FFF; font-size: 14px; }
-            
-            //*** Breakpoints ***
-            @include breakpoint($bp2) { float: none; width: 100%; margin-bottom: 10px; } 
-            
-        }//learnTxtC
-        
-        #leanMoreBtnC { float: left; width: 249px;
-            
-            a { display: inline-block; padding: 16px 50px; margin-left: 10px; background: #4c9d2f; color: #FFF; text-decoration: none;
-            
-                &:hover { background: #0c419a; }
+@import '_sbu-landing';
 
-                img { margin-left: 24px; vertical-align: middle; }
-                
-                //*** Breakpoints ***
-                @include breakpoint($bp2) { margin: 0px auto; padding: 14px 0px; display: block; width: 150px; text-align: center; } 
-                
-            }//a
-            
-            //*** Breakpoints ***
-            @include breakpoint($bp2) { float: none; width: 100%; } 
-            
-        }//leanMoreBtnC
-        
-        //*** Breakpoints ***
-        @include breakpoint($bp2) { width: 95%; } 
-        
-    }//learnMore
-    
-    //*** Breakpoints ***
-    @include breakpoint($bp2) { padding: 15px 0px; } 
-    
-}//learnMoreC
-
+@import '_sbu-product';
 
 @import '_footer';
 
 
+//Dotted background
+.bgPattern { background: url(../../images/bg-dots.gif); }
 
+//Full width container
+.fullWidthC { position: relative; margin: 0px auto; width: 1235px; }
+
+
+//Two Column Layouts
+.twoColmnC { position: relative; margin: 50px auto; width: 1235px; overflow: auto;
+    
+    .first p { margin-right: 10%;
+        
+        @include breakpoint($bp2) { margin-right: 0px; }
+    
+    }//first p 
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { width: 98%; xdisplay: none; }
+    @include breakpoint($bp2) { margin-top: 20px; margin-bottom: 20px; }
+    
+}//twoColmnC
 

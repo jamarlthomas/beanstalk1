@@ -13,15 +13,23 @@ link(rel='stylesheet', href='assets-layout/styles/styles.min.css')
 
 //Default Scripts
 script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.js')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js')
 script(src='assets-layout/js/library/jquery.animate-colors.min.js')
 script(src='assets-layout/js/library/jquery.dotdotdot.min.js')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.4/hammer.min.js')
+script(src='https://cdn.jsdelivr.net/jquery.columnizer/1.6.0/jquery.columnizer.js')
+
 script(src='assets-layout/js/custom/ellipsesText.min.js')
+script(src='assets-layout/js/custom/columnizeText.min.js')
+
 script(src='assets-layout/js/library/head.min.js')        
  
 script.
     head.js(
+        {home_rotator: "assets-layout/js/custom/homeSlideShow.min.js"},
         {language_selector: "assets-layout/js/custom/langSel.min.js"},
         {mega_menu_drop_down: "assets-layout/js/custom/megaMenu.min.js"},
+        {card_Animations: "assets-layout/js/custom/cards.min.js"},
         {mobile_nav: "assets-layout/js/custom/mobileNav.min.js"},
         {disclaimer_copyright: "assets-layout/js/custom/copyrightDate.min.js"},
         function(){

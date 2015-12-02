@@ -114,7 +114,9 @@ $( document ).ready(function() {
         //$("#topHeaderC").css({"height":"auto"})
         $("#topHeaderC").stop().animate({
             backgroundColor: "rgba(0, 0, 0, 0.0)"
-        }, 300);
+        }, 300, function(){            
+            $(this).css({"height":"0px"})
+        });
         
     }    
     
