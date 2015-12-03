@@ -27,4 +27,38 @@ Description:
 FAQ Description:
 <p>@Html.Raw(Model.FAQDescription)</p>
 <hr />
+FAQs:
+@foreach (var item in Model.FAQs)
+{
+    <p> 
+        @item.Question <br />
+        @item.Answer
+    </p>
+}
+<hr />
+Documents:
+@foreach (var item in Model.DocumentTypes)
+{
+    <p>
+        Document type: @item.Title <br />
+        Documents:
+        @foreach (var document in item.Documents)
+        {
+            <p>
+                @document.Title <br />
+                @document.Abstract <br />
+                @document.Copy <br />
+            </p>
+        }
+    </p>
+}
+<hr />
+Solutions:
+@foreach (var item in Model.Solutions)
+{
+    <p>
+        @item.Title <br />
+        @item.Description
+    </p>
+}
 

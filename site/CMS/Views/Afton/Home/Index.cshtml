@@ -5,5 +5,11 @@
     Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
 
-<h2>Index</h2>
+Primary tiles:
+@foreach (var item in Model.PrimaryTiles)
+{
+    <p>
+        @item.Title
+    </p>
+}
 

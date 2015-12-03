@@ -8,5 +8,6 @@ namespace CMS.Mvc.ViewModels.Home
     public class HomeViewModel
     {
         public List<HeroContentViewModel> HeroContentList { get; set; }
+        public List<PrimaryTileViewModel> PrimaryTiles { get; set; }
     }
 }
