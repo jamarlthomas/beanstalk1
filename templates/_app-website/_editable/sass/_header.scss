@@ -1,4 +1,4 @@
-#topHeaderC { position: fixed; top: 0px; width: 100%; z-index: 50;
+#topHeaderC { position: fixed; top: 0px; top: 115px; width: 100%; z-index: 50;
 
     #topHeader { border-bottom: 1px solid #4c9d2f; background: #FFF;
     
@@ -39,9 +39,9 @@
                 ul { margin: 0px; padding: 0px; }
                 li { margin: 0px; padding: 0px; list-style: none; }
 
-                a { display: block; color: #0c419a; text-decoration: none; font: 12px HelveticaNeueLT-Light; text-transform: uppercase; }
+                a { display: block; padding-left: 15px; color: #0c419a; text-decoration: none; font: 12px HelveticaNeueLT-Light; text-transform: uppercase; }
                 
-                #selLang { margin: 6px 30px 3px 0px; padding-right: 19px; background: url(../../images/down-arrow.gif) no-repeat right 4px; text-align: right;
+                #selLang { margin: 6px 30px 3px 0px; padding-right: 19px; background: url(../../images/down-arrow.gif) no-repeat 80px 4px; text-align: left;
                 
                     //*** Breakpoints ***
                     @include breakpoint($bp1) { opacity: 0.0; }

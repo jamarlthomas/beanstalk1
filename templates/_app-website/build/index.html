@@ -15,6 +15,7 @@
     <!--Default Scripts-->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="assets-layout/js/custom/mobileCheck.min.js"></script>
     <script src="assets-layout/js/library/jquery.animate-colors.min.js"></script>
     <script src="assets-layout/js/library/jquery.dotdotdot.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.4/hammer.min.js"></script>
@@ -39,6 +40,9 @@
     </script>
   </head>
   <body>
+    <div id="searchC">
+      <div id="search">search</div>
+    </div>
     <div id="mobileNavC1">
       <div id="mobileNavC">
         <div id="menuHdrC">
@@ -131,8 +135,8 @@
             <ul>
               <li><a href="#">About</a></li>
               <li><a href="#">Careers</a></li>
-              <li><a href="#">News</a></li>
-              <li><a href="#">Forum</a></li>
+              <li><a href="#"> News & Events</a></li>
+              <li><a href="#">Blog</a></li>
               <li><a href="#">Contact</a></li>
               <li><a href="#"><span class="icon-search"></span></a></li>
             </ul>
@@ -403,8 +407,8 @@
         </div>
       </div>
     </div>
-    <div class="cardsC">
-      <div class="cards"><a href="#">
+    <div class="cardsC bgPattern">
+      <div class="cards"><a href="http://google.com">
           <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
           <div class="overlayC">
             <div class="overlay">
@@ -547,31 +551,31 @@
       <footer>
         <div id="btmC">
           <div id="btmLogoC"><img src="images/btm-logo.png"></div>
-          <div id="btmNavLft"><a href="#">About</a>
+          <div class="btmNavCol"><a href="#">About</a>
             <ul>
-              <li><a href="#">Communities</a></li>
+              <li><a href="#">Communication</a></li>
               <li><a href="#">History</a></li>
               <li><a href="#">Safety</a></li>
               <li><a href="#">Values</a></li>
               <li><a href="#">Facilities & Locations</a></li>
             </ul>
           </div>
-          <div id="btmNavMid"><a href="#">News & Events</a>
-            <ul>
-              <li><a href="#">News</a></li>
-              <li><a href="#">Events</a></li>
-              <li><a href="#">Product Launches</a></li>
-              <li><a href="#">Newsletter Archives </a></li>
-              <li><a href="#">Archives</a></li>
-            </ul>
-          </div>
-          <div id="btmNavRt"><a href="#">Careers</a>
+          <div class="btmNavCol"><a href="#">Careers</a>
             <ul>
               <li><a href="#">Working at Afton</a></li>
               <li><a href="#">Career Development</a></li>
               <li><a href="#">Culture Matters</a></li>
             </ul>
           </div>
+          <div class="btmNavCol"><a href="#">News & Events</a>
+            <ul>
+              <li><a href="#">News</a></li>
+              <li><a href="#">Events</a></li>
+              <li><a href="#">Product Launches</a></li>
+              <li><a href="#">Newsletter Archive</a></li>
+            </ul>
+          </div>
+          <div class="btmNavCol"><a href="#">Blog</a></div>
         </div>
         <div id="btmContactBtn" style="display:none;"><a href="#">Contact</a></div>
         <div id="disclaimer">&copy;<span id="dateYear"></span> Afton Chemical <span class="divider">|</span><a href="#">Legal Notice</a><span class="divider">|</span><a href="#">Privacy & Terms</a><span class="divider">|</span><a href="#">Site Map</a></div>

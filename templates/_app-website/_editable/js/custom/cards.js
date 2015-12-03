@@ -23,28 +23,32 @@ $( document ).ready(function() {
     
    $('.cardsC .cards a').hover(
       function() {
+         
+          //Not Mobile
+          if(!isMobile.any()) {
           
-          //get the height of the card
-          cardHeight = $(this).height();
-          cardTxtBoxHeight = $(this).find(".overlayC").height();
-          distanceToTrav = cardHeight - cardTxtBoxHeight
-          storeTrendingPos = cardTxtBoxHeight + 15;
-          
-          
-          $(this).find(".overlayC").stop().animate({
-             bottom: distanceToTrav - 15
-          }, 500);
-                    
-          $(this).find(".hoverOverlayC").stop().animate({
-             height: distanceToTrav,
-             opacity: 1.0
-          }, 500);
-                    
-          $(this).find(".trendIndicator").stop().animate({
-             opacity: 0.0,
-             bottom: cardHeight - 43
-          }, 500);
+              //get the height of the card
+              cardHeight = $(this).height();
+              cardTxtBoxHeight = $(this).find(".overlayC").height();
+              distanceToTrav = cardHeight - cardTxtBoxHeight
+              storeTrendingPos = cardTxtBoxHeight + 15;
+
+
+              $(this).find(".overlayC").stop().animate({
+                 bottom: distanceToTrav - 15
+              }, 500);
+
+              $(this).find(".hoverOverlayC").stop().animate({
+                 height: distanceToTrav,
+                 opacity: 1.0
+              }, 500);
+
+              $(this).find(".trendIndicator").stop().animate({
+                 opacity: 0.0,
+                 bottom: cardHeight - 43
+              }, 500);
            
+          }
           
           
       }, function() {
