@@ -62,15 +62,15 @@
 }//sbuLandingHdrC
 
 
-#sbuLandingNavC { background: #b7bebf;
+#stickySBU-navC, .sbuLandingNavC { background: #b7bebf;
    
-    #sbuLandingNav { position: relative; margin: 0px auto; width: 1235px; overflow: auto;
+    .sbuLandingNav { position: relative; margin: 0px auto; width: 1235px; overflow: auto;
         
         ul { margin: 0px; padding: 0px;
             
             li { float: left; margin: 0px; padding: 0px; width: 20%; list-style: none; 
             
-                a { position: relative; display: block; height: 60px; color: #FFF; text-decoration: none;
+                a { position: relative; display: block; height: 50px; color: #FFF; text-decoration: none;
                 
                     &:hover, &.active { background: #0c419a; }
                     
@@ -88,16 +88,22 @@
         
     }//sbuLandingNav
     
-    #sbuLandingDropNav { background: #0c419a;
+    .sbuLandingDropNav { position: relative; background: #bec5c6;
         
-        a.sbuSelect { display: block; padding: 15px; color: #FFF; text-decoration: none;
+        .icon-arrow { position: absolute; top: 18px; right: 15px; transform: rotate(90deg); color: #FFF; }
         
-            .icon-arrow { float: right; padding-top: 15px; transform: rotate(90deg); }
+        a.sbuSelect { display: block; padding: 15px; color: #FFF; text-decoration: none; background: #0c419a; }
+        
+        ul { position: absolute; top: 48px; left: 0px; width: 100%; margin: 0px; padding: 0px; background: #b7bebf; z-index: 5;
+            li { margin: 0px; pading: 0px;
             
-        }//a.sbuSelect
-        
-        ul { margin: 0px; padding: 0px;
-            
+                a { display: block; padding: 8px 15px; text-decoration: none; color: #FFF;
+                
+                    &:hover, &.active { background: #0c419a; }
+                    
+                }//a
+                
+            }//li
         }//ul
         
         //*** Breakpoints ***
@@ -111,4 +117,14 @@
 }//sbuLandingNavC
 
 
+//anchor tag
+.anchorTag {
+    display: block;
+    position: relative;
+    top: -215px;
+    visibility: hidden;
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { top: -127px; }  
+}
 

@@ -63,7 +63,7 @@ $( document ).ready(function() {
               $(this).css({"opacity":0.0})
               
           });
-          console.log(storeTrendingPos)
+ 
           $(this).find(".trendIndicator").stop().animate({
              opacity: 1.0,
              bottom: storeTrendingPos

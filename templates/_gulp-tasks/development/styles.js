@@ -14,7 +14,7 @@ var gulp = require('gulp'),
  */
 gulp.task('styles', function() {
 
-  return gulp.src(config.workingFiles + '/sass/*.scss')
+  return gulp.src(config.workingFiles + '/sass/**/*.scss')
     .pipe(plumber())
     .pipe(sourcemaps.init())
 	.pipe(sass().on('error', sass.logError))

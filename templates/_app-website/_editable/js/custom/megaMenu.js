@@ -39,6 +39,9 @@ $( document ).ready(function() {
         //check if this item has a mega menu
         if(typeof mmId !== 'undefined'){
             
+            //hide SBU sticky nav
+            $("#stickySBU-navC").css({"display":"none"});
+            
             //add a class to for status
             $("#" + mmId).addClass("mmItemOpen")
             
@@ -80,8 +83,7 @@ $( document ).ready(function() {
           
           //activate nav highlight
           $("#mainNavC a[data-mm='" + mmItem + "']").addClass("active");
-          
-          
+
           //turn off timer
           clearTimeout(timerControl);
           
@@ -99,7 +101,7 @@ $( document ).ready(function() {
     
     //function to close open item
     function closeMenu() {
-        
+
         //close open item
         //$(".mmItemOpen").css({"display":"none"});
         $(".mmItemOpen").stop().animate({
@@ -115,7 +117,18 @@ $( document ).ready(function() {
         $("#topHeaderC").stop().animate({
             backgroundColor: "rgba(0, 0, 0, 0.0)"
         }, 300, function(){            
-            $(this).css({"height":"0px"})
+            $(this).css({"height":"auto"})
+            
+            //if sticky nav should be on show it
+            if($("#stickySBU-navC").hasClass("navDisplay")){
+                
+                $("#stickySBU-navC").css({"display":"block"});
+                
+            }
+                
+            
+            //remove left over styles that were created    
+            //$("#topHeaderC").removeAttr('style');
         });
         
     }    

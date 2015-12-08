@@ -1,0 +1,29 @@
+#languageC { position: absolute; top: 30px; right: 30px; width: 135px; padding: 7px 5px 5px 5px; background: #FFF; z-index: 10;
+
+    ul { margin: 0px; padding: 0px; }
+    li { margin: 0px; padding: 0px; list-style: none; }
+
+    a { display: block; padding-left: 15px; color: #0c419a; text-decoration: none; font: 12px HelveticaNeueLT-Light; text-transform: uppercase; }
+
+    #selLang { margin: 6px 30px 3px 0px; padding-right: 19px; background: url(../../images/down-arrow.gif) no-repeat 80px 4px; text-align: left;
+
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { opacity: 0.0; }
+
+    }//selLang
+
+    .icon-language { float: right; margin-top: -24px; font-size: 26px; color: #0032a0; }//icon-language
+
+    #langDropDown { position: relative; padding: 10px 27px 0px 0px; background: #FFF; z-index: 10; text-align: right;
+
+        a { padding: 5px;
+
+            &:hover { color: #48a540; }
+        }
+
+    }//#langDropDown 
+
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { top: 19px; right: 84px; }
+
+}//#languageC

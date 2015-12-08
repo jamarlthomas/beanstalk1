@@ -1,0 +1,40 @@
+body { padding-top: 165px;
+
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { padding-top: 79px; }
+} 
+
+div, p, li { font: 14px/20px HelveticaNeueLTStd-Roman, Helvetica, Arial, Sans-Serif; color: #595959; }
+
+h1, h2 { margin: 0px; padding: 0px; color: #0c419a; font: 24px/28px HelveticaNeueLT-Thin; }
+
+h3 { margin: 0px; padding: 0px; color: #000; font: 20px/24px HelveticaNeueLT-Thin; }
+
+.subTxt { padding-top: 5px; font-family: HelveticaNeueLTStd-It; }
+
+a { transition: 0.8s; }
+
+hr { border: 0px; border-top: 1px solid #000; }
+
+p { margin-top: 0px; }
+
+
+//Dotted background
+.bgPattern { background: url(../../images/bg-dots.gif); }
+
+//Shadow borders
+.borders {  box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.2); }
+
+//padding
+.padTopBtm { padding: 40px 0px; }
+
+.padTop { padding-top: 40px; }
+
+.txtPaddingBtm { padding-bottom: 20px; }
+  
+.txtPaddingTop { padding-top: 20px!important; }
+
+
+.viewAllBtn { display: block; margin-top: 40px; padding: 20px 0px; border: solid #48a540 1px; text-align: center; font-size: 20px; text-decoration: none; color: #48a540;
+    &:hover { background: #48a540; color: #FFF; }
+}

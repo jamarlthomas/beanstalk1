@@ -1,0 +1,13 @@
+#breadCrumbsC { position: relative; height: 70px; background: #184a9e;
+
+    #breadCrumbs { position: absolute; top: 50%; left: 15px; right: 15px; transform: translateY(-50%); color: #FFF; font-family: HelveticaNeueLT-Bold;
+    
+        a { margin-right: 10px; color: #FFF; text-decoration: none; font-family: HelveticaNeueLTStd-Roman;
+        
+            &:after { content: "/"; margin-left: 10px; }
+            
+        }
+        
+    }//breadCrumbs
+
+}//breadCrumbsC

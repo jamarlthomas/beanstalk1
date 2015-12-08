@@ -11,137 +11,407 @@ html(lang='en')
         include includes/_scripts_header.jade
         
     body
-    
+        
+        - var sbuMainNavHighlight = "active"
+           
         include includes/_mobileNav.jade
         
         include includes/_header.jade
         
-        
-        div(id="sbuLandingHdrC")
-            
-            div(id="sbuLandingHdr")
-            
-                div(class="hdrTxtBoxC")
-                    div(class="hdrTxtBox")
-                        div(class="sbuHeadline")
-                            | Enhanced protection, antiwear qualities & improved performance under nearly any conditions
-                        div(class="sbuTxt")
-                            | Afton Chemical has a full and robust selection of lubricant components to meet your needs.
-                            
-                div(class="sbuImgBoxC2" style="display:none;")
-                    img(src="page-images/sbu-header-image/sbu-header-sample.jpg")    
-                        
-            div(class="sbuImgBoxC")
-                img(src="page-images/sbu-header-image/sbu-header-sample.jpg") 
-                    
-        
-        div(id="sbuLandingNavC")
-            div(id="sbuLandingNav")
-                ul
-                    li: a(href="#" class="active"): span Overview
-                    li: a(href="#"): span Solutions
-                    li: a(href="#"): span FAQs
-                    li: a(href="#"): span Product Data Sheets
-                    li: a(href="#"): span Insights & Resources
-                    
-            div(id="sbuLandingDropNav" style="display: none;")
-                a(class="sbuSelect" href="#") 
-                    | Overview
+        div(id="contentAreaC")
+            div(id="sbuLandingHdrC")
+
+                div(id="sbuLandingHdr")
+
+                    div(class="hdrTxtBoxC")
+                        div(class="hdrTxtBox")
+                            div(class="sbuHeadline")
+                                | Enhanced protection, antiwear qualities & improved performance under nearly any conditions
+                            div(class="sbuTxt")
+                                | Afton Chemical has a full and robust selection of lubricant components to meet your needs.
+
+                    div(class="sbuImgBoxC2" style="display:none;")
+                        img(src="page-images/sbu-header-image/sbu-header-sample.jpg")    
+
+                div(class="sbuImgBoxC")
+                    img(src="page-images/sbu-header-image/sbu-header-sample.jpg") 
+
+
+            div(class="sbuLandingNavC")
+                div(class="sbuLandingNav")
+                    ul
+                        li: a(href="#overview-pos"): span Overview
+                        li: a(href="#solutions-pos"): span Solutions
+                        li: a(href="#faqs-pos"): span FAQs
+                        li: a(href="#sheets-pos"): span Product Data Sheets
+                        li: a(href="#resources-pos"): span Insights & Resources
+
+                div(class="sbuLandingDropNav" style="display: none;")
                     span(class="icon-arrow")
+                    a(class="sbuSelect" href="#")
+                        | Overview
+
+                    ul(class="DropNav" style="display:none;")
+                        li: a(data-sbudd="Overview" href="#overview-pos") Overview
+                        li: a(data-sbudd="Solutions" href="#solutions-pos") Solutions
+                        li: a(data-sbudd="FAQs" href="#faqs-pos") FAQs
+                        li: a(data-sbudd="Product Data Sheets" href="#sheets-pos") Product Data Sheets
+                        li: a(data-sbudd="Insights & Resources" href="#resources-pos") Insights & Resources
+
+            
+            a(id="overview-pos" class="anchorTag")
+            div(class="twoColumnC padTop")
+
+                p In addition to providing fully-developed additive packages, Afton Chemical is a leading supplier of lubricant components.
+                p Whether you need enhanced protection, antiwear qualities or to improve performance in a wider range of application conditions, Afton has a full and robust selection of components to meet your needs.
+
+                p Afton works with you to ensure your lubricants have optimal chemical balances for increased protection, marketable claims and competitive product positioning, plus the full benefit of over 90 years of Afton research and expertise.
+
+                p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eget vulputate erat, nec hendrerit turpis. Nullam sit amet massa in nulla mollis condimentum. Proin quam metus, tristique, sollicitudin quis arcu. In convallis pellentesque metus at porttitor.
+
+                p Nullam sit amet massa in nulla mollis condimentum. Proin quam metus, tristique, sollicitudin quis arcu. In convallis pellentesque metus at porttitor.
+
+                p Proin quam metus, tristique, sollicitudin quis arcu. In convallis pellentesque metus at porttitor.
+
+
+            a(id="solutions-pos" class="anchorTag")
+            div(class="padTopBtm")
+            
+                div(class="fullWidth")
+                    h1 Lubricant Componet Solutions
+
+
+                div(class="cardsC")
+                    div(class="cards")
+
+                        a(href="#")
+                            div(class="cardBtnIndicator")
+                                    img(src="images/card-btn-indicator.png")       
+                            div(class="overlayC")
+                                div(class="overlay")
+                                    div(class="cardTitle") News
+                                    div(class="cardHdr") Afton Chemical to exhibit and present at annual international CTI Symposium. 
+                                div(class="cardDate") March 27, 2015
+                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                                div(class="hoverOverlay")
+                                    div(class="hoverOverlayTxt")
+                                        | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+
+                                div(class="cardLearnMore") Read More
+                                    span(class="icon-arrow")
+
+                            img(src="page-images/cards/sample-card1.jpg")
+
+
+                        a(href="#")
+                            div(class="cardBtnIndicator")
+                                    img(src="images/card-btn-indicator.png")       
+                            div(class="overlayC")
+                                div(class="overlay")
+                                    div(class="cardTitle") Events
+                                    div(class="cardHdr") Afton Chemical breaks ground for its facility in Singapore.
+                                    div(class="cardTxt") Production of the next generation of additive solutions is set to begin in January 2016.
+                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                                div(class="hoverOverlay")
+                                    div(class="hoverOverlayTxt")
+                                        | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+
+                                div(class="cardLearnMore") Read More
+                                    span(class="icon-arrow")
+
+                            img(src="page-images/cards/sample-card2.jpg")
+
+
+                        a(href="#")
+                            div(class="cardBtnIndicator")
+                                    img(src="images/card-btn-indicator.png")       
+                            div(class="overlayC")
+                                div(class="overlay")
+                                    div(class="cardTitle") Fact Sheet
+                                    div(class="cardHdr") Automatic Transmissions
+                                    div(class="cardTxt") Afton Chemical develops and manufacturers petroleum additives that enhances the performance of fuels and lubricating oils in machinery and vehicles.
+
+                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                                div(class="hoverOverlay")
+                                    div(class="hoverOverlayTxt")
+                                        | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+
+                                div(class="cardLearnMore") Read More
+                                    span(class="icon-arrow")
+
+                            img(src="page-images/cards/sample-card3.jpg")
+
+                        a(href="#")
+                            div(class="cardBtnIndicator")
+                                    img(src="images/card-btn-indicator.png")       
+                            div(class="overlayC")
+                                div(class="overlay")
+                                    div(class="cardTitle") News
+                                    div(class="cardHdr") Afton Chemical to exhibit and present at annual international CTI Symposium. 
+                                div(class="cardDate") March 27, 2015
+                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                                div(class="hoverOverlay")
+                                    div(class="hoverOverlayTxt")
+                                        | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+
+                                div(class="cardLearnMore") Read More
+                                    span(class="icon-arrow")
+
+                            img(src="page-images/cards/sample-card1.jpg")
+
+
+                        a(href="#")
+                            div(class="cardBtnIndicator")
+                                    img(src="images/card-btn-indicator.png")       
+                            div(class="overlayC")
+                                div(class="overlay")
+                                    div(class="cardTitle") Events
+                                    div(class="cardHdr") Afton Chemical breaks ground for its facility in Singapore.
+                                    div(class="cardTxt") Production of the next generation of additive solutions is set to begin in January 2016.
+                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                                div(class="hoverOverlay")
+                                    div(class="hoverOverlayTxt")
+                                        | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+
+                                div(class="cardLearnMore") Read More
+                                    span(class="icon-arrow")
+
+                            img(src="page-images/cards/sample-card2.jpg")
+
+
+                        a(href="#")
+                            div(class="cardBtnIndicator")
+                                    img(src="images/card-btn-indicator.png")       
+                            div(class="overlayC")
+                                div(class="overlay")
+                                    div(class="cardTitle") Fact Sheet
+                                    div(class="cardHdr") Automatic Transmissions
+                                    div(class="cardTxt") Afton Chemical develops and manufacturers petroleum additives that enhances the performance of fuels and lubricating oils in machinery and vehicles.
+
+                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                                div(class="hoverOverlay")
+                                    div(class="hoverOverlayTxt")
+                                        | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+
+                                div(class="cardLearnMore") Read More
+                                    span(class="icon-arrow")
+
+                            img(src="page-images/cards/sample-card3.jpg")
+                        
+                        
+            a(id="faqs-pos" class="anchorTag")         
+            div(class="borders bgPattern")
+            
+                div(class="fullWidth padTopBtm")
+                    h2(class="txtPaddingBtm") FAQs
                     
-                ul(style="display:none;")
-                    li: a(href="#" class="active") Overview
-                    li: a(href="#") Solutions
-                    li: a(href="#") FAQs
-                    li: a(href="#") Product Data Sheets
-                    li: a(href="#") Insights & Resources
+                    | Lorem ipsum dol  or sit amet, consectetur adipiscing elit. Morbi eget vulputate erat, nec hendrerit turpis. Nullam sit amet massa in nulla mollis condimentum. Proin quam metus, tristique, sollicitudin quis arcu. In convallis pellentesque metus at porttitor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eget vulputate erat, nec ornare nec ipsum ut, maximus sollicitudin lectus. Nam enim est, tincidunt sed posuere tristique, sollicitudin quis arcu. In convallis pellentesque metus at porttitor.
+
                     
-        div(class="twoColmnC")
-            
-            p In addition to providing fully-developed additive packages, Afton Chemical is a leading supplier of lubricant components.
-            p Whether you need enhanced protection, antiwear qualities or to improve performance in a wider range of application conditions, Afton has a full and robust selection of components to meet your needs.
-
-            p Afton works with you to ensure your lubricants have optimal chemical balances for increased protection, marketable claims and competitive product positioning, plus the full benefit of over 90 years of Afton research and expertise.
-
-            p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eget vulputate erat, nec hendrerit turpis. Nullam sit amet massa in nulla mollis condimentum. Proin quam metus, tristique, sollicitudin quis arcu. In convallis pellentesque metus at porttitor.
-
-            p Nullam sit amet massa in nulla mollis condimentum. Proin quam metus, tristique, sollicitudin quis arcu. In convallis pellentesque metus at porttitor.
-
-            p Proin quam metus, tristique, sollicitudin quis arcu. In convallis pellentesque metus at porttitor.
-            
-        
-        div(class="fullWidthC")
-            h1 Lubricant Componet Solutions
-            
-            
-        div(class="cardsC")
-            div(class="cards")
-            
-                a(href="#")
-                    div(class="cardBtnIndicator")
-                            img(src="images/card-btn-indicator.png")       
-                    div(class="overlayC")
-                        div(class="overlay")
-                            div(class="cardTitle") News
-                            div(class="cardHdr") Afton Chemical to exhibit and present at annual international CTI Symposium. 
-                        div(class="cardDate") March 27, 2015
-                    div(class="hoverOverlayC" style="opacity: 0.0;")
-                        div(class="hoverOverlay")
-                            div(class="hoverOverlayTxt")
-                                | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+                    ul(class="accordC txtPaddingTop")
+                        li: a(href="#")
+                            div(class="icon")
+                            span 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dolor quam, porta ut erat in
+                            div(class="reveal" style="display: none;")
+                                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
                                 
-                        div(class="cardLearnMore") Read More
-                            span(class="icon-arrow")
-                            
-                    img(src="page-images/cards/sample-card1.jpg")
-                    
-                    
-                a(href="#")
-                    div(class="cardBtnIndicator")
-                            img(src="images/card-btn-indicator.png")       
-                    div(class="overlayC")
-                        div(class="overlay")
-                            div(class="cardTitle") Events
-                            div(class="cardHdr") Afton Chemical breaks ground for its facility in Singapore.
-                            div(class="cardTxt") Production of the next generation of additive solutions is set to begin in January 2016.
-                    div(class="hoverOverlayC" style="opacity: 0.0;")
-                        div(class="hoverOverlay")
-                            div(class="hoverOverlayTxt")
-                                | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+                        li: a(href="#")
+                            div(class="icon")
+                            span 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dolor quam, porta ut erat in
+                            div(class="reveal" style="display: none;")
+                                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet felis justo, vel faucibus orci ultrices ut. Maecenas eu vehicula eros. Morbi ultricies nibh porttitor nunc tincidunt auctor. Duis consectetur arcu a enim posuere, a rutrum quam bibendum. Cras rutrum ex et justo lacinia dictum eget non mauris. Nulla facilisi. Donec efficitur nisl non lacus aliquet, eget vulputate mauris aliquam. In dui sem, scelerisque in dolor tempor, gravida porttitor dolor. Aenean accumsan felis sed suscipit finibus. Mauris sed tempus sem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet felis justo, vel faucibus orci ultrices ut. Maecenas eu vehicula eros. Morbi ultricies nibh porttitor nunc tincidunt auctor. Duis consectetur arcu a enim posuere, a rutrum quam bibendum. Cras rutrum ex et justo lacinia dictum eget non mauris. Nulla facilisi. Donec efficitur nisl non lacus aliquet, eget vulputate mauris aliquam. In dui sem, scelerisque in dolor tempor, gravida porttitor dolor. Aenean accumsan felis sed suscipit finibus. Mauris sed tempus sem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet felis justo, vel faucibus orci ultrices ut. Maecenas eu vehicula eros. Morbi ultricies nibh porttitor nunc tincidunt auctor. Duis consectetur arcu a enim posuere, a rutrum quam bibendum. Cras rutrum ex et justo lacinia dictum eget non mauris. Nulla facilisi. Donec efficitur nisl non lacus aliquet, eget vulputate mauris aliquam. In dui sem, scelerisque in dolor tempor, gravida porttitor dolor. Aenean accumsan felis sed suscipit finibus. Mauris sed tempus sem.
                                 
-                        div(class="cardLearnMore") Read More
-                            span(class="icon-arrow")
-                            
-                    img(src="page-images/cards/sample-card2.jpg")
+                        li: a(href="#")
+                            div(class="icon")
+                            span 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dolor quam, porta ut erat in
+                            div(class="reveal" style="display: none;")
+                                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet felis justo, vel faucibus orci ultrices ut. Maecenas eu vehicula eros. Morbi ultricies nibh porttitor nunc tincidunt auctor. Duis consectetur arcu a enim posuere, a rutrum quam bibendum. Cras rutrum ex et justo lacinia dictum eget non mauris. Nulla facilisi. Donec efficitur nisl non lacus aliquet, eget vulputate mauris aliquam. In dui sem, scelerisque in dolor tempor, gravida porttitor dolor. Aenean accumsan felis sed suscipit finibus. Mauris sed tempus sem.
+                        
+                        li: a(href="#")
+                            div(class="icon")
+                            span 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dolor quam, porta ut erat in
+                            div(class="reveal" style="display: none;")
+                                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        
+                        li: a(href="#") 
+                            div(class="icon")
+                            span 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dolor quam, porta ut erat in
+                            div(class="reveal" style="display: none;")
+                                | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     
-                    
-                a(href="#")
-                    div(class="cardBtnIndicator")
-                            img(src="images/card-btn-indicator.png")       
-                    div(class="overlayC")
-                        div(class="overlay")
-                            div(class="cardTitle") Fact Sheet
-                            div(class="cardHdr") Automatic Transmissions
-                            div(class="cardTxt") Afton Chemical develops and manufacturers petroleum additives that enhances the performance of fuels and lubricating oils in machinery and vehicles.
-                            
-                    div(class="hoverOverlayC" style="opacity: 0.0;")
-                        div(class="hoverOverlay")
-                            div(class="hoverOverlayTxt")
-                                | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
-                                
-                        div(class="cardLearnMore") Read More
-                            span(class="icon-arrow")
-                    
-                    img(src="page-images/cards/sample-card3.jpg")
-
+                    a(href="#" class="viewAllBtn") View All Lubricant Component FAQs
             
             
+            
+            a(id="sheets-pos" class="anchorTag")
+            div(class="padTopBtm")  
+                 div(class="fullWidth")
+                    h1(class="txtPaddingBtm") Lubricant Component Documents
 
+                    div(class="txtPaddingBtm")
+                        | Lorem ipsum dol  or sit amet, consectetur adipiscing elit. Morbi eget vulputate erat, nec hendrerit turpis. Nullam sit amet massa in nulla mollis condimentum. Proin quam metus, tristique, sollicitudin quis arcu. In convallis pellentesque metus at porttitor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eget vulputate erat, nec ornare nec ipsum ut, maximus sollicitudin lectus. Nam enim est, tincidunt sed posuere tristique, sollicitudin quis arcu. In convallis pellentesque metus at porttitor.
+                    
+                    hr
+                    
+                    h2(class="txtPaddingTop") Product Data Sheets
+                    
+                    div(class="threeColGridC")
+                        div(class="twoColGrid-lft")
+                            div(class="threeColGrid-lft dataSheets")
+
+                                h3 Couplers
+                                ul
+                                    li: a(href="#") Nunc vestibulum laoreet mauris ac elementum
+                                    li: a(href="#") Donec sollicitudin commodo sem ut ultricies
+                                    li: a(href="#") Nulla eu metus sed augue placerat elementum at
+
+                                a(href="#") View More >
+
+                                h3 Detergents & Corrosion Inhibitors
+                                ul
+                                    li: a(href="#") Nunc vestibulum laoreet mauris ac elementum
+                                    li: a(href="#") Donec sollicitudin commodo sem ut ultricies
+                                    li: a(href="#") Nulla eu metus sed augue placerat elementum at
+
+                                a(href="#") View More >
+
+                                h3 Dispersants & Emulsifiers
+                                ul
+                                    li: a(href="#") Nunc vestibulum laoreet mauris ac elementum
+                                    li: a(href="#") Donec sollicitudin commodo sem ut ultricies
+                                    li: a(href="#") Nulla eu metus sed augue placerat elementum at
+
+                                a(href="#") View More >
+
+                                h3 Extreme Pressure Agents & Antiwear Agents 
+                                ul
+                                    li: a(href="#") Nunc vestibulum laoreet mauris ac elementum
+                                    li: a(href="#") Donec sollicitudin commodo sem ut ultricies
+                                    li: a(href="#") Nulla eu metus sed augue placerat elementum at
+
+                                a(href="#") View More >
+
+
+                            div(class="threeColGrid-mid dataSheets")
+
+                                h3 Foam Inhibitors
+                                ul
+                                    li: a(href="#") Nunc vestibulum laoreet mauris ac elementum
+                                    li: a(href="#") Donec sollicitudin commodo sem ut ultricies
+                                    li: a(href="#") Nulla eu metus sed augue placerat elementum at
+
+                                a(href="#") View More >
+
+                                h3 Friction Modifiers 
+                                ul
+                                    li: a(href="#") Nunc vestibulum laoreet mauris ac elementum
+                                    li: a(href="#") Donec sollicitudin commodo sem ut ultricies
+                                    li: a(href="#") Nulla eu metus sed augue placerat elementum at
+
+                                a(href="#") View More >
+
+                                h3 Pour Point Depressants (PPDs)  
+                                ul
+                                    li: a(href="#") Nunc vestibulum laoreet mauris ac elementum
+                                    li: a(href="#") Donec sollicitudin commodo sem ut ultricies
+                                    li: a(href="#") Nulla eu metus sed augue placerat elementum at
+
+                                a(href="#") View More >
+
+                                h3 Seal Swell Additives 
+                                ul
+                                    li: a(href="#") Nunc vestibulum laoreet mauris ac elementum
+                                    li: a(href="#") Donec sollicitudin commodo sem ut ultricies
+                                    li: a(href="#") Nulla eu metus sed augue placerat elementum at
+
+                                a(href="#") View More >
+                            
+                        div(class="threeColGrid-rt dataSheets")
+                            
+                            h3 Tackiness Additives
+                            ul
+                                li: a(href="#") Nunc vestibulum laoreet mauris ac elementum
+                                li: a(href="#") Donec sollicitudin commodo sem ut ultricies
+                                li: a(href="#") Nulla eu metus sed augue placerat elementum at
+                                
+                            a(href="#") View More >
+                            
+                            h3 Thickeners & Viscosity Index Improvers 
+                            ul
+                                li: a(href="#") Nunc vestibulum laoreet mauris ac elementum
+                                li: a(href="#") Donec sollicitudin commodo sem ut ultricies
+                                li: a(href="#") Nulla eu metus sed augue placerat elementum at
+                                
+                            a(href="#") View More >
+                    
+                    
+                    a(href="#" class="viewAllBtn") View All Lubricant Component Documents
+                 
+                 
+            a(id="resources-pos" class="anchorTag")
+            div(class="borders bgPattern padTopBtm")
+            
+                div(class="fullWidth")
+                    h2 Insights & Resources                    
+                    
+                div(class="cardsC")
+                    div(class="cards")
+
+                        a(href="#")
+                            div(class="cardBtnIndicator")
+                                    img(src="images/card-btn-indicator.png")       
+                            div(class="overlayC")
+                                div(class="overlay")
+                                    div(class="cardTitle") News
+                                    div(class="cardHdr") Afton Chemical to exhibit and present at annual international CTI Symposium. 
+                                div(class="cardDate") March 27, 2015
+                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                                div(class="hoverOverlay")
+                                    div(class="hoverOverlayTxt")
+                                        | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+
+                                div(class="cardLearnMore") Read More
+                                    span(class="icon-arrow")
+
+                            img(src="page-images/cards/sample-card1.jpg")
+
+
+                        a(href="#")
+                            div(class="cardBtnIndicator")
+                                    img(src="images/card-btn-indicator.png")       
+                            div(class="overlayC")
+                                div(class="overlay")
+                                    div(class="cardTitle") Events
+                                    div(class="cardHdr") Afton Chemical breaks ground for its facility in Singapore.
+                                    div(class="cardTxt") Production of the next generation of additive solutions is set to begin in January 2016.
+                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                                div(class="hoverOverlay")
+                                    div(class="hoverOverlayTxt")
+                                        | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+
+                                div(class="cardLearnMore") Read More
+                                    span(class="icon-arrow")
+
+                            img(src="page-images/cards/sample-card2.jpg")
+                            
+                            
+                        a(href="#")
+                            div(class="cardBtnIndicator")
+                                    img(src="images/card-btn-indicator.png")       
+                            div(class="overlayC")
+                                div(class="overlay")
+                                    div(class="cardTitle") Events
+                                    div(class="cardHdr") Afton Chemical breaks ground for its facility in Singapore.
+                                    div(class="cardTxt") Production of the next generation of additive solutions is set to begin in January 2016.
+                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                                div(class="hoverOverlay")
+                                    div(class="hoverOverlayTxt")
+                                        | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+
+                                div(class="cardLearnMore") Read More
+                                    span(class="icon-arrow")
+
+                            img(src="page-images/cards/sample-card2.jpg")
                     
         
-        
-        
-        
-        
-        
-        include includes/_footer.jade
+            include includes/_footer.jade

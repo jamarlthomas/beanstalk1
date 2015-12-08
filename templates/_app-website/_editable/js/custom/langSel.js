@@ -58,13 +58,13 @@ $( document ).ready(function() {
         closeLang(); 
     });
 
-    
-    
-    
-    //phone click
+
+    //prevent click
     $( "#languageC #selLang").click(function(e) {
         e.preventDefault();
     });
+    
+    //click (for touch)
     $( "#languageC").click(function() {
         
         //on click decide wether to open or close language

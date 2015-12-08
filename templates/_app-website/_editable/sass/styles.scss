@@ -1,56 +1,46 @@
 @import '_variables';
 
-body { padding-top: 165px;
+//Global General Styles
+@import '_gen-styles';
 
-    //*** Breakpoints ***
-    @include breakpoint($bp1) { padding-top: 79px; }
-} 
-
-div, p, li { font: 14px/18px HelveticaNeueLTStd-Roman, Helvetica, Arial, Sans-Serif; color: #595959; }
-
-h1 { margin: 0px; padding: 0px; color: #0c419a; font-size: 24px; }
-
-a { transition: 0.8s; }
-
-
-@import '_search';
-
-@import '_mobileNav';
 
 @import '_header';
 
-@import '_homeSlider';
 
-@import '_cards';
+//Layouts
 
-@import '_home-learnMore';
+@import 'grid-layouts/_fullWidth';
 
-@import '_sbu-landing';
+@import 'grid-layouts/_threeColGridC';
 
-@import '_sbu-product';
+@import 'grid-layouts/_twoColumnC';
+
+@import 'grid-layouts/_twoColumnC-sidebar';
+
+
+//Modules
+
+@import 'modules/_mobileNav';
+
+@import 'modules/_homeSlider';
+
+@import 'modules/_cards';
+
+@import 'modules/_home-learnMore';
+
+@import 'modules/_sbu-landing-hdr';
+
+@import 'modules/_data-sheets';
+
+@import 'modules/_accordion';
+
+@import 'modules/_sbu-solution-hdr';
+
+@import 'modules/_breadCrumbsC';
+
+@import 'modules/_socialC';
+
 
 @import '_footer';
-
-
-//Dotted background
-.bgPattern { background: url(../../images/bg-dots.gif); }
-
-//Full width container
-.fullWidthC { position: relative; margin: 0px auto; width: 1235px; }
-
-
-//Two Column Layouts
-.twoColmnC { position: relative; margin: 50px auto; width: 1235px; overflow: auto;
-    
-    .first p { margin-right: 10%;
-        
-        @include breakpoint($bp2) { margin-right: 0px; }
-    
-    }//first p 
-    
-    //*** Breakpoints ***
-    @include breakpoint($bp1) { width: 98%; xdisplay: none; }
-    @include breakpoint($bp2) { margin-top: 20px; margin-bottom: 20px; }
-    
-}//twoColmnC
+ 
 

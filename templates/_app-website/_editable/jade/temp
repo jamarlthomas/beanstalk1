@@ -1,16 +1,11 @@
-meta(charset="utf-8")
-meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
- 
-meta(name="robots" content="index,follow")
-
-meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
-
-//Default CSS
-link(rel='stylesheet', href='assets-layout/styles/normalize.min.css')
-link(rel='stylesheet', href='assets-layout/fonts/fonts.css')
-link(rel='stylesheet', href='assets-layout/styles/styles.min.css')
-
-
+li: a(href="#overview") Overview
+                            li: a(href="#solutions") Solutions
+                            li: a(href="#faqs") FAQs
+                            li: a(href="#sheets") Product Data Sheets
+                            li: a(href="#resources") Insights & Resources
+                            
+                            
+                            
 //Default Scripts
 script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.js')
 script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js')
@@ -19,7 +14,6 @@ script(src='assets-layout/js/library/jquery.animate-colors.min.js')
 script(src='assets-layout/js/library/jquery.dotdotdot.min.js')
 script(src='https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.4/hammer.min.js')
 script(src='https://cdn.jsdelivr.net/jquery.columnizer/1.6.0/jquery.columnizer.js')
-script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery.actual/1.0.17/jquery.actual.min.js')
 
 script(src='assets-layout/js/custom/ellipsesText.min.js')
 script(src='assets-layout/js/custom/columnizeText.min.js')

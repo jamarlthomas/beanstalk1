@@ -63,23 +63,20 @@ $( document ).ready(function() {
             }
 
             if(status == "reverse"){ 
+
                 //update slide number
-                console.log(currSlide)
                 prevSlide = currSlide
                 currSlide = Number(currSlide) - 1;
-
 
                 if(currSlide < 0 ){
                   currSlide = totalSlides - 1;
                 }
-                 console.log(currSlide)
 
                 //if number is positive switch it to negative
                 if(leftStartPos > 0){
                     leftStartPos = leftStartPos * -1;
                 }
 
-                //console.log(currSlide +"/"+prevSlide)
             }
 
             //prep new slide

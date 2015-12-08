@@ -1,0 +1,53 @@
+#megaMenuC { position: relative; width: 100%; background: #FFF;
+
+    .megaMenu { position: relative; margin: 0px auto; width: 1260px; overflow: hidden;
+        .lftCol { float: left; margin: 12px 0px 0px 19px; width: 395px; 
+
+            a.photoLink { padding: 15px; display: block; width: 360px; overflow: auto; 
+
+                img { float: left; margin-right: 12px; border: 1px solid #FFF; transition: 0.3s; }
+
+                .photoLinkRt { float: left; width: 220px; height: 70px; overflow: hidden;
+
+                    .mHeader { padding-bottom: 3px; color: #0c419a; font: 16px HelveticaNeueLT-Light; transition: 0.3s; }
+
+                    .mTxt { color: #595959; font-size: 11px; line-height: 14px; }
+
+                }//photoLinkRt
+
+                &:hover { background: #f6f7f6; }
+                &:hover img { border: 1px solid #48a540; }
+                &:hover .mHeader { color: #48a540; }
+
+            }//.photoLink
+
+            #searchBox { border: 0px; margin-top: 15px; width: 318px; height: 30px; padding: 0px 35px 0px 16px; background: #eaeaea url(../../images/search-bg.gif) no-repeat 290px 6px; font-size: 11px; color: #0c419a; 
+            }
+
+        }//#lftCol
+
+        .rtCol { float: left; width: 772px; margin: 12px 0px; min-height: 260px; border-left: 1px solid #48a540;
+
+            .rtColHdr { padding: 14px 0px 5px 47px; color: #0c419a; font: 16px HelveticaNeueLT-Light; }
+
+            .rtColLinksC { padding-left: 32px; display: flex; flex-flow: row wrap;
+
+                a.rtColLinks { display: block; float: left; width: 240px; padding: 15px; height: 90px;  text-decoration: none; transition: 0.8s;
+
+                    .txtC { height: 55px; overflow: hidden;
+                        .linkHdr { color: #0c419a; font: 12px; line-height: 14px; transition: 0.3s; }
+                        .linkTxt { color: #595959; font-size: 12px; line-height: 14px; }
+                    }
+
+                    &:hover { background: #f6f7f6; }
+                    &:hover .linkHdr { color: #48a540; }
+
+                }//a.rtColLinks
+
+            }//rtColLinksC
+
+        }//rtCol
+
+    }//megaMenu
+
+}//megaMenuC

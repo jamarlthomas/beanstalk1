@@ -1,7 +1,18 @@
 div(id="topHeaderC")
+
+    div(id="searchC")
+        div(id="search")
+            input(type="text" placeholder="Search Term...")        
+
+            div(id="searchDir")
+                | Press Enter to Search
+
+            div(id="closeSearch")
+                a(href="#")
+                    img(src="images/searchClose.png") 
+    
     div(id="topHeader")
         header
-
             a(href="#")
                 img(src="images/logo.gif" id="dLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions")
                 img(src="images/logo-mobile.gif" id="mLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions" style="display: none;")
@@ -62,13 +73,15 @@ div(id="topHeaderC")
                     li
                         a(href="#" data-mm="industrial") Industrial Additives
                     li
-                        a(href="#" data-mm="lubricant") Lubricant Components
+                        a(href="#" data-mm="lubricant" class=sbuMainNavHighlight ) Lubricant Components
                     li
                         a(href="#") Logistics & Supply
                     li
                         a(href="#") Insights & Resources
 
-
+    
+    div(id="stickySBU-navC" style="display: none;")
+    
     div(id="megaMenuC" style="opacity: 0;")
 
         <!-- DriveLine Mega Menu -->

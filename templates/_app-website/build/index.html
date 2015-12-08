@@ -20,17 +20,23 @@
     <script src="assets-layout/js/library/jquery.dotdotdot.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.4/hammer.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.columnizer/1.6.0/jquery.columnizer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.actual/1.0.17/jquery.actual.min.js"></script>
     <script src="assets-layout/js/custom/ellipsesText.min.js"></script>
     <script src="assets-layout/js/custom/columnizeText.min.js"></script>
     <script src="assets-layout/js/library/head.min.js">       </script>
     <script>
       head.js(
           {home_rotator: "assets-layout/js/custom/homeSlideShow.min.js"},
+          {search_box: "assets-layout/js/custom/search.min.js"},
           {language_selector: "assets-layout/js/custom/langSel.min.js"},
-          {mega_menu_drop_down: "assets-layout/js/custom/megaMenu.min.js"},
-          {card_Animations: "assets-layout/js/custom/cards.min.js"},
+          {mega_menu_drop_down: "assets-layout/js/custom/megaMenu.min.js"},        
           {mobile_nav: "assets-layout/js/custom/mobileNav.min.js"},
           {disclaimer_copyright: "assets-layout/js/custom/copyrightDate.min.js"},
+          
+          {card_Animations: "assets-layout/js/custom/cards.min.js"},
+          {sbu_Landing_Nav: "assets-layout/js/custom/sbuLandingDropDown.min.js"},
+          {sbu_Landing_Nav: "assets-layout/js/custom/accordion.min.js"},
+          
           function(){
               //loadCSS
               //	{LABEL: "URL/PATH"},
@@ -40,9 +46,6 @@
     </script>
   </head>
   <body>
-    <div id="searchC">
-      <div id="search">search</div>
-    </div>
     <div id="mobileNavC1">
       <div id="mobileNavC">
         <div id="menuHdrC">
@@ -113,6 +116,13 @@
       </div>
     </div>
     <div id="topHeaderC">
+      <div id="searchC">
+        <div id="search">
+          <input type="text" placeholder="Search Term...">
+          <div id="searchDir">Press Enter to Search</div>
+          <div id="closeSearch"><a href="#"><img src="images/searchClose.png"></a></div>
+        </div>
+      </div>
       <div id="topHeader">
         <header><a href="#"><img src="images/logo.gif" id="dLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions"><img src="images/logo-mobile.gif" id="mLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions" style="display: none;"></a><a href="#" id="mobileBtn" style="display: none;"><img src="images/mobileBtn.gif"></a><a href="#" id="mobileSearch" style="display: none;"><span class="icon-search"></span></a>
           <div id="languageC">
@@ -154,6 +164,7 @@
           </div>
         </header>
       </div>
+      <div id="stickySBU-navC" style="display: none;"></div>
       <div id="megaMenuC" style="opacity: 0;"><!-- DriveLine Mega Menu -->
         <div id="driveline" class="megaMenu">
           <div class="lftCol"><a href="#" class="photoLink"><img src="page-images/mega-menu/sample-pic-megamanu1.jpg">
@@ -363,188 +374,190 @@
         <div id="stickyFoot"><a href="#">Contact</a></div>
       </div>
     </div>
-    <div id="topSliderC">
-      <div id="topSliderArrowsC"><a href="#" id="lftArrow"><img src="images/lft-slidArrow.png"></a><a href="#" id="rtArrow"><img src="images/rt-slidArrow.png"></a></div>
-      <div id="slidesC">
-        <div id="topSliderNavC"></div>
-        <div id="slides">
-          <div style="display: none;" class="slide rtLayout">                   
-            <div class="slideTxtBoxC">
-              <div class="slideTxtBox">                       
-                <div class="slideHdr">Our culture and people are our most treasured assets </div>
-                <div class="slideTxt">A key player in the lubricant and fuel industry with over 90 years of customer collaboration.</div><a href="#s1">Learn More<span class="icon-arrow"></span></a>
+    <div id="contentAreaC">
+      <div id="topSliderC">
+        <div id="topSliderArrowsC"><a href="#" id="lftArrow"><img src="images/lft-slidArrow.png"></a><a href="#" id="rtArrow"><img src="images/rt-slidArrow.png"></a></div>
+        <div id="slidesC">
+          <div id="topSliderNavC"></div>
+          <div id="slides">
+            <div style="display: none;" class="slide rtLayout">                   
+              <div class="slideTxtBoxC">
+                <div class="slideTxtBox">                       
+                  <div class="slideHdr">Our culture and people are our most treasured assets </div>
+                  <div class="slideTxt">A key player in the lubricant and fuel industry with over 90 years of customer collaboration.</div><a href="#s1">Learn More<span class="icon-arrow"></span></a>
+                </div>
               </div>
+              <div class="slideImgBoxC"><img src="page-images/home-slider/lft-sample1.jpg"></div>
             </div>
-            <div class="slideImgBoxC"><img src="page-images/home-slider/lft-sample1.jpg"></div>
-          </div>
-          <div style="display: none;" class="slide lftLayout">
-            <div class="slideTxtBoxC">
-              <div class="slideTxtBox">
-                <div class="slideHdr">Where innovative chemistry leads to customized solutions</div>
-                <div class="slideTxt">A key player in the lubricant and fuel industry with over 90 years of customer collaboration. </div><a href="#s2">Learn More <span class="icon-arrow"></span></a>
+            <div style="display: none;" class="slide lftLayout">
+              <div class="slideTxtBoxC">
+                <div class="slideTxtBox">
+                  <div class="slideHdr">Where innovative chemistry leads to customized solutions</div>
+                  <div class="slideTxt">A key player in the lubricant and fuel industry with over 90 years of customer collaboration. </div><a href="#s2">Learn More <span class="icon-arrow"></span></a>
+                </div>
               </div>
+              <div class="slideImgBoxC"><img src="page-images/home-slider/rt-sample1.jpg"></div>
             </div>
-            <div class="slideImgBoxC"><img src="page-images/home-slider/rt-sample1.jpg"></div>
-          </div>
-          <div style="display: none;" class="slide rtLayout">                   
-            <div class="slideTxtBoxC">
-              <div class="slideTxtBox">                       
-                <div class="slideHdr">Our culture and people are our most treasured assets </div>
-                <div class="slideTxt">A key player in the lubricant and fuel industry with over 90 years of customer collaboration.</div><a href="#s1">Learn More<span class="icon-arrow"></span></a>
+            <div style="display: none;" class="slide rtLayout">                   
+              <div class="slideTxtBoxC">
+                <div class="slideTxtBox">                       
+                  <div class="slideHdr">Our culture and people are our most treasured assets </div>
+                  <div class="slideTxt">A key player in the lubricant and fuel industry with over 90 years of customer collaboration.</div><a href="#s1">Learn More<span class="icon-arrow"></span></a>
+                </div>
               </div>
+              <div class="slideImgBoxC"><img src="page-images/home-slider/lft-sample1.jpg"></div>
             </div>
-            <div class="slideImgBoxC"><img src="page-images/home-slider/lft-sample1.jpg"></div>
-          </div>
-          <div style="display: none;" class="slide lftLayout">
-            <div class="slideTxtBoxC">
-              <div class="slideTxtBox">
-                <div class="slideHdr">Where innovative chemistry leads to customized solutions</div>
-                <div class="slideTxt">A key player in the lubricant and fuel industry with over 90 years of customer collaboration. </div><a href="#s2">Learn More <span class="icon-arrow"></span></a>
+            <div style="display: none;" class="slide lftLayout">
+              <div class="slideTxtBoxC">
+                <div class="slideTxtBox">
+                  <div class="slideHdr">Where innovative chemistry leads to customized solutions</div>
+                  <div class="slideTxt">A key player in the lubricant and fuel industry with over 90 years of customer collaboration. </div><a href="#s2">Learn More <span class="icon-arrow"></span></a>
+                </div>
               </div>
+              <div class="slideImgBoxC"><img src="page-images/home-slider/rt-sample1.jpg"></div>
             </div>
-            <div class="slideImgBoxC"><img src="page-images/home-slider/rt-sample1.jpg"></div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="cardsC bgPattern">
-      <div class="cards"><a href="http://google.com">
-          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
-          <div class="overlayC">
-            <div class="overlay">
-              <div class="cardTitle">News</div>
-              <div class="cardHdr">Afton Chemical to exhibit and present at annual international CTI Symposium. </div>
+      <div class="cardsC bgPattern">
+        <div class="cards"><a href="http://google.com">
+            <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+            <div class="overlayC">
+              <div class="overlay">
+                <div class="cardTitle">News</div>
+                <div class="cardHdr">Afton Chemical to exhibit and present at annual international CTI Symposium. </div>
+              </div>
+              <div class="cardDate">March 27, 2015</div>
             </div>
-            <div class="cardDate">March 27, 2015</div>
+            <div style="opacity: 0.0;" class="hoverOverlayC">
+              <div class="hoverOverlay">
+                <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+              </div>
+              <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+            </div><img src="page-images/cards/sample-card1.jpg"></a><a href="#">
+            <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+            <div class="overlayC">
+              <div class="overlay">
+                <div class="cardTitle">Events</div>
+                <div class="cardHdr">Afton Chemical breaks ground for its facility in Singapore.</div>
+                <div class="cardTxt">Production of the next generation of additive solutions is set to begin in January 2016.</div>
+              </div>
+            </div>
+            <div style="opacity: 0.0;" class="hoverOverlayC">
+              <div class="hoverOverlay">
+                <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+              </div>
+              <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+            </div><img src="page-images/cards/sample-card2.jpg"></a><a href="#">
+            <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+            <div class="overlayC">
+              <div class="overlay">
+                <div class="cardTitle">Fact Sheet</div>
+                <div class="cardHdr">Automatic Transmissions</div>
+                <div class="cardTxt">Afton Chemical develops and manufacturers petroleum additives that enhances the performance of fuels and lubricating oils in machinery and vehicles.</div>
+              </div>
+            </div>
+            <div style="opacity: 0.0;" class="hoverOverlayC">
+              <div class="hoverOverlay">
+                <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+              </div>
+              <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+            </div><img src="page-images/cards/sample-card3.jpg"></a><a href="#">
+            <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+            <div class="overlayC">                       
+              <div class="overlay">
+                <div class="cardTitle">News</div>
+                <div class="cardHdr">Afton Chemical presents at ICIS E-World event and receives prestigious award.</div>
+              </div>
+              <div class="cardDate">March 1, 2015</div>
+            </div>
+            <div style="opacity: 0.0;" class="hoverOverlayC">
+              <div class="hoverOverlay">
+                <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+              </div>
+              <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+            </div><img src="page-images/cards/sample-card1.jpg"></a><a href="#">
+            <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+            <div class="overlayC">
+              <div class="overlay">
+                <div class="cardTitle">Solution</div>
+                <div class="cardHdr">Off Road: HiTec8888z</div>
+                <div class="cardTxt">Keeping even more of your big, dirty, dusty machines working smoothly and more efficiently for longer-reducing operatingcosts by being even more universal. </div>
+              </div>
+            </div>
+            <div style="opacity: 0.0;" class="hoverOverlayC">
+              <div class="hoverOverlay">
+                <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+              </div>
+              <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+            </div><img src="page-images/cards/sample-card2.jpg"></a><a href="#">
+            <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+            <div class="overlayC">
+              <div class="overlay">
+                <div class="cardTitle">Solution</div>
+                <div class="cardHdr">Polartech Amide MA 408 T</div>
+                <div class="cardTxt">408T us a cost effective balance between emulsification and corrosion protection with a reduced level of free diethanola-mine, suitable for a wide range of watermix fluids.</div>
+              </div>
+            </div>
+            <div style="opacity: 0.0;" class="hoverOverlayC">
+              <div class="hoverOverlay">
+                <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+              </div>
+              <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+            </div><img src="page-images/cards/sample-card3.jpg"></a><a href="#" class="trending">
+            <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+            <div class="trendIndicator">Trending Topic</div>
+            <div class="overlayC">
+              <div class="overlay">
+                <div class="cardTitle">Solution</div>
+                <div class="cardHdr">Afton Chemical trending topic headline to be placed in this designated area.</div>
+              </div>
+            </div>
+            <div style="opacity: 0.0;" class="hoverOverlayC">
+              <div class="hoverOverlay">
+                <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+              </div>
+              <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+            </div><img src="page-images/cards/sample-card1.jpg"></a><a href="#" class="trending">
+            <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+            <div class="trendIndicator">Trending Topic</div>
+            <div class="overlayC">
+              <div class="overlay">
+                <div class="cardTitle">Solution</div>
+                <div class="cardHdr">Two line trending topic headline example here.</div>
+                <div class="cardTxt">Omnis es aliat. Eceaquam eossimp oreperit dolupt tum hicto volorat. </div>
+              </div>
+            </div>
+            <div style="opacity: 0.0;" class="hoverOverlayC">
+              <div class="hoverOverlay">
+                <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+              </div>
+              <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+            </div><img src="page-images/cards/sample-card2.jpg"></a><a href="#" class="trending">
+            <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+            <div class="trendIndicator">Trending Topic</div>
+            <div class="overlayC">
+              <div class="overlay">
+                <div class="cardTitle">Solution</div>
+                <div class="cardHdr">One line trending headline example.</div>
+                <div class="cardTxt">Arum quia qui comnis volupta voluptas dolupta quam endicidem faccus molorios aceratia netur, cum sumque pos doluptio odist isti ut et faccatem harchilit reris.</div>
+              </div>
+            </div>
+            <div style="opacity: 0.0;" class="hoverOverlayC">
+              <div class="hoverOverlay">
+                <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+              </div>
+              <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+            </div><img src="page-images/cards/sample-card3.jpg"></a></div>
+      </div>
+      <div id="learnMoreC">
+        <div id="learnMore">
+          <div id="learnTxtC">
+            <div id="learnHdr">Learn more about our solutions.</div>
+            <div id="learnTxt">Talk with one of our sales representatives.</div>
           </div>
-          <div style="opacity: 0.0;" class="hoverOverlayC">
-            <div class="hoverOverlay">
-              <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
-            </div>
-            <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-          </div><img src="page-images/cards/sample-card1.jpg"></a><a href="#">
-          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
-          <div class="overlayC">
-            <div class="overlay">
-              <div class="cardTitle">Events</div>
-              <div class="cardHdr">Afton Chemical breaks ground for its facility in Singapore.</div>
-              <div class="cardTxt">Production of the next generation of additive solutions is set to begin in January 2016.</div>
-            </div>
-          </div>
-          <div style="opacity: 0.0;" class="hoverOverlayC">
-            <div class="hoverOverlay">
-              <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
-            </div>
-            <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-          </div><img src="page-images/cards/sample-card2.jpg"></a><a href="#">
-          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
-          <div class="overlayC">
-            <div class="overlay">
-              <div class="cardTitle">Fact Sheet</div>
-              <div class="cardHdr">Automatic Transmissions</div>
-              <div class="cardTxt">Afton Chemical develops and manufacturers petroleum additives that enhances the performance of fuels and lubricating oils in machinery and vehicles.</div>
-            </div>
-          </div>
-          <div style="opacity: 0.0;" class="hoverOverlayC">
-            <div class="hoverOverlay">
-              <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
-            </div>
-            <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-          </div><img src="page-images/cards/sample-card3.jpg"></a><a href="#">
-          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
-          <div class="overlayC">                       
-            <div class="overlay">
-              <div class="cardTitle">News</div>
-              <div class="cardHdr">Afton Chemical presents at ICIS E-World event and receives prestigious award.</div>
-            </div>
-            <div class="cardDate">March 1, 2015</div>
-          </div>
-          <div style="opacity: 0.0;" class="hoverOverlayC">
-            <div class="hoverOverlay">
-              <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
-            </div>
-            <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-          </div><img src="page-images/cards/sample-card1.jpg"></a><a href="#">
-          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
-          <div class="overlayC">
-            <div class="overlay">
-              <div class="cardTitle">Solution</div>
-              <div class="cardHdr">Off Road: HiTec8888z</div>
-              <div class="cardTxt">Keeping even more of your big, dirty, dusty machines working smoothly and more efficiently for longer-reducing operatingcosts by being even more universal. </div>
-            </div>
-          </div>
-          <div style="opacity: 0.0;" class="hoverOverlayC">
-            <div class="hoverOverlay">
-              <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
-            </div>
-            <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-          </div><img src="page-images/cards/sample-card2.jpg"></a><a href="#">
-          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
-          <div class="overlayC">
-            <div class="overlay">
-              <div class="cardTitle">Solution</div>
-              <div class="cardHdr">Polartech Amide MA 408 T</div>
-              <div class="cardTxt">408T us a cost effective balance between emulsification and corrosion protection with a reduced level of free diethanola-mine, suitable for a wide range of watermix fluids.</div>
-            </div>
-          </div>
-          <div style="opacity: 0.0;" class="hoverOverlayC">
-            <div class="hoverOverlay">
-              <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
-            </div>
-            <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-          </div><img src="page-images/cards/sample-card3.jpg"></a><a href="#" class="trending">
-          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
-          <div class="trendIndicator">Trending Topic</div>
-          <div class="overlayC">
-            <div class="overlay">
-              <div class="cardTitle">Solution</div>
-              <div class="cardHdr">Afton Chemical trending topic headline to be placed in this designated area.</div>
-            </div>
-          </div>
-          <div style="opacity: 0.0;" class="hoverOverlayC">
-            <div class="hoverOverlay">
-              <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
-            </div>
-            <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-          </div><img src="page-images/cards/sample-card1.jpg"></a><a href="#" class="trending">
-          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
-          <div class="trendIndicator">Trending Topic</div>
-          <div class="overlayC">
-            <div class="overlay">
-              <div class="cardTitle">Solution</div>
-              <div class="cardHdr">Two line trending topic headline example here.</div>
-              <div class="cardTxt">Omnis es aliat. Eceaquam eossimp oreperit dolupt tum hicto volorat. </div>
-            </div>
-          </div>
-          <div style="opacity: 0.0;" class="hoverOverlayC">
-            <div class="hoverOverlay">
-              <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
-            </div>
-            <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-          </div><img src="page-images/cards/sample-card2.jpg"></a><a href="#" class="trending">
-          <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
-          <div class="trendIndicator">Trending Topic</div>
-          <div class="overlayC">
-            <div class="overlay">
-              <div class="cardTitle">Solution</div>
-              <div class="cardHdr">One line trending headline example.</div>
-              <div class="cardTxt">Arum quia qui comnis volupta voluptas dolupta quam endicidem faccus molorios aceratia netur, cum sumque pos doluptio odist isti ut et faccatem harchilit reris.</div>
-            </div>
-          </div>
-          <div style="opacity: 0.0;" class="hoverOverlayC">
-            <div class="hoverOverlay">
-              <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
-            </div>
-            <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-          </div><img src="page-images/cards/sample-card3.jpg"></a></div>
-    </div>
-    <div id="learnMoreC">
-      <div id="learnMore">
-        <div id="learnTxtC">
-          <div id="learnHdr">Learn more about our solutions.</div>
-          <div id="learnTxt">Talk with one of our sales representatives.</div>
+          <div id="leanMoreBtnC"><a href="#">Contact Us<span class="icon-arrow"></span></a></div>
         </div>
-        <div id="leanMoreBtnC"><a href="#">Contact Us<span class="icon-arrow"></span></a></div>
       </div>
     </div>
     <div id="footerC">

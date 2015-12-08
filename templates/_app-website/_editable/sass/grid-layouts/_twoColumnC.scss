@@ -1,0 +1,15 @@
+//Two Column Text Layouts
+.twoColumnC { position: relative; margin: 0px auto; width: 1235px; overflow: auto;
+    
+    .first p { margin-right: 10%;
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp2) { margin-right: 0px; }
+    
+    }//first p 
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { width: 98%; xdisplay: none; }
+    @include breakpoint($bp2) { margin-top: 20px; margin-bottom: 20px; }
+    
+}//twoColumnC

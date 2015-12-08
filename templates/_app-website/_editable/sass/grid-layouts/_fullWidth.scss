@@ -1,0 +1,7 @@
+//Full width container
+.fullWidth { position: relative; margin: 0px auto; width: 1235px; 
+
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { width: 98%; }
+
+}
