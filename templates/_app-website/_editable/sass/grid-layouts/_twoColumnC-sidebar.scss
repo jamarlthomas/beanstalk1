@@ -1,4 +1,4 @@
-#twoColumnC-sidebar { @include container;
+#twoColumnC-sidebar { @include container; margin-top: -70px;
 
     #lftCol-sidebar { @include span(4 of 12);
     
@@ -14,5 +14,7 @@
     
     }
     
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { margin-top: 0px; width: 98%; }
 
 }//twoColumnC-sidebar
