@@ -1,0 +1,130 @@
+#sbuLandingHdrC { position: relative;
+
+    #sbuLandingHdr { position: relative; margin: 0px auto; height: 508px; width: 1235px; overflow: auto;
+        
+        .hdrTxtBoxC { width: 50%;
+            
+            .hdrTxtBox { position: absolute; top: 50%; width: 50%; transform: translateY(-50%); text-align: center; padding: 0px 30px;
+                .sbuHeadline { padding-bottom: 14px; color: #0c419a; font: 40px/45px HelveticaNeueLT-Thin; 
+                    
+                    //*** Breakpoints ***                        
+                    @include breakpoint($bp1) { padding-bottom: 7px; font-size: 30px; line-height: 33px; }
+                    @include breakpoint($bp2) { font-size: 18px; line-height: 20px; }  
+                    @include breakpoint($bp3) { padding-top: 15px; font-size: 30px; line-height: 33px; } 
+                    
+                }//sbuHeadline
+
+                .sbuTxt { margin-bottom: 36px; font: 18px HelveticaNeueLTStd-It;
+                
+                    //*** Breakpoints ***
+                    @include breakpoint($bp1) { margin-bottom: 18px; font-size: 15px; line-height: 20px; } 
+                    @include breakpoint($bp2) { font-size: 12px; line-height: 16px; } 
+                    @include breakpoint($bp3) { font-size: 15px; line-height: 18px; } 
+                    
+                }//sbuTxt
+            
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { position: relative; top: 0px; transform: translateY(0); width: 100%; }      
+            
+            }//hdrTxtBox
+            
+            //*** Breakpoints ***
+            @include breakpoint($bp3) { width: 100%; }
+            
+        }//hdrTxtBoxC
+        
+        .sbuImgBoxC2 { float: right; width: 50%;
+            
+            img { display: block; width: 100%; }
+        
+            //*** Breakpoints ***
+            @include breakpoint($bp1) { display: block!important; }
+            @include breakpoint($bp3) { width: 100%; }
+            
+        }//sbuImgBoxC2
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { width: 100%; height: auto; }    
+        
+        
+    }//sbuLandingHdr
+    
+    .sbuImgBoxC { position: absolute; top: 0px; right: 0px;
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { display: none; }  
+        
+    }//sbuImgBoxC 
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { overflow: auto; }    
+    
+}//sbuLandingHdrC
+
+
+#stickySBU-navC, .sbuLandingNavC { background: #b7bebf;
+   
+    .sbuLandingNav { position: relative; margin: 0px auto; width: 1235px; overflow: auto;
+        
+        ul { margin: 0px; padding: 0px;
+            
+            li { float: left; margin: 0px; padding: 0px; width: 20%; list-style: none; 
+            
+                a { position: relative; display: block; height: 50px; color: #FFF; text-decoration: none;
+                
+                    &:hover, &.active { background: #0c419a; }
+                    
+                    span { position: absolute; top: 50%; transform: translateY(-50%); display: block; width: 100%; text-align: center; }
+                    
+                }//a
+                
+            }//li
+        
+        }//ul
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { width: 100%; }
+        @include breakpoint($bp2) { display: none; }   
+        
+    }//sbuLandingNav
+    
+    .sbuLandingDropNav { position: relative; background: #bec5c6;
+        
+        .icon-arrow { position: absolute; top: 18px; right: 15px; transform: rotate(90deg); color: #FFF; }
+        
+        a.sbuSelect { display: block; padding: 15px; color: #FFF; text-decoration: none; background: #0c419a; }
+        
+        ul { position: absolute; top: 48px; left: 0px; width: 100%; margin: 0px; padding: 0px; background: #b7bebf; z-index: 5;
+            li { margin: 0px; pading: 0px;
+            
+                a { display: block; padding: 8px 15px; text-decoration: none; color: #FFF;
+                
+                    &:hover, &.active { background: #0c419a; }
+                    
+                }//a
+                
+            }//li
+        }//ul
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp2) { display: block!important;  }   
+        
+    }//sbuLandingDropNav
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp2) { background: none; }   
+    
+}//sbuLandingNavC
+
+
+//anchor tag
+.anchorTag {
+    display: block;
+    position: relative;
+    top: -215px;
+    visibility: hidden;
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { top: -127px; }  
+}
+

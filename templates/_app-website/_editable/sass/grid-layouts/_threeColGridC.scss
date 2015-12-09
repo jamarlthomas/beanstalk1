@@ -1,0 +1,31 @@
+.threeColGridC { @include container;
+
+    .twoColGrid-lft {
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp2) { @include span(6 of 12); }
+        @include breakpoint($bp3) { @include span(full); }
+        
+    }
+        
+    .threeColGrid-lft { @include span(4 of 12);
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp2) { @include span(full); }
+    
+    }
+    .threeColGrid-mid { @include span(4 of 12);
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp2) { @include span(full); } 
+    
+    }
+    .threeColGrid-rt { @include span(4 of 12 last);
+    
+        //*** Breakpoints ***
+        @include breakpoint($bp2) { @include span(6 of 12 last); }
+        @include breakpoint($bp3) { @include span(full); }
+        
+    }
+    
+}//threeColGridC

@@ -1,0 +1,97 @@
+
+#footerC { background: #595959;
+    
+    footer { margin: 0px auto; padding-top: 20px; width: 1240px; height: 217px; background: url(../../images/footer-bg.gif) top center;
+        
+        #btmC { overflow: auto; padding-left: 35px;
+            
+            #btmLogoC { float: left; width: 210px;
+                
+                img {
+                    
+                    //*** Breakpoints ***
+                    @include breakpoint($bp1) { height: 25px; } 
+                    @include breakpoint($bp2) { height: auto; } 
+                    
+                }//img
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp1) { float: none; padding-bottom: 5px; } 
+                @include breakpoint($bp2) { width: 100%; text-align: center; } 
+                
+            }//btmLogoC
+
+            .btmNavCol { float: left; width: 160px;
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp2) { width: 100%; float: none; padding-bottom: 10px; text-align: center; } 
+                
+            }//btmNavCol
+            
+                        
+            a{ color: #FFF; text-decoration: none; font-weight: bold;
+                
+                &:hover { color: #CCC; }
+                
+            }//a
+            
+            ul { margin: 0px; padding: 5px 0px 0px 0px;
+                
+                li { padding-bottom: 5px; list-style: none; font-size: 12px;
+                
+                    a { font-weight: normal; }
+
+                }//li
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp2) { display: none; } 
+                
+            }//ul
+            
+            //*** Breakpoints ***
+            @include breakpoint($bp1) { padding-left: 10px; } 
+            
+         }//btmC
+        
+        
+        #btmContactBtn { text-align: center;
+            
+            a { padding: 10px 40px; display: inline-block; background: #4c9d2f; color: #FFF; text-decoration: none; }
+            
+            //*** Breakpoints ***
+            @include breakpoint($bp3) { display: block!important; }
+            
+        }//btmContactBtn
+        
+        
+        #disclaimer { padding: 15px 0px 0px 35px; color: #FFF; font-size: 10px; 
+            
+            .divider { padding: 0px 10px;
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { display: none; }
+                
+            }//divider
+            
+            a { color: #FFF; text-decoration: none;
+            
+                &:hover { color: #CCC; }
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { display: block; }
+                
+            }//a
+            
+            //*** Breakpoints ***
+            @include breakpoint($bp1) { padding: 8px 0px 0px 10px; }
+            @include breakpoint($bp2) { text-align: center; }
+            
+        }//disclaimer
+    
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { width: 100%; padding: 8px 0px 0px 10px; } 
+        @include breakpoint($bp3) { padding-top: 20px; height: 304px; background: url(../../images/footer-bg2.gif) top center; } 
+        
+    }//footer
+
+}//footerC

@@ -1,0 +1,51 @@
+#learnMoreC { background: #b7bebf; padding: 24px 0px; overflow: auto;
+
+    #learnMore { margin: 0px auto; width: 674px;
+        
+        #learnTxtC { float: left; width: 425px; text-align: center; 
+            
+            #learnHdr { color: #FFF; font-size: 31px; line-height: 35px; font-family: "HelveticaNeueLT-Thin";
+            
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { font-size: 21px; line-height: 24px; } 
+                
+            }//learnHdr
+            
+            #learnTxt { color: #FFF; font-size: 14px; }
+            
+            //*** Breakpoints ***
+            @include breakpoint($bp2) { float: none; width: 100%; margin-bottom: 10px; } 
+            
+        }//learnTxtC
+        
+        #leanMoreBtnC { float: left; width: 249px;
+            
+            a { display: inline-block; padding: 16px 50px; margin-left: 10px; background: #4c9d2f; color: #FFF; text-decoration: none;
+            
+                &:hover { background: #0c419a; }
+                
+                .icon-arrow { font-size: 14px; margin-left: 24px; vertical-align: middle;
+                    
+                    @include breakpoint($bp2) { margin-left: 5px; }
+                        
+                }//icon-arrow
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp2) { margin: 0px auto; padding: 14px 0px; display: block; width: 150px; text-align: center; } 
+                
+            }//a
+            
+            //*** Breakpoints ***
+            @include breakpoint($bp2) { float: none; width: 100%; } 
+            
+        }//leanMoreBtnC
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp2) { width: 95%; } 
+        
+    }//learnMore
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp2) { padding: 15px 0px; } 
+    
+}//learnMoreC

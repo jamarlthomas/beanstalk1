@@ -1,0 +1,15 @@
+#utilityNavC { position: absolute; top: 73px; right: 35px;
+
+    ul { margin: 0px; padding: 0px; }
+    li { margin: 0px; padding: 0px; list-style: none; float: left; }
+
+    a { padding-left: 18px; text-decoration: none; color: #0c419a; font: 14px HelveticaNeueLT-Light; 
+        &:hover { color: #50a84a; }
+    }//a
+
+    .icon-search { font-size: 25px; line-height: 20px; }
+
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { display: none; }
+
+}//#utilityNavC

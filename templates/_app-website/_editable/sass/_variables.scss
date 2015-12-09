@@ -14,9 +14,11 @@ $susy: (
 @include border-box-sizing;
 
 //breakpoints
-$bp1: 885px max-width;
-$bp2: 710px max-width;
-$bp3: 560px max-width;
+$bp1: 1270px max-width;
+$bp2: 800px max-width;
+$bp2a: 700px max-width;
+$bp3: 550px max-width;
+$bp3a: 370px max-width;
 
 @mixin gridContainer {
     padding: 0px 10px;

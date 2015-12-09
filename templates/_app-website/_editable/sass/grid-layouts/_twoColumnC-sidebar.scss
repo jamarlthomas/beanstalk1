@@ -1,0 +1,20 @@
+#twoColumnC-sidebar { @include container; margin-top: -70px;
+
+    #lftCol-sidebar { @include span(4 of 12);
+    
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { @include span(full); }
+        
+    }
+    
+    #rtCol-contentArea { @include span(8 of 12 last);
+    
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { @include span(full); }
+    
+    }
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { margin-top: 0px; width: 98%; }
+
+}//twoColumnC-sidebar

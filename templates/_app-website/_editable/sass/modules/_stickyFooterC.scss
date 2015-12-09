@@ -1,0 +1,23 @@
+#stickyFooterC { position: fixed; bottom: 0px; width: 100%; z-index: 30;
+    
+    #stickyFooter { position: relative; margin: 0px auto; height: 0px; width: 1240px;
+        
+        #stickyFoot { position: absolute; top: -38px; right: 0px;
+            
+            a { padding: 10px 30px; margin-left: 10px; display: inline-block; background: #4c9d2f; color: #FFF; text-decoration: none; 
+            
+                &:hover { background: #0c419a; }
+                
+            }//a
+            
+        }//stickyFoot
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { width: 98%; }        
+        
+    }//stickyFooter
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp3) { display: none; }
+    
+}//stickyFooterC
