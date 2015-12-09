@@ -14,7 +14,8 @@ namespace CMS.Mvc.Controllers.Afton
             //var translProvider = RouteValueTranslationProvider.GetProvider();
             //TranslationsUtility.LoadTranslations(translProvider);
 
-            ContentHelper.GetDocByName<PagesMenuItem>(PagesMenuItem.CLASS_NAME, "About");
+            //var a = ContentHelper.GetDocByName<Product>(Product.CLASS_NAME, "Sample-product-1");
+            var b = ContentHelper.GetDocs<Product>(Product.CLASS_NAME);
             return View("~/Views/Afton/Auxiliary/Index.cshtml");
         }
     }
