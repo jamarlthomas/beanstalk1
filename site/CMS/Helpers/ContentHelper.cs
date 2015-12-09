@@ -80,7 +80,7 @@ namespace CMS.Mvc.Helpers
             {
                 case ViewModeEnum.Preview:
                 {
-                    var doc = DocumentHelper.GetDocuments(className)
+                    var doc = DocumentHelper.GetDocuments(className).Published(false)
                         .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                         .FirstOrDefault(predicate);
                     return (T) doc;
@@ -132,6 +132,7 @@ namespace CMS.Mvc.Helpers
                 case ViewModeEnum.Preview:
                 {
                     var treeNodes = DocumentHelper.GetDocuments(className)
+                        .Published(false)
                         .OrderBy("NodeLevel", "NodeOrder", "NodeName");
                     return constraint(treeNodes).Select(it => (TResult) it);
                 }
