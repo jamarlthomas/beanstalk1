@@ -6,10 +6,4 @@
 }
 
 Primary tiles:
-@foreach (var item in Model.PrimaryTiles)
-{
-    <p>
-        @item.Title
-    </p>
-}
-
+@Html.Partial("~/Views/Afton/Home/_primaryTiles.cshtml", Model.PrimaryTiles)

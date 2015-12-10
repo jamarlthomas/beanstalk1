@@ -340,6 +340,10 @@
     <Content Include="Views\Afton\Master\_header.cshtml" />
     <Content Include="Views\Afton\SBU\Index.cshtml" />
     <Content Include="Views\Afton\Master\_footer.cshtml" />
+    <Content Include="Views\Afton\Home\_primaryTiles.cshtml" />
+    <Content Include="Views\Afton\SBU\_FAQs.cshtml" />
+    <Content Include="Views\Afton\SBU\_documents.cshtml" />
+    <Content Include="Views\Afton\SBU\_solutions.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

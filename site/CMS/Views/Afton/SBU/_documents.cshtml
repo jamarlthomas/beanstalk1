@@ -1,0 +1,17 @@
+﻿@using CMS.Mvc.ViewModels.SBU
+@foreach (var item in Model)
+{
+	<p>
+		Document type: @item.Title <br />
+		Documents:
+		@foreach (var document in item.Documents)
+		{
+		<p>
+			@document.Title <br />
+			@document.Abstract <br />
+			@document.Copy <br />
+		</p>
+		}
+		</p>
+}
+<hr />

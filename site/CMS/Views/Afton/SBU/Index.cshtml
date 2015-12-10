@@ -28,37 +28,12 @@ FAQ Description:
 <p>@Html.Raw(Model.FAQDescription)</p>
 <hr />
 FAQs:
-@foreach (var item in Model.FAQs)
-{
-    <p> 
-        @item.Question <br />
-        @item.Answer
-    </p>
-}
-<hr />
+@Html.Partial("~/Views/Afton/SBU/_FAQs.cshtml", Model.FAQs)
+
 Documents:
-@foreach (var item in Model.DocumentTypes)
-{
-    <p>
-        Document type: @item.Title <br />
-        Documents:
-        @foreach (var document in item.Documents)
-        {
-            <p>
-                @document.Title <br />
-                @document.Abstract <br />
-                @document.Copy <br />
-            </p>
-        }
-    </p>
-}
-<hr />
+@Html.Partial("~/Views/Afton/SBU/_documents.cshtml", Model.DocumentTypes)
+
 Solutions:
-@foreach (var item in Model.Solutions)
-{
-    <p>
-        @item.Title <br />
-        @item.Description
-    </p>
-}
+@Html.Partial("~/Views/Afton/SBU/_solutions.cshtml", Model.Solutions)
+
 
