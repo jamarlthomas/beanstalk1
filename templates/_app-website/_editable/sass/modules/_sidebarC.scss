@@ -2,6 +2,9 @@
     
     h2 { position: absolute; position: absolute; top: 50%; left: 15px; right: 15px; transform: translateY(-50%); }
     
+    //*** Breakpoints ***
+    @include breakpoint($bp2) { display: none; }
+    
 }//sidbarHdrC
 
 #sidbarNavC { padding-bottom: 12px;
@@ -20,5 +23,7 @@
     
     }//ul    
     
+    //*** Breakpoints ***
+    @include breakpoint($bp2) { display: none; }
     
 }//sidbarNavC

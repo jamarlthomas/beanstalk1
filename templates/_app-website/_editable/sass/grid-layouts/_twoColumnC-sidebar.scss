@@ -3,14 +3,21 @@
     #lftCol-sidebar { @include span(4 of 12);
     
         //*** Breakpoints ***
-        @include breakpoint($bp1) { @include span(full); }
+        @include breakpoint($bp2) { @include span(full); }
         
     }
     
     #rtCol-contentArea { @include span(8 of 12 last);
     
+        h1 { 
+            
+            //*** Breakpoints ***
+            @include breakpoint($bp3) { font-size: 30px; text-align: center; }
+            
+        }//h1
+        
         //*** Breakpoints ***
-        @include breakpoint($bp1) { @include span(full); }
+        @include breakpoint($bp2) { @include span(full); }
     
     }
     
