@@ -2,6 +2,7 @@
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
+using CMS.Mvc.Helpers;
 using CMS.Mvc.ViewModels.Master;
 using System.Web.Mvc;
 using System.Linq;
@@ -15,7 +16,6 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly IMegaMenuThumbnailedItemProvider _megaMenuThumbnailedItemProvider;
         private readonly IMegaMenuLinkItemProvider _megaMenuLinkItemProvider;
         private readonly ISolutionBusinessUnitProvider _solutionBusinessUnitProvider;
-        private readonly IFooterNavCategoryProvider _footerNavCategoryProvider;
         private readonly IFooterNavItemProvider _footerNavItemProvider;
 
         public MasterController(IContentMenuItemProvider contentMenuItemProvider,
@@ -23,7 +23,6 @@ namespace CMS.Mvc.Controllers.Afton
             IMegaMenuThumbnailedItemProvider megaMenuThumbnailedItemProvider,
             IMegaMenuLinkItemProvider megaMenuLinkItemProvider,
             ISolutionBusinessUnitProvider solutionBusinessUnitProvider,
-            IFooterNavCategoryProvider footerNavCategoryProvider,
             IFooterNavItemProvider footerNavItemProvider)
         {
             _contentMenuItemProvider = contentMenuItemProvider;
@@ -31,7 +30,6 @@ namespace CMS.Mvc.Controllers.Afton
             _megaMenuThumbnailedItemProvider = megaMenuThumbnailedItemProvider;
             _megaMenuLinkItemProvider = megaMenuLinkItemProvider;
             _solutionBusinessUnitProvider = solutionBusinessUnitProvider;
-            _footerNavCategoryProvider = footerNavCategoryProvider;
             _footerNavItemProvider = footerNavItemProvider;
         }
 
@@ -42,7 +40,6 @@ namespace CMS.Mvc.Controllers.Afton
             _megaMenuThumbnailedItemProvider = new MegaMenuThumbnailedItemProvider();
             _megaMenuLinkItemProvider = new MegaMenuLinkItemProvider();
             _solutionBusinessUnitProvider = new SolutionBusinessUnitProvider();
-            _footerNavCategoryProvider = new FooterNavCategoryProvider();
             _footerNavItemProvider = new FooterNavItemProvider();
         }
 
@@ -50,7 +47,7 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Footer()
         {
             var footer = new FooterViewModel();
-            footer.FooterNavCategories = MapData<FooterNavCategory, FooterNavCategoryViewModel>(_footerNavCategoryProvider.GetFooterNavCategoryItems());
+			footer.FooterNavCategories = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems());
             foreach (var category in footer.FooterNavCategories)
             {
                 category.FooterNavItems = MapData<FooterNavItem, FooterNavItemViewModel>(_footerNavItemProvider.GetFooterNavItems(category.Title));
@@ -69,12 +66,12 @@ namespace CMS.Mvc.Controllers.Afton
                 if (solutionLink != null)
                 {
                     contentMenuItem.SolutionsLink = MapData<MegaMenuLinkItem, MegaMenuLinkItemViewModel>(solutionLink);
-                    contentMenuItem.SolutionsLink.Solutions = MapData<SolutionBusinessUnit, MegaMenuSolutionBusinessUnitViewModel>(_solutionBusinessUnitProvider.GetSolutionBusinessUnits(contentMenuItem.Title));
+					contentMenuItem.SolutionsLink.Solutions = MapData<SolutionBusinessUnit, MegaMenuSolutionBusinessUnitViewModel>(_solutionBusinessUnitProvider.GetSolutionBusinessUnits(contentMenuItem.SolutionsLink.Title));
                 }
             }
             return PartialView("~/Views/Afton/Master/_header.cshtml", new MasterViewModel
             {
-                SelectedCulture = CultureInfo.CurrentCulture,
+                SelectedCulture = CultureHelper.GetCultureDisplayName(CultureInfo.CurrentCulture),
                 MainNavList = mainNavList,
                 UtilityNavList = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems())
             });
