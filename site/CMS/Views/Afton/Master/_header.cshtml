@@ -1,241 +1,138 @@
 ﻿@using CMS.Mvc.ViewModels.Master
+@using System.Linq
 @model MasterViewModel
-<div id="topHeaderC">
-    <div id="topHeader">
-        <header>
-            <a href="#"><img src=@Url.Content("~/images/logo.gif") id="logoC" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions"></a><a href="#" id="mobileBtn" style="display: none;"><img src=@Url.Content("~/images/mobileBtn.gif")></a>
-            <div id="languageC">
-                <ul>
-                    <li>
-                        <a href=@Url.Content(string.Format("?lang={0}", @Model.SelectedCulture.Name)) id="selLang" data-lang="langEnglish">@Model.SelectedCulture.NativeName.Split(" ".ToCharArray()).FirstOrDefault()</a>
-                        <ul id="langDropDown" style="display: none;">
-                            <li id="langEnglish1"><a href=@Url.Content("?lang=en-US")>English</a></li>
-                            <li id="langChinese"><a href=@Url.Content("?lang=zh-CN")>简体中文</a></li>
-                            <li id="langDeutsch"><a href=@Url.Content("?lang=de-DE")>Deutsch</a></li>
-                            <li id="langJapanese"><a href="http://translate.google.com/translate?u=http%3A%2F%2Fafton-test.azurewebsites.net%2Ftemplates%2Findex.html&amp;hl=en&amp;langpair=auto|ja&amp;tbb=1&amp;ie=UTF-8">日本語</a></li>
-                            <li id="langRussian"><a href=@Url.Content("?lang=ru-RU")>Русский</a></li>
-                            <li id="langSpanish"><a href=@Url.Content("?lang=es-ES")>Español</a></li>
-                            <li id="langPortugues"><a href=@Url.Content("?lang=pt-PT")>Português</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div id="utilityNavC">
-                <ul>
-                    @foreach (var item in Model.UtilityNavList)
-                    {
-                        <li>
-
-                            <a href="@Url.Content("~/" + @item.Reference)">@item.Title</a>
-                        </li>
-                    }
-                    <li><a href="#"><img src=@Url.Content("~/images/b-search.gif")></a></li>
-                </ul>
-            </div>
-            <div id="mainNavC">
-                <ul>
-                    @foreach (var item in Model.MainNavList)
-                    {
-                        <li><a href="#">@item.Title</a></li>
-                    }
-                </ul>
-            </div>
-        </header>
-    </div>
-    <div id="megaMenuC">
-        <!-- DriveLine Mega Menu -->
-        <div id="driveline" style="display: none;" class="megaMenu">
-            <div class="lftCol">
-                <a href="#" class="photoLink">
-                    <img src=@Url.Content("~/images/sample-pic-megamanu1.jpg")>
-                    ><div class="photoLinkRt">
-                        <div class="mHeader">Driveline Products</div>
-                        <div class="mTxt">Keeping even more of your big, dirty, dusty machines working smoothly and more efficiently for longer operating. </div>
-                    </div>
-                </a><a href="#" class="photoLink">
-                        <img src=@Url.Content("~/images/sample-pic-megamanu2.jpg")>
-                    ><div class="photoLinkRt">
-                        <div class="mHeader">Driveline Insights & Resources</div>
-                        <div class="mTxt">Keeping even more of your big, dirty, dusty machines working smoothly and more efficiently for longer operating.</div>
-                    </div>
-                </a>
-                <input type="text" id="searchBox" placeholder="Search Driveline Additives">
-            </div>
-            <div class="rtCol">
-                <div class="rtColHdr">Driveline Additive Solutions</div>
-                <div class="rtColLinksC">
-                    <a href="#" class="rtColLinks">
-                        <div class="linkHdr">Automatic Transmissions</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Continuously Variable Transmission (CVT)</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Dual Clutch Transmission (DCT)</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Automotive Gear</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Power Steering</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Heavy Machinery</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a>
-                </div>
-            </div>
-        </div><!-- Engline Oil Additives Mega Menu -->
-        <div id="engine" style="display: none;" class="megaMenu">
-            <div class="lftCol">
-                <a href="#" class="photoLink">
-                    <img src=@Url.Content("~/images/sample-pic-megamanu1a.jpg")>
-                    ><div class="photoLinkRt">
-                        <div class="mHeader">Engine Oil Products</div>
-                        <div class="mTxt">Keeping even more of your big, dirty, dusty machines working smoothly and more efficiently for longer operating. </div>
-                    </div>
-                </a><a href="#" class="photoLink">
-                        <img src=@Url.Content("~/images/sample-pic-megamanu2a.jpg")>
-                    ><div class="photoLinkRt">
-                        <div class="mHeader">Engine Oil Insights & Resources</div>
-                        <div class="mTxt">Keeping even more of your big, dirty, dusty machines working smoothly and more efficiently for longer operating.</div>
-                    </div>
-                </a>
-                <input type="text" id="searchBox" placeholder="Search Engine Oil Additives">
-            </div>
-            <div class="rtCol">
-                <div class="rtColHdr">Engine Oil Additive Solutions</div>
-                <div class="rtColLinksC">
-                    <a href="#" class="rtColLinks">
-                        <div class="linkHdr">Diesel Oil</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Gasoline Oil</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a>
-                </div>
-            </div>
-        </div><!-- Fuel Additives Mega Menu -->
-        <div id="fuel" style="display: none;" class="megaMenu">
-            <div class="lftCol">
-                <a href="#" class="photoLink">
-                    <img src=@Url.Content("~/images/sample-pic-megamanu1.jpg")>
-                    <div class="photoLinkRt">
-                        <div class="mHeader">Fuel Products</div>
-                        <div class="mTxt">Keeping even more of your big, dirty, dusty machines working smoothly and more efficiently for longer operating. </div>
-                    </div>
-                </a><a href="#" class="photoLink">
-                        <img src=@Url.Content("~/images/sample-pic-megamanu2.jpg")>
-                    <div class="photoLinkRt">
-                        <div class="mHeader">Fuel Insights & Resources</div>
-                        <div class="mTxt">Keeping even more of your big, dirty, dusty machines working smoothly and more efficiently for longer operating.</div>
-                    </div>
-                </a>
-                <input type="text" id="searchBox" placeholder="Fuel Additives">
-            </div>
-            <div class="rtCol">
-                <div class="rtColHdr">Fuel Additive Solutions</div>
-                <div class="rtColLinksC">
-                    <a href="#" class="rtColLinks">
-                        <div class="linkHdr">Diesel Additives</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Gasoline Additives</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Octaine Improver</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Alternative Fuels</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Home Heating Fuel</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a>
-                </div>
-            </div>
-        </div><!-- Lubricant Additives Mega Menu -->
-        <div id="lubricant" style="display: none;" class="megaMenu">
-            <div class="lftCol">
-                <a href="#" class="photoLink">
-                    <img src=@Url.Content("~/images/sample-pic-megamanu1a.jpg")>
-                    ><div class="photoLinkRt">
-                        <div class="mHeader">Lubricant Products</div>
-                        <div class="mTxt">Keeping even more of your big, dirty, dusty machines working smoothly and more efficiently for longer operating. </div>
-                    </div>
-                </a><a href="#" class="photoLink">
-                        <img src=@Url.Content("~/images/sample-pic-megamanu2a.jpg")>
-                    <div class="photoLinkRt">
-                        <div class="mHeader">Lubricant Insights & Resources</div>
-                        <div class="mTxt">Keeping even more of your big, dirty, dusty machines working smoothly and more efficiently for longer operating.</div>
-                    </div>
-                </a>
-                <input type="text" id="searchBox" placeholder="Search Engine Oil Additives">
-            </div>
-            <div class="rtCol">
-                <div class="rtColHdr">Lubricant Additive Solutions</div>
-                <div class="rtColLinksC">
-                    <a href="#" class="rtColLinks">
-                        <div class="linkHdr">Couplers</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Detergents & Corrosion Inhibritors</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Extreme Pressure Agents & Antiewear Agents</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Foam Inhibitors</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Friction Modifiers</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Pour Point Depressants</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Seal Swell Additives</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Tackiness Additives</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a><a href="#" class="rtColLinks">
-                        <div class="linkHdr">Thickeners & Viscosity Index Improvers</div>
-                        <div class="linkTxt">Keeping even more of your big, dirty, dusty machines working smoothly.</div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+<div id="mobileNavC1">
+	<div id="mobileNavC">
+		<div id="menuHdrC">
+			<div id="menuHdr">Menu</div>
+			<div id="mobileNavStatus" style="display: none;"></div><a href="#" id="menuclose"><img src="images/menuClose.gif"></a>
+		</div>
+		<div id="mainNavC">
+			<ul>
+				@foreach (var item in Model.MainNavList)
+				{
+					<li>
+						<a href="@Url.Content("~/" + @item.Reference)">@item.Title</a>
+						<ul>
+							@foreach (var thumbnailedItem in item.ThumbnailedMenuItems)
+							{
+								<li><a href="#">@thumbnailedItem.Title</a></li>
+							}
+							@if (item.SolutionsLink != null)
+							{
+								foreach (var solution in item.SolutionsLink.Solutions)
+								{
+									<li><a href="#">@solution.Title</a></li>
+								}
+							}
+						</ul>
+					</li>
+				}
+			</ul>
+		</div>
+		<div id="utilC">
+			<ul>
+				@foreach (var item in Model.UtilityNavList)
+				{
+					<li><a href="@Url.Content("~/" + @item.Reference)">@item.Title</a></li>
+				}
+			</ul>
+		</div>
+	</div>
 </div>
-
-@foreach (var item in Model.UtilityNavList)
-{
-    <p><a href="@Url.Content("~/" + @item.Reference)">@item.Title</a></p>
-}
-<hr />
-@foreach (var item in Model.MainNavList)
-{
-    <p>
-        <a href="@Url.Content("~/" + @item.Reference)">@item.Title</a>
-        @foreach (var thumbnailedItem in item.ThumbnailedMenuItems)
-        {
-            @thumbnailedItem.Title <br />
-            @thumbnailedItem.Description
-        }
-        @if (item.SolutionsLink != null)
-	    {
-             <p>
-                 <a href="@Url.Content("~/" + @item.SolutionsLink.Reference)">@item.SolutionsLink.Title</a> <br />
-                 @foreach (var solution in item.SolutionsLink.Solutions)
-                 {
-                    @solution.Title <br />
-                    @solution.Description <br /><br /> 
-                 }
-             </p>  
-	    }
-    </p>
-}
-<hr />
-
-
+<div id="topHeaderC">
+	<div id="searchC">
+		<div id="search">
+			<input type="text" placeholder="Search Term...">
+			<div id="searchDir">Press Enter to Search</div>
+			<div id="closeSearch"><a href="#"><img src="images/searchClose.png"></a></div>
+		</div>
+	</div>
+	<div id="topHeader">
+		<header>
+			<a href="#"><img src="images/logo.gif" id="dLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions"><img src="images/logo-mobile.gif" id="mLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions" style="display: none;"></a><a href="#" id="mobileBtn" style="display: none;"><img src="images/mobileBtn.gif"></a><a href="#" id="mobileSearch" style="display: none;"><span class="icon-search"></span></a>
+			<div id="languageC">
+				<ul>
+					<li>
+						<a href="#" id="selLang" data-lang="@Model.SelectedCulture">@Model.SelectedCulture</a><span class="icon-language"></span>
+						<ul id="langDropDown" style="display: none;">
+							<li id="English"><a href="#">English</a></li>
+							<li id="简体中文"><a href="#">简体中文</a></li>
+							<li id="German"><a href="#">German</a></li>
+							<li id="日本語"><a href="#">日本語</a></li>
+							<li id="Русский"><a href="#">Русский</a></li>
+							<li id="Español"><a href="#">Español</a></li>
+							<li id="Português"><a href="#">Português</a></li>
+							<li id="French"><a href="#">French</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div id="utilityNavC">
+				<ul>
+					@foreach (var item in Model.UtilityNavList)
+					{
+						<li><a href="@Url.Content("~/" + @item.Reference)">@item.Title</a></li>
+					}
+					<li><a href="#"><span class="icon-search"></span></a></li>
+				</ul>
+			</div>
+			<div id="mainNavC">
+				<ul>
+					@foreach (var item in Model.MainNavList)
+					{
+						if (item.SolutionsLink != null)
+						{
+							<li><a href="@Url.Content("~/" + @item.Reference)" data-mm="@item.Title.Replace(" ", string.Empty)">@item.Title</a></li>
+						}
+						else
+						{
+							<li><a href="@Url.Content("~/" + @item.Reference)">@item.Title</a></li>
+						}
+					}
+				</ul>
+			</div>
+		</header>
+	</div>
+	<div id="stickySBU-navC" style="display: none;"></div>
+	<div id="megaMenuC" style="opacity: 0;">
+		<!-- DriveLine Mega Menu -->
+		@foreach (var item in Model.MainNavList.Where(w => w.SolutionsLink != null))
+		{
+			<div id="@item.Title.Replace(" ", string.Empty)" class="megaMenu">
+				<div class="lftCol">
+					@foreach (var thumbnailedItem in item.ThumbnailedMenuItems)
+					{
+						<a href="#" class="photoLink">
+							<img src="@thumbnailedItem.Image">
+							<div class="photoLinkRt">
+								<div class="mHeader">@thumbnailedItem.Title</div>
+								<div class="mTxt">@thumbnailedItem.Description</div>
+							</div>
+						</a>
+					}
+					<input type="text" id="searchBox" placeholder="Search Additives">
+				</div>
+				<div class="rtCol">
+					<div class="rtColHdr">@item.SolutionsLink.Title</div>
+					<div class="rtColLinksC">
+						@foreach (var solution in item.SolutionsLink.Solutions)
+						{
+							<a href="#" class="rtColLinks">
+								<div class="txtC">
+									<div class="linkHdr">@solution.Title</div>
+									<div class="linkTxt">@solution.Description</div>
+								</div>
+							</a>
+						}
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</div>
+<div id="stickyFooterC">
+	<div id="stickyFooter">
+		<div id="stickyFoot"><a href="#">Contact</a></div>
+	</div>
+</div>

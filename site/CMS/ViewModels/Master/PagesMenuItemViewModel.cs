@@ -9,5 +9,6 @@ namespace CMS.Mvc.ViewModels.Master
     {
         public string Title { get; set; }
         public string Reference { get; set; }
+		public List<FooterNavItemViewModel> FooterNavItems { get; set; }
     }
 }

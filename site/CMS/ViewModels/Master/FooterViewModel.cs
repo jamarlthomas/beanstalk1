@@ -7,6 +7,6 @@ namespace CMS.Mvc.ViewModels.Master
 {
     public class FooterViewModel
     {
-        public List<FooterNavCategoryViewModel> FooterNavCategories { get; set; }
+		public List<PagesMenuItemViewModel> FooterNavCategories { get; set; }
     }
 }
