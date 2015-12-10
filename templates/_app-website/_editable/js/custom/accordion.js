@@ -5,12 +5,13 @@ $(document).ready(function() {
         e.preventDefault();
         
         //open item
-        if(!$(this).hasClass("accordItemOpen")){
+        if(!$(this).parent().hasClass("accordItemOpen")){
             
-            $(this).before().attr("content","")
+            
+            //$(this).before().attr("content","")
             
             //get height of div that's open
-            var linkHeight = $(".accordC .accordItemOpen").find("span").height();
+            var linkHeight = $(".accordC .accordItemOpen a").height();
             
             //fade out any open text
             $(".accordC .accordItemOpen").find(".reveal").fadeOut(100);
@@ -18,45 +19,49 @@ $(document).ready(function() {
             //close container for reveal
             $(".accordC .accordItemOpen").animate({
                 height: linkHeight
-            }, 50,function(){
+            }, 300,function(){
                 
                 setTimeout(function(){
                     $(this).removeAttr("style"); 
                 }, 100);
                 
             });
-            
+                        
             //remove from open item class
             $(".accordC .accordItemOpen").removeClass("accordItemOpen"); 
             
+            
+            
             //get height of div
-            var linkHeight = $(this).actual('height');
-            var revealHeight = $(this).find(".reveal").actual('height');
-            var accordHeight = linkHeight + revealHeight + 10
-
+            var linkHeight = $(this).height();
+            var revealHeight = $(this).parent().find(".reveal").actual('height');
+            var accordHeight = linkHeight + revealHeight
+            //var accordHeight = $(this).parent().actual('height') + 10;
+            
+            
             //open container for reveal
-            $(this).animate({
+            $(this).parent().animate({
                 height: accordHeight
-            }, 50);
+            }, 400);
 
             //fade in text
-            $(this).find(".reveal").delay(300).fadeIn(800);
+            $(this).parent().find(".reveal").delay(400).fadeIn(800);
 
             //add class
-            $(this).addClass("accordItemOpen");
+            $(this).parent().addClass("accordItemOpen");
             
         }else {
             
             //get height of div
-            var linkHeight = $(this).find("span").height();
+            var linkHeight = $(this).height();
             
             //fade out in text
-            $(this).find(".reveal").fadeOut(100);
+            $(this).parent().find(".reveal").fadeOut(100);
             
             //close container for reveal
-            $(this).animate({
+            $(this).parent().animate({
                 height: linkHeight
-            }, 50,function(){
+            }, 300,function(){
                 
                 setTimeout(function(){
                     $(this).removeAttr("style"); 
@@ -65,7 +70,7 @@ $(document).ready(function() {
             });
                
             //remove class
-            $(this).removeClass("accordItemOpen");
+            $(this).parent().removeClass("accordItemOpen");
             
         }
         

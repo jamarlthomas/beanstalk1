@@ -4,8 +4,13 @@
     
     #txt { padding-bottom: 10px; }
     
-    .txtBox { float: right; padding: 10px; background: #595959; color: #FFF; border: 0px; } 
+    .txtBox { float: left; width: 60%; padding: 10px; background: #595959; color: #FFF; border: 0px; }
     
-    .submitBtn { float: right; padding: 10px 30px; background: #4c9d2f; color: #FFF; border: 0px; }
+    ::-webkit-input-placeholder { color: #FFF; }
+    :-moz-placeholder { color: #FFF; }
+    ::-moz-placeholder { color: #FFF; }
+    :-ms-input-placeholder { color: #FFF; }
+    
+    .submitBtn { padding: 10px 7%; background: #4c9d2f; color: #FFF; border: 0px; }
     
 }//stayInformedC

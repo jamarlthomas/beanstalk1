@@ -144,14 +144,18 @@ $( document ).ready(function() {
       //click (for touch)
       $(".sbuLandingDropNav").click(function() {
         
-        //on click decide wether to open or close language
-        if(ddStatus == "closed"){
-            $(".DropNav").fadeIn(500);
-            ddStatus = "open"
-        }else {
-            $(".DropNav").fadeOut(100);
-            ddStatus = "closed"
-        }
+        if(isMobile.any()) {
+            
+            //on click decide wether to open or close language
+            if(ddStatus == "closed"){
+                $(".DropNav").fadeIn(500);
+                ddStatus = "open"
+            }else {
+                $(".DropNav").fadeOut(100);
+                ddStatus = "closed"
+            }
+            
+        }//mobile
         
       });
       
