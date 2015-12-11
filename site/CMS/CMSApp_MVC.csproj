@@ -162,6 +162,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
+    <Compile Include="Controllers\Afton\SolutionsController.cs" />
     <Compile Include="Controllers\Afton\SBUController.cs" />
     <Compile Include="Controllers\Afton\HomeController.cs" />
     <Compile Include="Controllers\Afton\MasterController.cs" />
@@ -344,6 +345,7 @@
     <Content Include="Views\Afton\SBU\_FAQs.cshtml" />
     <Content Include="Views\Afton\SBU\_documents.cshtml" />
     <Content Include="Views\Afton\SBU\_solutions.cshtml" />
+    <Content Include="Views\Afton\Home\_heroContent.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

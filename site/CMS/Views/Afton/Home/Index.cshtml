@@ -5,5 +5,13 @@
     Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
 
-Primary tiles:
-@Html.Partial("~/Views/Afton/Home/_primaryTiles.cshtml", Model.PrimaryTiles)
+<div id="contentAreaC">
+	@Html.Partial("~/Views/Afton/Home/_heroContent.cshtml", Model.HeroContentList)
+
+	Primary tiles:
+	@Html.Partial("~/Views/Afton/Home/_primaryTiles.cshtml", Model.PrimaryTiles)
+</div>
+
+
+
+
