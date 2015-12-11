@@ -13,7 +13,7 @@
     }//breadCrumbs
     
     //*** Breakpoints ***
-    @include breakpoint($bp1) { margin: 0px -1%; }
+    @include breakpoint($bp2) { margin: 0px -1%; }
     @include breakpoint($bp3) { display: none; }
 
 }//breadCrumbsC

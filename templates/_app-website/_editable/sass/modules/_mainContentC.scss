@@ -1,0 +1,28 @@
+#mainContentC { padding: 20px 0px;
+    
+    h2 { padding-bottom: 10px; }
+    
+    hr { margin: 20px 0px; border: 0px; border-bottom: 1px solid #595959; }
+    
+    ul { margin: 0px; padding: 0px;
+        
+        li { margin: 0px 0px 0px 18px; padding: 0px; }
+    
+    }//ul
+    
+    img.rtAlignImg { float: right; margin: 0px 0px 10px 10px; width: 50%;
+
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { width: 40%; }
+    
+    }//rtAlignImg
+    
+    
+    img.inContent { width: 395px; 
+    
+        //*** Breakpoints ***
+        @include breakpoint($bp2) { width: 100%; }  
+        
+    }//img.inContent
+    
+}//mainContentC

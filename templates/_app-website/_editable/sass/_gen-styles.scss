@@ -19,14 +19,6 @@ hr { border: 0px; border-top: 1px solid #000; }
 p { margin-top: 0px; }
 
 
-.rtAlignImg { float: right; margin: 0px 0px 10px 10px; width: 50%;
-
-    //*** Breakpoints ***
-    @include breakpoint($bp1) { width: 40%; }
-    
-}//rtAlignImg
-
-
 //Dotted background
 .bgPattern { background: url(../../images/bg-dots.gif); }
 
