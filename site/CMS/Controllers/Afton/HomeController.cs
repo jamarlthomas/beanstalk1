@@ -35,7 +35,7 @@ namespace CMS.Mvc.Controllers.Afton
         {
             var model = new HomeViewModel
             {
-                HeroContentList = MapData<HeroContent, HeroContentViewModel>(_heroContentProvider.GetHeroContentItems()),
+                HeroContentList = MapData<HeroContent, HeroContentViewModel>(_heroContentProvider.GetHeroContentItems()).Where(w => !string.IsNullOrEmpty(w.Image)).ToList(),
                 PrimaryTiles = new List<PrimaryTileViewModel>()
             };
             var home = _homeProvider.GetHomeItems().First();

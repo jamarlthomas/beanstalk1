@@ -104,7 +104,7 @@
 					@foreach (var thumbnailedItem in item.ThumbnailedMenuItems)
 					{
 						<a href="#" class="photoLink">
-							<img src="@thumbnailedItem.Image">
+							<img src="@Url.Content(thumbnailedItem.Image ?? "")">
 							<div class="photoLinkRt">
 								<div class="mHeader">@thumbnailedItem.Title</div>
 								<div class="mTxt">@thumbnailedItem.Description</div>
