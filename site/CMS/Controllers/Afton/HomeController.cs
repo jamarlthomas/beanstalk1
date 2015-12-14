@@ -7,6 +7,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using CMS.DocumentEngine;
+using CMS.Mvc.Helpers;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -41,18 +42,29 @@ namespace CMS.Mvc.Controllers.Afton
             var home = _homeProvider.GetHomeItems().First();
             foreach (var primaryTile in _primaryTilesProvider.GetPrimaryTiles(home.ManagedBlocks.Split(';').Select(s => Guid.Parse(s)).ToList(), home.Site.DisplayName))
             {
+				PrimaryTileViewModel tile = null;
                 if (primaryTile is Document)
                 {
-                    model.PrimaryTiles.Add(MapData<Document, PrimaryTileViewModel>(primaryTile as Document));
+					tile = MapData<Document, PrimaryTileViewModel>(primaryTile as Document);
+					tile.TypeName = "Document";
                 }
                 else if (primaryTile is CustomNews)
                 {
-                    model.PrimaryTiles.Add(MapData<CustomNews, PrimaryTileViewModel>(primaryTile as CustomNews));
+					tile = MapData<CustomNews, PrimaryTileViewModel>(primaryTile as CustomNews);
+					tile.TypeName = "News";
                 }
                 else if (primaryTile is Event)
                 {
-                    model.PrimaryTiles.Add(MapData<Event, PrimaryTileViewModel>(primaryTile as Event));
+					tile = MapData<Event, PrimaryTileViewModel>(primaryTile as Event);
+					var separatedDescription = DivideHelper.SeparateText(tile.Description);
+					tile.HeaderDescription = separatedDescription[0];
+					tile.Description = separatedDescription[1];
+					tile.TypeName = "Events";
                 }
+				if (tile != null)
+				{
+					model.PrimaryTiles.Add(tile);
+				}
             }
             return View("~/Views/Afton/Home/Index.cshtml", model);
         }
