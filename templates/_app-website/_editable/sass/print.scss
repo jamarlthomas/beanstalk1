@@ -1,0 +1,16 @@
+@import '_variables';
+
+body { padding-top: 0px; }
+#topHeaderC { position: relative; }
+#searchC { display: none; }
+#topHeaderC #topHeader header { min-height: 80px; width: 100%; }
+#languageC { display: none; }
+#utilityNavC { display: none; }
+#mainNavC { display: none; }
+.cardsC .cards a { padding-bottom: 180px;
+    @include gallery(6 of 12 break);
+}
+.headerImgC { display: none; }
+.cards2C .cards2 a { padding-bottom: 180px;
+    @include gallery(4 of 12 break);
+}

@@ -5,7 +5,7 @@
 	<div id="mobileNavC">
 		<div id="menuHdrC">
 			<div id="menuHdr">Menu</div>
-			<div id="mobileNavStatus" style="display: none;"></div><a href="#" id="menuclose"><img src="images/menuClose.gif"></a>
+			<div id="mobileNavStatus" style="display: none;"></div><a href="#" id="menuclose"><img src="@Url.Content("~/images/menuClose.gif")"></a>
 		</div>
 		<div id="mainNavC">
 			<ul>
@@ -45,12 +45,12 @@
 		<div id="search">
 			<input type="text" placeholder="Search Term...">
 			<div id="searchDir">Press Enter to Search</div>
-			<div id="closeSearch"><a href="#"><img src="images/searchClose.png"></a></div>
+			<div id="closeSearch"><a href="#"><img src="@Url.Content("~/images/searchClose.png")"></a></div>
 		</div>
 	</div>
 	<div id="topHeader">
 		<header>
-			<a href="#"><img src="images/logo.gif" id="dLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions"><img src="images/logo-mobile.gif" id="mLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions" style="display: none;"></a><a href="#" id="mobileBtn" style="display: none;"><img src="images/mobileBtn.gif"></a><a href="#" id="mobileSearch" style="display: none;"><span class="icon-search"></span></a>
+			<a href="#"><img src="@Url.Content("~/images/logo.gif")" id="dLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions"><img src="@Url.Content("~/images/logo-mobile.gif")" id="mLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions" style="display: none;"></a><a href="#" id="mobileBtn" style="display: none;"><img src="@Url.Content("~/images/mobileBtn.gif")"></a><a href="#" id="mobileSearch" style="display: none;"><span class="icon-search"></span></a>
 			<div id="languageC">
 				<ul>
 					<li>
@@ -104,7 +104,7 @@
 					@foreach (var thumbnailedItem in item.ThumbnailedMenuItems)
 					{
 						<a href="#" class="photoLink">
-							<img src="@thumbnailedItem.Image">
+							<img src="@Url.Content(thumbnailedItem.Image ?? "")">
 							<div class="photoLinkRt">
 								<div class="mHeader">@thumbnailedItem.Title</div>
 								<div class="mTxt">@thumbnailedItem.Description</div>

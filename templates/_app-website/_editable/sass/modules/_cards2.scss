@@ -1,0 +1,43 @@
+.cards2C {
+
+    .cards2 { @include gridContainer; padding-top: 25px; padding-bottom: 15px;
+   
+        a { position: relative; @include gallery(3 of 12); margin-bottom: gutter(); display: block; box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.10); background: #FFF; text-decoration: none; overflow: hidden;
+            
+            .cardBtnIndicator { position: absolute; bottom: 10px; right: 10px; z-index: 11;
+                
+                img { width: 23px; }
+                
+            }//cardBtnIndicator
+            
+            img { display: block; width: 100%;  transition: 0.5s; }
+            
+            .textAreaC { padding: 10px 20px; height: 155px; overflow: hidden;
+            
+                .cardTitle { padding-bottom: 15px; font-size: 14px; color: #0c419a; }
+                .cardHdr { padding-bottom: 0px; font-size: 20px; color: #0c419a; }
+                .cardSubHdr { padding-bottom: 3px; font-size: 14px; color: #595959; }
+                .cardTxt { font-size: 12px; line-height: 15px; color: #595959; }
+                
+            }//textAreaC
+            
+            //*** Breakpoints ***
+            @include breakpoint($bp1) { @include gallery(6 of 12); } 
+            @include breakpoint($bp3) { 
+                
+                @include gallery(12 of 12 break);
+                
+                &:nth-child(n) {
+                    clear: both;
+                }
+            }//breakpoint($bp3
+
+            
+        }//a
+        
+        a:hover img { transform: scale(1.02,1.02); }
+
+        
+    }//cards2
+    
+}//cards2C

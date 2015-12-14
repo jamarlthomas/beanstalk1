@@ -3,7 +3,7 @@
 <div id="footerC">
 	<footer>
 		<div id="btmC">
-			<div id="btmLogoC"><img src="images/btm-logo.png"></div>
+			<div id="btmLogoC"><img src="@Url.Content("~/images/btm-logo.png")"></div>
 			@foreach (var item in Model.FooterNavCategories)
 			{
 				<div class="btmNavCol">
@@ -12,7 +12,6 @@
 						@foreach (var footerNavItems in item.FooterNavItems)
 						{
 							<li><a href="@Url.Content("~/" + @footerNavItems.Reference)">@footerNavItems.Title</a></li>
-							
 						}
 					</ul>
 				</div>

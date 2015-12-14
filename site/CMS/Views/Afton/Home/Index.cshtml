@@ -5,11 +5,13 @@
     Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
 
-Primary tiles:
-@foreach (var item in Model.PrimaryTiles)
-{
-    <p>
-        @item.Title
-    </p>
-}
+<div id="contentAreaC">
+	@Html.Partial("~/Views/Afton/Home/_heroContent.cshtml", Model.HeroContentList)
+
+	Primary tiles:
+	@Html.Partial("~/Views/Afton/Home/_primaryTiles.cshtml", Model.PrimaryTiles)
+</div>
+
+
+
 

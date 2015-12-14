@@ -11,6 +11,7 @@ gulp.task('browsersync', ['build'], function() {
             baseDir: "./" + config.buildFiles + "/"
         },
 		port: 9999,
+		reloadDelay: 1000,
 		files: [
 			
 			config.buildFiles + '/**/*',

@@ -1,4 +1,4 @@
-.accordC { margin: 0px; padding: 0px;
+.accordC { margin: 0px; padding: 0px 0px 40px 0px;
     
     li{ position: relative; margin: 0px 0px 20px 30px; padding: 0px; list-style: none;
         
@@ -20,4 +20,5 @@
     li:last-child { margin-bottom: 0px }
     
 }//accordC
+
 .accordC .accordItemOpen .icon { background: url(../../images/accordMinus.png) no-repeat; }

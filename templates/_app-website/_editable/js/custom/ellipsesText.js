@@ -38,4 +38,11 @@ $(document).ready(function() {
       watch: 'window'
     });
     
+    
+    //ellipses for cards v2
+    $(".cards2C .cards2 .textAreaC").dotdotdot({
+      ellipsis	: '... ',
+      wrap		: 'word',
+      watch: 'window'
+    });
 });
