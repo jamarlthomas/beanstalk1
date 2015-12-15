@@ -21,7 +21,7 @@
     img.inContent { width: 395px; 
     
         //*** Breakpoints ***
-        @include breakpoint($bp2) { width: 100%; }  
+        @include breakpoint($bp3) { width: 100%; }  
         
     }//img.inContent
     

@@ -36,8 +36,9 @@
           
           {card_Animations: "assets-layout/js/custom/cards.min.js"},
           {sbu_Landing_Nav: "assets-layout/js/custom/sbuLandingDropDown.min.js"},
-          {sbu_Landing_Nav: "assets-layout/js/custom/accordion.min.js"},
+          {accordion_Nav: "assets-layout/js/custom/accordion.min.js"},
           {card_Animations: "assets-layout/js/custom/print.min.js"},
+          {language_Document_selector: "assets-layout/js/custom/langDocSel.min.js"},
           
           function(){
               //loadCSS
@@ -388,8 +389,19 @@
               <h1>HiTEC<sup>&reg;</sup> 385: Gear Oil Additive</h1>
               <div id="pTxt">Premium Additive-Designed Lubricants for Use in Automotive Axles and Manual Transmissions</div>
               <div id="pCurrently">Currently available in: <span><a href="#">Asia Pacific</a></span><span><a href="#">EMEAI</a></span><span><a href="#">Latin America</a></span></div>
-              <div id="downloadDocsC"><a class="downloadBtn">Download Product Data Sheet <span class="icon-download"></span></a>
-                <div id="translate-doc">Translation Available: <a href="#">Select Language <span class="icon-arrow"></span></a></div>
+              <div id="downloadDocsC"><a href="#" class="downloadBtn">Download Product Data Sheet <span class="icon-download"></span></a>
+                <div id="translate-doc">Translation Available: <a href="#" id="selDocLang">Select Language <span class="icon-arrow"></span></a>
+                  <ul id="langDocDropDown" style="display: none;">
+                    <li id="langEnglish"><a href="#">English</a></li>
+                    <li id="langChinese"><a href="#">简体中文                                </a></li>
+                    <li id="langGerman"><a href="#">German</a></li>
+                    <li id="langJapanese"><a href="#">日本語</a></li>
+                    <li id="langRussian"><a href="#">Russian</a></li>
+                    <li id="langSpanish"><a href="#">Español</a></li>
+                    <li id="langPortugues"><a href="#">Português</a></li>
+                    <li id="langFrench"><a href="#">French</a></li>
+                  </ul>
+                </div>
               </div>
               <div id="socialC2"><a class="addthis_button_compact"><span class="icon-share"></span></a><a href="#"><span class="icon-print"></span></a></div>
             </div>
@@ -418,7 +430,7 @@
             Shelf Life: Up to 12 months @ 25°C<br>
             <hr>
             <h2>Recommended Dosage</h2><img src="page-images/sample-diagram.gif" class="inContent">
-          </div>
+          </div><a href="#" class="viewAllBtn marginBtm">View All Additive Products</a>
         </div>
         <div id="lftCol-sidebar"><img src="page-images/sidebar-images/sidebar-contact.jpg" class="sidbarImg">
           <div class="sidbarBoxC">
@@ -477,6 +489,93 @@
                   <Um>sundae culles aboritia aut acit volorum eumqui toratemquam.</Um>
                 </div></a></div>
           </div>
+        </div>
+      </div>
+      <div class="bgGray padTopBtm">
+        <div class="fullWidth">
+          <h2>Automotive Gear Products</h2>
+        </div>
+        <div class="cards2C">
+          <div class="cards2"><a href="#">
+              <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div><img src="page-images/cards/sample-cardv2.jpg">
+              <div class="textAreaC">
+                <div class="cardTitle">Driveline Additives</div>
+                <div class="cardHdr">HiTEC® 349</div>
+                <div class="cardSubHdr">Manual Transmissions</div>
+                <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials. </div>
+              </div></a><a href="#">
+              <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div><img src="page-images/cards/sample-cardv2.jpg">
+              <div class="textAreaC">
+                <div class="cardTitle">Driveline Additives</div>
+                <div class="cardHdr">HiTEC® 349</div>
+                <div class="cardSubHdr">Manual Transmissions</div>
+                <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+              </div></a><a href="#">
+              <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div><img src="page-images/cards/sample-cardv2.jpg">
+              <div class="textAreaC">
+                <div class="cardTitle">Driveline Additives</div>
+                <div class="cardHdr">HiTEC® 349</div>
+                <div class="cardSubHdr">Manual Transmissions</div>
+                <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+              </div></a><a href="#">
+              <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div><img src="page-images/cards/sample-cardv2.jpg">
+              <div class="textAreaC">
+                <div class="cardTitle">Driveline Additives</div>
+                <div class="cardHdr">HiTEC® 349</div>
+                <div class="cardSubHdr">Manual Transmissions</div>
+                <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+              </div></a></div>
+        </div>
+        <div class="fullWidth"><a href="#" class="viewAllBtn">View All Automotive Gear Products</a></div>
+      </div>
+      <div class="borders bgPattern padTopBtm">
+        <div class="fullWidth">
+          <h2>Insights & Resources  </h2>
+        </div>
+        <div class="cardsC">
+          <div class="cards"><a href="http://google.com">
+              <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+              <div class="overlayC">
+                <div class="overlay">
+                  <div class="cardTitle">News</div>
+                  <div class="cardHdr">Afton Chemical to exhibit and present at annual international CTI Symposium. </div>
+                </div>
+                <div class="cardDate">March 27, 2015</div>
+              </div>
+              <div style="opacity: 0.0;" class="hoverOverlayC">
+                <div class="hoverOverlay">
+                  <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+                </div>
+                <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+              </div><img src="page-images/cards/sample-card1.jpg"></a><a href="#">
+              <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+              <div class="overlayC">
+                <div class="overlay">
+                  <div class="cardTitle">Events</div>
+                  <div class="cardHdr">Afton Chemical breaks ground for its facility in Singapore.</div>
+                  <div class="cardTxt">Production of the next generation of additive solutions is set to begin in January 2016.</div>
+                </div>
+              </div>
+              <div style="opacity: 0.0;" class="hoverOverlayC">
+                <div class="hoverOverlay">
+                  <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+                </div>
+                <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+              </div><img src="page-images/cards/sample-card2.jpg"></a><a href="#">
+              <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+              <div class="overlayC">
+                <div class="overlay">
+                  <div class="cardTitle">Fact Sheet</div>
+                  <div class="cardHdr">Automatic Transmissions</div>
+                  <div class="cardTxt">Afton Chemical develops and manufacturers petroleum additives that enhances the performance of fuels and lubricating oils in machinery and vehicles.</div>
+                </div>
+              </div>
+              <div style="opacity: 0.0;" class="hoverOverlayC">
+                <div class="hoverOverlay">
+                  <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+                </div>
+                <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+              </div><img src="page-images/cards/sample-card3.jpg"></a></div>
         </div>
       </div>
     </div>

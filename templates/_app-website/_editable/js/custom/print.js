@@ -13,10 +13,17 @@
      //trigger print 
      window.print();
      
-     //clear print area
-     $("#printArea").html("");
+     //delay changing display back
+     setTimeout(function(){ 
+        
+         //clear print area
+         $("#printArea").html("");
      
-     //remove print class
-     $("body").removeClass("printPage")
+         //remove print class
+         $("body").removeClass("printPage")
+     
+     }, 100);
+     
+     
      
 });
