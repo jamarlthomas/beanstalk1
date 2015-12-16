@@ -56,10 +56,12 @@ namespace CMS.Mvc.Controllers.Afton
                 else if (primaryTile is Event)
                 {
 					tile = MapData<Event, PrimaryTileViewModel>(primaryTile as Event);
-					var separatedDescription = DivideHelper.SeparateText(tile.Description);
-					tile.HeaderDescription = separatedDescription[0];
-					tile.Description = separatedDescription[1];
 					tile.TypeName = "Events";
+                }
+                else if (primaryTile is Solution)
+                {
+                    tile = MapData<Solution, PrimaryTileViewModel>(primaryTile as Solution);
+                    tile.TypeName = "Solution";
                 }
 				if (tile != null)
 				{

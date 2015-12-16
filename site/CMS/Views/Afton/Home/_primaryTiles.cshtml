@@ -12,23 +12,22 @@
 					<div class="overlay">
 						<div class="cardTitle">@item.TypeName</div>
 						<div class="cardHdr">@item.Title</div>
-						@if (@item.HeaderDescription != null)
+						@if (@item.Description != null)
 						{
-							<div class="cardTxt">@item.HeaderDescription</div>
+							<div class="cardTxt">@item.Description</div>
 						}
 					</div>
 					@if (@item.Date != null)
 					{
 						<div class="cardDate">@item.Date.ToString("MMMM dd, yyyy")</div>
-						@*<div class="cardDate">March 27, 2015</div>*@
 					}
 				</div>
 				<div style="opacity: 0.0;" class="hoverOverlayC">
 					<div class="hoverOverlay">
-						<div class="hoverOverlayTxt">@(item.Description ?? "")</div>
+						<div class="hoverOverlayTxt">@(item.HoverContent ?? "Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late...")</div>
 					</div>
 					<div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-				</div><img src="@Url.Content(item.Image)">
+				</div><img src="@Url.Content(item.HomeImage)">
 			</a>
 		}
 	</div>
