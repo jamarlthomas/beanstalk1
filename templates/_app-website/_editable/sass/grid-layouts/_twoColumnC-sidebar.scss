@@ -1,4 +1,12 @@
-#twoColumnC-sidebar { @include container; margin-top: -70px;
+#twoColumnC-sidebar.negMargin { margin-top: -70px;
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { margin-top: 0px; }
+    
+
+}//#twoColumnC-sidebar.negMargin
+
+#twoColumnC-sidebar { @include container;
 
     #lftCol-sidebar { @include span(4 of 12);
     
@@ -22,6 +30,6 @@
     }
     
     //*** Breakpoints ***
-    @include breakpoint($bp1) { margin-top: 0px; width: 98%; }
+    @include breakpoint($bp1) { width: 98%; }
 
 }//twoColumnC-sidebar

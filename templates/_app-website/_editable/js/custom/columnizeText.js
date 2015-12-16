@@ -1,3 +1,3 @@
 $(document).ready(function(){
-    $('.twoColmnC').columnize({width:617});
+    $('.twoColumnC').columnize({width:617});
 });
