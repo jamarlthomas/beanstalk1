@@ -16,13 +16,19 @@
     }
     
     #rtCol-contentArea { @include span(8 of 12 last);
-    
-        h1 { 
+        
+        #contentC {
+        
+            h1 { 
+
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { font-size: 30px; text-align: center; }
+
+            }//h1
             
-            //*** Breakpoints ***
-            @include breakpoint($bp3) { font-size: 30px; text-align: center; }
+            @include breakpoint($bp2) { margin: 0px auto; width: 90%; }
             
-        }//h1
+        }//contentC
         
         //*** Breakpoints ***
         @include breakpoint($bp2) { @include span(full); }
@@ -31,5 +37,6 @@
     
     //*** Breakpoints ***
     @include breakpoint($bp1) { width: 98%; }
+    @include breakpoint($bp2) { width: 100%; }
 
 }//twoColumnC-sidebar

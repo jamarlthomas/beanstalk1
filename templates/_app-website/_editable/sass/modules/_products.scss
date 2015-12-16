@@ -9,15 +9,6 @@
     
     #pRt { @include span(6 of 8 last);
         
-        h1 { font-size: 35px; line-height: 37px;
-            
-            //*** Breakpoints ***
-            @include breakpoint($bp1) { font-size: 28px; }
-            
-        }//h1
-        
-        #pTxt { padding-top: 5px; font-size: 14px; }
-        
         #pCurrently { padding: 5px 0px; font-size: 12px;
             
             
@@ -62,5 +53,8 @@
         @include breakpoint($bp3) { @include span(full); }  
         
     }//pRt
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp3) { width: 90%; }
     
 }//prodHdrC
