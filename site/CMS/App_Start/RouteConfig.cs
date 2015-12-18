@@ -22,11 +22,11 @@ namespace CMS.Mvc
   
             routes.MapMvcAttributeRoutes();
 
-            //routes.MapRoute(
-            //    "Default",
-            //    "{controller}/{action}/{name}",
-            //    new { controller = "Home", action = "Index", name = "" }
-            //    );
+            routes.MapRoute(
+                "Default",
+                "{controller}/{action}/{name}",
+                new { controller = "Home", action = "Index", name = "" }
+                );
 
 
             //if (ConfigurationManager.AppSettings["EnableUrlLocalization"].Equals("true",

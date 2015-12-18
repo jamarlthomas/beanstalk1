@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
+using CMS.Mvc.ViewModels.Shared;
 
 namespace CMS.Mvc.ViewModels.Master
 {
-    public class ContentMenuItemViewModel
+    public class ContentMenuItemViewModel : LinkItemViewModel
     {
-        public string Title { get; set; }
-        public string Reference { get; set; }
         public List<MegaMenuThumbnailedItemViewModel> ThumbnailedMenuItems { get; set; }
         public MegaMenuLinkItemViewModel SolutionsLink { get; set; }
     }

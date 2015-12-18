@@ -143,8 +143,8 @@ namespace CMS.Mvc.Helpers
                         return CacheHelper.Cache(cs =>
                         {
                             var tree = new TreeProvider();
-                            var baseNodes = tree.SelectNodes(className);
-                            var treeNodes = baseNodes.Published()
+                            var treeNodes = tree.SelectNodes(className)
+                                .Published()
                                 .OrderBy("NodeLevel", "NodeOrder", "NodeName");
                             if (!string.IsNullOrWhiteSpace(cacheDependencyKey))
                                 cs.CacheDependency = CacheHelper.GetCacheDependency(cacheDependencyKey);

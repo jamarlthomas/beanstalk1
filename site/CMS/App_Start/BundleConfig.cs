@@ -26,7 +26,9 @@ namespace CMS.Mvc.App_Start
             bundles.Add(new StyleBundle("~/bundles/css")
                 .Include("~/css/normalize.min.css")
                 .Include("~/css/styles.min.css")
-                .Include("~/fonts/fonts.css"));
+                .Include("~/fonts/fonts.css")
+                .Include("~/css/print.min.css")
+                );
         }
     }
 

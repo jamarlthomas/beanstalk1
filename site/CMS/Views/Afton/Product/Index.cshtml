@@ -1,0 +1,40 @@
+﻿@model CMS.Mvc.ViewModels.Product.ProductPageViewModel
+
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Afton/Shared/Master.cshtml";
+}
+
+<div id="printArea"></div>
+<div id="contentAreaC">
+    <div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
+        <div id="rtCol-contentArea">
+            @Html.Partial("~/Views/Afton/Product/_breadCrumb.cshtml", @Model.BreadCrumb)
+            @Html.Partial("~/Views/Afton/Product/_downloadWidget.cshtml", @Model.DownloadWidget)
+            @Html.Partial("~/Views/Afton/Product/_productMainContent.cshtml", @Model.ContentCopy)
+        </div>
+        <div id="lftCol-sidebar">
+            @Html.Partial("~/Views/Afton/Product/_contactUs.cshtml", @Model.ContactUs)
+            @Html.Partial("~/Views/Afton/Product/_stayInformed.cshtml", @Model.StayInformed)
+            @Html.Partial("~/Views/Afton/Product/_insightsAndResoursesWidget.cshtml", @Model.InsightsAndResourcesWidget)
+            @Html.Partial("~/Views/Afton/Product/_passion.cshtml", @Model.PassionWidget)
+           
+        </div>
+    </div>
+    @Html.Partial("~/Views/Afton/Product/_relatedProducts.cshtml", @Model.RelatedProducts)
+    @Html.Partial("~/Views/Afton/Product/_insightsAndResourcesSection.cshtml", @Model.InsightsAndResourcesSection)
+   
+</div>
+
+@*
+    4.1. Content/copy area - added
+    4.2. Contact widget
+    4.3. Product data sheet download widget
+    4.4. Stay informed widget
+    4.5. Join product conversation widget
+    4.6. Insights & Resourses widget
+    4.7. Product List widget
+*@
+
+
+
