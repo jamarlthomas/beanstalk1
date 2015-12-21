@@ -7,6 +7,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using CMS.DocumentEngine;
+using CMS.Mvc.Helpers;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -39,7 +40,7 @@ namespace CMS.Mvc.Controllers.Afton
                 PrimaryTiles = new List<PrimaryTileViewModel>()
             };
             var home = _homeProvider.GetHomeItems().First();
-            foreach (var primaryTile in _primaryTilesProvider.GetPrimaryTiles(home.ManagedBlocks.Split(';').Select(s => Guid.Parse(s)).ToList(), home.Site.DisplayName))
+			foreach (var primaryTile in _primaryTilesProvider.GetPrimaryTiles(StringToGuidsConvertHelper.ParseGuids(home.ManagedBlocks), home.Site.DisplayName))
             {
                 if (primaryTile is Document)
                 {

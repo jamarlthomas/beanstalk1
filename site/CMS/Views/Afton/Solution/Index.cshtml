@@ -1,0 +1,24 @@
+﻿@using CMS.Mvc.ViewModels.Shared
+@model SolutionViewModel 
+@{
+    ViewBag.Title = "Solution";
+    Layout = "~/Views/Afton/Shared/Master.cshtml";
+}
+
+Hero Image:<br />
+@Html.Partial("~/Views/Afton/Solution/_heroImage.cshtml", Model.HeroImage)
+<hr />
+
+Description:<br />
+@Html.Partial("~/Views/Afton/Solution/_description.cshtml", Model.Description)
+<hr />
+
+Products List:<br />
+@Html.Partial("~/Views/Afton/Solution/_productsList.cshtml", Model.Products)
+<hr />
+
+Single product view:<br />
+@foreach (var product in Model.Products)
+{
+	@Html.Partial("~/Views/Afton/Solution/_product.cshtml", product)
+}

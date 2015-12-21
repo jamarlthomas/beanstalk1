@@ -2,10 +2,9 @@
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
-using CMS.Mvc.ViewModels.Home;
 using CMS.Mvc.ViewModels.SBU;
+using CMS.Mvc.ViewModels.Shared;
 using System.Web.Mvc;
-using System.Linq;
 
 namespace CMS.Mvc.Controllers.Afton
 {

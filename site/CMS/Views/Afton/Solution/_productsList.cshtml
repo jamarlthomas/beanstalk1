@@ -1,0 +1,15 @@
+﻿@using CMS.Mvc.ViewModels.Shared
+@foreach (var item in Model)
+{
+	<p>
+		<h3>@item.Title </h3><br />
+		@item.Description <br />
+		@item.Region <br />
+		@item.Benefits <br />
+		@item.Dosage <br />
+		@item.Characteristics <br />
+		@item.Approvals <br />
+		@item.HandlingInformation <br />
+		@item.Comparison
+	</p>
+}
