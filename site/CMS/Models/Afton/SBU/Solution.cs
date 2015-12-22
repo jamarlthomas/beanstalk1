@@ -59,6 +59,23 @@ namespace CMS.DocumentEngine.Types
 		/// 
 		/// </summary>
 		[DatabaseField]
+		public string HomeImage
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("HomeImage"), "");
+			}
+			set
+			{
+				SetValue("HomeImage", value);
+			}
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[DatabaseField]
 		public string Title
 		{
 			get

@@ -185,7 +185,6 @@
     <Compile Include="Interfaces\ISolutionProvider.cs" />
     <Compile Include="Interfaces\IHeroContentProvider.cs" />
     <Compile Include="Interfaces\IFooterNavItemProvider.cs" />
-    <Compile Include="Interfaces\IAnchorMenuItemProvider.cs" />
     <Compile Include="Interfaces\IFAQItemProvider.cs" />
     <Compile Include="Interfaces\ISolutionBusinessUnitProvider.cs" />
     <Compile Include="Interfaces\IMegaMenuLinkItemProvider.cs" />
@@ -227,7 +226,6 @@
     <Compile Include="Providers\HeroContentProvider.cs" />
     <Compile Include="Providers\MegaMenuLinkItemProvider.cs" />
     <Compile Include="Providers\MegaMenuThumbnailedItemProvider.cs" />
-    <Compile Include="Providers\AnchorMenuItemProvider.cs" />
     <Compile Include="Providers\SolutionProvider.cs" />
     <Compile Include="Providers\SolutionBusinessUnitProvider.cs" />
     <Compile Include="Providers\ContentMenuItemProvider.cs" />
@@ -247,7 +245,6 @@
     <Compile Include="ViewModels\SBU\FAQItemViewModel.cs" />
     <Compile Include="ViewModels\SBU\DocumentViewModel.cs" />
     <Compile Include="ViewModels\SBU\DocumentTypeViewModel.cs" />
-    <Compile Include="ViewModels\SBU\AnchorMenuItemViewModel.cs" />
     <Compile Include="ViewModels\SBU\SBUViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -342,10 +339,11 @@
     <Content Include="Views\Afton\Master\_footer.cshtml" />
     <Content Include="Views\Afton\Home\_primaryTiles.cshtml" />
     <Content Include="Views\Afton\SBU\_FAQs.cshtml" />
-    <Content Include="Views\Afton\SBU\_documents.cshtml" />
+    <Content Include="Views\Afton\SBU\_documentColumns.cshtml" />
     <Content Include="Views\Afton\SBU\_solutions.cshtml" />
     <Content Include="Views\Afton\Home\_heroContent.cshtml" />
     <Content Include="Views\Afton\SBU\_heroImage.cshtml" />
+    <Content Include="Views\Afton\SBU\_documents.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

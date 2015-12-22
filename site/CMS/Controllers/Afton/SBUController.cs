@@ -12,7 +12,6 @@ namespace CMS.Mvc.Controllers.Afton
     public class SBUController : BaseController
     {
         private readonly ISolutionBusinessUnitProvider _solutionBusinessUnitProvider;
-        private readonly IAnchorMenuItemProvider _anchorMenuItemProvider;
         private readonly IDocumentProvider _documentProvider;
         private readonly IFAQItemProvider _FAQItemProvider;
         private readonly IDocumentTypeProvider _documentTypeProvider;
@@ -20,7 +19,6 @@ namespace CMS.Mvc.Controllers.Afton
 
         public SBUController()
         {
-            _anchorMenuItemProvider = new AnchorMenuItemProvider();
             _solutionBusinessUnitProvider = new SolutionBusinessUnitProvider();
             _documentProvider = new DocumentProvider();
             _FAQItemProvider = new FAQItemProvider();
@@ -29,14 +27,12 @@ namespace CMS.Mvc.Controllers.Afton
         }
 
         public SBUController(ISolutionBusinessUnitProvider solutionBusinessUnitProvider,
-            IAnchorMenuItemProvider anchorMenuItemProvider,
             IDocumentProvider documentProvider,
             IFAQItemProvider FAQItemProvider,
             IDocumentTypeProvider documentTypeProvider,
             ISolutionProvider solutionProvider)
         {
             _solutionBusinessUnitProvider = solutionBusinessUnitProvider;
-            _anchorMenuItemProvider = anchorMenuItemProvider;
             _documentProvider = documentProvider;
             _FAQItemProvider = FAQItemProvider;
             _documentTypeProvider = documentTypeProvider;
@@ -46,14 +42,13 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index(string name)
         {
             var model = MapData<SolutionBusinessUnit, SBUViewModel>(_solutionBusinessUnitProvider.GetSolutionBusinessUnit(name));
-            model.AnchorMenu = MapData<AnchorMenuItem, AnchorMenuItemViewModel>(_anchorMenuItemProvider.GetAnchorMenuItems());
-            model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItemUnits(name));
-            model.DocumentTypes = MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypeUnits(name));
+            model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItemUnits(name)).Take(4).ToList();
+			model.DocumentTypes = MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypeUnits(name));
             foreach (var item in model.DocumentTypes)
             {
                 item.Documents = MapData<Document, DocumentViewModel>(_documentProvider.GetDocumentUnits(item.Title));
             }
-            model.Solutions = MapData<Solution, SolutionViewModel>(_solutionProvider.GetSolutionItems(name));
+			model.Solutions = MapData<Solution, SolutionViewModel>(_solutionProvider.GetSolutionItems(name)).Where(w => !string.IsNullOrEmpty(w.HomeImage)).ToList();
             return View("~/Views/Afton/SBU/Index.cshtml", model);
         }
     }

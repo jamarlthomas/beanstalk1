@@ -12,5 +12,6 @@ namespace CMS.Mvc.ViewModels.SBU
         public string NavigationIcon { get; set; }
         public string Description { get; set; }
         public string FeaturedProductList { get; set; }
+		public string HomeImage { get; set; }
     }
 }
