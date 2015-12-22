@@ -1,0 +1,78 @@
+#sidbarHdrC { position: relative; height: 70px; background: #FFF;
+    
+    h2 { position: absolute; position: absolute; top: 50%; left: 15px; right: 15px; transform: translateY(-50%);
+    
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { font-size: 20px; }
+        
+    }//h2
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp2) { display: none; }
+    
+}//sidbarHdrC
+
+#sidbarNavC { padding-bottom: 12px;
+    
+    ul { margin: 0px; padding: 0px; 
+    
+        li { margin: 0px; padding: 0px; list-style: none; border-bottom: 1px solid #a6a6a6; 
+        
+            a { padding: 10px 15px; display: block; background: #e2e2e2; text-decoration: none; font-size: 16px; color: #595959;
+            
+                &:hover { background: #4c9d2f; color: #FFF; }
+                
+            }
+            
+        }//li
+    
+    }//ul    
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp2) { display: none; }
+    
+}//sidbarNavC
+
+
+.sidbarImg { display: block; width: 100%; }
+
+.sidbarBoxC { padding: 15px; background: #eeeded; margin-bottom: 10px;
+    
+    .hdr { padding-bottom: 5px; color: #0c419a; font-size: 16px; }
+    
+    .txt { padding-bottom: 10px; }
+    
+    .dropdown { padding: 10px; width: 90%; background: #595959; color: #FFF; border: 0px; }
+    
+    ::-webkit-input-placeholder { color: #FFF; }
+    :-moz-placeholder { color: #FFF; }
+    ::-moz-placeholder { color: #FFF; }
+    :-ms-input-placeholder { color: #FFF; }
+    
+    .txtBox { float: left; width: 60%; padding: 10px; background: #595959; color: #FFF; border: 0px; }
+    
+    .submitBtn { padding: 10px 7%; background: #4c9d2f; color: #FFF; border: 0px; }
+    
+    .twoCol { @include container;
+        
+        a { display: block; margin-bottom: gutter(3); overflow: hidden;
+        
+            img { display: block; width: 100%; @include span(2 of 4); transition: 0.5s; }
+
+            .txtCol { @include span(2 of 4 last); font-size: 14px; line-height: 18px;
+            
+                .sTxt { padding-bottom: 2px; color: #4c9d2f; font-size: 16px; }
+                
+            }//txtCol
+
+        }//a
+        
+        a:hover img { transform: scale(1.02,1.02); }
+        
+        a:last-child { margin-bottom: 0px; }
+        
+    }//twoCol
+    
+}//sidbarBoxC
+
+

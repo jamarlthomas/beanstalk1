@@ -1,16 +1,52 @@
 @import '_variables';
 
-body { padding-top: 0px; }
-#topHeaderC { position: relative; }
-#searchC { display: none; }
-#topHeaderC #topHeader header { min-height: 80px; width: 100%; }
-#languageC { display: none; }
-#utilityNavC { display: none; }
-#mainNavC { display: none; }
-.cardsC .cards a { padding-bottom: 180px;
-    @include gallery(6 of 12 break);
+@media print {
+    
+    @page { size: 100%;  margin: 3%; padding: 0px; }
+    
+    body { padding-top: 0px; }
+    
+    a { transition: 0.0s!important; }
+    
+    #topHeaderC { position: relative;
+        
+        #searchC { display: none; }
+        
+        #topHeader { width: 100%;
+        
+            header { min-height: 80px; width: 100%; margin: 0px!important;
+            
+                #languageC, #utilityNavC, #mainNavC, #mobileBtn, #mobileSearch, #mobileBtn, #stickyFooterC { display: none!important; }
+                
+            }
+        
+        }//topHedear
+        
+    }//topHeaderC
+    
+    
+    .cardsC .cards { max-width: 100%; }
+    .cardsC .cards a { padding-bottom: 180px;
+        @include gallery(4 of 12 break); 
+
+    } 
+    
+    .headerImgC { display: none; }
+    
+    .cards2C .cards2 a {
+        @include gallery(4 of 12 break);
+    }
+    
+    
+    #topHeaderC { width: 100%!important; height: 80px!important; }
+    #topHeader { width: 100%!important; height: 80px!important; }
+    header { width: 100%!important; height: 80px!important; min-height: 80px!important; transition: 0.0s!important; }
+    
 }
-.headerImgC { display: none; }
-.cards2C .cards2 a { padding-bottom: 180px;
-    @include gallery(4 of 12 break);
-}
+    
+//Print Page
+body.printPage #stickyFooterC { display: none; }
+body.printPage #contentAreaC { display: none; }
+body.printPage #footerC { display: none; }
+body.printPage #printArea img.inContent { width: 395px!important; }
+

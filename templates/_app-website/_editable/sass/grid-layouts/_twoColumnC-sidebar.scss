@@ -1,4 +1,12 @@
-#twoColumnC-sidebar { @include container; margin-top: -70px;
+#twoColumnC-sidebar.negMargin { margin-top: -70px;
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { margin-top: 0px; }
+    
+
+}//#twoColumnC-sidebar.negMargin
+
+#twoColumnC-sidebar { @include container;
 
     #lftCol-sidebar { @include span(4 of 12);
     
@@ -8,13 +16,19 @@
     }
     
     #rtCol-contentArea { @include span(8 of 12 last);
-    
-        h1 { 
+        
+        #contentC {
+        
+            h1 { 
+
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { font-size: 30px; text-align: center; }
+
+            }//h1
             
-            //*** Breakpoints ***
-            @include breakpoint($bp3) { font-size: 30px; text-align: center; }
+            @include breakpoint($bp2) { margin: 0px auto; width: 90%; }
             
-        }//h1
+        }//contentC
         
         //*** Breakpoints ***
         @include breakpoint($bp2) { @include span(full); }
@@ -22,6 +36,7 @@
     }
     
     //*** Breakpoints ***
-    @include breakpoint($bp1) { margin-top: 0px; width: 98%; }
+    @include breakpoint($bp1) { width: 98%; }
+    @include breakpoint($bp2) { width: 100%; }
 
 }//twoColumnC-sidebar

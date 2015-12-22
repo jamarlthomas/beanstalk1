@@ -39,8 +39,12 @@ $( document ).ready(function() {
               }, 500);
 
               $(this).find(".hoverOverlayC").stop().animate({
-                 height: distanceToTrav,
+                 height: distanceToTrav - 15,
                  opacity: 1.0
+              }, 500);
+              
+              $(this).find(".cardBtnIndicator").stop().animate({
+                 opacity: 0.0,
               }, 500);
 
               $(this).find(".trendIndicator").stop().animate({
@@ -63,7 +67,11 @@ $( document ).ready(function() {
               $(this).css({"opacity":0.0})
               
           });
- 
+          
+          $(this).find(".cardBtnIndicator").stop().animate({
+                 opacity: 1.0,
+          }, 500);
+          
           $(this).find(".trendIndicator").stop().animate({
              opacity: 1.0,
              bottom: storeTrendingPos
