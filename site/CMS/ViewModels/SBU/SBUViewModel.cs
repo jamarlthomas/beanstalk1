@@ -10,8 +10,7 @@ namespace CMS.Mvc.ViewModels.SBU
     {
         public string Title { get; set; }
         public string HeroImage { get; set; }
-        public string LeftDescription { get; set; }
-        public string RightDescription { get; set; }
+        public string Description { get; set; }
         public string DocumentsDescription { get; set; }
         public string FAQDescription { get; set; }
         public string FAQList { get; set; }

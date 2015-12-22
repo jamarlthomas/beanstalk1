@@ -43,21 +43,17 @@ namespace CMS.Mvc.Controllers.Afton
             _solutionProvider = solutionProvider;
         }
 
-        public ActionResult Index(string alias)
+        public ActionResult Index(string name)
         {
-            var sbu = _solutionBusinessUnitProvider.GetSolutionBusinessUnit(alias);
-            var model = MapData<SolutionBusinessUnit, SBUViewModel>(sbu);
-            var separatedDescription = DivideHelper.SeparateText(sbu.Description);
-            model.LeftDescription = separatedDescription[0];
-            model.RightDescription = separatedDescription[1];
+            var model = MapData<SolutionBusinessUnit, SBUViewModel>(_solutionBusinessUnitProvider.GetSolutionBusinessUnit(name));
             model.AnchorMenu = MapData<AnchorMenuItem, AnchorMenuItemViewModel>(_anchorMenuItemProvider.GetAnchorMenuItems());
-            model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItemUnits(alias));
-            model.DocumentTypes = MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypeUnits(alias));
+            model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItemUnits(name));
+            model.DocumentTypes = MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypeUnits(name));
             foreach (var item in model.DocumentTypes)
             {
                 item.Documents = MapData<Document, DocumentViewModel>(_documentProvider.GetDocumentUnits(item.Title));
             }
-            model.Solutions = MapData<Solution, SolutionViewModel>(_solutionProvider.GetSolutionItems(alias));
+            model.Solutions = MapData<Solution, SolutionViewModel>(_solutionProvider.GetSolutionItems(name));
             return View("~/Views/Afton/SBU/Index.cshtml", model);
         }
     }
