@@ -21,103 +21,137 @@ using CMS.DocumentEngine;
 
 namespace CMS.DocumentEngine.Types
 {
-	/// <summary>
-	/// Sample item class.
-	/// </summary>
-	public partial class Document : TreeNode
-	{
-		#region "Constants"
+    /// <summary>
+    /// Sample item class.
+    /// </summary>
+    public partial class Document : TreeNode
+    {
+        #region "Constants"
 
-		/// <summary>
-		/// Class name of the item.
-		/// </summary>
-		public const string CLASS_NAME = "custom.Document";
+        /// <summary>
+        /// Class name of the item.
+        /// </summary>
+        public const string CLASS_NAME = "custom.Document";
 
-		#endregion
-
-
-		#region "Properties"
-
-		/// <summary>
-		/// CustomDocumentID.
-		/// </summary>
-		[DatabaseField]
-		public int CustomDocumentID
-		{
-			get
-			{
-				return ValidationHelper.GetInteger(GetValue("CustomDocumentID"), 0);
-			}
-			set
-			{
-				SetValue("CustomDocumentID", value);
-			}
-		}
+        #endregion
 
 
-		/// <summary>
-		/// 
-		/// </summary>
-		[DatabaseField]
-		public string Title
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Title"), "");
-			}
-			set
-			{
-				SetValue("Title", value);
-			}
-		}
+        #region "Properties"
+
+        /// <summary>
+        /// CustomDocumentID.
+        /// </summary>
+        [DatabaseField]
+        public int CustomDocumentID
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("CustomDocumentID"), 0);
+            }
+            set
+            {
+                SetValue("CustomDocumentID", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Abstract.
-		/// </summary>
-		[DatabaseField]
-		public string Abstract
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Abstract"), "");
-			}
-			set
-			{
-				SetValue("Abstract", value);
-			}
-		}
+        /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
+        public string HomeImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HomeImage"), "");
+            }
+            set
+            {
+                SetValue("HomeImage", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Copy.
-		/// </summary>
-		[DatabaseField]
-		public string Copy
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Copy"), "");
-			}
-			set
-			{
-				SetValue("Copy", value);
-			}
-		}
-
-		#endregion
+        /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
+        public string Description
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Description"), "");
+            }
+            set
+            {
+                SetValue("Description", value);
+            }
+        }
 
 
-		#region "Constructors"
+        /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
+        public string Title
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Title"), "");
+            }
+            set
+            {
+                SetValue("Title", value);
+            }
+        }
 
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		public Document()
-			: base(CLASS_NAME)
-		{
-		}
 
-		#endregion
-	}
+        /// <summary>
+        /// Abstract.
+        /// </summary>
+        [DatabaseField]
+        public string Abstract
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Abstract"), "");
+            }
+            set
+            {
+                SetValue("Abstract", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Copy.
+        /// </summary>
+        [DatabaseField]
+        public string Copy
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Copy"), "");
+            }
+            set
+            {
+                SetValue("Copy", value);
+            }
+        }
+
+        #endregion
+
+
+        #region "Constructors"
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public Document()
+            : base(CLASS_NAME)
+        {
+        }
+
+        #endregion
+    }
 }
