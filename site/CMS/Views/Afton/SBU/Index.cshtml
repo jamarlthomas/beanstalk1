@@ -1,17 +1,9 @@
 ﻿@using CMS.Mvc.ViewModels.SBU
 @model SBUViewModel
 @{
-	ViewBag.Title = "Solution Business Unit";
+	ViewBag.Title = Model.Title;
 	Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
-
-<!-- image -->
-Anchor Menu:
-@foreach (var item in Model.AnchorMenu)
-{
-	<p><a href="#">@item.Title</a></p>
-}
-
 <div id="contentAreaC">
 	@Html.Partial("~/Views/Afton/SBU/_heroImage.cshtml", Model)
 	<div class="sbuLandingNavC">

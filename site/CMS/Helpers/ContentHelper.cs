@@ -60,14 +60,14 @@ namespace CMS.Mvc.Helpers
         }
 
 
-        public static List<T> GetDocChildrenByName<T>(string childrenClassName, string docName)
+        public static List<T> GetDocChildrenByName<T>(string childrenClassName, string docName, int limit = Int32.MaxValue)
             where T : TreeNode, new()
         {
             docName = docName.Replace(' ', '-');
             return HandleQueryableData<T>(
-                q => q.Where(item => item.Parent.NodeAlias.Equals(docName, StringComparison.CurrentCultureIgnoreCase)),
+				q => q.Where(item => item.Parent.NodeAlias.Equals(docName, StringComparison.CurrentCultureIgnoreCase)).Take(limit),
                 childrenClassName,
-                string.Format("cc_{0}_ccn_{1}_dn_{2}", CurrentCulture, childrenClassName, docName),
+				string.Format("cc_{0}_ccn_{1}_dn_{2}_lim_{3}", CurrentCulture, childrenClassName, docName, limit),
                 string.Format("nodes|afton|{0}|all", childrenClassName.ToLower())
                 ).ToList();
         }

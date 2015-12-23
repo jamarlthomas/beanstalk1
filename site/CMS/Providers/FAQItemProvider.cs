@@ -7,9 +7,9 @@ namespace CMS.Mvc.Providers
 {
     public class FAQItemProvider : IFAQItemProvider
     {
-        public List<FAQItem> GetFAQItemUnits(string alias)
+        public List<FAQItem> GetFAQItemUnits(string alias, int limit)
         {
-            return ContentHelper.GetDocChildrenByName<FAQItem>(FAQItem.CLASS_NAME, alias);
+			return ContentHelper.GetDocChildrenByName<FAQItem>(FAQItem.CLASS_NAME, alias, limit);
         }
     }
 }

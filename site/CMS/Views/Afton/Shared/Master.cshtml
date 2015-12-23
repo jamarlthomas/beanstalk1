@@ -30,7 +30,7 @@
 
 </head>
 <body>
-	@{ Html.RenderAction("Index", "Master"); }
+	@{ Html.RenderAction("Index", "Master", new { title = ViewBag.Title }); }
 	<main>
 		@RenderBody()
 	</main>

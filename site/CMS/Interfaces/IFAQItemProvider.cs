@@ -5,6 +5,6 @@ namespace CMS.Mvc.Interfaces
 {
     public interface IFAQItemProvider
     {
-        List<FAQItem> GetFAQItemUnits(string alias);
+		List<FAQItem> GetFAQItemUnits(string alias, int limit);
     }
 }
