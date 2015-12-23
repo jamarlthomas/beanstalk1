@@ -19,6 +19,8 @@ namespace CMS.Mvc.Helpers
 
         private static readonly string CurrentCulture = LocalizationContext.CurrentCulture.CultureCode;
 
+		private static readonly TreeProvider _treeProvider = new TreeProvider();
+
         public static List<TreeNode> GetAllNodes()
         {
             if (PortalContext.ViewMode == ViewModeEnum.Preview)
@@ -71,6 +73,12 @@ namespace CMS.Mvc.Helpers
                 string.Format("nodes|afton|{0}|all", childrenClassName.ToLower())
                 ).ToList();
         }
+
+		public static List<T> GetDocByGuids<T>(List<Guid> guids, string siteName) 
+			where T : TreeNode, new()
+		{
+			return guids.Select(guid => _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName)) as T).ToList();
+		} 
 
         private static T HandleData<T>(Expression<Func<TreeNode, bool>> predicate, string className, string cacheKey,
             string cacheDependencyKey, string cachedependenciesFormat = "") where T : TreeNode, new()

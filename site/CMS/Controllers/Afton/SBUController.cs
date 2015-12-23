@@ -1,11 +1,10 @@
 ﻿using CMS.DocumentEngine.Types;
-using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
-using CMS.Mvc.ViewModels.Home;
 using CMS.Mvc.ViewModels.SBU;
-using System.Web.Mvc;
+using CMS.Mvc.ViewModels.Shared;
 using System.Linq;
+using System.Web.Mvc;
 
 namespace CMS.Mvc.Controllers.Afton
 {

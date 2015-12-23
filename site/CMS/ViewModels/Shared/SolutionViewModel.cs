@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CMS.Mvc.ViewModels.SBU
+namespace CMS.Mvc.ViewModels.Shared
 {
     public class SolutionViewModel
     {
@@ -13,5 +13,7 @@ namespace CMS.Mvc.ViewModels.SBU
         public string Description { get; set; }
         public string FeaturedProductList { get; set; }
 		public string HomeImage { get; set; }
+		public string ParentName { get; set; }
+		public List<ProductViewModel> Products { get; set; }
     }
 }
