@@ -1,0 +1,54 @@
+﻿@model CMS.Mvc.ViewModels.Product.RelatedProductsViewModel
+<div class="bgGray padTopBtm">
+    <div class="fullWidth">
+        <h2>Automotive Gear Products</h2>
+    </div>
+    <div class="cards2C">
+        <div class="cards2">
+            @foreach (var product in @Model.Products.Take(4))
+            {
+                @Html.Partial("~/Views/Afton/Product/_relatedProductCard.cshtml", product)
+            }
+            @*<a href="#">
+                <div class="cardBtnIndicator">
+                    <img src="~/images/card-btn-indicator.png">
+                </div>
+                <img src="~/images/page-images/cards/sample-cardv2.jpg">
+                <div class="textAreaC">
+                    <div class="cardTitle">Driveline Additives</div>
+                    <div class="cardHdr">HiTEC® 349</div>
+                    <div class="cardSubHdr">Manual Transmissions</div>
+                    <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials. </div>
+                </div>
+            </a>
+            <a href="#">
+                <div class="cardBtnIndicator"><img src="~/images/card-btn-indicator.png"></div><img src="~/images/page-images/cards/sample-cardv2.jpg">
+                <div class="textAreaC">
+                    <div class="cardTitle">Driveline Additives</div>
+                    <div class="cardHdr">HiTEC® 349</div>
+                    <div class="cardSubHdr">Manual Transmissions</div>
+                    <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                </div>
+            </a>
+            <a href="#">
+                <div class="cardBtnIndicator"><img src="~/images/card-btn-indicator.png"></div><img src="~/images/page-images/cards/sample-cardv2.jpg">
+                <div class="textAreaC">
+                    <div class="cardTitle">Driveline Additives</div>
+                    <div class="cardHdr">HiTEC® 349</div>
+                    <div class="cardSubHdr">Manual Transmissions</div>
+                    <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                </div>
+            </a>
+            <a href="#">
+                <div class="cardBtnIndicator"><img src="~/images/card-btn-indicator.png"></div><img src="~/images/page-images/cards/sample-cardv2.jpg">
+                <div class="textAreaC">
+                    <div class="cardTitle">Driveline Additives</div>
+                    <div class="cardHdr">HiTEC® 349</div>
+                    <div class="cardSubHdr">Manual Transmissions</div>
+                    <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                </div>
+            </a>*@
+        </div>
+    </div>
+    <div class="fullWidth"><a href="#" class="viewAllBtn">View All Automotive Gear Products</a></div>
+</div>

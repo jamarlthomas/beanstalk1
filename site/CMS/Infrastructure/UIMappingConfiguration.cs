@@ -1,4 +1,8 @@
-﻿using Infrastructure.Mapper;
+﻿using System.Linq;
+using CMS.DocumentEngine.Types;
+using CMS.Mvc.Helpers;
+using CMS.Mvc.ViewModels.Product;
+using Infrastructure.Mapper;
 
 namespace CMS.Mvc.Infrastructure
 {
@@ -8,7 +12,8 @@ namespace CMS.Mvc.Infrastructure
 
         protected override void Objects()
         {
-            
+            CreateMap<Product, ProductViewModel>()
+                .ForMember(s => s.Description, d => d.DescriptionFirst);
         }
 
         protected override void Collections()

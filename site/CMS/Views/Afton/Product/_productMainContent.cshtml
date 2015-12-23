@@ -1,0 +1,24 @@
+﻿@model CMS.Mvc.ViewModels.Product.ProductViewModel
+<div id="mainContentC">
+    <h2>Application</h2>
+    <p>@Model.DescriptionFirst</p>
+    <p>@Model.DescriptionSecond</p>
+    <hr>
+    <h2>Key Performance Benefits</h2>
+    <ul>
+        @foreach (string benefit in @Model.Benefits)
+        {
+            <li>@benefit</li>
+        }
+    </ul>
+    <hr>
+    <h2>Typical Characteristics</h2>
+    @Model.Characteristics
+    <hr>
+    <h2>Handling Information</h2>
+    @Model.HandlingInformation
+    <hr>
+    <h2>Recommended Dosage</h2>
+    <img src="@Url.Content(@Model.Dosage)" class="inContent">
+</div>
+<a href="#" class="viewAllBtn marginBtm">View All Additive Products</a>

@@ -1,0 +1,63 @@
+﻿@using CMS.Mvc.ViewModels.Product
+@model InsightsAndResourcesSectionViewModel
+<div class="borders bgPattern padTopBtm">
+    <div class="fullWidth">
+        <h2>Insights & Resources  </h2>
+    </div>
+    <div class="cardsC">
+        <div class="cards">
+            @foreach (InsightsAndResourcesCard card in @Model.InsightsAndResourcesCards.Take(3))
+            {
+                @Html.Partial("~/Views/Afton/Product/_insightsAndResourcesCard.cshtml", card)
+            }
+            @*<a href="http://google.com">
+                <div class="cardBtnIndicator"><img src="~/images/card-btn-indicator.png"></div>
+                <div class="overlayC">
+                    <div class="overlay">
+                        <div class="cardTitle">News</div>
+                        <div class="cardHdr">Afton Chemical to exhibit and present at annual international CTI Symposium. </div>
+                    </div>
+                    <div class="cardDate">March 27, 2015</div>
+                </div>
+                <div style="opacity: 0.0;" class="hoverOverlayC">
+                    <div class="hoverOverlay">
+                        <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+                    </div>
+                    <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+                </div><img src="~/images/page-images/cards/sample-card1.jpg">
+            </a>
+            <a href="#">
+                <div class="cardBtnIndicator"><img src="~/images/card-btn-indicator.png"></div>
+                <div class="overlayC">
+                    <div class="overlay">
+                        <div class="cardTitle">Events</div>
+                        <div class="cardHdr">Afton Chemical breaks ground for its facility in Singapore.</div>
+                        <div class="cardTxt">Production of the next generation of additive solutions is set to begin in January 2016.</div>
+                    </div>
+                </div>
+                <div style="opacity: 0.0;" class="hoverOverlayC">
+                    <div class="hoverOverlay">
+                        <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+                    </div>
+                    <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+                </div><img src="~/images/page-images/cards/sample-card2.jpg">
+            </a>
+            <a href="#">
+                <div class="cardBtnIndicator"><img src="~/images/card-btn-indicator.png"></div>
+                <div class="overlayC">
+                    <div class="overlay">
+                        <div class="cardTitle">Fact Sheet</div>
+                        <div class="cardHdr">Automatic Transmissions</div>
+                        <div class="cardTxt">Afton Chemical develops and manufacturers petroleum additives that enhances the performance of fuels and lubricating oils in machinery and vehicles.</div>
+                    </div>
+                </div>
+                <div style="opacity: 0.0;" class="hoverOverlayC">
+                    <div class="hoverOverlay">
+                        <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+                    </div>
+                    <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+                </div><img src="~/images/page-images/cards/sample-card3.jpg">
+            </a>*@
+        </div>
+    </div>
+</div>

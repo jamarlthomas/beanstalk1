@@ -162,6 +162,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
+    <Compile Include="Controllers\Afton\ProductController.cs" />
     <Compile Include="Controllers\Afton\SBUController.cs" />
     <Compile Include="Controllers\Afton\HomeController.cs" />
     <Compile Include="Controllers\Afton\MasterController.cs" />
@@ -181,7 +182,9 @@
     <Compile Include="Interfaces\IDocumentTypeProvider.cs" />
     <Compile Include="Interfaces\IDocumentProvider.cs" />
     <Compile Include="Interfaces\IHomeProvider.cs" />
+    <Compile Include="Interfaces\ILookupProvider.cs" />
     <Compile Include="Interfaces\IPrimaryTilesProvider.cs" />
+    <Compile Include="Interfaces\IProductProvider.cs" />
     <Compile Include="Interfaces\ISolutionProvider.cs" />
     <Compile Include="Interfaces\IHeroContentProvider.cs" />
     <Compile Include="Interfaces\IFooterNavItemProvider.cs" />
@@ -216,9 +219,11 @@
     <Compile Include="Models\Afton\GenericModel.cs" />
     <Compile Include="Models\Afton\Home\HeroContent.cs" />
     <Compile Include="Models\Afton\Home.cs" />
+    <Compile Include="Models\Afton\Shared\Region.cs" />
     <Compile Include="Models\CorporateSite\News.cs" />
     <Compile Include="Properties\MvcAssemblyInfo.cs" />
     <Compile Include="Providers\DocumentProvider.cs" />
+    <Compile Include="Providers\LookupProvider.cs" />
     <Compile Include="Providers\PrimaryTilesProvider.cs" />
     <Compile Include="Providers\HomeProvider.cs" />
     <Compile Include="Providers\DocumentTypeProvider.cs" />
@@ -228,6 +233,7 @@
     <Compile Include="Providers\MegaMenuLinkItemProvider.cs" />
     <Compile Include="Providers\MegaMenuThumbnailedItemProvider.cs" />
     <Compile Include="Providers\AnchorMenuItemProvider.cs" />
+    <Compile Include="Providers\ProductProvider.cs" />
     <Compile Include="Providers\SolutionProvider.cs" />
     <Compile Include="Providers\SolutionBusinessUnitProvider.cs" />
     <Compile Include="Providers\ContentMenuItemProvider.cs" />
@@ -237,21 +243,40 @@
     <Compile Include="ViewModels\Home\HomeViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterNavItemViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterViewModel.cs" />
+    <Compile Include="ViewModels\Product\BreadCrumbLinkItemViewModel.cs" />
+    <Compile Include="ViewModels\Product\InsightsAndResourcesBlockViewModel.cs" />
+    <Compile Include="ViewModels\Product\InsightsAndResourcesCard.cs" />
+    <Compile Include="ViewModels\Product\LeftSideBlockViewModel.cs" />
+    <Compile Include="ViewModels\Product\PassionBlockViewModel.cs" />
+    <Compile Include="ViewModels\Product\RelatedProductCardViewModel.cs" />
+    <Compile Include="ViewModels\Shared\LinkItemViewModel.cs" />
     <Compile Include="ViewModels\Master\MegaMenuSolutionBusinessUnitViewModel.cs" />
     <Compile Include="ViewModels\Master\MegaMenuLinkItemViewModel.cs" />
     <Compile Include="ViewModels\Master\MegaMenuThumbnailedItemViewModel.cs" />
     <Compile Include="ViewModels\Master\MasterViewModel.cs" />
     <Compile Include="ViewModels\Master\PagesMenuItemViewModel.cs" />
     <Compile Include="ViewModels\Master\ContentMenuItemViewModel.cs" />
+    <Compile Include="ViewModels\Product\BreadCrumbViewModel.cs" />
+    <Compile Include="ViewModels\Product\ContactUsViewModel.cs" />
+    <Compile Include="ViewModels\Product\DownloadWidgetViewModel.cs" />
+    <Compile Include="ViewModels\Product\InsightsAndResourcesSectionViewModel.cs" />
+    <Compile Include="ViewModels\Product\InsightsAndResourcesWidgetViewModel.cs" />
+    <Compile Include="ViewModels\Product\PassionWidgetViewModel.cs" />
+    <Compile Include="ViewModels\Product\ProductPageViewModel.cs" />
+    <Compile Include="ViewModels\Product\ProductViewModel.cs" />
+    <Compile Include="ViewModels\Product\RelatedProductsViewModel.cs" />
+    <Compile Include="ViewModels\Product\StayInformedViewModel.cs" />
     <Compile Include="ViewModels\SBU\SolutionViewModel.cs" />
     <Compile Include="ViewModels\SBU\FAQItemViewModel.cs" />
     <Compile Include="ViewModels\SBU\DocumentViewModel.cs" />
     <Compile Include="ViewModels\SBU\DocumentTypeViewModel.cs" />
     <Compile Include="ViewModels\SBU\AnchorMenuItemViewModel.cs" />
     <Compile Include="ViewModels\SBU\SBUViewModel.cs" />
+    <Compile Include="ViewModels\Shared\RegionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\normalize.min.css" />
+    <Content Include="css\print.min.css" />
     <Content Include="css\styles.min.css" />
     <Content Include="fonts\fonts.css" />
     <Content Include="fonts\HelveticaNeueLT-Bold\2F7DEF_2_0.eot" />
@@ -299,6 +324,25 @@
     <Content Include="images\mobile-arrow-o.png" />
     <Content Include="images\mobile-arrow.png" />
     <Content Include="images\mobileBtn.gif" />
+    <Content Include="images\page-images\cards\sample-card1.jpg" />
+    <Content Include="images\page-images\cards\sample-card2.jpg" />
+    <Content Include="images\page-images\cards\sample-card3.jpg" />
+    <Content Include="images\page-images\cards\sample-cardv2.jpg" />
+    <Content Include="images\page-images\home-slider\lft-sample1.jpg" />
+    <Content Include="images\page-images\home-slider\rt-sample1.jpg" />
+    <Content Include="images\page-images\mega-menu\sample-pic-megamanu1.jpg" />
+    <Content Include="images\page-images\mega-menu\sample-pic-megamanu1a.jpg" />
+    <Content Include="images\page-images\mega-menu\sample-pic-megamanu2.jpg" />
+    <Content Include="images\page-images\mega-menu\sample-pic-megamanu2a.jpg" />
+    <Content Include="images\page-images\sample-diagram.gif" />
+    <Content Include="images\page-images\sample-prod-img.jpg" />
+    <Content Include="images\page-images\sbu-header-image\sbu-header-sample.jpg" />
+    <Content Include="images\page-images\sidebar-images\sidebar-contact.jpg" />
+    <Content Include="images\page-images\sidebar-images\sidebar-res-driveline.jpg" />
+    <Content Include="images\page-images\sidebar-images\sidebar-res-passion.jpg" />
+    <Content Include="images\page-images\sidebar-images\sidebar-res-prod.jpg" />
+    <Content Include="images\page-images\sol-sample-image.jpg" />
+    <Content Include="images\page-images\solution-header-image\headerImg-sample.jpg" />
     <Content Include="images\rt-arrow.png" />
     <Content Include="images\rt-slidArrow.png" />
     <Content Include="images\search-bg.gif" />
@@ -345,6 +389,19 @@
     <Content Include="Views\Afton\SBU\_documents.cshtml" />
     <Content Include="Views\Afton\SBU\_solutions.cshtml" />
     <Content Include="Views\Afton\Home\_heroContent.cshtml" />
+    <Content Include="Views\Afton\Product\Index.cshtml" />
+    <Content Include="Views\Afton\Product\_breadCrumb.cshtml" />
+    <Content Include="Views\Afton\Product\_downloadWidget.cshtml" />
+    <Content Include="Views\Afton\Product\_productMainContent.cshtml" />
+    <Content Include="Views\Afton\Product\_contactUs.cshtml" />
+    <Content Include="Views\Afton\Product\_insightsAndResoursesWidget.cshtml" />
+    <Content Include="Views\Afton\Product\_stayInformed.cshtml" />
+    <Content Include="Views\Afton\Product\_passion.cshtml" />
+    <Content Include="Views\Afton\Product\_relatedProducts.cshtml" />
+    <Content Include="Views\Afton\Product\_insightsAndResourcesSection.cshtml" />
+    <Content Include="Views\Afton\Product\_insightsAndResourcesCard.cshtml" />
+    <Content Include="Views\Afton\Product\_leftSideBlock.cshtml" />
+    <Content Include="Views\Afton\Product\_relatedProductCard.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -356,8 +413,6 @@
     <Folder Include="Content\" />
     <Folder Include="Infrastructure\Enums\" />
     <Folder Include="Infrastructure\Helpers\" />
-    <Folder Include="Models\Afton\Shared\" />
-    <Folder Include="ViewModels\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CorporateSite\News\Detail.cshtml" />

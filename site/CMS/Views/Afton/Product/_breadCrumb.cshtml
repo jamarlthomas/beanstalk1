@@ -1,0 +1,10 @@
+﻿@model CMS.Mvc.ViewModels.Product.BreadCrumbViewModel
+<div id="breadCrumbsC">
+    <div id="breadCrumbs">
+        @foreach (var link in @Model.BreadcrumbLinkItems)
+        {
+            <a href="@Url.Content(@link.Reference)">@link.Title</a>
+        }
+        @*<a href="#">Home</a><a href="#">Driveline Additives</a><a href="#">Automotive Gear</a><a href="#">Automotive Gear Products</a>HiTEC® 385: Gear Oil Additive*@
+    </div>
+</div>
