@@ -47,7 +47,7 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 item.Documents = MapData<Document, DocumentViewModel>(_documentProvider.GetDocumentUnits(item.Title));
             }
-			model.Solutions = MapData<Solution, SolutionViewModel>(_solutionProvider.GetSolutionItems(name)).Where(w => !string.IsNullOrEmpty(w.HomeImage)).ToList();
+			model.Solutions = MapData<Solution, TileViewModel>(_solutionProvider.GetSolutionItems(name)).Where(w => !string.IsNullOrEmpty(w.HomeImage)).ToList();
             return View("~/Views/Afton/SBU/Index.cshtml", model);
         }
     }

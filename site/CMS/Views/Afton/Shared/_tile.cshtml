@@ -1,10 +1,12 @@
-﻿<div class="cardsC bgPattern">
+﻿@using CMS.Mvc.ViewModels.Shared
+@using System.Collections.Generic;
+@model List<TileViewModel>
 	<div class="cards">
 		@foreach (var item in Model)
 		{
-			<a href="#" class="@(Model.IndexOf(item) % 3 == 2 ? "trending" : "")">
+			<a href="#" class="@(item.IsTrending.HasValue && item.IsTrending.Value ? "trending" : "")">
 				<div class="cardBtnIndicator"><img src="@Url.Content("~/images/card-btn-indicator.png")"></div>
-				@if (Model.IndexOf(item) % 3 == 2)
+				@if (item.IsTrending.HasValue && item.IsTrending.Value)
 				{
 					<div class="trendIndicator">Trending Topic</div>
 				}
@@ -17,9 +19,9 @@
 							<div class="cardTxt">@item.Description</div>
 						}
 					</div>
-					@if (@item.Date != null)
+					@if (@item.Date.HasValue)
 					{
-						<div class="cardDate">@item.Date.ToString("MMMM dd, yyyy")</div>
+						<div class="cardDate">@item.Date.Value.ToString("MMMM dd, yyyy")</div>
 					}
 				</div>
 				<div style="opacity: 0.0;" class="hoverOverlayC">
@@ -31,4 +33,3 @@
 			</a>
 		}
 	</div>
-</div>

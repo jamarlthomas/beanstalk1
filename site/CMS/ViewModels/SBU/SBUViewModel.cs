@@ -16,6 +16,6 @@ namespace CMS.Mvc.ViewModels.SBU
         public string Theme { get; set; }
         public List<FAQItemViewModel> FAQs { get; set; }
         public List<DocumentTypeViewModel> DocumentTypes { get; set; }
-        public List<SolutionViewModel> Solutions { get; set; }
+		public List<TileViewModel> Solutions { get; set; }
     }
 }

@@ -10,6 +10,10 @@ namespace CMS.Mvc.Helpers
 	{
 		public static List<Guid> ParseGuids(string input)
 		{
+			if (string.IsNullOrEmpty(input))
+			{
+				return new List<Guid>();
+			}
 			return input.Split(';').Select(s => Guid.Parse(s)).ToList();
 		}
 	}

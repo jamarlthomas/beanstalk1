@@ -73,6 +73,40 @@ namespace CMS.DocumentEngine.Types
 
 
 		/// <summary>
+		/// Subtitle.
+		/// </summary>
+		[DatabaseField]
+		public string Subtitle
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("Subtitle"), "");
+			}
+			set
+			{
+				SetValue("Subtitle", value);
+			}
+		}
+
+
+		/// <summary>
+		/// TileImage.
+		/// </summary>
+		[DatabaseField]
+		public string TileImage
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("TileImage"), "");
+			}
+			set
+			{
+				SetValue("TileImage", value);
+			}
+		}
+
+
+		/// <summary>
 		/// Description.
 		/// </summary>
 		[DatabaseField]
