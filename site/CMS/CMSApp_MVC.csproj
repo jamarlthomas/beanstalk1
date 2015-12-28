@@ -243,7 +243,7 @@
     <Compile Include="ViewModels\Home\HomeViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterNavItemViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterViewModel.cs" />
-    <Compile Include="ViewModels\Product\BreadCrumbLinkItemViewModel.cs" />
+    <Compile Include="ViewModels\Shared\BreadCrumbLinkItemViewModel.cs" />
     <Compile Include="ViewModels\Product\InsightsAndResourcesBlockViewModel.cs" />
     <Compile Include="ViewModels\Product\InsightsAndResourcesCard.cs" />
     <Compile Include="ViewModels\Product\LeftSideBlockViewModel.cs" />
@@ -256,7 +256,7 @@
     <Compile Include="ViewModels\Master\MasterViewModel.cs" />
     <Compile Include="ViewModels\Master\PagesMenuItemViewModel.cs" />
     <Compile Include="ViewModels\Master\ContentMenuItemViewModel.cs" />
-    <Compile Include="ViewModels\Product\BreadCrumbViewModel.cs" />
+    <Compile Include="ViewModels\Shared\BreadCrumbViewModel.cs" />
     <Compile Include="ViewModels\Product\ContactUsViewModel.cs" />
     <Compile Include="ViewModels\Product\DownloadWidgetViewModel.cs" />
     <Compile Include="ViewModels\Product\InsightsAndResourcesSectionViewModel.cs" />

@@ -1,4 +1,6 @@
-﻿namespace CMS.Mvc.ViewModels.Product
+﻿using CMS.Mvc.ViewModels.Shared;
+
+namespace CMS.Mvc.ViewModels.Product
 {
     public class ProductPageViewModel
     {
@@ -25,5 +27,7 @@
         public InsightsAndResourcesSectionViewModel InsightsAndResourcesSection { get; set; }
         public BreadCrumbViewModel BreadCrumb { get; set; }
         public DownloadWidgetViewModel DownloadWidget { get; set; }
+
+        public ProductViewModel ContentCopy { get; set; }
     }
 }
