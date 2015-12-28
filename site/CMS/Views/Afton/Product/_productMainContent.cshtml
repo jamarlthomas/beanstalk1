@@ -1,6 +1,7 @@
 ﻿@model CMS.Mvc.ViewModels.Product.ProductViewModel
 <div id="mainContentC">
-    <h2>Application</h2>
+    @Model.DefaultContent
+    @*<h2>Application</h2>
     <p>@Model.DescriptionFirst</p>
     <p>@Model.DescriptionSecond</p>
     <hr>
@@ -19,6 +20,6 @@
     @Model.HandlingInformation
     <hr>
     <h2>Recommended Dosage</h2>
-    <img src="@Url.Content(@Model.Dosage)" class="inContent">
+    <img src="@Url.Content(@Model.Dosage)" class="inContent">*@
 </div>
 <a href="#" class="viewAllBtn marginBtm">View All Additive Products</a>

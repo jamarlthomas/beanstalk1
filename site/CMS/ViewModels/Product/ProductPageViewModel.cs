@@ -6,7 +6,7 @@
         {
             ContactUs = new ContactUsViewModel();
             BreadCrumb = new BreadCrumbViewModel();
-            ContentCopy = new ProductViewModel();
+            ContentCopyArea = new ProductViewModel();
             StayInformed = new StayInformedViewModel();
             InsightsAndResourcesWidget = new InsightsAndResourcesWidgetViewModel();
             PassionWidget = new PassionWidgetViewModel();
@@ -17,7 +17,7 @@
         }
 
         public ContactUsViewModel ContactUs { get; set; }
-        public ProductViewModel ContentCopy { get; set; }
+        public ProductViewModel ContentCopyArea { get; set; }
         public StayInformedViewModel StayInformed { get; set; }
         public InsightsAndResourcesWidgetViewModel InsightsAndResourcesWidget { get; set; }
         public PassionWidgetViewModel PassionWidget { get; set; }

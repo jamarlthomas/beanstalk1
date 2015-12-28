@@ -12,8 +12,11 @@ namespace CMS.Mvc.Infrastructure
 
         protected override void Objects()
         {
-            CreateMap<Product, ProductViewModel>()
-                .ForMember(s => s.Description, d => d.DescriptionFirst);
+            CreateMap<Product, ProductViewModel>();
+            CreateMap<Product, DownloadWidgetViewModel>()
+                .ForMember(s => s.Title, d => d.Title)
+                .ForMember(s=>s.TileImage, d=>d.TileImage);
+            
         }
 
         protected override void Collections()
