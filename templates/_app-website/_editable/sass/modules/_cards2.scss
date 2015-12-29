@@ -19,6 +19,9 @@
                 .cardSubHdr { padding-bottom: 3px; font-size: 14px; color: #595959; }
                 .cardTxt { font-size: 12px; line-height: 15px; color: #595959; }
                 
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { padding: 10px; } 
+                
             }//textAreaC
             
             //*** Breakpoints ***

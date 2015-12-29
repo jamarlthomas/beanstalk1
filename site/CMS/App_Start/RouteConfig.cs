@@ -5,6 +5,8 @@ using System.Web.Routing;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Infrastructure;
 using CMS.Mvc.Infrastructure.Localization;
+using System.Reflection;
+using System.Linq;
 
 namespace CMS.Mvc
 {
@@ -13,22 +15,37 @@ namespace CMS.Mvc
     /// </summary>
     public class RouteConfig
     {
+        private const string CONTROLLER_POSTFIX = "Controller";
         /// <summary>
         /// Registers the application routes.
         /// </summary>
         /// <param name="routes">The routes collection</param>
         public static void RegisterRoutes(RouteCollection routes)
         {
-  
+
             routes.MapMvcAttributeRoutes();
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
                 "Default",
-                "{controller}/{action}/{name}",
+                "",
                 new { controller = "Home", action = "Index", name = "" }
                 );
 
-
+            var controllersTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => String.Equals(t.Namespace, "CMS.Mvc.Controllers.Afton", StringComparison.Ordinal))
+                .Select(s => s.Name).ToList();
+            foreach (var controllerType in controllersTypes)
+            {
+                if (controllerType.EndsWith(CONTROLLER_POSTFIX))
+                {
+                    var controllerName = controllerType.Substring(0, controllerType.Length - CONTROLLER_POSTFIX.Length);
+                    routes.MapRoute(
+                        controllerName,
+                        controllerName + "/{action}/{name}",
+                        new { controller = controllerName, action = "Index", name = "" }
+                    );
+                }
+            }
             //if (ConfigurationManager.AppSettings["EnableUrlLocalization"].Equals("true",
             //    StringComparison.InvariantCultureIgnoreCase))
             //{

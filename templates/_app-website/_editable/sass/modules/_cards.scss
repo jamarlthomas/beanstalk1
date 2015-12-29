@@ -10,7 +10,7 @@
                 
             }//cardBtnIndicator
             
-            .trendIndicator { position: absolute; bottom: 180px; left: 0px; width: 100%; height: 43px; padding: 13px 33px; background-color: rgba(0, 37, 98, 0.95); z-index: 10; color: #FFF;
+            .trendIndicator { position: absolute; bottom: 180px; left: 0px; width: 100%; height: 43px; padding: 13px 33px; background-color: rgba(76, 157, 47, 0.90); z-index: 10; color: #FFF;
                 
                 &::before { content: url(../../images/trending-icon.png); margin-right: 10px; }
                 
@@ -19,7 +19,7 @@
                 
             }//trendIndicator
             
-            .overlayC { position: absolute; bottom: 0px; left: 0px; width: 100%; height: 180px; padding: 15px 33px 0px 15px; background-color: rgba(255, 255, 255, 0.95); z-index: 10; 
+            .overlayC { position: absolute; bottom: 0px; left: 0px; width: 100%; height: 180px; padding: 15px 33px 0px 15px; background-color: rgba(255, 255, 255, 0.90); z-index: 10; 
                 
                 .overlay { width: 100%; height: 128px; overflow: hidden;
                     
@@ -45,11 +45,11 @@
                 .cardDate { padding-top: 5px; color: #595959; font-size: 11px; }
                 
                 //*** Breakpoints ***
-                @include breakpoint($bp2) { padding: 15px 15px 0px 15px; height: 160px; }
+                @include breakpoint($bp2) { padding: 15px 10px 0px 10px; height: 160px; }
                 
             }//overlayC
             
-            .hoverOverlayC { position: absolute; bottom: 0px; width: 100%; padding: 30px 33px 0px 15px; background-color: rgba(12, 65, 154, 0.95);
+            .hoverOverlayC { position: absolute; bottom: 0px; width: 100%; padding: 10px 33px 0px 15px; background-color: rgba(12, 65, 154, 0.90);
                 
                 .hoverOverlay { max-height: 115px; margin-bottom: 5px; overflow: hidden;
                 
@@ -99,9 +99,9 @@
             
         }//a
         
-        a.trending .overlayC { background: #124397!important; }
+        a.trending .overlayC { background-color: rgba(12, 65, 154, 0.90)!important; }
         a.trending .cardTitle, a.trending .cardHdr, a.trending .cardTxt, a.trending .cardDate { color: #FFF!important; }
-        a.trending .hoverOverlayC { background: rgba(255,255,255,.95); }
+        a.trending .hoverOverlayC { background: rgba(255,255,255,.90); }
         a.trending .hoverOverlayC .hoverOverlayTxt { color: #595959; }
         
     }//cards
