@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Web;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.ViewModels.Product;
@@ -12,11 +13,10 @@ namespace CMS.Mvc.Infrastructure
 
         protected override void Objects()
         {
-            CreateMap<Product, ProductViewModel>();
-            CreateMap<Product, DownloadWidgetViewModel>()
-                .ForMember(s => s.Title, d => d.Title)
-                .ForMember(s=>s.TileImage, d=>d.TileImage);
-            
+            CreateMap<Product, ProductViewModel>()
+                .ForMember(s=>new HtmlString(s.Content), d=>d.DefaultContent);
+            CreateMap<Product, DownloadWidgetViewModel>();
+
         }
 
         protected override void Collections()

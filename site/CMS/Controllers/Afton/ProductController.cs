@@ -28,9 +28,13 @@ namespace CMS.Mvc.Controllers.Afton
             productModel.StayInformed = new StayInformedViewModel();
             productModel.InsightsAndResourcesWidget.InsightsAndResourcesBlocks = new List<InsightsAndResourcesBlockViewModel>();
             productModel.PassionWidget = new PassionWidgetViewModel();
-            productModel.BreadCrumb.BreadcrumbLinkItems = _productProvider.GetBreadcrumb(name);  //new List<BreadCrumbLinkItemViewModel>();
+            productModel.BreadCrumb.BreadcrumbLinkItems = _productProvider.GetBreadcrumb(name);  
             productModel.DownloadWidget = MapData<Product, DownloadWidgetViewModel>(product);
-            productModel.ContentCopy = MapData<Product, ProductViewModel>(product);
+            productModel.DownloadWidget.DownloadLink = _productProvider.GetDownloadLink(product);
+            productModel.DownloadWidget.AvailableIn = _productProvider.GetAvailableRegions(product);
+            productModel.DownloadWidget.TranslationAvailable = _productProvider.GetAvailableTranslations(product);
+
+            productModel.ContentCopyArea = MapData<Product, ProductViewModel>(product);
             productModel.RelatedProducts.Products = new List<RelatedProductCardViewModel>();
             productModel.InsightsAndResourcesSection.InsightsAndResourcesCards = new List<InsightsAndResourcesCard>();
             return View("~/Views/Afton/Product/Index.cshtml", productModel);

@@ -243,6 +243,7 @@
     <Compile Include="ViewModels\Home\HomeViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterNavItemViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterViewModel.cs" />
+    <Compile Include="ViewModels\Product\DownloadLanguageLinkItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\BreadCrumbLinkItemViewModel.cs" />
     <Compile Include="ViewModels\Product\InsightsAndResourcesBlockViewModel.cs" />
     <Compile Include="ViewModels\Product\InsightsAndResourcesCard.cs" />

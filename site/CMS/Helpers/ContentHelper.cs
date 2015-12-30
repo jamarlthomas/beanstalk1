@@ -11,6 +11,7 @@ using CMS.PortalEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebGrease;
 
 namespace CMS.Mvc.Helpers
 {
@@ -75,8 +76,10 @@ namespace CMS.Mvc.Helpers
 
         private static void TraverseNodes(TreeNode doc, List<Link> list)
         {
-
-            list.Add(new Link() { Title = doc.DocumentName, Reference = doc.NodeAlias});
+            object val;
+            if (!doc.TryGetProperty("ExcludeFromSiteMap", out val))
+                list.Add(new Link() {Title = doc.DocumentName, Reference = doc.NodeAlias});
+            
             if (doc.Parent.NodeAliasPath == "/")
                 return;
             TraverseNodes(doc.Parent, list);

@@ -1,25 +1,58 @@
 ﻿@model CMS.Mvc.ViewModels.Product.DownloadWidgetViewModel
 <div id="prodHdrC">
-    <img id="pLft" src="~/images/page-images/sample-prod-img.jpg">
+    @if (!string.IsNullOrWhiteSpace(Model.TileImage))
+    {
+        <img id="pLft" src="@Url.Content(Model.TileImage)">
+    }
     <div id="pRt">
-        <h1>HiTEC<sup>&reg;</sup> 385: Gear Oil Additive</h1>
-        <div id="pTxt">Premium Additive-Designed Lubricants for Use in Automotive Axles and Manual Transmissions</div>
-        <div id="pCurrently">Currently available in: <span><a href="#">Asia Pacific</a></span><span><a href="#">EMEAI</a></span><span><a href="#">Latin America</a></span></div>
-        <div id="downloadDocsC">
-            <a href="#" class="downloadBtn">Download Product Data Sheet <span class="icon-download"></span></a>
-            <div id="translate-doc">
-                Translation Available: <a href="#" id="selDocLang">Select Language <span class="icon-arrow"></span></a>
-                <ul id="langDocDropDown" style="display: none;">
-                    <li id="langEnglish"><a href="#">English</a></li>
-                    <li id="langChinese"><a href="#">简体中文</a></li>
-                    <li id="langGerman"><a href="#">German</a></li>
-                    <li id="langJapanese"><a href="#">日本語</a></li>
-                    <li id="langRussian"><a href="#">Russian</a></li>
-                    <li id="langSpanish"><a href="#">Español</a></li>
-                    <li id="langPortugues"><a href="#">Português</a></li>
-                    <li id="langFrench"><a href="#">French</a></li>
-                </ul>
+        <h1>@Html.Raw(Model.Title)</h1>
+        <div id="pTxt">@Model.Description</div>
+        @if (!Model.AvailableIn.Any())
+        {
+            <div id="pCurrently"> Currently not available</div>
+        }
+        else
+        {
+            <div id="pCurrently">
+                Currently available in:
+                @foreach (var link in Model.AvailableIn)
+                {
+                    <span>
+                        <a href="@Url.Content(link.Reference)">@link.Title</a>
+                    </span>
+                }
+                @*<span><a href="#">Asia Pacific</a></span>
+                    <span><a href="#">EMEAI</a></span>
+                    <span><a href="#">Latin America</a></span>*@
             </div>
+        }
+        <div id="downloadDocsC">
+            <a href="@Url.Content(Model.DownloadLink)" class="downloadBtn">Download @Html.Raw(Model.Title) <span class="icon-download"></span></a>
+            @if (Model.TranslationAvailable.Any())
+            {
+                <div id="translate-doc">
+                    Translation Available: <a href="#" id="selDocLang">Select Language <span class="icon-arrow"></span></a>
+                    <ul id="langDocDropDown" style="display: none;">
+                        @foreach (var translation in Model.TranslationAvailable)
+                        {
+                            <li id="@translation.LanguageId"><a href="@Url.Content(translation.Reference)">@translation.Title</a></li>
+                        }   
+                        @*<li id="langEnglish"><a href="#">English</a></li>
+                        <li id="langChinese"><a href="#">简体中文</a></li>
+                        <li id="langGerman"><a href="#">German</a></li>
+                        <li id="langJapanese"><a href="#">日本語</a></li>
+                        <li id="langRussian"><a href="#">Russian</a></li>
+                        <li id="langSpanish"><a href="#">Español</a></li>
+                        <li id="langPortugues"><a href="#">Português</a></li>
+                        <li id="langFrench"><a href="#">French</a></li>*@
+                    </ul>
+
+                </div>
+            }
+            else
+            {
+                <div id="translate-doc">Translation not available</div>
+            }
         </div>
         <div id="socialC2">
             <a class="addthis_button_compact">
