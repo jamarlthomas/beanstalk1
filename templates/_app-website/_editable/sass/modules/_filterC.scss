@@ -1,4 +1,4 @@
-.viewAll { display: block; padding-top: 5px; color: #48a540; text-decoration: none;
+.viewAll { padding-top: 5px; color: #48a540; text-decoration: none;
 
     &:hover { color: #0c419a; }
     
@@ -7,7 +7,16 @@
 
 #filterHdrC { background: #f1f0f0; 
     
-    #filterHdr { padding: 10px 0px; color: #545454; font: 15px HelveticaNeueLTStd-Md; }
+    #filterHdr { padding: 10px 0px; color: #545454; font: 15px HelveticaNeueLTStd-Md;
+    
+        #mobileFilterBtn { float: right;
+        
+            //*** Breakpoints ***
+            @include breakpoint($bp1) { display: block!important; }
+            
+        }//mobileFilterBtn
+        
+    }//filterHdr
     
 }//filterHdrC
 
@@ -47,17 +56,105 @@
     .borderBtm { border-bottom: 1px solid #000; }
   
     //*** Breakpoints ***
-    @include breakpoint($bp1) { display: none;}
+    @include breakpoint($bp1) { display: none; }
     
 }//filterC
 
 
+
 #hideFilterC { background: #a1a1a1; 
     
-    a { display: block; padding: 10px 0px; color: #FFF; font-size: 15px; text-align: center; text-decoration: none; }
+    a { position: relative; display: block; padding: 10px 0px; color: #FFF; font-size: 15px; text-align: center; text-decoration: none;
+    
+        .icon-arrow { content: "\e900"; position: absolute; margin: 4px 0px 0px 10px; font: 13px icomoon; transform: rotate(-90deg); }
+        
+    }//a
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { display: none; }
     
 }//hideFilterC
 
 
+
+
+
+#filterResultsC { background: #f1f0f0; box-shadow: 0 15px 0 0 rgba(0,0,0,.2);
+    
+    #filterHdr { position: relative;
+        
+        #filterSort { display: inline-block; position: absolute; top: 35px; right: 0px;
+            
+            select { position: relative; padding: 3px 45px 3px 10px; border: 1px solid #4c9d2f;
+                
+                &:focus { outline:none; }
+                
+            }//select
+            
+            @supports (pointer-events: none) {
+                &::before { content: ""; position: absolute; top: 0px; right: 0px; width: 40px; height: 26px; background: #4c9d2f; pointer-events: none; z-index: 1; }
+                &::after { content: "\e900"; color: #FFF; font: 13px icomoon; position: absolute; top: 6px; right: 13px; pointer-events: none; transform: rotate(90deg); z-index: 2; }          
+            }//suports 
+            
+            //*** Breakpoints ***
+            @include breakpoint($bp3) { margin-top: 10px; position: relative; top: 0px; } 
+            
+        }//filterSort
+        
+        #filterNum { padding-bottom: 5px; color: #0c419a; font-size: 24px; }
+        
+        #filterList { font-size: 12px; line-height: 16px;
+        
+            .hdr { font-weight: bold; }
+            
+        }//filterList
+        
+    }//filterHdr
+    
+    #filterResults { @include gridContainer; padding-top: 25px; padding-bottom: 15px;
+        
+        a.filterCardC { position: relative; @include gallery(3 of 12); margin-bottom: gutter(); display: block; box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.10); background: #FFF; text-decoration: none; overflow: hidden;
+        
+            .filterCardHdr { padding: 25px 25px 0px 25px; height: 125px; background: #114294; color: #FFF; font: 35px/38px HelveticaNeueLT-Thin; overflow: hidden; transition: 0.8s; }
+            
+            .filterCardTxtC { padding: 25px 25px 0px 25px; height: 125px; 
+                
+                .filterCardTxt {  height: 60px; font-size: 12px; line-height: 14px; overflow: hidden; }
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { display: none; }
+                
+            }//filterCardTxtC
+            
+            .cardBtnIndicator { position: absolute; bottom: 10px; right: 10px; z-index: 11;
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { display: none; }
+                
+            }//cardBtnIndicator
+            
+            &:hover .filterCardHdr { background: #49a842;  }            
+            
+            //*** Breakpoints ***
+            @include breakpoint($bp1) { @include gallery(6 of 12); } 
+            @include breakpoint($bp3) { 
+                
+                @include gallery(12 of 12 break);
+                
+                &:nth-child(n) {
+                    clear: both;
+                }
+            }//breakpoint($bp3)
+            
+            
+        }//a.filterCardC
+
+        
+    }//filterResults
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { margin-top: 10px; }
+    
+}//filterResultsC
 
 
