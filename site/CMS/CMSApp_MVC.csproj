@@ -162,10 +162,12 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
+    <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
     <Compile Include="Controllers\Afton\ProductController.cs" />
     <Compile Include="Controllers\Afton\SBUController.cs" />
     <Compile Include="Controllers\Afton\HomeController.cs" />
     <Compile Include="Controllers\Afton\MasterController.cs" />
+    <Compile Include="Helpers\RegionsHelper.cs" />
     <Compile Include="Helpers\CultureHelper.cs" />
     <Compile Include="Helpers\DivideHelper.cs" />
     <Compile Include="Infrastructure\Localization\IRouteValueTranslationProvider.cs" />
@@ -179,6 +181,7 @@
     <Compile Include="CMS_MvcModule\CMS_MvcModuleMetadata.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModule.cs" />
     <Compile Include="Infrastructure\Localization\TranslationsUtility.cs" />
+    <Compile Include="Interfaces\ISelectionFilterPageProvider.cs" />
     <Compile Include="Interfaces\IDocumentTypeProvider.cs" />
     <Compile Include="Interfaces\IDocumentProvider.cs" />
     <Compile Include="Interfaces\IHomeProvider.cs" />
@@ -199,6 +202,7 @@
     <Compile Include="Models\Afton\InsightsResources.cs" />
     <Compile Include="Models\Afton\GenericPage.cs" />
     <Compile Include="Models\Afton\Link.cs" />
+    <Compile Include="Models\Afton\ProductSelectionFilter\SelectionFilterPage.cs" />
     <Compile Include="Models\Afton\SBU\FAQTopic.cs" />
     <Compile Include="Models\Afton\SBU\FAQItem.cs" />
     <Compile Include="Models\Afton\SBU\Document.cs" />
@@ -222,6 +226,7 @@
     <Compile Include="Models\Afton\Shared\Region.cs" />
     <Compile Include="Models\CorporateSite\News.cs" />
     <Compile Include="Properties\MvcAssemblyInfo.cs" />
+    <Compile Include="Providers\SelectionFilterPageProvider.cs" />
     <Compile Include="Providers\DocumentProvider.cs" />
     <Compile Include="Providers\LookupProvider.cs" />
     <Compile Include="Providers\PrimaryTilesProvider.cs" />
@@ -243,6 +248,11 @@
     <Compile Include="ViewModels\Home\HomeViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterNavItemViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterViewModel.cs" />
+    <Compile Include="ViewModels\SelectionFilter\SelectionFilterPageStateEnum.cs" />
+    <Compile Include="ViewModels\SelectionFilter\SBUFilterViewModel.cs" />
+    <Compile Include="ViewModels\SelectionFilter\CheckBoxViewModel.cs" />
+    <Compile Include="ViewModels\SelectionFilter\HeaderViewModel.cs" />
+    <Compile Include="ViewModels\SelectionFilter\SelectionFilterViewModel.cs" />
     <Compile Include="ViewModels\Product\DownloadLanguageLinkItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\BreadCrumbLinkItemViewModel.cs" />
     <Compile Include="ViewModels\Product\InsightsAndResourcesBlockViewModel.cs" />
@@ -391,7 +401,7 @@
     <Content Include="Views\Afton\SBU\_solutions.cshtml" />
     <Content Include="Views\Afton\Home\_heroContent.cshtml" />
     <Content Include="Views\Afton\Product\Index.cshtml" />
-    <Content Include="Views\Afton\Product\_breadCrumb.cshtml" />
+    <Content Include="Views\Afton\Shared\_breadCrumb.cshtml" />
     <Content Include="Views\Afton\Product\_downloadWidget.cshtml" />
     <Content Include="Views\Afton\Product\_productMainContent.cshtml" />
     <Content Include="Views\Afton\Product\_contactUs.cshtml" />
@@ -403,6 +413,11 @@
     <Content Include="Views\Afton\Product\_insightsAndResourcesCard.cshtml" />
     <Content Include="Views\Afton\Product\_leftSideBlock.cshtml" />
     <Content Include="Views\Afton\Product\_relatedProductCard.cshtml" />
+    <Content Include="Views\Afton\SelectionFilter\Index.cshtml" />
+    <Content Include="Views\Afton\SelectionFilter\_header.cshtml" />
+    <Content Include="Views\Afton\SelectionFilter\_documentTypeCheckBoxes.cshtml" />
+    <Content Include="Views\Afton\SelectionFilter\_regionCheckBoxes.cshtml" />
+    <Content Include="Views\Afton\SelectionFilter\_SBUCheckBoxes.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

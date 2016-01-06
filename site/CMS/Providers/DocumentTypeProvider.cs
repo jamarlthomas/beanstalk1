@@ -11,5 +11,9 @@ namespace CMS.Mvc.Providers
         {
             return ContentHelper.GetDocChildrenByName<DocumentType>(DocumentType.CLASS_NAME, alias);
         }
+		public List<DocumentType> GetDocumentTypes()
+		{
+			return ContentHelper.GetDocs<DocumentType>(DocumentType.CLASS_NAME);
+		}
     }
 }
