@@ -8,7 +8,7 @@
         
         }//mobileFilterHdr
 
-        ul#mobileFilterNav { padding: 0px; margin: 0px 0px 25px 0px; border-bottom: 1px solid #4c9d2f;
+        ul#mobileFilterNav { padding: 0px; margin: 0px; border-bottom: 1px solid #4c9d2f;
             
             li { margin: 0px; padding: 0px; list-style: none;
             
@@ -33,7 +33,15 @@
                 
             }//li
 
-        }//mobileFilterNavC
+        }//ul#mobileFilterNavC
+        
+        
+        #mobileClearFilterB { padding: 10px 15px;
+            
+            input { padding: 10px 23px; width: 100%; background: #4c9d2f; border: 0px; color: #FFF; }
+        
+        }//mobileClearFilterB
+        
         
     }//mobileFilterNavC
     

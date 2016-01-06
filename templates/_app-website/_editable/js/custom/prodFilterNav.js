@@ -9,13 +9,27 @@ $( document ).ready(function() {
     getDocTypeFilter.find(".filterH").remove();
     $("#mFilterDocumentType").append(getDocTypeFilter);
     
-    var getSolutionFilter = $("#filterSolution-Driveline").html();
-    getSolutionFilter = getSolutionFilter + $("#filterSolution-Fuel").html();
-    getSolutionFilter = getSolutionFilter + $("#filterSolution-EngineOil").html();
-    getSolutionFilter = getSolutionFilter + $("#filterSolution-Industrial").html();
-    getSolutionFilter = getSolutionFilter + $("#filterSolution-LubricantComponents").html();
+    var getSolutionFilter = "";
+    if($("#filterSolution-Driveline").html()!== undefined){   
+        getSolutionFilter = $("#filterSolution-Driveline").html();
+    }
+    if($("#filterSolution-Fuel").html()!== undefined){   
+        getSolutionFilter = getSolutionFilter + $("#filterSolution-Fuel").html();
+    }
+    if($("#filterSolution-EngineOil").html()!== undefined){   
+        getSolutionFilter = getSolutionFilter + $("#filterSolution-EngineOil").html();
+    }
+    if($("#filterSolution-Industrial").html()!== undefined){   
+        getSolutionFilter = getSolutionFilter + $("#filterSolution-Industrial").html();
+    }
+    if($("#filterSolution-LubricantComponentsl").html()!== undefined){   
+        getSolutionFilter = getSolutionFilter + $("#filterSolution-LubricantComponents").html();
+    }
     $("#mFilterSolution").append(getSolutionFilter);
-    
+    if(getSolutionFilter==""){
+        $("#mobileFilterNav li:eq(2)").css({"display": "none"});
+    }
+     
     
    //Open Filter Navigation
     $('#mobileFilterBtn').click(function(e) {
@@ -99,5 +113,12 @@ $( document ).ready(function() {
         
     });
     
+    
+    //Reset button needs to reset all desktop items
+    $("#mobileFilterForm #mobileClearFilterB input").click(function() {
+        
+        $('#filterC')[0].reset();
+        
+    });
     
 });

@@ -17,7 +17,7 @@ $( document ).ready(function() {
                 $("#hideFilterC a .txt").text("Show Filter Options")
                 
                 $("#hideFilterC a .icon-arrow").css({"transform": "rotate(90deg)"})
-                
+  
             });
             
             prodFilter = "closed";
@@ -27,10 +27,12 @@ $( document ).ready(function() {
             $( "#filterC" ).animate({
                 height: "toggle"
             }, 1300, function(){
-               
+                
                 $("#hideFilterC a .txt").text("Hide Filter Options")
                 
                 $("#hideFilterC a .icon-arrow").css({"transform": "rotate(-90deg)"})
+                
+                $(this).removeAttr( 'style' );
             });
                         
             prodFilter = "open";

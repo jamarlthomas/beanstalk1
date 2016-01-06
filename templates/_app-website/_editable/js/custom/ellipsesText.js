@@ -14,7 +14,7 @@ $(document).ready(function() {
       fallbackToLetter: true
     });
     
-    //elipses should be added, so activate megamenu
+    //elipses should be added to megamenu, so now activate megamenu
     $( "#megaMenuC .megaMenu" ).each(function() {
         $(this).css({"display":"none"})
     });
@@ -45,4 +45,20 @@ $(document).ready(function() {
       wrap		: 'word',
       watch: 'window'
     });
+    
+    
+    //ellipses for cards v3
+    $(".cards3C .cards3 .cardHdrC").dotdotdot({
+      ellipsis	: '... ',
+      wrap		: 'word',
+      watch: 'window'
+    });
+    
+    $(".cards3C .cards3 .cardTxtC").dotdotdot({
+      ellipsis	: '... ',
+      wrap		: 'word',
+      watch: 'window'
+    });
+    
+    
 });
