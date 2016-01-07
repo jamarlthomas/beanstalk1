@@ -19,17 +19,20 @@ html(lang='en')
         include includes/_header.jade
         
         div(id="contentAreaC")
+        
+            div(class="fullWidth2 txtPaddingTop")
+
+                div(id="breadCrumbsC")
+                    div(id="breadCrumbs")
+                        a(href="#") Home
+                        a(href="#") Driveline Additives
+                        a(href="#") Automotive Gear
+                        a(href="#") Automotive Gear Products
+                        | HiTEC® 385: Gear Oil Additive
+
             
             div(class="fullWidth txtPaddingTop")
-            
-                div(id="breadCrumbsC")
-                            div(id="breadCrumbs")
-                                a(href="#") Home
-                                a(href="#") Driveline Additives
-                                a(href="#") Automotive Gear
-                                a(href="#") Automotive Gear Products
-                                | HiTEC® 385: Gear Oil Additive
-                                
+              
                 div(class="txtPaddingTop txtPaddingBtm")
                 
                     h1 Page Title
@@ -40,10 +43,12 @@ html(lang='en')
                     a(href="#" id="mobileFilterBtn" style="display: none;")
                         img(src="images/mobile-filter.png")
             
-            form(id="filterC" class="bgPattern")
+            form(id="filterC" class="bgPattern" style="display:none;")
                 
                 div(class="filterRow")
-                
+                    
+                    
+                    
                     div(id="clearFilterB")
                         input(type="reset" value="Clear All")
                 
@@ -103,7 +108,10 @@ html(lang='en')
                             input(type="checkbox" name="Doc Type" value="Product Reviews")
                             span
                             | Product Reviews
-                
+                            
+                    div(class="filterCol")
+                        div(class="filterH") Search
+                        input(type="text" placeholder="Enter Search Term")
                 
                 
                 div(class="filterRow" class="borderTop")
@@ -325,7 +333,7 @@ html(lang='en')
                     span(class="icon-arrow")
             
             div(id="filterResultsC")
-                div(id="filterHdr" class="fullWidth padTop")
+                div(id="filterHdr" class="padTop")
                         
                     div(id="filterNum") 4 Results
                     div(id="filterList") Current Selection:  
@@ -385,8 +393,108 @@ html(lang='en')
                                 div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
                             div(class="cardBtnIndicator")
                                 img(src="images/card-btn-indicator.png")
-
-                       
+                                
+                        a(href="#" class="cardC")
+                            div(class="cardHdrC")
+                                div(class="cardHdr") Result Title Here
+                            div(class="cardTxtC")
+                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png")
+                                
+                        a(href="#" class="cardC")
+                            div(class="cardHdrC")
+                                div(class="cardHdr") Result Title Here
+                            div(class="cardTxtC")
+                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png")
+                                
+                        a(href="#" class="cardC")
+                            div(class="cardHdrC")
+                                div(class="cardHdr") Result Title Here
+                            div(class="cardTxtC")
+                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png")
+                                
+                        a(href="#" class="cardC")
+                            div(class="cardHdrC")
+                                div(class="cardHdr") Result Title Here
+                            div(class="cardTxtC")
+                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png")
+                                
+                        a(href="#" class="cardC")
+                            div(class="cardHdrC")
+                                div(class="cardHdr") Result Title Here
+                            div(class="cardTxtC")
+                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png")
+                                
+                        a(href="#" class="cardC")
+                            div(class="cardHdrC")
+                                div(class="cardHdr") Result Title Here
+                            div(class="cardTxtC")
+                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png")
+                                
+                        a(href="#" class="cardC")
+                            div(class="cardHdrC")
+                                div(class="cardHdr") Result Title Here
+                            div(class="cardTxtC")
+                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png")
+                                
+                        a(href="#" class="cardC")
+                            div(class="cardHdrC")
+                                div(class="cardHdr") Result Title Here
+                            div(class="cardTxtC")
+                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png")
+                                
+                        a(href="#" class="cardC")
+                            div(class="cardHdrC")
+                                div(class="cardHdr") Result Title Here
+                            div(class="cardTxtC")
+                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png")
+                                
+                        a(href="#" class="cardC")
+                            div(class="cardHdrC")
+                                div(class="cardHdr") Result Title Here
+                            div(class="cardTxtC")
+                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png")
+                                
+                        a(href="#" class="cardC")
+                            div(class="cardHdrC")
+                                div(class="cardHdr") Result Title Here
+                            div(class="cardTxtC")
+                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png")
+                
+                div(class="paginationC padBtm")
+                    div(class="pagination")
+                        a(href="#" class="prev")
+                        a(href="#") 1
+                        a(href="#") 2
+                        a(href="#") 3
+                        a(href="#") 4
+                        a(href="#") 5
+                        a(href="#" class="nextGroup") ...
+                        a(href="#") 21
+                        a(href="#") 22
+                        a(href="#" class="next")
+                                
             
             div(class="borders bgPattern padTopBtm")
                 div(class="fullWidth")

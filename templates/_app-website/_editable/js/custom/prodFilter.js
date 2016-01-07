@@ -1,6 +1,6 @@
 $( document ).ready(function() {
     
-    var prodFilter = "open";
+    var prodFilter = "closed";
     
     //Mangage the Desktop Display    
     $("#hideFilterC").click(function(e) {

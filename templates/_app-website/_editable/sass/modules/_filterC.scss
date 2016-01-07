@@ -37,6 +37,8 @@
         
         .filterCol { float: left; width: 230px; margin-right: 20px;
             
+            input { width: 200px; }
+            
             label { display: block; margin: 0px 0px 8px 18px;
                 
                 input[type="checkbox"] { display:none; }
@@ -71,6 +73,7 @@
     //*** Breakpoints ***
     @include breakpoint($bp1) { display: none; }
     
+    
 }//hideFilterC
 
 
@@ -79,7 +82,7 @@
 
 #filterResultsC { background: #f1f0f0; box-shadow: 0 15px 0 0 rgba(0,0,0,.2);
     
-    #filterHdr { position: relative;
+    #filterHdr { position: relative; width: 1235px; margin: 0px auto;
         
         #filterSort { display: inline-block; position: absolute; top: 35px; right: 0px;
             
@@ -91,7 +94,7 @@
             
             @supports (pointer-events: none) {
                 
-                select { padding: 1px 45px 0px 3px; }
+                select { padding: 1px 35px 0px 3px; }
                 
                 &::before { content: ""; position: absolute; top: 0px; right: 0px; width: 40px; height: 26px; background: #4c9d2f; pointer-events: none; z-index: 1; }
                 
@@ -111,6 +114,11 @@
             .hdr { font-weight: bold; }
             
         }//filterList
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { width: 98%; }
+        @include breakpoint($bp2) { width: 95%; }
+        @include breakpoint($bp3) { width: 90%; }
         
     }//filterHdr
     
