@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
@@ -22,7 +23,8 @@ namespace CMS.Mvc.Providers
 
         public List<LinkItemViewModel> GetAvailableRegions(Product product)
         {
-            return new List<LinkItemViewModel> { new LinkItemViewModel { Reference = "#", Title = "Asia Pacific" } };
+            return product.Regions.Split('|').Select(item => new LinkItemViewModel() {Title = item}).ToList();
+            //new List<LinkItemViewModel> { new LinkItemViewModel { Reference = "#", Title = "Asia Pacific" } };
         }
 
 

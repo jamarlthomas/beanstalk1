@@ -18,7 +18,7 @@
                 @foreach (var link in Model.AvailableIn)
                 {
                     <span>
-                        <a href="@Url.Content(link.Reference)">@link.Title</a>
+                        <a @*href="@Url.Content(link.Reference)"*@>@link.Title</a>
                     </span>
                 }
                 @*<span><a href="#">Asia Pacific</a></span>

@@ -1,6 +1,6 @@
 ﻿@model CMS.Mvc.ViewModels.Product.PassionWidgetViewModel
 <div class="sidbarBoxC">
-    <div class="hdr">Passion: Our Communities</div>
+    <div class="hdr">@Model.Title @*Passion: Our Communities*@</div>
     <div class="twoCol">
         @Html.Partial("~/Views/Afton/Product/_leftSideBlock.cshtml", @Model.PassionBlock)
         @*<a href="#">
