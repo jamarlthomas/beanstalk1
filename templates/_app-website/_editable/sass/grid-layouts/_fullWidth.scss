@@ -2,6 +2,13 @@
 .fullWidth { position: relative; margin: 0px auto; width: 1235px; 
 
     //*** Breakpoints ***
-    @include breakpoint($bp1) { width: 90%; }
+    @include breakpoint($bp1) { width: calc(100% - 40px); margin: 0px 20px 0px 20px; }
+
+}
+
+.fullWidth2 { position: relative; margin: 0px auto; width: 1235px; 
+
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { width: 100%; }
 
 }

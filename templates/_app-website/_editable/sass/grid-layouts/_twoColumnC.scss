@@ -9,6 +9,6 @@
     }//first p 
     
     //*** Breakpoints ***
-    @include breakpoint($bp1) { width: 90%; }
+    @include breakpoint($bp1) { width: calc(100% - 40px); margin: 0px 20px 0px 20px;  }
     
 }//twoColumnC

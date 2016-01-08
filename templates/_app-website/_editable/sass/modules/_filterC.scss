@@ -1,0 +1,130 @@
+.viewAll { padding-top: 5px; color: #48a540; text-decoration: none;
+
+    &:hover { color: #0c419a; }
+    
+}//viewAll
+
+
+#filterHdrC { background: #f1f0f0; 
+    
+    #filterHdr { padding: 10px 0px; color: #545454; font: 15px HelveticaNeueLTStd-Md;
+    
+        #mobileFilterBtn { float: right;
+        
+            //*** Breakpoints ***
+            @include breakpoint($bp1) { display: block!important; }
+            
+        }//mobileFilterBtn
+        
+    }//filterHdr
+    
+}//filterHdrC
+
+
+#filterC { 
+    
+    .filterRow { position: relative; margin: 0px auto; padding: 28px 0px; width: 1235px; overflow: auto; 
+        
+        #clearFilterB { position: absolute; top: 26px; right: 0px;
+            
+            input { padding: 10px 23px; background: #4c9d2f; border: 0px; color: #FFF; }
+        
+        }//clearFilterB
+
+        .filterH { padding-bottom: 17px; color: #0c419a; font-size: 24px; }
+            
+        .filterSH { padding-bottom: 10px; font-size: 18px; }
+        
+        .filterCol { float: left; width: 230px; margin-right: 20px;
+            
+            input { width: 200px; }
+            
+            label { display: block; margin: 0px 0px 8px 18px;
+                
+                input[type="checkbox"] { display:none; }
+                
+                input[type="checkbox"] +  span { display:inline-block; width: 15px; height: 13px; margin: -3px 4px 0 -18px; vertical-align: middle; cursor: pointer; background:url(../../images/check-box.png) left top no-repeat; }
+                
+                input[type="checkbox"]:checked + span { background:url(../../images/check-box-a.png) left top no-repeat; }
+                
+            }//label
+            
+            &:last-child { margin-right: 0px; }
+            
+        }//filterCol
+        
+    }//filterRow
+  
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { display: none; }
+    
+}//filterC
+
+
+
+#hideFilterC { background: #a1a1a1; 
+    
+    a { position: relative; display: block; padding: 10px 0px; color: #FFF; font-size: 15px; text-align: center; text-decoration: none;
+    
+        .icon-arrow { content: "\e900"; position: absolute; margin: 4px 0px 0px 10px; font: 13px icomoon; transform: rotate(-90deg); }
+        
+    }//a
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { display: none; }
+    
+    
+}//hideFilterC
+
+
+
+
+
+#filterResultsC { background: #f1f0f0; box-shadow: 0 15px 0 0 rgba(0,0,0,.2);
+    
+    #filterHdr { position: relative; width: 1235px; margin: 0px auto;
+        
+        #filterSort { display: inline-block; position: absolute; top: 35px; right: 0px;
+            
+            select { position: relative; width: 120px; height: 26px; border: 1px solid #4c9d2f; border-radius: 0px; 
+                
+                &:focus { outline:none; }
+                
+            }//select
+            
+            @supports (pointer-events: none) {
+                
+                select { padding: 1px 35px 0px 3px; }
+                
+                &::before { content: ""; position: absolute; top: 0px; right: 0px; width: 40px; height: 26px; background: #4c9d2f; pointer-events: none; z-index: 1; }
+                
+                &::after { content: "\e900"; color: #FFF; font: 13px icomoon; position: absolute; top: 7px; right: 13px; pointer-events: none; transform: rotate(90deg); z-index: 2; } 
+                
+            }//suports 
+            
+            //*** Breakpoints ***
+            @include breakpoint($bp3) { margin-top: 10px; position: relative; top: 0px; } 
+            
+        }//filterSort
+        
+        #filterNum { padding-bottom: 5px; color: #0c419a; font-size: 24px; }
+        
+        #filterList { font-size: 12px; line-height: 16px;
+        
+            .hdr { font-weight: bold; }
+            
+        }//filterList
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { width: 98%; }
+        @include breakpoint($bp2) { width: 95%; }
+        @include breakpoint($bp3) { width: 90%; }
+        
+    }//filterHdr
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { margin-top: 10px; }
+    
+}//filterResultsC
+
+
