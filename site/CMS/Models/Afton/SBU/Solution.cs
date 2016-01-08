@@ -21,137 +21,154 @@ using CMS.DocumentEngine;
 
 namespace CMS.DocumentEngine.Types
 {
-	/// <summary>
-	/// Sample item class.
-	/// </summary>
-	public partial class Solution : TreeNode
-	{
-		#region "Constants"
+    /// <summary>
+    /// Sample item class.
+    /// </summary>
+    public partial class Solution : TreeNode
+    {
+        #region "Constants"
 
-		/// <summary>
-		/// Class name of the item.
-		/// </summary>
-		public const string CLASS_NAME = "custom.Solution";
+        /// <summary>
+        /// Class name of the item.
+        /// </summary>
+        public const string CLASS_NAME = "custom.Solution";
 
-		#endregion
-
-
-		#region "Properties"
-
-		/// <summary>
-		/// SolutionID.
-		/// </summary>
-		[DatabaseField]
-		public int SolutionID
-		{
-			get
-			{
-				return ValidationHelper.GetInteger(GetValue("SolutionID"), 0);
-			}
-			set
-			{
-				SetValue("SolutionID", value);
-			}
-		}
+        #endregion
 
 
-		/// <summary>
-		/// 
-		/// </summary>
-		[DatabaseField]
-		public string Title
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Title"), "");
-			}
-			set
-			{
-				SetValue("Title", value);
-			}
-		}
+        #region "Properties"
+
+        /// <summary>
+        /// SolutionID.
+        /// </summary>
+        [DatabaseField]
+        public int SolutionID
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("SolutionID"), 0);
+            }
+            set
+            {
+                SetValue("SolutionID", value);
+            }
+        }
 
 
-		/// <summary>
-		/// HeroImage.
-		/// </summary>
-		[DatabaseField]
-		public string HeroImage
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("HeroImage"), "");
-			}
-			set
-			{
-				SetValue("HeroImage", value);
-			}
-		}
+        /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
+        public string HomeImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HomeImage"), "");
+            }
+            set
+            {
+                SetValue("HomeImage", value);
+            }
+        }
 
 
-		/// <summary>
-		/// NavigationIcon.
-		/// </summary>
-		[DatabaseField]
-		public string NavigationIcon
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("NavigationIcon"), "");
-			}
-			set
-			{
-				SetValue("NavigationIcon", value);
-			}
-		}
+        /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
+        public string Title
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Title"), "");
+            }
+            set
+            {
+                SetValue("Title", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Description.
-		/// </summary>
-		[DatabaseField]
-		public string Description
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Description"), "");
-			}
-			set
-			{
-				SetValue("Description", value);
-			}
-		}
+        /// <summary>
+        /// HeroImage.
+        /// </summary>
+        [DatabaseField]
+        public string HeroImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HeroImage"), "");
+            }
+            set
+            {
+                SetValue("HeroImage", value);
+            }
+        }
 
 
-		/// <summary>
-		/// FeaturedProductList.
-		/// </summary>
-		[DatabaseField]
-		public string FeaturedProductList
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("FeaturedProductList"), "");
-			}
-			set
-			{
-				SetValue("FeaturedProductList", value);
-			}
-		}
-
-		#endregion
+        /// <summary>
+        /// NavigationIcon.
+        /// </summary>
+        [DatabaseField]
+        public string NavigationIcon
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("NavigationIcon"), "");
+            }
+            set
+            {
+                SetValue("NavigationIcon", value);
+            }
+        }
 
 
-		#region "Constructors"
+        /// <summary>
+        /// Description.
+        /// </summary>
+        [DatabaseField]
+        public string Description
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Description"), "");
+            }
+            set
+            {
+                SetValue("Description", value);
+            }
+        }
 
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		public Solution()
-			: base(CLASS_NAME)
-		{
-		}
 
-		#endregion
-	}
+        /// <summary>
+        /// FeaturedProductList.
+        /// </summary>
+        [DatabaseField]
+        public string FeaturedProductList
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("FeaturedProductList"), "");
+            }
+            set
+            {
+                SetValue("FeaturedProductList", value);
+            }
+        }
+
+        #endregion
+
+
+        #region "Constructors"
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public Solution()
+            : base(CLASS_NAME)
+        {
+        }
+
+        #endregion
+    }
 }
