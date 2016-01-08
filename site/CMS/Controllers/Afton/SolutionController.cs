@@ -1,4 +1,5 @@
-﻿using CMS.DocumentEngine.Types;
+﻿using System.Linq;
+using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
@@ -31,9 +32,11 @@ namespace CMS.Mvc.Controllers.Afton
 
         public ActionResult Index(string name, string parentName)
         {
-			var solution = _solutionProvider.GetSolution(name);
+			var solutions = _solutionProvider.GetSolutionItems(parentName);
+			var solution = solutions.First(f => f.Title == name);
 			var solutionViewModel = MapData<Solution, SolutionViewModel>(solution);
-			var featuredProductListGuids = StringToGuidsConvertHelper.ParseGuids(solution.FeaturedProductList);
+			solutionViewModel.SidebarSolutions = MapData<Solution, SolutionViewModel>(solutions);
+			var featuredProductListGuids = StringToGuidsConvertHelper.ParseGuids(solution.FeaturedProductList).Take(4).ToList();
 			solutionViewModel.Products = MapData<Product, ProductViewModel>(_productProvider.GetProductItems(featuredProductListGuids, solution.Site.DisplayName));
 			solutionViewModel.ParentName = parentName;
 			return View("~/Views/Afton/Solution/Index.cshtml", solutionViewModel);

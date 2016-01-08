@@ -1,15 +1,15 @@
 ﻿@using CMS.Mvc.ViewModels.Home
-@model HomeViewModel 
+@model HomeViewModel
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Afton/Shared/Master.cshtml";
+	ViewBag.Title = "Index";
+	Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
 
 <div id="contentAreaC">
 	@Html.Partial("~/Views/Afton/Home/_heroContent.cshtml", Model.HeroContentList)
-
-	@Html.Partial("~/Views/Afton/Home/_primaryTiles.cshtml", Model.PrimaryTiles)
-
+	<div class="cardsC bgPattern">
+		@Html.Partial("~/Views/Afton/Shared/_tile.cshtml", Model.PrimaryTiles)
+	</div>
 	<div id="learnMoreC">
 		<div id="learnMore">
 			<div id="learnTxtC">

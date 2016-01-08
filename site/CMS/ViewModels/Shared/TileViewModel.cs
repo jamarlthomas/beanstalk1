@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CMS.Mvc.ViewModels.Home
+namespace CMS.Mvc.ViewModels.Shared
 {
-	public class PrimaryTileViewModel
+	public class TileViewModel
 	{
 		public string Title { get; set; }
         public string HoverContent { get; set; }
@@ -13,5 +13,6 @@ namespace CMS.Mvc.ViewModels.Home
 		public DateTime? Date { get; set; }
         public string HomeImage { get; set; }
 		public string TypeName { get; set; }
+		public bool? IsTrending { get; set; }
 	}
 }

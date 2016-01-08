@@ -90,6 +90,23 @@ namespace CMS.DocumentEngine.Types
 
 
 		/// <summary>
+		/// Subtitle.
+		/// </summary>
+		[DatabaseField]
+		public string Subtitle
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("Subtitle"), "");
+			}
+			set
+			{
+				SetValue("Subtitle", value);
+			}
+		}
+
+
+		/// <summary>
 		/// HeroImage.
 		/// </summary>
 		[DatabaseField]
