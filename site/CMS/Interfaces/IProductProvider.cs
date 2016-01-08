@@ -1,9 +1,11 @@
 ﻿using CMS.DocumentEngine.Types;
+using System;
+using System.Collections.Generic;
 
 namespace CMS.Mvc.Interfaces
 {
-    public interface IProductProvider
+	public interface IProductProvider
     {
-        Product GetProduct(string alias);
+		List<Product> GetProductItems(List<Guid> guids, string siteName);
     }
 }

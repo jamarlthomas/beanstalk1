@@ -1,17 +1,8 @@
-﻿@using CMS.Mvc.ViewModels.SBU
-@foreach (var item in Model)
-{
-	<p>
-		Document type: @item.Title <br />
-		Documents:
-		@foreach (var document in item.Documents)
-		{
-		<p>
-			@document.Title <br />
-			@document.Abstract <br />
-			@document.Copy <br />
-		</p>
-		}
-		</p>
-}
-<hr />
+﻿<h3>@Model.Title</h3>
+<ul>
+	@foreach (var document in Model.Documents)
+	{
+		<li><a href="#">@document.Title</a></li>
+	}
+</ul>
+<a href="#">View More ></a>

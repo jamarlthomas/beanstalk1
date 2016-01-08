@@ -1,39 +1,118 @@
 ﻿@using CMS.Mvc.ViewModels.SBU
-@model SBUViewModel 
+@model SBUViewModel
 @{
-    ViewBag.Title = "Solution Business Unit";
-    Layout = "~/Views/Afton/Shared/Master.cshtml";
+	ViewBag.Title = Model.Title;
+	Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
-
-<!-- image -->
-Anchor Menu:
-@foreach (var item in Model.AnchorMenu)
-{
-    <p><a href="#">@item.Title</a></p>
-}
-<hr />
-Description:
-<p>
-    <p>
-        Left part<br />
-        @Html.Raw(Model.LeftDescription)
-    </p>
-    <p>
-        Right part <br />
-        @Html.Raw(Model.RightDescription)
-    </p>
-</p>
-<hr />
-FAQ Description:
-<p>@Html.Raw(Model.FAQDescription)</p>
-<hr />
-FAQs:
-@Html.Partial("~/Views/Afton/SBU/_FAQs.cshtml", Model.FAQs)
-
-Documents:
-@Html.Partial("~/Views/Afton/SBU/_documents.cshtml", Model.DocumentTypes)
-
-Solutions:
-@Html.Partial("~/Views/Afton/SBU/_solutions.cshtml", Model.Solutions)
+<div id="contentAreaC">
+	@Html.Partial("~/Views/Afton/SBU/_heroImage.cshtml", Model)
+	<div class="sbuLandingNavC">
+		<div class="sbuLandingNav">
+			<ul>
+				<li><a href="#overview-pos"><span>Overview</span></a></li>
+				<li><a href="#solutions-pos"><span>Solutions</span></a></li>
+				<li><a href="#faqs-pos"><span>FAQs</span></a></li>
+				<li><a href="#sheets-pos"><span>Product Data Sheets</span></a></li>
+				<li><a href="#resources-pos"><span>Insights & Resources</span></a></li>
+			</ul>
+		</div>
+		<div style="display: none;" class="sbuLandingDropNav">
+			<span class="icon-arrow"></span><a href="#" class="sbuSelect">Overview</a>
+			<ul style="display:none;" class="DropNav">
+				<li><a data-sbudd="Overview" href="#overview-pos">Overview</a></li>
+				<li><a data-sbudd="Solutions" href="#solutions-pos">Solutions</a></li>
+				<li><a data-sbudd="FAQs" href="#faqs-pos">FAQs</a></li>
+				<li><a data-sbudd="Product Data Sheets" href="#sheets-pos">Product Data Sheets</a></li>
+				<li><a data-sbudd="Insights &amp; Resources" href="#resources-pos">Insights & Resources</a></li>
+			</ul>
+		</div>
+	</div>
+	<a id="overview-pos" class="anchorTag"></a>
+	<div class="twoColumnC padTop leadIn">
+		@Html.Raw(Model.Description)
+	</div>
+	<a id="solutions-pos" class="anchorTag"></a>
+	<div class="padTopBtm">
+		<div class="fullWidth">
+			<h2>@Model.Title Solutions</h2>
+		</div>
+		@Html.Partial("~/Views/Afton/SBU/_solutions.cshtml", Model.Solutions)
+	</div>
+	<a id="faqs-pos" class="anchorTag"></a>
+	<div class="borders bgPattern">
+		<div class="fullWidth padTopBtm">
+			<h2 class="txtPaddingBtm">FAQs</h2>
+			@Html.Raw(Model.FAQDescription)
+			@Html.Partial("~/Views/Afton/SBU/_FAQs.cshtml", Model.FAQs)
+			<a href="#" class="viewAllBtn">View All @Model.Title FAQs</a>
+		</div>
+	</div><a id="sheets-pos" class="anchorTag"></a>
+	<div class="padTopBtm">
+		<div class="fullWidth">
+			<h2 class="txtPaddingBtm">@Model.Title Documents</h2>
+			<div class="txtPaddingBtm">@Html.Raw(Model.DocumentsDescription)</div>
+			<hr>
+			<h2 class="txtPaddingTop">Product Data Sheets</h2>
+			@Html.Partial("~/Views/Afton/SBU/_documentColumns.cshtml", Model.DocumentTypes)
+			<a href="#" class="viewAllBtn">View All @Model.Title Documents</a>
+		</div>
+	</div>
+	<a id="resources-pos" class="anchorTag"></a>
+	@*<div class="borders bgPattern padTopBtm">
+		<div class="fullWidth">
+			<h2>Insights & Resources </h2>
+		</div>
+		<div class="cardsC">
+				<div class="cards">
+					<a href="#">
+						<div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+						<div class="overlayC">
+							<div class="overlay">
+								<div class="cardTitle">News</div>
+								<div class="cardHdr">Afton Chemical to exhibit and present at annual international CTI Symposium. </div>
+							</div>
+							<div class="cardDate">March 27, 2015</div>
+						</div>
+						<div style="opacity: 0.0;" class="hoverOverlayC">
+							<div class="hoverOverlay">
+								<div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+							</div>
+							<div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+						</div><img src="page-images/cards/sample-card1.jpg">
+					</a><a href="#">
+						<div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+						<div class="overlayC">
+							<div class="overlay">
+								<div class="cardTitle">Events</div>
+								<div class="cardHdr">Afton Chemical breaks ground for its facility in Singapore.</div>
+								<div class="cardTxt">Production of the next generation of additive solutions is set to begin in January 2016.</div>
+							</div>
+						</div>
+						<div style="opacity: 0.0;" class="hoverOverlayC">
+							<div class="hoverOverlay">
+								<div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+							</div>
+							<div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+						</div><img src="page-images/cards/sample-card2.jpg">
+					</a><a href="#">
+						<div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+						<div class="overlayC">
+							<div class="overlay">
+								<div class="cardTitle">Events</div>
+								<div class="cardHdr">Afton Chemical breaks ground for its facility in Singapore.</div>
+								<div class="cardTxt">Production of the next generation of additive solutions is set to begin in January 2016.</div>
+							</div>
+						</div>
+						<div style="opacity: 0.0;" class="hoverOverlayC">
+							<div class="hoverOverlay">
+								<div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
+							</div>
+							<div class="cardLearnMore"> <span class="icon-arrow"></span></div>
+						</div><img src="page-images/cards/sample-card2.jpg">
+					</a>
+				</div>
+			</div>
+		</div>*@
+</div>
 
 

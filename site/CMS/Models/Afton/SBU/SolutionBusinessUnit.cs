@@ -90,6 +90,40 @@ namespace CMS.DocumentEngine.Types
 
 
 		/// <summary>
+		/// HeroImageTitle.
+		/// </summary>
+		[DatabaseField]
+		public string HeroImageTitle
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("HeroImageTitle"), "");
+			}
+			set
+			{
+				SetValue("HeroImageTitle", value);
+			}
+		}
+
+
+		/// <summary>
+		/// HeroImageSubtitle.
+		/// </summary>
+		[DatabaseField]
+		public string HeroImageSubtitle
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("HeroImageSubtitle"), "");
+			}
+			set
+			{
+				SetValue("HeroImageSubtitle", value);
+			}
+		}
+
+
+		/// <summary>
 		/// Description.
 		/// </summary>
 		[DatabaseField]

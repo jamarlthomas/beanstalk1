@@ -1,14 +1,18 @@
 ﻿using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 
 namespace CMS.Mvc.Providers
 {
-    public class ProductProvider : IProductProvider
+	public class ProductProvider : IProductProvider
     {
-        public Product GetProduct(string alias)
+		public List<Product> GetProductItems(List<Guid> guids, string siteName)
         {
-            return ContentHelper.GetDocByName<Product>(Product.CLASS_NAME, alias);
-        }
-    }
+			return ContentHelper.GetDocByGuids<Product>(guids, siteName);
+		}
+	}
 }
