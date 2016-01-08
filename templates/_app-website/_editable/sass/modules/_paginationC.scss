@@ -6,10 +6,22 @@
             
             &:hover { color: #114294; }
             
-            &.nextGroup { color: #000; }
+            &.nextGroup { color: #000;
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { display:none; }
+            }
+            
+            &.endNumbs { 
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { display:none; }
+                
+            }
                         
             //*** Breakpoints ***
-            @include breakpoint($bp2) { margin: 0px 8px; }
+            @include breakpoint($bp2) { margin: 0px 2.5%; font-size: 16px; }
+            @include breakpoint($bp3) { margin: 0px 2%; font-size: 18px; }
             
         }//a
         
