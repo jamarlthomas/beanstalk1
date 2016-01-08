@@ -234,6 +234,7 @@
     <Compile Include="Providers\SolutionBusinessUnitProvider.cs" />
     <Compile Include="Providers\ContentMenuItemProvider.cs" />
     <Compile Include="Providers\PagesMenuItemProvider.cs" />
+    <Compile Include="ViewModels\Shared\LinkItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\TileViewModel.cs" />
     <Compile Include="ViewModels\Home\HeroContentViewModel.cs" />
     <Compile Include="ViewModels\Home\HomeViewModel.cs" />
