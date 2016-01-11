@@ -8,6 +8,7 @@ using CMS.Mvc.ViewModels.Product;
 using CMS.Mvc.ViewModels.Shared;
 using CMS.Mvc.ViewModels.SelectionFilter;
 using CMS.Mvc.Helpers;
+using System.Data;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -44,6 +45,12 @@ namespace CMS.Mvc.Controllers.Afton
 			_documentTypeProvider = documentTypeProvider;
 			_solutionBusinessUnitProvider = solutionBusinessUnitProvider;
 			_solutionProvider = solutionProvider;
+		}
+
+		public ActionResult Search(string name)
+		{
+			var result = SearchHelper.PerformSearch(name);
+			return Json(result, JsonRequestBehavior.AllowGet);
 		}
 
 		public ActionResult Index(string name)
