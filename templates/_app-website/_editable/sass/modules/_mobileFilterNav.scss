@@ -1,0 +1,66 @@
+#mobileFilterNavC1 { position: fixed; top: 0px; xwidth: 0px; min-height: 100%; z-index: 0; background: rgba(0,0,0,0.0); overflow: hidden; transition: background 1s,ease; 
+
+    #mobileFilterNavC { position: absolute; top: 80px; right: -260px; width: 210px; height: 100%; overflow-x: hidden; height: calc(100% - 80px); background: #FFF; transition: All, 0.8s ease;
+        
+        #mobileFilterHdr { padding: 10px 15px; 
+            
+            #menuFilterclose { float: right; }
+        
+        }//mobileFilterHdr
+        
+        
+        #mobileFilterSearch { padding: 10px 15px; border-top: 1px solid #4c9d2f;
+            
+            #hdr { color: #0033a1; font-size: 16px; }
+            
+            input { width: 160px; }
+            
+        }//mobileFilterSearch
+        
+
+        ul#mobileFilterNav { padding: 0px; margin: 0px; border-bottom: 1px solid #4c9d2f;
+            
+            li { margin: 0px; padding: 0px; list-style: none;
+            
+                a { position: relative; padding: 10px 15px; display: block; color: #0033a1; font-size: 16px; text-decoration: none; border-top: 1px solid #4c9d2f;
+                
+                    &::after { content: "\e900"; position: absolute; top: 13px; right: 13px; pointer-events: none; color: #4c9d2f; font: 10px icomoon; transform: rotate(90deg); z-index: 2; }
+                    
+                 }
+                
+                .filterSH { padding: 0px 15px 5px 15px; font-weight: bold; }
+                
+                label { display: block; padding: 0px 15px 10px 35px;
+
+                    input[type="checkbox"] { display:none; }
+
+                    input[type="checkbox"] +  span { display:inline-block; width: 15px; height: 13px; margin: -3px 4px 0 -18px; vertical-align: middle; cursor: pointer; background:url(../../images/check-box.png) left top no-repeat; }
+
+                    input[type="checkbox"]:checked + span { background:url(../../images/check-box-a.png) left top no-repeat; }
+                
+                }//label
+                
+                
+            }//li
+
+        }//ul#mobileFilterNavC
+        
+        
+        #mobileClearFilterB { padding: 10px 15px;
+            
+            input { padding: 10px 23px; width: 100%; background: #4c9d2f; border: 0px; color: #FFF; }
+        
+        }//mobileClearFilterB
+        
+        
+    }//mobileFilterNavC
+    
+}//mobileFilterNavC1
+
+
+//Navigation Animation
+#mobileFilterNavC1.navFilterToggleOpen { background: rgba(0,0,0,0.75);
+
+    #mobileFilterNavC { right: 0px; }
+    
+}
