@@ -58,7 +58,7 @@ namespace CMS.Mvc.Helpers
             var list = new List<Link>();
             TraverseNodes(doc, list);
 
-            list.Add(new Link() { Title = "Home", Reference = "" });
+            list.Add(new Link() { Title = "Home", Reference = "Home" });
             list.Reverse();
             string currReference = "";
             var breadcrumbList = list.Select(item =>

@@ -220,6 +220,7 @@
     <Compile Include="Models\Afton\Home\HeroContent.cs" />
     <Compile Include="Models\Afton\Home.cs" />
     <Compile Include="Models\Afton\Shared\Region.cs" />
+    <Compile Include="Models\Afton\SidebarComponents\StayInformed.cs" />
     <Compile Include="Models\CorporateSite\News.cs" />
     <Compile Include="Properties\MvcAssemblyInfo.cs" />
     <Compile Include="Providers\DocumentProvider.cs" />
@@ -359,10 +360,12 @@
     <Content Include="Scripts\custom\copyrightDate.min.js" />
     <Content Include="Scripts\custom\ellipsesText.min.js" />
     <Content Include="Scripts\custom\homeSlideShow.min.js" />
+    <Content Include="Scripts\custom\langDocSel.min.js" />
     <Content Include="Scripts\custom\langSel.min.js" />
     <Content Include="Scripts\custom\megaMenu.min.js" />
     <Content Include="Scripts\custom\mobileCheck.min.js" />
     <Content Include="Scripts\custom\mobileNav.min.js" />
+    <Content Include="Scripts\custom\print.min.js" />
     <Content Include="Scripts\custom\sbuLandingDropDown.min.js" />
     <Content Include="Scripts\custom\search.min.js" />
     <Content Include="Scripts\library\hammer.min.js" />
@@ -404,6 +407,7 @@
     <Content Include="Views\Afton\Product\_insightsAndResourcesCard.cshtml" />
     <Content Include="Views\Afton\Product\_leftSideBlock.cshtml" />
     <Content Include="Views\Afton\Product\_relatedProductCard.cshtml" />
+    <Content Include="css\maps\print.min.css.map" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
