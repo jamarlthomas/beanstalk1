@@ -16,7 +16,6 @@ using CMS.Helpers;
 using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
-using System.Collections.Generic;
 
 [assembly: RegisterDocumentType(DocumentType.CLASS_NAME, typeof(DocumentType))]
 
@@ -57,7 +56,7 @@ namespace CMS.DocumentEngine.Types
 
 
 		/// <summary>
-		/// 
+		/// Title.
 		/// </summary>
 		[DatabaseField]
 		public string Title

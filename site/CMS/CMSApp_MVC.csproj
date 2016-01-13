@@ -162,6 +162,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
+    <Compile Include="Controllers\Afton\InsightsAndResourcesController.cs" />
     <Compile Include="Controllers\Afton\SolutionController.cs" />
     <Compile Include="Controllers\Afton\SBUController.cs" />
     <Compile Include="Controllers\Afton\HomeController.cs" />
@@ -180,9 +181,11 @@
     <Compile Include="CMS_MvcModule\CMS_MvcModuleMetadata.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModule.cs" />
     <Compile Include="Infrastructure\Localization\TranslationsUtility.cs" />
+    <Compile Include="Interfaces\IResourceTileProvider.cs" />
     <Compile Include="Interfaces\IDocumentTypeProvider.cs" />
     <Compile Include="Interfaces\IDocumentProvider.cs" />
     <Compile Include="Interfaces\IHomeProvider.cs" />
+    <Compile Include="Interfaces\IInsightsResourcesProvider.cs" />
     <Compile Include="Interfaces\IPrimaryTilesProvider.cs" />
     <Compile Include="Interfaces\IProductProvider.cs" />
     <Compile Include="Interfaces\ISolutionProvider.cs" />
@@ -195,13 +198,13 @@
     <Compile Include="Interfaces\IContentMenuItemProvider.cs" />
     <Compile Include="Interfaces\IPagesMenuItemProvider.cs" />
     <Compile Include="Helpers\ContentHelper.cs" />
-    <Compile Include="Models\Afton\InsightsResources.cs" />
+    <Compile Include="Models\Afton\InsightsAndResources\InsightsResources.cs" />
     <Compile Include="Models\Afton\GenericPage.cs" />
     <Compile Include="Models\Afton\Link.cs" />
     <Compile Include="Models\Afton\SBU\FAQTopic.cs" />
     <Compile Include="Models\Afton\SBU\FAQItem.cs" />
-    <Compile Include="Models\Afton\SBU\Document.cs" />
-    <Compile Include="Models\Afton\SBU\DocumentType.cs" />
+    <Compile Include="Models\Afton\Shared\Document.cs" />
+    <Compile Include="Models\Afton\Shared\DocumentType.cs" />
     <Compile Include="Models\Afton\Master\FooterNavItem.cs" />
     <Compile Include="Models\Afton\Master\MegaMenuDescriptionedItem.cs" />
     <Compile Include="Models\Afton\Master\MegaMenuLinkItem.cs" />
@@ -220,7 +223,9 @@
     <Compile Include="Models\Afton\Home.cs" />
     <Compile Include="Models\CorporateSite\News.cs" />
     <Compile Include="Properties\MvcAssemblyInfo.cs" />
+    <Compile Include="Providers\ResourceTileProvider.cs" />
     <Compile Include="Providers\DocumentProvider.cs" />
+    <Compile Include="Providers\InsightsResourcesProvider.cs" />
     <Compile Include="Providers\PrimaryTilesProvider.cs" />
     <Compile Include="Providers\HomeProvider.cs" />
     <Compile Include="Providers\DocumentTypeProvider.cs" />
@@ -234,7 +239,9 @@
     <Compile Include="Providers\SolutionBusinessUnitProvider.cs" />
     <Compile Include="Providers\ContentMenuItemProvider.cs" />
     <Compile Include="Providers\PagesMenuItemProvider.cs" />
-    <Compile Include="ViewModels\Shared\LinkItemViewModel.cs" />
+    <Compile Include="ViewModels\InsightsAndResources\InsightsListingItemViewModel.cs" />
+    <Compile Include="ViewModels\InsightsAndResources\InsightsAndResourcesViewModel.cs" />
+    <Compile Include="ViewModels\Shared\LinkViewModel.cs" />
     <Compile Include="ViewModels\Shared\TileViewModel.cs" />
     <Compile Include="ViewModels\Home\HeroContentViewModel.cs" />
     <Compile Include="ViewModels\Home\HomeViewModel.cs" />
@@ -357,6 +364,9 @@
     <Content Include="Views\Afton\Solution\_heroImage.cshtml" />
     <Content Include="Views\Afton\Solution\_sidebar.cshtml" />
     <Content Include="Views\Afton\Shared\_stayInformed.cshtml" />
+    <Content Include="Views\Afton\InsightsAndResources\Index.cshtml" />
+    <Content Include="Views\Afton\InsightsAndResources\_insightsListing.cshtml" />
+    <Content Include="Views\Afton\InsightsAndResources\_resourcesTiles.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

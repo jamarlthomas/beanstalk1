@@ -7,6 +7,11 @@ namespace CMS.Mvc.Providers
 {
     public class SolutionBusinessUnitProvider : ISolutionBusinessUnitProvider
     {
+		public List<SolutionBusinessUnit> GetSolutionBusinessUnits()
+		{
+			return ContentHelper.GetDocs<SolutionBusinessUnit>(SolutionBusinessUnit.CLASS_NAME);
+		}
+
         public List<SolutionBusinessUnit> GetSolutionBusinessUnits(string parentAlias)
         {
             return ContentHelper.GetDocChildrenByName<SolutionBusinessUnit>(SolutionBusinessUnit.CLASS_NAME, parentAlias);

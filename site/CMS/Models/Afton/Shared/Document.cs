@@ -19,7 +19,7 @@ using CMS.DocumentEngine;
 
 [assembly: RegisterDocumentType(Document.CLASS_NAME, typeof(Document))]
 
-namespace CMS.DocumentEngine.Types
+namespace CMS.DocumentEngine.Types 
 {
     /// <summary>
     /// Sample item class.
@@ -90,7 +90,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// 
+        /// Title.
         /// </summary>
         [DatabaseField]
         public string Title
@@ -136,6 +136,23 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("Copy", value);
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
+        public bool IsHighlightedOnInsightsPage
+        {
+            get
+            {
+                return ValidationHelper.GetBoolean(GetValue("IsHighlightedOnInsightsPage"), false);
+            }
+            set
+            {
+                SetValue("IsHighlightedOnInsightsPage", value);
             }
         }
 

@@ -1,0 +1,10 @@
+﻿@foreach (var insightsListingItem in Model)
+{
+	<h3>@insightsListingItem.Title</h3>
+	<p>
+		@foreach (var link in insightsListingItem.Links)
+		{
+			<a href="#">@link.Title</a>
+		}
+	</p>
+}

@@ -11,7 +11,7 @@ namespace CMS.Mvc.Providers
     {
         public List<TreeNode> GetPrimaryTiles(List<Guid> guids, string siteName)
         {
-			return ContentHelper.GetDocByGuids<TreeNode>(guids, siteName);
+			return ContentHelper.GetDocsByGuids<TreeNode>(guids, siteName);
         }
     }
 }

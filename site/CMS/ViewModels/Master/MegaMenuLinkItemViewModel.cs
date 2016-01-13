@@ -3,7 +3,7 @@ using CMS.Mvc.ViewModels.Shared;
 
 namespace CMS.Mvc.ViewModels.Master
 {
-    public class MegaMenuLinkItemViewModel : LinkItemViewModel
+    public class MegaMenuLinkItemViewModel : LinkViewModel
     {
         public List<MegaMenuSolutionBusinessUnitViewModel> Solutions { get; set; }
     }
