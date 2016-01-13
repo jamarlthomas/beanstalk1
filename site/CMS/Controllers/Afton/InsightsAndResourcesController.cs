@@ -60,16 +60,7 @@ namespace CMS.Mvc.Controllers.Afton
 				Title = s.Title,
 				Links = MapData<Document, LinkViewModel>(_documentProvider.GetHighlightedDocuments(s.Title))
 			}));
-			var tiles = _resourceTileProvider.GetTiles(page.FeaturedContentList, page.Site.DisplayName);
-			model.Tiles = new List<TileViewModel>();
-			foreach (var tile in tiles)
-			{
-				if (tile is Document)
-				{
-					model.Tiles.Add(MapData<Document, TileViewModel>(tile as Document));
-				}	
-			}
-			var tiles = docs.Select(s => MapData<type, TileViewModel>(s));
+			model.Tiles = _resourceTileProvider.GetTiles(page.FeaturedContentList, page.Site.DisplayName).Select(s => AutoMapper.Mapper.Map<TileViewModel>(s)).ToList();
 			return View("~/Views/Afton/InsightsAndResources/Index.cshtml", model);
 		}
 	}
