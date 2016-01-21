@@ -205,5 +205,11 @@ namespace CMS.Mvc.Helpers
         }
 
 
+
+        internal static List<TreeNode> GetNodes(string[] p)
+        {
+            return p.Select(id =>
+                DocumentHelper.GetDocument(int.Parse(id), new TreeProvider())).ToList();
+        }
     }
 }

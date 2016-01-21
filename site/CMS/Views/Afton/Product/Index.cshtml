@@ -35,10 +35,7 @@
             @Html.Partial("~/Views/Afton/Product/_productMainContent.cshtml", @Model.ContentCopyArea)
         </div>
         <div id="lftCol-sidebar">
-            @Html.Partial("~/Views/Afton/Product/_contactUs.cshtml", @Model.ContactUs)
-            @Html.Partial("~/Views/Afton/Product/_stayInformed.cshtml", @Model.StayInformed)
-            @Html.Partial("~/Views/Afton/Product/_insightsAndResoursesWidget.cshtml", @Model.InsightsAndResourcesWidget)
-            @Html.Partial("~/Views/Afton/Product/_passion.cshtml", @Model.PassionWidget)
+            @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar)
 
         </div>
     </div>

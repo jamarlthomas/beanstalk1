@@ -1,6 +1,6 @@
-﻿namespace CMS.Mvc.ViewModels.Shared
+﻿namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
 {
-    public class LinkItemViewModel
+    public class LinkItemViewModel 
     {
         public string Title { get; set; }
         public string Reference { get; set; }

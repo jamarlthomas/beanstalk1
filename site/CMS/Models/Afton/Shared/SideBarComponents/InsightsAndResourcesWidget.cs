@@ -17,21 +17,21 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(Product.CLASS_NAME, typeof(Product))]
+[assembly: RegisterDocumentType(InsightsAndResourcesWidget.CLASS_NAME, typeof(InsightsAndResourcesWidget))]
 
 namespace CMS.DocumentEngine.Types
 {
     /// <summary>
     /// Sample item class.
     /// </summary>
-    public partial class Product : TreeNode
+    public partial class InsightsAndResourcesWidget : TreeNode
     {
         #region "Constants"
 
         /// <summary>
         /// Class name of the item.
         /// </summary>
-        public const string CLASS_NAME = "custom.Product";
+        public const string CLASS_NAME = "custom.InsightsAndResourcesWidget";
 
         #endregion
 
@@ -39,35 +39,18 @@ namespace CMS.DocumentEngine.Types
         #region "Properties"
 
         /// <summary>
-        /// ProductID.
+        /// InsightsAndResourcesWidgetID.
         /// </summary>
         [DatabaseField]
-        public int ProductID
+        public int InsightsAndResourcesWidgetID
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("ProductID"), 0);
+                return ValidationHelper.GetInteger(GetValue("InsightsAndResourcesWidgetID"), 0);
             }
             set
             {
-                SetValue("ProductID", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Sidebar Component Items.
-        /// </summary>
-        [DatabaseField]
-        public string SidebarItems
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
-            }
-            set
-            {
-                SetValue("SidebarItems", value);
+                SetValue("InsightsAndResourcesWidgetID", value);
             }
         }
 
@@ -90,69 +73,35 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// TileImage.
+        /// Insights And Resource Items.
         /// </summary>
         [DatabaseField]
-        public string TileImage
+        public string InsightsAndResourceItems
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("TileImage"), "");
+                return ValidationHelper.GetString(GetValue("InsightsAndResourceItems"), "");
             }
             set
             {
-                SetValue("TileImage", value);
+                SetValue("InsightsAndResourceItems", value);
             }
         }
 
 
         /// <summary>
-        /// Description.
+        /// Default Image.
         /// </summary>
         [DatabaseField]
-        public string Description
+        public string DefaultImage
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Description"), "");
+                return ValidationHelper.GetString(GetValue("DefaultImage"), "");
             }
             set
             {
-                SetValue("Description", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Content.
-        /// </summary>
-        [DatabaseField]
-        public string Content
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("Content"), "");
-            }
-            set
-            {
-                SetValue("Content", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Regions.
-        /// </summary>
-        [DatabaseField]
-        public string Regions
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("Regions"), "");
-            }
-            set
-            {
-                SetValue("Regions", value);
+                SetValue("DefaultImage", value);
             }
         }
 
@@ -164,7 +113,7 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Constructor.
         /// </summary>
-        public Product()
+        public InsightsAndResourcesWidget()
             : base(CLASS_NAME)
         {
         }

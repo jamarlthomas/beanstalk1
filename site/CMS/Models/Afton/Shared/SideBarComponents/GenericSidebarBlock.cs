@@ -17,21 +17,21 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(Product.CLASS_NAME, typeof(Product))]
+[assembly: RegisterDocumentType(GenericSidebarBlock.CLASS_NAME, typeof(GenericSidebarBlock))]
 
 namespace CMS.DocumentEngine.Types
 {
     /// <summary>
     /// Sample item class.
     /// </summary>
-    public partial class Product : TreeNode
+    public partial class GenericSidebarBlock : TreeNode
     {
         #region "Constants"
 
         /// <summary>
         /// Class name of the item.
         /// </summary>
-        public const string CLASS_NAME = "custom.Product";
+        public const string CLASS_NAME = "custom.GenericSidebarBlock";
 
         #endregion
 
@@ -39,35 +39,18 @@ namespace CMS.DocumentEngine.Types
         #region "Properties"
 
         /// <summary>
-        /// ProductID.
+        /// GenericSidebarBlockID.
         /// </summary>
         [DatabaseField]
-        public int ProductID
+        public int GenericSidebarBlockID
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("ProductID"), 0);
+                return ValidationHelper.GetInteger(GetValue("GenericSidebarBlockID"), 0);
             }
             set
             {
-                SetValue("ProductID", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Sidebar Component Items.
-        /// </summary>
-        [DatabaseField]
-        public string SidebarItems
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
-            }
-            set
-            {
-                SetValue("SidebarItems", value);
+                SetValue("GenericSidebarBlockID", value);
             }
         }
 
@@ -90,69 +73,35 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// TileImage.
+        /// Default Image.
         /// </summary>
         [DatabaseField]
-        public string TileImage
+        public string DefaultImage
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("TileImage"), "");
+                return ValidationHelper.GetString(GetValue("DefaultImage"), "");
             }
             set
             {
-                SetValue("TileImage", value);
+                SetValue("DefaultImage", value);
             }
         }
 
 
         /// <summary>
-        /// Description.
+        /// SidebarItem.
         /// </summary>
         [DatabaseField]
-        public string Description
+        public string SidebarItem
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Description"), "");
+                return ValidationHelper.GetString(GetValue("SidebarItem"), "");
             }
             set
             {
-                SetValue("Description", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Content.
-        /// </summary>
-        [DatabaseField]
-        public string Content
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("Content"), "");
-            }
-            set
-            {
-                SetValue("Content", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Regions.
-        /// </summary>
-        [DatabaseField]
-        public string Regions
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("Regions"), "");
-            }
-            set
-            {
-                SetValue("Regions", value);
+                SetValue("SidebarItem", value);
             }
         }
 
@@ -164,7 +113,7 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Constructor.
         /// </summary>
-        public Product()
+        public GenericSidebarBlock()
             : base(CLASS_NAME)
         {
         }

@@ -8,7 +8,7 @@ using CMS.Mvc.ViewModels.Shared;
 
 namespace CMS.Mvc.Providers
 {
-    public class ProductProvider : IProductProvider
+    public class ProductProvider: IProductProvider
     {
         public Product GetProduct(string alias)
         {
@@ -21,13 +21,12 @@ namespace CMS.Mvc.Providers
         }
 
 
-        public List<LinkItemViewModel> GetAvailableRegions(Product product)
+        public List<string> GetAvailableRegions(Product product)
         {
-            return product.Regions.Split('|').Select(item => new LinkItemViewModel() {Title = item}).ToList();
-            //new List<LinkItemViewModel> { new LinkItemViewModel { Reference = "#", Title = "Asia Pacific" } };
+            return product.Regions.Split('|').ToList();
         }
 
-
+        //ToDo: 
         public List<DownloadLanguageLinkItemViewModel> GetAvailableTranslations(Product product)
         {
             return new List<DownloadLanguageLinkItemViewModel>
@@ -37,7 +36,7 @@ namespace CMS.Mvc.Providers
             };
         }
 
-
+        //ToDo
         public string GetDownloadLink(Product product)
         {
             return "#";

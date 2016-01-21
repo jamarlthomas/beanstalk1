@@ -2,11 +2,11 @@
 <div id="prodHdrC">
     @if (!string.IsNullOrWhiteSpace(Model.TileImage))
     {
-        <img id="pLft" src="@Url.Content(Model.TileImage)">
+        <img id="pLft" src="@Url.Content(Model.TileImage)"/>
     }
     <div id="pRt">
         <h1>@Html.Raw(Model.Title)</h1>
-        <div id="pTxt">@Model.Description</div>
+        <div id="subTxt">@Model.Description</div>
         @if (!Model.AvailableIn.Any())
         {
             <div id="pCurrently"> Currently not available</div>
