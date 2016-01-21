@@ -1,8 +1,5 @@
-﻿using System;
+﻿using CMS.Mvc.Infrastructure.Enums;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using CMS.Mvc.ViewModels.Shared;
 
 
 namespace CMS.Mvc.ViewModels.SelectionFilter

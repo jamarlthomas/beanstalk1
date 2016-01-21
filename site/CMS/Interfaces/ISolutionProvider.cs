@@ -6,5 +6,6 @@ namespace CMS.Mvc.Interfaces
     public interface ISolutionProvider
     {
         List<Solution> GetSolutionItems(string alias);
+		List<Solution> GetSolutionItems();
     }
 }

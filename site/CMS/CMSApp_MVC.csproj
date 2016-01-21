@@ -182,11 +182,13 @@
     <Compile Include="Infrastructure\Localization\RouteValueTranslationProvider.cs" />
     <Compile Include="Infrastructure\Localization\TranslatedRoute.cs" />
     <Compile Include="Infrastructure\Localization\TranslationItem.cs" />
+    <Compile Include="Infrastructure\Models\SearchRequest.cs" />
     <Compile Include="Infrastructure\UIMappingConfiguration.cs" />
     <Compile Include="Controllers\CorporateSite\NewsController.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModuleMetadata.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModule.cs" />
     <Compile Include="Infrastructure\Localization\TranslationsUtility.cs" />
+    <Compile Include="Interfaces\ISelectionFilterSearchProvider.cs" />
     <Compile Include="Interfaces\ISelectionFilterPageProvider.cs" />
     <Compile Include="Interfaces\IDocumentTypeProvider.cs" />
     <Compile Include="Interfaces\IDocumentProvider.cs" />
@@ -229,10 +231,12 @@
     <Compile Include="Models\Afton\GenericModel.cs" />
     <Compile Include="Models\Afton\Home\HeroContent.cs" />
     <Compile Include="Models\Afton\Home.cs" />
+    <Compile Include="Models\Afton\Shared\SearchResultItem.cs" />
     <Compile Include="Models\Afton\Shared\SearchResult.cs" />
     <Compile Include="Models\Afton\Shared\Region.cs" />
     <Compile Include="Models\CorporateSite\News.cs" />
     <Compile Include="Properties\MvcAssemblyInfo.cs" />
+    <Compile Include="Providers\SelectionFilterSearchProvider.cs" />
     <Compile Include="Providers\SelectionFilterPageProvider.cs" />
     <Compile Include="Providers\DocumentProvider.cs" />
     <Compile Include="Providers\LookupProvider.cs" />
@@ -255,10 +259,12 @@
     <Compile Include="ViewModels\Home\HomeViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterNavItemViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterViewModel.cs" />
-    <Compile Include="ViewModels\SelectionFilter\SelectionFilterPageStateEnum.cs" />
+    <Compile Include="Infrastructure\Enums\SelectionFilterPageStateEnum.cs" />
     <Compile Include="ViewModels\SelectionFilter\SBUFilterViewModel.cs" />
     <Compile Include="ViewModels\SelectionFilter\CheckBoxViewModel.cs" />
     <Compile Include="ViewModels\SelectionFilter\HeaderViewModel.cs" />
+    <Compile Include="ViewModels\SelectionFilter\SelectionFilterSearchItemViewModel.cs" />
+    <Compile Include="ViewModels\SelectionFilter\SelectionFilterSearchViewModel.cs" />
     <Compile Include="ViewModels\SelectionFilter\SelectionFilterViewModel.cs" />
     <Compile Include="ViewModels\Product\DownloadLanguageLinkItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\BreadCrumbLinkItemViewModel.cs" />
@@ -434,7 +440,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\" />
-    <Folder Include="Infrastructure\Enums\" />
     <Folder Include="Infrastructure\Helpers\" />
   </ItemGroup>
   <ItemGroup>

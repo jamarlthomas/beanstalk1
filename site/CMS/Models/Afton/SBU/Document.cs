@@ -59,6 +59,40 @@ namespace CMS.DocumentEngine.Types
 		/// 
 		/// </summary>
 		[DatabaseField]
+		public string HomeImage
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("HomeImage"), "");
+			}
+			set
+			{
+				SetValue("HomeImage", value);
+			}
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[DatabaseField]
+		public string Description
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("Description"), "");
+			}
+			set
+			{
+				SetValue("Description", value);
+			}
+		}
+
+
+		/// <summary>
+		/// Title.
+		/// </summary>
+		[DatabaseField]
 		public string Title
 		{
 			get
@@ -102,6 +136,23 @@ namespace CMS.DocumentEngine.Types
 			set
 			{
 				SetValue("Copy", value);
+			}
+		}
+
+
+		/// <summary>
+		/// IsHighlightedOnInsightsPage.
+		/// </summary>
+		[DatabaseField]
+		public bool IsHighlightedOnInsightsPage
+		{
+			get
+			{
+				return ValidationHelper.GetBoolean(GetValue("IsHighlightedOnInsightsPage"), false);
+			}
+			set
+			{
+				SetValue("IsHighlightedOnInsightsPage", value);
 			}
 		}
 

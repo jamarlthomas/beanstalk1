@@ -7,10 +7,9 @@ using CMS.Mvc.ViewModels.Shared;
 
 namespace CMS.Mvc.ViewModels.SelectionFilter
 {
-	public enum SelectionFilterPageStateEnum
+	public class SelectionFilterSearchViewModel
 	{
-		SBU,
-		Solution,
-		Base
+		public int pagecount { get; set; }
+		public List<SelectionFilterSearchItemViewModel> results { get; set; }
 	}
 }
