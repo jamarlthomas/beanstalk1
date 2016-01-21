@@ -9,16 +9,9 @@ namespace CMS.Mvc.Providers
 {
     public class PrimaryTilesProvider : IPrimaryTilesProvider
     {
-        private readonly TreeProvider _treeProvider = new TreeProvider();
         public List<TreeNode> GetPrimaryTiles(List<Guid> guids, string siteName)
         {
-            var result = new List<TreeNode>();
-            foreach (var guid in guids)
-            {
-                var singleDocument = _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName));
-                result.Add(singleDocument);
-            }
-            return result;
+			return ContentHelper.GetDocByGuids<TreeNode>(guids, siteName);
         }
     }
 }

@@ -6,7 +6,7 @@ body { padding-top: 165px;
 
 div, p, li { font: 14px/20px HelveticaNeueLTStd-Roman, Helvetica, Arial, Sans-Serif; color: #595959; }
 
-h1 { margin: 0px; padding: 0px; color: #0c419a; font: 34px/30px HelveticaNeueLT-Thin; }
+h1 { margin: 0px; padding: 0px; color: #0c419a; font: 34px/40px HelveticaNeueLT-Thin; }
 
 h2 { margin: 0px; padding: 0px; color: #0c419a; font: 24px/28px HelveticaNeueLT-Thin; }
 
@@ -29,6 +29,8 @@ p { margin-top: 0px; }
 
 //Shadow borders
 .borders {  box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.2); }
+
+.borderTop { border-top: 1px solid #000; }
 
 //padding
 .padTopBtm { padding: 40px 0px; }

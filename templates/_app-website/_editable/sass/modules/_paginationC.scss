@@ -1,0 +1,47 @@
+.paginationC { 
+    
+    .pagination { margin: 0px auto; padding: 22px 0px; width: 1235px; border: 1px solid #4c9d2f; text-align: center;
+        
+        a { margin: 0px 25px; color: #4c9d2f; text-decoration: none; 
+            
+            &:hover { color: #114294; }
+            
+            &.nextGroup { color: #000;
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { display:none; }
+            }
+            
+            &.endNumbs { 
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { display:none; }
+                
+            }
+                        
+            //*** Breakpoints ***
+            @include breakpoint($bp2) { margin: 0px 2.5%; font-size: 16px; }
+            @include breakpoint($bp3) { margin: 0px 2%; font-size: 18px; }
+            
+        }//a
+        
+        a.prev {
+            &:before { content: "PREV";
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { content: "<"; }
+            }
+        }
+        
+        a.next {
+            &:before { content: "NEXT";
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { content: ">"; }
+            }
+        }
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { width: calc(100% - 20px); margin: 0px 10px 0px 10px; }
+        
+    }//paginationC
+    
+}//paginationC

@@ -1,9 +1,9 @@
-﻿@using CMS.Mvc.ViewModels.SBU
-@foreach (var item in Model)
-{
-    <p> 
-        @item.Question <br />
-        @item.Answer
-    </p>
-}
-<hr />
+﻿<ul class="accordC txtPaddingTop">
+	@foreach (var item in Model)
+	{
+		<li>
+			<div class="icon"></div><a href="#">@item.Question</a>
+			<div style="display: none;" class="reveal">@item.Answer</div>
+		</li>
+	}
+</ul>

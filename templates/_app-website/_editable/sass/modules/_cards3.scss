@@ -1,0 +1,46 @@
+.cards3C {
+
+    .cards3 { @include gridContainer; padding-top: 25px; padding-bottom: 15px;
+
+            a { position: relative; @include gallery(3 of 12); margin-bottom: gutter(); display: block; box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.10); background: #FFF; text-decoration: none; overflow: hidden;
+
+                .cardHdrC { padding: 25px; height: 135px; background: #114294; transition: 0.8s;
+                    
+                    .cardHdr { color: #FFF; font: 35px/38px HelveticaNeueLT-Thin; overflow: hidden; }
+                
+                }//cardHdrC
+                
+                .cardTxtC { padding: 25px 25px 35px 25px; height: 125px; 
+
+                    .cardTxt { font-size: 12px; line-height: 14px; overflow: hidden; }
+
+                    //*** Breakpoints ***
+                    @include breakpoint($bp3) { display: none; }
+
+                }//cardTxtC
+
+                .cardBtnIndicator { position: absolute; bottom: 10px; right: 10px; z-index: 11;
+
+                    //*** Breakpoints ***
+                    @include breakpoint($bp3) { display: none; }
+
+                }//cardBtnIndicator
+
+                &:hover .cardHdrC { background: #49a842;  }            
+
+                //*** Breakpoints ***
+                @include breakpoint($bp1) { @include gallery(6 of 12); } 
+                @include breakpoint($bp3) { 
+
+                    @include gallery(12 of 12 break);
+
+                    &:nth-child(n) {
+                        clear: both;
+                    }
+                }//breakpoint($bp3)
+
+            }//a
+
+        }//cards3
+    
+}//cards3C

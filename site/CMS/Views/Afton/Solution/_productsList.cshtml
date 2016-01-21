@@ -1,0 +1,24 @@
+﻿<div class="bgGray padTopBtm">
+	<div class="fullWidth">
+		<h2>@Model.Title Products</h2>
+	</div>
+	<div class="cards2C">
+		<div class="cards2">
+			@foreach (var product in Model.Products)
+			{
+				<a href="#">
+					<div class="cardBtnIndicator"><img src="@Url.Content("~/images/card-btn-indicator.png")"></div><img src="@Url.Content(product.TileImage)">
+					<div class="textAreaC">
+						<div class="cardTitle">@Model.Title</div>
+						<div class="cardHdr">@product.Title</div>
+						<div class="cardSubHdr">@product.Subtitle</div>
+						<div class="cardTxt">@Html.Raw(product.Description) </div>
+					</div>
+				</a>
+			}
+		</div>
+	</div>
+	<div class="fullWidth"><a href="#" class="viewAllBtn">View All @Model.Title Products</a></div>
+</div>
+
+

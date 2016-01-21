@@ -59,6 +59,23 @@ namespace CMS.DocumentEngine.Types
 		/// 
 		/// </summary>
 		[DatabaseField]
+		public string HomeImage
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("HomeImage"), "");
+			}
+			set
+			{
+				SetValue("HomeImage", value);
+			}
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[DatabaseField]
 		public string Title
 		{
 			get
@@ -68,6 +85,23 @@ namespace CMS.DocumentEngine.Types
 			set
 			{
 				SetValue("Title", value);
+			}
+		}
+
+
+		/// <summary>
+		/// Subtitle.
+		/// </summary>
+		[DatabaseField]
+		public string Subtitle
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("Subtitle"), "");
+			}
+			set
+			{
+				SetValue("Subtitle", value);
 			}
 		}
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
@@ -10,6 +11,11 @@ namespace CMS.Mvc.Providers
 {
     public class ProductProvider: IProductProvider
     {
+		public List<Product> GetProductItems(List<Guid> guids, string siteName)
+        {
+            return ContentHelper.GetDocByGuids<Product>(guids, siteName);
+		}
+
         public Product GetProduct(string alias)
         {
             return ContentHelper.GetDocByName<Product>(Product.CLASS_NAME, alias);
@@ -43,3 +49,4 @@ namespace CMS.Mvc.Providers
         }
     }
 }
+
