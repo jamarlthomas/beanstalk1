@@ -431,6 +431,7 @@
     <Content Include="Views\Afton\SelectionFilter\_documentTypeCheckBoxes.cshtml" />
     <Content Include="Views\Afton\SelectionFilter\_regionCheckBoxes.cshtml" />
     <Content Include="Views\Afton\SelectionFilter\_SBUCheckBoxes.cshtml" />
+    <Content Include="Views\Afton\SelectionFilter\_searchResults.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
