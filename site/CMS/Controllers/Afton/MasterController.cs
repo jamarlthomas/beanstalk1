@@ -56,7 +56,7 @@ namespace CMS.Mvc.Controllers.Afton
         }
 
         [ChildActionOnly]
-        public ActionResult Index()
+        public ActionResult Index(string title)
         {
             var mainNavList = MapData<ContentMenuItem, ContentMenuItemViewModel>(_contentMenuItemProvider.GetContentMenuItems());
             foreach (var contentMenuItem in mainNavList)
@@ -73,7 +73,8 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 SelectedCulture = CultureHelper.GetCultureDisplayName(CultureInfo.CurrentCulture),
                 MainNavList = mainNavList,
-                UtilityNavList = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems())
+                UtilityNavList = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems()),
+				Title = title
             });
         }
     }

@@ -1,5 +1,4 @@
 ﻿@using CMS.Mvc.ViewModels.Master
-@using System.Linq
 @model MasterViewModel
 <div id="mobileNavC1">
 	<div id="mobileNavC">
@@ -83,11 +82,11 @@
 					{
 						if (item.SolutionsLink != null)
 						{
-							<li><a href="@Url.Content("~/" + @item.Reference)" data-mm="@item.Title.Replace(" ", string.Empty)">@item.Title</a></li>
+							<li><a href="@Url.Content("~/" + @item.Reference)" data-mm="@item.Title.Replace(" ", string.Empty)" class="@(item.Title.Equals(Model.Title) ? "active" : "")">@item.Title</a></li>
 						}
 						else
 						{
-							<li><a href="@Url.Content("~/" + @item.Reference)">@item.Title</a></li>
+							<li><a href="@Url.Content("~/" + @item.Reference)" class="@(item.Title.Equals(Model.Title) ? "active" : "")">@item.Title</a></li>
 						}
 					}
 				</ul>
@@ -106,12 +105,11 @@
 						<a href="#" class="photoLink">
 							<img src="@Url.Content(thumbnailedItem.Image ?? "")">
 							<div class="photoLinkRt">
-								<div class="mHeader">@thumbnailedItem.Title</div>
+								<div class="mHeader">Learn About @thumbnailedItem.Title</div>
 								<div class="mTxt">@thumbnailedItem.Description</div>
 							</div>
 						</a>
 					}
-					<input type="text" id="searchBox" placeholder="Search Additives">
 				</div>
 				<div class="rtCol">
 					<div class="rtColHdr">@item.SolutionsLink.Title</div>

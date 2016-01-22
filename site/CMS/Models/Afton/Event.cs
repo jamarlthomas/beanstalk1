@@ -56,6 +56,40 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Date.
+        /// </summary>
+        [DatabaseField]
+        public DateTime Date
+        {
+            get
+            {
+                return ValidationHelper.GetDateTime(GetValue("Date"), DateTimeHelper.ZERO_TIME);
+            }
+            set
+            {
+                SetValue("Date", value);
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
+        public string HomeImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HomeImage"), "");
+            }
+            set
+            {
+                SetValue("HomeImage", value);
+            }
+        }
+
+
+        /// <summary>
         /// 
         /// </summary>
         [DatabaseField]

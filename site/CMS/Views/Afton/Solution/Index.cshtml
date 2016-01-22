@@ -1,0 +1,26 @@
+﻿@using CMS.Mvc.ViewModels.Shared
+@model SolutionViewModel
+@{
+	ViewBag.Title = @Model.ParentName;
+	Layout = "~/Views/Afton/Shared/Master.cshtml";
+}
+<div id="contentAreaC">
+	@Html.Partial("~/Views/Afton/Solution/_heroImage.cshtml", Model.HeroImage)
+	<div id="twoColumnC-sidebar" class="padBtm  negMargin">
+		<div id="rtCol-contentArea">
+			<div id="breadCrumbsC">
+				<div id="breadCrumbs"><a href="@Url.Action("Index", "Home")">Home</a><a href="@Url.Action("Index", "SBU", new { name = Model.ParentName })">@Model.ParentName</a>@Model.Title</div>
+			</div>
+			<div id="contentC">
+				<h1 class="txtPaddingTop">
+					@Model.Title
+					<div class="subTxt">@Model.Subtitle</div>
+					<div id="socialC"><a class="addthis_button_compact"><span class="icon-share"></span></a></div>
+				</h1>
+				@Html.Partial("~/Views/Afton/Solution/_description.cshtml", Model.Description)
+			</div>
+		</div>
+		@Html.Partial("~/Views/Afton/Solution/_sidebar.cshtml", Model)
+	</div>
+	@Html.Partial("~/Views/Afton/Solution/_productsList.cshtml", Model)
+</div>

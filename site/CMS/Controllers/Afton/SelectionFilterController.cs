@@ -19,7 +19,6 @@ namespace CMS.Mvc.Controllers.Afton
 		private const string NULL_VALUE_PLACEHOLDER = "-1";
 
 		private readonly IProductProvider _productProvider;
-		private readonly ILookupProvider _lookupProvider;
 		private readonly ISelectionFilterPageProvider _selectionFilterPageProvider;
 		private readonly IDocumentTypeProvider _documentTypeProvider;
 		private readonly ISolutionBusinessUnitProvider _solutionBusinessUnitProvider;
@@ -29,7 +28,6 @@ namespace CMS.Mvc.Controllers.Afton
 		public SelectionFilterController()
 		{
 			_productProvider = new ProductProvider();
-			_lookupProvider = new LookupProvider();
 			_selectionFilterPageProvider = new SelectionFilterPageProvider();
 			_documentTypeProvider = new DocumentTypeProvider();
 			_solutionBusinessUnitProvider = new SolutionBusinessUnitProvider();
@@ -38,7 +36,6 @@ namespace CMS.Mvc.Controllers.Afton
 		}
 
 		public SelectionFilterController(IProductProvider productProvider,
-			ILookupProvider lookupProvider,
 			ISelectionFilterPageProvider selectionFilterPageProvider,
 			IDocumentTypeProvider documentTypeProvider,
 			ISolutionBusinessUnitProvider solutionBusinessUnitProvider,
@@ -46,7 +43,6 @@ namespace CMS.Mvc.Controllers.Afton
 			ISelectionFilterSearchProvider selectionFilterSearchProvider)
 		{
 			_productProvider = productProvider;
-			_lookupProvider = lookupProvider;
 			_selectionFilterPageProvider = selectionFilterPageProvider;
 			_documentTypeProvider = documentTypeProvider;
 			_solutionBusinessUnitProvider = solutionBusinessUnitProvider;
@@ -54,7 +50,7 @@ namespace CMS.Mvc.Controllers.Afton
 			_selectionFilterSearchProvider = selectionFilterSearchProvider;
 		}
 
-		[Route("filter/regions/{Regions}/documents/{DocumentTypesIds}/SBU/{SBUIds}/solutions/{SolutionsIds}")]
+		[Route("filter/regions/{Regions}/documents/{DocumentTypesIds}/SBU/{SBUId}/solutions/{SolutionsIds}")]
 		public JsonResult SearchAction(SearchRequest request)
 		{
 			return Json(Search(request), JsonRequestBehavior.AllowGet);

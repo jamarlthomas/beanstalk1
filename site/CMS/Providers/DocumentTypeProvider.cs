@@ -7,9 +7,9 @@ namespace CMS.Mvc.Providers
 {
     public class DocumentTypeProvider : IDocumentTypeProvider
     {
-        public List<DocumentType> GetDocumentTypeUnits(string alias)
+		public List<DocumentType> GetDocumentTypeUnits(string alias, int limit)
         {
-            return ContentHelper.GetDocChildrenByName<DocumentType>(DocumentType.CLASS_NAME, alias);
+            return ContentHelper.GetDocChildrenByName<DocumentType>(DocumentType.CLASS_NAME, alias, limit);
         }
 		public List<DocumentType> GetDocumentTypes()
 		{

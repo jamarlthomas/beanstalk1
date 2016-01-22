@@ -41,8 +41,8 @@ namespace CMS.Mvc
                     var controllerName = controllerType.Substring(0, controllerType.Length - CONTROLLER_POSTFIX.Length);
                     routes.MapRoute(
                         controllerName,
-                        controllerName + "/{action}/{name}",
-                        new { controller = controllerName, action = "Index", name = "" }
+                        controllerName + "/{action}/{name}/{parentName}",
+						new { controller = controllerName, action = "Index", name = "", parentName = "" }
                     );
                 }
             }
