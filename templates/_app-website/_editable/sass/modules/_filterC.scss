@@ -94,7 +94,7 @@
             
             @supports (pointer-events: none) {
                 
-                select { padding: 1px 35px 0px 3px; }
+                select { padding: 1px 0px 0px 3px; }
                 
                 &::before { content: ""; position: absolute; top: 0px; right: 0px; width: 40px; height: 26px; background: #4c9d2f; pointer-events: none; z-index: 1; }
                 

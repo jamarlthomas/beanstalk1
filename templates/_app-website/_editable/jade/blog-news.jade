@@ -1,0 +1,271 @@
+doctype 
+
+html(lang='en')
+
+    head
+        
+        title=""
+        meta(name="description" content="")
+        meta(name="keywords" content="")
+        
+        include includes/_scripts_header.jade
+    
+    body
+    
+        include includes/_mobileNav.jade
+        
+        include includes/_header.jade
+        
+        div(id="newsC")
+            div(id="newsHdr" class="padTop padBtm")
+                h1 News Events Blog Title
+                div(class="subTxt") Lorem ipsum dolor sit amet, consectetur adipiscing elit liquam at vulputate dolor.
+                
+                div(id="newsDD")
+                    div(id="categoriesDD")
+                        | Filter by:<br>                        
+                        div(class="customSelectC standard")
+                            div(class="orgSelect")
+                                select(name="categories")
+                                    option(value="All Categories") All Categories
+                                    option(value="Company") Company
+                                    option(value="Driveline Additives (SBU)") Driveline Additives (SBU)
+                                    option(value="Engine Additives (SBU)") Engine Additives (SBU)
+                                    option(value="Fuel Additives (SBU)") Fuel Additives (SBU)
+                                    option(value="Industrial Additives (SBU)") Industrial Additives (SBU)
+                                    option(value="Lubricant Components (SBU)") Lubricant Components (SBU)
+                                    option(value="Logistics & Supply") Logistics & Supply
+                                    option(value="Insights & Resources") Insights & Resources
+                                    option(value="Insights & Resources") Full list of categories TBD by CMS
+                        
+
+
+                    div(id="authorsDD")
+                        br                              
+                        div(class="customSelectC standard")
+                            div(class="orgSelect")
+                                select(name="authors")
+                                    option(value="All Authors") All Authors
+                                    option(value="Authors Name 1") Authors Name 1
+                                    option(value="Authors Name 2") Authors Name 2
+                                    
+
+                    div(id="sortDD")
+                        | Sort by:<br>                        
+                        div(class="customSelectC standard")
+                            div(class="orgSelect")
+                                select(name="sort")
+                                    option(value="Newest") Newest
+                                    option(value="Oldest") Oldest
+                        
+                                    
+                
+            div(id="newsListC")
+                
+                div(class="newsItem")
+                    
+                    div(class="newsImgC")
+                        img(src="page-images/news-images/sample-news-1.jpg")
+
+                    div(class="newsContentC")
+                        
+                        h2 Post Title Goes Here
+                        
+                        div(class="newsInfo") Category | Posted by Author Name: 3/12/16 | 6:00 AM CST
+                        
+                        div(class="newsTxt") Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus sit amet elit eget semper. Aliquam tempor, augue nec commodo vestibulum, dui libero convallis urna, non molestie ipsum magna non velit. Suspendisse potenti. Nam vitae fin ibus augue. Nullam pellentesque tempor vestibulum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus sit amet elit eget semper. Aliquam tempor, augue nec commodo vestibulum, dui libero convallis urn. Vestibulum tempus sit amet.
+                        
+                        a(href="#" class="newsMore") Read More
+                        
+                        
+                div(class="newsItem")
+                    
+                    div(class="newsImgC")
+                        img(src="page-images/news-images/sample-news-2.jpg")
+
+                    div(class="newsContentC")
+                        
+                        h2 Post Title Goes Here
+                        
+                        div(class="newsInfo") Category | Posted by Author Name: 3/12/16 | 6:00 AM CST
+                        
+                        div(class="newsTxt") Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus sit amet elit eget semper. Aliquam tempor, augue nec commodo vestibulum, dui libero convallis urna, non molestie ipsum magna non velit. Suspendisse potenti. Nam vitae fin ibus augue. Nullam pellentesque tempor vestibulum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus sit amet elit eget semper. Aliquam tempor, augue nec commodo vestibulum, dui libero convallis urn. Vestibulum tempus sit amet.
+                        
+                        a(href="#" class="newsMore") Read More
+                        
+                
+                div(class="newsItem")
+                    
+                    div(class="newsImgC")
+                        img(src="page-images/news-images/sample-news-3.jpg")
+
+                    div(class="newsContentC")
+                        
+                        h2 Post Title Goes Here
+                        
+                        div(class="newsInfo") Category | Posted by Author Name: 3/12/16 | 6:00 AM CST
+                        
+                        div(class="newsTxt") Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus sit amet elit eget semper. Aliquam tempor, augue nec commodo vestibulum, dui libero convallis urna, non molestie ipsum magna non velit. Suspendisse potenti. Nam vitae fin ibus augue. Nullam pellentesque tempor vestibulum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus sit amet elit eget semper. Aliquam tempor, augue nec commodo vestibulum, dui libero convallis urn. Vestibulum tempus sit amet.
+                        
+                        a(href="#" class="newsMore") Read More
+                        
+                
+                div(class="newsItem")
+                    
+                    div(class="newsImgC")
+                        img(src="page-images/news-images/sample-news-4.jpg")
+
+                    div(class="newsContentC")
+                        
+                        h2 Post Title Goes Here
+                        
+                        div(class="newsInfo") Category | Posted by Author Name: 3/12/16 | 6:00 AM CST
+                        
+                        div(class="newsTxt") Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus sit amet elit eget semper. Aliquam tempor, augue nec commodo vestibulum, dui libero convallis urna, non molestie ipsum magna non velit. Suspendisse potenti. Nam vitae fin ibus augue. Nullam pellentesque tempor vestibulum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus sit amet elit eget semper. Aliquam tempor, augue nec commodo vestibulum, dui libero convallis urn. Vestibulum tempus sit amet.
+                        
+                        a(href="#" class="newsMore") Read More
+                        
+            div(class="paginationC padBtm padTop")
+                    div(class="pagination")
+                        a(href="#" class="prev")
+                        a(href="#") 1
+                        a(href="#") 2
+                        a(href="#") 3
+                        a(href="#") 4
+                        span(class="nextGroup") ...
+                        a(href="#" class="sendToEnd") 49
+                        a(href="#") 50
+                        a(href="#" class="next")
+                
+        
+        div(class="bgGray padTopBtm")
+                div(class="fullWidth")
+                        h2 Automotive Gear Products
+
+                div(class="cards2C")
+                    div(class="cards2")
+
+                        a(href="#")
+
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png") 
+
+                            img(src="page-images/cards/sample-cardv2.jpg")
+
+                            div(class="textAreaC")
+                                div(class="cardTitle") Driveline Additives
+                                div(class="cardHdr") HiTEC® 349
+                                div(class="cardSubHdr") Manual Transmissions
+                                div(class="cardTxt") The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials. 
+
+                        a(href="#")
+
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png") 
+
+                            img(src="page-images/cards/sample-cardv2.jpg")
+
+                            div(class="textAreaC")
+                                div(class="cardTitle") Driveline Additives
+                                div(class="cardHdr") HiTEC® 349
+                                div(class="cardSubHdr") Manual Transmissions
+                                div(class="cardTxt") The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.
+
+                        a(href="#")
+
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png") 
+
+                            img(src="page-images/cards/sample-cardv2.jpg")
+
+                            div(class="textAreaC")
+                                div(class="cardTitle") Driveline Additives
+                                div(class="cardHdr") HiTEC® 349
+                                div(class="cardSubHdr") Manual Transmissions
+                                div(class="cardTxt") The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.
+
+                        a(href="#")
+
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png") 
+
+                            img(src="page-images/cards/sample-cardv2.jpg")
+
+                            div(class="textAreaC")
+                                div(class="cardTitle") Driveline Additives
+                                div(class="cardHdr") HiTEC® 349
+                                div(class="cardSubHdr") Manual Transmissions
+                                div(class="cardTxt") The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.
+
+
+                div(class="fullWidth")
+                    a(href="#" class="viewAllBtn") View All Automotive Gear Products
+        
+        
+        div(class="borders bgPattern padTopBtm")
+                div(class="fullWidth")
+                        h2 Personalized Content Title
+
+                div(class="cardsC")
+                    div(class="cards")
+
+                        a(href="http://google.com")
+                            div(class="cardBtnIndicator")
+                                    img(src="images/card-btn-indicator.png")       
+                            div(class="overlayC")
+                                div(class="overlay")
+                                    div(class="cardTitle") News
+                                    div(class="cardHdr") Afton Chemical to exhibit and present at annual international CTI Symposium. 
+                                div(class="cardDate") March 27, 2015
+                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                                div(class="hoverOverlay")
+                                    div(class="hoverOverlayTxt")
+                                        | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+
+                                div(class="cardLearnMore") Read More
+                                    span(class="icon-arrow")
+
+                            img(src="page-images/cards/sample-card1.jpg")
+
+
+                        a(href="#")
+                            div(class="cardBtnIndicator")
+                                    img(src="images/card-btn-indicator.png")       
+                            div(class="overlayC")
+                                div(class="overlay")
+                                    div(class="cardTitle") Events
+                                    div(class="cardHdr") Afton Chemical breaks ground for its facility in Singapore.
+                                    div(class="cardTxt") Production of the next generation of additive solutions is set to begin in January 2016.
+                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                                div(class="hoverOverlay")
+                                    div(class="hoverOverlayTxt")
+                                        | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+
+                                div(class="cardLearnMore") Read More
+                                    span(class="icon-arrow")
+
+                            img(src="page-images/cards/sample-card2.jpg")
+
+
+                        a(href="#")
+                            div(class="cardBtnIndicator")
+                                    img(src="images/card-btn-indicator.png")       
+                            div(class="overlayC")
+                                div(class="overlay")
+                                    div(class="cardTitle") Fact Sheet
+                                    div(class="cardHdr") Automatic Transmissions
+                                    div(class="cardTxt") Afton Chemical develops and manufacturers petroleum additives that enhances the performance of fuels and lubricating oils in machinery and vehicles.
+
+                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                                div(class="hoverOverlay")
+                                    div(class="hoverOverlayTxt")
+                                        | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+
+                                div(class="cardLearnMore") Read More
+                                    span(class="icon-arrow")
+
+                            img(src="page-images/cards/sample-card3.jpg")
+        
+        
+        include includes/_footer.jade
+        

@@ -33,6 +33,7 @@
           {mega_menu_drop_down: "assets-layout/js/custom/megaMenu.min.js"},        
           {mobile_nav: "assets-layout/js/custom/mobileNav.min.js"},
           {disclaimer_copyright: "assets-layout/js/custom/copyrightDate.min.js"},
+          {custom_select_DropDowns: "assets-layout/js/custom/customSelectDropDown.min.js"},
           
           {card_Animations: "assets-layout/js/custom/cards.min.js"},
           {sbu_Landing_Nav: "assets-layout/js/custom/sbuLandingDropDown.min.js"},
@@ -41,6 +42,7 @@
           {language_Document_selector: "assets-layout/js/custom/langDocSel.min.js"},
           {language_Document_selector: "assets-layout/js/custom/prodFilter.min.js"},
           {language_Document_selector: "assets-layout/js/custom/prodFilterNav.min.js"},
+          {language_Document_selector: "assets-layout/js/custom/faqDropDown.min.js"},
           
           function(){
               //loadCSS
@@ -430,32 +432,36 @@
           <div class="sidbarBoxC">
             <div class="hdr">Contact for More Information</div>
             <div class="txt">Um sundae culles aboritia as aut acit volorum eumqui quam quidele secatec toratemquam.</div>
-            <select class="dropdown">
-              <option value="volvo">Select Your Country</option>
-              <option value="Afghanistan">Afghanistan</option>
-              <option value="Albania">Albania</option>
-              <option value="Algeria">Algeria</option>
-              <option value="American Samoa">American Samoa</option>
-              <option value="Andorra">Andorra</option>
-              <option value="Angola">Angola</option>
-              <option value="Anguilla">Anguilla</option>
-              <option value="Antartica">Antarctica</option>
-              <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-              <option value="Argentina">Argentina</option>
-              <option value="Armenia">Armenia</option>
-              <option value="Aruba">Aruba</option>
-              <option value="Australia">Australia</option>
-              <option value="Austria">Austria</option>
-              <option value="Azerbaijan">Azerbaijan</option>
-              <option value="Bahamas">Bahamas</option>
-              <option value="Bahrain">Bahrain</option>
-              <option value="Bangladesh">Bangladesh</option>
-              <option value="Barbados">Barbados</option>
-              <option value="Belarus">Belarus</option>
-              <option value="Belgium">Belgium</option>
-              <option value="Belize">Belize</option>
-              <option value="Benin">Benin</option>
-            </select>
+            <div class="customSelectC sidebarOpt">
+              <div class="orgSelect">
+                <select name="Countries">
+                  <option value="">Select Your Country</option>
+                  <option value="Afghanistan">Afghanistan</option>
+                  <option value="Albania">Albania</option>
+                  <option value="Algeria">Algeria</option>
+                  <option value="American Samoa">American Samoa</option>
+                  <option value="Andorra">Andorra</option>
+                  <option value="Angola">Angola</option>
+                  <option value="Anguilla">Anguilla</option>
+                  <option value="Antartica">Antarctica</option>
+                  <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                  <option value="Argentina">Argentina</option>
+                  <option value="Armenia">Armenia</option>
+                  <option value="Aruba">Aruba</option>
+                  <option value="Australia">Australia</option>
+                  <option value="Austria">Austria</option>
+                  <option value="Azerbaijan">Azerbaijan</option>
+                  <option value="Bahamas">Bahamas</option>
+                  <option value="Bahrain">Bahrain</option>
+                  <option value="Bangladesh">Bangladesh</option>
+                  <option value="Barbados">Barbados</option>
+                  <option value="Belarus">Belarus</option>
+                  <option value="Belgium">Belgium</option>
+                  <option value="Belize">Belize</option>
+                  <option value="Benin">Benin</option>
+                </select>
+              </div>
+            </div>
           </div>
           <div class="sidbarBoxC">
             <div class="hdr">Stay Informed</div>

@@ -37,17 +37,25 @@ html(lang='en')
                 
                     h1 Page Title
                     a(href="#" class="viewAll") View all Afton Insights and Resources
-                    
-            div(id="filterHdrC")
+            
+            style.
+                @media only screen and (max-width: 1270px) {
+                    #filterHdrC { display: block!important; }
+                }
+            
+            div(id="filterHdrC" style="display: none;")
                 div(class="fullWidth" id="filterHdr") Filter
                     a(href="#" id="mobileFilterBtn" style="display: none;")
                         img(src="images/mobile-filter.png")
+                        
+            div(id="hideFilterC" style="background: #f1f0f0; margin-bottom: 10px;")
+                a(href="#")
+                    span(class="txt" style="color: #545454;") Hide Filter Options
+                    span(class="icon-arrow" style="display: none;")
             
             form(id="filterC" class="bgPattern" style="display:none;")
                 
                 div(class="filterRow")
-                    
-                    
                     
                     div(id="clearFilterB")
                         input(type="reset" value="Clear All")
@@ -110,11 +118,85 @@ html(lang='en')
                             | Product Reviews
                             
                     div(class="filterCol")
+                        div(class="filterH") Solution
+                        div(class="filterSH") Industrial
+                        
+                        label
+                            input(type="checkbox" name="Sol Ind" value="Compressor")
+                            span
+                            | Compressor
+
+                        label
+                            input(type="checkbox" name="Sol Ind" value="Grease")
+                            span
+                            | Grease
+                            
+                        label
+                            input(type="checkbox" name="Sol Ind" value="Hydrulic")
+                            span
+                            | Hydrulic
+                            
+                        label
+                            input(type="checkbox" name="Sol Ind" value="Industrial Gear")
+                            span
+                            | Industrial Gear
+                            
+                        label
+                            input(type="checkbox" name="Sol Ind" value="Metalworking")
+                            span
+                            | Metalworking
+                            
+                        label
+                            input(type="checkbox" name="Sol Ind" value="Corrosion Inhibitors")
+                            span
+                            | Corrosion Inhibitors
+                            
+                        label
+                            input(type="checkbox" name="Sol Ind" value="Couplers")
+                            span
+                            | Couplers
+                            
+                        label
+                            input(type="checkbox" name="Sol Ind" value="Demist Agents")
+                            span
+                            | Demist Agents
+                            
+                        label
+                            input(type="checkbox" name="Sol Ind" value="Emulsifiers")
+                            span
+                            | Emulsifiers
+                            
+                        label
+                            input(type="checkbox" name="Sol Ind" value="Lubricity and EP Additives")
+                            span
+                            | Lubricity and EP Additives
+                            
+                        label
+                            input(type="checkbox" name="Sol Ind" value="Packages")
+                            span
+                            | Packages
+                            
+                        label
+                            input(type="checkbox" name="Sol Ind" value="Quench Additives")
+                            span
+                            | Quench Additives
+                            
+                        label
+                            input(type="checkbox" name="Sol Ind" value="Sideway")
+                            span
+                            | Sideway
+                            
+                        label
+                            input(type="checkbox" name="Sol Ind" value="Turbine")
+                            span
+                            | Turbine
+                        
+                    div(class="filterCol")
                         div(class="filterH") Search
                         input(type="text" placeholder="Enter Search Term")
                 
                 
-                div(class="filterRow" class="borderTop")
+                div(class="filterRow" class="borderTop" style="display:none;")
                     
                     div(class="filterH") Solution
                     
@@ -327,12 +409,9 @@ html(lang='en')
                             span
                             | Improvers
                             
-            div(id="hideFilterC")
-                a(href="#")
-                    span(class="txt") Hide Filter Options
-                    span(class="icon-arrow")
+
             
-            div(id="filterResultsC")
+            div(id="filterResultsC" style="border-top: 1px solid #CCC;")
                 div(id="filterHdr" class="padTop")
                         
                     div(id="filterNum") 1600 Results

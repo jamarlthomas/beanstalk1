@@ -35,7 +35,7 @@ $(document).ready(function() {
             //get height of div
             var linkHeight = $(this).height();
             var revealHeight = $(this).parent().find(".reveal").actual('height');
-            var accordHeight = linkHeight + revealHeight
+            var accordHeight = linkHeight + revealHeight + 20
             //var accordHeight = $(this).parent().actual('height') + 10;
             
             
