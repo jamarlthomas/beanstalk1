@@ -1,9 +1,4 @@
 ﻿using CMS.DocumentEngine.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Optimization;
 using CMS.Mvc.ViewModels.Shared;
 
 namespace CMS.Mvc.App_Start

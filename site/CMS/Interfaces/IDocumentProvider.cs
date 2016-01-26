@@ -8,5 +8,6 @@ namespace CMS.Mvc.Interfaces
     {
 		List<Document> GetDocuments(string parentTitle);
 		List<Document> GetHighlightedDocuments(string parentTitle);
+		Document GetDocument(string alias);
     }
 }

@@ -166,6 +166,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
+    <Compile Include="Controllers\Afton\DocumentController.cs" />
     <Compile Include="Controllers\Afton\InsightsAndResourcesController.cs" />
     <Compile Include="Controllers\Afton\SolutionController.cs" />
     <Compile Include="Controllers\Afton\SBUController.cs" />
@@ -243,6 +244,7 @@
     <Compile Include="Providers\SolutionBusinessUnitProvider.cs" />
     <Compile Include="Providers\ContentMenuItemProvider.cs" />
     <Compile Include="Providers\PagesMenuItemProvider.cs" />
+    <Compile Include="ViewModels\Document\DocumentPageViewModel.cs" />
     <Compile Include="ViewModels\InsightsAndResources\InsightsListingItemViewModel.cs" />
     <Compile Include="ViewModels\InsightsAndResources\InsightsAndResourcesViewModel.cs" />
     <Compile Include="ViewModels\Shared\LinkViewModel.cs" />
@@ -260,7 +262,7 @@
     <Compile Include="ViewModels\Shared\ProductViewModel.cs" />
     <Compile Include="ViewModels\Shared\SolutionViewModel.cs" />
     <Compile Include="ViewModels\SBU\FAQItemViewModel.cs" />
-    <Compile Include="ViewModels\SBU\DocumentViewModel.cs" />
+    <Compile Include="ViewModels\Shared\DocumentViewModel.cs" />
     <Compile Include="ViewModels\SBU\DocumentTypeViewModel.cs" />
     <Compile Include="ViewModels\SBU\SBUViewModel.cs" />
   </ItemGroup>
@@ -371,6 +373,9 @@
     <Content Include="Views\Afton\InsightsAndResources\Index.cshtml" />
     <Content Include="Views\Afton\InsightsAndResources\_insightsListing.cshtml" />
     <Content Include="Views\Afton\InsightsAndResources\_resourcesTiles.cshtml" />
+    <Content Include="Views\Afton\Document\Index.cshtml" />
+    <Content Include="Views\Afton\Document\_header.cshtml" />
+    <Content Include="Views\Afton\Document\_content.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
