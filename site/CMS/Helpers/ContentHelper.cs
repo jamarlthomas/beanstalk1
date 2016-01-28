@@ -10,6 +10,7 @@ using CMS.Mvc.ViewModels.Shared;
 using CMS.PortalEngine;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using WebGrease;
 
@@ -110,10 +111,10 @@ namespace CMS.Mvc.Helpers
                 ).ToList();
         }
 
-		public static List<T> GetDocByGuids<T>(List<Guid> guids, string siteName) 
+        public static List<T> GetDocsByGuids<T>(IEnumerable<Guid> guids, string siteName = null) 
 			where T : TreeNode, new()
 		{
-			return guids.Select(guid => _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName)) as T).ToList();
+            return guids.Select(guid => _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T).ToList();
 		} 
 
         private static T HandleData<T>(Expression<Func<TreeNode, bool>> predicate, string className, string cacheKey,
@@ -210,14 +211,6 @@ namespace CMS.Mvc.Helpers
                             .OrderBy("NodeLevel", "NodeOrder", "NodeName")).Select(it => (TResult)it);
                     }
             }
-        }
-
-
-
-        internal static List<TreeNode> GetNodes(string[] p)
-        {
-            return p.Select(id =>
-                DocumentHelper.GetDocument(int.Parse(id), new TreeProvider())).ToList();
         }
     }
 }

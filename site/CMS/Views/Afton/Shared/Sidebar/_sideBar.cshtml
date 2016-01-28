@@ -25,6 +25,11 @@
             @Html.Partial("~/Views/Afton/Shared/Sidebar/_genericSidebarBlock.cshtml", component)
             break;
         }
+        case "custom.PollSurvey":
+        {
+            @Html.Partial("~/Views/Afton/Shared/Sidebar/_pollSurvey.cshtml", component)
+            break;
+        }
         default:
         {
             break;
