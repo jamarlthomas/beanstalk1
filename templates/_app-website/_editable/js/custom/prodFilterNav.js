@@ -2,13 +2,20 @@ $( document ).ready(function() {
     
     //Load Filters from the page into mobile naviagion
     var getRegionFilter = $("#filterRegion").clone();
-    getRegionFilter.find(".filterH").remove();
+    getRegionFilter.find(".filterHdr").remove();
     $("#mFilterRegion").append(getRegionFilter);
     
     var getDocTypeFilter = $("#filterDocumentType").clone();
-    getDocTypeFilter.find(".filterH").remove();
+    getDocTypeFilter.find(".filterHdr").remove();
     $("#mFilterDocumentType").append(getDocTypeFilter);
+
+    var getDocTypeFilter = $("#filterSolution").clone();
+    getDocTypeFilter.find(".filterHdr").remove();
+    getDocTypeFilter.find("#clearFilterB").remove();    
+    $("#mFilterSolution").append(getDocTypeFilter);
     
+    
+    /*
     var getSolutionFilter = "";
     if($("#filterSolution-Driveline").html()!== undefined){   
         getSolutionFilter = $("#filterSolution-Driveline").html();
@@ -29,11 +36,11 @@ $( document ).ready(function() {
     if(getSolutionFilter==""){
         $("#mobileFilterNav li:eq(2)").css({"display": "none"});
     }
-     
-    
+    */
+
    //Open Filter Navigation
     $('#mobileFilterBtn').click(function(e) {
-        
+
         e.preventDefault()    
 
         //prep for animation of navigation
@@ -76,7 +83,8 @@ $( document ).ready(function() {
       }
     );
     
-    //close from grayed out section of the mobile filte
+    
+    //close from grayed out section of the mobile filter
     $('#mobileFilterNavC1').click(function() { 
                                          
         //Check for hover event over mobile nav
@@ -116,7 +124,6 @@ $( document ).ready(function() {
     
     //Reset button needs to reset all desktop items
     $("#mobileFilterForm #mobileClearFilterB input").click(function() {
-        
         $('#filterC')[0].reset();
         
     });

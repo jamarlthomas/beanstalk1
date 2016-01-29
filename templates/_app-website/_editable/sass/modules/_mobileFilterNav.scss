@@ -1,6 +1,6 @@
 #mobileFilterNavC1 { position: fixed; top: 0px; xwidth: 0px; min-height: 100%; z-index: 0; background: rgba(0,0,0,0.0); overflow: hidden; transition: background 1s,ease; 
 
-    #mobileFilterNavC { position: absolute; top: 80px; right: -260px; width: 210px; height: 100%; overflow-x: hidden; height: calc(100% - 80px); background: #FFF; transition: All, 0.8s ease;
+    #mobileFilterNavC { position: absolute; top: 80px; right: -260px; width: 210px; height: 100%; overflow-x: hidden; height: calc(100% - 80px); background: rgba(240,240,240,0.90); transition: All, 0.8s ease;
         
         #mobileFilterHdr { padding: 10px 15px; 
             
@@ -13,7 +13,7 @@
             
             #hdr { color: #0033a1; font-size: 16px; }
             
-            input { width: 160px; }
+            input { padding: 10px; width: 160px; border: 0px; font-size: 12px; }
             
         }//mobileFilterSearch
         
@@ -28,13 +28,13 @@
                     
                  }
                 
-                .filterSH { padding: 0px 15px 5px 15px; font-weight: bold; }
+                .filterSecHdr { padding: 0px 15px 5px 15px; }
                 
-                label { display: block; padding: 0px 15px 10px 35px;
+                label { display: block; padding: 0px 15px 10px 37px;
 
                     input[type="checkbox"] { display:none; }
 
-                    input[type="checkbox"] +  span { display:inline-block; width: 15px; height: 13px; margin: -3px 4px 0 -18px; vertical-align: middle; cursor: pointer; background:url(../../images/check-box.png) left top no-repeat; }
+                    input[type="checkbox"] +  span { display:inline-block; width: 18px; height: 13px; margin: -3px 4px 0 -22px; vertical-align: middle; cursor: pointer; background:url(../../images/check-box.png) left top no-repeat; }
 
                     input[type="checkbox"]:checked + span { background:url(../../images/check-box-a.png) left top no-repeat; }
                 

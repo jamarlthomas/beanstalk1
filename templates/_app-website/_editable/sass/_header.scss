@@ -16,7 +16,7 @@
                 
             }//logoC
             
-            #mLogo { position: absolute; top: 15px; left: 10px;
+            #mLogo { position: absolute; top: 22px; left: 10px; z-index: 15;
             
                 @include breakpoint($bp3) { display: block!important; }
                 
