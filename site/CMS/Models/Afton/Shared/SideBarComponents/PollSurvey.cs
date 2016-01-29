@@ -90,6 +90,23 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// FeedbackPrompt.
+        /// </summary>
+        [DatabaseField]
+        public string FeedbackPrompt
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("FeedbackPrompt"), "");
+            }
+            set
+            {
+                SetValue("FeedbackPrompt", value);
+            }
+        }
+
+
+        /// <summary>
         /// Expire.
         /// </summary>
         [DatabaseField]

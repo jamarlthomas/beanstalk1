@@ -1,6 +1,5 @@
 ﻿using System;
-using CMS.DocumentEngine.Types;
-using TreeNode = CMS.DocumentEngine.TreeNode;
+using System.Collections.Generic;
 
 namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
 {
@@ -8,5 +7,9 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
     {
         public string Question { get; set; }
         public DateTime Expire { get; set; }
+        public string NodeAlias { get; set; }
+        public int TotalVotes { get; set; }
+        public string FeedbackPrompt { get; set; }
+        public List<PollSurveyAnswerViewModel> Answers { get; set; }
     }
 }

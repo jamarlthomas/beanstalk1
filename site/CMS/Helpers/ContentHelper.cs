@@ -12,7 +12,12 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using CMS.DataEngine;
+using CMS.Membership;
+using CMS.SiteProvider;
+using CMS.Synchronization;
 using WebGrease;
+using ServerInfo = System.Web.Helpers.ServerInfo;
 
 namespace CMS.Mvc.Helpers
 {
@@ -115,7 +120,7 @@ namespace CMS.Mvc.Helpers
 			where T : TreeNode, new()
 		{
             return guids.Select(guid => _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T).ToList();
-		} 
+		}
 
         private static T HandleData<T>(Expression<Func<TreeNode, bool>> predicate, string className, string cacheKey,
             string cacheDependencyKey, string cachedependenciesFormat = "") where T : TreeNode, new()

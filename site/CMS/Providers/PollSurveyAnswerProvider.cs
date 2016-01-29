@@ -11,5 +11,10 @@ namespace CMS.Mvc.Providers
         {
             return ContentHelper.GetDocChildrenByName<PollSurveyAnswer>(PollSurveyAnswer.CLASS_NAME, parentAlias);
         }
+
+        public PollSurveyAnswer GetPollSurveyAnswer(string alias)
+        {
+            return ContentHelper.GetDocByName<PollSurveyAnswer>(PollSurveyAnswer.CLASS_NAME, alias);
+        }
     }
 }

@@ -71,6 +71,23 @@ namespace CMS.DocumentEngine.Types
             }
         }
 
+
+        /// <summary>
+        /// Vote.
+        /// </summary>
+        [DatabaseField]
+        public int Vote
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("Vote"), 0);
+            }
+            set
+            {
+                SetValue("Vote", value);
+            }
+        }
+
         #endregion
 
 
