@@ -37,463 +37,453 @@ html(lang='en')
                 
                     h1 Page Title
                     a(href="#" class="viewAll") View all Afton Insights and Resources
-                    
-            div(id="filterHdrC")
-                div(class="fullWidth" id="filterHdr") Filter
-                    a(href="#" id="mobileFilterBtn" style="display: none;")
-                        img(src="images/mobile-filter.png")
+                
+            div(id="mobileFilterBtnC" style="display: none;")
+                a(href="#" id="mobileFilterBtn")
+                    div(id="mobileFilterTxt") Filter
+                    img(id="mobileFilterImg" src="images/filter-open.gif")
+                
+            div(id="filterAreaC" class="padBtm")
             
-            form(id="filterC" class="bgPattern" style="display:none;")
+                div(id="filterArea")
                 
-                div(class="filterRow")
-                    
-                    
-                    
-                    div(id="clearFilterB")
-                        input(type="reset" value="Clear All")
-                
-                    div(class="filterCol" id="filterRegion")
-                        div(class="filterH") Region
+                    form(id="filterC")
                         
-                        label
-                            input(type="checkbox" name="region" value="North America")
-                            span
-                            | North America
-                            
-                        label
-                            input(type="checkbox" name="region" value="Latin America")
-                            span
-                            | Latin America
-                            
-                        label
-                            input(type="checkbox" name="region" value="EMEAI")
-                            span
-                            | EMEAI
-                            
-                        label
-                            input(type="checkbox" name="region" value="Asia")
-                            span
-                            | Asia
+                            div(id="filterLabel") Filter by: 
 
-                    
-                    div(class="filterCol" id="filterDocumentType")
-                        div(class="filterH") Document Type
-                        
-                        label
-                            input(type="checkbox" name="Doc Type" value="Product Data Sheets")
-                            span
-                            | Product Data Sheets
-                            
-                        label
-                            input(type="checkbox" name="Doc Type" value="Articles")
-                            span
-                            | Articles
-                            
-                        label
-                            input(type="checkbox" name="Doc Type" value="White Papers")
-                            span
-                            | White Papers
-                        
-                        label
-                            input(type="checkbox" name="Doc Type" value="Research")
-                            span
-                            | Research
-                        
-                        label
-                            input(type="checkbox" name="Doc Type" value="Technical Documents")
-                            span
-                            | Technical Documents
-                        
-                        label
-                            input(type="checkbox" name="Doc Type" value="Product Reviews")
-                            span
-                            | Product Reviews
-                            
-                    div(class="filterCol")
-                        div(class="filterH") Search
-                        input(type="text" placeholder="Enter Search Term")
-                
-                
-                div(class="filterRow" class="borderTop")
-                    
-                    div(class="filterH") Solution
-                    
-                    div(class="filterCol" id="filterSolution-Driveline")
-                    
-                        div(class="filterSH") Driveline
-                        
-                        label
-                            input(type="checkbox" name="Sol Driveline" value="Automatic Transmission")
-                            span
-                            | Automatic Transmission
+                            div(id="filterColC")
 
-                        label
-                            input(type="checkbox" name="Sol Driveline" value="Continously Variable Transmission (CVT)")
-                            span
-                            | Continously Variable Transmission (CVT)
+                                input(id="filterSearch" type="text" placeholder="Enter Search Term")
 
-                        label
-                            input(type="checkbox" name="Sol Driveline" value="Dual Clutch Transmission (DCT)")
-                            span
-                            | Dual Clutch Transmission (DCT)
+                                <hr>
 
-                        label
-                            input(type="checkbox" name="Sol Driveline" value="Automotive Gear")
-                            span
-                            | Automotive Gear
-                        
-                        label
-                            input(type="checkbox" name="Sol Driveline" value="Power Steering")
-                            span
-                            | Power Steering
+                                div(class="filterGroup" id="filterRegion")
 
-                        label
-                            input(type="checkbox" name="Sol Driveline" value="Heavy Machinery")
-                            span
-                            | Heavy Machinery
+                                    div(class="filterHdr") Region
+
+                                    label
+                                        input(type="checkbox" name="region" value="North America")
+                                        span
+                                        | North America
+
+                                    label
+                                        input(type="checkbox" name="region" value="Latin America")
+                                        span
+                                        | Latin America
+
+                                    label
+                                        input(type="checkbox" name="region" value="EMEAI")
+                                        span
+                                        | EMEAI
+
+                                    label
+                                        input(type="checkbox" name="region" value="Asia")
+                                        span
+                                        | Asia
+
+                                <hr>
+
+                                div(class="filterGroup" id="filterDocumentType")
+
+                                    div(class="filterHdr") Document Type
+
+                                    label
+                                        input(type="checkbox" name="Doc Type" value="Product Data Sheets")
+                                        span
+                                        | Product Data Sheets
+
+                                    label
+                                        input(type="checkbox" name="Doc Type" value="Articles")
+                                        span
+                                        | Articles
+
+                                    label
+                                        input(type="checkbox" name="Doc Type" value="White Papers")
+                                        span
+                                        | White Papers
+
+                                    label
+                                        input(type="checkbox" name="Doc Type" value="Research")
+                                        span
+                                        | Research
+
+                                    label
+                                        input(type="checkbox" name="Doc Type" value="Technical Documents")
+                                        span
+                                        | Technical Documents
+
+                                    label
+                                        input(type="checkbox" name="Doc Type" value="Product Reviews")
+                                        span
+                                        | Product Reviews
+
+                                div(class="filterGroup" id="filterSolution")
+
+                                    div(class="filterHdr") Solution
+
+                                    div(class="filterSecHdr") Driveline
+
+                                    label
+                                        input(type="checkbox" name="Sol Driveline" value="Automatic Transmission")
+                                        span
+                                        | Automatic Transmission
+
+                                    label
+                                        input(type="checkbox" name="Sol Driveline" value="Continously Variable Transmission (CVT)")
+                                        span
+                                        | Continously Variable Transmission (CVT)
+
+                                    label
+                                        input(type="checkbox" name="Sol Driveline" value="Dual Clutch Transmission (DCT)")
+                                        span
+                                        | Dual Clutch Transmission (DCT)
+
+                                    label
+                                        input(type="checkbox" name="Sol Driveline" value="Automotive Gear")
+                                        span
+                                        | Automotive Gear
+
+                                    label
+                                        input(type="checkbox" name="Sol Driveline" value="Power Steering")
+                                        span
+                                        | Power Steering
+
+                                    label
+                                        input(type="checkbox" name="Sol Driveline" value="Heavy Machinery")
+                                        span
+                                        | Heavy Machinery
 
 
-                    div(class="filterCol" id="filterSolution-Fuel")
-                        
-                        div(class="filterSH") Fuel
-                        
-                        label
-                            input(type="checkbox" name="Sol Fuel" value="Diesel Additives")
-                            span
-                            | Diesel Additives
+                                    br
+                                    div(class="filterSecHdr") Fuel
 
-                        label
-                            input(type="checkbox" name="Sol Fuel" value="Gasoline Additives")
-                            span
-                            | Gasoline Additives
+                                    label
+                                        input(type="checkbox" name="Sol Fuel" value="Diesel Additives")
+                                        span
+                                        | Diesel Additives
 
-                        label
-                            input(type="checkbox" name="Sol Fuel" value="Octane Improver")
-                            span
-                            | Octane Improver
+                                    label
+                                        input(type="checkbox" name="Sol Fuel" value="Gasoline Additives")
+                                        span
+                                        | Gasoline Additives
 
-                        label
-                            input(type="checkbox" name="Sol Fuel" value="Alternative Fuels")
-                            span
-                            | Alternative Fuels
+                                    label
+                                        input(type="checkbox" name="Sol Fuel" value="Octane Improver")
+                                        span
+                                        | Octane Improver
 
-                        label
-                            input(type="checkbox" name="Sol Fuel" value="Home Heating Fuel")
-                            span
-                            | Home Heating Fuel
-                            
-                            
-                    div(class="filterCol" id="filterSolution-EngineOil")
-                        
-                        div(class="filterSH") Engine Oil
-                        
-                        label
-                            input(type="checkbox" name="Sol Engine" value="Diesel")
-                            span
-                            | Diesel Oil
+                                    label
+                                        input(type="checkbox" name="Sol Fuel" value="Alternative Fuels")
+                                        span
+                                        | Alternative Fuels
 
-                        label
-                            input(type="checkbox" name="Sol Engine" value="Gasoline Oil")
-                            span
-                            | Gasoline Oil
-                            
-                    
-                    div(class="filterCol" id="filterSolution-Industrial")
-                        
-                        div(class="filterSH") Industrial
-                        
-                        label
-                            input(type="checkbox" name="Sol Ind" value="Compressor")
-                            span
-                            | Compressor
+                                    label
+                                        input(type="checkbox" name="Sol Fuel" value="Home Heating Fuel")
+                                        span
+                                        | Home Heating Fuel
 
-                        label
-                            input(type="checkbox" name="Sol Ind" value="Grease")
-                            span
-                            | Grease
-                            
-                        label
-                            input(type="checkbox" name="Sol Ind" value="Hydrulic")
-                            span
-                            | Hydrulic
-                            
-                        label
-                            input(type="checkbox" name="Sol Ind" value="Industrial Gear")
-                            span
-                            | Industrial Gear
-                            
-                        label
-                            input(type="checkbox" name="Sol Ind" value="Metalworking")
-                            span
-                            | Metalworking
-                            
-                        label
-                            input(type="checkbox" name="Sol Ind" value="Corrosion Inhibitors")
-                            span
-                            | Corrosion Inhibitors
-                            
-                        label
-                            input(type="checkbox" name="Sol Ind" value="Couplers")
-                            span
-                            | Couplers
-                            
-                        label
-                            input(type="checkbox" name="Sol Ind" value="Demist Agents")
-                            span
-                            | Demist Agents
-                            
-                        label
-                            input(type="checkbox" name="Sol Ind" value="Emulsifiers")
-                            span
-                            | Emulsifiers
-                            
-                        label
-                            input(type="checkbox" name="Sol Ind" value="Lubricity and EP Additives")
-                            span
-                            | Lubricity and EP Additives
-                            
-                        label
-                            input(type="checkbox" name="Sol Ind" value="Packages")
-                            span
-                            | Packages
-                            
-                        label
-                            input(type="checkbox" name="Sol Ind" value="Quench Additives")
-                            span
-                            | Quench Additives
-                            
-                        label
-                            input(type="checkbox" name="Sol Ind" value="Sideway")
-                            span
-                            | Sideway
-                            
-                        label
-                            input(type="checkbox" name="Sol Ind" value="Turbine")
-                            span
-                            | Turbine
-                            
-                            
-                    div(class="filterCol" id="filterSolution-LubricantComponents")
-                        
-                        div(class="filterSH") Lubricant Components
-                        
-                        label
-                            input(type="checkbox" name="Sol Lub" value="Couplers")
-                            span
-                            | Couplers
 
-                        label
-                            input(type="checkbox" name="Sol Lub" value="Detergents & Corrosion Inhibitors")
-                            span
-                            | Detergents & Corrosion Inhibitors
-                            
-                        label
-                            input(type="checkbox" name="Sol Lub" value="Extreme Pressure Agents & Antiwear Agents")
-                            span
-                            | Extreme Pressure Agents & Antiwear Agents
-                            
-                        label
-                            input(type="checkbox" name="Sol Lub" value="Foam Inhibitors")
-                            span
-                            | Foam Inhibitors
-                            
-                        label
-                            input(type="checkbox" name="Sol Lub" value="Friction Modifiers")
-                            span
-                            | Friction Modifiers
-                            
-                        label
-                            input(type="checkbox" name="Sol Lub" value="Pour Point Depressants")
-                            span
-                            | Pour Point Depressants
-                            
-                        label
-                            input(type="checkbox" name="Sol Lub" value="Seal Swell Additives")
-                            span
-                            | Seal Swell Additives
-                            
-                        label
-                            input(type="checkbox" name="Sol Lub" value="Tackiness Additives")
-                            span
-                            | Tackiness Additives
-                            
-                        label
-                            input(type="checkbox" name="Sol Lub" value="Thickeners & Viscosity Index")
-                            span
-                            | Thickeners & Viscosity Index
-                            
-                        label
-                            input(type="checkbox" name="Sol Lub" value="Improvers")
-                            span
-                            | Improvers
-                            
-            div(id="hideFilterC")
-                a(href="#")
-                    span(class="txt") Hide Filter Options
-                    span(class="icon-arrow")
-            
-            div(id="filterResultsC")
-                div(id="filterHdr" class="padTop")
-                        
-                    div(id="filterNum") 4 Results
-                    div(id="filterList") Current Selection:  
-                        span(class="hdr") Region: 
-                        | All
-                        | / 
-                        span(class="hdr") Document Type: 
-                        | Articles
-                        | /  
-                        span(class="hdr") Solution: 
-                        | Continuously Variable Transmission (CVT), Gasoline Oil, Grease, Couplers
-                     
-                     div(id="filterSort")
-                        select
-                            option(value="Newest") Newest
-                            option(value="Oldest") Oldest
-                     
-                div(class="cards3C")
-                    div(class="cards3")
-                    
-                        a(href="#" class="cardC")
-                            div(class="cardHdrC")
-                                div(class="cardHdr") Result Title Here
-                            div(class="cardTxtC")
-                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
-                            div(class="cardBtnIndicator")
-                                img(src="images/card-btn-indicator.png")
-                                
-                        a(href="#" class="cardC")
-                            div(class="cardHdrC")
-                                div(class="cardHdr") Result Title Here
-                            div(class="cardTxtC")
-                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
-                            div(class="cardBtnIndicator")
-                                img(src="images/card-btn-indicator.png")
-                        
-                        a(href="#" class="cardC")
-                            div(class="cardHdrC")
-                                div(class="cardHdr") Result Title Here
-                            div(class="cardTxtC")
-                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
-                            div(class="cardBtnIndicator")
-                                img(src="images/card-btn-indicator.png")
-                                
-                        a(href="#" class="cardC")
-                            div(class="cardHdrC")
-                                div(class="cardHdr") Result Title Here
-                            div(class="cardTxtC")
-                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
-                            div(class="cardBtnIndicator")
-                                img(src="images/card-btn-indicator.png")
-                                
-                        a(href="#" class="cardC")
-                            div(class="cardHdrC")
-                                div(class="cardHdr") Result Title Here
-                            div(class="cardTxtC")
-                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
-                            div(class="cardBtnIndicator")
-                                img(src="images/card-btn-indicator.png")
-                                
-                        a(href="#" class="cardC")
-                            div(class="cardHdrC")
-                                div(class="cardHdr") Result Title Here
-                            div(class="cardTxtC")
-                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
-                            div(class="cardBtnIndicator")
-                                img(src="images/card-btn-indicator.png")
-                                
-                        a(href="#" class="cardC")
-                            div(class="cardHdrC")
-                                div(class="cardHdr") Result Title Here
-                            div(class="cardTxtC")
-                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
-                            div(class="cardBtnIndicator")
-                                img(src="images/card-btn-indicator.png")
-                                
-                        a(href="#" class="cardC")
-                            div(class="cardHdrC")
-                                div(class="cardHdr") Result Title Here
-                            div(class="cardTxtC")
-                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
-                            div(class="cardBtnIndicator")
-                                img(src="images/card-btn-indicator.png")
-                                
-                        a(href="#" class="cardC")
-                            div(class="cardHdrC")
-                                div(class="cardHdr") Result Title Here
-                            div(class="cardTxtC")
-                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
-                            div(class="cardBtnIndicator")
-                                img(src="images/card-btn-indicator.png")
-                                
-                        a(href="#" class="cardC")
-                            div(class="cardHdrC")
-                                div(class="cardHdr") Result Title Here
-                            div(class="cardTxtC")
-                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
-                            div(class="cardBtnIndicator")
-                                img(src="images/card-btn-indicator.png")
-                                
-                        a(href="#" class="cardC")
-                            div(class="cardHdrC")
-                                div(class="cardHdr") Result Title Here
-                            div(class="cardTxtC")
-                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
-                            div(class="cardBtnIndicator")
-                                img(src="images/card-btn-indicator.png")
-                                
-                        a(href="#" class="cardC")
-                            div(class="cardHdrC")
-                                div(class="cardHdr") Result Title Here
-                            div(class="cardTxtC")
-                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
-                            div(class="cardBtnIndicator")
-                                img(src="images/card-btn-indicator.png")
-                                
-                        a(href="#" class="cardC")
-                            div(class="cardHdrC")
-                                div(class="cardHdr") Result Title Here
-                            div(class="cardTxtC")
-                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
-                            div(class="cardBtnIndicator")
-                                img(src="images/card-btn-indicator.png")
-                                
-                        a(href="#" class="cardC")
-                            div(class="cardHdrC")
-                                div(class="cardHdr") Result Title Here
-                            div(class="cardTxtC")
-                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
-                            div(class="cardBtnIndicator")
-                                img(src="images/card-btn-indicator.png")
-                                
-                        a(href="#" class="cardC")
-                            div(class="cardHdrC")
-                                div(class="cardHdr") Result Title Here
-                            div(class="cardTxtC")
-                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
-                            div(class="cardBtnIndicator")
-                                img(src="images/card-btn-indicator.png")
-                                
-                        a(href="#" class="cardC")
-                            div(class="cardHdrC")
-                                div(class="cardHdr") Result Title Here
-                            div(class="cardTxtC")
-                                div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
-                            div(class="cardBtnIndicator")
-                                img(src="images/card-btn-indicator.png")
-                
-                div(class="paginationC padBtm")
-                    div(class="pagination")
-                        a(href="#" class="prev")
-                        a(href="#") 100
-                        a(href="#") 220
-                        a(href="#") 330
-                        a(href="#") 440
-                        a(href="#") 550
-                        a(href="#" class="nextGroup") ...
-                        a(href="#" class="endNumbs") 21
-                        a(href="#" class="endNumbs") 22
-                        a(href="#" class="next")
+                                    br
+                                    div(class="filterSecHdr") Engine Oil
+
+                                    label
+                                        input(type="checkbox" name="Sol Engine" value="Diesel")
+                                        span
+                                        | Diesel Oil
+
+                                    label
+                                        input(type="checkbox" name="Sol Engine" value="Gasoline Oil")
+                                        span
+                                        | Gasoline Oil
+
+
+                                    br
+                                    div(class="filterSecHdr") Industrial
+
+                                    label
+                                        input(type="checkbox" name="Sol Ind" value="Compressor")
+                                        span
+                                        | Compressor
+
+                                    label
+                                        input(type="checkbox" name="Sol Ind" value="Grease")
+                                        span
+                                        | Grease
+
+                                    label
+                                        input(type="checkbox" name="Sol Ind" value="Hydrulic")
+                                        span
+                                        | Hydrulic
+
+                                    label
+                                        input(type="checkbox" name="Sol Ind" value="Industrial Gear")
+                                        span
+                                        | Industrial Gear
+
+                                    label
+                                        input(type="checkbox" name="Sol Ind" value="Metalworking")
+                                        span
+                                        | Metalworking
+
+                                    label
+                                        input(type="checkbox" name="Sol Ind" value="Corrosion Inhibitors")
+                                        span
+                                        | Corrosion Inhibitors
+
+                                    label
+                                        input(type="checkbox" name="Sol Ind" value="Couplers")
+                                        span
+                                        | Couplers
+
+                                    label
+                                        input(type="checkbox" name="Sol Ind" value="Demist Agents")
+                                        span
+                                        | Demist Agents
+
+                                    label
+                                        input(type="checkbox" name="Sol Ind" value="Emulsifiers")
+                                        span
+                                        | Emulsifiers
+
+                                    label
+                                        input(type="checkbox" name="Sol Ind" value="Lubricity and EP Additives")
+                                        span
+                                        | Lubricity and EP Additives
+
+                                    label
+                                        input(type="checkbox" name="Sol Ind" value="Packages")
+                                        span
+                                        | Packages
+
+                                    label
+                                        input(type="checkbox" name="Sol Ind" value="Quench Additives")
+                                        span
+                                        | Quench Additives
+
+                                    label
+                                        input(type="checkbox" name="Sol Ind" value="Sideway")
+                                        span
+                                        | Sideway
+
+                                    label
+                                        input(type="checkbox" name="Sol Ind" value="Turbine")
+                                        span
+                                        | Turbine
+
+
+                                    br   
+                                    div(class="filterSecHdr") Lubricant Components
+
+                                    label
+                                        input(type="checkbox" name="Sol Lub" value="Couplers")
+                                        span
+                                        | Couplers
+
+                                    label
+                                        input(type="checkbox" name="Sol Lub" value="Detergents & Corrosion Inhibitors")
+                                        span
+                                        | Detergents & Corrosion Inhibitors
+
+                                    label
+                                        input(type="checkbox" name="Sol Lub" value="Extreme Pressure Agents & Antiwear Agents")
+                                        span
+                                        | Extreme Pressure Agents & Antiwear Agents
+
+                                    label
+                                        input(type="checkbox" name="Sol Lub" value="Foam Inhibitors")
+                                        span
+                                        | Foam Inhibitors
+
+                                    label
+                                        input(type="checkbox" name="Sol Lub" value="Friction Modifiers")
+                                        span
+                                        | Friction Modifiers
+
+                                    label
+                                        input(type="checkbox" name="Sol Lub" value="Pour Point Depressants")
+                                        span
+                                        | Pour Point Depressants
+
+                                    label
+                                        input(type="checkbox" name="Sol Lub" value="Seal Swell Additives")
+                                        span
+                                        | Seal Swell Additives
+
+                                    label
+                                        input(type="checkbox" name="Sol Lub" value="Tackiness Additives")
+                                        span
+                                        | Tackiness Additives
+
+                                    label
+                                        input(type="checkbox" name="Sol Lub" value="Thickeners & Viscosity Index")
+                                        span
+                                        | Thickeners & Viscosity Index
+
+                                    label
+                                        input(type="checkbox" name="Sol Lub" value="Improvers")
+                                        span
+                                        | Improvers
+
+                                    input(id="clearFilterB" type="reset" value="Clear All")
+
+
+                    div(id="filterResultsC")
+
+                        div(id="filterHdr")
+
+                            div(id="filterNum") 16 Results
+                            div(id="filterList") Current Selection:  
+                                span(class="hdr") Region: 
+                                | All
+                                | / 
+                                span(class="hdr") Document Type: 
+                                | Articles
+                                | /  
+                                span(class="hdr") Solution: 
+                                | Continuously Variable Transmission (CVT), Gasoline Oil, Grease, Couplers
+
+                             div(id="filterSort")
+                                div(class="customSelectC standard")
+                                    div(class="orgSelect")
+                                        select(name="sort")
+                                            option(value="Newest") Newest
+                                            option(value="Oldest") Oldest
+
+
+                        div(class="cards3C")
+                            div(class="cards3")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+
+                        div(class="paginationC")
+                            a(href="#" class="prev")
+                            a(href="#") 1
+                            a(href="#") 2
+                            a(href="#") 3
+                            a(href="#") 4
+                            span(class="nextGroup") ...
+                            a(href="#" class="sendToEnd") 49
+                            a(href="#") 50
+                            a(href="#" class="next")
                                 
             
             div(class="borders bgPattern padTopBtm")
