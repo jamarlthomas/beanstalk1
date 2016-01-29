@@ -38,6 +38,8 @@
 }//sidbarNavC
 
 
+.sidbarBoxCTitle { padding: 13px 0px; background: #184b9f; color: #FFF; text-align: center; font-size: 16px; }
+
 .sidbarImg { display: block; width: 100%; }
 
 .sidbarBoxC { padding: 15px; background: #eeeded; margin-bottom: 10px;
@@ -56,6 +58,22 @@
     .txtBox { float: left; width: 70%; padding: 10px; background: #595959; color: #FFF; border: 0px; }
     
     .submitBtn { padding: 10px 0px; width: 30%; background: #4c9d2f; color: #FFF; border: 0px; }
+    
+    form.pole {
+        
+        
+        label { display: block;  margin: 0px 0px 5px 22px; font-size: 16px;
+                
+            input[type="radio"] { display:none; }
+
+            input[type="radio"] +  span { display:inline-block; width: 18px; height: 13px; margin: -3px 4px 0 -22px; vertical-align: middle; cursor: pointer; background:url(../../images/check-box.png) left top no-repeat; }
+
+            input[type="radio"]:checked + span { background:url(../../images/check-box-a.png) left top no-repeat; }          
+
+        }//label
+        
+        
+    }//form.pole
     
     .twoCol { @include container;
         

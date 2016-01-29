@@ -143,9 +143,38 @@ $( document ).ready(function() {
       }
       
     });
+      
+    //add selected to html version if mobile version is selected
+    $(this).change(function(){
+        var itemClickValue = $(this).find(":selected").val();
+        var itemClickText = $(this).find(":selected").text();
+        //update text label
+        $(this).find(".currentItem").text(itemClickText);
+        //update selected in drop down
+        //$(this).find(".dropDownItemsC li[value='" + itemClickValue + "']").addClass("selected")
+    });
     
   });
   
+  
+  //reset button needs to clear out any selected values
+  $("input[type='reset']").click(function() {
+      
+      //get the ref of the form that contains this reset
+      var thisForm = $(this).closest("form")
+      
+      //look for all custom select items in this form
+      $(thisForm).find(".customSelectC").each(function(index) {
+          
+          //find the first item in each select
+          var resetOption = $(this).find("option:eq(0)").text();
+          
+          //reset all form labels in custom form
+          $(this).find(".currentItem").text(resetOption);
+          
+      });
+  });
+    
     
   //Need to change body cursor for ios for click register
   if (/ip(hone|od)|ipad/i.test(navigator.userAgent)) {

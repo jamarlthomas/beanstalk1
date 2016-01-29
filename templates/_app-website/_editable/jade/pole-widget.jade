@@ -16,6 +16,8 @@ html(lang='en')
         
         include includes/_header.jade
         
+        div(id="printArea")
+        
         div(id="contentAreaC")
         
             div(id="twoColumnC-sidebar" class="txtPaddingTop padBtm")
@@ -30,69 +32,46 @@ html(lang='en')
                             a(href="#") Automotive Gear Products
                             | HiTEC® 385: Gear Oil Additive
                     
-                    div(id="faqsHdrC" class="txtPaddingTop padBtm")
-                    
-                        h1 FAQs
-                        br
-                        div(class="subTxt") Sort by:
+                            
+                    div(id="contentC")               
+                        div(id="mainContentC")
+
+                            h2 Page Title
+
+                            p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque bibendum, libero ac cursus euismod, enim nibh dapibus turpis, eget pellentesque orci neque a leo. Nunc faucibus, purus ac lacinia tempus, dolor velit tincidunt metus, ac porttitor lectus mauris vitae dolor. Aenean bibendum sapien id tellus ultrices hendrerit. In semper gravida fringilla. Sed suscipit lorem sit amet urna auctor ultricies. Etiam at tristique est, at elementum massa. Nulla efficitur felis sed laoreet varius. Phasellus efficitur tortor nec tincidunt iaculis. Nunc rutrum, velit sit amet maximus rutrum, mauris orci pulvinar leo, non fringilla dui massa convallis eros. Nullam lectus ligula, rutrum eget iaculis nec, eleifend in velit. Nullam eleifend maximus nibh, eu facilisis dui iaculis nec.                            
                         
-                        div(class="customSelectC standard")
-                            div(class="orgSelect")
-                                select(name="faqs")
-                                    option(value="View-All") View All FAQs
-                                    option(value="Driveline-Additives") Driveline Additives FAQs
-                                    option(value="Engilne-Oil-Additives") Engilne Oil Additives FAQs
-                                    option(value="Fuel-Additives") Fuel Additives FAQs
-                                    option(value="Industrial-Additives") Industrial Additives FAQs
-                                    option(value="Lubricant-Components") Lubricant Components FAQs                                    
-                                
-                    
-                    div(id="faqItems")
-                    
-                        h2 Driveline Additives FAQs 
-
-                        ul(class="accordC txtPaddingTop")
-                            li
-                                div(class="icon")
-                                a(href="#") 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dolor quam, porta ut erat in
-                                div(class="reveal" style="display: none;")
-                                    | Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-
-                            li
-                                div(class="icon")
-                                a(href="#") 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dolor quam, porta ut erat in
-                                div(class="reveal" style="display: none;")
-                                    | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet felis justo, vel faucibus orci ultrices ut. Maecenas eu vehicula eros. Morbi ultricies nibh porttitor nunc tincidunt auctor. Duis consectetur arcu a enim posuere, a rutrum quam bibendum. Cras rutrum ex et justo lacinia dictum eget non mauris. Nulla facilisi. Donec efficitur nisl non lacus aliquet, eget vulputate mauris aliquam. In dui sem, scelerisque in dolor tempor, gravida porttitor dolor. Aenean accumsan felis sed suscipit finibus. Mauris sed tempus sem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet felis justo, vel faucibus orci ultrices ut. Maecenas eu vehicula eros. Morbi ultricies nibh porttitor nunc tincidunt auctor. Duis consectetur arcu a enim posuere, a rutrum quam bibendum. Cras rutrum ex et justo lacinia dictum eget non mauris. Nulla facilisi. Donec efficitur nisl non lacus aliquet, eget vulputate mauris aliquam. In dui sem, scelerisque in dolor tempor, gravida porttitor dolor. Aenean accumsan felis sed suscipit finibus. Mauris sed tempus sem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet felis justo, vel faucibus orci ultrices ut. Maecenas eu vehicula eros. Morbi ultricies nibh porttitor nunc tincidunt auctor. Duis consectetur arcu a enim posuere, a rutrum quam bibendum. Cras rutrum ex et justo lacinia dictum eget non mauris. Nulla facilisi. Donec efficitur nisl non lacus aliquet, eget vulputate mauris aliquam. In dui sem, scelerisque in dolor tempor, gravida porttitor dolor. Aenean accumsan felis sed suscipit finibus. Mauris sed tempus sem.
-
-
-                            li
-                                div(class="icon")
-                                a(href="#") 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dolor quam, porta ut erat in
-                                div(class="reveal" style="display: none;")
-                                    | Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-
-                            li
-                                div(class="icon")
-                                a(href="#") 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dolor quam, porta ut erat in
-                                div(class="reveal" style="display: none;")
-                                    | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet felis justo, vel faucibus orci ultrices ut. Maecenas eu vehicula eros. Morbi ultricies nibh porttitor nunc tincidunt auctor. Duis consectetur arcu a enim posuere, a rutrum quam bibendum. Cras rutrum ex et justo lacinia dictum eget non mauris. Nulla facilisi. Donec efficitur nisl non lacus aliquet, eget vulputate mauris aliquam. In dui sem, scelerisque in dolor tempor, gravida porttitor dolor. Aenean accumsan felis sed suscipit finibus. Mauris sed tempus sem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet felis justo, vel faucibus orci ultrices ut. Maecenas eu vehicula eros. Morbi ultricies nibh porttitor nunc tincidunt auctor. Duis consectetur arcu a enim posuere, a rutrum quam bibendum. Cras rutrum ex et justo lacinia dictum eget non mauris. Nulla facilisi. Donec efficitur nisl non lacus aliquet, eget vulputate mauris aliquam. In dui sem, scelerisque in dolor tempor, gravida porttitor dolor. Aenean accumsan felis sed suscipit finibus. Mauris sed tempus sem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet felis justo, vel faucibus orci ultrices ut. Maecenas eu vehicula eros. Morbi ultricies nibh porttitor nunc tincidunt auctor. Duis consectetur arcu a enim posuere, a rutrum quam bibendum. Cras rutrum ex et justo lacinia dictum eget non mauris. Nulla facilisi. Donec efficitur nisl non lacus aliquet, eget vulputate mauris aliquam. In dui sem, scelerisque in dolor tempor, gravida porttitor dolor. Aenean accumsan felis sed suscipit finibus. Mauris sed tempus sem.
-
+                        
                             
                 div(id="lftCol-sidebar")
-                    div(id="sidbarHdrC" class="altSidbarstyles")
-                        h2 Sub Navigation Title
-                    div(id="sidbarNavC")
-                        ul
-                            li: a(href="#") Sub Navigation Title
-                            li: a(href="#") Sub Navigation Title
-                            li: a(href="#") Sub Navigation Title
-                            li: a(href="#") Sub Navigation Title
-                            li: a(href="#") Sub Navigation Title
-                            li: a(href="#") Sub Navigation Title
-                            li: a(href="#") Sub Navigation Title
-                            li: a(href="#") Sub Navigation Title
-                            li: a(href="#") Sub Navigation Title
-                            li: a(href="#") Sub Navigation Title 
+                    
+                    div(class="sidbarBoxCTitle") We value your opinion!
+                    
+                    div(class="sidbarBoxC")
+                    
+                            div(class="txt") Which segment of off-road vehicle additives best fits your company’s needs?
+                            
+                            form(class="pole")
+                                
+                                label
+                                    input(type="radio" name="question" value="Agriculture segment")
+                                    span
+                                    | Agriculture segment
+                                
+                                label
+                                    input(type="radio" name="question" value="Construction segment")
+                                    span
+                                    | Construction segment
+                                
+                                label
+                                    input(type="radio" name="question" value="Mining segment")
+                                    span
+                                    | Mining segment
+                                br
+                                
+                                input(type="submit" value="Submit Your Vote")
+                                br
+                                | 270 Votes | 11 days, 2 hours left
+                                
                     
                     img(class="sidbarImg" src="page-images/sidebar-images/sidebar-contact.jpg")
                     
@@ -100,7 +79,8 @@ html(lang='en')
                         
                         div(class="hdr") Contact for More Information
                         div(class="txt") Um sundae culles aboritia as aut acit volorum eumqui quam quidele secatec toratemquam.
-                            
+                        
+                        
                         div(class="customSelectC sidebarOpt")
                           div(class="orgSelect")
                             select(name="Countries")
@@ -136,11 +116,76 @@ html(lang='en')
                         input(type="text" class="txtBox" placeholder="Email Address")
                         input(type="submit" class="submitBtn" value="Submit")
                         
+                            
             
+            div(class="bgGray padTopBtm")
+                div(class="fullWidth")
+                        h2 Automotive Gear Products
 
+                div(class="cards2C")
+                    div(class="cards2")
+
+                        a(href="#")
+
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png") 
+
+                            img(src="page-images/cards/sample-cardv2.jpg")
+
+                            div(class="textAreaC")
+                                div(class="cardTitle") Driveline Additives
+                                div(class="cardHdr") HiTEC® 349
+                                div(class="cardSubHdr") Manual Transmissions
+                                div(class="cardTxt") The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials. 
+
+                        a(href="#")
+
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png") 
+
+                            img(src="page-images/cards/sample-cardv2.jpg")
+
+                            div(class="textAreaC")
+                                div(class="cardTitle") Driveline Additives
+                                div(class="cardHdr") HiTEC® 349
+                                div(class="cardSubHdr") Manual Transmissions
+                                div(class="cardTxt") The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.
+
+                        a(href="#")
+
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png") 
+
+                            img(src="page-images/cards/sample-cardv2.jpg")
+
+                            div(class="textAreaC")
+                                div(class="cardTitle") Driveline Additives
+                                div(class="cardHdr") HiTEC® 349
+                                div(class="cardSubHdr") Manual Transmissions
+                                div(class="cardTxt") The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.
+
+                        a(href="#")
+
+                            div(class="cardBtnIndicator")
+                                img(src="images/card-btn-indicator.png") 
+
+                            img(src="page-images/cards/sample-cardv2.jpg")
+
+                            div(class="textAreaC")
+                                div(class="cardTitle") Driveline Additives
+                                div(class="cardHdr") HiTEC® 349
+                                div(class="cardSubHdr") Manual Transmissions
+                                div(class="cardTxt") The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.
+
+
+                div(class="fullWidth")
+                    a(href="#" class="viewAllBtn") View All Automotive Gear Products
+                    
+            
+            
             div(class="borders bgPattern padTopBtm")
                 div(class="fullWidth")
-                        h2 Personalized Content Title 
+                        h2 Insights & Resources  
 
                 div(class="cardsC")
                     div(class="cards")
@@ -202,6 +247,6 @@ html(lang='en')
 
                             img(src="page-images/cards/sample-card3.jpg")
                             
-                            
+        
+        
         include includes/_footer.jade
-                            
