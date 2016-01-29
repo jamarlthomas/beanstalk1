@@ -51,6 +51,10 @@ namespace CMS.Mvc.Controllers.Afton
                     {
                         return new GenericSidebarBlockViewModel(item);
                     }
+                case "custom.DocumentSidebarComponent":
+                    {
+                        return new DocumentsWidgetViewModel(item);
+                    }
                 default:
                     {
                         return null;
@@ -58,6 +62,6 @@ namespace CMS.Mvc.Controllers.Afton
             }
         }
 
-        
+
     }
 }

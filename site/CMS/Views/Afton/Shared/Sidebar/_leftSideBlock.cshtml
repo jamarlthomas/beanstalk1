@@ -4,11 +4,11 @@
     <a href="@Url.Content("~/" + Model.Reference)">
         @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
         {
-            <img src="@Url.Content(Model.ImageUrl)"/>
+            <img src="@Url.Content(Model.ImageUrl)" alt="@Model.Title"/>
         }
         else if (!string.IsNullOrWhiteSpace(Model.DefaultImage))
         {
-            <img src="@Url.Content(Model.DefaultImage)"/>
+            <img src="@Url.Content(Model.DefaultImage)" alt="@Model.Title" />
         }
         <div class="txtCol">
             <div class="sTxt">@Model.Title</div>
@@ -21,11 +21,11 @@ else
     <a>
         @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
         {
-            <img src="@Url.Content(Model.ImageUrl)" />
+            <img src="@Url.Content(Model.ImageUrl)" alt="@Model.Title" />
         }
         else if (!string.IsNullOrWhiteSpace(Model.DefaultImage))
         {
-            <img src="@Url.Content(Model.DefaultImage)" />
+            <img src="@Url.Content(Model.DefaultImage)" alt="@Model.Title" />
         }
         <div class="txtCol">
             <div class="sTxt">@Model.Title</div>

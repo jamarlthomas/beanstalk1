@@ -1,9 +1,12 @@
 ﻿using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Web.Configuration;
+using CMS.DataEngine.Generators;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Helpers;
+using CMS.Helpers.UniGraphConfig;
 using CMS.Localization;
 using CMS.Mvc.ViewModels.Product;
 using CMS.Mvc.ViewModels.Shared;
@@ -115,6 +118,15 @@ namespace CMS.Mvc.Helpers
 		{
 			return guids.Select(guid => _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName)) as T).ToList();
 		} 
+         internal static List<T> GetSiblings<T>(T node)	where T : TreeNode, new()
+         {
+             return HandleQueryableData<T>(
+                 q=>q.Where(n=>n.Parent.DocumentID==node.Parent.DocumentID && n.DocumentID != node.DocumentID),
+                 node.ClassName,
+                 string.Format("siblings_cc_{0}_dn_{1}", CurrentCulture, node.DocumentID),
+                 string.Format("nodes|afton|{0}|all", node.ClassName.ToLower()))
+                 .ToList();
+         }
 
         private static T HandleData<T>(Expression<Func<TreeNode, bool>> predicate, string className, string cacheKey,
             string cacheDependencyKey, string cachedependenciesFormat = "") where T : TreeNode, new()
@@ -214,10 +226,13 @@ namespace CMS.Mvc.Helpers
 
 
 
-        internal static List<TreeNode> GetNodes(string[] p)
+        internal static List<TreeNode> GetNodes(string[] stringIds)
         {
-            return p.Select(id =>
-                DocumentHelper.GetDocument(int.Parse(id), new TreeProvider())).ToList();
+            int intId;
+            int[] intIds = stringIds.Where(id => int.TryParse(id, out intId)).Select(int.Parse).ToArray();
+            return intIds.Select(id =>DocumentHelper.GetDocument(id, new TreeProvider())).Where(item => item != null).ToList();
         }
+
+       
     }
 }

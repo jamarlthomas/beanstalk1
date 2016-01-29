@@ -170,6 +170,7 @@
     <Compile Include="Controllers\Afton\HomeController.cs" />
     <Compile Include="Controllers\Afton\MasterController.cs" />
     <Compile Include="Controllers\Afton\SidebarPageController.cs" />
+    <Compile Include="Models\Afton\Shared\SidebarComponents\DocumentSidebarComponent.cs" />
     <Compile Include="Providers\SidebarProvider.cs" />
     <Compile Include="Helpers\CultureHelper.cs" />
     <Compile Include="Helpers\StringToGuidsConvertHelper.cs" />
@@ -225,10 +226,10 @@
     <Compile Include="Models\Afton\Home\HeroContent.cs" />
     <Compile Include="Models\Afton\Home.cs" />
     <Compile Include="Models\Afton\Shared\Region.cs" />
-    <Compile Include="Models\Afton\Shared\SideBarComponents\ContactUs.cs" />
-    <Compile Include="Models\Afton\Shared\SideBarComponents\GenericSidebarBlock.cs" />
-    <Compile Include="Models\Afton\Shared\SideBarComponents\GenericSidebarComponentWithDefaultImage.cs" />
-    <Compile Include="Models\Afton\Shared\SideBarComponents\StayInformed.cs" />
+    <Compile Include="Models\Afton\Shared\SidebarComponents\ContactUs.cs" />
+    <Compile Include="Models\Afton\Shared\SidebarComponents\GenericSidebarBlock.cs" />
+    <Compile Include="Models\Afton\Shared\SidebarComponents\GenericSidebarComponentWithDefaultImage.cs" />
+    <Compile Include="Models\Afton\Shared\SidebarComponents\StayInformed.cs" />
     <Compile Include="Models\CorporateSite\News.cs" />
     <Compile Include="Properties\MvcAssemblyInfo.cs" />
     <Compile Include="Providers\DocumentProvider.cs" />
@@ -245,6 +246,8 @@
     <Compile Include="Providers\SolutionBusinessUnitProvider.cs" />
     <Compile Include="Providers\ContentMenuItemProvider.cs" />
     <Compile Include="Providers\PagesMenuItemProvider.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\DocumentBlockViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\DocumentsWidgetViewModel.cs" />
     <Compile Include="ViewModels\Shared\SolutionViewModel.cs" />
     <Compile Include="ViewModels\Shared\TileViewModel.cs" />
     <Compile Include="ViewModels\Home\HeroContentViewModel.cs" />
@@ -264,7 +267,7 @@
     <Compile Include="ViewModels\Shared\SidebarComponents\LeftSideBlockViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\GenericSidebarBlockViewModel.cs" />
     <Compile Include="ViewModels\Product\RelatedProductCardViewModel.cs" />
-    <Compile Include="ViewModels\Shared\SidebarComponents\LinkItemViewModel.cs" />
+    <Compile Include="ViewModels\Shared\LinkItemViewModel.cs" />
     <Compile Include="ViewModels\Master\MegaMenuSolutionBusinessUnitViewModel.cs" />
     <Compile Include="ViewModels\Master\MegaMenuLinkItemViewModel.cs" />
     <Compile Include="ViewModels\Master\MegaMenuThumbnailedItemViewModel.cs" />
@@ -287,7 +290,7 @@
     <Compile Include="ViewModels\SBU\DocumentTypeViewModel.cs" />
     <Compile Include="ViewModels\SBU\SBUViewModel.cs" />
     <Compile Include="ViewModels\Shared\RegionViewModel.cs" />
-    <Compile Include="Models\Afton\Shared\SideBarComponents\InsightsAndResourcesWidget.cs" />
+    <Compile Include="Models\Afton\Shared\SidebarComponents\InsightsAndResourcesWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\normalize.min.css" />
@@ -429,6 +432,7 @@
     <Content Include="Views\Afton\Solution\_heroImage.cshtml" />
     <Content Include="Views\Afton\Solution\_sidebar.cshtml" />
     <Content Include="Views\Afton\Shared\_stayInformed.cshtml" />
+    <Content Include="Views\Afton\Shared\Sidebar\_documentWidget.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
