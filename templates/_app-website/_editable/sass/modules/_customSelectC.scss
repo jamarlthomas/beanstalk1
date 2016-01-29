@@ -11,17 +11,15 @@
 
     }//currentItem
 
-    .dropDownItemsC { width: 100%; position: absolute; margin-top: -1px;  background: #FFF; border: 1px solid #000; z-index: 100; display: none; max-height: 200px; overflow: auto;
+    .dropDownItemsC { width: 100%; position: absolute; margin-top: -1px;  background: #FFF; border: 1px solid #000; z-index: 1; display: none;
 
         ul { margin: 0px; padding: 0px;
 
-            li { margin: 0px; padding: 5px 40px 5px 5px; list-style: none; border-bottom: 1px solid #CCC;
+            li { margin: 0px; padding: 5px 40px 5px 5px; list-style: none;
 
-                &:hover { background: #EEE; }
+                &:hover { color: #50a84a; }
 
             }//li
-            
-            li:last-child { border: none; }
             
             li.disabled { color: #999; font-style: italic; }
 
@@ -64,8 +62,6 @@
     .currentItem { height: 35px; border: 1px solid #4c9d2f; background: #FFF; }
 
     .dropDownItemsC { border: solid 1px #4c9d2f; }
-
-    ul li { border-bottom: solid 1px #4c9d2f; }
 
     .orgSelect { 
 

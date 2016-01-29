@@ -6,7 +6,12 @@
             
             #categoriesDD { float: left;
                 
-                .customSelectC { width: 264px; }
+                .customSelectC { width: 264px;
+                    
+                    //*** Breakpoints ***
+                    @include breakpoint($bp2) { width: 100%; }
+                
+                }
                 
                 //*** Breakpoints ***
                 @include breakpoint($bp2) { float: none; }
@@ -15,7 +20,12 @@
             
             #authorsDD { float: left; padding-left: 40px;
                 
-                .customSelectC { width: 200px; }
+                .customSelectC { width: 200px;
+                
+                    //*** Breakpoints ***
+                    @include breakpoint($bp2) { width: 100%; }
+                    
+                }
                 
                 
                 //*** Breakpoints ***
@@ -26,7 +36,12 @@
             #sortDD { float: right;
                 
                 
-                .customSelectC { width: 120px; }
+                .customSelectC { width: 120px;
+                
+                    //*** Breakpoints ***
+                    @include breakpoint($bp2) { width: 100%; }
+                    
+                }
                 
                 
                 //*** Breakpoints ***

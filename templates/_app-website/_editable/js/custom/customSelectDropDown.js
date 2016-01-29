@@ -92,6 +92,7 @@ $( document ).ready(function() {
         $(".customSelectC").removeClass("openSelect");
         
         //detrmine openning position
+        /*
         var windowHeight = $(window).height();
         var selectTopPos = $(this).offset().top;
         var scrollPos = $(window).scrollTop();
@@ -107,6 +108,7 @@ $( document ).ready(function() {
           //remove styles for default open to below
           $(this).parent().find(".dropDownItemsC").css({"margin-top": "-1px"})
         }
+        */
         
         //now open the on selected
         $(this).parent().addClass("openSelect")

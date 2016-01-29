@@ -3,11 +3,13 @@
     ul { margin: 0px; padding: 0px; }
     li { margin: 0px; padding: 0px; list-style: none; float: left; }
 
-    a { padding: 0px 0.8em; display: block; height: 41px; text-decoration: none; color: #0c419a; font: 16px HelveticaNeueLT-Light; transition: 0.2s;
+    a { display: block; height: 41px; text-decoration: none; color: #0c419a; font: 16px HelveticaNeueLT-Light; transition: 0.2s; width: 175px; text-align: center; 
        
         &:hover, &.active { color: #50a84a; border-bottom: 5px solid #50a84a; }
-
+        
     }//a
+    
+    
 
     //*** Breakpoints ***
     @include breakpoint($bp1) { display: none; }
