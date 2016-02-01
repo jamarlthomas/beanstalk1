@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using CMS.DocumentEngine;
+using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
-using CMS.Mvc.Models.Afton.Shared;
 
 namespace CMS.Mvc.Providers
 {
@@ -17,14 +17,7 @@ namespace CMS.Mvc.Providers
 
         public List<Country> GetCountries()
         {
-            return new List<Country>
-            {
-                new Country {CountryName = "Afghanistan"},
-                new Country {CountryName = "Albania"},
-                new Country {CountryName = "Algeria"},
-                new Country {CountryName = "American Samoa"},
-                new Country {CountryName = "Andorra"}
-            };
+            return ContentHelper.GetDocs<Country>(Country.CLASS_NAME);
         }
     }
 }
