@@ -12,6 +12,7 @@ namespace CMS.Mvc.Controllers.Afton
 {
     public class SidebarPageController : BaseController
     {
+        protected readonly ILeftNavigationProvider _leftNavigationProvider;
         protected readonly IPollSurveyAnswerProvider _pollSurveyAnswerProvider;
         protected readonly ISidebarProvider _sidebarProvider;
 
@@ -19,6 +20,7 @@ namespace CMS.Mvc.Controllers.Afton
         {
             _sidebarProvider = new SidebarProvider();
             _pollSurveyAnswerProvider = new PollSurveyAnswerProvider();
+            _leftNavigationProvider = new LeftNavigationProvider();
         }
 
         public JsonResult SubmitEmail(string email)
@@ -42,14 +44,14 @@ namespace CMS.Mvc.Controllers.Afton
             }));
         }
 
-        protected ArrayList MapSidebar(List<TreeNode> nodes)
+        protected ArrayList MapSidebar(List<TreeNode> nodes, TreeNode baseNode = null)
         {
             var list = new ArrayList();
-            nodes.ForEach(item => list.Add(ConvertSideBarComponent(item)));
+            nodes.ForEach(item => list.Add(ConvertSideBarComponent(item, baseNode)));
             return list;
         }
 
-        private SidebarItemViewModel ConvertSideBarComponent(TreeNode item)
+        private SidebarItemViewModel ConvertSideBarComponent(TreeNode item, TreeNode baseNode)
         {
             switch (item.ClassName)
             {
@@ -76,6 +78,25 @@ namespace CMS.Mvc.Controllers.Afton
                     pollSurvey.Answers = MapData<PollSurveyAnswer, PollSurveyAnswerViewModel>(answers);
                     pollSurvey.TotalVotes = answers.Sum(s => s.Vote);
                     return pollSurvey;
+                }
+                case LeftNavigation.CLASS_NAME:
+                {
+                    return new LeftNavigationViewModel
+                    {
+                        ClassName = item.ClassName,
+                        Title = baseNode.GetStringValue("Title", baseNode.NodeAlias),
+                        NavItems = _leftNavigationProvider.GetNavItems(baseNode.NodeAliasPath)
+                            .Select(node => new LeftNavigationItemViewModel
+                            {
+                                Title = node.GetStringValue("Title", node.NodeAlias),
+                                Link = node.NodeAliasPath,
+                                SubMenu = node.Children.Select(subNode => new LeftNavigationItemViewModel
+                                {
+                                    Title = subNode.GetStringValue("Title", node.NodeAlias),
+                                    Link = subNode.NodeAliasPath
+                                })
+                            })
+                    };
                 }
                 default:
                 {

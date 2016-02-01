@@ -56,17 +56,9 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="CMS.Membership, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\CMS.Membership.dll</HintPath>
-    </Reference>
     <Reference Include="CMS.Search, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.Search.dll</HintPath>
-    </Reference>
-    <Reference Include="CMS.Synchronization, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\CMS.Synchronization.dll</HintPath>
     </Reference>
     <Reference Include="EmitMapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EmitMapper.1.0.0\lib\EmitMapper.dll</HintPath>
@@ -176,6 +168,7 @@
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
+    <Compile Include="Interfaces\ILeftNavigationProvider.cs" />
     <Compile Include="Interfaces\IPollSurveyAnswerProvider.cs" />
     <Compile Include="Models\Afton\Shared\Country.cs" />
     <Compile Include="Interfaces\ISidebarProvider.cs" />
@@ -187,8 +180,10 @@
     <Compile Include="Helpers\SearchHelper.cs" />
     <Compile Include="Helpers\RegionsHelper.cs" />
     <Compile Include="Controllers\Afton\SidebarPageController.cs" />
+    <Compile Include="Models\Afton\Shared\SideBarComponents\LeftNavigation.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\PollSurveyAnswer.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\PollSurvey.cs" />
+    <Compile Include="Providers\LeftNavigationProvider.cs" />
     <Compile Include="Providers\PollSurveyAnswerProvider.cs" />
     <Compile Include="Providers\SidebarProvider.cs" />
     <Compile Include="Helpers\CultureHelper.cs" />
@@ -273,8 +268,10 @@
     <Compile Include="Providers\SolutionBusinessUnitProvider.cs" />
     <Compile Include="Providers\ContentMenuItemProvider.cs" />
     <Compile Include="Providers\PagesMenuItemProvider.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\LeftNavigationItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\PollSurveyAnswerViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\PollSurveySubmitViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\LeftNavigationViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\PollSurveyViewModel.cs" />
     <Compile Include="ViewModels\Shared\SolutionViewModel.cs" />
     <Compile Include="ViewModels\Shared\TileViewModel.cs" />
@@ -474,6 +471,7 @@
     <Content Include="Views\Afton\Solution\_sidebar.cshtml" />
     <Content Include="Views\Afton\Shared\_stayInformed.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_pollSurvey.cshtml" />
+    <Content Include="Views\Afton\Shared\Sidebar\_leftNavigation.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

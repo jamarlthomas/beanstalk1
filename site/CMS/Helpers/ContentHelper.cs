@@ -13,9 +13,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using CMS.DataEngine;
-using CMS.Membership;
 using CMS.SiteProvider;
-using CMS.Synchronization;
 using WebGrease;
 using ServerInfo = System.Web.Helpers.ServerInfo;
 
@@ -121,6 +119,24 @@ namespace CMS.Mvc.Helpers
 		{
             return guids.Select(guid => _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T).ToList();
 		}
+
+        public static List<TreeNode> GetDocsByPath(string aliasPath, int maxRelativeLevel = 1, string classNames = "*")
+        {
+            var cacheDependencyKey = "nodes|afton|all";
+            return CacheHelper.Cache(cs =>
+            {
+                if (!string.IsNullOrWhiteSpace(cacheDependencyKey))
+                    cs.CacheDependency = CacheHelper.GetCacheDependency(cacheDependencyKey);
+                return new TreeProvider().SelectNodes(new NodeSelectionParameters
+                {
+                    ClassNames = classNames,
+                    SiteName = ConfigurationManager.AppSettings["SiteName"],
+                    SelectAllData = true,
+                    AliasPath = aliasPath + "/%",
+                    MaxRelativeLevel = maxRelativeLevel,
+                }).Where(i => i != null).ToList();
+            }, new CacheSettings(CachingTime, string.Format("pth_{0}_mrl_{1}_cn_{2}", aliasPath, maxRelativeLevel, classNames)));
+        }
 
         private static T HandleData<T>(Expression<Func<TreeNode, bool>> predicate, string className, string cacheKey,
             string cacheDependencyKey, string cachedependenciesFormat = "") where T : TreeNode, new()

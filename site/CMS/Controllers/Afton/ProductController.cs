@@ -23,7 +23,7 @@ namespace CMS.Mvc.Controllers.Afton
         {
             var product = _productProvider.GetProduct(name);
             ProductPageViewModel productModel = new ProductPageViewModel();
-            productModel.SideBar.Items = MapSidebar(_sidebarProvider.GetSideBarItems(StringToGuidsConvertHelper.ParseGuids(product.SidebarItems)));
+            productModel.SideBar.Items = MapSidebar(_sidebarProvider.GetSideBarItems(StringToGuidsConvertHelper.ParseGuids(product.SidebarItems)), product);
             productModel.BreadCrumb.BreadcrumbLinkItems = _productProvider.GetBreadcrumb(name);
             productModel.DownloadWidget = GetDownloadwidget(product);
           
