@@ -12,6 +12,11 @@ namespace CMS.Mvc.Providers
             return ContentHelper.GetDocChildrenByName<SolutionBusinessUnit>(SolutionBusinessUnit.CLASS_NAME, parentAlias);
         }
 
+		public List<SolutionBusinessUnit> GetSolutionBusinessUnits()
+		{
+			return ContentHelper.GetDocs<SolutionBusinessUnit>(SolutionBusinessUnit.CLASS_NAME);
+		}
+
         public SolutionBusinessUnit GetSolutionBusinessUnit(string alias)
         {
             return ContentHelper.GetDocByName<SolutionBusinessUnit>(SolutionBusinessUnit.CLASS_NAME, alias);

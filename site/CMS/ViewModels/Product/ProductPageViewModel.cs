@@ -1,4 +1,6 @@
-﻿namespace CMS.Mvc.ViewModels.Product
+﻿using CMS.Mvc.ViewModels.Shared;
+
+namespace CMS.Mvc.ViewModels.Product
 {
     public class ProductPageViewModel
     {
@@ -6,7 +8,7 @@
         {
             ContactUs = new ContactUsViewModel();
             BreadCrumb = new BreadCrumbViewModel();
-            ContentCopy = new ProductViewModel();
+            ContentCopyArea = new ProductViewModel();
             StayInformed = new StayInformedViewModel();
             InsightsAndResourcesWidget = new InsightsAndResourcesWidgetViewModel();
             PassionWidget = new PassionWidgetViewModel();
@@ -17,7 +19,7 @@
         }
 
         public ContactUsViewModel ContactUs { get; set; }
-        public ProductViewModel ContentCopy { get; set; }
+        public ProductViewModel ContentCopyArea { get; set; }
         public StayInformedViewModel StayInformed { get; set; }
         public InsightsAndResourcesWidgetViewModel InsightsAndResourcesWidget { get; set; }
         public PassionWidgetViewModel PassionWidget { get; set; }
@@ -25,5 +27,7 @@
         public InsightsAndResourcesSectionViewModel InsightsAndResourcesSection { get; set; }
         public BreadCrumbViewModel BreadCrumb { get; set; }
         public DownloadWidgetViewModel DownloadWidget { get; set; }
+
+        public ProductViewModel ContentCopy { get; set; }
     }
 }

@@ -5,6 +5,7 @@ namespace CMS.Mvc.Interfaces
 {
     public interface IDocumentTypeProvider
     {
-        List<DocumentType> GetDocumentTypeUnits(string alias, int limit);
+        List<DocumentType> GetDocumentTypeUnits(string alias);
+		List<DocumentType> GetDocumentTypes();
     }
 }

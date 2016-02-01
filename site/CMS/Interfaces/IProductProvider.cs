@@ -1,11 +1,19 @@
-﻿using CMS.DocumentEngine.Types;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using CMS.DocumentEngine.Types;
+using CMS.Mvc.ViewModels.Product;
+using CMS.Mvc.ViewModels.Shared;
 
 namespace CMS.Mvc.Interfaces
 {
-	public interface IProductProvider
+    public interface IProductProvider
     {
-		List<Product> GetProductItems(List<Guid> guids, string siteName);
+        Product GetProduct(string alias);
+        List<BreadCrumbLinkItemViewModel> GetBreadcrumb(string name);
+
+        List<LinkItemViewModel> GetAvailableRegions(Product product);
+
+        List<DownloadLanguageLinkItemViewModel> GetAvailableTranslations(Product product);
+
+        string GetDownloadLink(Product product);
     }
 }
