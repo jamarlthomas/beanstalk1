@@ -5,126 +5,113 @@
 }//viewAll
 
 
-#filterHdrC { background: #f1f0f0; 
+#mobileFilterBtnC { margin-bottom: 2px; padding: 7px 0px; background: #f1f0f0;
     
-    #filterHdr { padding: 10px 0px; color: #545454; font: 15px HelveticaNeueLTStd-Md;
-    
-        #mobileFilterBtn { float: right;
-        
-            //*** Breakpoints ***
-            @include breakpoint($bp1) { display: block!important; }
-            
-        }//mobileFilterBtn
-        
-    }//filterHdr
-    
-}//filterHdrC
+    a#mobileFilterBtn { display: block; text-decoration: none; width: calc(100% - 40px); margin: 0px 20px 0px 20px; overflow: auto;
 
-
-#filterC { 
-    
-    .filterRow { position: relative; margin: 0px auto; padding: 28px 0px; width: 1235px; overflow: auto; 
+        #mobileFilterTxt { float: left; font-size: 18px; color: #4c9d2f; }
         
-        #clearFilterB { position: absolute; top: 26px; right: 0px;
-            
-            input { padding: 10px 23px; background: #4c9d2f; border: 0px; color: #FFF; }
+        #mobileFilterImg { float: right; margin-top: 3px; }
         
-        }//clearFilterB
-
-        .filterH { padding-bottom: 17px; color: #0c419a; font-size: 24px; }
-            
-        .filterSH { padding-bottom: 10px; font-size: 18px; }
-        
-        .filterCol { float: left; width: 230px; margin-right: 20px;
-            
-            input { width: 200px; }
-            
-            label { display: block; margin: 0px 0px 8px 18px;
-                
-                input[type="checkbox"] { display:none; }
-                
-                input[type="checkbox"] +  span { display:inline-block; width: 15px; height: 13px; margin: -3px 4px 0 -18px; vertical-align: middle; cursor: pointer; background:url(../../images/check-box.png) left top no-repeat; }
-                
-                input[type="checkbox"]:checked + span { background:url(../../images/check-box-a.png) left top no-repeat; }
-                
-            }//label
-            
-            &:last-child { margin-right: 0px; }
-            
-        }//filterCol
-        
-    }//filterRow
-  
-    //*** Breakpoints ***
-    @include breakpoint($bp1) { display: none; }
-    
-}//filterC
-
-
-
-#hideFilterC { background: #a1a1a1; 
-    
-    a { position: relative; display: block; padding: 10px 0px; color: #FFF; font-size: 15px; text-align: center; text-decoration: none;
-    
-        .icon-arrow { content: "\e900"; position: absolute; margin: 4px 0px 0px 10px; font: 13px icomoon; transform: rotate(-90deg); }
-        
-    }//a
+    }//a#mobileFilterBtn
     
     //*** Breakpoints ***
-    @include breakpoint($bp1) { display: none; }
+    @include breakpoint($bp2) { display: block!important; } 
     
+}//mobileFilterBtnC
+
+
+#filterAreaC {
     
-}//hideFilterC
-
-
-
-
-
-#filterResultsC { background: #f1f0f0; box-shadow: 0 15px 0 0 rgba(0,0,0,.2);
+    #filterArea { margin: 0px auto; width: 1235px; @include cf;
     
-    #filterHdr { position: relative; width: 1235px; margin: 0px auto;
+        #filterC { /*@include span(3 of 12 no-gutters);*/ @include span(3 of 12); background: #f1f0f0;
         
-        #filterSort { display: inline-block; position: absolute; top: 35px; right: 0px;
+            #filterLabel { padding: 7px 15px; border-bottom: 2px solid #FFF; font-size: 17px; }
             
-            select { position: relative; width: 120px; height: 26px; border: 1px solid #4c9d2f; border-radius: 0px; 
-                
-                &:focus { outline:none; }
-                
-            }//select
+            #filterColC { padding: 0px 15px;
             
-            @supports (pointer-events: none) {
+                #filterSearch { margin: 17px 0px; padding-left: 10px; height: 34px; border: 0px; width: 100%;
                 
-                select { padding: 1px 35px 0px 3px; }
+                    &:focus { outline: none; }
+                    
+                }//filterSearch
                 
-                &::before { content: ""; position: absolute; top: 0px; right: 0px; width: 40px; height: 26px; background: #4c9d2f; pointer-events: none; z-index: 1; }
+                hr { border: 0px; border-bottom: 1px solid #bababa; }
                 
-                &::after { content: "\e900"; color: #FFF; font: 13px icomoon; position: absolute; top: 7px; right: 13px; pointer-events: none; transform: rotate(90deg); z-index: 2; } 
+                .filterGroup { padding: 10px 0px;
+                    
+                    .filterHdr { padding-bottom: 10px; color: #0c419a; font-size: 19px; }
+                    
+                    .filterSecHdr { padding-bottom: 3px; font-size: 15px; }
+                    
+                    label { display: block;  margin: 0px 0px 5px 22px;
                 
-            }//suports 
+                        input[type="checkbox"] { display:none; }
+
+                        input[type="checkbox"] +  span { display:inline-block; width: 18px; height: 13px; margin: -3px 4px 0 -22px; vertical-align: middle; cursor: pointer; background:url(../../images/check-box.png) left top no-repeat; }
+
+                        input[type="checkbox"]:checked + span { background:url(../../images/check-box-a.png) left top no-repeat; }          
+
+                    }//label
+                    
+                    input#clearFilterB { margin-top: 15px; padding: 10px 0px; text-align: center; width: 100%; background: #4c9d2f; border: 0px; color: #FFF; }
+                
+                }//filterGroup
+                    
+                
+                
+            }//filterColC
             
             //*** Breakpoints ***
-            @include breakpoint($bp3) { margin-top: 10px; position: relative; top: 0px; } 
+            @include breakpoint($bp2) { display: none; }
             
-        }//filterSort
-        
-        #filterNum { padding-bottom: 5px; color: #0c419a; font-size: 24px; }
-        
-        #filterList { font-size: 12px; line-height: 16px;
-        
-            .hdr { font-weight: bold; }
+        }//filterC
+
+
+        #filterResultsC { /*width: span(9) + gutter(); float: right; padding-left: gutter();*/ @include span(9 of 12 last);
             
-        }//filterList
+            #filterHdr { position: relative; margin: 0px auto;
+
+                #filterSort { display: inline-block; position: absolute; top: -15px; right: 0px; z-index: 10;
+                    
+                    .customSelectC { width: 120px; }
+
+                    //*** Breakpoints ***
+                    @include breakpoint($bp2) { margin-top: 10px; position: relative; top: 0px; } 
+
+                }//filterSort
+
+                #filterNum { padding-bottom: 5px; color: #0c419a; font-size: 24px; }
+
+                #filterList { font-size: 12px; line-height: 16px;
+
+                    .hdr { font-weight: bold; color: #114294; }
+
+                }//filterList
+
+            }//filterHdr
+
+        
+            //*** Breakpoints ***
+            @include breakpoint($bp2) { width: 100%; float: none; padding-left: 0px; } 
+            
+        }//filterResults
+        
         
         //*** Breakpoints ***
-        @include breakpoint($bp1) { width: 98%; }
-        @include breakpoint($bp2) { width: 95%; }
-        @include breakpoint($bp3) { width: 90%; }
+        @include breakpoint($bp1) { width: calc(100% - 40px); margin: 0px 20px 0px 20px; } 
         
-    }//filterHdr
+    }//filterArea
     
     //*** Breakpoints ***
-    @include breakpoint($bp1) { margin-top: 10px; }
+    @include breakpoint($bp2) { padding-top: 15px; background: #f1f0f0;  } 
     
-}//filterResultsC
+    
+}//filterAreaC
+
+
+
+
 
 

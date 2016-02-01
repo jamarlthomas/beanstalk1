@@ -1,9 +1,12 @@
 ﻿using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Web.Configuration;
+using CMS.DataEngine.Generators;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Helpers;
+using CMS.Helpers.UniGraphConfig;
 using CMS.Localization;
 using CMS.Mvc.ViewModels.Product;
 using CMS.Mvc.ViewModels.Shared;
@@ -28,7 +31,7 @@ namespace CMS.Mvc.Helpers
 
         private static readonly string CurrentCulture = LocalizationContext.CurrentCulture.CultureCode;
 
-		private static readonly TreeProvider _treeProvider = new TreeProvider();
+        private static readonly TreeProvider _treeProvider = new TreeProvider();
 
         public static List<TreeNode> GetAllNodes()
         {
@@ -84,8 +87,8 @@ namespace CMS.Mvc.Helpers
         {
             object val;
             if (!doc.TryGetProperty("ExcludeFromSiteMap", out val))
-                list.Add(new Link() {Title = doc.DocumentName, Reference = doc.NodeAlias});
-            
+                list.Add(new Link() { Title = doc.DocumentName, Reference = doc.NodeAlias });
+
             if (doc.Parent.NodeAliasPath == "/")
                 return;
             TraverseNodes(doc.Parent, list);
@@ -107,18 +110,18 @@ namespace CMS.Mvc.Helpers
         {
             docName = docName.Replace(' ', '-');
             return HandleQueryableData<T>(
-				q => q.Where(item => item.Parent.NodeAlias.Equals(docName, StringComparison.CurrentCultureIgnoreCase)).Take(limit),
+                q => q.Where(item => item.Parent.NodeAlias.Equals(docName, StringComparison.CurrentCultureIgnoreCase)).Take(limit),
                 childrenClassName,
-				string.Format("cc_{0}_ccn_{1}_dn_{2}_lim_{3}", CurrentCulture, childrenClassName, docName, limit),
+                string.Format("cc_{0}_ccn_{1}_dn_{2}_lim_{3}", CurrentCulture, childrenClassName, docName, limit),
                 string.Format("nodes|afton|{0}|all", childrenClassName.ToLower())
                 ).ToList();
         }
 
-        public static List<T> GetDocsByGuids<T>(IEnumerable<Guid> guids, string siteName = null) 
-			where T : TreeNode, new()
-		{
+        public static List<T> GetDocsByGuids<T>(IEnumerable<Guid> guids, string siteName = null)
+            where T : TreeNode, new()
+        {
             return guids.Select(guid => _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T).ToList();
-		}
+        }
 
         public static List<TreeNode> GetDocsByPath(string aliasPath, int maxRelativeLevel = 1, string classNames = "*")
         {
@@ -136,6 +139,16 @@ namespace CMS.Mvc.Helpers
                     MaxRelativeLevel = maxRelativeLevel,
                 }).Where(i => i != null).ToList();
             }, new CacheSettings(CachingTime, string.Format("pth_{0}_mrl_{1}_cn_{2}", aliasPath, maxRelativeLevel, classNames)));
+        }
+
+        internal static List<T> GetSiblings<T>(T node) where T : TreeNode, new()
+        {
+            return HandleQueryableData<T>(
+                q => q.Where(n => n.Parent.DocumentID == node.Parent.DocumentID && n.DocumentID != node.DocumentID),
+                node.ClassName,
+                string.Format("siblings_cc_{0}_dn_{1}", CurrentCulture, node.DocumentID),
+                string.Format("nodes|afton|{0}|all", node.ClassName.ToLower()))
+                .ToList();
         }
 
         private static T HandleData<T>(Expression<Func<TreeNode, bool>> predicate, string className, string cacheKey,
@@ -233,5 +246,13 @@ namespace CMS.Mvc.Helpers
                     }
             }
         }
+
+        internal static List<TreeNode> GetNodes(string[] stringIds)
+        {
+            int intId;
+            int[] intIds = stringIds.Where(id => int.TryParse(id, out intId)).Select(int.Parse).ToArray();
+            return intIds.Select(id => DocumentHelper.GetDocument(id, new TreeProvider())).Where(item => item != null).ToList();
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
+﻿namespace CMS.Mvc.ViewModels.Shared
 {
     public class LinkItemViewModel 
     {

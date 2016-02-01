@@ -2,7 +2,7 @@
 
 //Global General Styles
 @import '_gen-styles';
-
+@import 'modules/_customSelectC';
 
 @import '_header';
 
@@ -57,6 +57,10 @@
 @import 'modules/_filterC';
 
 @import 'modules/_paginationC'; 
+
+@import 'modules/_newsC'; 
+
+@import 'modules/_faqsC'; 
 
 
 @import '_footer';

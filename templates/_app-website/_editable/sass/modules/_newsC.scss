@@ -1,0 +1,94 @@
+#newsC { 
+    
+    #newsHdr { margin: 0px auto; width: 1235px; min-height: 220px; border-bottom: 1px solid #595959;
+        
+        #newsDD { position: relative; padding-top: 20px;  
+            
+            #categoriesDD { float: left;
+                
+                .customSelectC { width: 264px;
+                    
+                    //*** Breakpoints ***
+                    @include breakpoint($bp2) { width: 100%; }
+                
+                }
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp2) { float: none; }
+                
+            }//categoriesDD
+            
+            #authorsDD { float: left; padding-left: 40px;
+                
+                .customSelectC { width: 200px;
+                
+                    //*** Breakpoints ***
+                    @include breakpoint($bp2) { width: 100%; }
+                    
+                }
+                
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp2) { float: none; padding-left: 0px; }
+                
+            }//authorsDD
+            
+            #sortDD { float: right;
+                
+                
+                .customSelectC { width: 120px;
+                
+                    //*** Breakpoints ***
+                    @include breakpoint($bp2) { width: 100%; }
+                    
+                }
+                
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp2) { float: none; padding-top: 10px; }
+                
+            }//sortDD
+        
+        }//newsDD
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { width: calc(100% - 15px) }
+        
+    }//newsHdr
+    
+    
+    #newsListC { @include gridContainer;
+        
+        .newsItem { padding: 35px 0px; border-bottom: 1px solid #595959; overflow: auto; 
+            
+            .newsImgC { @include span(3 of 12);
+                
+                img { width: 100%; }
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp2) { @include span(full); }
+                
+            }//newsImgC
+        
+            .newsContentC { @include span(9 of 12 last);
+            
+                .newsInfo { padding-bottom: 30px; font-style: italic; }
+                
+                .newsTxt { padding-bottom: 30px; }
+                
+                .newsMore { padding: 10px 20px; display: inline-block; background: #4c9d2f; color: #FFF; text-decoration: none;
+                    
+                    &:hover { background: #0065b3; }
+                    
+                }//newsMore
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp2) { @include span(full); }
+                
+            }//newsContentC
+            
+        }//newsItem
+            
+    }//newsListC
+    
+}//newsC

@@ -6,6 +6,7 @@ using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Product;
+using CMS.Mvc.ViewModels.Shared;
 using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 
 namespace CMS.Mvc.Controllers.Afton
@@ -28,9 +29,17 @@ namespace CMS.Mvc.Controllers.Afton
             productModel.DownloadWidget = GetDownloadwidget(product);
           
             productModel.ContentCopyArea = MapData<Product, ProductViewModel>(product);
-            productModel.RelatedProducts.Products = new List<RelatedProductCardViewModel>();
+            productModel.RelatedProducts = GetRelatedProductsWidget(product);
             productModel.InsightsAndResourcesSection.InsightsAndResourcesCards = new List<InsightsAndResourcesCard>();
             return View("~/Views/Afton/Product/Index.cshtml", productModel);
+        }
+
+        private RelatedProductsViewModel GetRelatedProductsWidget(Product product)
+        {
+            var widget = new RelatedProductsViewModel();
+            var products = _productProvider.GetSiblings(product);
+            widget.Products = MapData<Product, RelatedProductCardViewModel>(products);  
+            return widget;
         }
 
         

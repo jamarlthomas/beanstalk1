@@ -181,6 +181,7 @@
     <Compile Include="Helpers\RegionsHelper.cs" />
     <Compile Include="Controllers\Afton\SidebarPageController.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\LeftNavigation.cs" />
+    <Compile Include="Models\Afton\Shared\SidebarComponents\DocumentSidebarComponent.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\PollSurveyAnswer.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\PollSurvey.cs" />
     <Compile Include="Providers\LeftNavigationProvider.cs" />
@@ -246,10 +247,10 @@
     <Compile Include="Models\Afton\Shared\SearchResultItem.cs" />
     <Compile Include="Models\Afton\Shared\SearchResult.cs" />
     <Compile Include="Models\Afton\Shared\Region.cs" />
-    <Compile Include="Models\Afton\Shared\SideBarComponents\ContactUs.cs" />
-    <Compile Include="Models\Afton\Shared\SideBarComponents\GenericSidebarBlock.cs" />
-    <Compile Include="Models\Afton\Shared\SideBarComponents\GenericSidebarComponentWithDefaultImage.cs" />
-    <Compile Include="Models\Afton\Shared\SideBarComponents\StayInformed.cs" />
+    <Compile Include="Models\Afton\Shared\SidebarComponents\ContactUs.cs" />
+    <Compile Include="Models\Afton\Shared\SidebarComponents\GenericSidebarBlock.cs" />
+    <Compile Include="Models\Afton\Shared\SidebarComponents\GenericSidebarComponentWithDefaultImage.cs" />
+    <Compile Include="Models\Afton\Shared\SidebarComponents\StayInformed.cs" />
     <Compile Include="Models\CorporateSite\News.cs" />
     <Compile Include="Properties\MvcAssemblyInfo.cs" />
     <Compile Include="Providers\SelectionFilterSearchProvider.cs" />
@@ -270,6 +271,8 @@
     <Compile Include="Providers\PagesMenuItemProvider.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\LeftNavigationItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\PollSurveyAnswerViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\DocumentBlockViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\DocumentsWidgetViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\PollSurveySubmitViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\LeftNavigationViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\PollSurveyViewModel.cs" />
@@ -299,7 +302,7 @@
     <Compile Include="ViewModels\Shared\SidebarComponents\LeftSideBlockViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\GenericSidebarBlockViewModel.cs" />
     <Compile Include="ViewModels\Product\RelatedProductCardViewModel.cs" />
-    <Compile Include="ViewModels\Shared\SidebarComponents\LinkItemViewModel.cs" />
+    <Compile Include="ViewModels\Shared\LinkItemViewModel.cs" />
     <Compile Include="ViewModels\Master\MegaMenuSolutionBusinessUnitViewModel.cs" />
     <Compile Include="ViewModels\Master\MegaMenuLinkItemViewModel.cs" />
     <Compile Include="ViewModels\Master\MegaMenuThumbnailedItemViewModel.cs" />
@@ -322,7 +325,7 @@
     <Compile Include="ViewModels\SBU\DocumentTypeViewModel.cs" />
     <Compile Include="ViewModels\SBU\SBUViewModel.cs" />
     <Compile Include="ViewModels\Shared\RegionViewModel.cs" />
-    <Compile Include="Models\Afton\Shared\SideBarComponents\InsightsAndResourcesWidget.cs" />
+    <Compile Include="Models\Afton\Shared\SidebarComponents\InsightsAndResourcesWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\normalize.min.css" />
@@ -470,6 +473,7 @@
     <Content Include="Views\Afton\Solution\_heroImage.cshtml" />
     <Content Include="Views\Afton\Solution\_sidebar.cshtml" />
     <Content Include="Views\Afton\Shared\_stayInformed.cshtml" />
+    <Content Include="Views\Afton\Shared\Sidebar\_documentWidget.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_pollSurvey.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_leftNavigation.cshtml" />
     <None Include="web.Debug.config">

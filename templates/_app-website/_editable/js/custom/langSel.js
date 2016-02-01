@@ -14,7 +14,7 @@ $( document ).ready(function() {
     function openLang() {
         
         //add drop shadow to languages
-        $("#languageC").css({"-webkit-box-shadow":"0px 0px 13px 0px rgba(0,0,0,0.1)","-moz-box-shadow":"0px 0px 13px 0px rgba(0,0,0,0.1)","box-shadow":"0px 0px 13px 0px rgba(0,0,0,0.1)"});
+        $("#languageC").css({"-webkit-box-shadow":"0px 0px 13px 0px rgba(0,0,0,0.1)","-moz-box-shadow":"0px 0px 13px 0px rgba(0,0,0,0.1)","box-shadow":"0px 0px 13px 0px rgba(0,0,0,0.1)","z-index":"20"});
         
         //show available languages
         $("#langDropDown").css({"display":"block"});        
@@ -32,7 +32,8 @@ $( document ).ready(function() {
     function closeLang() {
         
         //remove drop shadow
-        $("#languageC").css({"-webkit-box-shadow":"0px 0px 13px 0px rgba(0,0,0,0.0)","-moz-box-shadow":"0px 0px 13px 0px rgba(0,0,0,0.0)","box-shadow":"0px 0px 13px 0px rgba(0,0,0,0.0)"});
+        //$("#languageC").css({"-webkit-box-shadow":"0px 0px 13px 0px rgba(0,0,0,0.0)","-moz-box-shadow":"0px 0px 13px 0px rgba(0,0,0,0.0)","box-shadow":"0px 0px 13px 0px rgba(0,0,0,0.0)"});
+        $("#languageC").removeAttr( "style" )
 
         //hide drop down
         $("#langDropDown").css({"display":"none"});

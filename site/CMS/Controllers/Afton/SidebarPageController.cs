@@ -71,6 +71,10 @@ namespace CMS.Mvc.Controllers.Afton
                 {
                     return new GenericSidebarBlockViewModel(item);
                 }
+                case DocumentSidebarComponent.CLASS_NAME:
+                {
+                    return new DocumentsWidgetViewModel(item);
+                }
                 case PollSurvey.CLASS_NAME:
                 {
                     var pollSurvey = MapData<PollSurvey, PollSurveyViewModel>((PollSurvey) item);

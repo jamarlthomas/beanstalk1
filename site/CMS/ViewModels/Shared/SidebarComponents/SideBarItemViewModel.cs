@@ -7,15 +7,17 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
     {
         public string Title;
         public string ClassName { get; set; }
-
         protected SidebarItemViewModel() { }
 
-        protected SidebarItemViewModel(TreeNode item) : base(item) { }
-
-        protected override void Load()
+        protected SidebarItemViewModel(TreeNode item) : base(item)
         {
             Title = item.GetStringValue("Title", "");
             ClassName = item.ClassName;
+        }
+
+        protected override void Load()
+        {
+            
         }
     }
 }

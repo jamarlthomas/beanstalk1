@@ -14,5 +14,7 @@ namespace CMS.Mvc.Interfaces
         List<DownloadLanguageLinkItemViewModel> GetAvailableTranslations(Product product);
         string GetDownloadLink(Product product);
         List<Product> GetProductItems(List<Guid> featuredProductListGuids, string siteName);
+
+        List<Product> GetSiblings(Product product);
     }
 }

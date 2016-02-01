@@ -1,4 +1,5 @@
-﻿using CMS.DocumentEngine;
+﻿using System.Web;
+using CMS.DocumentEngine;
 
 namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
 {
@@ -8,10 +9,10 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
         {
             Reference = item.GetStringValue("Reference", "");
             ImageUrl = item.GetStringValue("ImageUrl", "");
-            Summary = item.GetStringValue("Summary", "");
+            Summary = new HtmlString(item.GetStringValue("Summary", ""));
         }
         public string Reference { get; set; }
         public string ImageUrl { get; set; }
-        public string Summary { get; set; }
+        public HtmlString Summary { get; set; }
     }
 }
