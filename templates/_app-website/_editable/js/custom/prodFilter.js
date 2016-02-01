@@ -1,3 +1,10 @@
+
+
+
+
+
+
+/*
 $( document ).ready(function() {
 
     //If checkbox is clicked in the page check it on mobile
@@ -25,3 +32,4 @@ $( document ).ready(function() {
     
     
 });
+*/

@@ -22,6 +22,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.4/hammer.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.columnizer/1.6.0/jquery.columnizer.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.actual/1.0.17/jquery.actual.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
     <script src="assets-layout/js/custom/ellipsesText.min.js"></script>
     <script src="assets-layout/js/custom/columnizeText.min.js"></script>
     <script src="assets-layout/js/library/head.min.js">       </script>
@@ -40,9 +41,9 @@
           {accordion_Nav: "assets-layout/js/custom/accordion.min.js"},
           {card_Animations: "assets-layout/js/custom/print.min.js"},
           {language_Document_selector: "assets-layout/js/custom/langDocSel.min.js"},
-          {language_Document_selector: "assets-layout/js/custom/prodFilter.min.js"},
-          {language_Document_selector: "assets-layout/js/custom/prodFilterNav.min.js"},
-          {language_Document_selector: "assets-layout/js/custom/faqDropDown.min.js"},
+          {product_Filter_Page: "assets-layout/js/custom/prodFilter.min.js"},
+          {product_Filter_Nav: "assets-layout/js/custom/prodFilterNav.min.js"},
+          {FAQ_Download: "assets-layout/js/custom/faqDropDown.min.js"},
           
           function(){
               //loadCSS
@@ -380,8 +381,131 @@
           </div>
           <div id="contentC">              
             <div id="mainContentC">
-              <h2>Page Title</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque bibendum, libero ac cursus euismod, enim nibh dapibus turpis, eget pellentesque orci neque a leo. Nunc faucibus, purus ac lacinia tempus, dolor velit tincidunt metus, ac porttitor lectus mauris vitae dolor. Aenean bibendum sapien id tellus ultrices hendrerit. In semper gravida fringilla. Sed suscipit lorem sit amet urna auctor ultricies. Etiam at tristique est, at elementum massa. Nulla efficitur felis sed laoreet varius. Phasellus efficitur tortor nec tincidunt iaculis. Nunc rutrum, velit sit amet maximus rutrum, mauris orci pulvinar leo, non fringilla dui massa convallis eros. Nullam lectus ligula, rutrum eget iaculis nec, eleifend in velit. Nullam eleifend maximus nibh, eu facilisis dui iaculis nec.                            </p>
+              <h1>Polls & Surveys</h1>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque bibendum, libero ac cursus euismod, enim nibh dapibus turpis, eget pellentesque orci neque a leo. Nunc faucibus, purus ac lacinia tempus, dolor velit tincidunt metus, ac porttitor lectus mauris vitae dolor. Aenean bibendum sapien id tellus ultrices hendrerit.</p>
+              <h2>Current Polls & Surveys</h2>
+              <div class="pollSurveyC">
+                <div class="pollSurvey">
+                  <div class="title">We value your opinion!</div>
+                  <div class="itemC">
+                    <div class="txt">Which segment of off-road vehicle additives best fits your company’s needs?</div>
+                    <form class="pole">
+                      <label>
+                        <input type="radio" name="question" value="Agriculture segment"><span></span>Agriculture segment
+                      </label>
+                      <label>
+                        <input type="radio" name="question" value="Construction segment"><span></span>Construction segment
+                      </label>
+                      <label>
+                        <input type="radio" name="question" value="Mining segment"><span></span>Mining segment
+                      </label>
+                      <input type="submit" value="Submit Your Vote" class="vote">
+                      <div class="voteDetails">270 Votes | 11 days, 2 hours left</div>
+                    </form>
+                  </div>
+                </div>
+                <div class="pollSurvey">
+                  <div class="title">We value your opinion!</div>
+                  <div class="itemC">
+                    <div class="txt">Which segment of off-road vehicle additives best fits your company’s needs?</div>
+                    <div class="voteResults">
+                      <ul>
+                        <li class="selected">Agricultural segment - <strong>65%</strong></li>
+                        <li>Construction segment - <strong>21%</strong></li>
+                        <li>Mining segment - <strong>14%</strong></li>
+                      </ul>
+                      <div class="voteMessage">Thank You!</div><a href="#" class="viewReslutsLink">View All Polls and Results</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="pollSurvey">
+                  <div class="title">We value your opinion!</div>
+                  <div class="itemC">
+                    <div class="txt">Which segment of off-road vehicle additives best fits your company’s needs?</div>
+                    <form class="pole">
+                      <label>
+                        <input type="radio" name="question" value="Agriculture segment"><span></span>Agriculture segment
+                      </label>
+                      <label>
+                        <input type="radio" name="question" value="Construction segment"><span></span>Construction segment
+                      </label>
+                      <label>
+                        <input type="radio" name="question" value="Mining segment"><span></span>Mining segment
+                      </label>
+                      <input type="submit" value="Submit Your Vote" class="vote">
+                      <div class="voteDetails">270 Votes | 11 days, 2 hours left</div>
+                    </form>
+                  </div>
+                </div>
+                <div class="pollSurvey">
+                  <div class="title">We value your opinion!</div>
+                  <div class="itemC">
+                    <div class="txt">Which segment of off-road vehicle additives best fits your company’s needs?</div>
+                    <form class="pole">
+                      <label>
+                        <input type="radio" name="question" value="Agriculture segment"><span></span>Agriculture segment
+                      </label>
+                      <label>
+                        <input type="radio" name="question" value="Construction segment"><span></span>Construction segment
+                      </label>
+                      <label>
+                        <input type="radio" name="question" value="Mining segment"><span></span>Mining segment
+                      </label>
+                      <input type="submit" value="Submit Your Vote" class="vote">
+                      <div class="voteDetails">270 Votes | 11 days, 2 hours left</div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <h2>Past Polls & Surveys</h2>
+              <div class="pollSurveyC">
+                <div class="pollSurvey">
+                  <div class="title">We value your opinion!</div>
+                  <div class="itemC">
+                    <div class="txt">Which segment of off-road vehicle additives best fits your company’s needs?</div>
+                    <div class="voteResults">
+                      <ul>
+                        <li>Agricultural segment - <strong>65%</strong></li>
+                        <li>Construction segment - <strong>21%</strong></li>
+                        <li>Mining segment - <strong>14%</strong></li>
+                      </ul>
+                      <div class="voteMessage">This Poll is Closed.</div>
+                      <div class="voteDetails">270 Votes | 12/1/15 - 12/10/15</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pollSurvey">
+                  <div class="title">We value your opinion!</div>
+                  <div class="itemC">
+                    <div class="txt">Which segment of off-road vehicle additives best fits your company’s needs?</div>
+                    <div class="voteResults">
+                      <ul>
+                        <li>Agricultural segment - <strong>65%</strong></li>
+                        <li>Construction segment - <strong>21%</strong></li>
+                        <li>Mining segment - <strong>14%</strong></li>
+                      </ul>
+                      <div class="voteMessage">This Poll is Closed.</div>
+                      <div class="voteDetails">270 Votes | 12/1/15 - 12/10/15</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pollSurvey">
+                  <div class="title">We value your opinion!</div>
+                  <div class="itemC">
+                    <div class="txt">Which segment of off-road vehicle additives best fits your company’s needs?</div>
+                    <div class="voteResults">
+                      <ul>
+                        <li>Agricultural segment - <strong>65%</strong></li>
+                        <li>Construction segment - <strong>21%</strong></li>
+                        <li>Mining segment - <strong>14%</strong></li>
+                      </ul>
+                      <div class="voteMessage">This Poll is Closed.</div>
+                      <div class="voteDetails">270 Votes | 12/1/15 - 12/10/15</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -398,9 +522,22 @@
               </label>
               <label>
                 <input type="radio" name="question" value="Mining segment"><span></span>Mining segment
-              </label><br>
-              <input type="submit" value="Submit Your Vote"><br>270 Votes | 11 days, 2 hours left
+              </label>
+              <input type="submit" value="Submit Your Vote" class="vote">
+              <div class="voteDetails">270 Votes | 11 days, 2 hours left</div>
             </form>
+          </div>
+          <div class="sidbarBoxCTitle">We value your opinion!</div>
+          <div class="sidbarBoxC">
+            <div class="txt">Which segment of off-road vehicle additives best fits your company’s needs?</div>
+            <div class="voteResults">
+              <ul>
+                <li class="selected">Agricultural segment - <strong>65%</strong></li>
+                <li>Construction segment - <strong>21%</strong></li>
+                <li>Mining segment - <strong>14%</strong></li>
+              </ul>
+              <div class="voteMessage">Thank You!</div><a href="#" class="viewReslutsLink">View All Polls and Results</a>
+            </div>
           </div><img src="page-images/sidebar-images/sidebar-contact.jpg" class="sidbarImg">
           <div class="sidbarBoxC">
             <div class="hdr">Contact for More Information</div>
