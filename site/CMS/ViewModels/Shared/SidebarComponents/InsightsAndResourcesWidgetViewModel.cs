@@ -12,7 +12,7 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
         {
             DefaultImage = ((InsightsAndResourcesWidget)item).DefaultImage;
             InsightsAndResourcesBlocks =
-                ContentHelper.GetNodes(((InsightsAndResourcesWidget)item).InsightsAndResourceItems.Split(';'))
+                ContentHelper.GetDocsByGuids<TreeNode>(StringToGuidsConvertHelper.ParseGuids(((InsightsAndResourcesWidget)item).InsightsAndResourceItems))
                 .Select(ir => new InsightsAndResourcesBlockViewModel((Document)ir) { DefaultImage = this.DefaultImage}).ToList();
         }
 

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Product;
@@ -23,7 +24,7 @@ namespace CMS.Mvc.Controllers.Afton
         {
             var product = _productProvider.GetProduct(name);
             ProductPageViewModel productModel = new ProductPageViewModel();
-            productModel.SideBar.Items = MapSidebar(sidebarProvider.GetSideBarItems(product.SidebarItems.Split(';')));
+            productModel.SideBar.Items = MapSidebar(_sidebarProvider.GetSideBarItems(StringToGuidsConvertHelper.ParseGuids(product.SidebarItems)));
             productModel.BreadCrumb.BreadcrumbLinkItems = _productProvider.GetBreadcrumb(name);
             productModel.DownloadWidget = GetDownloadwidget(product);
           

@@ -15,7 +15,7 @@ namespace CMS.Mvc.Providers
 
 		public List<Product> GetProductItems(List<Guid> guids, string siteName)
         {
-            return ContentHelper.GetDocByGuids<Product>(guids, siteName);
+            return ContentHelper.GetDocsByGuids<Product>(guids, siteName);
 		}
 
         public Product GetProduct(string alias)

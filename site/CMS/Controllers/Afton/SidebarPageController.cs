@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using CMS.DocumentEngine;
+using CMS.DocumentEngine.Types;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 using CMS.Mvc.Interfaces;
@@ -11,10 +12,13 @@ namespace CMS.Mvc.Controllers.Afton
 {
     public class SidebarPageController : BaseController
     {
-        protected readonly ISidebarProvider sidebarProvider;
+        protected readonly ISidebarProvider _sidebarProvider;
+        protected readonly IPollSurveyAnswerProvider _pollSurveyAnswerProvider;
+
         public SidebarPageController()
         {
-            sidebarProvider = new SidebarProvider();
+            _sidebarProvider = new SidebarProvider();
+            _pollSurveyAnswerProvider = new PollSurveyAnswerProvider();
         }
 
         public JsonResult SubmitEmail(string email)
@@ -23,45 +27,48 @@ namespace CMS.Mvc.Controllers.Afton
             return new JsonResult();
         }
 
-
         protected ArrayList MapSidebar(List<TreeNode> nodes)
         {
-            var b = new ArrayList();
-            nodes.ForEach(item => b.Add(ConvertSideBarComponent(item)));
-            return b;
+            var list = new ArrayList();
+            nodes.ForEach(item => list.Add(ConvertSideBarComponent(item)));
+            return list;
         }
+
         private SidebarItemViewModel ConvertSideBarComponent(TreeNode item)
         {
             switch (item.ClassName)
             {
-                case "custom.ContactUs":
-                    {
-                        return new ContactUsViewModel(item, sidebarProvider.GetCountries());
-                    }
-                case "custom.StayInformed":
-                    {
-                        return new StayInformedViewModel(item);
-                    }
-                case "custom.InsightsAndResourcesWidget":
-                    {
-
-                        return new InsightsAndResourcesWidgetViewModel(item);
-                    }
-                case "custom.GenericSidebarBlock":
-                    {
-                        return new GenericSidebarBlockViewModel(item);
-                    }
-                case "custom.DocumentSidebarComponent":
-                    {
-                        return new DocumentsWidgetViewModel(item);
-                    }
+                case ContactUs.CLASS_NAME:
+                {
+                    return new ContactUsViewModel(item, _sidebarProvider.GetCountries());
+                }
+                case StayInformed.CLASS_NAME:
+                {
+                    return new StayInformedViewModel(item);
+                }
+                case InsightsAndResourcesWidget.CLASS_NAME:
+                {
+                    return new InsightsAndResourcesWidgetViewModel(item);
+                }
+                case GenericSidebarBlock.CLASS_NAME:
+                {
+                    return new GenericSidebarBlockViewModel(item);
+                }
+                case DocumentSidebarComponent.CLASS_NAME:
+                {
+                    return new DocumentsWidgetViewModel(item);
+                }
+                case PollSurvey.CLASS_NAME:
+                {
+                    return MapData<PollSurvey, PollSurveyViewModel>((PollSurvey) item);
+                }
                 default:
-                    {
-                        return null;
-                    }
+                {
+                    return null;
+                }
             }
+
+
         }
-
-
     }
 }

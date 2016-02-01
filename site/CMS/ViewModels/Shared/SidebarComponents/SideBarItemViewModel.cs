@@ -7,6 +7,7 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
     {
         public string Title;
         public string ClassName { get; set; }
+        protected SidebarItemViewModel() { }
 
         protected SidebarItemViewModel(TreeNode item) : base(item)
         {
