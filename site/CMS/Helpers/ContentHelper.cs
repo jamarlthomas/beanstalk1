@@ -1,15 +1,19 @@
 ﻿using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Web.Configuration;
+using CMS.DataEngine.Generators;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Helpers;
+using CMS.Helpers.UniGraphConfig;
 using CMS.Localization;
 using CMS.Mvc.ViewModels.Product;
 using CMS.Mvc.ViewModels.Shared;
 using CMS.PortalEngine;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using WebGrease;
 
@@ -60,7 +64,7 @@ namespace CMS.Mvc.Helpers
             var list = new List<Link>();
             TraverseNodes(doc, list);
 
-            list.Add(new Link() { Title = "Home", Reference = "" });
+            list.Add(new Link() { Title = "Home", Reference = "Home" });
             list.Reverse();
             string currReference = "";
             var breadcrumbList = list.Select(item =>
@@ -110,11 +114,20 @@ namespace CMS.Mvc.Helpers
                 ).ToList();
         }
 
-		public static List<T> GetDocByGuids<T>(List<Guid> guids, string siteName) 
+        public static List<T> GetDocsByGuids<T>(IEnumerable<Guid> guids, string siteName = null) 
 			where T : TreeNode, new()
 		{
-			return guids.Select(guid => _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName)) as T).ToList();
+            return guids.Select(guid => _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T).ToList();
 		} 
+         internal static List<T> GetSiblings<T>(T node)	where T : TreeNode, new()
+         {
+             return HandleQueryableData<T>(
+                 q=>q.Where(n=>n.Parent.DocumentID==node.Parent.DocumentID && n.DocumentID != node.DocumentID),
+                 node.ClassName,
+                 string.Format("siblings_cc_{0}_dn_{1}", CurrentCulture, node.DocumentID),
+                 string.Format("nodes|afton|{0}|all", node.ClassName.ToLower()))
+                 .ToList();
+         }
 
         private static T HandleData<T>(Expression<Func<TreeNode, bool>> predicate, string className, string cacheKey,
             string cacheDependencyKey, string cachedependenciesFormat = "") where T : TreeNode, new()
@@ -212,6 +225,12 @@ namespace CMS.Mvc.Helpers
             }
         }
 
+        internal static List<TreeNode> GetNodes(string[] stringIds)
+        {
+            int intId;
+            int[] intIds = stringIds.Where(id => int.TryParse(id, out intId)).Select(int.Parse).ToArray();
+            return intIds.Select(id =>DocumentHelper.GetDocument(id, new TreeProvider())).Where(item => item != null).ToList();
+        }
 
     }
 }

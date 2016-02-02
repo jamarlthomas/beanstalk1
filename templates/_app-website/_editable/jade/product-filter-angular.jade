@@ -1,0 +1,446 @@
+doctype 
+
+html(lang='en' ng-app="prodFilterApp")
+
+    head
+        
+        title=""
+        meta(name="description" content="")
+        meta(name="keywords" content="")
+        
+        include includes/_scripts_header.jade
+        
+    body(ng-controller="prodFilterCntl")
+    
+        include includes/_mobileNav.jade
+        
+        include includes/_filterNav.jade
+        
+        include includes/_header.jade
+        
+        div(id="contentAreaC")
+        
+            div(class="fullWidth2 txtPaddingTop")
+
+                div(id="breadCrumbsC")
+                    div(id="breadCrumbs")
+                        a(href="#") Home
+                        a(href="#") Driveline Additives
+                        a(href="#") Automotive Gear
+                        a(href="#") Automotive Gear Products
+                        | HiTEC® 385: Gear Oil Additive
+
+            
+            div(class="fullWidth txtPaddingTop")
+              
+                div(class="txtPaddingTop txtPaddingBtm")
+                
+                    h1 Page Title
+                    a(href="#" class="viewAll") View all Afton Insights and Resources
+                
+            div(id="mobileFilterBtnC" style="display: none;")
+                a(href="#" id="mobileFilterBtn")
+                    div(id="mobileFilterTxt") Filter
+                    img(id="mobileFilterImg" src="images/filter-open.gif")
+                
+            div(id="filterAreaC" class="padBtm")
+            
+                form(id="filterArea")
+                
+                    div(id="filterC")
+                        
+                            div(id="filterLabel") Filter by: 
+
+                            div(id="filterColC")
+
+                                input(id="filterSearch" type="text" placeholder="Enter Search Term" ng-model="searchFilter" ng-keypress="($event.which === 13)?search(searchFilter):0")
+
+                                <hr>
+
+                                div(class="filterGroup" id="filterRegion")
+
+                                    div(class="filterHdr") Region
+
+                                    label
+                                        input(type="checkbox" ng-model="region[0]" ng-true-value="'North America|100'")
+                                        span
+                                        | North America
+
+                                    label
+                                        input(type="checkbox" ng-model="region[1]" ng-true-value="'Latin America|52'")
+                                        span
+                                        | Latin America
+
+                                    label
+                                        input(type="checkbox" ng-model="region[2]" ng-true-value="'EMEAI|60'")
+                                        span
+                                        | EMEAI
+
+                                    label
+                                        input(type="checkbox" ng-model="region[3]" ng-true-value="'Asia|540'")
+                                        span
+                                        | Asia
+
+                                <hr>
+
+                                div(class="filterGroup" id="filterDocumentType")
+
+                                    div(class="filterHdr") Document Type
+
+                                    label
+                                        input(type="checkbox" ng-model="docType[0]" ng-true-value="'Product Data Sheets|98'")
+                                        span
+                                        | Product Data Sheets
+
+                                    label
+                                        input(type="checkbox" ng-model="docType[1]" ng-true-value="'Articles|35'")
+                                        span
+                                        | Articles
+
+                                    label
+                                        input(type="checkbox" ng-model="docType[2]" ng-true-value="'White Papers|77'")
+                                        span
+                                        | White Papers
+
+                                    label
+                                        input(type="checkbox" ng-model="docType[3]" ng-true-value="'Research|11'")
+                                        span
+                                        | Research
+
+                                    label
+                                        input(type="checkbox" ng-model="docType[4]" ng-true-value="'Technical Documents|62'")
+                                        span
+                                        | Technical Documents
+
+                                    label
+                                        input(type="checkbox" ng-model="docType[5]" ng-true-value="'Product Reviews|41'")
+                                        span
+                                        | Product Reviews
+
+                                div(class="filterGroup" id="filterSolution")
+
+                                    div(class="filterHdr") Solution
+
+                                    div(class="filterSecHdr") Driveline
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[0]" ng-true-value="'Automatic Transmission|508'")
+                                        span
+                                        | Automatic Transmission
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[1]" ng-true-value="'Continously Variable Transmission (CVT)|451'")
+                                        span
+                                        | Continously Variable Transmission (CVT)
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[2]" ng-true-value="'Dual Clutch Transmission (DCT)|789'")
+                                        span
+                                        | Dual Clutch Transmission (DCT)
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[3]" ng-true-value="'Automotive Gear|123'")
+                                        span
+                                        | Automotive Gear
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[4]" ng-true-value="'Power Steering|951'")
+                                        span
+                                        | Power Steering
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[5]" ng-true-value="'Heavy Machinery|555'")
+                                        span
+                                        | Heavy Machinery
+
+
+                                    br
+                                    div(class="filterSecHdr") Fuel
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[6]" ng-true-value="'Diesel Additives|777'")
+                                        span
+                                        | Diesel Additives
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[7]" ng-true-value="'Gasoline Additives|333'")
+                                        span
+                                        | Gasoline Additives
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[8]" ng-true-value="'Octane Improver|222'")
+                                        span
+                                        | Octane Improver
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[9]" ng-true-value="'Alternative Fuels|665'")
+                                        span
+                                        | Alternative Fuels
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[10]" ng-true-value="'Home Heating Fuel|771'")
+                                        span
+                                        | Home Heating Fuel
+
+
+                                    br
+                                    div(class="filterSecHdr") Engine Oil
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[11]" ng-true-value="'Diesel|1111'")
+                                        span
+                                        | Diesel Oil
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[12]" ng-true-value="'Gasoline Oil|2222'")
+                                        span
+                                        | Gasoline Oil
+
+
+                                    br
+                                    div(class="filterSecHdr") Industrial
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[13]" ng-true-value="'Compressor|6666'")
+                                        span
+                                        | Compressor
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[14]" ng-true-value="'Grease|5555'")
+                                        span
+                                        | Grease
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[15]" ng-true-value="'Hydrulic|7777'")
+                                        span
+                                        | Hydrulic
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[16]" ng-true-value="'Industrial Gear|1223'")
+                                        span
+                                        | Industrial Gear
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[17]" ng-true-value="'Metalworking|7896'")
+                                        span
+                                        | Metalworking
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[18]" ng-true-value="'Corrosion Inhibitors|4512'")
+                                        span
+                                        | Corrosion Inhibitors
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[19]" ng-true-value="'Couplers|9578'")
+                                        span
+                                        | Couplers
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[20]" ng-true-value="'Demist Agents|6689'")
+                                        span
+                                        | Demist Agents
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[21]" ng-true-value="'Emulsifiers|1187'")
+                                        span
+                                        | Emulsifiers
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[22]" ng-true-value="'Lubricity and EP Additives|3351'")
+                                        span
+                                        | Lubricity and EP Additives
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[23]" ng-true-value="'Packages|7723'")
+                                        span
+                                        | Packages
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[24]" ng-true-value="'Quench Additives|75631'")
+                                        span
+                                        | Quench Additives
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[25]" ng-true-value="'Sideway|98735'")
+                                        span
+                                        | Sideway
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[26]" ng-true-value="'Turbine|11984'")
+                                        span
+                                        | Turbine
+
+
+                                    br   
+                                    div(class="filterSecHdr") Lubricant Components
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[27]" ng-true-value="'Couplers|65234'")
+                                        span
+                                        | Couplers
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[28]" ng-true-value="'Detergents & Corrosion Inhibitors|78925'")
+                                        span
+                                        | Detergents & Corrosion Inhibitors
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[29]" ng-true-value="'Extreme Pressure Agents & Antiwear Agents|93146'")
+                                        span
+                                        | Extreme Pressure Agents & Antiwear Agents
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[30]" ng-true-value="'Foam Inhibitors|15972'")
+                                        span
+                                        | Foam Inhibitors
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[31]" ng-true-value="'Friction Modifiers|55993'")
+                                        span
+                                        | Friction Modifiers
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[32]" ng-true-value="'Pour Point Depressants|11774'")
+                                        span
+                                        | Pour Point Depressants
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[33]" ng-true-value="'Seal Swell Additives|55993'")
+                                        span
+                                        | Seal Swell Additives
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[34]" ng-true-value="'Tackiness Additives|991166'")
+                                        span
+                                        | Tackiness Additives
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[35]" ng-true-value="'Thickeners & Viscosity Index|789642'")
+                                        span
+                                        | Thickeners & Viscosity Index
+
+                                    label
+                                        input(type="checkbox" ng-model="solution[36]" ng-true-value="'Improvers|115566'")
+                                        span
+                                        | Improvers
+
+                                    input(id="clearFilterB" type="reset" ng-click="reset()" value="Clear All")
+
+
+                    div(id="filterResultsC")
+
+                        div(id="filterHdr")
+
+                            div(id="filterNum") {{ (prodfilterResults.length) }} Results
+                            div(id="filterList") Current Selection:  
+                                span(class="hdr") Region: 
+                                | {{regionCurrentSelected}}
+                                | / 
+                                span(class="hdr") Document Type: 
+                                | {{docTypeCurrentSelected}}
+                                | /  
+                                span(class="hdr") Solution: 
+                                | {{solutionCurrentSelected}}
+
+                             div(id="filterSort")
+                                div(class="customSelectC standard")
+                                    div(class="orgSelect")
+                                        select(name="sort" ng-model="sortItems" ng-change="sorting()")
+                                            option(value="Newest") Newest
+                                            option(value="Oldest") Oldest
+
+
+                        div(class="cards3C")
+                            div(class="cards3")
+
+                                
+                                a(href="{{item.Link}}" ng-cloak class="cardC" ng-repeat="item in prodfilterResults")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") {{item.Title}}
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") {{item.Description}}
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+                                
+                                <div ng-hide="dataLoaded()">Loading Items...</div>
+                                <div ng-show="checkForResults()">No Items found</div>
+                                
+
+
+                        div(class="paginationC")
+                            a(href="#" class="prev")
+                            a(href="#") 1
+                            a(href="#") 2
+                            a(href="#") 3
+                            a(href="#") 4
+                            span(class="nextGroup") ...
+                            a(href="#" class="sendToEnd") 49
+                            a(href="#") 50
+                            a(href="#" class="next")
+                                
+            
+            div(class="borders bgPattern padTopBtm")
+                div(class="fullWidth")
+                        h2 Personalized Content Title
+
+                div(class="cardsC")
+                    div(class="cards")
+
+                        a(href="http://google.com")
+                            div(class="cardBtnIndicator")
+                                    img(src="images/card-btn-indicator.png")       
+                            div(class="overlayC")
+                                div(class="overlay")
+                                    div(class="cardTitle") News
+                                    div(class="cardHdr") Afton Chemical to exhibit and present at annual international CTI Symposium. 
+                                div(class="cardDate") March 27, 2015
+                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                                div(class="hoverOverlay")
+                                    div(class="hoverOverlayTxt")
+                                        | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+
+                                div(class="cardLearnMore") Read More
+                                    span(class="icon-arrow")
+
+                            img(src="page-images/cards/sample-card1.jpg")
+
+
+                        a(href="#")
+                            div(class="cardBtnIndicator")
+                                    img(src="images/card-btn-indicator.png")       
+                            div(class="overlayC")
+                                div(class="overlay")
+                                    div(class="cardTitle") Events
+                                    div(class="cardHdr") Afton Chemical breaks ground for its facility in Singapore.
+                                    div(class="cardTxt") Production of the next generation of additive solutions is set to begin in January 2016.
+                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                                div(class="hoverOverlay")
+                                    div(class="hoverOverlayTxt")
+                                        | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+
+                                div(class="cardLearnMore") Read More
+                                    span(class="icon-arrow")
+
+                            img(src="page-images/cards/sample-card2.jpg")
+
+
+                        a(href="#")
+                            div(class="cardBtnIndicator")
+                                    img(src="images/card-btn-indicator.png")       
+                            div(class="overlayC")
+                                div(class="overlay")
+                                    div(class="cardTitle") Fact Sheet
+                                    div(class="cardHdr") Automatic Transmissions
+                                    div(class="cardTxt") Afton Chemical develops and manufacturers petroleum additives that enhances the performance of fuels and lubricating oils in machinery and vehicles.
+
+                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                                div(class="hoverOverlay")
+                                    div(class="hoverOverlayTxt")
+                                        | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+
+                                div(class="cardLearnMore") Read More
+                                    span(class="icon-arrow")
+
+                            img(src="page-images/cards/sample-card3.jpg")
+                        
+        include includes/_footer.jade

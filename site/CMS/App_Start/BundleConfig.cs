@@ -21,7 +21,9 @@ namespace CMS.Mvc.App_Start
 				.Include("~/Scripts/library/jquery.actual.min.js")
 				.Include("~/Scripts/custom/ellipsesText.min.js")
 				.Include("~/Scripts/custom/columnizeText.min.js")
-                .Include("~/Scripts/library/head.min.js"));
+                //.Include("~/Scripts/custom/print.min.js")
+                .Include("~/Scripts/library/head.min.js")
+                );
 
             bundles.Add(new StyleBundle("~/bundles/css")
                 .Include("~/css/normalize.min.css")

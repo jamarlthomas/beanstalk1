@@ -1,0 +1,126 @@
+a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+
+                                a(href="#" class="cardC")
+                                    div(class="cardHdrC")
+                                        div(class="cardHdr") Result Title Here
+                                    div(class="cardTxtC")
+                                        div(class="cardTxt") consectetur adipiscing elit, sed do eiusmod tempor.
+                                    div(class="cardBtnIndicator")
+                                        img(src="images/card-btn-indicator.png")
+                                        
+                                        
+                                        
+div(class="paginationC")
+    a(href="#" class="prev")
+    a(href="#") 1
+    a(href="#") 2
+    a(href="#") 3
+    a(href="#") 4
+    span(class="nextGroup") ...
+    a(href="#" class="sendToEnd") 49
+    a(href="#") 50
+    a(href="#" class="next")
+    
+    

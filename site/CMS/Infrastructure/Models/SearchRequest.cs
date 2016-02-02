@@ -9,7 +9,7 @@ namespace CMS.Mvc.Infrastructure.Models
 	{
 		public string Regions { get; set; }
 		public string DocumentTypesIds { get; set; }
-		public string SBUIds { get; set; }
+		public string SBUId { get; set; }
 		public string SolutionsIds { get; set; }
 		public string SortOrder { get; set; }
 		public int? PageNumber { get; set; }

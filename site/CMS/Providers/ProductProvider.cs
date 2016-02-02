@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
@@ -7,11 +9,19 @@ using CMS.Mvc.ViewModels.Shared;
 
 namespace CMS.Mvc.Providers
 {
-    public class ProductProvider : IProductProvider
+    public class ProductProvider: IProductProvider
     {
+        public Product CurrentProduct { get; set; }
+
+		public List<Product> GetProductItems(List<Guid> guids, string siteName)
+        {
+            return ContentHelper.GetDocsByGuids<Product>(guids, siteName);
+		}
+
         public Product GetProduct(string alias)
         {
-            return ContentHelper.GetDocByName<Product>(Product.CLASS_NAME, alias);
+            CurrentProduct =  ContentHelper.GetDocByName<Product>(Product.CLASS_NAME, alias);
+            return CurrentProduct;
         }
 
         public List<BreadCrumbLinkItemViewModel> GetBreadcrumb(string name)
@@ -20,12 +30,12 @@ namespace CMS.Mvc.Providers
         }
 
 
-        public List<LinkItemViewModel> GetAvailableRegions(Product product)
+        public List<string> GetAvailableRegions(Product product)
         {
-            return new List<LinkItemViewModel> { new LinkItemViewModel { Reference = "#", Title = "Asia Pacific" } };
+            return product.Regions.Split('|').ToList();
         }
 
-
+        //ToDo: 
         public List<DownloadLanguageLinkItemViewModel> GetAvailableTranslations(Product product)
         {
             return new List<DownloadLanguageLinkItemViewModel>
@@ -35,10 +45,18 @@ namespace CMS.Mvc.Providers
             };
         }
 
-
+        //ToDo
         public string GetDownloadLink(Product product)
         {
             return "#";
         }
+
+
+        public List<Product> GetSiblings(Product product)
+        {
+
+            return ContentHelper.GetSiblings<Product>(product);
+        }
     }
 }
+
