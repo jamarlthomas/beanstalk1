@@ -1,0 +1,26 @@
+.calculator {
+    
+    input { width: 40%; padding: 10px; margin: 5px 13px 0px 0px; border: 1px solid #cecece;
+    
+        //*** Breakpoints ***
+        @include breakpoint($bp3) { width: 85%; }        
+    
+    }//input
+
+    .customSelectC.treatWeightSelect { width: 132px;
+    
+        //*** Breakpoints ***
+        @include breakpoint($bp3) { margin-top: 15px; width: 85%; }  
+    }
+    
+    .customSelectC.specificGravitySelect { margin-top: 5px; width: 40%;
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp3) { width: 85%; } 
+    }
+    
+    .submitBtn { background: #4c9d2f; border: 0px; color: #FFF; }
+    
+    .resetBtn { background: #FFF; border: 0px; color: #4c9d2f; }
+    
+}
