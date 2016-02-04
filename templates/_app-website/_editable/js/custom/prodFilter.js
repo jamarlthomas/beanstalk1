@@ -1,49 +1,120 @@
-var app = angular.module('prodFilterApp', ['ui.router']);
+var app = angular.module('prodFilterApp', ['ui.router','angularUtils.directives.dirPagination']);
 
 app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) { 
 
     $stateProvider    
         .state('home', {
-          url: '/doc/{}',
+          url: '/doc/',
           //templateUrl: 'homeContent.html', 
-          controller: 'prodFilterCntl'
+          controller: 'test'
         })
 
 }]); 
 
 
+app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", function($scope, $location, $http, $timeout) {
+    
+    
+    
+    //Watch URL
+    $scope.$on('$locationChangeSuccess', function(event, next, current) { 
+        
+        var getURLPath = $location.path();
+        var getURLPathArray = getURLPath.split("/")
+        
+        //*** REGION UPDATE ****/
+        var urlRegionsValues = getURLPathArray[2]
+        if(typeof urlRegionsValues !== "undefined" && urlRegionsValues != -1){
 
-app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", "$q", function($scope, $location, $http, $timeout, $q) {
+            urlRegionsArray = urlRegionsValues.split(",")
+            
+            //store each id of item in the array
+            $scope.regionArrayID = urlRegionsArray;
+            
+            //store the string to be displayed
+            $scope.regionArrayIDString = $scope.arrayToString2(urlRegionsArray)
+            
+            //clear array
+            $scope.regionArrayText = [];
+            
+            $scope.region = [];
+            for (i=0; i < urlRegionsArray.length; i++) { 
+                getModelID = $("#filterRegion input[data-id='" + urlRegionsArray[i] +"']").attr("ng-model")
+                getModelID = getModelID.replace("region[", "");
+                getModelID = getModelID.replace("]", "");
+                
+                //check each item
+                $scope.region[getModelID] = true;
+                
+                //store the text in the array                
+                getRegionValue = $("#filterRegion input[data-id='" + urlRegionsArray[i] +"']").attr("data-text")
+                $scope.regionArrayText.push(getRegionValue);
+                
+            }
+            
+            $scope.regionCurrentSelected = $scope.arrayToString($scope.regionArrayText);
+            
+        }
+        
+        
+        /*** DOCTYPE UPDATE ***
+        var urlDocTypeValues = getURLPathArray[4]
+        if(typeof urlDocTypeValues !== "undefined" && urlDocTypeValues != -1){
+
+            urlRegionsArray = urlRegionsValues.split(",")
+            
+            //store each id of item in the array
+            $scope.regionArrayID = urlRegionsArray;
+            
+            //store the string to be displayed
+            $scope.regionArrayIDString = $scope.arrayToString2(urlRegionsArray)
+            
+            //clear array
+            $scope.regionArrayText = [];
+            
+            $scope.region = [];
+            for (i=0; i < urlRegionsArray.length; i++) { 
+                getModelID = $("#filterRegion input[data-id='" + urlRegionsArray[i] +"']").attr("ng-model")
+                getModelID = getModelID.replace("region[", "");
+                getModelID = getModelID.replace("]", "");
+                
+                //check each item
+                $scope.region[getModelID] = true;
+                
+                //store the text in the array                
+                getRegionValue = $("#filterRegion input[data-id='" + urlRegionsArray[i] +"']").attr("data-text")
+                $scope.regionArrayText.push(getRegionValue);
+                
+            }
+            
+            $scope.regionCurrentSelected = $scope.arrayToString($scope.regionArrayText);
+            
+        }
+        */
+        
+        
+
+                
+               
+        $scope.runQuery();
+        
+    });
+    
+    
+    
     
 
     //convert checkbox objects into an array
-    $scope.objToArray = function(obj, type) {
+    $scope.updateArray = function(array, textValue, value, orderNum) {
         
-        $scope.tempArray = [];
+        if(value){
+            array.push(textValue);
+        }else {
+            var itemToRemove = array.indexOf(textValue);
+            array.splice(itemToRemove,1);
+        }
         
-        angular.forEach(obj, function(element,key) {
-            
-            if(!element){
-                //remove if false
-                $scope.tempArray.splice(key, temp[1]);
-            }else {//add if checked
-                
-                //get string values
-                if(type=="string"){
-                    //break Out Strings
-                    temp = element.split("|")                    
-                    $scope.tempArray.push(temp[0]);
-                }
-                //
-                if(type=="id"){
-                    //break Out Ids
-                    temp = element.split("|")                    
-                    $scope.tempArray.push(temp[1]);
-                }
-            }
-        });
-        
-        return $scope.tempArray;
+        return array;
         
     }
 
@@ -63,89 +134,106 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", "$
         return tempString
     }
     
+    //convert to Array to string
+    $scope.arrayToString2 = function(array) {
+        
+        tempString = ""
+        
+        tempString = array.join(",");
+        
+        if(tempString == ""){
+            
+            tempString = "-1"
+        }
+        
+        return tempString
+    }
+
+    
     
     //Search Click
-    $scope.searchFilter = ""
+    $scope.searchFilter = "";
     $scope.search = function(searchItem) {
-        $scope.runQuery();
+        $scope.pathUpdate();
     }
     
     
     //Region Watch
     $scope.regionArrayID = [];
-    $scope.regionArrayString = [];
-    $scope.regionCurrentSelected = "All"
-    $scope.$watchCollection('region',  function(newVal, oldVal) {
+    $scope.regionArrayIDString = "-1";
+    $scope.regionArrayText = [];
+    $scope.regionCurrentSelected = "All";
+    $scope.regionWatch = function(id, text, value){
         
-        //prevent from firing on load 
-        if(!newVal) return; 
-        //console.log($scope.region)
+        //ID Storage - for Ajax request
+        $scope.regionArrayID = $scope.updateArray($scope.regionArrayID, id, value);
+        $scope.regionArrayIDString = $scope.arrayToString2($scope.regionArrayID )
+        
+        //Text Storage -  for display of items selected
+        $scope.regionArrayText = $scope.updateArray($scope.regionArrayText, text, value);
+        $scope.regionCurrentSelected = $scope.arrayToString($scope.regionArrayText);
+        
+        $scope.pathUpdateDebounce();
+        
+    }
 
-        $scope.regionArrayID = $scope.objToArray($scope.region, "id");
-        //console.log($scope.regionArrayID);
-        
-        $scope.regionArrayString = $scope.objToArray($scope.region, "string");
-        $scope.regionCurrentSelected = $scope.arrayToString($scope.regionArrayString);
-                
-        $scope.runQueryDebounce();
-        
-    });
     
-    
-    //DocType Watch
+    //DocType Watch    
     $scope.docTypeArrayID = [];
-    $scope.docTypeArrayString = [];
-    $scope.docTypeCurrentSelected = "All"
-    $scope.$watchCollection('docType',  function(newVal, oldVal) {
-        
-        //prevent from firing on load 
-        if(!newVal) return; 
-        //console.log($scope.docType)
+    $scope.docTypeArrayIDString = "-1";
+    $scope.docTypeArrayText = [];
+    $scope.docTypeCurrentSelected = "All";
+    $scope.docTypeWatch = function(id, text, value){
 
-        $scope.docTypeArrayID = $scope.objToArray($scope.docType, "id");
-        //console.log($scope.docTypeArrayID);
+        //ID Storage - for Ajax request
+        $scope.docTypeArrayID = $scope.updateArray($scope.docTypeArrayID, id, value);
+        $scope.docTypeArrayIDString = $scope.arrayToString2($scope.docTypeArrayID );
         
-        $scope.docTypeArrayString = $scope.objToArray($scope.docType, "string");
-        $scope.docTypeCurrentSelected = $scope.arrayToString($scope.docTypeArrayString);
-        
-        $scope.runQueryDebounce();
-        
-    });
+        //Text Storage -  for display of items selected
+        $scope.docTypeArrayText = $scope.updateArray($scope.docTypeArrayText, text, value);
+        $scope.docTypeCurrentSelected = $scope.arrayToString($scope.docTypeArrayText);
+         
+        $scope.pathUpdateDebounce();
+       
+    };
+    
     
     
     //Solution Watch
+    
     $scope.solutionArrayID = [];
-    $scope.solutionArrayString = [];
-    $scope.solutionCurrentSelected = "All"
-    $scope.$watchCollection('solution',  function(newVal, oldVal) {
+    $scope.solutionArrayIDString = "-1";
+    $scope.solutionArrayText = [];
+    $scope.solutionCurrentSelected = "All";
+    $scope.solutionWatch = function(id, text, value){
+       
+        //ID Storage - for Ajax request
+        $scope.solutionArrayID = $scope.updateArray($scope.solutionArrayID, id, value);
+        $scope.solutionArrayIDString = $scope.arrayToString2($scope.solutionArrayID )
         
-        //prevent from firing on load 
-        if(!newVal) return;         
-        //console.log($scope.solution)
+        //Text Storage -  for display of items selected
+        $scope.solutionArrayText = $scope.updateArray($scope.solutionArrayText, text, value);
+        $scope.solutionCurrentSelected = $scope.arrayToString($scope.solutionArrayText);
         
-        $scope.solutionArrayID = $scope.objToArray($scope.solution, "id");
-        //console.log($scope.solutionArrayID);
-        
-        $scope.solutionArrayString = $scope.objToArray($scope.solution, "string");
-        $scope.solutionCurrentSelected = $scope.arrayToString($scope.solutionArrayString);
-        
-        $scope.runQueryDebounce();
-        
-    });
+        $scope.pathUpdateDebounce();
+       
+    };
     
 
     
     //Sort Watch
     $scope.sortItems = "Newest"
     $scope.sorting = function() {
-        
-        $scope.runQuery();
+        console.log("sort")
+        $scope.pathUpdate();
         
     }
     $("#filterSort .customSelectC").on("click", "li", function(e) {
        var itemSelected = $(this).text();
-       $scope.sortItems = itemSelected
-       $scope.runQuery();
+       $scope.sortItems = itemSelected       
+       $scope.$apply( 
+           $scope.pathUpdate()
+       )        
     });
     
     
@@ -155,87 +243,98 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", "$
         
         $scope.searchFilter = ""
         $scope.regionArrayID = [];
-        $scope.regionArrayString = [];
+        $scope.regionArrayIDString = "-1";
+        $scope.regionArrayText = [];
         $scope.regionCurrentSelected = "All"
         $scope.docTypeArrayID = [];
-        $scope.docTypeArrayString = [];
+        $scope.docTypeArrayIDString = "-1";
+        $scope.docTypeArrayText = [];
         $scope.docTypeCurrentSelected = "All"
         $scope.solutionArrayID = [];
-        $scope.solutionArrayString = [];
+        $scope.solutionArrayIDString = "-1";
+        $scope.solutionArrayText = [];
         $scope.solutionCurrentSelected = "All"
         $scope.sortItems = "Newest"
-        $scope.pageNum = 1
+        $scope.pageNumber = 1
         
-        $scope.runQuery();
+        $scope.pathUpdate();
         
     };
     
     
-    //Page Number
-    $scope.pageNum = 1;
+    //Pagination Init
+    $scope.total_count;
+    $scope.itemsPerpage;
+    $scope.pageNumber = 1;
+    
+    //Manage pagination links
+    $scope.pageChanged = function(pageRequest) {
+        
+        $scope.pageNumber = pageRequest;
+        
+        $scope.pathUpdateDebounce();
+    
+    };
+    
+
+    //update URL Path
+    $scope.pathUpdate = function(){
+        
+        //update URL
+        $scope.pageURL = "/"
+        $scope.pageURL = $scope.pageURL + "regions/" + $scope.regionArrayIDString
+        $scope.pageURL = $scope.pageURL + "/documents/" + $scope.docTypeArrayIDString
+        $scope.pageURL = $scope.pageURL + "/SBU/-1"
+        $scope.pageURL = $scope.pageURL + "/solutions/" + $scope.solutionArrayIDString 
+        $scope.pageURL = $scope.pageURL + "/sort/" + $scope.sortItems
+        $scope.pageURL = $scope.pageURL + "/page/" + $scope.pageNumber
+        $scope.pageURL = $scope.pageURL + "/search/" + $scope.searchFilter
+        $location.path($scope.pageURL)
+        
+        //updating url will trigger ajax request
+        
+        
+    }
     
     
-    
-    //Delay requesting ajax to reduce the number of requests
-    $scope.runQueryDebounce = function() {  
+    //Delay requesting to reduce the number of requests
+    $scope.pathUpdateDebounce = function() {  
         
         //set a delay for requesting ajax
         $timeout.cancel($scope.mytimeout);
         $scope.mytimeout = $timeout(function() {
             
             //run query
-            $scope.runQuery();
+            $scope.pathUpdate();
             
-        }, 1000);
+        }, 800);
             
     }
     
-                  
+
+    
     //function to handle query searches
     $scope.runQuery = function() {              
-        
-        
-        regionParam = $scope.regionArrayID.join(",");
-        if(regionParam == ""){
-            regionParam = -1
-        }
-        
-        docTypeParam = $scope.docTypeArrayID.join(",");
-        if(docTypeParam == ""){
-            docTypeParam = -1
-        }
-        
-        solutionParam = $scope.solutionArrayID.join(",");
-        if(solutionParam == ""){
-            solutionParam = -1
-        }
-        
-        //sortParam = $scope.sortItems;
-        //console.log(sortParam)
-        /*
-        if(solutionParam == ""){
-            solutionParam = -1
-        }
-        */
-        
-        //$scope.ajaxRequest = "http://localhost:51872/filter/regions/-1/documents/-1/SBU/-1/solutions/-1"
-        //$scope.ajaxRequest = "http://localhost:51872/filter/regions/-1/documents/1/SBU/26/solutions/510"
 
-        //create ajax request
+        
+        //Sample URL Feed
+        //$scope.ajaxRequest = "http://localhost:51872/filter/regions/-1/documents/-1/SBU/-1/solutions/-1"
+
+        //create ajax request        
         $scope.ajaxRequest = "http://localhost:51872/filter/"
-        $scope.ajaxRequest = $scope.ajaxRequest + "regions/" + regionParam
-        $scope.ajaxRequest = $scope.ajaxRequest + "/documents/" + docTypeParam
+        $scope.ajaxRequest = $scope.ajaxRequest + "regions/" + $scope.regionArrayIDString
+        $scope.ajaxRequest = $scope.ajaxRequest + "/documents/" + $scope.docTypeArrayIDString
         $scope.ajaxRequest = $scope.ajaxRequest + "/SBU/-1"
-        $scope.ajaxRequest = $scope.ajaxRequest + "/solutions/" + solutionParam 
+        $scope.ajaxRequest = $scope.ajaxRequest + "/solutions/" + $scope.solutionArrayIDString 
         $scope.ajaxRequest = $scope.ajaxRequest + "/sort/" + $scope.sortItems
-        $scope.ajaxRequest = $scope.ajaxRequest + "/page/" + $scope.pageNum
+        $scope.ajaxRequest = $scope.ajaxRequest + "/page/" + $scope.pageNumber
         $scope.ajaxRequest = $scope.ajaxRequest + "/search/" + $scope.searchFilter 
-        console.log($scope.ajaxRequest)
-        
-        
+        //console.log($scope.ajaxRequest)
+
         //reset display
         $scope.dataLoaded = function(){return false};
         $scope.prodfilterResults = "";
+
 
         //Run Ajax
         $http.get($scope.ajaxRequest)
@@ -243,14 +342,21 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", "$
             
               //Get Data of Items to be displayed
               $scope.prodfilterResults = response.data.results; 
-              //console.log($scope.prodfilterResults)
-
+              
+              //Get the number of pages there are for this search
+              $scope.total_count = response.data.pagecount; 
+              //$scope.total_count = 100; 
+              
+              //Get the number of items to show per page
+              $scope.itemsPerpage = response.data.itemsPerpage;
+              //$scope.itemsPerpage = 2;
+            
               //For preloader
               $scope.dataLoaded = function(){return true};
 
               //For No results
               $scope.checkForResults = function(){                  
-
+                  console.log("test")
                 //check if there are any results returned
                 if($scope.prodfilterResults === null){
                   return true;
@@ -263,15 +369,7 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", "$
           });
 
     }
-    $scope.runQuery();
-    
-    
-    
-                  
-                  
-    //console.log($location.path())
-    
-    //$location.path("/test")
+
     
 }]);
 

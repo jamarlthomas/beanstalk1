@@ -24,6 +24,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.actual/1.0.17/jquery.actual.min.js"></script>
     <script src="https://code.angularjs.org/1.4.8/angular.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.17/angular-ui-router.min.js"></script>
+    <script src="assets-layout/js/library/dirPagination.min.js"></script>
     <script src="assets-layout/js/custom/prodFilter.min.js"></script>
     <script src="assets-layout/js/custom/ellipsesText.min.js"></script>
     <script src="assets-layout/js/custom/columnizeText.min.js"></script>
@@ -419,156 +420,156 @@
               <div id="filterRegion" class="filterGroup">
                 <div class="filterHdr">Region</div>
                 <label>
-                  <input type="checkbox" ng-model="region[0]" ng-true-value="'North America|100'"><span></span>North America
+                  <input type="checkbox" ng-model="region[0]" data-id="100" data-text="North America" ng-click="regionWatch('100','North America',region[0])"><span></span>North America
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="region[1]" ng-true-value="'Latin America|52'"><span></span>Latin America
+                  <input type="checkbox" ng-model="region[1]" data-text="Latin America" data-id="52" ng-click="regionWatch('52','Latin America',region[1])"><span></span>Latin America
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="region[2]" ng-true-value="'EMEAI|60'"><span></span>EMEAI
+                  <input type="checkbox" ng-model="region[2]" data-text="EMEAI" data-id="60" ng-click="regionWatch('60','EMEAI',region[2])"><span></span>EMEAI
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="region[3]" ng-true-value="'Asia|540'"><span></span>Asia
+                  <input type="checkbox" ng-model="region[3]" data-text="Asia" data-id="540" ng-click="regionWatch('540','Asia',region[3])"><span></span>Asia
                 </label>
               </div><hr>
               <div id="filterDocumentType" class="filterGroup">
                 <div class="filterHdr">Document Type</div>
                 <label>
-                  <input type="checkbox" ng-model="docType[0]" ng-true-value="'Product Data Sheets|98'"><span></span>Product Data Sheets
+                  <input type="checkbox" ng-model="docType[0]" data-text="Product Data Sheets" data-id="98" ng-click="docTypeWatch('98','Product Data Sheets',docType[0])"><span></span>Product Data Sheets
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="docType[1]" ng-true-value="'Articles|35'"><span></span>Articles
+                  <input type="checkbox" ng-model="docType[1]" data-text="Articles" data-id="35" ng-click="docTypeWatch('35','Articless',docType[1])"><span></span>Articles
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="docType[2]" ng-true-value="'White Papers|77'"><span></span>White Papers
+                  <input type="checkbox" ng-model="docType[2]" data-text="White Papers" data-id="77" ng-click="docTypeWatch('77','White Papers',docType[2])"><span></span>White Papers
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="docType[3]" ng-true-value="'Research|11'"><span></span>Research
+                  <input type="checkbox" ng-model="docType[3]" data-text="Research" data-id="11" ng-click="docTypeWatch('11','Research',docType[3])"><span></span>Research
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="docType[4]" ng-true-value="'Technical Documents|62'"><span></span>Technical Documents
+                  <input type="checkbox" ng-model="docType[4]" data-text="Technical Documents" data-id="62" ng-click="docTypeWatch('32','Technical Documents',docType[4])"><span></span>Technical Documents
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="docType[5]" ng-true-value="'Product Reviews|41'"><span></span>Product Reviews
+                  <input type="checkbox" ng-model="docType[5]" data-text="Product Reviews" data-id="41" ng-click="docTypeWatch('41','Product Reviews',docType[5])"><span></span>Product Reviews
                 </label>
               </div>
               <div id="filterSolution" class="filterGroup">
                 <div class="filterHdr">Solution</div>
                 <div class="filterSecHdr">Driveline</div>
                 <label>
-                  <input type="checkbox" ng-model="solution[0]" ng-true-value="'Automatic Transmission|508'"><span></span>Automatic Transmission
+                  <input type="checkbox" ng-model="solution[0]" data-text="Automatic Transmission" data-id="508" ng-click="solutionWatch('508','Automatic Transmission',solution[0])"><span></span>Automatic Transmission
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[1]" ng-true-value="'Continously Variable Transmission (CVT)|451'"><span></span>Continously Variable Transmission (CVT)
+                  <input type="checkbox" ng-model="solution[1]" data-text="Continously Variable Transmission (CVT)" data-id="451" ng-click="solutionWatch('451','Continously Variable Transmission (CVT)',solution[1])"><span></span>Continously Variable Transmission (CVT)
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[2]" ng-true-value="'Dual Clutch Transmission (DCT)|789'"><span></span>Dual Clutch Transmission (DCT)
+                  <input type="checkbox" ng-model="solution[2]" data-text="Dual Clutch Transmission (DCT)" data-id="789" ng-click="solutionWatch('789','Dual Clutch Transmission (DCT)',solution[2])"><span></span>Dual Clutch Transmission (DCT)
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[3]" ng-true-value="'Automotive Gear|123'"><span></span>Automotive Gear
+                  <input type="checkbox" ng-model="solution[3]" data-text="Automotive Gear" data-id="123" ng-click="solutionWatch('123','Automotive Gear',solution[3])"><span></span>Automotive Gear
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[4]" ng-true-value="'Power Steering|951'"><span></span>Power Steering
+                  <input type="checkbox" ng-model="solution[4]" data-text="Power Steering" data-id="951" ng-click="solutionWatch('951','Power Steering',solution[4])"><span></span>Power Steering
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[5]" ng-true-value="'Heavy Machinery|555'"><span></span>Heavy Machinery
+                  <input type="checkbox" ng-model="solution[5]" data-text="Heavy Machinery" data-id="555" ng-click="solutionWatch('555','Heavy Machinery',solution[5])"><span></span>Heavy Machinery
                 </label><br>
                 <div class="filterSecHdr">Fuel</div>
                 <label>
-                  <input type="checkbox" ng-model="solution[6]" ng-true-value="'Diesel Additives|777'"><span></span>Diesel Additives
+                  <input type="checkbox" ng-model="solution[6]" data-text="Diesel Additives" data-id="777" ng-click="solutionWatch('777','Diesel Additives',solution[6])"><span></span>Diesel Additives
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[7]" ng-true-value="'Gasoline Additives|333'"><span></span>Gasoline Additives
+                  <input type="checkbox" ng-model="solution[7]" data-text="Gasoline Additives" data-id="333" ng-click="solutionWatch('333','Gasoline Additives',solution[7])"><span></span>Gasoline Additives
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[8]" ng-true-value="'Octane Improver|222'"><span></span>Octane Improver
+                  <input type="checkbox" ng-model="solution[8]" data-text="Octane Improver" data-id="222" ng-click="solutionWatch('222','Octane Improver',solution[8])"><span></span>Octane Improver
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[9]" ng-true-value="'Alternative Fuels|665'"><span></span>Alternative Fuels
+                  <input type="checkbox" ng-model="solution[9]" data-text="Alternative Fuels" data-id="665" ng-click="solutionWatch('665','Alternative Fuels',solution[9])"><span></span>Alternative Fuels
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[10]" ng-true-value="'Home Heating Fuel|771'"><span></span>Home Heating Fuel
+                  <input type="checkbox" ng-model="solution[10]" data-text="Home Heating Fuel" data-id="771" ng-click="solutionWatch('771','Home Heating Fuel',solution[10])"><span></span>Home Heating Fuel
                 </label><br>
                 <div class="filterSecHdr">Engine Oil</div>
                 <label>
-                  <input type="checkbox" ng-model="solution[11]" ng-true-value="'Diesel|1111'"><span></span>Diesel Oil
+                  <input type="checkbox" ng-model="solution[11]" data-text="Diesel Oil" data-id="1111" ng-click="solutionWatch('1111','Diesel Oil',solution[11])"><span></span>Diesel Oil
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[12]" ng-true-value="'Gasoline Oil|2222'"><span></span>Gasoline Oil
+                  <input type="checkbox" ng-model="solution[12]" data-text="Gasoline Oil" data-id="2222" ng-click="solutionWatch('2222','Gasoline Oil',solution[12])"><span></span>Gasoline Oil
                 </label><br>
                 <div class="filterSecHdr">Industrial</div>
                 <label>
-                  <input type="checkbox" ng-model="solution[13]" ng-true-value="'Compressor|6666'"><span></span>Compressor
+                  <input type="checkbox" ng-model="solution[13]" data-text="Compressor" data-id="6666" ng-click="solutionWatch('6666','Compressor',solution[13])"><span></span>Compressor
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[14]" ng-true-value="'Grease|5555'"><span></span>Grease
+                  <input type="checkbox" ng-model="solution[14]" data-text="Grease" data-id="5555" ng-click="solutionWatch('5555','Grease',solution[14])"><span></span>Grease
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[15]" ng-true-value="'Hydrulic|7777'"><span></span>Hydrulic
+                  <input type="checkbox" ng-model="solution[15]" data-text="Hydrulic" data-id="7777" ng-click="solutionWatch('7777','Hydrulic',solution[15])"><span></span>Hydrulic
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[16]" ng-true-value="'Industrial Gear|1223'"><span></span>Industrial Gear
+                  <input type="checkbox" ng-model="solution[16]" data-text="Industrial Gear" data-id="1223" ng-click="solutionWatch('1223','Industrial Gear',solution[16])"><span></span>Industrial Gear
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[17]" ng-true-value="'Metalworking|7896'"><span></span>Metalworking
+                  <input type="checkbox" ng-model="solution[17]" data-text="Metalworking" data-id="7896" ng-click="solutionWatch('7896','Metalworking',solution[17])"><span></span>Metalworking
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[18]" ng-true-value="'Corrosion Inhibitors|4512'"><span></span>Corrosion Inhibitors
+                  <input type="checkbox" ng-model="solution[18]" data-text="Corrosion Inhibitors" data-id="4512" ng-click="solutionWatch('4512','Corrosion Inhibitors',solution[18])"><span></span>Corrosion Inhibitors
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[19]" ng-true-value="'Couplers|9578'"><span></span>Couplers
+                  <input type="checkbox" ng-model="solution[19]" data-text="Couplers" data-id="9578" ng-click="solutionWatch('9578','Couplerss',solution[19])"><span></span>Couplers
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[20]" ng-true-value="'Demist Agents|6689'"><span></span>Demist Agents
+                  <input type="checkbox" ng-model="solution[20]" data-text="Demist Agents" data-id="6689" ng-click="solutionWatch('6689','Demist Agents',solution[20])"><span></span>Demist Agents
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[21]" ng-true-value="'Emulsifiers|1187'"><span></span>Emulsifiers
+                  <input type="checkbox" ng-model="solution[21]" data-text="Emulsifiers" data-id="1187" ng-click="solutionWatch('1187','Emulsifiers',solution[21])"><span></span>Emulsifiers
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[22]" ng-true-value="'Lubricity and EP Additives|3351'"><span></span>Lubricity and EP Additives
+                  <input type="checkbox" ng-model="solution[22]" data-text="Lubricity and EP Additives" data-id="3351" ng-click="solutionWatch('3351','Lubricity and EP Additives',solution[22])"><span></span>Lubricity and EP Additives
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[23]" ng-true-value="'Packages|7723'"><span></span>Packages
+                  <input type="checkbox" ng-model="solution[23]" data-text="Packages" data-id="7723" ng-click="solutionWatch('7723','Packages',solution[23])"><span></span>Packages
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[24]" ng-true-value="'Quench Additives|75631'"><span></span>Quench Additives
+                  <input type="checkbox" ng-model="solution[24]" data-text="Quench Additives" data-id="75631" ng-click="solutionWatch('75631','Quench Additives',solution[24])"><span></span>Quench Additives
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[25]" ng-true-value="'Sideway|98735'"><span></span>Sideway
+                  <input type="checkbox" ng-model="solution[25]" data-text="Sideway" data-id="98735" ng-click="solutionWatch('98735','Sideway',solution[25])"><span></span>Sideway
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[26]" ng-true-value="'Turbine|11984'"><span></span>Turbine
+                  <input type="checkbox" ng-model="solution[26]" data-text="Turbine" data-id="11984" ng-click="solutionWatch('11984','Turbine',solution[26])"><span></span>Turbine
                 </label><br>
                 <div class="filterSecHdr">Lubricant Components</div>
                 <label>
-                  <input type="checkbox" ng-model="solution[27]" ng-true-value="'Couplers|65234'"><span></span>Couplers
+                  <input type="checkbox" ng-model="solution[27]" data-text="Couplers" data-id="65234" ng-click="solutionWatch('65234','Couplers',solution[27])"><span></span>Couplers
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[28]" ng-true-value="'Detergents &amp; Corrosion Inhibitors|78925'"><span></span>Detergents & Corrosion Inhibitors
+                  <input type="checkbox" ng-model="solution[28]" data-text="Detergents &amp; Corrosion Inhibitors" data-id="78925" ng-click="solutionWatch('78925','Detergents &amp; Corrosion Inhibitors',solution[28])"><span></span>Detergents & Corrosion Inhibitors
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[29]" ng-true-value="'Extreme Pressure Agents &amp; Antiwear Agents|93146'"><span></span>Extreme Pressure Agents & Antiwear Agents
+                  <input type="checkbox" ng-model="solution[29]" data-text="Extreme Pressure Agents &amp; Antiwear Agents" data-id="93146" ng-click="solutionWatch('93146','Extreme Pressure Agents &amp; Antiwear Agents',solution[29])"><span></span>Extreme Pressure Agents & Antiwear Agents
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[30]" ng-true-value="'Foam Inhibitors|15972'"><span></span>Foam Inhibitors
+                  <input type="checkbox" ng-model="solution[30]" data-text="Foam Inhibitors" data-id="15972" ng-click="solutionWatch('15972','Foam Inhibitors',solution[30])"><span></span>Foam Inhibitors
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[31]" ng-true-value="'Friction Modifiers|55993'"><span></span>Friction Modifiers
+                  <input type="checkbox" ng-model="solution[31]" data-text="Friction Modifiers" data-id="55993" ng-click="solutionWatch('55993','Friction Modifiers',solution[31])"><span></span>Friction Modifiers
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[32]" ng-true-value="'Pour Point Depressants|11774'"><span></span>Pour Point Depressants
+                  <input type="checkbox" ng-model="solution[32]" data-text="Pour Point Depressants" data-id="11774" ng-click="solutionWatch('11774','Pour Point Depressants',solution[32])"><span></span>Pour Point Depressants
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[33]" ng-true-value="'Seal Swell Additives|55993'"><span></span>Seal Swell Additives
+                  <input type="checkbox" ng-model="solution[33]" data-text="Seal Swell Additives" data-id="55993" ng-click="solutionWatch('55993','Seal Swell Additives',solution[33])"><span></span>Seal Swell Additives
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[34]" ng-true-value="'Tackiness Additives|991166'"><span></span>Tackiness Additives
+                  <input type="checkbox" ng-model="solution[34]" data-text="Tackiness Additives" data-id="991166" ng-click="solutionWatch('991166','Tackiness Additives',solution[34])"><span></span>Tackiness Additives
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[35]" ng-true-value="'Thickeners &amp; Viscosity Index|789642'"><span></span>Thickeners & Viscosity Index
+                  <input type="checkbox" ng-model="solution[35]" data-text="Thickeners &amp; Viscosity Index" data-id="789642" ng-click="solutionWatch('789642','Thickeners &amp; Viscosity Index',solution[35])"><span></span>Thickeners & Viscosity Index
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[36]" ng-true-value="'Improvers|115566'"><span></span>Improvers
+                  <input type="checkbox" ng-model="solution[36]" data-text="Improvers" data-id="115566" ng-click="solutionWatch('115566','Improvers',solution[36])"><span></span>Improvers
                 </label>
                 <input id="clearFilterB" type="reset" ng-click="reset()" value="Clear All">
               </div>
@@ -593,7 +594,7 @@
               </div>
             </div>
             <div class="cards3C">
-              <div class="cards3"><a href="{{item.Link}}" ng-cloak ng-repeat="item in prodfilterResults" class="cardC">
+              <div class="cards3"><a href="{{item.Link}}" ng-cloak dir-paginate="item in prodfilterResults | itemsPerPage: itemsPerpage" total-items="total_count" class="cardC">
                   <div class="cardHdrC">
                     <div class="cardHdr">{{item.Title}}</div>
                   </div>
@@ -604,7 +605,7 @@
                 <div ng-show="checkForResults()">No Items found</div>
               </div>
             </div>
-            <div class="paginationC"><a href="#" class="prev"></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><span class="nextGroup">...</span><a href="#" class="sendToEnd">49</a><a href="#">50</a><a href="#" class="next"></a></div>
+            <dir-pagination-controls max-size="7" boundary-links="false" template-url="dirPagination.tpl.html" on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
           </div>
         </form>
       </div>

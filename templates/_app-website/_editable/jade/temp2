@@ -124,3 +124,49 @@ div(class="paginationC")
     a(href="#" class="next")
     
     
+    
+    
+    
+       
+   /*
+    
+    
+    
+    $scope.$watchCollection('region',  function(newVal, oldVal) {
+        
+        //prevent from firing on load 
+        if(!newVal) return; 
+        //console.log($scope.region)
+        
+        $scope.regionArrayID = $scope.objToArray($scope.region, "id");
+        $scope.regionArrayIDString = $scope.arrayIDsToString($scope.regionArrayID )
+        //console.log(regionArrayIDString);
+        
+        $scope.regionArrayString = $scope.objToArray($scope.region, "string");
+        $scope.regionCurrentSelected = $scope.arrayToString($scope.regionArrayString);
+        
+        
+        $scope.pathUpdateDebounce();
+        
+    });
+    */
+    
+    
+    $scope.$watchCollection('docType',  function(newVal, oldVal) {
+        
+        //prevent from firing on load 
+        if(!newVal) return; 
+        //console.log($scope.docType)
+
+        $scope.docTypeArrayID = $scope.objToArray($scope.docType, "id");
+        $scope.docTypeArrayIDString = $scope.arrayToString2($scope.docTypeArrayID)
+        //console.log($scope.docTypeArrayIDString);
+        
+        $scope.docTypeArrayString = $scope.objToArray($scope.docType, "string");
+        $scope.docTypeCurrentSelected = $scope.arrayToString($scope.docTypeArrayString);
+        
+        $scope.pathUpdateDebounce();
+        
+    });
+    
+    
