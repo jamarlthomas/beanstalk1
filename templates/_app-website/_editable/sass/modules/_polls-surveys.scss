@@ -1,0 +1,62 @@
+.pollSurveyC { @include container;
+    
+    .pollSurvey { @include gallery(6 of 12); margin-bottom: gutter();
+        
+        .title { padding: 13px 0px; background: #184b9f; color: #FFF; text-align: center; font-size: 16px; }
+        
+        .itemC { background: #eeeded; padding: 15px;
+            
+            form.pole { padding-top: 20px;      
+        
+                label { display: block; margin: 0px 10px 15px 30px;
+
+                    input[type="radio"] { display:none; }
+
+                    input[type="radio"] +  span { display:inline-block; width: 20px; height: 18px; margin: -3px 4px 0 -29px; vertical-align: middle; cursor: pointer; background:url(../../images/radio.png) left top no-repeat; }
+
+                    input[type="radio"]:checked + span { background:url(../../images/radio-a.png) left top no-repeat; }          
+
+                }//label
+
+                input.vote { display: block; margin: 0px auto 15px auto; padding: 10px 0px; width: 90%; color: #FFF; background: #4c9d2f; border: 0px; }
+      
+            }//form.pole
+    
+            .voteDetails { padding: 0px 0px 5px 0px; text-align: center; font: 12px HelveticaNeueLTStd-Md; }
+            
+            .voteResults { padding-top: 20px; 
+                
+                ul { margin: 0px; padding: 0px;
+                    
+                    li { margin: 0px 10px 10px 30px!important; padding: 0px; list-style: none;
+                    
+                        &.selected { list-style-image: url(../../images/checkmark.png); }
+                        
+                    }//li
+                    
+                }//ul
+                
+                .voteMessage { padding: 10px 0px 15px 0px; font-size: 26px; line-height: 30px; color: #184b9f; text-align: center; }
+                 
+                .viewReslutsLink { display: block; margin: 0px auto; padding: 10px 0px; width: 90%; text-align: center; color: #FFF; background: #4c9d2f; border: 0px; text-decoration: none; }
+
+                
+            }//voteResults
+            
+        }//itemC
+        
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp3) { 
+            
+            @include gallery(12 of 12 break);
+
+            &:nth-child(n) {
+                clear: both;
+            }
+        }
+                
+        
+    }//#pollSurvey
+
+}//pollSurveyC

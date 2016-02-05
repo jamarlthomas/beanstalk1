@@ -1,0 +1,11 @@
+﻿@Model.Title
+<hr />
+
+@Model.DocumentPublishFrom
+<hr/>
+
+@if (!string.IsNullOrEmpty(Model.HeroImage))
+{
+	<img src="@Url.Content(Model.HeroImage)">
+}
+<hr />

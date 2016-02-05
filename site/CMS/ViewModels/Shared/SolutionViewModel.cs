@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CMS.Mvc.ViewModels.Product;
+using CMS.Mvc.ViewModels.Product;
 
 namespace CMS.Mvc.ViewModels.Shared
 {

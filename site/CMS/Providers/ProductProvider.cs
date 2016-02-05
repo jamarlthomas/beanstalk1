@@ -7,13 +7,15 @@ using CMS.Mvc.Interfaces;
 using CMS.Mvc.ViewModels.Product;
 using CMS.Mvc.ViewModels.Shared;
 
+
 namespace CMS.Mvc.Providers
 {
-    public class ProductProvider: IProductProvider
+    public class ProductProvider : IProductProvider
     {
+
         public Product CurrentProduct { get; set; }
 
-		public List<Product> GetProductItems(List<Guid> guids, string siteName)
+        public List<Product> GetProductItems(List<Guid> guids, string siteName)
         {
             return ContentHelper.GetDocsByGuids<Product>(guids, siteName);
 		}
@@ -22,8 +24,7 @@ namespace CMS.Mvc.Providers
         {
             CurrentProduct =  ContentHelper.GetDocByName<Product>(Product.CLASS_NAME, alias);
             return CurrentProduct;
-        }
-
+			}
         public List<BreadCrumbLinkItemViewModel> GetBreadcrumb(string name)
         {
             return ContentHelper.GetBreadcrumb<Product>(Product.CLASS_NAME, name);
@@ -59,4 +60,3 @@ namespace CMS.Mvc.Providers
         }
     }
 }
-

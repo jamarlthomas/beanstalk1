@@ -1,10 +1,7 @@
-﻿using CMS.DocumentEngine.Types;
+﻿using System.Collections.Generic;
+using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace CMS.Mvc.Providers
 {
@@ -13,16 +10,11 @@ namespace CMS.Mvc.Providers
         public List<Solution> GetSolutionItems(string alias)
         {
             return ContentHelper.GetDocChildrenByName<Solution>(Solution.CLASS_NAME, alias);
-		}
+        }
 
-		public List<Solution> GetSolutionItems()
-		{
-			return ContentHelper.GetDocs<Solution>(Solution.CLASS_NAME);
-		}
-		
-		public Solution GetSolution(string alias)
-		{
-			return ContentHelper.GetDocByName<Solution>(Solution.CLASS_NAME, alias);
-		}
-	}
+        public List<Solution> GetSolutionItems()
+        {
+            return ContentHelper.GetDocs<Solution>(Solution.CLASS_NAME);
+        }
+    }
 }
