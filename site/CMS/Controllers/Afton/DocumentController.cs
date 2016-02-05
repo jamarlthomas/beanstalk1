@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
-using CMS.Mvc.ViewModels.Document;
+using CMS.Mvc.ViewModels.DocumentsViewModel;
 using CMS.Mvc.ViewModels.Shared;
 
 namespace CMS.Mvc.Controllers.Afton

@@ -21,120 +21,120 @@ using CMS.DocumentEngine;
 
 namespace CMS.DocumentEngine.Types
 {
-	/// <summary>
-	/// Sample item class.
-	/// </summary>
-	public partial class FAQItem : TreeNode
-	{
-		#region "Constants"
+    /// <summary>
+    /// Sample item class.
+    /// </summary>
+    public partial class FAQItem : TreeNode
+    {
+        #region "Constants"
 
-		/// <summary>
-		/// Class name of the item.
-		/// </summary>
-		public const string CLASS_NAME = "custom.FAQItem";
+        /// <summary>
+        /// Class name of the item.
+        /// </summary>
+        public const string CLASS_NAME = "custom.FAQItem";
 
-		#endregion
-
-
-		#region "Properties"
-
-		/// <summary>
-		/// FAQItemID.
-		/// </summary>
-		[DatabaseField]
-		public int FAQItemID
-		{
-			get
-			{
-				return ValidationHelper.GetInteger(GetValue("FAQItemID"), 0);
-			}
-			set
-			{
-				SetValue("FAQItemID", value);
-			}
-		}
+        #endregion
 
 
-		/// <summary>
-		/// Question.
-		/// </summary>
-		[DatabaseField]
-		public string Question
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Question"), "");
-			}
-			set
-			{
-				SetValue("Question", value);
-			}
-		}
+        #region "Properties"
+
+        /// <summary>
+        /// FAQItemID.
+        /// </summary>
+        [DatabaseField]
+        public int FAQItemID
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("FAQItemID"), 0);
+            }
+            set
+            {
+                SetValue("FAQItemID", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Answer.
-		/// </summary>
-		[DatabaseField]
-		public string Answer
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Answer"), "");
-			}
-			set
-			{
-				SetValue("Answer", value);
-			}
-		}
+        /// <summary>
+        /// Question.
+        /// </summary>
+        [DatabaseField]
+        public string Question
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Question"), "");
+            }
+            set
+            {
+                SetValue("Question", value);
+            }
+        }
 
 
-		/// <summary>
-		/// RelatedSBU.
-		/// </summary>
-		[DatabaseField]
-		public string RelatedSBU
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("RelatedSBU"), "");
-			}
-			set
-			{
-				SetValue("RelatedSBU", value);
-			}
-		}
+        /// <summary>
+        /// Answer.
+        /// </summary>
+        [DatabaseField]
+        public string Answer
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Answer"), "");
+            }
+            set
+            {
+                SetValue("Answer", value);
+            }
+        }
 
 
-		/// <summary>
-		/// FAQTopic.
-		/// </summary>
-		[DatabaseField]
-		public string FAQTopic
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("FAQTopic"), "");
-			}
-			set
-			{
-				SetValue("FAQTopic", value);
-			}
-		}
-
-		#endregion
+        /// <summary>
+        /// RelatedSBU.
+        /// </summary>
+        [DatabaseField]
+        public string RelatedSBU
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("RelatedSBU"), "");
+            }
+            set
+            {
+                SetValue("RelatedSBU", value);
+            }
+        }
 
 
-		#region "Constructors"
+        /// <summary>
+        /// FAQTopic.
+        /// </summary>
+        [DatabaseField]
+        public string FAQTopic
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("FAQTopic"), "");
+            }
+            set
+            {
+                SetValue("FAQTopic", value);
+            }
+        }
 
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		public FAQItem()
-			: base(CLASS_NAME)
-		{
-		}
+        #endregion
 
-		#endregion
-	}
+
+        #region "Constructors"
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public FAQItem()
+            : base(CLASS_NAME)
+        {
+        }
+
+        #endregion
+    }
 }

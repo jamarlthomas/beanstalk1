@@ -1,10 +1,11 @@
-﻿using CMS.DocumentEngine.Types;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using CMS.DocumentEngine.Types;
 
 namespace CMS.Mvc.Interfaces
 {
-	public interface IInsightsResourcesProvider
+    public interface IInsightsResourcesProvider
     {
-		List<InsightsResources> GetInsightsResources();
+        List<InsightsResources> GetInsightsResources();
+        InsightsResources GetInsightsResourcesByName(string name);
     }
 }

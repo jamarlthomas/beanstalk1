@@ -1,17 +1,24 @@
 ﻿using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Web.Configuration;
+using CMS.DataEngine.Generators;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Helpers;
+using CMS.Helpers.UniGraphConfig;
 using CMS.Localization;
 using CMS.Mvc.ViewModels.Product;
 using CMS.Mvc.ViewModels.Shared;
 using CMS.PortalEngine;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using CMS.DataEngine;
+using CMS.SiteProvider;
 using WebGrease;
+using ServerInfo = System.Web.Helpers.ServerInfo;
 
 namespace CMS.Mvc.Helpers
 {
@@ -24,7 +31,7 @@ namespace CMS.Mvc.Helpers
 
         private static readonly string CurrentCulture = LocalizationContext.CurrentCulture.CultureCode;
 
-		private static readonly TreeProvider _treeProvider = new TreeProvider();
+        private static readonly TreeProvider _treeProvider = new TreeProvider();
 
         public static List<TreeNode> GetAllNodes()
         {
@@ -60,9 +67,10 @@ namespace CMS.Mvc.Helpers
             var list = new List<Link>();
             TraverseNodes(doc, list);
 
-            list.Add(new Link() { Title = "Home", Reference = "" });
+            //list.Add(new Link() { Title = "Home", Reference = "Home" }); //We don't need this
+                                                                           //Because we have object "Home" in the root
             list.Reverse();
-            string currReference = "";
+            string currReference = string.Empty;
             var breadcrumbList = list.Select(item =>
             {
                 if (!string.IsNullOrWhiteSpace(item.Reference))
@@ -80,8 +88,8 @@ namespace CMS.Mvc.Helpers
         {
             object val;
             if (!doc.TryGetProperty("ExcludeFromSiteMap", out val))
-                list.Add(new Link() {Title = doc.DocumentName, Reference = doc.NodeAlias});
-            
+                list.Add(new Link() { Title = doc.DocumentName, Reference = doc.NodeAlias });
+
             if (doc.Parent.NodeAliasPath == "/")
                 return;
             TraverseNodes(doc.Parent, list);
@@ -103,18 +111,46 @@ namespace CMS.Mvc.Helpers
         {
             docName = docName.Replace(' ', '-');
             return HandleQueryableData<T>(
-				q => q.Where(item => item.Parent.NodeAlias.Equals(docName, StringComparison.CurrentCultureIgnoreCase)).Take(limit),
+                q => q.Where(item => item.Parent.NodeAlias.Equals(docName, StringComparison.CurrentCultureIgnoreCase)).Take(limit),
                 childrenClassName,
-				string.Format("cc_{0}_ccn_{1}_dn_{2}_lim_{3}", CurrentCulture, childrenClassName, docName, limit),
+                string.Format("cc_{0}_ccn_{1}_dn_{2}_lim_{3}", CurrentCulture, childrenClassName, docName, limit),
                 string.Format("nodes|afton|{0}|all", childrenClassName.ToLower())
                 ).ToList();
         }
 
-		public static List<T> GetDocsByGuids<T>(List<Guid> guids, string siteName) 
-			where T : TreeNode, new()
-		{
-			return guids.Select(guid => _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName)) as T).ToList();
-		} 
+        public static List<T> GetDocsByGuids<T>(IEnumerable<Guid> guids, string siteName = null)
+            where T : TreeNode, new()
+        {
+            return guids.Select(guid => _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T).ToList();
+        }
+
+        public static List<TreeNode> GetDocsByPath(string aliasPath, int maxRelativeLevel = 1, string classNames = "*")
+        {
+            var cacheDependencyKey = "nodes|afton|all";
+            return CacheHelper.Cache(cs =>
+            {
+                if (!string.IsNullOrWhiteSpace(cacheDependencyKey))
+                    cs.CacheDependency = CacheHelper.GetCacheDependency(cacheDependencyKey);
+                return new TreeProvider().SelectNodes(new NodeSelectionParameters
+                {
+                    ClassNames = classNames,
+                    SiteName = ConfigurationManager.AppSettings["SiteName"],
+                    SelectAllData = true,
+                    AliasPath = aliasPath + "/%",
+                    MaxRelativeLevel = maxRelativeLevel,
+                }).Where(i => i != null).ToList();
+            }, new CacheSettings(CachingTime, string.Format("pth_{0}_mrl_{1}_cn_{2}", aliasPath, maxRelativeLevel, classNames)));
+        }
+
+        internal static List<T> GetSiblings<T>(T node) where T : TreeNode, new()
+        {
+            return HandleQueryableData<T>(
+                q => q.Where(n => n.Parent.DocumentID == node.Parent.DocumentID && n.DocumentID != node.DocumentID),
+                node.ClassName,
+                string.Format("siblings_cc_{0}_dn_{1}", CurrentCulture, node.DocumentID),
+                string.Format("nodes|afton|{0}|all", node.ClassName.ToLower()))
+                .ToList();
+        }
 
         private static T HandleData<T>(Expression<Func<TreeNode, bool>> predicate, string className, string cacheKey,
             string cacheDependencyKey, string cachedependenciesFormat = "") where T : TreeNode, new()
@@ -212,6 +248,12 @@ namespace CMS.Mvc.Helpers
             }
         }
 
+        internal static List<TreeNode> GetNodes(string[] stringIds)
+        {
+            int intId;
+            int[] intIds = stringIds.Where(id => int.TryParse(id, out intId)).Select(int.Parse).ToArray();
+            return intIds.Select(id => DocumentHelper.GetDocument(id, new TreeProvider())).Where(item => item != null).ToList();
+        }
 
     }
 }
