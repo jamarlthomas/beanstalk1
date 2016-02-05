@@ -23,7 +23,6 @@
     <script src="https://cdn.jsdelivr.net/jquery.columnizer/1.6.0/jquery.columnizer.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.actual/1.0.17/jquery.actual.min.js"></script>
     <script src="https://code.angularjs.org/1.4.8/angular.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.17/angular-ui-router.min.js"></script>
     <script src="assets-layout/js/library/dirPagination.min.js"></script>
     <script src="assets-layout/js/custom/prodFilter.min.js"></script>
     <script src="assets-layout/js/custom/ellipsesText.min.js"></script>
@@ -447,7 +446,7 @@
                   <input type="checkbox" ng-model="docType[3]" data-text="Research" data-id="11" ng-click="docTypeWatch('11','Research',docType[3])"><span></span>Research
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="docType[4]" data-text="Technical Documents" data-id="62" ng-click="docTypeWatch('32','Technical Documents',docType[4])"><span></span>Technical Documents
+                  <input type="checkbox" ng-model="docType[4]" data-text="Technical Documents" data-id="62" ng-click="docTypeWatch('62','Technical Documents',docType[4])"><span></span>Technical Documents
                 </label>
                 <label>
                   <input type="checkbox" ng-model="docType[5]" data-text="Product Reviews" data-id="41" ng-click="docTypeWatch('41','Product Reviews',docType[5])"><span></span>Product Reviews
@@ -554,13 +553,13 @@
                   <input type="checkbox" ng-model="solution[30]" data-text="Foam Inhibitors" data-id="15972" ng-click="solutionWatch('15972','Foam Inhibitors',solution[30])"><span></span>Foam Inhibitors
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[31]" data-text="Friction Modifiers" data-id="55993" ng-click="solutionWatch('55993','Friction Modifiers',solution[31])"><span></span>Friction Modifiers
+                  <input type="checkbox" ng-model="solution[31]" data-text="Friction Modifiers" data-id="559930" ng-click="solutionWatch('559930','Friction Modifiers',solution[31])"><span></span>Friction Modifiers
                 </label>
                 <label>
                   <input type="checkbox" ng-model="solution[32]" data-text="Pour Point Depressants" data-id="11774" ng-click="solutionWatch('11774','Pour Point Depressants',solution[32])"><span></span>Pour Point Depressants
                 </label>
                 <label>
-                  <input type="checkbox" ng-model="solution[33]" data-text="Seal Swell Additives" data-id="55993" ng-click="solutionWatch('55993','Seal Swell Additives',solution[33])"><span></span>Seal Swell Additives
+                  <input type="checkbox" ng-model="solution[33]" data-text="Seal Swell Additives" data-id="559931" ng-click="solutionWatch('559931','Seal Swell Additives',solution[33])"><span></span>Seal Swell Additives
                 </label>
                 <label>
                   <input type="checkbox" ng-model="solution[34]" data-text="Tackiness Additives" data-id="991166" ng-click="solutionWatch('991166','Tackiness Additives',solution[34])"><span></span>Tackiness Additives
@@ -578,14 +577,14 @@
           <div id="filterResultsC">
             <div id="filterHdr">
               <div id="filterNum">{{ (prodfilterResults.length) }} Results</div>
-              <div id="filterList">Current Selection:  <span class="hdr">Region: </span>{{regionCurrentSelected}}
+              <div id="filterList">Current Selection:  <span class="hdr">Region: </span>{{regionSelected}}
                 / <span class="hdr">Document Type: </span>{{docTypeCurrentSelected}}
                 /  <span class="hdr">Solution: </span>{{solutionCurrentSelected}}
               </div>
               <div id="filterSort">
                 <div class="customSelectC standard">
                   <div class="orgSelect">
-                    <select name="sort" ng-model="sortItems" ng-change="sorting()">
+                    <select name="sort" ng-model="sortItems" xng-change="sorting()">
                       <option value="Newest">Newest</option>
                       <option value="Oldest">Oldest</option>
                     </select>

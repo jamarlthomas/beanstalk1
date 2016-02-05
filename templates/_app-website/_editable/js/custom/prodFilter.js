@@ -1,19 +1,54 @@
-var app = angular.module('prodFilterApp', ['ui.router','angularUtils.directives.dirPagination']);
-
-app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) { 
-
-    $stateProvider    
-        .state('home', {
-          url: '/doc/',
-          //templateUrl: 'homeContent.html', 
-          controller: 'test'
-        })
-
-}]); 
+var app = angular.module('prodFilterApp', ['angularUtils.directives.dirPagination']);
 
 
 app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", function($scope, $location, $http, $timeout) {
     
+    //function to update global varables for checkboxes when URL loads
+    $scope.updateCheckboxItems = function(htmlRef, htmlRef2, urlDataIDs, checkboxesRef){
+
+        if(typeof urlDataIDs !== "undefined" && urlDataIDs != -1 && urlDataIDs != ""){
+
+            //build array from values found
+            tempURLArray = urlDataIDs.split(",")
+            
+            //Update global Array of ID's
+            retArrayIDs = tempURLArray;
+           
+            //Update global ID's in string format 
+            retStringIDs = $scope.arrayToString2(tempURLArray)
+            
+            retArrayText = [];
+             
+            //loop through all the URL IDs
+            for (i=0; i < tempURLArray.length; i++) { 
+                
+                //find checkbox in HTML and get the checkbox model
+                tempModelID = $(htmlRef + " input[data-id='" + tempURLArray[i] +"']").attr("ng-model")
+                
+                //get just the id number
+                tempModelID = tempModelID.replace(htmlRef2, "");
+                tempModelID = tempModelID.replace("[", "");
+                tempModelID = tempModelID.replace("]", "");
+                 
+                //Check the correct checkbox on the page
+                checkboxesRef[tempModelID] = true;            
+               
+                //Find the checkbox in the html and get the text
+                tempTextValue = $("#filterRegion input[data-id='" + tempURLArray[i] +"']").attr("data-text")
+                
+                //Update global Array of Text items   
+                retArrayText.push(tempTextValue);
+                
+            }
+            
+            //Update global Text Items in text format
+            var retSelected = $scope.arrayToString(retArrayText);
+            
+            return [ retArrayIDs, retStringIDs, retArrayText, retSelected ]
+
+        }
+        
+    }
     
     
     //Watch URL
@@ -22,80 +57,96 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
         var getURLPath = $location.path();
         var getURLPathArray = getURLPath.split("/")
         
-        //*** REGION UPDATE ****/
-        var urlRegionsValues = getURLPathArray[2]
-        if(typeof urlRegionsValues !== "undefined" && urlRegionsValues != -1){
-
-            urlRegionsArray = urlRegionsValues.split(",")
-            
-            //store each id of item in the array
-            $scope.regionArrayID = urlRegionsArray;
-            
-            //store the string to be displayed
-            $scope.regionArrayIDString = $scope.arrayToString2(urlRegionsArray)
-            
-            //clear array
-            $scope.regionArrayText = [];
-            
-            $scope.region = [];
-            for (i=0; i < urlRegionsArray.length; i++) { 
-                getModelID = $("#filterRegion input[data-id='" + urlRegionsArray[i] +"']").attr("ng-model")
-                getModelID = getModelID.replace("region[", "");
-                getModelID = getModelID.replace("]", "");
-                
-                //check each item
-                $scope.region[getModelID] = true;
-                
-                //store the text in the array                
-                getRegionValue = $("#filterRegion input[data-id='" + urlRegionsArray[i] +"']").attr("data-text")
-                $scope.regionArrayText.push(getRegionValue);
-                
-            }
-            
-            $scope.regionCurrentSelected = $scope.arrayToString($scope.regionArrayText);
-            
+        //*** Regional Updates
+        var urlRegionsValues = getURLPathArray[2];
+        
+        //setup refrence to checkboxes
+        $scope.region = [];
+        var regionCheckboxesRef = $scope.region;
+        
+        //based on URL ID's make updates
+        var returnVars = $scope.updateCheckboxItems("#filterRegion","region", urlRegionsValues, regionCheckboxesRef);
+        
+        //update global variables
+        if(typeof returnVars !== "undefined"){
+            $scope.regionArrayID = returnVars[0];        
+            $scope.regionStringID = returnVars[1];
+            $scope.regionArrayText = returnVars[2];
+            $scope.regionSelected = returnVars[3];
+        } 
+        
+        
+        //*** DocType Updates
+        var urlDocTypesValues = getURLPathArray[4];
+        
+        //setup refrence to checkboxes
+        $scope.docType = [];
+        var docTypeCheckboxesRef = $scope.docType;
+        
+        //based on URL ID's make updates
+        var returnVars = $scope.updateCheckboxItems("#filterDocumentType","docType",urlDocTypesValues, docTypeCheckboxesRef);
+        
+        //update global variables
+        if(typeof returnVars !== "undefined"){
+            $scope.docTypeArrayID = returnVars[0];        
+            $scope.docTypeStringID = returnVars[1];
+            $scope.docTypeArrayText = returnVars[2];
+            $scope.docTypeSelected = returnVars[3];
         }
         
         
-        /*** DOCTYPE UPDATE ***
-        var urlDocTypeValues = getURLPathArray[4]
-        if(typeof urlDocTypeValues !== "undefined" && urlDocTypeValues != -1){
-
-            urlRegionsArray = urlRegionsValues.split(",")
-            
-            //store each id of item in the array
-            $scope.regionArrayID = urlRegionsArray;
-            
-            //store the string to be displayed
-            $scope.regionArrayIDString = $scope.arrayToString2(urlRegionsArray)
-            
-            //clear array
-            $scope.regionArrayText = [];
-            
-            $scope.region = [];
-            for (i=0; i < urlRegionsArray.length; i++) { 
-                getModelID = $("#filterRegion input[data-id='" + urlRegionsArray[i] +"']").attr("ng-model")
-                getModelID = getModelID.replace("region[", "");
-                getModelID = getModelID.replace("]", "");
-                
-                //check each item
-                $scope.region[getModelID] = true;
-                
-                //store the text in the array                
-                getRegionValue = $("#filterRegion input[data-id='" + urlRegionsArray[i] +"']").attr("data-text")
-                $scope.regionArrayText.push(getRegionValue);
-                
-            }
-            
-            $scope.regionCurrentSelected = $scope.arrayToString($scope.regionArrayText);
-            
+        //*** Solution Updates
+        var urlSolutionValues = getURLPathArray[8];
+        
+        //setup refrence to checkboxes
+        $scope.solution = [];
+        var solutionCheckboxesRef = $scope.solution;
+        
+        //based on URL ID's make updates
+        var returnVars = $scope.updateCheckboxItems("#filterSolution","solution",urlSolutionValues, solutionCheckboxesRef);
+        
+        //update global variables
+        if(typeof returnVars !== "undefined"){
+            $scope.solutionArrayID = returnVars[0];        
+            $scope.solutionStringID = returnVars[1];
+            $scope.solutionArrayText = returnVars[2];
+            $scope.solutionSelected = returnVars[3];
         }
-        */
         
         
-
-                
-               
+        //*** Sorting Updates
+        var urlSortValue = getURLPathArray[10];
+        
+        //update global sort value
+        $scope.sortItems = urlSortValue
+        
+        //update the real drop down
+        $("#filterSort .customSelectC ul").find("li[value='" + urlSortValue + "']").prop('selected', true);
+        
+        //update html drop down        
+        $scope.mytimeout = $timeout(function() {
+            
+            $("#filterSort .customSelectC .currentItem").text(urlSortValue)
+            
+        }, 800);
+        
+        
+        
+        //*** Paging Updates
+        var urlPageNumValue = getURLPathArray[12];
+        
+        $scope.pageNumber = urlPageNumValue
+        
+        
+        //*** Search Updates
+        var urlSearchValues = getURLPathArray[14];
+        
+        //add text to search box
+        $scope.searchFilter = urlSearchValues;
+        
+        
+        
+        //run ajax request
         $scope.runQuery();
         
     });
@@ -160,18 +211,18 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
     
     //Region Watch
     $scope.regionArrayID = [];
-    $scope.regionArrayIDString = "-1";
+    $scope.regionStringID = "-1";
     $scope.regionArrayText = [];
-    $scope.regionCurrentSelected = "All";
+    $scope.regionSelected = "All";
     $scope.regionWatch = function(id, text, value){
         
         //ID Storage - for Ajax request
         $scope.regionArrayID = $scope.updateArray($scope.regionArrayID, id, value);
-        $scope.regionArrayIDString = $scope.arrayToString2($scope.regionArrayID )
+        $scope.regionStringID = $scope.arrayToString2($scope.regionArrayID )
         
         //Text Storage -  for display of items selected
         $scope.regionArrayText = $scope.updateArray($scope.regionArrayText, text, value);
-        $scope.regionCurrentSelected = $scope.arrayToString($scope.regionArrayText);
+        $scope.regionSelected = $scope.arrayToString($scope.regionArrayText);
         
         $scope.pathUpdateDebounce();
         
@@ -180,40 +231,38 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
     
     //DocType Watch    
     $scope.docTypeArrayID = [];
-    $scope.docTypeArrayIDString = "-1";
+    $scope.docTypeStringID = "-1";
     $scope.docTypeArrayText = [];
-    $scope.docTypeCurrentSelected = "All";
+    $scope.docTypeSelected = "All";
     $scope.docTypeWatch = function(id, text, value){
 
         //ID Storage - for Ajax request
         $scope.docTypeArrayID = $scope.updateArray($scope.docTypeArrayID, id, value);
-        $scope.docTypeArrayIDString = $scope.arrayToString2($scope.docTypeArrayID );
+        $scope.docTypeStringID = $scope.arrayToString2($scope.docTypeArrayID );
         
         //Text Storage -  for display of items selected
         $scope.docTypeArrayText = $scope.updateArray($scope.docTypeArrayText, text, value);
-        $scope.docTypeCurrentSelected = $scope.arrayToString($scope.docTypeArrayText);
+        $scope.docTypeSelected = $scope.arrayToString($scope.docTypeArrayText);
          
         $scope.pathUpdateDebounce();
        
     };
     
     
-    
-    //Solution Watch
-    
+    //Solution Watch    
     $scope.solutionArrayID = [];
-    $scope.solutionArrayIDString = "-1";
+    $scope.solutionStringID = "-1";
     $scope.solutionArrayText = [];
-    $scope.solutionCurrentSelected = "All";
+    $scope.solutionSelected = "All";
     $scope.solutionWatch = function(id, text, value){
        
         //ID Storage - for Ajax request
         $scope.solutionArrayID = $scope.updateArray($scope.solutionArrayID, id, value);
-        $scope.solutionArrayIDString = $scope.arrayToString2($scope.solutionArrayID )
+        $scope.solutionStringID = $scope.arrayToString2($scope.solutionArrayID )
         
         //Text Storage -  for display of items selected
         $scope.solutionArrayText = $scope.updateArray($scope.solutionArrayText, text, value);
-        $scope.solutionCurrentSelected = $scope.arrayToString($scope.solutionArrayText);
+        $scope.solutionSelected = $scope.arrayToString($scope.solutionArrayText);
         
         $scope.pathUpdateDebounce();
        
@@ -224,9 +273,7 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
     //Sort Watch
     $scope.sortItems = "Newest"
     $scope.sorting = function() {
-        console.log("sort")
-        $scope.pathUpdate();
-        
+        $scope.pathUpdate();        
     }
     $("#filterSort .customSelectC").on("click", "li", function(e) {
        var itemSelected = $(this).text();
@@ -235,7 +282,7 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
            $scope.pathUpdate()
        )        
     });
-    
+
     
         
     //clear button watch
@@ -243,17 +290,17 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
         
         $scope.searchFilter = ""
         $scope.regionArrayID = [];
-        $scope.regionArrayIDString = "-1";
+        $scope.regionStringID = "-1";
         $scope.regionArrayText = [];
-        $scope.regionCurrentSelected = "All"
+        $scope.regionSelected = "All"
         $scope.docTypeArrayID = [];
-        $scope.docTypeArrayIDString = "-1";
+        $scope.docTypeStringID = "-1";
         $scope.docTypeArrayText = [];
-        $scope.docTypeCurrentSelected = "All"
+        $scope.docTypeSelected = "All"
         $scope.solutionArrayID = [];
-        $scope.solutionArrayIDString = "-1";
+        $scope.solutionStringID = "-1";
         $scope.solutionArrayText = [];
-        $scope.solutionCurrentSelected = "All"
+        $scope.solutionSelected = "All"
         $scope.sortItems = "Newest"
         $scope.pageNumber = 1
         
@@ -282,10 +329,10 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
         
         //update URL
         $scope.pageURL = "/"
-        $scope.pageURL = $scope.pageURL + "regions/" + $scope.regionArrayIDString
-        $scope.pageURL = $scope.pageURL + "/documents/" + $scope.docTypeArrayIDString
+        $scope.pageURL = $scope.pageURL + "regions/" + $scope.regionStringID
+        $scope.pageURL = $scope.pageURL + "/documents/" + $scope.docTypeStringID
         $scope.pageURL = $scope.pageURL + "/SBU/-1"
-        $scope.pageURL = $scope.pageURL + "/solutions/" + $scope.solutionArrayIDString 
+        $scope.pageURL = $scope.pageURL + "/solutions/" + $scope.solutionStringID 
         $scope.pageURL = $scope.pageURL + "/sort/" + $scope.sortItems
         $scope.pageURL = $scope.pageURL + "/page/" + $scope.pageNumber
         $scope.pageURL = $scope.pageURL + "/search/" + $scope.searchFilter
@@ -322,10 +369,10 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
 
         //create ajax request        
         $scope.ajaxRequest = "http://localhost:51872/filter/"
-        $scope.ajaxRequest = $scope.ajaxRequest + "regions/" + $scope.regionArrayIDString
-        $scope.ajaxRequest = $scope.ajaxRequest + "/documents/" + $scope.docTypeArrayIDString
+        $scope.ajaxRequest = $scope.ajaxRequest + "regions/" + $scope.regionStringID
+        $scope.ajaxRequest = $scope.ajaxRequest + "/documents/" + $scope.docTypeStringID
         $scope.ajaxRequest = $scope.ajaxRequest + "/SBU/-1"
-        $scope.ajaxRequest = $scope.ajaxRequest + "/solutions/" + $scope.solutionArrayIDString 
+        $scope.ajaxRequest = $scope.ajaxRequest + "/solutions/" + $scope.solutionStringID 
         $scope.ajaxRequest = $scope.ajaxRequest + "/sort/" + $scope.sortItems
         $scope.ajaxRequest = $scope.ajaxRequest + "/page/" + $scope.pageNumber
         $scope.ajaxRequest = $scope.ajaxRequest + "/search/" + $scope.searchFilter 

@@ -108,7 +108,7 @@ html(lang='en' ng-app="prodFilterApp")
                                         | Research
 
                                     label
-                                        input(type="checkbox" ng-model="docType[4]" data-text="Technical Documents" data-id="62" ng-click="docTypeWatch('32','Technical Documents',docType[4])")
+                                        input(type="checkbox" ng-model="docType[4]" data-text="Technical Documents" data-id="62" ng-click="docTypeWatch('62','Technical Documents',docType[4])")
                                         span
                                         | Technical Documents
 
@@ -295,7 +295,7 @@ html(lang='en' ng-app="prodFilterApp")
                                         | Foam Inhibitors
 
                                     label
-                                        input(type="checkbox" ng-model="solution[31]" data-text="Friction Modifiers" data-id="55993" ng-click="solutionWatch('55993','Friction Modifiers',solution[31])")
+                                        input(type="checkbox" ng-model="solution[31]" data-text="Friction Modifiers" data-id="559930" ng-click="solutionWatch('559930','Friction Modifiers',solution[31])")
                                         span
                                         | Friction Modifiers
 
@@ -305,7 +305,7 @@ html(lang='en' ng-app="prodFilterApp")
                                         | Pour Point Depressants
 
                                     label
-                                        input(type="checkbox" ng-model="solution[33]" data-text="Seal Swell Additives" data-id="55993" ng-click="solutionWatch('55993','Seal Swell Additives',solution[33])")
+                                        input(type="checkbox" ng-model="solution[33]" data-text="Seal Swell Additives" data-id="559931" ng-click="solutionWatch('559931','Seal Swell Additives',solution[33])")
                                         span
                                         | Seal Swell Additives
 
@@ -334,7 +334,7 @@ html(lang='en' ng-app="prodFilterApp")
                             div(id="filterNum") {{ (prodfilterResults.length) }} Results
                             div(id="filterList") Current Selection:  
                                 span(class="hdr") Region: 
-                                | {{regionCurrentSelected}}
+                                | {{regionSelected}}
                                 | / 
                                 span(class="hdr") Document Type: 
                                 | {{docTypeCurrentSelected}}
@@ -345,7 +345,7 @@ html(lang='en' ng-app="prodFilterApp")
                              div(id="filterSort")
                                 div(class="customSelectC standard")
                                     div(class="orgSelect")
-                                        select(name="sort" ng-model="sortItems" ng-change="sorting()")
+                                        select(name="sort" ng-model="sortItems" xng-change="sorting()")
                                             option(value="Newest") Newest
                                             option(value="Oldest") Oldest
 
