@@ -21,103 +21,120 @@ using CMS.DocumentEngine;
 
 namespace CMS.DocumentEngine.Types
 {
-	/// <summary>
-	/// Sample item class.
-	/// </summary>
-	public partial class InsightsResources : TreeNode
-	{
-		#region "Constants"
+    /// <summary>
+    /// Sample item class.
+    /// </summary>
+    public partial class InsightsResources : TreeNode
+    {
+        #region "Constants"
 
-		/// <summary>
-		/// Class name of the item.
-		/// </summary>
-		public const string CLASS_NAME = "custom.InsightsResources";
+        /// <summary>
+        /// Class name of the item.
+        /// </summary>
+        public const string CLASS_NAME = "custom.InsightsResources";
 
-		#endregion
-
-
-		#region "Properties"
-
-		/// <summary>
-		/// InsightsResourcesID.
-		/// </summary>
-		[DatabaseField]
-		public int InsightsResourcesID
-		{
-			get
-			{
-				return ValidationHelper.GetInteger(GetValue("InsightsResourcesID"), 0);
-			}
-			set
-			{
-				SetValue("InsightsResourcesID", value);
-			}
-		}
+        #endregion
 
 
-		/// <summary>
-		/// 
-		/// </summary>
-		[DatabaseField]
-		public string Title
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Title"), "");
-			}
-			set
-			{
-				SetValue("Title", value);
-			}
-		}
+        #region "Properties"
+
+        /// <summary>
+        /// InsightsResourcesID.
+        /// </summary>
+        [DatabaseField]
+        public int InsightsResourcesID
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("InsightsResourcesID"), 0);
+            }
+            set
+            {
+                SetValue("InsightsResourcesID", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Description.
-		/// </summary>
-		[DatabaseField]
-		public string Description
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Description"), "");
-			}
-			set
-			{
-				SetValue("Description", value);
-			}
-		}
+        /// <summary>
+        /// Title.
+        /// </summary>
+        [DatabaseField]
+        public string Title
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Title"), "");
+            }
+            set
+            {
+                SetValue("Title", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Featured Content List.
-		/// </summary>
-		[DatabaseField]
-		public string FeaturedContentList
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("FeaturedContentList"), "");
-			}
-			set
-			{
-				SetValue("FeaturedContentList", value);
-			}
-		}
-
-		#endregion
+        /// <summary>
+        /// Description.
+        /// </summary>
+        [DatabaseField]
+        public string Description
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Description"), "");
+            }
+            set
+            {
+                SetValue("Description", value);
+            }
+        }
 
 
-		#region "Constructors"
+        /// <summary>
+        /// Featured Content List.
+        /// </summary>
+        [DatabaseField]
+        public string FeaturedContentList
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("FeaturedContentList"), "");
+            }
+            set
+            {
+                SetValue("FeaturedContentList", value);
+            }
+        }
 
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		public InsightsResources()
-			: base(CLASS_NAME)
-		{
-		}
 
-		#endregion
-	}
+        /// <summary>
+        /// Sidebar Component Items.
+        /// </summary>
+        [DatabaseField]
+        public string SidebarItems
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
+            }
+            set
+            {
+                SetValue("SidebarItems", value);
+            }
+        }
+
+        #endregion
+
+
+        #region "Constructors"
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public InsightsResources()
+            : base(CLASS_NAME)
+        {
+        }
+
+        #endregion
+    }
 }

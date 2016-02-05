@@ -1,20 +1,29 @@
 ﻿@using CMS.Mvc.ViewModels.InsightsAndResources
 @model InsightsAndResourcesViewModel
 @{
-	ViewBag.Title = @Model.Title;
-	Layout = "~/Views/Afton/Shared/Master.cshtml";
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
 
-@Model.Title
-<hr />
+<div id="contentAreaC">
+    <div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
+        <div id="rtCol-contentArea">
+            @Model.Title
+            <hr />
 
-Description:<br />
-@Html.Raw(Model.Description)
-<hr />
+            Description:<br />
+            @Html.Raw(Model.Description)
+            <hr />
 
-@Html.Partial("~/Views/Afton/InsightsAndResources/_insightsListing.cshtml", Model.InsightsListing)
-<hr />
+            @Html.Partial("~/Views/Afton/InsightsAndResources/_insightsListing.cshtml", Model.InsightsListing)
+            <hr />
 
-Tiles:
-@Html.Partial("~/Views/Afton/InsightsAndResources/_resourcesTiles.cshtml", Model.Tiles)
-<hr />
+            Tiles:
+            @Html.Partial("~/Views/Afton/InsightsAndResources/_resourcesTiles.cshtml", Model.Tiles)
+            <hr />
+        </div>
+        <div id="lftCol-sidebar">
+            @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar)
+        </div>
+    </div>
+</div>
