@@ -56,18 +56,18 @@ namespace CMS.DocumentEngine.Types
 
 
 		/// <summary>
-		/// 
+		/// Title.
 		/// </summary>
 		[DatabaseField]
-		public string HomeImage
+		public string Title
 		{
 			get
 			{
-				return ValidationHelper.GetString(GetValue("HomeImage"), "");
+				return ValidationHelper.GetString(GetValue("Title"), "");
 			}
 			set
 			{
-				SetValue("HomeImage", value);
+				SetValue("Title", value);
 			}
 		}
 
@@ -85,23 +85,6 @@ namespace CMS.DocumentEngine.Types
 			set
 			{
 				SetValue("Description", value);
-			}
-		}
-
-
-		/// <summary>
-		/// Title.
-		/// </summary>
-		[DatabaseField]
-		public string Title
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Title"), "");
-			}
-			set
-			{
-				SetValue("Title", value);
 			}
 		}
 
@@ -136,6 +119,40 @@ namespace CMS.DocumentEngine.Types
 			set
 			{
 				SetValue("Copy", value);
+			}
+		}
+
+
+		/// <summary>
+		/// HomeImage.
+		/// </summary>
+		[DatabaseField]
+		public string HomeImage
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("HomeImage"), "");
+			}
+			set
+			{
+				SetValue("HomeImage", value);
+			}
+		}
+
+
+		/// <summary>
+		/// HeroImage.
+		/// </summary>
+		[DatabaseField]
+		public string HeroImage
+		{
+			get
+			{
+				return ValidationHelper.GetString(GetValue("HeroImage"), "");
+			}
+			set
+			{
+				SetValue("HeroImage", value);
 			}
 		}
 
