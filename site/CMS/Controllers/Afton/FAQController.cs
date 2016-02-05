@@ -16,6 +16,7 @@ namespace CMS.Mvc.Controllers.Afton
         public readonly IFAQItemProvider _faqItemProvider = new FAQItemProvider();
         public readonly IFAQPageProvider _faqPageProvider = new FAQPageProvider();
         public readonly IFAQTopicProvider _faqTopicProvider = new FAQTopicProvider();
+        public readonly IInsightsResourcesProvider _insightsResourcesProvider = new InsightsResourcesProvider();
 
         public ActionResult Index()
         {
@@ -24,7 +25,7 @@ namespace CMS.Mvc.Controllers.Afton
             var model = new FAQPageViewModel
             {
                 Title = page.Title,
-                MenuSelectedItem = page.Parent.NodeAlias, //TODO: merge with insights & resources
+                MenuSelectedItem = _insightsResourcesProvider.GetInsightsResourcesByName(page.Parent.NodeAlias).Title,
                 SideBar = new SidebarViewModel()
                 {
                     Items = MapSidebar(_sidebarProvider.GetSideBarItems(StringToGuidsConvertHelper.ParseGuids(page.SidebarItems)), page)

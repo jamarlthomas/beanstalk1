@@ -347,6 +347,7 @@
     <Compile Include="ViewModels\SBU\SBUViewModel.cs" />
     <Compile Include="ViewModels\Shared\RegionViewModel.cs" />
     <Compile Include="Models\Afton\Shared\SidebarComponents\InsightsAndResourcesWidget.cs" />
+    <Compile Include="ViewModels\Solution\ProductViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\normalize.min.css" />
@@ -518,7 +519,6 @@
   <ItemGroup>
     <Folder Include="Content\" />
     <Folder Include="Infrastructure\Helpers\" />
-    <Folder Include="ViewModels\Solution\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CorporateSite\News\Detail.cshtml" />
