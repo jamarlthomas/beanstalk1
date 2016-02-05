@@ -167,9 +167,13 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
+    <Compile Include="Controllers\Afton\FAQController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
+    <Compile Include="Interfaces\IFAQPageProvider.cs" />
     <Compile Include="Interfaces\ILeftNavigationProvider.cs" />
     <Compile Include="Interfaces\IPollSurveyAnswerProvider.cs" />
+    <Compile Include="Interfaces\IFAQTopicProvider.cs" />
+    <Compile Include="Models\Afton\FAQ\FAQPage.cs" />
     <Compile Include="Models\Afton\Shared\Country.cs" />
     <Compile Include="Interfaces\ISidebarProvider.cs" />
     <Compile Include="Controllers\Afton\ProductController.cs" />
@@ -184,6 +188,8 @@
     <Compile Include="Models\Afton\Shared\SidebarComponents\DocumentSidebarComponent.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\PollSurveyAnswer.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\PollSurvey.cs" />
+    <Compile Include="Providers\FAQPageProvider.cs" />
+    <Compile Include="Providers\FAQTopicProvider.cs" />
     <Compile Include="Providers\LeftNavigationProvider.cs" />
     <Compile Include="Providers\PollSurveyAnswerProvider.cs" />
     <Compile Include="Providers\SidebarProvider.cs" />
@@ -269,6 +275,8 @@
     <Compile Include="Providers\SolutionBusinessUnitProvider.cs" />
     <Compile Include="Providers\ContentMenuItemProvider.cs" />
     <Compile Include="Providers\PagesMenuItemProvider.cs" />
+    <Compile Include="ViewModels\FAQ\FAQPageViewModel.cs" />
+    <Compile Include="ViewModels\FAQ\FAQTopicViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\LeftNavigationItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\PollSurveyAnswerViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\DocumentBlockViewModel.cs" />
@@ -320,7 +328,7 @@
     <Compile Include="ViewModels\Shared\SidebarComponents\StayInformedViewModel.cs" />
     <!--<Compile Include="ViewModels\Shared\ProductViewModel.cs" />
     <Compile Include="ViewModels\Shared\SolutionViewModel.cs" />-->
-    <Compile Include="ViewModels\SBU\FAQItemViewModel.cs" />
+    <Compile Include="ViewModels\Shared\FAQItemViewModel.cs" />
     <Compile Include="ViewModels\SBU\DocumentViewModel.cs" />
     <Compile Include="ViewModels\SBU\DocumentTypeViewModel.cs" />
     <Compile Include="ViewModels\SBU\SBUViewModel.cs" />
@@ -476,6 +484,9 @@
     <Content Include="Views\Afton\Shared\Sidebar\_documentWidget.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_pollSurvey.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_leftNavigation.cshtml" />
+    <Content Include="Views\Afton\FAQ\_topic.cshtml" />
+    <Content Include="Views\Afton\FAQ\_dropdown.cshtml" />
+    <Content Include="Views\Afton\FAQ\Index.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

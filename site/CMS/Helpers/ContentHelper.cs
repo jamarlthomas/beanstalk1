@@ -67,9 +67,10 @@ namespace CMS.Mvc.Helpers
             var list = new List<Link>();
             TraverseNodes(doc, list);
 
-            list.Add(new Link() { Title = "Home", Reference = "Home" });
+            //list.Add(new Link() { Title = "Home", Reference = "Home" }); //We don't need this
+                                                                           //Because we have object "Home" in the root
             list.Reverse();
-            string currReference = "";
+            string currReference = string.Empty;
             var breadcrumbList = list.Select(item =>
             {
                 if (!string.IsNullOrWhiteSpace(item.Reference))
