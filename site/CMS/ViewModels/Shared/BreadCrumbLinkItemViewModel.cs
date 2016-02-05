@@ -1,6 +1,4 @@
-﻿using CMS.Mvc.ViewModels.Shared;
-
-namespace CMS.Mvc.ViewModels.Product
+﻿namespace CMS.Mvc.ViewModels.Shared
 {
     public class BreadCrumbLinkItemViewModel : LinkItemViewModel
     {

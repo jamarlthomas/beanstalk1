@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace CMS.Mvc.ViewModels.Product
+namespace CMS.Mvc.ViewModels.Shared
 {
     public class BreadCrumbViewModel
     {

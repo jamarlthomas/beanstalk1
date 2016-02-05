@@ -1,0 +1,20 @@
+﻿@model CMS.Mvc.ViewModels.SelectionFilter.SelectionFilterViewModel
+
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Afton/Shared/Master.cshtml";
+}
+
+@Html.Partial("~/Views/Afton/SelectionFilter/_header.cshtml", @Model.Header)
+
+State: @Model.State.ToString() state
+<hr />
+
+Document types: <br />
+@Html.Partial("~/Views/Afton/SelectionFilter/_documentTypeCheckBoxes.cshtml", @Model.DocumentTypesList)
+
+Regions: <br />
+@Html.Partial("~/Views/Afton/SelectionFilter/_regionCheckBoxes.cshtml", @Model.RegionsList)
+
+SBUs:
+@Html.Partial("~/Views/Afton/SelectionFilter/_SBUCheckBoxes.cshtml", @Model.SBUList)

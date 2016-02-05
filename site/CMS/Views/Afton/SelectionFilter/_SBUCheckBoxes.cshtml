@@ -1,0 +1,12 @@
+﻿@foreach (var sbu in Model)
+{
+	<p>
+		@sbu.Title. Solutions:
+		@foreach (var solution in sbu.SolutionsList)
+		{
+			@solution.Title
+			
+		}
+	</p>
+}
+<hr />
