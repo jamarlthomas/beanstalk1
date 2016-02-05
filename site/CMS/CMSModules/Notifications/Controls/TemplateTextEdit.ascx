@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Notifications_Controls_TemplateTextEdit"
-    Codebehind="TemplateTextEdit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Notifications_Controls_TemplateTextEdit"
+     Codebehind="TemplateTextEdit.ascx.cs" %>
 
 <div class="form-horizontal">
     <asp:PlaceHolder runat="server" ID="plcSubject" EnableViewState="false">

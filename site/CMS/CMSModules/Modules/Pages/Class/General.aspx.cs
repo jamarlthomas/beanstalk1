@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.DataEngine;
 using CMS.Helpers;
@@ -164,12 +164,6 @@ public partial class CMSModules_Modules_Pages_Class_General : GlobalAdminPage
 
             // Clear default queries
             QueryInfoProvider.ClearDefaultQueries(CurrentClass, true, true);
-
-            if (CurrentClass.ClassIsDocumentType)
-            {
-                // Generate default view for document type
-                SqlGenerator.GenerateDefaultView(CurrentClass, null);
-            }
 
             editElem.RedirectUrlAfterSave = URLHelper.AddParameterToUrl(RequestContext.CurrentURL, "tablechanged", "1");
         }

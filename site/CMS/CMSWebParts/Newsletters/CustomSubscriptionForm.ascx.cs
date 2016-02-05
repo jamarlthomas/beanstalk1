@@ -1,9 +1,8 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
 using CMS.Core;
-using CMS.FormControls;
 using CMS.FormEngine;
 using CMS.Helpers;
 using CMS.Localization;
@@ -18,12 +17,14 @@ using CMS.Protection;
 using CMS.DataEngine;
 using CMS.MacroEngine;
 
+
 public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstractWebPart
 {
     #region "Variables"
 
-    private bool chooseMode = false;
-    private bool isAuthenticated = false;
+    private bool mChooseMode;
+    private bool mIsAuthenticated;
+    private readonly ISubscriptionService mSubscriptionService = Service<ISubscriptionService>.Entry();
 
     #endregion
 
@@ -334,9 +335,9 @@ public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstrac
         }
         else
         {
-            isAuthenticated = (CurrentUser != null) && AuthenticationHelper.IsAuthenticated();
+            mIsAuthenticated = (CurrentUser != null) && AuthenticationHelper.IsAuthenticated();
 
-            if (AllowUserSubscribers && isAuthenticated && (CurrentUser != null) && (!string.IsNullOrEmpty(CurrentUser.Email)))
+            if (AllowUserSubscribers && mIsAuthenticated && (CurrentUser != null) && (!string.IsNullOrEmpty(CurrentUser.Email)))
             {
                 // Hide form for authenticated user who has an email
                 formElem.StopProcessing = true;
@@ -348,17 +349,16 @@ public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstrac
                 AlternativeFormInfo afi = AlternativeFormInfoProvider.GetAlternativeFormInfo(AlternativeForm);
                 if (afi != null)
                 {
-                    // Init subscriber object
-                    SubscriberInfo sb = new SubscriberInfo();
-                    if (AllowUserSubscribers && isAuthenticated)
+                    var subscriber = new SubscriberInfo();
+                    if (AllowUserSubscribers && mIsAuthenticated)
                     {
                         // Prepare user subscriber object for authenticated user without an email
                         // Try to get existing user subscriber
-                        sb = SubscriberInfoProvider.GetSubscriberInfo(UserInfo.OBJECT_TYPE, CurrentUser.UserID, SiteContext.CurrentSiteID);
-                        if (sb == null)
+                        subscriber = SubscriberInfoProvider.GetSubscriberInfo(UserInfo.OBJECT_TYPE, CurrentUser.UserID, SiteContext.CurrentSiteID);
+                        if (subscriber == null)
                         {
                             // Prepare new user subscriber with pre-filled data
-                            sb = new SubscriberInfo()
+                            subscriber = new SubscriberInfo
                             {
                                 SubscriberFirstName = CurrentUser.FirstName,
                                 SubscriberLastName = CurrentUser.LastName,
@@ -371,7 +371,7 @@ public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstrac
 
                     // Init the form
                     formElem.AlternativeFormFullName = AlternativeForm;
-                    formElem.Info = sb;
+                    formElem.Info = subscriber;
                     formElem.ClearAfterSave = false;
                     formElem.Visible = true;
                     formElem.ValidationErrorMessage = SubscriptionErrorMessage;
@@ -419,7 +419,6 @@ public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstrac
                 formElem.ControlContext.ContextName = CMS.ExtendedControls.ControlContext.LIVE_SITE;
             }
 
-            // Init newsletter selector
             InitNewsletterSelector();
         }
     }
@@ -430,47 +429,45 @@ public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstrac
         // Show/hide newsletter list
         plcNwsList.Visible = NewsletterName.EqualsCSafe("nwsletuserchoose", true);
 
-        if (plcNwsList.Visible)
+        if (!plcNwsList.Visible)
         {
-            chooseMode = true;
+            return;
+        }
+        mChooseMode = true;
 
-            if ((!ExternalUse || !RequestHelper.IsPostBack()) && (chklNewsletters.Items.Count == 0))
+        if ((!ExternalUse || !RequestHelper.IsPostBack()) && (chklNewsletters.Items.Count == 0))
+        {
+            DataSet ds = null;
+
+            // Try to get data from cache
+            using (var cs = new CachedSection<DataSet>(ref ds, CacheMinutes, true, CacheItemName, "newslettersubscription", SiteContext.CurrentSiteName))
             {
-                DataSet ds = null;
-
-                // Try to get data from cache
-                using (var cs = new CachedSection<DataSet>(ref ds, CacheMinutes, true, CacheItemName, "newslettersubscription", SiteContext.CurrentSiteName))
+                if (cs.LoadData)
                 {
-                    if (cs.LoadData)
+                    // Get the data
+                    ds = NewsletterInfoProvider.GetNewslettersForSite(SiteContext.CurrentSiteID).OrderBy("NewsletterDisplayName").Columns("NewsletterDisplayName", "NewsletterName");
+
+                    // Add data to the cache
+                    if (cs.Cached)
                     {
-                        // Get the data
-                        ds = NewsletterInfoProvider.GetNewslettersForSite(SiteContext.CurrentSiteID).OrderBy("NewsletterDisplayName").Columns("NewsletterDisplayName", "NewsletterName");
-
-                        // Add data to the cache
-                        if (cs.Cached)
-                        {
-                            // Prepare cache dependency
-                            cs.CacheDependency = CacheHelper.GetCacheDependency("newsletter.newsletter|all");
-                        }
-
-                        cs.Data = ds;
+                        // Prepare cache dependency
+                        cs.CacheDependency = CacheHelper.GetCacheDependency("newsletter.newsletter|all");
                     }
+
+                    cs.Data = ds;
                 }
+            }
 
-                if (!DataHelper.DataSourceIsEmpty(ds))
+            if (!DataHelper.DataSourceIsEmpty(ds))
+            {
+                // Fill checkbox list with newsletters
+                foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    ListItem li = null;
-                    string displayName = null;
+                    // Get localized string
+                    var displayName = ResHelper.LocalizeString(ValidationHelper.GetString(dr["NewsletterDisplayName"], string.Empty));
 
-                    // Fill checkbox list with newsletters
-                    foreach (DataRow dr in ds.Tables[0].Rows)
-                    {
-                        // Get localized string
-                        displayName = ResHelper.LocalizeString(ValidationHelper.GetString(dr["NewsletterDisplayName"], string.Empty));
-
-                        li = new ListItem(HTMLHelper.HTMLEncode(displayName), ValidationHelper.GetString(dr["NewsletterName"], string.Empty));
-                        chklNewsletters.Items.Add(li);
-                    }
+                    var li = new ListItem(HTMLHelper.HTMLEncode(displayName), ValidationHelper.GetString(dr["NewsletterName"], string.Empty));
+                    chklNewsletters.Items.Add(li);
                 }
             }
         }
@@ -496,20 +493,22 @@ public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstrac
             return;
         }
 
-        if (IsValid())
+        if (!IsValid())
         {
-            // Ensure subscriber - get existing or create new one
-            SubscriberInfo subscriber = SaveSubscriber();
+            return;
+        }
 
-            if (chooseMode)
-            {
-                ValidChoose(subscriber);
-            }
-            else
-            {
-                // Hide subscription form if subscription was successful
-                pnlSubscription.Visible = !Save(NewsletterName, subscriber);
-            }
+        // Ensure subscriber - get existing or create new one
+        SubscriberInfo subscriber = SaveSubscriber();
+
+        if (mChooseMode)
+        {
+            ValidChoose(subscriber);
+        }
+        else
+        {
+            // Hide subscription form if subscription was successful
+            pnlSubscription.Visible = !Save(NewsletterName, subscriber);
         }
     }
 
@@ -523,7 +522,7 @@ public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstrac
         string errorText = null;
         bool result = true;
 
-        if (chooseMode)
+        if (mChooseMode)
         {
             if (chklNewsletters.SelectedIndex < 0)
             {
@@ -597,14 +596,14 @@ public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstrac
 
         // Check if a subscriber exists first
         SubscriberInfo sb = null;
-        if (AllowUserSubscribers && isAuthenticated)
+        if (AllowUserSubscribers && mIsAuthenticated)
         {
             // Try to get user subscriber
             sb = SubscriberInfoProvider.GetSubscriberInfo(UserInfo.OBJECT_TYPE, CurrentUser.UserID, currentSiteId);
         }
         else
         {
-            EditingFormControl txtEmail = formElem.FieldEditingControls["SubscriberEmail"] as EditingFormControl;
+            var txtEmail = formElem.FieldEditingControls["SubscriberEmail"];
             if (txtEmail != null)
             {
                 emailValue = ValidationHelper.GetString(txtEmail.Value, String.Empty);
@@ -617,7 +616,7 @@ public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstrac
             }
         }
 
-        if ((sb == null) || (chooseMode))
+        if ((sb == null) || (mChooseMode))
         {
             // Create subscriber
             if (sb == null)
@@ -647,7 +646,7 @@ public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstrac
             }
 
             // Handle authenticated user
-            if (AllowUserSubscribers && isAuthenticated)
+            if (AllowUserSubscribers && mIsAuthenticated)
             {
                 // Get user info and copy first name, last name or full name to new subscriber
                 // if these properties were not set
@@ -713,13 +712,13 @@ public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstrac
         bool toReturn = false;
         int siteId = SiteContext.CurrentSiteID;
 
-        // Check if sunscriber info object exists
+        // Check if subscriber info object exists
         if ((sb == null) || string.IsNullOrEmpty(newsletterName))
         {
             return false;
         }
 
-        // Get nesletter info
+        // Get newsletter info
         NewsletterInfo news = NewsletterInfoProvider.GetNewsletterInfo(newsletterName, siteId);
         if (news != null)
         {
@@ -731,7 +730,7 @@ public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstrac
             MacroResolver resolver = ContextResolver;
             resolver.SetNamedSourceData("Newsletter", news);
             resolver.SetNamedSourceData("Subscriber", sb);
-            if (AllowUserSubscribers && isAuthenticated)
+            if (AllowUserSubscribers && mIsAuthenticated)
             {
                 data[2] = CurrentUser;
                 resolver.SetNamedSourceData("User", CurrentUser);
@@ -740,15 +739,19 @@ public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstrac
 
             try
             {
-                // Check if subscriber is not allready subscribed
-                if (!SubscriberInfoProvider.IsSubscribed(sb.SubscriberGUID, news.NewsletterGUID, siteId))
+                // Check if subscriber is not already subscribed
+                if (!mSubscriptionService.IsSubscribed(sb.SubscriberID, news.NewsletterID))
                 {
                     toReturn = true;
 
-                    // Subscribe to the site
-                    SubscriberInfoProvider.Subscribe(sb.SubscriberID, news.NewsletterID, DateTime.Now, SendConfirmationEmail);
+                    mSubscriptionService.Subscribe(sb.SubscriberID, news.NewsletterID, new SubscribeSettings()
+                    {
+                        SendConfirmationEmail = SendConfirmationEmail,
+                        RequireOptIn = true,
+                        RemoveAlsoUnsubscriptionFromAllNewsletters = true,
+                    });
 
-                    if (!chooseMode)
+                    if (!mChooseMode)
                     {
                         // Display message about successful subscription
                         lblInfo.Visible = true;
@@ -760,7 +763,7 @@ public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstrac
                     {
                         string siteName = SiteContext.CurrentSiteName;
 
-                        if (AnalyticsHelper.AnalyticsEnabled(siteName) && AnalyticsHelper.TrackConversionsEnabled(siteName) && !AnalyticsHelper.IsIPExcluded(siteName, RequestContext.UserHostAddress))
+                        if (AnalyticsHelper.AnalyticsEnabled(siteName) && !AnalyticsHelper.IsIPExcluded(siteName, RequestContext.UserHostAddress))
                         {
                             // Log conversion
                             HitLogProvider.LogConversions(siteName, LocalizationContext.PreferredCultureCode, TrackConversionName, 0, ConversionValue);
@@ -781,7 +784,7 @@ public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstrac
 
                     if (string.IsNullOrEmpty(MessageForAlreadySubscribed))
                     {
-                        if (!chooseMode)
+                        if (!mChooseMode)
                         {
                             message = GetString("NewsletterSubscription.SubscriberIsAlreadySubscribed");
                         }
@@ -796,7 +799,7 @@ public partial class CMSWebParts_Newsletters_CustomSubscriptionForm : CMSAbstrac
                     }
 
                     // Info message - subscriber is allready in site
-                    if (!chooseMode)
+                    if (!mChooseMode)
                     {
                         lblInfo.Text = message;
                     }

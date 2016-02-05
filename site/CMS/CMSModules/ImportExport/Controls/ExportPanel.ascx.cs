@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.CMSImportExport;
 using CMS.EventLog;
@@ -215,10 +215,9 @@ public partial class CMSModules_ImportExport_Controls_ExportPanel : CMSUserContr
                 if (!string.IsNullOrEmpty(SelectedNodeValue))
                 {
                     lblError.Text = "";
-                    string virtualPath = "~/CMSModules/ImportExport/Controls/Export/" + (SiteNode ? "Site/" : "") + ImportExportHelper.GetSafeObjectTypeName(SelectedNodeValue) + ".ascx";
-                    string filePath = Server.MapPath(virtualPath);
+                    string virtualPath = SiteNode ? ExportSettingsControlsRegister.GetSiteSettingsControl(SelectedNodeValue) : ExportSettingsControlsRegister.GetSettingsControl(SelectedNodeValue);
 
-                    if (File.Exists(filePath))
+                    if (virtualPath != null)
                     {
                         // Load control
                         settingsControl = (ImportExportControl)Page.LoadUserControl(virtualPath);
@@ -335,7 +334,7 @@ public partial class CMSModules_ImportExport_Controls_ExportPanel : CMSUserContr
             return;
         }
 
-        objectTree.RootNode = ImportExportHelper.ObjectTree;
+        objectTree.RootNode = ImportExportHelper.ExportObjectTree;
         objectTree.SiteID = Settings.SiteId;
         objectTree.ReloadData();
 

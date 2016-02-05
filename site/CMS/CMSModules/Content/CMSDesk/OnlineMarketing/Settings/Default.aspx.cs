@@ -1,14 +1,22 @@
-using System;
+﻿using System;
+using System.Linq;
 
+using CMS.DocumentEngine;
 using CMS.Helpers;
 using CMS.Membership;
+using CMS.PortalEngine;
 using CMS.UIControls;
 using CMS.ExtendedControls;
 using CMS.DataEngine;
+using CMS.WebAnalytics;
+using CMS.Core;
+using CMS.PortalEngine.Internal;
 
 [SaveAction(0)]
 public partial class CMSModules_Content_CMSDesk_OnlineMarketing_Settings_Default : CMSAnalyticsContentPage
 {
+    private const string CAMPAIGN_ELEMENT_CODENAME = "CampaignProperties";
+
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);
@@ -45,7 +53,6 @@ public partial class CMSModules_Content_CMSDesk_OnlineMarketing_Settings_Default
 
             // Disable save button
             CurrentMaster.HeaderActions.Enabled = false;
-            usSelectCampaign.Enabled = false;
         }
 
         if ((Node != null) && !URLHelper.IsPostback())
@@ -60,9 +67,38 @@ public partial class CMSModules_Content_CMSDesk_OnlineMarketing_Settings_Default
     /// </summary>
     private void ReloadData()
     {
-        usSelectCampaign.Value = Node.DocumentCampaign;
         ucConversionSelector.Value = Node.DocumentTrackConversionName;
         txtConversionValue.Value = Node.DocumentConversionValue;
+
+        var campaignsListWithNameAndLink = CampaignInfoProvider.GetCampaigns()
+                                                               .Source(s => s.Join<CampaignAssetInfo>("CampaignID", "CampaignAssetCampaignID"))
+                                                               .WhereEquals("CampaignAssetAssetGuid", Node.NodeGUID)
+                                                               .WhereEquals("CampaignAssetType", TreeNode.OBJECT_TYPE)
+                                                               .Columns("CampaignDisplayName", "CampaignID")
+                                                               .Select(campaign => new
+                                                               {
+                                                                   EncodedCampaignDisplayName = HTMLHelper.HTMLEncode(campaign.CampaignDisplayName),
+                                                                   CampaignEditLink = URLHelper.GetAbsoluteUrl(Service.Entry<IUILinkProvider>().GetSingleObjectLink(CampaignInfo.TYPEINFO.ModuleName, CAMPAIGN_ELEMENT_CODENAME,
+                                                                       new ObjectDetailLinkParameters
+                                                                       {
+                                                                           ObjectIdentifier = campaign.CampaignID,
+                                                                           AllowNavigationToListing = true
+                                                                       }))
+                                                               });
+
+        if (campaignsListWithNameAndLink.Any())
+        {
+            listViewCampaings.DataSource = campaignsListWithNameAndLink;
+            listViewCampaings.DataBind();
+            ucConversionSelector.Enabled = false;
+            txtConversionValue.Enabled = false;
+            smrtpEditInCampaign.Visible = true;
+            smrtpEditInCampaign.Content = GetString("om.analyticSettings.editInCampain");
+        }
+        else
+        {
+            pnlTrackedCampaigns.Visible = false;
+        }
     }
 
 
@@ -79,13 +115,6 @@ public partial class CMSModules_Content_CMSDesk_OnlineMarketing_Settings_Default
                 return;
             }
 
-            if (!usSelectCampaign.IsValid())
-            {
-                e.ErrorMessage = usSelectCampaign.ValidationError;
-                e.IsValid = false;
-                return;
-            }
-
             if (!txtConversionValue.IsValid())
             {
                 e.ErrorMessage = GetString("conversionvalue.error");
@@ -93,7 +122,6 @@ public partial class CMSModules_Content_CMSDesk_OnlineMarketing_Settings_Default
                 return;
             }
 
-            Node.DocumentCampaign = ValidationHelper.GetString(usSelectCampaign.Value, String.Empty).Trim();
             Node.DocumentConversionValue = txtConversionValue.Value.ToString();
             Node.DocumentTrackConversionName = conversionName;
         }

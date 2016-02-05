@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.SiteProvider;
@@ -65,12 +65,7 @@ public partial class CMSMessages_AccessDenied : AccessDeniedPage
     protected void btnLogin_Click(object sender, EventArgs e)
     {
         // Get the logon page URL
-        string logonPage = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSSecuredAreasLogonPage");
-        if (logonPage == string.Empty)
-        {
-            logonPage = "../CMSPages/Logon.aspx";
-        }
-
+        string logonPage = AuthenticationHelper.GetSecuredAreasLogonPage(SiteContext.CurrentSiteName);
         ltlScript.Text = ScriptHelper.GetScript("window.top.location.href = '" + ResolveUrl(logonPage) + "';");
     }
 

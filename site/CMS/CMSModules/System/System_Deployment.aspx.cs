@@ -1,5 +1,4 @@
-using System;
-using System.Collections;
+﻿using System;
 using System.Security.Principal;
 using System.Threading;
 
@@ -19,9 +18,8 @@ public partial class CMSModules_System_System_Deployment : GlobalAdminPage
 {
     #region "Variables"
 
-    DeploymentManager mManager = null;
-    private static readonly Hashtable mErrors = new Hashtable();
-
+    DeploymentManager mManager;
+    
     #endregion
 
 
@@ -40,29 +38,17 @@ public partial class CMSModules_System_System_Deployment : GlobalAdminPage
 
 
     /// <summary>
-    /// Current log context.
-    /// </summary>
-    private LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
-
-    /// <summary>
     /// Current Error.
     /// </summary>
     private string CurrentError
     {
         get
         {
-            return ValidationHelper.GetString(mErrors["TranslateError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mErrors["TranslateError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -82,7 +68,6 @@ public partial class CMSModules_System_System_Deployment : GlobalAdminPage
         // Handle Async control
         ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
         ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-        ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
         ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
 
         ctlAsyncLog.TitleText = GetString("Deployment.Processing");
@@ -115,7 +100,7 @@ public partial class CMSModules_System_System_Deployment : GlobalAdminPage
 
         if (SystemContext.IsRunningOnAzure)
         {
-            ShowWarning(GetString("Deployment.AzureDisabled"), null, null);
+            ShowWarning(GetString("Deployment.AzureDisabled"));
             btnSaveAll.Enabled = false;
             btnSourceControl.Enabled = false;
             chkSaveCSS.Enabled = chkSaveLayouts.Enabled = chkSavePageTemplate.Enabled = chkSaveTransformation.Enabled = chkSaveWebpartLayout.Enabled
@@ -188,12 +173,12 @@ public partial class CMSModules_System_System_Deployment : GlobalAdminPage
         pnlLog.Visible = true;
 
         CurrentError = string.Empty;
-        CurrentLog.Close();
-        EnsureLog();
-        ctlAsyncLog.Parameter = GetParameters();
+        
+        var parameter = GetParameters();
 
-        ctlAsyncLog.RunAsync(action, WindowsIdentity.GetCurrent());
+        ctlAsyncLog.RunAsync(p => action(parameter), WindowsIdentity.GetCurrent());
     }
+
     #endregion
 
 
@@ -204,7 +189,7 @@ public partial class CMSModules_System_System_Deployment : GlobalAdminPage
     /// </summary>
     private DeploymentParameters GetParameters()
     {
-        return new DeploymentParameters()
+        return new DeploymentParameters
         {
             SaveAlternativeFormLayout = chkSaveAltFormLayouts.Checked,
             SaveFormLayout = chkSaveFormLayouts.Checked,
@@ -231,8 +216,7 @@ public partial class CMSModules_System_System_Deployment : GlobalAdminPage
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state == CMSThread.ABORT_REASON_STOP)
+            if (CMSThread.Stopped(ex))
             {
                 // When canceled
                 AddError(ResHelper.GetString(cancelResString));
@@ -257,37 +241,25 @@ public partial class CMSModules_System_System_Deployment : GlobalAdminPage
 
     private void Deploy(object parameter)
     {
-        RunWithTryCatch(() =>
-        {
-            CurrentDeploymentManager.Deploy(parameter as DeploymentParameters);
-        });
+        RunWithTryCatch(() => CurrentDeploymentManager.Deploy(parameter as DeploymentParameters));
     }
 
 
     private void Test(object parameter)
     {
-        RunWithTryCatch(() =>
-        {
-            CurrentDeploymentManager.CompileVirtualObjects(null);
-        }, "general.actioncanceled");
+        RunWithTryCatch(() => CurrentDeploymentManager.CompileVirtualObjects(null), "general.actioncanceled");
     }
 
 
     private void SaveExternally(object parameter)
     {
-        RunWithTryCatch(() =>
-        {
-            CurrentDeploymentManager.SaveExternally(parameter as DeploymentParameters);
-        });
+        RunWithTryCatch(() => CurrentDeploymentManager.SaveExternally(parameter as DeploymentParameters));
     }
 
 
     private void Synchronize(object parameter)
     {
-        RunWithTryCatch(() =>
-        {
-            CurrentDeploymentManager.Synchronize(parameter as DeploymentParameters);
-        });
+        RunWithTryCatch(() => CurrentDeploymentManager.Synchronize(parameter as DeploymentParameters));
     }
 
     #endregion
@@ -309,7 +281,7 @@ public partial class CMSModules_System_System_Deployment : GlobalAdminPage
 
 
     #region "Async methods"
-     
+
     /// <summary>
     /// When exception occurs, log it to event log.
     /// </summary>
@@ -324,12 +296,9 @@ public partial class CMSModules_System_System_Deployment : GlobalAdminPage
     {
         pnlLog.Visible = false;
 
-        ctlAsyncLog.Parameter = null;
         string cancel = GetString("general.actioncanceled");
         AddLog(cancel);
         ltlScript.Text += ScriptHelper.GetScript("var __pendingCallbacks = new Array(); RefreshCurrent();");
-
-        CurrentLog.Close();
 
         if (!string.IsNullOrEmpty(CurrentError))
         {
@@ -341,34 +310,25 @@ public partial class CMSModules_System_System_Deployment : GlobalAdminPage
     }
 
 
-    private void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
-    }
-
-
     private void ctlAsyncLog_OnError(object sender, EventArgs e)
     {
         if (ctlAsyncLog.Status == AsyncWorkerStatusEnum.Running)
         {
             ctlAsyncLog.Stop();
         }
-        ctlAsyncLog.Parameter = null;
-        ShowError(CurrentError);
-        CurrentLog.Close();
 
+        ShowError(CurrentError);
+        
         pnlLog.Visible = false;
     }
 
 
     private void ctlAsyncLog_OnFinished(object sender, EventArgs e)
     {
-        CurrentLog.Close();
         pnlLog.Visible = false;
 
         if (!string.IsNullOrEmpty(CurrentError))
         {
-            ctlAsyncLog.Parameter = null;
             ShowError(CurrentError);
             return;
         }
@@ -385,22 +345,12 @@ public partial class CMSModules_System_System_Deployment : GlobalAdminPage
 
 
     /// <summary>
-    /// Ensures the logging context.
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        return LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-    }
-
-
-    /// <summary>
     /// Adds the log information.
     /// </summary>
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
 

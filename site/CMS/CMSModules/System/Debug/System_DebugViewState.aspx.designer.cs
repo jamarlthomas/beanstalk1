@@ -12,15 +12,6 @@
 public partial class CMSModules_System_Debug_System_DebugViewState {
     
     /// <summary>
-    /// chkOnlyDirty control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSCheckBox chkOnlyDirty;
-    
-    /// <summary>
     /// btnClear control.
     /// </summary>
     /// <remarks>
@@ -28,6 +19,15 @@ public partial class CMSModules_System_Debug_System_DebugViewState {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.CMSButton btnClear;
+    
+    /// <summary>
+    /// chkOnlyDirty control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSCheckBox chkOnlyDirty;
     
     /// <summary>
     /// plcLogs control.

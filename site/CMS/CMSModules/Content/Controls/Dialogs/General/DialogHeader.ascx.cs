@@ -1,5 +1,5 @@
-using System;
-using CMS.Controls.Configuration;
+﻿using System;
+
 using CMS.Core;
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -441,6 +441,9 @@ public partial class CMSModules_Content_Controls_Dialogs_General_DialogHeader : 
     private string GetMediaLibrariesPath()
     {
         string path;
+
+        const string MEDIA_FORMCONTROLS_FOLDER = "~/CMSModules/MediaLibrary/FormControls/";
+
         if (IsLiveSite)
         {
             if (AuthenticationHelper.IsAuthenticated())
@@ -449,12 +452,12 @@ public partial class CMSModules_Content_Controls_Dialogs_General_DialogHeader : 
             }
             else
             {
-                path = "~/CMSModules/MediaLibrary/FormControls/LiveSelectors/InsertImageOrMedia/Tabs_Media.aspx";
+                path = MEDIA_FORMCONTROLS_FOLDER + "LiveSelectors/InsertImageOrMedia/Tabs_Media.aspx";
             }
         }
         else
         {
-            path = "~/CMSModules/MediaLibrary/FormControls/Selectors/InsertImageOrMedia/Tabs_Media.aspx";
+            path = MEDIA_FORMCONTROLS_FOLDER + "Selectors/InsertImageOrMedia/Tabs_Media.aspx";
         }
 
         return URLHelper.ResolveUrl(path) + RequestContext.CurrentQueryString;

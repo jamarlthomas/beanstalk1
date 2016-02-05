@@ -2027,8 +2027,10 @@
 			.css(c.cssReq).css("zIndex", options.zIndexes.pane_normal)
 			.css(o.applyDemoStyles ? c.cssDemo : {}) // demo styles
 			.addClass(o.paneClass + " " + o.paneClass + "-" + pane) // default = "ui-layout-pane ui-layout-pane-west" - may be a dupe of 'paneSelector'
-			.bind("mouseenter." + sID, addHover)
-			.bind("mouseleave." + sID, removeHover)
+            // CMS FIX FOR TRIGGERING THESE EVENTS ON OPTIONS IN DDL IN FIREFOX
+			//.bind("mouseenter." + sID, addHover)
+			//.bind("mouseleave." + sID, removeHover)
+            // CMS END
 			;
     var paneMethods = {
         hide: ''

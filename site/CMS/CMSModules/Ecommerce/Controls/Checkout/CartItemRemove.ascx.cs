@@ -17,7 +17,7 @@ public partial class CMSModules_Ecommerce_Controls_Checkout_CartItemRemove : CMS
     #region "Variables"
 
     private string mControlType;
-    private static string mImageURL;
+    private string mImageURL;
     private string mControlLabel;
     private ShoppingCartItemInfo mShoppingCartItemInfoObject;
     private CMSAbstractWebPart mShoppingCartContent;

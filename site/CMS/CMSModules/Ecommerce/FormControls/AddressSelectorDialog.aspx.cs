@@ -2,6 +2,7 @@
 using System.Data;
 using System.Text;
 
+using CMS.Core;
 using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.FormControls;
@@ -74,9 +75,9 @@ public partial class CMSModules_Ecommerce_FormControls_AddressSelectorDialog : C
         }
 
         // Check 'EcommerceRead' permission
-        if (!ECommerceContext.IsUserAuthorizedForPermission("ReadCustomers"))
+        if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.CUSTOMERS_READ))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", "EcommerceRead OR ReadCustomers");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceRead OR ReadCustomers");
         }
     }
 
@@ -156,9 +157,9 @@ public partial class CMSModules_Ecommerce_FormControls_AddressSelectorDialog : C
     protected void EditForm_OnCheckPermissions(object sender, EventArgs args)
     {
         // Check 'EcommerceModify' permission
-        if (!ECommerceContext.IsUserAuthorizedForPermission("ModifyCustomers"))
+        if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.CUSTOMERS_MODIFY))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyCustomers");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyCustomers");
         }
     }
 

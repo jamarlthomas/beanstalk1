@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Avatars_Controls_AvatarsGallery" Codebehind="AvatarsGallery.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Avatars_Controls_AvatarsGallery"  Codebehind="AvatarsGallery.ascx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/Pager/UIPager.ascx" TagName="UIPager"
     TagPrefix="cms" %>

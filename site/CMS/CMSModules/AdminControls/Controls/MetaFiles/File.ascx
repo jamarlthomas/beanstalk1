@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_AdminControls_Controls_MetaFiles_File"
-    Codebehind="File.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_AdminControls_Controls_MetaFiles_File"
+     Codebehind="File.ascx.cs" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Content/Controls/Attachments/DirectFileUploader/DirectFileUploader.ascx"
@@ -24,7 +24,7 @@
                         <ug:Action Name="delete" ExternalSourceName="delete" Caption="$General.Delete$" FontIconClass="icon-bin" FontIconStyle="Critical" Confirmation="$General.ConfirmDelete$" />
                     </GridActions>
                     <GridColumns>
-                        <ug:Column Source="##ALL##" ExternalSourceName="update" Caption="$general.update$"
+                        <ug:Column Source="##ALL##" ExternalSourceName="update" Name="Update" Caption="$general.update$"
                             Wrap="false" Style="text-align: center;" CssClass="unigrid-actions" AllowSorting="false" />
                         <ug:Column Source="##ALL##" ExternalSourceName="name" Caption="$general.filename$"
                             Wrap="false" CssClass="main-column-100" AllowSorting="false" />

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Blogs_Controls_NewSubscription" Codebehind="NewSubscription.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Blogs_Controls_NewSubscription"  Codebehind="NewSubscription.ascx.cs" %>
 <asp:Panel ID="pnlContent" runat="server" CssClass="BoardNewPost">
     <asp:Label ID="lblInfo" runat="server" CssClass="InfoLabel" Visible="false" EnableViewState="false" />
     <asp:Label ID="lblError" runat="server" CssClass="ErrorLabel" Visible="false" EnableViewState="false" />

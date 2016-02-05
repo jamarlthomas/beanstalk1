@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="OutdatedDocumentsFilter.ascx.cs" Inherits="CMSModules_AdminControls_Controls_Documents_OutdatedDocumentsFilter" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="OutdatedDocumentsFilter.ascx.cs" Inherits="CMSModules_AdminControls_Controls_Documents_OutdatedDocumentsFilter" %>
 <asp:Panel runat="server" ID="pnlFilter" DefaultButton="btnShow">
     <div class="form-horizontal form-filter">
         <div class="form-group">

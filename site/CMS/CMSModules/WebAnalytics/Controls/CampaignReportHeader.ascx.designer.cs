@@ -12,60 +12,6 @@
 public partial class CMSModules_WebAnalytics_Controls_CampaignReportHeader {
     
     /// <summary>
-    /// pnlGoal control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.PlaceHolder pnlGoal;
-    
-    /// <summary>
-    /// lblGoal control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblGoal;
-    
-    /// <summary>
-    /// drpGoals control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSDropDownList drpGoals;
-    
-    /// <summary>
-    /// pnlCampaign control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.PlaceHolder pnlCampaign;
-    
-    /// <summary>
-    /// lblCampaign control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblCampaign;
-    
-    /// <summary>
-    /// ucSelectCampaign control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMSModules_WebAnalytics_FormControls_SelectCampaign ucSelectCampaign;
-    
-    /// <summary>
     /// pnlConversion control.
     /// </summary>
     /// <remarks>
@@ -91,31 +37,4 @@ public partial class CMSModules_WebAnalytics_Controls_CampaignReportHeader {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMSModules_WebAnalytics_FormControls_SelectConversion usSelectConversion;
-    
-    /// <summary>
-    /// pnlSite control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.PlaceHolder pnlSite;
-    
-    /// <summary>
-    /// lblSelectSite control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblSelectSite;
-    
-    /// <summary>
-    /// usSite control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMSFormControls_Sites_SiteSelector usSite;
 }

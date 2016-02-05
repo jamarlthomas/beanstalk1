@@ -43,6 +43,45 @@ public partial class CMSModules_AdminControls_Controls_UIControls_DisabledModule
         }
     }
 
+
+    public String SiteButtonText
+    {
+        get
+        {
+            return GetStringContextValue("SiteButtonText");
+        }
+        set
+        {
+            SetValue("SiteButtonText", value);
+        }
+    }
+
+
+    public String GlobalButtonText
+    {
+        get
+        {
+            return GetStringContextValue("GlobalButtonText");
+        }
+        set
+        {
+            SetValue("GlobalButtonText", value);
+        }
+    }
+
+
+    public String DisabledModuleInfoText
+    {
+        get
+        {
+            return GetStringContextValue("DisabledModuleInfoText");
+        }
+        set
+        {
+            SetValue("DisabledModuleInfoText", value);
+        }
+    }
+
     #endregion
 
 
@@ -54,6 +93,9 @@ public partial class CMSModules_AdminControls_Controls_UIControls_DisabledModule
         {
             dModule.SettingsKeys = SettingKeys;
             dModule.KeyScope = KeyScope;
+            dModule.SiteButtonText = SiteButtonText;
+            dModule.GlobalButtonText = GlobalButtonText;
+            dModule.InfoText = DisabledModuleInfoText;
         }
         else
         {

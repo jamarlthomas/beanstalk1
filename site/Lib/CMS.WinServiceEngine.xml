@@ -322,6 +322,46 @@
             <param name="message">Custom additional message</param>
             <param name="logToConsole">Indicates if message should be written to the console</param>
         </member>
+        <member name="T:CMS.WinServiceEngine.WinServiceEngineHandlers">
+            <summary>
+            Event handlers for the module WinServiceEngine
+            </summary>
+        </member>
+        <member name="M:CMS.WinServiceEngine.WinServiceEngineHandlers.Init">
+            <summary>
+            Initialize the handlers
+            </summary>
+        </member>
+        <member name="M:CMS.WinServiceEngine.WinServiceEngineHandlers.ClearServiceSettings(System.Object,CMS.DataEngine.SettingsKeyChangedEventArgs)">
+            <summary>
+            Settings key changed handler
+            </summary>
+        </member>
+        <member name="T:CMS.WinServiceEngine.WinServiceEngineModuleMetadata">
+            <summary>
+            Represents the Windows service engine module metadata.
+            </summary>
+        </member>
+        <member name="M:CMS.WinServiceEngine.WinServiceEngineModuleMetadata.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="T:CMS.WinServiceEngine.WinServiceEngineModule">
+            <summary>
+            Represents the Windows service engine module.
+            </summary>
+        </member>
+        <member name="M:CMS.WinServiceEngine.WinServiceEngineModule.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:CMS.WinServiceEngine.WinServiceEngineModule.OnInit">
+            <summary>
+            Initializes the module.
+            </summary>
+        </member>
         <member name="T:CMS.WinServiceEngine.ServiceManager">
             <summary>
             Windows services manager

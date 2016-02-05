@@ -143,7 +143,7 @@ public partial class CMSModules_MessageBoards_Controls_SubscriptionApproval : CM
 
         if (!QueryHelper.ValidateHash("hash", "aliaspath", settings))
         {
-            URLHelper.Redirect(ResolveUrl("~/CMSMessages/Error.aspx?title=" + ResHelper.GetString("dialogs.badhashtitle") + "&text=" + ResHelper.GetString("dialogs.badhashtext")));
+            URLHelper.Redirect(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext"));
         }
 
         // Get data from query string

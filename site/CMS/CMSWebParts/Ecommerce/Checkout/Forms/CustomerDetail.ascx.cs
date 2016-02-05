@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-using CMS.Base;
+using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.ExtendedControls;
 using CMS.FormControls;
@@ -196,6 +196,9 @@ public partial class CMSWebParts_Ecommerce_Checkout_Forms_CustomerDetail : CMSCh
         }
 
         ShoppingCart.Customer = customer;
+
+        // Update contact with customer details
+        ModuleCommands.OnlineMarketingUpdateContactFromExternalData(customer, ContactID);
     }
 
     #endregion

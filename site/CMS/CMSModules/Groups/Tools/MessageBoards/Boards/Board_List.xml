@@ -9,8 +9,8 @@
     <column source="BoardEnabled" externalsourcename="enabled" caption="$general.enabled$" wrap="false" />
     <column source="##ALL##" externalsourcename="opened"  caption="$general.open$" wrap="false" />
     <column source="BoardModerated" externalsourcename="moderated" caption="$general.moderated$" wrap="false" />
-    <column source="BoardMessages" caption="$general.posts$" wrap="false" />
-    <column source="BoardLastMessageTime" caption="$board.list.lastpost$" wrap="false" />
+    <column source="BoardMessages" caption="$board.messageboard.messages$" wrap="false" />
+    <column source="BoardLastMessageTime" caption="$board.messageboard.lastmessage$" wrap="false" />
     <column source="##ALL##" externalsourcename="document"  caption="$general.document$" wrap="false" />
     <column cssclass="filling-column" />
   </columns>

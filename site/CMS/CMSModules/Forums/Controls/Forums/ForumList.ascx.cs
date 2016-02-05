@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Web;
@@ -12,20 +12,21 @@ using CMS.Helpers;
 using CMS.Base;
 using CMS.SiteProvider;
 using CMS.UIControls;
+using CMS.DataEngine;
 
 public partial class CMSModules_Forums_Controls_Forums_ForumList : CMSAdminListControl
 {
     #region "Variables"
 
     protected int mGroupId = 0;
-    protected int mCommunityGroupId = 0;
+    private int? mCommunityGroupID;
     private bool process = true;
     private bool reloadUnigrid = false;
 
     #endregion
 
 
-    #region "Public properties"
+    #region "Properties"
 
     /// <summary>
     /// Gets or sets the ID of the forum group for which the forums should be loaded.
@@ -44,31 +45,27 @@ public partial class CMSModules_Forums_Controls_Forums_ForumList : CMSAdminListC
 
     
     /// <summary>
-    /// Gets or sets the ID of the community group for which the forums should be loaded.
+    /// Gets the ID of the community group which the forums should be loaded for.
     /// </summary>
-    public int CommunityGroupID
+    private int CommunityGroupID
     {
         get
         {
-            return mCommunityGroupId;
-        }
-        set
-        {
-            mCommunityGroupId = value;
+            if (mCommunityGroupID == null)
+            {
+                mCommunityGroupID = 0;
+                ForumGroupInfo forumGroup = ForumGroupInfoProvider.GetForumGroupInfo(GroupID);
+
+                if ((forumGroup != null) && (forumGroup.GroupGroupID > 0))
+                {
+                    BaseInfo communityGroupInfo = ModuleCommands.CommunityGetGroupInfo(forumGroup.GroupGroupID);
+                    mCommunityGroupID = (communityGroupInfo != null) ? communityGroupInfo.Generalized.ObjectID : 0;
+                }
+            }
+
+            return mCommunityGroupID.Value;
         }
     }
-
-
-    /// <summary>
-    /// Indicates whether forum is group forum.
-    /// </summary>
-    /*public bool IsGroupForum
-    {
-        get
-        {
-            return CheckGroupForum();
-        }
-    }*/
 
     #endregion
 

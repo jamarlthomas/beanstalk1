@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -197,8 +197,7 @@ public partial class CMSModules_Reporting_Tools_BannerManagement_Reports : CMSBa
         reportHeader.ReportName = ucDisplayReport.ReportName;
         reportHeader.ReportParameters = ucDisplayReport.ReportParameters;
         reportHeader.SelectedInterval = ucGraphTypePeriod.SelectedInterval;
-        reportHeader.DisplayManageData = false;
-
+        
         mParamsLoaded = true;
     }
 

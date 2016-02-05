@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Content_Controls_Dialogs_General_FileSystemDialogFooter" Codebehind="FileSystemDialogFooter.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Content_Controls_Dialogs_General_FileSystemDialogFooter"  Codebehind="FileSystemDialogFooter.ascx.cs" %>
 
 <asp:HiddenField ID="hdnSelected" runat="server" />
 <div class="FloatRight">

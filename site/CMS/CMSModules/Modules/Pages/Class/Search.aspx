@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Modules_Pages_Class_Search"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Modules_Pages_Class_Search"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Class - Search"
-    Theme="Default" Codebehind="Search.aspx.cs" %>
+    Theme="Default"  Codebehind="Search.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/SmartSearch/Controls/Edit/SearchFields.ascx"
     TagName="SearchFields" TagPrefix="cms" %>

@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Groups_CMSPages_JoinTheGroup"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Groups_CMSPages_JoinTheGroup"
     MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master" Theme="Default"
-    Codebehind="JoinTheGroup.aspx.cs" %>
+     Codebehind="JoinTheGroup.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Groups/Controls/GroupJoin.ascx" TagName="GroupJoin"
     TagPrefix="uc1" %>

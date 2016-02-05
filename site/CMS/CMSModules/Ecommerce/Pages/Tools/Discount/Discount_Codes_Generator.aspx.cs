@@ -1,5 +1,4 @@
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -23,7 +22,6 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Discount_Discount_Codes_Ge
 {
     #region "Variables and constants"
 
-    private static readonly Hashtable mWarnings = new Hashtable();
     private int mDiscountId;
     private int count;
     private string prefix = "";
@@ -110,29 +108,17 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Discount_Discount_Codes_Ge
 
 
     /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
-
-    /// <summary>
     /// Current Error.
     /// </summary>
     private string CurrentError
     {
         get
         {
-            return ValidationHelper.GetString(mWarnings["DefineError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mWarnings["DefineError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -190,7 +176,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Discount_Discount_Codes_Ge
         {
             if (!DiscountInfoProvider.IsUserAuthorizedToModifyDiscount(SiteContext.CurrentSiteName, CurrentUser))
             {
-                RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyDiscounts");
+                RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyDiscounts");
             }
 
             // Collect data from form
@@ -249,7 +235,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Discount_Discount_Codes_Ge
         {
             if (!string.IsNullOrEmpty(ElementName))
             {
-                var url = UIContextHelper.GetElementUrl("CMS.Ecommerce", ElementName);
+                var url = UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, ElementName);
                 url = URLHelper.AddParameterToUrl(url, "parentobjectid", Discount.DiscountID.ToString());
                 url = URLHelper.AddParameterToUrl(url, "displaytitle", "false");
                 return url;
@@ -356,15 +342,12 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Discount_Discount_Codes_Ge
 
     private void ctlAsyncLog_OnCancel(object sender, EventArgs e)
     {
-        CurrentLog.Close();
         RedirectTo("error", GetString("com.couponcode.generationterminated"));
     }
 
 
     private void ctlAsyncLog_OnFinished(object sender, EventArgs e)
     {
-        CurrentLog.Close();
-
         if (!String.IsNullOrEmpty(CurrentError))
         {
             RedirectTo("error", CurrentError);
@@ -380,19 +363,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Discount_Discount_Codes_Ge
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
-    }
-
-
-    /// <summary>
-    /// Ensures the logging context
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext currentLog = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-
-        return currentLog;
+        ctlAsyncLog.AddLog(newLog);
     }
 
 
@@ -404,9 +375,6 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Discount_Discount_Codes_Ge
         pnlLog.Visible = true;
         pnlGeneral.Visible = false;
         CurrentError = string.Empty;
-
-        CurrentLog.Close();
-        EnsureLog();
     }
 
 
@@ -416,6 +384,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Discount_Discount_Codes_Ge
     /// <param name="action">Method to run</param>
     protected void RunAsync(AsyncAction action)
     {
+        ctlAsyncLog.EnsureLog();
         ctlAsyncLog.RunAsync(action, WindowsIdentity.GetCurrent());
     }
 
@@ -426,8 +395,6 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Discount_Discount_Codes_Ge
     private void SetupAsyncControl()
     {
         ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
-        ctlAsyncLog.OnError += (s, e) => CurrentLog.Close();
-        ctlAsyncLog.OnRequestLog += (sender, args) => { ctlAsyncLog.LogContext = CurrentLog; };
         ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
 
         ctlAsyncLog.MaxLogLines = 1000;

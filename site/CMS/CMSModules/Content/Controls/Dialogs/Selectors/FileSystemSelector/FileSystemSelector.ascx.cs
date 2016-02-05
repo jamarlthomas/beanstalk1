@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Security;
 using System.Text;
 using System.Web.UI;
@@ -76,7 +76,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
     /// <summary>
     /// Returns current properties (according to OutputFormat).
     /// </summary>
-    protected ItemProperties Properties
+    protected ItemProperties ItemProperties
     {
         get
         {
@@ -135,17 +135,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
             return SettingsKeyInfoProvider.GetIntValue((String.IsNullOrEmpty(siteName) ? string.Empty : siteName + ".") + "CMSMaxTreeNodes");
         }
     }
-
-
-    /// <summary>
-    /// Indicates whether the post back is result of some hidden action.
-    /// </summary>
-    private bool IsAction
-    {
-        get;
-        set;
-    }
-
+    
 
     /// <summary>
     /// Indicates whether the content tree is displaying more than max tree nodes.
@@ -177,23 +167,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
             ViewState["ItemToColorize"] = value;
         }
     }
-
-
-    /// <summary>
-    /// Value of node under which more content should be displayed.
-    /// </summary>
-    private string MoreContentNode
-    {
-        get
-        {
-            return ValidationHelper.GetString(ViewState["MoreContentNode"], string.Empty);
-        }
-        set
-        {
-            ViewState["MoreContentNode"] = value;
-        }
-    }
-
+    
 
     /// <summary>
     /// Dialog configuration.
@@ -222,13 +196,12 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
             {
                 return Server.MapPath(Config.StartingPath).TrimEnd('\\');
             }
-            else
+
+            if (Config.StartingPath.EndsWithCSafe(":\\"))
             {
-                if (Config.StartingPath.EndsWithCSafe(":\\"))
-                {
-                    return Config.StartingPath;
-                }
+                return Config.StartingPath;
             }
+
             return Config.StartingPath.TrimEnd('\\');
         }
     }
@@ -297,7 +270,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
     #region "Control methods"
 
     /// <summary>
-    /// Init.
+    /// Initialize.
     /// </summary>
     protected override void OnInit(EventArgs e)
     {
@@ -320,21 +293,23 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
             ColorizeRow(ItemToColorize);
         }
 
+        var path = NodeID;
+
         // Display info on listing more content
-        if (IsDisplayMore && !Config.ShowFolders) //curently selected more object && (TreeNodeObj != null))
+        if (IsDisplayMore && !Config.ShowFolders)
         {
             string closeLink = String.Format("<span class=\"ListingClose\" style=\"cursor: pointer;\" onclick=\"SetAction('closelisting', ''); RaiseHiddenPostBack(); return false;\">{0}</span>", GetString("general.close"));
             string currentPath = "<span class=\"ListingPath\">";
 
-            // Display relative paths with tilda
+            // Display relative paths with tilde
             if (Config.StartingPath.StartsWithCSafe("~"))
             {
                 string serverPath = Server.MapPath(Config.StartingPath).TrimEnd('\\');
-                currentPath += NodeID.Replace(serverPath.Substring(0, serverPath.LastIndexOfCSafe('\\') + 1), string.Empty);
+                currentPath += path.Replace(serverPath.Substring(0, serverPath.LastIndexOfCSafe('\\') + 1), string.Empty);
             }
             else
             {
-                currentPath += NodeID.Replace(NodeID.Substring(0, Config.StartingPath.TrimEnd('\\').LastIndexOfCSafe('\\') + 1), string.Empty);
+                currentPath += path.Replace(path.Substring(0, Config.StartingPath.TrimEnd('\\').LastIndexOfCSafe('\\') + 1), string.Empty);
             }
             currentPath += "</span>";
 
@@ -342,7 +317,16 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
             fileSystemView.DisplayListingInfo(listingMsg);
         }
 
-        folderActions.EnableDeleteFolder = !FullStartingPath.EqualsCSafe(NodeID, true);
+        SetFolderActions(path);
+    }
+
+
+    private void SetFolderActions(string path)
+    {
+        var isZipped = StorageHelper.IsZippedFilePath(path);
+
+        folderActions.EnableDeleteFolder = !FullStartingPath.EqualsCSafe(path, true) && !isZipped;
+        folderActions.EnableAddFolder = !isZipped;
     }
 
 
@@ -528,13 +512,17 @@ function imageEdit_FileSystemRefresh(arg){{{{
         treeFileSystem.MaxTreeNodeText = String.Format("<span class=\"ContentTreeItem\" onclick=\"SetAction('morecontentselect', '##PARENTNODEID##'); RaiseHiddenPostBack(); return false;\"><span class=\"Name\">{0}</span></span>", GetString("general.SeeListing"));
         treeFileSystem.IsLiveSite = IsLiveSite;
         treeFileSystem.ExpandDefaultPath = true;
-        treeFileSystem.StartingPath = Config.StartingPath;
+
+        var config = Config;
+        
+        treeFileSystem.StartingPath = config.StartingPath;
         if (treeFileSystem.DefaultPath == String.Empty)
         {
-            treeFileSystem.DefaultPath = Config.DefaultPath;
+            treeFileSystem.DefaultPath = config.DefaultPath;
         }
-        treeFileSystem.AllowedFolders = Config.AllowedFolders;
-        treeFileSystem.ExcludedFolders = Config.ExcludedFolders;
+        treeFileSystem.AllowedFolders = config.AllowedFolders;
+        treeFileSystem.ExcludedFolders = config.ExcludedFolders;
+        treeFileSystem.AllowZipFolders = config.AllowZipFolders;
     }
 
 
@@ -560,8 +548,6 @@ function imageEdit_FileSystemRefresh(arg){{{{
     /// </summary>
     protected void hdnButton_Click(object sender, EventArgs e)
     {
-        IsAction = true;
-
         switch (CurrentAction)
         {
             case "insertitem":
@@ -625,7 +611,6 @@ function imageEdit_FileSystemRefresh(arg){{{{
 
             case "closelisting":
                 IsDisplayMore = false;
-                MoreContentNode = null;
                 HandleFolderAction(NodeID, false);
                 break;
 
@@ -736,9 +721,14 @@ function imageEdit_FileSystemRefresh(arg){{{{
         InitializeFileSystemTree();
 
         // Fill with new info
-        NodeID = argument;
+        if (!String.IsNullOrEmpty(argument))
+        {
+            NodeID = argument;
+        }
 
-        treeFileSystem.DefaultPath = NodeID;
+        var path = NodeID;
+
+        treeFileSystem.DefaultPath = path;
         treeFileSystem.ExpandDefaultPath = true;
 
         treeFileSystem.ReloadData();
@@ -746,17 +736,18 @@ function imageEdit_FileSystemRefresh(arg){{{{
         pnlUpdateMenu.Update();
 
         // Reload the file system view
-        fileSystemView.StartingPath = NodeID;
+        fileSystemView.StartingPath = path;
         fileSystemView.Reload();
 
         pnlUpdateView.Update();
 
         InitializeMenuElem();
-        folderActions.EnableDeleteFolder = !FullStartingPath.EqualsCSafe(NodeID, true);
+
+        SetFolderActions(path);
+        
         folderActions.Update();
         menuElem.UpdateActionsMenu();
-
-
+        
         // Forget recent action
         ClearActionElems();
     }
@@ -802,7 +793,7 @@ function imageEdit_FileSystemRefresh(arg){{{{
                 pnlUpdateView.Update();
 
                 // Clear selected item
-                Properties.ClearProperties();
+                ItemProperties.ClearProperties();
                 pnlUpdateProperties.Update();
             }
         }
@@ -862,8 +853,17 @@ function imageEdit_FileSystemRefresh(arg){{{{
         {
             fileSystemView.StartingPath = NodeID.Substring(0, argument.LastIndexOfCSafe('\\') + 1);
         }
-
+        
         fileSystemView.StartingPath = NodeID;
+
+        // Set the editing possibilities
+        var canEdit = !StorageHelper.IsZippedFilePath(fileSystemView.StartingPath);
+        if (!canEdit)
+        {
+            fileSystemView.AllowEdit = false;
+        }
+
+        menuElem.AllowNew = canEdit;
 
         // Reload view control's content
         fileSystemView.Reload();
@@ -887,13 +887,13 @@ function imageEdit_FileSystemRefresh(arg){{{{
     /// </summary>
     public void GetSelectedItem()
     {
-        if (Properties.Validate())
+        if (ItemProperties.Validate())
         {
             // Get selected item information
-            Hashtable properties = Properties.GetItemProperties();
+            var props = ItemProperties.GetItemProperties();
 
             // Get JavaScript for inserting the item
-            string script = CMSDialogHelper.GetFileSystemItem(properties);
+            var script = CMSDialogHelper.GetFileSystemItem(props);
             if (!string.IsNullOrEmpty(script))
             {
                 ScriptManager.RegisterStartupScript(Page, typeof(Page), "insertItemScript", script, true);
@@ -943,11 +943,7 @@ function imageEdit_FileSystemRefresh(arg){{{{
                 if (!avoidPropUpdate)
                 {
                     // Get selected properties from session
-                    Hashtable selectedParameters = SessionHelper.GetValue("DialogSelectedParameters") as Hashtable;
-                    if (selectedParameters == null)
-                    {
-                        selectedParameters = new Hashtable();
-                    }
+                    Hashtable selectedParameters = SessionHelper.GetValue("DialogSelectedParameters") as Hashtable ?? new Hashtable();
 
                     // Update selected properties
                     selectedParameters[DialogParameters.ITEM_PATH] = path;
@@ -957,7 +953,7 @@ function imageEdit_FileSystemRefresh(arg){{{{
                     selectedParameters[DialogParameters.ITEM_RELATIVEPATH] = Config.StartingPath.StartsWithCSafe("~");
 
                     // Force media properties control to load selected item
-                    Properties.LoadItemProperties(selectedParameters);
+                    ItemProperties.LoadItemProperties(selectedParameters);
 
                     SessionHelper.SetValue("DialogSelectedParameters", selectedParameters);
                     // Update properties panel
@@ -980,7 +976,7 @@ function imageEdit_FileSystemRefresh(arg){{{{
 
 
     /// <summary>
-    /// Clears hidden control elements fo future use.
+    /// Clears hidden control elements for future use.
     /// </summary>
     private void ClearActionElems()
     {
@@ -1005,11 +1001,17 @@ function imageEdit_FileSystemRefresh(arg){{{{
     public void LoadItemConfiguration()
     {
         // Load properties
-        Properties.LoadItemProperties(Parameters);
+        ItemProperties.LoadItemProperties(Parameters);
         pnlUpdateProperties.Update();
 
         // Remember item to colorize
         ItemToColorize = NodeID.Replace("\\", "\\\\").Replace("'", "\\'");
+    }
+
+
+    private object GetParameter(Hashtable p, string name)
+    {
+        return p[name] ?? QueryHelper.GetString(name, null);
     }
 
 
@@ -1021,16 +1023,37 @@ function imageEdit_FileSystemRefresh(arg){{{{
         // Get allowed and excluded folders and extensions        
         FileSystemDialogConfiguration config = Config;
 
-        config.AllowManage = QueryHelper.GetBoolean("allow_manage", config.AllowManage);
-        config.AllowedExtensions = QueryHelper.GetString("allowed_extensions", config.AllowedExtensions);
-        config.NewTextFileExtension = QueryHelper.GetString("newfile_extension", config.NewTextFileExtension);
-        config.AllowedFolders = QueryHelper.GetString("allowed_folders", config.AllowedFolders);
-        config.ExcludedExtensions = QueryHelper.GetString("excluded_extensions", config.ExcludedExtensions);
-        config.ExcludedFolders = QueryHelper.GetString("excluded_folders", config.ExcludedFolders);
-        config.AllowNonApplicationPath = QueryHelper.GetBoolean("allow_nonapp_path", config.AllowNonApplicationPath);
+        Hashtable p;
+
+        var paramsGuid = QueryHelper.GetString("params", "");
+        if (!String.IsNullOrEmpty(paramsGuid))
+        {
+            // Try to get parameters
+            p = (Hashtable)WindowHelper.GetItem(paramsGuid, true);
+
+            // ... and validate hash
+            if ((p == null) || !QueryHelper.ValidateHash("hash", "selectedvalue"))
+            {
+                // Redirect to error page
+                URLHelper.Redirect(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext"));
+                return;
+            }
+        }
+        else
+        {
+            p = new Hashtable();
+        }
+
+        config.AllowManage = ValidationHelper.GetBoolean(GetParameter(p, "allow_manage"), config.AllowManage);
+        config.AllowedExtensions = ValidationHelper.GetString(GetParameter(p, "allowed_extensions"), config.AllowedExtensions);
+        config.NewTextFileExtension = ValidationHelper.GetString(GetParameter(p, "newfile_extension"), config.NewTextFileExtension);
+        config.AllowedFolders = ValidationHelper.GetString(GetParameter(p, "allowed_folders"), config.AllowedFolders);
+        config.ExcludedExtensions = ValidationHelper.GetString(GetParameter(p, "excluded_extensions"), config.ExcludedExtensions);
+        config.ExcludedFolders = ValidationHelper.GetString(GetParameter(p, "excluded_folders"), config.ExcludedFolders);
+        config.AllowNonApplicationPath = ValidationHelper.GetBoolean(GetParameter(p, "allow_nonapp_path"), config.AllowNonApplicationPath);
 
         // Get starting path
-        var startingPath = QueryHelper.GetString("starting_path", "~/");
+        var startingPath = ValidationHelper.GetString(GetParameter(p, "starting_path"), "~/");
         if (startingPath.StartsWithCSafe("~") && (startingPath != "~/"))
         {
             startingPath = startingPath.TrimEnd('/');
@@ -1059,7 +1082,7 @@ function imageEdit_FileSystemRefresh(arg){{{{
         config.StartingPath = startingPath;
 
         // Get selected path
-        var selectedPath = QueryHelper.GetString("selected_path", String.Empty);
+        var selectedPath = ValidationHelper.GetString(GetParameter(p, "selected_path"), String.Empty);
 
         // If starting path under website try to map selected path
         if (startingPath.StartsWithCSafe("~") && !String.IsNullOrEmpty(selectedPath))
@@ -1079,7 +1102,7 @@ function imageEdit_FileSystemRefresh(arg){{{{
         config.SelectedPath = selectedPath;
 
         // Get default path
-        config.DefaultPath = QueryHelper.GetString("default_path", String.Empty);
+        config.DefaultPath = ValidationHelper.GetString(GetParameter(p, "default_path"), String.Empty);
         string origDefaultPath = config.DefaultPath;
 
         if (selectedPath.StartsWithCSafe(startingPath))
@@ -1132,7 +1155,8 @@ function imageEdit_FileSystemRefresh(arg){{{{
         }
 
         // Get mode
-        config.ShowFolders = QueryHelper.GetBoolean("show_folders", false);
+        config.ShowFolders = ValidationHelper.GetBoolean(GetParameter(p, "show_folders"), false);
+        config.AllowZipFolders = ValidationHelper.GetBoolean(GetParameter(p, "allow_zip_folders"), false);
     }
 
 

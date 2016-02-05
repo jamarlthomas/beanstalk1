@@ -19,8 +19,6 @@ using CMS.UIControls;
 /// </summary>
 public class ClassesListControlExtender : ControlExtender<UniGrid>
 {
-    private const string UPDATE = "updateClasses";
-
     /// <summary>
     /// Gets the current resource
     /// </summary>
@@ -38,16 +36,13 @@ public class ClassesListControlExtender : ControlExtender<UniGrid>
     /// </summary>
     public override void OnInit()
     {
-        // Add header actions
-        InitHeaderActions();
-
         Control.OnAction += OnAction;
         Control.OnExternalDataBound += OnExternalDataBound;
 
         // Show warning when module is not editable
         Control.Load += (sender, args) =>
         {
-            if ((Resource != null) && (Resource.ResourceId > 0) && !Resource.IsEditable)
+            if ((Resource != null) && (Resource.ResourceID > 0) && !Resource.IsEditable)
             {
                 Control.ShowInformation(Control.GetString("resource.classesinstalledresourcewarning"));
             }
@@ -64,10 +59,10 @@ public class ClassesListControlExtender : ControlExtender<UniGrid>
         {
             // Disable delete and clone options when module is not editable
             case "delete":
-                ((CMSGridActionButton)sender).Enabled = (Resource != null) && (Resource.ResourceId > 0) && Resource.IsEditable;
+                ((CMSGridActionButton)sender).Enabled = (Resource != null) && (Resource.ResourceID > 0) && Resource.IsEditable;
                 break;
             case "#objectmenu":
-                ((CMSGridActionButton)sender).Visible = (Resource != null) && (Resource.ResourceId > 0) && Resource.IsEditable;
+                ((CMSGridActionButton)sender).Visible = (Resource != null) && (Resource.ResourceID > 0) && Resource.IsEditable;
                 break;
         }
 
@@ -87,20 +82,10 @@ public class ClassesListControlExtender : ControlExtender<UniGrid>
         switch (actionName)
         {
             case "delete":
-                // Version and document dependencies
-                if ((classId <= 0) || DataClassInfoProvider.CheckDependencies(classId))
-                {
-                    // Display error on deleting
-                    Control.ShowError(Control.GetString("sysdev.class_list.delete.hasdependencies"));
-                    return;
-                }
-
                 var databaseDependencies = DataClassInfoProvider.CheckDatabaseDependencies(classId);
-
                 if (databaseDependencies.Count > 0)
                 {
                     Control.ShowError(CreateDatabaseDependenciesErrorMessage(databaseDependencies));
-
                     return;
                 }
 
@@ -109,41 +94,6 @@ public class ClassesListControlExtender : ControlExtender<UniGrid>
 
                 break;
         }
-    }
-
-
-    /// <summary>
-    /// Adds header actions to page.
-    /// </summary>
-    private void InitHeaderActions()
-    {
-        if (SystemContext.DevelopmentMode)
-        {
-            // Update class list header action
-            Control.AddHeaderAction(new HeaderAction
-            {
-                Index = 1,
-                Text = Control.GetString("sysdev.class_list.updateclasses"),
-                CommandName = UPDATE,
-                OnClientClick = "return confirm(" + ScriptHelper.GetString(Control.GetString("sysdev.class_list.updateconfirm")) + ");"
-            });
-            ComponentEvents.RequestEvents.RegisterForEvent(UPDATE, (sender, args) => UpdateClasses());
-        }
-    }
-
-
-    /// <summary>
-    /// Updates default view for all document types.
-    /// </summary>
-    private void UpdateClasses()
-    {
-        TableManager tm = new TableManager(null);
-
-        tm.RefreshDocumentViews();
-
-        // Everything performed well as we get here (no exception was thrown by TableManager.UpdateClasses())
-        // Let the system know everything succeeded
-        Control.ShowConfirmation(Control.GetString("sysdev.class_list.updatesucc"));
     }
 
 

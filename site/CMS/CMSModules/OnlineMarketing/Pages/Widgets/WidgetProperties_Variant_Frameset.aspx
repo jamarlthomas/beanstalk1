@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_OnlineMarketing_Pages_Widgets_WidgetProperties_Variant_Frameset"
-    EnableEventValidation="false" ValidateRequest="false" Codebehind="WidgetProperties_Variant_Frameset.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_OnlineMarketing_Pages_Widgets_WidgetProperties_Variant_Frameset"
+    EnableEventValidation="false" ValidateRequest="false"  Codebehind="WidgetProperties_Variant_Frameset.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

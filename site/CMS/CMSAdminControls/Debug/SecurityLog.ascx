@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Debug_SecurityLog"
-    Codebehind="SecurityLog.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Debug_SecurityLog"
+     Codebehind="SecurityLog.ascx.cs" %>
 <cms:UIGridView runat="server" ID="gridSec" ShowFooter="true" AutoGenerateColumns="false">
     <Columns>
         <asp:TemplateField>

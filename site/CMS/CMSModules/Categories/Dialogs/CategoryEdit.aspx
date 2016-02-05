@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="CategoryEdit.aspx.cs" Inherits="CMSModules_Categories_Dialogs_CategoryEdit"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="CategoryEdit.aspx.cs" Inherits="CMSModules_Categories_Dialogs_CategoryEdit"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="Message - Edit" %>
 

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Avatars_Avatar_Edit"
-    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Title="Avatars - Edit" Codebehind="Avatar_Edit.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Avatars_Avatar_Edit"
+    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Title="Avatars - Edit"  Codebehind="Avatar_Edit.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/System/LocalizableTextBox.ascx" TagName="LocalizableTextBox" TagPrefix="cms" %>
 

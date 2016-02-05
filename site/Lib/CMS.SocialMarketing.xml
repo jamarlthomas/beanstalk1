@@ -54,6 +54,46 @@
             If true, the action will verify that there is no post related to the document yet. If there are any, no action is executed.
             </summary>
         </member>
+        <member name="T:CMS.SocialMarketing.Internal.FacebookAccessTokenService">
+            <summary>
+            Provides method for getting Facebook access token. This service is for internal use only.
+            </summary>
+            <exclude />
+        </member>
+        <member name="T:CMS.SocialMarketing.Internal.IFacebookAccessTokenService">
+            <summary>
+            Provides method for getting Facebook access token. This service is for internal use only.
+            </summary>
+            <exclude />
+        </member>
+        <member name="M:CMS.SocialMarketing.Internal.IFacebookAccessTokenService.GetAccessToken(System.String,System.String)">
+            <summary>
+            Gets Facebook access token for given <paramref name="applicationID"/> and <paramref name="applicationSecret"/>.
+            </summary>
+            <param name="applicationID">Application ID provided by the Facebook</param>
+            <param name="applicationSecret">Application secret provided by the Facebook</param>
+            <returns>Access token authorizing </returns>
+        </member>
+        <member name="M:CMS.SocialMarketing.Internal.FacebookAccessTokenService.GetAccessToken(System.String,System.String)">
+            <summary>
+            Gets Facebook access token for given <paramref name="applicationID"/> and <paramref name="applicationSecret"/>.
+            </summary>
+            <param name="applicationID">Application ID provided by the Facebook</param>
+            <param name="applicationSecret">Application secret provided by the Facebook</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="applicationID"/> is null -or- <paramref name="applicationSecret"/> is null</exception>
+            <returns>Access token authorizing </returns>
+        </member>
+        <member name="T:CMS.SocialMarketing.Internal.FacebookContext">
+            <summary>
+            Facebook context. This context is for internal use only.
+            </summary>
+            <exclude />
+        </member>
+        <member name="P:CMS.SocialMarketing.Internal.FacebookContext.FacebookAccessToken">
+            <summary>
+            Access token used for authorize facebook requests.
+            </summary>
+        </member>
         <member name="T:CMS.SocialMarketing.FacebookInsightsCollectionTask">
             <summary>
             Handles Facebook Insights analytics data collection when activated by the scheduler.
@@ -699,13 +739,6 @@
             </summary>
             <param name="facebookAccountId">Facebook account (page) identifier.</param>
             <returns>An object query of Facebook posts for the specified account (page).</returns>
-        </member>
-        <member name="M:CMS.SocialMarketing.FacebookPostInfoProvider.GetFacebookPostInfosByDocumentGuid(System.Guid)">
-            <summary>
-            Retrieves an object query of Facebook posts for the specified document identifier, and returns it.
-            </summary>
-            <param name="documentGuid">Document identifier.</param>
-            <returns>An object query of Facebook posts for the specified document.</returns>
         </member>
         <member name="M:CMS.SocialMarketing.FacebookPostInfoProvider.GetFacebookPostInfosByDocumentGuid(System.Guid,System.Int32)">
             <summary>
@@ -2974,13 +3007,6 @@
             <param name="linkedInAccountId">LinkedIn account (company profile) identifier.</param>
             <returns>An object query of LinkedIn posts for the specified account (company profile).</returns>
         </member>
-        <member name="M:CMS.SocialMarketing.LinkedInPostInfoProvider.GetLinkedInPostInfosByDocumentGuid(System.Guid)">
-            <summary>
-            Retrieves an object query of LinkedIn posts for the specified document identifier, and returns it.
-            </summary>
-            <param name="documentGuid">Document identifier.</param>
-            <returns>An object query of LinkedIn posts for the specified document.</returns>
-        </member>
         <member name="M:CMS.SocialMarketing.LinkedInPostInfoProvider.GetLinkedInPostInfosByDocumentGuid(System.Guid,System.Int32)">
             <summary>
             Retrieves an object query of LinkedIn posts for the specified document identifier, and returns it.
@@ -3189,6 +3215,11 @@
             Gets the document that is edited by the form.
             </summary>
         </member>
+        <member name="P:CMS.SocialMarketing.SocialMarketingAutoPostControl.SiteIdentifier">
+            <summary>
+            Gets site identefier that specifies context used when creating or editing social marketing post.
+            </summary>
+        </member>
         <member name="P:CMS.SocialMarketing.SocialMarketingAutoPostControl.IsUnderWorkflow">
             <summary>
             Indicates whether the Document is under workflow or not. 
@@ -3379,6 +3410,29 @@
             If true, the action will verify that there is no post related to the document yet. If there are any, no action is executed.
             </summary>
         </member>
+        <member name="T:CMS.SocialMarketing.ITwitterRetryPolicyProvider">
+            <summary>
+            Provides methods for performing retry policy when the exception is caused by a network problem.
+            </summary>
+        </member>
+        <member name="M:CMS.SocialMarketing.ITwitterRetryPolicyProvider.ApplyRetryPolicy">
+            <summary>
+            Applies retry policy and checks whether the exception should be handled in standard pipeline, or should be suppressed.
+            </summary>
+            <returns>True if the policy was successfully applied and another try can be performed; false if the exception should be handled in standard pipeline.</returns>
+        </member>
+        <member name="M:CMS.SocialMarketing.ITwitterRetryPolicyProvider.IsEligible(System.Exception)">
+            <summary>
+            Checks whether the given <paramref name="exception"/> is eligible to be used in retry policy.
+            </summary>
+            <param name="exception">Exception to be checked</param>
+            <returns>True if the exception is candidate for retry policy; otherwise, false</returns>
+        </member>
+        <member name="M:CMS.SocialMarketing.ITwitterRetryPolicyProvider.Reset">
+            <summary>
+            Ensures reset of retry policy. Should be called when <see cref="M:CMS.SocialMarketing.ITwitterRetryPolicyProvider.ApplyRetryPolicy"/> returns false so next attempt starts from the initial state.
+            </summary>
+        </member>
         <member name="T:CMS.SocialMarketing.TwitterInsightsCollectionTask">
             <summary>
             Retrieves insights from Twitter.
@@ -3529,6 +3583,31 @@
         <member name="P:CMS.SocialMarketing.TwitterIdentifierRange.To">
             <summary>
             Gets the range end (inclusive).
+            </summary>
+        </member>
+        <member name="T:CMS.SocialMarketing.TwitterRetryPolicyProvider">
+            <summary>
+            Provides methods for performing retry policy when the exception is caused by a network problem.
+            </summary>
+        </member>
+        <member name="M:CMS.SocialMarketing.TwitterRetryPolicyProvider.ApplyRetryPolicy">
+            <summary>
+            Increases retry count, and checks whether the count exceeds retry limit.
+            </summary>
+            <returns>True if the policy was successfully applied and another try can be performed; false if the exception should be handled in standard pipeline.</returns>
+        </member>
+        <member name="M:CMS.SocialMarketing.TwitterRetryPolicyProvider.IsEligible(System.Exception)">
+            <summary>
+            Checks whether the given <paramref name="exception"/> is eligible for the retry policy. Given exception has to be <see cref="T:LinqToTwitter.TwitterQueryException"/>, 
+            cannot have known error code provided by twitter API and the underlying inner exception has to be <see cref="T:System.Net.WebException"/>.
+            In other cases the exception is not eligible and should be proceeded in the standard pipeline.
+            </summary>
+            <param name="exception">Exception to be checked</param>
+            <returns>True if the exception is candidate for retry policy; otherwise, false</returns>
+        </member>
+        <member name="M:CMS.SocialMarketing.TwitterRetryPolicyProvider.Reset">
+            <summary>
+            Resets the retry count to zero.
             </summary>
         </member>
         <member name="T:CMS.SocialMarketing.TwitterHelper">
@@ -3878,13 +3957,6 @@
             </summary>
             <param name="twitterAccountId">Twitter account (channel) identifier.</param>
             <returns>An object query of Twitter posts for the specified account (channel).</returns>
-        </member>
-        <member name="M:CMS.SocialMarketing.TwitterPostInfoProvider.GetTwitterPostInfosByDocumentGuid(System.Guid)">
-            <summary>
-            Retrieves an object query of Twitter posts for the specified document identifier, and returns it.
-            </summary>
-            <param name="documentGuid">Document identifier.</param>
-            <returns>An object query of Twitter posts for the specified document.</returns>
         </member>
         <member name="M:CMS.SocialMarketing.TwitterPostInfoProvider.GetTwitterPostInfosByDocumentGuid(System.Guid,System.Int32)">
             <summary>

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_UI_ProductTaxes"
-    Codebehind="ProductTaxes.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_UI_ProductTaxes"
+     Codebehind="ProductTaxes.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"
     TagPrefix="cms" %>
 <cms:LocalizedHeading runat="server" ID="headTitle" Level="4" CssClass="listing-title" EnableViewState="false" />

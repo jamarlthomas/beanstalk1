@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="AddressSelectorDialog.aspx.cs" Inherits="CMSModules_Ecommerce_FormControls_AddressSelectorDialog"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="AddressSelectorDialog.aspx.cs" Inherits="CMSModules_Ecommerce_FormControls_AddressSelectorDialog"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" Title="Order - edit adresses" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">

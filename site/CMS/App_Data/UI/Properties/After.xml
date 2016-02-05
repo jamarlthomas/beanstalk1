@@ -28,7 +28,7 @@
     </settings>
   </field>
   <category name="CodeBehind" caption="Code behind" collapsible="true" collapsedbydefault="true" visible="true" />
-  <field column="PageExtenderAssemblyName" fielddescription="{$documentation.property.pageextender$}" fieldcaption="Extender" visible="true" columntype="text" fieldtype="CustomUserControl" allowempty="true" columnsize="100" publicfield="false" guid="168dea06-38c2-4eca-9143-3761c524ab2b">
+  <field column="PageExtenderAssemblyName" fielddescription="{$documentation.property.pageextender$}" fieldcaption="Extender" visible="true" columntype="text" fieldtype="CustomUserControl" allowempty="true" columnsize="100" publicfield="false" guid="840d28be-d99c-416a-ad1d-296e59eaa4d9">
     <settings>
       <ShowInterfaces>False</ShowInterfaces>
       <BaseClassName>CMS.ExtendedControls.PageExtender, CMS.ExtendedControls</BaseClassName>
@@ -38,7 +38,7 @@
       <controlname>assemblyclassselector</controlname>
     </settings>
   </field>
-  <field column="PageExtenderClassName" columntype="text" fieldtype="CustomUserControl" allowempty="true" columnsize="100" publicfield="false" guid="da3d187f-2f43-4f69-a3e2-450c9aa78367">
+  <field column="PageExtenderClassName" columntype="text" fieldtype="CustomUserControl" allowempty="true" columnsize="100" publicfield="false" guid="8ae4d0d6-7f78-4769-a281-c2106dcbb541">
     <settings>
       <controlname>textboxcontrol</controlname>
     </settings>

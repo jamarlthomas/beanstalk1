@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Inherits="CMSModules_ContactManagement_Controls_UI_ActivityDetails_PurchaseDetail"
-    Theme="Default" Codebehind="PurchaseDetail.aspx.cs" %>
+    Theme="Default"  Codebehind="PurchaseDetail.aspx.cs" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <asp:Panel runat="server" ID="p">

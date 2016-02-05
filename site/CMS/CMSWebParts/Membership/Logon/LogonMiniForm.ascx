@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="True"
-    Inherits="CMSWebParts_Membership_Logon_LogonMiniForm" Codebehind="~/CMSWebParts/Membership/Logon/LogonMiniForm.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="True"
+    Inherits="CMSWebParts_Membership_Logon_LogonMiniForm"  Codebehind="~/CMSWebParts/Membership/Logon/LogonMiniForm.ascx.cs" %>
 <asp:Login ID="loginElem" runat="server" DestinationPageUrl="~/Default.aspx" EnableViewState="true">
     <LayoutTemplate>
         <asp:Panel ID="pnlLogonMiniForm" runat="server" DefaultButton="btnLogon" EnableViewState="true" CssClass="form-minilogon">

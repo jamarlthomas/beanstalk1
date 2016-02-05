@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -171,8 +171,11 @@ public partial class CMSModules_SystemTables_Controls_Views_SQLEdit : SqlEditCon
                 
                 txtObjName.Enabled = false;
                 txtObjName.ReadOnly = true;
-                txtObjName.Text = name.Trim();
-                txtSQLText.Text = body.Trim();
+                if (result)
+                {
+                    txtObjName.Text = name.Trim();
+                    txtSQLText.Text = body.Trim();
+                }
                 if (!string.IsNullOrEmpty(indexesCreateCode))
                 {
                     txtIndexes.Text = indexesCreateCode.Trim();
@@ -204,9 +207,12 @@ public partial class CMSModules_SystemTables_Controls_Views_SQLEdit : SqlEditCon
                 result = ParseProcedure(objectCreateCode, out name, out param, out body);
                 txtObjName.Enabled = false;
                 txtObjName.ReadOnly = true;
-                txtObjName.Text = name.Trim();
-                txtParams.Text = param.Trim();
-                txtSQLText.Text = body.Trim();
+                if (result)
+                {
+                    txtObjName.Text = name.Trim();
+                    txtParams.Text = param.Trim();
+                    txtSQLText.Text = body.Trim();
+                }
                 State = SqlEditModeEnum.AlterProcedure;
             }
             plcParams.Visible = true;

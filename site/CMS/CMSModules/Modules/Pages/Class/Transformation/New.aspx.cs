@@ -1,12 +1,10 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.Helpers;
 using CMS.PortalEngine;
 using CMS.UIControls;
-using CMS.Base;
 using CMS.ExtendedControls.ActionsConfig;
-using CMS.Modules;
 
 // Parent object
 [ParentObject("cms.class", "classid")]
@@ -32,7 +30,6 @@ public partial class CMSModules_Modules_Pages_Class_Transformation_New : GlobalA
     protected void Page_Load(object sender, EventArgs e)
     {
         editElem.OnAfterSave += editElem_OnAfterSave;
-        editElem.OnBeforeSave += editElem_OnBeforeSave;
 
         ucTransfCode.ClassID = ClassID;
 
@@ -87,13 +84,5 @@ public partial class CMSModules_Modules_Pages_Class_Transformation_New : GlobalA
 
             URLHelper.Redirect(editPage);
         }
-    }
-
-
-    protected void editElem_OnBeforeSave(object sender, EventArgs e)
-    {
-        // Mark transformation as custom if module is not in development and development mode is off
-        ResourceInfo resource = ResourceInfoProvider.GetResourceInfo(QueryHelper.GetInteger("moduleid", 0));
-        editElem.Data["TransformationIsCustom"] = !SystemContext.DevelopmentMode && ((resource != null) && !resource.ResourceIsInDevelopment);
     }
 }

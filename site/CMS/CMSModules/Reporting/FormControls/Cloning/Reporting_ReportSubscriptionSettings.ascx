@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Codebehind="Reporting_ReportSubscriptionSettings.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="false"  Codebehind="Reporting_ReportSubscriptionSettings.ascx.cs"
     Inherits="CMSModules_Reporting_FormControls_Cloning_Reporting_ReportSubscriptionSettings" %>
 
 <div class="form-horizontal">

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Community_Shortcuts" Codebehind="~/CMSWebParts/Community/Shortcuts.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Community_Shortcuts"  Codebehind="~/CMSWebParts/Community/Shortcuts.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Friends/Controls/RequestFriendship.ascx" TagName="RequestFriendship"
     TagPrefix="cms" %>
 <asp:Panel runat="server" ID="pnlProfileLinks" Visible="false" EnableViewState="false"
@@ -31,11 +31,7 @@
         <asp:Panel ID="pnlMyInvitations" runat="server" Visible="false" EnableViewState="false"
             CssClass="ShortcutPanel">
             <cms:LocalizedHyperlink ID="lnkMyInvitations" runat="server" />
-        </asp:Panel>
-        <asp:Panel ID="pnlMyTasks" runat="server" Visible="false" EnableViewState="false"
-            CssClass="ShortcutPanel">
-            <cms:LocalizedHyperlink ID="lnkMyTasks" runat="server" />
-        </asp:Panel>        
+        </asp:Panel>      
     </asp:Panel>
 </asp:Panel>
 <asp:Panel runat="server" ID="pnlGroupLinks" Visible="false" EnableViewState="false"

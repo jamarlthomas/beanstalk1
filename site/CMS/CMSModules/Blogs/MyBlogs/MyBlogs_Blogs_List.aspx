@@ -1,6 +1,6 @@
-<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
+﻿<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
     Inherits="CMSModules_Blogs_MyBlogs_MyBlogs_Blogs_List" Title="Blogs - List" Theme="Default"
-    Codebehind="MyBlogs_Blogs_List.aspx.cs" %>
+     Codebehind="MyBlogs_Blogs_List.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <asp:Content ID="contentElem" ContentPlaceHolderID="plcContent" runat="Server">

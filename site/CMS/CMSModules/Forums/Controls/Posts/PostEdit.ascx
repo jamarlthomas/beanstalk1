@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Posts_PostEdit" Codebehind="PostEdit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Posts_PostEdit"  Codebehind="PostEdit.ascx.cs" %>
 <%@ Register Src="ForumPost.ascx" TagName="ForumPost" TagPrefix="cms" %>
 <%@ Register TagPrefix="cms" Namespace="CMS.ExtendedControls" Assembly="CMS.ExtendedControls" %>
 <asp:Panel ID="pnlContent" runat="server" CssClass="ForumNewPost">

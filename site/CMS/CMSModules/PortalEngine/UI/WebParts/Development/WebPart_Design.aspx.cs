@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls.ActionsConfig;
 using CMS.Helpers;

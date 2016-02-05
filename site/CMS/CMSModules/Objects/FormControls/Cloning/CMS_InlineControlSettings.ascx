@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="CMS_InlineControlSettings.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="CMS_InlineControlSettings.ascx.cs"
     Inherits="CMSModules_Objects_FormControls_Cloning_CMS_InlineControlSettings" %>
 
 <div class="form-horizontal">

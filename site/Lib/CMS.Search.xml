@@ -58,10 +58,10 @@
         </member>
         <member name="M:CMS.Search.SearchMacroMethods.GetSupportedContentExtractors(CMS.MacroEngine.EvaluationContext,System.Object[])">
             <summary>
-            Returns list of the extensions (separated with colons) for which there is a content extractor registered in the system.
+            Returns list of the extensions (separated by comma and space) for which there is a content extractor registered in the system.
             </summary>
             <param name="context">Evaluation context with child resolver</param>
-            <param name="parameters">No parameteres</param>
+            <param name="parameters">No parameters</param>
         </member>
         <member name="T:CMS.Search.SearchContext">
             <summary>
@@ -78,6 +78,11 @@
         <member name="M:CMS.Search.SearchContext.CloneForNewThread">
             <summary>
             Clones the object for new thread
+            </summary>
+        </member>
+        <member name="P:CMS.Search.SearchContext.IsCrawler">
+            <summary>
+            Whether request is based on page crawler index.
             </summary>
         </member>
         <member name="P:CMS.Search.SearchContext.CurrentHighlight">
@@ -160,12 +165,12 @@
             Initializes the tasks for media files synchronization
             </summary>
         </member>
-        <member name="M:CMS.Search.SearchSynchronization.CheckSynchronizeSmartSearch">
+        <member name="M:CMS.Search.SearchSynchronization.CheckSynchronizeSmartSearch(CMS.Core.IWebFarmTask)">
             <summary>
             Returns true if the synchronization of the smart search is allowed
             </summary>
         </member>
-        <member name="M:CMS.Search.SearchSynchronization.RunSmartSearchIndexer(System.String,System.String,CMS.Core.BinaryData)">
+        <member name="M:CMS.Search.SearchSynchronization.RunSmartSearchIndexer(System.String,System.String[],CMS.Core.BinaryData)">
             <summary>
             Runs the smart search indexer
             </summary>
@@ -173,7 +178,7 @@
             <param name="data">Task data</param>
             <param name="binaryData">Task binary data</param>
         </member>
-        <member name="M:CMS.Search.SearchSynchronization.InvalidateSearcher(System.String,System.String,CMS.Core.BinaryData)">
+        <member name="M:CMS.Search.SearchSynchronization.InvalidateSearcher(System.String,System.String[],CMS.Core.BinaryData)">
             <summary>
             Invalidates searcher.
             </summary>
@@ -303,6 +308,18 @@
             </summary>
             <param name="value">String representation of double</param>
         </member>
+        <member name="M:CMS.Search.ISearchValueConverter.DecimalToString(System.Decimal)">
+            <summary>
+            Returns string representation of the decimal value.
+            </summary>
+            <param name="value">Decimal value</param>
+        </member>
+        <member name="M:CMS.Search.ISearchValueConverter.StringToDecimal(System.String)">
+            <summary>
+            Converts search string to the decimal value.
+            </summary>
+            <param name="value">String representation of decimal</param>
+        </member>
         <member name="M:CMS.Search.ISearchValueConverter.StringToDate(System.String)">
             <summary>
             Converts the string representation of the date time from searched document to a date time
@@ -317,7 +334,7 @@
         </member>
         <member name="M:CMS.Search.AbstractSearchValueConverter.ConvertToString(System.Object)">
             <summary>
-            Converts the 
+            Converts the value to a search string representation.
             </summary>
             <param name="value">Value to convert</param>
         </member>
@@ -339,6 +356,12 @@
             </summary>
             <param name="m">Regex match</param>
         </member>
+        <member name="M:CMS.Search.AbstractSearchValueConverter.DecimalMatch(System.Text.RegularExpressions.Match)">
+            <summary>
+            Converts regular decimal value to search-friendly double value.
+            </summary>
+            <param name="m">Regex match</param>
+        </member>
         <member name="M:CMS.Search.AbstractSearchValueConverter.IntToString(System.Int32)">
             <summary>
             Returns string representation of the integer value. Returned value has always uniform format.
@@ -356,6 +379,18 @@
             Returns string representation of the double value. Returned value has always uniform format.
             </summary>
             <param name="value">Double value</param>
+        </member>
+        <member name="M:CMS.Search.AbstractSearchValueConverter.DecimalToString(System.Decimal)">
+            <summary>
+            Returns string representation of the decimal value.
+            </summary>
+            <param name="value">Decimal value</param>
+        </member>
+        <member name="M:CMS.Search.AbstractSearchValueConverter.StringToDecimal(System.String)">
+            <summary>
+            Converts search string to the decimal value.
+            </summary>
+            <param name="value">String representation of decimal</param>
         </member>
         <member name="M:CMS.Search.AbstractSearchValueConverter.StringToDouble(System.String)">
             <summary>
@@ -383,6 +418,16 @@
         <member name="P:CMS.Search.AbstractSearchValueConverter.DoubleReplacerRegex">
             <summary>
             Gets the double replacer regular expression.
+            </summary>
+        </member>
+        <member name="P:CMS.Search.AbstractSearchValueConverter.DecimalReplacerRegex">
+            <summary>
+            Gets the decimal replacer regular expression.
+            </summary>
+        </member>
+        <member name="P:CMS.Search.AbstractSearchValueConverter.Culture">
+            <summary>
+            Culture used to convert numbers to string and vice versa. 
             </summary>
         </member>
         <member name="T:CMS.Search.DocumentSearchCondition">
@@ -694,7 +739,7 @@
         </member>
         <member name="M:CMS.Search.SearchTextExtractorManager.GetSupportedContentExtractors">
             <summary>
-            Returns list of the extensions (separated with colons) for which there is a content extractor registered in the system.
+            Returns list of the extensions (separated by comma and space) for which there is a content extractor registered in the system.
             </summary>
         </member>
         <member name="T:CMS.Search.IIndexSearcher">
@@ -1013,17 +1058,17 @@
         </member>
         <member name="T:CMS.Search.SearchFields">
             <summary>
-            Search fields collection and field constatns
+            Search fields collection and field constants
             </summary>
         </member>
         <member name="M:CMS.Search.SearchFields.#ctor">
             <summary>
-            Empty contructor
+            Empty constructor
             </summary>
         </member>
         <member name="M:CMS.Search.SearchFields.#ctor(System.Boolean)">
             <summary>
-            Contructor
+            Constructor
             </summary>
             <param name="storeValues">Indicates if field values will be stored in fields.</param>
         </member>
@@ -1036,7 +1081,7 @@
             <param name="searchable">Indicates if field can be searched</param>
             <param name="tokenized">Indicates if field will be tokenized</param>
             <param name="getValueFunc">Function that returns value of the field</param>
-            <param name="insertDirectly">Indicates if field should be insert directly into search document whithout aditional processing</param>
+            <param name="insertDirectly">Indicates if field should be insert directly into search document without additional processing</param>
             <param name="analyzer">Explicit analyzer to process search field's value. When null default analyzer is used</param>
             <returns>Newly added or existing field</returns>
             <exception cref="T:System.InvalidOperationException">When StoreValues is true and we try to add already existing field but with different value.</exception>
@@ -1068,7 +1113,7 @@
             Inserts new search field into collection
             </summary>
             <param name="newField">Field to insert</param>
-            <returns>Insered field</returns>
+            <returns>Inserted field</returns>
         </member>
         <member name="M:CMS.Search.SearchFields.UpdateExistingField(CMS.DataEngine.ISearchField)">
             <summary>
@@ -1373,9 +1418,9 @@
         </member>
         <member name="M:CMS.Search.AbstractSearchSyntaxHelper.FieldNameEvaluator(System.Text.RegularExpressions.Match)">
             <summary>
-            Evaluator method, converts lowercase "to" to uppercase.
+            Converts all field names to lower case in regex result. 
             </summary>
-            <param name="match">Match</param>
+            <param name="match">Regular expression match</param>
         </member>
         <member name="M:CMS.Search.AbstractSearchSyntaxHelper.FinalizeSearchCondition(System.String)">
             <summary>
@@ -1770,7 +1815,7 @@
         </member>
         <member name="M:CMS.Search.CustomSearchIndexer.GetSearchFields(CMS.Search.SearchIndexInfo,CMS.DataEngine.ISearchFields)">
             <summary>
-            Gets the collection of search fields. When no SearchFields colection is provided, new is created.
+            Gets the collection of search fields. When no SearchFields collection is provided, new is created.
             </summary>
             <param name="index">Search index</param>
             <param name="searchFields">Search fields collection</param>
@@ -2074,11 +2119,6 @@
         <member name="P:CMS.Search.SearchIndexInfo.IndexFilesLastUpdate">
             <summary>
             Time when index files were updated. Value is assigned to index files used by current application process.  
-            </summary>
-        </member>
-        <member name="P:CMS.Search.SearchIndexInfo.IndexLastUpdate">
-            <summary>
-            Last modification of index.
             </summary>
         </member>
         <member name="P:CMS.Search.SearchIndexInfo.ActualRebuildTime">
@@ -2870,8 +2910,11 @@
         </member>
         <member name="P:CMS.Search.SearchParameters.NumberOfResults">
             <summary>
-            Number of results which (for pager settings)
+            Number of results for the search query.
             </summary>
+            <remarks>
+            Number of results can differ for different pages of search results due to increasing number of processed results.
+            </remarks>
         </member>
         <member name="P:CMS.Search.SearchParameters.MaxScore">
             <summary>
@@ -3593,7 +3636,7 @@
         </member>
         <member name="M:CMS.Search.SearchHelper.GetBinaryDataSearchContent(CMS.DataEngine.BaseInfo,CMS.Search.ExtractionContext,System.Boolean@)">
             <summary>
-            Extracts the search information from the info. Returns null by default. Should be overriden by specific info.
+            Extracts the search information from the info. Returns null by default. Should be overridden by specific info.
             </summary>
             <param name="info">Object to extract search content from</param>
             <param name="context">Extraction context passed to the extractor in case the value is not cached</param>
@@ -3620,8 +3663,16 @@
         </member>
         <member name="P:CMS.Search.SearchHelper.MaxResults">
             <summary>
-            Gets the value that indicates whether diacritics should be removed for index field
+            Gets the value that is used for maximal number of records returned from search index.
             </summary>
+            <remarks>
+            <para>
+            This option doesn't affect information about number of available results.
+            </para>
+            <para>
+            Default value is set to 1000 items per search request. This value can be changed by config key CMSSearchMaxResultsNumber but always consider impact on search performance.
+            </para>
+            </remarks>
         </member>
         <member name="P:CMS.Search.SearchHelper.RemoveDiacriticsForIndexField">
             <summary>
@@ -3862,61 +3913,6 @@
             File name for the external lock
             </summary>
         </member>
-        <member name="F:CMS.Search.SearchTaskInfoProvider.MAX_NUMBER_OF_THREAD_RESTORING">
-            <summary>
-            Maximal number of thread restoring.
-            </summary>
-        </member>
-        <member name="F:CMS.Search.SearchTaskInfoProvider.TASK_INDEXER_RETRIEVE_ROWS_COUNT">
-            <summary>
-            Task indexer will retrieve search tasks from database by count of 10.
-            </summary>
-        </member>
-        <member name="F:CMS.Search.SearchTaskInfoProvider.mEnableIndexer">
-            <summary>
-            Indicates if the smart search indexer should start.
-            </summary>
-        </member>
-        <member name="F:CMS.Search.SearchTaskInfoProvider.mEnableTasks">
-            <summary>
-            Indicates whether task creation is enabled.
-            </summary>
-        </member>
-        <member name="F:CMS.Search.SearchTaskInfoProvider.mIsIndexThreadRunning">
-            <summary>
-            Indicates whether thread is running.
-            </summary>
-        </member>
-        <member name="F:CMS.Search.SearchTaskInfoProvider.mIndexerThreadGuid">
-            <summary>
-            Contains GUID of indexter thread when indexer is running.
-            </summary>
-        </member>
-        <member name="F:CMS.Search.SearchTaskInfoProvider.mWindowsIdentity">
-            <summary>
-            Windows identity.
-            </summary>
-        </member>
-        <member name="F:CMS.Search.SearchTaskInfoProvider.mNumberOfThreadRestoring">
-            <summary>
-            Current number of thread restoring.
-            </summary>
-        </member>
-        <member name="F:CMS.Search.SearchTaskInfoProvider.locker">
-            <summary>
-            Object used for thread locking.
-            </summary>
-        </member>
-        <member name="F:CMS.Search.SearchTaskInfoProvider.mProcessSearchTasksByScheduler">
-            <summary>
-            If true, smart search tasks are processed by scheduler.
-            </summary>
-        </member>
-        <member name="M:CMS.Search.SearchTaskInfoProvider.GetSearchtasks">
-            <summary>
-            Returns all search tasks.
-            </summary>
-        </member>
         <member name="M:CMS.Search.SearchTaskInfoProvider.GetSearchTasks">
             <summary>
             Returns all search tasks.
@@ -3971,21 +3967,21 @@
             <param name="objectField">Object field</param>
             <param name="objectValue">Object value</param>
             <param name="objectID">ID of an object this task relates to, 0 if there is none</param>
-            <param name="runIndexer">Whether indexer starts after creation. If not specified this behaviour depends on current settings.</param>
+            <param name="runIndexer">Whether indexer starts after creation. If not specified this behavior depends on current settings.</param>
         </member>
         <member name="M:CMS.Search.SearchTaskInfoProvider.CreateTask(CMS.Search.SearchTaskCreationParameters,System.Nullable{System.Boolean})">
             <summary>
             Creates task in the database and start indexer if it is required.
             </summary>
             <param name="parameters">Search task creation parameters</param>
-            <param name="runIndexer">Whether indexer starts after creation. If not specified this behaviour depends on current settings.</param>
+            <param name="runIndexer">Whether indexer starts after creation. If not specified this behavior depends on current settings.</param>
         </member>
         <member name="M:CMS.Search.SearchTaskInfoProvider.CreateTasks(System.Collections.Generic.ICollection{CMS.Search.SearchTaskCreationParameters},System.Nullable{System.Boolean})">
             <summary>
             Creates tasks in the database and start indexer if it is required.
             </summary>
             <param name="parameters">Search task creation parameters</param>
-            <param name="runIndexer">Whether indexer starts after creation. If not specified this behaviour depends on current settings.</param>
+            <param name="runIndexer">Whether indexer starts after creation. If not specified this behavior depends on current settings.</param>
         </member>
         <member name="M:CMS.Search.SearchTaskInfoProvider.ProcessTasks">
             <summary>
@@ -4103,7 +4099,7 @@
         </member>
         <member name="P:CMS.Search.SearchTaskInfoProvider.IndexerThreadGuid">
             <summary>
-            Contains GUID of indexter thread when indexer is running.
+            Contains GUID of indexer thread when indexer is running.
             </summary>
         </member>
         <member name="P:CMS.Search.SearchTaskInfoProvider.IsIndexThreadRunning">
@@ -4312,6 +4308,18 @@
             Converts search string to the integer value.
             </summary>
             <param name="value">String representation of double</param>
+        </member>
+        <member name="M:CMS.Search.SearchValueConverter.DecimalToString(System.Decimal)">
+            <summary>
+            Returns string representation of the decimal value.
+            </summary>
+            <param name="value">Decimal value</param>
+        </member>
+        <member name="M:CMS.Search.SearchValueConverter.StringToDecimal(System.String)">
+            <summary>
+            Converts search string to the decimal value.
+            </summary>
+            <param name="value">String representation of decimal</param>
         </member>
         <member name="M:CMS.Search.SearchValueConverter.StringToDate(System.String)">
             <summary>

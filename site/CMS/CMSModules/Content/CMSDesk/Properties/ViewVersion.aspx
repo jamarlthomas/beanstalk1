@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_ViewVersion"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_ViewVersion"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Title="Properties - View Version" Codebehind="ViewVersion.aspx.cs" %>
+    Title="Properties - View Version"  Codebehind="ViewVersion.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/ViewVersion.ascx" TagName="ViewVersion"
     TagPrefix="cms" %>

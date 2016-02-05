@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Ecommerce_Checkout_Selectors_ShippingSelection" Codebehind="~/CMSWebParts/Ecommerce/Checkout/Selectors/ShippingSelection.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Ecommerce_Checkout_Selectors_ShippingSelection"  Codebehind="~/CMSWebParts/Ecommerce/Checkout/Selectors/ShippingSelection.ascx.cs" %>
 <%@ Register Src="~/CMSModules/ECommerce/FormControls/ShippingSelector.ascx" TagName="ShippingSelector"
     TagPrefix="cms" %>
     

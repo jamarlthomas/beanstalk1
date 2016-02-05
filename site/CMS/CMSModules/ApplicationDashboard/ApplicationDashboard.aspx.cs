@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using System.Linq;
 
 using CMS.Helpers;
 using CMS.LicenseProvider;
+using CMS.Membership;
 using CMS.UIControls;
 
 public partial class CMSModules_ApplicationDashboard_ApplicationDashboard : CMSDeskPage

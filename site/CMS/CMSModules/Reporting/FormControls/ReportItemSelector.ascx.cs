@@ -1,20 +1,19 @@
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
+using System.Linq;
 using System.Web.UI;
 
+using CMS.Base;
 using CMS.ExtendedControls;
 using CMS.FormControls;
 using CMS.FormEngine;
 using CMS.Helpers;
 using CMS.IO;
 using CMS.Reporting;
-using CMS.Base;
-using CMS.DataEngine;
 
 public partial class CMSModules_Reporting_FormControls_ReportItemSelector : FormEngineUserControl
 {
-    #region "Private variables"
+    #region "Variables"
 
     private bool mDisplay = true;
     private DataSet mCurrentDataSet;
@@ -26,7 +25,7 @@ public partial class CMSModules_Reporting_FormControls_ReportItemSelector : Form
     #endregion
 
 
-    #region "Public properties"
+    #region "Properties"
 
     /// <summary>
     /// Gets or sets the value that indicates whether id value should be used in selector
@@ -39,28 +38,7 @@ public partial class CMSModules_Reporting_FormControls_ReportItemSelector : Form
 
 
     /// <summary>
-    /// Gets the current data set.
-    /// </summary>
-    private DataSet CurrentDataSet
-    {
-        get
-        {
-            DataSet ds = WindowHelper.GetItem(CurrentGuid()) as DataSet;
-            if (DataHelper.DataSourceIsEmpty(ds))
-            {
-                if (DataHelper.DataSourceIsEmpty(mCurrentDataSet))
-                {
-                    mCurrentDataSet = LoadFromXML(Convert.ToString(ViewState["ParametersXmlData"]), Convert.ToString(ViewState["ParametersXmlSchema"]));
-                }
-                ds = mCurrentDataSet;
-            }
-            return ds;
-        }
-    }
-
-
-    /// <summary>
-    /// If false control shows only report selector.
+    /// If set <c>false</c> control shows only report selector.
     /// </summary>
     public bool ShowItemSelector
     {
@@ -95,14 +73,12 @@ public partial class CMSModules_Reporting_FormControls_ReportItemSelector : Form
                 }
                 return usReportsValue;
             }
-            else
+
+            if ((usReportsValue == "0") || (usItemsValue == "0"))
             {
-                if ((usReportsValue == "0") || (usItemsValue == "0"))
-                {
-                    return String.Empty;
-                }
-                return String.Format("{0};{1}", usReportsValue, usItemsValue);
+                return String.Empty;
             }
+            return String.Format("{0};{1}", usReportsValue, usItemsValue);
         }
         set
         {
@@ -136,28 +112,6 @@ public partial class CMSModules_Reporting_FormControls_ReportItemSelector : Form
                 {
                     LoadOtherValues();
                 }
-            }
-        }
-    }
-
-
-    /// <summary>
-    /// Loads the other fields values to the state of the form control
-    /// </summary>
-    public override void LoadOtherValues()
-    {
-        if ((Form != null) && (Form.Data != null))
-        {
-            // Check if the schema information is available
-            IDataContainer data = Form.Data;
-
-            if (data.ContainsColumn("ParametersXmlSchema") && data.ContainsColumn("ParametersXmlData"))
-            {
-                // Get xml schema and data                    
-                string schema = Convert.ToString(Form.GetFieldValue("ParametersXmlSchema"));
-                string xml = Convert.ToString(Form.GetFieldValue("ParametersXmlData"));
-
-                LoadFromXML(xml, schema);
             }
         }
     }
@@ -217,10 +171,209 @@ public partial class CMSModules_Reporting_FormControls_ReportItemSelector : Form
         }
     }
 
+
+    /// <summary>
+    /// Gets the current data set.
+    /// </summary>
+    private DataSet CurrentDataSet
+    {
+        get
+        {
+            DataSet ds = WindowHelper.GetItem(CurrentGuid()) as DataSet;
+            if (DataHelper.DataSourceIsEmpty(ds))
+            {
+                if (DataHelper.DataSourceIsEmpty(mCurrentDataSet))
+                {
+                    mCurrentDataSet = LoadFromXML(Convert.ToString(ViewState["ParametersXmlData"]), Convert.ToString(ViewState["ParametersXmlSchema"]));
+                }
+                ds = mCurrentDataSet;
+            }
+            return ds;
+        }
+    }
+
+    #endregion
+
+
+    #region "Control events"
+
+    protected override void OnLoad(EventArgs e)
+    {
+        // First item as "please select .." - not default "none"
+        usReports.SpecialFields.Add(new SpecialField { Text = "(" + GetString("rep.pleaseselect") + ")", Value = "0" });
+        usReports.DropDownSingleSelect.AutoPostBack = true;
+        usReports.IsLiveSite = IsLiveSite;
+        usReports.OnSelectionChanged += usReports_OnSelectionChanged;
+
+        // Disable 'please select' for items selector
+        usItems.MaxDisplayedItems = usItems.MaxDisplayedTotalItems = 1000;
+        usItems.IsLiveSite = IsLiveSite;
+
+        BuildReportCondition();
+
+        base.OnLoad(e);
+    }
+
+
+    protected override void OnPreRender(EventArgs e)
+    {
+        string reportName = ValidationHelper.GetString(usReports.Value, String.Empty);
+        mReportInfo = ReportInfoProvider.GetReportInfo(reportName);
+        if (mReportInfo != null)
+        {
+            ReportID = mReportInfo.ReportID;
+
+            usItems.Enabled = true;
+
+            // Test if there is any item visible in report parameters
+            FormInfo fi = new FormInfo(mReportInfo.ReportParameters);
+
+            // Hide if there are no visible parameters
+            pnlParametersButtons.Visible = fi.GetFields(true, false).Any();
+        }
+        else
+        {
+            if (ReportID == 0)
+            {
+                pnlParametersButtons.Visible = false;
+                usItems.Enabled = false;
+            }
+        }
+
+        ScriptHelper.RegisterClientScriptBlock(this, typeof(String), "ReportItemSelector_Refresh", "function refresh () {" + ControlsHelper.GetPostBackEventReference(pnlUpdate, String.Empty) + "}", true);
+
+        if (!mDisplay)
+        {
+            pnlReports.Visible = false;
+            pnlParametersButtons.Visible = false;
+            usItems.Enabled = true;
+        }
+
+        if (!ShowItemSelector)
+        {
+            pnlItems.Visible = false;
+        }
+
+        BuildConditions();
+
+        if (mReportInfo == null)
+        {
+            usItems.SpecialFields.Add(new SpecialField { Text = "(" + mFirstItemText + ")", Value = "0" });
+        }
+
+        if (ShowItemSelector)
+        {
+            ReloadItems();
+        }
+
+        var currentGuid = CurrentGuid();
+
+        if (mSetValues)
+        {
+            WindowHelper.Add(currentGuid, CurrentDataSet);
+	        ScriptHelper.RegisterDialogScript(Page);
+            ScriptHelper.RegisterStartupScript(Page, typeof(Page), "OpenModalWindowReportItem", ScriptHelper.GetScript("modalDialog('" + ResolveUrl("~/CMSModules/Reporting/Dialogs/ReportParametersSelector.aspx?ReportID=" + ReportID + "&guid=" + currentGuid) + "','ReportParametersDialog', 700, 500);"));
+            mKeepDataInWindowsHelper = true;
+        }
+
+        // Apply reportid condition if report was selected via uniselector
+        if (mReportInfo != null)
+        {
+            DataSet ds = CurrentDataSet;
+
+            ViewState["ParametersXmlData"] = null;
+            ViewState["ParametersXmlSchema"] = null;
+
+            if (!DataHelper.DataSourceIsEmpty(ds))
+            {
+                ViewState["ParametersXmlData"] = ds.GetXml();
+                ViewState["ParametersXmlSchema"] = ds.GetXmlSchema();
+            }
+
+            if (!mKeepDataInWindowsHelper)
+            {
+                WindowHelper.Remove(currentGuid);
+            }
+
+            if (!DataHelper.DataSourceIsEmpty(ds))
+            {
+                ds = DataHelper.DataSetPivot(ds, new [] { "ParameterName", "ParameterValue" });
+                ugParameters.DataSource = ds;
+                ugParameters.ReloadData();
+                pnlParameters.Visible = true;
+            }
+            else
+            {
+                pnlParameters.Visible = false;
+            }
+        }
+        else
+        {
+            pnlParameters.Visible = false;
+        }
+
+        if (pnlParameters.Visible || pnlParametersButtons.Visible)
+        {
+            pnlItems.AddCssClass("form-group");
+        }
+        else
+        {
+            pnlItems.RemoveCssClass("form-group");
+        }
+
+        base.OnPreRender(e);
+    }
+
+
+    protected void btnSet_Click(object sender, EventArgs e)
+    {
+        mSetValues = true;
+    }
+
+
+    protected void btnClear_Click(object sender, EventArgs e)
+    {
+        ClearData();
+    }
+
+
+    protected void usReports_OnSelectionChanged(object sender, EventArgs ea)
+    {
+        ClearData();
+
+        // Try to set first item
+        if (usItems.DropDownSingleSelect.Items.Count > 0)
+        {
+            usItems.DropDownSingleSelect.SelectedIndex = 0;
+        }
+    }
+
     #endregion
 
 
     #region "Methods"
+
+    /// <summary>
+    /// Loads the other fields values to the state of the form control
+    /// </summary>
+    public override void LoadOtherValues()
+    {
+        if ((Form != null) && (Form.Data != null))
+        {
+            // Check if the schema information is available
+            IDataContainer data = Form.Data;
+
+            if (data.ContainsColumn("ParametersXmlSchema") && data.ContainsColumn("ParametersXmlData"))
+            {
+                // Get xml schema and data                    
+                string schema = Convert.ToString(Form.GetFieldValue("ParametersXmlSchema"));
+                string xml = Convert.ToString(Form.GetFieldValue("ParametersXmlData"));
+
+                LoadFromXML(xml, schema);
+            }
+        }
+    }
+
 
     /// <summary>
     /// Returns an array of values of any other fields returned by the control.
@@ -351,7 +504,7 @@ public partial class CMSModules_Reporting_FormControls_ReportItemSelector : Form
 
 
     /// <summary>
-    /// Forces Items Uni select to reload.
+    /// Forces reload of the selector with report items.
     /// </summary>
     public void ReloadItems()
     {
@@ -359,12 +512,10 @@ public partial class CMSModules_Reporting_FormControls_ReportItemSelector : Form
 
         usItems.Reload(true);
 
-        try
+        var item = usItems.DropDownSingleSelect.Items.FindByValue(selected);
+        if (item != null)
         {
-            usItems.DropDownSingleSelect.SelectedValue = selected;
-        }
-        catch
-        {
+            item.Selected = true;
         }
     }
 
@@ -374,7 +525,7 @@ public partial class CMSModules_Reporting_FormControls_ReportItemSelector : Form
     /// </summary>
     private String CurrentGuid()
     {
-        // For reloaddata (f.e. webpart save) store guid also in request helper, because hidden is empty after control is reloaded.
+        // For ReloadData (f.e. webpart save) store guid also in request helper, because hidden field is empty after control reload
         Guid guid = ValidationHelper.GetGuid(RequestStockHelper.GetItem("wppreportselector"), Guid.Empty);
         if (hdnGuid.Value == String.Empty)
         {
@@ -390,175 +541,11 @@ public partial class CMSModules_Reporting_FormControls_ReportItemSelector : Form
     }
 
 
-    protected override void OnLoad(EventArgs e)
-    {
-        // First item as "please select .." - not default "none"
-        usItems.AllowEmpty = false;
-        usReports.AllowEmpty = false;
-
-        usReports.SpecialFields.Add(new SpecialField { Text = "(" + GetString("rep.pleaseselect") + ")", Value = "0" });
-
-        // Disable 'please select' for items selector
-        usItems.MaxDisplayedItems = usItems.MaxDisplayedTotalItems = 1000;
-
-        BuildReportCondition();
-        usReports.OnSelectionChanged += usReports_OnSelectionChanged;
-        base.OnLoad(e);
-    }
-
-
-    protected override void OnPreRender(EventArgs e)
-    {
-        pnlReports.Attributes.Add("style", "margin-bottom:3px");
-
-        string reportName = ValidationHelper.GetString(usReports.Value, String.Empty);
-        mReportInfo = ReportInfoProvider.GetReportInfo(reportName);
-        if (mReportInfo != null)
-        {
-            usItems.Enabled = true;
-
-            // Test if there is any item visible in report parameters
-            FormInfo fi = new FormInfo(mReportInfo.ReportParameters);
-
-            // Get dataset from cache
-            DataSet ds = (DataSet)WindowHelper.GetItem(CurrentGuid());
-            DataRow dr = fi.GetDataRow(false);
-            fi.LoadDefaultValues(dr, true);
-            bool itemVisible = false;
-            List<IField> items = fi.ItemsList;
-            foreach (IField item in items)
-            {
-                FormFieldInfo ffi = item as FormFieldInfo;
-                if (ffi != null)
-                {
-                    if (ffi.Visible)
-                    {
-                        itemVisible = true;
-                        break;
-                    }
-                }
-            }
-
-            ReportID = mReportInfo.ReportID;
-
-            plcParametersButtons.Visible = itemVisible;
-        }
-        else
-        {
-            if (ReportID == 0)
-            {
-                plcParametersButtons.Visible = false;
-                usItems.Enabled = false;
-            }
-        }
-
-        ltlScript.Text = ScriptHelper.GetScript("function refresh () {" + ControlsHelper.GetPostBackEventReference(pnlUpdate, String.Empty) + "}");
-        usReports.DropDownSingleSelect.AutoPostBack = true;
-
-        if (!mDisplay)
-        {
-            pnlReports.Visible = false;
-            plcParametersButtons.Visible = false;
-            usItems.Enabled = true;
-        }
-
-        if (!ShowItemSelector)
-        {
-            pnlItems.Visible = false;
-        }
-
-        usItems.IsLiveSite = IsLiveSite;
-        usReports.IsLiveSite = IsLiveSite;
-        ugParameters.GridName = "~/CMSModules/Reporting/FormControls/ReportParametersList.xml";
-        ugParameters.ZeroRowsText = String.Empty;
-        ugParameters.PageSize = "##ALL##";
-        ugParameters.Pager.DefaultPageSize = -1;
-
-        BuildConditions();
-
-        if (mReportInfo == null)
-        {
-            usItems.SpecialFields.Add(new SpecialField { Text = "(" + mFirstItemText + ")", Value = "0" });
-        }
-
-        if (ShowItemSelector)
-        {
-            ReloadItems();
-        }
-
-        if (mSetValues)
-        {
-            WindowHelper.Add(CurrentGuid(), CurrentDataSet);
-	        ScriptHelper.RegisterDialogScript(Page);
-            ScriptHelper.RegisterStartupScript(Page, typeof(Page), "OpenModalWindowReportItem", ScriptHelper.GetScript("modalDialog('" + ResolveUrl("~/CMSModules/Reporting/Dialogs/ReportParametersSelector.aspx?ReportID=" + ReportID + "&guid=" + CurrentGuid()) + "','ReportParametersDialog', 700, 500);"));
-            mKeepDataInWindowsHelper = true;
-        }
-
-        // Apply reportid condition if report was selected via uniselector
-        if (mReportInfo != null)
-        {
-            DataSet ds = CurrentDataSet;
-
-            ViewState["ParametersXmlData"] = null;
-            ViewState["ParametersXmlSchema"] = null;
-
-            if (!DataHelper.DataSourceIsEmpty(ds))
-            {
-                ViewState["ParametersXmlData"] = ds.GetXml();
-                ViewState["ParametersXmlSchema"] = ds.GetXmlSchema();
-            }
-
-            if (!mKeepDataInWindowsHelper)
-            {
-                WindowHelper.Remove(CurrentGuid());
-            }
-
-            if (!DataHelper.DataSourceIsEmpty(ds))
-            {
-                ds = DataHelper.DataSetPivot(ds, new [] { "ParameterName", "ParameterValue" });
-                ugParameters.DataSource = ds;
-                ugParameters.ReloadData();
-                pnlParameters.Visible = true;
-            }
-            else
-            {
-                pnlParameters.Visible = false;
-            }
-        }
-        else
-        {
-            pnlParameters.Visible = false;
-        }
-
-        base.OnPreRender(e);
-    }
-
-
-    protected void btnSet_Click(object sender, EventArgs e)
-    {
-        mSetValues = true;
-    }
-
-
-    protected void btnClear_Click(object sender, EventArgs e)
+    private void ClearData()
     {
         WindowHelper.Remove(CurrentGuid());
         ViewState["ParametersXmlData"] = null;
         ViewState["ParametersXmlSchema"] = null;
-    }
-
-
-    protected void usReports_OnSelectionChanged(object sender, EventArgs ea)
-    {
-        WindowHelper.Remove(CurrentGuid());
-        ViewState["ParametersXmlData"] = null;
-        ViewState["ParametersXmlSchema"] = null;
-
-        // Try to set first item
-        if (usItems.DropDownSingleSelect.Items.Count > 0)
-        {
-            usItems.DropDownSingleSelect.SelectedIndex = 0;
-        }
     }
 
     #endregion

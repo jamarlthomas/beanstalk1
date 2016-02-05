@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="True" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Inherits="CMSModules_ContactManagement_Pages_Tools_Account_CollisionDialog" Codebehind="CollisionDialog.aspx.cs" %>
+    Inherits="CMSModules_ContactManagement_Pages_Tools_Account_CollisionDialog"  Codebehind="CollisionDialog.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/CountrySelector.ascx" TagName="CountrySelector"
     TagPrefix="cms" %>

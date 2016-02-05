@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" 
+﻿<%@ Page Language="C#" AutoEventWireup="true" 
     Inherits="CMSModules_Groups_Tools_Group_New" Theme="Default"
-    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="New group" Codebehind="Group_New.aspx.cs" %>
+    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="New group"  Codebehind="Group_New.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Groups/Controls/GroupEdit.ascx" TagPrefix="cms" TagName="GroupEdit" %>
 

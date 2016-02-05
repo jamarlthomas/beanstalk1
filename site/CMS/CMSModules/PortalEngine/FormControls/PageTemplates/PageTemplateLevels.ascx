@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_FormControls_PageTemplates_PageTemplateLevels"
-    Codebehind="PageTemplateLevels.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_FormControls_PageTemplates_PageTemplateLevels"
+     Codebehind="PageTemplateLevels.ascx.cs" %>
 <%@ Register Src="~/CMSModules/PortalEngine/FormControls/PageTemplates/LevelTree.ascx"
     TagPrefix="cms" TagName="LevelTree" %>
 <cms:CMSUpdatePanel runat="server" ID="pnlUpdate">

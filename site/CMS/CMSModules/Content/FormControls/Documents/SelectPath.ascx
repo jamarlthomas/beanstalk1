@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_FormControls_Documents_SelectPath"
-    Codebehind="SelectPath.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_FormControls_Documents_SelectPath"
+     Codebehind="SelectPath.ascx.cs" %>
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server" UpdateMode="Conditional" RenderMode="Inline">
     <ContentTemplate>
         <div class="control-group-inline">

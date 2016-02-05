@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_DocumentTypes_Pages_Development_DocumentType_Edit_Transformation_New"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_DocumentTypes_Pages_Development_DocumentType_Edit_Transformation_New"
     ValidateRequest="false" Theme="Default" EnableEventValidation="false" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Title="New transformation" Codebehind="DocumentType_Edit_Transformation_New.aspx.cs" %>
+    Title="New transformation"  Codebehind="DocumentType_Edit_Transformation_New.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/Filters/DocTypeFilter.ascx" TagName="DocTypeFilter"
     TagPrefix="cms" %>

@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
-using System.Web;
+using System.Web.UI.WebControls;
 
 using CMS;
 using CMS.Base;
 using CMS.ExtendedControls;
 using CMS.Helpers;
+using CMS.Localization;
 using CMS.UIControls;
 using CMS.WebFarmSync;
+using CMS.WebFarmSync.Internal;
 
-
-/// <summary>
-/// Custom class registration.
-/// </summary>
 [assembly: RegisterCustomClass("WebFarmServerListExtender", typeof(WebFarmServerListExtender))]
 
 /// <summary>
@@ -30,20 +29,22 @@ public class WebFarmServerListExtender : ControlExtender<UniGrid>
         Control.OnExternalDataBound += OnExternalDataBound;
         Control.ZeroRowsText = ResHelper.GetString("general.nodatafound");
 
-        if (WebSyncHelper.WebFarmInstanceEnabled && !String.IsNullOrEmpty(WebSyncHelper.ServerName))
+        string messageToShow;
+
+        if (WebFarmContext.WebFarmEnabled)
         {
-            if (SystemContext.IsRunningOnAzure)
-            {
-                Control.ShowInformation(String.Format(ResHelper.GetString("WebFarm.EnabledAzure"), WebSyncHelper.ServerName));
-            }
-            else
-            {
-                Control.ShowInformation(String.Format(ResHelper.GetString("WebFarm.Enabled"), WebSyncHelper.ServerName));
-            }
+            messageToShow = SystemContext.IsRunningOnAzure ? "WebFarm.EnabledAzure" : "WebFarm.Enabled";
         }
         else
         {
-            Control.ShowInformation(ResHelper.GetString("WebFarm.Disabled"));
+            messageToShow = "WebFarm.Disabled";
+        }
+
+        Control.ShowInformation(String.Format(ResHelper.GetString(messageToShow), SystemContext.ServerName));
+
+        if ((WebFarmLicenseHelper.ServerCount > 1) && !WebFarmLicenseHelper.LicenseIsValid)
+        {
+            Control.ShowError(ResHelper.GetString("webfarm.unsufficientdomainlicense"));
         }
     }
 
@@ -72,8 +73,43 @@ public class WebFarmServerListExtender : ControlExtender<UniGrid>
     {
         switch (sourceName.ToLowerCSafe())
         {
+            case "serveredit":
+                if (WebFarmContext.WebFarmMode == WebFarmModeEnum.Automatic)
+                {
+                    CMSGridActionButton button = (CMSGridActionButton)sender;
+                    button.Enabled = false;
+                    button.ToolTip = LocalizationHelper.GetString("webfarmservers_list.disablededit");
+                }
+                break;
+
             case "serverenabled":
                 return UniGridFunctions.ColoredSpanYesNo(parameter);
+
+            case "serverstatus":
+                var server = WebFarmServerInfoProvider.GetWebFarmServerInfo(ValidationHelper.GetInteger(parameter, 0));
+                switch (server.Status)
+                {
+                    case WebFarmServerStatusEnum.Healthy:
+                        return new Tag
+                        {
+                            Text = ResHelper.GetString("webfarmservers_list.status.healthy"),
+                            Color = "#497d04"
+                        };
+
+                    case WebFarmServerStatusEnum.Transitioning:
+                        return new Tag
+                        {
+                            Text = ResHelper.GetString("webfarmservers_list.status.transitioning"),
+                            Color = "#c98209"
+                        };
+
+                    default:
+                        return new Tag
+                        {
+                            Text = ResHelper.GetString("webfarmservers_list.status.notresponding"),
+                            Color = "#b12628"
+                        };
+                }
         }
         return parameter;
     }

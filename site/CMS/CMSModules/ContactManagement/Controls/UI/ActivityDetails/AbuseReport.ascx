@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="AbuseReport.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_ActivityDetails_AbuseReport" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="AbuseReport.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_ActivityDetails_AbuseReport" %>
 <div class="form-horizontal">
     <div class="form-group">
         <div class="editing-form-label-cell">

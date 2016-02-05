@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_Tools_Ecommerce_Report_View"
-    Theme="Default" Codebehind="Report_View.aspx.cs" Title="E-commerce - Reports" EnableEventValidation="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_Tools_Ecommerce_Report_View"
+    Theme="Default"  Codebehind="Report_View.aspx.cs" Title="E-commerce - Reports" EnableEventValidation="false" %>
 
 <%@ Register Src="~/CMSModules/WebAnalytics/Controls/GraphPreLoader.ascx" TagName="GraphPreLoader"
     TagPrefix="cms" %>

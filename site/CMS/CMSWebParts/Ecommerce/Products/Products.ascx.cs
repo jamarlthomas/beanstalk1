@@ -477,7 +477,7 @@ public partial class CMSWebParts_Ecommerce_Products_Products : CMSAbstractWebPar
         base.OnContentLoaded();
 
         // Check module permissions
-        if (!ECommerceContext.IsUserAuthorizedForPermission("ReadProducts"))
+        if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.PRODUCTS_READ))
         {
             ShowError(String.Format(GetString("CMSMessages.AccessDeniedResource"), "EcommerceRead OR ReadProducts"));
             gridElem.Visible = false;

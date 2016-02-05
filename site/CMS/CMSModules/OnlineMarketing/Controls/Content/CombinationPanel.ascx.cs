@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Text;
 using System.Web;
@@ -390,15 +390,13 @@ public partial class CMSModules_OnlineMarketing_Controls_Content_CombinationPane
                     // Widgets - use the Preview view mode to ensure that only chosen variant will be rendered (Edit mode renders all widget variants and does not combine the instance with the variants)
                     instance = MVTestInfoProvider.CombineWithMVT(pi, pi.DocumentTemplateInstance, currentCombination.MVTCombinationID, ViewModeEnum.Preview);
                     CMSPortalManager.SaveTemplateChanges(pi, instance, WidgetZoneTypeEnum.Editor, ViewModeEnum.Edit, tp);
+
+                    // Save document after combining widgets as it is by default saved in the session and changes are not properly reflected
+                    DocumentManager.SaveDocument();
                 }
 
                 // Remove all variants
-                var variants = MVTVariantInfoProvider.GetMVTVariants().WhereEquals("MVTVariantPageTemplateID", templateId);
-
-                foreach (MVTVariantInfo info in variants)
-                {
-                    MVTVariantInfoProvider.DeleteMVTVariantInfo(info);
-                }
+                MVTVariantInfoProvider.GetMVTVariants().WhereEquals("MVTVariantPageTemplateID", templateId).ForEachObject(v => v.Delete());
 
                 // Clear cached template info
                 pi.UsedPageTemplateInfo.Update();

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" Theme="Default" AutoEventWireup="true"
-    Inherits="CMSModules_MediaLibrary_CMSPages_SelectFolder_Content" EnableEventValidation="false" Codebehind="SelectFolder_Content.aspx.cs" %>
+﻿<%@ Page Language="C#" Theme="Default" AutoEventWireup="true"
+    Inherits="CMSModules_MediaLibrary_CMSPages_SelectFolder_Content" EnableEventValidation="false"  Codebehind="SelectFolder_Content.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/MediaLibrary/SelectFolder.ascx"
     TagName="SelectFolder" TagPrefix="cms" %>

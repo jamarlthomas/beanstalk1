@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="MessageUserSelector_Footer.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="MessageUserSelector_Footer.aspx.cs"
     Inherits="CMSModules_Messaging_CMSPages_MessageUserSelector_Footer" Theme="Default"
     MasterPageFile="~/CMSMasterPages/LiveSite/EmptyPage.master" %>
 

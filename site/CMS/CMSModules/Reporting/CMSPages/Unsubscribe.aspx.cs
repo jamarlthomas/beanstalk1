@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 
 using CMS.UIControls;
@@ -33,7 +33,7 @@ public partial class CMSModules_Reporting_CMSPages_Unsubscribe : CMSPage
             if (ri != null)
             {
                 // Set info label based by subscription's report
-                lblInfo.Text = String.Format(GetString("reportsubscription.unsubscription.info"), email, ri.ReportDisplayName);
+                lblInfo.Text = String.Format(GetString("reportsubscription.unsubscription.info"), HTMLHelper.HTMLEncode(email), HTMLHelper.HTMLEncode(ri.ReportDisplayName));
             }
         }
         else

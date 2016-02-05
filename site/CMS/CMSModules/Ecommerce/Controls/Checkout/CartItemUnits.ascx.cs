@@ -15,7 +15,7 @@ public partial class CMSModules_Ecommerce_Controls_Checkout_CartItemUnits : CMSC
     #region "Variables"
 
     private string mControlType;
-    private static string mImageURL;
+    private string mImageURL;
     private string mControlLabel;
     private int mCartItemID;
     private bool? mShowUpdate;

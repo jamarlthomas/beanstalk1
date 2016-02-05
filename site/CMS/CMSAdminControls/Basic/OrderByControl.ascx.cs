@@ -1,10 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Web;
 using System.Web.UI;
-using System.Collections;
 using System.Web.UI.WebControls;
 
 using CMS.ExtendedControls;
@@ -13,38 +11,43 @@ using CMS.Helpers;
 
 public partial class CMSAdminControls_Basic_OrderByControl : FormEngineUserControl
 {
+    #region "Constants"
+
+    // Control names
+    private const string TXTCOLUMN_ID_PREFIX = "txtColumn";
+
+    private const string DRPCOLUMN_ID_PREFIX = "drpColumn";
+
+    private const string DRPDIRECTION_ID_PREFIX = "drpDirection";
+
+    private const string LBLTHENBY_ID_PREFIX = "lblThenBy";
+
+    private const string PNLORDERBY_ID_PREFIX = "pnlOrderBy";
+
+    private const string SELECT_COLUMN = "##SELECTCOLUMN##";
+
+    // Direction constants
+    private const string ASC = "ASC";
+
+    private const string DESC = "DESC";
+
+    // JavaScript prefixes
+    private const string SET_DIRECTION_TXT = "SetDirectionTxt";
+
+    private const string SET_DIRECTION_DRP = "SetDirectionDrp";
+
+    #endregion
+
+
     #region "Private variables"
 
     private List<ListItem> mColumns = new List<ListItem>();
 
-    private List<OrderByRow> orderByRows = new List<OrderByRow>();
+    private readonly List<OrderByRow> orderByRows = new List<OrderByRow>();
 
-    private IList<string> mValues = null;
+    private IList<string> mValues;
 
-    private IList<int> mControlIdentifiers = null;
-
-    // Control names
-    private static string TXTCOLUMN_ID_PREFIX = "txtColumn";
-
-    private static string DRPCOLUMN_ID_PREFIX = "drpColumn";
-
-    private static string DRPDIRECTION_ID_PREFIX = "drpDirection";
-
-    private static string LBLTHENBY_ID_PREFIX = "lblThenBy";
-
-    private static string PNLORDERBY_ID_PREFIX = "pnlOrderBy";
-
-    private static string SELECT_COLUMN = "##SELECTCOLUMN##";
-
-    // Direction constants
-    private static string ASC = "ASC";
-
-    private static string DESC = "DESC";
-
-    // JavaScript prefixes
-    private static string SET_DIRECTION_TXT = "SetDirectionTxt";
-
-    private static string SET_DIRECTION_DRP = "SetDirectionDrp";
+    private IList<int> mControlIdentifiers;
 
     #endregion
 
@@ -116,30 +119,25 @@ public partial class CMSAdminControls_Basic_OrderByControl : FormEngineUserContr
                 // Get column name based on current column control
                 if (ColumnControl.GetType() == typeof(TextBox))
                 {
-                    TextBox txtColumn = ColumnControl as TextBox;
-                    return txtColumn.Text.Trim();
+                    return ((TextBox)ColumnControl).Text.Trim();
                 }
-                else if (ColumnControl.GetType() == typeof(CMSDropDownList))
+                
+                if (ColumnControl.GetType() == typeof(CMSDropDownList))
                 {
-                    CMSDropDownList drpColumn = ColumnControl as CMSDropDownList;
-                    return drpColumn.SelectedValue.Trim();
+                    return ((CMSDropDownList)ColumnControl).SelectedValue.Trim();
                 }
-                else
-                {
-                    return string.Empty;
-                }
+                
+                return string.Empty;
             }
             set
             {
                 if (ColumnControl.GetType() == typeof(TextBox))
                 {
-                    TextBox txtColumn = ColumnControl as TextBox;
-                    txtColumn.Text = value;
+                    ((TextBox)ColumnControl).Text = value;
                 }
                 else if (ColumnControl.GetType() == typeof(CMSDropDownList))
                 {
-                    CMSDropDownList drpColumn = ColumnControl as CMSDropDownList;
-                    drpColumn.SelectedValue = value;
+                     ((CMSDropDownList)ColumnControl).SelectedValue = value;
                 }
             }
         }
@@ -194,7 +192,7 @@ public partial class CMSAdminControls_Basic_OrderByControl : FormEngineUserContr
 
     /// <summary>
     /// Indicates if delayed reload should be used.
-    /// If True reload data must be called externaly.
+    /// If True reload data must be called externally.
     /// </summary>
     public bool DelayedReload
     {
@@ -271,7 +269,7 @@ public partial class CMSAdminControls_Basic_OrderByControl : FormEngineUserContr
 
             if (!string.IsNullOrEmpty(clauses))
             {
-                Values = clauses.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                Values = clauses.Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             }
             else
             {
@@ -290,7 +288,7 @@ public partial class CMSAdminControls_Basic_OrderByControl : FormEngineUserContr
         {
             if (mValues == null)
             {
-                return ValidationHelper.GetString(Value, string.Empty).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                return ValidationHelper.GetString(Value, string.Empty).Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             }
             return mValues;
         }
@@ -305,13 +303,6 @@ public partial class CMSAdminControls_Basic_OrderByControl : FormEngineUserContr
 
     #region "Page events"
 
-    public CMSAdminControls_Basic_OrderByControl()
-    {
-
-    }
-
-
-
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!DelayedReload)
@@ -324,6 +315,7 @@ public partial class CMSAdminControls_Basic_OrderByControl : FormEngineUserContr
     protected override void OnPreRender(EventArgs e)
     {
         base.OnPreRender(e);
+        
         // Make final adjustments of controls
         RefreshControls();
     }
@@ -389,9 +381,9 @@ public partial class CMSAdminControls_Basic_OrderByControl : FormEngineUserContr
         {
             orderByRows.Clear();
             plcOrderBy.Controls.Clear();
-            mControlIdentifiers = Array.ConvertAll<string, int>(hdnIndices.Value.Trim().Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries), new Converter<string, int>(StringToInt));
+            mControlIdentifiers = Array.ConvertAll(hdnIndices.Value.Trim().Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries), StringToInt);
             hdnIndices.Value = string.Empty;
-            int count = 0;
+            int count;
 
             if (ControlIdentifiers.Count > 0)
             {
@@ -414,7 +406,7 @@ public partial class CMSAdminControls_Basic_OrderByControl : FormEngineUserContr
                     for (int i = 0; i < count; i++)
                     {
                         string line = Values[i].Trim();
-                        string[] valuesArray = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        string[] valuesArray = line.Split(new [] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                         if (valuesArray.Length > 0)
                         {
@@ -527,10 +519,13 @@ $cmsj(this).keyup(function() {
             // Check whether entered value is an identifier
             if (!ValidationHelper.IsIdentifier(text) && !isLastRow)
             {
-                LocalizedLabel lblError = new LocalizedLabel();
-                lblError.ResourceString = "orderbycontrol.notidentifier";
-                lblError.CssClass = "ErrorLabel";
-                lblError.ID = "lblError" + index;
+                LocalizedLabel lblError = new LocalizedLabel
+                {
+                    ResourceString = "orderbycontrol.notidentifier",
+                    CssClass = "ErrorLabel",
+                    EnableViewState = false,
+                    ID = "lblError" + index
+                };
                 panel.Controls.Add(lblError);
                 i++;
             }
@@ -649,33 +644,36 @@ $cmsj(this).keyup(function() {
     {
         hdnIndices.Value += i + ";";
 
-        Panel pnlOrderBy = new Panel();
-        pnlOrderBy.ID = PNLORDERBY_ID_PREFIX + i;
+        Panel pnlOrderBy = new Panel
+        {
+            ID = PNLORDERBY_ID_PREFIX + i
+        };
 
         LocalizedLabel lblThenBy = null;
         if (addThenBy)
         {
             // Add 'Then by' label 
-            lblThenBy = new LocalizedLabel();
-            lblThenBy.ResourceString = "orderbycontrol.thenby";
-            lblThenBy.CssClass = "ThenBy";
-            lblThenBy.ID = LBLTHENBY_ID_PREFIX + i;
+            lblThenBy = new LocalizedLabel
+            {
+                ResourceString = "orderbycontrol.thenby",
+                CssClass = "ThenBy",
+                EnableViewState = false,
+                ID = LBLTHENBY_ID_PREFIX + i
+            };
         }
 
-        // Add non-breakable space
-        LiteralControl ltlNbsp = new LiteralControl("&nbsp;");
-        ltlNbsp.ID = "ltlNbsp" + i;
-
         // Add dropdown list for setting direction
-        CMSDropDownList drpDirection = new CMSDropDownList();
-        drpDirection.ID = DRPDIRECTION_ID_PREFIX + i;
-        drpDirection.CssClass = "ShortDropDownList";
+        CMSDropDownList drpDirection = new CMSDropDownList
+        {
+            ID = DRPDIRECTION_ID_PREFIX + i,
+            CssClass = "ShortDropDownList",
+            AutoPostBack = true,
+            Enabled = Enabled
+        };
         drpDirection.Items.Add(new ListItem(GetString("general.ascending"), ASC));
         drpDirection.Items.Add(new ListItem(GetString("general.descending"), DESC));
-        drpDirection.AutoPostBack = true;
         if (!String.IsNullOrEmpty(sortDirection))
         {
-            // Set value
             drpDirection.SelectedValue = sortDirection;
         }
 
@@ -684,10 +682,13 @@ $cmsj(this).keyup(function() {
         {
                 // Add textbox for column name
             case SelectorMode.TextBox:
-                CMSTextBox txtColumn = new CMSTextBox();
-                txtColumn.ID = TXTCOLUMN_ID_PREFIX + i;
+                CMSTextBox txtColumn = new CMSTextBox
+                {
+                    ID = TXTCOLUMN_ID_PREFIX + i,
+                    AutoPostBack = true,
+                    Enabled = Enabled
+                };
                 txtColumn.TextChanged += txtBox_TextChanged;
-                txtColumn.AutoPostBack = true;
 
                 if (!String.IsNullOrEmpty(sortColumn))
                 {
@@ -699,11 +700,14 @@ $cmsj(this).keyup(function() {
 
                 // Add dropdown list for column selection
             case SelectorMode.DropDownList:
-                CMSDropDownList drpColumn = new CMSDropDownList();
-                drpColumn.ID = DRPCOLUMN_ID_PREFIX + i;
-                drpColumn.CssClass = "ColumnDropDown";
+                CMSDropDownList drpColumn = new CMSDropDownList
+                {
+                    ID = DRPCOLUMN_ID_PREFIX + i,
+                    CssClass = "ColumnDropDown",
+                    AutoPostBack = true,
+                    Enabled = Enabled
+                };
                 drpColumn.SelectedIndexChanged += drpOrderBy_SelectedIndexChanged;
-                drpColumn.AutoPostBack = true;
                 drpColumn.Items.Add(new ListItem(GetString("orderbycontrol.selectcolumn"), SELECT_COLUMN));
                 drpColumn.Items.AddRange(CloneItems(Columns.ToArray()));
                 if (!String.IsNullOrEmpty(sortColumn))
@@ -718,31 +722,50 @@ $cmsj(this).keyup(function() {
         // Add controls to panel
         if (lblThenBy != null)
         {
-            pnlOrderBy.Controls.Add(lblThenBy);
+            pnlOrderBy.Controls.Add(WrapControl(lblThenBy));
         }
         if (orderByControl != null)
         {
-            pnlOrderBy.Controls.Add(orderByControl);
+            pnlOrderBy.Controls.Add(WrapControl(orderByControl));
         }
-        pnlOrderBy.Controls.Add(ltlNbsp);
-        pnlOrderBy.Controls.Add(drpDirection);
+        pnlOrderBy.Controls.Add(WrapControl(drpDirection));
 
         // Add panel to place holder
         plcOrderBy.Controls.Add(pnlOrderBy);
 
-        // Setup enable/disable script for direction dropdown list
-        if (orderByControl is CMSTextBox)
+        if (Enabled)
         {
-            (orderByControl as CMSTextBox).Attributes.Add("onkeyup", SET_DIRECTION_TXT + "('" + orderByControl.ClientID + "')");
-            ScriptHelper.RegisterStartupScript(this, typeof(string), "setEnabledTxt" + orderByControl.ClientID, ScriptHelper.GetScript("$cmsj(document).ready(function() {" + SET_DIRECTION_TXT + "('" + orderByControl.ClientID + "');})"));
-        }
-        else if (orderByControl is CMSDropDownList)
-        {
-            ScriptHelper.RegisterStartupScript(this, typeof(string), "setEnabledDrp" + orderByControl.ClientID, ScriptHelper.GetScript("$cmsj(document).ready(function() {" + SET_DIRECTION_DRP + "('" + orderByControl.ClientID + "');})"));
+            // Setup enable/disable script for direction dropdown list
+            if (orderByControl is TextBox)
+            {
+                ((TextBox)orderByControl).Attributes.Add("onkeyup", SET_DIRECTION_TXT + "('" + orderByControl.ClientID + "')");
+                ScriptHelper.RegisterStartupScript(this, typeof (string), "setEnabledTxt" + orderByControl.ClientID, ScriptHelper.GetScript("$cmsj(document).ready(function() {" + SET_DIRECTION_TXT + "('" + orderByControl.ClientID + "');})"));
+            }
+            else
+            {
+                ScriptHelper.RegisterStartupScript(this, typeof (string), "setEnabledDrp" + orderByControl.ClientID, ScriptHelper.GetScript("$cmsj(document).ready(function() {" + SET_DIRECTION_DRP + "('" + orderByControl.ClientID + "');})"));
+            }
         }
 
         // Add row to collection
         orderByRows.Add(new OrderByRow(i, lblThenBy, orderByControl, drpDirection, pnlOrderBy));
+    }
+
+
+    /// <summary>
+    /// Wraps the given control in panel.
+    /// </summary>
+    /// <param name="control">Control that will be wrapped.</param>
+    private Control WrapControl(Control control)
+    {
+        Panel pnl = new Panel
+        {
+            ID = "pnlWrp" + control.ID,
+            CssClass = "control-group-inline"
+        };
+        pnl.Controls.Add(control);
+
+        return pnl;
     }
 
     #endregion

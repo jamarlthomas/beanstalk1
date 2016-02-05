@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Web;
@@ -206,7 +206,7 @@ public partial class CMSModules_Groups_Controls_GroupJoin : CMSAdminControl
         GroupMemberInfo groupMemberInfo = GroupMemberInfoProvider.GetGroupMemberInfo(MembershipContext.AuthenticatedUser.UserID, Group.GroupID);
         if (groupMemberInfo != null)
         {
-            if (groupMemberInfo.MemberStatus == GroupMemberStatus.Approved || groupMemberInfo.MemberStatus == GroupMemberStatus.GroupAdmin)
+            if ((groupMemberInfo.MemberStatus == GroupMemberStatus.Approved) || (groupMemberInfo.MemberStatus == GroupMemberStatus.GroupAdmin))
             {
                 lblInfo.Text = GetString("community.group.join.alreadyamember");
             }

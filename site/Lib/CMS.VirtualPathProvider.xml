@@ -9,21 +9,6 @@
             Virtual path provider dynamically loads content from virtual paths.
             </summary>
         </member>
-        <member name="F:CMS.VirtualPathProvider.DbPathProvider.mVirtualFiles">
-            <summary>
-            Virtual files [path] -> [VirtualFile]
-            </summary>
-        </member>
-        <member name="F:CMS.VirtualPathProvider.DbPathProvider.mVirtualDirectories">
-            <summary>
-            Virtual directories. [path] -> [VirtualDirectory]
-            </summary>
-        </member>
-        <member name="F:CMS.VirtualPathProvider.DbPathProvider.mEnabled">
-            <summary>
-            If true, the virtual path provider is enabled
-            </summary>
-        </member>
         <member name="M:CMS.VirtualPathProvider.DbPathProvider.FileExists(System.String)">
             <summary>
             Finds whether the file, which is part of given virtual path, exists on the virtual file system or on the normal file system.
@@ -96,11 +81,6 @@
         <member name="P:CMS.VirtualPathProvider.DbPathProvider.VirtualDirectories">
             <summary>
             Virtual directories. [path] -> [VirtualDirectory]
-            </summary>
-        </member>
-        <member name="P:CMS.VirtualPathProvider.DbPathProvider.Enabled">
-            <summary>
-            If true, the virtual path provider is enabled
             </summary>
         </member>
         <member name="T:CMS.VirtualPathProvider.DbVirtualDirectory">

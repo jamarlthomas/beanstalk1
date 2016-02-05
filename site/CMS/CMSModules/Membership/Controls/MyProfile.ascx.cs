@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls;
 using CMS.FormControls;
@@ -15,10 +15,13 @@ public partial class CMSModules_Membership_Controls_MyProfile : CMSUserControl
     // Default form name
     private string mAlternativeFormName = "";
 
-    /// <summary>
-    /// Indicates if field visibility could be edited.
-    /// </summary>
-    private bool mAllowEditVisibility = false;
+    private bool mAllowEditVisibility;
+    public bool mMarkRequiredFields;
+    public bool mUseColonBehindLabel = true;
+    public string mAfterSaveRedirectURL;
+    public string mFormCSSClass;
+    public string mSubmitButtonResourceString;
+    public string mValidationErrorMessage;
 
     #endregion
 
@@ -71,6 +74,7 @@ public partial class CMSModules_Membership_Controls_MyProfile : CMSUserControl
         }
     }
 
+
     public override bool IsLiveSite
     {
         get
@@ -85,11 +89,116 @@ public partial class CMSModules_Membership_Controls_MyProfile : CMSUserControl
         }
     }
 
+
+    /// <summary>
+    /// Displays required field mark next to field labels if fields are required. Default value is false.
+    /// </summary>
+    public bool MarkRequiredFields
+    {
+        get
+        {
+            return mMarkRequiredFields;
+        }
+        set
+        {
+            mMarkRequiredFields = value;
+            editProfileForm.MarkRequiredFields = value;
+        }
+    }
+
+
+    /// <summary>
+    /// Displays colon behind label text in form. Default value is true.
+    /// </summary>
+    public bool UseColonBehindLabel
+    {
+        get
+        {
+            return mUseColonBehindLabel;
+        }
+        set
+        {
+            mUseColonBehindLabel = value;
+            editProfileForm.UseColonBehindLabel = value;
+        }
+    }
+
+
+    /// <summary>
+    /// Relative URL where user is redirected, after form content is successfully modified.
+    /// </summary>
+    public string AfterSaveRedirectURL
+    {
+        get
+        {
+            return mAfterSaveRedirectURL;
+        }
+        set
+        {
+            mAfterSaveRedirectURL = value;
+            editProfileForm.RedirectUrlAfterSave = value;
+        }
+    }
+
+
+    /// <summary>
+    /// Form css class.
+    /// </summary>
+    public string FormCSSClass
+    {
+        get
+        {
+            return mFormCSSClass;
+        }
+        set
+        {
+            mFormCSSClass = value;
+            editProfileForm.CssClass = value;
+        }
+    }
+
+
+    /// <summary>
+    /// Submit button label. Valid input is resource string.
+    /// </summary>
+    public string SubmitButtonResourceString
+    {
+        get
+        {
+            return mSubmitButtonResourceString;
+        }
+        set
+        {
+            mSubmitButtonResourceString = value;
+            editProfileForm.SubmitButton.ResourceString = value;
+        }
+    }
+
+
+    /// <summary>
+    /// Message used when validation fails.
+    /// </summary>
+    public string ValidationErrorMessage
+    {
+        get
+        {
+            return mValidationErrorMessage;
+        }
+        set
+        {
+            mValidationErrorMessage = value;
+            editProfileForm.ValidationErrorMessage = value;
+        }
+    }
+
     #endregion
 
 
     #region "Methods"
 
+    /// <summary>
+    /// Sets edited user.
+    /// </summary>
     protected override void OnInit(EventArgs e)
     {
         // Show only to authenticated users
@@ -108,12 +217,18 @@ public partial class CMSModules_Membership_Controls_MyProfile : CMSUserControl
                 editProfileForm.VisibilityFormName = AlternativeFormName;
                 editProfileForm.AllowEditVisibility = AllowEditVisibility;
                 editProfileForm.IsLiveSite = IsLiveSite;
+                editProfileForm.RedirectUrlAfterSave = AfterSaveRedirectURL;
+                editProfileForm.SubmitButton.ResourceString = SubmitButtonResourceString;
+                editProfileForm.CssClass = FormCSSClass;
+                editProfileForm.MarkRequiredFields = MarkRequiredFields;
+                editProfileForm.UseColonBehindLabel = UseColonBehindLabel;
+                editProfileForm.ValidationErrorMessage = ValidationErrorMessage;
             }
         }
         else
         {
             Visible = false;
-        }
+        }        
     }
 
 
@@ -198,7 +313,7 @@ public partial class CMSModules_Membership_Controls_MyProfile : CMSUserControl
     protected override void OnPreRender(EventArgs e)
     {
         base.OnPreRender(e);
-        
+
         ControlsHelper.RegisterPostbackControl(editProfileForm.SubmitButton);
 
         // Alter username according to GetFormattedUserName function

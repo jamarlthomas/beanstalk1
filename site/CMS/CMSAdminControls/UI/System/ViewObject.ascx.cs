@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Data;
 using System.Text;
@@ -12,6 +12,7 @@ using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.UIControls;
+using CMS.PortalEngine;
 
 using CultureInfo = System.Globalization.CultureInfo;
 

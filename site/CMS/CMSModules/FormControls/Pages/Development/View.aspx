@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_FormControls_Pages_Development_View"
-    Theme="Default" Title="Form User Control View" Codebehind="View.aspx.cs"
+    Theme="Default" Title="Form User Control View"  Codebehind="View.aspx.cs"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">

@@ -1,26 +1,27 @@
-using System;
+﻿using System;
 using System.Collections;
+using System.Linq;
 using System.Security.Principal;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using CMS.CMSImportExport;
 using CMS.Core;
-using CMS.EventLog;
+using CMS.DataEngine;
 using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.IO;
 using CMS.Base;
-using CMS.Localization;
 using CMS.PortalEngine;
 using CMS.SiteProvider;
 using CMS.Membership;
 using CMS.UIControls;
 
 using Directory = CMS.IO.Directory;
+
 using IOExceptions = System.IO;
 
-public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserControl, ICallbackEventHandler
+public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserControl
 {
     #region "Constants"
 
@@ -35,14 +36,27 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
     #region "Variables"
 
     private static readonly Hashtable mManagers = new Hashtable();
-    private static object mLock = new object();
+    private static readonly object mLock = new object();
 
-    private SiteImportSettings mImportSettings = null;
+    private SiteImportSettings mImportSettings;
+    private AsyncProcessData mProcessData;
 
     #endregion
 
 
     #region "Properties"
+
+    /// <summary>
+    /// Process messages
+    /// </summary>
+    public AsyncProcessData ProcessData
+    {
+        get
+        {
+            return mProcessData ?? (mProcessData = AsyncProcessData.GetDataForProcess(ProcessGUID));
+        }
+    }
+
 
     /// <summary>
     /// Redirection URL after finish button click.
@@ -166,7 +180,7 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
         {
             if (mImportSettings == null)
             {
-                SiteImportSettings settings = (SiteImportSettings)SiteExportSettings.GetFromPersistentStorage(PersistentSettingsKey);
+                SiteImportSettings settings = (SiteImportSettings)AbstractImportExportSettings.GetFromPersistentStorage(PersistentSettingsKey);
                 if (settings == null)
                 {
                     if (wzdImport.ActiveStepIndex == 0)
@@ -265,8 +279,10 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
                 SetWarningLabel(GetString("ImportSite.VirtualPathProviderNotRunning"));
             }
 
-            ctrlAsync.OnFinished += ctrlAsync_OnFinished;
-            ctrlAsync.OnError += ctrlAsync_OnError;
+            ctrlAsyncUnzip.OnFinished += CtrlAsyncUnzipOnFinished;
+            ctrlAsyncUnzip.OnError += CtrlAsyncUnzipOnError;
+
+            ctlAsyncImport.OnCancel += ctlAsyncImport_OnCancel;
 
             bool notTempPermissions = false;
 
@@ -284,7 +300,7 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
                 catch (IOExceptions.IOException ex)
                 {
                     pnlWrapper.Visible = false;
-                    SetErrorLabel(ex.Message);
+                    SetAlertLabel(lblErrorBlank, ex.Message);
                     return;
                 }
 
@@ -295,8 +311,8 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
             if (notTempPermissions)
             {
                 pnlWrapper.Visible = false;
-                SetErrorLabel(LocalizationHelper.GetStringFormat("ImportSite.ErrorPermissions", ImportSettings.TemporaryFilesPath, WindowsIdentity.GetCurrent().Name));
                 pnlPermissions.Visible = true;
+                SetAlertLabel(lblErrorBlank, String.Format(GetString("ImportSite.ErrorPermissions"), ImportSettings.TemporaryFilesPath, WindowsIdentity.GetCurrent().Name));
                 lnkPermissions.Target = "_blank";
                 lnkPermissions.Text = GetString("Install.ErrorPermissions");
                 lnkPermissions.NavigateUrl = DocumentationHelper.GetDocumentationTopicUrl(HELP_TOPIC_DISKPERMISSIONS_LINK);
@@ -315,63 +331,58 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
                     catch (Exception ex)
                     {
                         pnlWrapper.Visible = false;
-                        SetErrorLabel(GetString("ImportSite.ErrorDeletionTemporaryFiles") + ex.Message);
+                        SetAlertLabel(lblErrorBlank, GetString("ImportSite.ErrorDeletionTemporaryFiles") + " " + ex.Message);
                         return;
                     }
                 }
-
+                
                 // Javascript functions
-                string script =
-                    "var imMessageText = '';\n" +
-                    "var imErrorText = '';\n" +
-                    "var imWarningText = '';\n" +
-                    "var imMachineName = '" + SystemContext.MachineName.ToLowerCSafe() + "';\n" +
-                    "var getBusy = false;\n" +
-                    "function GetImportState(cancel)\n" +
-                    "{ if(window.Activity){window.Activity();} if (getBusy && !cancel) return; getBusy = true; var argument = cancel + ';' + imMessageText.length + ';' + imErrorText.length + ';' + imWarningText.length + ';' + imMachineName; return " + Page.ClientScript.GetCallbackEventReference(this, "argument", "SetImportStateMssg", "argument", "ProcessSetImportStateError", false) + " }\n";
+                string script = String.Format(
+@"
+function Finished(sender) {{
+    var errorElement = document.getElementById('{2}');
 
-                script +=
-                    "function ProcessSetImportStateError(arg, context)\n" +
-                    "{\n" +
-                    "   getBusy = false;\n" +
-                    "}\n";
+    var errorText = sender.getErrors();
+    if (errorText != '') {{ 
+        errorElement.innerHTML = errorText;
+        document.getElementById('{4}').style.removeProperty('display');
+    }}
 
-                script +=
-                    "function SetImportStateMssg(rValue, context)\n" +
-                    "{\n" +
-                    "   getBusy = false;\n" +
-                    "   if(rValue != '')\n" +
-                    "   {\n" +
-                    "       var args = context.split(';');\n" +
-                    "       var values = rValue.split('" + SiteExportSettings.SEPARATOR + "');\n" +
-                    "       var messageElement = document.getElementById('" + lblProgress.ClientID + "');\n" +
-                    "       var errorElement = document.getElementById('" + lblError.ClientID + "');\n" +
-                    "       var warningElement = document.getElementById('" + lblWarning.ClientID + "');\n" +
-                    "       var messageText = imMessageText;\n" +
-                    "       messageText = values[1] + messageText.substring(messageText.length - args[1]);\n" +
-                    "       if(messageText.length > imMessageText.length){ imMessageText = messageElement.innerHTML = messageText; }\n" +
-                    "       var errorText = imErrorText;\n" +
-                    "       errorText = values[2] + errorText.substring(errorText.length - args[2]);\n" +
-                    "       if(errorText.length > imErrorText.length){ imErrorText = errorElement.innerHTML = errorText; document.getElementById('" + pnlError.ClientID + "').style.removeProperty('display'); }\n" +
-                    "       var warningText = imWarningText;\n" +
-                    "       warningText = values[3] + warningText.substring(warningText.length - args[3]);\n" +
-                    "       if(warningText.length > imWarningText.length){ imWarningText = warningElement.innerHTML = warningText; document.getElementById('" + pnlWarning.ClientID + "').style.removeProperty('display'); }\n" +
-                    "       if((values=='') || (values[0]=='F'))\n" +
-                    "       {\n" +
-                    "           StopImportStateTimer();\n" +
-                    "           var actDiv = document.getElementById('actDiv'); \n" +
-                    "           if (actDiv != null) { actDiv.style.display = 'none'; } \n" +
-                    "           BTN_Disable('" + CancelButton.ClientID + "');\n" +
-                    "           BTN_Enable('" + FinishButton.ClientID + "');\n" +
-                    "       }\n" +
-                    "   }\n" +
-                    "}\n";
+    var warningElement = document.getElementById('{3}');
+    
+    var warningText = sender.getWarnings();
+    if (warningText != '') {{ 
+        warningElement.innerHTML = warningText;
+        document.getElementById('{5}').style.removeProperty('display');
+    }}    
+
+    var actDiv = document.getElementById('actDiv');
+    if (actDiv != null) {{ 
+        actDiv.style.display = 'none'; 
+    }}
+
+    BTN_Disable('{0}');
+    BTN_Enable('{1}');
+
+    if ((errorText == null) || (errorText == '')) {{ 
+        BTN_Enable('{6}');
+    }}
+}}
+",
+                    CancelButton.ClientID,
+                    FinishButton.ClientID,
+                    lblError.LabelClientID,
+                    lblWarning.LabelClientID,
+                    pnlError.ClientID,
+                    pnlWarning.ClientID,
+                    NextButton.ClientID
+                );
 
                 // Register the script to perform get flags for showing buttons retrieval callback
-                ScriptHelper.RegisterClientScriptBlock(this, GetType(), "GetSetImportState", ScriptHelper.GetScript(script));
+                ScriptHelper.RegisterClientScriptBlock(this, GetType(), "Finished", ScriptHelper.GetScript(script));
 
                 // Add cancel button attribute
-                CancelButton.Attributes.Add("onclick", "BTN_Disable('" + CancelButton.ClientID + "');" + "return CancelImport();");
+                CancelButton.Attributes.Add("onclick", ctlAsyncImport.GetCancelScript(true) + "return false;");
 
                 wzdImport.NextButtonClick += wzdImport_NextButtonClick;
                 wzdImport.PreviousButtonClick += wzdImport_PreviousButtonClick;
@@ -386,6 +397,12 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
     }
 
 
+    private void ctlAsyncImport_OnCancel(object sender, EventArgs e)
+    {
+        wzdImport_FinishButtonClick(sender, null);
+    }
+
+
     protected override void OnPreRender(EventArgs e)
     {
         base.OnPreRender(e);
@@ -395,21 +412,25 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
             InitializeHeader();
 
             // Button click script
-            const string afterScript = "var imClicked = false; \n" +
-                                       "function NextStepAction() \n" +
-                                       "{ \n" +
-                                       "   if(!imClicked) \n" +
-                                       "   { \n" +
-                                       "     imClicked = true; \n" +
-                                       "     return true; \n" +
-                                       "   } \n" +
-                                       "   return false; \n" +
-                                       "} \n";
+            const string afterScript = 
+@"
+var imClicked = false;
+
+function NextStepAction() {
+    if (!imClicked) {
+        imClicked = true;
+        return true;
+    }
+    return false;
+}
+";
 
             ltlScriptAfter.Text += ScriptHelper.GetScript(afterScript);
 
             // Ensure default button
             EnsureDefaultButton();
+
+            ShowObjectTypeCycleWarning();
 
             InitAlertLabels();
         }
@@ -481,7 +502,7 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
                     );
 
                 // Create temporary files asynchronously
-                ctrlAsync.RunAsync(CreateTemporaryFiles, WindowsIdentity.GetCurrent());
+                ctrlAsyncUnzip.RunAsync(CreateTemporaryFiles, WindowsIdentity.GetCurrent());
 
                 e.Cancel = true;
                 break;
@@ -523,8 +544,6 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
                 wzdImport.ActiveStepIndex++;
                 break;
         }
-
-        ReloadSteps();
     }
 
     #endregion
@@ -532,7 +551,7 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
 
     #region "Async control events"
 
-    protected void ctrlAsync_OnError(object sender, EventArgs e)
+    protected void CtrlAsyncUnzipOnError(object sender, EventArgs e)
     {
         if (((AsyncControl)sender).Worker.LastException != null)
         {
@@ -550,19 +569,21 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
     }
 
 
-    protected void ctrlAsync_OnFinished(object sender, EventArgs e)
+    protected void CtrlAsyncUnzipOnFinished(object sender, EventArgs e)
     {
         // Stop the timer
         const string script = "StopUnzipTimer();";
 
+        var settings = ImportSettings;
+
         // Check if a new module is being imported
-        if (!String.IsNullOrWhiteSpace(ImportSettings.ModuleName))
+        if (!String.IsNullOrWhiteSpace(settings.ModuleName))
         {
             // Start the import process immediately
-            ImportSettings.DefaultProcessObjectType = ProcessObjectEnum.All;
-            ImportSettings.CopyFiles = false;
-            ImportSettings.CopyCodeFiles = false;
-            if (!StartImport(ImportSettings))
+            settings.DefaultProcessObjectType = ProcessObjectEnum.All;
+            settings.CopyFiles = false;
+            settings.CopyCodeFiles = false;
+            if (!StartImport(settings))
             {
                 return;
             }
@@ -574,10 +595,10 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
             wzdImport.ActiveStepIndex++;
 
         } // Decide if importing site
-        else if (ImportSettings.SiteIsIncluded)
+        else if (settings.SiteIsIncluded)
         {
             // Single site import and no site exists
-            if (ValidationHelper.GetBoolean(ImportSettings.GetInfo(ImportExportHelper.INFO_SINGLE_OBJECT), false) && (SiteInfoProvider.GetSitesCount() == 0))
+            if (ValidationHelper.GetBoolean(settings.GetInfo(ImportExportHelper.INFO_SINGLE_OBJECT), false) && (SiteInfoProvider.GetSitesCount() == 0))
             {
                 SetErrorLabel(GetString("SiteImport.SingleSiteObjectNoSite"));
                 return;
@@ -595,21 +616,10 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
 
         // Move to the next step
         wzdImport.ActiveStepIndex++;
-        ReloadSteps();
-
+        
         ltlScriptAfter.Text += ScriptHelper.GetScript(script);
     }
-
-
-    protected void worker_OnError(object sender, EventArgs e)
-    {
-    }
-
-
-    protected void worker_OnFinished(object sender, EventArgs e)
-    {
-    }
-
+    
     #endregion
 
 
@@ -662,20 +672,24 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
     // Create temporary files and preselect objects
     private void CreateTemporaryFiles(object parameter)
     {
-        ImportProvider.CreateTemporaryFiles(ImportSettings);
-        ImportSettings.LoadDefaultSelection();
+        var settngs = ImportSettings;
+
+        ImportProvider.CreateTemporaryFiles(settngs);
+
+        settngs.LoadDefaultSelection();
+        settngs.SavePersistent();
     }
 
 
     /// <summary>
     /// Starts import process with given settings. Returns true if import was started successfully, false otherwise (error label is set in this case).
     /// </summary>
-    /// <param name="importSettings">Import settings</param>
+    /// <param name="settings">Import settings</param>
     /// <returns>Returns true if import was started successfully, false otherwise.</returns>
-    private bool StartImport(SiteImportSettings importSettings)
+    private bool StartImport(SiteImportSettings settings)
     {
         // Check licences
-        string error = ImportExportControl.CheckLicenses(importSettings);
+        string error = ImportExportControl.CheckLicenses(settings);
         if (!string.IsNullOrEmpty(error))
         {
             SetErrorLabel(error);
@@ -683,31 +697,20 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
             return false;
         }
 
-        // Init the Mimetype helper (required for the Import)
-        MimeTypeHelper.LoadMimeTypes();
-
         // Start asynchronnous Import
-        if (importSettings.SiteIsIncluded)
+        if (settings.SiteIsIncluded)
         {
-            importSettings.EventLogSource = string.Format(importSettings.GetAPIString("ImportSite.EventLogSiteSource", "Import '{0}' site"), ResHelper.LocalizeString(importSettings.SiteDisplayName));
+            settings.EventLogSource = string.Format(settings.GetAPIString("ImportSite.EventLogSiteSource", "Import '{0}' site"), ResHelper.LocalizeString(settings.SiteDisplayName));
         }
-        ImportManager.Settings = importSettings;
 
-        AsyncWorker worker = new AsyncWorker();
-        worker.OnFinished += worker_OnFinished;
-        worker.OnError += worker_OnError;
-        worker.RunAsync(ImportManager.Import, WindowsIdentity.GetCurrent());
+        var manager = ImportManager;
+
+        settings.LogContext = ctlAsyncImport.CurrentLog;
+        manager.Settings = settings;
+
+        ctlAsyncImport.RunAsync(manager.Import, WindowsIdentity.GetCurrent());
 
         return true;
-    }
-
-
-    protected void ReloadSteps()
-    {
-        if (wzdImport.ActiveStepIndex == 3)
-        {
-            ltlScript.Text = ScriptHelper.GetScript("StartImportStateTimer();");
-        }
     }
 
 
@@ -754,7 +757,7 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
 
 
     /// <summary>
-    /// Iniliazes (hides) alert labels
+    /// Initializes (hides) alert labels
     /// </summary>
     private void InitAlertLabels()
     {
@@ -765,7 +768,24 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
 
 
     /// <summary>
-    /// Displays text in given altert lable
+    /// Displays a warning about potential problems caused by object type dependency cycles.
+    /// </summary>
+    private void ShowObjectTypeCycleWarning()
+    {
+        // Show only on the second step
+        if ((wzdImport.ActiveStepIndex == 2) && ImportExportHelper.ObjectTypeCycles.Any())
+        {
+            SetAlertLabel(lblWarningCycles, String.Format(GetString("importexport.objecttypecycles"), String.Join("<br />", ImportExportHelper.ObjectTypeCycles.Select(HTMLHelper.HTMLEncode))));
+        }
+        else
+        {
+            pnlWarningCycles.Visible = false;
+        }
+    }
+
+
+    /// <summary>
+    /// Displays text in given alert label
     /// </summary>
     /// <param name="label">Alert label</param>
     /// <param name="text">Text to display</param>
@@ -792,72 +812,6 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard : CMSUserCont
     private void SetWarningLabel(string text)
     {
         SetAlertLabel(lblWarning, text);
-    }
-
-    #endregion
-
-
-    #region "Callback handling"
-
-    /// <summary>
-    /// Callback event handler.
-    /// </summary>
-    /// <param name="argument">Callback argument</param>
-    public void RaiseCallbackEvent(string argument)
-    {
-        // Get arguments
-        string[] args = argument.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-        bool cancel = ValidationHelper.GetBoolean(args[0], false);
-        int messageLength = 0;
-        int errorLength = 0;
-        int warningLength = 0;
-        string machineName = null;
-
-        if (args.Length == 5)
-        {
-            messageLength = ValidationHelper.GetInteger(args[1], 0);
-            errorLength = ValidationHelper.GetInteger(args[2], 0);
-            warningLength = ValidationHelper.GetInteger(args[3], 0);
-            machineName = ValidationHelper.GetString(args[4], null);
-        }
-
-        // Check if on same machine
-        if (machineName == SystemContext.MachineName.ToLowerCSafe())
-        {
-            try
-            {
-                // Cancel Import
-                if (cancel)
-                {
-                    ImportManager.Settings.Cancel();
-                }
-
-                hdnState.Value = ImportManager.Settings.GetLimitedProgressLog(messageLength, errorLength, warningLength);
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogException("ImportWizard", "IMPORT", ex);
-
-                hdnState.Value = ImportManager.Settings.GetLimitedProgressLog(messageLength, errorLength, warningLength);
-            }
-            finally
-            {
-                if (ImportManager.Settings.GetProgressState() != LogStatusEnum.Info)
-                {
-                    // Delete presistent data
-                    PersistentStorageHelper.RemoveValue(PersistentSettingsKey);
-                }
-            }
-        }
-    }
-
-
-    /// <summary>
-    /// Callback result retrieving handler.
-    /// </summary>
-    public string GetCallbackResult()
-    {
-        return hdnState.Value;
     }
 
     #endregion

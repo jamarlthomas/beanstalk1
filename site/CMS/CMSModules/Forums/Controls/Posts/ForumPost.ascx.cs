@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 
-using CMS.DataEngine;
+using CMS.Base;
 using CMS.ExtendedControls;
 using CMS.Forums;
 using CMS.Globalization;
@@ -12,9 +12,6 @@ public partial class CMSModules_Forums_Controls_Posts_ForumPost : ForumViewer
     #region "Variables"
 
     private int mPostID;
-
-    private IDataClass mPostSrcData;
-    private bool mDisplayOnly;
 
     #endregion
 
@@ -90,29 +87,17 @@ public partial class CMSModules_Forums_Controls_Posts_ForumPost : ForumViewer
     /// <summary>
     /// Gets or sets post data object.
     /// </summary>
-    public IDataClass PostData
+    public IDataContainer PostData
     {
-        get
-        {
-            return mPostSrcData;
-        }
-        set
-        {
-            mPostSrcData = value;
-        }
+        get;
+        set;
     }
 
 
     public bool DisplayOnly
     {
-        get
-        {
-            return mDisplayOnly;
-        }
-        set
-        {
-            mDisplayOnly = value;
-        }
+        get;
+        set;
     }
 
     #endregion
@@ -142,7 +127,7 @@ public partial class CMSModules_Forums_Controls_Posts_ForumPost : ForumViewer
 
         if (PostData != null)
         {
-            fpi = new ForumPostInfo(PostData);
+            fpi = ForumPostInfo.New(PostData);
         }
 
         if (fpi == null)
@@ -152,7 +137,7 @@ public partial class CMSModules_Forums_Controls_Posts_ForumPost : ForumViewer
 
         if (fpi != null)
         {
-            PostData = fpi.Generalized.DataClass;
+            PostData = fpi;
             fi = ForumInfoProvider.GetForumInfo(fpi.PostForumID);
         }
         else

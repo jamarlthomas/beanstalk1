@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Messaging_Controls_IgnoreList"
-    Codebehind="IgnoreList.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Messaging_Controls_IgnoreList"
+     Codebehind="IgnoreList.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Membership/FormControls/Users/selectuser.ascx" TagName="SelectUser"
     TagPrefix="cms" %>
 <cms:CMSUpdatePanel ID="pnlIgnoreList" runat="server">

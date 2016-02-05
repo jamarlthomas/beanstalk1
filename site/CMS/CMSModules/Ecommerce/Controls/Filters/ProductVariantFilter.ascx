@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_Filters_ProductVariantFilter" 
-    Codebehind="ProductVariantFilter.ascx.cs" %>
+     Codebehind="ProductVariantFilter.ascx.cs" %>
 
 <asp:Panel ID="pnlContainer" runat="server" DefaultButton="btnFilter" class ="form-horizontal form-filter">
     <asp:Panel ID="pnlFilterOptions" runat="server">

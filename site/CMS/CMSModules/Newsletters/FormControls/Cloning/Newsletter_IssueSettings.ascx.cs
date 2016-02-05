@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.DataEngine;
 using CMS.Newsletters;
@@ -9,25 +9,13 @@ public partial class CMSModules_Newsletters_FormControls_Cloning_Newsletter_Issu
     #region "Properties"
 
     /// <summary>
-    /// Excluded other binding tasks.
-    /// </summary>
-    public override string ExcludedOtherBindingTypes
-    {
-        get
-        {
-            return OpenedEmailInfo.OBJECT_TYPE;
-        }
-    }
-
-
-    /// <summary>
-    /// Excluded other binding tasks.
+    /// Excluded child types.
     /// </summary>
     public override string ExcludedChildTypes
     {
         get
         {
-            return LinkInfo.OBJECT_TYPE;
+            return string.Join(";", LinkInfo.OBJECT_TYPE, OpenedEmailInfo.OBJECT_TYPE);
         }
     }
 

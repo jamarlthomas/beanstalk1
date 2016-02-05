@@ -119,7 +119,7 @@ Date.prototype.format = function (mask, utc) {
 function startTimer(id,format,time){
     var now = new Date();
     now.setTime((now.getTime()+time));
-	var timer = $("#time_"+id)[0];
+    var timer = document.getElementById("time_" + id);
 	if (timer != null) {
 	 	timer.innerHTML = dateFormat(now, format, false);
 	 	window[id + "timer"] = setTimeout(function(){

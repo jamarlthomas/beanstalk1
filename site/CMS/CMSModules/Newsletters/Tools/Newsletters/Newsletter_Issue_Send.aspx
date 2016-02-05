@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Newsletter_Issue_Send.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Newsletter_Issue_Send.aspx.cs"
     Inherits="CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_Send" Theme="Default"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 

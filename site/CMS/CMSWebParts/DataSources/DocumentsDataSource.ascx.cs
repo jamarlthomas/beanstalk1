@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.Localization;
@@ -296,24 +296,7 @@ public partial class CMSWebParts_DataSources_DocumentsDataSource : CMSAbstractWe
             srcDocuments.SourceFilterName = value;
         }
     }
-
-
-    /// <summary>
-    /// Gets or sets the value that indicates whether documents datasource supports selected item.
-    /// </summary>
-    [Obsolete("Use property LoadCurrentPageOnly instead")]
-    public bool EnableSelectedItem
-    {
-        get
-        {
-            return LoadCurrentPageOnly;
-        }
-        set
-        {
-            LoadCurrentPageOnly = value;
-        }
-    }
-
+    
 
     /// <summary>
     /// Gets or sets the value that indicates that if a page is selected,

@@ -36,6 +36,16 @@
             Specialized class for the custom table info
             </summary>
         </member>
+        <member name="F:CMS.CustomTables.CustomTableInfo.OBJECT_TYPE_CUSTOMTABLE">
+            <summary>
+            Object type for custom table
+            </summary>
+        </member>
+        <member name="F:CMS.CustomTables.CustomTableInfo.TYPEINFOCUSTOMTABLE">
+            <summary>
+            Type information for custom tables.
+            </summary>
+        </member>
         <member name="M:CMS.CustomTables.CustomTableInfo.#ctor">
             <summary>
             Constructor
@@ -160,6 +170,12 @@
             <param name="className">Class name of the custom table</param>
             <param name="dr">DataRow with the data</param>
         </member>
+        <member name="M:CMS.CustomTables.CustomTableItem.NewObject(CMS.DataEngine.LoadDataSettings)">
+            <summary>
+            Creates a new object from the given DataRow
+            </summary>
+            <param name="settings">Data settings</param>
+        </member>
         <member name="M:CMS.CustomTables.CustomTableItem.New(System.String,System.Data.DataRow)">
             <summary>
             Creates new CustomTableItem instance which must inherit the CustomTableItem class.
@@ -192,7 +208,7 @@
             Initializes the object created with default constructor. Use it to load existing item from data row.
             </summary>
             <param name="className">Class name</param>
-            <param name="dataRow">Data row containing all page data</param>
+            <param name="dr">Data row containing all page data</param>
         </member>
         <member name="M:CMS.CustomTables.CustomTableItem.Initialize(System.String,CMS.Base.IDataContainer)">
             <summary>
@@ -951,7 +967,7 @@
             Initializes the tasks for custom table items synchronization
             </summary>
         </member>
-        <member name="M:CMS.CustomTables.CustomTableSynchronization.ClearCustomTableTypeInfos(System.String,System.String,CMS.Core.BinaryData)">
+        <member name="M:CMS.CustomTables.CustomTableSynchronization.ClearCustomTableTypeInfos(System.String,System.String[],CMS.Core.BinaryData)">
             <summary>
             Clears the custom table items
             </summary>
@@ -959,7 +975,7 @@
             <param name="data">Task data</param>
             <param name="binaryData">Task binary data</param>
         </member>
-        <member name="M:CMS.CustomTables.CustomTableSynchronization.InvalidateCustomTableTypeInfo(System.String,System.String,CMS.Core.BinaryData)">
+        <member name="M:CMS.CustomTables.CustomTableSynchronization.InvalidateCustomTableTypeInfo(System.String,System.String[],CMS.Core.BinaryData)">
             <summary>
             Invalidates the custom table type info
             </summary>

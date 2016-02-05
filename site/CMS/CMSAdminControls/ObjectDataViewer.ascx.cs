@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -11,6 +11,7 @@ using CMS.Base;
 using CMS.DataEngine;
 using CMS.Helpers;
 using CMS.UIControls;
+using CMS.PortalEngine;
 
 public partial class CMSAdminControls_ObjectDataViewer : CMSAdminEditControl
 {

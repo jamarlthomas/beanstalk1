@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Title="Page Type Edit - Query Edit" Theme="Default"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Title="Page Type Edit - Query Edit" Theme="Default"
     Inherits="CMSModules_DocumentTypes_Pages_Development_DocumentType_Edit_Query_Edit"
-    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Codebehind="DocumentType_Edit_Query_Edit.aspx.cs" %>
+    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"  Codebehind="DocumentType_Edit_Query_Edit.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/AdminControls/Controls/Class/QueryEdit.ascx" TagName="QueryEdit" TagPrefix="cms" %>
 

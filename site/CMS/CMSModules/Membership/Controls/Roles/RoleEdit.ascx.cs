@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.SiteProvider;
@@ -266,7 +266,7 @@ public partial class CMSModules_Membership_Controls_Roles_RoleEdit : CMSAdminEdi
                 if (si != null)
                 {
                     // Check unique name
-                    RoleInfo ri = RoleInfoProvider.GetExistingRoleInfo(codeName, si.SiteID);
+                    RoleInfo ri = (GroupID > 0) ? RoleInfoProvider.GetExistingRoleInfo(codeName, si.SiteID, GroupID) : RoleInfoProvider.GetExistingRoleInfo(codeName, si.SiteID);
                     if ((ri == null) || (ri.RoleID == ItemID) || (codeName == InfoHelper.CODENAME_AUTOMATIC))
                     {
                         SaveRole(ri, codeName, displayName);

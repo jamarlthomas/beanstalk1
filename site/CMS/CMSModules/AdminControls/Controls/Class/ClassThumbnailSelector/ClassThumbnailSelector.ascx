@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="ClassThumbnailSelector.ascx.cs" Inherits="CMSModules_AdminControls_Controls_Class_ClassThumbnailSelector_ClassThumbnailSelector" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="ClassThumbnailSelector.ascx.cs" Inherits="CMSModules_AdminControls_Controls_Class_ClassThumbnailSelector_ClassThumbnailSelector" %>
 <%@ Import Namespace="CMS.IO" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniFlatSelector.ascx" TagName="UniFlatSelector"

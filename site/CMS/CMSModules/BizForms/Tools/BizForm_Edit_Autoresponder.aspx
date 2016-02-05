@@ -1,12 +1,14 @@
 <%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_BizForms_Tools_BizForm_Edit_Autoresponder"
     Theme="Default" ValidateRequest="false" EnableEventValidation="false" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Codebehind="BizForm_Edit_Autoresponder.aspx.cs" %>
+     Codebehind="BizForm_Edit_Autoresponder.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" TagName="HeaderActions"
     TagPrefix="cms" %>
 
 <asp:Content ID="aS" runat="server" ContentPlaceHolderID="plcActions">
-    <cms:HeaderActions ID="menu" ShortID="m" runat="server" IsLiveSite="false" />
+    <div class="control-group-inline header-actions-container">
+        <cms:HeaderActions ID="menu" ShortID="m" runat="server" IsLiveSite="false" />
+    </div>
 </asp:Content>
 <asp:Content ID="plcContent" runat="server" ContentPlaceHolderID="plcContent">
     <asp:Panel ID="pnlUsers" runat="server" CssClass="form-custom-layout">
@@ -44,7 +46,7 @@
                     </div>
                     <div class="control-group-inline">
                         <div class="editor">
-                            <cms:CMSHtmlEditor ID="htmlEditor" runat="server" Width="650px" Height="300px" />
+                            <cms:CMSHtmlEditor FullPage="True" ID="htmlEditor" runat="server" Width="650px" Height="300px" />
                         </div>
                         <div class="fields">
                             <cms:LocalizedLabel ID="lblAvailableFields" runat="server" EnableViewState="false"

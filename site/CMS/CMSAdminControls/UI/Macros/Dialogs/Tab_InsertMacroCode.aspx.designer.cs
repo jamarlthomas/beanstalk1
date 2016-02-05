@@ -18,7 +18,7 @@ public partial class CMSAdminControls_UI_Macros_Dialogs_Tab_InsertMacroCode {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSAdminControls_UI_Macros_MacroEditor macroEditor;
+    protected global::CMS.UIControls.MacroEditor macroEditor;
     
     /// <summary>
     /// btnInsert control.

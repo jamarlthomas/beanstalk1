@@ -258,7 +258,7 @@
             <param name="service">TranslationService info object</param>
             <param name="siteName">Name of the site (for settings loading)</param>
         </member>
-        <member name="M:CMS.TranslationServices.AbstractHumanTranslationService.CheckTargetLanguagesAvailability(System.Collections.Generic.List{System.String})">
+        <member name="M:CMS.TranslationServices.AbstractHumanTranslationService.CheckTargetLanguagesAvailability(System.Collections.Generic.ICollection{System.String})">
             <summary>
             Checks that all given target languages are supported by selected service.
             </summary>
@@ -281,6 +281,8 @@
             Creates new submission (or resubmits existing if submission ticket is present).
             </summary>
             <param name="submission">Submission object</param>
+            <exception cref="T:System.Exception">Thrown when missing license for translation feature</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="submission"/> is <c>null</c></exception>
         </member>
         <member name="M:CMS.TranslationServices.EmailTranslationService.CancelSubmission(CMS.TranslationServices.TranslationSubmissionInfo)">
             <summary>
@@ -324,12 +326,14 @@
             Creates new submission (or resubmits existing if submission ticket is present).
             </summary>
             <param name="submission">Submission object</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="submission"/> is <c>null</c></exception>
         </member>
         <member name="M:CMS.TranslationServices.ManualTranslationService.CancelSubmission(CMS.TranslationServices.TranslationSubmissionInfo)">
             <summary>
             Cancels given submission.
             </summary>
             <param name="submission">Submission to cancel</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="submission"/> is <c>null</c></exception>
         </member>
         <member name="M:CMS.TranslationServices.ManualTranslationService.DownloadCompletedTranslations">
             <summary>
@@ -356,14 +360,6 @@
             Translations.com provider.
             </summary>
         </member>
-        <member name="M:CMS.TranslationServices.TranslationsComService.InitializeClientSettings(System.String,System.String,System.String)">
-            <summary>
-            Validates submission settings and initializes client provider.
-            </summary>
-            <param name="encoding">Encoding</param>
-            <param name="mimeType">Mime type</param>
-            <param name="fileFormatProfile">File format</param>
-        </member>
         <member name="M:CMS.TranslationServices.TranslationsComService.IsAvailable">
             <summary>
             Checks if everything required to run the service is in the settings of the service.
@@ -380,6 +376,8 @@
             Creates new submission (or resubmits existing if submission ticket is present).
             </summary>
             <param name="submission">Submission object</param>
+            <exception cref="T:System.Exception">Thrown when missing license for translation feature</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="submission"/> is <c>null</c></exception>
         </member>
         <member name="M:CMS.TranslationServices.TranslationsComService.CancelSubmission(CMS.TranslationServices.TranslationSubmissionInfo)">
             <summary>
@@ -391,6 +389,19 @@
             <summary>
             Retrieves completed XLIFF files from the service and processes them (imports them into the system). Returns null if everything went well.
             </summary>
+        </member>
+        <member name="M:CMS.TranslationServices.TranslationsComService.CheckConnection">
+            <summary>
+            Checks if the credentials are set correctly.
+            </summary>
+        </member>
+        <member name="M:CMS.TranslationServices.TranslationsComService.InitializeClientSettings(System.String,System.String,System.String)">
+            <summary>
+            Validates submission settings and initializes client provider.
+            </summary>
+            <param name="encoding">Encoding</param>
+            <param name="mimeType">Mime type</param>
+            <param name="fileFormatProfile">File format</param>
         </member>
         <member name="M:CMS.TranslationServices.TranslationsComService.GetPriorityName(System.Int32)">
             <summary>
@@ -414,12 +425,18 @@
             Processes submissions the translation of which is canceled.
             </summary>
         </member>
-        <member name="M:CMS.TranslationServices.TranslationsComService.ProcessCompletedDocument(System.String,System.String)">
+        <member name="M:CMS.TranslationServices.TranslationsComService.ProcessCompletedDocument(System.String,System.String,System.String)">
             <summary>
             Processes document with given ticket. Returns ID of the submission to which the submission item belongs.
             </summary>
             <param name="documentTicket">Target document ticket</param>
             <param name="targetTicket">Target item ticket</param>
+            <param name="targetLanguage">Target language in which was translation requested</param>
+        </member>
+        <member name="P:CMS.TranslationServices.TranslationsComService.Project">
+            <summary>
+            Returns project object received from the Project Director.
+            </summary>
         </member>
         <member name="P:CMS.TranslationServices.TranslationsComService.SupportedLanguages">
             <summary>
@@ -454,6 +471,11 @@
         <member name="P:CMS.TranslationServices.TranslationsComService.Client">
             <summary>
             Client to work with Project Director
+            </summary>
+        </member>
+        <member name="P:CMS.TranslationServices.TranslationsComService.ReplaceTargetLanguageRegex">
+            <summary>
+            Regex to replace target language in the XLIFF
             </summary>
         </member>
         <member name="T:CMS.TranslationServices.BingTranslatorService">
@@ -523,6 +545,11 @@
         <member name="M:CMS.TranslationServices.BingTranslatorService.IsAvailable">
             <summary>
             Checks if everything required to run the service is in the settings of the service.
+            </summary>
+        </member>
+        <member name="M:CMS.TranslationServices.BingTranslatorService.CheckConnection">
+            <summary>
+            Checks if the credentials are set correctly.
             </summary>
         </member>
         <member name="M:CMS.TranslationServices.BingTranslatorService.Translate(System.String,System.String,System.String,System.String,System.String)">
@@ -641,6 +668,11 @@
             Checks if everything required to run the service is in the settings of the service.
             </summary>
         </member>
+        <member name="M:CMS.TranslationServices.GoogleTranslatorService.CheckConnection">
+            <summary>
+            Checks if the credentials are set correctly.
+            </summary>
+        </member>
         <member name="M:CMS.TranslationServices.GoogleTranslatorService.GetLangCode(System.String)">
             <summary>
             Returns only first part of a culture code string (i.e. it returns "cs" from "cs-CZ").
@@ -712,7 +744,7 @@
         </member>
         <member name="M:CMS.TranslationServices.TranslationServicesTransformationFunctions.IsTranslationReady(System.Object)">
             <summary>
-            Returns true if there is at least one translation submission item with target XLIFF.
+            Returns true if there is at least one translation submission item with target XLIFF for given page and submission is marked as ready.
             </summary>
             <param name="document">Document to check</param>
         </member>
@@ -727,6 +759,21 @@
             </summary>
             <param name="context">Evaluation context with child resolver</param>
             <param name="parameters">Method parameters</param>
+        </member>
+        <member name="T:CMS.TranslationServices.TranslationServicesHandlers">
+            <summary>
+            Event handlers for translation services module
+            </summary>
+        </member>
+        <member name="M:CMS.TranslationServices.TranslationServicesHandlers.Init">
+            <summary>
+            Initializes the handlers
+            </summary>
+        </member>
+        <member name="M:CMS.TranslationServices.TranslationServicesHandlers.ClearServiceSettings(System.Object,CMS.DataEngine.SettingsKeyChangedEventArgs)">
+            <summary>
+            Settings key changed handler
+            </summary>
         </member>
         <member name="T:CMS.TranslationServices.TranslationServicesModuleMetadata">
             <summary>
@@ -751,6 +798,11 @@
         <member name="T:CMS.TranslationServices.TranslationServicesModule">
             <summary>
             Represents the Translation Services module.
+            </summary>
+        </member>
+        <member name="F:CMS.TranslationServices.TranslationServicesModule.TRANSLATION_SERVICES_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for translation services.
             </summary>
         </member>
         <member name="M:CMS.TranslationServices.TranslationServicesModule.#ctor">
@@ -778,13 +830,6 @@
             XLIFF MIME type
             </summary>
         </member>
-        <member name="M:CMS.TranslationServices.TranslationServiceHelper.GetXLIFF(CMS.Base.IDataContainer,CMS.TranslationServices.TranslationSettings)">
-            <summary>
-            Returns XLIFF export for given IDataContainer object.
-            </summary>
-            <param name="data">DataContainer object to export</param>
-            <param name="settings">Translation settings</param>
-        </member>
         <member name="M:CMS.TranslationServices.TranslationServiceHelper.GetXLIFF(CMS.Base.IDataContainer,CMS.TranslationServices.TranslationSettings,System.String)">
             <summary>
             Returns XLIFF export for given IDataContainer object.
@@ -792,15 +837,6 @@
             <param name="data">DataContainer object to export</param>
             <param name="settings">Translation settings</param>
             <param name="targetLanguage">Target language</param>
-        </member>
-        <member name="M:CMS.TranslationServices.TranslationServiceHelper.GetXLIFF(CMS.Base.IDataContainer,CMS.TranslationServices.TranslationSettings,System.Int32@,System.Int32@)">
-            <summary>
-            Returns XLIFF export for given IDataContainer object.
-            </summary>
-            <param name="data">DataContainer object to export</param>
-            <param name="settings">Translation settings</param>
-            <param name="charCount">Number of characters to translate within exported XLIFF</param>
-            <param name="wordCount">Number of words to translate within exported XLIFF</param>
         </member>
         <member name="M:CMS.TranslationServices.TranslationServiceHelper.GetXLIFF(CMS.Base.IDataContainer,CMS.TranslationServices.TranslationSettings,System.String,System.Int32@,System.Int32@)">
             <summary>
@@ -812,13 +848,6 @@
             <param name="charCount">Number of characters to translate within exported XLIFF</param>
             <param name="wordCount">Number of words to translate within exported XLIFF</param>
         </member>
-        <member name="M:CMS.TranslationServices.TranslationServiceHelper.GetXLIFF(CMS.DataEngine.BaseInfo,CMS.TranslationServices.TranslationSettings)">
-            <summary>
-            Returns XLIFF export for given TreeNode object.
-            </summary>
-            <param name="info">BaseInfo object to export</param>
-            <param name="settings">Translation settings</param>
-        </member>
         <member name="M:CMS.TranslationServices.TranslationServiceHelper.GetXLIFF(CMS.DataEngine.BaseInfo,CMS.TranslationServices.TranslationSettings,System.String)">
             <summary>
             Returns XLIFF export for given object instance.
@@ -826,15 +855,6 @@
             <param name="info">BaseInfo object to export</param>
             <param name="settings">Translation settings</param>
             <param name="targetLanguage">Target language</param>
-        </member>
-        <member name="M:CMS.TranslationServices.TranslationServiceHelper.GetXLIFF(CMS.DataEngine.BaseInfo,CMS.TranslationServices.TranslationSettings,System.Int32@,System.Int32@)">
-            <summary>
-            Returns XLIFF export for given TreeNode object.
-            </summary>
-            <param name="info">BaseInfo object to export</param>
-            <param name="settings">Translation settings</param>
-            <param name="charCount">Number of characters to translate within exported XLIFF</param>
-            <param name="wordCount">Number of words to translate within exported XLIFF</param>
         </member>
         <member name="M:CMS.TranslationServices.TranslationServiceHelper.GetXLIFF(CMS.DataEngine.BaseInfo,CMS.TranslationServices.TranslationSettings,System.String,System.Int32@,System.Int32@)">
             <summary>
@@ -846,13 +866,6 @@
             <param name="charCount">Number of characters to translate within exported XLIFF</param>
             <param name="wordCount">Number of words to translate within exported XLIFF</param>
         </member>
-        <member name="M:CMS.TranslationServices.TranslationServiceHelper.GetXLIFF(CMS.DocumentEngine.TreeNode,CMS.TranslationServices.TranslationSettings)">
-            <summary>
-            Returns XLIFF export for given TreeNode object.
-            </summary>
-            <param name="node">TreeNode object to export</param>
-            <param name="settings">Export settings</param>
-        </member>
         <member name="M:CMS.TranslationServices.TranslationServiceHelper.GetXLIFF(CMS.DocumentEngine.TreeNode,CMS.TranslationServices.TranslationSettings,System.String)">
             <summary>
             Returns XLIFF export for given TreeNode object.
@@ -860,15 +873,6 @@
             <param name="node">TreeNode object to export</param>
             <param name="settings">Export settings</param>
             <param name="targetLanguage">Target language</param>
-        </member>
-        <member name="M:CMS.TranslationServices.TranslationServiceHelper.GetXLIFF(CMS.DocumentEngine.TreeNode,CMS.TranslationServices.TranslationSettings,System.Int32@,System.Int32@)">
-            <summary>
-            Returns XLIFF export for given TreeNode object.
-            </summary>
-            <param name="node">TreeNode object to export</param>
-            <param name="settings">Export settings</param>
-            <param name="charCount">Number of characters to translate within exported XLIFF</param>
-            <param name="wordCount">Number of words to translate within exported XLIFF</param>
         </member>
         <member name="M:CMS.TranslationServices.TranslationServiceHelper.GetXLIFF(CMS.DocumentEngine.TreeNode,CMS.TranslationServices.TranslationSettings,System.String,System.Int32@,System.Int32@)">
             <summary>
@@ -960,6 +964,44 @@
             <param name="wordCount">Word count</param>
             <param name="charCount">Character count</param>
         </member>
+        <member name="M:CMS.TranslationServices.TranslationServiceHelper.SetComponentProperty(System.Collections.Generic.Dictionary{System.String,CMS.PortalEngine.WebPartInstance},System.Collections.Generic.Dictionary{System.String,CMS.FormEngine.FormInfo},System.String[],CMS.PortalEngine.PageTemplateInstance,System.String,System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Sets the translation string into property of given page component.
+            </summary>
+            <param name="componentsCache">Page components cache</param>
+            <param name="formDefinitionsCache">Form definitions cache</param>
+            <param name="parts">Identifier of the component and its property from XLIFF</param>
+            <param name="templateInstance">Page template instance</param>
+            <param name="translation">Translation of the property</param>
+            <param name="sourceLang">Source language</param>
+            <param name="targetLang">Target language</param>
+            <param name="prefix">Prefix defines type of component</param>
+            <param name="useResourceString">Indicates if resource string should be used</param>
+        </member>
+        <member name="M:CMS.TranslationServices.TranslationServiceHelper.GetCachedFormInfo(System.Collections.Generic.Dictionary{System.String,CMS.FormEngine.FormInfo},CMS.PortalEngine.WebPartInstance,System.String)">
+            <summary>
+            Gets the component form definition from web part instance object or cache
+            </summary>
+            <param name="formDefinitionsCache">Form definitions cache</param>
+            <param name="instance">Web part instance</param>
+            <param name="cacheKey">Key to check cache if form definition is already retrieved from the database</param>
+        </member>
+        <member name="M:CMS.TranslationServices.TranslationServiceHelper.GetCachedWebPartInstance(System.Collections.Generic.Dictionary{System.String,CMS.PortalEngine.WebPartInstance},CMS.PortalEngine.PageTemplateInstance,System.String,System.String)">
+            <summary>
+            Gets web part instance object from page template instance by given control identifier or cache key
+            </summary>
+            <param name="componentsCache">Page components cache</param>
+            <param name="templateInstance">Page template instance</param>
+            <param name="cacheKey">Cache key</param>
+            <param name="controlId">Control identifier</param>
+        </member>
+        <member name="M:CMS.TranslationServices.TranslationServiceHelper.GetFieldLength(CMS.FormEngine.FormFieldInfo,System.Boolean)">
+            <summary>
+            Get maximal allowed length of the given field. If using resource string the result is substract by length of the "{$ $}" macro signatures
+            </summary>
+            <param name="field">Field info</param>
+            <param name="useResourceString">Indicates if length is used for resource string or not</param>
+        </member>
         <member name="M:CMS.TranslationServices.TranslationServiceHelper.ProcessTranslation(System.String,CMS.TranslationServices.TranslationSubmissionInfo)">
             <summary>
             Translates object specified by XLIFF document. Returns translated object if translation went ok, null otherwise.
@@ -1003,7 +1045,7 @@
             <param name="settings">Translation settings</param>
             <param name="node">Document to translate</param>
         </member>
-        <member name="M:CMS.TranslationServices.TranslationServiceHelper.TranslateFields(CMS.Base.ICMSObject,System.Collections.Generic.List{CMS.FormEngine.FormFieldInfo},CMS.TranslationServices.AbstractMachineTranslationService,System.String,System.Collections.Generic.List{System.String},System.Boolean)">
+        <member name="M:CMS.TranslationServices.TranslationServiceHelper.TranslateFields(CMS.Base.ICMSObject,System.Collections.Generic.IEnumerable{CMS.FormEngine.FormFieldInfo},CMS.TranslationServices.AbstractMachineTranslationService,System.String,System.Collections.Generic.HashSet{System.String},System.Boolean)">
             <summary>
             Translates given object using specified machine translation service. Returns true if any field was updated.
             </summary>
@@ -1013,6 +1055,15 @@
             <param name="sourceLanguage">Source language of the data</param>
             <param name="targetLanguages">Target language(s) of the data</param>
             <param name="useResourceString">If true, field is translated using {$ $} macro, if false, translated value is saved directly in the field</param>
+        </member>
+        <member name="M:CMS.TranslationServices.TranslationServiceHelper.CheckValidLength(System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Checks if translation length is not longer than allowed field length else throws an exception
+            </summary>
+            <param name="translationLength">Length of the translation</param>
+            <param name="columnLength">Maximal length of the column </param>
+            <param name="columnName">Column name</param>
+            <param name="componentName">Name of the component which field is checked</param>
         </member>
         <member name="M:CMS.TranslationServices.TranslationServiceHelper.CancelSubmission(CMS.TranslationServices.TranslationSubmissionInfo)">
             <summary>
@@ -1054,15 +1105,6 @@
             <param name="sourceNode">Node to submit (source language node with all necessary data)</param>
             <param name="submissionInfo">Submission info</param>
             <returns>Null if operation succeeded, otherwise returns error message.</returns>
-        </member>
-        <member name="M:CMS.TranslationServices.TranslationServiceHelper.CreateSubmissionItemInfo(CMS.TranslationServices.TranslationSettings,CMS.TranslationServices.TranslationSubmissionInfo,CMS.DocumentEngine.TreeNode,System.Int32)">
-            <summary>
-            Creates new submission item within given submission (saves it to DB also) and returns the object.
-            </summary>
-            <param name="settings">Translation settings</param>
-            <param name="submission">Submission to which the item belongs</param>
-            <param name="sourceNode">Node tu submit</param>
-            <param name="targetDocId">Document ID of the target culture node (0 if does not exist)</param>
         </member>
         <member name="M:CMS.TranslationServices.TranslationServiceHelper.CreateSubmissionItemInfo(CMS.TranslationServices.TranslationSettings,CMS.TranslationServices.TranslationSubmissionInfo,CMS.DocumentEngine.TreeNode,System.Int32,System.String)">
             <summary>
@@ -1147,9 +1189,15 @@
         </member>
         <member name="M:CMS.TranslationServices.TranslationServiceHelper.IsTranslationReady(CMS.DocumentEngine.TreeNode)">
             <summary>
-            Returns true if there is at least one translation submission item with target XLIFF.
+            Returns true if there is at least one translation submission item with target XLIFF for given page and submission is marked as ready.
             </summary>
             <param name="doc">Document to check</param>
+        </member>
+        <member name="M:CMS.TranslationServices.TranslationServiceHelper.IsSubmissionReady(CMS.TranslationServices.TranslationSubmissionInfo)">
+            <summary>
+            Checks if submission is ready to import the translation based on current submission status
+            </summary>
+            <param name="submission">Translation submission to check</param>
         </member>
         <member name="M:CMS.TranslationServices.TranslationServiceHelper.ImportXLIFFfromZIP(CMS.TranslationServices.TranslationSubmissionInfo,CMS.IO.Stream)">
             <summary>
@@ -1205,7 +1253,7 @@
             </summary>
             <param name="priority">Submission priority</param>
         </member>
-        <member name="M:CMS.TranslationServices.TranslationServiceHelper.IsAuthorizedToTranslateDocument(CMS.DocumentEngine.TreeNode,CMS.Membership.CurrentUserInfo,System.Collections.Generic.List{System.String})">
+        <member name="M:CMS.TranslationServices.TranslationServiceHelper.IsAuthorizedToTranslateDocument(CMS.DocumentEngine.TreeNode,CMS.Membership.CurrentUserInfo,System.Collections.Generic.HashSet{System.String})">
             <summary>
             Checks whether the user is authorized to translate document.
             </summary>
@@ -1231,12 +1279,6 @@
             </summary>
             <param name="siteName">Name of the site</param>
         </member>
-        <member name="M:CMS.TranslationServices.TranslationServiceHelper.LogInformation(System.String)">
-            <summary>
-            Logs an information to event log.
-            </summary>
-            <param name="message">Information message to log</param>
-        </member>
         <member name="M:CMS.TranslationServices.TranslationServiceHelper.LogError(System.String)">
             <summary>
             Logs an error message to event log.
@@ -1255,13 +1297,13 @@
             </summary>
             <param name="message">Error message</param>
         </member>
-        <member name="M:CMS.TranslationServices.TranslationServiceHelper.SaveTranslatedTemplate(CMS.DocumentEngine.TreeNode,CMS.DocumentEngine.PageInfo,System.Collections.Hashtable)">
+        <member name="M:CMS.TranslationServices.TranslationServiceHelper.SaveTranslatedTemplate(CMS.DocumentEngine.TreeNode,CMS.DocumentEngine.PageInfo,System.Collections.Generic.Dictionary{System.String,CMS.PortalEngine.WebPartInstance})">
             <summary>
             Saves translated template.
             </summary>
             <param name="node">Document to update</param>
             <param name="pageInfo">PageInfo object</param>
-            <param name="webpartsTable">Hashtable of web parts to clear the cache</param>
+            <param name="webpartsTable">Dict of web parts to clear the cache</param>
         </member>
         <member name="M:CMS.TranslationServices.TranslationServiceHelper.SaveDocument(CMS.DocumentEngine.TreeNode,CMS.DocumentEngine.TreeProvider)">
             <summary>
@@ -1289,7 +1331,7 @@
             <param name="translation">Translation</param>
             <param name="sourceCulture">Source culture code</param>
             <param name="targetCulture">Target culture code</param>
-            <param name="maxKeyLength">Maximal resource string key length</param>
+            <param name="maxKeyLength">Maximal length of the resource string key</param>
             <param name="useResourceString">If true, field is translated using {$ $} macro, if false, translated value is saved directly in the field</param>
         </member>
         <member name="M:CMS.TranslationServices.TranslationServiceHelper.TranslateString(System.String,System.String,System.String,System.String,System.Int32)">
@@ -1308,6 +1350,12 @@
             </summary>
             <param name="src">Text to process</param>
             <param name="sourceLang">Source language</param>
+        </member>
+        <member name="M:CMS.TranslationServices.TranslationServiceHelper.GetLatestTranslatedSubmissionItemQuery(CMS.DocumentEngine.TreeNode)">
+            <summary>
+            Returns query for latest translated submission item of the given document.
+            </summary>
+            <param name="doc">Document waiting for translation</param>
         </member>
         <member name="M:CMS.TranslationServices.TranslationServiceHelper.CheckAndDownloadTranslations(System.String)">
             <summary>
@@ -1596,11 +1644,6 @@
             If not set, the setting is initialized based on translation service setting.
             </summary>
         </member>
-        <member name="P:CMS.TranslationServices.TranslationSettings.TargetLanguage">
-            <summary>
-            Gets or sets the target language of the object/document.
-            </summary>
-        </member>
         <member name="P:CMS.TranslationServices.TranslationSettings.TargetLanguages">
             <summary>
             Gets or sets the target languages of the object/document.
@@ -1734,6 +1777,16 @@
             Constructor - Creates a new TranslationSubmissionInfo object from the given DataRow.
             </summary>
             <param name="dr">DataRow with the object data.</param>
+        </member>
+        <member name="M:CMS.TranslationServices.TranslationSubmissionInfo.GetServiceSourceCulture">
+            <summary>
+            Gets service representation of the source service culture code
+            </summary>
+        </member>
+        <member name="M:CMS.TranslationServices.TranslationSubmissionInfo.GetServiceTargetCultures">
+            <summary>
+            Gets service representation of the target service culture codes
+            </summary>
         </member>
         <member name="P:CMS.TranslationServices.TranslationSubmissionInfo.SubmissionTargetCulture">
             <summary>
@@ -2178,6 +2231,14 @@
             <summary>
             Returns the query of all translation submissions.
             </summary>
+        </member>
+        <member name="M:CMS.TranslationServices.TranslationSubmissionItemInfoProvider.UpdateData(System.String,System.String,CMS.DataEngine.QueryDataParameters)">
+            <summary>
+            Updates data for all records given by where condition
+            </summary>
+            <param name="updateExpression">Update expression, e.g. "Value = Value * 2"</param>
+            <param name="where">Where condition</param>
+            <param name="parameters">Parameters</param>
         </member>
         <member name="T:CMS.TranslationServices.ImportTranslationAction">
             <summary>

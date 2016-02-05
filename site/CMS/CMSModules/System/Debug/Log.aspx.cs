@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Web.UI;
@@ -85,32 +85,48 @@ public partial class CMSModules_System_Debug_Log : CMSDebugPage
 
             var logs = Settings.LastLogs;
 
-            for (int i = logs.Count - 1; i >= 0; i--)
+            LoadLogs(logs);
+        }
+    }
+
+
+    /// <summary>
+    /// Loads the logs control for each request log and setups the control
+    /// </summary>
+    /// <param name="logs">List of request logs</param>
+    private void LoadLogs(List<RequestLog> logs)
+    {
+        RequestLog lastLog = null;
+
+        // Load the logs
+        for (int i = logs.Count - 1; i >= 0; i--)
+        {
+            try
             {
-                try
+                // Get the log
+                var log = logs[i];
+                if (log != null)
                 {
-                    // Get the log
-                    var log = logs[i];
-                    if (log != null)
+                    if ((log.Value != null) || !DataHelper.DataSourceIsEmpty(log.LogTable))
                     {
-                        if ((log.Value != null) || !DataHelper.DataSourceIsEmpty(log.LogTable))
-                        {
-                            // Load the control
-                            var logCtrl = LoadLogControl(log, Settings.LogControl, i);
+                        // Load the control
+                        var logCtrl = LoadLogControl(log, Settings.LogControl, i);
 
-                            logCtrl.ShowCompleteContext = chkCompleteContext.Checked;
+                        logCtrl.PreviousLog = lastLog;
+                        logCtrl.ShowCompleteContext = chkCompleteContext.Checked;
 
-                            // Add to the output
-                            plcLogs.Controls.Add(logCtrl);
+                        // Add to the output
+                        plcLogs.Controls.Add(logCtrl);
 
-                            mLogControls.Add(logCtrl);
-                        }
+                        mLogControls.Add(logCtrl);
+
+                        lastLog = log;
                     }
                 }
-                catch
-                {
-                    // Suppress error
-                }
+            }
+            catch
+            {
+                // Suppress error
             }
         }
     }

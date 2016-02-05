@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" EnableEventValidation="false" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" EnableEventValidation="false" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Inherits="CMSModules_Ecommerce_Pages_Tools_Products_Product_List" Theme="Default"
-    MaintainScrollPositionOnPostback="true" Title="Product list" Codebehind="Product_List.aspx.cs" %>
+    MaintainScrollPositionOnPostback="true" Title="Product list"  Codebehind="Product_List.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Content/Controls/DocumentList.ascx" TagName="DocumentList"

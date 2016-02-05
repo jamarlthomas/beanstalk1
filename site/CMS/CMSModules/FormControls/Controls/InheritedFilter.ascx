@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="InheritedFilter.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="InheritedFilter.ascx.cs"
     Inherits="CMSModules_FormControls_Controls_InheritedFilter" %>
 
 <asp:Panel CssClass="Filter" runat="server" ID="pnlSearch">

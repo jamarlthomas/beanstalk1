@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Collections;
@@ -875,7 +875,7 @@ function SelectButton(elem) {{
                 {
                     var icon = new CMSIcon
                     {
-                        ID = "ico" + identifier,
+                        ID = string.Format("ico_{0}_{1}", identifier, i),
                         EnableViewState = false,
                         ToolTip = pnlButton.ToolTip,
                         CssClass = "cms-icon-80 " + uiElement.ElementIconClass

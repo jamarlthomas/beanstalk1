@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Pages_Users_General_User_Kicked"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Title="Users - kicked users"
-    Codebehind="User_Kicked.aspx.cs" EnableEventValidation="false" %>
+     Codebehind="User_Kicked.aspx.cs" EnableEventValidation="false" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/Basic/DisabledModuleInfo.ascx" TagPrefix="cms"

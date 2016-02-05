@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.Ecommerce;
@@ -39,7 +39,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Suppliers_Supplier_List : 
 
         if (actionName == "edit")
         {
-            var url = UIContextHelper.GetElementUrl("cms.ecommerce", "edit.supplier", false, supplierId);
+            var url = UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, "edit.supplier", false, supplierId);
             url = URLHelper.AddParameterToUrl(url, "action", "edit");
             URLHelper.Redirect(url);
         }
@@ -57,11 +57,11 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Suppliers_Supplier_List : 
             {
                 if (supplierObj.IsGlobal)
                 {
-                    RedirectToAccessDenied("CMS.Ecommerce", "EcommerceGlobalModify");
+                    RedirectToAccessDenied(ModuleName.ECOMMERCE, EcommercePermissions.ECOMMERCE_MODIFYGLOBAL);
                 }
                 else
                 {
-                    RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifySuppliers");
+                    RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifySuppliers");
                 }
             }
 

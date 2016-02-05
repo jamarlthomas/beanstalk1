@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Staging_Tools_Objects_Tree"
-    EnableEventValidation="false" Theme="Default" Codebehind="Tree.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Staging_Tools_Objects_Tree"
+    EnableEventValidation="false" Theme="Default"  Codebehind="Tree.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/Trees/ObjectTree.ascx" TagName="ObjectTree" TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/Trees/TreeBorder.ascx" TagName="TreeBorder" TagPrefix="cms" %>
@@ -25,18 +25,6 @@
                 currentNodeId = "",
                 currentSiteId = 0;
 
-            // Refresh node action
-            function RefreshNode(nodeId, selectNodeId, selectSiteId) {
-                if (selectNodeId == null) {
-                    selectNodeId = currentNodeId;
-                }
-                if (selectSiteId == null) {
-                    selectSiteId = currentSiteId;
-                }
-
-                document.location.replace(treeUrl + "?objecttype=" + selectNodeId + "&siteid=" + currentSiteId);
-            }
-
             // Select node action
             function SelectNode(nodeId, siteId, nodeElem) {
                 if ((currentNode != null) && (nodeElem != null)) {
@@ -56,8 +44,6 @@
             }
             //]]>
         </script>
-
-        <asp:Literal ID="ltlScript" runat="server" EnableViewState="false" />
     </form>
 </body>
 </html>

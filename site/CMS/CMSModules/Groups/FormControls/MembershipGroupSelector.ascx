@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Groups_FormControls_MembershipGroupSelector" Codebehind="MembershipGroupSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Groups_FormControls_MembershipGroupSelector"  Codebehind="MembershipGroupSelector.ascx.cs" %>
 <%@ Register src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" tagname="UniSelector" tagprefix="cms" %>
 
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">

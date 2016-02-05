@@ -183,24 +183,6 @@ public partial class CMSModules_ImportExport_Controls_Import___objects__ {
     protected global::CMS.ExtendedControls.CMSCheckBox chkDeleteSite;
     
     /// <summary>
-    /// plcOverwriteQueries control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.PlaceHolder plcOverwriteQueries;
-    
-    /// <summary>
-    /// chkOverwriteSystemQueries control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSCheckBox chkOverwriteSystemQueries;
-    
-    /// <summary>
     /// chkSkipOrfans control.
     /// </summary>
     /// <remarks>

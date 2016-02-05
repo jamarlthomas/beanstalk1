@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    EnableEventValidation="false" Codebehind="ReportHtmlGraph_Edit.aspx.cs" Inherits="CMSModules_Reporting_Tools_ReportHtmlGraph_Edit" %>
+    EnableEventValidation="false"  Codebehind="ReportHtmlGraph_Edit.aspx.cs" Inherits="CMSModules_Reporting_Tools_ReportHtmlGraph_Edit" %>
 
 <%@ Register Src="~/CMSFormControls/Inputs/LargeTextArea.ascx" TagName="LargeTextArea"
     TagPrefix="cms" %>

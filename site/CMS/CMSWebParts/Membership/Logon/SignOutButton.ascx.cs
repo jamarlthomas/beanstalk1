@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 
 using CMS.Helpers;
@@ -293,7 +293,7 @@ public partial class CMSWebParts_Membership_Logon_SignOutButton : CMSAbstractWeb
                 }
                 else
                 {
-                    signInUrl = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSSecuredAreasLogonPage");
+                    signInUrl = AuthenticationHelper.GetSecuredAreasLogonPage(SiteContext.CurrentSiteName);
                 }
 
                 if (ReturnPath != "")

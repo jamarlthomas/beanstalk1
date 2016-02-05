@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="AsyncLogDialog.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="AsyncLogDialog.ascx.cs"
     Inherits="CMSAdminControls_AsyncLogDialog" %>
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/PageTitle.ascx" TagName="PageTitle"
     TagPrefix="cms" %>

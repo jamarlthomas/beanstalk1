@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Title="Banned IP Properties" Inherits="CMSModules_BannedIP_Tools_BannedIP_Edit"
-    Theme="Default" Codebehind="BannedIP_Edit.aspx.cs" %>
+    Theme="Default"  Codebehind="BannedIP_Edit.aspx.cs" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <div class="form-horizontal">

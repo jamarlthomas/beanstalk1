@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="QuickAdd.aspx.cs" Inherits="CMSModules_Ecommerce_FormControls_QuickAdd"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="QuickAdd.aspx.cs" Inherits="CMSModules_Ecommerce_FormControls_QuickAdd"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">

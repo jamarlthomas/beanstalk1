@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Content_Controls_Dialogs_Properties_HTMLAnchorProperties" Codebehind="HTMLAnchorProperties.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Content_Controls_Dialogs_Properties_HTMLAnchorProperties"  Codebehind="HTMLAnchorProperties.ascx.cs" %>
 
 <asp:Literal ID="ltlScript" runat="server" />
 

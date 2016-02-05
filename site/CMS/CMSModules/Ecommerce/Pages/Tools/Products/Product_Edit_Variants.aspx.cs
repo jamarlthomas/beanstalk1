@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Data;
-using System.Collections;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Web.UI.WebControls;
 
 using CMS.Core;
+using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.Base;
@@ -33,7 +33,6 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Vari
     #region "Variables"
 
     private SKUInfo mProduct;
-    private static readonly Hashtable mWarnings = new Hashtable();
 
     // Possible actions
     private enum VariantActionEnum
@@ -76,19 +75,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Vari
             return mProduct ?? (mProduct = SKUInfoProvider.GetSKUInfo(ProductID));
         }
     }
-
-
-    /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
+    
 
     /// <summary>
     /// Current Warning.
@@ -97,11 +84,11 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Vari
     {
         get
         {
-            return ValidationHelper.GetString(mWarnings["DeleteWarning_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Warning;
         }
         set
         {
-            mWarnings["DeleteWarning_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Warning = value;
         }
     }
 
@@ -113,11 +100,11 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Vari
     {
         get
         {
-            return ValidationHelper.GetString(mWarnings["DeleteError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mWarnings["DeleteError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -183,7 +170,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Vari
             url = URLHelper.AddParameterToUrl(url, "dialog", QueryHelper.GetString("dialog", "0"));
 
             // Allow user to generate variants 
-            CurrentMaster.HeaderActions.ActionsList.Add(new HeaderAction()
+            CurrentMaster.HeaderActions.ActionsList.Add(new HeaderAction
             {
                 Text = GetString("com.products.newvariant"),
                 RedirectUrl = ResolveUrl(url)
@@ -269,161 +256,168 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Vari
         switch (sourceName.ToLowerCSafe())
         {
             case "skuname":
-
-                // Ensure correct values for unigrid export
-                if (sender == null)
                 {
-                    return HTMLHelper.HTMLEncode(variant.SKUName);
+                    // Ensure correct values for unigrid export
+                    if (sender == null)
+                    {
+                        return HTMLHelper.HTMLEncode(variant.SKUName);
+                    }
+
+                    InlineEditingTextBox inlineSkuName = new InlineEditingTextBox
+                    {
+                        Text = variant.SKUName,
+                        AdditionalCssClass = "inline-editing-textbox-text"
+                    };
+
+                    inlineSkuName.Formatting += (s, e) =>
+                    {
+                        // Localize name
+                        inlineSkuName.FormattedText = ResHelper.LocalizeString(variant.SKUName);
+                    };
+
+                    inlineSkuName.Update += (s, e) =>
+                    {
+                        CheckProductModifyAndRedirect(Product);
+
+                        // Trim text
+                        inlineSkuName.Text = inlineSkuName.Text.Trim();
+
+                        // Update name, if it is not empty
+                        if (!string.IsNullOrEmpty(inlineSkuName.Text))
+                        {
+                            variant.SKUName = inlineSkuName.Text;
+                            variant.MakeComplete(true);
+                            variant.Update();
+
+                            ugVariants.ReloadData();
+                        }
+                        else
+                        {
+                            inlineSkuName.ErrorText = GetString("general.requiresvalue");
+                        }
+                    };
+
+                    return inlineSkuName;
                 }
-
-                InlineEditingTextBox inlineSkuName = new InlineEditingTextBox
-                {
-                    Text = variant.SKUName,
-                    AdditionalCssClass = "inline-editing-textbox-text"
-                };
-
-                inlineSkuName.Formatting += (s, e) =>
-                {
-                    // Localize name
-                    inlineSkuName.FormattedText = ResHelper.LocalizeString(variant.SKUName);
-                };
-
-                inlineSkuName.Update += (s, e) =>
-                {
-                    CheckProductModifyAndRedirect(Product);
-
-                    // Trim text
-                    inlineSkuName.Text = inlineSkuName.Text.Trim();
-
-                    // Update name, if it is not empty
-                    if (!string.IsNullOrEmpty(inlineSkuName.Text))
-                    {
-                        variant.SKUName = inlineSkuName.Text;
-                        variant.MakeComplete(true);
-                        variant.Update();
-
-                        ugVariants.ReloadData();
-                    }
-                    else
-                    {
-                        inlineSkuName.ErrorText = GetString("general.requiresvalue");
-                    }
-                };
-
-                return inlineSkuName;
 
             case "skunumber":
-                // Ensure correct values for unigrid export
-                if (sender == null)
                 {
-                    return HTMLHelper.HTMLEncode(variant.SKUNumber);
+                    // Ensure correct values for unigrid export
+                    if (sender == null)
+                    {
+                        return HTMLHelper.HTMLEncode(variant.SKUNumber);
+                    }
+
+                    InlineEditingTextBox inlineSkuNumber = new InlineEditingTextBox
+                    {
+                        Text = variant.SKUNumber,
+                        AdditionalCssClass = "inline-editing-textbox-text"
+                    };
+
+                    inlineSkuNumber.Update += (s, e) =>
+                    {
+                        CheckProductModifyAndRedirect(Product);
+
+                        variant.SKUNumber = inlineSkuNumber.Text;
+                        variant.MakeComplete(true);
+                        variant.Update();
+
+                        ugVariants.ReloadData();
+                    };
+
+                    return inlineSkuNumber;
                 }
-
-                InlineEditingTextBox inlineSkuNumber = new InlineEditingTextBox
-                {
-                    Text = variant.SKUNumber,
-                    AdditionalCssClass = "inline-editing-textbox-text"
-                };
-
-                inlineSkuNumber.Update += (s, e) =>
-                {
-                    CheckProductModifyAndRedirect(Product);
-
-                    variant.SKUNumber = inlineSkuNumber.Text;
-                    variant.MakeComplete(true);
-                    variant.Update();
-
-                    ugVariants.ReloadData();
-                };
-
-                return inlineSkuNumber;
 
             case "skuprice":
-                // Ensure correct values for unigrid export
-                if (sender == null)
                 {
-                    return variant.SKUPrice;
+                    // Ensure correct values for unigrid export
+                    if (sender == null)
+                    {
+                        return variant.SKUPrice;
+                    }
+
+                    InlineEditingTextBox inlineSkuPrice = new InlineEditingTextBox();
+                    inlineSkuPrice.Text = variant.SKUPrice.ToString();
+
+                    inlineSkuPrice.Formatting += (s, e) =>
+                    {
+                        // Format price
+                        inlineSkuPrice.FormattedText = CurrencyInfoProvider.GetFormattedPrice(variant.SKUPrice, variant.SKUSiteID);
+                    };
+
+                    inlineSkuPrice.Update += (s, e) =>
+                    {
+                        CheckProductModifyAndRedirect(Product);
+
+                        // Price must be double number
+                        double price = ValidationHelper.GetDouble(inlineSkuPrice.Text, -1);
+
+                        if (ValidationHelper.IsDouble(inlineSkuPrice.Text) && (price >= 0))
+                        {
+                            variant.SKUPrice = price;
+                            variant.MakeComplete(true);
+                            variant.Update();
+
+                            ugVariants.ReloadData();
+                        }
+                        else
+                        {
+                            inlineSkuPrice.ErrorText = GetString("com.productedit.priceinvalid");
+                        }
+                    };
+
+                    return inlineSkuPrice;
                 }
-
-                InlineEditingTextBox inlineSkuPrice = new InlineEditingTextBox();
-                inlineSkuPrice.Text = variant.SKUPrice.ToString();
-
-                inlineSkuPrice.Formatting += (s, e) =>
-                {
-                    // Format price
-                    inlineSkuPrice.FormattedText = CurrencyInfoProvider.GetFormattedPrice(variant.SKUPrice, variant.SKUSiteID);
-                };
-
-                inlineSkuPrice.Update += (s, e) =>
-                {
-                    CheckProductModifyAndRedirect(Product);
-
-                    // Price must be double number
-                    double price = ValidationHelper.GetDouble(inlineSkuPrice.Text, -1);
-
-                    if (ValidationHelper.IsDouble(inlineSkuPrice.Text) && (price >= 0))
-                    {
-                        variant.SKUPrice = price;
-                        variant.MakeComplete(true);
-                        variant.Update();
-
-                        ugVariants.ReloadData();
-                    }
-                    else
-                    {
-                        inlineSkuPrice.ErrorText = GetString("com.productedit.priceinvalid");
-                    }
-                };
-
-                return inlineSkuPrice;
 
             case "skuavailableitems":
-                // Ensure correct values for unigrid export
-                if (sender == null)
                 {
-                    return variant.SKUAvailableItems;
+                    // Ensure correct values for unigrid export
+                    if (sender == null)
+                    {
+                        return variant.SKUAvailableItems;
+                    }
+                    int availableItems = variant.SKUAvailableItems;
+
+                    InlineEditingTextBox inlineSkuAvailableItems = new InlineEditingTextBox();
+                    inlineSkuAvailableItems.Text = availableItems.ToString();
+                    inlineSkuAvailableItems.EnableEncode = false;
+
+                    inlineSkuAvailableItems.Formatting += (s, e) =>
+                    {
+                        var reorderAt = variant.SKUReorderAt;
+
+                        // Emphasize the number when product needs to be reordered
+                        if (availableItems <= reorderAt)
+                        {
+                            // Format message informing about insufficient stock level
+                            string reorderMsg = string.Format(GetString("com.sku.reorderatTooltip"), reorderAt);
+                            string message = string.Format("<span class=\"alert-status-error\" onclick=\"UnTip()\" onmouseout=\"UnTip()\" onmouseover=\"Tip('{1}')\">{0}</span>", availableItems, reorderMsg);
+                            inlineSkuAvailableItems.FormattedText = message;
+                        }
+                    };
+
+                    inlineSkuAvailableItems.Update += (s, e) =>
+                    {
+                        CheckProductModifyAndRedirect(Product);
+
+                        var newNumberOfItems = ValidationHelper.GetInteger(inlineSkuAvailableItems.Text, availableItems);
+
+                        // Update available items if new value is valid
+                        if (ValidationHelper.IsInteger(inlineSkuAvailableItems.Text) && (-1000000000 <= newNumberOfItems) && (newNumberOfItems <= 1000000000))
+                        {
+                            variant.SKUAvailableItems = ValidationHelper.GetInteger(inlineSkuAvailableItems.Text, availableItems);
+                            variant.MakeComplete(true);
+                            variant.Update();
+
+                            ugVariants.ReloadData();
+                        }
+                        else
+                        {
+                            inlineSkuAvailableItems.ErrorText = GetString("com.productedit.availableitemsinvalid");
+                        }
+                    };
+                    return inlineSkuAvailableItems;
                 }
-                int availableItems = variant.SKUAvailableItems;
-
-                InlineEditingTextBox inlineSkuAvailableItems = new InlineEditingTextBox();
-                inlineSkuAvailableItems.Text = availableItems.ToString();
-                inlineSkuAvailableItems.EnableEncode = false;
-
-                inlineSkuAvailableItems.Formatting += (s, e) =>
-                {
-                    var reorderAt = variant.SKUReorderAt;
-
-                    // Emphasize the number when product needs to be reordered
-                    if (availableItems <= reorderAt)
-                    {
-                        // Format message informing about insufficient stock level
-                        string reorderMsg = string.Format(GetString("com.sku.reorderatTooltip"), reorderAt);
-                        string message = string.Format("<span class=\"alert-status-error\" onclick=\"UnTip()\" onmouseout=\"UnTip()\" onmouseover=\"Tip('{1}')\">{0}</span>", availableItems, reorderMsg);
-                        inlineSkuAvailableItems.FormattedText = message;
-                    }
-                };
-
-                inlineSkuAvailableItems.Update += (s, e) =>
-                {
-                    CheckProductModifyAndRedirect(Product);
-
-                    var newNumberOfItems = ValidationHelper.GetInteger(inlineSkuAvailableItems.Text, availableItems);
-
-                    // Update available items if new value is valid
-                    if (ValidationHelper.IsInteger(inlineSkuAvailableItems.Text) && (-1000000000 <= newNumberOfItems) && (newNumberOfItems <= 1000000000))
-                    {
-                        variant.SKUAvailableItems = ValidationHelper.GetInteger(inlineSkuAvailableItems.Text, availableItems);
-                        variant.MakeComplete(true);
-                        variant.Update();
-
-                        ugVariants.ReloadData();
-                    }
-                    else
-                    {
-                        inlineSkuAvailableItems.ErrorText = GetString("com.productedit.availableitemsinvalid");
-                    }
-                };
-                return inlineSkuAvailableItems;
         }
 
         return parameter;
@@ -478,8 +472,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Vari
 
                     // Run action in asynchronous control
                     EnsureAsyncLog();
-                    ctlAsyncLog.Parameter = newPrice;
-                    RunAsync(UpdatePrice);
+                    RunAsync(p => UpdatePrice(newPrice));
 
                     break;
             }
@@ -540,6 +533,19 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Vari
         if (variantsCannotBeGenerated)
         {
             return GetString("com.variant.nooptionselectedforproduct");
+        }
+
+        var bundles = SKUInfoProvider.GetSKUs()
+                                     .Column("SKUName")
+                                     .WhereIn("SKUID", BundleInfoProvider.GetBundles()
+                                                                         .Column("BundleID")
+                                                                         .WhereEquals("SKUID", Product.SKUID)
+                                             )
+                                     .GetListResult<string>();
+
+        if (bundles.Count > 0)
+        {
+            return String.Format(GetString("com.variant.productusedinbundle"), HTMLHelper.HTMLEncode(ResHelper.LocalizeString(string.Join(", ", bundles))));
         }
 
         return "";
@@ -636,8 +642,6 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Vari
     private void SetupControl()
     {
         ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
-        ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-        ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
         ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
 
         ctlAsyncLog.MaxLogLines = 1000;
@@ -658,12 +662,11 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Vari
     /// <summary>
     /// Updates price of variants in asynchronous control.
     /// </summary>
-    /// <param name="newPriceValue">New price of variant</param>
-    protected void UpdatePrice(object newPriceValue)
+    /// <param name="newPrice">New price of variant</param>
+    protected void UpdatePrice(double newPrice)
     {
         try
         {
-            double newPrice = (double)newPriceValue;
             SKUInfo variantInfo = null;
 
             // Use special action contexts to turn off unnecessary actions 
@@ -793,28 +796,12 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Vari
 
     private void ctlAsyncLog_OnCancel(object sender, EventArgs e)
     {
-        CurrentLog.Close();
-
         ShowError(GetString("com.variant.terminated"));
     }
 
-
-    private void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
-    }
-
-
-    private void ctlAsyncLog_OnError(object sender, EventArgs e)
-    {
-        CurrentLog.Close();
-    }
-
-
+    
     private void ctlAsyncLog_OnFinished(object sender, EventArgs e)
     {
-        CurrentLog.Close();
-
         if (!String.IsNullOrEmpty(CurrentWarning))
         {
             ShowWarning(CurrentWarning);
@@ -833,20 +820,9 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Vari
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
-
-
-    /// <summary>
-    /// Ensures the logging context
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext currentLog = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-        return currentLog;
-    }
-
+    
 
     /// <summary>
     /// Ensures log for asynchronous control
@@ -857,9 +833,6 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Vari
         pnlContent.Visible = false;
         CurrentWarning = string.Empty;
         CurrentError = string.Empty;
-
-        CurrentLog.Close();
-        EnsureLog();
     }
 
 
@@ -869,6 +842,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Vari
     /// <param name="action">Method to run</param>
     protected void RunAsync(AsyncAction action)
     {
+        ctlAsyncLog.EnsureLog();
         ctlAsyncLog.RunAsync(action, WindowsIdentity.GetCurrent());
     }
 

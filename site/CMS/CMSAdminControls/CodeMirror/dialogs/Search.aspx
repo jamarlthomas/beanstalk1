@@ -1,5 +1,5 @@
-<%@ Page Title="Search" Language="C#" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Theme="Default" AutoEventWireup="true" Codebehind="Search.aspx.cs" Inherits="CMSAdminControls_CodeMirror_dialogs_Search" %>
+﻿<%@ Page Title="Search" Language="C#" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
+    Theme="Default" AutoEventWireup="true"  Codebehind="Search.aspx.cs" Inherits="CMSAdminControls_CodeMirror_dialogs_Search" %>
 
 <asp:Content ID="plcContentContent" ContentPlaceHolderID="plcContent" runat="server">
     <div class="form-horizontal">

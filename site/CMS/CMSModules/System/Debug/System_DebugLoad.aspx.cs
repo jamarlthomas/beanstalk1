@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Net;
 using System.Threading;
 using System.Web.Security;
@@ -11,22 +11,24 @@ public partial class CMSModules_System_Debug_System_DebugLoad : CMSDebugPage
 {
     #region "Variables"
 
-    private static bool mCancel = true;
-    private static bool mRun;
-    private static int mSuccessRequests;
-    private static int mErrors;
-    private static int mCurrentThreads;
+    private class LoadSettings
+    {
+        public bool Cancel = true;
+        public bool Run;
+        public int SuccessRequests;
+        public int Errors;
+        public int CurrentThreads;
+        public string UserName = "";
+        public string Duration = "";
+        public string Iterations = "1000";
+        public string Interval = "";
+        public string Threads = "10";
+        public string UserAgent = "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; .NET4.0C; .NET4.0E; MS-RTC LM 8)";
+        public string URLs = "~/Home.aspx";
+        public bool SplitURLs;
 
-    private static string mUserName = "";
-    private static string mDuration = "";
-    private static string mIterations = "1000";
-    private static string mInterval = "";
-    private static string mThreads = "10";
-    private static string mUserAgent = "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; .NET4.0C; .NET4.0E; MS-RTC LM 8)";
-    private static string mURLs = "~/Home.aspx";
-    private static bool mSplitURLs;
-
-    protected static string mLastError = null;
+        public string LastError;
+    }
 
     #endregion
 
@@ -51,7 +53,7 @@ public partial class CMSModules_System_Debug_System_DebugLoad : CMSDebugPage
         /// </summary>
         protected bool IsCanceled()
         {
-            return mCancel || ((RunUntil != DateTimeHelper.ZERO_TIME) && (DateTime.Now > RunUntil)) || ((NumberOfIterations != -1) && (NumberOfIterations == 0));
+            return Settings.Cancel || ((RunUntil != DateTimeHelper.ZERO_TIME) && (DateTime.Now > RunUntil)) || ((NumberOfIterations != -1) && (NumberOfIterations == 0));
         }
 
 
@@ -60,7 +62,9 @@ public partial class CMSModules_System_Debug_System_DebugLoad : CMSDebugPage
         /// </summary>
         public void Run()
         {
-            mCurrentThreads++;
+            var s = Settings;
+
+            s.CurrentThreads++;
 
             // Prepare the client
             WebClient client = new WebClient();
@@ -100,12 +104,12 @@ public partial class CMSModules_System_Debug_System_DebugLoad : CMSDebugPage
                             // Get the page
                             client.DownloadData(url);
 
-                            mSuccessRequests++;
+                            s.SuccessRequests++;
                         }
                         catch (Exception ex)
                         {
-                            mLastError = ex.Message;
-                            mErrors++;
+                            s.LastError = ex.Message;
+                            s.Errors++;
                         }
                     }
                 }
@@ -120,11 +124,14 @@ public partial class CMSModules_System_Debug_System_DebugLoad : CMSDebugPage
             // Dispose the client
             client.Dispose();
 
-            mCurrentThreads--;
+            s.CurrentThreads--;
         }
     }
 
     #endregion
+
+
+    private static readonly LoadSettings Settings = new LoadSettings();
 
 
     protected override void OnInit(EventArgs e)
@@ -139,25 +146,25 @@ public partial class CMSModules_System_Debug_System_DebugLoad : CMSDebugPage
     {
         if (!URLHelper.IsPostback())
         {
-            if ((mCurrentThreads > 0) || (mSuccessRequests > 0) || (mErrors > 0))
+            if ((Settings.CurrentThreads > 0) || (Settings.SuccessRequests > 0) || (Settings.Errors > 0))
             {
-                txtDuration.Text = mDuration;
-                txtInterval.Text = mInterval;
-                txtIterations.Text = mIterations;
-                txtThreads.Text = mThreads;
-                txtURLs.Text = mURLs;
-                txtUserAgent.Text = mUserAgent;
-                userElem.Value = mUserName;
-                chkSplitUrls.Checked = mSplitURLs;
+                txtDuration.Text = Settings.Duration;
+                txtInterval.Text = Settings.Interval;
+                txtIterations.Text = Settings.Iterations;
+                txtThreads.Text = Settings.Threads;
+                txtURLs.Text = Settings.URLs;
+                txtUserAgent.Text = Settings.UserAgent;
+                userElem.Value = Settings.UserName;
+                chkSplitUrls.Checked = Settings.SplitURLs;
             }
         }
         else
         {
-            if (mRun && (mCurrentThreads == 0))
+            if (Settings.Run && (Settings.CurrentThreads == 0))
             {
                 // Enable the form when the load finished
-                mRun = false;
-                EnableAll();
+                Settings.Run = false;
+                SetEnabled(true);
                 pnlBody.Update();
             }
         }
@@ -166,87 +173,113 @@ public partial class CMSModules_System_Debug_System_DebugLoad : CMSDebugPage
 
     protected void Page_PreRender(object sender, EventArgs e)
     {
-        lblInfo.Text = String.Format(GetString("DebugLoad.Info"), mCurrentThreads, mSuccessRequests, mErrors);
-        if (!String.IsNullOrEmpty(mLastError))
+        lblInfo.Text = String.Format(GetString("DebugLoad.Info"), Settings.CurrentThreads, Settings.SuccessRequests, Settings.Errors);
+        if (!String.IsNullOrEmpty(Settings.LastError))
         {
-            ShowError(mLastError);
+            ShowError(Settings.LastError);
         }
 
         btnStart.Text = GetString("DebugLoad.Generate");
         btnStop.Text = GetString("DebugLoad.Stop");
         btnReset.Text = GetString("DebugLoad.Reset");
 
-        if (mCurrentThreads > 0)
+        if (Settings.CurrentThreads > 0)
         {
-            DisableAll();
+            SetEnabled(false);
         }
-        btnStop.Enabled = (mCurrentThreads > 0);
+        btnStop.Enabled = (Settings.CurrentThreads > 0);
     }
 
 
     protected void btnReset_Click(object sender, EventArgs e)
     {
-        mSuccessRequests = 0;
-        mErrors = 0;
-        mLastError = "";
+        Reset();
+    }
+
+
+    private static void Reset()
+    {
+        var s = Settings;
+
+        s.SuccessRequests = 0;
+        s.Errors = 0;
+        s.LastError = "";
     }
 
 
     protected void btnStop_Click(object sender, EventArgs e)
     {
-        mRun = false;
-        mCancel = true;
-        while (mCurrentThreads > 0)
+        Stop();
+
+        SetEnabled(true);
+        btnStop.Enabled = false;
+    }
+
+
+    private static void Stop()
+    {
+        var s = Settings;
+
+        s.Run = false;
+        s.Cancel = true;
+
+        while (s.CurrentThreads > 0)
         {
             Thread.Sleep(100);
         }
-        mCurrentThreads = 0;
 
-        EnableAll();
-        btnStop.Enabled = false;
-
-        mLastError = "";
+        s.CurrentThreads = 0;
+        s.LastError = "";
     }
 
 
     protected void btnStart_Click(object sender, EventArgs e)
     {
-        mLastError = "";
-        mCancel = false;
-        mSuccessRequests = 0;
-        mErrors = 0;
-        mRun = true;
+        ResetSettings();
 
-        mDuration = txtDuration.Text.Trim();
-        mInterval = txtInterval.Text.Trim();
-        mIterations = txtIterations.Text.Trim();
-        mThreads = txtThreads.Text.Trim();
-        mURLs = txtURLs.Text.Trim();
-        mUserAgent = txtUserAgent.Text.Trim();
-        mUserName = ValidationHelper.GetString(userElem.Value, "");
-        mSplitURLs = chkSplitUrls.Checked;
+        LoadSettingsFromUI();
 
-        if (!String.IsNullOrEmpty(txtURLs.Text))
+        if (RunThreads())
         {
-            // Prepare the parameters
-            string[] urls = txtURLs.Text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 0; i < urls.Length; i++)
-            {
-                urls[i] = URLHelper.GetAbsoluteUrl(urls[i]);
-            }
+            SetEnabled(false);
 
-            int newThreads = ValidationHelper.GetInteger(txtThreads.Text, 0);
+            btnStop.Enabled = true;
+            btnReset.Enabled = true;
+        }
+    }
+
+
+    private bool RunThreads()
+    {
+        var s = Settings;
+
+        if (!String.IsNullOrEmpty(s.URLs))
+        {
+            int newThreads = ValidationHelper.GetInteger(s.Threads, 0);
             if (newThreads > 0)
             {
-                int duration = ValidationHelper.GetInteger(txtDuration.Text, 0);
-                int interval = ValidationHelper.GetInteger(txtInterval.Text, 0);
-                int iterations = ValidationHelper.GetInteger(txtIterations.Text, 0);
-                bool splitUrls = ValidationHelper.GetBoolean(chkSplitUrls.Checked, false);
+                // Prepare the parameters
+                string[] urls = s.URLs.Split(new[]
+                {
+                    '\r',
+                    '\n'
+                }, StringSplitOptions.RemoveEmptyEntries);
+
+                for (int i = 0; i < urls.Length; i++)
+                {
+                    urls[i] = URLHelper.GetAbsoluteUrl(urls[i]);
+                }
+
+                int duration = ValidationHelper.GetInteger(s.Duration, 0);
+                int interval = ValidationHelper.GetInteger(s.Interval, 0);
+                int iterations = ValidationHelper.GetInteger(s.Iterations, 0);
+                bool splitUrls = ValidationHelper.GetBoolean(s.SplitURLs, false);
 
                 DateTime runUntil = DateTime.Now.AddSeconds(duration);
 
                 // Divide URLs between threads
                 string[][] partUrls = null;
+
                 if (splitUrls)
                 {
                     // Do not run more threads than URLs
@@ -255,10 +288,12 @@ public partial class CMSModules_System_Debug_System_DebugLoad : CMSDebugPage
                     partUrls = new string[newThreads][];
 
                     int size = (int)Math.Ceiling((double)urls.Length / newThreads);
+
                     for (int i = 0; i < newThreads; i++)
                     {
                         size = Math.Min(size, urls.Length - i * size);
                         partUrls[i] = new string[size];
+
                         for (int j = 0; j < size; j++)
                         {
                             partUrls[i][j] = urls[i * size + j];
@@ -271,14 +306,17 @@ public partial class CMSModules_System_Debug_System_DebugLoad : CMSDebugPage
                 {
                     // Prepare the loader object
                     RequestLoader loader = new RequestLoader();
+
                     loader.URLs = (splitUrls ? partUrls[i] : urls);
                     loader.WaitInterval = interval;
-                    loader.UserAgent = txtUserAgent.Text.Trim();
+                    loader.UserAgent = s.UserAgent;
                     loader.UserName = ValidationHelper.GetString(userElem.Value, "").Trim();
+
                     if (duration > 0)
                     {
                         loader.RunUntil = runUntil;
                     }
+
                     if (iterations > 0)
                     {
                         loader.NumberOfIterations = iterations;
@@ -289,38 +327,51 @@ public partial class CMSModules_System_Debug_System_DebugLoad : CMSDebugPage
                     newThread.Start();
                 }
 
-                DisableAll();
-                btnStop.Enabled = true;
-                btnReset.Enabled = true;
+                return true;
             }
         }
+
+        return false;
     }
 
 
-    private void EnableAll()
+    private static void ResetSettings()
     {
-        txtDuration.Enabled = true;
-        txtInterval.Enabled = true;
-        txtIterations.Enabled = true;
-        txtThreads.Enabled = true;
-        txtURLs.Enabled = true;
-        txtUserAgent.Enabled = true;
-        userElem.Enabled = true;
-        chkSplitUrls.Enabled = true;
-        btnStart.Enabled = true;
+        var s = Settings;
+
+        s.LastError = "";
+        s.Cancel = false;
+        s.SuccessRequests = 0;
+        s.Errors = 0;
+        s.Run = true;
     }
 
 
-    private void DisableAll()
+    private void LoadSettingsFromUI()
     {
-        txtDuration.Enabled = false;
-        txtInterval.Enabled = false;
-        txtIterations.Enabled = false;
-        txtThreads.Enabled = false;
-        txtURLs.Enabled = false;
-        txtUserAgent.Enabled = false;
-        userElem.Enabled = false;
-        chkSplitUrls.Enabled = false;
-        btnStart.Enabled = false;
+        var s = Settings;
+
+        s.Duration = txtDuration.Text.Trim();
+        s.Interval = txtInterval.Text.Trim();
+        s.Iterations = txtIterations.Text.Trim();
+        s.Threads = txtThreads.Text.Trim();
+        s.URLs = txtURLs.Text.Trim();
+        s.UserAgent = txtUserAgent.Text.Trim();
+        s.UserName = ValidationHelper.GetString(userElem.Value, "");
+        s.SplitURLs = chkSplitUrls.Checked;
+    }
+
+
+    private void SetEnabled(bool enabled)
+    {
+        txtDuration.Enabled = enabled;
+        txtInterval.Enabled = enabled;
+        txtIterations.Enabled = enabled;
+        txtThreads.Enabled = enabled;
+        txtURLs.Enabled = enabled;
+        txtUserAgent.Enabled = enabled;
+        userElem.Enabled = enabled;
+        chkSplitUrls.Enabled = enabled;
+        btnStart.Enabled = enabled;
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="FieldAppearance.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="FieldAppearance.ascx.cs"
     Inherits="CMSModules_AdminControls_Controls_Class_FieldEditor_FieldAppearance" %>
 
 <%@ Register Src="~/CMSModules/FormControls/FormControls/FormControlSelector.ascx"
@@ -12,7 +12,7 @@
                     <cms:LocalizedLabel CssClass="control-label" ID="lblVisibility" runat="server" EnableViewState="false" ResourceString="TemplateDesigner.Visibility" AssociatedControlID="ctrlVisibility" />
                 </div>
                 <div class="editing-form-value-cell">
-                    <cms:VisibilityControl ID="ctrlVisibility" runat="server" />
+                    <cms:EditingFormControl ID="ctrlVisibility" runat="server" AllowMacroEditing="False" FormControlName="DropDownVisibilityControl" IsLiveSite="false" />
                 </div>
             </div>
             <div class="form-group">

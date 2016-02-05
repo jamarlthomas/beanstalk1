@@ -3,7 +3,6 @@
 using CMS.DataEngine;
 using CMS.ExtendedControls;
 using CMS.FormControls;
-using CMS.FormEngine;
 using CMS.Helpers;
 using CMS.SiteProvider;
 
@@ -16,8 +15,8 @@ public partial class CMSFormControls_Metafiles_MetafileOrFontIconSelector : Form
     #region "Variables"
 
     private IconTypeEnum iconType = IconTypeEnum.Metafile;
-    private string mValue = null;
-    private BaseInfo mFormObject = null;
+    private string mValue;
+    private BaseInfo mFormObject;
 
     #endregion
 
@@ -36,6 +35,23 @@ public partial class CMSFormControls_Metafiles_MetafileOrFontIconSelector : Form
         set
         {
             mValue = ValidationHelper.GetString(value, null);
+        }
+    }
+
+
+    /// <summary>
+    /// Gets or sets if control is enabled.
+    /// </summary>
+    public override bool Enabled
+    {
+        get
+        {
+            return base.Enabled;
+        }
+        set
+        {
+            base.Enabled = value;
+            SetEnabled(base.Enabled);
         }
     }
 
@@ -250,35 +266,41 @@ public partial class CMSFormControls_Metafiles_MetafileOrFontIconSelector : Form
     {
         if (Form.EditedObject is BaseInfo)
         {
-            BaseInfo info = Form.EditedObject as BaseInfo;
-            if (info != null)
+            BaseInfo info = (BaseInfo)Form.EditedObject;
+            fileUploader.ObjectType = info.TypeInfo.ObjectType;
+
+            if (info.Generalized.ObjectSiteID > 0)
             {
-                fileUploader.ObjectType = info.TypeInfo.ObjectType;
-
-                if (info.Generalized.ObjectSiteID > 0)
-                {
-                    fileUploader.SiteID = info.Generalized.ObjectSiteID;
-                }
-
-                fileUploader.ObjectID = info.Generalized.ObjectID;
+                fileUploader.SiteID = info.Generalized.ObjectSiteID;
             }
+
+            fileUploader.ObjectID = info.Generalized.ObjectID;
         }
         else if (Form.EditedObject is IDataClass)
         {
-            IDataClass item = Form.EditedObject as IDataClass;
+            IDataClass item = (IDataClass)Form.EditedObject;
 
-            if (item != null)
+            fileUploader.ObjectType = item.ClassName;
+
+            if (!string.IsNullOrEmpty(Form.SiteName))
             {
-                fileUploader.ObjectType = item.ClassName;
-
-                if (!string.IsNullOrEmpty(Form.SiteName))
-                {
-                    fileUploader.SiteID = SiteInfoProvider.GetSiteID(Form.SiteName);
-                }
-
-                fileUploader.ObjectID = item.ID;
+                fileUploader.SiteID = SiteInfoProvider.GetSiteID(Form.SiteName);
             }
+
+            fileUploader.ObjectID = item.ID;
         }
+    }
+
+
+    /// <summary>
+    /// Sets if nested controls are enabled.
+    /// </summary>
+    /// <param name="enabled">If true, nested controls will be enabled.</param>
+    private void SetEnabled(bool enabled)
+    {
+        txtCssClass.Enabled = enabled;
+        fileUploader.Enabled = enabled;
+        lstOptions.Enabled = enabled;
     }
 
     #endregion

@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_WebPartToolbar"
-    Codebehind="WebPartToolbar.ascx.cs" EnableViewState="false" %>
+     Codebehind="WebPartToolbar.ascx.cs" EnableViewState="false" %>
 <%@ Register Src="~/CMSModules/PortalEngine/Controls/WebParts/SelectWebpart.ascx"
     TagName="SelectWebpart" TagPrefix="cms" %>
 <%@ Register TagPrefix="cms" Namespace="CMS.ExtendedControls.DragAndDrop" Assembly="CMS.ExtendedControls" %>
@@ -43,7 +43,7 @@
                     <cms:ScrollPanel ID="scrollPanel" ShortID="sp" runat="server" CssClass="WPTItemsContainer"
                         ScrollAreaCssClass="WPTItemsRow" BackwardScrollerControlID="pnlScrollBack"
                         ForwardScrollerControlID="pnlScrollForward" InnerItemClass="WPTSelectorEnvelope"
-                        EnableViewState="false">
+                        EnableViewState="false" Layout="Vertical">
                         <asp:Button runat="server" ID="btnLoadMore" CssClass="HiddenButton" />
                         <asp:Literal ID="ltlRecentlyUsedWebParts" runat="server"></asp:Literal>
                         <cms:QueryRepeater ID="repItems" runat="server" QueryName="cms.webpartcategory.selectallview" ShortID="r" StopProcessing="true" DataBindByDefault="false" ForceCacheMinutes="true">

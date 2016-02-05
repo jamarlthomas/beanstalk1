@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_TimeZones_Pages_TimeZone_Edit"
-    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Codebehind="TimeZone_Edit.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_TimeZones_Pages_TimeZone_Edit"
+    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"  Codebehind="TimeZone_Edit.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/System/LocalizableTextBox.ascx" TagName="LocalizableTextBox" TagPrefix="cms" %>
 <%@ Register Src="~/CMSFormControls/System/CodeName.ascx" TagName="CodeName" TagPrefix="cms" %>
@@ -32,7 +32,7 @@
         </div>
         <div class="form-group">
             <div class="editing-form-label-cell">
-                <cms:LocalizedLabel CssClass="control-label" runat="server" ID="lblTimeZoneGMT" EnableViewState="false" ResourceString="TimeZ.Edit.TimeZoneGMT" />
+                <cms:LocalizedLabel CssClass="control-label" runat="server" ID="lblTimeZoneGMT" EnableViewState="false" ResourceString="TimeZ.Edit.TimeZoneGMT" AssociatedControlID="txtTimeZoneGMT" />
             </div>
             <div class="editing-form-value-cell">
                 <cms:CMSTextBox ID="txtTimeZoneGMT" runat="server" />
@@ -45,20 +45,20 @@
         <div class="form-group">
             <div class="editing-form-label-cell">
                 <cms:LocalizedLabel CssClass="control-label" runat="server" ID="lblTimeZoneDaylight" EnableViewState="false"
-                    ResourceString="TimeZ.Edit.TimeZoneDaylight" />
+                    ResourceString="TimeZ.Edit.TimeZoneDaylight" AssociatedControlID="chkTimeZoneDaylight" />
             </div>
             <div class="editing-form-value-cell">
                 <cms:CMSCheckBox ID="chkTimeZoneDaylight" AutoPostBack="true" runat="server" CssClass="CheckBoxMovedLeft" />
             </div>
         </div>
-        <asp:PlaceHolder runat="server" ID="plcDSTInfo">
+        <asp:PlaceHolder runat="server" ID="plcDSTInfo" Visible="false">
             <div class="form-group">
                 <div class="editing-form-label-cell">
                     <cms:LocalizedLabel CssClass="control-label" runat="server" ID="lblTimeZoneRuleStartIn" EnableViewState="false"
                         ResourceString="TimeZ.Edit.TimeZoneRuleStartIn" />
                 </div>
                 <div class="editing-form-value-cell">
-                    <asp:Label CssClass="form-control-text" ID="lblTimeZoneRuleStart" runat="server" />
+                    <asp:Label CssClass="form-control-text" ID="lblTimeZoneRuleStart" runat="server" EnableViewState="false" />
                 </div>
             </div>
             <div class="form-group">
@@ -67,7 +67,7 @@
                         ResourceString="TimeZ.Edit.TimeZoneRuleEndIn" />
                 </div>
                 <div class="editing-form-value-cell">
-                    <asp:Label CssClass="form-control-text" ID="lblTimeZoneRuleEnd" runat="server" />
+                    <asp:Label CssClass="form-control-text" ID="lblTimeZoneRuleEnd" runat="server" EnableViewState="false" />
                 </div>
             </div>
         </asp:PlaceHolder>

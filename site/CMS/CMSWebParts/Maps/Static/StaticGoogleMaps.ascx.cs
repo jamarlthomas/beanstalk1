@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+
 using CMS.Controls;
 using CMS.DataEngine;
 using CMS.Helpers;
@@ -171,26 +172,6 @@ public partial class CMSWebParts_Maps_Static_StaticGoogleMaps : CMSAbstractWebPa
         set
         {
             SetValue("MapType", value);
-        }
-    }
-
-
-    /// <summary>
-    /// The Navigation control may appear in one of the following style options:
-    /// Default picks an appropriate navigation control based on the map's size and the device on which the map is running.
-    /// Small displays a mini-zoom control, consisting of only + and - buttons. This style is appropriate for small maps.
-    /// Large displays the standard zoom slider control.
-    /// </summary>
-    [Obsolete("This property is obsolete. Please use ZoomControlType instead.")]
-    public int NavigationControlType
-    {
-        get
-        {
-            return ValidationHelper.GetInteger(GetValue("NavigationControlType"), 0);
-        }
-        set
-        {
-            SetValue("NavigationControlType", value);
         }
     }
 

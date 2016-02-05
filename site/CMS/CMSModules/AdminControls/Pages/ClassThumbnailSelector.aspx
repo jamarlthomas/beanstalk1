@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_AdminControls_Pages_ClassThumbnailSelector" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Theme="Default" Codebehind="ClassThumbnailSelector.aspx.cs" %>
+    Theme="Default"  Codebehind="ClassThumbnailSelector.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/AdminControls/Controls/Class/ClassThumbnailSelector/ClassThumbnailSelector.ascx" TagName="ClassThumbnailSelector"
     TagPrefix="cms" %>

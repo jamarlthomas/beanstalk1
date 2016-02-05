@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Web;
@@ -350,8 +350,20 @@ public partial class CMSModules_MessageBoards_Controls_Messages_MessageList : CM
 
         if (!RequestHelper.IsPostBack())
         {
+            var defaultApproved = "NO";
+
+            if (SelectedBoardID > 0)
+            {
+                // Check if board is moderated
+                var boardInfo = BoardInfoProvider.GetBoardInfo(SelectedBoardID);
+                if ((boardInfo != null) && (!boardInfo.BoardModerated))
+                {
+                    defaultApproved = "";
+                }
+            }
+
             // Preselect filter data
-            PreselectFilter(";;" + GroupID + ";;;NO;;");
+            PreselectFilter(String.Format(";;{0};;;{1};;", GroupID, defaultApproved));
         }
 
         if (GroupID > 0)

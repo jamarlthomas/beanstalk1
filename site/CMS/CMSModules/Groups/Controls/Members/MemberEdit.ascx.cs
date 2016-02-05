@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 
 using CMS.Community;
@@ -176,7 +176,7 @@ public partial class CMSModules_Groups_Controls_Members_MemberEdit : CMSAdminEdi
         usRoles.WhereCondition = where;
 
         // Show message or uniselector?
-        RoleInfo role = RoleInfoProvider.GetRoles().Where(where).Columns("RoleID").FirstResult();
+        RoleInfo role = RoleInfoProvider.GetRoles().Where(where).Columns("RoleID").TopN(1);
         if (role == null)
         {
             usRoles.Visible = false;

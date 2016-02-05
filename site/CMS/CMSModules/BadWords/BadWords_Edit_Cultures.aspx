@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Inherits="CMSModules_BadWords_BadWords_Edit_Cultures" Theme="Default" Codebehind="BadWords_Edit_Cultures.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+    Inherits="CMSModules_BadWords_BadWords_Edit_Cultures" Theme="Default"  Codebehind="BadWords_Edit_Cultures.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"
     TagPrefix="cms" %>

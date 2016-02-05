@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.LicenseProvider;
@@ -51,7 +51,8 @@ public partial class CMSInstall_Controls_WizardSteps_LicenseDialog : CMSUserCont
 
     private void lnkSkipLicense_Click(object sender, EventArgs e)
     {
-        AuthenticationHelper.AuthenticateUser("administrator", false);
+        AuthenticationHelper.AuthenticateUser(UserInfoProvider.AdministratorUserName, false);
+
         URLHelper.Redirect(UIContextHelper.GetApplicationUrl("cms", "sites", "action=new"));
     }
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.DataEngine;
@@ -219,24 +219,7 @@ public partial class CMSModules_MediaLibrary_FormControls_MediaLibrarySelector :
         }
     }
 
-
-    /// <summary>
-    /// Gets or sets the value which determines, whether to add none item record to the DropDownList.
-    /// </summary>
-    [Obsolete("This property is obsolete. Please use AllowEmpty instead")]
-    public bool AddNoneItemsRecord
-    {
-        get
-        {
-            return AllowEmpty;
-        }
-        set
-        {
-            AllowEmpty = value;
-        }
-    }
-
-
+    
     /// <summary>
     /// Indicates whether the '(none)' option should be visible. 
     /// </summary>
@@ -422,18 +405,14 @@ public partial class CMSModules_MediaLibrary_FormControls_MediaLibrarySelector :
 
         bool noLibrary = DataHelper.DataSourceIsEmpty(MediaLibraryInfoProvider.GetMediaLibraries(where, null, 1, "LibraryID"));
 
-        // Insert '(none)' record if no library exists - only if '(none)' isn't inserted by default
-        uniSelector.AllowEmpty = (noLibrary && NoneWhenEmpty);
+        // Empty value '(none)' is allowed when it is allowed from outside (property 'AllowEmpty') or no libraries was found and flag 'NoneWhenEmpty' is set
+        uniSelector.AllowEmpty |= (noLibrary && NoneWhenEmpty);
 
-        if (!uniSelector.AllowEmpty && AddCurrentLibraryRecord)
+        if (AddCurrentLibraryRecord)
         {
             uniSelector.SpecialFields.Add(new SpecialField { Text = GetString("media.current"), Value = MediaLibraryInfoProvider.CURRENT_LIBRARY });
         }
-        else
-        {
-            uniSelector.SpecialFields = null;
-        }
-
+        
         if (forceReload)
         {
             uniSelector.Reload(true);

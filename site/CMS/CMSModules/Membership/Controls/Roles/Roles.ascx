@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Controls_Roles_Roles"
-    Codebehind="Roles.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Controls_Roles_Roles"
+     Codebehind="Roles.ascx.cs" %>
 
 <%@ Register Src="Role.ascx" TagName="Role" TagPrefix="cms" %>
 <%@ Register Src="RoleList.ascx" TagName="RoleList" TagPrefix="cms" %>

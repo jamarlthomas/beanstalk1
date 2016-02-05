@@ -9,9 +9,29 @@
             Abstract class for providers.
             </summary>
         </member>
+        <member name="T:CMS.Base.ICustomizableProvider">
+            <summary>
+            Interface for the customizable provider
+            </summary>
+        </member>
+        <member name="M:CMS.Base.ICustomizableProvider.SetAsDefaultProvider">
+            <summary>
+            Sets the provider object as a default provider
+            </summary>
+        </member>
         <member name="F:CMS.Base.AbstractBaseProvider`1.mProviderObject">
             <summary>
             Provider object.
+            </summary>
+        </member>
+        <member name="M:CMS.Base.AbstractBaseProvider`1.#cctor">
+            <summary>
+            Static constructor
+            </summary>
+        </member>
+        <member name="M:CMS.Base.AbstractBaseProvider`1.SetAsDefaultProvider">
+            <summary>
+            Sets this object as the default provider
             </summary>
         </member>
         <member name="P:CMS.Base.AbstractBaseProvider`1.ProviderObject">
@@ -548,11 +568,6 @@
             CMS version
             </summary>
         </member>
-        <member name="F:CMS.Base.CMSVersion.SUFFIX">
-            <summary>
-            Suffix of the system version, e.g. "BETA"
-            </summary>
-        </member>
         <member name="M:CMS.Base.CMSVersion.GetVersion(System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
             Returns string representation of system version. Private since build and hotfix numbers are mutually exclusive.
@@ -636,15 +651,6 @@
             Class for advanced generic list.
             </summary>
         </member>
-        <member name="M:CMS.Base.CMSList`1.#ctor(System.String,System.Char,System.Boolean,System.Boolean)">
-            <summary>
-            Constructor.
-            </summary>
-            <param name="values">Values to fill to CMSList</param>
-            <param name="separator">Separator for splitting values</param>
-            <param name="caseSensitive">Indicates if list is case sensitive</param>
-            <param name="checkUnique">Indicates if list checks uniqueness</param>
-        </member>
         <member name="M:CMS.Base.CMSList`1.#ctor(System.String,System.Char,System.StringSplitOptions,System.Boolean,System.Boolean)">
             <summary>
             Constructor.
@@ -708,6 +714,7 @@
             <summary>
             Thread-safe variant of a generic hash set
             </summary>
+            <remarks>Even for reference types, null is not supported value in the safe hash set.</remarks>
         </member>
         <member name="M:CMS.Base.SafeHashSet`1.#ctor(System.Collections.Generic.IEqualityComparer{`0})">
             <summary>
@@ -715,23 +722,146 @@
             </summary>
             <param name="comparer">Equality comparer</param>
         </member>
-        <member name="M:CMS.Base.SafeHashSet`1.Add(`0)">
+        <member name="M:CMS.Base.SafeHashSet`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEqualityComparer{`0})">
             <summary>
-            Adds the item to the hash set
+            Constructor
             </summary>
-            <param name="value">Value to add</param>
-        </member>
-        <member name="M:CMS.Base.SafeHashSet`1.Remove(`0)">
-            <summary>
-            Removes the value from the hash set
-            </summary>
-            <param name="value">Value to remove</param>
+            <param name="collection">Source collection</param>
+            <param name="comparer">Equality comparer</param>
         </member>
         <member name="M:CMS.Base.SafeHashSet`1.Contains(`0)">
             <summary>
             Returns true if the hash set contains the given value
             </summary>
-            <param name="value">Value to check</param>
+            <param name="item">Value to check</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="item"/> is null.</exception>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.Add(`0)">
+            <summary>
+            Adds the item to the hash set
+            </summary>
+            <param name="item">Value to add</param>
+            <returns>true if item added, false otherwise</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="item"/> is null.</exception>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.System#Collections#Generic#ICollection{T}#Add(`0)">
+            <summary>
+            Adds the item to the hash set
+            </summary>
+            <param name="item">Value to add</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="item"/> is null.</exception>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.Remove(`0)">
+            <summary>
+            Removes the value from the hash set
+            </summary>
+            <param name="item">Value to remove</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="item"/> is null.</exception>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.ExceptWith(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Removes all elements in the specified collection from the current <see cref="T:CMS.Base.SafeHashSet`1"/> object.
+            </summary>
+            <param name="other">The collection of items to remove from the <see cref="T:CMS.Base.SafeHashSet`1"/> object.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.IntersectWith(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Modifies the current <see cref="T:CMS.Base.SafeHashSet`1"/> object to contain only elements that are present in that object and in the specified collection.
+            </summary>
+            <param name="other">The collection to compare to the current <see cref="T:CMS.Base.SafeHashSet`1"/> object.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.IsProperSubsetOf(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Determines whether a <see cref="T:CMS.Base.SafeHashSet`1"/> object is a proper subset of the specified collection.
+            </summary>
+            <param name="other">The collection to compare to the current <see cref="T:CMS.Base.SafeHashSet`1"/> object.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.IsProperSupersetOf(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Determines whether a <see cref="T:CMS.Base.SafeHashSet`1"/> object is a proper superset of the specified collection.
+            </summary>
+            <param name="other">The collection to compare to the current <see cref="T:CMS.Base.SafeHashSet`1"/> object.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.IsSubsetOf(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Determines whether a <see cref="T:CMS.Base.SafeHashSet`1"/> object is a subset of the specified collection.
+            </summary>
+            <param name="other">The collection to compare to the current <see cref="T:CMS.Base.SafeHashSet`1"/> object.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.IsSupersetOf(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Determines whether a <see cref="T:CMS.Base.SafeHashSet`1"/> object is a superset of the specified collection.
+            </summary>
+            <param name="other">The collection to compare to the current <see cref="T:CMS.Base.SafeHashSet`1"/> object.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.Overlaps(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Determines whether the current <see cref="T:CMS.Base.SafeHashSet`1"/> object and a specified collection share common elements.
+            </summary>
+            <param name="other">The collection to compare to the current <see cref="T:CMS.Base.SafeHashSet`1"/> object.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.SetEquals(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Determines whether a <see cref="T:CMS.Base.SafeHashSet`1"/> object and the specified collection contain the same elements.
+            </summary>
+            <param name="other">The collection to compare to the current <see cref="T:CMS.Base.SafeHashSet`1"/> object.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.SymmetricExceptWith(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Modifies the current <see cref="T:CMS.Base.SafeHashSet`1"/> object to contain only elements that are present either in that object or in the specified collection, but not both.
+            </summary>
+            <param name="other">The collection to compare to the current <see cref="T:CMS.Base.SafeHashSet`1"/> object.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.UnionWith(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Modifies the current <see cref="T:CMS.Base.SafeHashSet`1"/> object to contain all elements that are present in itself, the specified collection, or both.
+            </summary>
+            <param name="other">The collection to merge into the current <see cref="T:CMS.Base.SafeHashSet`1"/> object.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.Clear">
+            <summary>
+            Removes all elements from a <see cref="T:CMS.Base.SafeHashSet`1"/> object.
+            </summary>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.CopyTo(`0[],System.Int32)">
+            <summary>
+            Copies the elements of a <see cref="T:CMS.Base.SafeHashSet`1"/> object to an array, starting at the specified array index.
+            </summary>
+            <param name="array">The one-dimensional array that is the destination of the elements copied from the <see cref="T:CMS.Base.SafeHashSet`1"/> object. The array must have zero-based indexing.</param>
+            <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="array"/> is null.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">If <paramref name="arrayIndex"/> is less than the lower bound of <paramref name="array"/>.</exception>
+            <exception cref="T:System.ArgumentException">If the number of elements in set is greater than the available number of elements from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.</exception>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+        </member>
+        <member name="M:CMS.Base.SafeHashSet`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+        </member>
+        <member name="P:CMS.Base.SafeHashSet`1.Count">
+            <summary>
+            Returns the number of elements in a sequence.
+            </summary>
+        </member>
+        <member name="P:CMS.Base.SafeHashSet`1.IsReadOnly">
+            <summary>
+            Gets a value indicating whether a collection is read-only.
+            </summary>
         </member>
         <member name="T:CMS.Base.EnumerableDataContainer`1">
             <summary>
@@ -1381,6 +1511,11 @@
             Registers the Columns of this object
             </summary>
         </member>
+        <member name="M:CMS.Base.AbstractSimpleDataContainer`1.#cctor">
+            <summary>
+            Static constructor
+            </summary>
+        </member>
         <member name="M:CMS.Base.AbstractSimpleDataContainer`1.TryGetValue(System.String,System.Object@)">
             <summary>
             Returns value of column.
@@ -1509,6 +1644,11 @@
             Registers the properties of this object
             </summary>
         </member>
+        <member name="M:CMS.Base.AbstractHierarchicalObject`1.#cctor">
+            <summary>
+            Static constructor
+            </summary>
+        </member>
         <member name="M:CMS.Base.AbstractHierarchicalObject`1.CombineWith(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Object},`0[])">
             <summary>
             Combines current instance with other properties (modifies current instace!). 
@@ -1603,17 +1743,22 @@
         </member>
         <member name="M:CMS.Base.IContextContainer.ClearCurrent">
             <summary>
-            Clears the current container
+            Clears the current container.
             </summary>
         </member>
         <member name="M:CMS.Base.IContextContainer.SetAsCurrent">
             <summary>
-            Sets the current instance as the current thread item
+            Sets the current instance as the current thread item.
+            </summary>
+        </member>
+        <member name="M:CMS.Base.IContextContainer.EnsureCurrent">
+            <summary>
+            Creates the internal <see cref="T:CMS.Base.ContextContainer`1"/> storage if it does not exist yet.
             </summary>
         </member>
         <member name="P:CMS.Base.IContextContainer.Key">
             <summary>
-            Unique container key
+            Unique container key.
             </summary>
         </member>
         <member name="F:CMS.Base.ContextContainer`1.mKey">
@@ -1634,6 +1779,19 @@
         <member name="F:CMS.Base.ContextContainer`1.ParentContext">
             <summary>
             Parent context
+            </summary>
+        </member>
+        <member name="M:CMS.Base.ContextContainer`1.EnsureContextContainer">
+            <summary>
+            Ensures current <see cref="T:CMS.Base.ContextContainer`1"/>.
+            </summary>
+            <remarks>
+            If not available create and register the container of the specified type.
+            </remarks>
+        </member>
+        <member name="M:CMS.Base.ContextContainer`1.#cctor">
+            <summary>
+            Static constructor
             </summary>
         </member>
         <member name="M:CMS.Base.ContextContainer`1.CreateNew">
@@ -1666,6 +1824,11 @@
         <member name="M:CMS.Base.ContextContainer`1.FromThread(CMS.Base.CMSThread)">
             <summary>
             Gets the current container from the provided thread
+            </summary>
+        </member>
+        <member name="M:CMS.Base.ContextContainer`1.EnsureCurrent">
+            <summary>
+            Creates the internal <see cref="T:CMS.Base.ContextContainer`1"/> storage if it does not exist yet.
             </summary>
         </member>
         <member name="P:CMS.Base.ContextContainer`1.Key">
@@ -1734,6 +1897,22 @@
             Restores the original values to the context
             </summary>
         </member>
+        <member name="M:CMS.Base.AbstractActionContext`1.StoreOriginalValue``1(System.Nullable{``0}@,``0)">
+            <summary>
+            Stores current value as the original value if original value hasn't been stored yet.
+            </summary>
+            <typeparam name="TValue">Type of the property</typeparam>
+            <param name="originalValueProperty">Original value property inner field.</param>
+            <param name="currentValue">Value of the property before it has been changed, hence the original value.</param>
+        </member>
+        <member name="M:CMS.Base.AbstractActionContext`1.StoreOriginalValue``1(``0@,``0)">
+            <summary>
+            Stores current value as the original value.
+            </summary>
+            <typeparam name="TValue">Type of the property</typeparam>
+            <param name="originalValueProperty">Original value property inner field.</param>
+            <param name="currentValue">Value of the property before it has been changed, hence the original value.</param>
+        </member>
         <member name="P:CMS.Base.AbstractActionContext`1.OriginalData">
             <summary>
             Previous context data
@@ -1789,6 +1968,11 @@
         <member name="P:CMS.Base.CMSStatic.CurrentContext">
             <summary>
             Current context name
+            </summary>
+        </member>
+        <member name="M:CMS.Base.CMSStatic`1.#cctor">
+            <summary>
+            Static constructor
             </summary>
         </member>
         <member name="M:CMS.Base.CMSStatic`1.#ctor">
@@ -1862,7 +2046,12 @@
             Creates a new object
             </summary>
         </member>
-        <member name="T:CMS.Base.NoDebugAttribute">
+        <member name="T:CMS.Base.HideFromDebugContextAttribute">
+            <summary>
+            Marks a specific member or class to be excluded from debug context information
+            </summary>
+        </member>
+        <member name="T:CMS.Base.ExcludeFromDebug">
             <summary>
             Marks the method as not being included in debug
             </summary>
@@ -1870,6 +2059,17 @@
         <member name="T:CMS.Base.DebugContext">
             <summary>
             Debug context
+            </summary>
+        </member>
+        <member name="M:CMS.Base.DebugContext.ThreadStarted(CMS.Base.ThreadDebugItem)">
+            <summary>
+            Notifies the debug that a specific thread started in current context
+            </summary>
+            <param name="thread">Thread debug item</param>
+        </member>
+        <member name="M:CMS.Base.DebugContext.ThreadFinished">
+            <summary>
+            Notifies the debug that a thread finished in current context
             </summary>
         </member>
         <member name="M:CMS.Base.DebugContext.CloneForNewThread">
@@ -1912,38 +2112,10 @@
             Returns current request settings.
             </summary>
         </member>
-        <member name="T:CMS.Base.DebugExtensions">
+        <member name="P:CMS.Base.DebugContext.CurrentThreadStack">
             <summary>
-            Debug extension methods
+            Current thread stack
             </summary>
-        </member>
-        <member name="M:CMS.Base.DebugExtensions.WhenCalledFrom``1(``0,System.Delegate[])">
-            <summary>
-            Adds condition to check if the handler is called from specific stack trace
-            </summary>
-            <param name="ev">Event object</param>
-            <param name="methods">Method to match</param>
-        </member>
-        <member name="M:CMS.Base.DebugExtensions.WhenCalledFrom``1(``0,System.String[])">
-            <summary>
-            Adds condition to check if the handler is called from specific stack trace
-            </summary>
-            <param name="ev">Event object</param>
-            <param name="methods">Methods to match at the stack trace</param>
-        </member>
-        <member name="M:CMS.Base.DebugExtensions.WhenCalledFrom``1(``0,System.Action[])">
-            <summary>
-            Adds condition to check if the handler is called from specific stack trace
-            </summary>
-            <param name="ev">Event object</param>
-            <param name="methods">Methods to match at the stack trace</param>
-        </member>
-        <member name="M:CMS.Base.DebugExtensions.WhenCalledFrom``1(``0,System.Reflection.MethodInfo[])">
-            <summary>
-            Adds condition to check if the handler is called from specific stack trace
-            </summary>
-            <param name="ev">Event object</param>
-            <param name="methods">Methods to match at the stack trace</param>
         </member>
         <member name="T:CMS.Base.DebugSettings">
             <summary>
@@ -2003,6 +2175,11 @@
         <member name="F:CMS.Base.DebugSettings.mDebugKey">
             <summary>
             No key by default - Not registered
+            </summary>
+        </member>
+        <member name="F:CMS.Base.DebugSettings.lockObject">
+            <summary>
+            Lock object to avoid concurrent initialization. Lock object must remain static, otherwise several debugs could face a deadlock, mostly between SqlDebug and HandlersDebug which may need each other during initialization.
             </summary>
         </member>
         <member name="M:CMS.Base.DebugSettings.#ctor(System.String)">
@@ -2193,11 +2370,6 @@
             Indicates if the objects time stamps should be updated.
             </summary>
         </member>
-        <member name="P:CMS.Base.ExtendedActionContext`1.InvalidateObject">
-            <summary>
-            Indicates if the objects should be invalidated.
-            </summary>
-        </member>
         <member name="P:CMS.Base.ExtendedActionContext`1.CreateSearchTask">
             <summary>
             Indicates if the search task should be created for the objects.
@@ -2300,10 +2472,20 @@
         </member>
         <member name="T:CMS.Base.SafeDictionary`2">
             <summary>
-            Thread safe dictionary template.
+            Represents a thread-safe collection of key/value pairs that can be modified by multiple threads concurrently.
             </summary>
             <typeparam name="TKey">Key type</typeparam>
             <typeparam name="TValue">Value type</typeparam>
+            <remarks>
+            <para>
+            Keep in mind that the operations of this class are thread-safe. However, a sequence of operations inherently cannot be thread-safe.
+            If you want to perform multiple operations as one atomic operation, use the <see cref="P:CMS.Base.SafeDictionary`2.SyncRoot"/> object.
+            </para>
+            <para>
+            In current implementation some read operations do not require locking (i.e. multiple threads can read even though some other thread has the lock).
+            If your situation requires all the readers to wait when the dictionary is locked by some other thread, consider some other collection suitable for readers-writers synchronization problem.
+            </para>
+            </remarks>
         </member>
         <member name="T:CMS.Base.IGeneralIndexable`2">
             <summary>
@@ -2347,6 +2529,11 @@
             If true, the dictionary is copied (not cloned) to a new thread
             </summary>
         </member>
+        <member name="F:CMS.Base.SafeDictionary`2.mSyncRoot">
+            <summary>
+            Object used for underlying Hashtable access synchronization.
+            </summary>
+        </member>
         <member name="M:CMS.Base.SafeDictionary`2.#ctor">
             <summary>
             SafeDictionary constructor.
@@ -2365,6 +2552,17 @@
             <param name="d">Source data dictionary</param>
             <param name="comparer">Equality comparer for the items</param>
         </member>
+        <member name="M:CMS.Base.SafeDictionary`2.Clone">
+            <summary>
+            Clones the dictionary
+            </summary>
+        </member>
+        <member name="M:CMS.Base.SafeDictionary`2.CopyPropertiesTo(CMS.Base.SafeDictionary{`0,`1})">
+            <summary>
+            Copies the dictionary properties to the target dictionary
+            </summary>
+            <param name="target">Target dictionary</param>
+        </member>
         <member name="M:CMS.Base.SafeDictionary`2.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
             <summary>
             De-serialization constructor.
@@ -2381,8 +2579,31 @@
         </member>
         <member name="M:CMS.Base.SafeDictionary`2.GetRealCount">
             <summary>
-            Gets the real count of the objects in the dictionary
+            Gets the real count of the objects in the dictionary.
             </summary>
+            <remarks>
+            <para>
+            The operation is executed on a snapshot of the dictionary. Therefore,
+            the dictionary's content can be changed by other threads while computing
+            the result. If you want to make sure the dictionary's content does
+            not change while computing the real count, use the <see cref="P:CMS.Base.SafeDictionary`2.SyncRoot"/>.
+            </para>
+            <para>
+            Important: When the dictionary uses weak references, no lock can guarantee you
+            that no item has been released from the memory while computing the real count.
+            </para>
+            </remarks>
+            <example>
+            <code>
+            lock (dictionary.SyncRoot)
+            {
+                int realCount = dictionary.GetRealCount();
+            
+                // The realCount corresponds to current dictionary's state only when weak references are NOT used
+                // Otherwise, some entries might have been released from the memory regardless of the lock
+            }
+            </code>
+            </example>
         </member>
         <member name="M:CMS.Base.SafeDictionary`2.GetInternalValue(`0)">
             <summary>
@@ -2403,25 +2624,51 @@
             </summary>
             <param name="key">Value key</param>
             <param name="value">Returning value</param>
+            <remarks>
+            This operation does not require locking for concurrent access.
+            </remarks>
         </member>
         <member name="M:CMS.Base.SafeDictionary`2.Add(System.Object,System.Object)">
             <summary>
-            Adds the value to the dictionary
+            Adds the value to the dictionary if it does not exist.
+            Updates existing, if it does exist.
             </summary>
             <param name="key">Key</param>
             <param name="value">Value</param>
+            <example>
+            If you want to add some key-value pair only if it does not exist within the dictionary, use the following
+            snippet to do so in a thread-safe way.
+            <code>
+            if (!dictionary.ContainsKey(myKey))
+            {
+                lock (dictionary.SyncRoot)
+                {
+                    if (!dictionary.ContainsKey(myKey))
+                    {
+                        dictionary.Add(myKey, myValue);
+                    }
+                }
+            }
+            </code>
+            </example>
         </member>
         <member name="M:CMS.Base.SafeDictionary`2.ContainsKey(System.Object)">
             <summary>
             Returns true if the dictionary contains the given key
             </summary>
             <param name="key">Key</param>
+            <remarks>
+            This operation does not require locking for concurrent access.
+            </remarks>
         </member>
         <member name="M:CMS.Base.SafeDictionary`2.Contains(System.Object)">
             <summary>
             Returns true if the dictionary contains the given key
             </summary>
             <param name="key">Key</param>
+            <remarks>
+            This operation does not require locking for concurrent access.
+            </remarks>
         </member>
         <member name="M:CMS.Base.SafeDictionary`2.ContainsValue(System.Object)">
             <summary>
@@ -2435,6 +2682,33 @@
             </summary>
             <param name="items">Items to add</param>
             <param name="value">Items value</param>
+            /// <remarks>
+            The operation is not performed in a critical section. If you want to make sure
+            no other thread modifies the dictionary (e.g. adds/removes an item) while the dictionary
+            is being filled with items, use the <see cref="P:CMS.Base.SafeDictionary`2.SyncRoot"/>.
+            </remarks>
+            <example>
+            Use the following snippet to make sure no other thread modifies the dictionary while
+            it is being populated by <paramref name="items"/>.
+            <code>
+            string[] items = GetItems(...);
+            lock (dictionary.SyncRoot)
+            {
+                dictionary.AddMultiple(items, true);
+            
+                // All the items are set to true now
+            }
+            </code>
+            
+            The following approach is also thread-safe, but the result may differ from the previous one if another thread performs any write operation
+            while the items are being added.
+            <code>
+            string[] items = GetItems(...);
+            dictionary.AddMultiple(items, true);
+            
+            // Any other thread might have modified some entry (i.e. the items are not guaranteed to be set to true)
+            </code>
+            </example>
         </member>
         <member name="M:CMS.Base.SafeDictionary`2.CloneForNewThread">
             <summary>
@@ -2452,6 +2726,22 @@
             </summary>
             <param name="array">The one-dimensional System.Array that is the destination of the System.Collections.DictionaryEntry objects copied from System.Collections.Hashtable. The System.Array must have zero-based indexing.</param>
             <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
+            <remarks>
+            The <paramref name="array"/> has to be large enough to accommodate all the dictionary entries. Unless the dictionary has a fixed number of entries
+            (or the entries count is limited somehow and the limit is a known number), you should perform the array allocation in a thread-safe way.
+            </remarks>
+            <example>
+            Use the following code snippet to ensure the proper array size.
+            <code>
+            lock (dictionary.SyncRoot)
+            {
+                // The lock makes sure the entries count does not change between the array allocation and the copy operation
+                // The GetArrayOfSize is only an illustrational method
+                Array destinationArray = GetArrayOfSize(dictionary.Count);
+                dictionary.CopyTo(destinationArray, 0);
+            }
+            </code>
+            </example>
         </member>
         <member name="M:CMS.Base.SafeDictionary`2.Remove(System.Object)">
             <summary>
@@ -2466,24 +2756,87 @@
         </member>
         <member name="M:CMS.Base.SafeDictionary`2.System#Xml#Serialization#IXmlSerializable#ReadXml(System.Xml.XmlReader)">
             <summary>
-            Read XML serialized data and fill dictionary with them.
+            Reads XML serialized data and fills the dictionary with them (the current dictionary content is cleared).
             </summary>
             <param name="reader">XML reader</param>
+            <remarks>
+            The operation is not performed in a critical section. If you want to make sure
+            no other thread modifies the dictionary (e.g. adds/removes an item) while the dictionary
+            is being filled with values from the XML, use the <see cref="P:CMS.Base.SafeDictionary`2.SyncRoot"/>.
+            </remarks>
+            <example>
+            Use the following snippet to make sure no other thread modifies the dictionary while
+            it is being populated from the XML.
+            <code>
+            XmlReader xmlReader = GetReader(...);
+            lock (dictionary.SyncRoot)
+            {
+                dictionary.ReadXml(xmlReader);
+            
+                // The dictionary contains only entries from the XML
+            }
+            </code>
+            
+            The following approach is also thread-safe, but the result may differ from the previous one if another thread performs any write operation
+            while the XML is being read.
+            <code>
+            XmlReader xmlReader = GetReader(...);
+            dictionary.ReadXml(xmlReader);
+            
+            // Any other thread might have added or modified some entry from the XML, the dictionary's entries may differ from the XML content
+            </code>
+            </example>
         </member>
         <member name="M:CMS.Base.SafeDictionary`2.System#Xml#Serialization#IXmlSerializable#WriteXml(System.Xml.XmlWriter)">
             <summary>
             XML serialization method.
             </summary>
             <param name="writer">XML writer</param>
+            <remarks>
+            The operation writes a snapshot of the dictionary entries to XML.
+            </remarks>
         </member>
         <member name="P:CMS.Base.SafeDictionary`2.IsSynchronized">
             <summary>
             Returns true if dictionary is synchronized.
             </summary>
             <remarks>
-            Current implementation ensures thread-safety for write operations.
-            If you need synchronize reading(iterating thru collection) use SyncRoot for read/write access in all places where the r/w operations are used.
+            Current implementation ensures thread-safety for read/write operations (read operations are safe to be performed without the need for locking).
+            To synchronize enumeration or multiple operations use <see cref="P:CMS.Base.SafeDictionary`2.SyncRoot"/>.
             </remarks>
+        </member>
+        <member name="P:CMS.Base.SafeDictionary`2.SyncRoot">
+            <summary>
+            Gets an object that can be used to synchronize access to the <see cref="T:CMS.Base.SafeDictionary`2"/>.
+            </summary>
+            <returns>
+            An object that can be used to synchronize access to the <see cref="T:CMS.Base.SafeDictionary`2"/>.
+            </returns>
+            <remarks>
+            <para>
+            Utilize this property when you need to perform multiple dictionary operations as a single atomic operation,
+            or when you need to enumerate the entries.
+            </para>
+            <para>
+            Obtaining a lock does not prevent all other threads from read operations, since most read operations do not
+            need to use locking.
+            </para>
+            </remarks>
+            <example>
+            Use the following snippet to enumerate the dictionary entries in a thread-safe way.
+            <code>
+            lock (dictionary.SyncRoot)
+            {
+                foreach (var entry in dictionary)
+                {
+                    // Perform some operation
+                    // Try to avoid time consuming operations to release the lock as soon as possible
+                    // No other thread can modify the dictionary when it is locked using the SyncRoot property
+                    // However, read access does not require locking, therefore any other thread can still read the dictionary's content
+                }
+            }
+            </code>
+            </example>
         </member>
         <member name="P:CMS.Base.SafeDictionary`2.DefaultValue">
             <summary>
@@ -2505,6 +2858,9 @@
             Items indexer. Gets or sets the value in the dictionary.
             </summary>
             <param name="key">Value key</param>
+            <remarks>
+            The <see cref="M:CMS.Base.SafeDictionary`2.get_Item(`0)"/> operation does not require locking for concurrent access.
+            </remarks>
         </member>
         <member name="P:CMS.Base.SafeDictionary`2.AllowNulls">
             <summary>
@@ -2518,13 +2874,26 @@
         </member>
         <member name="P:CMS.Base.SafeDictionary`2.UseWeakReferences">
             <summary>
-            If true, the weak references are used for the items so the memory can be cleared upon request
+            If true, the weak references are used for the items so the memory can be cleared upon request.
+            The property can be set only when the dictionary is empty. To ensure thread-safety, you have
+            to perform the check for emptiness and property assignment in a critical section (use <see cref="P:CMS.Base.SafeDictionary`2.SyncRoot"/> for that purpose).
             </summary>
+            <example>
+            Use the following code snippet to ensure thread-safety while changing this property.
+            <code>
+            lock (dictionary.SyncRoot)
+            {
+                dictionary.Clear();
+                dictionary.UseWeakReferences = true;
+            }
+            </code>
+            </example>
         </member>
         <member name="P:CMS.Base.SafeDictionary`2.IsEmpty">
             <summary>
             Returns true if the dictionary is empty
             </summary>
+            This operation does not require locking for concurrent access.
         </member>
         <member name="P:CMS.Base.SafeDictionary`2.CopyToNewThread">
             <summary>
@@ -2538,7 +2907,7 @@
         </member>
         <member name="P:CMS.Base.SafeDictionary`2.Values">
             <summary>
-            Gets an Collection containing the values in the System.Collections.Hashtable.
+            Gets a Collection containing the values in the System.Collections.Hashtable.
             </summary>
         </member>
         <member name="M:CMS.Base.ContextItemsDictionary`2.Copy">
@@ -2560,6 +2929,58 @@
             <param name="itemsSource">Items source.</param>
             <returns>Copy of the <paramref name="itemsSource"/>.</returns>
         </member>
+        <member name="T:CMS.Base.ThreadRequiredContexts">
+            <summary>
+            Holds collection of required <see cref="T:CMS.Base.IContextContainer"/>s and provides initialization for <see cref="T:CMS.Base.CMSThread"/>.
+            </summary>
+            <threadsafety static="false" instance="false"/>
+        </member>
+        <member name="M:CMS.Base.ThreadRequiredContexts.Register(CMS.Base.IContextContainer)">
+            <summary>
+            Registers <see cref="T:CMS.Base.IContextContainer"/> that needs to be ensured for every <see cref="T:CMS.Base.CMSThread"/>.
+            </summary>
+            <param name="contextContainer">Context that needs to be initialized and copied into every new CMSThread</param>
+        </member>
+        <member name="M:CMS.Base.ThreadRequiredContexts.EnsureContextsForThread">
+            <summary>
+            Ensures registered contexts into current <see cref="T:CMS.Base.ThreadContext"/>, so they can be copied into new <see cref="T:CMS.Base.CMSThread"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.Base.ThreadRequiredContexts.ThreadRequiredContextCollection">
+            <summary>
+            Collection of registered contexts.
+            </summary>
+        </member>
+        <member name="T:CMS.Base.ThreadRequiredContextAttribute">
+            <summary>
+            Indicates whether the marked class should be ensured before the new <see cref="T:CMS.Base.CMSThread"/> is started to be available with current values within the <see cref="T:CMS.Base.CMSThread"/> run.
+            </summary>
+            <remarks>
+            Marked class must implement <see cref="T:CMS.Base.IContextContainer"/> interface.
+            </remarks>
+        </member>
+        <member name="M:CMS.Base.ThreadRequiredContextAttribute.#ctor(System.Type)">
+            <summary>
+            Creates new instance of <see cref="T:CMS.Base.ThreadRequiredContextAttribute"/>.
+            </summary>
+            <param name="markedType"><see cref="T:CMS.Base.IContextContainer"/> context type.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="markedType"/> is not set.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when <paramref name="markedType"/> is not implementing <see cref="T:CMS.Base.IContextContainer"/>.</exception>
+        </member>
+        <member name="M:CMS.Base.ThreadRequiredContextAttribute.PreInit">
+            <summary>
+            Registers context of <see cref="P:CMS.Base.ThreadRequiredContextAttribute.MarkedType"/> type.
+            </summary>
+            <exception cref="T:System.NullReferenceException">Thrown when <see cref="P:CMS.Base.ThreadRequiredContextAttribute.MarkedType"/> is not defined.</exception>
+        </member>
+        <member name="P:CMS.Base.ThreadRequiredContextAttribute.MarkedType">
+            <summary>
+            Type of the context.
+            </summary>
+            <remarks>
+            Must implements <see cref="T:CMS.Base.IContextContainer"/>.
+            </remarks>
+        </member>
         <member name="T:CMS.Base.INotCopyThreadItem">
             <summary>
             Interface to mark the objects to be not copied to new thread items
@@ -2570,44 +2991,30 @@
             Thread context
             </summary>
         </member>
-        <member name="F:CMS.Base.ThreadContext.ParentThreadID">
-            <summary>
-            Parent thread ID
-            </summary>
-        </member>
-        <member name="F:CMS.Base.ThreadContext.ParentThreadType">
-            <summary>
-            Parent thread type
-            </summary>
-        </member>
-        <member name="F:CMS.Base.ThreadContext.MultipleThreads">
-            <summary>
-            If true, the items will be used by multiple threads, therefore cannot be used by a new thread directly.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.ThreadContext.mItems">
-            <summary>
-            Thread items
-            </summary>
-        </member>
         <member name="M:CMS.Base.ThreadContext.#cctor">
             <summary>
-            Static constructor
+             Ensures that current context is not added to the collection of current containers to avoid infinite loop, this one is handled separately by thread start.
             </summary>
         </member>
         <member name="M:CMS.Base.ThreadContext.Reset">
             <summary>
-            Clears all containers in the current context
+            Clears all containers in the current context.
             </summary>
+        </member>
+        <member name="M:CMS.Base.ThreadContext.CopyForNewThread">
+            <summary>
+            Copies current context values to the <see cref="T:CMS.Base.ThreadContext"/> to be available for new <see cref="T:CMS.Base.CMSThread"/>.
+            </summary>
+            <returns><see cref="T:CMS.Base.ThreadContext"/> instance for a new <see cref="T:CMS.Base.CMSThread"/>.</returns>
         </member>
         <member name="M:CMS.Base.ThreadContext.SetAsCurrent">
             <summary>
-            Sets the current instance as the current thread item
+            Sets the current instance as the current thread item.
             </summary>
         </member>
         <member name="M:CMS.Base.ThreadContext.CloneForNewThread">
             <summary>
-            Clones the object for new thread
+            Clones the object for new thread.
             </summary>
         </member>
         <member name="M:CMS.Base.ThreadContext.GetContextForNewThread(System.Boolean)">
@@ -2618,7 +3025,7 @@
         </member>
         <member name="M:CMS.Base.ThreadContext.SetParentThread(System.Int32,System.Type)">
             <summary>
-            Sets the context parent thread
+            Sets the context parent thread.
             </summary>
             <param name="parentThreadId">Thread ID</param>
             <param name="parentThreadType">Thread type</param>
@@ -2635,12 +3042,12 @@
         </member>
         <member name="P:CMS.Base.ThreadContext.CurrentContainers">
             <summary>
-            Holds the list of containers used within current thread
+            Holds a collection of containers used within current thread.
             </summary>
         </member>
         <member name="P:CMS.Base.ThreadContext.Containers">
             <summary>
-            Holds the list of containers used within current thread
+            Holds a collection of containers used within current thread
             </summary>
         </member>
         <member name="P:CMS.Base.ThreadContext.CurrentHttpContext">
@@ -2652,11 +3059,6 @@
             </remarks>
         </member>
         <member name="T:CMS.Base.ThreadItemsDictionaryInternal">
-            <summary>
-            Thread items dictionary.
-            </summary>
-        </member>
-        <member name="T:CMS.Base.ThreadItemsDictionary">
             <summary>
             Thread items dictionary.
             </summary>
@@ -2781,16 +3183,6 @@
             Class to provide lock objects based on the given key.
             </summary>
         </member>
-        <member name="F:CMS.Base.LockHelper.lockObjects">
-            <summary>
-            Inner list of locking objects
-            </summary>
-        </member>
-        <member name="F:CMS.Base.LockHelper.globalLockObject">
-            <summary>
-            Global lock object
-            </summary>
-        </member>
         <member name="M:CMS.Base.LockHelper.TryEnter(System.Object)">
             <summary>
             Attempts to acquire an exclusive lock on the given object
@@ -2817,18 +3209,22 @@
         </member>
         <member name="M:CMS.Base.LockHelper.Ensure``1(``0@,System.Object)">
             <summary>
-            Ensures the value of the given variable in a locked context to prevent multiple loads. Uses the loadMethod to populate the value
+            Ensures the value of the given variable in a locked context to prevent multiple loads.
+            Uses the default constructor of <typeparamref name="T"/> to initialize the value.
             </summary>
             <param name="variable">Variable to load</param>
             <param name="lockObject">Object to use for locking context to ensure only one load</param>
+            <exception cref="T:System.ArgumentNullException">Throws when lock object is not defined</exception>
         </member>
         <member name="M:CMS.Base.LockHelper.Ensure``1(``0@,System.Func{``0},System.Object)">
             <summary>
-            Ensures the value of the given variable in a locked context to prevent multiple loads. Uses the loadMethod to populate the value
+            Ensures the value of the given variable in a locked context to prevent multiple loads.
+            Uses the <paramref name="loadMethod"/> to initialize the value.
             </summary>
             <param name="variable">Variable to load</param>
             <param name="loadMethod">Methods that provides the variable value</param>
             <param name="lockObject">Object to use for locking context to ensure only one load</param>
+            <exception cref="T:System.ArgumentNullException">Throws when lock object is not defined</exception>
         </member>
         <member name="M:CMS.Base.LockHelper.ExecuteOnceInLifetime(System.Action,System.Object,System.Boolean@)">
             <summary>
@@ -2837,32 +3233,7 @@
             <param name="action">Action to execute</param>
             <param name="lockObject">Object to use for locking context to ensure only one load</param>
             <param name="executedFlag">Flag that indicates if the action was already executed</param>
-        </member>
-        <member name="M:CMS.Base.LockHelper.ExecuteOnce(System.Action,System.Object,System.Boolean)">
-            <summary>
-            Ensures that the given action is executed only once if raised from multiple threads to prevent contention. Returns true, if current thread executed the action, otherwise returns false
-            </summary>
-            <param name="action">Action to execute</param>
-            <param name="lockObject">Object to use for locking context to ensure only one load</param>
-            <param name="waitForCompletion">If true, the other callers wait for completion of the action</param>
-        </member>
-        <member name="M:CMS.Base.LockHelper.ExecuteOnceAcrossAppDomains(System.Action,System.String,System.Boolean)">
-            <summary>
-            Ensures that the given action is executed only once at a time across all application domains using <see cref="T:System.Threading.Mutex"/>
-            </summary>
-            <param name="action">Action to execute</param>
-            <param name="mutexName">Name of the <see cref="T:System.Threading.Mutex"/> to use</param>
-            <param name="waitForCompletion">If true, the other callers wait for the action completion</param>
-        </member>
-        <member name="M:CMS.Base.LockHelper.GetMutexSecuritySettings">
-            <summary>
-            Returns Mutex security settings to allow access to it by multiple users
-            </summary>
-        </member>
-        <member name="P:CMS.Base.LockHelper.MutexSecuritySettings">
-            <summary>
-            Returns Mutex security settings to allow access to it by multiple users
-            </summary>
+            <exception cref="T:System.ArgumentNullException">Throws when lock object is not defined</exception>
         </member>
         <member name="T:CMS.Base.LockObject">
             <summary>
@@ -2892,16 +3263,6 @@
         <member name="M:CMS.Base.LockObject.#ctor(System.String)">
             <summary>
             Constructor
-            </summary>
-        </member>
-        <member name="M:CMS.Base.LockObject.EnterWrite">
-            <summary>
-            Attempts to enter the write lock, if the lock is acquired, returns true and the writing operation is allowed, if false is returned, other thread did the operation.
-            </summary>
-        </member>
-        <member name="M:CMS.Base.LockObject.FinishWrite">
-            <summary>
-            Finishes the write lock, call if the lock was acquired by EnterWrite
             </summary>
         </member>
         <member name="M:CMS.Base.LockObject.EnterRead``1(``0@)">
@@ -3564,7 +3925,12 @@
         </member>
         <member name="T:CMS.Base.Extension">
             <summary>
-            Extension extension methods
+            Helper methods for creating extension objects from specific type
+            </summary>
+        </member>
+        <member name="F:CMS.Base.Extension.LockObject">
+            <summary>
+            Object for locking the context. We lock with a single global lock for all extensions to avoid deadlocks when chaining through multiple generic classes.
             </summary>
         </member>
         <member name="M:CMS.Base.Extension.CreateFromType(System.Type)">
@@ -3582,61 +3948,6 @@
             Storage for static extensions
             </summary>
         </member>
-        <member name="F:CMS.Base.Extension`1.mRegisteredAttributes">
-            <summary>
-            List of types that already registered their extension attributes
-            </summary>
-        </member>
-        <member name="F:CMS.Base.Extension`1.mTypeExtensions">
-            <summary>
-            List of extension properties for types
-            </summary>
-        </member>
-        <member name="F:CMS.Base.Extension`1.mExtensionsCollectedForType">
-            <summary>
-            List of extensions collected for specific type
-            </summary>
-        </member>
-        <member name="F:CMS.Base.Extension`1.mExtensions">
-            <summary>
-            List of all the extensions for all the types
-            </summary>
-        </member>
-        <member name="F:CMS.Base.Extension`1.mTypeProperties">
-            <summary>
-            List of extension properties for types [Type -> [PropertyName -> Extension]]
-            </summary>
-        </member>
-        <member name="F:CMS.Base.Extension`1.mPropertiesForType">
-            <summary>
-            List of property results for specific type
-            </summary>
-        </member>
-        <member name="F:CMS.Base.Extension`1.mPropertiesCollectedForType">
-            <summary>
-            List of static properties collected for specific type
-            </summary>
-        </member>
-        <member name="F:CMS.Base.Extension`1.mTypeStaticProperties">
-            <summary>
-            List of extension static properties for types [Type -> [PropertyName -> Extension]]
-            </summary>
-        </member>
-        <member name="F:CMS.Base.Extension`1.mStaticPropertiesForType">
-            <summary>
-            List of property results for specific type
-            </summary>
-        </member>
-        <member name="F:CMS.Base.Extension`1.mStaticPropertiesCollectedForType">
-            <summary>
-            List of static properties collected for specific type
-            </summary>
-        </member>
-        <member name="F:CMS.Base.Extension`1.mLock">
-            <summary>
-            Object for locking the context
-            </summary>
-        </member>
         <member name="M:CMS.Base.Extension`1.AddAsProperty(System.Type,System.String)">
             <summary>
             Adds the property to the given type
@@ -3651,6 +3962,7 @@
             <param name="type">Type to which register the property</param>
             <param name="propertyName">Property name</param>
             <param name="ext">Extension object</param>
+            <exception cref="T:System.Exception">Thrown when <see cref="T:CMS.Base.IExtensible"/> can not be assigned to the type of <paramref name="type"/> parameter</exception>
         </member>
         <member name="M:CMS.Base.Extension`1.GetPropertyForObject(System.Object,System.String)">
             <summary>
@@ -3825,6 +4137,11 @@
             <param name="extensions">List of extensions</param>
             <param name="type">Type to add</param>
         </member>
+        <member name="M:CMS.Base.Extension`1.#cctor">
+            <summary>
+            Static constructor
+            </summary>
+        </member>
         <member name="M:CMS.Base.Extension`1.GetExtensions">
             <summary>
             Returns the merged list of all the extensions for all the types.
@@ -3834,6 +4151,10 @@
             <summary>
             Clears the registered extensions
             </summary>
+            <remarks>
+            This method is intended for tests only. Clearing the extensions while other threads
+            collect the extensions may give unexpected results.
+            </remarks>
         </member>
         <member name="M:CMS.Base.Extension`1.EnsureRegisteredAttributes(System.Type)">
             <summary>
@@ -3948,122 +4269,246 @@
         </member>
         <member name="T:CMS.Base.ApplicationEvents">
             <summary>
-            Global CMS application events
+            Holds events that allow performing of custom logic at specific points within the application's life cycle.
             </summary>
+            <remarks>
+            <para>
+            The events are represented by fields of the <see cref="T:CMS.Base.SimpleHandler"/> type. Handler methods need to be assigned to the Execute event of individual fields.
+            </para>
+            <para>
+            Some of the ApplicationEvents are not raised out of web-based applications without the CMSApplication module (when using the Kentico API externally).
+            </para>
+            </remarks>
         </member>
         <member name="F:CMS.Base.ApplicationEvents.PreInitialized">
             <summary>
-            Fires after the application was pre-initialized. Fires only once during application life-time, needs to be attached in module PreInit.
+            Occurs after the application pre-initialization.
             </summary>
+            <remarks>
+            Fires only once during the application lifetime. Handlers need to be attached in the PreInit of modules.
+            </remarks>
         </member>
         <member name="F:CMS.Base.ApplicationEvents.UpdateData">
             <summary>
-            Fires when the application performs upgrades to a newer version. Fires only once during application life-time, needs to be attached in module PreInit or Init.
+            Occurs when the application is ready to perform an upgrade routine.
             </summary>
+            <remarks>
+            <para>
+            This event is not intended to be used in custom code.
+            </para>
+            <para>
+            This event fires on every application start.
+            </para>
+            </remarks>
         </member>
         <member name="F:CMS.Base.ApplicationEvents.Initialized">
             <summary>
-            Fires upon the application start. Fires only once during application life-time, needs to be attached in module PreInit or Init.
+            Occurs after the application finishes initialization.
             </summary>
+            <remarks>
+            <para>
+            When this event occurs, the database connection is available and all modules are initialized.
+            </para>
+            <para>
+            Fires only once during the application lifetime. Handlers need to be attached in the PreInit or Init of modules.
+            </para>
+            </remarks>
         </member>
         <member name="F:CMS.Base.ApplicationEvents.PostStart">
             <summary>
-            Fires at the end of first application request. Fires only once during application life-time, use to perform additional async tasks needed for application startup which do not influence the request output.
+            Occurs after the end of the first application request after successful initialization.
             </summary>
+            <remarks>
+            <para>
+            Fires only once during the application lifetime. Use to perform additional async tasks needed for application startup which do not influence the request output.
+            </para>
+            <para>
+            This event only occurs for web-based applications. For example, does not occur when using the Kentico API in an external console application.
+            </para>
+            </remarks>
         </member>
         <member name="F:CMS.Base.ApplicationEvents.End">
             <summary>
-            Fires upon the application end. Fires only once during application life-time.
+            Occurs just before the application shuts down.
             </summary>
+            <remarks>
+            <para>
+            Fires only once during the application lifetime.
+            </para>
+            <para>
+            This event only occurs for web-based applications. For example, does not occur when using the Kentico API in an external console application.
+            </para>
+            <para>
+            Do not use this event for performing critical actions. Code execution can be forcibly interrupted after a short period of time.
+            </para>
+            </remarks>
         </member>
         <member name="F:CMS.Base.ApplicationEvents.Finalize">
             <summary>
-            Fires as the last action after the application end. Fires only once during application life-time.
+            Occurs just before the application shuts down, after the <see cref="F:CMS.Base.ApplicationEvents.End"/> application event.
             </summary>
+            <remarks>
+            <para>
+            This event is not intended to be used in custom code. Use <see cref="F:CMS.Base.ApplicationEvents.End"/> instead.
+            </para>
+            <para>
+            The purpose of the event is to call actions after custom code execution within the <see cref="F:CMS.Base.ApplicationEvents.End"/> event.
+            </para>
+            <para>
+            Fires only once during the application lifetime.
+            </para>
+            <para>
+            This event only occurs for web-based applications. For example, does not occur when using the Kentico API in an external console application.
+            </para>
+            <para>
+            Do not use this event for performing critical actions. Code execution can be forcibly interrupted after a short period of time.
+            </para>        
+            </remarks>
         </member>
         <member name="F:CMS.Base.ApplicationEvents.Error">
             <summary>
-            Fires upon the application error
+            Occurs when an unhandled exception is thrown.
             </summary>
+            <remarks>
+            This event only occurs for web-based applications. For example, does not occur when using the Kentico API in an external console application.
+            </remarks>
         </member>
         <member name="F:CMS.Base.ApplicationEvents.SessionStart">
             <summary>
-            Fires when the session starts
+            Occurs when a new HTTP session is created for a client.
             </summary>
+            <remarks>
+            This event only occurs for web-based applications. For example, does not occur when using the Kentico API in an external console application.
+            </remarks>
         </member>
         <member name="F:CMS.Base.ApplicationEvents.SessionEnd">
             <summary>
-            Fires when the session ends
+            Occurs when an HTTP session is destroyed.
             </summary>
+            <remarks>
+            <para>
+            This event only occurs for web-based applications. For example, does not occur when using the Kentico API in an external console application.
+            </para>
+            <para>
+            May not be raised if the application is configured to use a session state mode different than InProc.
+            </para>
+            </remarks>
         </member>
         <member name="F:CMS.Base.ApplicationEvents.GetVaryByCustomString">
             <summary>
-            Fires when vary by custom string for output cache is evaluated
+            Occurs when the application evaluates variables in custom names of output cache keys.
+            </summary>
+            <remarks>
+            This event only occurs for web-based applications. For example, does not occur when using the Kentico API in an external console application.
+            </remarks>
+        </member>
+        <member name="M:CMS.Base.ApplicationEvents.#ctor">
+            <summary>
+            The <see cref="T:CMS.Base.ApplicationEvents"/> class is not intended to be used as instance type. 
+            Static modifier is not used due to possibility of using extension methods.
             </summary>
         </member>
         <member name="T:CMS.Base.RequestEvents">
             <summary>
-            Global CMS request events
+            Holds events that allow performing of custom logic at specific points within the request processing.
             </summary>
+            <remarks>
+            <para>
+            These request events allow you to handle most usable events from <see cref="T:System.Web.HttpApplication"/> without the need to create a custom HTTP module or edit global.asax.
+            </para>
+            <para>
+            The events are represented by fields of the <see cref="T:CMS.Base.SimpleHandler"/> type. Handler methods need to be assigned to the Execute event of individual fields.
+            </para>
+            <para>
+            The events are not raised out of web-based applications without the CMSApplication module (when using the Kentico API externally).
+            </para>    
+            </remarks>
         </member>
         <member name="F:CMS.Base.RequestEvents.Prepare">
             <summary>
-            Fires before the request begins. Use for operations that need to execute before the request begins, e.g. setup the request database context.
+            Occurs before the <see cref="F:CMS.Base.RequestEvents.Begin"/> event.
             </summary>
+            <remarks>        
+            This event is related to the <see cref="T:CMS.Base.RequestEvents"/> lifecycle only. The standard .NET <see cref="E:System.Web.HttpApplication.BeginRequest"/> event can be invoked before this event.
+            </remarks>
         </member>
         <member name="F:CMS.Base.RequestEvents.Begin">
             <summary>
-            Fires when the request starts
+            Occurs as the first event in the HTTP pipeline chain of execution when ASP.NET responds to a request.
             </summary>
+            <seealso cref="E:System.Web.HttpApplication.BeginRequest"/>
         </member>
         <member name="F:CMS.Base.RequestEvents.Authenticate">
             <summary>
-            Fires upon the request authentication
+            Occurs when a security module has established the identity of a user.
             </summary>
+            <seealso cref="E:System.Web.HttpApplication.AuthenticateRequest"/>
         </member>
         <member name="F:CMS.Base.RequestEvents.Authorize">
             <summary>
-            Fires upon the request authorization
+            Occurs when a security module has verified user authorization.
             </summary>
+            <seealso cref="E:System.Web.HttpApplication.AuthorizeRequest"/>
         </member>
         <member name="F:CMS.Base.RequestEvents.PostAuthorize">
             <summary>
-            Fires upon the post request authorization
+            Occurs when the user for the current request has been authorized.
             </summary>
+            <seealso cref="E:System.Web.HttpApplication.PostAuthorizeRequest"/>
+        </member>
+        <member name="F:CMS.Base.RequestEvents.PostResolveRequestCache">
+            <summary>
+            Occurs when ASP.NET bypasses execution of the current event handler and allows a caching module to serve a request from the cache.
+            </summary>
+            <seealso cref="E:System.Web.HttpApplication.PostResolveRequestCache"/>
         </member>
         <member name="F:CMS.Base.RequestEvents.MapRequestHandler">
             <summary>
-            Fires upon the request handler mapping
+            Occurs when a handler is selected to respond to the request.
             </summary>
+            <seealso cref="E:System.Web.HttpApplication.MapRequestHandler"/>
         </member>
         <member name="F:CMS.Base.RequestEvents.PostMapRequestHandler">
             <summary>
-            Fires after the request handler mapping
+            Occurs after ASP.NET has mapped the current request to the appropriate event handler.
             </summary>
+            <seealso cref="E:System.Web.HttpApplication.PostMapRequestHandler"/>
         </member>
         <member name="F:CMS.Base.RequestEvents.AcquireRequestState">
             <summary>
-            Fires upon the acquiring request state
+            Occurs when ASP.NET acquires the current state (for example, session state) that is associated with the current request.
             </summary>
+            <seealso cref="E:System.Web.HttpApplication.AcquireRequestState"/>
         </member>
         <member name="F:CMS.Base.RequestEvents.PostAcquireRequestState">
             <summary>
-            Fires after the acquiring request state
+            Occurs after the request state (for example, session state) that is associated with the current request has been obtained.
             </summary>
+            <seealso cref="E:System.Web.HttpApplication.PostAcquireRequestState"/>
         </member>
         <member name="F:CMS.Base.RequestEvents.End">
             <summary>
-            Fires when the request ends. Last chance to influence what is being sent to the client.
+            Occurs as the last event in the HTTP pipeline chain of execution when ASP.NET responds to a request.
             </summary>
+            <seealso cref="E:System.Web.HttpApplication.EndRequest"/>
         </member>
         <member name="F:CMS.Base.RequestEvents.RunEndRequestTasks">
             <summary>
-            Fires when the request may perform the background tasks. Use for any background tasks that should execute at the end of the request, but do not influence the response to the client.
+            Occurs after the <see cref="F:CMS.Base.RequestEvents.End"/> event has finished and the response content was sent to the client.
             </summary>
+            <remarks>
+            Can be used to execute request related code that does not need to modify the response.
+            </remarks>
         </member>
         <member name="F:CMS.Base.RequestEvents.Finalize">
             <summary>
-            Fires when the request is finalized. Use to cleanup and release any resources used by the request.
+            Occurs as the last event in the pipeline and can be used to clean up and release resources used by the request.
+            </summary>
+        </member>
+        <member name="M:CMS.Base.RequestEvents.#ctor">
+            <summary>
+            The <see cref="T:CMS.Base.RequestEvents"/> class is not intended to be used as instance type. 
+            Static modifier is not used due to possibility of using extension methods.
             </summary>
         </member>
         <member name="T:CMS.Base.AbstractObjectGenerator">
@@ -4105,6 +4550,28 @@
         <member name="P:CMS.Base.AbstractAdvancedHandler.SupportsCancel">
             <summary>
             If true, the handler supports cancelling of the event. If set and handler is already cancelled, throws an exception.
+            </summary>
+        </member>
+        <member name="T:CMS.Base.AdvancedHandlerInvoker`2">
+            <summary>
+            Represents an event invoker that can raise specified event for each item in collection.
+            </summary>
+        </member>
+        <member name="M:CMS.Base.AdvancedHandlerInvoker`2.StartEvents(System.Collections.Generic.IEnumerable{`0},System.Func{`0,`1})">
+            <summary>
+            Raise specified event for each item in collection.
+            </summary>
+            <param name="items">Items over which the handler iterates.</param>
+            <param name="startFunc">Function which starts individual handler iterations.</param>
+        </member>
+        <member name="M:CMS.Base.AdvancedHandlerInvoker`2.FinishEvents">
+            <summary>
+            Executes <see cref="M:CMS.HandlersExtensions.FinishEvent(CMS.Base.AbstractAdvancedHandler)"/> method for all handlers created within the item iteration.
+            </summary>
+        </member>
+        <member name="M:CMS.Base.AdvancedHandlerInvoker`2.Dispose">
+            <summary>
+            Executes <see cref="M:CMS.Base.AbstractHandler.Dispose"/> method for all handlers created within the item iteration.
             </summary>
         </member>
         <member name="T:CMS.Base.RecursionControl">
@@ -4547,6 +5014,12 @@
             Implementation of <see cref="M:CMS.Base.BaseExtensions.Batch``1(System.Collections.Generic.IEnumerable{``0},System.Int32)"/> method.
             </summary>
         </member>
+        <member name="M:CMS.Base.BaseExtensions.AsDataContainer(System.Data.DataRow)">
+            <summary>
+            Converts a DataRow to IDataContainer. Returns null if the original data row is null.
+            </summary>
+            <param name="dr">Data row</param>
+        </member>
         <member name="T:CMS.Base.IRecursionControlHandler`1">
             <summary>
             Interface that defines the recursion control for the given handler
@@ -4757,10 +5230,24 @@
             Interface for authentication service
             </summary>
         </member>
+        <member name="M:CMS.Base.IAuthenticationService.GetUser(System.String)">
+            <summary>
+            Get user info of given user.
+            </summary>
+            <param name="userName">name of given user</param>
+            <returns>user info of given user</returns>
+        </member>
         <member name="P:CMS.Base.IAuthenticationService.CurrentUser">
             <summary>
             Currently authenticated user
             </summary>
+        </member>
+        <member name="M:CMS.Base.DefaultAuthenticationService.GetUser(System.String)">
+            <summary>
+            Get user info of given user.
+            </summary>
+            <param name="userName">name of given user</param>
+            <returns>user info of given user</returns>
         </member>
         <member name="P:CMS.Base.DefaultAuthenticationService.CurrentUser">
             <summary>
@@ -5006,6 +5493,11 @@
             Helper object.
             </summary> 
         </member>
+        <member name="M:CMS.Base.AbstractHelper`1.#cctor">
+            <summary>
+            Static constructor
+            </summary>
+        </member>
         <member name="M:CMS.Base.AbstractHelper`1.SetAsDefaultHelper">
             <summary>
             Sets this object as the default helper
@@ -5061,183 +5553,14 @@
         </member>
         <member name="T:CMS.Base.CMSActionContext">
             <summary>
-            Action context. Ensures context for the actions block.
+            Ensures context for the actions block.
             </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mUser">
-            <summary>
-            User of the context.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mIsLiveSite">
-            <summary>
-            Indicates, if the currently running code executes on live site.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mSite">
-            <summary>
-            Site of the context.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mLogSynchronization">
-            <summary>
-            Indicates if the staging tasks should be logged.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mLogIntegration">
-            <summary>
-            Indicates if the integration tasks should be logged.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mEnableLogContext">
-            <summary>
-            Indicates whether logging through log context (LogContext) is currently enabled.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mLogEvents">
-            <summary>
-            Indicates if the events should be logged.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mLogWebFarmTasks">
-            <summary>
-            Indicates if the web farm tasks should be logged.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mTouchCacheDependencies">
-            <summary>
-            Indicates if the objects cache dependencies should be touched.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mUpdateTimeStamp">
-            <summary>
-            Indicates if the objects time stamps should be updated.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mInvalidateObject">
-            <summary>
-            Indicates if the objects should be invalidated.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mCreateSearchTask">
-            <summary>
-            Indicates if the search task should be created for the objects.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mLogExport">
-            <summary>
-            Indicates if the export tasks should be logged.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mCreateVersion">
-            <summary>
-            Indicates if the object version should be created.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mAllowAsyncActions">
-            <summary>
-            Indicates if the actions can run asynchronously.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mThreadGuid">
-            <summary>
-            CMSThread guid.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mSendNotifications">
-            <summary>
-            Indicates if the notifications should be sent.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mUpdateRating">
-            <summary>
-            Indicates whether a rating should be updated.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mUpdateSystemFields">
-            <summary>
-            Indicates if the system fields should be updated.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mUseCache">
-            <summary>
-            Indicates if cache should be used for data operations.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mAllowInitUser">
-            <summary>
-            Indicates if the current user should be initialized.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mDisconnected">
-            <summary>
-            Indicates if the objects within current context should behave as disconnected
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mTouchParent">
-            <summary>
-            Indicates if the objects within current context should touch parent object
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mSendEmails">
-            <summary>
-            Indicates if email should be sent.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mUseGlobalAdminContext">
-            <summary>
-            Indicates if global admin context should be used.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mEnableSmartSearchIndexer">
-            <summary>
-            Indicates whether a search task should be executed when it is created.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mDeletePhysicalFiles">
-            <summary>
-            Indicates whether a physical files should be deleted for attachments, meta files and media files.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mUpdateUserCounts">
-            <summary>
-            Indicates whether a user activity points should be updated.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mAllowLicenseRedirect">
-            <summary>
-            Indicates whether a redirect is allowed in case the license check fails. If not, an exception is thrown instead.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mLogLicenseWarnings">
-            <summary>
-            Indicates whether a warning is logged when license check for feature availability fails.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mCheckLicence">
-            <summary>
-            Indicates whether a license check should be performed when managing objects.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mEmptyDataForInvalidLicense">
-            <summary>
-            Indicates whether a get data queries for object that are not allowed under current license returns empty data set or throw an error.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mResetChanges">
-            <summary>
-            Indicates whether the changes made to the object instance should be reseted.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mCulture">
-            <summary>
-            Current thread culture.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.CMSActionContext.mUICulture">
-            <summary>
-            Current thread UI culture.
-            </summary>
+            <example>
+            using(var ctx = new CMSActionContext() { LogEvents = false })
+            {
+                DoSomeAction();
+            }
+            </example>
         </member>
         <member name="M:CMS.Base.CMSActionContext.#ctor">
             <summary>
@@ -5252,17 +5575,28 @@
         </member>
         <member name="M:CMS.Base.CMSActionContext.EnsureRequiredValues">
             <summary>
-            Initialize context
+            Initialize context, ensures values in current thread, if the values are already set, they are not overwritten.
             </summary>
+            <remarks>
+            Used when new CMSThread is started, so the thread has all the values it needs.
+            </remarks>
         </member>
         <member name="M:CMS.Base.CMSActionContext.DisableAll">
             <summary>
-            Disables logging for synchronization, event log, web farm tasks, versioning and cache dependencies 
-            Disables timestamp update 
-            Disables object invalidation
-            Disables cache usage
-            Disables asynchronous actions
-            Disables sending of emails
+            Disables all automated actions except for the ones necessary to keep the system consistent
+            
+            Disables:
+                Logging for synchronization, event log, web farm tasks, versioning and cache dependencies 
+                Timestamp update 
+                Object invalidation
+                Cache usage
+                Asynchronous actions
+                Sending of emails
+                Smart search indexing
+                Updating ratings
+            
+            Does not disable:
+                Object serialization
             </summary>
         </member>
         <member name="M:CMS.Base.CMSActionContext.DisableLogging">
@@ -5312,7 +5646,7 @@
         </member>
         <member name="P:CMS.Base.CMSActionContext.IsLiveSite">
             <summary>
-            User of the context.
+            Indicates whether the currently running code executes on the live site.
             </summary>
         </member>
         <member name="P:CMS.Base.CMSActionContext.LogSynchronization">
@@ -5349,19 +5683,6 @@
             <summary>
             Indicates if the objects time stamps should be updated.
             </summary>
-        </member>
-        <member name="P:CMS.Base.CMSActionContext.InvalidateObject">
-            <summary>
-            Indicates if the objects should be invalidated.
-            </summary>
-        </member>
-        <member name="P:CMS.Base.CMSActionContext.InvalidateObjectInternal">
-            <summary>
-            Indicates if the objects should be invalidated.
-            </summary>
-            <remarks>
-            Will be removed along with <see cref="P:CMS.Base.CMSActionContext.InvalidateObject"/>.
-            </remarks>
         </member>
         <member name="P:CMS.Base.CMSActionContext.CreateSearchTask">
             <summary>
@@ -5483,6 +5804,16 @@
             Current thread UI culture.
             </summary>
         </member>
+        <member name="P:CMS.Base.CMSActionContext.ThreadCulture">
+            <summary>
+            Current thread culture.
+            </summary>
+        </member>
+        <member name="P:CMS.Base.CMSActionContext.ContinuousIntegrationAllowObjectSerialization">
+            <summary>
+            Configures if object serialization within continuous integration is allowed in the given context
+            </summary>
+        </member>
         <member name="P:CMS.Base.CMSActionContext.CurrentSite">
             <summary>
             Current site of the context.
@@ -5495,7 +5826,7 @@
         </member>
         <member name="P:CMS.Base.CMSActionContext.CurrentIsLiveSite">
             <summary>
-            Current user of the context.
+            Indicates whether the currently running code executes on the live site.
             </summary>
         </member>
         <member name="P:CMS.Base.CMSActionContext.CurrentLogSynchronization">
@@ -5510,7 +5841,7 @@
         </member>
         <member name="P:CMS.Base.CMSActionContext.CurrentEnableLogContext">
             <summary>
-            
+            Indicates whether logging through log context (LogContext) is currently enabled.
             </summary>
         </member>
         <member name="P:CMS.Base.CMSActionContext.CurrentLogEvents">
@@ -5532,19 +5863,6 @@
             <summary>
             Indicates if the objects time stamps should be updated within the context.
             </summary>
-        </member>
-        <member name="P:CMS.Base.CMSActionContext.CurrentInvalidateObject">
-            <summary>
-            Indicates if the objects should be invalidated within the context.
-            </summary>
-        </member>
-        <member name="P:CMS.Base.CMSActionContext.CurrentInvalidateObjectInternal">
-            <summary>
-            Indicates if the objects should be invalidated.
-            </summary>
-            <remarks>
-            Will be removed along with <see cref="P:CMS.Base.CMSActionContext.CurrentInvalidateObject"/>.
-            </remarks>
         </member>
         <member name="P:CMS.Base.CMSActionContext.CurrentCreateSearchTask">
             <summary>
@@ -5664,6 +5982,11 @@
         <member name="P:CMS.Base.CMSActionContext.CurrentUICulture">
             <summary>
             Current thread UI culture.
+            </summary>
+        </member>
+        <member name="P:CMS.Base.CMSActionContext.CurrentContinuousIntegrationAllowObjectSerialization">
+            <summary>
+            Indicates if object serialization within continuous integration is allowed in the given context
             </summary>
         </member>
         <member name="T:CMS.Base.CMSLoaderAttribute">
@@ -6298,18 +6621,21 @@
         </member>
         <member name="T:CMS.Base.BaseHandlers">
             <summary>
-            Base module event handlers
+            Provides <see cref="M:CMS.Base.BaseHandlers.Init"/> method with initialization of handlers related to the current module.
             </summary>
         </member>
         <member name="M:CMS.Base.BaseHandlers.Init">
             <summary>
-            Initializes the handlers
+            Initialize the event handlers related to the current module.
             </summary>
         </member>
-        <member name="M:CMS.Base.BaseHandlers.SetInitialDebug(System.Object,System.EventArgs)">
+        <member name="M:CMS.Base.BaseHandlers.RunQueuedWorkersForThread(System.Object,CMS.Base.ThreadEventArgs)">
             <summary>
-            Sets the initial debug for the request
+            Run queued workers for asynchronous threads.
             </summary>
+            <remarks>
+            Workers from sub-threads will be handled by the parent thread.
+            </remarks>
         </member>
         <member name="T:CMS.Base.BaseSynchronization">
             <summary>
@@ -6380,49 +6706,9 @@
             True if the assemblies are compiled in debug mode.
             </summary>
         </member>
-        <member name="F:CMS.Base.SystemContext.mIsPrecompiledWebsite">
-            <summary>
-            If true, the web site is precompiled
-            </summary>
-        </member>
         <member name="F:CMS.Base.SystemContext.EnglishCulture">
             <summary>
             English culture.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.SystemContext.mWebApplicationPhysicalPath">
-            <summary>
-            Application physical path.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.SystemContext.mDevelopmentMode">
-            <summary>
-            Development mode.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.SystemContext.mMachineName">
-            <summary>
-            Current machine name.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.SystemContext.mServerName">
-            <summary>
-            Current server name.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.SystemContext.mInstanceName">
-            <summary>
-            Unique instance name
-            </summary>
-        </member>
-        <member name="F:CMS.Base.SystemContext.mApplicationPath">
-            <summary>
-            Application path.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.SystemContext.mIsWebApplicationProject">
-            <summary>
-            Returns true if web application is installed (instead of web project).
             </summary>
         </member>
         <member name="F:CMS.Base.SystemContext.IsWebProjectDebug">
@@ -6430,15 +6716,18 @@
             True if web project is compiled in debug mode.
             </summary>
         </member>
-        <member name="F:CMS.Base.SystemContext.mCurrentTrustLevel">
+        <member name="M:CMS.Base.SystemContext.SetIsWebSiteFlag">
             <summary>
-            Trust level.
+            Sets the <see cref="P:CMS.Base.SystemContext.IsWebSite"/> flag to true.
             </summary>
-        </member>
-        <member name="F:CMS.Base.SystemContext.mIsFullTrust">
-            <summary>
-            Indicates if application run in full trust level
-            </summary>
+            <remarks>
+            <para>
+            The method is not intended to be used directly from your code.
+            </para>
+            <para>
+            Method is called automatically during the application startup for applications hosted within the web server.
+            </para>
+            </remarks>
         </member>
         <member name="M:CMS.Base.SystemContext.GenerateUniqueInstanceName">
             <summary>
@@ -6449,6 +6738,29 @@
             <summary>
             Gets the current application trust level
             </summary>
+        </member>
+        <member name="M:CMS.Base.SystemContext.GetApplicationPoolName">
+            <summary>
+            Gets the application pool name.
+            </summary>
+        </member>
+        <member name="M:CMS.Base.SystemContext.GetIISWebSiteName">
+            <summary>
+            Gets the name of the IIS web site
+            </summary>
+        </member>
+        <member name="P:CMS.Base.SystemContext.ApplicationTerminating">
+            <summary>
+            Returns true if the application is terminating
+            </summary>
+        </member>
+        <member name="P:CMS.Base.SystemContext.IsCMSRunningAsMainApplication">
+            <summary>
+            Indicates whether hosting environment is CMS web-based application (is not running as a part of external application).
+            </summary>
+            <remarks>
+            This property should be used only internally.
+            </remarks>
         </member>
         <member name="P:CMS.Base.SystemContext.IsWebApplicationProject">
             <summary>
@@ -6512,12 +6824,30 @@
         </member>
         <member name="P:CMS.Base.SystemContext.IsWebSite">
             <summary>
-            If true, the application is a web site. Must be explicitly set for web application
+            Indicates whether the application runs on a web server, or as part of some other tool (e.g. Console application).
             </summary>
+            <remarks>
+            <para>
+            The web site is automatically detected during application start (<see cref="M:CMS.Base.SystemContext.SetIsWebSiteFlag"/> initialization method is called).
+            </para>
+            <para>
+            To distinguish a web site from a web application, <see cref="P:CMS.Base.SystemContext.IsWebApplicationProject"/> is suitable.
+            </para>
+            </remarks>
         </member>
         <member name="P:CMS.Base.SystemContext.CurrentTrustLevel">
             <summary>
             Current trust level.
+            </summary>
+        </member>
+        <member name="P:CMS.Base.SystemContext.ApplicationPoolName">
+            <summary>
+            Current application pool name
+            </summary>
+        </member>
+        <member name="P:CMS.Base.SystemContext.IISWebSiteName">
+            <summary>
+            Current IIS web site name
             </summary>
         </member>
         <member name="P:CMS.Base.SystemContext.IsFullTrustLevel">
@@ -6549,6 +6879,22 @@
             <summary>
             Lock object used for singleton
             </summary>
+        </member>
+        <member name="M:CMS.Base.CMSAppSettings.GetFromSettingsWithLocalizedValues(System.String)">
+            <summary>
+            Gets the key from settings with support for localized values. Values can be localized based on machine name and virtual directory (application path)
+            Machine name can be localized based on application pool name
+            
+            Examples of .config key names:
+            
+            [AppPool 1]CMSMachineName
+            
+            [Machine1]/VirtualDirectory1:CMSWebFarmEnabled
+            [Machine1]CMSWebFarmEnabled
+            /VirtualDirectory2:CMSWebFarmEnabled
+            CMSWebFarmEnabled
+            </summary>
+            <param name="key"></param>
         </member>
         <member name="M:CMS.Base.CMSAppSettings.EnsureExplicitSettings">
             <summary>
@@ -6848,6 +7194,11 @@
             Fires when a new analytics debug item is logged to debug.
             </summary>
         </member>
+        <member name="F:CMS.Base.DebugEvents.SettingsReset">
+            <summary>
+            Fires when debug settings are reset. The event arguments do not contain any debug data.
+            </summary>
+        </member>
         <member name="T:CMS.Base.DebugHandler">
             <summary>
             Debug event handler.
@@ -7077,13 +7428,25 @@
             <param name="items">List of items to check</param>
             <param name="condition">Condition to check</param>
         </member>
+        <member name="M:CMS.Base.DebugHelper.GetThreadStack">
+            <summary>
+            Gets the current stack.
+            </summary>
+        </member>
         <member name="M:CMS.Base.DebugHelper.GetStack(System.Int32)">
             <summary>
             Gets the current stack.
             </summary>
             <param name="depth">Stack depth</param>
         </member>
-        <member name="M:CMS.Base.DebugHelper.SkipMethod(System.Reflection.MethodBase)">
+        <member name="M:CMS.Base.DebugHelper.ExcludeMethod(System.Reflection.MethodBase,System.String)">
+            <summary>
+            Returns true if the given method is excluded from debug (should not be listed in debug)
+            </summary>
+            <param name="method">Method to check</param>
+            <param name="methodName">Method name</param>
+        </member>
+        <member name="M:CMS.Base.DebugHelper.StopOnMethod(System.Reflection.MethodBase)">
             <summary>
             Returns true if the given method should be skipped from the stack trace
             </summary>
@@ -7196,6 +7559,11 @@
             </summary>
             <param name="dt">DataTable of the request log</param>
             <param name="columnName">Column name</param>
+        </member>
+        <member name="P:CMS.Base.DebugHelper.MaxLogSize">
+            <summary>
+            Maximum debug log size
+            </summary>
         </member>
         <member name="P:CMS.Base.DebugHelper.RegisteredDebugs">
             <summary>
@@ -7347,6 +7715,16 @@
             Value collections for multiple values purposes.
             </summary>
         </member>
+        <member name="F:CMS.Base.RequestLog.NotLoggedItems">
+            <summary>
+            Number of items that weren't logged due to exceeding of max log size
+            </summary>
+        </member>
+        <member name="F:CMS.Base.RequestLog.ThreadStack">
+            <summary>
+            Current thread stack
+            </summary>
+        </member>
         <member name="M:CMS.Base.RequestLog.#ctor(CMS.Base.RequestLogs,System.Data.DataTable,CMS.Base.DebugSettings)">
             <summary>
             Constructor.
@@ -7354,6 +7732,14 @@
             <param name="parentLogs">Parent logs container</param>
             <param name="logTable">DataTable for the log</param>
             <param name="settings">Debug settings</param>
+        </member>
+        <member name="M:CMS.Base.RequestLog.LogNewItem(System.Action{System.Data.DataRow},System.Boolean,System.Boolean)">
+            <summary>
+            Log a new item to the debug. Returns the item Data row if the item was logged
+            </summary>
+            <param name="itemSetup">Item setup</param>
+            <param name="addBeforeLast">If true, the new item is added before the last item</param>
+            <param name="rememberItem">If true, the item is remembered in context for further editing</param>
         </member>
         <member name="M:CMS.Base.RequestLog.FinalizeData">
             <summary>
@@ -7380,21 +7766,6 @@
         <member name="F:CMS.Base.RequestLogs.logs">
             <summary>
             Flags for enabled status of particular debugs
-            </summary>
-        </member>
-        <member name="F:CMS.Base.RequestLogs.RequestGUID">
-            <summary>
-            Request GUID.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.RequestLogs.RequestTime">
-            <summary>
-            Request time.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.RequestLogs.RequestURL">
-            <summary>
-            Request URL.
             </summary>
         </member>
         <member name="M:CMS.Base.RequestLogs.#ctor(System.Guid)">
@@ -7438,12 +7809,43 @@
             </summary>
             <param name="debug">Debug</param>
         </member>
+        <member name="P:CMS.Base.RequestLogs.RequestGUID">
+            <summary>
+            Request GUID.
+            </summary>
+        </member>
+        <member name="P:CMS.Base.RequestLogs.RequestTime">
+            <summary>
+            Request time.
+            </summary>
+        </member>
+        <member name="P:CMS.Base.RequestLogs.RequestURL">
+            <summary>
+            Request URL.
+            </summary>
+        </member>
+        <member name="P:CMS.Base.RequestLogs.ThreadStack">
+            <summary>
+            Current thread stack
+            </summary>
+        </member>
         <member name="T:CMS.Base.RequestSettings">
             <summary>
             Container containing current request settings.
             </summary>
         </member>
-        <member name="F:CMS.Base.RequestSettings.flags">
+        <member name="F:CMS.Base.RequestSettings.mFlags">
+            <summary>
+            Flags for enabled status of particular debugs
+            </summary>
+        </member>
+        <member name="M:CMS.Base.RequestSettings.Clone">
+            <summary>
+            Creates a new instance of <see cref="T:CMS.Base.RequestSettings"/> 
+            and initialize the <see cref="P:CMS.Base.RequestSettings.Flags"/> with shallow copy of current <see cref="P:CMS.Base.RequestSettings.Flags"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.Base.RequestSettings.Flags">
             <summary>
             Flags for enabled status of particular debugs
             </summary>
@@ -8323,7 +8725,13 @@
         </member>
         <member name="M:CMS.Base.CMSString.IsInvariantCompareCulture">
             <summary>
-            Returns true, if for current UI culture is needed culture invariant ToLower or Compare
+            Returns true if <see cref="P:System.Globalization.CultureInfo.InvariantCulture"/> should be used instead of 
+            <see cref="P:System.Globalization.CultureInfo.CurrentCulture"/> to perform case insensitive operations.
+            </summary>
+        </member>
+        <member name="M:CMS.Base.CMSString.IsInvariantCompareCulture(System.Globalization.CultureInfo)">
+            <summary>
+            Returns true if <see cref="P:System.Globalization.CultureInfo.InvariantCulture"/> should be used instead of passed culture to perform case insensitive operations.
             </summary>
         </member>
         <member name="T:CMS.Base.CMSExtensibilitySection">
@@ -8605,6 +9013,11 @@
             <param name="propertyName">Property name</param>
             <returns>Returns true if property name was successfully removed, otherwise false</returns>
         </member>
+        <member name="M:CMS.Base.RegisteredProperties`1.#cctor">
+            <summary>
+            Static constructor
+            </summary>
+        </member>
         <member name="M:CMS.Base.RegisteredProperties`1.#ctor(CMS.Base.RegisteredProperties{`0}.RegistrationCallbackHandler)">
             <summary>
             Constructor
@@ -8717,21 +9130,7 @@
             <summary>
             Base extensions
             </summary>
-        </member>
-        <member name="M:CMS.Base.CoreExtensions.GetString(System.Object,System.String)">
-            <summary>
-            Gets the string by the specified resource key
-            </summary>
-            <param name="obj">Object</param>
-            <param name="resourceKey">Resource key</param>
-        </member>
-        <member name="M:CMS.Base.CoreExtensions.GetAPIString(System.Object,System.String,System.String)">
-            <summary>
-            Gets the string by the specified resource key
-            </summary>
-            <param name="obj">Object</param>
-            <param name="resourceKey">Resource key</param>
-            <param name="defaultValue">Default value</param>
+            <exclude/>
         </member>
         <member name="M:CMS.Base.CoreExtensions.ToInteger(System.Object,System.Int32)">
             <summary>
@@ -8834,6 +9233,13 @@
             Safe dictionary indexed by string
             </summary>
         </member>
+        <member name="M:CMS.Base.StringSafeDictionary`1.#ctor(System.Collections.IDictionary,System.Collections.IEqualityComparer)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="d">Source data dictionary</param>
+            <param name="comparer">Equality comparer for items</param>
+        </member>
         <member name="M:CMS.Base.StringSafeDictionary`1.#ctor(System.Collections.IDictionary,System.Boolean)">
             <summary>
             Constructor.
@@ -8864,6 +9270,11 @@
             Gets the comparer for the dictionary
             </summary>
             <param name="caseSensitive">If true, the access to the dictionary is case sensitive</param>
+        </member>
+        <member name="M:CMS.Base.StringSafeDictionary`1.Clone">
+            <summary>
+            Clones the dictionary
+            </summary>
         </member>
         <member name="F:CMS.Base.MultiKeyDictionary`1.mSubKeys">
             <summary>
@@ -9489,6 +9900,11 @@
             Node site ID
             </summary>
         </member>
+        <member name="P:CMS.Base.ITreeNode.NodeSiteName">
+            <summary>
+            Node site name.
+            </summary>
+        </member>
         <member name="P:CMS.Base.ITreeNode.ClassName">
             <summary>
             Node class name
@@ -9507,6 +9923,11 @@
         <member name="P:CMS.Base.ITreeNode.DocumentUrlPath">
             <summary>
             Document URL path.
+            </summary>
+        </member>
+        <member name="P:CMS.Base.ITreeNode.DocumentExtensions">
+            <summary>
+            Document extensions.
             </summary>
         </member>
         <member name="T:CMS.Base.IUserInfo">
@@ -9528,13 +9949,14 @@
             <param name="siteName">Site name</param>
             <param name="exceptionOnFailure">If true, PermissionCheckException is thrown whenever a permission check fails</param>
         </member>
-        <member name="M:CMS.Base.IUserInfo.IsAuthorizedPerClassName(System.String,System.String,System.String)">
+        <member name="M:CMS.Base.IUserInfo.IsAuthorizedPerClassName(System.String,System.String,System.String,System.Boolean)">
             <summary>
             Checks whether the user is authorized for given class name and permission, returns true if so.
             </summary>
             <param name="className">Class name</param>
             <param name="permissionName">Permission name to check</param>
             <param name="siteName">Site name</param>
+            <param name="exceptionOnFailure">If true, PermissionCheckException is thrown whenever a permission check fails</param>
         </member>
         <member name="M:CMS.Base.IUserInfo.FilterSearchResults(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Boolean@)">
             <summary>
@@ -9750,11 +10172,10 @@
             Reverts the object changes to the original values.
             </summary>
         </member>
-        <member name="M:CMS.Base.IAdvancedDataContainer.ResetChanges(System.Boolean)">
+        <member name="M:CMS.Base.IAdvancedDataContainer.ResetChanges">
             <summary>
             Resets the object changes and keeps the new values as unchanged.
             </summary>
-            <param name="asUnchanged">If true, the changed columns won't contain anything. If false, the previous values are discarded, but all the columns will be marked as changed.</param>
         </member>
         <member name="M:CMS.Base.IAdvancedDataContainer.GetOriginalValue(System.String)">
             <summary>
@@ -10108,7 +10529,7 @@
         </member>
         <member name="M:CMS.Base.TypeHelper.GetObjectTypeResourceKey(System.String)">
             <summary>
-            Gets the resource key for the name of the object type.
+            Gets the resource key for the name of the object type. Name of type should be in singular form.
             </summary>
             <param name="objectType">Object type</param>
         </member>
@@ -10152,8 +10573,11 @@
         </member>
         <member name="M:CMS.Base.TypeHelper.GetTasksResourceKey(System.String)">
             <summary>
-            Gets the resource key for the 
+            Gets the resource key for groups or categories of objects (usually plural), typically used in object trees to label nodes with children. 
             </summary>
+            <remarks>
+            Not all object types are guaranteed to have a translation for the resource string produced by this function.
+            </remarks>
             <param name="objectType">Object type</param>
         </member>
         <member name="P:CMS.Base.TypeHelper.MaxCodeNameLength">
@@ -10292,6 +10716,11 @@
             Thread was stopped by the user.
             </summary>
         </member>
+        <member name="F:CMS.Base.CMSThread.THREAD_GUID_ABORT_DATA_NAME">
+            <summary>
+            String constant used to store Thread guid in <see cref="T:CMS.Base.ThreadAbortData"/>.
+            </summary>
+        </member>
         <member name="F:CMS.Base.CMSThread.mThreads">
             <summary>
             Lookup table for the threads.
@@ -10347,6 +10776,16 @@
             Object for locking the lookup table for the threads
             </summary>
         </member>
+        <member name="F:CMS.Base.CMSThread.startLock">
+            <summary>
+            Object for locking thread start
+            </summary>
+        </member>
+        <member name="F:CMS.Base.CMSThread.mNewThreadsAllowed">
+            <summary>
+            If true, new threads are allowed to run
+            </summary>
+        </member>
         <member name="M:CMS.Base.CMSThread.#ctor(System.Threading.ThreadStart,System.Boolean,CMS.Base.ThreadModeEnum)">
             <summary>
             Constructor.
@@ -10361,6 +10800,11 @@
             </summary>
             <param name="start">Thread start method</param>
             <param name="settings">Thread settings</param>
+        </member>
+        <member name="M:CMS.Base.CMSThread.CreateInnerThread">
+            <summary>
+            Creates a new inner thread
+            </summary>
         </member>
         <member name="M:CMS.Base.CMSThread.GetCurrentThreadId">
             <summary>
@@ -10390,13 +10834,29 @@
         </member>
         <member name="M:CMS.Base.CMSThread.Abort">
             <summary>
-            Aborts the thread execution.
+            Aborts the thread execution. 
+            In case of sync mode thread, this method also kills all CMSThreads running under same InnerThread.
             </summary>
+        </member>
+        <member name="M:CMS.Base.CMSThread.StopAllThreads(System.Boolean,System.Boolean)">
+            <summary>
+            Stops all running threads
+            </summary>
+            <param name="allowNewThreads">If true, new threads are </param>
+            <param name="waitForAbort">If true, the process waits for all threads to be finished</param>
         </member>
         <member name="M:CMS.Base.CMSThread.Stop">
             <summary>
-            Stops the thread execution.
+            Stops the thread execution (doesn't log abort exception).
+            In case of sync mode thread, this method only stops this and child synchronous threads. 
+            Parent threads running under same InnerThread will continue running.
             </summary>
+        </member>
+        <member name="M:CMS.Base.CMSThread.Stopped(System.Threading.ThreadAbortException)">
+            <summary>
+            Returns true if thread was aborted with ABORT_REASON_STOP state info e.g. Thread.Abort(CMSThread.ABORT_REASON_STOP);
+            </summary>
+            <param name="exception">The thread abort exception.</param>
         </member>
         <member name="M:CMS.Base.CMSThread.RunAsync">
             <summary>
@@ -10531,6 +10991,11 @@
             <param name="action">Action to wrap</param>
             <param name="multipleThreads">If true, the wrapped method may be used by multiple threads. Use this parameter to ensure that all the threads receive the original context values.</param>
         </member>
+        <member name="P:CMS.Base.CMSThread.Aborted">
+            <summary>
+            If true, the thread  was aborted
+            </summary>
+        </member>
         <member name="P:CMS.Base.CMSThread.DisableDebug">
             <summary>
             Gets or sets the value that indicates whether debug should be disabled for current thread
@@ -10661,11 +11126,6 @@
             Maximum number of running worker threads from all queues
             </summary>
         </member>
-        <member name="F:CMS.Base.CMSWorkerQueue.mGlobal">
-            <summary>
-            Global worker queue
-            </summary>
-        </member>
         <member name="F:CMS.Base.CMSWorkerQueue.mParameters">
             <summary>
             Worker queue parameters indexed by their name
@@ -10745,11 +11205,6 @@
             Runs the workers queued in current request.
             </summary>
         </member>
-        <member name="M:CMS.Base.CMSWorkerQueue.RunGlobalQueuedWorkers">
-            <summary>
-            Runs the global queued workers
-            </summary>
-        </member>
         <member name="P:CMS.Base.CMSWorkerQueue.Duplicities">
             <summary>
             Table of existing duplicity keys for current queue.
@@ -10758,11 +11213,6 @@
         <member name="P:CMS.Base.CMSWorkerQueue.Instance">
             <summary>
             Gets or sets current worker queue.
-            </summary>
-        </member>
-        <member name="P:CMS.Base.CMSWorkerQueue.Global">
-            <summary>
-            Gets the global worker queue.
             </summary>
         </member>
         <member name="P:CMS.Base.CMSWorkerQueue.Closed">
@@ -10882,6 +11332,54 @@
             </summary>
             <param name="thread">Handled thread</param>
         </member>
+        <member name="T:CMS.Base.ThreadAbortData">
+            <summary>
+            Container class used as state info for Thread.Abort method parameter
+            </summary>
+        </member>
+        <member name="M:CMS.Base.ThreadAbortData.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMS.Base.ThreadAbortData"/> class.
+            </summary>
+        </member>
+        <member name="M:CMS.Base.ThreadAbortData.GetValue(System.String)">
+            <summary>
+            Returns value of column.
+            </summary>
+            <param name="columnName">Column name</param>
+            <returns></returns>
+        </member>
+        <member name="M:CMS.Base.ThreadAbortData.SetValue(System.String,System.Object)">
+            <summary>
+            Sets value of column.
+            </summary>
+            <param name="columnName">Column name</param>
+            <param name="value">Column value</param>
+            <returns></returns>
+        </member>
+        <member name="M:CMS.Base.ThreadAbortData.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="P:CMS.Base.ThreadAbortData.AbortReason">
+            <summary>
+            Gets or sets the abort reason.         
+            </summary>
+        </member>
+        <member name="P:CMS.Base.ThreadAbortData.Item(System.String)">
+            <summary>
+            Gets or sets the <see cref="T:System.Object"/> with the specified column name.
+            </summary>
+            <value>
+            The <see cref="T:System.Object"/>.
+            </value>
+            <param name="columnName">Name of the column.</param>
+            <returns></returns>
+        </member>
         <member name="T:CMS.Base.ThreadDebug">
             <summary>
             Thread debug helper
@@ -10898,11 +11396,6 @@
             </summary>
             <param name="thread">Thread that finished</param>
         </member>
-        <member name="P:CMS.Base.ThreadDebug.TrackCMSThread">
-            <summary>
-            Gets the value that indicates whether original CMSThread should be stored in collection (backward compatibility)
-            </summary>
-        </member>
         <member name="P:CMS.Base.ThreadDebug.MaxFinishedThreadsLogged">
             <summary>
             Maximum number of finished threads that should be logged by the system.
@@ -10918,24 +11411,9 @@
             Gets the List of finished threads. This property is intended for internal use only. 
             </summary>
         </member>
-        <member name="P:CMS.Base.ThreadDebug.LiveThreads">
-            <summary>
-            List of live threads.
-            </summary>
-        </member>
-        <member name="P:CMS.Base.ThreadDebug.FinishedThreads">
-            <summary>
-            List of the last finished threads.
-            </summary>
-        </member>
         <member name="T:CMS.Base.ThreadEvents">
             <summary>
             Events raised within thread processing
-            </summary>
-        </member>
-        <member name="F:CMS.Base.ThreadEvents.EnsureSourceItems">
-            <summary>
-            Fires when the thread needs to ensure that the source items.
             </summary>
         </member>
         <member name="F:CMS.Base.ThreadEvents.Init">
@@ -10973,6 +11451,11 @@
             Constructor
             </summary>
             <param name="thread">Source thread object</param>
+        </member>
+        <member name="M:CMS.Base.ThreadDebugItem.ToString">
+            <summary>
+            Returns the string representation of the object
+            </summary>
         </member>
         <member name="P:CMS.Base.ThreadDebugItem.ThreadGuid">
             <summary>
@@ -11069,9 +11552,19 @@
             Returns true if the worker thread is currently running
             </summary>
         </member>
+        <member name="M:CMS.Base.ThreadWorker`1.Abort">
+            <summary>
+            Aborts the worker
+            </summary>
+        </member>
         <member name="M:CMS.Base.ThreadWorker`1.Reset">
             <summary>
             Resets the worker
+            </summary>
+        </member>
+        <member name="M:CMS.Base.ThreadWorker`1.StopExecution">
+            <summary>
+            Stops the worker after finishing its job
             </summary>
         </member>
         <member name="M:CMS.Base.ThreadWorker`1.EnsureRunningThread">
@@ -11082,6 +11575,11 @@
         <member name="M:CMS.Base.ThreadWorker`1.Register">
             <summary>
             Registers the worker so that it runs within the system
+            </summary>
+        </member>
+        <member name="M:CMS.Base.ThreadWorker`1.#cctor">
+            <summary>
+            Static constructor
             </summary>
         </member>
         <member name="M:CMS.Base.ThreadWorker`1.Process">
@@ -11107,6 +11605,11 @@
         <member name="M:CMS.Base.ThreadWorker`1.ResetInternal">
             <summary>
             Resets the worker
+            </summary>
+        </member>
+        <member name="M:CMS.Base.ThreadWorker`1.AbortInternal">
+            <summary>
+            Aborts the worker
             </summary>
         </member>
         <member name="M:CMS.Base.ThreadWorker`1.RunAsync">
@@ -11150,7 +11653,7 @@
             Registers the worker
             </summary>
         </member>
-        <member name="M:CMS.Base.ThreadWorker`1.RunFinish(System.Object,System.EventArgs)">
+        <member name="M:CMS.Base.ThreadWorker`1.RunFinish">
             <summary>
             Runs the finish action
             </summary>
@@ -11168,6 +11671,11 @@
         <member name="P:CMS.Base.ThreadWorker`1.UseLogContext">
             <summary>
             If true, the thread uses a log context for its operations
+            </summary>
+        </member>
+        <member name="P:CMS.Base.ThreadWorker`1.ProcessingPaused">
+            <summary>
+            If set to true, tasks from queue will not be processed.
             </summary>
         </member>
         <member name="P:CMS.Base.ThreadWorker`1.Current">
@@ -11225,6 +11733,11 @@
             Events fired by the worker
             </summary>
         </member>
+        <member name="M:CMS.Base.ThreadQueueWorker`2.#cctor">
+            <summary>
+            Static constructor
+            </summary>
+        </member>
         <member name="M:CMS.Base.ThreadQueueWorker`2.ClearQueue">
             <summary>
             Clears the current queue
@@ -11276,9 +11789,9 @@
             Resets the worker and clears the queue
             </summary>
         </member>
-        <member name="P:CMS.Base.ThreadQueueWorker`2.ProcessingPaused">
+        <member name="M:CMS.Base.ThreadQueueWorker`2.AbortInternal">
             <summary>
-            If set to true, tasks from queue will not be processed.
+            Aborts the worker and clears the queue
             </summary>
         </member>
         <member name="P:CMS.Base.ThreadQueueWorker`2.ItemsInQueue">
@@ -11361,364 +11874,6 @@
             Initiates the event handling
             </summary>
             <param name="items">Worker queue</param>
-        </member>
-        <member name="T:CMS.Base.EditableItems">
-            <summary>
-            Editable items container.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.EditableItems.mEditableRegions">
-            <summary>
-            Collection of the editable regions contents.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.EditableItems.mEditableWebParts">
-            <summary>
-            Collection of the editable web parts contents.
-            </summary>
-        </member>
-        <member name="M:CMS.Base.EditableItems.LoadContentXml(System.String)">
-            <summary>
-            Loads the content XML to the content table.
-            </summary>
-            <param name="contentXml">Content XML to load</param>
-        </member>
-        <member name="M:CMS.Base.EditableItems.LoadEditableItems(CMS.Base.MultiKeyDictionary{System.String},System.Xml.XmlDocument,System.String)">
-            <summary>
-            Fills editable items dictionary from xml document for specific element
-            </summary>
-            <param name="items">Items collection</param>
-            <param name="xml">Source Xml document</param>
-            <param name="elementName">Element name</param>
-        </member>
-        <member name="M:CMS.Base.EditableItems.GetContentXml">
-            <summary>
-            Returns the xml code of the document contents (Editable regions, web parts).
-            </summary>
-        </member>
-        <member name="M:CMS.Base.EditableItems.SetItemsXml(CMS.Base.MultiKeyDictionary{System.String},System.Xml.XmlDocument,System.String)">
-            <summary>
-            Sets the items to the xml document under the specific node defined by element name
-            </summary>
-            <param name="items">Editable items list</param>
-            <param name="xml">XML document</param>
-            <param name="elementName">Xml element name</param>
-        </member>
-        <member name="M:CMS.Base.EditableItems.Clone">
-            <summary>
-            Returns the cloned object.
-            </summary>
-        </member>
-        <member name="M:CMS.Base.EditableItems.GetValue(System.String)">
-            <summary>
-            Gets the value of specific field.
-            </summary>
-            <param name="columnName">Column name</param>
-        </member>
-        <member name="M:CMS.Base.EditableItems.SetValue(System.String,System.Object)">
-            <summary>
-            Sets the value of specific field.
-            </summary>
-            <param name="columnName">Column name</param>
-            <param name="value">New value</param>
-        </member>
-        <member name="M:CMS.Base.EditableItems.TryGetValue(System.String,System.Object@)">
-            <summary>
-            Tries to get the value of specific column.
-            </summary>
-            <param name="columnName">Column name</param>
-            <param name="value">Returns value</param>
-        </member>
-        <member name="M:CMS.Base.EditableItems.ContainsColumn(System.String)">
-            <summary>
-            Returns true if the structure contains specific column.
-            </summary>
-            <param name="columnName">Column name</param>
-        </member>
-        <member name="P:CMS.Base.EditableItems.EditableRegions">
-            <summary>
-            Editable regions contained within the document.
-            </summary>
-        </member>
-        <member name="P:CMS.Base.EditableItems.EditableWebParts">
-            <summary>
-            Editable WebParts contained within the document.
-            </summary>
-        </member>
-        <member name="P:CMS.Base.EditableItems.Item(System.String)">
-            <summary>
-            Returns the editable value.
-            </summary>
-            <param name="controlId">Control ID</param>
-        </member>
-        <member name="P:CMS.Base.EditableItems.CMS#Base#ISimpleDataContainer#Item(System.String)">
-            <summary>
-            Gets or sets the field value.
-            </summary>
-            <param name="columnName">Column name</param>
-        </member>
-        <member name="P:CMS.Base.EditableItems.ColumnNames">
-            <summary>
-            Returns the available column names.
-            </summary>
-        </member>
-        <member name="T:CMS.Base.ExtendedXmlData">
-            <summary>
-            XML data container.
-            </summary>
-        </member>
-        <member name="T:CMS.Base.XmlData">
-            <summary>
-            XML data container.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.XmlData.mValue">
-            <summary>
-            Custom data value.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.XmlData.mData">
-            <summary>
-            Collection of the data contents.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.XmlData.mMacros">
-            <summary>
-            Collection of the macros.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.XmlData.mXmlRootName">
-            <summary>
-            Default xml root element name.
-            </summary>
-        </member>
-        <member name="M:CMS.Base.XmlData.ConvertToHashtable">
-            <summary>
-            Converts XML data to Hashtable.
-            </summary>        
-        </member>
-        <member name="M:CMS.Base.XmlData.TryGetValue(System.String,System.Object@)">
-            <summary>
-            Returns value of column.
-            </summary>
-            <param name="columnName">Column name</param>
-            <param name="value">Returns the value</param>
-            <returns>Returns true if the operation was successful (the value was present)</returns>
-        </member>
-        <member name="M:CMS.Base.XmlData.GetValue(System.String)">
-            <summary>
-            Returns value of column.
-            </summary>
-            <param name="columnName">Column name</param>
-        </member>
-        <member name="M:CMS.Base.XmlData.SetValue(System.String,System.Object)">
-            <summary>
-            Sets value of column.
-            </summary>
-            <param name="columnName">Column name</param>
-            <param name="value">Column value</param> 
-        </member>
-        <member name="M:CMS.Base.XmlData.ContainsColumn(System.String)">
-            <summary>
-            Returns true if the object contains specified column.
-            </summary>
-            <param name="columnName">Column name</param>
-        </member>
-        <member name="M:CMS.Base.XmlData.LoadData(System.String)">
-            <summary>
-            Loads the XML to the content table.
-            </summary>
-            <param name="data">Content XML to load</param>
-        </member>
-        <member name="M:CMS.Base.XmlData.LoadData(System.String,System.Xml.XmlDocument@)">
-            <summary>
-            Loads the XML to the content table.
-            </summary>
-            <param name="data">Content XML to load</param>
-            <param name="xml">Xml document on output</param>
-        </member>
-        <member name="M:CMS.Base.XmlData.GetData">
-            <summary>
-            Returns the XML code of the data.
-            </summary>
-            <remarks>Data are represented as a string values</remarks>
-        </member>
-        <member name="M:CMS.Base.XmlData.GetData(System.Xml.XmlDocument@)">
-            <summary>
-            Returns the XML code of the data and constructed XML document.
-            </summary>
-            <remarks>Data are represented as a string values</remarks>
-        </member>
-        <member name="M:CMS.Base.XmlData.Clear">
-            <summary>
-            Clears the custom data.
-            </summary>
-        </member>
-        <member name="M:CMS.Base.XmlData.Clone">
-            <summary>
-            Returns the cloned object.
-            </summary>
-        </member>
-        <member name="M:CMS.Base.XmlData.Remove(System.String)">
-            <summary>
-            Removes element with specified key from collection
-            </summary>
-            <param name="key">Key to remove</param>
-        </member>
-        <member name="M:CMS.Base.XmlData.ToString">
-            <summary>
-            Returns xml as a string.
-            </summary>
-        </member>
-        <member name="M:CMS.Base.XmlData.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Gets object data.
-            </summary>
-        </member>
-        <member name="M:CMS.Base.XmlData.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Constructor for deserialization.
-            </summary>
-            <param name="info">Serialization info</param>
-            <param name="context">Streaming context</param>
-        </member>
-        <member name="M:CMS.Base.XmlData.#ctor">
-            <summary>
-            Constructor - creates empty XmlData object.
-            </summary>
-        </member>
-        <member name="M:CMS.Base.XmlData.#ctor(System.String)">
-            <summary>
-            Constructor with root element name specification.
-            </summary>
-            <param name="rootName">Root element name</param>
-        </member>
-        <member name="P:CMS.Base.XmlData.XmlRootName">
-            <summary>
-            Gets name of xml root element.
-            </summary>
-        </member>
-        <member name="P:CMS.Base.XmlData.ColumnNames">
-            <summary>
-            Column names.
-            </summary>
-        </member>
-        <member name="P:CMS.Base.XmlData.Value">
-            <summary>
-            Value of the custom data, if set, overrides the data collection.
-            </summary>
-        </member>
-        <member name="P:CMS.Base.XmlData.ExcludedColumns">
-            <summary>
-            List of excluded columns (delimited by ';') which wont be loaded to collection. Test contains startwith.
-            </summary>
-        </member>
-        <member name="P:CMS.Base.XmlData.MacroTable">
-            <summary>
-            Macro table
-            </summary>
-        </member>
-        <member name="P:CMS.Base.XmlData.Item(System.String)">
-            <summary>
-            Gets or sets the value of the column.
-            </summary>
-            <param name="key">Column name</param>
-        </member>
-        <member name="P:CMS.Base.XmlData.AllowMacros">
-            <summary>
-            Indicates if macro values are allowed
-            </summary>
-        </member>
-        <member name="F:CMS.Base.ExtendedXmlData.mStructuredData">
-            <summary>
-            Collection of the structured data.
-            </summary>
-        </member>
-        <member name="F:CMS.Base.ExtendedXmlData.mItemIdentifier">
-            <summary>
-            Item identifier.
-            </summary>
-        </member>
-        <member name="M:CMS.Base.ExtendedXmlData.LoadData(System.String)">
-            <summary>
-            Loads the XML to the content table.
-            </summary>
-            <param name="data">Content XML to load</param>
-        </member>
-        <member name="M:CMS.Base.ExtendedXmlData.SetAttribute(System.String,System.String,System.String,System.Object)">
-            <summary>
-            Creates or update XML node with dependence on item identifier.
-            </summary>
-            <param name="columnName">Column name</param>
-            <param name="identifier">Identifier value</param>
-            <param name="attributeName">Attribute name</param>
-            <param name="attributeValue">Attribute value</param>
-        </member>
-        <member name="M:CMS.Base.ExtendedXmlData.GetAttribute(System.String,System.String)">
-            <summary>
-            Returns attribute value from structured data colection.
-            </summary>
-            <param name="identifier">Item identifier value</param>
-            <param name="attributeName">Attribute name</param>
-        </member>
-        <member name="M:CMS.Base.ExtendedXmlData.GetAttributes(System.String)">
-            <summary>
-            Returns attributes of item with given identifier or null when such item doesn't exists.
-            </summary>
-            <param name="identifier">Item identifier value</param>        
-        </member>
-        <member name="M:CMS.Base.ExtendedXmlData.GetStructuredData">
-            <summary>
-            Returns Hashtable with structures data.
-            </summary>
-        </member>
-        <member name="M:CMS.Base.ExtendedXmlData.GetData">
-            <summary>
-            Returns the xml code of the data.
-            </summary>
-        </member>
-        <member name="M:CMS.Base.ExtendedXmlData.Clear">
-            <summary>
-            Clears the custom data.
-            </summary>
-        </member>
-        <member name="M:CMS.Base.ExtendedXmlData.Clone">
-            <summary>
-            Returns the cloned object.
-            </summary>
-        </member>
-        <member name="M:CMS.Base.ExtendedXmlData.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Gets object data.
-            </summary>
-        </member>
-        <member name="M:CMS.Base.ExtendedXmlData.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Constructor for deserialization.
-            </summary>
-            <param name="info">Serialization info</param>
-            <param name="context">Streaming context</param>
-        </member>
-        <member name="M:CMS.Base.ExtendedXmlData.#ctor">
-            <summary>
-            Constructor - creates empty XmlData object.
-            </summary>
-        </member>
-        <member name="M:CMS.Base.ExtendedXmlData.#ctor(System.String)">
-            <summary>
-            Constructor with root element name specification.
-            </summary>
-            <param name="rootName">Root element name</param>
-        </member>
-        <member name="P:CMS.Base.ExtendedXmlData.ItemIdentifier">
-            <summary>
-            Gets or sets the item identifier, if is set data can be saved structured.
-            </summary>
-        </member>
-        <member name="P:CMS.Base.ExtendedXmlData.ItemIdentificator">
-            <summary>
-            Gets or sets the item identifier, if is set data can be saved structured.
-            </summary>
         </member>
         <member name="T:CMS.Base.Internal.Benchmark`1">
             <summary>

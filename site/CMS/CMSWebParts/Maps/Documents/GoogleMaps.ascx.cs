@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Controls;
 using CMS.Helpers;
@@ -399,26 +399,6 @@ public partial class CMSWebParts_Maps_Documents_GoogleMaps : CMSAbstractWebPart
 
 
     /// <summary>
-    /// The Navigation control may appear in one of the following style options:
-    /// Default picks an appropriate navigation control based on the map's size and the device on which the map is running.
-    /// Small displays a mini-zoom control, consisting of only + and - buttons. This style is appropriate for small maps.
-    /// Large displays the standard zoom slider control.
-    /// </summary>
-    [Obsolete("This property is obsolete. Please use ZoomControlType instead.")]
-    public int NavigationControlType
-    {
-        get
-        {
-            return ValidationHelper.GetInteger(GetValue("NavigationControlType"), 0);
-        }
-        set
-        {
-            SetValue("NavigationControlType", value);
-        }
-    }
-
-
-    /// <summary>
     /// The Zoom control may appear in one of the following style options:
     /// Default picks an appropriate navigation control based on the map's size and the device on which the map is running.
     /// Small displays a mini-zoom control, consisting of only + and - buttons. This style is appropriate for small maps.
@@ -713,23 +693,6 @@ public partial class CMSWebParts_Maps_Documents_GoogleMaps : CMSAbstractWebPart
 
 
     /// <summary>
-    /// Gets or sets the value that indicates if current document is in classnames only this document is displayed.
-    /// </summary>
-    [Obsolete("Use property LoadCurrentPageOnly instead")]
-    public bool EnableSelectedItem
-    {
-        get
-        {
-            return LoadCurrentPageOnly;
-        }
-        set
-        {
-            LoadCurrentPageOnly = value;
-        }
-    }
-
-
-    /// <summary>
     /// Gets or sets the value that indicates that if a page is selected,
     /// the datasource will provide data for the selected page only.
     /// </summary>
@@ -944,7 +907,7 @@ public partial class CMSWebParts_Maps_Documents_GoogleMaps : CMSAbstractWebPart
             if (ucDocumentSource != null && EnableServerProcessing)
             {
                 ucGoogleMap.CacheItemName = ucDocumentSource.CacheItemName;
-                ucGoogleMap.CacheMinutes = (ucDocumentSource.CacheMinutes <= 0) ? SettingsKeyInfoProvider.GetIntValue(CurrentSiteName + ".CMSCacheMinutes") : ucDocumentSource.CacheMinutes;
+                ucGoogleMap.CacheMinutes = ucDocumentSource.CacheMinutes;
 
                 // Cache depends on data source and properties of web part
                 ucGoogleMap.CacheDependencies = CacheHelper.GetCacheDependencies(CacheDependencies, ucDocumentSource.GetDefaultCacheDependencies());

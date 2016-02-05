@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using CMS.Blogs;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
@@ -60,10 +60,6 @@ public partial class CMSModules_Blogs_CMSPages_Comment_Edit : CMSLiveModalPage
 
     protected void ctrlCommentEdit_OnAfterCommentSaved(BlogCommentInfo commentObj)
     {
-        // Get filter parameters
-        string filterParams = "?user=" + QueryHelper.GetString("user", "") + "&comment=" + QueryHelper.GetString("comment", "") +
-                              "&approved=" + QueryHelper.GetString("approved", "") + "&isspam=" + QueryHelper.GetString("isspam", "");
-
-        ltlScript.Text = ScriptHelper.GetScript("wopener.RefreshPage(" + ScriptHelper.GetString(filterParams) + ");CloseDialog();");
+        ltlScript.Text = ScriptHelper.GetScript("wopener.RefreshBlogCommentPage();CloseDialog();");
     }
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Linq;
 using System.Web.UI;
@@ -1017,7 +1017,7 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartOrde
             MapContactAddress(ai);
 
             ShoppingCart.ShoppingCartBillingAddress = ai;
-
+            
             // If shopping cart does not need shipping
             if (!ShoppingCart.IsShippingNeeded)
             {
@@ -1145,6 +1145,8 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartOrde
 
             try
             {
+                ShoppingCart.InvalidateCalculations();
+
                 // Update changes in database only when on the live site
                 if (!ShoppingCartControl.IsInternalOrder)
                 {

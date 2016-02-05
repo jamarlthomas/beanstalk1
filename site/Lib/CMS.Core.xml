@@ -91,11 +91,6 @@
             Marks the assembly as discoverable (containing modules or implementations)
             </summary>
         </member>
-        <member name="T:CMS.IDiscoverableAttribute">
-            <summary>
-            Interface for a discoverable attribute
-            </summary>
-        </member>
         <member name="T:CMS.RegisterImplementationAttribute">
             <summary>
             Marks the class as implementation of the given interface
@@ -220,34 +215,30 @@
         </member>
         <member name="T:CMS.Core.AppCore">
             <summary>
-            Main entry point to the application
-            </summary>
-        </member>
-        <member name="F:CMS.Core.AppCore.mLock">
-            <summary>
-            An object used to synchronize access to this class.
-            </summary>
-        </member>
-        <member name="F:CMS.Core.AppCore.mSetup">
-            <summary>
-            Application core startup parameters.
+            Main entry point to the application.
             </summary>
         </member>
         <member name="M:CMS.Core.AppCore.PreInit">
             <summary>
             Determines whether the pre-initialization phase of the application core life-cycle is complete. If it is not, it executes it.
             </summary>
+            <remarks>
+            This method is not intended to be used in custom code. Use CMS.DataEngine.CMSApplication.PreInit() instead.
+            </remarks>
             <returns>True, the pre-initialization phase of the application core life-cycle has been executed; otherwise, false.</returns>
         </member>
         <member name="M:CMS.Core.AppCore.Init">
             <summary>
             Determines whether the initialization phase of the application core life-cycle is complete. If it is not, it executes it.
             </summary>
+            <remarks>
+            This method is not intended to be used in custom code. Use CMS.DataEngine.CMSApplication.Init() instead.
+            </remarks>
             <returns>True, if the initialization phase of the application core life-cycle has been executed; otherwise, false.</returns>
         </member>
         <member name="M:CMS.Core.AppCore.Setup(CMS.Core.AppCoreSetup)">
             <summary>
-            Provides the application core with startup parameters.
+            Provides the application core with startup parameters. The setup can be set only once, subsequent attempts are ignored.
             </summary>
             <param name="setup">Application core startup parameters.</param>
         </member>
@@ -319,12 +310,11 @@
             </summary>
             <param name="baseFolderPath">The path to the folder with private assemblies.</param>
         </member>
-        <member name="M:CMS.Core.DefaultAssemblyResolver.GetAssembly(System.Reflection.AssemblyName,System.Reflection.Assembly)">
+        <member name="M:CMS.Core.DefaultAssemblyResolver.GetAssembly(System.ResolveEventArgs)">
             <summary>
             Loads the assembly into an execution context using the specified context.
             </summary>
-            <param name="name">The name of the assembly to resolve.</param>
-            <param name="requestingAssembly">The assembly whose dependency is being resolved.</param>
+            <param name="resolveEventArgs">Data for assembly resolution.</param>
             <returns>The assembly matching the specified context; or null, if the assembly cannot be resolved.</returns>
         </member>
         <member name="M:CMS.Core.DefaultAssemblyResolver.GetAssemblyFromFile(System.String)">
@@ -552,7 +542,8 @@
         </member>
         <member name="M:CMS.Core.TypeManager.InitializeTypes">
             <summary>
-            PreInitializes all types with IPreInitAttribute attributes
+            Initializes all types with IInitAttribute attributes.
+            Assemblies containing installable module which is not installed are omitted.
             </summary>
         </member>
         <member name="M:CMS.Core.TypeManager.InitializeTypes(System.Reflection.Assembly)">
@@ -560,6 +551,35 @@
             Initializes types in the given assembly
             </summary>
             <param name="assembly">Assembly to initialize</param>
+        </member>
+        <member name="M:CMS.Core.TypeManager.GetAssembliesOmittedFromTypeInitialization">
+            <summary>
+            Gets assemblies to be omitted from type initialization.
+            </summary>
+            <returns>Set of omitted assemblies.</returns>
+            <remarks>
+            Assemblies containing installable modules which are not installed in the system (or which installation state 
+            is not available at the moment) are omitted from type initialization.
+            </remarks>
+        </member>
+        <member name="M:CMS.Core.TypeManager.RegisterGenericType(System.Type)">
+            <summary>
+            Registers a generic type.
+            </summary>
+            <remarks>
+            <para>
+            Registered generic types are used for automatic application state reset within the automated tests.
+            </para>
+            <para>
+             Use this method in static constructor of a generic type.
+            </para>
+            </remarks>
+            <param name="type">Type to register</param>
+        </member>
+        <member name="M:CMS.Core.TypeManager.GetRegisteredGenericTypes">
+            <summary>
+            Gets the list of registered generic types.
+            </summary>
         </member>
         <member name="P:CMS.Core.TypeManager.Implementations">
             <summary>
@@ -571,9 +591,21 @@
             Dictionary of type extensions [InterfaceType -> List(ExtensionType)]
             </summary>
         </member>
+        <member name="P:CMS.Core.TypeManager.SystemTypesInitialized">
+            <summary>
+            If true, all system types were already initialized. System types are considered all types that are not installable.
+            </summary>
+            <seealso cref="P:CMS.Core.TypeManager.InstallableTypesInitialized"/>
+        </member>
+        <member name="P:CMS.Core.TypeManager.InstallableTypesInitialized">
+            <summary>
+            If true, all installable types were already initialized. 
+            </summary>
+            <seealso cref="P:CMS.Core.TypeManager.SystemTypesInitialized"/>
+        </member>
         <member name="P:CMS.Core.TypeManager.Initialized">
             <summary>
-            If true, the types were already initialized
+            If true, all types were already initialized (both system <see cref="P:CMS.Core.TypeManager.SystemTypesInitialized"/> and installable <see cref="P:CMS.Core.TypeManager.InstallableTypesInitialized"/>).
             </summary>
         </member>
         <member name="P:CMS.Core.TypeManager.PreInitialized">
@@ -584,6 +616,11 @@
         <member name="T:CMS.Core.SingletonStorage`2">
             <summary>
             Storage for singleton objects
+            </summary>
+        </member>
+        <member name="M:CMS.Core.SingletonStorage`2.#cctor">
+            <summary>
+            Static constructor
             </summary>
         </member>
         <member name="P:CMS.Core.SingletonStorage`2.Singleton">
@@ -925,12 +962,84 @@
             <param name="assembly">The assembly to retrieve modules from.</param>
             <returns>An enumerable collection of application modules from the specified assembly.</returns>
         </member>
+        <member name="T:CMS.Core.BasicModuleInstallationMetaData">
+            <summary>
+            Basic module installation meta data (can be retrieved from the name of module installation meta file).
+            The basic meta data is read only.
+            </summary>
+        </member>
+        <member name="M:CMS.Core.BasicModuleInstallationMetaData.#ctor(System.String,System.String)">
+            <summary>
+            Creates new basic module installation meta data.
+            </summary>
+            <param name="name">Module name.</param>
+            <param name="version">Module version.</param>
+        </member>
+        <member name="M:CMS.Core.BasicModuleInstallationMetaData.ToString">
+            <summary>
+            Returns a string that represents the current object.
+            </summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="P:CMS.Core.BasicModuleInstallationMetaData.Name">
+            <summary>
+            Name of the module.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.BasicModuleInstallationMetaData.Version">
+            <summary>
+            Version of the module.
+            </summary>
+        </member>
+        <member name="T:CMS.Core.ModuleInstallationMetaData">
+            <summary>
+            Installation meta data about single installation module, shipped with module via NuGet.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.ModuleInstallationMetaData.Name">
+            <summary>
+            Name of the module.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.ModuleInstallationMetaData.Version">
+            <summary>
+            Version of the module (e.g. "1.2.3").
+            </summary>
+        </member>
+        <member name="T:CMS.Core.DefaultInstallableModulesInformationService">
+            <summary>
+            Provides information about installable modules.
+            </summary>
+            <remarks>
+            The default implementation does not provide any information about installable modules.
+            </remarks>
+        </member>
+        <member name="T:CMS.Core.Internal.IInstallableModulesInformationService">
+            <summary>
+            Provides information about installable modules.
+            </summary>
+            <remarks>
+            This interface is for internal use only and shall not be considered as part of public API.
+            </remarks>
+        </member>
+        <member name="M:CMS.Core.Internal.IInstallableModulesInformationService.GetModuleNamesOmittedFromInitialization">
+            <summary>
+            Gets set of module names which are not installed and therefore omitted from initialization.
+            </summary>
+            <returns>Set of module names omitted from initialization. Returns null if all installable modules are omitted from initialization.</returns>
+        </member>
+        <member name="M:CMS.Core.DefaultInstallableModulesInformationService.GetModuleNamesOmittedFromInitialization">
+            <summary>
+            Gets set of module names which are not installed and therefore omitted from initialization.
+            </summary>
+            <returns>Returns null and therefore all installable modules are omitted from initialization.</returns>
+        </member>
         <member name="T:CMS.Core.ModuleEntry">
             <summary>
             Represents the standard module entry.
             </summary>
         </member>
-        <member name="M:CMS.Core.ModuleEntry.#ctor(CMS.Core.ModuleMetadata)">
+        <member name="M:CMS.Core.ModuleEntry.#ctor(CMS.Core.ModuleMetadata,System.Boolean)">
             <summary>
             Constructor
             </summary>
@@ -985,35 +1094,99 @@
             If true, this module is automatically discoverable
             </summary>
         </member>
-        <member name="P:CMS.Core.ModuleEntry.ReferencedAssembliesNames">
+        <member name="P:CMS.Core.ModuleEntry.IsInstallable">
             <summary>
-            Gets a set of names of assemblies referenced by the assembly of this module entry.
+            Indicates if module is designed as installable.
             </summary>
             <remarks>
-            The set performs a case-insensitive string comparison using the word comparison rules of the invariant culture.
+            Installable modules which are not installed in the database are omitted from initialization.
             </remarks>
         </member>
-        <member name="T:CMS.Core.ModuleEntryComparer">
+        <member name="P:CMS.Core.ModuleEntry.IsInstalled">
             <summary>
-            Represents a module entry comparison operation that uses module entry dependencies.
+            Indicates if installable module is installed.
+            </summary>
+            <remarks>
+            <para>The value of this property is available in application init phase.</para>
+            <para>Returns false for modules which are not installable or when the property is accessed before information regarding installed installable modules is available (i.e. before application init phase).</para>
+            <para>Returns true for installable modules which are being developed on this instance.</para>
+            </remarks>
+            <seealso cref="P:CMS.Core.ModuleEntry.IsInstallable"/>
+            <seealso cref="P:CMS.Core.ModuleEntryManager.IsInstalledModulesStateAvailable"/>
+        </member>
+        <member name="P:CMS.Core.ModuleEntry.Assembly">
+            <summary>
+            Gets assembly the module resides in.
+            </summary>
+            <remarks>
+            Available only for modules discovered via <see cref="T:CMS.Core.ModuleDiscovery"/>.
+            </remarks>
+        </member>
+        <member name="T:CMS.Core.ModuleEntrySort">
+            <summary>
+            Provides an ordered collection of modules based on their dependencies.
+            </summary>
+            <remarks>
+            Module A is dependent on module B if module A is declared in an assembly that references an assembly where module B is declared.
+            It implements deterministic depth-first topological sort that ignores circular dependencies.
+            </remarks>
+        </member>
+        <member name="M:CMS.Core.ModuleEntrySort.Sort(System.Collections.Generic.List{CMS.Core.ModuleEntry})">
+            <summary>
+            Sorts the specified collection of modules based on their dependencies.
+            </summary>
+            <param name="modules">A collection of modules.</param>
+            <returns>An ordered collection of modules where each module comes after its dependencies.</returns>
+        </member>
+        <member name="M:CMS.Core.ModuleEntrySort.Visit(System.Int32,System.Collections.Generic.List{CMS.Core.ModuleEntry},System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.Int32}},CMS.Core.ModuleEntrySort.ModuleEntryState[],System.Collections.Generic.List{CMS.Core.ModuleEntry})">
+            <summary>
+            Processes the specified module.
+            </summary>
+            <param name="index">The module index.</param>
+            <param name="modules">A collection of modules to sort.</param>
+            <param name="moduleIndicesByAssemblyName">A mapping from an assembly name to a list module indices.</param>
+            <param name="state">Current state of modules.</param>
+            <param name="result">An ordered collection of modules where each module comes after its dependencies.</param>
+        </member>
+        <member name="M:CMS.Core.ModuleEntrySort.GetModuleDependencies(System.Int32,System.Collections.Generic.List{CMS.Core.ModuleEntry},System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.Int32}})">
+            <summary>
+            Determines a set of dependencies for the specified module and returns a collection of their indices.
+            </summary>
+            <param name="index">The module index.</param>
+            <param name="modules">A collection of modules to sort.</param>
+            <param name="moduleIndicesByAssemblyName">A mapping from an assembly name to a list module indices.</param>
+            <returns>A collection of dependency indices.</returns>
+        </member>
+        <member name="M:CMS.Core.ModuleEntrySort.CreateModuleIndicesByAssemblyName(System.Collections.Generic.List{CMS.Core.ModuleEntry})">
+            <summary>
+            Creates a mapping from an assembly name to a list module indices, and returns it.
+            </summary>
+            <param name="modules">A collection of modules to sort.</param>
+            <returns>A mapping from an assembly name to a list module indices.</returns>
+        </member>
+        <member name="T:CMS.Core.ModuleEntrySort.ModuleEntryState">
+            <summary>
+            Represents a state of a module entry during topological sort.
             </summary>
         </member>
-        <member name="M:CMS.Core.ModuleEntryComparer.Compare(CMS.Core.ModuleEntry,CMS.Core.ModuleEntry)">
+        <member name="F:CMS.Core.ModuleEntrySort.ModuleEntryState.Alive">
             <summary>
-            Compares two module entries and returns an indication of their relative sort order.
+            The module entry has not been processed yet.
             </summary>
-            <param name="first">A module entry to compare to <paramref name="second"/>.</param>
-            <param name="second">A module entry to compare to <paramref name="first"/>.</param>
-            <returns>A signed integer that indicates the relative values of <paramref name="first"/> and <paramref name="second"/>.</returns>
+        </member>
+        <member name="F:CMS.Core.ModuleEntrySort.ModuleEntryState.Dead">
+            <summary>
+            The module entry has been processed.
+            </summary>
+        </member>
+        <member name="F:CMS.Core.ModuleEntrySort.ModuleEntryState.Processing">
+            <summary>
+            The module entry is being processed.
+            </summary>
         </member>
         <member name="T:CMS.Core.ModuleMetadata">
             <summary>
             Represents the module metadata.
-            </summary>
-        </member>
-        <member name="F:CMS.Core.ModuleMetadata.mExtends">
-            <summary>
-            A set of names of module dependencies.
             </summary>
         </member>
         <member name="M:CMS.Core.ModuleMetadata.#ctor(System.String)">
@@ -1025,11 +1198,6 @@
         <member name="P:CMS.Core.ModuleMetadata.Name">
             <summary>
             Gets the module name.
-            </summary>
-        </member>
-        <member name="P:CMS.Core.ModuleMetadata.Extends">
-            <summary>
-            Gets a set of names of module dependencies.
             </summary>
         </member>
         <member name="P:CMS.Core.ModuleMetadata.RootPath">
@@ -1055,6 +1223,11 @@
         <member name="F:CMS.Core.ModuleName.CONTENT">
             <summary>
             Content.
+            </summary>
+        </member>
+        <member name="F:CMS.Core.ModuleName.CONTINUOUSINTEGRATION">
+            <summary>
+            Continuous integration
             </summary>
         </member>
         <member name="F:CMS.Core.ModuleName.EVENTLOG">
@@ -1302,6 +1475,11 @@
             Scheduler.
             </summary>
         </member>
+        <member name="F:CMS.Core.ModuleName.WINSERVICEENGINE">
+            <summary>
+            Windows services engine.
+            </summary>
+        </member>
         <member name="F:CMS.Core.ModuleName.BASE">
             <summary>
             Settings provider.
@@ -1362,11 +1540,6 @@
             WebDAV.
             </summary>
         </member>
-        <member name="F:CMS.Core.ModuleName.PROJECTMANAGEMENT">
-            <summary>
-            Project Management.
-            </summary>
-        </member>
         <member name="F:CMS.Core.ModuleName.IMPORTEXPORT">
             <summary>
             Import/export module.
@@ -1380,11 +1553,6 @@
         <member name="F:CMS.Core.ModuleName.MVC">
             <summary>
             MVC Implementation module
-            </summary>
-        </member>
-        <member name="F:CMS.Core.ModuleName.FILEIMPORT">
-            <summary>
-            File import module
             </summary>
         </member>
         <member name="F:CMS.Core.ModuleName.SOCIALMEDIA">
@@ -1482,6 +1650,16 @@
             Web API
             </summary>
         </member>
+        <member name="F:CMS.Core.ModuleName.APPLICATIONDASHBOARD">
+            <summary>
+            Application Dashboard
+            </summary>
+        </member>
+        <member name="F:CMS.Core.ModuleName.ROUTING">
+            <summary>
+            Routing
+            </summary>
+        </member>
         <member name="T:CMS.Core.BufferedEvent">
             <summary>
             Represents the data container for the buffered events.
@@ -1534,9 +1712,9 @@
             Logs the buffered event to the event log
             </summary>
         </member>
-        <member name="P:CMS.Core.BufferedEvent.AllowMultiple">
+        <member name="P:CMS.Core.BufferedEvent.LoggingPolicy">
             <summary>
-            If true, it is allowed to log this exception multiple times within the application run
+            Logging policy.
             </summary>
         </member>
         <member name="T:CMS.Core.DefaultLogContext">
@@ -1555,6 +1733,11 @@
             </summary>
             <param name="text">Text to append</param>
             <param name="newLine">Append as new line</param>
+        </member>
+        <member name="M:CMS.Core.ILogContext.Clear">
+            <summary>
+            Clears the log
+            </summary>
         </member>
         <member name="P:CMS.Core.ILogContext.Offset">
             <summary>
@@ -1582,6 +1765,11 @@
             </summary>
             <param name="text">Text to append</param>
             <param name="newLine">Append as new line</param>
+        </member>
+        <member name="M:CMS.Core.DefaultLogContext.Clear">
+            <summary>
+            Clears the log
+            </summary>
         </member>
         <member name="P:CMS.Core.DefaultLogContext.Offset">
             <summary>
@@ -1613,44 +1801,40 @@
             Web farm service interface
             </summary>
         </member>
-        <member name="M:CMS.Core.IWebFarmService.NotifyServers(System.Boolean)">
+        <member name="M:CMS.Core.IWebFarmService.RegisterTask(CMS.Core.WebFarmTask)">
             <summary>
-            Notifies other servers that some changes occurred
+            Registers the given web farm task.
             </summary>
-            <param name="forceSynchronization">If true, the synchronization is forced at this particular moment</param>
+            <param name="task">Web farm task.</param>
         </member>
-        <member name="M:CMS.Core.IWebFarmService.NotifyWebApplication(System.String)">
+        <member name="M:CMS.Core.IWebFarmService.CreateTask(System.String,System.String,System.String[])">
             <summary>
-            Notifies the application sitting under specific physical path
-            </summary>
-            <param name="appPath">Application path</param>
-        </member>
-        <member name="M:CMS.Core.IWebFarmService.RegisterTask(System.String,System.Action{System.String,System.String,CMS.Core.BinaryData},System.Func{System.Boolean})">
-            <summary>
-            Registers the given web farm task
-            </summary>
-            <param name="taskType">Task type</param>
-            <param name="execute">Method executed to perform the task</param>
-            <param name="condition">Condition under which the task is synchronized</param>
-        </member>
-        <member name="M:CMS.Core.IWebFarmService.CreateTask(System.String,System.String,System.String,CMS.Core.BinaryData)">
-            <summary>
-            Creates task to be synchronized to other servers
+            Creates task.
             </summary>
             <param name="taskType">Task type</param>
             <param name="taskTarget">Target</param>
             <param name="taskTextData">Task text data (such as code name, ID etc.)</param>
-            <param name="taskBinaryData">Task binary data (for attachments etc.)</param>
             <returns>Returns true if the task was created (web farm is set up and task was allowed)</returns>
         </member>
-        <member name="M:CMS.Core.IWebFarmService.GetEnabledServerNames">
+        <member name="M:CMS.Core.IWebFarmService.CreateIOTask(System.String,System.String,CMS.Core.BinaryData,System.String,System.String[])">
             <summary>
-            Gets the list of currently enabled servers
+            Creates task.
             </summary>
+            <param name="taskType">Task type</param>
+            <param name="taskFilePath">Task file path.</param>
+            <param name="taskBinaryData">Task binary data.</param>
+            <param name="taskTarget">Target</param>
+            <param name="taskTextData">Task text data (such as code name, ID etc.)</param>
+            <returns>Returns true if the task was created (web farm is set up and task was allowed)</returns>
         </member>
         <member name="M:CMS.Core.IWebFarmService.GetServerNamesToUpdate">
             <summary>
             Gets the list of names of servers to be updated. Current server is excluded.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.IWebFarmService.SynchronizeFiles">
+            <summary>
+            Gets or sets value that indicates whether file synchronization is enabled.
             </summary>
         </member>
         <member name="P:CMS.Core.IWebFarmService.SynchronizePhysicalFiles">
@@ -1658,54 +1842,55 @@
             Gets value that indicates whether file synchronization for physical project files is enabled.
             </summary>
         </member>
+        <member name="P:CMS.Core.IWebFarmService.SynchronizeDeleteFiles">
+            <summary>
+            Gets or sets value that indicates whether file delete synchronization is enabled.
+            </summary>
+        </member>
         <member name="P:CMS.Core.IWebFarmService.WebFarmEnabled">
             <summary>
-            Returns true if the web farm is enabled
+            Returns true if the web farm is enabled.
             </summary>
         </member>
         <member name="P:CMS.Core.IWebFarmService.ServerName">
             <summary>
-            Returns unique identifier of the server
+            Returns unique identifier of the server.
             </summary>
         </member>
-        <member name="M:CMS.Core.DefaultWebFarmService.NotifyServers(System.Boolean)">
+        <member name="M:CMS.Core.DefaultWebFarmService.RegisterTask(CMS.Core.WebFarmTask)">
             <summary>
-            Notifies other servers that some changes occurred
+            Registers the given web farm task.
             </summary>
-            <param name="forceSynchronization">If true, the synchronization is forced at this particular moment</param>
+            <param name="task">Web farm task.</param>
         </member>
-        <member name="M:CMS.Core.DefaultWebFarmService.NotifyWebApplication(System.String)">
-            <summary>
-            Notifies the application sitting under specific physical path
-            </summary>
-            <param name="appPath">Application path</param>
-        </member>
-        <member name="M:CMS.Core.DefaultWebFarmService.RegisterTask(System.String,System.Action{System.String,System.String,CMS.Core.BinaryData},System.Func{System.Boolean})">
-            <summary>
-            Registers the given web farm task
-            </summary>
-            <param name="taskType">Task type</param>
-            <param name="execute">Method executed to perform the task</param>
-            <param name="condition">Condition under which the task is synchronized</param>
-        </member>
-        <member name="M:CMS.Core.DefaultWebFarmService.CreateTask(System.String,System.String,System.String,CMS.Core.BinaryData)">
+        <member name="M:CMS.Core.DefaultWebFarmService.CreateTask(System.String,System.String,System.String[])">
             <summary>
             Creates task.
             </summary>
             <param name="taskType">Task type</param>
             <param name="taskTarget">Target</param>
             <param name="taskTextData">Task text data (such as code name, ID etc.)</param>
-            <param name="taskBinaryData">Task binary data (for attachments etc.)</param>
             <returns>Returns true if the task was created (web farm is set up and task was allowed)</returns>
         </member>
-        <member name="M:CMS.Core.DefaultWebFarmService.GetEnabledServerNames">
+        <member name="M:CMS.Core.DefaultWebFarmService.CreateIOTask(System.String,System.String,CMS.Core.BinaryData,System.String,System.String[])">
             <summary>
-            Gets the list of currently enabled servers
+            Creates task.
             </summary>
+            <param name="taskType">Task type</param>
+            <param name="taskFilePath">Task file path.</param>
+            <param name="taskBinaryData">Task binary data.</param>
+            <param name="taskTarget">Target</param>
+            <param name="taskTextData">Task text data (such as code name, ID etc.)</param>
+            <returns>Returns true if the task was created (web farm is set up and task was allowed)</returns>
         </member>
         <member name="M:CMS.Core.DefaultWebFarmService.GetServerNamesToUpdate">
             <summary>
             Gets the list of names of servers to be updated. Current server is excluded.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.DefaultWebFarmService.SynchronizeFiles">
+            <summary>
+            Gets or sets value that indicates whether file synchronization is enabled.
             </summary>
         </member>
         <member name="P:CMS.Core.DefaultWebFarmService.SynchronizePhysicalFiles">
@@ -1713,19 +1898,59 @@
             Gets value that indicates whether file synchronization for physical project files is enabled.
             </summary>
         </member>
+        <member name="P:CMS.Core.DefaultWebFarmService.SynchronizeDeleteFiles">
+            <summary>
+            Gets or sets value that indicates whether file delete synchronization is enabled.
+            </summary>
+        </member>
         <member name="P:CMS.Core.DefaultWebFarmService.WebFarmEnabled">
             <summary>
-            Returns true if the web farm is enabled
+            Returns true if the web farm is enabled.
             </summary>
         </member>
         <member name="P:CMS.Core.DefaultWebFarmService.ServerName">
             <summary>
-            Returns unique identifier of the server
+            Returns unique identifier of the server.
+            </summary>
+        </member>
+        <member name="T:CMS.Core.IWebFarmTask">
+            <summary>
+            Web farm task representation.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.IWebFarmTask.TaskBinaryData">
+            <summary>
+            Binary data.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.IWebFarmTask.TaskIsAnonymous">
+            <summary>
+            Indicates if the task is not assigned to any server.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.IWebFarmTask.TaskType">
+            <summary>
+            Task type.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.IWebFarmTask.TaskTarget">
+            <summary>
+            Task target.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.IWebFarmTask.TaskTextData">
+            <summary>
+            Task type.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.IWebFarmTask.TaskFilePath">
+            <summary>
+            Target path of file transported by task.
             </summary>
         </member>
         <member name="T:CMS.Core.BinaryData">
             <summary>
-            Wrapper for the binary data of the web farm task
+            Wrapper for the binary data (fox example for the web farm tasks).
             </summary>
         </member>
         <member name="F:CMS.Core.BinaryData.mData">
@@ -1736,6 +1961,11 @@
         <member name="F:CMS.Core.BinaryData.mStream">
             <summary>
             Resulting stream
+            </summary>
+        </member>
+        <member name="F:CMS.Core.BinaryData.mChecksum">
+            <summary>
+            Checksum to compare binary data
             </summary>
         </member>
         <member name="M:CMS.Core.BinaryData.#ctor(System.Byte[])">
@@ -1811,6 +2041,132 @@
             External method used to get the binary data when required
             </summary>
         </member>
+        <member name="P:CMS.Core.BinaryData.IsLoaded">
+            <summary>
+            True if data were loaded to memory.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.BinaryData.Checksum">
+            <summary>
+            Gets data checksum.
+            </summary>
+        </member>
+        <member name="T:CMS.Core.LoggingPolicy">
+            <summary>
+            Logging policy allows to limit the number of logged events.
+            </summary>
+        </member>
+        <member name="F:CMS.Core.LoggingPolicy.DEFAULT">
+            <summary>
+            Default logging policy ensures that events are always logged.
+            </summary>
+        </member>
+        <member name="F:CMS.Core.LoggingPolicy.ONLY_ONCE">
+            <summary>
+            Policy ensures that events are logged only once per application lifetime.
+            </summary>
+        </member>
+        <member name="M:CMS.Core.LoggingPolicy.#ctor(CMS.Core.LoggingPolicyEnum)">
+            <summary>
+            Internal constructor used for non-period policy types.
+            </summary>
+            <param name="type">Policy type</param>
+            <exception cref="T:System.NotSupportedException">Thrown when <see cref="F:CMS.Core.LoggingPolicyEnum.OncePerPeriod"/> is used.</exception>
+        </member>
+        <member name="M:CMS.Core.LoggingPolicy.#ctor(System.TimeSpan)">
+            <summary>
+            Creates new logging policy of type <see cref="F:CMS.Core.LoggingPolicyEnum.OncePerPeriod"/>.
+            </summary>
+            <remarks>
+            You can use <see cref="F:CMS.Core.LoggingPolicy.ONLY_ONCE"/> constant instead of <see cref="F:System.TimeSpan.Zero"/> for events that should be logged only once without period limit.
+            </remarks>
+            <example>
+            <code>
+            var policy = new LoggingPolicy(TimeSpan.FromMinutes(15));
+            CoreServices.EventLog.LogException("Data", "UPDATE", ex, policy);
+            </code>
+            </example>
+            <param name="period">Period value.</param>
+        </member>
+        <member name="P:CMS.Core.LoggingPolicy.Type">
+            <summary>
+            Logging policy type.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.LoggingPolicy.Period">
+            <summary>
+            Logging period.
+            </summary>
+            <remarks>
+            Applicable when policy type is <see cref="F:CMS.Core.LoggingPolicyEnum.OncePerPeriod"/>.
+            </remarks>
+        </member>
+        <member name="T:CMS.Core.LoggingPolicyEnum">
+            <summary>
+            Logging policy types.
+            </summary>
+        </member>
+        <member name="F:CMS.Core.LoggingPolicyEnum.Default">
+            <summary>
+            Logs all events without any limits.
+            </summary>
+        </member>
+        <member name="F:CMS.Core.LoggingPolicyEnum.OnlyOnce">
+            <summary>
+            Logs the event only once per application lifetime.
+            </summary>
+        </member>
+        <member name="F:CMS.Core.LoggingPolicyEnum.OncePerPeriod">
+            <summary>
+            Logs the event once per given period.
+            </summary>
+        </member>
+        <member name="T:CMS.Core.WebFarmTask">
+            <summary>
+            Web farm task implementation
+            </summary>
+        </member>
+        <member name="P:CMS.Core.WebFarmTask.Type">
+            <summary>
+            Task type.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.WebFarmTask.Condition">
+            <summary>
+            Condition which must be met in order to log the task.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.WebFarmTask.Execute">
+            <summary>
+            Action which is fired when the web farm task executes.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.WebFarmTask.IsMemoryTask">
+            <summary>
+            Indicates if the task modifies memory only. Memory tasks
+            can be deleted on application start.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.WebFarmTask.OptimizationType">
+            <summary>
+            Indicates if task number can be optimized by one of predefined ways.
+            </summary>
+        </member>
+        <member name="T:CMS.Core.WebFarmTaskOptimizeActionEnum">
+            <summary>
+            Determines kind of optimization which can be used for reduction number of generated web farm tasks of particular type.
+            </summary>
+        </member>
+        <member name="F:CMS.Core.WebFarmTaskOptimizeActionEnum.None">
+            <summary>
+            No optimization available.
+            </summary>
+        </member>
+        <member name="F:CMS.Core.WebFarmTaskOptimizeActionEnum.GroupData">
+            <summary>
+            Group data of same task type
+            </summary>
+        </member>
         <member name="T:CMS.Core.AbstractDecorator`2">
             <summary>
             Base class for decorators
@@ -1819,6 +2175,11 @@
         <member name="T:CMS.Core.AbstractDecorator`1">
             <summary>
             Base class for decorators
+            </summary>
+        </member>
+        <member name="M:CMS.Core.AbstractDecorator`1.#cctor">
+            <summary>
+            Static constructor
             </summary>
         </member>
         <member name="M:CMS.Core.AbstractDecorator`1.CreateBaseObject">
@@ -2173,14 +2534,14 @@
             <param name="eventCode">Event code (UPDATEDOC, SENDEMAIL, DELETE, etc.)</param>
             <param name="eventDescription">Detailed description of the event</param>
         </member>
-        <member name="M:CMS.Core.IEventLogService.LogException(System.String,System.String,System.Exception,System.Boolean)">
+        <member name="M:CMS.Core.IEventLogService.LogException(System.String,System.String,System.Exception,CMS.Core.LoggingPolicy)">
             <summary>
             Writes a new error to the event log.
             </summary>
             <param name="source">Source of the event (Content, Administration, etc.)</param>
             <param name="eventCode">Event code (UPDATEDOC, SENDEMAIL, DELETE, etc.)</param>
             <param name="ex">Exception to be logged</param>
-            <param name="allowMultiple">If true, it is allowed to log this exception multiple times within the application run</param>
+            <param name="loggingPolicy">Logging policy.</param>
         </member>
         <member name="P:CMS.Core.IEventLogService.CurrentLogContext">
             <summary>
@@ -2208,14 +2569,14 @@
             <param name="eventCode">Event code (UPDATEDOC, SENDEMAIL, DELETE, etc.)</param>
             <param name="eventDescription">Detailed description of the event</param>
         </member>
-        <member name="M:CMS.Core.DefaultEventLogService.LogException(System.String,System.String,System.Exception,System.Boolean)">
+        <member name="M:CMS.Core.DefaultEventLogService.LogException(System.String,System.String,System.Exception,CMS.Core.LoggingPolicy)">
             <summary>
             Writes a new error to the event log.
             </summary>
             <param name="source">Source of the event (Content, Administration, etc.)</param>
             <param name="eventCode">Event code (UPDATEDOC, SENDEMAIL, DELETE, etc.)</param>
             <param name="ex">Exception to be logged</param>
-            <param name="allowMultiple">If true, it is allowed to log this exception multiple times within the application run</param>
+            <param name="loggingPolicy">Logging policy.</param>
         </member>
         <member name="M:CMS.Core.DefaultEventLogService.AddBufferedEvent(CMS.Core.BufferedEvent)">
             <summary>
@@ -2453,9 +2814,14 @@
             A lock that is used to manage access to the private state.
             </summary>
         </member>
-        <member name="M:CMS.Core.ModuleEntryManager.#cctor">
+        <member name="F:CMS.Core.ModuleEntryManager.mModulesLock">
             <summary>
-            Initializes the <see cref="T:CMS.Core.ModuleEntryManager"/> class.
+            Object for locking initialization of module collections
+            </summary>
+        </member>
+        <member name="M:CMS.Core.ModuleEntryManager.EnsureModules">
+            <summary>
+            Ensures the collections of modules
             </summary>
         </member>
         <member name="M:CMS.Core.ModuleEntryManager.RegisterModule(CMS.Core.ModuleInfo)">
@@ -2485,7 +2851,9 @@
             <typeparam name="T">The type of the module to register.</typeparam>
             <remarks>
             If a module info object with the same name is already available, the manager does nothing.
-            If the application life-cycle has already started, the module initialization starts immediately to catch up.
+            If the application life-cycle has already started and the module has <see cref="P:CMS.Core.ModuleEntry.AutoInitialize"/> set to true,
+            the module initialization starts immediately to catch up (if called from multiple threads, the method does not return
+            until the module has caught up the application life-cycle).
             </remarks>
         </member>
         <member name="M:CMS.Core.ModuleEntryManager.EnsureModule(CMS.Core.ModuleEntry)">
@@ -2494,9 +2862,19 @@
             </summary>
             <remarks>
             If a module info object with the same name is already available, the manager does nothing.
-            If the application life-cycle has already started, the module initialization starts immediately to catch up.
+            If the application life-cycle has already started and the module has <see cref="P:CMS.Core.ModuleEntry.AutoInitialize"/> set to true,
+            the module initialization starts immediately to catch up (if called from multiple threads, the method does not return
+            until the module has caught up the application life-cycle).
             </remarks>
-            <param name="module">The module to register.</param>
+            <param name="module">The module to register. If the module is already registered, this instance is not used (i.e. initialization occurs only on the first registered module instance of the name).</param>
+        </member>
+        <member name="M:CMS.Core.ModuleEntryManager.EnsureAppCodeModules(System.Reflection.Assembly)">
+            <summary>
+            Ensures modules contained in the app code assembly, which is not discoverable by default
+            (the web site project has no explicit assembly where the <see cref="T:CMS.AssemblyDiscoverableAttribute"/>
+            could be placed).
+            </summary>
+            <param name="appCodeAssembly">Assembly which represents the app code.</param>
         </member>
         <member name="M:CMS.Core.ModuleEntryManager.GetDiscoverableModules">
             <summary>
@@ -2510,19 +2888,61 @@
             </summary>
             <param name="module">The module to initialize.</param>
         </member>
+        <member name="M:CMS.Core.ModuleEntryManager.GetModuleEntriesForAutoPreInitialization">
+            <summary>
+            Gets module entries suitable for PreInit. All modules which have <see cref="P:CMS.Core.ModuleEntry.AutoInitialize"/> set are suitable.
+            </summary>
+            <returns>Enumeration of module entries.</returns>
+        </member>
+        <member name="M:CMS.Core.ModuleEntryManager.GetModuleEntriesForAutoInitialization">
+            <summary>
+            Gets module entries suitable for Init. Only modules which have <see cref="P:CMS.Core.ModuleEntry.AutoInitialize"/> set and are installed
+            in the same version as their corresponding NuGet package are suitable.
+            </summary>
+            <returns>Enumeration of module entries.</returns>
+        </member>
+        <member name="M:CMS.Core.ModuleEntryManager.SetInstallableModulesState">
+            <summary>
+            Sets <see cref="P:CMS.Core.ModuleEntry.IsInstalled"/> state in all installable modules.
+            </summary>
+        </member>
+        <member name="M:CMS.Core.ModuleEntryManager.GetModuleNamesOmittedFromInitialization">
+            <summary>
+            Returns installable module names omitted from initialization or null if all modules are omitted.
+            </summary>
+            <returns>Installable module names omitted from initialization or null if all modules are omitted..</returns>
+        </member>
         <member name="M:CMS.Core.ModuleEntryManager.PreInit">
             <summary>
-            Preinitializes modules.
+            Pre-initializes modules.
             </summary>
+            <remarks>
+            PreInit applies to all modules which have <see cref="P:CMS.Core.ModuleEntry.AutoInitialize"/> set. Even to those
+            which are not installed.
+            </remarks>
         </member>
         <member name="M:CMS.Core.ModuleEntryManager.Init">
             <summary>
             Initializes modules.
             </summary>
+            <remarks>
+            Init applies to all modules which have <see cref="P:CMS.Core.ModuleEntry.AutoInitialize"/> set and are
+            either not installable or are installed in the same version as their NuGet package.
+            </remarks>
         </member>
         <member name="P:CMS.Core.ModuleEntryManager.Modules">
             <summary>
             Gets an enumerable collection of module info objects.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.ModuleEntryManager.ModuleLookup">
+            <summary>
+            Gets an enumerable collection of module info objects.
+            </summary>
+        </member>
+        <member name="P:CMS.Core.ModuleEntryManager.IsInstalledModulesStateAvailable">
+            <summary>
+            Indicates whether the state of installable modules is available or not.
             </summary>
         </member>
         <member name="T:CMS.Core.Service">
@@ -2549,6 +2969,7 @@
             <summary>
             Returns the service interface as a static singleton
             </summary>
+            <exception cref="T:System.Exception">Thrown when service is used before application <see cref="M:CMS.Core.AppCore.PreInit"/>.</exception>
         </member>
         <member name="M:CMS.Core.Service`1.EnsureInitialization">
             <summary>
@@ -2708,6 +3129,11 @@
             Creates and returns a new object
             </summary>
         </member>
+        <member name="M:CMS.Core.ObjectFactory`1.#cctor">
+            <summary>
+            Static constructor
+            </summary>
+        </member>
         <member name="M:CMS.Core.ObjectFactory`1.New">
             <summary>
             Creates a new object of the given type
@@ -2764,11 +3190,6 @@
         <member name="P:CMS.Core.ObjectFactory`1.CurrentFactoryInternal">
             <summary>
             Current object factory used for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.Core.ObjectFactory`1.IsDefault">
-            <summary>
-            Returns true if the object factory is the default one (giving out the exact type that defines it)
             </summary>
         </member>
         <member name="P:CMS.Core.ObjectFactory`1.CreatedType">

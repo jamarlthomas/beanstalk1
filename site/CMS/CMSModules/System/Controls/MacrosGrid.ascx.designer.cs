@@ -75,40 +75,40 @@ public partial class CMSModules_System_Controls_MacrosGrid {
     protected global::CMS.FormControls.FormControl drpType;
     
     /// <summary>
-    /// lblInvalid control.
+    /// lblReportProblems control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblInvalid;
+    protected global::CMS.ExtendedControls.LocalizedLabel lblReportProblems;
     
     /// <summary>
-    /// chkInvalid control.
+    /// chkReportProblems control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSCheckBox chkInvalid;
+    protected global::CMS.ExtendedControls.CMSCheckBox chkReportProblems;
     
     /// <summary>
-    /// lblSkipTesting control.
+    /// lblSkipTestingObjects control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblSkipTesting;
+    protected global::CMS.ExtendedControls.LocalizedLabel lblSkipTestingObjects;
     
     /// <summary>
-    /// chkSkipTesting control.
+    /// chkSkipTestingObjects control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSCheckBox chkSkipTesting;
+    protected global::CMS.ExtendedControls.CMSCheckBox chkSkipTestingObjects;
     
     /// <summary>
     /// lblFilter control.
@@ -120,13 +120,13 @@ public partial class CMSModules_System_Controls_MacrosGrid {
     protected global::CMS.ExtendedControls.LocalizedLabel lblFilter;
     
     /// <summary>
-    /// txtFilter control.
+    /// txtTextToSearch control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSTextBox txtFilter;
+    protected global::CMS.ExtendedControls.CMSTextBox txtTextToSearch;
     
     /// <summary>
     /// btnSearch control.

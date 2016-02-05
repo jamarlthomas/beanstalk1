@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_Layout_SaveNewPageTemplate"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_Layout_SaveNewPageTemplate"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Title="Page template - Save as new" Codebehind="SaveNewPageTemplate.aspx.cs" %>
+    Title="Page template - Save as new" CodeBehind="SaveNewPageTemplate.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/System/LocalizableTextBox.ascx" TagName="LocalizableTextBox"
     TagPrefix="cms" %>
@@ -9,8 +9,11 @@
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <script type="text/javascript">
         //<![CDATA[
-        function SelectTemplate(templateId, selectorId) {
-            wopener.OnSelectPageTemplate(templateId, selectorId);
+        function SelectTemplate(templateId) {
+            if (wopener.OnSelectPageTemplate)
+            {
+                wopener.OnSelectPageTemplate(templateId, 'refresh');
+            }
             CloseDialog();
         }
         //]]>
@@ -54,17 +57,15 @@
                     <cms:CMSTextArea ID="txtTemplateDescription" runat="server" Rows="4" />
                 </div>
             </div>
-            <asp:PlaceHolder runat="server" ID="plcKeep">
-                <div class="form-group">
-                    <div class="editing-form-label-cell">
-                        <cms:LocalizedLabel CssClass="control-label" ID="lblKeep" runat="server" ResourceString="PortalEngine.SaveNewPageTemplate.Keep" 
-                             AssociatedControlID="chkKeep" />
-                    </div>
-                    <div class="editing-form-value-cell">
-                        <cms:CMSCheckBox ID="chkKeep" MaxLength="200" runat="server" Checked="true" />
-                    </div>
+            <div class="form-group">
+                <div class="editing-form-label-cell">
+                    <cms:LocalizedLabel CssClass="control-label" ID="lblKeep" runat="server" ResourceString="PortalEngine.SaveNewPageTemplate.Keep"
+                        AssociatedControlID="chkKeep" />
                 </div>
-            </asp:PlaceHolder>
+                <div class="editing-form-value-cell">
+                    <cms:CMSCheckBox ID="chkKeep" MaxLength="200" runat="server" Checked="true" />
+                </div>
+            </div>
         </div>
     </asp:Panel>
     <asp:Literal ID="ltlScript" runat="server" />

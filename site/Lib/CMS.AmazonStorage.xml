@@ -238,7 +238,7 @@
         </member>
         <member name="T:CMS.AmazonStorage.DirectoryInfo">
             <summary>
-            
+            Directory info for Amazon storage provider
             </summary>
         </member>
         <member name="M:CMS.AmazonStorage.DirectoryInfo.#ctor(System.String)">
@@ -247,29 +247,18 @@
             </summary>
             <param name="path">Path to directory</param>
         </member>
-        <member name="M:CMS.AmazonStorage.DirectoryInfo.CreateSubdirectory(System.String)">
+        <member name="M:CMS.AmazonStorage.DirectoryInfo.CreateSubdirectoryInternal(System.String)">
             <summary>
             Creates subdirectory.
             </summary>
             <param name="subdir">Subdirectory to create.</param>
         </member>
-        <member name="M:CMS.AmazonStorage.DirectoryInfo.Delete">
+        <member name="M:CMS.AmazonStorage.DirectoryInfo.DeleteInternal">
             <summary>
             Deletes directory
             </summary>
         </member>
-        <member name="M:CMS.AmazonStorage.DirectoryInfo.GetDirectories">
-            <summary>
-            Returns the subdirectories of the current directory.
-            </summary>  
-        </member>
-        <member name="M:CMS.AmazonStorage.DirectoryInfo.GetDirectories(System.String)">
-            <summary>
-            Returns the subdirectories of the current directory.
-            </summary>
-            <param name="searchPattern">Search pattern.</param> 
-        </member>
-        <member name="M:CMS.AmazonStorage.DirectoryInfo.GetDirectories(System.String,CMS.IO.SearchOption)">
+        <member name="M:CMS.AmazonStorage.DirectoryInfo.GetDirectoriesInternal(System.String,CMS.IO.SearchOption)">
             <summary>
             Returns an array of directories in the current DirectoryInfo matching the given search criteria and using a value
             to determine whether to search subdirectories.
@@ -277,18 +266,7 @@
             <param name="searchPattern">Search pattern.</param>
             <param name="searchOption">Specifies whether to search the current directory, or the current directory and all subdirectories.</param>
         </member>
-        <member name="M:CMS.AmazonStorage.DirectoryInfo.GetFiles">
-            <summary>
-            Returns files of the current directory.
-            </summary> 
-        </member>
-        <member name="M:CMS.AmazonStorage.DirectoryInfo.GetFiles(System.String)">
-            <summary>
-            Returns files of the current directory.
-            </summary>
-            <param name="searchPattern">Search pattern.</param> 
-        </member>
-        <member name="M:CMS.AmazonStorage.DirectoryInfo.GetFiles(System.String,CMS.IO.SearchOption)">
+        <member name="M:CMS.AmazonStorage.DirectoryInfo.GetFilesInternal(System.String,CMS.IO.SearchOption)">
             <summary>
             Returns files of the current directory.
             </summary>
@@ -562,41 +540,35 @@
             </summary>
             <param name="filename">File name.</param>
         </member>
-        <member name="M:CMS.AmazonStorage.FileInfo.CreateText">
+        <member name="M:CMS.AmazonStorage.FileInfo.CreateTextInternal">
             <summary>
             Creates or opens a file for writing UTF-8 encoded text.
             </summary> 
         </member>
-        <member name="M:CMS.AmazonStorage.FileInfo.Delete">
+        <member name="M:CMS.AmazonStorage.FileInfo.DeleteInternal">
             <summary>
             Deletes file.
             </summary>
         </member>
-        <member name="M:CMS.AmazonStorage.FileInfo.OpenRead">
+        <member name="M:CMS.AmazonStorage.FileInfo.OpenReadInternal">
             <summary>
             Creates a read-only ICMSFileStream.
             </summary> 
         </member>
-        <member name="M:CMS.AmazonStorage.FileInfo.CopyTo(System.String)">
-            <summary>
-            Copies current file to destination. 
-            </summary>
-            <param name="destFileName">Destination file name.</param>
-        </member>
-        <member name="M:CMS.AmazonStorage.FileInfo.CopyTo(System.String,System.Boolean)">
+        <member name="M:CMS.AmazonStorage.FileInfo.CopyToInternal(System.String,System.Boolean)">
             <summary>
             Copies current file to destination. 
             </summary>
             <param name="destFileName">Destination file name.</param>
             <param name="overwrite">Specifies whether destination file is overwritten.</param>        
         </member>
-        <member name="M:CMS.AmazonStorage.FileInfo.MoveTo(System.String)">
+        <member name="M:CMS.AmazonStorage.FileInfo.MoveToInternal(System.String)">
             <summary>
             Moves an existing file to a new file.
             </summary>
             <param name="destFileName">Destination file name.</param>        
         </member>
-        <member name="M:CMS.AmazonStorage.FileInfo.OpenText">
+        <member name="M:CMS.AmazonStorage.FileInfo.OpenTextInternal">
             <summary>
             Creates a StreamReader with UTF8 encoding that reads from an existing text file.
             </summary>   
@@ -774,6 +746,12 @@
             <summary>
             Returns S3Object provider.
             </summary>
+        </member>
+        <member name="P:CMS.AmazonStorage.FileStream.CanSeek">
+            <summary>
+            Gets a value indicating whether the current stream supports seeking.
+            </summary>
+            <returns>True if the stream supports seeking, false otherwise.</returns>
         </member>
         <member name="P:CMS.AmazonStorage.FileStream.Length">
             <summary>

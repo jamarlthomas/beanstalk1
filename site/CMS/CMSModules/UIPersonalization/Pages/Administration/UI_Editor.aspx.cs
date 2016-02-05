@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.SiteProvider;
 using CMS.Membership;
@@ -15,7 +15,7 @@ public partial class CMSModules_UIPersonalization_Pages_Administration_UI_Editor
         ResourceInfo ri = ResourceInfoProvider.GetResourceInfo("CMS.WYSIWYGEditor");
         if (ri != null)
         {
-            editElem.ResourceID = ri.ResourceId;
+            editElem.ResourceID = ri.ResourceID;
             editElem.IsLiveSite = false;
         }
     }

@@ -89,8 +89,7 @@ public class HelpTopicUniGridExtender : ControlExtender<UniGrid>
                     return String.Format("<a href=\"{0}\" target=\"_blank\">{1}</a>", linkUrl, HTMLHelper.HTMLEncode(linkUrl));
                 }
             case "delete_modify":
-            case "moveup_modify":
-            case "movedown_modify":
+            case "move_modify":
                 CMSGridActionButton button = (CMSGridActionButton)sender;
                 button.Enabled = EditingEnabled;
                 break;

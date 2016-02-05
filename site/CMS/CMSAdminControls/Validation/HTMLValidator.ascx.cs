@@ -11,7 +11,6 @@ using CMS.IO;
 using CMS.Base;
 using CMS.UIControls;
 using CMS.ExtendedControls.ActionsConfig;
-using CMS.IO.Compression;
 using CMS.ExtendedControls;
 using CMS.DocumentEngine;
 
@@ -26,11 +25,9 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
 
     #region "Variables"
 
-    private string mValidatorURL = null;
-    private DataSet mDataSource = null;
-    private bool mUseServerRequest = false;
-    private string mAppValidatorPath = null;
-    private string mErrorText = null;
+    private string mValidatorURL;
+    private string mAppValidatorPath;
+    private string mErrorText;
 
     #endregion
 
@@ -100,14 +97,8 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
     /// </summary>
     public bool UseServerRequestType
     {
-        get
-        {
-            return mUseServerRequest;
-        }
-        set
-        {
-            mUseServerRequest = value;
-        }
+        get;
+        set;
     }
 
 
@@ -119,29 +110,6 @@ public partial class CMSAdminControls_Validation_HTMLValidator : DocumentValidat
         get
         {
             return "validation|html|" + CultureCode + "|" + Url;
-        }
-    }
-
-
-    /// <summary>
-    /// Gets or sets source of the data for unigrid control
-    /// </summary>
-    public override DataSet DataSource
-    {
-        get
-        {
-            if (mDataSource == null)
-            {
-                mDataSource = base.DataSource;
-            }
-            base.DataSource = mDataSource;
-
-            return mDataSource;
-        }
-        set
-        {
-            base.DataSource = value;
-            mDataSource = value;
         }
     }
 

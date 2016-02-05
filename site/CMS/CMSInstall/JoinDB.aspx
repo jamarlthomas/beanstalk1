@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="JoinDB.aspx.cs" Inherits="CMSInstall_JoinDB"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="JoinDB.aspx.cs" Inherits="CMSInstall_JoinDB"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalSimplePage.master"
     Title="Contact management database join" %>
 

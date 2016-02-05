@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="EmailQueue - Details" Inherits="CMSModules_EmailQueue_EmailQueue_Details"
-    Theme="Default" Codebehind="EmailQueue_Details.aspx.cs" %>
+    Theme="Default"  Codebehind="EmailQueue_Details.aspx.cs" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <asp:PlaceHolder ID="plcDetails" runat="server">

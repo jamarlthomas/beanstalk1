@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.FormControls;
 using CMS.SiteProvider;
@@ -100,7 +100,7 @@ public partial class CMSModules_Newsletters_FormControls_NewsletterSelector : Fo
     /// <summary>
     /// Gets or sets the resource prefix of uni selector. If not set default values are used.
     /// </summary>
-    public string ResourcePrefix
+    public override string ResourcePrefix
     {
         get
         {

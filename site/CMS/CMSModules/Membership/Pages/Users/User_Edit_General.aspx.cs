@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -459,7 +459,7 @@ public partial class CMSModules_Membership_Pages_Users_User_Edit_General : CMSUs
     protected void LoadData()
     {
         // Fill lstUICulture (loop over and localize them first)
-        DataSet uiCultures = CultureInfoProvider.GetUICultures(orderBy: "CultureName ASC");
+        DataSet uiCultures = CultureInfoProvider.GetUICultures().OrderBy("CultureName");
         LocalizeCultureNames(uiCultures);
         lstUICulture.DataSource = uiCultures.Tables[0].DefaultView;
         lstUICulture.DataTextField = "CultureName";

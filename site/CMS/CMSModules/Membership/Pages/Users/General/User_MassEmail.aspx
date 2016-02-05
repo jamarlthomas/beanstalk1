@@ -1,6 +1,6 @@
-<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
+﻿<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
     Inherits="CMSModules_Membership_Pages_Users_General_User_MassEmail" Title="Mass email"
-    Theme="Default" Codebehind="User_MassEmail.aspx.cs" %>
+    Theme="Default"  Codebehind="User_MassEmail.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Membership/FormControls/Users/selectuser.ascx" TagName="UserSelector"
     TagPrefix="cms" %>

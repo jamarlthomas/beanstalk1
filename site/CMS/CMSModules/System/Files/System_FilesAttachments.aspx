@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_Files_System_FilesAttachments"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_Files_System_FilesAttachments"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Administration - System - Files - Attachments"
-    Codebehind="System_FilesAttachments.aspx.cs" %>
+     Codebehind="System_FilesAttachments.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector"
@@ -10,7 +10,7 @@
 
 <asp:Content ContentPlaceHolderID="plcBeforeBody" runat="server" ID="cntBeforeBody">
     <asp:Panel runat="server" ID="pnlLog" Visible="false">
-        <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+        <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="Attachments" />
     </asp:Panel>
 </asp:Content>
 <asp:Content ID="plcBefore" runat="server" ContentPlaceHolderID="plcSiteSelector">

@@ -5,6 +5,7 @@ using System.Web.UI.WebControls;
 
 using CMS.Base;
 using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.FormControls;
 using CMS.FormEngine;
 using CMS.Helpers;
@@ -98,7 +99,7 @@ public partial class CMSModules_Content_Controls_Filters_DocumentCultureFilter :
             return mSiteCultures;
         }
     }
-    
+
     #endregion
 
 
@@ -137,7 +138,7 @@ public partial class CMSModules_Content_Controls_Filters_DocumentCultureFilter :
 
         specialFields.Add(new SpecialField { Text = GetString("transman.anyculture"), Value = "##ANY##" });
         specialFields.Add(new SpecialField { Text = GetString("transman.allcultures"), Value = "##ALL##" });
-        
+
         // Init operands
         var items = drpLanguage.Items;
         if (items.Count == 0)
@@ -188,35 +189,56 @@ public partial class CMSModules_Content_Controls_Filters_DocumentCultureFilter :
     /// </summary>
     public override string GetWhereCondition()
     {
-        string where = string.Empty;
-
-        string val = ValidationHelper.GetString(cultureElem.Value, string.Empty);
-        if (val == string.Empty)
+        var where = new WhereCondition();
+        var oper = drpLanguage.SelectedValue.ToEnum<QueryOperator>();
+        var val = ValidationHelper.GetString(cultureElem.Value, null);
+        if (String.IsNullOrEmpty(val))
         {
             val = "##ANY##";
         }
 
         if (val != "##ANY##")
         {
+            // Create base query
+            var tree = new TreeProvider();
+            var query = tree.SelectNodes()
+                            .All()
+                            .Column("NodeID");
+
             switch (val)
             {
                 case "##ALL##":
-                    where = SqlHelper.AddWhereCondition(where, "((SELECT COUNT(*) FROM View_CMS_Tree_Joined AS TreeView WHERE TreeView.NodeID = View_CMS_Tree_Joined_Versions.NodeID) " + SqlHelper.EscapeQuotes(drpLanguage.SelectedValue) + " " + SiteCultures.Tables[0].Rows.Count + ")");
+                    {
+                        var cultureCount = SiteCultures.Tables[0].Rows.Count;
+                        query.GroupBy("NodeID").Having(string.Format("(COUNT(NodeID) {0} {1})", oper.ToStringRepresentation(), cultureCount));
+
+                        where.WhereIn("NodeID", query);
+                    }
                     break;
 
                 default:
-                    string oper = (drpLanguage.SelectedValue == "<>") ? "NOT" : "";
-                    where = SqlHelper.AddWhereCondition(where, "NodeID " + oper + " IN (SELECT NodeID FROM View_CMS_Tree_Joined AS TreeView WHERE TreeView.NodeID = NodeID AND DocumentCulture = '" + SqlHelper.EscapeQuotes(val) + "')");
+                    {
+                        query.WhereEquals("DocumentCulture", val);
+
+                        if (oper == QueryOperator.NotEquals)
+                        {
+                            where.WhereNotIn("NodeID", query);
+                        }
+                        else
+                        {
+                            where.WhereIn("NodeID", query);
+                        }
+                    }
                     break;
             }
         }
-        else if (drpLanguage.SelectedValue == "<>")
+        else if (oper == QueryOperator.NotEquals)
         {
-            where = SqlHelper.NO_DATA_WHERE;
+            where.NoResults();
         }
 
-        return where;
+        return where.ToString(true);
     }
-    
+
     #endregion
 }

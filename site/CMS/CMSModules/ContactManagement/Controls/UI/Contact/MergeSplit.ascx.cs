@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Text;
 using System.Web.UI;
@@ -114,15 +114,15 @@ public partial class CMSModules_ContactManagement_Controls_UI_Contact_MergeSplit
     /// <summary>
     /// Dialog control identifier.
     /// </summary>
-    private string Identifier
+    private Guid Identifier
     {
         get
         {
-            string identifier = hdnValue.Value;
-            if (string.IsNullOrEmpty(identifier))
+            Guid identifier;
+            if (!Guid.TryParse(hdnValue.Value, out identifier))
             {
-                identifier = Guid.NewGuid().ToString();
-                hdnValue.Value = identifier;
+                identifier = Guid.NewGuid();
+                hdnValue.Value = identifier.ToString();
             }
 
             return identifier;
@@ -302,7 +302,7 @@ public partial class CMSModules_ContactManagement_Controls_UI_Contact_MergeSplit
             mParameters["accountcontactid"] = CallbackArgument;
             mParameters["allownone"] = true;
 
-            WindowHelper.Add(Identifier, mParameters);
+            WindowHelper.Add(Identifier.ToString(), mParameters);
 
             queryString = "?params=" + Identifier;
             queryString = URLHelper.AddParameterToUrl(queryString, "hash", QueryHelper.GetHash(queryString));

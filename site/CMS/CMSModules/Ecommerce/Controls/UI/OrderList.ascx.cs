@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Data;
 
+using CMS.Core;
 using CMS.Ecommerce;
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -133,7 +134,7 @@ public partial class CMSModules_Ecommerce_Controls_UI_OrderList : CMSAdminListCo
         switch (actionName.ToLowerCSafe())
         {
             case "edit":
-                string redirectToUrl = UIContextHelper.GetElementUrl("CMS.Ecommerce", "OrderProperties", false, orderId);
+                string redirectToUrl = UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, "OrderProperties", false, orderId);
                 if (customerId > 0)
                 {
                     redirectToUrl += "&customerId=" + customerId;
@@ -144,9 +145,9 @@ public partial class CMSModules_Ecommerce_Controls_UI_OrderList : CMSAdminListCo
 
             case "delete":
                 // Check 'ModifyOrders' and 'EcommerceModify' permission
-                if (!ECommerceContext.IsUserAuthorizedForPermission("ModifyOrders"))
+                if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.ORDERS_MODIFY))
                 {
-                    AccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyOrders");
+                    AccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyOrders");
                 }
 
                 // delete OrderInfo object from database
@@ -155,9 +156,9 @@ public partial class CMSModules_Ecommerce_Controls_UI_OrderList : CMSAdminListCo
 
             case "previous":
                 // Check 'ModifyOrders' and 'EcommerceModify' permission
-                if (!ECommerceContext.IsUserAuthorizedForPermission("ModifyOrders"))
+                if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.ORDERS_MODIFY))
                 {
-                    AccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyOrders");
+                    AccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyOrders");
                 }
 
                 oi = OrderInfoProvider.GetOrderInfo(orderId);
@@ -175,9 +176,9 @@ public partial class CMSModules_Ecommerce_Controls_UI_OrderList : CMSAdminListCo
 
             case "next":
                 // Check 'ModifyOrders' and 'EcommerceModify' permission
-                if (!ECommerceContext.IsUserAuthorizedForPermission("ModifyOrders"))
+                if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.ORDERS_MODIFY))
                 {
-                    AccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyOrders");
+                    AccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyOrders");
                 }
 
                 oi = OrderInfoProvider.GetOrderInfo(orderId);

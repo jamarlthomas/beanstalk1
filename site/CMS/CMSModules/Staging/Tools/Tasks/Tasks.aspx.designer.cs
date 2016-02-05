@@ -12,15 +12,6 @@
 public partial class CMSModules_Staging_Tools_Tasks_Tasks {
     
     /// <summary>
-    /// btnComplete control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedButton btnComplete;
-    
-    /// <summary>
     /// lblServers control.
     /// </summary>
     /// <remarks>
@@ -165,15 +156,6 @@ public partial class CMSModules_Staging_Tools_Tasks_Tasks {
     protected global::CMS.ExtendedControls.LocalizedButton btnDeleteAll;
     
     /// <summary>
-    /// ltlScript control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Literal ltlScript;
-    
-    /// <summary>
     /// btnSyncComplete control.
     /// </summary>
     /// <remarks>
@@ -181,4 +163,13 @@ public partial class CMSModules_Staging_Tools_Tasks_Tasks {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.CMSButton btnSyncComplete;
+    
+    /// <summary>
+    /// ltlScript control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Literal ltlScript;
 }

@@ -136,8 +136,8 @@ public partial class CMSModules_Membership_Controls_UnlockUserAccount : CMSUserC
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        string defauĺtReturnUrl = URLHelper.ResolveUrl(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSSecuredAreasLogonPage"));
-        returnUrl = QueryHelper.GetString("returnurl", defauĺtReturnUrl);
+        string defaultReturnUrl = URLHelper.ResolveUrl(AuthenticationHelper.GetSecuredAreasLogonPage(SiteContext.CurrentSiteName));
+        returnUrl = QueryHelper.GetString("returnurl", defaultReturnUrl);
 
         // If StopProcessing flag is set, do nothing
         if (StopProcessing)
@@ -220,7 +220,7 @@ public partial class CMSModules_Membership_Controls_UnlockUserAccount : CMSUserC
                     else
                     {
                         ShowConfirmation(GetString("invalidlogonattempts.unlockaccount.accountunlocked"));
-                        lblInfo.Text = string.Format(GetString("invalidlogonattempts.unlockaccount.login"), returnUrl);
+                        lblInfo.Text = String.Format(GetString("invalidlogonattempts.unlockaccount.login"), HTMLHelper.EncodeForHtmlAttribute(returnUrl));
                     }
                 }
                 else

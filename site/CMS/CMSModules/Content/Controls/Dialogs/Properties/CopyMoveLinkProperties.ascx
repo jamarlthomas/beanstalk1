@@ -1,10 +1,10 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="CopyMoveLinkProperties.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="CopyMoveLinkProperties.ascx.cs"
     Inherits="CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLinkProperties" %>
 
 <%@ Register Src="~/CMSAdminControls/AsyncLogDialog.ascx" TagName="AsyncLog" TagPrefix="cms" %>
 
 <asp:Panel runat="server" ID="pnlLog" Visible="false">
-    <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+    <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="Documents" />
 </asp:Panel>
 <div class="DialogInfoArea" id="ContentDiv">
     <cms:MessagesPlaceHolder ID="plcMess" runat="server" />

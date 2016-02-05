@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Newsletter_Issue_SendDraft.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Newsletter_Issue_SendDraft.aspx.cs"
     Inherits="CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_SendDraft"
     Title="Newsletter issue - Send draft" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" %>
 

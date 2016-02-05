@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web;
 using System.Xml;
@@ -277,7 +277,8 @@ public partial class CMSWebParts_Membership_LinkedIn_LinkedInUsersRequiredData :
                 {
                     StringBuilder parameter = new StringBuilder();
                     parameter.Append(UIElementInfoProvider.GetApplicationNavigationString("cms", "Settings") + " -> ");
-                    parameter.Append(GetString("settingscategory.socialmedia") + " -> ");
+                    parameter.Append(GetString("settingscategory.cmsmembership") + " -> ");
+                    parameter.Append(GetString("settingscategory.cmsmembershipauthentication") + " -> ");
                     parameter.Append(GetString("settingscategory.cmslinkedin"));
                     if (MembershipContext.AuthenticatedUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.GlobalAdmin))
                     {

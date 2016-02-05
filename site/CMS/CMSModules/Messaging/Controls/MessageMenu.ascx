@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Messaging_Controls_MessageMenu"
-    Codebehind="MessageMenu.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Messaging_Controls_MessageMenu"
+     Codebehind="MessageMenu.ascx.cs" %>
 <asp:Panel runat="server" ID="pnlMessageMenu" CssClass="PortalContextMenu WebPartContextMenu">
     <asp:Panel runat="server" ID="pnlReply" CssClass="Item">
         <asp:Panel runat="server" ID="pnlReplyPadding" CssClass="ItemPadding">

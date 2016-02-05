@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    AutoEventWireup="false" Codebehind="PageLayouts.aspx.cs" Inherits="CMSModules_DeviceProfile_Pages_Development_PageLayouts"
+    AutoEventWireup="false"  Codebehind="PageLayouts.aspx.cs" Inherits="CMSModules_DeviceProfile_Pages_Development_PageLayouts"
     Theme="Default" %>
 
 <%@ Register Src="~/CMSModules/DeviceProfile/Controls/PageLayouts.ascx" TagPrefix="cms" TagName="PageLayouts" %>

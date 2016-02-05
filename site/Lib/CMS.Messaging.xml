@@ -54,6 +54,11 @@
             Represents the Messaging module.
             </summary>
         </member>
+        <member name="F:CMS.Messaging.MessagingModule.MESSAGING_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for general purposes.
+            </summary>
+        </member>
         <member name="M:CMS.Messaging.MessagingModule.#ctor">
             <summary>
             Default constructor

@@ -198,24 +198,13 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLLinkProp
         if (properties != null)
         {
             LoadProperties(properties);
-            string shortUrl = URLHelper.RemoveProtocol(item.Url);
-            string protocol = item.Url.Substring(0, item.Url.Length - shortUrl.Length);
-            if ((protocol == "http://") || (protocol == "https://") ||
-                (protocol == "ftp://") || (protocol == "news://"))
-            {
-                urlSelectElem.LinkProtocol = protocol;
-                urlSelectElem.LinkURL = shortUrl;
-            }
-            else
-            {
-                urlSelectElem.LinkProtocol = "other";
-                urlSelectElem.LinkURL = item.Url;
-            }
+
+            urlSelectElem.LinkURL = item.Url;
             urlSelectElem.LinkText = item.Name;
 
             if (item.MediaType == MediaTypeEnum.Flash)
             {
-                urlSelectElem.LinkURL = URLHelper.UpdateParameterInUrl(urlSelectElem.LinkURL, "ext", "." + item.Extension.TrimStart('.'));
+                urlSelectElem.LinkURL = URLHelper.UpdateParameterInUrl(item.Url, "ext", "." + item.Extension.TrimStart('.'));
             }
         }
         SaveSession();
@@ -245,7 +234,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLLinkProp
 
 
     /// <summary>
-    /// Loads the properites.
+    /// Loads the properties.
     /// </summary>
     /// <param name="properties">Properties collection</param>
     public override void LoadProperties(Hashtable properties)
@@ -259,7 +248,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLLinkProp
             string linkUrl = ValidationHelper.GetString(properties[DialogParameters.LINK_URL], string.Empty);
 
             urlSelectElem.LinkText = HttpUtility.HtmlDecode(linkText);
-            urlSelectElem.LinkURL = URLHelper.RemoveProtocol(linkUrl);
+            urlSelectElem.LinkURL = linkUrl;
             urlSelectElem.LinkProtocol = linkProtocol;
 
             #endregion

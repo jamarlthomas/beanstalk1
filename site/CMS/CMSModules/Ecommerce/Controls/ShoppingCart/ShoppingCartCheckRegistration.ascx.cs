@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 
 using CMS.DataEngine;
@@ -14,6 +14,7 @@ using CMS.Protection;
 using CMS.Base;
 using CMS.SiteProvider;
 using CMS.WebAnalytics;
+using CMS.Core;
 
 public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartCheckRegistration : ShoppingCartStep
 {
@@ -275,7 +276,7 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartChec
         if ((value != String.Empty) && (SiteContext.CurrentSite != null))
         {
             bool success;
-            lblResult.Text = AuthenticationHelper.ForgottenEmailRequest(value, SiteContext.CurrentSiteName, "ECOMMERCE", ECommerceSettings.SendEmailsFrom(SiteContext.CurrentSite.SiteName), MacroContext.CurrentResolver, AuthenticationHelper.GetResetPasswordUrl(SiteContext.CurrentSiteName), out success);
+            lblResult.Text = AuthenticationHelper.ForgottenEmailRequest(value, SiteContext.CurrentSiteName, "ECOMMERCE", ECommerceSettings.SendEmailsFrom(SiteContext.CurrentSite.SiteName), null, AuthenticationHelper.GetResetPasswordUrl(SiteContext.CurrentSiteName), out success);
 
             plcResult.Visible = true;
             plcErrorResult.Visible = false;
@@ -682,7 +683,7 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartChec
                 ui.Enabled = true;
                 ui.UserIsGlobalAdministrator = false;
                 ui.UserURLReferrer = MembershipContext.AuthenticatedUser.URLReferrer;
-                ui.UserCampaign = AnalyticsHelper.Campaign;
+                ui.UserCampaign = Service<ICampaignService>.Entry().CampaignCode;
                 ui.UserSettings.UserRegistrationInfo.IPAddress = RequestContext.UserHostAddress;
                 ui.UserSettings.UserRegistrationInfo.Agent = HttpContext.Current.Request.UserAgent;
 
@@ -952,19 +953,20 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartChec
     /// </summary>
     private void SendRegistrationNotification(UserInfo ui)
     {
-        SiteInfo currentSite = SiteContext.CurrentSite;
+        var currentSiteName = SiteContext.CurrentSiteName;
 
         // Notify administrator
-        if ((ui != null) && (currentSite != null) && (ShoppingCartControl.SendNewRegistrationNotificationToAddress != ""))
+        if ((ui != null) && !String.IsNullOrEmpty(currentSiteName) && (ShoppingCartControl.SendNewRegistrationNotificationToAddress != ""))
         {
             EmailTemplateInfo mEmailTemplate = null;
-            if (!ui.UserEnabled)
+            MacroResolver resolver = MembershipResolvers.GetRegistrationResolver(ui);
+            if (SettingsKeyInfoProvider.GetBoolValue(currentSiteName + ".CMSRegistrationAdministratorApproval"))
             {
-                mEmailTemplate = EmailTemplateProvider.GetEmailTemplate("Registration.Approve", currentSite.SiteName);
+                mEmailTemplate = EmailTemplateProvider.GetEmailTemplate("Registration.Approve", currentSiteName);
             }
             else
             {
-                mEmailTemplate = EmailTemplateProvider.GetEmailTemplate("Registration.New", currentSite.SiteName);
+                mEmailTemplate = EmailTemplateProvider.GetEmailTemplate("Registration.New", currentSiteName);
             }
 
             if (mEmailTemplate == null)
@@ -978,32 +980,18 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartChec
                 EmailMessage message = new EmailMessage();
                 message.EmailFormat = EmailFormatEnum.Default;
 
-                message.From = EmailHelper.GetSender(mEmailTemplate, ECommerceSettings.SendEmailsFrom(currentSite.SiteName));
+                message.From = EmailHelper.GetSender(mEmailTemplate, ECommerceSettings.SendEmailsFrom(currentSiteName));
                 message.Subject = GetString("RegistrationForm.EmailSubject");
 
                 message.Recipients = ShoppingCartControl.SendNewRegistrationNotificationToAddress;
                 message.Body = mEmailTemplate.TemplateText;
-
-                // Init macro resolving
-                string[,] replacements = new string[4, 2];
-                replacements[0, 0] = "firstname";
-                replacements[0, 1] = ui.FirstName;
-                replacements[1, 0] = "lastname";
-                replacements[1, 1] = ui.LastName;
-                replacements[2, 0] = "email";
-                replacements[2, 1] = ui.Email;
-                replacements[3, 0] = "username";
-                replacements[3, 1] = ui.UserName;
-
-                MacroResolver resolver = MacroContext.CurrentResolver;
-                resolver.SetNamedSourceData(replacements);
 
                 try
                 {
                     // Add template metafiles to e-mail
                     EmailHelper.ResolveMetaFileImages(message, mEmailTemplate.TemplateID, EmailTemplateInfo.OBJECT_TYPE, ObjectAttachmentsCategories.TEMPLATE);
                     // Send e-mail
-                    EmailSender.SendEmailWithTemplateText(currentSite.SiteName, message, mEmailTemplate, resolver, false);
+                    EmailSender.SendEmailWithTemplateText(currentSiteName, message, mEmailTemplate, resolver, false);
                 }
                 catch
                 {

@@ -12,6 +12,15 @@
 public partial class CMSModules_OnlineMarketing_Pages_Content_ABTesting_ABTest_Overview {
     
     /// <summary>
+    /// smrtpHowToOverview control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMSAdminControls_UI_SmartTip smrtpHowToOverview;
+    
+    /// <summary>
     /// lblConversions control.
     /// </summary>
     /// <remarks>

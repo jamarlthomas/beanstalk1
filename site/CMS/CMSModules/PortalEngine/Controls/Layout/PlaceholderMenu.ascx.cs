@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 
 using CMS.Helpers;
@@ -7,8 +7,6 @@ using CMS.PortalControls;
 using CMS.PortalEngine;
 using CMS.DocumentEngine;
 using CMS.SiteProvider;
-
-using TreeNode = CMS.DocumentEngine.TreeNode;
 using CMS.Synchronization;
 using CMS.DataEngine;
 using CMS.UIControls;
@@ -66,26 +64,6 @@ function ShowVersionsDialog(objectType, objectId, objectName) {
         }
         else
         {
-            // Wireframe options
-            if (documentExists && PortalHelper.IsWireframingEnabled(SiteContext.CurrentSiteName))
-            {
-                iSepWireframe.Visible = true;
-
-                if (pi.NodeWireframeTemplateID <= 0)
-                {
-                    // Create wireframe
-                    iWireframe.Text = ResHelper.GetString("Wireframe.Create", culture);
-                    iWireframe.RedirectUrl = String.Format("~/CMSModules/Content/CMSDesk/Properties/CreateWireframe.aspx?nodeid={0}&culture={1}", pi.NodeID, pi.DocumentCulture);
-                }
-                else
-                {
-                    // Remove wireframe
-                    iWireframe.Text = ResHelper.GetString("Wireframe.Remove", culture);
-                    iWireframe.OnClientClick = "if (!confirm(" + ScriptHelper.GetLocalizedString("Wireframe.ConfirmRemove") + ")) return false;";
-                    iWireframe.Click += iWireframe_Click;
-                }
-            }
-
             if ((mPagePlaceholder != null) && (mPagePlaceholder.LayoutTemplate == null))
             {
                 // Edit layout
@@ -152,41 +130,15 @@ function ShowVersionsDialog(objectType, objectId, objectName) {
 
                 int templateId = pi.UsedPageTemplateInfo.PageTemplateId;
                 iSaveAsNew.OnClientClick = String.Format(
-                    "modalDialog('{0}?refresh=1&templateId={1}&siteid={2}{3}', 'SaveNewTemplate', 720, 430); return false;",
+                    "modalDialog('{0}?refresh=1&templateId={1}&siteid={2}', 'SaveNewTemplate', 720, 430); return false;",
                     ResolveUrl("~/CMSModules/PortalEngine/UI/Layout/SaveNewPageTemplate.aspx"),
                     templateId,
-                    SiteContext.CurrentSiteID,
-                    ((PortalContext.ViewMode.IsWireframe()) ? "&assign=0" : "")
-                );
+                    SiteContext.CurrentSiteID);
             }
         }
 
         iRefresh.Text = ResHelper.GetString("PlaceholderMenu.IconRefresh", culture);
         iRefresh.Attributes.Add("onclick", "RefreshPage();");
-    }
-
-
-    /// <summary>
-    /// Remove wireframe event handler
-    /// </summary>
-    protected void iWireframe_Click(object sender, EventArgs e)
-    {
-        // Ensure the document node
-        if (pi != null)
-        {
-            DocumentManager.NodeID = pi.NodeID;
-            DocumentManager.CultureCode = pi.DocumentCulture;
-        }
-        TreeNode node = DocumentManager.Node;
-
-        DocumentManager.RemoveWireframe();
-
-        PortalContext.ViewMode = ViewModeEnum.Design;
-
-        ScriptHelper.RegisterStartupScript(this, typeof(string), "Refresh", ScriptHelper.GetScript(String.Format(
-            "parent.RefreshTree({0}, {0}); parent.SelectNode({0});",
-            node.NodeID
-        )));
     }
 
 

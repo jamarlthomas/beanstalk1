@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 
 using CMS.ExtendedControls;
@@ -56,6 +56,7 @@ function RefreshParent() {
         {
             ScopeStartingPath = path,
             ScopeExcludeChildren = radDocument.Checked,
+            ScopeExcluded = false,
             ScopeWorkflowID = ValidationHelper.GetInteger(ucWorkflow.Value, 0),
             ScopeSiteID = SiteContext.CurrentSiteID
         };

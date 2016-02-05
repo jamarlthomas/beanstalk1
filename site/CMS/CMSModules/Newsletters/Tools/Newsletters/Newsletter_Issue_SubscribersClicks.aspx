@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_SubscribersClicks"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_SubscribersClicks"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Title="Tools - Participated subscribers" Codebehind="Newsletter_Issue_SubscribersClicks.aspx.cs" %>
+    Title="Tools - Participated subscribers"  CodeBehind="Newsletter_Issue_SubscribersClicks.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Newsletters/Controls/OpenedByFilter.ascx" TagPrefix="cms"
     TagName="OpenedByFilter" %>
@@ -8,15 +8,14 @@
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 <asp:Content ID="cntContent" ContentPlaceHolderID="plcContent" runat="server">
     <cms:OpenedByFilter runat="server" ID="fltOpenedBy" ShortID="f" />
-    <cms:UniGrid runat="server" ID="UniGrid" ShortID="g" OrderBy="Clicks DESC" IsLiveSite="false"
-        ObjectType="newsletter.subscriberlinklist" ShowActionsMenu="true" Columns="SubscriberID,SubscriberFullName,SubscriberEmail,Clicks">
+    <cms:UniGrid runat="server" ID="UniGrid" ShortID="g" IsLiveSite="false"
+        ShowActionsMenu="True">
         <GridColumns>
-            <ug:Column Source="##ALL##" Caption="$unigrid.subscribers.columns.subscribername$"
-                ExternalSourceName="name" Wrap="false" CssClass="main-column-100" />
-            <ug:Column Source="##ALL##" Caption="$general.emailaddress$" ExternalSourceName="email"
-                Wrap="false" />
-            <ug:Column Source="Clicks" Caption="$unigrid.newsletter_issue_subscribersclicks.columns.clicks$"
-                CssClass="TableCell" Wrap="false" />
+            <ug:Column Source="ClickedLinkEmail" Caption="$general.email$" 
+                Wrap="false"/>
+            <ug:Column Source="ClickCount" Caption="$unigrid.newsletter_issue_subscribersclicks.columns.clicks$"
+                Wrap="false" CssClass="TableCell"/>
+            <ug:Column CssClass="filling-column" />
         </GridColumns>
     </cms:UniGrid>
 </asp:Content>

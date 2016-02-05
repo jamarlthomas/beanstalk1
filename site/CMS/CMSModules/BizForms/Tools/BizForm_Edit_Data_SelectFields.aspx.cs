@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
@@ -50,14 +50,9 @@ public partial class CMSModules_BizForms_Tools_BizForm_Edit_Data_SelectFields : 
 
         Save += btnOK_Click;
 
-        // Check permissions for CMS Desk -> Tools
         var user = MembershipContext.AuthenticatedUser;
-        if (!user.IsAuthorizedPerUIElement("CMS", "CMSDesk.Content"))
-        {
-            RedirectToUIElementAccessDenied("CMS", "CMSDesk.Content");
-        }
 
-        // Check permissions for CMS Desk -> Tools -> BizForms        
+        // Check permissions for Forms application        
         if (!user.IsAuthorizedPerUIElement("cms.form", "Form"))
         {
             RedirectToUIElementAccessDenied("cms.form", "Form");

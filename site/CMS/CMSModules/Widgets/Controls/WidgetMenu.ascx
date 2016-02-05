@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Widgets_Controls_WidgetMenu" Codebehind="WidgetMenu.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Widgets_Controls_WidgetMenu"  Codebehind="WidgetMenu.ascx.cs" %>
 <%@ Register TagPrefix="cms" Namespace="CMS.UIControls" Assembly="CMS.UIControls" %>
 <cms:ContextMenu runat="server" ID="menuMoveTo" MenuID="moveToMenuWidget" VerticalPosition="Bottom"
     HorizontalPosition="Left" OffsetX="25" ActiveItemCssClass="ItemSelected" MenuLevel="1"

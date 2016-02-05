@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 
 using CMS.ExtendedControls;
@@ -72,16 +72,6 @@ public partial class CMSFormControls_Selectors_LargeTextAreaDesigner : MessagePa
         // Register macro scripts
         RegisterModalPageScripts();
         RegisterEscScript();
-    }
-
-
-    /// <summary>
-    /// Disables handler base tag to fix App_Theme issues.
-    /// </summary>
-    protected override void OnInit(EventArgs e)
-    {
-        UseBaseTagForHandlerPage = false;
-        base.OnInit(e);
     }
 
     #endregion

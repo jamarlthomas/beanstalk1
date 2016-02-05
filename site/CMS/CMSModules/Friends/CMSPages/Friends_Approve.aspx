@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Title="Approve friendship" Inherits="CMSModules_Friends_CMSPages_Friends_Approve"
-    Theme="default" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalSimplePage.master" Codebehind="Friends_Approve.aspx.cs" %>
+    Theme="default" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalSimplePage.master"  Codebehind="Friends_Approve.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Friends/Controls/Friends_Approve.ascx" TagName="FriendsApprove"
     TagPrefix="cms" %>

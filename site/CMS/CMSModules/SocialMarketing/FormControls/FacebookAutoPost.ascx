@@ -1,5 +1,7 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SocialMarketing_FormControls_FacebookAutoPost" Codebehind="FacebookAutoPost.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SocialMarketing_FormControls_FacebookAutoPost"  Codebehind="FacebookAutoPost.ascx.cs" %>
 <%@ Import Namespace="CMS.MacroEngine" %>
+<%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagPrefix="cms" TagName="UniSelector" %>
+<%@ Register Src="~/CMSModules/SocialMarketing/FormControls/AvailableUrlShortenerSelector.ascx" TagPrefix="cms" TagName="UrlShortenerSelector" %>
 
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">
     <ContentTemplate>
@@ -11,14 +13,7 @@
                     <cms:LocalizedLabel runat="server" AssociatedControlID="pageSelector" ResourceString="sm.facebook.posts.account" DisplayColon="True" />
                 </div>
                 <div class="control-group-inline-forced">
-                    <cms:FormControl runat="server" ID="pageSelector" FormControlName="Uni_selector">
-                        <Properties>
-                            <cms:Property Name="ObjectType" Value="sm.facebookaccount" />
-                            <cms:Property Name="ReturnColumnName" Value="FacebookAccountID" />
-                            <cms:Property Name="ObjectSiteName" Value="#currentsite" />
-                            <cms:Property Name="SelectionMode" Value="SingleDropDownList" />
-                        </Properties>
-                    </cms:FormControl>
+                    <cms:UniSelector runat="server" ID="pageSelector" ObjectType="sm.facebookaccount" ReturnColumnName="FacebookAccountID" SelectionMode="SingleDropDownList" AllowEmpty="False" />
                     <span class="info-icon">
                         <cms:LocalizedLabel runat="server" ToolTipResourceString="sm.facebook.autopost.pagetooltip" CssClass="sr-only"></cms:LocalizedLabel>
                         <i aria-hidden="true" class="icon-question-circle" title="<%=GetString("sm.facebook.autopost.pagetooltip") %>"></i>
@@ -32,18 +27,12 @@
                     <div class="sm-related-margin-top form-text">
                         <% = MacroResolver.Resolve(GetString("sm.facebook.autopost.macrohint"))%>
                     </div>
-                    <div class="sm-related-margin-top">
-                        <div>
-                            <cms:CMSCheckBox runat="server" ID="chkShortenUrls" ResourceString="sm.facebook.autopost.shortenurls" OnCheckedChanged="chkShortenUrls_OnCheckedChanged" AutoPostBack="true" />
-                        </div>
-                        <div class="sm-related-margin-top">
-                            <cms:FormControl runat="server" ID="urlShortenerSelector" FormControlName="AvailableURLShortenerSelector">
-                                <Properties>
-                                    <cms:Property Name="SocialNetworkName" Value="Facebook" />
-                                </Properties>
-                            </cms:FormControl>
-                        </div>
-                    </div>
+                </div>
+                <div class="sm-inner-control-label">
+                    <cms:LocalizedLabel runat="server" AssociatedControlID="urlShortenerSelector" ResourceString="sm.facebook.posts.urlshortener" DisplayColon="True" />
+                </div>
+                <div>
+                    <cms:UrlShortenerSelector runat="server" ID="urlShortenerSelector" SocialNetworkName="Facebook" />
                 </div>
                 <div class="sm-inner-control-label">
                     <cms:LocalizedLabel runat="server" AssociatedControlID="publishDateTime" ResourceString="sm.facebook.posts.scheduledpublish" DisplayColon="True" />
@@ -60,16 +49,7 @@
                     <cms:LocalizedLabel runat="server" AssociatedControlID="campaingSelector" ResourceString="sm.facebook.posts.campaign" DisplayColon="True" />
                 </div>
                 <div>
-                    <cms:FormControl runat="server" ID="campaingSelector" FormControlName="Uni_selector">
-                        <Properties>
-                            <cms:Property Name="ObjectType" Value="Analytics.Campaign" />
-                            <cms:Property Name="ReturnColumnName" Value="CampaignID" />
-                            <cms:Property Name="ObjectSiteName" Value="#currentsite" />
-                            <cms:Property Name="SelectionMode" Value="SingleDropDownList" />
-                            <cms:Property Name="AllowEmpty" Value="True" />
-                            <cms:Property Name="OrderBy" Value="CampaignDisplayName" />
-                        </Properties>
-                    </cms:FormControl>
+                    <cms:UniSelector runat="server" ID="campaingSelector" ObjectType="Analytics.Campaign" ReturnColumnName="CampaignID" SelectionMode="SingleDropDownList" AllowEmpty="True" OrderBy="CampaignDisplayName" />
                 </div>
             </cms:CMSPanel>
         </div>

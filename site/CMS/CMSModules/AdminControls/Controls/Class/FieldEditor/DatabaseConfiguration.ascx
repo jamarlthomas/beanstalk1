@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="True" Codebehind="DatabaseConfiguration.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="True"  Codebehind="DatabaseConfiguration.ascx.cs"
     Inherits="CMSModules_AdminControls_Controls_Class_FieldEditor_DatabaseConfiguration" %>
 <%@ Register Src="~/CMSFormControls/Basic/DropDownListControl.ascx" TagName="DropDownListControl"
     TagPrefix="cms" %>

@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SmartSearch_FormControls_ClassNameSelector" Codebehind="ClassNameSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SmartSearch_FormControls_ClassNameSelector"  Codebehind="ClassNameSelector.ascx.cs" %>
 <%@ Register src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" tagname="UniSelector" tagprefix="cms" %>
 
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server" UpdateMode="Conditional">

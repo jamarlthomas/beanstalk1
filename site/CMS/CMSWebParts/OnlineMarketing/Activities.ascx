@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/OnlineMarketing/Activities.ascx.cs" Inherits="CMSWebParts_OnlineMarketing_Activities" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/OnlineMarketing/Activities.ascx.cs" Inherits="CMSWebParts_OnlineMarketing_Activities" %>
 <%@ Register Src="~/CMSModules/ContactManagement/Controls/UI/Activity/List.ascx" TagName="ActivityList" TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/Basic/DisabledModuleInfo.ascx" TagPrefix="cms" TagName="DisabledModuleInfo" %>
 

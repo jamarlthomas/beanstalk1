@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Title="Staging - Tasks" Inherits="CMSModules_Staging_Tools_Tasks_Tasks" Theme="Default"
-    Codebehind="Tasks.aspx.cs" %>
+     Codebehind="Tasks.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Staging/FormControls/ServerSelector.ascx" TagName="ServerSelector"
     TagPrefix="cms" %>
@@ -10,10 +10,8 @@
 <%@ Register Src="~/CMSAdminControls/Basic/DisabledModuleInfo.ascx" TagPrefix="cms"
     TagName="DisabledModule" %>
 
-<asp:Content ID="cntHeader" runat="server" ContentPlaceHolderID="plcActions">
-    <cms:LocalizedButton ID="btnComplete" runat="server" OnClientClick="return CompleteSync();"
-        EnableViewState="false" ButtonStyle="Default" ResourceString="Tasks.CompleteSync" />
-    <div class="form-horizontal form-filter server-selector">
+<asp:Content ID="cntHeader" runat="server" ContentPlaceHolderID="plcSiteSelector">
+    <div class="form-horizontal form-filter">
         <div class="form-group">
             <div class="filter-form-label-cell">
                 <cms:LocalizedLabel CssClass="control-label" ID="lblServers" runat="server" EnableViewState="false" ResourceString="Tasks.SelectServer" />
@@ -30,19 +28,19 @@
             <asp:Label ID="lblInfo" runat="server" CssClass="InfoLabel" EnableViewState="false"
                 Visible="false" />
             <asp:Panel runat="server" ID="pnlLog" Visible="false">
-                <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+                <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="Synchronization" />
             </asp:Panel>
             <asp:Panel runat="server" ID="pnlNotLogged">
                 <cms:DisabledModule runat="server" ID="ucDisabledModule" />
             </asp:Panel>
             <asp:PlaceHolder ID="plcContent" runat="server">
                 <asp:Panel ID="pnlTasksGrid" runat="server" Visible="true">
-                    <cms:UniGrid ID="tasksUniGrid" runat="server" GridName="~/CMSModules/Staging/Tools/Tasks/Tasks.xml"
+                    <cms:UniGrid ID="tasksUniGrid" runat="server" GridName="~/CMSModules/Staging/Tools/AllTasks/Tasks.xml"
                         IsLiveSite="false" OrderBy="TaskTime, TaskID" ExportFileName="staging_task" />
                 </asp:Panel>
                 <br />
-                <asp:Panel ID="pnlFooter" runat="server" Style="clear: both;">
-                    <table style="width: 100%;">
+                <asp:Panel ID="pnlFooter" runat="server" CssClass="Clear">
+                    <table class="Table100">
                         <tr>
                             <td>
                                 <cms:LocalizedButton runat="server" ID="btnSyncSelected" ButtonStyle="Default" OnClick="btnSyncSelected_Click"
@@ -61,31 +59,6 @@
                 </asp:Panel>
             </asp:PlaceHolder>
             <cms:CMSButton ID="btnSyncComplete" runat="server" Visible="false" ButtonStyle="Primary" />
-            <script type="text/javascript">
-                //<![CDATA[
-                var currentNodeId = 0,
-                    selectDocuments = false;
-
-                function ViewTask(taskId) {
-                    modalDialog('View.aspx?taskid=' + taskId, 'viewtask', 700, 500);
-                }
-
-                function ChangeServer(value) {
-                    currentServerId = value;
-                }
-
-                function SelectNode(serverId, nodeId) {
-                    currentServerId = serverId;
-                    currentNodeId = nodeId;
-                    document.location = 'Tasks.aspx?serverId=' + currentServerId + '&stagingnodeid=' + nodeId;
-                }
-
-                function SelectDocNode(serverId, nodeId) {
-                    currentNodeId = nodeId;
-                    document.location = 'DocumentsList.aspx?serverId=' + currentServerId + '&stagingnodeid=' + nodeId;
-                }
-                //]]>
-            </script>
             <asp:Literal ID="ltlScript" runat="server" EnableViewState="false" />
         </ContentTemplate>
     </cms:CMSUpdatePanel>

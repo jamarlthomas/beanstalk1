@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -18,7 +18,7 @@ public partial class CMSModules_PortalEngine_UI_WebParts_Development_WebPart_New
         btnOk.Text = GetString("general.ok");
         rfvWebPartDisplayName.ErrorMessage = GetString("Development-WebPart_Edit.ErrorDisplayName");
         rfvWebPartName.ErrorMessage = GetString("Development-WebPart_Edit.ErrorWebPartName");
-
+        rfvCodeFileName.ErrorMessage = GetString("webpart.codefilenamerequired");
         webpartSelector.ShowInheritedWebparts = false;
 
         lblWebpartList.Text = GetString("DevelopmentWebPartEdit.InheritedWebPart");
@@ -52,8 +52,18 @@ public partial class CMSModules_PortalEngine_UI_WebParts_Development_WebPart_New
     /// </summary>
     protected void radNewWebPart_CheckedChanged(object sender, EventArgs e)
     {
-        plcFileName.Visible = radNewWebPart.Checked;
         plcWebparts.Visible = radInherited.Checked;
+        plcCodeFiles.Visible = radNewWebPart.Checked;
+    }
+
+
+    /// <summary>
+    /// Handles 'Code files' radio buttons change.
+    /// </summary>
+    protected void radNewFile_CheckedChanged(object sender, EventArgs e)
+    {
+        plcFileName.Visible = radNewFile.Checked;
+        plcSelectFile.Visible = radExistingFile.Checked;
     }
 
 
@@ -65,21 +75,26 @@ public partial class CMSModules_PortalEngine_UI_WebParts_Development_WebPart_New
         // Validate the text box fields
         string errorMessage = new Validator().IsCodeName(txtWebPartName.Text, GetString("general.invalidcodename")).Result;
 
-        // Check file name
-        if (!chkGenerateFiles.Checked && radNewWebPart.Checked)
+        // Validate and trim file name textbox only if it's visible
+        if (radNewWebPart.Checked && radNewFile.Checked)
         {
-            if (errorMessage == String.Empty)
+            if (String.IsNullOrEmpty(errorMessage))
             {
-                string webpartPath = WebPartInfoProvider.GetWebPartPhysicalPath(FileSystemSelector.Value.ToString());
-
-                if (!radInherited.Checked)
-                {
-                    errorMessage = new Validator().IsFileName(Path.GetFileName(webpartPath), GetString("WebPart_Clone.InvalidFileName")).Result;
-                }
+                errorMessage = new Validator().IsFileName(Path.GetFileName(txtCodeFileName.Text), GetString("WebPart_Clone.InvalidFileName")).Result;
             }
         }
 
-        if (errorMessage != String.Empty)
+        // Check file name
+        if (radExistingFile.Checked && radNewWebPart.Checked)
+        {
+            if (String.IsNullOrEmpty(errorMessage))
+            {
+                string webpartPath = WebPartInfoProvider.GetWebPartPhysicalPath(FileSystemSelector.Value.ToString());
+                errorMessage = new Validator().IsFileName(Path.GetFileName(webpartPath), GetString("WebPart_Clone.InvalidFileName")).Result;
+            }
+        }
+
+        if (!String.IsNullOrEmpty(errorMessage))
         {
             ShowError(HTMLHelper.HTMLEncode(errorMessage));
             return;
@@ -98,11 +113,28 @@ public partial class CMSModules_PortalEngine_UI_WebParts_Development_WebPart_New
                 return;
             }
 
+            string filename = String.Empty;
 
-            string filename = FileSystemSelector.Value.ToString().Trim();
-            if (filename.ToLowerCSafe().StartsWithCSafe("~/cmswebparts/"))
+            if (radNewWebPart.Checked)
             {
-                filename = filename.Substring("~/cmswebparts/".Length);
+                if (radExistingFile.Checked)
+                {
+                    filename = FileSystemSelector.Value.ToString().Trim();
+
+                    if (filename.ToLowerCSafe().StartsWithCSafe("~/cmswebparts/"))
+                    {
+                        filename = filename.Substring("~/cmswebparts/".Length);
+                    }
+                }
+                else
+                {
+                    filename = txtCodeFileName.Text.Trim();
+
+                    if (!filename.EndsWithCSafe(".ascx"))
+                    {
+                        filename += ".ascx";
+                    }
+                }
             }
 
             wi.WebPartDisplayName = txtWebPartDisplayName.Text.Trim();
@@ -141,23 +173,20 @@ public partial class CMSModules_PortalEngine_UI_WebParts_Development_WebPart_New
             else
             {
                 // Check if filename was added
-                if (!FileSystemSelector.IsValid())
+                if (FileSystemSelector.Visible && !FileSystemSelector.IsValid())
                 {
                     ShowError(FileSystemSelector.ValidationError);
-
                     return;
                 }
-                else
-                {
-                    wi.WebPartProperties = "<form></form>";
-                    wi.WebPartParentID = 0;
-                }
+
+                wi.WebPartProperties = "<form></form>";
+                wi.WebPartParentID = 0;
             }
 
             // Save the web part
             WebPartInfoProvider.SetWebPartInfo(wi);
 
-            if (chkGenerateFiles.Checked && radNewWebPart.Checked)
+            if (radNewFile.Checked && radNewWebPart.Checked)
             {
                 string physicalFile = WebPartInfoProvider.GetFullPhysicalPath(wi);
                 if (!File.Exists(physicalFile))

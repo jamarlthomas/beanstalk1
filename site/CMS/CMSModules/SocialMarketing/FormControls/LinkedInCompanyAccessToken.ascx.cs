@@ -126,32 +126,35 @@ public partial class CMSModules_SocialMarketing_FormControls_LinkedInCompanyAcce
     /// </summary>
     protected void btnGetToken_OnClick(object sender, EventArgs e)
     {
-        // Control data, show error if something is missing
-        int appId = ValidationHelper.GetInteger(Form.GetFieldValue("LinkedInAccountLinkedInApplicationID"), 0);
-        LinkedInApplicationInfo appInfo = LinkedInApplicationInfoProvider.GetLinkedInApplicationInfo(appId);
-        if (appInfo == null)
+        if (Form != null)
         {
-            Form.AddError(GetString("sm.linkedin.account.msg.appnotset"));
+            // Control data, show error if something is missing
+            int appId = ValidationHelper.GetInteger(Form.GetFieldValue("LinkedInAccountLinkedInApplicationID"), 0);
+            LinkedInApplicationInfo appInfo = LinkedInApplicationInfoProvider.GetLinkedInApplicationInfo(appId);
+            if (appInfo == null)
+            {
+                Form.AddError(GetString("sm.linkedin.account.msg.appnotset"));
 
-            return;
-        }
+                return;
+            }
 
-        // Store data in session
-        string sessionKey = Guid.NewGuid().ToString();
-        Hashtable parameters = new Hashtable
-        {
+            // Store data in session
+            string sessionKey = Guid.NewGuid().ToString();
+            Hashtable parameters = new Hashtable
+            {
                 {"ApiKey", appInfo.LinkedInApplicationConsumerKey},
                 {"ApiSecret", appInfo.LinkedInApplicationConsumerSecret},
                 {"AppInfoId", appInfo.LinkedInApplicationID},
                 {"ClientID", ClientID}
             };
-        WindowHelper.Add(sessionKey, parameters);
+            WindowHelper.Add(sessionKey, parameters);
 
-        // Open client dialog script
-        string openDialogScript = String.Format("modalDialog('{0}?dataKey={1}', 'LinkedInCompanyAccessToken', 600, 600, null, null, null, true);",
-            URLHelper.GetAbsoluteUrl("~/CMSModules/SocialMarketing/Pages/LinkedInCompanyAccessTokenDialog.aspx"),
-            sessionKey);
-        ScriptHelper.RegisterStartupScript(this, GetType(), "LinkedInAccessTokenOpenModal" + ClientID, openDialogScript, true);
+            // Open client dialog script
+            string openDialogScript = String.Format("modalDialog('{0}?dataKey={1}', 'LinkedInCompanyAccessToken', 600, 600, null, null, null, true);",
+                URLHelper.GetAbsoluteUrl("~/CMSModules/SocialMarketing/Pages/LinkedInCompanyAccessTokenDialog.aspx"),
+                sessionKey);
+            ScriptHelper.RegisterStartupScript(this, GetType(), "LinkedInAccessTokenOpenModal" + ClientID, openDialogScript, true);
+        }
     }
 
     #endregion
@@ -335,12 +338,12 @@ public partial class CMSModules_SocialMarketing_FormControls_LinkedInCompanyAcce
         StringBuilder status = new StringBuilder();
         if (success)
         {
-            status.Append(UIHelper.GetAccessibleIconTag("icon-check-circle", GetString("sharepoint.testconnection.success"), FontIconSizeEnum.NotDefined, "linkedin-status-success-icon")).
+            status.Append(UIHelper.GetAccessibleIconTag("icon-check-circle", message, FontIconSizeEnum.NotDefined, "linkedin-status-success-icon")).
                 Append("<span class=\"linkedin-status-success-text\">");
         }
         else
         {
-            status.Append(UIHelper.GetAccessibleIconTag("icon-times-circle", GetString("sharepoint.testconnection.failure"), FontIconSizeEnum.NotDefined, "linkedin-status-error-icon")).
+            status.Append(UIHelper.GetAccessibleIconTag("icon-times-circle", message, FontIconSizeEnum.NotDefined, "linkedin-status-error-icon")).
                 Append("<span class=\"linkedin-status-error-text\">"); ;
         }
         status.Append(HTMLHelper.HTMLEncode(message)).Append("</span>");

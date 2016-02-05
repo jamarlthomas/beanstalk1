@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -180,11 +180,7 @@ public partial class CMSModules_BannedIP_Tools_BannedIP_Edit : CMSBannedIPsPage
             bannedIPObj.IPAddress = txtIPAddress.Text.Trim();
 
             // Make sure text is not too long
-            if (txtIPAddressBanReason.Text.Length > 450)
-            {
-                txtIPAddressBanReason.Text = txtIPAddressBanReason.Text.Substring(0, 450);
-            }
-            bannedIPObj.IPAddressBanReason = txtIPAddressBanReason.Text.Trim();
+            bannedIPObj.IPAddressBanReason = TextHelper.LimitLength(txtIPAddressBanReason.Text.Trim(), txtIPAddressBanReason.MaxLength);
 
             if (SiteID == 0)
             {

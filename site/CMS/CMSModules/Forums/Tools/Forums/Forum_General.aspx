@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Tools_Forums_Forum_General"
-    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Title="Forum General" Codebehind="Forum_General.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Tools_Forums_Forum_General"
+    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Title="Forum General"  Codebehind="Forum_General.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Forums/Controls/Forums/ForumEdit.ascx" TagName="ForumEdit" TagPrefix="cms" %>
 

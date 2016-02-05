@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 
 using CMS.Core;
+using CMS.DataEngine;
 using CMS.ExtendedControls.ActionsConfig;
 using CMS.Helpers;
 using CMS.OnlineMarketing;
@@ -73,6 +74,12 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Contact_List : CMS
                 Text = GetString("om.contact.new"),
                 RedirectUrl = url
             });
+
+        var deletingInactiveContactsMethod = SettingsKeyInfoProvider.GetValue("CMSDeleteInactiveContactsMethod", SiteContext.CurrentSiteID);
+        if (string.IsNullOrEmpty(deletingInactiveContactsMethod))
+        {
+            ShowWarning(string.Format(GetString("om.contactlist.inactivecontacts.warning"), "https://docs.kentico.com/x/9QKOAw"));                
+        }
     }
 
 

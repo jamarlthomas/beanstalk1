@@ -4,7 +4,8 @@ using System.Data;
 using System.Web.UI.WebControls;
 using System.Collections.Generic;
 
-using CMS.DataEngine;
+using CMS.Core;
+using CMS.PortalEngine;
 using CMS.UIControls;
 using CMS.Newsletters;
 using CMS.Helpers;
@@ -27,7 +28,6 @@ public partial class CMSModules_Newsletters_Controls_VariantMailout : CMSAdminCo
     private bool mEnableMailoutTimeSetting = true;
     private bool mShowSelectWinnerAction;
     private DateTime mHighestMailoutTime = DateTime.MinValue;
-    private bool? mOnlineMarketingEnabled;
 
     #endregion
 
@@ -134,22 +134,6 @@ public partial class CMSModules_Newsletters_Controls_VariantMailout : CMSAdminCo
     }
 
 
-    /// <summary>
-    /// Determines if Online Marketing is enabled.
-    /// </summary>
-    private bool OnlineMarketingEnabled
-    {
-        get
-        {
-            if (mOnlineMarketingEnabled == null)
-            {
-                mOnlineMarketingEnabled = NewsletterHelper.OnlineMarketingAvailable(CurrentSite.SiteName);
-            }
-
-            return (bool)mOnlineMarketingEnabled;
-        }
-    }
-
     #endregion
 
 
@@ -192,12 +176,9 @@ public partial class CMSModules_Newsletters_Controls_VariantMailout : CMSAdminCo
         InitControls(forceReload);
 
         // Javascript for handling winner mailout time
-        string scriptBlock = string.Format(@"function SelWinner(id) {{ modalDialog('{0}?objectid=' + id, 'NewsletterWinnerMailout', '700px', '425px'); return false; }}
-function ShowOpenedBy(id) {{ modalDialog('{1}?objectid=' + id, 'NewsletterIssueOpenedBy', '900px', '700px');  return false; }}
-function ViewClickedLinks(id) {{ modalDialog('{2}?objectid=' + id, 'NewsletterTrackedLinks', '900px', '700px'); return false; }}",
-                                           ResolveUrl(@"~\CMSModules\Newsletters\Tools\Newsletters\Newsletter_Issue_WinnerMailout.aspx"),
-                                           ResolveUrl(@"~\CMSModules\Newsletters\Tools\Newsletters\Newsletter_Issue_OpenedBy.aspx"),
-                                           ResolveUrl(@"~\CMSModules\Newsletters\Tools\Newsletters\Newsletter_Issue_TrackedLinks.aspx"));
+        string scriptBlock = string.Format(@"function SelWinner(id) {{ modalDialog('{0}?objectid=' + id, 'NewsletterWinnerMailout', '700px', '425px'); return false; }}",
+            ResolveUrl(@"~\CMSModules\Newsletters\Tools\Newsletters\Newsletter_Issue_WinnerMailout.aspx"));
+       
         ScriptHelper.RegisterDialogScript(Page);
         ScriptHelper.RegisterClientScriptBlock(this, GetType(), "Actions", scriptBlock, true);
 
@@ -325,7 +306,7 @@ function ViewClickedLinks(id) {{ modalDialog('{2}?objectid=' + id, 'NewsletterTr
                         // Issue has not been sent yet => get mail out time from scheduled task
                         int taskId = ValidationHelper.GetInteger(drv["IssueScheduledTaskID"], 0);
                         TaskInfo task = TaskInfoProvider.GetTaskInfo(taskId);
-                        if (task != null)
+                        if (task != null && (task.TaskNextRunTime > DateTimeHelper.ZERO_TIME))
                         {
                             if (task.TaskNextRunTime < DateTime.Now)
                             {
@@ -476,20 +457,13 @@ function ViewClickedLinks(id) {{ modalDialog('{2}?objectid=' + id, 'NewsletterTr
         // Get opened emails count from issue record
         int openedEmails = ValidationHelper.GetInteger(DataHelper.GetDataRowViewValue(rowView, "IssueOpenedEmails"), 0);
 
-        if (OnlineMarketingEnabled)
-        {
-            // Get number of emails opened by contact group and persona members
-            openedEmails += OpenedEmailInfoProvider.GetMultiSubscriberOpenedIssueActivityCount(issueId);
-        }
-
         if (openedEmails > 0)
         {
-            return string.Format(@"<a href=""#"" onclick=""ShowOpenedBy({0})"">{1}</a>", issueId, openedEmails);
+            var url = UIContextHelper.GetElementDialogUrl(ModuleName.NEWSLETTER, "Newsletter.Issue.Reports.Opens", issueId);
+            return string.Format(@"<a href=""#"" onclick=""modalDialog('{0}', 'NewsletterOpenedEmails', '1000px', '700px'); return false;"">{1}</a>", url, openedEmails);
         }
-        else
-        {
-            return "0";
-        }
+
+        return "0";
     }
 
 
@@ -502,11 +476,10 @@ function ViewClickedLinks(id) {{ modalDialog('{2}?objectid=' + id, 'NewsletterTr
     {
         if (clicks > 0)
         {
-            return string.Format(@"<a href=""#"" onclick=""ViewClickedLinks({0})"">{1}</a>", issueId, clicks);
+            var url = UIContextHelper.GetElementDialogUrl(ModuleName.NEWSLETTER, "Newsletter.Issue.Reports.Clicks", issueId);
+            return string.Format(@"<a href=""#"" onclick=""modalDialog('{0}', 'NewsletterTrackedLinks', '1000px', '700px'); return false;"">{1}</a>", url, clicks);
         }
-        else
-        {
-            return "0";
-        }
+
+        return "0";
     }
 }

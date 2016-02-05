@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Collections;
-using System.Web;
+﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 
 using CMS.EmailEngine;
 using CMS.EventLog;
@@ -87,7 +82,7 @@ public partial class CMSModules_Membership_Pages_Users_General_User_WaitingForAp
                                                    "function OpenReject(user)\n" +
                                                    "{\n" +
                                                    "document.getElementById('" + hdnUser.ClientID + "').value = user;  \n" +
-                                                   "modalDialog('" + ResolveUrl("~/CMSModules/Membership/Pages/Users/General/User_Reject.aspx") + "', 'UserReject', 650, 480); \n" +
+                                                   "modalDialog('" + ResolveUrl("~/CMSModules/Membership/Pages/Users/General/User_Reject.aspx") + "', 'UserReject', 650, 550); \n" +
                                                    "return false;\n" +
                                                    "}\n"));
 
@@ -320,16 +315,13 @@ public partial class CMSModules_Membership_Pages_Users_General_User_WaitingForAp
                     email.From = from;
                     email.Recipients = user.Email;
 
-                    string[,] replacements = new string[1, 2];
-                    // Prepare macro replacements
-                    replacements[0, 0] = "homepageurl";
-                    replacements[0, 1] = URLHelper.GetAbsoluteUrl("~/");
+                    MacroResolver resolver = MembershipResolvers.GetRegistrationApprovalResolver(user, URLHelper.GetAbsoluteUrl("~/"));
 
-                    MacroResolver resolver = MacroContext.CurrentResolver;
+                    // Enable encoding of macro results for HTML mail body
                     resolver.Settings.EncodeResolvedValues = true;
-                    resolver.SetNamedSourceData(replacements);
                     email.Body = resolver.ResolveMacros(template.TemplateText);
 
+                    // Disable encoding of macro results for plaintext body and subject
                     resolver.Settings.EncodeResolvedValues = false;
                     string emailSubject = EmailHelper.GetSubject(template, GetString("registrationform.registrationapprovalemailsubject"));
                     email.Subject = resolver.ResolveMacros(emailSubject);

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Text;
 using System.Threading;
@@ -543,7 +543,7 @@ public partial class CMSModules_Forums_Controls_Posts_PostEdit : CMSAdminEditCon
         }
 
         ForumPost1.DisplayOnly = true;
-        ForumPost1.PostData = fp.Generalized.DataClass;
+        ForumPost1.PostData = fp;
 
         pnlReplyPost.Visible = true;
         lblHeader.Text = GetString("Forums_ForumNewPost_Header.Preview");

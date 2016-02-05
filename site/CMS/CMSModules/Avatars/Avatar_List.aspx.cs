@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.Core;
@@ -8,24 +8,18 @@ using CMS.Membership;
 using CMS.UIControls;
 using CMS.ExtendedControls;
 
+[Title("avat.title")]
 [Action(0, "avat.newavatar", "Avatar_Edit.aspx")]
 [UIElement(ModuleName.CMS, "Administration.Avatars")]
 public partial class CMSModules_Avatars_Avatar_List : GlobalAdminPage
 {
-    private CurrentUserInfo currentUser = null;
-
-
     protected void Page_Load(object sender, EventArgs e)
     {
-        currentUser = MembershipContext.AuthenticatedUser;
-
-        if (currentUser == null)
+        if (MembershipContext.AuthenticatedUser == null)
         {
             return;
         }
 
-        // Page title
-        PageTitle.TitleText = GetString("avat.title");
         // Set up unigrid options
         unigridAvatarList.OrderBy = "AvatarName";
         unigridAvatarList.OnExternalDataBound += unigridAvatarList_OnExternalDataBound;
@@ -43,8 +37,10 @@ public partial class CMSModules_Avatars_Avatar_List : GlobalAdminPage
         {
             case "avatartype":
                 return GetString("avat.type" + (string)parameter);
+
             case "imagepreview":
-                return "<img src=\"" + HTMLHelper.EncodeForHtmlAttribute(ResolveUrl("~/CMSModules/Avatars/CMSPages/GetAvatar.aspx?avatarguid=" + parameter + "&maxsidesize=50")) + "\" alt=\"\" /> ";
+                return "<img src=\"" + HTMLHelper.EncodeForHtmlAttribute(ResolveUrl("~/CMSPages/GetAvatar.aspx?avatarguid=" + parameter + "&maxsidesize=50")) + "\" alt=\"\" /> ";
+
             case "avatarname":
                 DataRowView dr = (DataRowView)parameter;
                 string avatarName = HTMLHelper.HTMLEncode(dr.Row["AvatarName"].ToString());
@@ -54,10 +50,9 @@ public partial class CMSModules_Avatars_Avatar_List : GlobalAdminPage
                     name = name.Substring(0, name.LastIndexOfCSafe("."));
                     return name;
                 }
-                else
-                {
-                    return avatarName;
-                }
+
+                return avatarName;
+
             default:
                 return "";
         }

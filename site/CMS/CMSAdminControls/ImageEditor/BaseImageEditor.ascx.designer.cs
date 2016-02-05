@@ -288,7 +288,7 @@ public partial class CMSAdminControls_ImageEditor_BaseImageEditor {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSButton btnConvert;
+    protected global::CMS.ExtendedControls.LocalizedButton btnConvert;
     
     /// <summary>
     /// pnlAccordion4 control.
@@ -621,7 +621,7 @@ public partial class CMSAdminControls_ImageEditor_BaseImageEditor {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSButton btnChangeMetaData;
+    protected global::CMS.ExtendedControls.LocalizedButton btnChangeMetaData;
     
     /// <summary>
     /// plcMess control.
@@ -649,13 +649,4 @@ public partial class CMSAdminControls_ImageEditor_BaseImageEditor {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Image imgMain;
-    
-    /// <summary>
-    /// ltlScript control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Literal ltlScript;
 }

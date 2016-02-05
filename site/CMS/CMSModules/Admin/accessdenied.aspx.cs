@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 
+using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.UIControls;
 using CMS.Membership;
@@ -43,6 +44,11 @@ public partial class CMSModules_Admin_accessdenied : AccessDeniedPage
             btnSignOut.Style.Add("display", "none");
             lnkGoBack.Visible = false;
         }
+
+        // Handle dialog
+        CMSDialogHelper.RegisterDialogHelper(this);
+        var script = String.Format("HandleAspxPageDialog('{0}');", CurrentMaster.PanelHeader.ClientID);
+        ScriptHelper.RegisterStartupScript(this, typeof(string), "HandleAspxPageDialog", script, true);
     }
 
     #endregion

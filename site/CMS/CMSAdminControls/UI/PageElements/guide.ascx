@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_PageElements_guide"
-    Codebehind="guide.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_PageElements_guide"
+     Codebehind="guide.ascx.cs" %>
 <script type="text/javascript">
     //<![CDATA[
     function ShowDesktopContent(contentUrl, fullContent, nodeCodeName) {

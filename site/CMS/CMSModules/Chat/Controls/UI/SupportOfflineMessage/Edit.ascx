@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Edit.ascx.cs" Inherits="CMSModules_Chat_Controls_UI_SupportOfflineMessage_Edit" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Edit.ascx.cs" Inherits="CMSModules_Chat_Controls_UI_SupportOfflineMessage_Edit" %>
 
 <div class="form-horizontal">
     <div class="form-group">

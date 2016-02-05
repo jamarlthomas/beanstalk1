@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="RecycleBin_Objects.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="RecycleBin_Objects.aspx.cs"
     Inherits="CMSModules_MyDesk_RecycleBin_RecycleBin_Objects" Theme="Default" EnableEventValidation="false"
     MaintainScrollPositionOnPostback="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Title="MyDesk - Objects recycle bin" %>

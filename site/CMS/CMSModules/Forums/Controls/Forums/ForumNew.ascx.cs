@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Forums;
 using CMS.Helpers;
@@ -13,9 +13,7 @@ public partial class CMSModules_Forums_Controls_Forums_ForumNew : CMSAdminEditCo
 
     private int mGroupId;
     private int mForumId;
-    private Guid mCommunityGroupGUID = Guid.Empty;
     private ForumGroupInfo mForumGroup;
-    private int? mCommunityGroupID;
     private ForumInfo mForum;
 
     #endregion
@@ -73,49 +71,6 @@ public partial class CMSModules_Forums_Controls_Forums_ForumNew : CMSAdminEditCo
         get
         {
             return mForumGroup ?? (mForumGroup = ForumGroupInfoProvider.GetForumGroupInfo(GroupID));
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets the community group GUID.
-    /// </summary>
-    public Guid CommunityGroupGUID
-    {
-        get
-        {
-            return mCommunityGroupGUID;
-        }
-        set
-        {
-            mCommunityGroupGUID = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Community group ID
-    /// </summary>
-    protected int CommunityGroupID
-    {
-        get
-        {
-            if (mCommunityGroupID == null)
-            {
-                BaseInfo groupInfo = null;
-
-                if (CommunityGroupGUID != Guid.Empty)
-                {
-                    groupInfo = ModuleCommands.CommunityGetGroupInfoByGuid(CommunityGroupGUID);
-                }
-                else if ((ForumGroup != null) && (ForumGroup.GroupGroupID > 0))
-                {
-                    groupInfo = ModuleCommands.CommunityGetGroupInfo(ForumGroup.GroupGroupID);
-                }
-
-                mCommunityGroupID = (groupInfo != null) ? groupInfo.Generalized.ObjectID : 0;
-            }
-
-            return mCommunityGroupID.Value;
         }
     }
 
@@ -327,12 +282,27 @@ public partial class CMSModules_Forums_Controls_Forums_ForumNew : CMSAdminEditCo
             return;
         }
 
+        // Get community group identificators
+        int communityGroupId = 0;
+        Guid communityGroupGuid = Guid.Empty;
+        
+        if (ForumGroup != null)
+        {
+            BaseInfo communityGroup = ModuleCommands.CommunityGetGroupInfo(ForumGroup.GroupGroupID);
+
+            if (communityGroup != null)
+            {
+                communityGroupId = communityGroup.Generalized.ObjectID;
+                communityGroupGuid = communityGroup.Generalized.ObjectGUID;
+            }
+        }
+
         string codeName = txtForumName.Text.Trim();
 
         // Get safe code name for simple display mode
         if (DisplayMode == ControlDisplayModeEnum.Simple)
         {
-            codeName = ValidationHelper.GetCodeName(txtForumDisplayName.Text.Trim(), 50) + "_group_" + CommunityGroupGUID;
+            codeName = ValidationHelper.GetCodeName(txtForumDisplayName.Text.Trim(), 50) + "_group_" + communityGroupGuid;
         }
 
         // Check required fields
@@ -348,7 +318,7 @@ public partial class CMSModules_Forums_Controls_Forums_ForumNew : CMSAdminEditCo
             if (SiteContext.CurrentSite != null)
             {
                 // If forum with given name already exists show error message
-                if (ForumInfoProvider.GetForumInfo(codeName, SiteContext.CurrentSiteID, CommunityGroupID) != null)
+                if (ForumInfoProvider.GetForumInfo(codeName, SiteContext.CurrentSiteID, communityGroupId) != null)
                 {
                     ShowError(GetString("Forum_Edit.ForumAlreadyExists"));
                     return;
@@ -372,7 +342,7 @@ public partial class CMSModules_Forums_Controls_Forums_ForumNew : CMSAdminEditCo
                 Forum.ForumThreadsAbsolute = 0;
                 Forum.ForumOrder = 0;
                 chkCaptcha.SetThreeStateValue(Forum,"ForumUseCAPTCHA");
-                Forum.ForumCommunityGroupID = CommunityGroupID;
+                Forum.ForumCommunityGroupID = communityGroupId;
 
                 // For simple display mode skip some properties
                 if (DisplayMode != ControlDisplayModeEnum.Simple)

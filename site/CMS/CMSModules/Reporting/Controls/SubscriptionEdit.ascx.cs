@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Globalization;
 using System.Linq;
@@ -337,7 +337,7 @@ function disableLast(disable) {
             mReportSubscriptionInfo.ReportSubscriptionSubject = txtSubject.Text;
             mReportSubscriptionInfo.ReportSubscriptionCondition = ucMacroEditor.Text;
             mReportSubscriptionInfo.ReportSubscriptionOnlyNonEmpty = chkNonEmpty.Checked;
-            mReportSubscriptionInfo.ReportSubscriptionNextPostDate = SchedulingHelper.GetNextTime(ucInterval.ScheduleInterval, DateTimeHelper.ZERO_TIME, DateTimeHelper.ZERO_TIME);
+            mReportSubscriptionInfo.ReportSubscriptionNextPostDate = SchedulingHelper.GetFirstRunTime(ucInterval.TaskInterval);
 
             ReportSubscriptionInfoProvider.SetReportSubscriptionInfo(mReportSubscriptionInfo);
 

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Tab_General.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Tab_General.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Title="Account properties - General" Inherits="CMSModules_ContactManagement_Pages_Tools_Account_Tab_General"
     Theme="Default" %>
 

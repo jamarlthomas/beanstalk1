@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MessageBoards_Controls_Boards_BoardList" Codebehind="BoardList.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MessageBoards_Controls_Boards_BoardList"  Codebehind="BoardList.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <asp:Panel class="form-horizontal form-filter" runat="server" DefaultButton="btnFilter">
     <cms:MessagesPlaceHolder ID="plcMess" runat="server" />

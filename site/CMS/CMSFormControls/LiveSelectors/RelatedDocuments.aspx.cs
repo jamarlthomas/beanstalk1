@@ -96,7 +96,7 @@ public partial class CMSFormControls_LiveSelectors_RelatedDocuments : CMSLiveMod
             btnSave.Visible = false;
             btnClose.Visible = false;
             addRelatedDocument.Visible = false;
-            string url = ResolveUrl("~/CMSMessages/Error.aspx?title=" + GetString("dialogs.badhashtitle") + "&text=" + GetString("dialogs.badhashtext") + "&cancel=1");
+            string url = ResolveUrl(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
             ltlScript.Text = ScriptHelper.GetScript("window.location = '" + url + "';");
         }
     }

@@ -1,10 +1,12 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="True" Inherits="CMSModules_ContactManagement_Controls_UI_Account_Subsidiaries"
-    Codebehind="Subsidiaries.ascx.cs" %>
+     Codebehind="Subsidiaries.ascx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 <%@ Register Src="~/CMSModules/ContactManagement/FormControls/AccountSelector.ascx"
     TagName="AccountSelector" TagPrefix="cms" %>
+
+<%-- Reference to Filter.ascx is here intentionally --%>
 <%@ Register Src="~/CMSModules/ContactManagement/Controls/UI/Account/Filter.ascx" TagPrefix="cms" TagName="AccountFilter" %>
 
 <asp:Panel ID="pnlSelector" runat="server" CssClass="cms-edit-menu">
@@ -17,7 +19,7 @@
             <cms:UniGrid runat="server" ID="gridElem" OrderBy="AccountName" ObjectType="om.accountlist"
                 Columns="AccountID,AccountName,AccountStatusID,PrimaryContactFullName,AccountCountryID,AccountSiteID"
                 IsLiveSite="false" WhereCondition="AccountSubsidiaryOfID={%EditedObject.AccountID%}"
-                ShowObjectMenu="false" HideFilterButton="true" RememberDefaultState="true" RememberStateByParam="issitemanager">
+                ShowObjectMenu="false" HideFilterButton="true" RememberDefaultState="true" RememberStateByParam="issitemanager,siteid">
                 <GridActions Parameters="AccountID">
                     <ug:Action Name="edit" Caption="$om.account.viewdetail$" FontIconClass="icon-edit" FontIconStyle="Allow"
                         CommandArgument="AccountID" ModuleName="CMS.OnlineMarketing" ExternalSourceName="edit" />

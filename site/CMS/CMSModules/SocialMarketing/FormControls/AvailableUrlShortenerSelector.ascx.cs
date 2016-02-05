@@ -12,9 +12,10 @@ using CMS.SocialMarketing;
 public partial class CMSModules_SocialMarketing_FormControls_AvailableUrlShortenerSelector : FormEngineUserControl
 {
 
-    #region "Constants"
+    #region "Constants and fields"
 
     private const string SOCIALNETWORKNAME_PROPERTYNAME = "SocialNetworkName";
+    private int? mSiteID;
 
     #endregion
 
@@ -39,6 +40,22 @@ public partial class CMSModules_SocialMarketing_FormControls_AvailableUrlShorten
         set
         {
             SetValue(SOCIALNETWORKNAME_PROPERTYNAME, value);
+        }
+    }
+
+
+    /// <summary>
+    /// Gets or sets Site ID.
+    /// </summary>
+    public int SiteID
+    {
+        get
+        {
+            return mSiteID ?? (mSiteID = SiteContext.CurrentSiteID).Value;
+        }
+        set
+        {
+            mSiteID = value;
         }
     }
 
@@ -82,7 +99,7 @@ public partial class CMSModules_SocialMarketing_FormControls_AvailableUrlShorten
             EnsureDropDownListItems();
             if (value != null)
             {
-                URLShortenerTypeEnum selectedShortener = (URLShortenerTypeEnum) ValidationHelper.GetInteger(value, -1);
+                URLShortenerTypeEnum selectedShortener = value is URLShortenerTypeEnum ? (URLShortenerTypeEnum)value : (URLShortenerTypeEnum)ValidationHelper.GetInteger(value, -1);
                 if (!Enum.IsDefined(typeof(URLShortenerTypeEnum), selectedShortener))
                 {
                     selectedShortener = URLShortenerTypeEnum.None;
@@ -97,9 +114,9 @@ public partial class CMSModules_SocialMarketing_FormControls_AvailableUrlShorten
 
     #region "Life-cycle methods"
 
-    protected override void OnInit(EventArgs e)
+    protected override void OnLoad(EventArgs e)
     {
-        base.OnInit(e);
+        base.OnLoad(e);
         EnsureDropDownListItems();
     }
 
@@ -120,13 +137,13 @@ public partial class CMSModules_SocialMarketing_FormControls_AvailableUrlShorten
     private void InitializeDropDownList()
     {
         UrlShortenerDropDownList.Items.Add(CreateDropDownListItem(URLShortenerTypeEnum.None));
-        foreach (URLShortenerTypeEnum shortener in URLShortenerHelper.GetAvailableURLShorteners(SiteContext.CurrentSiteName))
+        foreach (URLShortenerTypeEnum shortener in URLShortenerHelper.GetAvailableURLShorteners(SiteID))
         {
             UrlShortenerDropDownList.Items.Add(CreateDropDownListItem(shortener));
         }
         if (SocialNetworkName != SocialNetworkTypeEnum.None)
         {
-            URLShortenerTypeEnum defaultShortener = URLShortenerHelper.GetDefaultURLShortenerForSocialNetwork(SocialNetworkName, SiteContext.CurrentSiteName);
+            URLShortenerTypeEnum defaultShortener = URLShortenerHelper.GetDefaultURLShortenerForSocialNetwork(SocialNetworkName, SiteID);
             UrlShortenerDropDownList.SelectedValue = Enum.GetName(typeof(URLShortenerTypeEnum), defaultShortener);
         }
     }
@@ -138,7 +155,7 @@ public partial class CMSModules_SocialMarketing_FormControls_AvailableUrlShorten
         return new ListItem
         {
             Value = shortenerName,
-            Text = ResHelper.GetString(String.Format("sm.urlshortener.{0}", shortenerName))
+            Text = ResHelper.GetString(String.Format("urlshortenertypeenum.{0}", shortenerName))
         };
     }
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 using CMS.DataEngine;
 using CMS.Helpers;
@@ -24,7 +24,7 @@ public partial class CMSModules_Staging_Tools_Log : CMSStagingPage
         // Check hash
         if (!QueryHelper.ValidateHash("hash"))
         {
-            URLHelper.Redirect(ResolveUrl("~/CMSMessages/Error.aspx?title=" + GetString("dialogs.badhashtitle") + "&text=" + GetString("dialogs.badhashtext") + "&cancel=1"));
+            URLHelper.Redirect(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
         }
         else
         {
@@ -56,7 +56,7 @@ public partial class CMSModules_Staging_Tools_Log : CMSStagingPage
             gridLog.QueryParameters = parameters;
             gridLog.OnAction += gridLog_OnAction;
             gridLog.ZeroRowsText = GetString("Task.LogNoEvents");
-            gridLog.OnBeforeDataReload += new OnBeforeDataReload(gridLog_OnBeforeDataReload);
+            gridLog.OnBeforeDataReload += gridLog_OnBeforeDataReload;
 
             PageTitle.TitleText = GetString("Task.LogHeader");
             CurrentMaster.DisplayControlsPanel = true;
@@ -85,7 +85,7 @@ public partial class CMSModules_Staging_Tools_Log : CMSStagingPage
                 {
                     lblInfo.Text += "<br /><br />";
                 }
-                lblInfo.Text += String.Format(GetString("Task.LogServerInfo"), si.ServerDisplayName);
+                lblInfo.Text += String.Format(GetString("Task.LogServerInfo"), HTMLHelper.HTMLEncode(si.ServerDisplayName));
             }
         }
         lblInfo.Visible = (lblInfo.Text != "");

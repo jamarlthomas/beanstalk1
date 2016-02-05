@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="AnalyticsReportViewer.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="AnalyticsReportViewer.ascx.cs"
     Inherits="CMSModules_WebAnalytics_Controls_AnalyticsReportViewer" %>
 <%@ Register Src="~/CMSModules/WebAnalytics/Controls/SelectGraphTypeAndPeriod.ascx"
     TagName="GraphTypeAndPeriod" TagPrefix="cms" %>

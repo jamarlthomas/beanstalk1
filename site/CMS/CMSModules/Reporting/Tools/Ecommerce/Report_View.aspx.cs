@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -69,8 +69,7 @@ public partial class CMSModules_Reporting_Tools_Ecommerce_Report_View : CMSEcomm
         reportHeader.ReportName = ucReportViewer.ReportName;
         reportHeader.ReportParameters = ucReportViewer.ReportParameters;
         reportHeader.SelectedInterval = ucReportViewer.SelectedInterval;
-        reportHeader.DisplayManageData = false;
-
+        
         RegisterModalDialogScript();
     }
 

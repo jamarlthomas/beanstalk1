@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="MessageUserSelector_Footer.aspx.cs" Inherits="CMSModules_Messaging_Dialogs_MessageUserSelector_Footer" Theme="Default"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="MessageUserSelector_Footer.aspx.cs" Inherits="CMSModules_Messaging_Dialogs_MessageUserSelector_Footer" Theme="Default"
     MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" %>
 
 <asp:Content ID="content" ContentPlaceHolderID="plcContent" runat="server">

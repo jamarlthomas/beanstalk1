@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 
 using CMS.ExtendedControls;
@@ -81,11 +81,6 @@ public partial class CMSModules_Content_CMSDesk_TemplateSelection : CMSContentPa
                         selTemplate.SetDefaultTemplate(dci.ClassDefaultPageTemplateID);
                     }
                 }
-            }
-
-            if (dci.ClassName.EqualsCSafe("cms.wireframe", true))
-            {
-                selTemplate.IsWireframe = true;
             }
 
             // Display footer only in dialog mode

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SelectSKUBinding.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SelectSKUBinding.ascx.cs"
     Inherits="CMSModules_Ecommerce_FormControls_SelectSKUBinding" %>
 <%@ Register TagPrefix="cms" TagName="SKUSelector" Src="~/CMSModules/Ecommerce/FormControls/SKUSelector.ascx" %>
 <div class="form-horizontal" role="form">

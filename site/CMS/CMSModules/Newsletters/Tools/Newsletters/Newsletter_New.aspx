@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Tools_Newsletters_Newsletter_New"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Tools_Newsletters_Newsletter_New"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Tools - New newsletter"
-    Codebehind="Newsletter_New.aspx.cs" %>
+     Codebehind="Newsletter_New.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/Selectors/ScheduleInterval.ascx" TagName="ScheduleInterval"
     TagPrefix="cms" %>

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSModules/Forums/Controls/Forums/ForumPostsWaitingForApproval.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSModules/Forums/Controls/Forums/ForumPostsWaitingForApproval.ascx.cs"
     Inherits="CMSModules_Forums_Controls_Forums_ForumPostsWaitingForApproval" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <asp:Panel runat="server" ID="pnlApprove">

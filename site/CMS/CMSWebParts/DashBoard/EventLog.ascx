@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/DashBoard/EventLog.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/DashBoard/EventLog.ascx.cs"
     Inherits="CMSWebParts_DashBoard_EventLog" %>
 <%@ Register Src="~/CMSModules/EventLog/Controls/EventLog.ascx"
     TagName="EventLog" TagPrefix="cms" %>

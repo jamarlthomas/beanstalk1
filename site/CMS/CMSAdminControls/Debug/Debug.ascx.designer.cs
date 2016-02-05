@@ -12,6 +12,15 @@
 public partial class CMSAdminControls_Debug_Debug {
     
     /// <summary>
+    /// pnlDebugContainer control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSPanel pnlDebugContainer;
+    
+    /// <summary>
     /// plcDebugs control.
     /// </summary>
     /// <remarks>

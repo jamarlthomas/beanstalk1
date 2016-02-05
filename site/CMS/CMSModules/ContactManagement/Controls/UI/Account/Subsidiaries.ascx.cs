@@ -1,8 +1,5 @@
-using System;
-using System.Data;
+﻿using System;
 using System.Text;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using CMS.Core;
@@ -22,7 +19,7 @@ public partial class CMSModules_ContactManagement_Controls_UI_Account_Subsidiari
     protected AccountInfo ai = null;
     protected int mSiteId = -1;
     protected bool? mModifyAccountPermission;
-    private CMSModules_ContactManagement_Controls_UI_Account_Filter filter = null;
+    private CMSModules_ContactManagement_Controls_UI_Account_Filter filter;
 
     /// <summary>
     /// Available actions in mass action selector.
@@ -133,7 +130,7 @@ public partial class CMSModules_ContactManagement_Controls_UI_Account_Subsidiari
 
     protected override void OnInit(EventArgs e)
     {
-        gridElem.OnFilterFieldCreated += new OnFilterFieldCreated(gridElem_OnFilterFieldCreated);
+        gridElem.OnFilterFieldCreated += gridElem_OnFilterFieldCreated;
         gridElem.LoadGridDefinition();
 
         base.OnInit(e);
@@ -168,8 +165,8 @@ public partial class CMSModules_ContactManagement_Controls_UI_Account_Subsidiari
             accountSelector.UniSelector.DialogButton.ResourceString = "om.account.addaccount";
 
             // Setup UniGrid
-            gridElem.OnExternalDataBound += new OnExternalDataBoundEventHandler(gridElem_OnExternalDataBound);
-            gridElem.OnAction += new OnActionEventHandler(gridElem_OnAction);
+            gridElem.OnExternalDataBound += gridElem_OnExternalDataBound;
+            gridElem.OnAction += gridElem_OnAction;
             gridElem.ZeroRowsText = GetString("om.account.noaccountsfound");
 
             // Initialize dropdown lists
@@ -213,7 +210,7 @@ public partial class CMSModules_ContactManagement_Controls_UI_Account_Subsidiari
 
     #region "Events"
 
-    
+
     private object gridElem_OnExternalDataBound(object sender, string sourceName, object parameter)
     {
         CMSGridActionButton btn;
@@ -234,7 +231,7 @@ public partial class CMSModules_ContactManagement_Controls_UI_Account_Subsidiari
                 if (!ModifyAccountPermission)
                 {
                     btn = (CMSGridActionButton)sender;
-                    btn.Enabled = false;                    
+                    btn.Enabled = false;
                 }
                 break;
         }
@@ -272,19 +269,20 @@ public partial class CMSModules_ContactManagement_Controls_UI_Account_Subsidiari
         if (AccountHelper.AuthorizedModifyAccount(SiteID, true))
         {
             // Get new items from selector
-            string newValues = ValidationHelper.GetString(accountSelector.Value, null);
-            string[] newItems = newValues.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (newItems != null)
+            var newValues = ValidationHelper.GetString(accountSelector.Value, null);
+            if (newValues == null)
             {
-                // Set HQ ID of selected accounts to edited account ID
-                string where = SqlHelper.GetWhereCondition<int>("AccountID", newItems, false);
-                AccountInfoProvider.UpdateAccountHQ(ai.AccountID, where);
-
-                gridElem.ReloadData();
-                pnlUpdate.Update();
-                accountSelector.Value = null;
+                return;
             }
+
+            var newItems = newValues.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
+            // Set HQ ID of selected accounts to edited account ID
+            string where = SqlHelper.GetWhereCondition<int>("AccountID", newItems, false);
+            AccountInfoProvider.UpdateAccountHQ(ai.AccountID, @where);
+
+            gridElem.ReloadData();
+            pnlUpdate.Update();
+            accountSelector.Value = null;
         }
     }
 
@@ -296,7 +294,7 @@ public partial class CMSModules_ContactManagement_Controls_UI_Account_Subsidiari
             Action action = (Action)ValidationHelper.GetInteger(drpAction.SelectedItem.Value, 0);
             What what = (What)ValidationHelper.GetInteger(drpWhat.SelectedItem.Value, 0);
 
-            string where = string.Empty;
+            string where;
 
             switch (what)
             {
@@ -343,7 +341,7 @@ public partial class CMSModules_ContactManagement_Controls_UI_Account_Subsidiari
     {
         ScriptHelper.RegisterDialogScript(Page);
         StringBuilder script = new StringBuilder();
-        
+
         // Register script to open dialogs for role selection and for account editing
         script.Append(@"
 function Refresh()

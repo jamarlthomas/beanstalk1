@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Core;
@@ -20,12 +20,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_Menu : CMSPropertiesP
         if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerUIElement("CMS.Content", "Properties.Menu"))
         {
             RedirectToUIElementAccessDenied("CMS.Content", "Properties.Menu");
-        }
-
-        // Redirect to information page when no UI elements displayed
-        if (pnlUIActions.IsHidden && pnlUIBasicProperties.IsHidden && pnlUIDesign.IsHidden && pnlUISearch.IsHidden)
-        {
-            RedirectToUINotAvailable();
         }
 
         // Init document manager events
@@ -58,7 +52,8 @@ public partial class CMSModules_Content_CMSDesk_Properties_Menu : CMSPropertiesP
 
     private string GetFirstChildUrl()
     {
-        var url = TreePathUtils.GetFirstChildUrl(PageInfoProvider.GetPageInfo(Node.DocumentGUID, Node.NodeSiteID));
+        var node = Node;
+        var url = TreePathUtils.GetFirstChildUrl(node.NodeSiteName, node.NodeAliasPath, node.DocumentCulture);
         return string.IsNullOrEmpty(url) ? GetString("content.menu.nochilddocument") : string.Format("<a target=\"_blank\" href=\"{0}\" >{0}</a>", URLHelper.ResolveUrl(url));
     }
 
@@ -149,12 +144,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_Menu : CMSPropertiesP
             Node.DocumentMenuStyle = txtMenuItemStyle.Text.Trim();
             Node.SetValue("DocumentMenuClass", txtCssClass.Text.Trim());
 
-            Node.SetValue("DocumentMenuStyleOver", txtMenuItemStyleMouseOver.Text.Trim());
-            Node.SetValue("DocumentMenuClassOver", txtCssClassMouseOver.Text.Trim());
-            Node.SetValue("DocumentMenuItemImageOver", txtMenuItemImageMouseOver.Text.Trim());
-            Node.SetValue("DocumentMenuItemLeftImageOver", txtMenuItemLeftImageMouseOver.Text.Trim());
-            Node.SetValue("DocumentMenuItemRightImageOver", txtMenuItemRightImageMouseOver.Text.Trim());
-
             Node.SetValue("DocumentMenuStyleHighlighted", txtMenuItemStyleHighlight.Text.Trim());
             Node.SetValue("DocumentMenuClassHighlighted", txtCssClassHighlight.Text.Trim());
             Node.SetValue("DocumentMenuItemImageHighlighted", txtMenuItemImageHighlight.Text.Trim());
@@ -181,7 +170,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Menu : CMSPropertiesP
             }
 
             if (radInactive.Checked)
-            {    
+            {
                 txtUrl.Text = txtUrlInactive.Text;
                 if (Node != null)
                 {
@@ -241,6 +230,21 @@ public partial class CMSModules_Content_CMSDesk_Properties_Menu : CMSPropertiesP
     {
         if (Node != null)
         {
+            // Redirect to information page when no UI elements displayed
+            if (pnlUIActions.IsHidden && pnlUIBasicProperties.IsHidden && (pnlUIDesign.IsHidden || ShowContentOnlyProperties) && pnlUISearch.IsHidden)
+            {
+                RedirectToUINotAvailable();
+            }
+
+            if (ShowContentOnlyProperties)
+            {
+                pnlUIDesign.Visible = false;
+                pnlUIBasicProperties.Visible = false;
+                pnlUIActions.Visible = false;
+                plcAdvancedSearch.Visible = false;
+                headSearch.Visible = false;
+            }
+
             if (!RequestHelper.IsPostBack())
             {
                 // Use predefined value
@@ -277,12 +281,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_Menu : CMSPropertiesP
             chkShowInSitemap.Checked = Convert.ToBoolean(Node.GetValue("DocumentShowInSiteMap"));
 
             txtCssClass.Text = ValidationHelper.GetString(Node.GetValue("DocumentMenuClass"), "");
-
-            txtMenuItemStyleMouseOver.Text = ValidationHelper.GetString(Node.GetValue("DocumentMenuStyleOver"), "");
-            txtCssClassMouseOver.Text = ValidationHelper.GetString(Node.GetValue("DocumentMenuClassOver"), "");
-            txtMenuItemImageMouseOver.Text = ValidationHelper.GetString(Node.GetValue("DocumentMenuItemImageOver"), "");
-            txtMenuItemLeftImageMouseOver.Text = ValidationHelper.GetString(Node.GetValue("DocumentMenuItemLeftImageOver"), "");
-            txtMenuItemRightImageMouseOver.Text = ValidationHelper.GetString(Node.GetValue("DocumentMenuItemRightImageOver"), "");
 
             txtMenuItemStyleHighlight.Text = ValidationHelper.GetString(Node.GetValue("DocumentMenuStyleHighlighted"), "");
             txtCssClassHighlight.Text = ValidationHelper.GetString(Node.GetValue("DocumentMenuClassHighlighted"), "");

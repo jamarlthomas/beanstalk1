@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Messaging_Controls_MyMessages"
-    Codebehind="MyMessages.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Messaging_Controls_MyMessages"
+     Codebehind="MyMessages.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Messaging/Controls/Inbox.ascx" TagName="Inbox" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Messaging/Controls/Outbox.ascx" TagName="Outbox" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Messaging/Controls/ContactList.ascx" TagName="ContactList"

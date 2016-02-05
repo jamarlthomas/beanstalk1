@@ -30,15 +30,6 @@ public partial class CMSModules_Reporting_FormControls_ReportItemSelector {
     protected global::System.Web.UI.WebControls.HiddenField hdnGuid;
     
     /// <summary>
-    /// ltlScript control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Literal ltlScript;
-    
-    /// <summary>
     /// pnlReports control.
     /// </summary>
     /// <remarks>
@@ -93,13 +84,13 @@ public partial class CMSModules_Reporting_FormControls_ReportItemSelector {
     protected global::CMSAdminControls_UI_UniGrid_UniGrid ugParameters;
     
     /// <summary>
-    /// plcParametersButtons control.
+    /// pnlParametersButtons control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.HtmlControls.HtmlGenericControl plcParametersButtons;
+    protected global::System.Web.UI.WebControls.Panel pnlParametersButtons;
     
     /// <summary>
     /// btnSet control.

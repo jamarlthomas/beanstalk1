@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_MessageBoards_Content_Properties_Tree"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_MessageBoards_Content_Properties_Tree"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Tree.master" Title="Message boards - tree"
-    Codebehind="Tree.aspx.cs" %>
+     Codebehind="Tree.aspx.cs" %>
 
 <asp:Content ID="cntMenu" runat="server" ContentPlaceHolderID="plcMenu">
     <div class="tree-actions-panel">

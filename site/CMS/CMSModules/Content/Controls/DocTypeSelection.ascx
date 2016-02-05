@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="DocTypeSelection.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="DocTypeSelection.ascx.cs"
     Inherits="CMSModules_Content_Controls_DocTypeSelection" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
@@ -7,7 +7,7 @@
     <asp:Label ID="lblError" runat="server" CssClass="ContentLabel" ForeColor="Red" EnableViewState="false" />
 </div>
 <div class="ContentNewClasses UniGridClearPager content-block-50">
-    <cms:UniGrid runat="server" ID="gridClasses" IsLiveSite="false" ZeroRowsText="">
+    <cms:UniGrid runat="server" ID="gridClasses" IsLiveSite="false" ZeroRowsText="" ShowActionsMenu="false">
         <GridColumns>
             <ug:Column Source="##ALL##" ExternalSourceName="classname" Caption="$general.codename$"
                 Wrap="false" />

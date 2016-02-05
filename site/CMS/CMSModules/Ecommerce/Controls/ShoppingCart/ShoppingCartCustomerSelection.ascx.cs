@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 
+using CMS.Core;
 using CMS.Ecommerce;
 using CMS.EcommerceProvider;
 using CMS.ExtendedControls;
@@ -176,7 +177,7 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartCust
             // Check permissions
             if (!HasModifyCustomerPermission)
             {
-                RedirectToAccessDenied("CMS.Ecommerce", "ModifyCustomers OR EcommerceModify");
+                RedirectToAccessDenied(ModuleName.ECOMMERCE, "ModifyCustomers OR EcommerceModify");
                 return false;
             }
             

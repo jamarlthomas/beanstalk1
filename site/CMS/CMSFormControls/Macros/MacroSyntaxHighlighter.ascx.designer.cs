@@ -18,5 +18,5 @@ public partial class CMSFormControls_Macros_MacroSyntaxHighlighter {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSAdminControls_UI_Macros_MacroEditor txtMacro;
+    protected global::CMS.UIControls.MacroEditor txtMacro;
 }

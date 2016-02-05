@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -58,8 +58,8 @@ public partial class CMSModules_Reporting_Dialogs_ReportParametersSelector : CMS
 
         // Test if there is any item visible in report parameters
         bool itemVisible = false;
-        List<IField> items = fi.ItemsList;
-        foreach (IField item in items)
+        List<IDataDefinitionItem> items = fi.ItemsList;
+        foreach (IDataDefinitionItem item in items)
         {
             FormFieldInfo ffi = item as FormFieldInfo;
             if (ffi != null && ffi.Visible)
@@ -131,8 +131,8 @@ public partial class CMSModules_Reporting_Dialogs_ReportParametersSelector : CMS
                 fi.LoadDefaultValues(defaultRow, true);
 
                 // Load default parameters to items ,where displayed in edit form not checked
-                List<IField> items = fi.ItemsList;
-                foreach (IField item in items)
+                List<IDataDefinitionItem> items = fi.ItemsList;
+                foreach (IDataDefinitionItem item in items)
                 {
                     FormFieldInfo ffi = item as FormFieldInfo;
                     if ((ffi != null) && (!ffi.Visible))

@@ -3,11 +3,11 @@
     padding: 0;
 }
 
-.InsertEmailWidget .PageHeaderLine {
+.InsertEmailWidget .InsertEmailWidgetHeader {
     overflow: hidden;
 }
 
-    .InsertEmailWidget .PageHeaderLine p {
+    .InsertEmailWidget .InsertEmailWidgetHeader p {
         margin: 16px;
     }
 

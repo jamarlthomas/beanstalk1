@@ -129,13 +129,13 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard {
     protected global::System.Web.UI.WebControls.WizardStep wzdStepProgress;
     
     /// <summary>
-    /// lblProgress control.
+    /// ctlAsyncImport control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblProgress;
+    protected global::CMS.UIControls.AsyncControl ctlAsyncImport;
     
     /// <summary>
     /// wzdStepMasterTemplate control.
@@ -189,7 +189,7 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblError;
+    protected global::CMS.ExtendedControls.AlertLabel lblError;
     
     /// <summary>
     /// pnlWarning control.
@@ -207,7 +207,7 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblWarning;
+    protected global::CMS.ExtendedControls.AlertLabel lblWarning;
     
     /// <summary>
     /// pnlPermissions control.
@@ -246,20 +246,11 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard {
     protected global::System.Web.UI.WebControls.Literal ltlScriptAfter;
     
     /// <summary>
-    /// ctrlAsync control.
+    /// ctrlAsyncSelection control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.UIControls.AsyncControl ctrlAsync;
-    
-    /// <summary>
-    /// ctrlImport control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.UIControls.AsyncControl ctrlImport;
+    protected global::CMS.UIControls.AsyncControl ctrlAsyncSelection;
 }

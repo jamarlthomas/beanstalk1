@@ -39,15 +39,6 @@ public partial class CMSModules_ContactManagement_Controls_UI_ContactGroup_Accou
     protected global::System.Web.UI.WebControls.Panel pnlContent;
     
     /// <summary>
-    /// pnlUpdate control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSUpdatePanel pnlUpdate;
-    
-    /// <summary>
     /// plcMess control.
     /// </summary>
     /// <remarks>
@@ -55,6 +46,15 @@ public partial class CMSModules_ContactManagement_Controls_UI_ContactGroup_Accou
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.MessagesPlaceHolder plcMess;
+    
+    /// <summary>
+    /// pnlUpdate control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSUpdatePanel pnlUpdate;
     
     /// <summary>
     /// gridElem control.

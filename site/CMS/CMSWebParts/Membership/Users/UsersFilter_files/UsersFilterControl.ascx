@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Membership_Users_UsersFilter_files_UsersFilterControl" Codebehind="~/CMSWebParts/Membership/Users/UsersFilter_files/UsersFilterControl.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Membership_Users_UsersFilter_files_UsersFilterControl"  Codebehind="~/CMSWebParts/Membership/Users/UsersFilter_files/UsersFilterControl.ascx.cs" %>
 <asp:Panel CssClass="Filter" DefaultButton="btnSelect" runat="server" ID="pnlUsersFilter">
     <span class="FilterSort">
         <asp:Label runat="server" ID="lblSortBy" EnableViewState="false" />

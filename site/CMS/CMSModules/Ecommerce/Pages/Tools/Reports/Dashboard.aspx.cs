@@ -11,7 +11,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Reports_Dashboard : Dashbo
     {
         base.OnPreInit(e);
 
-        ucDashboard.ResourceName = "CMS.Ecommerce";
+        ucDashboard.ResourceName = ModuleName.ECOMMERCE;
         ucDashboard.ElementName = "ReportsDashboard";
         ucDashboard.PortalPageInstance = this;
         ucDashboard.TagsLiteral = ltlTags;

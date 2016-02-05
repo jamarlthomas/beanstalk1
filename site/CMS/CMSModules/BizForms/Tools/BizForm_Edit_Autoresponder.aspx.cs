@@ -254,7 +254,7 @@ public partial class CMSModules_BizForms_Tools_BizForm_Edit_Autoresponder : CMSB
         menu.ActionsList.Clear();
 
         // Add save action
-        save = new SaveAction(Page);
+        save = new SaveAction();
         menu.ActionsList.Add(save);
 
         bool isAuthorized = CurrentUser.IsAuthorizedPerResource("cms.form", "EditForm") && (EditedObject != null);

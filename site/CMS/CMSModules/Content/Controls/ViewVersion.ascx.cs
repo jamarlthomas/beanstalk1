@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Data;
 using System.Text;
@@ -165,8 +165,8 @@ public partial class CMSModules_Content_Controls_ViewVersion : VersionHistoryCon
             try
             {
                 // Get original version of document
-                Node = VersionManager.GetVersion(versionHistoryId, null);
-                CompareNode = VersionManager.GetVersion(versionCompare, null);
+                Node = VersionManager.GetVersion(versionHistoryId);
+                CompareNode = VersionManager.GetVersion(versionCompare);
 
                 if (Node != null)
                 {
@@ -348,7 +348,7 @@ public partial class CMSModules_Content_Controls_ViewVersion : VersionHistoryCon
         {
             // Prepare onclick script
             string confirmScript = "if (confirm(" + ScriptHelper.GetString(GetString("Unigrid.VersionHistory.Actions.Rollback.Confirmation")) + ")) { ";
-            confirmScript += Page.ClientScript.GetPostBackEventReference(this, versionID.ToString()) + "; return false; }";
+            confirmScript += Page.ClientScript.GetPostBackEventReference(this, versionID.ToString()) + "; } return false;";
             imgRollback.Attributes.Add("onclick", confirmScript);
         }
 
@@ -461,7 +461,7 @@ public partial class CMSModules_Content_Controls_ViewVersion : VersionHistoryCon
             AttachmentInfo aiCompare = null;
 
             // Compare attachments
-            if ((columnName == UNSORTED) || ((ffi != null) && (ffi.DataType == FieldDataType.DocAttachments)))
+            if ((columnName == UNSORTED) || ((ffi != null) && (ffi.DataType == DocumentFieldDataType.DocAttachments)))
             {
                 allowLabel = false;
 
@@ -577,12 +577,12 @@ public partial class CMSModules_Content_Controls_ViewVersion : VersionHistoryCon
                     string textorig = null;
                     if (ai != null)
                     {
-                        textorig = CreateAttachment(ai.Generalized.DataClass, versionHistoryId);
+                        textorig = CreateAttachment(ai, versionHistoryId);
                     }
                     string textcompare = null;
                     if (aiCompare != null)
                     {
-                        textcompare = CreateAttachment(aiCompare.Generalized.DataClass, versionCompare);
+                        textcompare = CreateAttachment(aiCompare, versionCompare);
                     }
 
                     comparefirst = new TextComparison();
@@ -1153,55 +1153,55 @@ public partial class CMSModules_Content_Controls_ViewVersion : VersionHistoryCon
     /// </summary>
     private string CreateAttachment(IDataContainer dc, int versionId)
     {
-        string result = null;
-        if (dc != null)
+        if (dc == null)
         {
-            // Get attachment GUID
-            Guid attachmentGuid = ValidationHelper.GetGuid(dc.GetValue("AttachmentGUID"), Guid.Empty);
-
-            // Get attachment extension
-            string attachmentExt = ValidationHelper.GetString(dc.GetValue("AttachmentExtension"), null);
-
-            // Get link for attachment
-            string attName = ValidationHelper.GetString(dc.GetValue("AttachmentName"), null);
-            string attachmentUrl = AuthenticationHelper.ResolveUIUrl(AttachmentURLProvider.GetAttachmentUrl(attachmentGuid, URLHelper.GetSafeFileName(attName, SiteContext.CurrentSiteName), null, versionId));
-
-            // Ensure correct URL
-            attachmentUrl = URLHelper.AddParameterToUrl(attachmentUrl, "sitename", SiteContext.CurrentSiteName);
-
-            // Optionally trim attachment name
-            string attachmentName = TextHelper.LimitLength(attName, 90);
-            bool isImage = ImageHelper.IsImage(attachmentExt);
-
-            // Tooltip
-            string tooltip = null;
-            if (isImage)
-            {
-                int attachmentWidth = ValidationHelper.GetInteger(dc.GetValue("AttachmentImageWidth"), 0);
-                if (attachmentWidth > 300)
-                {
-                    attachmentWidth = 300;
-                }
-                tooltip = "onmouseout=\"UnTip()\" onmouseover=\"TipImage(" + attachmentWidth + ", '" + URLHelper.AddParameterToUrl(attachmentUrl, "width", "300") + "', " + ScriptHelper.GetString(HTMLHelper.HTMLEncode(attachmentName)) + ")\"";
-            }
-
-            string attachmentSize = DataHelper.GetSizeString(ValidationHelper.GetLong(dc.GetValue("AttachmentSize"), 0));
-            string title = ValidationHelper.GetString(dc.GetValue("AttachmentTitle"), string.Empty);
-            string description = ValidationHelper.GetString(dc.GetValue("AttachmentDescription"), string.Empty);
-
-            // Icon
-            var additional = new StringBuilder();
-            additional.Append(tooltip, "onclick=\"javascript: window.open(", ScriptHelper.GetString(attachmentUrl), "); return false;\" style=\"cursor: pointer;\"");
-
-            var sb = new StringBuilder();
-            sb.Append(UIHelper.GetFileIcon(Page, attachmentExt, tooltip: HTMLHelper.HTMLEncode(attachmentName), additionalAttributes: additional.ToString()));
-            sb.Append(" ", HTMLHelper.HTMLEncode(attachmentName), " (", HTMLHelper.HTMLEncode(attachmentSize), ")<br />");
-            sb.Append("<table class=\"table-blank\"><tr><td><strong>", GetString("general.title"), ":</strong></td><td>", HTMLHelper.HTMLEncode(title), "</td></tr>");
-            sb.Append("<tr><td><strong>", GetString("general.description"), ":</strong></td><td>", HTMLHelper.HTMLEncode(description), "</td></tr></table>");
-            result = sb.ToString();
+            return null;
         }
 
-        return result;
+        // Get attachment GUID
+        Guid attachmentGuid = ValidationHelper.GetGuid(dc.GetValue("AttachmentGUID"), Guid.Empty);
+
+        // Get attachment extension
+        string attachmentExt = ValidationHelper.GetString(dc.GetValue("AttachmentExtension"), null);
+
+        // Get link for attachment
+        string attName = ValidationHelper.GetString(dc.GetValue("AttachmentName"), null);
+        string attachmentUrl = AuthenticationHelper.ResolveUIUrl(AttachmentURLProvider.GetAttachmentUrl(attachmentGuid, URLHelper.GetSafeFileName(attName, SiteContext.CurrentSiteName), null, versionId));
+
+        // Ensure correct URL
+        attachmentUrl = URLHelper.AddParameterToUrl(attachmentUrl, "sitename", SiteContext.CurrentSiteName);
+
+        // Optionally trim attachment name
+        string attachmentName = TextHelper.LimitLength(attName, 90);
+        bool isImage = ImageHelper.IsImage(attachmentExt);
+
+        // Tooltip
+        string tooltip = null;
+        if (isImage)
+        {
+            int attachmentWidth = ValidationHelper.GetInteger(dc.GetValue("AttachmentImageWidth"), 0);
+            if (attachmentWidth > 300)
+            {
+                attachmentWidth = 300;
+            }
+            tooltip = "onmouseout=\"UnTip()\" onmouseover=\"TipImage(" + attachmentWidth + ", '" + URLHelper.AddParameterToUrl(attachmentUrl, "width", "300") + "', " + ScriptHelper.GetString(HTMLHelper.HTMLEncode(attachmentName)) + ")\"";
+        }
+
+        string attachmentSize = DataHelper.GetSizeString(ValidationHelper.GetLong(dc.GetValue("AttachmentSize"), 0));
+        string title = ValidationHelper.GetString(dc.GetValue("AttachmentTitle"), string.Empty);
+        string description = ValidationHelper.GetString(dc.GetValue("AttachmentDescription"), string.Empty);
+
+        // Icon
+        var additional = new StringBuilder();
+        additional.Append(tooltip, "onclick=\"javascript: window.open(", ScriptHelper.GetString(attachmentUrl), "); return false;\" style=\"cursor: pointer;\"");
+
+        var sb = new StringBuilder();
+        sb.Append(UIHelper.GetFileIcon(Page, attachmentExt, tooltip: HTMLHelper.HTMLEncode(attachmentName), additionalAttributes: additional.ToString()));
+        sb.Append(" ", HTMLHelper.HTMLEncode(attachmentName), " (", HTMLHelper.HTMLEncode(attachmentSize), ")<br />");
+        sb.Append("<table class=\"table-blank\"><tr><td><strong>", GetString("general.title"), ":</strong></td><td>", HTMLHelper.HTMLEncode(title), "</td></tr>");
+        sb.Append("<tr><td><strong>", GetString("general.description"), ":</strong></td><td>", HTMLHelper.HTMLEncode(description), "</td></tr></table>");
+        
+        return sb.ToString();
     }
 
     #endregion

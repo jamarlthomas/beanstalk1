@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Polls_Controls_Polls" Codebehind="Polls.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Polls_Controls_Polls"  Codebehind="Polls.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Polls/Controls/PollsList.ascx" TagName="PollsList"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Polls/Controls/PollEdit.ascx" TagName="PollEdit" TagPrefix="cms" %>

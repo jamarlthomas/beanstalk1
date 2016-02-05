@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Data;
-using System.Collections;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -26,8 +25,6 @@ public partial class CMSModules_Workflows_Workflow_Documents : CMSWorkflowPage
     private CurrentUserInfo currentUser;
     private string currentCulture = CultureHelper.DefaultUICultureCode;
 
-    private static readonly Hashtable mInfos = new Hashtable();
-
     private const string GET_WORKFLOW_DOCS_WHERE = "DocumentWorkflowStepID IN (SELECT StepID FROM CMS_WorkflowStep WHERE StepWorkflowID = {0})";
 
     private enum Action
@@ -49,19 +46,7 @@ public partial class CMSModules_Workflows_Workflow_Documents : CMSWorkflowPage
 
 
     #region "Properties"
-
-    /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
-
+    
     /// <summary>
     /// Current Error.
     /// </summary>
@@ -69,11 +54,11 @@ public partial class CMSModules_Workflows_Workflow_Documents : CMSWorkflowPage
     {
         get
         {
-            return ValidationHelper.GetString(mInfos["WorkflowError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mInfos["WorkflowError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -85,11 +70,11 @@ public partial class CMSModules_Workflows_Workflow_Documents : CMSWorkflowPage
     {
         get
         {
-            return ValidationHelper.GetString(mInfos["WorkflowInfo_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Information;
         }
         set
         {
-            mInfos["WorkflowInfo_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Information = value;
         }
     }
 
@@ -101,11 +86,11 @@ public partial class CMSModules_Workflows_Workflow_Documents : CMSWorkflowPage
     {
         get
         {
-            return ValidationHelper.GetString(mInfos["CanceledString_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.CancelledInfo;
         }
         set
         {
-            mInfos["CanceledString_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.CancelledInfo = value;
         }
     }
 
@@ -122,7 +107,6 @@ public partial class CMSModules_Workflows_Workflow_Documents : CMSWorkflowPage
         // Initialize events
         ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
         ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-        ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
         ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
 
         if (!RequestHelper.IsCallback())
@@ -224,8 +208,7 @@ public partial class CMSModules_Workflows_Workflow_Documents : CMSWorkflowPage
         pnlContent.Visible = false;
 
         CurrentError = string.Empty;
-        EnsureLog();
-
+        
         int actionValue = ValidationHelper.GetInteger(drpAction.SelectedValue, 0);
         Action action = (Action)actionValue;
 
@@ -284,9 +267,9 @@ public partial class CMSModules_Workflows_Workflow_Documents : CMSWorkflowPage
                         string className = ValidationHelper.GetString(nodeRow["ClassName"], string.Empty);
                         string aliasPath = ValidationHelper.GetString(nodeRow["NodeAliasPath"], string.Empty);
                         string docCulture = ValidationHelper.GetString(nodeRow["DocumentCulture"], string.Empty);
-                        string siteName = ValidationHelper.GetString(nodeRow["SiteName"], string.Empty);
+                        string siteName = SiteInfoProvider.GetSiteName(nodeRow["NodeSiteID"].ToInteger(0));
 
-                        node = DocumentHelper.GetDocument(siteName, aliasPath, docCulture, false, className, null, null, -1, false, null, Tree);
+                        node = DocumentHelper.GetDocument(siteName, aliasPath, docCulture, false, className, null, null, TreeProvider.ALL_LEVELS, false, null, Tree);
 
                         // Publish document
                         if (Publish(node, wm))
@@ -305,8 +288,7 @@ public partial class CMSModules_Workflows_Workflow_Documents : CMSWorkflowPage
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state == CMSThread.ABORT_REASON_STOP)
+            if (CMSThread.Stopped(ex))
             {
                 // When canceled
                 CurrentInfo = CanceledString;
@@ -358,7 +340,7 @@ public partial class CMSModules_Workflows_Workflow_Documents : CMSWorkflowPage
                         string className = ValidationHelper.GetString(nodeRow["ClassName"], string.Empty);
                         string aliasPath = ValidationHelper.GetString(nodeRow["NodeAliasPath"], string.Empty);
                         string docCulture = ValidationHelper.GetString(nodeRow["DocumentCulture"], string.Empty);
-                        string siteName = ValidationHelper.GetString(nodeRow["SiteName"], string.Empty);
+                        string siteName = SiteInfoProvider.GetSiteName(nodeRow["NodeSiteID"].ToInteger(0));
 
                         // Get published version
                         node = Tree.SelectSingleNode(siteName, aliasPath, docCulture, false, className, false);
@@ -390,8 +372,7 @@ public partial class CMSModules_Workflows_Workflow_Documents : CMSWorkflowPage
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state == CMSThread.ABORT_REASON_STOP)
+            if (CMSThread.Stopped(ex))
             {
                 // When canceled
                 CurrentInfo = CanceledString;
@@ -422,7 +403,7 @@ public partial class CMSModules_Workflows_Workflow_Documents : CMSWorkflowPage
     /// <returns>Set of documents based on where condition and other settings</returns>
     private DataSet GetDocumentsToProcess(string where)
     {
-        string columns = SqlHelper.MergeColumns(TreeProvider.SELECTNODES_REQUIRED_COLUMNS, "NodeAliasPath, ClassName, DocumentCulture, SiteName");
+        string columns = SqlHelper.MergeColumns(DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS, "NodeAliasPath, ClassName, DocumentCulture");
         return DocumentHelper.GetDocuments(TreeProvider.ALL_SITES, "/%", TreeProvider.ALL_CULTURES, false, TreeProvider.ALL_CLASSNAMES, where, "NodeAliasPath DESC", -1, false, -1, columns, Tree);
     }
 
@@ -543,18 +524,6 @@ public partial class CMSModules_Workflows_Workflow_Documents : CMSWorkflowPage
         }
         // Clear selection
         docElem.UniGrid.ResetSelection();
-        CurrentLog.Close();
-    }
-
-
-    /// <summary>
-    /// Ensures the logging context.
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext log = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-
-        return log;
     }
 
 
@@ -564,8 +533,7 @@ public partial class CMSModules_Workflows_Workflow_Documents : CMSWorkflowPage
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
 
@@ -590,13 +558,7 @@ public partial class CMSModules_Workflows_Workflow_Documents : CMSWorkflowPage
         ltlScript.Text += ScriptHelper.GetScript("var __pendingCallbacks = new Array();");
         HandlePossibleError();
     }
-
-
-    private void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
-    }
-
+    
 
     private void ctlAsyncLog_OnError(object sender, EventArgs e)
     {

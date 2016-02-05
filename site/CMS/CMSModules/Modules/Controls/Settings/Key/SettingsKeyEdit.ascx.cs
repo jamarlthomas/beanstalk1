@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -130,10 +130,28 @@ public partial class CMSModules_Modules_Controls_Settings_Key_SettingsKeyEdit : 
         set;
     }
 
+
+    /// <summary>
+    /// Returns last time selected control name.
+    /// </summary>
+    private string ControlName
+    {
+        get
+        {
+            var controlName = ViewState["ControlName"];
+
+            return ValidationHelper.GetString(controlName ?? ucSettingsKeyControlSelector.Value, null);
+        }
+        set
+        {
+            ViewState["ControlName"] = value;
+        }
+    }
+
     #endregion
 
 
-    #region "Page Events"
+    #region "Control Events"
 
     protected override void OnLoad(EventArgs e)
     {
@@ -160,21 +178,7 @@ public partial class CMSModules_Modules_Controls_Settings_Key_SettingsKeyEdit : 
         EditedObject = (SettingsKeyID > 0) ? SettingsKeyObj : new SettingsKeyInfo();
 
         // Init form control settings
-        var controlCodeName = ValidationHelper.GetString(ucSettingsKeyControlSelector.Value, null);
-        var controlInfo = FormUserControlInfoProvider.GetFormUserControlInfo(controlCodeName);
-        if (controlInfo != null)
-        {
-            pnlControlSettings.Visible = true;
-
-            ucControlSettings.FormInfo = FormHelper.GetFormControlParameters(controlCodeName, controlInfo.UserControlMergedParameters, true);
-            ucControlSettings.Reload(true);
-
-            pnlControlSettings.Visible = ucControlSettings.CheckVisibility();
-        }
-        else
-        {
-            pnlControlSettings.Visible = false;
-        }
+        LoadControlSettings(ControlName);
     }
 
 
@@ -185,6 +189,46 @@ public partial class CMSModules_Modules_Controls_Settings_Key_SettingsKeyEdit : 
         SelectDefaultValueControl();
 
         RegisterKeyTypeChangeConfirmationModule();
+
+        ControlName = ValidationHelper.GetString(ucSettingsKeyControlSelector.Value, null);
+    }
+
+
+    protected void btnOK_Click(object sender, EventArgs e)
+    {
+        // Validate input
+        var isValid = Validate();
+        if (!isValid)
+        {
+            return;
+        }
+
+        // Update key
+        SettingsKeyID = UpdateKey();
+        RaiseOnSaved();
+
+        // Show the info message
+        ShowChangesSaved();
+
+        // Show category selection
+        trCategory.Visible = true;
+
+        // Select 'Keep current settings' option for load generation property
+        drpGeneration.Value = -1;
+    }
+
+
+    protected void drpKeyType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        SelectDefaultValueControl();
+    }
+
+
+    protected void ucSettingsKeyControlSelector_Changed(object sender, EventArgs e)
+    {
+        // Reload control settings
+        var controlName = ValidationHelper.GetString(ucSettingsKeyControlSelector.Value, null);
+        LoadControlSettings(controlName);
     }
 
     #endregion
@@ -244,7 +288,7 @@ public partial class CMSModules_Modules_Controls_Settings_Key_SettingsKeyEdit : 
         {
             SettingsCategoryInfo parentCategory = SettingsCategoryInfoProvider.GetSettingsCategoryInfo(SettingsKeyObj.KeyCategoryID);
             ResourceInfo resource = ResourceInfoProvider.GetResourceInfo(ModuleID);
-            plnEdit.Enabled = btnOk.Enabled = (resource != null) && (((parentCategory != null) && (parentCategory.CategoryResourceID == resource.ResourceId) && resource.ResourceIsInDevelopment) || SystemContext.DevelopmentMode);
+            plnEdit.Enabled = btnOk.Enabled = (resource != null) && (((parentCategory != null) && (parentCategory.CategoryResourceID == resource.ResourceID) && resource.ResourceIsInDevelopment) || SystemContext.DevelopmentMode);
 
         }
 
@@ -291,13 +335,44 @@ public partial class CMSModules_Modules_Controls_Settings_Key_SettingsKeyEdit : 
         drpGeneration.Value = -1;
         chkKeyIsGlobal.Checked = SettingsKeyObj.KeyIsGlobal;
         chkKeyIsHidden.Checked = SettingsKeyObj.KeyIsHidden;
+    }
 
-        // Load form control settings
-        if (!string.IsNullOrEmpty(SettingsKeyObj.KeyFormControlSettings))
+
+    private void LoadControlSettings(string controlName)
+    {
+        var controlInfo = FormUserControlInfoProvider.GetFormUserControlInfo(controlName);
+        if (controlInfo != null)
         {
-            var formFieldInfo = FormHelper.GetFormControlSettingsFromXML(SettingsKeyObj.KeyFormControlSettings);
-            ucControlSettings.Settings = formFieldInfo.Settings;
-            ucControlSettings.MacroTable = formFieldInfo.SettingsMacroTable;
+            pnlControlSettings.Visible = true;
+
+            ucControlSettings.Settings = new System.Collections.Hashtable();
+            ucControlSettings.BasicForm.Mode = CMS.ExtendedControls.FormModeEnum.Insert;
+
+            ucControlSettings.FormInfo = FormHelper.GetFormControlParameters(controlName, controlInfo.UserControlMergedParameters, true);
+
+            if (SettingsKeyObj != null)
+            {
+                // Load form control settings
+                if (!string.IsNullOrEmpty(SettingsKeyObj.KeyFormControlSettings))
+                {
+                    var formFieldInfo = FormHelper.GetFormControlSettingsFromXML(SettingsKeyObj.KeyFormControlSettings);
+                    ucControlSettings.Settings = formFieldInfo.Settings;
+                    ucControlSettings.MacroTable = formFieldInfo.SettingsMacroTable;
+                }
+
+                if (SettingsKeyObj.KeyEditingControlPath.EqualsCSafe(controlName, true))
+                {
+                    ucControlSettings.BasicForm.Mode = CMS.ExtendedControls.FormModeEnum.Update;
+                }
+            }
+
+            ucControlSettings.Reload(true);
+
+            pnlControlSettings.Visible = ucControlSettings.CheckVisibility();
+        }
+        else
+        {
+            pnlControlSettings.Visible = false;
         }
     }
 
@@ -505,40 +580,6 @@ public partial class CMSModules_Modules_Controls_Settings_Key_SettingsKeyEdit : 
                 InitialKeyType = mSettingsKeyObj.KeyType
             });
         }
-    }
-
-    #endregion
-
-
-    #region "Event Handlers"
-
-    protected void btnOK_Click(object sender, EventArgs e)
-    {
-        // Validate input
-        var isValid = Validate();
-        if (!isValid)
-        {
-            return;
-        }
-
-        // Update key
-        SettingsKeyID = UpdateKey();
-        RaiseOnSaved();
-
-        // Show the info message
-        ShowChangesSaved();
-
-        // Show category selection
-        trCategory.Visible = true;
-
-        // Select 'Keep current settings' option for load generation property
-        drpGeneration.Value = -1;
-    }
-
-
-    protected void drpKeyType_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        SelectDefaultValueControl();
     }
 
     #endregion

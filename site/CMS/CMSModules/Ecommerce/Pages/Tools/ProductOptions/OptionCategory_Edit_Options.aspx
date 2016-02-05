@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCategory_Edit_Options" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Option category - list of options" Codebehind="OptionCategory_Edit_Options.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCategory_Edit_Options" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Option category - list of options"  Codebehind="OptionCategory_Edit_Options.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>

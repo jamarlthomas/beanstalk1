@@ -111,13 +111,13 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard {
     protected global::System.Web.UI.WebControls.WizardStep wzdStepProgress;
     
     /// <summary>
-    /// lblProgress control.
+    /// ctlAsyncImport control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblProgress;
+    protected global::CMS.UIControls.AsyncControl ctlAsyncImport;
     
     /// <summary>
     /// pnlError control.
@@ -135,7 +135,7 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblError;
+    protected global::CMS.ExtendedControls.AlertLabel lblError;
     
     /// <summary>
     /// pnlWarning control.
@@ -153,7 +153,43 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblWarning;
+    protected global::CMS.ExtendedControls.AlertLabel lblWarning;
+    
+    /// <summary>
+    /// pnlWarningCycles control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlWarningCycles;
+    
+    /// <summary>
+    /// lblWarningCycles control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.AlertLabel lblWarningCycles;
+    
+    /// <summary>
+    /// pnlErrorBlank control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlErrorBlank;
+    
+    /// <summary>
+    /// lblErrorBlank control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.AlertLabel lblErrorBlank;
     
     /// <summary>
     /// pnlPermissions control.
@@ -174,15 +210,6 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard {
     protected global::System.Web.UI.WebControls.HyperLink lnkPermissions;
     
     /// <summary>
-    /// hdnState control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.HiddenField hdnState;
-    
-    /// <summary>
     /// ltlScriptAfter control.
     /// </summary>
     /// <remarks>
@@ -192,11 +219,11 @@ public partial class CMSModules_ImportExport_Controls_ImportWizard {
     protected global::System.Web.UI.WebControls.Literal ltlScriptAfter;
     
     /// <summary>
-    /// ctrlAsync control.
+    /// ctrlAsyncUnzip control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.UIControls.AsyncControl ctrlAsync;
+    protected global::CMS.UIControls.AsyncControl ctrlAsyncUnzip;
 }

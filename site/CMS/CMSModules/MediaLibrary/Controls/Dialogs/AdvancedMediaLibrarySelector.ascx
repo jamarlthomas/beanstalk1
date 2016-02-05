@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_MediaLibrary_Controls_Dialogs_AdvancedMediaLibrarySelector" Codebehind="AdvancedMediaLibrarySelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_MediaLibrary_Controls_Dialogs_AdvancedMediaLibrarySelector"  Codebehind="AdvancedMediaLibrarySelector.ascx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/MediaLibrary/FormControls/MediaLibrarySelector.ascx"

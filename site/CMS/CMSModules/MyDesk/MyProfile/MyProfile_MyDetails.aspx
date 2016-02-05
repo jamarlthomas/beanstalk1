@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Inherits="CMSModules_MyDesk_MyProfile_MyProfile_MyDetails"
-    Theme="Default" Codebehind="MyProfile_MyDetails.aspx.cs" %>
+    Theme="Default"  Codebehind="MyProfile_MyDetails.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Membership/Controls/MyProfile.ascx" TagName="MyProfile"
     TagPrefix="cms" %>

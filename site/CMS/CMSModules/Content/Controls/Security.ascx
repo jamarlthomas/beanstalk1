@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Security.ascx.cs" Inherits="CMSModules_Content_Controls_Security" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Security.ascx.cs" Inherits="CMSModules_Content_Controls_Security" %>
 <%@ Register Src="~/CMSModules/Membership/FormControls/Roles/securityAddRoles.ascx"
     TagName="AddRoles" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Membership/FormControls/Users/securityAddUsers.ascx"
@@ -14,9 +14,9 @@
             <cms:LocalizedLabel ID="lblUsersRoles" CssClass="control-label" runat="server"
                 EnableViewState="false" ResourceString="Security.UsersRoles" />
             <asp:Panel ID="pnlFilter" runat="server" DefaultButton="btnFilter">
-                <div class="control-group-inline form-group">
+                <div class="control-group-inline form-group dont-check-changes">
                     <cms:CMSTextBox ID="txtFilter" runat="server" />
-                    <cms:LocalizedButton ID="btnFilter" runat="server" ButtonStyle="Default" ResourceString="general.search" />
+                    <cms:LocalizedButton ID="btnFilter" runat="server" ButtonStyle="Default" ResourceString="general.search" OnClientClick="if(!CheckChanges()) {return false;} " />
                 </div>
             </asp:Panel>
             <div class="form-group">

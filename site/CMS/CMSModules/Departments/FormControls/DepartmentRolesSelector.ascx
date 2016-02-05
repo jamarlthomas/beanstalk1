@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Departments_FormControls_DepartmentRolesSelector" Codebehind="~/CMSModules/Departments/FormControls/DepartmentRolesSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Departments_FormControls_DepartmentRolesSelector"  Codebehind="~/CMSModules/Departments/FormControls/DepartmentRolesSelector.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector" TagPrefix="cms" %>
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">
     <ContentTemplate>

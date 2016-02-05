@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalSimplePage.master"
-    Inherits="CMSModules_Chat_CMSPages_OfflineSupportForm" Codebehind="OfflineSupportForm.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalSimplePage.master"
+    Inherits="CMSModules_Chat_CMSPages_OfflineSupportForm"  Codebehind="OfflineSupportForm.aspx.cs"
     Theme="Default" %>
 
 <%@ Register Src="~/CMSModules/Chat/Controls/UI/SupportOfflineMessage/Edit.ascx" TagName="SupportOfflineMessageEdit" TagPrefix="cms" %>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Linq;
@@ -189,7 +189,15 @@ public partial class CMSModules_ImportExport_Controls_ImportGridView : ImportExp
     protected void btnAll_Click(object sender, EventArgs e)
     {
         // Load all selection
-        Settings.LoadDefaultSelection(ObjectType, SiteObject, ImportTypeEnum.AllNonConflicting, true, false);
+        DefaultSelectionParameters parameters = new DefaultSelectionParameters()
+        {
+            ObjectType = base.ObjectType,
+            SiteObjects = base.SiteObject,
+            ImportType = ImportTypeEnum.AllNonConflicting,
+            LoadTasks = false,
+            ClearProgressLog = true
+        };
+        Settings.LoadDefaultSelection(parameters);
 
         RaiseButtonPressed(sender, e);
     }
@@ -198,7 +206,14 @@ public partial class CMSModules_ImportExport_Controls_ImportGridView : ImportExp
     protected void btnNone_Click(object sender, EventArgs e)
     {
         // Load none selection
-        Settings.LoadDefaultSelection(ObjectType, SiteObject, ImportTypeEnum.None, true, false);
+        DefaultSelectionParameters parameters = new DefaultSelectionParameters()
+        {
+            ObjectType = base.ObjectType,
+            SiteObjects = base.SiteObject,
+            LoadTasks = false,
+            ClearProgressLog = true
+        };
+        Settings.LoadDefaultSelection(parameters);
 
         RaiseButtonPressed(sender, e);
     }
@@ -222,7 +237,15 @@ public partial class CMSModules_ImportExport_Controls_ImportGridView : ImportExp
             }
         }
 
-        Settings.LoadDefaultSelection(ObjectType, SiteObject, importType, true, false);
+        DefaultSelectionParameters parameters = new DefaultSelectionParameters()
+        {
+            ObjectType = base.ObjectType,
+            SiteObjects = base.SiteObject,
+            ImportType = importType,
+            LoadTasks = false,
+            ClearProgressLog = true
+        };
+        Settings.LoadDefaultSelection(parameters);
 
         RaiseButtonPressed(sender, e);
     }
@@ -268,10 +291,9 @@ public partial class CMSModules_ImportExport_Controls_ImportGridView : ImportExp
                 if (!DataHelper.DataSourceIsEmpty(ds))
                 {
                     // Get the table
-                    string tableName = DataClassInfoProvider.GetTableName(info);
-                    table = ds.Tables[tableName];
+                    table = ObjectHelper.GetTable(ds, info);
 
-                    // Set correct ID for direct page contol
+                    // Set correct ID for direct page control
                     pagerElem.DirectPageControlID = ((float)table.Rows.Count / pagerElem.CurrentPageSize > 20.0f) ? "txtPage" : "drpPage";
 
                     // Sort data
@@ -385,11 +407,14 @@ public partial class CMSModules_ImportExport_Controls_ImportGridView : ImportExp
 
             if (IsInConflict(codeName))
             {
+                // Adjust warning message for existing object - it will be either overwritten, or just a binding will be added (if allowed in import settings)
+                string warningMessage = Settings.ImportOnlyNewObjects ? "importgridview.import.warningNewObjects" : "importgridview.import.warning";
+
                 var icon = new CMSIcon
                 {
                     ID = "warning-icon",
                     CssClass = "RightAlignAlign icon-exclamation-triangle color-orange-80 warning-icon",
-                    ToolTip = GetString("importgridview.import.warning"),
+                    ToolTip = GetString(warningMessage),
                 };
 
                 if (!e.Row.Cells[1].Controls.OfType<CMSIcon>().Any(ci => ci.ID == icon.ID))

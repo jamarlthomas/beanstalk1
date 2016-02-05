@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.SiteProvider;
@@ -19,6 +19,7 @@ public partial class CMSModules_RecycleBin_Pages_RecycleBin_Documents : GlobalAd
             siteSelector.DropDownSingleSelect.AutoPostBack = true;
             siteSelector.OnlyRunningSites = false;
             siteSelector.AllowAll = false;
+            CurrentMaster.DisplaySiteSelectorPanel = true;
 
             siteSelector.UniSelector.SpecialFields.Add(new SpecialField()
             {

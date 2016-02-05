@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" EnableEventValidation="false" Inherits="CMSFormControls_LiveSelectors_InsertImageOrMedia_Default"
-    Codebehind="Default.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" EnableEventValidation="false" Inherits="CMSFormControls_LiveSelectors_InsertImageOrMedia_Default"
+     Codebehind="Default.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

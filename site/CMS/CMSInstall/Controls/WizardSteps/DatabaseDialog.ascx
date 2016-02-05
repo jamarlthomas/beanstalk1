@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="DatabaseDialog.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="DatabaseDialog.ascx.cs"
     Inherits="CMSInstall_Controls_WizardSteps_DatabaseDialog" %>
 <div class="install-content">
     <table class="install-wizard" border="0" cellpadding="0" cellspacing="0">

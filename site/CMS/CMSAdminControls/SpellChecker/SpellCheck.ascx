@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_SpellChecker_SpellCheck"
-    Codebehind="SpellCheck.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_SpellChecker_SpellCheck"
+     Codebehind="SpellCheck.ascx.cs" %>
 <asp:Panel ID="SpellingBody" runat="server">
     <asp:HiddenField ID="WordIndex" runat="server" Value="0" />
     <asp:HiddenField ID="CurrentText" runat="server" />

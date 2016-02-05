@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="WidgetZoneEditorMenu.ascx.cs" Inherits="CMSModules_Widgets_Controls_WidgetZoneEditorMenu" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="WidgetZoneEditorMenu.ascx.cs" Inherits="CMSModules_Widgets_Controls_WidgetZoneEditorMenu" %>
 <%@ Register TagPrefix="cms" Namespace="CMS.UIControls" Assembly="CMS.UIControls" %>
 <asp:Panel runat="server" ID="pnlZoneMenu" CssClass="PortalContextMenu ZoneContextMenu">
     <asp:Panel runat="server" ID="pnlNewWebPart" CssClass="Item">

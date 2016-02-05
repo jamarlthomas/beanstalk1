@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Title="Integration connector properties" Inherits="CMSModules_Integration_Pages_Administration_Connectors_Edit" Theme="Default" Codebehind="Edit.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+    Title="Integration connector properties" Inherits="CMSModules_Integration_Pages_Administration_Connectors_Edit" Theme="Default"  Codebehind="Edit.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Integration/Controls/UI/Connectors/Edit.ascx"
     TagName="IntegrationConnectorEdit" TagPrefix="cms" %>

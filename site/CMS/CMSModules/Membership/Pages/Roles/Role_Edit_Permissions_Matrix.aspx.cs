@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -13,7 +13,6 @@ public partial class CMSModules_Membership_Pages_Roles_Role_Edit_Permissions_Mat
 
     protected override void OnPreInit(EventArgs e)
     {
-        ((Panel)CurrentMaster.PanelBody.FindControl("pnlContent")).CssClass = "";
         base.OnPreInit(e);
     }
 
@@ -34,17 +33,40 @@ public partial class CMSModules_Membership_Pages_Roles_Role_Edit_Permissions_Mat
             RedirectToAccessDenied("CMS.Permissions", "Read");
         }
 
-        prmMatrix.SelectedID = QueryHelper.GetString("id", string.Empty);
-        if (prmMatrix.SelectedID != "0")
-        {
-            prmMatrix.SelectedType = QueryHelper.GetString("type", string.Empty);
-        }
+        InitializeFilter();
 
         prmMatrix.GlobalRoles = ((SiteID <= 0) && MembershipContext.AuthenticatedUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.GlobalAdmin));
         prmMatrix.SiteID = SiteID;
         prmMatrix.RoleID = QueryHelper.GetInteger("roleid", 0);
         prmMatrix.OnDataLoaded += new CMSModules_Permissions_Controls_PermissionsMatrix.OnMatrixDataLoaded(prmMatrix_DataLoaded);
         prmMatrix.CornerText = GetString("Administration.Roles.Permission");
+    }
+
+
+    protected void Page_PreRender(object sender, EventArgs e)
+    {
+        prmMatrix.SelectedID = prmhdrHeader.SelectedID;
+        if (prmMatrix.SelectedID != "0")
+        {
+            prmMatrix.SelectedType = prmhdrHeader.SelectedType;
+        }
+        prmMatrix.FilterChanged = prmhdrHeader.FilterChanged;
+    }
+
+    #endregion
+
+
+    #region "Private methods"
+
+    /// <summary>
+    /// Initialize permission filter control.
+    /// </summary>
+    private void InitializeFilter()
+    {
+        prmhdrHeader.SiteID = (SiteID <= 0) ? 0 : SiteID;
+        prmhdrHeader.HideSiteSelector = ((SiteID <= 0) && MembershipContext.AuthenticatedUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.GlobalAdmin));
+        prmhdrHeader.ShowUserSelector = false;
+        prmhdrHeader.UseUniSelectorAutocomplete = false;
     }
 
     #endregion

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_PageElements_HeaderActions"
-    Codebehind="HeaderActions.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_PageElements_HeaderActions"
+     Codebehind="HeaderActions.ascx.cs" %>
 <asp:PlaceHolder ID="plcMenu" runat="server">
     <cms:CMSUpdatePanel ID="pnlUp" runat="server" UpdateMode="Conditional">
         <ContentTemplate>

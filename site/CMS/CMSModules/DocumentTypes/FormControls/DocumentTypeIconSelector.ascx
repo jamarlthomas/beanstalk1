@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="DocumentTypeIconSelector.ascx.cs" Inherits="CMSModules_DocumentTypes_FormControls_DocumentTypeIconSelector" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="DocumentTypeIconSelector.ascx.cs" Inherits="CMSModules_DocumentTypes_FormControls_DocumentTypeIconSelector" %>
 <%@ Register Src="~/CMSModules/Content/Controls/Attachments/DirectFileUploader/DirectFileUploader.ascx"
     TagName="DirectFileUploader" TagPrefix="cms" %>
 <cms:LocalizedLabel runat="server" ID="lblControlHidden" Visible="False" ResourceString="doctypeiconselector.hidden" EnableViewState="False" CssClass="form-control-text" />

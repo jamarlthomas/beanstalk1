@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Theme="Default"
-    Inherits="CMSModules_Reporting_Tools_Report_Print" Codebehind="Report_Print.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Theme="Default"
+    Inherits="CMSModules_Reporting_Tools_Report_Print"  Codebehind="Report_Print.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Reporting/Controls/DisplayReport.ascx" TagName="DisplayReport" TagPrefix="cms" %>
 <!DOCTYPE html>

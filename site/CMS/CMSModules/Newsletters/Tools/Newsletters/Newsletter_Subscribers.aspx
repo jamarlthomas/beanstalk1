@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscribers"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscribers"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Newsletters - Subscribers"
-    EnableEventValidation="false" Codebehind="Newsletter_Subscribers.aspx.cs" %>
+    EnableEventValidation="false"  Codebehind="Newsletter_Subscribers.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Membership/FormControls/Roles/selectrole.ascx" TagName="SelectRole"
@@ -11,8 +11,8 @@
     TagName="SelectSubscriber" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 
-<asp:Content ID="contentControls" ContentPlaceHolderID="plcBeforeContent" runat="server">
-    <div class="cms-edit-menu uniselector-action-buttons">
+<asp:Content ID="contentControls" ContentPlaceHolderID="plcActions" runat="server">
+    <div class="control-group-inline header-actions-container">
         <cms:SelectSubscriber runat="server" ID="selectSubscriber" ShortID="ss" />
         <cms:SelectUser runat="server" ID="selectUser" HideHiddenUsers="true" HideDisabledUsers="true"
             HideNonApprovedUsers="true" ShortID="su" />
@@ -24,12 +24,8 @@
     <cms:CMSUpdatePanel runat="server" ID="pnlUpdate" UpdateMode="Conditional">
         <ContentTemplate>
             <cms:UniGrid ID="UniGridSubscribers" runat="server" ShortID="g" OrderBy="SubscriberFullName"
-                IsLiveSite="false" ShowObjectMenu="false" ObjectType="newsletter.subscribernewsletterlist" Columns="SubscriberID, SubscriberFullName, SubscriberEmail, Email, SubscriptionApproved, SubscriberType, SubscriberBounces, SubscriptionEnabled, SubscriberRelatedID, SubscriberNewsletterID">
+                IsLiveSite="false" ShowObjectMenu="false" ObjectType="newsletter.subscribernewsletterlist" Columns="SubscriberID, NewsletterID, SubscriberFullName, SubscriberEmail, Email, SubscriptionApproved, SubscriberType, SubscriberBounces, SubscriberRelatedID, SubscriberNewsletterID">
                 <GridActions>
-                    <ug:Action Name="subscribe" ExternalSourceName="subscribe" Caption="$newsletter.renewsubscription$" FontIconClass="icon-message" FontIconStyle="Allow"
-                        Confirmation="$Unigrid.Subscribers.Actions.Subscribe.Confirmation$" />
-                    <ug:Action Name="unsubscribe" ExternalSourceName="unsubscribe" Caption="$newsletter.unsubscribelink$" FontIconClass="icon-message" FontIconStyle="Critical"
-                        Confirmation="$Unigrid.Subscribers.Actions.unsubscribe.Confirmation$" />
                     <ug:Action Name="remove" Caption="$newsletter.deletesubscription$" FontIconClass="icon-bin" FontIconStyle="Critical"
                         Confirmation="$Unigrid.Subscribers.Actions.RemoveSubscription.Confirmation$" />
                     <ug:Action Name="approve" ExternalSourceName="approve" Caption="$newsletter.approvesubscription$"
@@ -50,7 +46,7 @@
                     </ug:Column>
                     <ug:Column Source="##ALL##" ExternalSourceName="status" Caption="$general.status$"
                         CssClass="TableCell" Wrap="false">
-                        <Filter Source="SubscriptionEnabled" Path="~/CMSModules/Newsletters/Controls/SubscriptionStatusFilter.ascx" />
+                        <Filter Source="SubscriptionApproved" Path="~/CMSModules/Newsletters/Controls/SubscriptionStatusFilter.ascx" />
                     </ug:Column>
                     <ug:Column Source="##ALL##" ExternalSourceName="blocked" Caption="$Unigrid.Subscribers.Columns.Blocked$"
                         CssClass="TableCell" Wrap="false" Name="blocked">

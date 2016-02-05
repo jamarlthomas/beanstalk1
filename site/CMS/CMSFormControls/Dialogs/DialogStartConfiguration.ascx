@@ -1,5 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_Dialogs_DialogStartConfiguration"
-    Codebehind="DialogStartConfiguration.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_Dialogs_DialogStartConfiguration" Codebehind="DialogStartConfiguration.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Content/FormControls/Documents/SelectPath.ascx"
     TagName="SelectPath" TagPrefix="cms" %>
 <%@ Register Src="~/CMSFormControls/Images/AutoResizeConfiguration.ascx" TagName="AutoResize"
@@ -10,8 +9,8 @@
 
 <cms:CMSUpdatePanel runat="server" ID="updatePanel" UpdateMode="Always">
     <ContentTemplate>
-        <cms:LocalizedLinkButton CssClass="form-control-text" ID="lnkAdvacedFieldSettings" runat="server" ResourceString="TemplateDesigner.ConfigureSettings" />
-        <asp:PlaceHolder ID="plcAdvancedFieldSettings" runat="server" Visible="false">
+        <cms:LocalizedLinkButton CssClass="form-control-text" ID="lnkAdvacedFieldSettings" runat="server" ResourceString="TemplateDesigner.ConfigureSettings" EnableViewState="false" />
+        <asp:PlaceHolder ID="plcAdvancedFieldSettings" runat="server">
             <div class="form-horizontal">
                 <div class="form-group">
                     <div class="editing-form-label-cell">

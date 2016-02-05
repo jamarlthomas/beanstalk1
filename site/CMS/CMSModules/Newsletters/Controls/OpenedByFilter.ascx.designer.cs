@@ -21,24 +21,6 @@ public partial class CMSModules_Newsletters_Controls_OpenedByFilter {
     protected global::System.Web.UI.WebControls.Panel pnl;
     
     /// <summary>
-    /// lblSubscriberName control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblSubscriberName;
-    
-    /// <summary>
-    /// fltSubscriberName control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMSAdminControls_UI_UniGrid_Filters_TextSimpleFilter fltSubscriberName;
-    
-    /// <summary>
     /// lblEmail control.
     /// </summary>
     /// <remarks>

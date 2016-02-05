@@ -2065,11 +2065,6 @@
             Gets or sets the number of points on this account.
             </summary>
         </member>
-        <member name="P:CMS.DataCom.User.PurchasePointsUrl">
-            <summary>
-            Gets or sets the URL to purchase more points.
-            </summary>
-        </member>
         <member name="T:CMS.DataCom.DomainExtensions">
             <summary>
             Provides a set of static methods for transformation of domain objects.

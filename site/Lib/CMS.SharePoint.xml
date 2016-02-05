@@ -1365,93 +1365,6 @@
             <param name="taskInfo">Task info.</param>
             <returns>True if SharePoint is available, false otherwise.</returns>
         </member>
-        <member name="T:CMS.SharePoint.SPClassMapping">
-            <summary>
-            Class representing mapping of CMS class to SharePoint object. 
-            </summary>
-        </member>
-        <member name="M:CMS.SharePoint.SPClassMapping.#ctor">
-            <summary>
-            Public constructor required for XML serialization.
-            </summary>
-        </member>
-        <member name="M:CMS.SharePoint.SPClassMapping.#ctor(System.String)">
-            <summary>
-            Constructor with parameter defining path to SharePoint object.
-            </summary>
-            <param name="SharePointPath">Path to SharePoint object</param>
-        </member>
-        <member name="P:CMS.SharePoint.SPClassMapping.SPPath">
-            <summary>
-            Path to SharePoint list or library.
-            </summary>
-        </member>
-        <member name="P:CMS.SharePoint.SPClassMapping.SPCMSMapping">
-            <summary>
-            Dictionary containing field mapping of CMS object to SharePoint object.
-            </summary>
-        </member>
-        <member name="T:CMS.SharePoint.SPDocTypeMapping">
-            <summary>
-            Class representing mapping of Document type to SharePoint object.
-            </summary>
-        </member>
-        <member name="M:CMS.SharePoint.SPDocTypeMapping.#ctor">
-            <summary>
-            Public constructor required for XML serialization.
-            </summary>
-        </member>
-        <member name="M:CMS.SharePoint.SPDocTypeMapping.#ctor(System.String,System.String,System.String)">
-            <summary>
-            Constructor
-            </summary>
-            <param name="aliasPath">Alias path for which is mapping applied</param>
-            <param name="culture">Document culture</param>
-            <param name="spPath">Path to SharePoint object</param>
-        </member>
-        <member name="P:CMS.SharePoint.SPDocTypeMapping.AliasPath">
-            <summary>
-            Document structure alias path
-            </summary>
-        </member>
-        <member name="P:CMS.SharePoint.SPDocTypeMapping.Culture">
-            <summary>
-            Document culture
-            </summary>
-        </member>
-        <member name="T:CMS.SharePoint.SPMediaMapping">
-            <summary>
-            Class representing mapping of Media library to SharePoint object.
-            </summary>
-        </member>
-        <member name="M:CMS.SharePoint.SPMediaMapping.#ctor">
-            <summary>
-            Public constructor required for XML serialization.
-            </summary>
-        </member>
-        <member name="M:CMS.SharePoint.SPMediaMapping.#ctor(System.String,System.String,System.String)">
-            <summary>
-            Constructor
-            </summary>
-            <param name="mlName">Media library code name</param>
-            <param name="mlPath">Media library path</param>
-            <param name="spPath">Path to SharePoint object</param>
-        </member>
-        <member name="P:CMS.SharePoint.SPMediaMapping.MediaLibraryName">
-            <summary>
-            Media library name
-            </summary>
-        </member>
-        <member name="P:CMS.SharePoint.SPMediaMapping.MediaLibraryPath">
-            <summary>
-            Path within media library
-            </summary>
-        </member>
-        <member name="T:CMS.SharePoint.SharepointHelper">
-            <summary>
-            Class implementing operations on SharePoint 
-            </summary>
-        </member>
         <member name="T:CMS.SharePoint.SharePointModule">
             <summary>
             Represents the SharePoint module.
@@ -2182,16 +2095,16 @@
         <member name="M:CMS.SharePoint.ISharePointListService.GetListItems(System.String,System.String,CMS.SharePoint.SharePointView,CMS.SharePoint.SharePointListItemsSelection)">
             <summary>
             <para>
-            Gets (optionally) a selection of list items of SharePoint list identified by its title.
-            Keeping listItemsSelection.FieldName or listItemsSelection.FieldType unspecified causes all items (optionally restricted by camlQueryString) to be selected.
-            Keeping camlQueryString unspecified causes all list items to be selected (the listItemsSelection still applies).
+            Gets a selection of items of a SharePoint list identified by its title.
+            Keeping <see cref="P:CMS.SharePoint.SharePointListItemsSelection.FieldName"/> or <see cref="P:CMS.SharePoint.SharePointListItemsSelection.FieldType"/> unspecified causes all items (optionally restricted by <see cref="P:CMS.SharePoint.SharePointView.QueryInnerXml"/>) to be selected.
+            Keeping <see cref="P:CMS.SharePoint.SharePointView.QueryInnerXml"/> unspecified causes all list items to be selected (the <paramref name="listItemsSelection"/> still applies).
             </para>
             <para>
-            The listItemsSelection parameter is provided just for comfortability reason and the same can be achieved using
+            The <paramref name="listItemsSelection"/> parameter is provided just for comfortability reason and produces a query similar to the following
             <pre>
             &lt;Query&gt;
                 &lt;And&gt;
-                    camlQueryString &lt;Eq&gt;&lt;FieldRef Name="<see cref="P:CMS.SharePoint.SharePointListItemsSelection.FieldName"/>" /&gt;&lt;Value Type="<see cref="P:CMS.SharePoint.SharePointListItemsSelection.FieldType"/>"&gt;<see cref="P:CMS.SharePoint.SharePointListItemsSelection.FieldValue"/>&lt;/Value&gt;&lt;/Eq&gt;
+                    <see cref="P:CMS.SharePoint.SharePointView.QueryInnerXml"/> &lt;Eq&gt;&lt;FieldRef Name="<see cref="P:CMS.SharePoint.SharePointListItemsSelection.FieldName"/>" /&gt;&lt;Value Type="<see cref="P:CMS.SharePoint.SharePointListItemsSelection.FieldType"/>"&gt;<see cref="P:CMS.SharePoint.SharePointListItemsSelection.FieldValue"/>&lt;/Value&gt;&lt;/Eq&gt;
                 &lt;/And&gt;
             &lt;/Query&gt;
             </pre>
@@ -2710,16 +2623,16 @@
         <member name="M:CMS.SharePoint.SharePoint2010ListService.GetListItems(System.String,System.String,CMS.SharePoint.SharePointView,CMS.SharePoint.SharePointListItemsSelection)">
             <summary>
             <para>
-            Gets (optionally) a selection of list items of SharePoint list identified by its title.
-            Keeping listItemsSelection.FieldName, listItemsSelection.FieldType or listItemsSelection.FieldValue unspecified causes all items (optionally restricted by camlQueryString) to be selected.
-            Keeping camlQueryString unspecified causes all list items to be selected (the listItemsSelection still applies).
+            Gets a selection of items of a SharePoint list identified by its title.
+            Keeping <see cref="P:CMS.SharePoint.SharePointListItemsSelection.FieldName"/> or <see cref="P:CMS.SharePoint.SharePointListItemsSelection.FieldType"/> unspecified causes all items (optionally restricted by <see cref="P:CMS.SharePoint.SharePointView.QueryInnerXml"/>) to be selected.
+            Keeping <see cref="P:CMS.SharePoint.SharePointView.QueryInnerXml"/> unspecified causes all list items to be selected (the <paramref name="listItemsSelection"/> still applies).
             </para>
             <para>
-            The listItemsSelection parameter is provided just for comfortability reason and the same can be achieved using <see cref="P:CMS.SharePoint.SharePointView.QueryInnerXml"/> as follows
+            The <paramref name="listItemsSelection"/> parameter is provided just for comfortability reason and produces a query similar to the following
             <pre>
             &lt;Query&gt;
                 &lt;And&gt;
-                    camlQueryString &lt;Eq&gt;&lt;FieldRef Name="<see cref="P:CMS.SharePoint.SharePointListItemsSelection.FieldName"/>" /&gt;&lt;Value Type="<see cref="P:CMS.SharePoint.SharePointListItemsSelection.FieldType"/>"&gt;<see cref="P:CMS.SharePoint.SharePointListItemsSelection.FieldValue"/>&lt;/Value&gt;&lt;/Eq&gt;
+                    <see cref="P:CMS.SharePoint.SharePointView.QueryInnerXml"/> &lt;Eq&gt;&lt;FieldRef Name="<see cref="P:CMS.SharePoint.SharePointListItemsSelection.FieldName"/>" /&gt;&lt;Value Type="<see cref="P:CMS.SharePoint.SharePointListItemsSelection.FieldType"/>"&gt;<see cref="P:CMS.SharePoint.SharePointListItemsSelection.FieldValue"/>&lt;/Value&gt;&lt;/Eq&gt;
                 &lt;/And&gt;
             &lt;/Query&gt;
             </pre>

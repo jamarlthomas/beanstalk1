@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_General_CookieLaw"
-    Codebehind="~/CMSWebParts/General/CookieLaw.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_General_CookieLaw"
+     Codebehind="~/CMSWebParts/General/CookieLaw.ascx.cs" %>
 <div class="CookieConsent">
     <asp:Label runat="server" ID="lblText" EnableViewState="false" CssClass="ConsentText" />
     <span class="ConsentButtons">

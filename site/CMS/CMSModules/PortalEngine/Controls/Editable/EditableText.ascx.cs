@@ -5,8 +5,10 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
+using System.Globalization;
 using System.Threading;
 
+using CMS.CKEditor;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.SiteProvider;
@@ -22,6 +24,7 @@ using CMS.MacroEngine;
 
 using CultureInfo = System.Globalization.CultureInfo;
 
+
 public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CMSUserControl
 {
     #region "Variables"
@@ -29,31 +32,30 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
     protected string mHtmlAreaToolbar = String.Empty;
     protected string mHtmlAreaToolbarLocation = String.Empty;
 
-    protected XmlData mImageAutoResize = null;
-    protected int mResizeToWidth = 0;
-    protected int mResizeToHeight = 0;
-    protected int mResizeToMaxSideSize = 0;
-    protected bool mDimensionsLoaded = false;
+    protected XmlData mImageAutoResize;
+    protected int mResizeToWidth;
+    protected int mResizeToHeight;
+    protected int mResizeToMaxSideSize;
+    protected bool mDimensionsLoaded;
 
-    protected ISimpleDataContainer mIDataControl = null;
-    protected IPageManager mIPageManager = null;
+    protected ISimpleDataContainer mIDataControl;
+    protected IPageManager mIPageManager;
 
-    protected CMSHtmlEditor htmlValue = null;
-    protected CMSTextBox txtValue = null;
+    protected CMSTextBox txtValue;
 
-    protected Label lblTitle = null;
-    protected Panel pnlEditor = null;
-    protected Label lblError = null;
+    protected Label lblTitle;
+    protected Panel pnlEditor;
+    protected Label lblError;
 
-    protected bool mShowToolbar = false;
+    protected bool mShowToolbar;
 
-    protected Literal ltlContent = null;
+    protected Literal ltlContent;
 
-    protected ViewModeEnum? mViewMode = null;
+    protected ViewModeEnum? mViewMode;
 
-    protected PageInfo mCurrentPageInfo = null;
-    private string mEditPageUrl = "~/CMSModules/PortalEngine/UI/OnSiteEdit/EditText.aspx";
-    private MacroResolver mMacroResolver = null;
+    protected PageInfo mCurrentPageInfo;
+    private const string EDIT_PAGE_URL = "~/CMSModules/PortalEngine/UI/OnSiteEdit/EditText.aspx";
+    private MacroResolver mMacroResolver;
 
     #endregion
 
@@ -102,10 +104,8 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
     /// </summary>
     public CMSHtmlEditor Editor
     {
-        get
-        {
-            return htmlValue;
-        }
+        get;
+        private set;
     }
 
 
@@ -136,7 +136,7 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
     {
         get
         {
-            return URLHelper.ResolveUrl(mEditPageUrl);
+            return URLHelper.ResolveUrl(EDIT_PAGE_URL);
         }
     }
 
@@ -236,7 +236,7 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
                 if (mIDataControl == null)
                 {
                     // ASPX mode - editable text in a dialog (On-site editing)
-                    mIDataControl = this as ISimpleDataContainer;
+                    mIDataControl = this;
                 }
             }
             return mIDataControl;
@@ -277,7 +277,8 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
     /// <summary>
     /// Gets or sets the type of server control which is displayed in the editable region.
     /// </summary>
-    [Category("Appearance"), Description("Gets or sets the type of server control which is displayed in the editable region.")]
+    [Category("Appearance")]
+    [Description("Gets or sets the type of server control which is displayed in the editable region.")]
     [DefaultValue(CMSEditableRegionTypeEnum.TextBox)]
     public virtual CMSEditableRegionTypeEnum RegionType
     {
@@ -289,7 +290,8 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
     /// <summary>
     /// Gets or sets the control title which is displayed in the editable mode.
     /// </summary>
-    [Category("Appearance"), Description("Gets or sets the control title which is displayed in the editable mode.")]
+    [Category("Appearance")]
+    [Description("Gets or sets the control title which is displayed in the editable mode.")]
     public string RegionTitle
     {
         get
@@ -306,7 +308,8 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
     /// <summary>
     /// Gets or sets the maximum length of the content.
     /// </summary>
-    [Category("Behavior"), Description("Gets or sets the maximum length of the content.")]
+    [Category("Behavior")]
+    [Description("Gets or sets the maximum length of the content.")]
     public int MaxLength
     {
         get
@@ -321,9 +324,28 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
 
 
     /// <summary>
+    /// Encodes text inserted via text box or text area. Default value is false.
+    /// </summary>
+    [Category("Behavior")]
+    [Description("Encodes text inserted via text box or text area. Default value is false.")]
+    public bool EncodeText
+    {
+        get
+        {
+            return ValidationHelper.GetBoolean(GetValue("EncodeText"), false);
+        }
+        set
+        {
+            SetValue("EncodeText", value);
+        }
+    }
+
+
+    /// <summary>
     /// Gets or sets the minimum length of the content.
     /// </summary>
-    [Category("Behavior"), Description("Gets or sets the minimum length of the content.")]
+    [Category("Behavior")]
+    [Description("Gets or sets the minimum length of the content.")]
     public int MinLength
     {
         get
@@ -340,7 +362,8 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
     /// <summary>
     /// Gets or sets the height of the control.
     /// </summary>
-    [Category("Appearance"), Description("Gets or sets the height of the control.")]
+    [Category("Appearance")]
+    [Description("Gets or sets the height of the control.")]
     public int DialogHeight
     {
         get
@@ -357,7 +380,8 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
     /// <summary>
     /// Gets or sets the width of the control.
     /// </summary>
-    [Category("Appearance"), Description("Gets or sets the width of the control.")]
+    [Category("Appearance")]
+    [Description("Gets or sets the width of the control.")]
     public int DialogWidth
     {
         get
@@ -374,7 +398,8 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
     /// <summary>
     /// Gets or sets the name of the CSS style sheet used by the control (for HTML area RegionType).
     /// </summary>
-    [Category("Appearance"), Description("Gets or sets the name of the CSS style sheet used by the control (for HTML area RegionType).")]
+    [Category("Appearance")]
+    [Description("Gets or sets the name of the CSS style sheet used by the control (for HTML area RegionType).")]
     public string HTMLEditorCssStylesheet
     {
         get
@@ -391,7 +416,8 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
     /// <summary>
     /// Gets or sets the value that indicates whether to wrap the text if using text area field.
     /// </summary>
-    [Category("Appearance"), Description("Gets or sets the value that indicates whether to wrap the text if using text area field.")]
+    [Category("Appearance")]
+    [Description("Gets or sets the value that indicates whether to wrap the text if using text area field.")]
     [DefaultValue(true)]
     public bool WordWrap
     {
@@ -417,14 +443,7 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
         }
         set
         {
-            if (value == null)
-            {
-                mHtmlAreaToolbar = "";
-            }
-            else
-            {
-                mHtmlAreaToolbar = value;
-            }
+            mHtmlAreaToolbar = value ?? "";
         }
     }
 
@@ -440,14 +459,7 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
         }
         set
         {
-            if (value == null)
-            {
-                mHtmlAreaToolbarLocation = "";
-            }
-            else
-            {
-                mHtmlAreaToolbarLocation = value;
-            }
+            mHtmlAreaToolbarLocation = value ?? "";
         }
     }
 
@@ -602,48 +614,48 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
     /// </summary>
     private void Page_PreRender(object sender, EventArgs e)
     {
-        if (!StopProcessing)
+        if (StopProcessing)
         {
-            ViewModeEnum viewMode = (PortalContext.ViewMode.IsPreview()) ? ViewModeEnum.Preview : ViewMode;
+            return;
+        }
 
-            switch (viewMode)
-            {
-                case ViewModeEnum.Edit:
-                case ViewModeEnum.EditDisabled:
-                    // Set enabled
-                    if (htmlValue != null)
-                    {
-                        htmlValue.Enabled = IsEnabled(viewMode);
-                    }
-                    if (txtValue != null)
-                    {
-                        txtValue.Enabled = IsEnabled(viewMode);
-                    }
+        switch (ViewMode)
+        {
+            case ViewModeEnum.Edit:
+            case ViewModeEnum.EditDisabled:
+                // Set enabled
+                if (Editor != null)
+                {
+                    Editor.Enabled = IsEnabled(ViewMode);
+                }
+                if (txtValue != null)
+                {
+                    txtValue.Enabled = IsEnabled(ViewMode);
+                }
 
-                    if (mShowToolbar && IsEnabled(viewMode))
-                    {
-                        ScriptHelper.RegisterClientScriptBlock(this, typeof(string), ScriptHelper.TOOLBAR_SCRIPT_KEY, ScriptHelper.ToolbarScript);
-                    }
+                if (mShowToolbar && IsEnabled(ViewMode))
+                {
+                    ScriptHelper.RegisterClientScriptBlock(this, typeof(string), ScriptHelper.TOOLBAR_SCRIPT_KEY, ScriptHelper.ToolbarScript);
+                }
 
-                    if (lblError != null)
-                    {
-                        lblError.Visible = (lblError.Text != "");
-                    }
+                if (lblError != null)
+                {
+                    lblError.Visible = (lblError.Text != "");
+                }
 
-                    if (lblTitle != null)
-                    {
-                        lblTitle.Text = RegionTitle;
-                        lblTitle.Visible = (lblTitle.Text != "");
-                    }
+                if (lblTitle != null)
+                {
+                    lblTitle.Text = RegionTitle;
+                    lblTitle.Visible = (lblTitle.Text != "");
+                }
 
-                    // Allow to select text in the source editor area
-                    if (DesignPanel != null)
-                    {
-                        ScriptHelper.RegisterStartupScript(this, typeof(string), "onselectstart", "document.getElementById('" + DesignPanel.ClientID + "').parentNode.onselectstart = function() { return true; };", true);
-                    }
+                // Allow to select text in the source editor area
+                if (DesignPanel != null)
+                {
+                    ScriptHelper.RegisterStartupScript(this, typeof(string), "onselectstart", "document.getElementById('" + DesignPanel.ClientID + "').parentNode.onselectstart = function() { return true; };", true);
+                }
 
-                    break;
-            }
+                break;
         }
     }
 
@@ -652,7 +664,6 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
 
     #region "Methods"
 
-
     /// <summary>
     /// Loads the control content.
     /// </summary>
@@ -660,78 +671,79 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
     /// <param name="forceReload">If true, the content is forced to reload</param>
     public void LoadContent(string content, bool forceReload)
     {
-        if (!StopProcessing)
+        if (StopProcessing)
         {
-            ApplySettings();
+            return;
+        }
 
-            content = ValidationHelper.GetString(content, "");
+        ApplySettings();
 
-            // If content empty set default text
-            if (String.IsNullOrEmpty(content))
-            {
-                content = DefaultText;
-            }
+        bool contentIsEmpty = String.IsNullOrEmpty(content);
+        content = contentIsEmpty ? DefaultText : content;
 
-            // Resolve URLs
-            content = HTMLHelper.ResolveUrls(content, null);
+        // Resolve URLs
+        content = HTMLHelper.ResolveUrls(content, null);
 
-            switch (ViewMode)
-            {
-                case ViewModeEnum.Edit:
-                case ViewModeEnum.EditDisabled:
-                    switch (RegionType)
-                    {
-                        case CMSEditableRegionTypeEnum.HtmlEditor:
-                            // HTML editor
-                            if ((htmlValue != null) && (forceReload || !RequestHelper.IsPostBack() || (ViewMode == ViewModeEnum.EditDisabled)))
-                            {
-                                htmlValue.ResolvedValue = content;
-                            }
-                            break;
+        switch (ViewMode)
+        {
+            case ViewModeEnum.Edit:
+            case ViewModeEnum.EditDisabled:
 
-                        case CMSEditableRegionTypeEnum.TextArea:
-                        case CMSEditableRegionTypeEnum.TextBox:
-                            // TextBox
-                            if ((forceReload || !RequestHelper.IsPostBack()) && (txtValue != null))
-                            {
-                                txtValue.Text = content;
-                            }
-                            break;
-                    }
-                    break;
-
-
-                default:
-                    // Check authorization
-                    bool isAuthorized = true;
-                    if ((PageManager != null) && (CheckPermissions))
-                    {
-                        isAuthorized = PageManager.IsAuthorized;
-                    }
-
-                    // Only published
-                    if ((PortalContext.ViewMode != ViewModeEnum.LiveSite) || !SelectOnlyPublished || ((CurrentPageInfo != null) && CurrentPageInfo.IsPublished))
-                    {
-                        if (isAuthorized)
+                switch (RegionType)
+                {
+                    case CMSEditableRegionTypeEnum.HtmlEditor:
+                        // HTML editor
+                        if ((Editor != null) && (forceReload || !RequestHelper.IsPostBack() || (ViewMode == ViewModeEnum.EditDisabled) || contentIsEmpty))
                         {
-                            if (ltlContent == null)
-                            {
-                                ltlContent = (Literal)FindControl("ltlContent");
-                            }
-                            if (ltlContent != null)
-                            {
-                                ltlContent.Text = ContextResolver.ResolveMacros(content);
+                            Editor.ResolvedValue = content;
+                        }
+                        break;
 
-                                // Resolve inline controls
-                                if (ResolveDynamicControls)
-                                {
-                                    ControlsHelper.ResolveDynamicControls(this);
-                                }
+                    case CMSEditableRegionTypeEnum.TextArea:
+                    case CMSEditableRegionTypeEnum.TextBox:
+
+                        content = (EncodeText) ? HTMLHelper.HTMLDecode(content) : content;
+
+                        // TextBox
+                        if ((forceReload || !RequestHelper.IsPostBack() || contentIsEmpty) && (txtValue != null))
+                        {
+                            txtValue.Text = content;
+                        }
+                        break;
+                }
+                break;
+
+
+            default:
+                // Check authorization
+                bool isAuthorized = true;
+                if ((PageManager != null) && (CheckPermissions))
+                {
+                    isAuthorized = PageManager.IsAuthorized;
+                }
+
+                // Only published
+                if ((PortalContext.ViewMode != ViewModeEnum.LiveSite) || !SelectOnlyPublished || ((CurrentPageInfo != null) && CurrentPageInfo.IsPublished))
+                {
+                    if (isAuthorized)
+                    {
+                        if (ltlContent == null)
+                        {
+                            ltlContent = (Literal)FindControl("ltlContent");
+                        }
+                        if (ltlContent != null)
+                        {
+                            ltlContent.Text = content;
+
+                            // Resolve inline controls
+                            if (ResolveDynamicControls)
+                            {
+                                ControlsHelper.ResolveDynamicControls(this);
                             }
                         }
                     }
-                    break;
-            }
+                }
+                break;
         }
     }
 
@@ -741,9 +753,7 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
     /// </summary>
     public bool IsValid()
     {
-        string textWithOut = "";
-        bool mIsValid = true;
-        string mError = "";
+        bool isValid = true;
 
         switch (ViewMode)
         {
@@ -752,58 +762,53 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
                 switch (RegionType)
                 {
                     case CMSEditableRegionTypeEnum.HtmlEditor:
-                        // HTML editor
-                        if (htmlValue != null)
+                        if (Editor != null)
                         {
-                            textWithOut = HTMLHelper.StripTags(htmlValue.ResolvedValue);
-                            if (textWithOut != null)
-                            {
-                                if ((textWithOut.Length > MaxLength) && (MaxLength > 0))
-                                {
-                                    mError = String.Format(GetString("EditableText.ErrorMax"), textWithOut.Length, MaxLength);
-                                    mIsValid = false;
-                                }
-                                if ((textWithOut.Length < MinLength) && (MinLength > 0))
-                                {
-                                    mError = String.Format(GetString("EditableText.ErrorMin"), textWithOut.Length, MinLength);
-                                    mIsValid = false;
-                                }
-                            }
+                            isValid = CheckIfLengthIsValid(Editor.ResolvedValue);
                         }
                         break;
 
                     case CMSEditableRegionTypeEnum.TextArea:
                     case CMSEditableRegionTypeEnum.TextBox:
-                        // TextBox
+
                         if (txtValue != null)
                         {
-                            textWithOut = HTMLHelper.StripTags(txtValue.Text);
-                            if (textWithOut != null)
-                            {
-                                if ((textWithOut.Length > MaxLength) && (MaxLength > 0))
-                                {
-                                    mError = String.Format(GetString("EditableText.ErrorMax"), textWithOut.Length, MaxLength);
-                                    mIsValid = false;
-                                }
-                                if ((textWithOut.Length < MinLength) && (MinLength > 0))
-                                {
-                                    mError = String.Format(GetString("EditableText.ErrorMin"), textWithOut.Length, MinLength);
-                                    mIsValid = false;
-                                }
-                            }
+                            var content = txtValue.Text;
+                            content = (EncodeText) ? HTMLHelper.HTMLEncode(content) : content;
+
+                            isValid = CheckIfLengthIsValid(content);
                         }
                         break;
                 }
                 break;
         }
 
-        if (!mIsValid)
+        return isValid;
+    }
+
+
+    private bool CheckIfLengthIsValid(string text)
+    {
+        text = HTMLHelper.StripTags(text);
+
+        if (String.IsNullOrEmpty(text))
         {
-            lblError.Text = mError;
-            ErrorMessage = mError;
+            return true;
         }
 
-        return mIsValid;
+        if ((MinLength > 0) && (text.Length < MinLength))
+        {
+            ErrorMessage = lblError.Text = String.Format(GetString("EditableText.ErrorMin"), text.Length, MinLength);
+            return false;
+        }
+
+        if ((MaxLength > 0) && (text.Length > MaxLength))
+        {
+            ErrorMessage = lblError.Text = String.Format(GetString("EditableText.ErrorMax"), text.Length, MaxLength);
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -824,9 +829,9 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
                     {
                         case CMSEditableRegionTypeEnum.HtmlEditor:
                             // HTML editor
-                            if (htmlValue != null)
+                            if (Editor != null)
                             {
-                                return htmlValue.ResolvedValue;
+                                return Editor.ResolvedValue;
                             }
                             break;
 
@@ -835,7 +840,7 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
                             // TextBox
                             if (txtValue != null)
                             {
-                                return txtValue.Text;
+                                return (EncodeText) ? HTMLHelper.HTMLEncode(txtValue.Text) : txtValue.Text;
                             }
                             break;
                     }
@@ -860,9 +865,9 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
                 {
                     case CMSEditableRegionTypeEnum.HtmlEditor:
                         // HTML editor
-                        if (htmlValue != null)
+                        if (Editor != null)
                         {
-                            result.Add(htmlValue.ClientID);
+                            result.Add(Editor.ClientID);
                         }
                         break;
 
@@ -893,11 +898,6 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
                 case ViewModeEnum.Edit:
                 case ViewModeEnum.EditDisabled:
                     {
-                        // Edit mode
-                        if (DialogWidth > 0)
-                        {
-                            pnlEditor.Style.Add(HtmlTextWriterStyle.Width, DialogWidth.ToString() + "px;");
-                        }
 
                         // Display the region control based on the region type
                         switch (RegionType)
@@ -906,29 +906,16 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
                                 // HTML Editor
                                 if (IsDialogEdit)
                                 {
-                                    htmlValue.Width = new Unit(100, UnitType.Percentage);
-                                    htmlValue.Height = new Unit(100, UnitType.Percentage);
-                                    htmlValue.ToolbarLocation = "out:CKToolbar";
-                                    htmlValue.Title = Title;
+                                    Editor.ToolbarLocation = "out:CKToolbar";
+                                    Editor.Title = Title;
 
                                     // Maximize editor to fill entire dialog
-                                    htmlValue.RemoveButtons.Add("Maximize");
+                                    Editor.RemoveButtons.Add("Maximize");
 
                                     if (!DeviceContext.CurrentDevice.IsMobile)
                                     {
                                         // Desktop browsers
-                                        htmlValue.Config["on"] = "{ 'instanceReady' : function(e) { e.editor.execCommand( 'maximize' ); } }";
-                                    }
-                                }
-                                else
-                                {
-                                    if (DialogWidth > 0)
-                                    {
-                                        htmlValue.Width = new Unit(DialogWidth);
-                                    }
-                                    if (DialogHeight > 0)
-                                    {
-                                        htmlValue.Height = new Unit(DialogHeight);
+                                        Editor.Config["on"] = "{ 'instanceReady' : function(e) { e.editor.execCommand( 'maximize' ); } }";
                                     }
                                 }
 
@@ -941,39 +928,39 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
                                         mShowToolbar = true;
                                     }
 
-                                    htmlValue.ToolbarLocation = HtmlAreaToolbarLocation;
+                                    Editor.ToolbarLocation = HtmlAreaToolbarLocation;
                                 }
 
                                 // Set the visual appearance
                                 if (HtmlAreaToolbar != "")
                                 {
-                                    htmlValue.ToolbarSet = HtmlAreaToolbar;
+                                    Editor.ToolbarSet = HtmlAreaToolbar;
                                 }
 
                                 // Get editor area css file
                                 if (HTMLEditorCssStylesheet != "")
                                 {
-                                    htmlValue.EditorAreaCSS = CSSHelper.GetStylesheetUrl(HTMLEditorCssStylesheet);
+                                    Editor.EditorAreaCSS = CSSHelper.GetStylesheetUrl(HTMLEditorCssStylesheet);
                                 }
                                 else if (SiteContext.CurrentSite != null)
                                 {
-                                    htmlValue.EditorAreaCSS = CssStylesheetInfoProvider.GetHtmlEditorAreaCss(SiteContext.CurrentSiteName);
+                                    Editor.EditorAreaCSS = CssStylesheetInfoProvider.GetHtmlEditorAreaCss(SiteContext.CurrentSiteName);
                                 }
 
                                 // Set "Insert image or media" dialog configuration                            
-                                htmlValue.MediaDialogConfig.ResizeToHeight = ResizeToHeight;
-                                htmlValue.MediaDialogConfig.ResizeToWidth = ResizeToWidth;
-                                htmlValue.MediaDialogConfig.ResizeToMaxSideSize = ResizeToMaxSideSize;
+                                Editor.MediaDialogConfig.ResizeToHeight = ResizeToHeight;
+                                Editor.MediaDialogConfig.ResizeToWidth = ResizeToWidth;
+                                Editor.MediaDialogConfig.ResizeToMaxSideSize = ResizeToMaxSideSize;
 
                                 // Set "Insert link" dialog configuration  
-                                htmlValue.LinkDialogConfig.ResizeToHeight = ResizeToHeight;
-                                htmlValue.LinkDialogConfig.ResizeToWidth = ResizeToWidth;
-                                htmlValue.LinkDialogConfig.ResizeToMaxSideSize = ResizeToMaxSideSize;
+                                Editor.LinkDialogConfig.ResizeToHeight = ResizeToHeight;
+                                Editor.LinkDialogConfig.ResizeToWidth = ResizeToWidth;
+                                Editor.LinkDialogConfig.ResizeToMaxSideSize = ResizeToMaxSideSize;
 
                                 // Set "Quickly insert image" configuration
-                                htmlValue.QuickInsertConfig.ResizeToHeight = ResizeToHeight;
-                                htmlValue.QuickInsertConfig.ResizeToWidth = ResizeToWidth;
-                                htmlValue.QuickInsertConfig.ResizeToMaxSideSize = ResizeToMaxSideSize;
+                                Editor.QuickInsertConfig.ResizeToHeight = ResizeToHeight;
+                                Editor.QuickInsertConfig.ResizeToWidth = ResizeToWidth;
+                                Editor.QuickInsertConfig.ResizeToMaxSideSize = ResizeToMaxSideSize;
 
                                 break;
 
@@ -1098,45 +1085,40 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
                     {
                         case CMSEditableRegionTypeEnum.HtmlEditor:
                             // HTML Editor
-                            htmlValue = new CMSHtmlEditor();
-                            htmlValue.IsLiveSite = false;
-                            htmlValue.ID = "htmlValue";
-                            htmlValue.AutoDetectLanguage = false;
-                            htmlValue.DefaultLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
-                            htmlValue.Title = Title;
-
-                            htmlValue.UseInlineMode = UseInlineMode;
-
-                            // Set direction
-                            htmlValue.Config["ContentsLangDirection"] = "ltr";
-
-                            if (CultureHelper.IsPreferredCultureRTL())
-                            {
-                                htmlValue.Config["ContentsLangDirection"] = "rtl";
-                            }
+                            Editor = new CMSHtmlEditor();
+                            Editor.IsLiveSite = false;
+                            Editor.ID = "htmlValue";
+                            Editor.AutoDetectLanguage = false;
+                            Editor.DefaultLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
+                            Editor.Title = Title;
+                            Editor.UseInlineMode = UseInlineMode;
+                            Editor.ContentsLangDirection = CultureHelper.IsPreferredCultureRTL() ? LanguageDirection.RightToLeft : LanguageDirection.LeftToRight;
 
                             // Set the language
                             try
                             {
                                 CultureInfo ci = CultureHelper.GetCultureInfo(DataHelper.GetNotEmpty(MembershipContext.AuthenticatedUser.PreferredUICultureCode, LocalizationContext.PreferredCultureCode));
-                                htmlValue.DefaultLanguage = ci.TwoLetterISOLanguageName;
+                                Editor.DefaultLanguage = ci.TwoLetterISOLanguageName;
                             }
-                            catch
+                            catch (ArgumentNullException)
+                            {
+                            }
+                            catch (CultureNotFoundException)
                             {
                             }
 
-                            htmlValue.AutoDetectLanguage = false;
-                            htmlValue.Enabled = IsEnabled(ViewMode);
+                            Editor.AutoDetectLanguage = false;
+                            Editor.Enabled = IsEnabled(ViewMode);
 
                             if (ViewMode == ViewModeEnum.EditDisabled)
                             {
                                 pnlEditor.Controls.Add(new LiteralControl("<div style=\"width: 98%\">"));
-                                pnlEditor.Controls.Add((Control)htmlValue);
+                                pnlEditor.Controls.Add(Editor);
                                 pnlEditor.Controls.Add(new LiteralControl("</div>"));
                             }
                             else
                             {
-                                pnlEditor.Controls.Add((Control)htmlValue);
+                                pnlEditor.Controls.Add(Editor);
                             }
                             break;
 
@@ -1146,7 +1128,8 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
                             txtValue = new CMSTextBox();
                             txtValue.ID = "txtValue";
                             txtValue.CssClass = "EditableTextTextBox";
-
+                            // Do not append macro hash. Macro security is being applied in the CMSAbstractWebPart
+                            txtValue.ProcessMacroSecurity = false;
                             txtValue.Enabled = IsEnabled(ViewMode);
                             pnlEditor.Controls.Add(txtValue);
                             break;

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 
 using CMS.CustomTables;
 using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.FormControls;
 using CMS.FormEngine;
 using CMS.Helpers;
@@ -127,7 +128,7 @@ public partial class CMSFormControls_System_FieldSelector : FormEngineUserContro
         {
             // Custom tables
             case 0:
-                selectionElem.UniSelector.ObjectType = DataClassInfo.OBJECT_TYPE_CUSTOMTABLE;
+                selectionElem.UniSelector.ObjectType = CustomTableInfo.OBJECT_TYPE_CUSTOMTABLE;
                 break;
 
             // System tables
@@ -138,7 +139,7 @@ public partial class CMSFormControls_System_FieldSelector : FormEngineUserContro
 
             // Document types
             default:
-                selectionElem.UniSelector.ObjectType = DataClassInfo.OBJECT_TYPE_DOCUMENTTYPE;
+                selectionElem.UniSelector.ObjectType = DocumentTypeInfo.OBJECT_TYPE_DOCUMENTTYPE;
                 selectionElem.ShowOnlyCoupled = true;
                 break;
         }

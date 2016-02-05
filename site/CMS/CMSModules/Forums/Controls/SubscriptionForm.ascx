@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Forums_Controls_SubscriptionForm" Codebehind="SubscriptionForm.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Forums_Controls_SubscriptionForm"  Codebehind="SubscriptionForm.ascx.cs" %>
 
 <asp:Panel runat="server" ID="pnlPadding" CssClass="FormPadding" DefaultButton="btnOK">
     <cms:MessagesPlaceHolder ID="plcMess" runat="server" />

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -162,7 +162,7 @@ public partial class CMSModules_IntranetPortal_Controls_EmployeesFilterControl :
     /// </summary>
     private void InitializeDepartmentFilter()
     {
-        DataSet dsDepartments = TreeProvider.SelectNodes(SiteContext.CurrentSiteName, "/%", null, true, DEPARTMENT_DOC_TYPE, null, null, -1, true, 0, TreeProvider.SELECTNODES_REQUIRED_COLUMNS + ",DocumentName");
+        DataSet dsDepartments = TreeProvider.SelectNodes(SiteContext.CurrentSiteName, "/%", null, true, DEPARTMENT_DOC_TYPE, null, null, -1, true, 0, DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS + ",DocumentName");
         if (!DataHelper.DataSourceIsEmpty(dsDepartments))
         {
             // Add default value

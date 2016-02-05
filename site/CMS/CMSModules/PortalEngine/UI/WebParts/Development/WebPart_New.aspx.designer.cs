@@ -120,6 +120,42 @@ public partial class CMSModules_PortalEngine_UI_WebParts_Development_WebPart_New
     protected global::CMS.ExtendedControls.CMSRequiredFieldValidator rfvWebPartName;
     
     /// <summary>
+    /// plcCodeFiles control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.PlaceHolder plcCodeFiles;
+    
+    /// <summary>
+    /// lblCodeFiles control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblCodeFiles;
+    
+    /// <summary>
+    /// radNewFile control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSRadioButton radNewFile;
+    
+    /// <summary>
+    /// radExistingFile control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSRadioButton radExistingFile;
+    
+    /// <summary>
     /// plcFileName control.
     /// </summary>
     /// <remarks>
@@ -127,6 +163,51 @@ public partial class CMSModules_PortalEngine_UI_WebParts_Development_WebPart_New
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.PlaceHolder plcFileName;
+    
+    /// <summary>
+    /// lblFileName control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblFileName;
+    
+    /// <summary>
+    /// txtCodeFileName control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSTextBox txtCodeFileName;
+    
+    /// <summary>
+    /// rfvCodeFileName control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSRequiredFieldValidator rfvCodeFileName;
+    
+    /// <summary>
+    /// lblFileNameExplanation control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblFileNameExplanation;
+    
+    /// <summary>
+    /// plcSelectFile control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.PlaceHolder plcSelectFile;
     
     /// <summary>
     /// lblWebPartFileName control.
@@ -145,15 +226,6 @@ public partial class CMSModules_PortalEngine_UI_WebParts_Development_WebPart_New
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMSFormControls_Dialogs_FileSystemSelector FileSystemSelector;
-    
-    /// <summary>
-    /// chkGenerateFiles control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSCheckBox chkGenerateFiles;
     
     /// <summary>
     /// plcWebparts control.

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -39,6 +39,8 @@ public partial class CMSModules_System_Debug_System_DebugFiles : CMSDebugPage
 
             var logs = FileDebug.Settings.LastLogs;
 
+            RequestLog lastLog = null;
+
             for (int i = logs.Count - 1; i >= 0; i--)
             {
                 try
@@ -71,11 +73,15 @@ public partial class CMSModules_System_Debug_System_DebugFiles : CMSDebugPage
                                 // Load the control
                                 FilesLog logCtrl = (FilesLog)LoadLogControl(log, "~/CMSAdminControls/Debug/FilesLog.ascx", i);
 
+                                logCtrl.PreviousLog = lastLog;
                                 logCtrl.ShowCompleteContext = chkCompleteContext.Checked;
                                 logCtrl.ProviderName = providerName;
+                                logCtrl.WriteOnly = chkWriteOnly.Checked;
 
                                 // Add to the output
                                 plcLogs.Controls.Add(logCtrl);
+
+                                lastLog = log;
                             }
                         }
                     }

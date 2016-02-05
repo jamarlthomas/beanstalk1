@@ -41,22 +41,6 @@ public partial class CMSFormControls_System_CodeNameWithPrefix : FormEngineUserC
 
 
     /// <summary>
-    /// Gets or sets resource prefix for additional info labels.
-    /// </summary>
-    public string ResourcePrefix
-    {
-        get
-        {
-            return GetValue("ResourcePrefix", String.Empty);
-        }
-        set
-        {
-            SetValue("ResourcePrefix", value);
-        }
-    }
-
-
-    /// <summary>
     /// Indicates if prefix is editable
     /// </summary>
     public bool AllowEditPrefix
@@ -157,8 +141,8 @@ public partial class CMSFormControls_System_CodeNameWithPrefix : FormEngineUserC
         if (ShowAdditionalInfo)
         {
             plcInfo.Visible = true;
-            lblNamespace.ResourceString = ResourcePrefix + ".namespace|general.namespace";
-            lblClass.ResourceString = ResourcePrefix + ".codename|general.codename";
+            lblNamespace.ResourceString = "general.namespace";
+            lblClass.ResourceString = "general.codename";
         }
 
         if ((FieldInfo != null) && (FieldInfo.AllowEmpty))
@@ -184,10 +168,10 @@ public partial class CMSFormControls_System_CodeNameWithPrefix : FormEngineUserC
 
         if (AllowEditPrefix)
         {
-            result = new Validator().IsIdentifier(txtPrefix.Text.Trim(), GetString(ResourcePrefix + ".NamespaceNameIdentifier|general.NamespaceNameIdentifier")).Result + " ";
+            result = new Validator().IsIdentifier(txtPrefix.Text.Trim(), GetString("general.NamespaceNameIdentifier")).Result + " ";
         }
 
-        result += new Validator().IsIdentifier(txtCodeName.Text.Trim(), GetString(ResourcePrefix + ".CodeNameIdentifier|general.CodeNameIdentifier")).Result;
+        result += new Validator().IsIdentifier(txtCodeName.Text.Trim(), GetString("general.CodeNameIdentifier")).Result;
 
         if (!String.IsNullOrEmpty(result.Trim()))
         {

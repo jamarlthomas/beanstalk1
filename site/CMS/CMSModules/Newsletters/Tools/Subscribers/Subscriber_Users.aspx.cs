@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -203,7 +203,7 @@ public partial class CMSModules_Newsletters_Tools_Subscribers_Subscriber_Users :
 
     private static int GetBouncesFromRow(DataRowView rowView)
     {
-        return ValidationHelper.GetInteger(DataHelper.GetDataRowValue(rowView.Row, "UserBounces"), 0);
+        return DataHelper.GetIntValue(rowView.Row, "UserBounces");
     }
 
     #endregion

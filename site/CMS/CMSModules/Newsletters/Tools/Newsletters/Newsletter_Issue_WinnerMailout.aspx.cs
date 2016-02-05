@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 
+using CMS.Core;
 using CMS.Helpers;
 using CMS.Newsletters;
 using CMS.SiteProvider;
@@ -87,8 +88,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_W
                 NewsletterTasksManager.DeleteMailoutTask(issue.IssueGUID, issue.IssueSiteID);
 
                 DateTime mailoutTime = dtpMailout.SelectedDateTime;
-                IssueSender issueSender = new IssueSender(IssueInfoProvider.GetIssueInfo(parentIssueId));
-                issueSender.Send(mailoutTime);
+                Service<IIssueSender>.Entry().Send(IssueInfoProvider.GetIssueInfo(parentIssueId), mailoutTime);
             }
         }
 

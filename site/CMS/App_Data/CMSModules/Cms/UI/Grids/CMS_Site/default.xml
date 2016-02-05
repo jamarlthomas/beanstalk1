@@ -17,9 +17,10 @@
       <filter type="text" />
     </column>
     <column source="Documents"  caption="$general.pages$" wrap="false" />
+    <column source="SiteIsContentOnly" externalsourcename="#yesnocolorless" caption="$Unigrid.SiteList.Columns.SiteIsContentOnly$" wrap="false" />
     <column source="##ALL##" externalsourcename="culture" caption="$Unigrid.SiteList.Columns.DefaultCulture$" wrap="false" />
   </columns>
-  <objecttype name="cms.sitelist" columns="SiteID, SiteName, SiteDisplayName, SiteStatus, SiteIsOffline, SiteDomainName, Documents" />
+  <objecttype name="cms.sitelist" columns="SiteID, SiteName, SiteDisplayName, SiteStatus, SiteIsOffline, SiteDomainName, Documents, SiteIsContentOnly" />
   <options>
     <key name="DisplayFilter" value="true" />
   </options>

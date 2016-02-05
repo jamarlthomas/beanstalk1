@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="AuthorizationSetupPrologue.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_SalesForce_AuthorizationSetupPrologue" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" EnableEventValidation="false" Theme="Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="AuthorizationSetupPrologue.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_SalesForce_AuthorizationSetupPrologue" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" EnableEventValidation="false" Theme="Default" %>
 <asp:Content ID="MainContent" ContentPlaceHolderID="plcContent" runat="Server" EnableViewState="false">
 	<asp:Panel ID="MainPanel" runat="server" EnableViewState="false">
 	    <cms:AlertLabel runat="server" ID="ConfirmationElement" AlertType="Confirmation" Style="display:none;" />

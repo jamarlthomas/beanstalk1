@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Delete.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_Activities_Activity_Delete"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Delete.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_Activities_Activity_Delete"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Contact - Delete" %>
 
 <%@ Register Src="~/CMSAdminControls/AsyncLogDialog.ascx" TagName="AsyncLog"
     TagPrefix="cms" %>
 <asp:Content ContentPlaceHolderID="plcBeforeBody" runat="server" ID="cntBeforeBody">
     <asp:Panel runat="server" ID="pnlLog" Visible="false">
-        <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+        <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="Activites" />
     </asp:Panel>
 </asp:Content>
 <asp:Content ID="plcContent" ContentPlaceHolderID="plcBeforeContent" runat="server"

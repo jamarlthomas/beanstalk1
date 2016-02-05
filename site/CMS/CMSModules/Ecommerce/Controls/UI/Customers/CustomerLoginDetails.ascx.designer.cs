@@ -30,33 +30,6 @@ public partial class CMSModules_Ecommerce_Controls_UI_Customers_CustomerLoginDet
     protected global::CMSAdminControls_UI_PageElements_HeaderActions hdrActions;
     
     /// <summary>
-    /// pnlUser control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlUser;
-    
-    /// <summary>
-    /// updUserFields control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSUpdatePanel updUserFields;
-    
-    /// <summary>
-    /// plcUserFields control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.PlaceHolder plcUserFields;
-    
-    /// <summary>
     /// lblUserName control.
     /// </summary>
     /// <remarks>
@@ -73,6 +46,15 @@ public partial class CMSModules_Ecommerce_Controls_UI_Customers_CustomerLoginDet
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.CMSTextBox txtUserName;
+    
+    /// <summary>
+    /// pnlPassword control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlPassword;
     
     /// <summary>
     /// lblPasswordLine1 control.

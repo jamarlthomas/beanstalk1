@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.Ecommerce;
@@ -65,11 +65,11 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
             {
                 if (globalSKU)
                 {
-                    RedirectToAccessDenied("CMS.Ecommerce", "EcommerceGlobalModify");
+                    RedirectToAccessDenied(ModuleName.ECOMMERCE, EcommercePermissions.ECOMMERCE_MODIFYGLOBAL);
                 }
                 else
                 {
-                    RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyProducts");
+                    RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyProducts");
                 }
             }
         }
@@ -79,11 +79,11 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
         {
             if (globalCategory)
             {
-                RedirectToAccessDenied("CMS.Ecommerce", "EcommerceGlobalModify");
+                RedirectToAccessDenied(ModuleName.ECOMMERCE, EcommercePermissions.ECOMMERCE_MODIFYGLOBAL);
             }
             else
             {
-                RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyProducts");
+                RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyProducts");
             }
         }
     }

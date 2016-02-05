@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.PortalControls;
+using CMS.MacroEngine;
 
 public partial class CMSWebParts_Blogs_NewBlog : CMSAbstractWebPart
 {
@@ -231,7 +232,7 @@ public partial class CMSWebParts_Blogs_NewBlog : CMSAbstractWebPart
         else
         {
             // Set new blog properties
-            newBlog.BlogParentPath = BlogParentPath;
+            newBlog.BlogParentPath = MacroResolver.ResolveCurrentPath(BlogParentPath);
             newBlog.RedirectToNewBlog = RedirectToNewBlog;
             newBlog.BlogAllowAnonymousComments = BlogAllowAnonymousComments;
             newBlog.BlogModerateComments = BlogModerateComments;

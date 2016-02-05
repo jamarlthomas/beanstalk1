@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/DashBoard/EmailQueue.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/DashBoard/EmailQueue.ascx.cs"
     Inherits="CMSWebParts_DashBoard_EmailQueue" %>
 <%@ Register Src="~/CMSModules/EmailQueue/Controls/EmailQueue.ascx" TagName="EmailQueue"
     TagPrefix="cms" %>

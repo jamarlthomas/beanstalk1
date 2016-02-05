@@ -28,13 +28,4 @@ public partial class CMSAdminControls_UI_UIProfiles_UIElementEdit {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.FormControls.UIForm EditForm;
-    
-    /// <summary>
-    /// ltlScript control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Literal ltlScript;
 }

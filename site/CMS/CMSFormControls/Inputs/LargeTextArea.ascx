@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="LargeTextArea.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="LargeTextArea.ascx.cs"
     Inherits="CMSFormControls_Inputs_LargeTextArea" %>
 
 <cms:ActionContainer runat="server" ID="cntElem">

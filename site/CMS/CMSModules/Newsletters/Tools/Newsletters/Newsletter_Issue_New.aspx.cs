@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 using System.Linq;
 
@@ -42,11 +42,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_N
         }
 
         // Remove extra padding set by the master page
-        CurrentMaster.PanelContent.CssClass = string.Empty;
-
-        // Ensure correct padding
-        MessagesPlaceHolder.OffsetX = 16;
-        MessagesPlaceHolder.OffsetY = 8;
+        CurrentMaster.PanelContent.CssClass = "email-content";
 
         editElem.NewsletterID = newsletterId;
 
@@ -62,7 +58,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_N
         CurrentMaster.HeaderActions.ActionsList.Clear();
 
         // Init save button
-        CurrentMaster.HeaderActions.ActionsList.Add(new SaveAction(this)
+        CurrentMaster.HeaderActions.ActionsList.Add(new SaveAction()
         {
             OnClientClick = "if (GetContent != null) {return GetContent();} else {return false;}"
         });

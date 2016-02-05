@@ -534,21 +534,13 @@
             <param name="maxRecords">Maximum number of records to get. If maxRecords is zero or less, all records are returned (no paging is used)</param>
             <param name="totalRecords">Returns total number of available records</param>
         </member>
-        <member name="M:CMS.Controls.CMSAbstractDataProperties.LoadTransformation(System.Web.UI.Control,System.String,System.Boolean)">
-            <summary>
-            Loads the transformation template.
-            </summary>
-            <param name="parent">Parent control</param>
-            <param name="transformationName">Transformation name</param>
-            <param name="showEditDelete">Add show edit delete parameter</param>
-        </member>
         <member name="M:CMS.Controls.CMSAbstractDataProperties.LoadTransformation(System.Web.UI.Control,System.String,CMS.PortalEngine.EditModeButtonEnum)">
             <summary>
             Loads the transformation template.
             </summary>
             <param name="parent">Parent control</param>
             <param name="transformationName">Transformation name</param>
-            <param name="editButtonsMode">Edit buttons mode</param>
+            <param name="editButtonsMode">Specify which editing buttons should be displayed</param>
         </member>
         <member name="M:CMS.Controls.CMSAbstractDataProperties.GetDocument(System.String)">
             <summary>
@@ -560,6 +552,12 @@
             <summary>
             Clears the cached items.
             </summary>
+        </member>
+        <member name="M:CMS.Controls.CMSAbstractDataProperties.ApplyRelationshipOrder(CMS.DocumentEngine.MultiDocumentQuery)">
+            <summary>
+            Joins query with relationship objects to apply relationship order for ad-hoc (ordered) relationships.
+            </summary>
+            <param name="query">MultiDocumentQuery to be joined with ordered relationships.</param>
         </member>
         <member name="P:CMS.Controls.CMSAbstractDataProperties.IsSelected">
             <summary>
@@ -647,11 +645,6 @@
             </summary>
         </member>
         <member name="P:CMS.Controls.ICMSMenuProperties.UseItemImagesForHighlightedItem">
-            <summary>
-            Indicates if highlighted images is not specified, use item image if exist.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.ICMSMenuProperties.UseItemImagesForHiglightedItem">
             <summary>
             Indicates if highlighted images is not specified, use item image if exist.
             </summary>
@@ -765,14 +758,6 @@
             Otherwise columns defined in Columns property are merged with default columns
             </summary>        
         </member>
-        <member name="M:CMS.Controls.CMSAbstractMenuProperties.GetItemUrl(System.String,System.String,System.Boolean)">
-            <summary>
-            Returns URL to menu item, depend on site name.
-            </summary>
-            <param name="aliasPath">Node alias path</param>
-            <param name="urlPath">Document URL path</param>
-            <param name="isLink">True if the document is link (only alias path is used)</param>
-        </member>
         <member name="M:CMS.Controls.CMSAbstractMenuProperties.GetDefaultCacheDependencies">
             <summary>
             Gets the default cache dependencies for the data source.
@@ -799,11 +784,6 @@
             </summary>
         </member>
         <member name="P:CMS.Controls.CMSAbstractMenuProperties.UseItemImagesForHighlightedItem">
-            <summary>
-            Indicates if highlighted images is not specified, use item image if exist.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSAbstractMenuProperties.UseItemImagesForHiglightedItem">
             <summary>
             Indicates if highlighted images is not specified, use item image if exist.
             </summary>
@@ -2700,9 +2680,9 @@
             Placeholder used for inner content in hierarchical mode of universal viewer
             </summary>
         </member>
-        <member name="T:CMS.Controls.MacroDataSource">
+        <member name="T:CMS.Controls.LanguageDataSource">
             <summary>
-            Users data source server control.
+            Culture specific URLs data source control.
             </summary>
         </member>
         <member name="T:CMS.Controls.CMSBaseDataSource">
@@ -3066,6 +3046,53 @@
             Gets or sets the number of result. Enables proceed "fake" datasets, where number 
             of results in the dataset is not correspondent to the real number of results
             This property must be equal -1 if should be disabled
+            </summary>
+        </member>
+        <member name="M:CMS.Controls.LanguageDataSource.GetDataSourceFromDB">
+            <summary>
+            Gets data source from DB.
+            </summary>
+            <returns>List of DocumentCultureURLs as object</returns>
+        </member>
+        <member name="M:CMS.Controls.LanguageDataSource.GetDefaultCacheKey">
+            <summary>
+            Gets the default cache key.
+            </summary>
+            <returns>Default cache key</returns>
+        </member>
+        <member name="M:CMS.Controls.LanguageDataSource.GetDefaultCacheDependencies">
+            <summary>
+            Gets the default cache dependencies.
+            </summary>
+        </member>
+        <member name="P:CMS.Controls.LanguageDataSource.ExcludeUntranslatedDocuments">
+            <summary>
+            URLs for not translated pages will not be generated. Default value is true.
+            </summary>
+        </member>
+        <member name="P:CMS.Controls.LanguageDataSource.ExcludedCultureCode">
+            <summary>
+            Culture for which URLs should not be generated.
+            </summary>
+        </member>
+        <member name="P:CMS.Controls.LanguageDataSource.UseCultureSpecificURLs">
+            <summary>
+            Returns URL for the document aliasPath and document URL path (preferable if document URL path is not wildcard URL). Default value is true.
+            </summary>
+        </member>
+        <member name="P:CMS.Controls.LanguageDataSource.Node">
+            <summary>
+            Node for which document culture URLs will be generated.
+            </summary>
+        </member>
+        <member name="P:CMS.Controls.LanguageDataSource.UrlOptions">
+            <summary>
+            Defines format of culture specific URLs. Use logical OR operation to define parameters.
+            </summary>
+        </member>
+        <member name="T:CMS.Controls.MacroDataSource">
+            <summary>
+            Users data source server control.
             </summary>
         </member>
         <member name="M:CMS.Controls.MacroDataSource.GetDataSourceFromDB">
@@ -3459,6 +3486,16 @@
             Current object
             </summary>
         </member>
+        <member name="T:CMS.Controls.ISpellCheckableControl">
+            <summary>
+            Interface class for the controls providing content for spell checker.
+            </summary>
+        </member>
+        <member name="M:CMS.Controls.ISpellCheckableControl.GetSpellCheckFields">
+            <summary>
+            Returns the list of the field IDs (Client IDs of the inner controls) that should be spell checked.
+            </summary>
+        </member>
         <member name="T:CMS.Controls.CMSAbstractRecycleBinFilterControl">
             <summary>
             Abstract class for recycle bin filter controls.
@@ -3498,6 +3535,16 @@
             <param name="filter">Filter control</param>
             <param name="state">State storage</param>
         </member>
+        <member name="T:CMS.Controls.BackwardCompatibilityHandlers">
+            <summary>
+            Provides handlers for controls backward compatibility
+            </summary>
+        </member>
+        <member name="M:CMS.Controls.BackwardCompatibilityHandlers.Init">
+            <summary>
+            Initializes the handlers
+            </summary>
+        </member>
         <member name="T:CMS.Controls.CMSControlsMetadata">
             <summary>
             Represents the CMS Controls module metadata.
@@ -3526,6 +3573,46 @@
         <member name="M:CMS.Controls.CMSControlsModule.OnInit">
             <summary>
             Initializes the module
+            </summary>
+        </member>
+        <member name="T:CMS.Controls.TransformationEvalEventArgs">
+            <summary>
+            Arguments for the evaluation of data column in transformation event.
+            </summary>
+        </member>
+        <member name="P:CMS.Controls.TransformationEvalEventArgs.Data">
+            <summary>
+            Source data.
+            </summary>
+        </member>
+        <member name="P:CMS.Controls.TransformationEvalEventArgs.ColumnName">
+            <summary>
+            Name of the column.
+            </summary>
+        </member>
+        <member name="P:CMS.Controls.TransformationEvalEventArgs.Value">
+            <summary>
+            Output value.
+            </summary>
+        </member>
+        <member name="P:CMS.Controls.TransformationEvalEventArgs.HasValue">
+            <summary>
+            Indicates that the value is provided by the handler.
+            </summary>
+        </member>
+        <member name="T:CMS.Controls.TransformationEvalHandler">
+            <summary>
+            Handler used to evaluate data column in transformation.
+            </summary>
+        </member>
+        <member name="T:CMS.Controls.CMSControlsEvents">
+            <summary>
+            Controls events
+            </summary>
+        </member>
+        <member name="F:CMS.Controls.CMSControlsEvents.TransformationEval">
+            <summary>
+            Fires when the data is evaluated for a column within the transformation
             </summary>
         </member>
         <member name="T:CMS.Controls.ObjectEditMenu">
@@ -3692,16 +3779,6 @@
         <member name="P:CMS.Controls.EditMenu.ShowSaveAndClose">
             <summary>
             If true, save and close button can be displayed
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.EditMenu.ShowCreateWireframe">
-            <summary>
-            If true, the Create wireframe button is shown
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.EditMenu.ShowRemoveWireframe">
-            <summary>
-            If true, the Create wireframe button is shown
             </summary>
         </member>
         <member name="P:CMS.Controls.EditMenu.NodeID">
@@ -4837,11 +4914,6 @@
             Data properties
             </summary>
         </member>
-        <member name="P:CMS.Controls.CMSDocumentsDataSource.EnableSelectedItem">
-            <summary>
-            Gets or sets the value that indicates if current document is in class names only this document is displayed.
-            </summary>
-        </member>
         <member name="P:CMS.Controls.CMSDocumentsDataSource.LoadCurrentPageOnly">
             <summary>
             Gets or sets the value that indicates that if a page is selected,
@@ -5003,11 +5075,6 @@
         <member name="P:CMS.Controls.CustomTableDataSource.CustomTable">
             <summary>
             Gets or sets the custom table name.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CustomTableDataSource.EnableSelectedItem">
-            <summary>
-            Enables or disables option to retrieve selected item.
             </summary>
         </member>
         <member name="P:CMS.Controls.CustomTableDataSource.LoadCurrentPageOnly">
@@ -5182,11 +5249,6 @@
             </summary>
             <param name="pageInfo">Page info where to store the content</param>
         </member>
-        <member name="M:CMS.Controls.ICMSEditableControl.GetSpellCheckFields">
-            <summary>
-            Returns the list of the field IDs (Client IDs of the inner controls) that should be spell checked.
-            </summary>
-        </member>
         <member name="M:CMS.Controls.ICMSEditableControl.IsValid">
             <summary>
             Returns true if entered data is valid. If data is invalid, it returns false and displays an error message.
@@ -5277,6 +5339,13 @@
             </summary>
             <param name="viewMode">View mode to request</param>
             <param name="id">Control ID</param>
+        </member>
+        <member name="M:CMS.Controls.CMSAbstractEditableControl.ResolveMacros(System.String,CMS.MacroEngine.MacroSettings)">
+            <summary>
+            Resolves the macros within current context.
+            </summary>
+            <param name="inputText">Input text to resolve</param>
+            <param name="settings">Macro context object with specific options</param>
         </member>
         <member name="P:CMS.Controls.CMSAbstractEditableControl.SourcePageInfo">
             <summary>
@@ -5408,9 +5477,16 @@
             Gets the current control content.
             </summary>
         </member>
+        <member name="M:CMS.Controls.CMSEditableImage.GetContentXml(System.String,System.String)">
+            <summary>
+            Gets the image content XML
+            </summary>
+            <param name="imagePath">Image path</param>
+            <param name="altText">Alternate text</param>
+        </member>
         <member name="M:CMS.Controls.CMSEditableImage.OnPreRender(System.EventArgs)">
             <summary>
-            Prerender event handler.
+            PreRender event handler.
             </summary>
         </member>
         <member name="M:CMS.Controls.CMSEditableImage.Render(System.Web.UI.HtmlTextWriter)">
@@ -5421,7 +5497,7 @@
         <member name="M:CMS.Controls.CMSEditableImage.GetEditDialogParameters">
             <summary>
             Gets the custom dialog parameters used in the On-site editing when opening the modal edit dialog.
-            The url parameters are in the following format: "name=value"
+            The URL parameters are in the following format: "name=value"
             </summary>
         </member>
         <member name="P:CMS.Controls.CMSEditableImage.ImageTitle">
@@ -5486,7 +5562,7 @@
         </member>
         <member name="P:CMS.Controls.CMSEditableImage.EditPageUrl">
             <summary>
-            Edit page url which will be used for editing of the editable control. Used in On-site editing.
+            Edit page URL which will be used for editing of the editable control. Used in On-site editing.
             </summary>
         </member>
         <member name="T:CMS.Controls.CMSEditableRegion">
@@ -6088,11 +6164,6 @@
             Renders tags.
             </summary>
         </member>
-        <member name="M:CMS.Controls.NoFramesLiteral.#ctor">
-            <summary>
-            Constructor.
-            </summary>
-        </member>
         <member name="T:CMS.Controls.AtomFeed">
             <summary>
             Atom Feed - Generates link to Atom feed.
@@ -6481,11 +6552,6 @@
         <member name="F:CMS.Controls.XMLRepeater.mProperties">
             <summary>
             Base properties for caching purposes.
-            </summary>
-        </member>
-        <member name="M:CMS.Controls.XMLRepeater.#ctor">
-            <summary>
-            Creates instance of XMLRepeater with default settings.
             </summary>
         </member>
         <member name="M:CMS.Controls.XMLRepeater.InitControl(System.Boolean)">
@@ -6990,6 +7056,13 @@
         <member name="M:CMS.Controls.TransformationMethods.GetUrl(CMS.MacroEngine.EvaluationContext,System.Object[])">
             <summary>
             Returns URL for the specified aliasPath and urlPath (preferable).
+            </summary>
+            <param name="context">Evaluation context with child resolver</param>
+            <param name="parameters">Method parameters</param>
+        </member>
+        <member name="M:CMS.Controls.TransformationMethods.GetNavigationUrl(CMS.MacroEngine.EvaluationContext,System.Object[])">
+            <summary>
+            Returns resolved (i.e. absolute) URL of data item (page) which is currently being processed. Method reflects page navigation settings.
             </summary>
             <param name="context">Evaluation context with child resolver</param>
             <param name="parameters">Method parameters</param>
@@ -7720,6 +7793,13 @@
             <param name="urlPath">URL Path</param>
             <param name="siteName">Site name</param>
         </member>
+        <member name="M:CMS.Controls.TransformationHelper.GetNavigationUrl(System.Object,CMS.MacroEngine.MacroResolver)">
+            <summary>
+            Returns resolved (i.e. absolute) URL of data item (page) that currently being processed. Method reflects page navigation settings.
+            </summary>
+            <param name="data">Page data</param>
+            <param name="resolver">Macro resolver</param>
+        </member>
         <member name="M:CMS.Controls.TransformationHelper.GetDate(System.Object,System.String,System.String)">
             <summary>
             Returns date from the provided date-time value.
@@ -7734,19 +7814,12 @@
             </summary>
             <param name="relativeUrl">Relative URL</param>
         </member>
-        <member name="M:CMS.Controls.TransformationHelper.GetAbsoluteUrl(System.String,System.Int32)">
+        <member name="M:CMS.Controls.TransformationHelper.GetAbsoluteUrl(System.String,CMS.DataEngine.SiteInfoIdentifier)">
             <summary>
             Returns absolute URL from relative path.
             </summary>
             <param name="relativeUrl">Relative URL</param>
-            <param name="siteId">Site ID</param>
-        </member>
-        <member name="M:CMS.Controls.TransformationHelper.GetAbsoluteUrl(System.String,System.Object)">
-            <summary>
-            Returns absolute URL from relative path.
-            </summary>
-            <param name="relativeUrl">Relative URL</param>
-            <param name="siteNameObj">Site name</param>
+            <param name="site">Site identifier (name or ID)</param>
         </member>
         <member name="M:CMS.Controls.TransformationHelper.GetAbsoluteUrl(System.String,System.String)">
             <summary>
@@ -7835,12 +7908,6 @@
             </summary>
             <param name="inputText">Text containing tags to be removed</param>
         </member>
-        <member name="M:CMS.Controls.TransformationHelper.EnsureValueHTMLEncode(System.Object)">
-            <summary>
-            Returns HTML encoded value if value is string and it should be encoded(it depends on value of CMSHTMLEncodeEval key in configuration file).
-            </summary>
-            <param name="value">Value to encode</param>  
-        </member>
         <member name="M:CMS.Controls.TransformationHelper.EnsureValueHTMLEncode``1(System.Object)">
             <summary>
             Returns HTML encoded value if value is string and it should be encoded(it depends on value of CMSHTMLEncodeEval key in configuration file).
@@ -7900,7 +7967,7 @@
             <summary>
             Returns date time with dependence on selected time zone.
             </summary>
-            <param name="dateTime">DateTim to convert (server time zone)</param>
+            <param name="dateTime">DateTime to convert (server time zone)</param>
             <param name="timeZoneName">Time zone code name</param>
         </member>
         <member name="M:CMS.Controls.TransformationHelper.GetDateTime(System.Web.UI.Control,System.Object)">
@@ -7908,7 +7975,7 @@
             Returns date time with dependence on current ITimeZone manager time zone settings.
             </summary>
             <param name="control">Control containing ITimeZoneManager</param>
-            <param name="dateTime">DateTim to convert (server time zone)</param>
+            <param name="dateTime">DateTime to convert (server time zone)</param>
         </member>
         <member name="M:CMS.Controls.TransformationHelper.GetDateTime(System.Web.UI.Control,System.DateTime)">
             <summary>
@@ -8123,13 +8190,14 @@
             <param name="id">ID of the item</param>
             <param name="columnName">Column name</param>
         </member>
-        <member name="M:CMS.Controls.TransformationHelper.SearchResultUrl(System.String,System.String,System.Boolean)">
+        <member name="M:CMS.Controls.TransformationHelper.SearchResultUrl(System.String,System.String,System.Boolean,System.Boolean)">
             <summary>
             Returns URL for current search result.
             </summary>
             <param name="id">ID of the item</param>
             <param name="type">Type</param>
             <param name="absolute">Indicates whether generated url should be absolute</param>
+            <param name="addLangParameter">Adds culture specific query parameter to the URL if more than one culture version exists. Default value is true.</param>
         </member>
         <member name="M:CMS.Controls.TransformationHelper.GetFeedName(System.Object,System.Object)">
             <summary>
@@ -9650,11 +9718,6 @@
             Indicates if apply document menu item properties.
             </summary>
         </member>
-        <member name="P:CMS.Controls.CMSAbstractMenuFilterControl.UseItemImagesForHiglightedItem">
-            <summary>
-            Indicates if highlighted images is not specified, use item image if exist.
-            </summary>
-        </member>
         <member name="P:CMS.Controls.CMSAbstractMenuFilterControl.UseItemImagesForHighlightedItem">
             <summary>
             Indicates if highlighted images is not specified, use item image if exist.
@@ -9995,7 +10058,7 @@
             <summary>
             Returns a complete HTML code of the image that is specified by the given url.
             </summary>
-            <param name="imageUrl">Image url</param>       
+            <param name="imageUrl">Image URL</param>       
             <param name="maxSideSize">Image max. side size</param>
             <param name="width">Image width</param>
             <param name="height">Image height</param>
@@ -10003,16 +10066,16 @@
         </member>
         <member name="M:CMS.Controls.CMSAbstractTransformation.GetImageByUrl(System.Object,System.Int32)">
             <summary>
-            Returns a complete HTML code of the image that is specified by the given url.
+            Returns a complete HTML code of the image that is specified by the given URL.
             </summary>
-            <param name="imageUrl">Image url</param>
+            <param name="imageUrl">Image URL</param>
             <param name="maxSideSize">Image max. side size</param>
         </member>
         <member name="M:CMS.Controls.CMSAbstractTransformation.GetImageByUrl(System.Object,System.Int32,System.Int32)">
             <summary>
-            Returns a complete HTML code of the image that is specified by the given url.
+            Returns a complete HTML code of the image that is specified by the given URL.
             </summary>
-            <param name="imageUrl">Image url</param>
+            <param name="imageUrl">Image URL</param>
             <param name="width">Image width</param>
             <param name="height">Image height</param>
         </member>
@@ -10058,6 +10121,11 @@
             <param name="urlPath">URL Path</param>
             <param name="siteName">Site name</param>
         </member>
+        <member name="M:CMS.Controls.CMSAbstractTransformation.GetNavigationUrl">
+            <summary>
+            Returns resolved (i.e. absolute) URL of data item (page) that currently being processed. Method reflects page navigation settings.
+            </summary>
+        </member>
         <member name="M:CMS.Controls.CMSAbstractTransformation.GetDateTime(System.String,System.String)">
             <summary>
             Returns date and time in given format.
@@ -10083,12 +10151,12 @@
             </summary>
             <param name="relativeUrl">Relative URL</param>
         </member>
-        <member name="M:CMS.Controls.CMSAbstractTransformation.GetAbsoluteUrl(System.String,System.Int32)">
+        <member name="M:CMS.Controls.CMSAbstractTransformation.GetAbsoluteUrl(System.String,CMS.DataEngine.SiteInfoIdentifier)">
             <summary>
             Returns absolute URL from relative path.
             </summary>
             <param name="relativeUrl">Relative URL</param>
-            <param name="siteId">Site ID</param>
+            <param name="site">Site identifier (name or ID)</param>
         </member>
         <member name="M:CMS.Controls.CMSAbstractTransformation.GetAbsoluteUrl(System.String,System.Object)">
             <summary>
@@ -10096,13 +10164,6 @@
             </summary>
             <param name="relativeUrl">Relative URL</param>
             <param name="siteNameObj">Site name</param>
-        </member>
-        <member name="M:CMS.Controls.CMSAbstractTransformation.GetAbsoluteUrl(System.String,System.String)">
-            <summary>
-            Returns absolute URL from relative path.
-            </summary>
-            <param name="relativeUrl">Relative URL</param>
-            <param name="domainName">Domain name</param>
         </member>
         <member name="M:CMS.Controls.CMSAbstractTransformation.GetNotEmpty(System.Object)">
             <summary>
@@ -10272,13 +10333,6 @@
             <param name="columnName">Column name or expression to get</param>
             <param name="value">Returning value of the evaluation</param>
         </member>
-        <member name="M:CMS.Controls.CMSAbstractTransformation.TryGetDocumentSKUColumn(System.Data.DataRowView,System.String)">
-            <summary>
-            For the given SKU column returns name of its corresponding document column if it exists in the data.
-            </summary>
-            <param name="drv">Data</param>
-            <param name="column">SKU column name</param>
-        </member>
         <member name="M:CMS.Controls.CMSAbstractTransformation.EvalInternal(System.Object,CMS.Base.IHierarchicalObject,System.String,System.Object@)">
             <summary>
             Evaluates the expression on the available data
@@ -10348,6 +10402,19 @@
             Evaluates the item data and converts it to the boolean.
             </summary>
             <param name="columnName">Column name</param>
+        </member>
+        <member name="M:CMS.Controls.CMSAbstractTransformation.RaiseEvaluateHandler(System.Object,System.String,System.Object@)">
+            <summary>
+            Raises handler to handle column evaluation
+            </summary>
+            <param name="data">Data</param>
+            <param name="columnName">Column name to evaluate</param>
+            <param name="value">Output value</param>
+        </member>
+        <member name="M:CMS.Controls.CMSAbstractTransformation.GetSiteName">
+            <summary>
+            Gets site name from data
+            </summary>
         </member>
         <member name="M:CMS.Controls.CMSAbstractTransformation.GetUIImageUrl(System.String)">
             <summary>
@@ -10479,7 +10546,7 @@
         </member>
         <member name="M:CMS.Controls.CMSAbstractTransformation.GetUserAvatarImageUrl(System.Object,System.Object,System.Int32,System.Int32,System.Int32)">
             <summary>
-            Returns avatar image url, if avatar is not defined returns gender depend avatar or user default avatar if is defined.
+            Returns avatar image URL, if avatar is not defined returns gender depend avatar or user default avatar if is defined.
             </summary>
             <param name="avatarID">Avatar ID</param>
             <param name="userID">User ID, load gender avatar for specified user if avatar by avatar id doesn't exist</param>
@@ -10489,7 +10556,7 @@
         </member>
         <member name="M:CMS.Controls.CMSAbstractTransformation.GetUserAvatarImageUrl(System.Object,System.Object,System.String,System.Int32,System.Int32,System.Int32)">
             <summary>
-            Returns avatar image url, if avatar is not defined returns gender depend avatar or user default avatar if is defined.
+            Returns avatar image URL, if avatar is not defined returns gender depend avatar or user default avatar if is defined.
             </summary>
             <param name="avatarID">Avatar ID</param>
             <param name="userID">User ID, load gender avatar for specified user if avatar by avatar id doesn't exist</param>
@@ -10610,11 +10677,12 @@
             </summary>
             <param name="columnName">Column</param>
         </member>
-        <member name="M:CMS.Controls.CMSAbstractTransformation.SearchResultUrl(System.Boolean)">
+        <member name="M:CMS.Controls.CMSAbstractTransformation.SearchResultUrl(System.Boolean,System.Boolean)">
             <summary>
             Returns URL for current search result.
             </summary>
-            <param name="absolute">Indicates whether generated url should be absolute. False by default.</param>
+            <param name="absolute">Indicates whether generated URL should be absolute. False by default.</param>
+            <param name="addLangParameter">Adds culture specific query parameter to the URL if more than one culture version exists. True by default.</param>
         </member>
         <member name="M:CMS.Controls.CMSAbstractTransformation.EvalCDATA(System.String)">
             <summary>
@@ -10689,7 +10757,7 @@
         </member>
         <member name="M:CMS.Controls.CMSAbstractTransformation.AddCurrentCategoryParameter(System.Object)">
             <summary>
-            Appends current category ID to given url.
+            Appends current category ID to given URL.
             </summary>
             <param name="url">URL to add parameter to</param>
         </member>
@@ -12166,13 +12234,6 @@
             <param name="highlightedColumnName">Highlighted image column name</param>
             <param name="isHighlighted">Indicates whether highlighted is preferred</param>
         </member>
-        <member name="M:CMS.Controls.CMSListMenu.GetItemUrl(System.Data.DataRowView,CMS.MacroEngine.MacroResolver)">
-            <summary>
-            Gets item URL
-            </summary>
-            <param name="dr">DataRowView</param>
-            <param name="localResolver">Macro resolver</param>
-        </member>
         <member name="M:CMS.Controls.CMSListMenu.RenderItemInternal(System.Web.UI.HtmlTextWriter,System.Int32,System.Int32)">
             <summary>
             Render current level items
@@ -12304,204 +12365,6 @@
         <member name="P:CMS.Controls.CMSListMenu.EncodeMenuCaption">
             <summary>
             Indicates if menu caption should be HTML encoded.
-            </summary>
-        </member>
-        <member name="T:CMS.Controls.CMSMenu">
-            <summary>
-            Menu control that can be bounded to the CMS content.
-            </summary>
-        </member>
-        <member name="F:CMS.Controls.CMSMenu.mMenu">
-            <summary>
-            Menu object.
-            </summary>
-        </member>
-        <member name="F:CMS.Controls.CMSMenu.mHighlightedMenuItem">
-            <summary>
-            Currently highlighted menu item.
-            </summary>
-        </member>
-        <member name="F:CMS.Controls.CMSMenu.mClass">
-            <summary>
-            CSS class.
-            </summary>
-        </member>
-        <member name="F:CMS.Controls.CMSMenu.mFilterName">
-            <summary>
-            Filter name.
-            </summary>
-        </member>
-        <member name="F:CMS.Controls.CMSMenu.mFilterControl">
-            <summary>
-            Filter control.
-            </summary>
-        </member>
-        <member name="F:CMS.Controls.CMSMenu.mLocalResolver">
-            <summary>
-            Local macro resolver.
-            </summary>
-        </member>
-        <member name="M:CMS.Controls.CMSMenu.#ctor">
-            <summary>
-            Constructor.
-            </summary>
-        </member>
-        <member name="M:CMS.Controls.CMSMenu.OnLoad(System.EventArgs)">
-            <summary>
-            Load event handler.
-            </summary>
-        </member>
-        <member name="M:CMS.Controls.CMSMenu.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Renders the control.
-            </summary>
-        </member>
-        <member name="M:CMS.Controls.CMSMenu.InitControl(System.Boolean)">
-            <summary>
-            Ensures default data binding 
-            </summary>
-            <param name="loadPhase">Indicates whether Init is call from Load event</param>
-        </member>
-        <member name="M:CMS.Controls.CMSMenu.CreateChildControls">
-            <summary>
-            Creates child controls collection.
-            </summary>
-        </member>
-        <member name="M:CMS.Controls.CMSMenu.ReloadData(System.Boolean)">
-            <summary>
-            Reloads the menu data.
-            </summary>
-        </member>
-        <member name="M:CMS.Controls.CMSMenu.AddMenuItemSeparator(CMS.skmMenuControl.Menu)">
-            <summary>
-            Add separator to the menu in top level.
-            </summary>
-            <param name="menuObject">Created menu</param>
-        </member>
-        <member name="M:CMS.Controls.CMSMenu.GetMinNodeLevel(System.Data.DataSet)">
-            <summary>
-            Returns minimum NodeLevel of all nodes in the provided dataset.
-            </summary>
-            <param name="menuItemsDS">Dataset containing all nodes at all levels</param>
-        </member>
-        <member name="M:CMS.Controls.CMSMenu.ProcessMainMenuItemDR(CMS.skmMenuControl.Menu,CMS.Base.ISimpleDataContainer,CMS.Base.IGroupedData,System.String)">
-            <summary>
-            Creates menu items at the top level.
-            </summary>
-            <param name="menuObject">Menu object</param>
-            <param name="newItemDR">Data row containing menu item description</param>
-            <param name="menuItemsDS">Grouped data source containing all menu items at all levels</param>
-            <param name="cssPostfix">Css postfix, used with UseAlternatingStyles</param>
-        </member>
-        <member name="M:CMS.Controls.CMSMenu.ProcessSubItem(CMS.skmMenuControl.MenuItem,CMS.Base.ISimpleDataContainer,CMS.Base.IGroupedData,System.Int32,CMS.skmMenuControl.Menu)">
-            <summary>
-            Gets a menu item and creates its subitems.
-            </summary>
-            <param name="parentMenuItem">Parent menu item object</param>
-            <param name="parentMenuItemDR">Data row representing parent menu item</param>
-            <param name="menuItemsDS">Grouped data source containing all menu items at all levels</param>
-            <param name="level">Item level</param>
-            <param name="menuObject">Menu control object</param>
-        </member>
-        <member name="M:CMS.Controls.CMSMenu.GetNewMenuItem(CMS.Base.ISimpleDataContainer,System.Int32,System.String)">
-            <summary>
-            Returns a new MenuItem object based on provided data row.
-            </summary>
-            <param name="data">Data containing menu item description</param>
-            <param name="level">Level in indentation</param>
-            <param name="cssPostfix">CssPostfix use with UseAlternatingStyles</param>
-        </member>
-        <member name="M:CMS.Controls.CMSMenu.FilterControl_OnFilterChanged">
-            <summary>
-            Data filter control handler.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.EnableMouseUpDownClass">
-            <summary>
-            Indicates if are assigned classes for mouse down and up.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.EnableRTLBehaviour">
-            <summary>
-            Enable RTL behaviour.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.RenderImageAlt">
-            <summary>
-            Render the image alt attribute?
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.RenderItemName">
-            <summary>
-            Indicates if ItemName attribute should be rendered.
-            </summary>
-            <remarks>If you switch this property to true, the resulting HTML code will not be valid.</remarks>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.HighlightedNodePath">
-            <summary>
-            Path of the item that will be highlighted like it was selected. If you omit this value, the control automatically uses the current alias path from the "aliaspath" querystring parameter.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.HighlightedMenuItem">
-            <summary>
-            Highlighted menu item. You can use it to set its style.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.MenuControl">
-            <summary>
-            Menu (skmMenu) control that ensures rendering.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.Layout">
-            <summary>
-            Represents Layout for menu (skmMenu) control.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.Cursor">
-            <summary>Represents Cursor for menu (skmMenu) control.</summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.Padding">
-            <summary>Padding of the CMSMenu table.</summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.Spacing">
-            <summary>Spacing of the CMSMenu table.</summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.ExternalScriptPath">
-            <summary>Path of the external .js file with skmMenu scripts. The default path is ~/cmsscripts/skmmenu.js.</summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.SeparatorText">
-            <summary>
-            Menu item separator text for top level of the menu.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.SeparatorCssClass">
-            <summary>
-            Menu item separator CSS class for top level of the menu.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.SeparatorHeight">
-            <summary>
-            Menu item separator height for top level of the menu.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.FilterControl">
-            <summary>
-            Filter control.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.FilterName">
-            <summary>
-            Gets or Set filter name.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.EncodeMenuCaption">
-            <summary>
-            Indicates if menu caption should be HTML encoded.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSMenu.LocalResolver">
-            <summary>
-            Local instance of macro resolver.
             </summary>
         </member>
         <member name="T:CMS.Controls.CMSSearchDialog">
@@ -13695,11 +13558,6 @@
         <member name="P:CMS.Controls.CMSTreeView.StopProcessing">
              <summary>
              Stop processing.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeView.UseItemImagesForHiglightedItem">
-            <summary>
-            Indicates if highlighted images is not specified, use item image if exist.
             </summary>
         </member>
         <member name="P:CMS.Controls.CMSTreeView.UseItemImagesForHighlightedItem">
@@ -15576,11 +15434,6 @@
             Control for rendering google sitemap specific XML.
             </summary>
         </member>
-        <member name="M:CMS.Controls.GoogleSitemap.#ctor">
-            <summary>
-            Constructor.
-            </summary>
-        </member>
         <member name="M:CMS.Controls.GoogleSitemap.OnLoad(System.EventArgs)">
             <summary>
             Reloads data.
@@ -16076,11 +15929,6 @@
             Indicates if apply document menu item properties.
             </summary>
         </member>
-        <member name="P:CMS.Controls.CMSTabControl.UseItemImagesForHiglightedItem">
-            <summary>
-            Indicates if highlighted images is not specified, use item image if exist.
-            </summary>
-        </member>
         <member name="P:CMS.Controls.CMSTabControl.UseItemImagesForHighlightedItem">
             <summary>
             Indicates if highlighted images is not specified, use item image if exist.
@@ -16227,190 +16075,6 @@
             Gets or Set filter name.
             </summary>
         </member>
-        <member name="T:CMS.Controls.CMSTreeMenu">
-            <summary>
-            CMSTreeMenu class.
-            </summary>
-        </member>
-        <member name="F:CMS.Controls.CMSTreeMenu.mRenderedHTML">
-            <summary>
-            Rendered HTML code.
-            </summary>
-        </member>
-        <member name="F:CMS.Controls.CMSTreeMenu.mFilterName">
-            <summary>
-            Filter name.
-            </summary>
-        </member>
-        <member name="F:CMS.Controls.CMSTreeMenu.mFilterControl">
-            <summary>
-            Filter control.
-            </summary>
-        </member>
-        <member name="F:CMS.Controls.CMSTreeMenu.mRenderEmptyStyleTag">
-            <summary>
-            Whether render empty style tag.
-            </summary>        
-        </member>
-        <member name="M:CMS.Controls.CMSTreeMenu.ReloadData(System.Boolean)">
-            <summary>
-            Reload data.
-            </summary>
-            <param name="forceReload">If is true data will be always loaded</param>
-        </member>
-        <member name="M:CMS.Controls.CMSTreeMenu.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Renders the control.
-            </summary>
-        </member>
-        <member name="M:CMS.Controls.CMSTreeMenu.InitControl(System.Boolean)">
-            <summary>
-            Ensures default data binding 
-            </summary>
-            <param name="loadPhase">Indicates whether Init is call from Load event</param>
-        </member>
-        <member name="M:CMS.Controls.CMSTreeMenu.OnLoad(System.EventArgs)">
-            <summary>
-            OnLoad.
-            </summary>
-        </member>
-        <member name="M:CMS.Controls.CMSTreeMenu.GetItems(System.Int32,System.Int32)">
-            <summary>
-            Returns source code of items under specified parent node.
-            </summary>
-            <param name="nodeParentId">Parent Node ID</param>
-            <param name="indentLevel">Indent level</param>
-        </member>
-        <member name="M:CMS.Controls.CMSTreeMenu.AddStyle(System.Data.DataRow,System.Boolean)">
-            <summary>
-            Add style from DataRow.
-            </summary>
-        </member>
-        <member name="M:CMS.Controls.CMSTreeMenu.FilterControl_OnFilterChanged">
-            <summary>
-            Data filter control handler.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.RenderEmptyStyleTag">
-            <summary>
-            Whether render empty style tag.
-            </summary> 
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.GenerateAllSubItems">
-            <summary>
-            Indicates whether all sub-items should be generated.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.RenderSubItems">
-            <summary>
-            Indicates whether under selected item should be rendered sub-items.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.RenderedHTML">
-            <summary>
-            Gets or set rendered HTML code.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.LoadDataAutomaticaly">
-            <summary>
-            Indicates if data will be loaded automatically.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.RenderImageAlt">
-            <summary>
-            Render the image alt attribute?
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.CollapseSelectedNodeOnClick">
-            <summary>
-            Indicates if the selected section of menu should be collapsed when it's clicked.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.GenerateIndentationInsideLink">
-            <summary>
-            Indicates if indentation spaces should be generated inside hyperlink (true) or outside (false). This applies only when you do not use images in the menu.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.GenerateOnlyOuterLink">
-            <summary>
-            Indicates if only one outer link should be generated per each menu item.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.DisplayHighlightedItemAsLink">
-            <summary>
-            Indicates if the highlighted item should be displayed as a link.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.ItemIdPrefix">
-            <summary>
-            Item ID prefix.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.OnMouseOutScript">
-            <summary>
-            OnMouseOutScript script for menu items. You can use macro expressions here.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.OnMouseOverScript">
-            <summary>
-            OnMouseOver script for menu items. You can use macro expressions here.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.Indentation">
-            <summary>
-            Indentation of menu item levels. Number of spaces that will be placed before each level of menu items.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.UrlTarget">
-            <summary>
-            Specifies target frame for all URLs.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.HighlightedNodePath">
-            <summary>
-            Path of the item that will be highlighted like it was selected. If you omit this value, the control automatically uses the current alias path from the "aliaspath" querystring parameter.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.MenuItemImageUrl">
-            <summary>
-            URL address of the image that is displayed next to menu items. It may start with "~/" representing the virtual path of the current application.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.MenuItemOpenImageUrl">
-            <summary>
-            URL address of the image that is displayed next to open menu items. It may start with "~/" representing the virtual path of the current application.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.CellSpacing">
-            <summary>
-            Cell spacing of the table representing menu.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.CellPadding">
-            <summary>
-            Cell padding of the table representing menu.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.RenderLinkTitle">
-            <summary>
-            Render the link title attribute?
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.FilterControl">
-            <summary>
-            Filter control.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.FilterName">
-            <summary>
-            Gets or Set filter name.
-            </summary>
-        </member>
-        <member name="P:CMS.Controls.CMSTreeMenu.EncodeMenuCaption">
-            <summary>
-            Indicates if menu caption should be HTML encoded.
-            </summary>
-        </member>
         <member name="T:CMS.Controls.CMSMenuProperties">
             <summary>
             Base menu controls properties.
@@ -16435,11 +16099,6 @@
         <member name="F:CMS.Controls.CMSViewer.mNoData">
             <summary>
             When DataSource is empty NoData  = true.
-            </summary>
-        </member>
-        <member name="M:CMS.Controls.CMSViewer.#ctor">
-            <summary>
-            Constructor.
             </summary>
         </member>
         <member name="M:CMS.Controls.CMSViewer.Render(System.Web.UI.HtmlTextWriter)">

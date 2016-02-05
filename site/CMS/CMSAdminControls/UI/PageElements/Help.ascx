@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_PageElements_Help"
-    Codebehind="Help.ascx.cs" EnableViewState="false" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_PageElements_Help"
+     Codebehind="Help.ascx.cs" EnableViewState="false" %>
 
 <asp:HyperLink runat="server" ID="lnkHelp" CssClass="hidden" Target="_blank">
     <asp:PlaceHolder runat="server" ID="plcIcon">

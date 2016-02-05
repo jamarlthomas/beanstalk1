@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -58,7 +58,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_LinkedDocs : CMSPrope
         gridDocs.OnAction += gridDocs_OnAction;
         gridDocs.OnDataReload += gridDocs_OnDataReload;
         gridDocs.ShowActionsMenu = true;
-        gridDocs.Columns = "NodeAliasPath, SiteName, NodeParentID, DocumentName, DocumentNamePath, ClassDisplayName";
+        gridDocs.Columns = "NodeAliasPath, NodeSiteID, NodeParentID, DocumentName, DocumentNamePath, ClassDisplayName";
 
         // Get all possible columns to retrieve
         gridDocs.AllColumns = SqlHelper.JoinColumnList(ObjectTypeManager.GetColumnNames(PredefinedObjectType.NODE, PredefinedObjectType.DOCUMENTLOCALIZATION));
@@ -88,7 +88,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_LinkedDocs : CMSPrope
             }
 
             // Get the documents
-            columns = SqlHelper.MergeColumns(TreeProvider.SELECTNODES_REQUIRED_COLUMNS, columns);
+            columns = SqlHelper.MergeColumns(DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS, columns);
             DataSet nodes = DocumentManager.Tree.SelectNodes(TreeProvider.ALL_SITES, "/%", TreeProvider.ALL_CULTURES, true, null, "(NodeID = " + linkedNodeId + " AND NodeLinkedNodeID IS NULL) OR NodeLinkedNodeID = " + linkedNodeId, "NodeAliasPath ASC", -1, false, gridDocs.TopN, columns);
             if (!DataHelper.DataSourceIsEmpty(nodes) && (nodes.Tables[0].Rows.Count > 1))
             {
@@ -166,7 +166,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_LinkedDocs : CMSPrope
                     data = (DataRowView)parameter;
 
                     string name = ValidationHelper.GetString(data["NodeAliasPath"], "");
-                    string siteName = ValidationHelper.GetString(data["SiteName"], "");
+                    string siteName = SiteInfoProvider.GetSiteName(ValidationHelper.GetInteger(data["NodeSiteID"], 0));
                     int currentNodeId = ValidationHelper.GetInteger(data["NodeID"], 0);
                     int currentNodeParentId = ValidationHelper.GetInteger(data["NodeParentID"], 0);
 
@@ -184,7 +184,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_LinkedDocs : CMSPrope
                     bool isLink = (data["NodeLinkedNodeID"] != DBNull.Value);
                     if ((sender != null) && isLink)
                     {
-                        result += DocumentHelper.GetDocumentMarkImage(this, DocumentMarkEnum.Link);
+                        result += DocumentUIHelper.GetDocumentMarkImage(this, DocumentMarkEnum.Link);
                     }
 
                     return result;
@@ -193,20 +193,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_LinkedDocs : CMSPrope
             case "documentnametooltip":
                 data = (DataRowView)parameter;
                 return UniGridFunctions.DocumentNameTooltip(data);
-
-            case "sitename":
-                {
-                    string siteName = (string)parameter;
-                    SiteInfo si = SiteInfoProvider.GetSiteInfo(siteName);
-                    if (si != null)
-                    {
-                        return HTMLHelper.HTMLEncode(si.DisplayName);
-                    }
-                    else
-                    {
-                        return parameter;
-                    }
-                }
 
             case "deleteaction":
                 {

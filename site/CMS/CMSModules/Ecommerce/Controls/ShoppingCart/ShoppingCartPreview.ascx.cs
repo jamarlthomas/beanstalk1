@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web.UI.WebControls;
 
@@ -44,7 +44,7 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartPrev
         // Load company address
         if (ShoppingCart.ShoppingCartCompanyAddress != null)
         {
-            lblCompany.Text = OrderInfoProvider.GetAddress(ShoppingCart.ShoppingCartCompanyAddress);
+            lblCompany.Text = GetAddressHTML(ShoppingCart.ShoppingCartCompanyAddress);
             mAddressCount++;
             tdCompanyAddress.Visible = true;
         }
@@ -160,7 +160,7 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartPrev
     /// <param name="address">Billing address</param>
     protected void FillBillingAddressForm(IAddress address)
     {
-        lblBill.Text = OrderInfoProvider.GetAddress(address);
+        lblBill.Text = GetAddressHTML(address);
     }
 
 
@@ -170,7 +170,7 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartPrev
     /// <param name="address">Shipping address</param>
     protected void FillShippingAddressForm(IAddress address)
     {
-        lblShip.Text = OrderInfoProvider.GetAddress(address);
+        lblShip.Text = GetAddressHTML(address);
     }
 
 
@@ -180,7 +180,9 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartPrev
     public override void ButtonBackClickAction()
     {
         // Save the values to ShoppingCart ViewState
-        ShoppingCartControl.SetTempValue(ORDER_NOTE, txtNote.Text);
+        string note = TextHelper.LimitLength(txtNote.Text.Trim(), txtNote.MaxLength);
+
+        ShoppingCartControl.SetTempValue(ORDER_NOTE, note);
 
         base.ButtonBackClickAction();
     }
@@ -237,7 +239,7 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartPrev
 
         // Deal with order note
         ShoppingCartControl.SetTempValue(ORDER_NOTE, null);
-        ShoppingCart.ShoppingCartNote = txtNote.Text.Trim();
+        ShoppingCart.ShoppingCartNote = TextHelper.LimitLength(txtNote.Text.Trim(), txtNote.MaxLength);
 
         try
         {
@@ -437,4 +439,78 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartPrev
             return HTMLHelper.HTMLEncode(name);
         }
     }
+
+
+    #region "Address formatting"
+
+    /// <summary>
+    /// Returns html code that represents address. Used for generating of invoice.
+    /// </summary>
+    /// <param name="address">Address to be formatted</param>
+    private string GetAddressHTML(IAddress address)
+    {
+        if (address == null)
+        {
+            return string.Empty;
+        }
+
+        var sb = new StringBuilder();
+
+        // Personal name
+        sb.Append("<table class=\"TextLeft\">\n");
+        sb.Append("<tr><td>");
+        sb.Append(HTMLHelper.HTMLEncode(address.AddressPersonalName));
+        sb.Append("</td></tr>\n");
+
+        // Line 1
+        if (address.AddressLine1 != "")
+        {
+            sb.Append("<tr><td>");
+            sb.Append(HTMLHelper.HTMLEncode(address.AddressLine1));
+            sb.Append("</td></tr>\n");
+        }
+
+        // Line 2
+        if (address.AddressLine2 != "")
+        {
+            sb.Append("<tr><td>");
+            sb.Append(HTMLHelper.HTMLEncode(address.AddressLine2));
+            sb.Append("</td></tr>\n");
+        }
+
+        // City + (State) + Postal Code
+        sb.Append("<tr><td>");
+        sb.Append(HTMLHelper.HTMLEncode(address.AddressCity));
+
+        var state = StateInfoProvider.GetStateInfo(address.AddressStateID);
+        if (state != null)
+        {
+            sb.Append(", ");
+            sb.Append(HTMLHelper.HTMLEncode(ResHelper.LocalizeString(state.StateDisplayName)));
+        }
+
+        sb.Append(" ");
+        sb.Append(HTMLHelper.HTMLEncode(address.AddressZip));
+        sb.Append("</td></tr>\n");
+
+        // Country
+        var country = CountryInfoProvider.GetCountryInfo(address.AddressCountryID);
+        if (country != null)
+        {
+            sb.Append("<tr><td>");
+            sb.Append(HTMLHelper.HTMLEncode(ResHelper.LocalizeString(country.CountryDisplayName)));
+            sb.Append("</td></tr>\n");
+        }
+
+        // Phone
+        sb.Append("<tr><td>");
+        sb.Append(HTMLHelper.HTMLEncode(address.AddressPhone));
+        sb.Append("</td></tr>\n");
+
+        sb.Append("</table>");
+
+        return sb.ToString();
+    }
+
+    #endregion
 }

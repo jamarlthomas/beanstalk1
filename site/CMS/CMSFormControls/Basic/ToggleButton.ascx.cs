@@ -1,21 +1,25 @@
 ﻿using System;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Collections;
 
-using CMS.FormControls;
-using CMS.FormEngine;
-using CMS.Helpers;
 using CMS.Base;
+using CMS.EventLog;
+using CMS.FormControls;
+using CMS.Helpers;
 using CMS.PortalControls;
 using CMS.DataEngine;
 
 public partial class CMSFormControls_Basic_ToggleButton : FormEngineUserControl
 {
+    #region "Constants"
+
+    private const string EVENT_SOURCE = "Toggle button";
+    private const string EVENT_CODE = "UNSUPPORTEDVALUE";
+
+    #endregion
+
+
     #region "Variables"
 
-    protected object innerValue = null;
+    private object mInnerValue;
 
     #endregion
 
@@ -62,7 +66,7 @@ public partial class CMSFormControls_Basic_ToggleButton : FormEngineUserControl
             }
             else
             {
-                innerValue = value;
+                mInnerValue = value;
             }
         }
     }
@@ -318,9 +322,79 @@ public partial class CMSFormControls_Basic_ToggleButton : FormEngineUserControl
                 UncheckedValue = DataHelper.GetNotEmpty(GetValue("UncheckedValue"), "");
             }
 
-            string innerValueString = ValidationHelper.GetString(innerValue, null);
-            checkbox.Checked = CMSString.Equals(CheckedValue.ToString(), innerValueString);
+            if (FieldInfo.DataType == FieldDataType.Decimal)
+            {
+                HandleDecimalValue();
+                return;
+            }
+
+            if (FieldInfo.DataType == FieldDataType.Double)
+            {
+                HandleDoubleValue();
+                return;
+            }
+
+            HandleStringValue();
         }
+    }
+
+
+    /// <summary>
+    /// Compares inner decimal value with checked value and sets the check box accordingly.
+    /// </summary>
+    private void HandleDecimalValue()
+    {
+        try
+        {
+            // Number of decimal digits could vary depending on field precision.
+            var innerValueDecimal = Convert.ToDecimal(mInnerValue);
+            var checkedValueDecimal = Convert.ToDecimal(CheckedValue);
+
+            checkbox.Checked = checkedValueDecimal == innerValueDecimal;
+        }
+        catch (Exception e)
+        {
+            LogException(e);
+        }
+    }
+
+
+    /// <summary>
+    /// Compares inner double value with checked value and sets the check box accordingly.
+    /// </summary>
+    private void HandleDoubleValue()
+    {
+        try
+        {
+            // Number of double digits could vary depending on field precision.
+            var innerValueDouble = Convert.ToDouble(mInnerValue);
+            var checkedValueDouble = Convert.ToDouble(CheckedValue);
+
+            checkbox.Checked = (Math.Abs(checkedValueDouble - innerValueDouble) < Double.Epsilon);
+        }
+        catch (Exception e)
+        {
+            LogException(e);
+        }
+    }
+
+
+    /// <summary>
+    /// Compares inner string value with checked value and sets the check box accordingly.
+    /// </summary>
+    private void HandleStringValue()
+    {
+        var innerValueString = ValidationHelper.GetString(mInnerValue, null);
+        checkbox.Checked = CMSString.Equals(CheckedValue.ToString(), innerValueString);
+    }
+
+
+    /// <summary>
+    /// Logs given exception into event log.
+    /// </summary>
+    private static void LogException(Exception e)
+    {
+        EventLogProvider.LogException(EVENT_SOURCE, EVENT_CODE, e);
     }
 
 

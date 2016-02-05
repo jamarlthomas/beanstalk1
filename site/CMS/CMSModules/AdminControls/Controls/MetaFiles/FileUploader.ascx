@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_AdminControls_Controls_MetaFiles_FileUploader" Codebehind="FileUploader.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_AdminControls_Controls_MetaFiles_FileUploader"  Codebehind="FileUploader.ascx.cs" %>
 
 <script type="text/javascript">
 <!--

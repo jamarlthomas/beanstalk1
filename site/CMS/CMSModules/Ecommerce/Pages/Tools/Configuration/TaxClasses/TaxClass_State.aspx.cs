@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Data;
 using System.Web.UI.WebControls;
@@ -17,9 +17,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_TaxClasses_T
 
     private int taxClassId;
     private int countryId;
-    private string currencyCode = "";
     private readonly Hashtable changedTextBoxes = new Hashtable();
-    private readonly Hashtable changedCheckBoxes = new Hashtable();
 
     #endregion
 
@@ -28,8 +26,6 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_TaxClasses_T
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        ScriptHelper.RegisterJQuery(this);
-
         // Check UI element
         CheckUIElementAccessHierarchical(ModuleName.ECOMMERCE, IsMultiStoreConfiguration ? "Tools.Ecommerce.StatesTaxClasses" : "Configuration.TaxClasses.States");
 
@@ -43,11 +39,6 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_TaxClasses_T
         {
             // Check site id of tax class
             CheckEditedObjectSiteID(taxClass.TaxClassSiteID);
-
-            currencyCode = CurrencyInfoProvider.GetMainCurrencyCode(taxClass.TaxClassSiteID);
-
-            // Check presence of main currency
-            CheckMainCurrency(taxClass.TaxClassSiteID);
         }
 
         if (!RequestHelper.IsPostBack())
@@ -62,26 +53,12 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_TaxClasses_T
         gvStates.Columns[0].HeaderText = GetString("taxclass_state.gvstates.state");
         gvStates.Columns[1].HeaderText = GetString("Code");
         gvStates.Columns[2].HeaderText = GetString("taxclass_state.gvstates.value");
-        gvStates.Columns[3].HeaderText = GetString("taxclass_state.gvstates.isflat");
-        gvStates.Columns[4].HeaderText = GetString("StateId");
+        gvStates.Columns[3].HeaderText = GetString("StateId");
 
         LoadGridViewData();
 
-        // Init scripts
-        string currencySwitchScript = string.Format(@"
-function switchCurrency(isFlatValue, labelId){{
-  if(isFlatValue)
-  {{
-    $cmsj('#' + labelId).html('{0}');
-  }}else{{
-    $cmsj('#' + labelId).html('%');
-  }}
-}}", ScriptHelper.GetString(HTMLHelper.HTMLEncode(currencyCode), false));
-        ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "CurrencySwitch", currencySwitchScript, true);
-        ScriptHelper.RegisterStartupScript(this, typeof(string), "InitializeGrid", "$cmsj('input[id*=\"chkIsFlatValue\"]').change();", true);
-
         // Set header actions
-        CurrentMaster.HeaderActions.AddAction(new SaveAction(this));
+        CurrentMaster.HeaderActions.AddAction(new SaveAction());
         CurrentMaster.HeaderActions.ActionPerformed += HeaderActions_ActionPerformed;
         CurrentMaster.DisplaySiteSelectorPanel = true;
     }
@@ -120,31 +97,17 @@ function switchCurrency(isFlatValue, labelId){{
     {
         foreach (GridViewRow row in gvStates.Rows)
         {
-            // Copy id from 5th column to invisible label in last column
+            // Copy id from StateID column to invisible label in last column
             Label id = new Label();
             id.Visible = false;
-            id.Text = row.Cells[4].Text;
-            row.Cells[4].Controls.Add(id);
+            id.Text = row.Cells[3].Text;
+            row.Cells[3].Controls.Add(id);
 
             // Set unique text box ID
             TextBox txtValue = ControlsHelper.GetChildControl(row, typeof(TextBox), "txtTaxValue") as TextBox;
             if (txtValue != null)
             {
                 txtValue.ID = "txtTaxValue" + id.Text;
-            }
-
-            // Set unique check box ID
-            CMSCheckBox chkIsFlat = ControlsHelper.GetChildControl(row, typeof(CMSCheckBox), "chkIsFlatValue") as CMSCheckBox;
-            if (chkIsFlat != null)
-            {
-                chkIsFlat.ID = "chkIsFlatValue" + id.Text;
-
-                Label lblCurrency = ControlsHelper.GetChildControl(row, typeof(Label), "lblCurrency") as Label;
-                if (lblCurrency != null)
-                {
-                    chkIsFlat.InputAttributes["onclick"] = "switchCurrency(this.checked, '" + lblCurrency.ClientID + "')";
-                    chkIsFlat.InputAttributes["onchange"] = "switchCurrency(this.checked, '" + lblCurrency.ClientID + "')";
-                }
             }
         }
     }
@@ -156,20 +119,15 @@ function switchCurrency(isFlatValue, labelId){{
     }
 
 
-    protected void chkIsFlatValue_Changed(object sender, EventArgs e)
-    {
-        changedCheckBoxes[((CMSCheckBox)sender).ID] = sender;
-    }
-
-
     private void LoadGridViewData()
     {
-        gvStates.Columns[4].Visible = true;
+        // Binding StateID column
+        gvStates.Columns[3].Visible = true;
         countryId = ValidationHelper.GetInteger(drpCountry.SelectedValue, 0);
         DataSet ds = TaxClassStateInfoProvider.GetStatesAndTaxValues(taxClassId, countryId);
         gvStates.DataSource = ds.Tables[0];
         gvStates.DataBind();
-        gvStates.Columns[4].Visible = false;
+        gvStates.Columns[3].Visible = false;
     }
 
 
@@ -187,37 +145,33 @@ function switchCurrency(isFlatValue, labelId){{
         // Loop through states
         foreach (GridViewRow row in gvStates.Rows)
         {
-            Label lblStateId = (Label)row.Cells[4].Controls[0];
+            Label lblStateId = (Label)row.Cells[3].Controls[0];
             int stateId = ValidationHelper.GetInteger(lblStateId.Text, 0);
 
             if (stateId > 0)
             {
                 string stateName = ((Label)row.Cells[0].Controls[1]).Text;
                 TextBox txtValue = (TextBox)row.Cells[2].Controls[1];
-                CMSCheckBox chkIsFlat = (CMSCheckBox)row.Cells[3].Controls[1];
 
-                if ((changedTextBoxes[txtValue.ID] != null) || (changedCheckBoxes[chkIsFlat.ID] != null))
+                if (changedTextBoxes[txtValue.ID] != null)
                 {
                     // Remove state tax information if tax value is empty
                     if (String.IsNullOrEmpty(txtValue.Text))
                     {
                         TaxClassStateInfoProvider.RemoveStateTaxValue(taxClassId, stateId);
-                        chkIsFlat.Checked = false;
                         saved = true;
                     }
                     // Update state tax information if tax value is not empty
                     else
                     {
-                        // Valid percentage or flat tax value
-                        if ((!chkIsFlat.Checked && ValidationHelper.IsInRange(0, 100, ValidationHelper.GetDouble(txtValue.Text, -1))) || (chkIsFlat.Checked && ValidationHelper.IsPositiveNumber(txtValue.Text)))
+                        // Valid percentage tax
+                        if (ValidationHelper.IsInRange(0, 100, ValidationHelper.GetDouble(txtValue.Text, -1)))
                         {
                             TaxClassStateInfo stateInfo = TaxClassStateInfoProvider.GetTaxClassStateInfo(taxClassId, stateId);
                             stateInfo = stateInfo ?? new TaxClassStateInfo();
-
                             stateInfo.StateID = stateId;
                             stateInfo.TaxClassID = taxClassId;
                             stateInfo.TaxValue = ValidationHelper.GetDouble(txtValue.Text, 0);
-                            stateInfo.IsFlatValue = chkIsFlat.Checked;
 
                             TaxClassStateInfoProvider.SetTaxClassStateInfo(stateInfo);
                             saved = true;

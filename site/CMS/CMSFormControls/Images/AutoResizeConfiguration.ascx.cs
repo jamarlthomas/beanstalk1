@@ -1,5 +1,4 @@
-using System;
-using System.Text;
+﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -20,14 +19,13 @@ public partial class CMSFormControls_Images_AutoResizeConfiguration : FormEngine
     #region "Variables"
 
     private readonly XmlDocument xmlValue = new XmlDocument();
-    private string fieldValue = string.Empty;
     protected string dimensions = string.Empty;
+    private bool? mAutoresizeHashTable;
 
     #endregion
 
 
     #region "Private properties"
-
 
     /// <summary>
     /// Indicates if values are saved in settings hash table or in xml format in value.
@@ -36,14 +34,14 @@ public partial class CMSFormControls_Images_AutoResizeConfiguration : FormEngine
     {
         get
         {
-            if (Form != null)
+            if ((mAutoresizeHashTable == null) && (Form != null))
             {
                 if (ContainsColumn("autoresize_hashtable"))
                 {
                     object val = Form.GetDataValue("autoresize_hashtable");
                     if (val != null)
                     {
-                        return ValidationHelper.GetBoolean(val, false);
+                        mAutoresizeHashTable = ValidationHelper.GetBoolean(val, false);
                     }
                 }
 
@@ -52,12 +50,17 @@ public partial class CMSFormControls_Images_AutoResizeConfiguration : FormEngine
                     FormFieldInfo ffi = Form.FormInformation.GetFormField("autoresize_hashtable");
                     if (ffi != null)
                     {
-                        return ValidationHelper.GetBoolean(ffi.DefaultValue, false);
+                        mAutoresizeHashTable = ValidationHelper.GetBoolean(ffi.DefaultValue, false);
                     }
                 }
             }
 
-            return false;
+            if (mAutoresizeHashTable == null)
+            {
+                mAutoresizeHashTable = false;
+            }
+
+            return mAutoresizeHashTable.Value;
         }
     }
 
@@ -93,29 +96,25 @@ public partial class CMSFormControls_Images_AutoResizeConfiguration : FormEngine
     {
         get
         {
-            // Return data form hashtable
-            if (AutoresizeHashTable)
-            {
-                return drpSettings.SelectedValue;
-            }
-            // Return XML data
-            else
-            {
-                return UpdateConfiguration(xmlValue);
-            }
+            // Return data form hashtable or XML data
+            return AutoresizeHashTable ? drpSettings.SelectedValue : UpdateConfiguration(xmlValue);
         }
         set
         {
-            string strValue = ValidationHelper.GetString(value, string.Empty);
+            EnsureChildControls();
 
-            // Try to load data from XML
+            string strValue = ValidationHelper.GetString(value, string.Empty);
+            
             if (AutoresizeHashTable)
             {
-                fieldValue = strValue;
+                // Provided data are not in XML format
+                drpSettings.SelectedValue = strValue;
+
+                LoadOtherValues();
             }
-            // Provided data are not in XML format
             else
             {
+                // Try to load data from XML
                 try
                 {
                     xmlValue.LoadXml(strValue);
@@ -133,8 +132,10 @@ public partial class CMSFormControls_Images_AutoResizeConfiguration : FormEngine
 
     #region "Methods"
 
-    protected void Page_Load(object sender, EventArgs e)
+    protected override void CreateChildControls()
     {
+        base.CreateChildControls();
+
         if (!StopProcessing)
         {
             // Load drop-down list
@@ -143,16 +144,7 @@ public partial class CMSFormControls_Images_AutoResizeConfiguration : FormEngine
                 drpSettings.Items.Add(new ListItem("dialogs.resize.donotresize", "noresize"));
                 drpSettings.Items.Add(new ListItem("dialogs.resize.usesitesettings", string.Empty));
                 drpSettings.Items.Add(new ListItem("dialogs.resize.usecustomsettings", "custom"));
-                drpSettings.SelectedValue = fieldValue;
             }
-
-            // Registred scripts
-            ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "AutoResize_EnableDisableForm", GetScriptEnableDisableForm());
-            ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "AutoResize_ReceiveDimensions", GetScriptReceiveDimensions());
-            ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "AutoResize_LoadSiteSettings", ScriptHelper.GetScript("function GetDimensions(txtWidthID, txtHeightID, txtMaxID){ return " + Page.ClientScript.GetCallbackEventReference(this, "txtWidthID + ';' + txtHeightID + ';' + txtMaxID", "ReceiveDimensions", null) + " } \n"));
-
-            // Initialize form
-            drpSettings.Attributes.Add("onchange", GetEnableDisableFormDefinition());
         }
         else
         {
@@ -165,10 +157,15 @@ public partial class CMSFormControls_Images_AutoResizeConfiguration : FormEngine
     {
         base.OnPreRender(e);
 
-        LoadOtherValues();
-
         if (base.Enabled)
         {
+            // Register scripts
+            ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "AutoResize_EnableDisableForm", GetScriptEnableDisableForm());
+            ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "AutoResize_ReceiveDimensions", GetScriptReceiveDimensions());
+            ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "AutoResize_LoadSiteSettings", ScriptHelper.GetScript("function GetDimensions(txtWidthID, txtHeightID, txtMaxID){ return " + Page.ClientScript.GetCallbackEventReference(this, "txtWidthID + ';' + txtHeightID + ';' + txtMaxID", "ReceiveDimensions", null) + " } \n"));
+
+            drpSettings.Attributes.Add("onchange", GetEnableDisableFormDefinition());
+
             ScriptHelper.RegisterStartupScript(this, typeof(string), "EnableDisableFields", ScriptHelper.GetScript(GetEnableDisableFormDefinition()));
         }
     }
@@ -407,7 +404,7 @@ function EnableDisableForm(drpSettingsID, txtWidthID, txtHeightID, txtMaxID){
         int maxSideSize = ValidationHelper.GetInteger(config["AutoResize"]["autoresize_maxsidesize"].InnerText, 0);
         string autoresize = ValidationHelper.GetString(config["AutoResize"]["autoresize"].InnerText, string.Empty);
 
-        fieldValue = autoresize;
+        drpSettings.SelectedValue = autoresize;
         LoadConfiguration(autoresize, width, height, maxSideSize);
     }
 
@@ -452,7 +449,7 @@ function EnableDisableForm(drpSettingsID, txtWidthID, txtHeightID, txtMaxID){
             nodeAutoresize.InnerText = "noresize";
         }
 
-        return config.InnerXml;
+        return config.ToFormattedXmlString(true);
     }
 
 

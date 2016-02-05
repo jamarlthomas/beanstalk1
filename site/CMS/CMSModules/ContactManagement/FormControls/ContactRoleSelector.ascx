@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="ContactRoleSelector.ascx.cs" Inherits="CMSModules_ContactManagement_FormControls_ContactRoleSelector" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="ContactRoleSelector.ascx.cs" Inherits="CMSModules_ContactManagement_FormControls_ContactRoleSelector" %>
 <%@ Register src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" tagname="UniSelector" tagprefix="cms" %>
 
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">

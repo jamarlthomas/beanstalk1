@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.Membership;
@@ -11,10 +11,11 @@ using CMS.DataEngine;
 using CMS.FormEngine;
 using CMS.PortalEngine;
 
-
 public partial class CMSModules_Content_CMSDesk_Properties_Alias_Edit : CMSPropertiesPage
 {
     #region "Private variables"
+
+    private const string PROPERTIES_FOLDER = "~/CMSModules/Content/CMSDesk/Properties/";
 
     protected int aliasId = 0;
     int defaultNodeID;
@@ -101,7 +102,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_Edit : CMSPrope
             HeaderActions.AddAction(new HeaderAction
             {
                 Text = GetString("doc.urls.viewallalias"),
-                OnClientClick = "modalDialog('" + ResolveUrl("~/CMSModules/Content/CMSDesk/Properties/Alias_AliasList.aspx") + "?nodeid=" + NodeID + "&dialog=1" + "','AliasManagement','90%','85%');",
+                OnClientClick = "modalDialog('" + ResolveUrl(PROPERTIES_FOLDER + "Alias_AliasList.aspx") + "?nodeid=" + NodeID + "&dialog=1" + "','AliasManagement','90%','85%');",
                 ButtonStyle = ButtonStyle.Default
             });
         }
@@ -115,7 +116,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_Edit : CMSPrope
             {
                 ShowInformation(String.Format(GetString("cmsdesk.notauthorizedtoeditdocument"), Node.NodeAliasPath));
 
-                usSelectCampaign.Enabled = false;
                 txtURLExtensions.Enabled = false;
 
                 ctrlURL.Enabled = false;
@@ -129,7 +129,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_Edit : CMSPrope
             }
 
             lblDocumentCulture.Text = GetString("general.culture") + ResHelper.Colon;
-            lblTrackCampaign.Text = GetString("doc.urls.trackcampaign") + ResHelper.Colon;
             lblURLExtensions.Text = GetString("doc.urls.urlextensions") + ResHelper.Colon;
 
             // Show path of document alias only if dialog mode edit 
@@ -155,13 +154,11 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_Edit : CMSPrope
                 // Edit existing alias
                 if (DocumentAlias != null && DocumentAlias.AliasID > 0)
                 {
-                    usSelectCampaign.Value = DocumentAlias.AliasCampaign;
-
                     txtURLExtensions.Text = DocumentAlias.AliasExtensions;
                     ctrlURL.URLPath = DocumentAlias.AliasURLPath;
 
                     cultureSelector.Value = DocumentAlias.AliasCulture;
-                    PageBreadcrumbs.Items[1].Text = TreePathUtils.GetURLPathDisplayName(DocumentAlias.AliasURLPath);
+                    PageBreadcrumbs.Items[1].Text = TreePathUtils.GetUrlPathDisplayName(DocumentAlias.AliasURLPath);
 
                     drpAction.SelectedValue = DocumentAlias.AliasActionMode.ToStringRepresentation();
                 }
@@ -187,10 +184,10 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_Edit : CMSPrope
     {
         // Initialize breadcrumbs
         string urls = GetString("Properties.Urls");
-        string urlsUrl = string.Format("~/CMSModules/Content/CMSDesk/Properties/Alias_List.aspx?nodeid={0}&compare=1", defaultNodeID);
+        string urlsUrl = string.Format(PROPERTIES_FOLDER + "Alias_List.aspx?nodeid={0}&compare=1", defaultNodeID);
         string addAlias = GetString("doc.urls.addnewalias");
         string aliasManagement = GetString("content.ui.urlsaliases");
-        string managementUrl = "~/CMSModules/Content/CMSDesk/Properties/Alias_AliasList.aspx?nodeid=" + defaultNodeID;
+        string managementUrl = PROPERTIES_FOLDER + "Alias_AliasList.aspx?nodeid=" + defaultNodeID;
 
         PageBreadcrumbs.Items.Add(new BreadcrumbItem
         {
@@ -210,12 +207,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_Edit : CMSPrope
         if (String.IsNullOrEmpty(ctrlURL.PlainURLPath))
         {
             ShowError(GetString("doc.urls.requiresurlpath"));
-            return;
-        }
-
-        if (!usSelectCampaign.IsValid())
-        {
-            ShowError(GetString("campaign.validcodename"));
             return;
         }
 
@@ -245,7 +236,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_Edit : CMSPrope
             // Set object properties
             DocumentAlias.AliasURLPath = TreePathUtils.GetSafeUrlPath(ctrlURL.URLPath, Node.NodeSiteName);
 
-            DocumentAlias.AliasCampaign = ValidationHelper.GetString(usSelectCampaign.Value, String.Empty).Trim();
             DocumentAlias.AliasExtensions = txtURLExtensions.Text.Trim();
             DocumentAlias.AliasCulture = ValidationHelper.GetString(cultureSelector.Value, "");
             DocumentAlias.AliasSiteID = Node.NodeSiteID;

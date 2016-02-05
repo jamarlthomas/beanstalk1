@@ -36,7 +36,8 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_AliasList : CMS
     {
         // Init unigrid
         ugAlias.WhereCondition = SqlHelper.AddWhereCondition(ugAlias.WhereCondition, "AliasSiteID =" + SiteContext.CurrentSiteID);
-        ugAlias.Columns = "AliasID,NodeName,SiteName,AliasCulture AS DocumentCulture,AliasUrlPath,ClassName,ClassIconClass,AliasExtensions,NodeACLID,NodeSiteID,NodeOwner,NodeAliasPath,CampaignDisplayName,NodeParentID";
+        // Columns NodeSiteID, NodeACLID and NodeOwner are required for permission check. Do not remove them.
+        ugAlias.Columns = "AliasID,NodeName,AliasCulture AS DocumentCulture,AliasUrlPath,ClassName,ClassIconClass,AliasExtensions,NodeAliasPath,NodeParentID,NodeSiteID,NodeACLID,NodeOwner";
         ugAlias.Query = "CMS.DocumentAlias.SelectAllNodes";
         ugAlias.OnAction += UniGridAlias_OnAction;
         ugAlias.OnExternalDataBound += UniGridAlias_OnExternalDataBound;

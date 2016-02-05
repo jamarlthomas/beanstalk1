@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Debug_AllLog"
-    EnableViewState="false" Codebehind="AllLog.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Debug_AllLog"
+    EnableViewState="false"  Codebehind="AllLog.ascx.cs" %>
 <cms:UIGridView runat="server" ID="gridDebug" ShowFooter="true" AutoGenerateColumns="false" CssClass="wrap-normal">
     <Columns>
         <asp:TemplateField>

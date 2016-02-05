@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="AnalyticsLog.aspx.cs" Inherits="CMSModules_WebAnalytics_Pages_Content_AnalyticsLog" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="AnalyticsLog.aspx.cs" Inherits="CMSModules_WebAnalytics_Pages_Content_AnalyticsLog" %>
 
 <!DOCTYPE html>
 

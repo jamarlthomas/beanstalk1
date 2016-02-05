@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="QuickNavigation.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="QuickNavigation.ascx.cs"
     Inherits="CMSModules_Ecommerce_Controls_UI_QuickNavigation" %>
 <asp:Panel ID="pnlWrapper" runat="server" CssClass="QuickNavigation">
     <ul runat="server">

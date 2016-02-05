@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <grid>
   <actions>
+    <action name="#move" caption="$General.DragMove$" fonticonclass="icon-dots-vertical" />
     <action name="edit" caption="$General.Edit$" fonticonclass="icon-edit" fonticonstyle="allow" />
     <action name="#delete" caption="$General.Delete$" fonticonclass="icon-bin" fonticonstyle="critical" confirmation="$general.confirmdelete$" />
-    <action name="#moveup" caption="$Unigrid.Groups.Actions.up$" fonticonclass="icon-chevron-up" />
-    <action name="#movedown" caption="$Unigrid.Groups.Actions.down$" fonticonclass="icon-chevron-down" />
   </actions>
   <columns>
     <column source="GroupDisplayName" caption="$Unigrid.Forums.Columns.GroupName$" wrap="false" localize="true">

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -400,7 +400,7 @@ public partial class CMSModules_Permissions_Controls_PermissionsFilter : CMSAdmi
                     ResourceInfo ri = ResourceInfoProvider.GetResourceInfo(selectedModule);
                     if (ri != null)
                     {
-                        moduleSelector.Value = ri.ResourceId;
+                        moduleSelector.Value = ri.ResourceID;
                     }
                 }
             }

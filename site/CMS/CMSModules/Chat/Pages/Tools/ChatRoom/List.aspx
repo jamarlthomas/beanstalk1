@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Chat room list"
-    Inherits="CMSModules_Chat_Pages_Tools_ChatRoom_List" Theme="Default" Codebehind="List.aspx.cs" %>
+    Inherits="CMSModules_Chat_Pages_Tools_ChatRoom_List" Theme="Default"  Codebehind="List.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Chat/Controls/UI/ChatRoom/List.ascx" TagName="ChatRoomList" TagPrefix="cms" %>
 

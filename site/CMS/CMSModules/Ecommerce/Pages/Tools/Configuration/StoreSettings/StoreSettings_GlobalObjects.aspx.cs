@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.Ecommerce;
@@ -23,7 +23,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_StoreSetting
         CheckUIElementAccessHierarchical(ModuleName.ECOMMERCE, elementName);
 
         // Set up header
-        CurrentMaster.HeaderActions.AddAction(new SaveAction(this));
+        CurrentMaster.HeaderActions.AddAction(new SaveAction());
         CurrentMaster.HeaderActions.ActionPerformed += StoreSettingsActions_ActionPerformed;
 
         // Assign category, group and site ID

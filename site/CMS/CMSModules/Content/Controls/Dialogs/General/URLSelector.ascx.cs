@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -12,7 +12,7 @@ public partial class CMSModules_Content_Controls_Dialogs_General_URLSelector : C
     #region "Properties"
 
     /// <summary>
-    /// Gets or sets the link URL.
+    /// Gets or sets the link URL. If url contains supported protocol, it is set to <see cref="LinkProtocol"/> property.
     /// </summary>
     public string LinkURL
     {
@@ -22,7 +22,7 @@ public partial class CMSModules_Content_Controls_Dialogs_General_URLSelector : C
         }
         set
         {
-            txtUrl.Text = value;
+            txtUrl.Text = ExtractSupportedProtocols(value);
         }
     }
 
@@ -183,6 +183,34 @@ public partial class CMSModules_Content_Controls_Dialogs_General_URLSelector : C
 
             txtUrl.Attributes["onchange"] = "detectUrl('" + txtUrl.ClientID + "','" + drpProtocol.ClientID + "');";
         }
+    }
+
+    #endregion
+
+
+    #region "Methods"
+
+    /// <summary>
+    /// Returns url without supported protocol (protocol is set to Protocol dropdown list). Returns original Url if protocol not specified or not supported.
+    /// </summary>
+    /// <param name="url">Url to extract protocol from.</param>
+    private string ExtractSupportedProtocols(string url)
+    {
+        if(string.IsNullOrEmpty(url))
+        {
+            return url;
+        }
+
+        var shortUrl = URLHelper.RemoveProtocol(url);
+        var protocol = url.Substring(0, url.Length - shortUrl.Length);
+        if ((protocol == "http://") || (protocol == "https://") ||
+            (protocol == "ftp://") || (protocol == "news://"))
+        {
+            LinkProtocol = protocol;
+            return shortUrl;
+        }
+
+        return url;
     }
 
     #endregion

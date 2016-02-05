@@ -48,13 +48,13 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Automation_Process
     protected global::CMSModules_WebAnalytics_Controls_ReportHeader reportHeader;
     
     /// <summary>
-    /// rightHeaderActions control.
+    /// additionalActions control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSAdminControls_UI_PageElements_HeaderActions rightHeaderActions;
+    protected global::CMSAdminControls_UI_PageElements_HeaderActions additionalActions;
     
     /// <summary>
     /// ucReport control.

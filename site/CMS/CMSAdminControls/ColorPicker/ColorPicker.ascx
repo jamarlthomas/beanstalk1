@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_ColorPicker_ColorPicker_Control" Codebehind="ColorPicker.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_ColorPicker_ColorPicker_Control"  Codebehind="ColorPicker.ascx.cs" %>
 <asp:TextBox ID="txtColor" runat="server" ReadOnly="true" CssClass="Color form-control input-width-20" />
 
 <script type="text/javascript">

@@ -1,4 +1,8 @@
-﻿.DebugLog .LogInfo
+﻿.debug {
+    overflow-x: scroll;
+}
+
+.debug-log-info
 {
     display: block;
     padding: 8px;
@@ -9,66 +13,66 @@
     color: #000;
 }
 
-.DebugLog .LogInfo:visited, .DebugLog .LogInfo:active, .DebugLog .LogInfo:hover, .DebugLog .LogInfo:focus
+.debug-log-info:visited, .debug-log-info:active, .debug-log-info:hover, .debug-log-info:focus
 {
     color: #000;
 }
 
-.DebugLog .QueryText
+.debug-log-querytext
 {
     color: #666;
 }
 
-.DebugLog .ContextInfo
+.debug-log-context
 {
     color: #888888;
 }
 
-.DebugLog .Chart
+.debug-log-chart
 {
     border: solid 1px #cccccc;
     height: 10px;
     width: 50px;
 }
 
-.DebugLog .Chart .Inner
+.debug-log-chart-inner
 {
     float: left;
     overflow: hidden;
     height: 10px;
 }
 
-.DebugLog .Chart.Good
+.debug-log-chart-good
 {
     background-color: #bbffbb;
 }
 
-.DebugLog .Chart.Good .Inner
+.debug-log-chart-inner
 {
     background-color: #88dd88;
 }
 
-.DebugLog .Chart.Bad
+.debug-log-chart-bad
 {
     background-color: #ffbbbb;
 }
 
-.DebugLog .Chart.Bad .Inner
+.debug-log-chart-bad .debug-log-chart-inner
 {
     background-color: #ff3333;
 }
 
-.DebugLog .Chart.Warn
+.debug-log-chart-warn
 {
     background-color: #ffcc66;
 }
 
-.DebugLog .Chart.Warn .Inner
+.debug-log-chart-warn .debug-log-chart-inner
 {
     background-color: #ff9900;
 }
 
-.DebugLog .CacheDep
+.debug-log-cachedep
 {
     margin-top: 2px;
     border-top: solid 1px #dddddd;
@@ -76,41 +80,46 @@
     padding-left: 10px;
 }
 
-.DebugLog
+.debug-log
 {
     margin-top: 2px;
     border-top: solid 1px #dddddd;
 }
 
-.DebugLog .LessImportant
+.debug-log-lessimportant
 {
     color: #888;
 }
 
-.DebugLog .Error *
+.debug-log-error *
 {
     color: #f00 !important;
 }
 
-.DebugLog .View
+.debug-log-view
 {
     float: right;
     border: none;
 }
 
-.DebugLog .Yes
+.debug-log-yes
 {
     color: green;
 }
 
-.DebugLog .No
+.debug-log-no
 {
     color: Red;
 }
 
-.DebugLog .Output
+.debug-log-output
 {
     width: 100%;
     height: 530px;
     font-family: "Courier New", monospace;
+}
+
+.debug-log-nav
+{
+    float: right;    
 }

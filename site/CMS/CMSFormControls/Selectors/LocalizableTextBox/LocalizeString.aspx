@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="Localize string" Language="C#" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     AutoEventWireup="true" EnableEventValidation="false" Inherits="CMSFormControls_Selectors_LocalizableTextBox_LocalizeString"
-    Codebehind="LocalizeString.aspx.cs" %>
+     Codebehind="LocalizeString.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Cultures/Controls/UI/ResourceStringEdit.ascx"
     TagName="ResourceStringEdit" TagPrefix="cms" %>

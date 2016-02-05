@@ -1,7 +1,8 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Debug_Debug"
-    Codebehind="Debug.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Debug_Debug"
+     Codebehind="Debug.ascx.cs" %>
+
 <!--LOG-->
-<div class="Debug">
+<cms:CMSPanel runat="server" ID="pnlDebugContainer" CssClass="debug">
     <cms:CMSPlaceholder runat="server" ID="plcDebugs" EnableViewState="false" />
-</div>
+</cms:CMSPanel>
 <!--LOGEND-->

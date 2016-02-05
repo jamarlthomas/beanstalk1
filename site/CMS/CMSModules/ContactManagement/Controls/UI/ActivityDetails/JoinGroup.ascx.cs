@@ -1,4 +1,4 @@
-using CMS.Core;
+﻿using CMS.Core;
 using CMS.DataEngine;
 using CMS.OnlineMarketing;
 using CMS.Base;

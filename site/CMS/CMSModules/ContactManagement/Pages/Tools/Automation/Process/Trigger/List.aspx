@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Codebehind="List.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="List.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Title="Objectworkflowtrigger list" Inherits="CMSModules_ContactManagement_Pages_Tools_Automation_Process_Trigger_List"
     Theme="Default" %>
 
@@ -25,7 +25,7 @@
 <asp:Content ID="cntActions" runat="server" ContentPlaceHolderID="plcActions">
     <cms:CMSUpdatePanel ID="pnlActons" runat="server">
         <ContentTemplate>
-            <div class="control-group-inline">
+            <div class="control-group-inline header-actions-container">
                 <cms:HeaderActions ID="headerActions" runat="server" IsLiveSite="false" />
                 <cms:LocalizedLabel ID="lblWarnNew" runat="server" ResourceString="com.chooseglobalorsite"
                     EnableViewState="false" Visible="false" CssClass="button-explanation-text" />

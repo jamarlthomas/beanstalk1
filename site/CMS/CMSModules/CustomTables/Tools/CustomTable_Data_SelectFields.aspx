@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_CustomTables_Tools_CustomTable_Data_SelectFields" Theme="Default"
-    MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" Title="Custom table data - Select Fields" Codebehind="CustomTable_Data_SelectFields.aspx.cs" %>
+    MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" Title="Custom table data - Select Fields"  Codebehind="CustomTable_Data_SelectFields.aspx.cs" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <asp:PlaceHolder ID="plcContent" runat="server">

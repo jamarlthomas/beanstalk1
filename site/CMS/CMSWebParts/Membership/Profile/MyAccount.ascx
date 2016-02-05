@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Membership_Profile_MyAccount"
-    Codebehind="~/CMSWebParts/Membership/Profile/MyAccount.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Membership_Profile_MyAccount"
+     Codebehind="~/CMSWebParts/Membership/Profile/MyAccount.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Membership/FormControls/Passwords/ChangePassword.ascx" TagName="ChangePassword"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Membership/Controls/MyProfile.ascx" TagName="MyProfile"

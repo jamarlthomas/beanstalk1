@@ -143,7 +143,7 @@ public partial class CMSWebParts_StrandsRecommender_StrandsRecommendations : CMS
 
                 if (CheckForProductPage()) // This template should not be displayed on documents not related with products
                 {
-                    strandsRecs.Attributes.Add("item", CurrentDocument.DocumentID.ToString());
+                    strandsRecs.Attributes.Add("item", CurrentDocument.NodeID.ToString());
                 }
                     
                 break;

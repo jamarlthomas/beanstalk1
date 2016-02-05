@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Friends_Controls_FriendsSearchBox"
-    Codebehind="FriendsSearchBox.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Friends_Controls_FriendsSearchBox"
+     Codebehind="FriendsSearchBox.ascx.cs" %>
 
 <asp:Panel ID="pnlFilter" runat="server" EnableViewState="false" DefaultButton="btnSearch" CssClass="form-horizontal form-filter">
     <div class="form-group">

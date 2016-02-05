@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Content_Controls_Dialogs_Properties_HTMLLinkProperties" Codebehind="HTMLLinkProperties.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Content_Controls_Dialogs_Properties_HTMLLinkProperties"  Codebehind="HTMLLinkProperties.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/General/URLSelector.ascx" TagPrefix="cms"
     TagName="URLSelector" %>

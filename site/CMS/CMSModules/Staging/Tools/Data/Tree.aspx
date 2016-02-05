@@ -1,7 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Staging_Tools_Data_Tree"
-    EnableEventValidation="false" Theme="Default" Codebehind="tree.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Staging_Tools_Data_Tree"
+    EnableEventValidation="false" Theme="Default"  Codebehind="tree.aspx.cs" %>
 
-<%@ Register Src="~/CMSAdminControls/UI/Trees/ObjectTree.ascx" TagName="ObjectTree" TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/Trees/TreeBorder.ascx" TagName="TreeBorder" TagPrefix="cms" %>
 <!DOCTYPE html>
 <html>
@@ -25,17 +24,6 @@
             //<![CDATA[
             var currentNode = document.getElementById('treeSelectedNode');
 
-            // Refresh node action
-            function RefreshNode(nodeId, selectNodeId, selectSiteId) {
-                if (selectNodeId == null) {
-                    selectNodeId = currentNodeId;
-                }
-                if (selectSiteId == null) {
-                    selectSiteId = currentSiteId;
-                }
-                document.location.replace(treeUrl + "?objecttype=" + selectNodeId + "&siteid=" + currentSiteId);
-            }
-
             function SelectNode(objectType, nodeElem) {
                 if ((currentNode != null) && (nodeElem != null)) {
                     currentNode.className = 'ContentTreeItem';
@@ -49,7 +37,6 @@
                     currentNode.className = 'ContentTreeSelectedItem';
                 }
             }
-
             //]]>
         </script>
 

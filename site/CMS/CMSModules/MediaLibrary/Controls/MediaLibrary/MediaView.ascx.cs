@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
@@ -273,16 +273,18 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaView : M
         innermedia.TotalRecords = TotalRecords;
         innermedia.SelectableContent = SelectableContent;
 
-        string gridName = "~/CMSModules/MediaLibrary/Controls/Dialogs/MediaListView.xml";
+        const string MEDIA_DIALOGS_FOLDER = "~/CMSModules/MediaLibrary/Controls/Dialogs/";
+
+        string gridName = MEDIA_DIALOGS_FOLDER + "MediaListView.xml";
         if (!IsCopyMoveLinkDialog && (DisplayMode == ControlDisplayModeEnum.Simple))
         {
             innermedia.DisplayMode = DisplayMode;
-            gridName = "~/CMSModules/MediaLibrary/Controls/Dialogs/MediaListView_UI.xml";
+            gridName = MEDIA_DIALOGS_FOLDER + "MediaListView_UI.xml";
         }
         else if (IsCopyMoveLinkDialog && (DisplayMode == ControlDisplayModeEnum.Simple))
         {
             innermedia.DisplayMode = DisplayMode;
-            gridName = "~/CMSModules/MediaLibrary/Controls/Dialogs/MediaListView_CopyMove.xml";
+            gridName = MEDIA_DIALOGS_FOLDER + "MediaListView_CopyMove.xml";
         }
 
         innermedia.ListViewControl.GridName = gridName;
@@ -354,8 +356,7 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaView : M
     /// <param name="height">Specifies height of the image</param>
     /// <param name="width">Specifies width of the image</param>
     /// <param name="maxSideSize">Specifies maximum size of the image</param>
-    /// <param name="notAttachment">Indicates whether the file is attachment</param>
-    private string GetItemUrlInternal(string argument, IDataContainer data, bool isPreview, int height, int width, int maxSideSize, bool notAttachment)
+    private string GetItemUrlInternal(string argument, IDataContainer data, bool isPreview, int height, int width, int maxSideSize)
     {
         MediaFileInfo mfi = null;
 
@@ -733,14 +734,13 @@ function SetParentAction(argument) {
     /// </summary>
     /// <param name="data">Data object holding information on item</param>
     /// <param name="isPreview">Indicates whether the URL is requested for item preview</param>
-    /// <param name="notAttachment">Indicates whether the file is attachment</param>
-    private string innermedia_GetListItemUrl(IDataContainer data, bool isPreview, bool notAttachment)
+    private string innermedia_GetListItemUrl(IDataContainer data, bool isPreview)
     {
         // Get set of important information
         string arg = GetArgumentSet(data);
 
         // Get item url
-        return GetItemUrlInternal(arg, data, isPreview, 0, 0, 0, notAttachment);
+        return GetItemUrlInternal(arg, data, isPreview, 0, 0, 0);
     }
 
 
@@ -752,59 +752,58 @@ function SetParentAction(argument) {
     /// <param name="height">Image height</param>
     /// <param name="width">Image width</param>
     /// <param name="maxSideSize">Specifies maximum size of the image</param>
-    /// <param name="notAttachment">Indicates whether the file is attachment</param>
-    private IconParameters innermedia_GetThumbsItemUrl(IDataContainer data, bool isPreview, int height, int width, int maxSideSize, bool notAttachment)
+    /// <param name="extension">File extension</param>
+    private IconParameters innermedia_GetThumbsItemUrl(IDataContainer data, bool isPreview, int height, int width, int maxSideSize, string extension)
     {
-        IconParameters parameters = new IconParameters();
+        var parameters = new IconParameters();
 
-        if (LibraryInfo != null)
+        if (LibraryInfo == null)
         {
-            // get argument set
-            string arg = GetArgumentSet(data);
+            return parameters;
+        }
 
-            // Get extension
-            string ext = data.GetValue((data.ContainsColumn("FileExtension") ? "FileExtension" : "Extension")).ToString();
+        // get argument set
+        string arg = GetArgumentSet(data);
+            
+        // If image is requested for preview
+        if (!isPreview)
+        {
+            // Get item URL
+            parameters.Url = GetItemUrlInternal(arg, data, false, height, width, maxSideSize);
 
-            // If image is requested for preview
-            if (isPreview)
+            return parameters;
+        }
+
+        if (extension.ToLowerCSafe() == "<dir>")
+        {
+            parameters.IconClass = "icon-folder";
+        }
+        else
+        {
+            // Check if file has a preview
+            if (!ImageHelper.IsSupportedByImageEditor(extension))
             {
-                if (ext.ToLowerCSafe() == "<dir>")
-                {
-                    parameters.IconClass = "icon-folder";
-                }
-                else
-                {
-                    // Check if file has a preview
-                    if (!ImageHelper.IsSupportedByImageEditor(ext))
-                    {
-                        // File isn't image and no preview exists - get the default file icon
-                        parameters.IconClass = UIHelper.GetFileIconClass(ext);
-                    }
-                    else
-                    {
-                        // Files are obtained from the FS
-                        if (!data.ContainsColumn("FileURL"))
-                        {
-                            parameters.Url = GetItemUrl(arg, true, height, width, maxSideSize);
-                        }
-                        else
-                        {
-                            parameters.IconClass = UIHelper.GetFileIconClass(ext);
-                        }
-                    }
-                }
-
-                // Setup icon size for fon icons
-                if (!string.IsNullOrEmpty(parameters.IconClass))
-                {
-                    parameters.IconSize = FontIconSizeEnum.Dashboard;
-                }
+                // File isn't image and no preview exists - get the default file icon
+                parameters.IconClass = UIHelper.GetFileIconClass(extension);
             }
             else
             {
-                // Get item URL
-                parameters.Url = GetItemUrlInternal(arg, data, false, height, width, maxSideSize, notAttachment);
+                // Files are obtained from the FS
+                if (!data.ContainsColumn("FileURL"))
+                {
+                    parameters.Url = GetItemUrl(arg, true, height, width, maxSideSize);
+                }
+                else
+                {
+                    parameters.IconClass = UIHelper.GetFileIconClass(extension);
+                }
             }
+        }
+
+        // Setup icon size for fon icons
+        if (!string.IsNullOrEmpty(parameters.IconClass))
+        {
+            parameters.IconSize = FontIconSizeEnum.Dashboard;
         }
         return parameters;
     }

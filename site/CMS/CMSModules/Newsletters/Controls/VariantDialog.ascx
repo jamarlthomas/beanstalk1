@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="VariantDialog.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="VariantDialog.ascx.cs"
     Inherits="CMSModules_Newsletters_Controls_VariantDialog" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/PageTitle.ascx" TagName="PageTitle"

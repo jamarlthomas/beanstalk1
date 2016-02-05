@@ -1,7 +1,7 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_PortalEngine_UI_PageTemplates_Scopes_PageTemplateScope_Edit"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Page Template Edit - Scopes list"
-    Theme="Default" Codebehind="PageTemplateScope_Edit.aspx.cs" %>
+    Theme="Default"  Codebehind="PageTemplateScope_Edit.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/FormControls/Documents/selectpath.ascx" TagName="selectpath" TagPrefix="cms" %>
 <%@ Register Src="~/CMSFormControls/Classes/selectclass.ascx" TagName="SelectClass" TagPrefix="cms" %>
@@ -24,7 +24,7 @@
                     DisplayColon="true"></cms:LocalizedLabel>
             </div>
             <div class="editing-form-value-cell">
-                <cms:SelectClass runat="server" ID="classElem" IsLiveSite="false" HideWireframe="true" />
+                <cms:SelectClass runat="server" ID="classElem" IsLiveSite="false" />
             </div>
         </div>
         <div class="form-group">

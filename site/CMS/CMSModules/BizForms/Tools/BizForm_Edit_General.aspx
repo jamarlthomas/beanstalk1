@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_BizForms_Tools_BizForm_Edit_General"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_BizForms_Tools_BizForm_Edit_General"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="BizForm General"
-    Theme="Default" Codebehind="BizForm_Edit_General.aspx.cs" %>
+    Theme="Default"  Codebehind="BizForm_Edit_General.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/System/LocalizableTextBox.ascx" TagName="LocalizableTextBox"
     TagPrefix="cms" %>

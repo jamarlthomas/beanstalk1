@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_ShoppingCart_OrderItemEdit"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_ShoppingCart_OrderItemEdit"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Title="Shopping cart - Order item edit" Codebehind="OrderItemEdit.aspx.cs" %>
+    Title="Shopping cart - Order item edit"  Codebehind="OrderItemEdit.aspx.cs" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <asp:Panel ID="pnlContent" runat="server">

@@ -135,6 +135,12 @@
             <param name="operation">Operation to perform with document</param>
             <param name="stream">Stream with document data</param>
         </member>
+        <member name="M:CMS.DocumentWebServices.DocumentRESTService.IsSingleDocumentOperation(System.String)">
+            <summary>
+            Returns true if the given document is 
+            </summary>
+            <param name="operation">Operation name</param>
+        </member>
         <member name="M:CMS.DocumentWebServices.DocumentRESTService.Translate(System.IO.Stream)">
             <summary>
             Gateway for submitting an XLIFF document.
@@ -154,15 +160,16 @@
             </summary>
             <param name="docType">Document type of an document</param>
         </member>
-        <member name="M:CMS.DocumentWebServices.DocumentRESTService.GetExportSettings(System.String)">
+        <member name="M:CMS.DocumentWebServices.DocumentRESTService.GetDocumentExportSettings(System.String,System.Boolean)">
             <summary>
             Creates ExportObjectSettings object from query string parameters.
             </summary>
             <param name="rootName">Name of the root</param>
+            <param name="isSingleDocument">If true, the request is a request to a single document</param>
         </member>
         <member name="M:CMS.DocumentWebServices.DocumentRESTService.CombineDocTypes(System.String)">
             <summary>
-            Combines (intersection) requested and allowed document types to use in SelectDocuments methods.
+            Combines (intersection) requested and allowed document types to use in selecting documents methods.
             </summary>
             <param name="requestedTypes">Document types requested by users</param>
         </member>

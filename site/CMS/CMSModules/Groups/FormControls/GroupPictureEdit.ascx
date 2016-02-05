@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Groups_FormControls_GroupPictureEdit"
-    Codebehind="GroupPictureEdit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Groups_FormControls_GroupPictureEdit"
+     Codebehind="GroupPictureEdit.ascx.cs" %>
 <%@ Reference Control="~/CMSAdminControls/UI/UserPicture.ascx" %>
 <asp:Literal ID="ltlScript" runat="server" EnableViewState="false" />
 <div class="control-group-inline">

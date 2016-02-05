@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Edit.ascx.cs" Inherits="CMSModules_Workflows_Controls_UI_WorkflowStep_Edit" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Edit.ascx.cs" Inherits="CMSModules_Workflows_Controls_UI_WorkflowStep_Edit" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/Selectors/TimeoutSelector.ascx" TagName="TimeoutSelector"
     TagPrefix="cms" %>

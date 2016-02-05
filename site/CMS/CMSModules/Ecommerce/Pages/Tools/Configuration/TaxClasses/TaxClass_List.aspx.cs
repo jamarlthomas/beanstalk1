@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 using System.Data;
 
@@ -24,7 +24,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_TaxClasses_T
 
         UniGrid.OnAction += uniGrid_OnAction;
 
-        if (UseGlobalObjects && ExchangeTableInfoProvider.IsExchangeRateFromGlobalMainCurrencyMissing(SiteContext.CurrentSiteID))
+        if (UseGlobalObjects && ECommerceContext.IsExchangeRateFromGlobalMainCurrencyMissing)
         {
             ShowError(GetString("com.NeedExchangeRateFromGlobal"));
         }
@@ -146,7 +146,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_TaxClasses_T
     /// <param name="uiElementName">Name of ui element to redirect to.</param>
     private string GetRedirectURL(string uiElementName)
     {
-        string url = UIContextHelper.GetElementUrl("cms.ecommerce", uiElementName, false);
+        string url = UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, uiElementName, false);
         // Only global object can be created from site manager       
         if (IsMultiStoreConfiguration)
         {

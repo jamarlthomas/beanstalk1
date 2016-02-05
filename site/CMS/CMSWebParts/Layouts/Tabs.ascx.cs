@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -316,6 +316,7 @@ Sys.Extended.UI.TabContainer.prototype._app_onload = function (sender, e) {
             if (headers.Length >= i)
             {
                 header = ResHelper.LocalizeString(headers[i - 1]);
+                header = HTMLHelper.HTMLEncode(header);
             }
             if (String.IsNullOrEmpty(header))
             {

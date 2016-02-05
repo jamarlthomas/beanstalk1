@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Automation_Controls_AutomationMenu" Codebehind="AutomationMenu.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Automation_Controls_AutomationMenu"  Codebehind="AutomationMenu.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" TagName="HeaderActions"
     TagPrefix="cms" %>
 <asp:PlaceHolder ID="plcMenu" runat="server">

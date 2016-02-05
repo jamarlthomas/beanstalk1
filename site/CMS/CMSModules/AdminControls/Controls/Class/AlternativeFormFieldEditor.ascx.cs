@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 
 using CMS.FormEngine;
-using CMS.Base;
+using CMS.Helpers;
+using CMS.Modules;
 using CMS.UIControls;
 using CMS.ExtendedControls;
 using CMS.DataEngine;
@@ -164,48 +165,55 @@ public partial class CMSModules_AdminControls_Controls_Class_AlternativeFormFiel
         AlternativeFormInfo afi = AlternativeFormInfoProvider.GetAlternativeFormInfo(mAlternativeFormId);
         UIContext.EditedObject = afi;
 
-        if (afi != null)
+        if (afi == null)
         {
-            DataClassInfo dci = DataClassInfoProvider.GetDataClassInfo(afi.FormClassID);
-            if (dci != null)
-            {
-                string formDef = dci.ClassFormDefinition;
-                string coupledClassName = null;
+            return;
+        }
 
-                if (afi.FormCoupledClassID > 0)
+        DataClassInfo dci = DataClassInfoProvider.GetDataClassInfo(afi.FormClassID);
+        if (dci == null)
+        {
+            ShowError(GetString("general.invalidid"));
+        }
+        else
+        {
+            string formDef = dci.ClassFormDefinition;
+            string coupledClassName = null;
+
+            if (afi.FormCoupledClassID > 0)
+            {
+                // If coupled class is defined combine form definitions
+                DataClassInfo coupledDci = DataClassInfoProvider.GetDataClassInfo(afi.FormCoupledClassID);
+                if (coupledDci != null)
                 {
-                    // If coupled class is defined combine form definitions
-                    DataClassInfo coupledDci = DataClassInfoProvider.GetDataClassInfo(afi.FormCoupledClassID);
-                    if (coupledDci != null)
-                    {
-                        formDef = FormHelper.MergeFormDefinitions(formDef, coupledDci.ClassFormDefinition);
-                        coupledClassName = coupledDci.ClassName;
-                    }
+                    formDef = FormHelper.MergeFormDefinitions(formDef, coupledDci.ClassFormDefinition);
+                    coupledClassName = coupledDci.ClassName;
                 }
-
-                // Set original form definition
-                fieldEditor.OriginalFormDefinition = formDef;
-
-                // Merge class and alternative form definitions
-                formDef = FormHelper.MergeFormDefinitions(formDef, afi.FormDefinition);
-
-                // Initialize field editor mode and load form definition
-                fieldEditor.AlternativeFormFullName = afi.FullName;
-                fieldEditor.FormDefinition = formDef;
-
-                // Specify set of controls which should be offered for field types
-                fieldEditor.DisplayedControls = mDisplayedControls;
-                fieldEditor.ClassName = dci.ClassName;
-                fieldEditor.CoupledClassName = coupledClassName;
-
-                // Handle definition update (move up, move down, delete, OK button)
-                fieldEditor.OnAfterDefinitionUpdate += fieldEditor_OnAfterDefinitionUpdate;
-                fieldEditor.OnFieldNameChanged += fieldEditor_OnFieldNameChanged;
             }
-            else
-            {
-                ShowError(GetString("general.invalidid"));
-            }
+
+            var resource = ResourceInfoProvider.GetResourceInfo(QueryHelper.GetInteger("moduleid", 0));
+
+            // Allow development mode only for non-system tables
+            fieldEditor.DevelopmentMode = (resource != null) && resource.IsEditable;
+
+            // Set original form definition
+            fieldEditor.OriginalFormDefinition = formDef;
+
+            // Merge class and alternative form definitions
+            formDef = FormHelper.MergeFormDefinitions(formDef, afi.FormDefinition);
+
+            // Initialize field editor mode and load form definition
+            fieldEditor.AlternativeFormFullName = afi.FullName;
+            fieldEditor.FormDefinition = formDef;
+
+            // Specify set of controls which should be offered for field types
+            fieldEditor.DisplayedControls = mDisplayedControls;
+            fieldEditor.ClassName = dci.ClassName;
+            fieldEditor.CoupledClassName = coupledClassName;
+
+            // Handle definition update (move up, move down, delete, OK button)
+            fieldEditor.OnAfterDefinitionUpdate += fieldEditor_OnAfterDefinitionUpdate;
+            fieldEditor.OnFieldNameChanged += fieldEditor_OnFieldNameChanged;
         }
     }
 

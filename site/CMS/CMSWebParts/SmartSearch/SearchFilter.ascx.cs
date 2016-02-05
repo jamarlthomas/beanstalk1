@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Data;
 
 using CMS.Controls;
 using CMS.DataEngine;
+using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.PortalControls;
 using CMS.Base;
@@ -311,7 +312,7 @@ public partial class CMSWebParts_SmartSearch_SearchFilter : CMSAbstractWebPart
                             return;
                         }
 
-                        // Loop thru all rows
+                        // Loop through all rows
                         foreach (DataRow dr in ds.Tables[0].Rows)
                         {
                             AddItem(dr[0].ToString(), dr[1].ToString(), ResHelper.LocalizeString(dr[2].ToString()));
@@ -324,7 +325,7 @@ public partial class CMSWebParts_SmartSearch_SearchFilter : CMSAbstractWebPart
                     // Split values into rows
                     string[] rows = FilterValues.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-                    // Loop thru each row
+                    // Loop through each row
                     foreach (string row in rows)
                     {
                         string trimmedRow = row.Trim().TrimEnd('\r');
@@ -349,7 +350,7 @@ public partial class CMSWebParts_SmartSearch_SearchFilter : CMSAbstractWebPart
             // Get webpart ID
             string webpartID = ValidationHelper.GetString(GetValue("WebpartControlID"), ID);
 
-            // Try to get selected values from querystring - but only if is not postback
+            // Try to get selected values from query string - but only if is not postback
             if (!RequestHelper.IsPostBack())
             {
                 string selectedItems = QueryHelper.GetString(webpartID, "");
@@ -370,12 +371,15 @@ public partial class CMSWebParts_SmartSearch_SearchFilter : CMSAbstractWebPart
                             case SearchFilterModeEnum.Checkbox:
                                 SelectItem(item, chklstFilter);
                                 break;
+
                             case SearchFilterModeEnum.RadioButton:
                                 SelectItem(item, radlstFilter);
                                 break;
+
                             case SearchFilterModeEnum.DropdownList:
                                 SelectItem(item, drpFilter);
                                 break;
+
                             default:
                                 txtFilter.Text = item;
                                 break;
@@ -398,6 +402,8 @@ public partial class CMSWebParts_SmartSearch_SearchFilter : CMSAbstractWebPart
                         txtFilter.WatermarkText = WatermarkText;
                         txtFilter.AutoPostBack = FilterAutoPostback;
 
+                        AppendClientHandlers(txtFilter);
+
                         if (!String.IsNullOrEmpty(DefaultSelectedIndex) && String.IsNullOrEmpty(txtFilter.Text) && !URLHelper.IsPostback())
                         {
                             txtFilter.Text = DefaultSelectedIndex;
@@ -412,7 +418,7 @@ public partial class CMSWebParts_SmartSearch_SearchFilter : CMSAbstractWebPart
                                 string[] rows = FilterValues.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
                                 var keyWords = SearchSyntaxHelper.ProcessSearchKeywords(txtFilter.Text, SearchOptionsEnum.NoneSearch);
 
-                                // Loop thru each row
+                                // Loop through each row
                                 foreach (string row in rows)
                                 {
                                     string trimmedRow = row.Trim();
@@ -455,6 +461,8 @@ public partial class CMSWebParts_SmartSearch_SearchFilter : CMSAbstractWebPart
                         {
                             chklstFilter.AutoPostBack = true;
                         }
+
+                        AppendClientHandlers(chklstFilter);
                     }
                     break;
 
@@ -472,7 +480,6 @@ public partial class CMSWebParts_SmartSearch_SearchFilter : CMSAbstractWebPart
                         radlstFilter.RepeatLayout = GetLayoutEnumFromString(RepeatLayout);
                         radlstFilter.RepeatColumns = RepeatColumns;
 
-
                         // Get selected items
                         applyFilter = GetSelectedItems(radlstFilter, out ids);
 
@@ -481,6 +488,8 @@ public partial class CMSWebParts_SmartSearch_SearchFilter : CMSAbstractWebPart
                         {
                             radlstFilter.AutoPostBack = true;
                         }
+
+                        AppendClientHandlers(radlstFilter);
                     }
                     break;
 
@@ -498,26 +507,22 @@ public partial class CMSWebParts_SmartSearch_SearchFilter : CMSAbstractWebPart
                         {
                             drpFilter.AutoPostBack = true;
                         }
+
+                        AppendClientHandlers(drpFilter);
+
                         lblFilter.AssociatedControlID = drpFilter.ID;
                     }
                     break;
             }
 
-            // Apply filter and add selected values to querystring
+            // Apply filter and add selected values to query string
             ISearchFilterable searchWebpart = (ISearchFilterable)CMSControlsHelper.GetFilter(SearchWebpartID);
             if (searchWebpart != null)
             {
-                bool filterPostback = false;
-
-                if (RequestHelper.IsPostBack())
-                {
-                    var postbackControl = Page.FindControl(Request.Params.Get("__EVENTTARGET"));
-                    if (postbackControl != null)
-                    {
-                        filterPostback = postbackControl.Parent == this;
-                    }
-                }
-
+                // Check if postback was caused by any control in the filter
+                var postBackControl = ControlsHelper.GetPostBackControl(Page);
+                var filterPostback = (postBackControl != null) && (postBackControl.Parent == this);
+                
                 if (FilterIsConditional)
                 {
                     // If filter fieldname or value is filled
@@ -526,7 +531,7 @@ public partial class CMSWebParts_SmartSearch_SearchFilter : CMSAbstractWebPart
                         // Handle filter clause
                         if (!string.IsNullOrEmpty(FilterClause))
                         {
-                            applyFilter = FilterClause + SearchSyntaxHelper.GetGroup(new [] { applyFilter });
+                            applyFilter = FilterClause + SearchSyntaxHelper.GetGroup(new[] { applyFilter });
                         }
 
                         searchWebpart.ApplyFilter(applyFilter, null, filterPostback);
@@ -543,7 +548,7 @@ public partial class CMSWebParts_SmartSearch_SearchFilter : CMSAbstractWebPart
             }
         }
     }
-    
+
     #endregion
 
 
@@ -567,7 +572,7 @@ public partial class CMSWebParts_SmartSearch_SearchFilter : CMSAbstractWebPart
 
 
     /// <summary>
-    /// Realoads data.
+    /// Reloads data.
     /// </summary>
     public override void ReloadData()
     {
@@ -651,13 +656,13 @@ public partial class CMSWebParts_SmartSearch_SearchFilter : CMSAbstractWebPart
     /// Gets selected items.
     /// </summary>
     /// <param name="control">Control</param>  
-    /// <param name="ids">Id's of selected values separed by semicolon</param>
+    /// <param name="ids">Id's of selected values separated by semicolon</param>
     private string GetSelectedItems(ListControl control, out string ids)
     {
         ids = "";
         string selected = "";
 
-        // loop thru all items
+        // loop through all items
         for (int i = 0; i != control.Items.Count; i++)
         {
             if (control.Items[i].Selected)
@@ -674,6 +679,15 @@ public partial class CMSWebParts_SmartSearch_SearchFilter : CMSAbstractWebPart
         }
 
         return selected;
+    }
+
+
+    private void AppendClientHandlers(WebControl control)
+    {
+        if (!FilterAutoPostback)
+        {
+            control.Attributes.Add("onkeypress", "if (event.which == 13 || event.keyCode == 13) {" + ControlsHelper.GetPostBackEventReference(control) + "; return false; }");
+        }
     }
 
     #endregion

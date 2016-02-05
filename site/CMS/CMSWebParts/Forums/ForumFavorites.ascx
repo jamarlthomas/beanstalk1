@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Forums_ForumFavorites" Codebehind="~/CMSWebParts/Forums/ForumFavorites.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Forums_ForumFavorites"  Codebehind="~/CMSWebParts/Forums/ForumFavorites.ascx.cs" %>
 <asp:Literal runat="server" ID="ltlMessage" EnableViewState="false" />
 <table class="ForumFavorites">
     <asp:PlaceHolder ID="plcEmptyDSTagBegin" runat="server" Visible="false">

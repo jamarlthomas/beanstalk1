@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/DeviceProfile/SwitchDeviceDetection.ascx.cs" Inherits="CMSWebParts_DeviceProfile_SwitchDeviceDetection" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/DeviceProfile/SwitchDeviceDetection.ascx.cs" Inherits="CMSWebParts_DeviceProfile_SwitchDeviceDetection" %>
 <asp:Panel ID="pnlContent" runat="server" CssClass="WebPartSwitchDeviceDetection" >
     <asp:LinkButton ID="lnkLink" runat="server" CssClass="SwitchDeviceDetection" OnClick="lnkLink_OnClick">
     </asp:LinkButton>

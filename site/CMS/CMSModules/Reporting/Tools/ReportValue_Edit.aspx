@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_Tools_ReportValue_Edit"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_Tools_ReportValue_Edit"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Title="ReportValue Edit" Codebehind="~/CMSModules/Reporting/Tools/ReportValue_Edit.aspx.cs" %>
+    Title="ReportValue Edit"  Codebehind="~/CMSModules/Reporting/Tools/ReportValue_Edit.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/System/LocalizableTextBox.ascx" TagName="LocalizableTextBox"
     TagPrefix="cms" %>

@@ -1,6 +1,6 @@
-<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
+﻿<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
     Inherits="CMSModules_Blogs_Tools_Blogs_Blogs_List" Title="Blogs - Blogs list"
-    Theme="Default" Codebehind="Blogs_Blogs_List.aspx.cs" %>
+    Theme="Default"  Codebehind="Blogs_Blogs_List.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 

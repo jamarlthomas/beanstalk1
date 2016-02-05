@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Specialized;
 using System.Text;
 using System.Web;
@@ -43,7 +43,7 @@ public partial class CMSModules_Content_CMSDesk_SplitView : CMSContentPage
         if (!string.IsNullOrEmpty(url) && UIContext.DisplaySplitMode)
         {
             // Register script files
-            ltlScript.Text += ScriptHelper.GetIncludeScript("~/CMSModules/Content/CMSDesk/SplitView.js");
+            ltlScript.Text += ScriptHelper.GetScriptTag("~/CMSModules/Content/CMSDesk/SplitView.js");
 
             // Decode URL
             url = HttpUtility.UrlDecode(url);

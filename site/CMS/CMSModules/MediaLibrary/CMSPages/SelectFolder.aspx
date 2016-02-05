@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_CMSPages_SelectFolder"
-    EnableEventValidation="false" Codebehind="SelectFolder.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_CMSPages_SelectFolder"
+    EnableEventValidation="false"  Codebehind="SelectFolder.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

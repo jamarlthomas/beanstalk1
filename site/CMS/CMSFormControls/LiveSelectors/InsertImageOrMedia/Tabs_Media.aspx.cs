@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -91,7 +89,7 @@ public partial class CMSFormControls_LiveSelectors_InsertImageOrMedia_Tabs_Media
         {
             linkMedia.StopProcessing = true;
             linkMedia.Visible = false;
-            string url = ResolveUrl("~/CMSMessages/Error.aspx?title=" + GetString("dialogs.badhashtitle") + "&text=" + GetString("dialogs.badhashtext") + "&cancel=1");
+            string url = ResolveUrl(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
             ltlScript.Text = ScriptHelper.GetScript("if (window.parent != null) { window.parent.location = '" + url + "' }");
         }
     }

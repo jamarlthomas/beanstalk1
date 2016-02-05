@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -17,7 +17,6 @@ public partial class CMSModules_Content_Controls_VersionList : VersionHistoryCon
 
     private Label mInfoLabel;
     private Label mErrorLabel;
-    private bool mDisplaySecurityMessage;
 
     #endregion
 
@@ -73,14 +72,8 @@ public partial class CMSModules_Content_Controls_VersionList : VersionHistoryCon
     /// </summary>
     public bool DisplaySecurityMessage
     {
-        get
-        {
-            return mDisplaySecurityMessage;
-        }
-        set
-        {
-            mDisplaySecurityMessage = value;
-        }
+        get;
+        set;
     }
 
 
@@ -102,13 +95,13 @@ public partial class CMSModules_Content_Controls_VersionList : VersionHistoryCon
 
 
     /// <summary>
-    /// Messages placeholder
+    /// Messages placeholder 
     /// </summary>
-    public override CMS.ExtendedControls.MessagesPlaceHolder MessagesPlaceHolder
+    public override MessagesPlaceHolder MessagesPlaceHolder
     {
         get
         {
-            return plcMess;
+            return IsLiveSite ? plcMess : base.MessagesPlaceHolder;
         }
     }
 
@@ -141,6 +134,10 @@ public partial class CMSModules_Content_Controls_VersionList : VersionHistoryCon
     {
         gridHistory.ZeroRowsText = GetString("workflowproperties.documenthasnohistory");
         gridHistory.IsLiveSite = IsLiveSite;
+        
+        // Use local panel for messages only on live site, in the UI is messages placeholder in the master page
+        plcLabels.Visible = IsLiveSite;
+
         if (Node != null)
         {
             // Prepare the query parameters
@@ -150,18 +147,20 @@ public partial class CMSModules_Content_Controls_VersionList : VersionHistoryCon
 
             ScriptHelper.RegisterStartupScript(this, typeof(string), "confirmDestroyMessage", ScriptHelper.GetScript("var varConfirmDestroy='" + ResHelper.GetString("VersionProperties.ConfirmDestroy") + "'; \n"));
 
-            gridHistory.GridName = "~/CMSModules/Content/Controls/VersionHistory.xml";
+            const string CONTENT_FOLDER = "~/CMSModules/Content/";
+
+            gridHistory.GridName = CONTENT_FOLDER + "Controls/VersionHistory.xml";
             gridHistory.OnExternalDataBound += gridHistory_OnExternalDataBound;
             gridHistory.OnAction += gridHistory_OnAction;
 
             string viewVersionUrl;
             if (IsLiveSite)
             {
-                viewVersionUrl = AuthenticationHelper.ResolveDialogUrl("~/CMSModules/Content/CMSPages/Versions/ViewVersion.aspx");
+                viewVersionUrl = AuthenticationHelper.ResolveDialogUrl(CONTENT_FOLDER + "CMSPages/Versions/ViewVersion.aspx");
             }
             else
             {
-                viewVersionUrl = ResolveUrl("~/CMSModules/Content/CMSDesk/Properties/ViewVersion.aspx");
+                viewVersionUrl = ResolveUrl(CONTENT_FOLDER + "CMSDesk/Properties/ViewVersion.aspx");
             }
 
             string viewVersionScript = ScriptHelper.GetScript("function ViewVersion(versionHistoryId) {window.open('" + viewVersionUrl + "?versionHistoryId=' + versionHistoryId)}");
@@ -186,7 +185,6 @@ public partial class CMSModules_Content_Controls_VersionList : VersionHistoryCon
             {
                 ShowInformation(String.Format(GetString("cmsdesk.notauthorizedtoeditdocument"), Node.NodeAliasPath));
             }
-            plcLabels.Visible = !(string.IsNullOrEmpty(MessagesPlaceHolder.ErrorLabel.Text) && string.IsNullOrEmpty(MessagesPlaceHolder.InfoLabel.Text));
         }
     }
 
@@ -275,8 +273,7 @@ public partial class CMSModules_Content_Controls_VersionList : VersionHistoryCon
                                 if (!IsLiveSite)
                                 {
                                     // Refresh content tree (for the case that document name has been changed)
-                                    string refreshTreeScript = ScriptHelper.GetScript("if(window.RefreshTree!=null){RefreshTree(" + Node.NodeParentID + ", " + Node.NodeID + ");}");
-                                    ScriptHelper.RegisterStartupScript(this, typeof(string), "refreshTree" + ClientID, refreshTreeScript);
+                                    ScriptHelper.RefreshTree(Page, NodeID, Node.NodeParentID);
                                 }
 
                                 // Refresh node instance

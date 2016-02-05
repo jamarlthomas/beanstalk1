@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SQLList.ascx.cs" Inherits="CMSModules_SystemTables_Controls_Views_SQLList" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SQLList.ascx.cs" Inherits="CMSModules_SystemTables_Controls_Views_SQLList" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/Filters/TextSimpleFilter.ascx" TagName="SimpleFilter"

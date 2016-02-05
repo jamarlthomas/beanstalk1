@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_ImportExport_Controls_ImportWizard"
-    Codebehind="ImportWizard.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_ImportExport_Controls_ImportWizard"
+     Codebehind="ImportWizard.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/Wizard/Header.ascx" TagName="WizardHeader" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/ImportExport/Controls/ImportPanel.ascx" TagName="ImportPanel"
     TagPrefix="cms" %>
@@ -14,24 +14,6 @@
 <script type="text/javascript">
     //<![CDATA[      
     var timerZipId = 0;
-    var importTimerId = 0;
-
-    // Start timer function
-    function StartImportStateTimer() {
-        importTimerId = setInterval("GetImportState(false)", 500);
-    }
-
-    // End timer function
-    function StopImportStateTimer() {
-        if (importTimerId) {
-            clearInterval(importTimerId);
-            importTimerId = 0;
-
-            if (window.HideActivity) {
-                window.HideActivity();
-            }
-        }
-    }
 
     // End timer function
     function StopUnzipTimer() {
@@ -50,12 +32,6 @@
         if (window.Activity) {
             timerZipId = setInterval("window.Activity()", 500);
         }
-    }
-
-    // Cancel import
-    function CancelImport() {
-        GetImportState(true);
-        return false;
     }
     //]]>
 </script>
@@ -143,7 +119,7 @@
                                 <asp:WizardStep ID="wzdStepProgress" runat="server" AllowReturn="False" StepType="Finish"
                                     EnableViewState="true">
                                     <div class="GlobalWizardStep" style="height: <%=PanelHeight%>px">
-                                        <asp:Label ID="lblProgress" runat="Server" CssClass="WizardLog" EnableViewState="false" />
+                                        <cms:AsyncControl ID="ctlAsyncImport" runat="server" ProvideLogContext="true" LogContextNames="Import" PostbackOnFinish="false" PostbackOnError="false" FinishClientCallback="Finished" />
                                     </div>
                                 </asp:WizardStep>
                             </WizardSteps>
@@ -154,29 +130,20 @@
         </table>
     </div>
     <asp:Panel ID="pnlError" runat="server" CssClass="GlobalWizard">
-        <div class="alert-error alert">
-            <span class="alert-icon">
-                <i class="icon-times-circle"></i>
-                <span class="sr-only"><%= GetString("general.error") %></span>
-            </span>
-            <asp:Label ID="lblError" runat="server" CssClass="alert-label" EnableViewState="false" />
-        </div>
+        <cms:AlertLabel runat="server" ID="lblError" AlertType="Error" Visible="true" EnableViewState="false" />
     </asp:Panel>
     <asp:Panel ID="pnlWarning" runat="server" CssClass="GlobalWizard">
-        <div class="alert-warning alert" style="display:block; ">
-            <span class="alert-icon">
-                <i class="icon-exclamation-triangle"></i>
-                <span class="sr-only"><%= GetString("general.warning") %></span>
-            </span>
-            <asp:Label ID="lblWarning" runat="server" CssClass="alert-label" EnableViewState="false" />
-        </div>
+        <cms:AlertLabel runat="server" ID="lblWarning" AlertType="Warning" Visible="true" EnableViewState="false"/>
+    </asp:Panel>
+    <asp:Panel ID="pnlWarningCycles" runat="server" CssClass="GlobalWizard" EnableViewState="false">
+        <cms:AlertLabel runat="server" ID="lblWarningCycles" AlertType="Warning" Visible="true" EnableViewState="false" />
     </asp:Panel>
 </asp:Panel>
-<br />
+<asp:Panel ID="pnlErrorBlank" runat="server">
+    <cms:AlertLabel runat="server" ID="lblErrorBlank" AlertType="Error" EnableViewState="false" />
+</asp:Panel>
 <asp:Panel ID="pnlPermissions" runat="server" Visible="false" EnableViewState="false">
-    <br />
     <asp:HyperLink ID="lnkPermissions" runat="server" />
 </asp:Panel>
-<asp:HiddenField ID="hdnState" runat="server" />
 <asp:Literal ID="ltlScriptAfter" runat="server" EnableViewState="false" />
-<cms:AsyncControl ID="ctrlAsync" runat="server" />
+<cms:AsyncControl ID="ctrlAsyncUnzip" runat="server" />

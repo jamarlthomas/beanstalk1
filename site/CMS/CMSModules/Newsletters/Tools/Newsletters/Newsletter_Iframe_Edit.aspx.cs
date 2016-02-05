@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -17,6 +17,8 @@ using CMS.MacroEngine;
 using CMS.DataEngine;
 
 [UIElement("CMS.Newsletter", "Newsletters")]
+[EditedObject(PredefinedObjectType.NEWSLETTERISSUE, "objectid")]
+[ParentObject(PredefinedObjectType.NEWSLETTER, "parentobjectid")]
 public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Iframe_Edit : CMSNewsletterPage
 {
     #region "Variables"
@@ -95,23 +97,39 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Iframe_
         base.OnPreRender(e);
         
         RegisterActionScripts();
+        HandleBreadcrumbsScripts();
     }
 
 
     /// <summary>
-    /// Registers action scripts
+    /// Registers action scripts.
     /// </summary>
     private void RegisterActionScripts()
     {
         ScriptHelper.RegisterEditScript(Page);
         ScriptHelper.RegisterModule(Page, "CMS/HeaderShadow");
         ScriptHelper.RegisterSpellChecker(Page);
-
+        
         StringBuilder sb = new StringBuilder();
         sb.Append("var spellURL = '", AuthenticationHelper.ResolveDialogUrl("~/CMSModules/Content/CMSDesk/Edit/SpellCheck.aspx"), "'; \n");
         sb.Append("function SpellCheck_", ClientID, "() { checkSpelling(spellURL); }");
 
         ControlsHelper.RegisterClientScriptBlock(this, Page, typeof(string), "SpellCheckAction" + ClientID, ScriptHelper.GetScript(sb.ToString()));
+    }
+
+
+    /// <summary>
+    /// Handles manual rendering of breadcrumbs.
+    /// On this page the breadcrumbs needs to be hard-coded in order to be able to access single email via link and ensure consistency of breadcrumbs.
+    /// </summary>
+    private void HandleBreadcrumbsScripts()
+    {
+        ScriptHelper.RegisterRequireJs(Page);
+
+        ControlsHelper.RegisterClientScriptBlock(this, Page, typeof(string), "BreadcrumbsOverwriting", ScriptHelper.GetScript(@"
+        cmsrequire(['CMS/EventHub'], function(hub) {
+              hub.publish('OverwriteBreadcrumbs', " + IssueHelper.GetBreadcrumbsData((IssueInfo)EditedObject, (NewsletterInfo)EditedObjectParent) + @");
+        });"));
     }
 
 
@@ -327,7 +345,6 @@ function SetRegionContentInternal(editor, regcontent) {
                             }
 
                             CMSHtmlEditor editor = editableRegion.HtmlEditor;
-                            editor.ExtraPlugins.Add("CMSPlugins");
                             editor.ExtraPlugins.Add("autogrow");
                             editor.AutoGrowMinHeight = height;
                             editor.ResolverName = "NewsletterResolver";

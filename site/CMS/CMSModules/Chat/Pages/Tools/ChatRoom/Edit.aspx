@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Chat room properties – General"
-    Inherits="CMSModules_Chat_Pages_Tools_ChatRoom_Edit" Theme="Default" Codebehind="Edit.aspx.cs" %>            
+    Inherits="CMSModules_Chat_Pages_Tools_ChatRoom_Edit" Theme="Default"  Codebehind="Edit.aspx.cs" %>            
 <%@ Register Src="~/CMSModules/Chat/Controls/UI/ChatRoom/Edit.ascx"
     TagName="ChatRoomEdit" TagPrefix="cms" %>
     

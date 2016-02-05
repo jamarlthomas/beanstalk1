@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Web.UI;
 
+using CMS.CustomTables;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Helpers;
@@ -61,7 +62,7 @@ public partial class CMSModules_SmartSearch_SearchIndex_Content_Edit : GlobalAdm
                 }
                 break;
 
-            case DataClassInfo.OBJECT_TYPE_CUSTOMTABLE:
+            case CustomTableInfo.OBJECT_TYPE_CUSTOMTABLE:
                 {
                     // Custom table index
                     customTableEdit.ItemID = indexId;
@@ -161,7 +162,7 @@ public partial class CMSModules_SmartSearch_SearchIndex_Content_Edit : GlobalAdm
                 control = forumEdit;
                 break;
 
-            case DataClassInfo.OBJECT_TYPE_CUSTOMTABLE:
+            case CustomTableInfo.OBJECT_TYPE_CUSTOMTABLE:
                 control = customTableEdit;
                 break;
 

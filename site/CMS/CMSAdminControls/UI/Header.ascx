@@ -1,8 +1,9 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Header.ascx.cs" Inherits="CMSAdminControls_UI_Header" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Header.ascx.cs" Inherits="CMSAdminControls_UI_Header" %>
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Membership/Controls/PasswordExpiration.ascx" TagPrefix="cms" TagName="PasswordExpiration" %>
 <%@ Register Src="~/CMSAdminControls/UI/UserMenu.ascx" TagPrefix="cms" TagName="UserMenu" %>
 <%@ Register Src="~/CMSAdminControls/UI/ContextHelp.ascx" TagPrefix="cms" TagName="ContextHelp" %>
+
 <div class="navbar navbar-inverse cms-navbar">
     <asp:PlaceHolder runat="server" ID="plcToggle">
         <a href="javascript:void(0)" class="applist-toggle navbar-left" id="cms-applist-toggle" title="<%= GetString("applicationlist.open") %>">
@@ -13,24 +14,38 @@
     <h2 class="sr-only"><%= GetString("breadcrumbs.title")  %></h2>
     <ul class="navbar-left breadcrumb cms-nav-breadcrumb" id="js-nav-breadcrumb">
         <li class="no-ico">
-            <cms:LocalizedHyperlink ID="lnkDashboard" runat="server" EnableViewState="false" ToolTipResourceString="cms.dashboard.back">
+            <cms:localizedhyperlink id="lnkDashboard" runat="server" enableviewstate="false" tooltipresourcestring="cms.dashboard.back">
                 <i aria-hidden="true" class="icon-home cms-nav-icon-medium"></i> 
                 <span class="sr-only"><%= GetString("cms.dashboard.back") %></span>
-            </cms:LocalizedHyperlink>
+            </cms:localizedhyperlink>
         </li>
         <asp:PlaceHolder runat="server" ID="plcSiteSelector">
             <li class="dropdown no-ico header-site-selector">
-                <cms:SiteSelector ID="siteSelector" ShortID="ss" runat="server" IsLiveSite="false" />
+                <cms:siteselector id="siteSelector" shortid="ss" runat="server" islivesite="false" />
             </li>
         </asp:PlaceHolder>
     </ul>
+    <ul class="navbar-left breadcrumb cms-nav-breadcrumb">
+        <li class="dashboard-breadcrumb-pin" id="js-single-object-dashboard-pin-list">
+            <a href="javascript:void(0)">
+                <i id="js-single-object-dashboard-pin-i" aria-hidden="true" class="icon-pin-o cms-icon-50 dashboard-pin icon-disabled"
+                    data-action-text-pin="<%= GetString("cms.dashboard.pin") %>" data-action-text-unpin="<%= GetString("cms.dashboard.unpin") %>"></i>
+                <span class="sr-only"><%= GetString("cms.dashboard.pin") %></span>
+            </a>
+        </li>
+    </ul>
     <ul class="nav navbar-nav navbar-right navbar-inverse">
-        <asp:PlaceHolder runat="server" ID="plcSupportChat" Visible="false"></asp:PlaceHolder>
+        <asp:PlaceHolder runat="server" ID="plcStagingTaskGroupContainer" Visible="false">
+            <li>
+                <asp:PlaceHolder runat="server" ID="plcStagingTaskGroup" Visible="false"/>
+            </li>
+        </asp:PlaceHolder>
+        <asp:PlaceHolder runat="server" ID="plcSupportChat" Visible="false" />
         <li>
-            <cms:ContextHelp runat="server" ID="contextHelp" />
+            <cms:contexthelp runat="server" id="contextHelp" />
         </li>
         <li>
-            <cms:UserMenu runat="server" ID="userMenu" />
+            <cms:usermenu runat="server" id="userMenu" />
         </li>
     </ul>
 </div>
@@ -47,7 +62,7 @@
         <a href="#" class="alert-link" onclick="HideWarning('<%= pnlTrial.ClientID %>', '<% = SESSION_KEY_TRIAL %>'); return false;"><%= GetString("general.close") %></a>
     </asp:Panel>
     <asp:Panel runat="server" ID="pnlPwdExp" CssClass="message-panel alert-warning">
-        <cms:PasswordExpiration ID="pwdExpiration" runat="server" EnableViewState="false"
-            IsLiveSite="false" />
+        <cms:passwordexpiration id="pwdExpiration" runat="server" enableviewstate="false"
+            islivesite="false" />
     </asp:Panel>
 </div>

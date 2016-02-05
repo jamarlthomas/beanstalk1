@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Theme="Default"  MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master" Title="Forum post unsubscribe" Codebehind="LiveUserUnsubscribe.aspx.cs" Inherits="CMSModules_Forums_CMSPages_LiveUserUnsubscribe" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Theme="Default"  MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master" Title="Forum post unsubscribe"  Codebehind="LiveUserUnsubscribe.aspx.cs" Inherits="CMSModules_Forums_CMSPages_LiveUserUnsubscribe" %>
 
 <%@ Register Src="~/CMSModules/Forums/Controls/Posts/PostApprove.ascx" TagName="PostApprove"
     TagPrefix="cms" %>

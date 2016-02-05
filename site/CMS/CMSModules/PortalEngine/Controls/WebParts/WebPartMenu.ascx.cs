@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Web.UI.WebControls;
@@ -63,13 +63,6 @@ public partial class CMSModules_PortalEngine_Controls_WebParts_WebPartMenu : CMS
         if (!currentUser.IsAuthorizedPerResource("cms.contentpersonalization", "Manage"))
         {
             plcAddCPVariant.Visible = false;
-        }
-
-        if (PortalContext.ViewMode.IsWireframe())
-        {
-            pnlUIPaste.AlwaysVisible = true;
-            pnlUIDelete.AlwaysVisible = true;
-            pnlUIProperties.AlwaysVisible = true;
         }
 
         string click = null;

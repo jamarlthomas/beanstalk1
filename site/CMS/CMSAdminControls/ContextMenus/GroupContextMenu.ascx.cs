@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 using System.Data;
 
@@ -65,7 +65,7 @@ public partial class CMSAdminControls_ContextMenus_GroupContextMenu : CMSContext
                   " } \n";
 
         // Redirect to sign in URL
-        string signInUrl = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSSecuredAreasLogonPage");
+        string signInUrl = AuthenticationHelper.GetSecuredAreasLogonPage(SiteContext.CurrentSiteName);
         if (!string.IsNullOrEmpty(signInUrl))
         {
             signInUrl = "window.location.replace('" + URLHelper.AddParameterToUrl(ResolveUrl(signInUrl), "ReturnURL", Server.UrlEncode(RequestContext.CurrentURL)) + "');";

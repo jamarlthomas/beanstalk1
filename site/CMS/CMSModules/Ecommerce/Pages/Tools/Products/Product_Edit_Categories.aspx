@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Product_Edit_Categories.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Product_Edit_Categories.aspx.cs"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Inherits="CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Categories"
     Theme="Default" %>
 <%@ Register Src="~/CMSModules/Categories/Controls/MultipleCategoriesSelector.ascx"

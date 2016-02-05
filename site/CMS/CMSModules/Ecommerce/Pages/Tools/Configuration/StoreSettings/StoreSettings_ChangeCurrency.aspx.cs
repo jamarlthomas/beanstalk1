@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Ecommerce;
 using CMS.Helpers;
@@ -47,10 +47,8 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_StoreSetting
         CurrentMaster.Page.Title = "Ecommerce - Change main currency";
         chkRecalculateFromGlobal.InputAttributes["onclick"] = "checkRecalculation()";
         chkCredit.InputAttributes["onclick"] = "checkRecalculation()";
-        chkDocuments.InputAttributes["onclick"] = "checkRecalculation()";
         chkExchangeRates.InputAttributes["onclick"] = "checkRecalculation()";
         chkDiscounts.InputAttributes["onclick"] = "checkRecalculation()";
-        chkFlatTaxes.InputAttributes["onclick"] = "checkRecalculation()";
         chkProductPrices.InputAttributes["onclick"] = "checkRecalculation()";
         chkShipping.InputAttributes["onclick"] = "checkRecalculation()";
         btnOk.Text = GetString("General.saveandclose");
@@ -60,7 +58,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_StoreSetting
         if (mainCurrency != null)
         {
             // Set confirmation message for OK button
-            btnOk.Attributes["onclick"] = "OnButtonClicked()";
+            btnOk.OnClientClick = "if (!OnButtonClicked()) { return false; }";
             lblOldMainCurrency.Text = HTMLHelper.HTMLEncode(mainCurrency.CurrencyDisplayName);
         }
         else
@@ -73,7 +71,6 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_StoreSetting
         currencyElem.AddSelectRecord = true;
         currencyElem.SiteID = editedSiteId;
 
-        plcRecountDocuments.Visible = (editedSiteId != 0);
         plcRecalculateFromGlobal.Visible = (editedSiteId == 0);
 
         if (!URLHelper.IsPostback())
@@ -126,8 +123,11 @@ function checkRecalculation(){
 function OnButtonClicked()
 {
   var checkedCheckboxies = $cmsj('#recalculationDetail input:checkbox:checked');
-  if (checkedCheckboxies.length > 0)
-      return confirm(" + ScriptHelper.GetString(GetString("StoreSettings_ChangeCurrency.Confirmation")) + @");
+  var result = true;
+  if (checkedCheckboxies.length > 0) {
+      result = confirm(" + ScriptHelper.GetString(GetString("StoreSettings_ChangeCurrency.Confirmation")) + @");
+  }
+  return result;
 };";
 
         ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "Scripts", checkRecalculationScript + btnSubmitScript, true);
@@ -197,11 +197,9 @@ function OnButtonClicked()
                 settings.ExchangeRates = chkExchangeRates.Checked;
                 settings.FromGlobalCurrencyRates = (plcRecalculateFromGlobal.Visible && chkRecalculateFromGlobal.Checked);
                 settings.Products = chkProductPrices.Checked;
-                settings.Taxes = chkFlatTaxes.Checked;
                 settings.Discounts = chkDiscounts.Checked;
                 settings.CreditEvents = chkCredit.Checked;
                 settings.ShippingOptions = chkShipping.Checked;
-                settings.Documents = (plcRecountDocuments.Visible && chkDocuments.Checked);
                 // Do not recalculate orders after main currency changed
                 settings.Orders = false;
 
@@ -225,12 +223,11 @@ function OnButtonClicked()
 
 
     /// <summary>
-    /// Returns true when at least one checkox is checked.
+    /// Returns true when at least one checkbox is checked.
     /// </summary>
     private bool RecalculationRequested()
     {
         return chkExchangeRates.Checked || (plcRecalculateFromGlobal.Visible && chkRecalculateFromGlobal.Checked) || chkProductPrices.Checked ||
-               chkFlatTaxes.Checked || chkDiscounts.Checked || chkCredit.Checked ||
-               chkShipping.Checked || (plcRecountDocuments.Visible && chkDocuments.Checked);
+               chkDiscounts.Checked || chkCredit.Checked || chkShipping.Checked;
     }
 }

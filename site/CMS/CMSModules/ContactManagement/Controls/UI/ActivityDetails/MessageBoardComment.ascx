@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="MessageBoardComment.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="MessageBoardComment.ascx.cs"
     Inherits="CMSModules_ContactManagement_Controls_UI_ActivityDetails_MessageBoardComment" %>
 
 <div class="form-horizontal">

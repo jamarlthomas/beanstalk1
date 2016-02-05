@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Web;
@@ -231,23 +231,6 @@ public partial class CMSWebParts_Community_Profile_GroupProfile : CMSAbstractWeb
         }
     }
 
-
-    /// <summary>
-    /// If true, the polls tab is enabled.
-    /// </summary>
-    public bool DisplayProjects
-    {
-        get
-        {
-            return ValidationHelper.GetBoolean(GetValue("DisplayProjects"), groupProfileElem.ShowProjectsTab);
-        }
-        set
-        {
-            SetValue("DisplayProjects", value);
-            groupProfileElem.ShowProjectsTab = value;
-        }
-    }
-
     #endregion
 
 
@@ -307,7 +290,6 @@ public partial class CMSWebParts_Community_Profile_GroupProfile : CMSAbstractWeb
                 groupProfileElem.ShowMediaTab = DisplayMediaLibrary;
                 groupProfileElem.ShowMessageBoardsTab = DisplayMessageBoards;
                 groupProfileElem.ShowPollsTab = DisplayPolls;
-                groupProfileElem.ShowProjectsTab = DisplayProjects;
             }
             else
             {

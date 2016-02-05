@@ -19,6 +19,8 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Automation_Process
     #region "Variables"
 
     private bool mSaving;
+    int siteId = 0;
+    int processId = QueryHelper.GetInteger("processid", 0);
 
     #endregion
 
@@ -35,9 +37,6 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Automation_Process
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        int siteId = 0;
-        int processId = QueryHelper.GetInteger("processid", 0);
-
         // Handle site selectors visibility
         if (IsSiteManager)
         {
@@ -77,8 +76,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Automation_Process
         {
             ucReport.ReportName = report.ReportName;
             reportHeader.ReportName = report.ReportName;
-            reportHeader.DisplayManageData = false;
-
+            
             ucReport.DisplayFilter = false;
             ucReport.LoadFormParameters = false;
 
@@ -89,9 +87,16 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Automation_Process
 
             reportHeader.ActionPerformed += reportHeader_ActionPerformed;
         }
+    }
+
+
+    protected override void OnPreRender(EventArgs e)
+    {
+
+        base.OnPreRender(e);
 
         // Create refresh action
-        rightHeaderActions.AddAction(new HeaderAction()
+        reportHeader.HeaderActions.AddAction(new HeaderAction()
         {
             Text = GetString("general.refresh"),
             RedirectUrl = AddSiteQuery("Tab_Report.aspx?processid=" + processId, siteId)

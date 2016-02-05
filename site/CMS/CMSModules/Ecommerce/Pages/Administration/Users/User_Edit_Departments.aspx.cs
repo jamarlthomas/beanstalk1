@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Web;
@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
+using CMS.Core;
 using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.LicenseProvider;
@@ -34,16 +35,16 @@ public partial class CMSModules_Ecommerce_Pages_Administration_Users_User_Edit_D
         // Check the license
         LicenseHelper.CheckFeatureAndRedirect(RequestContext.CurrentDomain, FeatureEnum.Ecommerce);
 
-        bool ecommerceOnSite = ResourceSiteInfoProvider.IsResourceOnSite("CMS.Ecommerce", SiteContext.CurrentSiteName);
+        bool ecommerceOnSite = ResourceSiteInfoProvider.IsResourceOnSite(ModuleName.ECOMMERCE, SiteContext.CurrentSiteName);
 
         // Check 'ConfigurationRead' permission
-        if (!ecommerceOnSite || !MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("CMS.Ecommerce", "ConfigurationRead"))
+        if (!ecommerceOnSite || !MembershipContext.AuthenticatedUser.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.CONFIGURATION_READ))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", "ConfigurationRead");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, EcommercePermissions.CONFIGURATION_READ);
         }
 
         // Check 'ConfigurationModify' permission
-        if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("CMS.Ecommerce", "ConfigurationModify"))
+        if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.CONFIGURATION_MODIFY))
         {
             uniSelector.Enabled = false;
         }
@@ -154,9 +155,9 @@ public partial class CMSModules_Ecommerce_Pages_Administration_Users_User_Edit_D
     protected void usSites_OnSelectionChanged(object sender, EventArgs e)
     {
         // check 'ConfigurationModify' permission
-        if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("CMS.Ecommerce", "ConfigurationModify"))
+        if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.CONFIGURATION_MODIFY))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", "ConfigurationModify");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, EcommercePermissions.CONFIGURATION_MODIFY);
         }
 
         string result = ValidateGlobalAndDeskAdmin(userId);

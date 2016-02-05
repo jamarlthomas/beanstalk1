@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Widgets_LiveDialogs_WidgetSelector"
-    MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master" Theme="Default" Title="Add widget" Codebehind="WidgetSelector.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Widgets_LiveDialogs_WidgetSelector"
+    MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master" Theme="Default" Title="Add widget"  Codebehind="WidgetSelector.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Widgets/Controls/WidgetSelector.ascx" TagName="WidgetSelector"
     TagPrefix="cms" %>

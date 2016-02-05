@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Tools_Newsletters_Newsletter_Iframe_Edit"
-    Theme="Default" ValidateRequest="false" Codebehind="Newsletter_Iframe_Edit.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Tools_Newsletters_Newsletter_Iframe_Edit"
+    Theme="Default" ValidateRequest="false"  Codebehind="Newsletter_Iframe_Edit.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

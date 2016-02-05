@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SeparationFinished.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SeparationFinished.ascx.cs"
     Inherits="CMSInstall_Controls_WizardSteps_SeparationFinished" %>
 <div class="install-content">
     <table class="install-wizard" border="0" cellpadding="0" cellspacing="0">

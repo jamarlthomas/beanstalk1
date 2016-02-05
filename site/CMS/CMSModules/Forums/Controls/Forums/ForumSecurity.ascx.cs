@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Web.UI;
@@ -174,7 +174,7 @@ public partial class CMSModules_Forums_Controls_Forums_ForumSecurity : CMSAdminE
         if ((resForums != null) && (forum != null))
         {
             QueryDataParameters parameters = new QueryDataParameters();
-            parameters.Add("@ID", resForums.ResourceId);
+            parameters.Add("@ID", resForums.ResourceID);
             parameters.Add("@ForumID", forum.ForumID);
             parameters.Add("@SiteID", SiteContext.CurrentSiteID);
 
@@ -254,7 +254,7 @@ public partial class CMSModules_Forums_Controls_Forums_ForumSecurity : CMSAdminE
         if ((resForums != null) && (forum != null))
         {
             // Get permissions for the current forum resource                       
-            DataSet permissions = PermissionNameInfoProvider.GetResourcePermissions(resForums.ResourceId);
+            DataSet permissions = PermissionNameInfoProvider.GetResourcePermissions(resForums.ResourceID);
             if (DataHelper.DataSourceIsEmpty(permissions))
             {
                 ShowInformation(GetString("general.emptymatrix"));

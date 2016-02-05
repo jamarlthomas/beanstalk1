@@ -1,11 +1,10 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web.UI;
 
 using CMS.Controls;
 using CMS.Helpers;
 using CMS.IO;
-using CMS.MacroEngine;
 using CMS.Base;
 using CMS.DocumentEngine;
 using CMS.UIControls;
@@ -15,7 +14,7 @@ public partial class CMSModules_Content_Controls_Attachments_AttachmentLightboxG
 {
     #region "Variables"
 
-    private string mPath = null;
+    private string mPath;
 
     #endregion
 
@@ -966,7 +965,7 @@ public partial class CMSModules_Content_Controls_Attachments_AttachmentLightboxG
         set
         {
             mPath = value;
-            ucAttachments.Path = MacroResolver.ResolveCurrentPath(value);
+            ucAttachments.Path = value;
         }
     }
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Helpers;
@@ -6,7 +6,6 @@ using CMS.Membership;
 using CMS.UIControls;
 using CMS.ExtendedControls.ActionsConfig;
 
-[Security(Resource = "CMS.MessageBoards", UIElements = "Messages")]
 public partial class CMSModules_MessageBoards_Tools_Messages_Message_List : CMSMessageBoardPage
 {
     private int mBoardId;
@@ -19,6 +18,13 @@ public partial class CMSModules_MessageBoards_Tools_Messages_Message_List : CMSM
 
         mBoardId = QueryHelper.GetInteger("boardId", 0);
         mGroupId = QueryHelper.GetInteger("groupid", 0);
+
+        // Check correct UI element based on specified board identifier or not
+        string uiElement = (mBoardId > 0) ? "Board.Messages" : "Messages";
+        if (!CurrentUser.IsAuthorizedPerUIElement("CMS.MessageBoards", uiElement))
+        {
+            RedirectToUIElementAccessDenied("CMS.MessageBoards", uiElement);
+        }
     }
 
 
@@ -33,7 +39,7 @@ public partial class CMSModules_MessageBoards_Tools_Messages_Message_List : CMSM
         {
             HeaderAction action = new HeaderAction();
             action.Text = GetString("Board.MessageList.NewMessage");
-            action.OnClientClick = "modalDialog('" + AuthenticationHelper.ResolveDialogUrl("~/CMSModules/MessageBoards/Tools/Messages/Message_Edit.aspx") + "?boardId=" + mBoardId + "&changemaster=" + QueryHelper.GetBoolean("changemaster", false) + "', 'MessageEdit', 800, 535); return false;";
+            action.OnClientClick = "modalDialog('" + AuthenticationHelper.ResolveDialogUrl("~/CMSModules/MessageBoards/Tools/Messages/Message_Edit.aspx") + "?boardId=" + mBoardId + "&changemaster=" + QueryHelper.GetBoolean("changemaster", false) + "', 'MessageEdit', 360, 490); return false;";
             CurrentMaster.HeaderActions.AddAction(action);
         }
     }

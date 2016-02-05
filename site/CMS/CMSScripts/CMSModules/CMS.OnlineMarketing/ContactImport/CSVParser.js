@@ -4,6 +4,9 @@ cmsdefine(['Underscore', 'csv-parser', 'CMS/StringHelper'], function (_, csvPars
     csvParser.DETECT_TYPES = false;
 
     return {
+        COLUMN_SEPARATOR: csvParser.COLUMN_SEPARATOR,
+        IGNORE_RECORD_LENGTH: csvParser.IGNORE_RECORD_LENGTH,
+
         /**
          * Checks if length of every row in given input match the given length. If not, row is either spliced or filled up with empty values.
          * @param  input         string[[]]  Input to be checked
@@ -78,6 +81,9 @@ cmsdefine(['Underscore', 'csv-parser', 'CMS/StringHelper'], function (_, csvPars
                 } : StringHelper.getLastEndOfLinePosition(buffer),
                 originalLength = buffer.length,
                 rows;
+
+            csvParser.COLUMN_SEPARATOR = this.COLUMN_SEPARATOR;
+            csvParser.IGNORE_RECORD_LENGTH = this.IGNORE_RECORD_LENGTH;
 
             while (lastEndOfLine.start > 0) {
                 try {

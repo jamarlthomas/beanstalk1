@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -24,20 +24,14 @@ public partial class CMSModules_MessageBoards_Controls_MessageBoard : CMSUserCon
     private BoardProperties mBoardProperties = new BoardProperties();
 
     // Currently processed board info
-    private BoardInfo bi = null;
+    private BoardInfo bi;
 
-    private bool mReloadPageAfterAction = false;
-    private bool userVerified = false;
+    private bool userVerified;
 
-    private string mAliasPath = null;
-    private string mCulture = null;
-    private string mSiteName = null;
-    private TreeNode mBoardNode = null;
-
-    private string mMessageTransformation = null;
-    private int mMessageBoardID = 0;
-    private string mNoMessagesText = null;
-
+    private string mAliasPath;
+    private string mCulture;
+    private string mSiteName;
+    private TreeNode mBoardNode;
     #endregion
 
 
@@ -60,18 +54,22 @@ public partial class CMSModules_MessageBoards_Controls_MessageBoard : CMSUserCon
 
 
     /// <summary>
+    /// Prefix for the resource strings which are used for the strings on the message form. 
+    /// </summary>
+    public string FormResourcePrefix
+    {
+        get;
+        set;
+    }
+
+
+    /// <summary>
     /// Transformation to be used for displaying the board message text.
     /// </summary>
     public string MessageTransformation
     {
-        get
-        {
-            return mMessageTransformation;
-        }
-        set
-        {
-            mMessageTransformation = value;
-        }
+        get;
+        set;
     }
 
 
@@ -80,14 +78,8 @@ public partial class CMSModules_MessageBoards_Controls_MessageBoard : CMSUserCon
     /// </summary>
     public int MessageBoardID
     {
-        get
-        {
-            return mMessageBoardID;
-        }
-        set
-        {
-            mMessageBoardID = value;
-        }
+        get;
+        set;
     }
 
 
@@ -96,14 +88,8 @@ public partial class CMSModules_MessageBoards_Controls_MessageBoard : CMSUserCon
     /// </summary>
     public string NoMessagesText
     {
-        get
-        {
-            return mNoMessagesText;
-        }
-        set
-        {
-            mNoMessagesText = value;
-        }
+        get;
+        set;
     }
 
 
@@ -112,14 +98,8 @@ public partial class CMSModules_MessageBoards_Controls_MessageBoard : CMSUserCon
     /// </summary>
     public bool ReloadPageAfterAction
     {
-        get
-        {
-            return mReloadPageAfterAction;
-        }
-        set
-        {
-            mReloadPageAfterAction = value;
-        }
+        get;
+        set;
     }
 
 
@@ -198,11 +178,7 @@ public partial class CMSModules_MessageBoards_Controls_MessageBoard : CMSUserCon
     {
         get
         {
-            if (mAliasPath == null)
-            {
-                mAliasPath = DocumentContext.CurrentPageInfo.NodeAliasPath;
-            }
-            return mAliasPath;
+            return mAliasPath ?? (mAliasPath = DocumentContext.CurrentPageInfo.NodeAliasPath);
         }
     }
 
@@ -214,11 +190,7 @@ public partial class CMSModules_MessageBoards_Controls_MessageBoard : CMSUserCon
     {
         get
         {
-            if (mCulture == null)
-            {
-                mCulture = LocalizationContext.PreferredCultureCode;
-            }
-            return mCulture;
+            return mCulture ?? (mCulture = LocalizationContext.PreferredCultureCode);
         }
     }
 
@@ -230,11 +202,7 @@ public partial class CMSModules_MessageBoards_Controls_MessageBoard : CMSUserCon
     {
         get
         {
-            if (mSiteName == null)
-            {
-                mSiteName = SiteContext.CurrentSiteName;
-            }
-            return mSiteName;
+            return mSiteName ?? (mSiteName = SiteContext.CurrentSiteName);
         }
     }
 
@@ -290,7 +258,7 @@ public partial class CMSModules_MessageBoards_Controls_MessageBoard : CMSUserCon
     {
         base.OnPreRender(e);
 
-        string postBackRefference = ControlsHelper.GetPostBackEventReference(btnRefresh, null);
+        string postBackRefference = ControlsHelper.GetPostBackEventReference(btnRefresh);
         ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "RefreshBoardList", ScriptHelper.GetScript("function RefreshBoardList(filterParams){" +
                                                                                                                 postBackRefference + "}"));
     }
@@ -323,7 +291,7 @@ public partial class CMSModules_MessageBoards_Controls_MessageBoard : CMSUserCon
                         boardMsgActions.MessageBoardID = MessageBoardID;
 
                         // Register for OnAction event
-                        boardMsgActions.OnMessageAction += new BoardMessageActions.OnBoardMessageAction(boardMsgActions_OnMessageAction);
+                        boardMsgActions.OnMessageAction += boardMsgActions_OnMessageAction;
 
                         // Handle buttons displaying
                         boardMsgActions.ShowApprove = ((BoardProperties.ShowApproveButton) && (!bmi.MessageApproved) && userVerified);
@@ -338,9 +306,9 @@ public partial class CMSModules_MessageBoards_Controls_MessageBoard : CMSUserCon
                         if ((bmi.MessageRatingValue > 0) && (BoardProperties.EnableContentRating))
                         {
                             pnlRating.Visible = true;
-                            AbstractRatingControl usrControl = null;
                             if (DocumentContext.CurrentDocument != null)
                             {
+                                AbstractRatingControl usrControl;
                                 try
                                 {
                                     // Insert rating control to page
@@ -494,10 +462,11 @@ public partial class CMSModules_MessageBoards_Controls_MessageBoard : CMSUserCon
             // Set the repeater
             rptBoardMessages.QueryName = "board.message.selectall";
             rptBoardMessages.ZeroRowsText = HTMLHelper.HTMLEncode(NoMessagesText) + "<br /><br />";
-            rptBoardMessages.ItemDataBound += new RepeaterItemEventHandler(rptBoardMessages_ItemDataBound);
+            rptBoardMessages.ItemDataBound += rptBoardMessages_ItemDataBound;
             rptBoardMessages.TransformationName = MessageTransformation;
 
             // Set the labels
+            msgEdit.ResourcePrefix = FormResourcePrefix;
             lblLeaveMessage.ResourceString = "board.messageboard.leavemessage";
             lblNewSubscription.ResourceString = "board.newsubscription";
             btnSubscribe.Text = GetString("board.messageboard.subscribe");
@@ -506,7 +475,7 @@ public partial class CMSModules_MessageBoards_Controls_MessageBoard : CMSUserCon
             // Pass the properties down to the message edit control
             msgEdit.BoardProperties = BoardProperties;
             msgEdit.MessageBoardID = MessageBoardID;
-            msgEdit.OnAfterMessageSaved += new OnAfterMessageSavedEventHandler(msgEdit_OnAfterMessageSaved);
+            msgEdit.OnAfterMessageSaved += msgEdit_OnAfterMessageSaved;
             msgSubscription.BoardProperties = BoardProperties;
             plcBtnSubscribe.Visible = BoardProperties.BoardEnableSubscriptions;
             pnlMsgSubscription.Visible = BoardProperties.BoardEnableSubscriptions;
@@ -641,6 +610,12 @@ public partial class CMSModules_MessageBoards_Controls_MessageBoard : CMSUserCon
                 rptBoardMessages.WhereCondition = where;
                 rptBoardMessages.ReloadData(true);
             }
+        }
+
+        // Update update panel if needed
+        if (ControlsHelper.IsInUpdatePanel(this))
+        {
+            ControlsHelper.UpdateCurrentPanel(this);
         }
 
         ReleaseContext();

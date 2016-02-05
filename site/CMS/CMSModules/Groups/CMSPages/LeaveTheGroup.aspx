@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Groups_CMSPages_LeaveTheGroup"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Groups_CMSPages_LeaveTheGroup"
     MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master" Theme="Default"
-    Codebehind="LeaveTheGroup.aspx.cs" %>
+     Codebehind="LeaveTheGroup.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Groups/Controls/GroupLeave.ascx" TagName="GroupLeave"
     TagPrefix="uc1" %>

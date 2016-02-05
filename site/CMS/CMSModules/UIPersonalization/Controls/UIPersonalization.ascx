@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_UIPersonalization_Controls_UIPersonalization"
-    Codebehind="UIPersonalization.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_UIPersonalization_Controls_UIPersonalization"
+     Codebehind="UIPersonalization.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" TagName="HeaderActions"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector"
@@ -12,7 +12,7 @@
 <%@ Register Src="~/CMSAdminControls/Basic/DisabledModuleInfo.ascx" TagPrefix="cms"
     TagName="DisabledModule" %>
 <asp:PlaceHolder runat="server" ID="plcContent">
-    <cms:CMSPanel ID="pnlHeader" runat="server" FixedPosition="True">
+    <cms:CMSPanel ID="pnlHeader" runat="server">
         <cms:CMSUpdatePanel runat="server" ID="pnlUpdate" UpdateMode="Always">
             <ContentTemplate>
                 <asp:Panel ID="pnlActions" runat="server" CssClass="header-panel">
@@ -24,8 +24,7 @@
                                         DisplayColon="true" />
                                 </div>
                                 <div class="filter-form-value-cell-wide">
-                                    <cms:SiteSelector runat="server" ID="selectSite" AllowAll="false" AllowEmpty="false"
-                                        OnlyRunningSites="false" />
+                                    <cms:SiteSelector runat="server" ID="selectSite" AllowAll="false" AllowEmpty="false" OnlyRunningSites="false" />
                                 </div>
                             </div>
                         </asp:PlaceHolder>
@@ -48,8 +47,7 @@
                                         DisplayColon="true" />
                                 </div>
                                 <div class="filter-form-value-cell-wide">
-                                    <cms:ModuleSelector runat="server" ID="selectModule"
-                                        DisplayOnlyWithPermission="false" AllowAll="true" />
+                                    <cms:ModuleSelector runat="server" ID="selectModule" DisplayOnlyWithPermission="false" AllowAll="true" FilterMode="true" />
                                 </div>
                             </div>
                         </asp:PlaceHolder>
@@ -58,23 +56,23 @@
                 <asp:Panel ID="pnlAdditionalControls" runat="server" EnableViewState="false" CssClass="cms-edit-menu">
                     <cms:HeaderActions ID="actionsElem" runat="server" IsLiveSite="false" />
                 </asp:Panel>
-                <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
             </ContentTemplate>
         </cms:CMSUpdatePanel>
     </cms:CMSPanel>
-    <cms:CMSUpdatePanel runat="server" ID="pnlUpdateTree" UpdateMode="Always">
-        <ContentTemplate>
-            <asp:Panel ID="pnlTree" runat="server" CssClass="PageContent">
-                <cms:DisabledModule runat="server" ID="ucDisabledModule" SettingsKeys="CMSPersonalizeUserInterface" />
-                <cms:LocalizedLabel ID="lblInfo" runat="server" EnableViewState="false" CssClass="header-panel"
-                    Visible="false" />
-                <div class="ContentTree">
-                    <div class="TreeAreaTree">
-                        <cms:UITree runat="server" ID="treeElem" />
+    <div class="PageContent">
+        <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
+        <cms:CMSUpdatePanel runat="server" ID="pnlUpdateTree" UpdateMode="Always">
+            <ContentTemplate>
+                <asp:Panel ID="pnlTree" runat="server">
+                    <cms:DisabledModule runat="server" ID="ucDisabledModule" SettingsKeys="CMSPersonalizeUserInterface"/>
+                    <div class="ContentTree">
+                        <div class="TreeAreaTree">
+                            <cms:UITree runat="server" ID="treeElem" />
+                        </div>
                     </div>
-                </div>
-            </asp:Panel>
-        </ContentTemplate>
-    </cms:CMSUpdatePanel>
+                </asp:Panel>
+            </ContentTemplate>
+        </cms:CMSUpdatePanel>
+    </div>
 </asp:PlaceHolder>
 

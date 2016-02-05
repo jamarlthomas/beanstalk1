@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_SmartSearch_SearchIndex_Content_List"
-    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Search Index - Content List" Theme="Default" Codebehind="SearchIndex_Content_List.aspx.cs" %>
+    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Search Index - Content List" Theme="Default"  Codebehind="SearchIndex_Content_List.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/SmartSearch/Controls/UI/SearchIndex_Content_List.ascx"
     TagName="ContentList" TagPrefix="cms" %>

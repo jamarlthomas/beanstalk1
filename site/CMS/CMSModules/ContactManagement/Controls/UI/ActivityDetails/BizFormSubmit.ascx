@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="BizFormSubmit.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="BizFormSubmit.ascx.cs"
     Inherits="CMSModules_ContactManagement_Controls_UI_ActivityDetails_BizFormSubmit" %>
 <div class="form-horizontal">
     <div class="form-group">

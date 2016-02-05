@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/Chat/ChatOnlineUsers.ascx.cs" Inherits="CMSWebParts_Chat_ChatOnlineUsers" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/Chat/ChatOnlineUsers.ascx.cs" Inherits="CMSWebParts_Chat_ChatOnlineUsers" %>
 
 <asp:Panel runat="server" CssClass="ChatWebpartContainer ChatWebpartContainerOnlineUsers" ID="pnlOnlineUsersWP">
 <div class="ChatWebpartFilterPaging">

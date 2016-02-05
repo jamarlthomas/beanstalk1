@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
 using CMS.Core;
 using CMS.Helpers;
+using CMS.LicenseProvider;
 using CMS.Newsletters;
 using CMS.Base;
 using CMS.PortalEngine;
@@ -21,8 +22,7 @@ public partial class CMSModules_Newsletters_Tools_Subscribers_Subscriber_List : 
     #region "Variables"
 
     private int mBounceLimit;
-
-
+    private readonly ISubscriberEmailRetriever mSubscriberEmailRetriever = Service<ISubscriberEmailRetriever>.Entry();
     private bool mBounceInfoAvailable;
 
     #endregion
@@ -40,6 +40,16 @@ public partial class CMSModules_Newsletters_Tools_Subscribers_Subscriber_List : 
         UniGrid.OnAction += uniGrid_OnAction;
         UniGrid.OnExternalDataBound += uniGrid_OnExternalDataBound;
         UniGrid.WhereCondition = "SubscriberSiteID = " + currentSite.SiteID;
+        UniGrid.FilteredZeroRowsText = GetString("subscriber_list.nodata.filtered");
+
+        if (LicenseContext.CurrentLicenseInfo.Edition == ProductEditionEnum.EnterpriseMarketingSolution)
+        {
+            UniGrid.ZeroRowsText = string.Format(GetString("subscriber_list.nodata.ems"), URLHelper.ResolveUrl(UIContextHelper.GetApplicationUrl(ModuleName.ONLINEMARKETING, "ContactsFrameset","?tabname=Contacts")));
+        }
+        else
+        {
+            UniGrid.ZeroRowsText = GetString("subscriber_list.nodata.noems");
+        }
     }
 
 
@@ -56,7 +66,7 @@ public partial class CMSModules_Newsletters_Tools_Subscribers_Subscriber_List : 
             foreach (DataRow row in view.Table.Rows)
             {
                 // Hide object menu for other than normal subscribers
-                if (ValidationHelper.GetString(DataHelper.GetDataRowValue(row, "SubscriberType"), "") != "")
+                if (DataHelper.GetStringValue(row, "SubscriberType") != "")
                 {
                     if ((UniGrid.GridView.Rows[i].Cells.Count > 0) && (UniGrid.GridView.Rows[i].Cells[0].Controls.Count > 4)
                         && (UniGrid.GridView.Rows[i].Cells[0].Controls[4] is ContextMenuContainer))
@@ -187,23 +197,8 @@ public partial class CMSModules_Newsletters_Tools_Subscribers_Subscriber_List : 
     private object GetEmail(DataRowView rowView)
     {
         // Try to get subscriber email
-        string email = ValidationHelper.GetString(rowView.Row["SubscriberEmail"], string.Empty);
-        if (string.IsNullOrEmpty(email))
-        {
-            // Try to get user email
-            email = ValidationHelper.GetString(rowView.Row["Email"], string.Empty);
-        }
-
-        if (string.IsNullOrEmpty(email) && ValidationHelper.GetString(rowView.Row["SubscriberType"], string.Empty).EqualsCSafe(PredefinedObjectType.CONTACT))
-        {
-            // Add the field transformation control that handles the translation
-            var tr = new ObjectTransformation("om.contact", ValidationHelper.GetInteger(rowView.Row["SubscriberRelatedID"], 0));
-            tr.Transformation = "ContactEmail";
-
-            return tr;
-        }
-
-        return email;
+        var subscriberID = ValidationHelper.GetInteger(rowView.Row["SubscriberID"], 0);
+        return mSubscriberEmailRetriever.GetSubscriberEmail(subscriberID);
     }
 
 
@@ -314,7 +309,7 @@ public partial class CMSModules_Newsletters_Tools_Subscribers_Subscriber_List : 
     /// </summary>
     private static bool IsMultiSubscriber(DataRowView rowView)
     {
-        string type = ValidationHelper.GetString(DataHelper.GetDataRowValue(rowView.Row, "SubscriberType"), string.Empty);
+        string type = DataHelper.GetStringValue(rowView.Row, "SubscriberType");
         return (type.EqualsCSafe(RoleInfo.OBJECT_TYPE, true) || type.EqualsCSafe(PredefinedObjectType.CONTACTGROUP, true) || type.EqualsCSafe(PredefinedObjectType.PERSONA, true));
     }
 
@@ -324,7 +319,7 @@ public partial class CMSModules_Newsletters_Tools_Subscribers_Subscriber_List : 
     /// </summary>
     private static int GetBouncesFromRow(DataRowView rowView)
     {
-        return ValidationHelper.GetInteger(DataHelper.GetDataRowValue(rowView.Row, "SubscriberBounces"), 0);
+        return DataHelper.GetIntValue(rowView.Row, "SubscriberBounces");
     }
 
     #endregion

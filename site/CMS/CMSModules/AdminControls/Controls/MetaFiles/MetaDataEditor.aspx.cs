@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.SiteProvider;
@@ -67,7 +67,7 @@ public partial class CMSModules_AdminControls_Controls_MetaFiles_MetaDataEditor 
         {
             // Hide all controls
             metaDataEditor.Visible = false;
-            string url = ResolveUrl("~/CMSMessages/Error.aspx?title=" + GetString("dialogs.badhashtitle") + "&text=" + GetString("dialogs.badhashtext") + "&cancel=1");
+            string url = ResolveUrl(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
             ltlScript.Text = ScriptHelper.GetScript("window.location = '" + url + "';");
         }
     }

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Toolbar.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Toolbar.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
     Inherits="CMSModules_Content_CMSDesk_SplitView_Toolbar" Theme="Default" Title="CMSDesk - Split view toolbar" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/SplitView/Documents/DocumentToolbar.ascx"

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Base;
 using CMS.DataEngine;
@@ -16,6 +16,9 @@ using TreeNode = CMS.DocumentEngine.TreeNode;
 [Title("Content.ListingTitle")]
 public partial class CMSModules_Content_CMSDesk_View_Listing : CMSContentPage
 {
+    private const string CONTENT_CMSDESK_FOLDER = "~/CMSModules/Content/CMSDesk/";
+
+
     #region "Page events"
 
     protected override void OnPreInit(EventArgs e)
@@ -50,15 +53,16 @@ public partial class CMSModules_Content_CMSDesk_View_Listing : CMSContentPage
         docList.NodeID = NodeID;
         docList.SelectItemJSFunction = "SelectItem";
 
-        docList.DeleteReturnUrl = "~/CMSModules/Content/CMSDesk/Delete.aspx?multiple=true" + dialogParameter;
-        docList.PublishReturnUrl = "~/CMSModules/Content/CMSDesk/PublishArchive.aspx?multiple=true" + dialogParameter;
-        docList.ArchiveReturnUrl = "~/CMSModules/Content/CMSDesk/PublishArchive.aspx?multiple=true" + dialogParameter;
+        docList.DeleteReturnUrl = CONTENT_CMSDESK_FOLDER + "Delete.aspx?multiple=true" + dialogParameter;
+        docList.PublishReturnUrl = CONTENT_CMSDESK_FOLDER + "PublishArchive.aspx?multiple=true" + dialogParameter;
+        docList.ArchiveReturnUrl = CONTENT_CMSDESK_FOLDER + "PublishArchive.aspx?multiple=true" + dialogParameter;
         docList.TranslateReturnUrl = "~/CMSModules/Translations/Pages/TranslateDocuments.aspx?currentastargetdefault=1" + dialogParameter;
 
         docList.RequiresDialog = RequiresDialog;
 
         SelectClass.SiteID = SiteContext.CurrentSiteID;
         SelectClass.DropDownSingleSelect.AutoPostBack = true;
+        CurrentMaster.DisplaySiteSelectorPanel = true;
 
         var filterForm = grid.FilterForm;
 
@@ -84,7 +88,7 @@ public partial class CMSModules_Content_CMSDesk_View_Listing : CMSContentPage
         if (!RequiresDialog)
         {
             ScriptHelper.RegisterStartupScript(this, typeof(String), "ListingContentAppHash", "cmsListingContentApp = '" + UIContextHelper.GetApplicationHash("cms.content", "content") + "';", true);
-            ScriptHelper.RegisterScriptFile(this, "~/CMSModules/Content/CMSDesk/View/Listing.js");
+            ScriptHelper.RegisterScriptFile(this, CONTENT_CMSDESK_FOLDER + "View/Listing.js");
         }
 
         // Set selected document type
@@ -105,7 +109,7 @@ public partial class CMSModules_Content_CMSDesk_View_Listing : CMSContentPage
 
                 if (RequiresDialog)
                 {
-                    ScriptHelper.RegisterScriptFile(this, @"~/CMSModules/Content/CMSDesk/View/ListingDialog.js");
+                    ScriptHelper.RegisterScriptFile(this, CONTENT_CMSDESK_FOLDER + "View/ListingDialog.js");
 
                     // Set JavaScript for new button
                     CurrentMaster.HeaderActions.AddAction(new HeaderAction
@@ -123,7 +127,7 @@ public partial class CMSModules_Content_CMSDesk_View_Listing : CMSContentPage
                     EnsureDocumentBreadcrumbs(PageBreadcrumbs, node);
                     
                     // Setup the link to the parent document
-                    if ((node.NodeClassName.ToLowerCSafe() != "cms.root") && (currentUserInfo.UserStartingAliasPath.ToLowerCSafe() != node.NodeAliasPath.ToLowerCSafe()))
+                    if (!node.IsRoot() && (currentUserInfo.UserStartingAliasPath.ToLowerCSafe() != node.NodeAliasPath.ToLowerCSafe()))
                     {
                         CurrentMaster.HeaderActions.AddAction(new HeaderAction
                         {
@@ -153,41 +157,34 @@ public partial class CMSModules_Content_CMSDesk_View_Listing : CMSContentPage
     /// <param name="node">Current node</param>
     private void EnsureBreadcrumbs(TreeNode node)
     {
-        if (node != null)
+        if (node == null)
         {
-            // Loop thru all levels and generate breadcrumbs
-            int parentNodeId = 0;
+            return;
+        }
 
-            PageTitle.HideBreadcrumbs = false;
+        PageTitle.HideBreadcrumbs = false;
 
-            for (int i = node.NodeLevel; i >= 0; i--)
+        // Loop thru all levels and generate breadcrumbs
+        for (int i = node.NodeLevel; i >= 0; i--)
+        {
+            if (node == null)
             {
-                if (node == null)
-                {
-                    // Document is not translated in the current culture -> get parent node from the default culture
-                    TreeProvider treeProvider = new TreeProvider();
-                    TreeNode parentNode = DocumentHelper.GetDocument(parentNodeId, CultureCode, true, treeProvider);
-                    node = parentNode;
-                }
-
-                if (node != null)
-                {
-                    PageBreadcrumbs.Items.Add(new BreadcrumbItem
-                    {
-                        Text = node.GetDocumentName(),
-                        Index = i,
-                        RedirectUrl = "#",
-                        OnClientClick = "SelectItem(" + node.NodeID + "); return false;"
-                    });
-
-                    parentNodeId = node.NodeParentID;
-                    node = node.Parent;
-                }
+                continue;
             }
 
-            // Add additional css class for correct design
-            CurrentMaster.PanelHeader.CssClass += " SimpleHeader";
+            PageBreadcrumbs.Items.Add(new BreadcrumbItem
+            {
+                Text = node.GetDocumentName(),
+                Index = i,
+                RedirectUrl = "#",
+                OnClientClick = "SelectItem(" + node.NodeID + "); return false;"
+            });
+
+            node = node.Parent;
         }
+
+        // Add additional css class for correct design
+        CurrentMaster.PanelHeader.CssClass += " SimpleHeader";
     }
 
     #endregion

@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="List.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_Activity_List" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="List.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_Activity_List" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
@@ -8,7 +8,7 @@
     <cms:UniGrid runat="server" ID="gridElem" ObjectType="om.activitylist" Columns="ActivityID,ContactFullNameJoined,ActivityTitle,ActivityType,ActivityCreated,ActivityIPAddress,ActivitySiteID"
         IsLiveSite="false" HideFilterButton="true" RememberStateByParam="issitemanager">
         <GridActions Parameters="ActivityID">
-            <ug:Action Name="view" ExternalSourceName="view" Caption="$General.View$" FontIconClass="icon-edit" FontIconStyle="Allow" />
+            <ug:Action Name="view" ExternalSourceName="view" Caption="$General.Edit$" FontIconClass="icon-edit" FontIconStyle="Allow" />
             <ug:Action Name="#delete" ExternalSourceName="delete" CommandArgument="ActivityID"
                 Caption="$General.Delete$" FontIconClass="icon-bin" FontIconStyle="Critical" Confirmation="$General.ConfirmDelete$"
                 ModuleName="CMS.ContactManagement" Permissions="ManageActivities" />

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Default"
-    Codebehind="Default.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Default"
+     Codebehind="Default.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
     Theme="Default" Title="Content" %>
 
 <asp:Content runat="server" ID="cntContent" ContentPlaceHolderID="plcContent">

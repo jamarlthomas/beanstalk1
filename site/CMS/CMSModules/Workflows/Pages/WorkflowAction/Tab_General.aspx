@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="True"
+﻿<%@ Page Language="C#" AutoEventWireup="True"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Workflow action properties – General"
-    Inherits="CMSModules_Workflows_Pages_WorkflowAction_Tab_General" Theme="Default" Codebehind="Tab_General.aspx.cs" %>            
+    Inherits="CMSModules_Workflows_Pages_WorkflowAction_Tab_General" Theme="Default"  Codebehind="Tab_General.aspx.cs" %>            
 <%@ Register Src="~/CMSModules/Workflows/Controls/UI/WorkflowAction/Edit.ascx"
     TagName="WorkflowActionEdit" TagPrefix="cms" %>
     

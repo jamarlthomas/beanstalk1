@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_Controls_MacrosGrid" Codebehind="MacrosGrid.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_Controls_MacrosGrid"  Codebehind="MacrosGrid.ascx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/Pager/UIPager.ascx" TagName="UIPager" TagPrefix="cms" %>
 
@@ -32,31 +32,31 @@
                 </div>
                 <div class="form-group">
                     <div class="filter-form-label-cell">
-                        <cms:LocalizedLabel CssClass="control-label" runat="server" ID="lblInvalid" ResourceString="Macros.InvalidSignature"
-                            DisplayColon="true" EnableViewState="false" AssociatedControlID="chkInvalid" />
+                        <cms:LocalizedLabel CssClass="control-label" runat="server" ID="lblReportProblems" ResourceString="Macros.InvalidSignature"
+                            DisplayColon="true" EnableViewState="false" AssociatedControlID="chkReportProblems" />
                     </div>
                     <div class="filter-form-value-cell">
-                        <cms:CMSCheckBox ID="chkInvalid" runat="server" />
+                        <cms:CMSCheckBox ID="chkReportProblems" runat="server" />
                     </div>
                 </div>
                 <cms:DevelopmentMode runat="server">
                     <div class="form-group">
                         <div class="filter-form-label-cell">
-                            <cms:LocalizedLabel CssClass="control-label" runat="server" ID="lblSkipTesting" ResourceString="Macros.SkipTesting"
-                                DisplayColon="true" EnableViewState="false" AssociatedControlID="chkSkipTesting" />
+                            <cms:LocalizedLabel CssClass="control-label" runat="server" ID="lblSkipTestingObjects" ResourceString="Macros.SkipTesting"
+                                DisplayColon="true" EnableViewState="false" AssociatedControlID="chkSkipTestingObjects" />
                         </div>
                         <div class="filter-form-value-cell">
-                            <cms:CMSCheckBox ID="chkSkipTesting" Checked="True" runat="server" />
+                            <cms:CMSCheckBox ID="chkSkipTestingObjects" Checked="True" runat="server" />
                         </div>
                     </div>
                 </cms:DevelopmentMode>
                 <div class="form-group">
                     <div class="filter-form-label-cell">
                         <cms:LocalizedLabel CssClass="control-label" runat="server" ID="lblFilter" ResourceString="Macros.Contains"
-                            DisplayColon="true" EnableViewState="false" AssociatedControlID="txtFilter" />
+                            DisplayColon="true" EnableViewState="false" AssociatedControlID="txtTextToSearch" />
                     </div>
                     <div class="filter-form-value-cell">
-                        <cms:CMSTextBox runat="server" ID="txtFilter" />
+                        <cms:CMSTextBox runat="server" ID="txtTextToSearch" />
                     </div>
                 </div>
                 <div class="form-group">

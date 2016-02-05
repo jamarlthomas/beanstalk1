@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Ecommerce;
 using CMS.Helpers;
@@ -58,36 +58,53 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_Currencies_C
 
     protected void EditForm_OnItemValidation(object sender, ref string errorMessage)
     {
-        FormEngineUserControl ctrl = sender as FormEngineUserControl;
+        var ctrl = sender as FormEngineUserControl;
 
-        if ((ctrl != null))
+        if ((ctrl == null))
         {
-            // Check whether the main currency is being disabled
-            if (ctrl.FieldInfo.Name == "CurrencyEnabled")
-            {
-                CurrencyInfo main = CurrencyInfoProvider.GetMainCurrency(ConfiguredSiteID);
-                if ((main != null) && (mEditedCurrency != null) && (main.CurrencyID == mEditedCurrency.CurrencyID)
-                        && !ValidationHelper.GetBoolean(ctrl.Value, true))
-                {
-                    errorMessage = String.Format(GetString("ecommerce.disablemaincurrencyerror"), main.CurrencyDisplayName);
-                }
-            }
+            return;
+        }
 
-            // Validate currency format string
-            if (ctrl.FieldInfo.Name == "CurrencyFormatString")
-            {
+        switch (ctrl.FieldInfo.Name)
+        {
+            case "CurrencyCode":
+                var currencies = CurrencyInfoProvider.GetCurrenciesByCode(SiteID);
+                var code = ctrl.Value.ToString();
+
+                // Currency with same code already exists
+                if (currencies.ContainsKey(code))
+                {
+                    // And it is not currently edited one
+                    if ((mEditedCurrency == null) || (currencies[code].CurrencyID != mEditedCurrency.CurrencyID))
+                    {
+                        errorMessage = ResHelper.GetStringFormat("com.currencycodenotunique", code);
+                    }
+                }
+                break;
+
+            case "CurrencyEnabled":
+                {
+                    var main = CurrencyInfoProvider.GetMainCurrency(ConfiguredSiteID);
+                    if ((main != null) && (mEditedCurrency != null) && (main.CurrencyID == mEditedCurrency.CurrencyID)
+                        && !ValidationHelper.GetBoolean(ctrl.Value, true))
+                    {
+                        errorMessage = ResHelper.GetStringFormat("ecommerce.disablemaincurrencyerror", main.CurrencyDisplayName);
+                    }
+                }
+                break;
+
+            case "CurrencyFormatString":
                 try
                 {
                     // Test for double exception
                     string.Format(ctrl.Value.ToString().Trim(), 1.234);
-
                     string.Format(ctrl.Value.ToString().Trim(), "12.12");
                 }
                 catch
                 {
                     errorMessage = GetString("Currency_Edit.ErrorCurrencyFormatString");
                 }
-            }
+                break;
         }
     }
 

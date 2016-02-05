@@ -4,6 +4,33 @@
         <name>CMS.WebAnalytics</name>
     </assembly>
     <members>
+        <member name="T:CMS.WebAnalytics.ActivitiesUsageDataSource">
+            <summary>
+            Module usage tracking data source for activities module.
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.ActivitiesUsageDataSource.mSettingsToLog">
+            <summary>
+            Settings keyes which are logged.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.ActivitiesUsageDataSource.GetData">
+            <summary>
+            Get all module statistical data.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.ActivitiesUsageDataSource.GetSettingsUsage(System.Boolean)">
+            <summary>
+            Returns how many times is specific setting used with value which is not same as default value. 
+            Only settings on running sites (if <paramref name="global"/> is true), not hidden and not custom are retrieved.
+            Only global settings when <paramref name="global"/> is false.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.ActivitiesUsageDataSource.Name">
+            <summary>
+            Get the data source name.
+            </summary>
+        </member>
         <member name="T:CMS.WebAnalytics.ActivityData">
             <summary>
             Container for the activity data.
@@ -104,14 +131,9 @@
             Constructor. Sets <see cref="F:CMS.WebAnalytics.ActivityData.LogTime"/> to Now.
             </summary>
         </member>
-        <member name="M:CMS.WebAnalytics.ActivityData.GetLogString">
+        <member name="T:CMS.WebAnalytics.ActivityNewsletterUnsubscribingFromAll">
             <summary>
-            Gets the log string for this activity item.
-            </summary>
-        </member>
-        <member name="T:CMS.WebAnalytics.ActivityCustomTableFormSubmit">
-            <summary>
-            Class for custom table form submit activity
+            Unsubscribing from any marketing communication (from all newsletters). 
             </summary>
         </member>
         <member name="T:CMS.WebAnalytics.Activity">
@@ -198,6 +220,28 @@
             <param name="e">Event arguments</param>
             <returns>Returns true if activity can be logged.</returns>
         </member>
+        <member name="M:CMS.WebAnalytics.ActivityNewsletterUnsubscribingFromAll.#ctor(CMS.DataEngine.BaseInfo,CMS.WebAnalytics.ActivityContext)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="issue">Issue object. Issue object may be null and in this case activity is logged without any additional information.</param>
+            <param name="variables">Environment variables required for proper logging of activities. Use AnalyticsContext.ActivityEnvironmentVariables.</param>
+        </member>
+        <member name="P:CMS.WebAnalytics.ActivityNewsletterUnsubscribingFromAll.ActivityType">
+            <summary>
+            Activity type.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.ActivityNewsletterUnsubscribingFromAll.SettingsKeyName">
+            <summary>
+            Settings key name.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.ActivityCustomTableFormSubmit">
+            <summary>
+            Class for custom table form submit activity
+            </summary>
+        </member>
         <member name="M:CMS.WebAnalytics.ActivityCustomTableFormSubmit.#ctor(CMS.DataEngine.DataClassInfo,System.Int32,System.String,CMS.WebAnalytics.ActivityContext)">
             <summary>
             Default constructor
@@ -228,16 +272,6 @@
             Event is not fired when activity is logged using ActivityInfoProvider.SetInfo().
             </summary>
         </member>
-        <member name="F:CMS.WebAnalytics.ActivityEvents.ProcessActivity">
-            <summary>
-            Event fires when activity is being processed from log file to DB.
-            </summary>
-        </member>
-        <member name="F:CMS.WebAnalytics.ActivityEvents.ProcessActivities">
-            <summary>
-            Event fires when activities batch is being processed from log file to DB.
-            </summary>
-        </member>
         <member name="T:CMS.WebAnalytics.ActivityLoggedEventArgs">
             <summary>
             Arguments for the ActivityLoggedHandler event handler.
@@ -260,45 +294,9 @@
             <param name="activityData">Logged activity</param>
             <returns>Event handler</returns>
         </member>
-        <member name="T:CMS.WebAnalytics.ProcessActivityEventArgs">
-            <summary>
-            Arguments for the ProcessActivityHandler event handler.
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.ProcessActivityEventArgs.ActivityID">
-            <summary>
-            Activity ID.
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.ProcessActivityEventArgs.ActivityData">
-            <summary>
-            Data of the logged activity.
-            </summary>
-        </member>
-        <member name="T:CMS.WebAnalytics.ProcessActivityHandler">
-            <summary>
-            Handler for processing an activity.
-            </summary>
-        </member>
-        <member name="M:CMS.WebAnalytics.ProcessActivityHandler.StartEvent(CMS.WebAnalytics.ActivityData)">
-            <summary>
-            Initiates the event handling.
-            </summary>
-            <param name="data">Activity data</param>
-        </member>
         <member name="T:CMS.WebAnalytics.ActivityLogger">
             <summary>
             Provides interface for logging activities.
-            </summary>
-        </member>
-        <member name="F:CMS.WebAnalytics.ActivityLogger.ITEM_SEPARATOR">
-            <summary>
-            Item separator constant (used in temporary log file).
-            </summary>
-        </member>
-        <member name="F:CMS.WebAnalytics.ActivityLogger.POLL_ANSWER_SEPARATOR">
-            <summary>
-            Answer IDs separator (in case of multiple answers this character is used as separator)
             </summary>
         </member>
         <member name="M:CMS.WebAnalytics.ActivityLogger.LogActivity(CMS.WebAnalytics.ActivityData)">
@@ -306,34 +304,6 @@
             Logs activity to the storage.
             </summary>
             <param name="activityData">Activity data</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.ActivityLogger.GetFriendlyUserName(System.Int32)">
-            <summary>
-            Joins user name consisting of first, middle, last and e-mail address in one string.
-            </summary>
-            <param name="userId">User ID</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.ActivityLogger.GetFriendlyUserName(CMS.Membership.UserInfo)">
-            <summary>
-            Joins user name consisting of first, middle, last and e-mail address in one string.
-            </summary>
-            <param name="ui">User info</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.ActivityLogger.GetFriendlyUserName(CMS.DataEngine.BaseInfo)">
-            <summary>
-            Joins user name consisting of first, middle, last and e-mail address in one string.
-            </summary>
-            <param name="ui">User info</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.ActivityLogger.GetFriendlyUserName(System.String,System.String,System.String,System.String,System.String)">
-            <summary>
-            Joins user name consisting of first, middle, last and e-mail address in one string.
-            </summary>
-            <param name="first">First name</param>
-            <param name="middle">Middle name</param>
-            <param name="last">Last name</param>
-            <param name="emailAddress">E-mail address</param>
-            <param name="userName">User name</param>
         </member>
         <member name="P:CMS.WebAnalytics.ActivityLogger.LogDirectory">
             <summary>
@@ -1084,7 +1054,7 @@
             Newsletter email click through activity.
             </summary>
         </member>
-        <member name="M:CMS.WebAnalytics.ActivityNewsletterClickThrough.#ctor(System.Int32,System.String,System.String,CMS.DataEngine.BaseInfo,CMS.DataEngine.BaseInfo,CMS.DataEngine.BaseInfo,CMS.WebAnalytics.ActivityContext)">
+        <member name="M:CMS.WebAnalytics.ActivityNewsletterClickThrough.#ctor(System.Int32,System.String,System.String,CMS.DataEngine.BaseInfo,CMS.DataEngine.BaseInfo,CMS.WebAnalytics.ActivityContext)">
             <summary>
             Default constructor.
             </summary>
@@ -1093,7 +1063,6 @@
             <param name="value">Activity value</param>
             <param name="issue">Issue object</param>
             <param name="newsletter">Newsletter object</param>
-            <param name="subscriber">Subscriber object</param>
             <param name="variables">Environment variables required for proper logging of activities. Use AnalyticsContext.ActivityEnvironmentVariables.</param>
         </member>
         <member name="M:CMS.WebAnalytics.ActivityNewsletterClickThrough.ActivityNewsletterClickThrough_OnAfterLogActivity(System.Object,System.EventArgs)">
@@ -1159,6 +1128,11 @@
             On after logging event.
             </summary>
         </member>
+        <member name="E:CMS.WebAnalytics.ActivityNewsletterSubscribing.OnAfterNewsletterSubscribingActivity">
+            <summary>
+            Occurs after newsletter subscribing activity is logged.
+            </summary>
+        </member>
         <member name="P:CMS.WebAnalytics.ActivityNewsletterSubscribing.ActivityType">
             <summary>
             Activity type.
@@ -1174,11 +1148,10 @@
             Activity newsletter unsubscribing.
             </summary>
         </member>
-        <member name="M:CMS.WebAnalytics.ActivityNewsletterUnsubscribing.#ctor(CMS.DataEngine.BaseInfo,CMS.DataEngine.BaseInfo,CMS.WebAnalytics.ActivityContext)">
+        <member name="M:CMS.WebAnalytics.ActivityNewsletterUnsubscribing.#ctor(CMS.DataEngine.BaseInfo,CMS.WebAnalytics.ActivityContext)">
             <summary>
             Default constructor.
             </summary>
-            <param name="subscriber">Subscriber object</param>
             <param name="newsletter">Newsletter object</param>
             <param name="variables">Environment variables required for proper logging of activities. Use AnalyticsContext.ActivityEnvironmentVariables.</param>
         </member>
@@ -1610,23 +1583,6 @@
             Provides functionality for activity logging. 
             </summary>
         </member>
-        <member name="M:CMS.WebAnalytics.ActivityLogHelper.ParseActivityLogRecord(System.String)">
-            <summary>
-            Parses one line of the log file.
-            </summary>
-            <param name="line">Log record (line contains activity type, contact ID, site ID, title, item ID, URL, node ID, item detail ID, value, IP address, campaign name, additional param1, additional param2... )</param>
-            <exception cref="T:System.ArgumentNullException"><paramref name="line"/> is null</exception>
-            <returns><see cref="T:CMS.WebAnalytics.ActivityData"/> or null if passed log record is in incorrect format</returns>
-        </member>
-        <member name="M:CMS.WebAnalytics.ActivityLogHelper.ProcessActivityLogRecord(CMS.WebAnalytics.ActivityData)">
-            <summary>
-            Inserts one log record to the database. Returns ID of created activity.
-            </summary>
-            <remarks>
-            This method does not touch cache keys for the inserted activity ("om.activity|all", "om.contact|..|children", etc.) automatically. It has to be done by caller if needed.
-            </remarks>
-            <param name="activityData">Parsed log record</param>
-        </member>
         <member name="M:CMS.WebAnalytics.ActivityLogHelper.ProcessActivityUpdateMerged(System.Int32,System.Int32)">
             <summary>
             Updates activities performed by now merged contacts, so their ActivityActiveContactID column correctly points to the ID of the now parent contact. 
@@ -1634,12 +1590,6 @@
             </summary>
             <param name="firstActivityId">First activity ID to be processed</param>
             <param name="lastActivityId">last activity ID to be processed</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.ActivityLogHelper.ProcessActivityLogRecords(System.Collections.Generic.List{System.String})">
-            <summary>
-            Processes the log records to DB.
-            </summary>
-            <param name="lines">Log records (each line contains activity type, contact ID, site ID, title, item ID, URL, document ID,  item detail ID, value, IP address, aditional param1, aditional param2... )</param>
         </member>
         <member name="M:CMS.WebAnalytics.ActivityLogHelper.GetContactIDByMembership(System.Int32,System.Int32,System.Int32,System.String)">
             <summary>
@@ -1661,6 +1611,1452 @@
             </summary>
             <param name="contactIDs">IDs of the contacts whose activities were created</param>
             <returns>List of cache dependencies which should be touched after inserting a batch of activities</returns>
+        </member>
+        <member name="T:CMS.WebAnalytics.AssetController">
+            <summary>
+            Handles the campaign assets.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.AssetController.Post(CMS.WebAnalytics.CampaignAssetViewModel)">
+            <summary>
+            Performs saving of the <see cref="T:CMS.WebAnalytics.CampaignAssetInfo"/> corresponding to the given <see cref="T:CMS.WebAnalytics.CampaignAssetViewModel"/>.
+            The <see cref="T:CMS.WebAnalytics.CampaignAssetInfo"/> is inserted with the values obtained from <paramref name="campaignAssetViewModel"/>.
+            </summary>
+            <param name="campaignAssetViewModel">Instance of updated view-model. This instance will be used to creating corresponding <see cref="T:CMS.WebAnalytics.CampaignAssetInfo"/></param>
+            <returns>
+            <c>HTTP status code 400 Bad request</c>, if model state of binded <paramref name="campaignAssetViewModel"/> was not valid;
+            otherwise, <c>HTTP status code 200 OK</c> with serialized <paramref name="campaignAssetViewModel"/>. This campaign has <see cref="P:CMS.WebAnalytics.CampaignEditViewModel.CampaignID"/> filled
+            with the data from the DB.
+            </returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.AssetController.Put(CMS.WebAnalytics.CampaignAssetViewModel)">
+            <summary>
+            Performs update of the <see cref="T:CMS.WebAnalytics.CampaignAssetInfo"/> corresponding.
+            The <see cref="T:CMS.WebAnalytics.CampaignAssetInfo"/> values are updated with the values from <paramref name="campaignAssetViewModel"/>.
+            </summary>
+            <remarks>
+            No dirty checking is performed, <see cref="T:CMS.WebAnalytics.CampaignAssetInfo"/> will be updated even if no change was made to the object.
+            HTTP verb PUT is not supported, therefore this request accepts only the POST requests.
+            </remarks>
+            <param name="campaignAssetViewModel">Instance of updated view-model. This instance will be used to update corresponding <see cref="T:CMS.WebAnalytics.CampaignAssetInfo"/></param>
+            <returns>
+            <c>HTTP status code 400 Bad request</c>, if model state of binded <paramref name="campaignAssetViewModel"/> was not valid
+            otherwise, <c>HTTP status code 200 OK</c> with updated <paramref name="campaignAssetViewModel"/>.
+            </returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.AssetController.Delete(System.Int32)">
+            <summary>
+            Deletes given campaign asset.
+            </summary>
+            <remarks>
+            When response is returned, there will be no campaign with given ID in database.
+            HTTP verb DELETE is not supported, therefore this request accepts only the GET requests.
+            </remarks>
+            <param name="campaignAssetID">ID of asset</param>
+            <returns>
+            Returns <c>HTTP status code 200 OK</c> if request was successful.
+            </returns>
+        </member>
+        <member name="T:CMS.WebAnalytics.CampaignController">
+            <summary>
+            Handles getting of campaigns.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignController.Get">
+            <summary>
+            Gets list of campaigns from current site.
+            </summary>
+            <returns>
+            HTTP response message containing the status code dependent on whether the action was successful or not.
+            Returns 200 OK status and list of campaigns from current site.
+            </returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignController.Post(CMS.WebAnalytics.CampaignEditViewModel)">
+            <summary>
+            Performs saving of the <see cref="T:CMS.WebAnalytics.CampaignInfo"/> corresponding to the given <see cref="T:CMS.WebAnalytics.CampaignEditViewModel"/>.
+            The <see cref="T:CMS.WebAnalytics.CampaignInfo"/> is inserted with the values obtained from <paramref name="model"/>.
+            </summary>
+            <remarks>
+            <see cref="P:CMS.WebAnalytics.CampaignInfo.CampaignName"/> is set to <see cref="F:CMS.DataEngine.InfoHelper.CODENAME_AUTOMATIC"/> to let the <see cref="T:CMS.WebAnalytics.CampaignInfoProvider"/> decide
+            what codename should be used based on the <see cref="P:CMS.WebAnalytics.CampaignInfo.CampaignDisplayName"/>.
+            </remarks>
+            <param name="model">Instance of updated view-model. This instance will be used to creating corresponding <see cref="T:CMS.WebAnalytics.CampaignInfo"/></param>
+            <returns>
+            <c>HTTP status code 400 Bad request</c>, if model state of binded <paramref name="model"/> was not valid;
+            otherwise, <c>HTTP status code 200 OK</c> with serialized <paramref name="model"/>. This campaign has <see cref="P:CMS.WebAnalytics.CampaignEditViewModel.CampaignID"/> filled
+            with the data from the DB.
+            </returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignController.Put(CMS.WebAnalytics.CampaignEditViewModel)">
+            <summary>
+            Performs update of the <see cref="T:CMS.WebAnalytics.CampaignInfo"/> corresponding to the given <see cref="P:CMS.WebAnalytics.CampaignEditViewModel.CampaignID"/> property.
+            The <see cref="T:CMS.WebAnalytics.CampaignInfo"/> values are updated with the values from <paramref name="model"/>. 
+            </summary>
+            <remarks>
+            No dirty checking is performed, <see cref="T:CMS.WebAnalytics.CampaignInfo"/> will be updated even if no change was made to the object.
+            HTTP verb PUT is not supported, therefore this request accepts only the POST requests.
+            </remarks>
+            <param name="model">Instance of updated view-model. This instance will be used to update corresponding <see cref="T:CMS.WebAnalytics.CampaignInfo"/></param>
+            <returns>
+            <c>HTTP status code 400 Bad request</c>, if model state of binded <paramref name="model"/> was not valid -or -
+            if no campaign was found for the provided <see cref="P:CMS.WebAnalytics.CampaignEditViewModel.CampaignID"/> if provided model is not valid;
+            otherwise, <c>HTTP status code 200 OK</c> with updated <paramref name="model"/>. 
+            </returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignController.Delete(System.Int32)">
+            <summary>
+            Deletes campaign with given id only for current site.
+            </summary>
+            <remarks>
+            When response is returned, there will be no campaign with given ID in database.
+            HTTP verb DELETE is not supported, therefore this request accepts only the GET requests.
+            </remarks>
+            <param name="id">ID of campaign</param>
+            <returns>
+            Returns <c>HTTP status code 200 OK</c> if request was successful.
+            </returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignController.Finish(System.Int32)">
+            <summary>
+            Finishes campaign and data will not be tracked anymore.
+            Doesn't finish already finished campaign.
+            </summary>
+            <param name="id">Campaign id</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignController.Launch(System.Int32)">
+            <summary>
+            The method launches a campaign. This includes the following steps:
+            <ul>
+                <li>Campaign will start tracking data</li>
+                <li>All linked page assets will be published</li>
+                <li>All linked email assets will be sent</li>
+            </ul>  
+            Doesn't launch an already launched campaign or a campaign from a different site.
+            </summary>
+            <remarks>
+            When pages are published <see cref="P:CMS.DocumentEngine.TreeNode.DocumentPublishFrom"/> is set to <see cref="P:System.DateTime.Now"/>. 
+            Also <see cref="P:CMS.DocumentEngine.TreeNode.DocumentPublishTo"/> is reset if date is set to past.
+            Furthermore, pages under workflow are left untouched and all culture variants are published.
+            </remarks>
+            <param name="id">Campaign id</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignController.LaunchLog(System.Int32)">
+            <summary>
+            The method collect informations about actions which are performed during campaign launch.
+            For more information see <see cref="M:CMS.WebAnalytics.CampaignController.Launch(System.Int32)"/>.
+            </summary>
+            <param name="id">Campaign id</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignController.UpdateNewsletterUTMCodes(System.String,System.String)">
+            <summary>
+            Updates UTM campaign codes in newsletters.
+            </summary>
+            <param name="oldUTMCode">Original UTM campaign code.</param>
+            <param name="newUTMCode">New UTM campaign code.</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignController.PublishPagesAndFiles(CMS.WebAnalytics.CampaignInfo,System.DateTime)">
+            <summary>
+            Publishes assets of type file and page added to the given campaign.
+            </summary>
+            <param name="campaign">Campaign</param>
+            <param name="campaignLaunched">Date time when campaign have been launched.</param>
+        </member>
+        <member name="T:CMS.WebAnalytics.CampaignLaunchLog">
+            <summary>
+            Collection explanations messages for all actions that needs to be performed before campaign is launched.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignLaunchLog.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignLaunchLog.Messages">
+            <summary>
+            Explanations texts.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.CampaignListItemViewModelService">
+            <summary>
+            Service that provides method to fill all the properties in <see cref="T:CMS.WebAnalytics.CampaignListItemViewModel"/> objects.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.Internal.ICampaignListItemViewModelService">
+            <summary>
+            Service that provides method to work with the <see cref="T:CMS.WebAnalytics.CampaignListItemViewModel"/> objects.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.ICampaignListItemViewModelService.GetModel(CMS.WebAnalytics.CampaignInfo,System.DateTime)">
+            <summary>
+            Method takes <see cref="T:CMS.WebAnalytics.CampaignInfo"/> and creates new instance of <see cref="T:CMS.WebAnalytics.CampaignListItemViewModel"/> containing all values
+            required for communication between Web API and javascript modules.
+            </summary>
+            <param name="campaign">Campaign info obtained from the database</param>
+            <param name="dateTime">Datetime, used to calculate the current status of campaign</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="campaign"/> is null</exception>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignListItemViewModelService.GetModel(CMS.WebAnalytics.CampaignInfo,System.DateTime)">
+            <summary>
+            Method takes <see cref="T:CMS.WebAnalytics.CampaignInfo"/> and creates new instance of <see cref="T:CMS.WebAnalytics.CampaignListItemViewModel"/> containing all values
+            required for communication between Web API and javascript modules.
+            </summary>
+            <param name="campaign">Campaign info obtained from the database</param>
+            <param name="dateTime">Datetime, used to calculate the current status of campaign</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="campaign"/> is null</exception>
+        </member>
+        <member name="T:CMS.WebAnalytics.ICampaignAssetModelService">
+            <summary>
+            Service that provides method to work with the <see cref="T:CMS.WebAnalytics.CampaignAssetViewModel"/> objects.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.ICampaignAssetModelService.GetStrategy(System.String)">
+            <summary>
+            Returns specific campaign asset model service strategy.
+            </summary>
+            <param name="type">Type of asset to work with.</param>
+        </member>
+        <member name="T:CMS.WebAnalytics.DateTimeController">
+            <summary>
+            This controller provides method for retrieving date time information from the server. 
+            Because time zones can vary from the client and therefore using javascript Date object only could lead 
+            to confusion, obtaining current date time should be always performed from the server.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.DateTimeController.GetCurrentSiteDateTime">
+            <summary>
+            Gets current date time for the <see cref="P:CMS.SiteProvider.SiteContext.CurrentSite"/>.
+            </summary>
+            <returns>DateTime for the current <see cref="T:CMS.SiteProvider.SiteInfo"/></returns>
+        </member>
+        <member name="T:CMS.WebAnalytics.CampaignAssetViewModel">
+            <summary>
+            View model for campaign assets.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignAssetViewModel.Type">
+            <summary>
+            Asset type.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignAssetViewModel.ID">
+            <summary>
+            Asset ID.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignAssetViewModel.AssetID">
+            <summary>
+            Asset info ID.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignAssetViewModel.Name">
+            <summary>
+            Asset name.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignAssetViewModel.Link">
+            <summary>
+            Direct asset link.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignAssetViewModel.CampaignID">
+            <summary>
+            ID of campaign this asset belongs to. Used when creating or updating asset.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignAssetViewModel.AdditionalProperties">
+            <summary>
+            Contains properties required by specific types of campaign assets.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.CampaignListItemViewModel">
+            <summary>
+            Represents listing View model of Campaign Info which can be serialized and used for communication between API controller and javascript services.
+            This wrapper has to be used because info objects cannot be easily serialized and deserialized.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignListItemViewModel.CampaignID">
+            <summary>
+            Unique integer identifier of the campaign. Refers to the <see cref="P:CMS.WebAnalytics.CampaignInfo.CampaignID"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignListItemViewModel.DisplayName">
+            <summary>
+            Name of the campaign used in listing and all reports. Refers to the <see cref="P:CMS.WebAnalytics.CampaignInfo.CampaignDisplayName"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignListItemViewModel.OpenFrom">
+            <summary>
+            Provides time from which the campaign will be running. Refers to the <see cref="P:CMS.WebAnalytics.CampaignInfo.CampaignOpenFrom"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignListItemViewModel.OpenTo">
+            <summary>
+            Provides time to which the champaign will be running. Refers to the <see cref="P:CMS.WebAnalytics.CampaignInfo.CampaignOpenTo"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignListItemViewModel.Visitors">
+            <summary>
+            Indicates how many visitor has reached campaign.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignListItemViewModel.Conversions">
+            <summary>
+            Indicates how many conversion happend in campaign.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignListItemViewModel.ConversionRate">
+            <summary>
+            Campaign conversion rate. It is calculated as <see cref="P:CMS.WebAnalytics.CampaignListItemViewModel.Conversions"/> divided by <see cref="P:CMS.WebAnalytics.CampaignListItemViewModel.Visitors"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignListItemViewModel.Status">
+            <summary>
+            Refers to the current status. Can be one of the <see cref="T:CMS.WebAnalytics.CampaignStatusEnum"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignListItemViewModel.DetailLink">
+            <summary>
+            Single object url for editing current campaign.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.CampaignEditViewModel">
+            <summary>
+            Represents View model of Campaign Info which can be serialized and used for communication between API controller and javascript services.
+            This wrapper has to be used because info objects cannot be easily serialized and deserialized.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignEditViewModel.#ctor">
+            <summary>
+            Empty constructor. Needs to be present to enable data binding performed by the Web API.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignEditViewModel.#ctor(CMS.WebAnalytics.CampaignInfo,System.DateTime)">
+            <summary>
+            Constructor takes <see cref="T:CMS.WebAnalytics.CampaignInfo"/> and creates new instance of <see cref="T:CMS.WebAnalytics.CampaignEditViewModel"/> containing all values
+            required for communication between Web API and javascript modules.
+            </summary>
+            <param name="campaign">Campaign info obtained from the database</param>
+            <param name="dateTime">Datetime, used to calculate the current status of campaign</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="campaign"/> is null</exception>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignEditViewModel.FillCampaignInfo(CMS.WebAnalytics.CampaignInfo)">
+            <summary>
+            Fills given <paramref name="campaign"/> with data obtained from current instance of <see cref="T:CMS.WebAnalytics.CampaignEditViewModel"/>. 
+            This method should be used whenever the call from client to the server with filled <see cref="T:CMS.WebAnalytics.CampaignEditViewModel"/> was made
+            and the incoming object values need to be copied to the existing <paramref name="campaign"/>.
+            </summary>
+            <param name="campaign">Campaign which will be filled with data from the current instance of <see cref="T:CMS.WebAnalytics.CampaignEditViewModel"/></param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="campaign"/> is null</exception>
+            <returns><paramref name="campaign"/> filled with the data from current instance of <see cref="T:CMS.WebAnalytics.CampaignEditViewModel"/></returns>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignEditViewModel.CampaignID">
+            <summary>
+            Unique integer identifier of the campaign. Refers to the <see cref="P:CMS.WebAnalytics.CampaignInfo.CampaignID"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignEditViewModel.DisplayName">
+            <summary>
+            Name of the campaign used in listing and all reports. Refers to the <see cref="P:CMS.WebAnalytics.CampaignInfo.CampaignDisplayName"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignEditViewModel.UTMCode">
+            <summary>
+            Campaign UTM code. Refers to the <see cref="P:CMS.WebAnalytics.CampaignInfo.CampaignUTMCode"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignEditViewModel.Description">
+            <summary>
+            Campaign description used in reports, provides closer details about the campaign. Refers to the <see cref="P:CMS.WebAnalytics.CampaignInfo.CampaignDescription"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignEditViewModel.Status">
+            <summary>
+            Refers to the current status. Can be one of the <see cref="T:CMS.WebAnalytics.CampaignStatusEnum"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignEditViewModel.CodeName">
+            <summary>
+            Refers to codename of the campaign. This field is required for enabling single object pinning.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignEditViewModel.SiteName">
+            <summary>
+            Refers to site name campaign is assigned to. This field is required for enabling single object pinning.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.AbstractAssetModelStrategy">
+            <summary>
+            Class with shared logic for all asset model strategies.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.ICampaignAssetModelStrategy">
+            <summary>
+            Interface that provides service methods to work with the <see cref="T:CMS.WebAnalytics.CampaignAssetViewModel"/> objects.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.ICampaignAssetModelStrategy.GetAssetInfo(CMS.WebAnalytics.CampaignAssetViewModel)">
+            <summary>
+            Returns asset info from view model.
+            </summary>
+            <param name="model">Asset view model.</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.ICampaignAssetModelStrategy.GetAssetViewModel(CMS.WebAnalytics.CampaignAssetInfo)">
+            <summary>
+            Returns view model from given asset info.
+            </summary>
+            <param name="info">Asset info.</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.ICampaignAssetModelStrategy.SetAssetInfo(CMS.WebAnalytics.CampaignAssetViewModel)">
+            <summary>
+            Sets data from asset model and returns updated view model.
+            This method is called when new asset is added to campaign.
+            </summary>
+            <param name="model">Asset view model.</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.AbstractAssetModelStrategy.GetAssetInfo(CMS.WebAnalytics.CampaignAssetViewModel)">
+            <summary>
+            Returns asset info from view model.
+            </summary>
+            <param name="model">Asset view model.</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.AbstractAssetModelStrategy.GetAssetViewModel(CMS.WebAnalytics.CampaignAssetInfo)">
+            <summary>
+            Returns view model from given asset info.
+            </summary>
+            <param name="info">Asset info.</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.AbstractAssetModelStrategy.SetAssetInfo(CMS.WebAnalytics.CampaignAssetViewModel)">
+            <summary>
+            Sets data from asset model and returns updated view model.
+            This method is called when existing asset is being updated.
+            </summary>
+            <param name="model">Asset view model.</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.AbstractAssetModelStrategy.GetRemovedAssetViewModel(CMS.WebAnalytics.CampaignAssetInfo)">
+            <summary>
+            Returns default view model for asset with not existing linked object.
+            </summary>
+            <param name="asset">Asset</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.AbstractAssetModelStrategy.CreateConversion(System.String,System.Int32)">
+            <summary>
+            Creates conversion and stores it in DB.
+            </summary>
+            <param name="conversionDisplayName">Name of the new conversion</param>
+            <param name="siteID">Site ID</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.AbstractAssetModelStrategy.RenameConversion(CMS.WebAnalytics.ConversionInfo,System.String)">
+            <summary>
+            Renames given conversion.
+            </summary>
+            <param name="conversion">Conversion to be renamed</param>
+            <param name="newConversionDisplayName">New conversion display name</param>
+        </member>
+        <member name="T:CMS.WebAnalytics.NewsletterAssetModelStrategy">
+            <summary>
+            Logic connected to newsletter issue modeling and storing.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.NewsletterAssetModelStrategy.GetAssetViewModel(CMS.WebAnalytics.CampaignAssetInfo)">
+            <summary>
+            Returns view model from given asset info.
+            </summary>
+            <param name="info">Asset info.</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.NewsletterAssetModelStrategy.SetAssetInfo(CMS.WebAnalytics.CampaignAssetViewModel)">
+            <summary>
+            Sets data from asset model and returns updated view model.
+            This method is called when existing asset is being updated.
+            </summary>
+            <param name="model">Asset view model.</param>
+        </member>
+        <member name="T:CMS.WebAnalytics.PageAssetModelStrategy">
+            <summary>
+            Logic connected to page modeling and storing.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.PageAssetModelStrategy.GetAssetInfo(CMS.WebAnalytics.CampaignAssetViewModel)">
+            <summary>
+            Returns asset info from view model.
+            </summary>
+            <param name="model">Asset view model.</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.PageAssetModelStrategy.GetAssetViewModel(CMS.WebAnalytics.CampaignAssetInfo)">
+            <summary>
+            Returns view model from given asset info.
+            </summary>
+            <param name="info">Asset info.</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.PageAssetModelStrategy.SetAssetInfo(CMS.WebAnalytics.CampaignAssetViewModel)">
+            <summary>
+            Sets data from asset model and returns updated view model.
+            This method is called when existing asset is being updated.
+            </summary>
+            <param name="model">Asset view model.</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.PageAssetModelStrategy.UpdateDocuments(System.Collections.Generic.IEnumerable{CMS.DocumentEngine.TreeNode},CMS.WebAnalytics.CampaignAssetViewModel,System.String)">
+            <summary>
+            Updates given documents from model.
+            </summary>
+            <param name="documents">Documents to be updated.</param>
+            <param name="model">Model with changes.</param>
+            <param name="conversionName">Conversion name.</param>
+        </member>
+        <member name="T:CMS.WebAnalytics.UTMCodeAttribute">
+            <summary>
+            Validates campaign UTM code. UTM code must be unique in every site.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.UTMCodeAttribute.IsValid(System.Object,System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            Checks if object is valid.
+            </summary>
+            <param name="value">Object to validate.</param>
+            <param name="validationContext">Validation context.</param>
+        </member>
+        <member name="T:CMS.WebAnalytics.Internal.CampaignDataGenerator">
+            <summary>
+            Contains methods for generating sample data for the Campaign module.
+            </summary>
+            <exclude />
+        </member>
+        <member name="F:CMS.WebAnalytics.Internal.CampaignDataGenerator.CAMPAIGN_CAFE_PROMOTION">
+            <summary>
+            Code name of the Cafe promotion campaign.
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.Internal.CampaignDataGenerator.CAMPAIGN_COFFEE_CLUB_MEMBERSHIP">
+            <summary>
+            Code name of the Coffee club membership campaign.
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.Internal.CampaignDataGenerator.CAMPAIGN_CAFE_SAMPLE_PROMOTION">
+            <summary>
+            Code name of the Cafe sample promotion campaign.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.CampaignDataGenerator.#ctor(CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="site">Site the newsletters data will be generated for</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.CampaignDataGenerator.Generate">
+            <summary>
+            Performs campaigns sample data generation.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.CampaignAssetInfo">
+            <summary>
+            CampaignAssetInfo data container class.
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.CampaignAssetInfo.OBJECT_TYPE">
+            <summary>
+            Object type
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.CampaignAssetInfo.TYPEINFO">
+            <summary>
+            Type information.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfo.DeleteObject">
+            <summary>
+            Deletes the object using appropriate provider.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfo.SetObject">
+            <summary>
+            Updates the object using appropriate provider.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfo.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor for de-serialization.
+            </summary>
+            <param name="info">Serialization info</param>
+            <param name="context">Streaming context</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfo.#ctor">
+            <summary>
+            Constructor - Creates an empty CampaignAssetInfo object.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfo.#ctor(System.Data.DataRow)">
+            <summary>
+            Constructor - Creates a new CampaignAssetInfo object from the given DataRow.
+            </summary>
+            <param name="dr">DataRow with the object data</param>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignAssetInfo.CampaignAssetID">
+            <summary>
+            Campaign asset ID
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignAssetInfo.CampaignAssetGuid">
+            <summary>
+            Campaign asset guid
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignAssetInfo.CampaignAssetLastModified">
+            <summary>
+            Campaign asset last modified
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignAssetInfo.CampaignAssetType">
+            <summary>
+            Campaign asset type
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignAssetInfo.CampaignAssetAssetGuid">
+            <summary>
+            Guid of specific asset (e.g. email or form)
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignAssetInfo.CampaignAssetCampaignID">
+            <summary>
+            Campaign asset campaign ID
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.CampaignAssetInfoProvider">
+            <summary>
+            Class providing CampaignAssetInfo management.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfoProvider.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfoProvider.GetCampaignAssets">
+            <summary>
+            Returns a query for all the CampaignAssetInfo objects.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfoProvider.GetCampaignAssetInfo(System.Int32)">
+            <summary>
+            Returns CampaignAssetInfo with specified ID.
+            </summary>
+            <param name="id">CampaignAssetInfo ID</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfoProvider.GetCampaignAssetInfo(System.Guid)">
+            <summary>
+            Returns CampaignAssetInfo with specified GUID.
+            </summary>
+            <param name="guid">CampaignAssetInfo GUID</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfoProvider.SetCampaignAssetInfo(CMS.WebAnalytics.CampaignAssetInfo)">
+            <summary>
+            Sets (updates or inserts) specified CampaignAssetInfo.
+            </summary>
+            <param name="infoObj">CampaignAssetInfo to be set</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfoProvider.DeleteCampaignAssetInfo(CMS.WebAnalytics.CampaignAssetInfo)">
+            <summary>
+            Deletes specified CampaignAssetInfo.
+            </summary>
+            <param name="infoObj">CampaignAssetInfo to be deleted</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfoProvider.DeleteCampaignAssetInfo(System.Int32)">
+            <summary>
+            Deletes CampaignAssetInfo with specified ID.
+            </summary>
+            <param name="id">CampaignAssetInfo ID</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfoProvider.GetCampaignAssetsInternal">
+            <summary>
+            Returns a query for all the CampaignAssetInfo objects.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfoProvider.GetCampaignAssetInfoInternal(System.Int32)">
+            <summary>
+            Returns CampaignAssetInfo with specified ID.
+            </summary>
+            <param name="id">CampaignAssetInfo ID</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfoProvider.GetCampaignAssetInfoInternal(System.Guid)">
+            <summary>
+            Returns CampaignAssetInfo with specified GUID.
+            </summary>
+            <param name="guid">CampaignAssetInfo GUID</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfoProvider.SetCampaignAssetInfoInternal(CMS.WebAnalytics.CampaignAssetInfo)">
+            <summary>
+            Sets (updates or inserts) specified CampaignAssetInfo.
+            </summary>
+            <param name="infoObj">CampaignAssetInfo to be set</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetInfoProvider.DeleteCampaignAssetInfoInternal(CMS.WebAnalytics.CampaignAssetInfo)">
+            <summary>
+            Deletes specified CampaignAssetInfo.
+            </summary>
+            <param name="infoObj">CampaignAssetInfo to be deleted</param>
+        </member>
+        <member name="T:CMS.WebAnalytics.CampaignService">
+            <summary>
+            Provides access to the campaign related to the current request via the implementation of <see cref="T:CMS.WebAnalytics.ICampaignPersistentStorage"/>.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.ICampaignService">
+            <summary>
+            Provides access to the campaign related to the current request via the implementation of <see cref="T:CMS.WebAnalytics.ICampaignPersistentStorage"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.ICampaignService.SetCampaign(System.String,System.String,System.String)">
+            <summary>
+            If <see cref="T:CMS.WebAnalytics.CampaignInfo"/> with given <paramref name="campaignCode"/> exists and is running, sets both <paramref name="campaignCode"/> and <paramref name="source"/> to their 
+            properties (<see cref="P:CMS.WebAnalytics.ICampaignService.CampaignCode"/> or <see cref="P:CMS.WebAnalytics.ICampaignService.CampaignSourceName"/> respectively).
+            Additionally performs logging of campaign hit to the analytics. 
+            </summary>
+            <remarks>
+            If Javascript logging is enabled, hit logging will be performed asynchronously on the following request.
+            </remarks>
+            <param name="campaignCode">Campaign UTM code</param>
+            <param name="siteName">Name of the site the campaign belongs to</param>
+            <param name="source">Name of the campaign source</param>
+            <example>
+            Following example shows how to use the <see cref="M:CMS.WebAnalytics.ICampaignService.SetCampaign(System.String,System.String,System.String)"/> method.
+            <code>
+            
+            var campaignService = new CampaignService();
+            
+            ...
+            
+            // stores myCampaign to the <see cref="P:CMS.WebAnalytics.ICampaignService.CampaignCode"/> and mySource to the <see cref="P:CMS.WebAnalytics.ICampaignService.CampaignSourceName"/>
+            campaignService.SetCampaign("myCampaign", "mySite", "mySource");
+            
+            ...
+            
+            // for all following requests of the same visitor
+            // returns myCampaign
+            public string GetCampaignCode() 
+            {
+                return campaignService.CampaignCode;
+            }
+            
+            
+            // returns mySource
+            public string GetSourceName() 
+            {
+                return campaignService.CampaignSourceName;
+            }
+            
+            </code>
+            </example>
+        </member>
+        <member name="P:CMS.WebAnalytics.ICampaignService.CampaignCode">
+            <summary>
+            Gets/sets the visitor's campaign from/to a persistent storage.
+            </summary>
+            <example>
+            Following example shows how to use the <see cref="P:CMS.WebAnalytics.ICampaignService.CampaignCode"/> property in the case <see cref="T:CMS.WebAnalytics.CookieCampaignPersistentStorage"/> is used as implementation of <see cref="T:CMS.WebAnalytics.ICampaignPersistentStorage"/>.
+            <code>
+            
+            var campaignService = new CampaignService();
+            
+            ...
+             
+            // for request with cookie Campaign: test_campaign returns test_campaign
+            // for request without cookies returns null
+            public string GetCampaignCode() 
+            {
+                return campaignService.CampaignCode;
+            }
+            
+            </code>
+            </example>
+        </member>
+        <member name="P:CMS.WebAnalytics.ICampaignService.CampaignSourceName">
+            <summary>
+            Gets/sets the visitor's source from/to a cookie.
+            </summary>
+            <example>
+            Following example shows how to use the <see cref="P:CMS.WebAnalytics.ICampaignService.CampaignSourceName"/> property in the case <see cref="T:CMS.WebAnalytics.CookieCampaignPersistentStorage"/> is used as implementation of <see cref="T:CMS.WebAnalytics.ICampaignPersistentStorage"/>.
+            <code>
+            
+            var campaignService = new CampaignService();
+            
+            ...
+             
+            // for request with cookie Source: test_source returns test_source
+            // for request without cookies returns null
+            public string GetSourceName() 
+            {
+                return campaignService.CampaignSourceName;
+            }
+            
+            </code>
+            </example>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignService.#ctor(CMS.WebAnalytics.ICampaignPersistentStorage)">
+            <summary>
+            Creates new instance of <see cref="T:CMS.WebAnalytics.CampaignService"/>.
+            </summary>
+            <param name="campaignPersistentStorage">Provides access to the persistent storage of campaign and campaign source name.</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignService.SetCampaign(System.String,System.String,System.String)">
+            <summary>
+            If <see cref="T:CMS.WebAnalytics.CampaignInfo"/> with given <paramref name="campaignCode"/> exists and is running, sets both <paramref name="campaignCode"/> and <paramref name="source"/> to their 
+            properties (<see cref="P:CMS.WebAnalytics.CampaignService.CampaignCode"/> or <see cref="P:CMS.WebAnalytics.CampaignService.CampaignSourceName"/> respectively).
+            Additionally performs logging of campaign hit to the analytics. 
+            </summary>
+            <remarks>
+            If Javascript logging is enabled, hit logging will be performed asynchronously on the following request.
+            </remarks>
+            <param name="campaignCode">Name of the campaign to be set</param>
+            <param name="siteName">Name of the site the <paramref name="campaignCode"/> belongs to</param>
+            <param name="source">Name of the campaign source</param>
+            <example>
+            Following example shows how to use the <see cref="M:CMS.WebAnalytics.CampaignService.SetCampaign(System.String,System.String,System.String)"/> method.
+            <code>
+            
+            var campaignService = new CampaignService();
+            
+            ...
+            
+            // stores myCampaign to the <see cref="P:CMS.WebAnalytics.CampaignService.CampaignCode"/> and mySource to the <see cref="P:CMS.WebAnalytics.CampaignService.CampaignSourceName"/>
+            campaignService.SetCampaign("myCampaign", "mySite", "mySource");
+            
+            ...
+            
+            // for all following requests of the same visitor
+            // returns myCampaign
+            public string GetCampaignCode() 
+            {
+                return campaignService.CampaignCode;
+            }
+            
+            
+            // returns mySource
+            public string GetSourceName() 
+            {
+                return campaignService.CampaignSourceName;
+            }
+            
+            </code>
+            </example>
+            <exception cref="T:System.ArgumentException"><paramref name="campaignCode"/> is null -or- <paramref name="siteName"/> is null or empty</exception>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignService.CampaignCode">
+            <summary>
+            Gets/sets the visitor's campaign from/to a persistent storage.
+            </summary>
+            <example>
+            Following example shows how to use the <see cref="P:CMS.WebAnalytics.CampaignService.CampaignCode"/> property in the case <see cref="T:CMS.WebAnalytics.CookieCampaignPersistentStorage"/> is used as implementation of <see cref="T:CMS.WebAnalytics.ICampaignPersistentStorage"/>.
+            <code>
+            
+            var campaignService = new CampaignService();
+            
+            ...
+             
+            // for request with cookie Campaign: test_campaign returns test_campaign
+            // for request without cookies returns null
+            public string GetCampaignCode() 
+            {
+                return campaignService.CampaignCode;
+            }
+            
+            </code>
+            </example>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignService.CampaignSourceName">
+            <summary>
+            Gets/sets the visitor's source from/to a cookie.
+            </summary>
+            <example>
+            Following example shows how to use the <see cref="P:CMS.WebAnalytics.CampaignService.CampaignSourceName"/> property in the case <see cref="T:CMS.WebAnalytics.CookieCampaignPersistentStorage"/> is used as implementation of <see cref="T:CMS.WebAnalytics.ICampaignPersistentStorage"/>.
+            <code>
+            
+            var campaignService = new CampaignService();
+            
+            ...
+             
+            // for request with cookie Source: test_source returns test_source
+            // for request without cookies returns null
+            public string GetSourceName() 
+            {
+                return campaignService.CampaignSourceName;
+            }
+            
+            </code>
+            </example>
+        </member>
+        <member name="T:CMS.WebAnalytics.CookieCampaignPersistentStorage">
+            <summary>
+            Provides access to the campaign and its source name stored in the cookies.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.ICampaignPersistentStorage">
+            <summary>
+            Provides access to storing and retrieving campaign code and campaign source name from/to persistent storage.
+            Persistent storage is a place where campaign code and source name can be stored and after the same visitor
+            makes another request, it will be returned.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.ICampaignPersistentStorage.CampaignUTMCode">
+            <summary>
+            Campaign UTM code.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.ICampaignPersistentStorage.SourceName">
+            <summary>
+            Name of the campaign's source name.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.CookieCampaignPersistentStorage.EnsureCampaign(System.String)">
+            <summary>
+            Ensures that given <paramref name="campaignCode"/> represents existing <see cref="T:CMS.WebAnalytics.CampaignInfo"/> and the related <see cref="T:CMS.WebAnalytics.CampaignInfo"/> is not finished.
+            </summary>
+            <param name="campaignCode">Campaign UTM code.</param>
+            <returns>True if campaign exists and has not finished yet; otherwise, false</returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.CookieCampaignPersistentStorage.RemoveCampaignCookies">
+            <summary>
+            Removes all cookies related to the campaign.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CookieCampaignPersistentStorage.CampaignUTMCode">
+            <summary>
+            Gets or sets the visitor's campaign from/to a cookie.
+            </summary>
+            <remarks>
+            The cookie is saved when a visitor comes to the page through URL that contains campaign parameter. Is stored for fifty years and is used for linking campaigns to conversions.
+            </remarks>
+        </member>
+        <member name="P:CMS.WebAnalytics.CookieCampaignPersistentStorage.SourceName">
+            <summary>
+            Gets or sets the visitor's source from/to a cookie.
+            </summary>
+            <remarks>
+            The cookie is saved when a visitor comes to the page through URL that contains source parameter. Is stored for fifty years and is used for linking channels to conversions.
+            </remarks>
+        </member>
+        <member name="T:CMS.WebAnalytics.ITrackedCampaignsService">
+            <summary>
+            Provides access to the tracked campaigns.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.ITrackedCampaignsService.AddTrackedCampaign(System.String)">
+            <summary>
+            Adds new campaign to TrackedCampaigns collection. Adding is performed only when campaign is not already present.
+            </summary>
+            <param name="campaignName">Codename of campaign</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.ITrackedCampaignsService.RemoveTrackedCampaigns">
+            <summary>
+            Removes TrackedCampaign cookie from cookie collection.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.ITrackedCampaignsService.TrackedCampaigns">
+            <summary>
+            Gets enumerable of campaigns which should be logged in web analytics service called by Javascript.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.DateTimePickerSettingsProvider">
+            <summary>
+            Provides dictionary containing all culture dependent settings needed for initialization of cmsdatepicker javascript component.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.IDateTimePickerSettingsProvider">
+            <summary>
+            Provides dictionary containing all culture dependent settings needed for initialization of cmsdatepicker javascript component.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.IDateTimePickerSettingsProvider.GetDateTimePickerSettings(System.Globalization.CultureInfo,CMS.SiteProvider.SiteInfo,System.DateTime)">
+            <summary>
+            Get dictionary containing all culture dependent settings needed by cmsdatepicker component, as well as timezone dependent labels.
+            </summary>
+            <param name="culture">Culture for which the settings will be evaluated</param>
+            <param name="currentSite">Reference to the executing site. This information is needed, because current time for the datepicker is retrieved based on the site time zone</param>
+            <param name="currentDateTime">Current date time for the site. Should be already shifted by timezone, if necessary</param>
+            <returns>Settings object suitable for serialization</returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.DateTimePickerSettingsProvider.#ctor(CMS.Core.ILocalizationService)">
+            <summary>
+            Constructor, creates instance of <see cref="T:CMS.WebAnalytics.DateTimePickerSettingsProvider"/>.
+            </summary>
+            <param name="localizationService">Service for strings localization</param>
+            <example>
+            This example shows how to use the settings when calling angular cms-date-time-picker component.
+            <code>
+            
+            service.cs
+            
+            var settingsProvider = new DateTimePickerSettingsProvider(localizationService);
+            var settings = JsonConvert.SerializeObject(settingsProvider.GetDateTimePickerSettings(culture, currentDateTime));
+            
+            ... pass settings to the client
+            
+            
+            controller.js
+            $scope.settings = getSettingsFromServer();
+             
+            
+            markup.aspx
+            <cms-date-time-picker settings="{{settings}}"></cms-date-time-picker>
+            
+            </code>
+            </example>
+            <exception cref="T:System.ArgumentNullException"><paramref name="localizationService"/> is null</exception>
+        </member>
+        <member name="M:CMS.WebAnalytics.DateTimePickerSettingsProvider.GetDateTimePickerSettings(System.Globalization.CultureInfo,CMS.SiteProvider.SiteInfo,System.DateTime)">
+            <summary>
+            Get dictionary containing all culture dependent settings needed by cmsdatepicker component, as well as timezone dependent labels.
+            </summary>
+            <param name="culture">Culture for which the settings will be evaluated</param>
+            <param name="currentSite">Reference to the executing site. This information is needed, because current time for the datepicker is retrieved based on the site time zone</param>
+            <param name="currentDateTime">Current date time for the site. Should be already shifted by timezone, if necessary</param>
+            <remarks>
+            Settings are suitable for serialization using Newtonsoft.Json. For example, please refer to <see cref="T:CMS.WebAnalytics.DateTimePickerSettingsProvider"/>.
+            This service is directly dependent on the <see cref="T:CMS.Globalization.TimeZoneHelper"/> class.
+            </remarks>
+            <exception cref="T:System.ArgumentNullException"><paramref name="culture"/> or <paramref name="currentSite"/> is null</exception>
+            <returns>Settings object suitable for serialization</returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.DateTimePickerSettingsProvider.AddMonthNames(System.Collections.Generic.Dictionary{System.String,System.Object},System.Globalization.DateTimeFormatInfo)">
+            <summary>
+            Add values representing the month names.
+            </summary>
+            <remarks>
+            Default monthNames for en-US culture are <c>January, February, ...</c>.
+            Default monthNamesShort for en-US culture are <c>Jan, Feb, ...</c>.
+            </remarks>
+            <param name="dictionary">Settings dictionary</param>
+            <param name="dateTimeFormatInfo">Provides culture-specific information about the format of date and time values</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.DateTimePickerSettingsProvider.AddDayNames(System.Collections.Generic.Dictionary{System.String,System.Object},System.Globalization.DateTimeFormatInfo)">
+            <summary>
+            Adds values representing the day names and flag determining which day starts the week.
+            </summary>
+            <remarks>
+            Default dayNames for en-US culture are <c>Sunday, Monday, ...</c>.
+            Default dayNamesMin for en-US culture are <c>Su, Mo, ...</c>.
+            Default firstDay for en-US culture is <c>0</c>.
+            </remarks>
+            <param name="dictionary">Settings dictionary</param>
+            <param name="dateTimeFormatInfo">Provides culture-specific information about the format of date and time values</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.DateTimePickerSettingsProvider.AddHourDesignators(System.Collections.Generic.Dictionary{System.String,System.Object},System.Globalization.CultureInfo)">
+            <summary>
+            Adds text representing the ante and poste meridiem suffixes.
+            </summary>
+            <remarks>
+            Default AMDesignator for en-US culture is <c>AM</c>.
+            Default PMDesignator for en-US culture is <c>PM</c>.
+            </remarks>
+            <param name="dictionary">Settings dictionary</param>
+            <param name="culture">Provides information about culture context</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.DateTimePickerSettingsProvider.AddButtonsText(System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            Adds texts that will be rendered on various buttons within the calendar control.
+            </summary>
+            <remarks>
+            Default closeText for en-US culture is <c>Select</c>.
+            Default prevText for en-US culture is <c>Prev</c>.
+            Default nextText for en-US culture is <c>Next</c>.
+            Default NAText for en-US culture is <c>N/A</c>.
+            Default currentText for en-US culture is <c>Now</c>.
+            </remarks>
+            <param name="dictionary">Settings dictionary</param>
+            <param name="cultureCode">The culture name in the format languagecode2-country/regioncode2</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.DateTimePickerSettingsProvider.AddRTLFlag(System.Collections.Generic.Dictionary{System.String,System.Object},System.Globalization.CultureInfo)">
+            <summary>
+            Adds flag determining whether right-to-left rendering should be used.
+            </summary>
+            <remarks>
+            Default isRTL for en-US culture is <c>false</c>.
+            </remarks>
+            <param name="dictionary">Settings dictionary</param>
+            <param name="culture">Provides information about culture context</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.DateTimePickerSettingsProvider.AddDateFormattingAndCurrentDate(System.Collections.Generic.Dictionary{System.String,System.Object},System.String,System.Globalization.CultureInfo,System.DateTime)">
+            <summary>
+            Adds date formatting and flag determining whether 24 hour format is used for the time.
+            </summary>
+            <remarks>
+            Default dateFormat for en-US culture is <c>M/d/yy h:mm:ss tt</c>.
+            Default use24HourMode for en-US culture is <c>false</c>.
+            </remarks>
+            <param name="dictionary">Settings dictionary</param>
+            <param name="dateFormat">Specifies how the date will be formatted</param>
+            <param name="culture">Provides information about culture context</param>
+            <param name="currentDateTime">Current date time for the site. Should be already shifted by timezone, if necessary</param>
+        </member>
+        <member name="T:CMS.WebAnalytics.TrackedCampaignsService">
+            <summary>
+            Provides access to the tracked campaigns.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.TrackedCampaignsService.AddTrackedCampaign(System.String)">
+            <summary>
+            Adds new campaign to TrackedCampaigns collection. Adding is performed only when campaign is not already present.
+            </summary>
+            <param name="campaignName">Codename of campaign</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.TrackedCampaignsService.RemoveTrackedCampaigns">
+            <summary>
+            Removes TrackedCampaign cookie from cookie collection.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.TrackedCampaignsService.TrackedCampaigns">
+            <summary>
+            Gets enumerable of campaigns which should be logged in web analytics service called by Javascript.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.ConversionCampaignSourceInfo">
+            <summary>
+            ConversionCampaignSourceInfo data container class.
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.ConversionCampaignSourceInfo.OBJECT_TYPE">
+            <summary>
+            Object type
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.ConversionCampaignSourceInfo.TYPEINFO">
+            <summary>
+            Type information.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.ConversionCampaignSourceInfo.DeleteObject">
+            <summary>
+            Deletes the object using appropriate provider.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.ConversionCampaignSourceInfo.SetObject">
+            <summary>
+            Updates the object using appropriate provider.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.ConversionCampaignSourceInfo.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor for de-serialization.
+            </summary>
+            <param name="info">Serialization info</param>
+            <param name="context">Streaming context</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.ConversionCampaignSourceInfo.#ctor">
+            <summary>
+            Constructor - Creates an empty ConversionCampaignSourceInfo object.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.ConversionCampaignSourceInfo.#ctor(System.Data.DataRow)">
+            <summary>
+            Constructor - Creates a new ConversionCampaignSourceInfo object from the given DataRow.
+            </summary>
+            <param name="dr">DataRow with the object data</param>
+        </member>
+        <member name="P:CMS.WebAnalytics.ConversionCampaignSourceInfo.ConversionCampaignSourceID">
+            <summary>
+            Conversion campaign source ID
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.ConversionCampaignSourceInfo.CampaignID">
+            <summary>
+            Campaign ID
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.ConversionCampaignSourceInfo.ConversionID">
+            <summary>
+            Conversion ID
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.ConversionCampaignSourceInfo.SourceName">
+            <summary>
+            Source name
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.ConversionCampaignSourceInfo.ConversionHits">
+            <summary>
+            Conversion hits
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.ConversionCampaignSourceInfoProvider">
+            <summary>
+            Class providing ConversionCampaignSourceInfo management.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.ConversionCampaignSourceInfoProvider.GetConversionCampaignSources">
+            <summary>
+            Returns all ConversionCampaignSourceInfo bindings.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.ConversionCampaignSourceInfoProvider.GetConversionCampaignSources(System.Int32)">
+            <summary>
+            Returns all ConversionCampaignSourceInfo bindings with campaignID.
+            </summary>
+            <param name="campaignId">Campaign ID</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.ConversionCampaignSourceInfoProvider.SetConversionCampaignSourceInfo(CMS.WebAnalytics.ConversionCampaignSourceInfo)">
+            <summary>
+            Sets specified ConversionCampaignSourceInfo.
+            </summary>
+            <param name="infoObj">ConversionCampaignSourceInfo to set</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.ConversionCampaignSourceInfoProvider.DeleteConversionCampaignSourceInfo(CMS.WebAnalytics.ConversionCampaignSourceInfo)">
+            <summary>
+            Deletes specified ConversionCampaignSourceInfo binding.
+            </summary>
+            <param name="infoObj">ConversionCampaignSourceInfo object</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.ConversionCampaignSourceInfoProvider.SetConversionCampaignSourceInfoInternal(CMS.WebAnalytics.ConversionCampaignSourceInfo)">
+            <summary>
+            Sets specified ConversionCampaignSourceInfo binding.
+            </summary>
+            <param name="infoObj">ConversionCampaignSourceInfo object</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.ConversionCampaignSourceInfoProvider.DeleteConversionCampaignSourceInfoInternal(CMS.WebAnalytics.ConversionCampaignSourceInfo)">
+            <summary>
+            Deletes specified ConversionCampaignSourceInfo.
+            </summary>
+            <param name="infoObj">ConversionCampaignSourceInfo object</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.ConversionCampaignSourceInfoProvider.BulkInsertUTMData(System.Collections.Generic.IList{CMS.WebAnalytics.ConversionCampaignSourceInfo})">
+            <summary>
+            Inserts multiple log records to the database.
+            </summary>
+            <param name="utmParameters">UTM records to insert</param>
+        </member>
+        <member name="T:CMS.WebAnalytics.CampaignStatusEnum">
+            <summary>
+            Represents the current status of a campaign.
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.CampaignStatusEnum.Launched">
+            <summary>
+            Campaign have been launched and currently running. All data will be tracked.
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.CampaignStatusEnum.Scheduled">
+            <summary>
+            Campaign is scheduled to be launched in the future. No data are tracked until launched.
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.CampaignStatusEnum.Draft">
+            <summary>
+            Campaign is not enabled and not ready to be started yet.
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.CampaignStatusEnum.Finished">
+            <summary>
+            Campaign has finished. No data are tracked.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.CampaignLaunchLogHandler">
+            <summary>
+            Handler for campaign launch collects messages of actions.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.CampaignLaunchedHandler">
+            <summary>
+            Handler for campaign being launched.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.CampaignLaunchLogEventArgs">
+            <summary>
+            Arguments for event handlers related to <see cref="T:CMS.WebAnalytics.CampaignLaunchLogHandler"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignLaunchLogEventArgs.Campaign">
+            <summary>
+            Campaign info.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignLaunchLogEventArgs.Messages">
+            <summary>
+            Messages for all actions.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.CampaignUTMChangedEventArgs">
+            <summary>
+            Arguments for event handlers related to <see cref="T:CMS.WebAnalytics.CampaignUTMChangedHandler"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignUTMChangedEventArgs.OriginalEmailID">
+            <summary>
+            ID of issue (for A/B must be master email ID).
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignUTMChangedEventArgs.Campaign">
+            <summary>
+            Campaign info.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignUTMChangedEventArgs.NewUTMSource">
+            <summary>
+            New UTM source to set.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.CampaignUTMChangedHandler">
+            <summary>
+            Fires when there is a change in campaigns UTM parameter.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.Filters.FilterCrawlersAttribute">
+            <summary>
+            Checks whether the request was made by crawler. If so, returns 403 Forbidden message.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Filters.FilterCrawlersAttribute.OnAuthorization(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+            Calls when a process requests authorization.
+            </summary>
+            <param name="actionContext">The action context, which encapsulates information for using <see cref="T:System.Web.Http.Filters.AuthorizationFilterAttribute"/>.</param>
+        </member>
+        <member name="T:CMS.WebAnalytics.ILogHitsProvider">
+            <summary>
+            Defines methods which have to be implemented in order to be able to perform logging of visitor hits.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.ILogHitsProvider.LogHit(CMS.WebAnalytics.LogHitParameters)">
+            <summary>
+            Performs logging of general hit.
+            </summary>
+            <param name="logHitParameters">Parameters required for hit logging</param>
+            <exception cref="T:System.ArgumentException">Attempt to found page according to the given <paramref name="logHitParameters"/> was not successful (no page was found).</exception>
+            <exception cref="T:System.InvalidOperationException">Javascript logging is not enabled on the current site.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="logHitParameters"/> is null</exception>
+        </member>
+        <member name="M:CMS.WebAnalytics.ILogHitsProvider.LogBannerHit(System.Int32)">
+            <summary>
+            Performs logging of banner hit.
+            </summary>
+            <param name="bannerID">ID of the banner the visitor clicked on</param>
+            <exception cref="T:System.InvalidOperationException">Javascript logging is not enabled on the current site.</exception>
+        </member>
+        <member name="M:CMS.WebAnalytics.ILogHitsProvider.LogSearchHit(CMS.WebAnalytics.LogSearchHitParameters)">
+            <summary>
+            Performs logging of search event hit. 
+            </summary>
+            <param name="logSearchHitParameters">Parameters required for hit logging</param>
+            <exception cref="T:System.ArgumentException">Attempt to found page according to the given <paramref name="logSearchHitParameters"/> was not successful (no page was found).</exception>
+            <exception cref="T:System.InvalidOperationException">Javascript logging is not enabled on the current site.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="logSearchHitParameters"/> is null</exception>
+        </member>
+        <member name="T:CMS.WebAnalytics.LogHitParameters">
+            <summary>
+            Data class containing all fields required for asynchronous hit logging.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.LogHitParameters.UrlReferrer">
+            <summary>
+            Current request referrer.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.LogHitParameters.NodeAliasPath">
+            <summary>
+            Alias path to the document from which was the request made.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.LogHitParameters.DocumentCultureCode">
+            <summary>
+            Culture of the document from which was the request made.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.LogHitParameters.ABTestName">
+            <summary>
+            Name of the AB test to log visit for.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.LogHitParameters.ABTestVariantName">
+            <summary>
+            Name of the currently selected AB test variant.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.LogHitParameters.ABTestFirstVisit">
+            <summary>
+            Decides whether to log first visit or recurring visit for given AB test.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.LogHitParameters.MVTestCombinationName">
+            <summary>
+            Name of the MV test combination to log visit for.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.LogHitParameters.PlainParameters">
+            <summary>
+            Wrapper around the other fields. This field is used as argument when raising log hit event.
+            </summary>
+            <remarks>
+            Keys in dictionary do not match the fields name due to backward compatibility.
+            </remarks>
+        </member>
+        <member name="T:CMS.WebAnalytics.LogSearchHitParameters">
+            <summary>
+             Data class containing all fields required for asynchronous search hit logging.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.LogSearchHitParameters.Keyword">
+            <summary>
+            Keyword representing the search query made by search engine.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.LogSearchHitParameters.NodeAliasPath">
+            <summary>
+            Alias path to the document from which was the request made.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.LogSearchHitParameters.DocumentCultureCode">
+            <summary>
+            Culture of the document from which was the request made.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.ApiControllers.WebAnalyticsController">
+            <summary>
+            Handles logging of visitor hits.
+            </summary>
+            <remarks>
+            Only real visitors ban be logged, crawlers which the system is able to recognize are omitted.
+            Adds information to the header to tell the crawlers not to track this controller. This applies only to the crawlers that was
+            not recognized in the <see cref="T:CMS.WebAnalytics.Filters.FilterCrawlersAttribute"/>.
+            </remarks>
+        </member>
+        <member name="M:CMS.WebAnalytics.ApiControllers.WebAnalyticsController.LogHit(CMS.WebAnalytics.LogHitParameters)">
+            <summary>
+            Performs logging of general hit.
+            </summary>
+            <param name="logHitParameters">Parameters required for hit logging</param>
+            <returns>
+            HTTP response message containing the status code dependent on whether the action was successful or not.
+            Returns 200 OK status if logging was successful.
+            Returns 400 Bad request if exception was thrown while trying to log the hit.
+            </returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.ApiControllers.WebAnalyticsController.LogSearchHit(CMS.WebAnalytics.LogSearchHitParameters)">
+            <summary>
+            Performs logging of search event hit. 
+            </summary>
+            <param name="logSearchHitParameters">Parameters required for hit logging</param>
+            <returns>
+            HTTP response message containing the status code dependent on whether the action was successful or not.
+            Returns 200 OK status if logging was successful.
+            Returns 400 Bad request if exception was thrown while trying to log the hit.
+            </returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.ApiControllers.WebAnalyticsController.LogBannerHit(System.Int32)">
+            <summary>
+            Performs logging of banner hit.
+            </summary>
+            <param name="bannerID">ID of the banner the visitor clicked on</param>
+            <returns>
+            HTTP response message containing the status code dependent on whether the action was successful or not.
+            Returns 200 OK status if logging was successful.
+            Returns 400 Bad request if exception was thrown while trying to log the hit.
+            </returns>
+        </member>
+        <member name="T:CMS.WebAnalytics.Filters.DoNotTrackAttribute">
+            <summary>
+            Adds header to the response telling the crawlers not to track the site the request was made for.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Filters.DoNotTrackAttribute.OnActionExecuted(System.Web.Http.Filters.HttpActionExecutedContext)">
+            <summary>
+            Occurs after the action method is invoked.
+            </summary>
+            <param name="actionExecutedContext">The action executed context.</param>
         </member>
         <member name="T:CMS.WebAnalytics.UserNameFormatter">
             <summary>
@@ -1771,34 +3167,35 @@
             </summary>
             <value>Can be either set manually, or obtained from HttpContext otherwise</value>
         </member>
-        <member name="T:CMS.WebAnalytics.SampleDataGenerator">
+        <member name="T:CMS.WebAnalytics.DefaultLogHitsProvider">
             <summary>
-            Generates sample data in Web Analytics. Uses analytics.statistics.generatesampledata query.
+            Default implementation of <see cref="T:CMS.WebAnalytics.ILogHitsProvider"/>. Contains methods for performing logging of visitor hits.
             </summary>
         </member>
-        <member name="F:CMS.WebAnalytics.SampleDataGenerator.StatisticCodeNames">
+        <member name="M:CMS.WebAnalytics.DefaultLogHitsProvider.LogHit(CMS.WebAnalytics.LogHitParameters)">
             <summary>
-            Statistics code names. These are used when 'all' statistics are being generated.
+            Performs logging of general hit.
             </summary>
+            <param name="logHitParameters">Parameters required for hit logging</param>
+            <exception cref="T:System.ArgumentException">Attempt to found page according to the given <paramref name="logHitParameters"/> was not successful (no page was found).</exception>
+            <exception cref="T:System.InvalidOperationException">Javascript logging is not enabled on the current site.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="logHitParameters"/> is null</exception>
         </member>
-        <member name="M:CMS.WebAnalytics.SampleDataGenerator.GenerateSampleData(System.DateTime,System.DateTime,System.Int32,System.String)">
+        <member name="M:CMS.WebAnalytics.DefaultLogHitsProvider.LogBannerHit(System.Int32)">
             <summary>
-            Generates sample analytics data. Returns true if sample data generator was started.
+            Performs logging of banner hit.
             </summary>
-            <param name="from">From</param>
-            <param name="to">To</param>
-            <param name="siteId">Site ID</param>
-            <param name="codeName">Statistic codename</param>
+            <param name="bannerID">ID of the banner the visitor clicked on</param>
+            <exception cref="T:System.InvalidOperationException">Javascript logging is not enabled on the current site.</exception>
         </member>
-        <member name="M:CMS.WebAnalytics.SampleDataGenerator.GenerateData(System.DateTime,System.DateTime,System.Int32,System.String)">
+        <member name="M:CMS.WebAnalytics.DefaultLogHitsProvider.LogSearchHit(CMS.WebAnalytics.LogSearchHitParameters)">
             <summary>
-            Generates analytics data.
+            Performs logging of search event hit. 
             </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.SampleDataGenerator.DataGeneratorIsRunning">
-            <summary>
-            Gets the value that indicates whether data generation is running
-            </summary>
+            <param name="logSearchHitParameters">Parameters required for hit logging</param>
+            <exception cref="T:System.ArgumentException">Attempt to found page according to the given <paramref name="logSearchHitParameters"/> was not successful (no page was found).</exception>
+            <exception cref="T:System.InvalidOperationException">Javascript logging is not enabled on the current site.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="logSearchHitParameters"/> is null</exception>
         </member>
         <member name="T:CMS.WebAnalytics.AnalyticsDebug">
             <summary>
@@ -1815,12 +3212,6 @@
             Creates a new table for the analytics log.
             </summary>
         </member>
-        <member name="M:CMS.WebAnalytics.AnalyticsDebug.LogActivityOperation(CMS.WebAnalytics.ActivityData)">
-            <summary>
-            Logs the activity operation. Logs the activity operation to the file and to current request log for debugging.
-            </summary>
-            <param name="data">Activity data</param>
-        </member>
         <member name="M:CMS.WebAnalytics.AnalyticsDebug.LogAnalyticsOperation(System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Double)">
             <summary>
             Logs the analytics operation. Logs the analytics operation to the file and to current request log for debugging.
@@ -1832,20 +3223,6 @@
             <param name="objectId">Object ID</param>
             <param name="count">Hit count</param>
             <param name="value">Hit value</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.AnalyticsDebug.LogToFile(CMS.WebAnalytics.ActivityData)">
-            <summary>
-            Logs the activity to the log file.
-            </summary>
-            <param name="data">Activity data</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.AnalyticsDebug.AppendActivityInfo(System.Text.StringBuilder,System.String,System.String)">
-            <summary>
-            Appends given line if not empty
-            </summary>
-            <param name="builder">StringBuilder object</param>
-            <param name="title">Title</param>
-            <param name="value">Value</param>
         </member>
         <member name="M:CMS.WebAnalytics.AnalyticsDebug.LogToFile(System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Double)">
             <summary>
@@ -1918,11 +3295,6 @@
         <member name="F:CMS.WebAnalytics.AnalyticsHelper.mSlidingIPExpiration">
             <summary>
             Indicates if IP should be logged every time for anonymous user.
-            </summary>
-        </member>
-        <member name="F:CMS.WebAnalytics.AnalyticsHelper.mEnableAutomaticCampaignCreate">
-            <summary>
-            Indicates whether automatic campaign object is enabled
             </summary>
         </member>
         <member name="F:CMS.WebAnalytics.AnalyticsHelper.mIpLocker">
@@ -1999,18 +3371,6 @@
         <member name="M:CMS.WebAnalytics.AnalyticsHelper.TrackBrowserTypesEnabled(System.String)">
             <summary>
             Returns true if browser types tracking is enabled for specified site.
-            </summary>
-            <param name="siteName">Site name</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.AnalyticsHelper.TrackCampaignsEnabled(System.String)">
-            <summary>
-            Returns true if campaigns tracking is enabled for specified site.
-            </summary>
-            <param name="siteName">Site name</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.AnalyticsHelper.TrackConversionsEnabled(System.String)">
-            <summary>
-            Returns true if conversions tracking is enabled for specified site.
             </summary>
             <param name="siteName">Site name</param>
         </member>
@@ -2190,16 +3550,23 @@
             </summary>
             <param name="siteName">Site name</param>
         </member>
-        <member name="M:CMS.WebAnalytics.AnalyticsHelper.CampaignTrackingParameter(System.String)">
+        <member name="M:CMS.WebAnalytics.AnalyticsHelper.CurrentCampaign">
             <summary>
-            Returns the campaign tracking URL parameter.
+            Returns the name of the current campaign.
             </summary>
-            <param name="siteName">Site name</param>
+            <remarks>
+            Name of current campaign is obtained from query string.
+            </remarks>
+            <returns>Name of the campaign or null when campaign parameter is not present in query string</returns>
         </member>
-        <member name="M:CMS.WebAnalytics.AnalyticsHelper.CurrentCampaign(System.String)">
+        <member name="M:CMS.WebAnalytics.AnalyticsHelper.CurrentSource">
             <summary>
-            Returns current request campaign name reference.
+            Returns the name of the current source.
             </summary>
+            <remarks>
+            Name of current source is obtained from query string.
+            </remarks>
+            <returns>Name of the source or null when campaign parameter is not present in query string</returns>
         </member>
         <member name="M:CMS.WebAnalytics.AnalyticsHelper.SetCampaign(System.String,System.String,System.String)">
             <summary>
@@ -2207,7 +3574,7 @@
             </summary>
             <param name="campaign">Campaign name</param>
             <param name="siteName">Site name</param>
-            <param name="aliasPath">Node alias path for checking if url is excluded from analytics</param>
+            <param name="source">Channel name</param>
             <returns>True if successfully logged, or campaign is written into cookie</returns>
         </member>
         <member name="M:CMS.WebAnalytics.AnalyticsHelper.AddTrackedCampaign(System.String)">
@@ -2372,11 +3739,6 @@
             Returns visitor status.
             </summary>
         </member>
-        <member name="P:CMS.WebAnalytics.AnalyticsHelper.EnableAutomaticCampaignCreate">
-            <summary>
-            Gets or sets the value that indicates whether automatic campaign creation is enabled
-            </summary>
-        </member>
         <member name="P:CMS.WebAnalytics.AnalyticsHelper.RemoveReferralQuery">
             <summary>
             Returns true, if query string should be removed from the referral URL; otherwise, false.
@@ -2390,8 +3752,19 @@
         </member>
         <member name="P:CMS.WebAnalytics.AnalyticsHelper.Campaign">
             <summary>
-            Gets or sets the current campaign
+            Gets/sets the visitor's campaign from/to a cookie.
             </summary>
+            <remarks>
+            The cookie is saved when a visitor comes to the page through URL that contains campaign parameter. Is stored for fifty years and is used for linking campaigns to conversions.
+            </remarks>
+        </member>
+        <member name="P:CMS.WebAnalytics.AnalyticsHelper.Source">
+            <summary>
+            Gets/sets the visitor's source from/to a cookie.
+            </summary>
+            <remarks>
+            The cookie is saved when a visitor comes to the page through URL that contains source parameter. Is stored for fifty years and is used for linking channels to conversions.
+            </remarks>
         </member>
         <member name="P:CMS.WebAnalytics.AnalyticsHelper.TrackedCampaigns">
             <summary>
@@ -2487,19 +3860,14 @@
             Arguments for event handlers related to generating sample statistics data. 
             </summary>
         </member>
-        <member name="P:CMS.WebAnalytics.GenerateStatisticsEventArgs.From">
+        <member name="P:CMS.WebAnalytics.GenerateStatisticsEventArgs.Date">
             <summary>
-            Date to generate statistics from.
+            Date for which the statistics should be generated.
             </summary>
         </member>
-        <member name="P:CMS.WebAnalytics.GenerateStatisticsEventArgs.To">
+        <member name="P:CMS.WebAnalytics.GenerateStatisticsEventArgs.Visitors">
             <summary>
-            Date to generate statistics to.
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.GenerateStatisticsEventArgs.StatisticsCodeName">
-            <summary>
-            Code name of statistics to generate.
+            Contains number of visitor per every culture.
             </summary>
         </member>
         <member name="T:CMS.WebAnalytics.GenerateStatisticsHandler">
@@ -2507,13 +3875,12 @@
             Handler for generating sample web analytics statistics.
             </summary>
         </member>
-        <member name="M:CMS.WebAnalytics.GenerateStatisticsHandler.StartEvent(System.DateTime,System.DateTime,System.String)">
+        <member name="M:CMS.WebAnalytics.GenerateStatisticsHandler.StartEvent(System.DateTime,System.Collections.Generic.IDictionary{System.String,System.Int32})">
             <summary>
             Initiates the event handling.
             </summary>
-            <param name="from">Date to generate statistics from</param>
-            <param name="to">Date to generate statistics to</param>
-            <param name="statisticsCodename">Codename of statistics to generate</param>
+            <param name="date">Date for which the statistics should be generated</param>
+            <param name="visitors">Contains number of visitor per every culture</param>
         </member>
         <member name="T:CMS.WebAnalytics.InsertAnalyticsJSHandler">
             <summary>
@@ -2857,6 +4224,12 @@
             Updates the object using appropriate provider.
             </summary>
         </member>
+        <member name="M:CMS.WebAnalytics.CampaignInfo.GetCampaignStatus(System.DateTime)">
+            <summary>
+            Computes current campaign status for given <paramref name="dateTime"/>.
+            </summary>
+            <param name="dateTime">Date time to compute status to</param>
+        </member>
         <member name="M:CMS.WebAnalytics.CampaignInfo.#ctor">
             <summary>
             Constructor - Creates an empty CampaignInfo object.
@@ -2885,11 +4258,6 @@
             Campaign object ID.
             </summary>
         </member>
-        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignTotalCost">
-            <summary>
-            Campaign cost.
-            </summary>
-        </member>
         <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignSiteID">
             <summary>
             Campaign object site ID.
@@ -2900,14 +4268,14 @@
             Campaign object description.
             </summary>
         </member>
-        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignUseAllConversions">
-            <summary>
-            Indicates whether use with campaign all conversions or only selected ones.
-            </summary>
-        </member>
         <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignName">
             <summary>
             Campaign object name.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignUTMCode">
+            <summary>
+            Campaign UTM code.
             </summary>
         </member>
         <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignOpenTo">
@@ -2915,19 +4283,9 @@
             Campaign open to.
             </summary>
         </member>
-        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignImpressions">
-            <summary>
-            Campaign imperssions (number of users affected by campaign).
-            </summary>
-        </member>
         <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignOpenFrom">
             <summary>
             Campaign open from.
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignRules">
-            <summary>
-            Group of crieterias under which campaign will be logged.
             </summary>
         </member>
         <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignGUID">
@@ -2943,66 +4301,6 @@
         <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignEnabled">
             <summary>
             Indicates whether campaign is enabled.
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignGoalVisitorsMin">
-            <summary>
-            Gets or sets the campaign red flag value for number of visitors
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignGoalConversionsMin">
-            <summary>
-            Gets or sets the campaign red flag value for number of conversions
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignGoalValueMin">
-            <summary>
-            Gets or sets the campaign red flag value for total value of conversions
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignGoalPerVisitorMin">
-            <summary>
-            Gets or sets the campaign red flag value for value per visitor
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignGoalVisitors">
-            <summary>
-            Gets or sets the campaign goal value for number of visitors
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignGoalConversions">
-            <summary>
-            Gets or sets the campaign goal value for number of conversions
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignGoalValue">
-            <summary>
-            Gets or sets the campaign goal value for total value of conversions
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignGoalPerVisitor">
-            <summary>
-            Gets or sets the campaign goal value for value per visitor
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignGoalVisitorsPercent">
-            <summary>
-            Gets or sets the value that indicates whether vistors value should be counted as percent value
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignGoalConversionsPercent">
-            <summary>
-            Gets or sets the value that indicates whether conversions value should be counted as percent value
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignGoalValuePercent">
-            <summary>
-            Gets or sets the value that indicates whether value should be counted as percent value
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.CampaignInfo.CampaignGoalPerVisitorPercent">
-            <summary>
-            Gets or sets the value that indicates whether vistor per visitor value should be counted as percent value
             </summary>
         </member>
         <member name="T:CMS.WebAnalytics.CampaignInfoProvider">
@@ -3067,6 +4365,13 @@
             <param name="newName">New code name</param>
             <param name="siteID">Campaign site ID </param>
         </member>
+        <member name="M:CMS.WebAnalytics.CampaignInfoProvider.GetCampaignByUTMCode(System.String,System.String)">
+            <summary>
+            Returns campaign with given UTM code.
+            </summary>
+            <param name="utmCode">UTM code.</param>
+            <param name="siteName">Site name.</param>
+        </member>
         <member name="M:CMS.WebAnalytics.CampaignInfoProvider.GetCampaignsInternal">
             <summary>
             Returns a query for all the CampaignInfo objects.
@@ -3076,26 +4381,26 @@
             <summary>
             Returns campaign with specified ID.
             </summary>
-            <param name="campaignId">Campaign ID</param>        
+            <param name="campaignId">Campaign ID</param>
         </member>
         <member name="M:CMS.WebAnalytics.CampaignInfoProvider.GetCampaignInfoInternal(System.String,System.String)">
             <summary>
             Returns campaign with specified name.
             </summary>
-            <param name="campaignName">Campaign name</param>                
-            <param name="siteName">Site name</param>         
+            <param name="campaignName">Campaign name</param>
+            <param name="siteName">Site name</param>
         </member>
         <member name="M:CMS.WebAnalytics.CampaignInfoProvider.SetCampaignInfoInternal(CMS.WebAnalytics.CampaignInfo)">
             <summary>
             Sets (updates or inserts) specified campaign.
             </summary>
-            <param name="campaignObj">Campaign to be set</param>        
+            <param name="campaignObj">Campaign to be set</param>
         </member>
         <member name="M:CMS.WebAnalytics.CampaignInfoProvider.DeleteCampaignInfoInternal(CMS.WebAnalytics.CampaignInfo)">
             <summary>
             Deletes specified campaign.
             </summary>
-            <param name="campaignObj">Campaign to be deleted</param>        
+            <param name="campaignObj">Campaign to be deleted</param>
         </member>
         <member name="M:CMS.WebAnalytics.CampaignInfoProvider.CampaignIsRunningInternal(System.String,System.String)">
             <summary>
@@ -3118,11 +4423,12 @@
             <param name="newName">New code name</param>
             <param name="siteID">Campaign site ID </param>
         </member>
-        <member name="M:CMS.WebAnalytics.CampaignInfoProvider.RemoveCampaignFromDocuments(CMS.WebAnalytics.CampaignInfo)">
+        <member name="M:CMS.WebAnalytics.CampaignInfoProvider.GetCampaignByUTMCodeInternal(System.String,System.String)">
             <summary>
-            Removes campaign from document nodes.
+            Returns campaign with given UTM code.
             </summary>
-            <param name="campaignObj">Campaign object</param>  
+            <param name="utmCode">UTM code.</param>
+            <param name="siteName">Site name.</param>
         </member>
         <member name="M:CMS.WebAnalytics.CampaignInfoProvider.RemoveAnalyticsData(CMS.WebAnalytics.CampaignInfo)">
             <summary>
@@ -3134,138 +4440,6 @@
             <summary>
             Constructor using ID and codename Hashtables.
             </summary>
-        </member>
-        <member name="T:CMS.WebAnalytics.ConversionCampaignInfo">
-            <summary>
-            ConversionCampaignInfo data container class.
-            </summary>
-        </member>
-        <member name="F:CMS.WebAnalytics.ConversionCampaignInfo.OBJECT_TYPE">
-            <summary>
-            Object type
-            </summary>
-        </member>
-        <member name="F:CMS.WebAnalytics.ConversionCampaignInfo.TYPEINFO">
-            <summary>
-            Type information.
-            </summary>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfo.DeleteObject">
-            <summary>
-            Deletes the object using appropriate provider.
-            </summary>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfo.SetObject">
-            <summary>
-            Updates the object using appropriate provider.
-            </summary>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfo.#ctor">
-            <summary>
-            Constructor - Creates an empty ConversionCampaignInfo object.
-            </summary>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfo.#ctor(System.Data.DataRow)">
-            <summary>
-            Constructor - Creates a new ConversionCampaignInfo object from the given DataRow.
-            </summary>
-            <param name="dr">DataRow with the object data</param>
-        </member>
-        <member name="P:CMS.WebAnalytics.ConversionCampaignInfo.CampaignID">
-            <summary>
-            Campaign object ID.
-            </summary>
-        </member>
-        <member name="P:CMS.WebAnalytics.ConversionCampaignInfo.ConversionID">
-            <summary>
-            Conversion object ID.
-            </summary>
-        </member>
-        <member name="T:CMS.WebAnalytics.ConversionCampaignInfoProvider">
-            <summary>
-            Class providing ConversionCampaignInfo management.
-            </summary>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfoProvider.GetConversionCampaigns">
-            <summary>
-            Returns a query for all the ConversionCampaignInfo objects.
-            </summary>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfoProvider.GetConversionCampaignInfo(System.Int32,System.Int32)">
-            <summary>
-            Returns relationship between specified conversion and campaign.
-            </summary>
-            <param name="conversionId">Conversion ID</param>
-            <param name="campaignId">Campaign ID</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfoProvider.SetConversionCampaignInfo(CMS.WebAnalytics.ConversionCampaignInfo)">
-            <summary>
-            Sets relationship between specified conversion and campaign.
-            </summary>
-            <param name="infoObj">Conversion-campaign relationship to be set</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfoProvider.DeleteConversionCampaignInfo(CMS.WebAnalytics.ConversionCampaignInfo)">
-            <summary>
-            Deletes relationship between specified conversion and campaign.
-            </summary>
-            <param name="infoObj">Conversion-campaign relationship to be deleted</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfoProvider.AddConversionToCampaign(System.Int32,System.Int32)">
-            <summary>
-            Sets relationship between specified conversion and campaign.
-            </summary>	
-            <param name="conversionId">Conversion ID</param>
-            <param name="campaignId">Campaign ID</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfoProvider.RemoveConversionFromCampaign(System.Int32,System.Int32)">
-            <summary>
-            Deletes relationship between specified conversion and campaign.
-            </summary>
-            <param name="conversionId">Conversion ID</param>
-            <param name="campaignId">Campaign ID</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfoProvider.RemoveAllConversionsFromCampaign(System.Int32)">
-            <summary>
-            Removes all conversions which belong to campaign.
-            </summary>
-            <param name="campaignID">Campaign ID</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfoProvider.GetConversionCampaignsInternal">
-            <summary>
-            Returns a query for all the ConversionCampaignInfo objects.
-            </summary>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfoProvider.GetConversionCampaignInfoInternal(System.Int32,System.Int32)">
-            <summary>
-            Returns relationship between specified conversion and campaign.
-            </summary>
-            <param name="conversionId">Conversion ID</param>
-            <param name="campaignId">Campaign ID</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfoProvider.SetConversionCampaignInfoInternal(CMS.WebAnalytics.ConversionCampaignInfo)">
-            <summary>
-            Sets relationship between specified conversion and campaign.
-            </summary>
-            <param name="infoObj">Conversion-campaign relationship to be set</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfoProvider.DeleteConversionCampaignInfoInternal(CMS.WebAnalytics.ConversionCampaignInfo)">
-            <summary>
-            Deletes relationship between specified conversion and campaign.
-            </summary>
-            <param name="infoObj">Conversion-campaign relationship to be deleted</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfoProvider.AddConversionToCampaignInternal(System.Int32,System.Int32)">
-            <summary>
-            Sets relationship between specified conversion and campaign.
-            </summary>	
-            <param name="conversionId">Conversion ID</param>
-            <param name="campaignId">Campaign ID</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.ConversionCampaignInfoProvider.RemoveAllConversionsFromCampaignInternal(System.Int32)">
-            <summary>
-            Removes all conversions which belong to campaign.
-            </summary>
-            <param name="campaignID">Campaign ID</param>
         </member>
         <member name="T:CMS.WebAnalytics.ConversionInfo">
             <summary>
@@ -3514,6 +4688,11 @@
         <member name="F:CMS.WebAnalytics.PredefinedActivityType.NEWSLETTER_UNSUBSCRIBING">
             <summary>
             Code name for newsletter unsubscribing activity.
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.PredefinedActivityType.NEWSLETTER_UNSUBSCRIBING_FROM_ALL">
+            <summary>
+            Code name for newsletter unsubscribing from all activity.
             </summary>
         </member>
         <member name="F:CMS.WebAnalytics.PredefinedActivityType.NEWSLETTER_OPEN">
@@ -3983,6 +5162,29 @@
             Fires when web analytics statistics are being generated.
             </summary>
         </member>
+        <member name="F:CMS.WebAnalytics.WebAnalyticsEvents.CampaignLaunched">
+            <summary>
+            Fires when campaign is being launched. 
+            </summary>
+            <remarks>
+            When attaching to this handler please consider also attach to the <see cref="F:CMS.WebAnalytics.WebAnalyticsEvents.CampaignLaunchLog"/>.
+            <see cref="F:CMS.WebAnalytics.WebAnalyticsEvents.CampaignLaunchLog"/> only explains what will happen to the campaign after real launch.
+            </remarks>
+        </member>
+        <member name="F:CMS.WebAnalytics.WebAnalyticsEvents.CampaignLaunchLog">
+            <summary>
+            Fires when campaign launch collects messages of all actions.
+            </summary>
+            <remarks>
+            Do not modify any the content or do not make any persistent changes (these changes should be handled in <see cref="F:CMS.WebAnalytics.WebAnalyticsEvents.CampaignLaunched"/>). 
+            Event should only insert messages to the <see cref="P:CMS.WebAnalytics.CampaignLaunchLogEventArgs.Messages"/> which explains what will happen to the campaign after launch.
+            </remarks>
+        </member>
+        <member name="F:CMS.WebAnalytics.WebAnalyticsEvents.CampaignUTMChanged">
+            <summary>
+            Fires when there is a change in campaigns UTM parameter.
+            </summary>
+        </member>
         <member name="T:CMS.WebAnalytics.CurrentUserFields">
             <summary>
             Wrapper class to provide fields from System.Math namespace in the MacroEngine.
@@ -3998,11 +5200,6 @@
             Web analytics events handlers
             </summary>
         </member>
-        <member name="F:CMS.WebAnalytics.WebAnalyticsHandlers.PARAM_REFERRER">
-            <summary>
-            Referrer query parameter name.
-            </summary>
-        </member>
         <member name="F:CMS.WebAnalytics.WebAnalyticsHandlers.PARAM_PAGE_GUID">
             <summary>
             Page GUID query parameter name.
@@ -4013,15 +5210,38 @@
             Page site ID query parameter name.
             </summary>
         </member>
-        <member name="F:CMS.WebAnalytics.WebAnalyticsHandlers.JAVASCRIPT_QUERYPARAMS_SUBSTITUTE">
+        <member name="F:CMS.WebAnalytics.WebAnalyticsHandlers.CAMPAIGN_URL_TRACKING_PARAMETER">
             <summary>
-            String to put into HTML to JavaScript code before substitution resolving.
+            Query parameter name for the campaign tracking.
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.WebAnalyticsHandlers.SOURCE_URL_TRACKING_PARAMETER">
+            <summary>
+            Query parameter name for the source tracking.
             </summary>
         </member>
         <member name="M:CMS.WebAnalytics.WebAnalyticsHandlers.Init">
             <summary>
             Initializes the events handlers.
             </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.WebAnalyticsHandlers.LogCampaignConversions(System.Object,CMS.Base.CMSEventArgs{CMS.WebAnalytics.LogRecord})">
+            <summary>
+            Log conversion for campaign.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.WebAnalyticsHandlers.LogUTMParameters(System.Object,CMS.Base.CMSEventArgs{CMS.WebAnalytics.LogRecord})">
+            <summary>
+            Log UTM parameters for given campaign.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.WebAnalyticsHandlers.IsDocumentPartOfCampaign(CMS.WebAnalytics.CampaignInfo,System.Guid)">
+            <summary>
+            Determines whether the given <paramref name="documentGuid"/> is asset of the given <paramref name="campaign"/>.
+            </summary>
+            <param name="campaign">Instance of <see cref="T:CMS.WebAnalytics.CampaignInfo"/> to be determined</param>
+            <param name="documentGuid"><see cref="T:System.Guid"/> of the document to be checked</param>
+            <returns>True, if given <paramref name="documentGuid"/> is asset of the <paramref name="campaign"/>; otherwise, false</returns>
         </member>
         <member name="M:CMS.WebAnalytics.WebAnalyticsHandlers.HandleEndAnalytics(System.Object,System.EventArgs)">
             <summary>
@@ -4038,16 +5258,6 @@
             Logs activities at the end of the request
             </summary>
         </member>
-        <member name="M:CMS.WebAnalytics.WebAnalyticsHandlers.HandleBeginAnalytics(System.Object,System.EventArgs)">
-            <summary>
-            Ensures the handler for inserting web analytics Javascript to the page
-            </summary>
-        </member>
-        <member name="M:CMS.WebAnalytics.WebAnalyticsHandlers.InsertAnalyticsJS(System.Object,System.EventArgs)">
-            <summary>
-            Inserts the web analytics Javascript to the page
-            </summary>
-        </member>
         <member name="M:CMS.WebAnalytics.WebAnalyticsHandlers.LogBeginAnalytics">
             <summary>
             Logs web analytics within the request
@@ -4062,35 +5272,13 @@
         <member name="M:CMS.WebAnalytics.WebAnalyticsHandlers.LogCampaignsViaJavascript(System.Object,CMS.WebAnalytics.AnalyticsJSEventArgs)">
             <summary>
             Logs all campaigns located in TrackedCampaign cookie. This is needed when campaigns should be logged asynchronously in the web service - in that
-            case <see cref="M:CMS.WebAnalytics.AnalyticsHelper.SetCampaign(System.String,System.String,System.String)"/> only stores campaign name in the cookies and this method logs it.
-            </summary>
-        </member>
-        <member name="M:CMS.WebAnalytics.WebAnalyticsHandlers.PrepareJavaScriptQueryParams">
-            <summary>
-            Prepares JavaScript query parameters.
-            Fires InsertAnalyticsJS event to allow other query parameters to be added.
-            </summary>.
-        </member>
-        <member name="M:CMS.WebAnalytics.WebAnalyticsHandlers.ShouldInsertAnalyticsJS">
-            <summary>
-            Checks whether the JavaScript logging snippet should be added to the page.
-            </summary>
-        </member>
-        <member name="M:CMS.WebAnalytics.WebAnalyticsHandlers.InsertJavaScriptSnippet">
-            <summary>
-            Inserts JavaScript snippet with specified query parameters to the page.
+            case <see cref="M:CMS.WebAnalytics.CampaignService.SetCampaign(System.String,System.String,System.String)"/> only stores campaign name in the cookies and this method logs it.
             </summary>
         </member>
         <member name="M:CMS.WebAnalytics.WebAnalyticsHandlers.DelayEndOfTheRequest(System.Object,CMS.OutputFilter.OutputCacheEventArgs)">
             <summary>
             Delays the end of the request when full page caching if Analytics or Activities are enabled.
             Fired when cache successfully loaded.
-            </summary>
-        </member>
-        <member name="M:CMS.WebAnalytics.WebAnalyticsHandlers.ResolveSubstitution(System.Object,CMS.OutputFilter.SubstitutionEventArgs)">
-            <summary>
-            Resolves JavaScript parameters substitution macro.
-            Substitution macro is used because of full page caching, JavaScript snippet is unique for each visitor.
             </summary>
         </member>
         <member name="M:CMS.WebAnalytics.WebAnalyticsHandlers.LogCampaign(System.Object,System.EventArgs)">
@@ -4352,37 +5540,6 @@
             Deletes specified search engine.
             </summary>
             <param name="engineObj">Search engine to be deleted</param>        
-        </member>
-        <member name="M:CMS.WebAnalytics.SearchEngineInfoProvider.LoadEngineIDs(System.Boolean)">
-            <summary>
-            Loads static collection of search engine IDs
-            </summary>
-        </member>
-        <member name="M:CMS.WebAnalytics.SearchEngineInfoProvider.GetInfoForCrawlerInternal(System.String)">
-            <summary>
-            Returns Search index info for crawlers identified by user agent
-            </summary>
-            <param name="userAgent">user agent</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.SearchEngineInfoProvider.GetSearchEngineNameForURLInternal(System.String,System.String@)">
-            <summary>
-            Returns search engine name for specified URL otherwise returns empty string.
-            </summary>
-            <param name="absoluteUrl">Absolute url</param>
-            <param name="searchKeyword">Output search keyword parameter</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.SearchEngineInfoProvider.GetSearchEngineNameForURL(System.String,System.String@)">
-            <summary>
-            Returns search engine name for specified URL otherwise return empty string.
-            </summary>
-            <param name="absoluteUrl">Absolute url</param>
-            <param name="searchKeyword">Output search keyword parameter</param>
-        </member>
-        <member name="M:CMS.WebAnalytics.SearchEngineInfoProvider.GetInfoForCrawler(System.String)">
-            <summary>
-            Returns Search index info for crawlers identified by user agent
-            </summary>
-            <param name="userAgent">user agent</param>
         </member>
         <member name="T:CMS.WebAnalytics.HitsDayInfo">
             <summary>
@@ -5011,6 +6168,17 @@
             </summary>
             <param name="infoObj">HitsYearInfo to be deleted.</param>        
         </member>
+        <member name="T:CMS.WebAnalytics.CampaignAssetModelService">
+            <summary>
+            Service that provides method to work with the <see cref="T:CMS.WebAnalytics.CampaignAssetViewModel"/> objects.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.CampaignAssetModelService.GetStrategy(System.String)">
+            <summary>
+            Returns specific campaign asset model service strategy.
+            </summary>
+            <param name="type">Type of asset to work with.</param>
+        </member>
         <member name="T:CMS.WebAnalytics.WebAnalyticsService">
             <summary>
             Web analytics can be tracked in 2 ways. The first is to track web analytics right on each request, the second is to log web analytics with a WebService
@@ -5031,8 +6199,8 @@
             Method for logging on-site search keywords. Ajax call that calls this method is called in SearchResults WebPart.
             </summary>
             <param name="keyword">A keyword that has been searched</param>
-            <param name="pageGUID">A GUID of a page on which is processed the AJAX call</param>
-            <param name="pageSiteId">A site identifier of a page on which is processed the AJAX call</param>
+            <param name="nodeAliasPath">A NodeAliasPath of a page on which is processed the AJAX call</param>
+            <param name="cultureCode">A culture of a page on which is processed the AJAX call</param>
             <returns>"ok" string if everything went ok</returns>
             <exception cref="T:System.InvalidOperationException">Logging by JS is not enabled</exception>
         </member>
@@ -5057,14 +6225,18 @@
             <see cref="T:System.Object"/> is used because IDictionary cannot be serialized to XML, thus Get request to WebAnalyticsService.asmx always threw exception. 
             </param>
             <returns>"ok" string if everything went ok; null or exception message otherwise</returns>
-            <exception cref="T:System.ArgumentNullException"><paramref name="parameters"/> is null</exception>
-            <exception cref="T:System.ArgumentException"><paramref name="parameters"/> doesn't contain page GUID (<see cref="F:CMS.WebAnalytics.WebAnalyticsHandlers.PARAM_PAGE_GUID"/> key)</exception>
-            <exception cref="T:System.InvalidOperationException"><paramref name="parameters"/> doesn't contain referrer (<see cref="F:CMS.WebAnalytics.WebAnalyticsHandlers.PARAM_REFERRER"/> key)</exception>
         </member>
         <member name="M:CMS.WebAnalytics.WebAnalyticsService.CreateStringDictionary(System.Object)">
             <summary>
             Method that converts Object to Dictionary{String, String}.
             </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.WebAnalyticsService.GetLogHitsParams(System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Checks if all required parameters are present and extracts typed representation of the parameters for the LogHits method.
+            </summary>
+            <param name="parameters">Plain representation of the parameters</param>
+            <returns>Typed representation of the LogHits parameters</returns>
         </member>
         <member name="M:CMS.WebAnalytics.WebAnalyticsService.GetErrorMessage(System.Exception)">
             <summary>
@@ -6086,6 +7258,418 @@
         <member name="T:CMS.WebAnalytics.VisitorNamespace">
             <summary>
             Wrapper class to provide Visitor namespace in the MacroEngine.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.IUTMEnqueuerService">
+            <summary>
+            Interface for UTM enqueuer service
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.IUTMEnqueuerService.LogUTMParameters(System.String,System.String,System.String)">
+            <summary>
+            Inserts UTM parameters to Queue.
+            </summary>
+            <param name="campaignName">Campaign name</param>
+            <param name="conversionName">Conversion name</param>
+            <param name="sourceName">Source name</param>
+        </member>
+        <member name="T:CMS.WebAnalytics.UTMLogWorker">
+            <summary>
+            UTM parameters log worker. Takes information from UTM queue and processes them. 
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.UTMLogWorker.Finish">
+            <summary>
+            Finishes the worker process. Implement this method to specify what the worker must do in order to not lose its internal data when being finished. Leave empty if no extra action is required.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.UTMLogWorker.ProcessItem(CMS.WebAnalytics.ConversionCampaignSourceInfo)">
+            <summary>
+            Processing of single item. In this implementation this method is not called at all.
+            </summary>
+            <param name="item">Item to be processed.</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.UTMLogWorker.ProcessItems(System.Collections.Generic.IEnumerable{CMS.WebAnalytics.ConversionCampaignSourceInfo})">
+            <summary>
+            Processes items from queue.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.UTMLogWorker.DefaultInterval">
+            <summary>
+            Gets the interval in milliseconds for the worker.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.DefaultUTMEnqueuerService">
+            <summary>
+            Service responsible for logging UTM parameters.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.DefaultUTMEnqueuerService.LogUTMParameters(System.String,System.String,System.String)">
+            <summary>
+            Inserts UTM parameters to Queue.
+            </summary>
+            <param name="campaignName">Campaign name</param>
+            <param name="conversionName">Conversion name</param>
+            <param name="sourceName">Source name</param>
+        </member>
+        <member name="T:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator">
+            <summary>
+            Contains methods for generating sample data for the Web analytics module.
+            </summary>
+            <exclude />
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.#ctor(CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="site">Site the analytics will be generated for</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.Generate">
+            <summary>
+            Performs web analytics sample data generation.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.RegisterGenerators">
+            <summary>
+            Registers all methods generating the sample data to the output delegate.
+            </summary>
+            <returns>Delegates list containing all generators</returns>
+        </member>
+        <member name="F:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.StatisticCodeNames">
+            <summary>
+            Statistics code names being generated. 
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.Countries(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Logs countries obtained from <see cref="F:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.mCountriesDataSource"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.RegisteredUsers(System.Random)">
+            <summary>
+            Iterates names in <see cref="F:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.mNameDataSource"/> and log the name as registered user for random day in last month.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.MobileDevices(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Logs mobile devices obtained from <see cref="F:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.mMobileDevicesDataSource"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.UrlReferrals(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Logs URL Referrals obtained from <see cref="F:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.mReferralsDataSource"/>. Logs referring site as well (in this case the hits are aggregated by referral domain).
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.SearchEngines(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Logs search engines obtained from <see cref="F:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.mSearchEnginesDataSource"/>. Logs search referring site as well.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.AggregatedViews(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Generates Aggregated views representing the views through RSS or atom feeds, therefore documents are filtered to match only Article type.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.FileDownloads(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Logs file downloads obtained from the <see cref="F:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.mFileDownloadsDataSource"/>
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.VisitorsAndTopLandingAndExitPages(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Splits visitors between returning and the new ones. For the new visitors, logs first visit hit and both top and exit landing pages.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.OnSiteAndExternalKeywords(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Logs both on-site and external search keywords obtained from the <see cref="F:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.mSearchKeywordDataSource"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.InvalidPages(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Picks random documents and alter their alias paths by adding space or removing some of the letters from the end of the path.
+            These paths are then logged as invalid ones.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.PageViewsAndAverageTimeOnPage(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Picks random documents for both cultures, distributes number of visitors across the pages while penalizing long document alias paths and logs page view. Logs average time on page for
+            every processed document as well as direct referring site.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.BrowserTypes(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Logs browser types obtained from <see cref="F:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.mBrowsersDataSource"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.FlashJavaAndSilverligthSupport(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Logs support for Flash, Java and Silverlight.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.ThirdPartySupport(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random,System.Double,System.String,System.String,System.String)">
+            <summary>
+            Logs third party application support (usable for logging Flash, Java and Silverlight support).
+            </summary>
+            <param name="date">Date the hit will be assigned to</param>
+            <param name="visitors">Contains number of visitor per every culture</param>
+            <param name="random">Random number generator</param>
+            <param name="threshold">Relative threshold determining how many visitors do not support third party applications</param>
+            <param name="hitType">Codename of the statistics</param>
+            <param name="supportedValue">Value will be logged for the supporting visitors</param>
+            <param name="notsupportedValue">Value will be logged fo the not supporting visitors</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.OperatingSystems(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Logs browser types obtained from <see cref="F:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.mOperatingSystemDataSource"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.ScreenColors(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Logs browser types obtained from <see cref="F:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.mScreenColorDataSource"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.ScreenResolution(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Logs browser types obtained from <see cref="F:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.mScreenResolutionDataSource"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.Conversions(System.DateTime,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Logs hits for top 6 conversions found within the site.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.GetDataSourceFrequency(System.Collections.Generic.Dictionary{System.String,System.Int32})">
+            <summary>
+            Gets relative frequency of every item in <paramref name="input"/> on interval [0,1].
+            </summary>
+            <param name="input">Dictionary containing all data source items with their absolute frequency</param>
+            <returns>Computed relative frequency for every item in <paramref name="input"/></returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.GetRandomDataSourceValue(System.Collections.Generic.Dictionary{System.String,System.Int32},System.Random)">
+            <summary>
+            Gets random value from the <paramref name="input"/> while weight of every value is defined by its value in the input dictionary.
+            </summary>
+            <param name="input">Contains all the values the result will be picked from, where key is the output value and key is weight of the item</param>
+            <param name="random">Random number generator</param>
+            <returns>Single value randomly picked from <paramref name="input"/> with respect to the item weight.</returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.SplitVisitors(System.Double,System.Double,System.Random,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Collections.Generic.Dictionary{System.String,System.Int32}@,System.Collections.Generic.Dictionary{System.String,System.Int32}@)">
+            <summary>
+            Splits visitors given in <paramref name="visitors"/> according to <paramref name="threshold"/> with respect to <paramref name="variance"/>. 
+            </summary>
+            <param name="threshold">Relative amount of visitors, where those for interval [0-threshold] are stored in <paramref name="belowThreshold"/>, while the rest in <paramref name="overThreshold"/></param>
+            <param name="variance">Specifies weight of the random variance added to the threshold</param>
+            <param name="random">Random number generator</param>
+            <param name="visitors">Input dictionary of visitors which will be splitted. Contains key value pair for every visitor culture</param>
+            <param name="belowThreshold">Out parameter where visitors below the threshold will be stored</param>
+            <param name="overThreshold">OUt parameter where visitors over the threshold will be stored</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.GetRelativeAmountOfVisitors(System.Double,System.Double,System.Random,System.Collections.Generic.Dictionary{System.String,System.Int32})">
+            <summary>
+            Gets relative amount of visitors from <paramref name="visitors"/> for each input culture.
+            </summary>
+            <param name="relativeAmount">Relative amount of visitors which will be returned. Has to be in interval [0,1]</param>
+            <param name="variance">Specifies weight of the random variance added to the threshold</param>
+            <param name="random">Random number generator</param>
+            <param name="visitors">Input dictionary of visitors from which the output will be obtained. Contains key value pair for every visitor culture</param>
+            <returns>Dictionary containing only relative amount of visitors from the <paramref name="visitors"/></returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.GetRandomValue(System.Random,System.Int32,System.Int32)">
+            <summary>
+            Gets pseudo-random number from the  <paramref name="baseValue"/> vicinity. The least value returned is always 1.
+            </summary>
+            <param name="random">Random number generator</param>
+            <param name="baseValue">Specifies the base value of the result</param>
+            <param name="variance">Specifies how much does the result differ from <paramref name="baseValue"/></param>
+            <returns>Pseudo-random number in <paramref name="baseValue"/> vicinity</returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.GetRandomDocuments(System.Int32,System.Int32,System.String)">
+            <summary>
+            Gets <paramref name="numberOfEnglishDocuments"/> documents in English culture and <paramref name="numberOfSpanishDocuments"/> in Spanish culture from the current site. 
+            </summary>
+            <param name="numberOfEnglishDocuments">Number of documents in English culture to be obtained</param>
+            <param name="numberOfSpanishDocuments">Number of documents in Spanish culture to be obtained</param>
+            <param name="documentType">Specifies filter of document types. Leave null for all document types</param>
+            <returns>Collection of randomly obtained documents from the current site</returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.Logit(System.Double)">
+            <summary>
+            Function, which maps interval [0,1] to whole real domain.
+            Input value is reduced to interval [1e-12, 1 - 1e-12] to avoid infinity or extreme large results.
+            </summary>
+            <param name="x">Input value.</param>
+            <returns>Product of Logit function on <paramref name="x"/></returns>
+        </member>
+        <member name="M:CMS.WebAnalytics.Internal.WebAnalyticsDataGenerator.LogHit(System.String,System.Int32,System.Int32,System.DateTime,System.String,System.String,System.Int32)">
+            <summary>
+            Performs logging of the hit.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.IWebAnalyticsServiceScriptsGenerator">
+            <summary>
+            Service for generating JavaScript code which is able to call the external web service via AJAX. Before using the generated JS snippet, you need
+            to manually create global WebServiceCall(url, method, parameters) JavaScript function either by calling ScriptHelper.RegisterWebServiceCallFunction(page) or 
+            manually.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.IWebAnalyticsServiceScriptsGenerator.GetLogBannerHitScript(System.Int32)">
+            <summary>
+            Returns script which logs BannerHit asynchronously.
+            </summary>
+            <param name="bannerID">ID of the banner which was viewed</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.IWebAnalyticsServiceScriptsGenerator.GetLogSearchScript(CMS.DocumentEngine.PageInfo,System.String)">
+            <summary>
+            Returns script which logs Search statistics asynchronously.
+            </summary>
+            <param name="pageInfo">PageInfo representing current document/node</param>
+            <param name="searchText">Text which was searched for</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.IWebAnalyticsServiceScriptsGenerator.GetLogHitsScriptWithSubstitute(System.String)">
+            <summary>
+            Returns script which logs page views and other hits asynchronously. The script does not contain the actual parameters.
+            There is a placeholder at the location where parameters would be and this placeholder should be replaced by the actual parameters
+            before sending page output to the client browser. This two-step rendering is required, because of the output cache mechanism.
+            At first, there is a universal script rendered and saved into cache. This universal script is then updated with values specific
+            for the current request before sending HTTP response back to the client browser.
+            </summary>
+            <param name="substitute">String which will be placed at the location where parameters would normally be</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.IWebAnalyticsServiceScriptsGenerator.GetLogHitsParameters(CMS.DocumentEngine.PageInfo,System.String)">
+            <summary>
+            Returns parameters of the LogHits call in JSON format.
+            </summary>
+            <param name="pageInfo">PageInfo representing current document/node. Cannot be null</param>
+            <param name="urlReferrer">Url of the page where the user came from (http referrer). Can be null</param>
+        </member>
+        <member name="T:CMS.WebAnalytics.WebAnalyticsServiceScriptsRenderer">
+            <summary>
+            Contains methods for registering JavaScript code into page which logs web analytics statistics asynchronously via call to WebAnalyticsService.
+            LogHits call is registered automatically for each page request. Other calls have to be registered manually.
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.WebAnalyticsServiceScriptsRenderer.JAVASCRIPT_QUERYPARAMS_SUBSTITUTE">
+            <summary>
+            String to put into HTML to JavaScript code before substitution resolving.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.WebAnalyticsServiceScriptsRenderer.RegisterLogBannerHitCall(System.Web.UI.Page,System.Int32)">
+            <summary>
+            Registers script which logs banner hit asynchronously.
+            </summary>
+            <param name="page">Page where script should be registered</param>
+            <param name="bannerID">Banner which was viewed</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.WebAnalyticsServiceScriptsRenderer.RegisterLogSearchCall(System.Web.UI.Page,CMS.DocumentEngine.PageInfo,System.String)">
+            <summary>
+            Registers script which logs search hit asynchronously.
+            </summary>
+            <param name="page">Page where script should be registered</param>
+            <param name="pageInfo">PageInfo representing current document/node</param>
+            <param name="searchText">Text which was searched for</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.WebAnalyticsServiceScriptsRenderer.Init">
+            <summary>
+            Binds to appropriate events, so that LogHits call can be rendered on every page request.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.WebAnalyticsServiceScriptsRenderer.RegisterLogHitsCall(System.Object,System.EventArgs)">
+            <summary>
+            Registers script which logs page views and other hits asynchronously. The script is registered without the actual parameters.
+            There is a placeholder at the location where parameters would be and this placeholder should be replaced by the actual parameters
+            before sending page output to the client browser. This two-step rendering is required, because of the output cache mechanism.
+            At first, there is a universal script rendered and 
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.WebAnalyticsServiceScriptsRenderer.ShouldInsertAnalyticsJS(System.String,System.String)">
+            <summary>
+            Checks whether the JavaScript logging snippet should be added to the page.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.WebAnalyticsServiceScriptsRenderer.ResolveSubstitution(System.Object,CMS.OutputFilter.SubstitutionEventArgs)">
+            <summary>
+            Resolves JavaScript parameters substitution macro.
+            Substitution macro is used because of full page caching, JavaScript snippet is unique for each visitor, because of the Url Referrer parameter.
+            </summary>
+        </member>
+        <member name="T:CMS.WebAnalytics.WebAnalyticsServiceScriptsGenerator">
+            <summary>
+            Service for generating JavaScript code which is able to call the external web service via AJAX. Before using the generated JS snippet, you need
+            to manually create global WebServiceCall(url, method, parameters) JavaScript function either by calling ScriptHelper.RegisterWebServiceCallFunction(page) or 
+            manually.
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.WebAnalyticsServiceScriptsGenerator.PARAM_PAGE_NODE_ALIAS_PATH">
+            <summary>
+            Node alias path of the page the visitor requested.
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.WebAnalyticsServiceScriptsGenerator.PARAM_PAGE_CULTURE_CODE">
+            <summary>
+            Culture code of the page the visitor requested.
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.WebAnalyticsServiceScriptsGenerator.PARAM_REFERRER">
+            <summary>
+            Referrer query parameter name.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.WebAnalyticsServiceScriptsGenerator.GetLogBannerHitScript(System.Int32)">
+            <summary>
+            Returns script which logs BannerHit asynchronously.
+            </summary>
+            <param name="bannerID">ID of the banner which was viewed</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.WebAnalyticsServiceScriptsGenerator.GetLogSearchScript(CMS.DocumentEngine.PageInfo,System.String)">
+            <summary>
+            Returns script which logs Search statistics asynchronously.
+            </summary>
+            <param name="pageInfo">PageInfo representing current document/node</param>
+            <param name="searchText">Text which was searched for</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.WebAnalyticsServiceScriptsGenerator.GetLogHitsScriptWithSubstitute(System.String)">
+            <summary>
+            Returns script which logs page views and other hits asynchronously. The script does not contain the actual parameters.
+            There is a placeholder at the location where parameters would be and this placeholder should be replaced by the actual parameters
+            before sending page output to the client browser. This two-step rendering is required, because of the output cache mechanism.
+            At first, there is a universal script rendered and saved into cache. This universal script is then updated with values specific
+            for the current request before sending HTTP response back to the client browser.
+            </summary>
+            <param name="substitute">String which will be placed at the location where parameters would normally be</param>
+        </member>
+        <member name="M:CMS.WebAnalytics.WebAnalyticsServiceScriptsGenerator.GetLogHitsParameters(CMS.DocumentEngine.PageInfo,System.String)">
+            <summary>
+            Returns parameters of the LogHits call in JSON format.
+            </summary>
+            <param name="pageInfo">PageInfo representing current document/node. Cannot be null</param>
+            <param name="urlReferrer">Url of the page where the user came from (http referrer). Can be null</param>
+        </member>
+        <member name="T:CMS.WebAnalytics.WebAnalyticsUSageDataSource">
+            <summary>
+            Module usage tracking data source for web analytics module.
+            </summary>
+        </member>
+        <member name="F:CMS.WebAnalytics.WebAnalyticsUSageDataSource.mSettingsToLog">
+            <summary>
+            Settings keyes which are logged.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.WebAnalyticsUSageDataSource.GetData">
+            <summary>
+            Get all module statistical data.
+            </summary>
+        </member>
+        <member name="M:CMS.WebAnalytics.WebAnalyticsUSageDataSource.GetSettingsUsage(System.Boolean)">
+            <summary>
+            Returns how many times is specific setting used with value which is not same as default value. 
+            Only settings on running sites (if <paramref name="global"/> is true), not hidden and not custom are retrieved.
+            Only global settings when <paramref name="global"/> is false.
+            </summary>
+        </member>
+        <member name="P:CMS.WebAnalytics.WebAnalyticsUSageDataSource.Name">
+            <summary>
+            Get the data source name.
             </summary>
         </member>
     </members>

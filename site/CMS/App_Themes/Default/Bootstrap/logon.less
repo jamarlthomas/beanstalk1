@@ -1,26 +1,27 @@
 ﻿.logon-page {
     height: 100%;
     width: 100%;
-    background: @color-gray-150;
-    padding: @base-unit;
+    background: @color-blue-100;
+    padding: 0 @base-unit;
     box-sizing: border-box;
 
     .logo {
-        margin: (@base-unit * 5) auto 0;
-        width: 291px;
-        height: 97px;
+        margin: 0 auto 0;
+        width: 1035px;
+        height: 60px;
         background: url(../../CMSPages/GetResource.ashx?image=logon-logo.png) no-repeat;
     }
 
-    @media screen and (max-height: 550px) {
+    @media (max-width: (1034 + (@base-unit * 2))) {
         .logo {
-            margin: 0 auto;
+            margin: 0;
+            width: 131px;
         }
     }
 
     .center-box {
         width: @base-unit * 27;
-        margin: @base-unit * 3 auto 0;
+        margin: @base-unit * 11.5 auto 0;
         height: @base-unit * 17;
 
         .logon-box {
@@ -93,9 +94,10 @@
         .logon-help-links {
             text-align: center;
             margin-top: @base-unit;
+            color: @color-white;
 
-            a:hover {
-                text-decoration: underline;
+            a {
+                color: @color-white;
             }
         }
     }
@@ -108,6 +110,6 @@
 
 @media screen and (min-height: 850px) {
     .logon-page {
-        background: @color-gray-150 url(../../CMSPages/GetResource.ashx?image=background.png) no-repeat center bottom fixed;
+        background: @color-blue-100 url(../../CMSPages/GetResource.ashx?image=logon-background.png) no-repeat center bottom fixed;
     }
 }

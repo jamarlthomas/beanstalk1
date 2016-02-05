@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Forums_Controls_Subscriptions_SubscriptionEdit" Codebehind="SubscriptionEdit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Forums_Controls_Subscriptions_SubscriptionEdit"  Codebehind="SubscriptionEdit.ascx.cs" %>
 
 <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
 <div class="form-horizontal">

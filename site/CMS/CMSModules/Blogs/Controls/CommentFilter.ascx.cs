@@ -1,15 +1,10 @@
-using System;
+﻿using System;
 using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 
 using CMS.Blogs;
 using CMS.DataEngine;
 using CMS.Helpers;
-using CMS.Base;
 using CMS.SiteProvider;
 using CMS.Membership;
 using CMS.UIControls;
@@ -19,10 +14,9 @@ public partial class CMSModules_Blogs_Controls_CommentFilter : CMSUserControl
 {
     #region "Variables"
 
-    private SiteInfo currentSite = null;
-    private CurrentUserInfo currentUser = null;
+    private SiteInfo currentSite;
+    private CurrentUserInfo currentUser;
     private bool mDisplayAllRecord = true;
-    private bool mIsInMydesk = false;
 
     #endregion
 
@@ -56,7 +50,7 @@ public partial class CMSModules_Blogs_Controls_CommentFilter : CMSUserControl
     /// <summary>
     /// Cookie key 
     /// </summary>
-    private string mSessionKey = "BlogCommentsFilter" + (MembershipContext.AuthenticatedUser == null ? String.Empty : MembershipContext.AuthenticatedUser.UserID.ToString());
+    private readonly string mSessionKey = "BlogCommentsFilter" + (MembershipContext.AuthenticatedUser == null ? String.Empty : MembershipContext.AuthenticatedUser.UserID.ToString());
 
     #endregion
 
@@ -80,7 +74,7 @@ public partial class CMSModules_Blogs_Controls_CommentFilter : CMSUserControl
 
 
     /// <summary>
-    /// Gets the Blog part of the WHERE conditon.
+    /// Gets the Blog part of the WHERE condition.
     /// </summary>
     public string BlogWhereCondition
     {
@@ -94,7 +88,7 @@ public partial class CMSModules_Blogs_Controls_CommentFilter : CMSUserControl
                 val = (DisplayAllRecord ? "##ALL##" : "##MYBLOGS##");
             }
 
-            // Blogs dropdownlist
+            // Blogs dropdown list
             switch (val)
             {
                 case "##ALL##":
@@ -121,7 +115,7 @@ public partial class CMSModules_Blogs_Controls_CommentFilter : CMSUserControl
 
 
     /// <summary>
-    /// Gets the Comment part of the WHERE conditon.
+    /// Gets the Comment part of the WHERE condition.
     /// </summary>
     public string CommentWhereCondition
     {
@@ -129,7 +123,7 @@ public partial class CMSModules_Blogs_Controls_CommentFilter : CMSUserControl
         {
             string where = "";
 
-            // Approved dropdownlist
+            // Approved dropdown list
             if (drpApproved.SelectedIndex > 0)
             {
                 switch (drpApproved.SelectedValue)
@@ -143,7 +137,7 @@ public partial class CMSModules_Blogs_Controls_CommentFilter : CMSUserControl
                         break;
                 }
             }
-            // Spam dropdownlist
+            // Spam dropdown list
             if (drpSpam.SelectedIndex > 0)
             {
                 switch (drpSpam.SelectedValue)
@@ -196,14 +190,8 @@ public partial class CMSModules_Blogs_Controls_CommentFilter : CMSUserControl
     /// </summary>
     public bool IsInMydesk
     {
-        get
-        {
-            return mIsInMydesk;
-        }
-        set
-        {
-            mIsInMydesk = value;
-        }
+        get;
+        set;
     }
 
     #endregion
@@ -216,28 +204,37 @@ public partial class CMSModules_Blogs_Controls_CommentFilter : CMSUserControl
         currentSite = SiteContext.CurrentSite;
         currentUser = MembershipContext.AuthenticatedUser;
 
-        bool manageBlogs = false;
         // Check 'Manage' permission
-        if (currentUser.IsAuthorizedPerResource("cms.blog", "Manage"))
+        var manageBlogs = currentUser.IsAuthorizedPerResource("cms.blog", "Manage");
+
+        // There is no sense to display (ALL) in blogs DDL when
+        // user does not have manage blogs permission
+        if (!manageBlogs)
         {
-            manageBlogs = true;
+            DisplayAllRecord = false;
         }
 
-        string where = "(NodeSiteID = " + currentSite.SiteID + ")";
-        if (!((currentUser.IsGlobalAdministrator) || (manageBlogs)))
+        var condition = new WhereCondition().WhereEquals("NodeSiteID", currentSite.SiteID);
+        if (!currentUser.IsGlobalAdministrator && !manageBlogs)
         {
-            where += " AND " + BlogHelper.GetBlogsWhere(currentUser.UserID, currentUser.UserName, null);
+            condition.Where(BlogHelper.GetBlogsWhere(currentUser.UserID, currentUser.UserName, null));
         }
+        
+        // Culture priority column to handle duplicities
+        var culturePriority = new RowNumberColumn("CulturePriority", "BlogID");
+        culturePriority.PartitionBy = "NodeID";
 
         // Init Blog selector
         uniSelector.DisplayNameFormat = "{%BlogName%}";
         uniSelector.SelectionMode = SelectionModeEnum.SingleDropDownList;
-        uniSelector.WhereCondition = where;
+        uniSelector.WhereCondition = condition.ToString(true);
         uniSelector.ReturnColumnName = "BlogID";
+        uniSelector.AdditionalColumns = culturePriority.ToString();
         uniSelector.ObjectType = "cms.blog";
         uniSelector.ResourcePrefix = "unisiteselector";
         uniSelector.AllowEmpty = false;
         uniSelector.AllowAll = false;
+        uniSelector.OnAfterRetrieveData += uniSelector_OnAfterRetrieveData;
 
         // Preselect my blogs
         if (IsInMydesk && !RequestHelper.IsPostBack())
@@ -246,15 +243,33 @@ public partial class CMSModules_Blogs_Controls_CommentFilter : CMSUserControl
         }
     }
 
+    /// <summary>
+    /// OnAfterRetrieveData event handler
+    /// </summary>
+    /// <param name="ds">DataSet with data</param>
+    protected DataSet uniSelector_OnAfterRetrieveData(DataSet ds)
+    {
+        // Get duplicates and remove them
+        var duplicatedRows = ds.Tables[0].Select("CulturePriority > 1");
+        foreach (var duplicatedRow in duplicatedRows)
+        {
+            ds.Tables[0].Rows.Remove(duplicatedRow);    
+        }
+        
+        ds.AcceptChanges();
+
+        return ds;
+    }
+
 
     protected void uniSelector_OnSpecialFieldsLoaded(object sender, EventArgs e)
     {
         if (DisplayAllRecord)
         {
-            uniSelector.SpecialFields.Add(new SpecialField() { Text = GetString("general.selectall"), Value = "##ALL##" });
+            uniSelector.SpecialFields.Add(new SpecialField { Text = GetString("general.selectall"), Value = "##ALL##" });
         }
 
-        uniSelector.SpecialFields.Add(new SpecialField() { Text = GetString("myblogs.comments.selectmyblogs"), Value = "##MYBLOGS##" });
+        uniSelector.SpecialFields.Add(new SpecialField { Text = GetString("myblogs.comments.selectmyblogs"), Value = "##MYBLOGS##" });
     }
 
 

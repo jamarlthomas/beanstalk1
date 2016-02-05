@@ -1,7 +1,6 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="SeparateDB.aspx.cs" Inherits="CMSInstall_SeparateDB"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="SeparateDB.aspx.cs" Inherits="CMSInstall_SeparateDB"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalSimplePage.master"
     Title="Contact management database separation" %>
-
 
 <%@ Register Src="Controls/StepNavigation.ascx" TagName="StepNavigation" TagPrefix="cms" %>
 <%@ Register Src="Controls/WizardSteps/UserServer.ascx" TagName="UserServer" TagPrefix="cms" %>

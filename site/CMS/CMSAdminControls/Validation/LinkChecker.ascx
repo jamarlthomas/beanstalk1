@@ -1,12 +1,12 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Validation_LinkChecker"
-    Codebehind="LinkChecker.ascx.cs" %>
+     Codebehind="LinkChecker.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagPrefix="cms" TagName="UniGrid" %>
 
 <%@ Register Src="~/CMSAdminControls/AsyncLogDialog.ascx" TagName="AsyncLog"
     TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 <asp:Panel runat="server" ID="pnlLog" Visible="false">
-    <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+    <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="LinkChecker" />
 </asp:Panel>
 <asp:Literal ID="ltlScript" runat="server" EnableViewState="false" />
 <asp:Panel ID="pnlGrid" runat="server" CssClass="Validation">

@@ -39,22 +39,13 @@ public partial class CMSModules_Content_CMSDesk_OnlineMarketing_Settings_Default
     protected global::CMSAdminControls_Basic_DisabledModuleInfo ucDisabledModule;
     
     /// <summary>
-    /// lblCampaign control.
+    /// smrtpEditInCampaign control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblCampaign;
-    
-    /// <summary>
-    /// usSelectCampaign control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMSModules_WebAnalytics_FormControls_SelectCampaign usSelectCampaign;
+    protected global::CMSAdminControls_UI_SmartTip smrtpEditInCampaign;
     
     /// <summary>
     /// lblConversionName control.
@@ -91,4 +82,31 @@ public partial class CMSModules_Content_CMSDesk_OnlineMarketing_Settings_Default
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMSFormControls_Inputs_TextboxDoubleValidator txtConversionValue;
+    
+    /// <summary>
+    /// pnlTrackedCampaigns control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlTrackedCampaigns;
+    
+    /// <summary>
+    /// lblCampaigns control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblCampaigns;
+    
+    /// <summary>
+    /// listViewCampaings control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.ListView listViewCampaings;
 }

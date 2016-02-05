@@ -1,9 +1,7 @@
-using System;
-using System.Collections;
+﻿using System;
 using System.Security.Principal;
 using System.Threading;
 
-using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Base;
 using CMS.DocumentEngine;
@@ -16,11 +14,9 @@ public partial class CMSModules_Content_Controls_DragOperation : ContentActionsC
 
     protected int nodeId = 0;
     protected int targetNodeId = 0;
-    private string canceledString = null;
+    private string canceledString;
 
     protected string action = null;
-
-    protected static Hashtable mInfos = new Hashtable();
 
     protected TreeNode node = null;
     protected TreeNode targetNode = null;
@@ -58,19 +54,7 @@ public partial class CMSModules_Content_Controls_DragOperation : ContentActionsC
             base.IsLiveSite = value;
         }
     }
-
-
-    /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
+    
 
     /// <summary>
     /// Current Error.
@@ -79,11 +63,11 @@ public partial class CMSModules_Content_Controls_DragOperation : ContentActionsC
     {
         get
         {
-            return ValidationHelper.GetString(mInfos["CopyMoveError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mInfos["CopyMoveError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -95,11 +79,11 @@ public partial class CMSModules_Content_Controls_DragOperation : ContentActionsC
     {
         get
         {
-            return ValidationHelper.GetString(mInfos["CopyMoveInfo_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Information;
         }
         set
         {
-            mInfos["CopyMoveInfo_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Information = value;
         }
     }
 
@@ -136,7 +120,6 @@ public partial class CMSModules_Content_Controls_DragOperation : ContentActionsC
         // Initialize events
         ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
         ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-        ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
         ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
 
         // Get the data
@@ -160,7 +143,7 @@ public partial class CMSModules_Content_Controls_DragOperation : ContentActionsC
             if ((node != null) && (targetNode != null))
             {
                 string targetName = targetNode.DocumentNamePath;
-                bool isRoot = targetNode.NodeClassName.EqualsCSafe("cms.root", true);
+                bool isRoot = targetNode.IsRoot();
 
                 // Get the real target node
                 if (!isRoot && (action.IndexOfCSafe("position", true) >= 0))
@@ -243,11 +226,11 @@ public partial class CMSModules_Content_Controls_DragOperation : ContentActionsC
         pnlLog.Visible = true;
         pnlContent.Visible = false;
 
-        EnsureLog();
         CurrentError = string.Empty;
         CurrentInfo = string.Empty;
 
         // Perform the action
+        ctlAsyncLog.EnsureLog();
         ctlAsyncLog.RunAsync(DoAction, WindowsIdentity.GetCurrent());
     }
 
@@ -356,15 +339,8 @@ public partial class CMSModules_Content_Controls_DragOperation : ContentActionsC
         {
             ShowConfirmation(CurrentInfo);
         }
-        CurrentLog.Close();
     }
-
-
-    private void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
-    }
-
+    
 
     private void ctlAsyncLog_OnError(object sender, EventArgs e)
     {
@@ -372,7 +348,6 @@ public partial class CMSModules_Content_Controls_DragOperation : ContentActionsC
         {
             ShowError(CurrentError);
         }
-        CurrentLog.Close();
     }
 
 
@@ -382,23 +357,11 @@ public partial class CMSModules_Content_Controls_DragOperation : ContentActionsC
         {
             ShowError(CurrentError);
         }
-        CurrentLog.Close();
-
+        
         if (ctlAsyncLog.Parameter != null)
         {
             AddScript(ctlAsyncLog.Parameter.ToString());
         }
-    }
-
-
-    /// <summary>
-    /// Ensures the logging context.
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext log = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-
-        return log;
     }
 
 
@@ -408,9 +371,7 @@ public partial class CMSModules_Content_Controls_DragOperation : ContentActionsC
     /// <param name="newLog">New log information</param>
     protected override void AddLog(string newLog)
     {
-        EnsureLog();
-
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
     #endregion

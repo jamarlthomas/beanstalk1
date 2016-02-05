@@ -12,6 +12,15 @@
 public partial class CMSModules_System_Debug_System_DebugCacheItems {
     
     /// <summary>
+    /// btnClear control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSButton btnClear;
+    
+    /// <summary>
     /// headItems control.
     /// </summary>
     /// <remarks>
@@ -46,13 +55,4 @@ public partial class CMSModules_System_Debug_System_DebugCacheItems {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMSModules_System_Debug_CacheItemsGrid gridDummy;
-    
-    /// <summary>
-    /// btnClear control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSButton btnClear;
 }

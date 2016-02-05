@@ -78,7 +78,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Discount_Discount_List : C
                 AddHeaderAction(new HeaderAction
                 {
                     Text = GetString("com.discount.newcatalogdiscount"),
-                    RedirectUrl = UIContextHelper.GetElementUrl("CMS.Ecommerce", "NewCatalogDiscount", false)
+                    RedirectUrl = UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, "NewCatalogDiscount", false)
                 });
 
                 SetTitle(GetString("com.discount.catalogdiscounts"));
@@ -92,7 +92,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Discount_Discount_List : C
                 AddHeaderAction(new HeaderAction
                 {
                     Text = GetString("com.discount.neworderdiscount"),
-                    RedirectUrl = UIContextHelper.GetElementUrl("CMS.Ecommerce", "NewOrderDiscount", false)
+                    RedirectUrl = UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, "NewOrderDiscount", false)
                 });
 
                 SetTitle(GetString("com.discount.orderdiscounts"));
@@ -106,7 +106,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Discount_Discount_List : C
                 AddHeaderAction(new HeaderAction
                 {
                     Text = GetString("com.discount.newshippingdiscount"),
-                    RedirectUrl = UIContextHelper.GetElementUrl("CMS.Ecommerce", "NewShippingDiscount", false)
+                    RedirectUrl = UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, "NewShippingDiscount", false)
                 });
 
                 SetTitle(GetString("com.discount.shippingdiscounts"));
@@ -170,7 +170,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Discount_Discount_List : C
 
                 if (!string.IsNullOrEmpty(elementName))
                 {
-                    var url = UIContextHelper.GetElementUrl("CMS.Ecommerce", elementName, false, actionArgument.ToInteger(0));
+                    var url = UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, elementName, false, actionArgument.ToInteger(0));
                     URLHelper.Redirect(url);
                 }
 
@@ -186,7 +186,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Discount_Discount_List : C
                 }
                 else
                 {
-                    RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyDiscounts");
+                    RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyDiscounts");
                 }
 
                 return;

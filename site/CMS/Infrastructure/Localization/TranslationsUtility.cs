@@ -23,7 +23,7 @@ namespace CMS.Mvc.Infrastructure.Localization
             var dictSet = new Dictionary<string, RouteDictionary>();
             foreach (TreeNode node in nodes)
             {
-                var nodeAliases = node.Aliases.ToList();
+                var nodeAliases = node.Aliases.CodeNames.ToList();
 
                 //get default(english?) value
                 var defaultValue = node.NodeAlias;
@@ -74,7 +74,7 @@ namespace CMS.Mvc.Infrastructure.Localization
         internal static TranslationItem SearchFreshTranslation(Dictionary<string, RouteDictionary> dictionarySet, CultureInfo cultureValue, string foreignCultureValue)
         {
             //get node having forignCultureValue
-            var nodes = ContentHelper.GetAllNodes().Where(n => n.Aliases.Select(al => ((DocumentAliasInfo)al).AliasURLPath.Split('/').LastOrDefault().Equals(foreignCultureValue, StringComparison.InvariantCultureIgnoreCase)).Any());
+            var nodes = ContentHelper.GetAllNodes().Where(n => n.Aliases.OfType<DocumentAliasInfo>().Select(al => al.AliasURLPath.Split('/').LastOrDefault().Equals(foreignCultureValue, StringComparison.InvariantCultureIgnoreCase)).Any());
             string defaultCultureValue = "";
             CultureInfo newPairCulture = null;
             string newPairValue = "";

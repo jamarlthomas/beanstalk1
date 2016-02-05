@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSAdminControls_UI_UniSelector_Controls_SelectionDialog" Codebehind="SelectionDialog.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSAdminControls_UI_UniSelector_Controls_SelectionDialog"  Codebehind="SelectionDialog.ascx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 
@@ -17,7 +17,7 @@
                                 runat="server" EnableViewState="False" />
                         </div>
                         <div class="filter-form-value-cell">
-                            <cms:CMSTextBox ID="txtSearch" runat="server" />
+                            <cms:CMSTextBox ID="txtSearch" runat="server" MaxLength="300" />
                         </div>
                     </div>
                     <div class="form-group form-group-buttons">

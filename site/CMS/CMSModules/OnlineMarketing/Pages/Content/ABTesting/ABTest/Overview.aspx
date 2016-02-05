@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Overview.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Overview.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Title="A/B Test Overview" Inherits="CMSModules_OnlineMarketing_Pages_Content_ABTesting_ABTest_Overview"
     EnableEventValidation="false" Theme="Default" %>
 
@@ -10,6 +10,8 @@
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/WebAnalytics/FormControls/SelectConversion.ascx" TagName="SelectConversion"
     TagPrefix="cms" %>
+<%@ Register Src="~/CMSAdminControls/UI/SmartTip.ascx" TagPrefix="cms"
+    TagName="SmartTip" %>
 
 <asp:Content ID="cntContent" runat="server" ContentPlaceHolderID="plcContent">
     <script type="text/javascript">
@@ -136,6 +138,7 @@
 
         //]]>
     </script>
+    <cms:SmartTip runat="server" ID="smrtpHowToOverview" />
     <asp:Panel runat="server" CssClass="ab-overview">
         <div class="form-horizontal form-filter">
             <div class="form-group">

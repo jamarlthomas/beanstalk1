@@ -388,34 +388,31 @@ public partial class CMSModules_AdminControls_Controls_UIControls_EditItem : CMS
         {
             if (!String.IsNullOrEmpty(RedirectURL))
             {
-                URLHelper.Redirect(RedirectURL);
+                EditForm.RedirectUrlAfterSave = RedirectURL;
             }
-
-            if (newItem)
+            // If there is some redirect URL already set in the UI form, do not override this value with the URL taken
+            // from the UI element, or with the generated one. 
+            // Existing value can only be set from the extender and therefore has higher priority.
+            else if (newItem && String.IsNullOrEmpty(EditForm.RedirectUrlAfterSave))
             {
-                String url = RedirectURL;
-                if (String.IsNullOrEmpty(RedirectURL))
+                // Find element representing new object
+                UIElementInfo uiPar = UIElementInfoProvider.GetUIElementInfo(UIContext.UIElement.ElementParentID);
+                if (uiPar != null)
                 {
-                    // Find element representing new object
-                    UIElementInfo uiPar = UIElementInfoProvider.GetUIElementInfo(UIContext.UIElement.ElementParentID);
-                    if (uiPar != null)
-                    {
-                        // Append parameters
-                        url = UIContextHelper.GetElementUrl(uiPar.GetEditElement(), UIContext);
-                        url = URLHelper.AppendQuery(url, "objectid=" + EditForm.EditedObject.Generalized.ObjectID + "&saved=1");
+                    // Append parameters
+                    string url = UIContextHelper.GetElementUrl(uiPar.GetEditElement(), UIContext);
+                    url = URLHelper.AppendQuery(url, "objectid=" + EditForm.EditedObject.Generalized.ObjectID + "&saved=1");
 
-                        // Ensure that the redirected edit page will behave as a top dialog page (hide breadcrumbs, uses dialog page title...) 
-                        url = URLHelper.RemoveParameterFromUrl(url, "rootelementid");
+                    // Ensure that the redirected edit page will behave as a top dialog page (hide breadcrumbs, uses dialog page title...) 
+                    url = URLHelper.RemoveParameterFromUrl(url, "rootelementid");
 
-                        // Append action edit parameter
-                        url = URLHelper.AddParameterToUrl(url, "action", "edit");
-                    }
+                    // Append action edit parameter
+                    url = URLHelper.AddParameterToUrl(url, "action", "edit");
+
+                    // Ensure hash for dialog mode
+                    url = UIContextHelper.AppendDialogHash(UIContext, url);
+                    EditForm.RedirectUrlAfterSave = url;
                 }
-
-                // Ensure hash for dialog mode
-                url = UIContextHelper.AppendDialogHash(UIContext, url);
-
-                EditForm.RedirectUrlAfterSave = url;
             }
         }
 

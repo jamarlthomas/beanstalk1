@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -602,6 +602,12 @@ public partial class CMSModules_Scoring_Controls_UI_Rule_Edit : CMSAdminEditCont
 
         // Update rule settings panel when changing selected rule type
         RadioButtonsListRuleType.Changed += (s, e) => upnlSettings.Update();
+
+        // Form can be saved not only by header actions. It can be saved also using ENTER key for example.
+        UIForm.ObjectManager.OnBeforeAction += (s, e) =>
+        {
+            e.IsValid = ValidateForm();
+        };
     }
 
 
@@ -948,11 +954,11 @@ public partial class CMSModules_Scoring_Controls_UI_Rule_Edit : CMSAdminEditCont
 
         // Get the activity form elements
         FormInfo filterFieldsForm = FormHelper.GetFormInfo(ActivityInfo.OBJECT_TYPE, true);
-        IList<IField> elements = filterFieldsForm.GetFormElements(true, false);
+        IList<IDataDefinitionItem> elements = filterFieldsForm.GetFormElements(true, false);
 
         FormCategoryInfo newCategory = null;
 
-        foreach (IField elem in elements)
+        foreach (IDataDefinitionItem elem in elements)
         {
             if (elem is FormCategoryInfo)
             {

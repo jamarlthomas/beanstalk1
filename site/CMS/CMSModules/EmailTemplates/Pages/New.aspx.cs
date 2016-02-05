@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.EmailEngine;
 using CMS.Helpers;
@@ -29,7 +29,7 @@ public partial class CMSModules_EmailTemplates_Pages_New : CMSEmailTemplatesPage
 
             if (!QueryHelper.ValidateHash("hash", "saved;name;templateid;selectorid;tabmode;siteid;selectedsiteid", settings, true))
             {
-                URLHelper.Redirect(ResolveUrl(String.Format("~/CMSMessages/Error.aspx?title={0}&text={1}", GetString("dialogs.badhashtitle"), GetString("dialogs.badhashtext"))));
+                URLHelper.Redirect(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext"));
             }
 
             MasterPageFile = "~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master";

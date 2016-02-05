@@ -163,6 +163,39 @@
             <exception cref="T:System.ArgumentException"><paramref name="massActionScope"/> is set to 'selected documents' and <paramref name="selectedNodeIDs"/> is null or empty</exception>
             <returns>URL of the dialog which should be opened to finish action</returns>
         </member>
+        <member name="T:CMS.Personas.Internal.PersonaWithRulesGenerator">
+            <summary>
+            Contains methods for generating sample personas with rules of various types.
+            </summary>
+            <exclude />
+        </member>
+        <member name="F:CMS.Personas.Internal.PersonaWithRulesGenerator.PERSONA_CAFE_OWNER">
+            <summary>
+            Represents Tony, the Cafe Owner.
+            </summary>
+        </member>
+        <member name="F:CMS.Personas.Internal.PersonaWithRulesGenerator.PERSONA_COFEE_GEEK">
+            <summary>
+            Represents Martina, the Coffee Geek.
+            </summary>
+        </member>
+        <member name="M:CMS.Personas.Internal.PersonaWithRulesGenerator.#ctor(CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="site">Site that will contain generated objects</param>
+        </member>
+        <member name="M:CMS.Personas.Internal.PersonaWithRulesGenerator.Generate">
+            <summary>
+            Generates two personas with rules.
+            </summary>
+        </member>
+        <member name="M:CMS.Personas.Internal.PersonaWithRulesGenerator.GenerateBannerPersonalizationVariantsMacrosAndEnableVariants">
+            <summary>
+            Enables banner variants and adds the macro to the display condition.
+            Does not overwrite data.
+            </summary>
+        </member>
         <member name="T:CMS.Personas.ContactIsInPersonaInstanceTranslator">
             <summary>
             Translator for Contact is in persona macro rule.
@@ -173,137 +206,35 @@
             Translates ContactIsInPersona Macro rule. Macro is in format 'Contact {_is} in persona {personaGuid}'.
             </summary>
         </member>
-        <member name="T:CMS.Personas.DelayedContactPersonaEvaluator">
+        <member name="T:CMS.Personas.PersonasUsageDataSource">
             <summary>
-            IContactPersonaEvaluator that uses <see cref="T:CMS.Base.CMSWorkerQueue"/>. That means all duplicate calls in one request will be processed just once.
-            Internally uses <see cref="T:CMS.Personas.ContactPersonaEvaluator"/>.
+            Provides statistical information about personas module.
             </summary>
         </member>
-        <member name="T:CMS.Personas.IContactPersonaEvaluator">
+        <member name="M:CMS.Personas.PersonasUsageDataSource.GetData">
             <summary>
-            Contains methods for reevaluation of contact's persona.
+            Get all module statistical data.
             </summary>
-            <remarks>
-            Use <see cref="T:CMS.Personas.PersonasFactory"/> to obtain implementation of this interface.
-            Contact can be in one persona only - contact belongs to persona if score quotient (contact score points divided by persona score limit) is the highest one of all personas.
-            </remarks>
         </member>
-        <member name="M:CMS.Personas.IContactPersonaEvaluator.ReevaluateAllContacts(System.Int32)">
+        <member name="M:CMS.Personas.PersonasUsageDataSource.GetEnabledPersonasCount">
             <summary>
-            Reevaluates all contacts and assigns them to proper persona.
+            Returns number of enabled personas.
             </summary>
-            <remarks>
-            This method should be used when persona properties were changed, or rules were recalculated.
-            </remarks>
-            <param name="siteId">ID of the site</param>
         </member>
-        <member name="M:CMS.Personas.IContactPersonaEvaluator.ReevaluateAllContactsAsync(System.Int32)">
+        <member name="M:CMS.Personas.PersonasUsageDataSource.GetNumberOfRulesInPersonasGroupedByType">
             <summary>
-            Reevaluates all contacts and assigns them to proper persona asynchronously.
+            Returns number of rule types per each score.
             </summary>
-            <remarks>
-            This method should be used when persona properties were changed, or rules were recalculated.
-            </remarks>
-            <param name="siteId">ID of the site</param>
-            <returns>Asynchronous execution task</returns>
         </member>
-        <member name="M:CMS.Personas.IContactPersonaEvaluator.ReevaluateContacts(System.Collections.Generic.IEnumerable{System.Int32})">
+        <member name="M:CMS.Personas.PersonasUsageDataSource.GetNumberOfContactsInEachPersona">
             <summary>
-            Reevaluates given contacts and assigns them to proper persona.
+            Returns number of contacts in each persona.
             </summary>
-            <remarks>
-            This method should be used when new activity is logged for contact or its attribute was changed. These 
-            actions can change contact points and thus it is possible the contact can be assigned to more correct persona.
-            </remarks>
-            <param name="contactsIds">Contacts which should be assigned to persona</param>
         </member>
-        <member name="M:CMS.Personas.IContactPersonaEvaluator.ReevaluateContactsAsync(System.Collections.Generic.IEnumerable{System.Int32})">
+        <member name="P:CMS.Personas.PersonasUsageDataSource.Name">
             <summary>
-            Reevaluates given contacts and assigns them to proper persona.
+            Get the data source name.
             </summary>
-            <remarks>
-            This method should be used when new activity is logged for contact or its attribute was changed. These 
-            actions can change contact points and thus it is possible the contact can be assigned to more correct persona.
-            </remarks>
-            <param name="contactsIds">Contacts which should be assigned to persona</param>
-            <returns>Asynchronous execution task</returns>
-        </member>
-        <member name="M:CMS.Personas.IContactPersonaEvaluator.ReevaluateContact(CMS.OnlineMarketing.ContactInfo)">
-            <summary>
-            Reevaluates given contact and finds proper persona the contact should be assigned to.
-            </summary>
-            <remarks>
-            This method should be used when new activity is logged for contact or its attribute was changed. These 
-            actions can change contact points and thus it is possible the contact can be assigned to more correct persona.
-            </remarks>
-            <param name="contact">Contact which should be assigned to persona</param>
-        </member>
-        <member name="M:CMS.Personas.IContactPersonaEvaluator.ReevaluateContactAsync(CMS.OnlineMarketing.ContactInfo)">
-            <summary>
-            Reevaluates given contact and finds proper persona the contact should be assigned to asynchronously.
-            </summary>
-            <remarks>
-            This method should be used when new activity is logged for contact or its attribute was changed. These 
-            actions can change contact points and thus it is possible the contact can be assigned to more correct persona.
-            </remarks>
-            <param name="contact">Contact which should be assigned to persona</param>
-            <returns>Asynchronous execution task</returns>
-        </member>
-        <member name="M:CMS.Personas.DelayedContactPersonaEvaluator.ReevaluateAllContacts(System.Int32)">
-            <summary>
-            Reevaluates all contacts and assigns them to proper persona.
-            </summary>
-            <remarks>
-            Does not use delayed <see cref="T:CMS.Base.AbstractWorker"/> call.
-            </remarks>
-        </member>
-        <member name="M:CMS.Personas.DelayedContactPersonaEvaluator.ReevaluateAllContactsAsync(System.Int32)">
-            <summary>
-            Reevaluates all contacts and assigns them to proper persona asynchronously.
-            </summary>
-            <remarks>
-            Does not use delayed <see cref="T:CMS.Base.AbstractWorker"/> call.
-            </remarks>
-        </member>
-        <member name="M:CMS.Personas.DelayedContactPersonaEvaluator.ReevaluateContacts(System.Collections.Generic.IEnumerable{System.Int32})">
-            <summary>
-            Reevaluates given contacts and assigns them to proper persona.
-            </summary>
-            <remarks>
-            This method should be used when new activity is logged for contact or its attribute was changed. These 
-            actions can change contact points and thus it is possible the contact can be assigned to more correct persona.
-            </remarks>
-            <param name="contactsIds">Contacts which should be assigned to persona</param>
-        </member>
-        <member name="M:CMS.Personas.DelayedContactPersonaEvaluator.ReevaluateContactsAsync(System.Collections.Generic.IEnumerable{System.Int32})">
-            <summary>
-            Reevaluates given contacts and assigns them to proper persona.
-            </summary>
-            <remarks>
-            This method should be used when new activity is logged for contact or its attribute was changed. These 
-            actions can change contact points and thus it is possible the contact can be assigned to more correct persona.
-            </remarks>
-            <param name="contactsIds">Contacts which should be assigned to persona</param>
-            <returns>Asynchronous execution task</returns>
-        </member>
-        <member name="M:CMS.Personas.DelayedContactPersonaEvaluator.ReevaluateContact(CMS.OnlineMarketing.ContactInfo)">
-            <summary>
-            Reevaluates given contact and finds proper persona the contact should be assigned to.
-            </summary>
-            <remarks>
-            Does method uses delayed <see cref="T:CMS.Base.AbstractWorker"/> call. That means if in one request, more than one reevaluation request occurs, 
-            it gets processed just once for each contact.
-            </remarks>
-            <exception cref="T:System.ArgumentNullException"><paramref name="contact"/> is null</exception>
-        </member>
-        <member name="M:CMS.Personas.DelayedContactPersonaEvaluator.ReevaluateContactAsync(CMS.OnlineMarketing.ContactInfo)">
-            <summary>
-            Reevaluates given contact and finds proper persona the contact should be assigned to asynchronously.
-            </summary>
-            <remarks>
-            Does not use delayed <see cref="T:CMS.Base.AbstractWorker"/> call.
-            </remarks>
-            <exception cref="T:System.ArgumentNullException"><paramref name="contact"/>is null</exception>
         </member>
         <member name="T:CMS.Personas.Handlers.PersonasHandlers">
             <summary>
@@ -353,7 +284,8 @@
         </member>
         <member name="M:CMS.Personas.PersonasNewslettersHandlers.GeneratePersonaSubscriberQueueItems(System.Object,CMS.Newsletters.GenerateQueueItemsEventArgs)">
             <summary>
-            Checks whether issue that is being generated into newsletter queue (see <see cref="T:CMS.Newsletters.EmailQueueItemInfo"/>) contains Persona subscribers.
+            Checks whether issue that is being generated into newsletter queue (see <see cref="T:CMS.Newsletters.EmailQueueItemInfo"/>) contains Persona subscribers and if it does, 
+            generates all the emails which will be send to the Persona subscribers.
             </summary>
         </member>
         <member name="M:CMS.Personas.PersonasNewslettersHandlers.ObtainSubscriberAddressesForPersonaSubscriber(System.Object,CMS.Newsletters.ObtainSubscriberAddressesEventArgs)">
@@ -811,13 +743,14 @@
             Class responsible for generating newsletter items (emails) for a persona subscriber (see <see cref="F:CMS.Newsletters.SubscriberInfo.TYPEINFOPERSONA"/>).
             </summary>
         </member>
-        <member name="M:CMS.Personas.PersonaNewsletterGenerator.GenerateQueueItems(CMS.Newsletters.IssueInfo,CMS.Newsletters.SubscriberInfo,System.Collections.Generic.HashSet{System.String})">
+        <member name="M:CMS.Personas.PersonaNewsletterGenerator.GenerateQueueItems(CMS.Newsletters.IssueInfo,CMS.Newsletters.SubscriberInfo,System.Collections.Generic.HashSet{System.String},CMS.Newsletters.IEmailAddressBlocker)">
             <summary>
             Creates newsletter queue items for a persona subscriber and an issue. See <see cref="T:CMS.Newsletters.EmailQueueItemInfo"/>.
             </summary>
             <param name="issue">Issue to send</param>
             <param name="personaSubscriber">Persona subscriber to send the issue to</param>
             <param name="generatedEmails">E-mail addresses that have been already added to the queue. Used to remove duplicates throughout different subscriber types.</param>
+            <param name="emailAddressBlocker">Every email should be checked using this email address blocker before it is added to the email queue.</param>
             <exception cref="T:System.ArgumentException"><paramref name="personaSubscriber"/> isn't persona subscriber</exception>
             <exception cref="T:System.ArgumentNullException"><paramref name="issue"/> is null</exception>
         </member>
@@ -1056,6 +989,76 @@
             <param name="metafileSeoFileName">Returned image will have this name. No spaces are allowed</param>
             <param name="sizeInPx">Maximum size of one side of picture</param>
             <returns>Url to the metafil</returns>
+        </member>
+        <member name="T:CMS.Personas.IContactPersonaEvaluator">
+            <summary>
+            Contains methods for reevaluation of contact's persona.
+            </summary>
+            <remarks>
+            Use <see cref="T:CMS.Personas.PersonasFactory"/> to obtain implementation of this interface.
+            Contact can be in one persona only - contact belongs to persona if score quotient (contact score points divided by persona score limit) is the highest one of all personas.
+            </remarks>
+        </member>
+        <member name="M:CMS.Personas.IContactPersonaEvaluator.ReevaluateAllContacts(System.Int32)">
+            <summary>
+            Reevaluates all contacts and assigns them to proper persona.
+            </summary>
+            <remarks>
+            This method should be used when persona properties were changed, or rules were recalculated.
+            </remarks>
+            <param name="siteId">ID of the site</param>
+        </member>
+        <member name="M:CMS.Personas.IContactPersonaEvaluator.ReevaluateAllContactsAsync(System.Int32)">
+            <summary>
+            Reevaluates all contacts and assigns them to proper persona asynchronously.
+            </summary>
+            <remarks>
+            This method should be used when persona properties were changed, or rules were recalculated.
+            </remarks>
+            <param name="siteId">ID of the site</param>
+            <returns>Asynchronous execution task</returns>
+        </member>
+        <member name="M:CMS.Personas.IContactPersonaEvaluator.ReevaluateContacts(System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Reevaluates given contacts and assigns them to proper persona.
+            </summary>
+            <remarks>
+            This method should be used when new activity is logged for contact or its attribute was changed. These 
+            actions can change contact points and thus it is possible the contact can be assigned to more correct persona.
+            </remarks>
+            <param name="contactsIds">Contacts which should be assigned to persona</param>
+        </member>
+        <member name="M:CMS.Personas.IContactPersonaEvaluator.ReevaluateContactsAsync(System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Reevaluates given contacts and assigns them to proper persona.
+            </summary>
+            <remarks>
+            This method should be used when new activity is logged for contact or its attribute was changed. These 
+            actions can change contact points and thus it is possible the contact can be assigned to more correct persona.
+            </remarks>
+            <param name="contactsIds">Contacts which should be assigned to persona</param>
+            <returns>Asynchronous execution task</returns>
+        </member>
+        <member name="M:CMS.Personas.IContactPersonaEvaluator.ReevaluateContact(CMS.OnlineMarketing.ContactInfo)">
+            <summary>
+            Reevaluates given contact and finds proper persona the contact should be assigned to.
+            </summary>
+            <remarks>
+            This method should be used when new activity is logged for contact or its attribute was changed. These 
+            actions can change contact points and thus it is possible the contact can be assigned to more correct persona.
+            </remarks>
+            <param name="contact">Contact which should be assigned to persona</param>
+        </member>
+        <member name="M:CMS.Personas.IContactPersonaEvaluator.ReevaluateContactAsync(CMS.OnlineMarketing.ContactInfo)">
+            <summary>
+            Reevaluates given contact and finds proper persona the contact should be assigned to asynchronously.
+            </summary>
+            <remarks>
+            This method should be used when new activity is logged for contact or its attribute was changed. These 
+            actions can change contact points and thus it is possible the contact can be assigned to more correct persona.
+            </remarks>
+            <param name="contact">Contact which should be assigned to persona</param>
+            <returns>Asynchronous execution task</returns>
         </member>
         <member name="T:CMS.Personas.ContactPersonaEvaluator">
             <summary>

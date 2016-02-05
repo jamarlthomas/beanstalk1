@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="ContentNavigationPanel.ascx.cs" Inherits="CMSModules_Content_Controls_ContentNavigationPanel" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="ContentNavigationPanel.ascx.cs" Inherits="CMSModules_Content_Controls_ContentNavigationPanel" %>
 
 <div class="ContentMenuGroup">
     <cms:UILayout runat="server" ID="layoutElem">

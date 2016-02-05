@@ -67,7 +67,7 @@ public partial class CMSWebParts_Ecommerce_RemainingAmountForFreeShipping : CMSA
         // Hide text by default
         lblText.Visible = false;
 
-        if ((cart != null) && !cart.IsEmpty)
+        if ((cart != null) && !cart.IsEmpty && cart.IsShippingNeeded)
         {
             // Select all applicable shipping discounts regardless the Minimum order amount
             var discounts = cart.CartDiscountsFilter.Filter(cart.ShippingDiscounts, Double.MaxValue);

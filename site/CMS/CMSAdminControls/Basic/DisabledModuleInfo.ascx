@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="DisabledModuleInfo.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="DisabledModuleInfo.ascx.cs"
     Inherits="CMSAdminControls_Basic_DisabledModuleInfo" %>
 <div class="alert alert-info">
     <span class="alert-icon">

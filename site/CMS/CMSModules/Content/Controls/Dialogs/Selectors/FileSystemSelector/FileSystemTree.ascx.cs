@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.UI.WebControls;
 
@@ -30,6 +30,16 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
 
 
     #region "Properties"
+
+    /// <summary>
+    /// If true, zip folders are shown
+    /// </summary>
+    public bool AllowZipFolders
+    {
+        get;
+        set;
+    }
+
 
     /// <summary>
     /// Starting path of the tree.
@@ -233,9 +243,12 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
             }
 
             // Zip files acts the same way as directories
-            var childZips = dirInfo.GetFiles("*.zip");
-            counter += childZips.Length;
-            
+            if (AllowZipFolders)
+            {
+                var childZips = dirInfo.GetFiles("*.zip");
+                counter += childZips.Length;
+            }
+
             return counter;
         }
         catch (Exception)
@@ -596,52 +609,59 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
 
         try
         {
-            DirectoryInfo dirInfo = DirectoryInfo.New(e.Node.Value);
+            var path = e.Node.Value;
 
-            // Get the child directories
-            DirectoryInfo[] childDirs = dirInfo.GetDirectories();
-
-            for (int i = 0, index = 0; i < childDirs.Length; i++)
+            DirectoryInfo dirInfo = DirectoryInfo.New(path);
+            if (dirInfo.Exists)
             {
-                TreeNode newNode = CreateNode(childDirs[i], index);
-                if (newNode != null)
+                // Get the child directories
+                DirectoryInfo[] childDirs = dirInfo.GetDirectories();
+
+                for (int i = 0, index = 0; i < childDirs.Length; i++)
                 {
-                    e.Node.ChildNodes.Add(newNode);
-
-                    // More content node was inserted
-                    if (newNode.Value == "")
+                    TreeNode newNode = CreateNode(childDirs[i], index);
+                    if (newNode != null)
                     {
-                        return;
-                    }
+                        e.Node.ChildNodes.Add(newNode);
 
-                    index++;
+                        // More content node was inserted
+                        if (newNode.Value == "")
+                        {
+                            return;
+                        }
+
+                        index++;
+                    }
                 }
-            }
 
-            // Get the zip directories
-            FileInfo[] childZips = dirInfo.GetFiles("*.zip");
-
-            for (int i = 0, index = 0; i < childZips.Length; i++)
-            {
-                // Convert zip file to directory
-                FileInfo zipFile = childZips[i];
-                string fileName = ZipStorageProvider.GetZipFileName(zipFile.Name);
-                string parentDir = zipFile.Directory.FullName;
-
-                DirectoryInfo zipDir = DirectoryInfo.New(parentDir + "\\" + fileName);
-
-                TreeNode newNode = CreateNode(zipDir, index);
-                if (newNode != null)
+                // Get the zip directories
+                if (AllowZipFolders)
                 {
-                    e.Node.ChildNodes.Add(newNode);
+                    var childZips = dirInfo.GetFiles("*.zip");
 
-                    // More content node was inserted
-                    if (newNode.Value == "")
+                    for (int i = 0, index = 0; i < childZips.Length; i++)
                     {
-                        return;
-                    }
+                        // Convert zip file to directory
+                        FileInfo zipFile = childZips[i];
+                        string fileName = ZipStorageProvider.GetZipFileName(zipFile.Name);
+                        string parentDir = zipFile.Directory.FullName;
 
-                    index++;
+                        DirectoryInfo zipDir = DirectoryInfo.New(parentDir + "\\" + fileName);
+
+                        TreeNode newNode = CreateNode(zipDir, index);
+                        if (newNode != null)
+                        {
+                            e.Node.ChildNodes.Add(newNode);
+
+                            // More content node was inserted
+                            if (newNode.Value == "")
+                            {
+                                return;
+                            }
+
+                            index++;
+                        }
+                    }
                 }
             }
         }

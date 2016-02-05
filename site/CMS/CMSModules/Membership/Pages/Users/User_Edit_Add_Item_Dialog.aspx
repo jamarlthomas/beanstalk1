@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    EnableEventValidation="false" Theme="Default" Codebehind="User_Edit_Add_Item_Dialog.aspx.cs"
+    EnableEventValidation="false" Theme="Default"  Codebehind="User_Edit_Add_Item_Dialog.aspx.cs"
     Inherits="CMSModules_Membership_Pages_Users_User_Edit_Add_Item_Dialog" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/Controls/SelectionDialog.ascx"

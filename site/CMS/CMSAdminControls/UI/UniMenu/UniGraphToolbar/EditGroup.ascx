@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="EditGroup.ascx.cs" Inherits="CMSAdminControls_UI_UniMenu_UniGraphToolbar_EditGroup" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="EditGroup.ascx.cs" Inherits="CMSAdminControls_UI_UniMenu_UniGraphToolbar_EditGroup" %>
 
 <div>
     <div class="UniMenuContent">

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="TreeActionsPanel.ascx.cs" Inherits="CMSModules_Content_Controls_TreeActionsPanel" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="TreeActionsPanel.ascx.cs" Inherits="CMSModules_Content_Controls_TreeActionsPanel" %>
 <div class="tree-actions-panel">
     <asp:PlaceHolder runat="server" ID="plcContentButtons">
         <cms:CMSPanel ID="pnlButtons" ShortID="pb" runat="server" CssClass="tree-buttons">

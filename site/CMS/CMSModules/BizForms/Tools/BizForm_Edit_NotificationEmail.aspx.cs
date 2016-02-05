@@ -54,7 +54,7 @@ public partial class CMSModules_BizForms_Tools_BizForm_Edit_NotificationEmail : 
     protected void Page_Load(object sender, EventArgs e)
     {
         // Add save action
-        save = new SaveAction(Page);
+        save = new SaveAction();
         menu.AddAction(save);
 
         // Register for action

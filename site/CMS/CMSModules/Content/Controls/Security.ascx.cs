@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -31,7 +31,7 @@ public partial class CMSModules_Content_Controls_Security : CMSUserControl
 
     private string ipAddress;
     private string eventUrl;
-    
+
     #endregion
 
 
@@ -185,7 +185,7 @@ public partial class CMSModules_Content_Controls_Security : CMSUserControl
 
 
     /// <summary>
-    /// Indiactes whether to allow redirection due to lack of permissions.
+    /// Indicates whether to allow redirection due to lack of permissions.
     /// </summary>
     public bool AllowRedirection
     {
@@ -334,18 +334,7 @@ public partial class CMSModules_Content_Controls_Security : CMSUserControl
         // Check changes when selecting another user/role
         if (!IsLiveSite && DocumentManager.RegisterSaveChangesScript)
         {
-            StringBuilder script = new StringBuilder();
-            script.Append(@"
-var select = $cmsj('#", lstOperators.ClientID, @"');
-select.change(function(){
-    if(!CheckChanges()) {
-        select.val($cmsj.data(select, 'current'));
-        return false;
-    }
-    $cmsj.data(select, 'current', select.val());
-});");
-            ScriptHelper.RegisterJQuery(Page);
-            ScriptHelper.RegisterStartupScript(this, typeof(string), "CheckChangesBeforeChange" + ClientID, ScriptHelper.GetScript(script.ToString()));
+            RegisterSaveChangesScripts();
         }
 
         CheckButtonsActiveState();
@@ -355,11 +344,34 @@ select.change(function(){
             HeaderActions.UpdatePanel.Update();
         }
     }
-
+    
     #endregion
 
 
     #region "Methods"
+
+    private void RegisterSaveChangesScripts()
+    {
+        ScriptHelper.RegisterJQuery(Page);
+
+        var script = string.Format(@"
+var select = $cmsj('#{0}');
+select.change(function(){{
+    if(!CheckChanges()) {{
+        select.val($cmsj.data(select, 'current'));
+        return false;
+    }}
+    $cmsj.data(select, 'current', select.val());
+}});", lstOperators.ClientID);
+        ScriptHelper.RegisterStartupScript(this, typeof(string), "CheckChangesBeforeChange" + ClientID, script, true);
+
+        if (RequestHelper.IsAJAXRequest())
+        {
+            // Register script to notify about changes when another operator from list selected and changes in permissions were made (re-initialize script when update panel is updated)
+            ScriptHelper.RegisterClientScriptBlock(pnlUpdate, typeof(string), "InitChanges", "CMSContentManager.initChanges();", true);
+        }
+    }
+    
 
     public void ReloadData(bool forceReload)
     {
@@ -418,6 +430,9 @@ select.change(function(){
 
         addRoles.CurrentSelector.DisabledItems = DisabledRoles;
         addUsers.CurrentSelector.DisabledItems = DisabledUsers;
+
+        addUsers.CurrentSelector.OnGetSelectionDialogScript.Execute += OnGetSelectionDialogScript_Execute;
+        addRoles.CurrentSelector.OnGetSelectionDialogScript.Execute += OnGetSelectionDialogScript_Execute;
     }
 
 
@@ -512,47 +527,50 @@ select.change(function(){
     /// <param name="checkRead">Indicates whether to check also read permission</param>    
     private void CheckPermissions(bool redirect, bool checkRead = false)
     {
-        if (Node != null)
+        if (Node == null)
         {
-            bool isGroupAdmin = false;
+            return;
+        }
 
-            // Allow group administrator edit group document permissions
-            if (GroupID > 0)
-            {
-                isGroupAdmin = MembershipContext.AuthenticatedUser.IsGroupAdministrator(GroupID);
-            }
+        bool isGroupAdminOnLiveSite = false;
 
-            if (checkRead)
-            {
-                // Check permissions, for group document library also group administrator can read the permissions
-                bool hasReadPermission = (MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(Node, NodePermissionsEnum.Read) == AuthorizationResultEnum.Allowed) || isGroupAdmin;
+        // Allow group administrator edit group document permissions
+        if (GroupID > 0)
+        {
+            isGroupAdminOnLiveSite = MembershipContext.AuthenticatedUser.IsGroupAdministrator(GroupID) && IsLiveSite;
+        }
 
-                // If hasn't permission and redirect enabled
-                if (!hasReadPermission)
-                {
-                    if (AllowRedirection)
-                    {
-                        RedirectToAccessDenied(String.Format(GetString("cmsdesk.notauthorizedtoreaddocument"), Node.NodeAliasPath));
-                    }
-                    else
-                    {
-                        DisableForm();
-                    }
-                }
-            }
-            hasModifyPermission = (MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(Node, NodePermissionsEnum.ModifyPermissions) == AuthorizationResultEnum.Allowed) || isGroupAdmin;
+        if (checkRead)
+        {
+            // Check permissions, for group document library also group administrator can read the permissions
+            bool hasReadPermission = (MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(Node, NodePermissionsEnum.Read) == AuthorizationResultEnum.Allowed) || isGroupAdminOnLiveSite;
 
             // If hasn't permission and redirect enabled
-            if (!hasModifyPermission)
+            if (!hasReadPermission)
             {
-                if (redirect && AllowRedirection)
+                if (AllowRedirection)
                 {
-                    RedirectToAccessDenied(String.Format(GetString("cmsdesk.notauthorizedtoeditdocumentpermissions"), Node.NodeAliasPath));
+                    RedirectToAccessDenied(String.Format(GetString("cmsdesk.notauthorizedtoreaddocument"), Node.NodeAliasPath));
                 }
                 else
                 {
                     DisableForm();
                 }
+            }
+        }
+
+        hasModifyPermission = (MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(Node, NodePermissionsEnum.ModifyPermissions) == AuthorizationResultEnum.Allowed) || isGroupAdminOnLiveSite;
+
+        // If hasn't permission and redirect enabled
+        if (!hasModifyPermission)
+        {
+            if (redirect && AllowRedirection)
+            {
+                RedirectToAccessDenied(String.Format(GetString("cmsdesk.notauthorizedtoeditdocumentpermissions"), Node.NodeAliasPath));
+            }
+            else
+            {
+                DisableForm();
             }
         }
     }
@@ -605,122 +623,125 @@ select.change(function(){
     /// <param name="reload">Forces reload of listbox</param>
     public void LoadOperators(bool reload)
     {
-        if (!StopProcessing)
+        if (StopProcessing)
         {
-            string lastOperator = string.Empty;
-            StringBuilder roles = new StringBuilder();
-            StringBuilder users = new StringBuilder();
+            return;
+        }
 
-            StringBuilder disabledRoles = new StringBuilder();
-            StringBuilder disabledUsers = new StringBuilder();
+        string lastOperator = string.Empty;
+        StringBuilder roles = new StringBuilder();
+        StringBuilder users = new StringBuilder();
 
-            if (reload)
+        StringBuilder disabledRoles = new StringBuilder();
+        StringBuilder disabledUsers = new StringBuilder();
+
+        if (reload)
+        {
+            lstOperators.Items.Clear();
+        }
+
+        LoadACLItems(reload);
+
+        if ((dsAclItems != null) && (dsAclItems.Tables.Count > 0))
+        {
+            foreach (DataRow drAclItem in dsAclItems.Tables[0].Rows)
             {
-                lstOperators.Items.Clear();
-            }
-
-            LoadACLItems(reload);
-            if ((dsAclItems != null) && (dsAclItems.Tables.Count > 0))
-            {
-                foreach (DataRow drAclItem in dsAclItems.Tables[0].Rows)
+                int nodeID = ValidationHelper.GetInteger(drAclItem["ACLOwnerNodeID"], 0);
+                string op = ValidationHelper.GetString(drAclItem["Operator"], "");
+                if (op != lastOperator)
                 {
-                    int nodeID = ValidationHelper.GetInteger(drAclItem["ACLOwnerNodeID"], 0);
-                    string op = ValidationHelper.GetString(drAclItem["Operator"], "");
-                    if (op != lastOperator)
+                    lastOperator = op;
+                    string operName = ValidationHelper.GetString(drAclItem["OperatorName"], String.Empty);
+                    operName = MacroResolver.Resolve(operName);
+
+                    if (!String.IsNullOrEmpty(op))
                     {
-                        lastOperator = op;
-                        string operName = ValidationHelper.GetString(drAclItem["OperatorName"], String.Empty);
-                        operName = MacroResolver.Resolve(operName);
-
-                        if (!String.IsNullOrEmpty(op))
+                        switch (op[0])
                         {
-                            switch (op[0])
-                            {
                                 // Operator starts with 'R' - indicates role
-                                case 'R':
-                                    string role = op.Substring(1) + ";";
-                                    roles.Append(role);
+                            case 'R':
+                                string role = op.Substring(1) + ";";
+                                roles.Append(role);
 
-                                    // Test whether ACL owner node id is current node id, if not this ACL is inherited => disable in selector
-                                    if (nodeID != NodeID)
-                                    {
-                                        disabledRoles.Append(role);
-                                    }
+                                // Test whether ACL owner node id is current node id, if not this ACL is inherited => disable in selector
+                                if (nodeID != NodeID)
+                                {
+                                    disabledRoles.Append(role);
+                                }
 
-                                    if (ValidationHelper.GetInteger(drAclItem["RoleGroupID"], 0) > 0)
-                                    {
-                                        operName += " " + GetString("security.grouprole");
-                                    }
+                                if (ValidationHelper.GetInteger(drAclItem["RoleGroupID"], 0) > 0)
+                                {
+                                    operName += " " + GetString("security.grouprole");
+                                }
 
-                                    // Add global postfix
-                                    if (ValidationHelper.GetInteger(drAclItem["SiteID"], 0) == 0)
-                                    {
-                                        operName += " " + GetString("general.global");
-                                    }
+                                // Add global postfix
+                                if (ValidationHelper.GetInteger(drAclItem["SiteID"], 0) == 0)
+                                {
+                                    operName += " " + GetString("general.global");
+                                }
 
-                                    break;
+                                break;
 
                                 // Operator starts with 'U' - indicates user
-                                case 'U':
-                                    string user = op.Substring(1) + ";";
-                                    users.Append(user);
+                            case 'U':
+                                string user = op.Substring(1) + ";";
+                                users.Append(user);
 
-                                    // Test whether ACL owner node id is current node id, if not this ACL is inherited => disable in selector
-                                    if (nodeID != NodeID)
-                                    {
-                                        disabledUsers.Append(user);
-                                    }
+                                // Test whether ACL owner node id is current node id, if not this ACL is inherited => disable in selector
+                                if (nodeID != NodeID)
+                                {
+                                    disabledUsers.Append(user);
+                                }
 
-                                    string fullName = ValidationHelper.GetString(drAclItem["OperatorFullName"], String.Empty);
-                                    operName = Functions.GetFormattedUserName(operName, fullName);
-                                    break;
-                            }
+                                string fullName = ValidationHelper.GetString(drAclItem["OperatorFullName"], String.Empty);
+                                operName = Functions.GetFormattedUserName(operName, fullName);
+                                break;
                         }
+                    }
 
-                        if (reload)
-                        {
-                            lstOperators.Items.Add(new ListItem(operName, op));
-                        }
+                    if (reload)
+                    {
+                        lstOperators.Items.Add(new ListItem(operName, op));
+                    }
 
-                        // Add different color for inherited users or roles
-                        if (NodeID != nodeID)
+                    // Add different color for inherited users or roles
+                    if (nodeID != NodeID)
+                    {
+                        ListItem item = lstOperators.Items.FindByValue(op);
+                        if (item != null)
                         {
-                            ListItem item = lstOperators.Items.FindByValue(op);
-                            if (item != null)
-                            {
-                                item.Attributes.Add("style", "color:grey");
-                                item.Attributes.Add("title", GetString("security.inheritedfromparent"));
-                            }
+                            item.Attributes.Add("style", "color:grey");
+                            item.Attributes.Add("title", GetString("security.inheritedfromparent"));
                         }
                     }
                 }
             }
+        }
 
-            if (reload)
+        if (reload)
+        {
+            if (lstOperators.Items.Count > 0)
             {
-                if (lstOperators.Items.Count > 0)
-                {
-                    lstOperators.SelectedIndex = 0;
-                    DisplayOperatorPermissions(lstOperators.SelectedValue);
-                }
-                else
-                {
-                    ResetPermissions();
-                    DisableAllCheckBoxes();
-                }
-
-                // Update selector values on full reload
-                addRoles.CurrentSelector.Value = roles.ToString();
-                addUsers.CurrentSelector.Value = users.ToString();
+                lstOperators.SelectedIndex = 0;
+                DisplayOperatorPermissions(lstOperators.SelectedValue);
+            }
+            else
+            {
+                ResetPermissions();
+                DisableAllCheckBoxes();
             }
 
-            // Set values to selectors (to be able to distinguish new and old items for add/remove action)
-            addRoles.CurrentValues = roles.ToString();
-            addUsers.CurrentValues = users.ToString();
-
-            DisabledRoles = disabledRoles.ToString();
-            DisabledUsers = disabledUsers.ToString();
+            // Update selector values on full reload
+            addRoles.CurrentSelector.Value = roles.ToString();
+            addUsers.CurrentSelector.Value = users.ToString();
         }
+
+        // Set values to selectors (to be able to distinguish new and old items for add/remove action)
+        addRoles.CurrentValues = roles.ToString();
+        addUsers.CurrentValues = users.ToString();
+
+        DisabledRoles = disabledRoles.ToString();
+        DisabledUsers = disabledUsers.ToString();
     }
 
 
@@ -730,11 +751,19 @@ select.change(function(){
     /// <param name="reload">Forces reload of listbox</param>
     private void LoadACLItems(bool reload)
     {
-        if ((dsAclItems == null) || reload)
+        if ((dsAclItems != null) && !reload)
         {
-            string where = GetWhereCondition();
-            dsAclItems = AclItemInfoProvider.GetAclItems(Node.NodeID, where, "OperatorName, Operator, Inherited DESC", 0, "Operator,ACLOwnerNodeID,OperatorName,OperatorFullName,Allowed,Denied,RoleGroupID,RoleID,SiteID, CASE WHEN (ACLOwnerNodeID = " + Node.NodeID + ") THEN 0 ELSE 1 END AS Inherited");
+            return;
         }
+
+        var orderBy = new[] { "OperatorName", "Operator", "Inherited DESC" };
+        var columns = new[] { "Operator", "ACLOwnerNodeID", "OperatorName", "OperatorFullName", "Allowed", "Denied", "RoleGroupID", "RoleID", "SiteID", "CASE WHEN (ACLOwnerNodeID = " + Node.NodeID + ") THEN 0 ELSE 1 END AS Inherited" };
+
+        string where = GetWhereCondition();
+        dsAclItems = AclItemInfoProvider.GetACLItemsAndOperators(Node.NodeID)
+            .Where(where)
+            .OrderBy(orderBy)
+            .Columns(columns);
     }
 
 
@@ -781,7 +810,7 @@ select.change(function(){
                 int i;
 
                 // Process inherited permissions
-                DataRow[] rows = dsAclItems.Tables[0].Select(" Operator = '" + operatorID + "' AND ACLOwnerNodeID <> '" + Node.NodeID + "' ");
+                DataRow[] rows = dsAclItems.Tables[0].Select(" Operator = '" + operatorID + "' AND Inherited = 1");
 
                 for (i = 0; i <= rows.GetUpperBound(0); i++)
                 {
@@ -838,8 +867,8 @@ select.change(function(){
                 }
 
                 // Process native permissions
-                rows = dsAclItems.Tables[0].Select(" Operator = '" + operatorID + "' AND ACLOwnerNodeID = '" + Node.NodeID + "' ");
-                
+                rows = dsAclItems.Tables[0].Select(" Operator = '" + operatorID + "' AND Inherited = 0");
+
                 int nativeAllowed = 0;
                 int nativeDenied = 0;
 
@@ -848,7 +877,7 @@ select.change(function(){
                     hasNativePermissions = true;
                     nativeAllowed = Convert.ToInt32(rows[i]["Allowed"]);
                     nativeDenied = Convert.ToInt32(rows[i]["Denied"]);
-                    
+
                     // Set "allow" check boxes for native permissions
                     SetCheckBoxWithNativePermission(chkReadAllow, IsPermissionTrue(nativeAllowed, NodePermissionsEnum.Read));
                     SetCheckBoxWithNativePermission(chkModifyAllow, IsPermissionTrue(nativeAllowed, NodePermissionsEnum.Modify));
@@ -879,7 +908,7 @@ select.change(function(){
             btnOk.Enabled = (chkFullControlAllow.Enabled || chkFullControlDeny.Enabled) && operatorIsEditable && hasModifyPermission;
             pnlAccessRights.Enabled = pnlAccessRights.Enabled && operatorIsEditable;
             btnRemoveOperator.Enabled = (hasModifyPermission && !hasInheritedPermissions && hasNativePermissions) && operatorIsEditable;
-            btnRemoveOperator.OnClientClick = "return confirm(" + ScriptHelper.GetLocalizedString("security.confirmremove") + ");";
+            btnRemoveOperator.OnClientClick = "if(!CheckChanges()) {return false;} return confirm(" + ScriptHelper.GetLocalizedString("security.confirmremove") + ");";
 
             // Setup 'Full control' checkboxes
             chkFullControlAllow.Checked = chkReadAllow.Checked && chkModifyAllow.Checked && chkCreateAllow.Checked && chkDeleteAllow.Checked && chkDestroyAllow.Checked && chkExploreTreeAllow.Checked && chkManagePermissionsAllow.Checked;
@@ -914,7 +943,7 @@ select.change(function(){
     /// </summary>
     protected int GetCheckBoxValue(CMSCheckBox chkBox, NodePermissionsEnum permission)
     {
-        return (chkBox.Enabled && chkBox.Checked) ? Convert.ToInt32(Math.Pow(2, Convert.ToInt32(permission))) : 0;
+        return (chkBox.Enabled && chkBox.Checked) ? DocumentSecurityHelper.GetFlagFromPermission(permission) : 0;
     }
 
 
@@ -956,12 +985,12 @@ select.change(function(){
     /// Sets value to enabled checkbox.
     /// </summary>
     /// <param name="chkBox">Checkbox to use</param>
-    /// <param name="checkedIdent">Checked value</param>
-    private static void CheckEnabledCheckbox(CMSCheckBox chkBox, bool checkedIdent)
+    /// <param name="checkedValue">Checked value</param>
+    private static void CheckEnabledCheckbox(CMSCheckBox chkBox, bool checkedValue)
     {
         if (chkBox.Enabled)
         {
-            chkBox.Checked = checkedIdent;
+            chkBox.Checked = checkedValue;
         }
     }
 
@@ -991,7 +1020,7 @@ select.change(function(){
 
 
     /// <summary>
-    /// Loads javacript.
+    /// Loads javascript.
     /// </summary>
     private void LoadJavascript()
     {
@@ -1132,6 +1161,21 @@ select.change(function(){
 
 
     #region "Events"
+
+    /// <summary>
+    /// OnGetSelectionDialogScript event handler
+    /// </summary>
+    protected void OnGetSelectionDialogScript_Execute(object sender, CMSEventArgs<GetSelectionDialogScriptEventArgs> e)
+    {
+        if (StopProcessing)
+        {
+            return;
+        }
+
+        // Replace update script
+        e.Parameter.Script = String.Format("if(!CheckChanges()) {{ return false; }}; {0}", e.Parameter.Script);
+    }
+
 
     /// <summary>
     /// On changed roles - update update panel.

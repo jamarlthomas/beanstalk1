@@ -1,10 +1,4 @@
-using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
+﻿using System;
 
 using CMS.FormControls;
 using CMS.Helpers;
@@ -37,30 +31,19 @@ public partial class CMSFormControls_Inputs_InternationalPhone : FormEngineUserC
     {
         get
         {
-            if (DataHelper.IsEmpty(txt1st.Text) && DataHelper.IsEmpty(txt2nd.Text))
+            if (String.IsNullOrWhiteSpace(txt1st.Text) && String.IsNullOrWhiteSpace(txt2nd.Text))
             {
                 return "";
             }
-            return "+" + txt1st.Text + " " + txt2nd.Text;
+
+            return ("+" + txt1st.Text.Trim() + " " + txt2nd.Text.Trim());
         }
         set
         {
             string number = (string)value;
             // Parse numbers from incoming string.
-            if ((number != null) && (number != ""))
-            {
-                txt1st.Text = number.Substring(1, number.IndexOfCSafe(" ") - 1);
-                txt2nd.Text = number.Substring(number.IndexOfCSafe(" ") + 1, number.Length - number.IndexOfCSafe(" ") - 1);
-            }
+            ParsePhoneNumberString(number);
         }
-    }
-
-
-    /// <summary>
-    /// Page load.
-    /// </summary>
-    protected void Page_Load(object sender, EventArgs e)
-    {
     }
 
 
@@ -69,7 +52,7 @@ public partial class CMSFormControls_Inputs_InternationalPhone : FormEngineUserC
     /// </summary>
     public override bool IsValid()
     {
-        if ((txt1st.Text != "") || (txt2nd.Text != ""))
+        if (!String.IsNullOrEmpty(txt1st.Text) || !String.IsNullOrEmpty(txt2nd.Text))
         {
             Validator val = new Validator();
             // International phone number must be in the form '+d{1-4} d{1-20}' where 'd' is digit.
@@ -82,5 +65,29 @@ public partial class CMSFormControls_Inputs_InternationalPhone : FormEngineUserC
             }
         }
         return true;
+    }
+
+
+    /// <summary>
+    /// Parses given phone number and sets textboxes' values.
+    /// </summary>
+    /// <param name="phoneNumber">Phone number to parse</param>
+    private void ParsePhoneNumberString(string phoneNumber)
+    {
+        if (!String.IsNullOrEmpty(phoneNumber))
+        {
+            int spaceIndex = phoneNumber.IndexOfCSafe(" ");
+            if (spaceIndex <= 0)
+            {
+                txt2nd.Text = phoneNumber.Trim().TrimStart('+');
+            }
+            else
+            {
+                int partOneLength = spaceIndex - 1;
+                int partTwoStart = spaceIndex + 1;
+                txt1st.Text = phoneNumber.Substring(1, partOneLength);
+                txt2nd.Text = phoneNumber.Substring(partTwoStart, phoneNumber.Length - partTwoStart);
+            }
+        }
     }
 }

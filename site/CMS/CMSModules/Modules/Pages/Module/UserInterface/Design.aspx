@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Design.aspx.cs" ValidateRequest="false"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Design.aspx.cs" ValidateRequest="false"
     MaintainScrollPositionOnPostback="true" EnableEventValidation="false" Theme="Default"
     Inherits="CMSModules_Modules_Pages_Module_UserInterface_Design" %>
 

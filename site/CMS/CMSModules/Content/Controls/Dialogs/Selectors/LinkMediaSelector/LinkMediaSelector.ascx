@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSelector_LinkMediaSelector" Codebehind="LinkMediaSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSelector_LinkMediaSelector"  Codebehind="LinkMediaSelector.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/ContentTree.ascx" TagName="ContentTree"
     TagPrefix="cms" %>
@@ -140,8 +140,6 @@
             currentNode.className = 'ContentTreeItem';
             currentNode.id = '';
         }
-
-        currentNodeId = nodeId;
 
         if (nodeElem != null) {
             currentNode = nodeElem;

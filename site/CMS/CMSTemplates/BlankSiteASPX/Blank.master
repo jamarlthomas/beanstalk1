@@ -1,5 +1,5 @@
 <%@ Master Language="C#" AutoEventWireup="true" Inherits="CMSTemplates_BlankSiteASPX_Blank"
-    Codebehind="Blank.master.cs" %>
+     Codebehind="Blank.master.cs" %>
 
 <%=DocType%>
 <html xmlns="http://www.w3.org/1999/xhtml">

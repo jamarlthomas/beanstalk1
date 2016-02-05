@@ -1,3 +1,5 @@
+﻿using System.Data;
+
 using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.ExtendedControls;
@@ -197,7 +199,6 @@ public partial class CMSModules_Ecommerce_FormControls_CurrencySelector : SiteSe
         {
             // Add (select) item to the UniSelector
             uniSelector.SpecialFields.Add(new SpecialField { Text = GetString("currencyselector.select"), Value = "-1" });
-
         }
     }
 
@@ -210,22 +211,7 @@ public partial class CMSModules_Ecommerce_FormControls_CurrencySelector : SiteSe
     {
         // Prepare where condition
         var where = new WhereCondition(whereCondition);
-        if (DisplayOnlyWithExchangeRate)
-        {
-            var tableInfo = ExchangeTableInfoProvider.GetLastExchangeTableInfo(SiteID);
-            if (tableInfo != null)
-            {
-                where.Where(w => w.WhereEquals("CurrencyID", MainCurrencyID)
-                                  .Or()
-                                  .WhereIn("CurrencyID", new IDQuery(ExchangeRateInfo.OBJECT_TYPE, "ExchangeRateToCurrencyID")
-                                                .WhereEquals("ExchangeTableID", tableInfo.ExchangeTableID)
-                                                .WhereTrue("CurrencyEnabled")));
-            }
-            else
-            {
-                where.NoResults();
-            }
-        }
+        
         // Exclude site main currency when required
         if (ExcludeSiteDefaultCurrency && (MainCurrencyID > 0))
         {
@@ -255,6 +241,34 @@ public partial class CMSModules_Ecommerce_FormControls_CurrencySelector : SiteSe
 
         // Append additional items
         return base.AppendInclusiveWhere(where.ToString(true));
+    }
+
+
+    /// <summary>
+    /// Ensures that only currencies with exchange rates are displayed in the selector.
+    /// </summary>
+    /// <param name="ds"></param>
+    /// <returns></returns>
+    protected override DataSet OnAfterRetrieveData(DataSet ds)
+    {
+        if (!DisplayOnlyWithExchangeRate || DataHelper.DataSourceIsEmpty(ds))
+        {
+            return ds;
+        }
+
+        var currencies = ds.Tables[0].Select();
+        foreach (var currencyRow in currencies)
+        {
+            var currencyId = ValidationHelper.GetInteger(currencyRow["CurrencyID"], 0);
+
+            // Check if we are able to work with this currency in terms of currency conversion
+            if (!CurrencyInfoProvider.IsCurrencyWithExchangeRate(currencyId, SiteID))
+            {
+                ds.Tables[0].Rows.Remove(currencyRow);
+            }
+        }
+
+        return ds;
     }
 
     #endregion

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/Chat/ChatRooms.ascx.cs" Inherits="CMSWebParts_Chat_ChatRooms" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/Chat/ChatRooms.ascx.cs" Inherits="CMSWebParts_Chat_ChatRooms" %>
 
 <asp:Panel runat="server" ID="pnlChatRooms" CssClass="ChatWebpartContainer ChatWebpartContainerRooms">
 

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Code.aspx.cs" Inherits="CMSModules_Modules_Pages_Class_Code" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Class - Code" Theme="Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Code.aspx.cs" Inherits="CMSModules_Modules_Pages_Class_Code" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Class - Code" Theme="Default" %>
 
 <%@ Register Src="~/CMSFormControls/Dialogs/FileSystemSelector.ascx" TagName="FileSystemSelector" TagPrefix="cms" %>
 <%@ Register Src="~/CMSFormControls/Basic/DropDownListControl.ascx" TagName="DropDownListControl"

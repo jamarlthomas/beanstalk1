@@ -355,22 +355,25 @@ public partial class CMSModules_Ecommerce_FormControls_OptionCategoryProductOpti
     /// </summary>
     private void GetSelectorConfiguration()
     {
-        // Display price adjustment
-        if (Form.FieldControls.Contains(OptionCategoryDisplayPriceColumn))
+        if (Form != null)
         {
-            DisplayPrice = ValidationHelper.GetBoolean(Form.FieldControls[OptionCategoryDisplayPriceColumn].Value, false);
-        }
+            // Display price adjustment
+            if (Form.FieldControls.Contains(OptionCategoryDisplayPriceColumn))
+            {
+                DisplayPrice = ValidationHelper.GetBoolean(Form.FieldControls[OptionCategoryDisplayPriceColumn].Value, false);
+            }
 
-        // Default record text
-        if (Form.FieldControls.Contains(OptionCategoryDefaultRecordColumn))
-        {
-            AdditionalOptionText = ValidationHelper.GetString(Form.FieldControls[OptionCategoryDefaultRecordColumn].Value, "").Trim();
-        }
+            // Default record text
+            if (Form.FieldControls.Contains(OptionCategoryDefaultRecordColumn))
+            {
+                AdditionalOptionText = ValidationHelper.GetString(Form.FieldControls[OptionCategoryDefaultRecordColumn].Value, "").Trim();
+            }
 
-        // Selection type
-        if (Form.FieldControls.Contains(OptionCategorySelectionTypeColumn))
-        {
-            SelectionType = ValidationHelper.GetString(Form.FieldControls[OptionCategorySelectionTypeColumn].Value, "").ToEnum<OptionCategorySelectionTypeEnum>();
+            // Selection type
+            if (Form.FieldControls.Contains(OptionCategorySelectionTypeColumn))
+            {
+                SelectionType = ValidationHelper.GetString(Form.FieldControls[OptionCategorySelectionTypeColumn].Value, "").ToEnum<OptionCategorySelectionTypeEnum>();
+            }
         }
     }
 

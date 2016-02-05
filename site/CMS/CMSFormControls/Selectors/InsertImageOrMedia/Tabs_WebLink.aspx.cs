@@ -9,8 +9,11 @@ public partial class CMSFormControls_Selectors_InsertImageOrMedia_Tabs_WebLink :
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        string output = QueryHelper.GetString("output", "");
+        OutputFormatEnum outputFormat = CMSDialogHelper.GetOutputFormat(output, QueryHelper.GetBoolean("link", false));
+
         // Check UIProfile
-        if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerUIElement("CMS.WYSIWYGEditor", "InsertLink"))
+        if ((outputFormat == OutputFormatEnum.HTMLLink) && !MembershipContext.AuthenticatedUser.IsAuthorizedPerUIElement("CMS.WYSIWYGEditor", "InsertLink"))
         {
             RedirectToUIElementAccessDenied("CMS.WYSIWYGEditor", "InsertLink");
         }
@@ -30,7 +33,7 @@ public partial class CMSFormControls_Selectors_InsertImageOrMedia_Tabs_WebLink :
         {
             webLinkSelector.StopProcessing = true;
             webLinkSelector.Visible = false;
-            string url = ResolveUrl("~/CMSMessages/Error.aspx?title=" + GetString("dialogs.badhashtitle") + "&text=" + GetString("dialogs.badhashtext") + "&cancel=1");
+            string url = ResolveUrl(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
             ltlScript.Text = ScriptHelper.GetScript("if (window.parent != null) { window.parent.location = '" + url + "' }");
         }
     }

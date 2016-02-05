@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Linq;
 
 using CMS.Core;
 using CMS.CustomTables;
@@ -42,21 +43,26 @@ public partial class CMSModules_CustomTables_CustomTable_List : CMSCustomTablesP
         else if (actionName == "delete")
         {
             int classId = ValidationHelper.GetInteger(actionArgument, 0);
-
-            if (classId > 0)
+            var dci = DataClassInfoProvider.GetDataClassInfo(classId);
+            if (dci == null)
             {
-                // If no item depends on the current class
-                if (!DataClassInfoProvider.CheckDependencies(classId))
-                {
-                    // Delete the class
-                    DataClassInfoProvider.DeleteDataClassInfo(classId);
-                    CustomTableItemProvider.ClearLicensesCount();
-                }
+                return;
             }
-            else
+
+            try
             {
-                // Display error on deleting
-                ShowError(GetString("customtable.delete.hasdependencies"));
+                // Delete the class
+                DataClassInfoProvider.DeleteDataClassInfo(classId);
+                CustomTableItemProvider.ClearLicensesCount();
+            }
+            catch (CheckDependenciesException)
+            {
+                var description = uniGrid.GetCheckDependenciesDescription(dci);
+                ShowError(GetString("unigrid.deletedisabledwithoutenable"), description);
+            }
+            catch (Exception ex)
+            {
+                LogAndShowError("Custom table", "Delete", ex);
             }
         }
     }

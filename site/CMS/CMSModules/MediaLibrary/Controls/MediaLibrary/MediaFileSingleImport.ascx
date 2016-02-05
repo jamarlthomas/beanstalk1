@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileSingleImport"
-    Codebehind="MediaFileSingleImport.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileSingleImport"
+     Codebehind="MediaFileSingleImport.ascx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/System/LocalizableTextBox.ascx" TagName="LocalizableTextBox"
     TagPrefix="cms" %>
@@ -48,7 +48,7 @@
                             <div class="form-group">
                                 <div class="editing-form-value-cell-offset editing-form-value-cell">
                                     <cms:LocalizedButton ID="btnNew" runat="server" ButtonStyle="Primary" OnClick="btnNew_Click"
-                                        ValidationGroup="NewFileValidation" EnableViewState="false" ResourceString="general.import" />
+                                        ValidationGroup="NewFileValidation" EnableViewState="false" ResourceString="general.import" DisableAfterSubmit="true" />
                                 </div>
                             </div>
                         </div>

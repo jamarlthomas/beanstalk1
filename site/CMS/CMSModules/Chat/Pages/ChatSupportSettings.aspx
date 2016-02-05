@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" EnableEventValidation="false" Inherits="CMSModules_Chat_Pages_ChatSupportSettings" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Theme="Default" Codebehind="ChatSupportSettings.aspx.cs" %>
+    Theme="Default"  Codebehind="ChatSupportSettings.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Chat/Controls/UI/ChatSupportCannedResponse/List.ascx" TagName="ChatSupportCannedResponseList" TagPrefix="cms" %>
 

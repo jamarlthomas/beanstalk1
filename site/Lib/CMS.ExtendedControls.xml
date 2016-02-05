@@ -323,36 +323,6 @@
             Gets or sets the object from which data-bound control retrieves its list of data item.
             </summary>
         </member>
-        <member name="T:CMS.ExtendedControls.CMSAccordion">
-            <summary>
-            Accordion.
-            </summary>
-        </member>
-        <member name="M:CMS.ExtendedControls.CMSAccordion.OnInit(System.EventArgs)">
-            <summary>
-            Init event handler.
-            </summary>
-        </member>
-        <member name="P:CMS.ExtendedControls.CMSAccordion.ShortID">
-            <summary>
-            Short ID of the control.
-            </summary>
-        </member>
-        <member name="T:CMS.ExtendedControls.CMSAccordionPane">
-            <summary>
-            Accordion pane.
-            </summary>
-        </member>
-        <member name="M:CMS.ExtendedControls.CMSAccordionPane.OnInit(System.EventArgs)">
-            <summary>
-            Init event handler.
-            </summary>
-        </member>
-        <member name="P:CMS.ExtendedControls.CMSAccordionPane.ShortID">
-            <summary>
-            Short ID of the control.
-            </summary>
-        </member>
         <member name="T:CMS.ExtendedControls.ControlDefinition">
             <summary>
             Definition of the control. Pass in either string as control path or a Type as control type.
@@ -401,6 +371,67 @@
         <member name="P:CMS.ExtendedControls.ControlDefinition.Type">
             <summary>
             Control type
+            </summary>
+        </member>
+        <member name="T:CMS.ExtendedControls.ControlsLocalization">
+            <summary>
+            Localization support for controls
+            </summary>
+        </member>
+        <member name="M:CMS.ExtendedControls.ControlsLocalization.GetString(System.Web.UI.Control,System.String,System.String)">
+            <summary>
+            Returns a localized string for a control
+            </summary>
+            <param name="ctrl">Control</param>
+            <param name="stringName">String name</param>
+            <param name="culture">String culture</param>
+        </member>
+        <member name="M:CMS.ExtendedControls.ControlsLocalization.ApplyResourcePrefixes(System.Web.UI.Control,System.String)">
+            <summary>
+            Applies resource prefixes to the given string name
+            </summary>
+            <param name="ctrl">Control</param>
+            <param name="stringName">String name</param>
+        </member>
+        <member name="M:CMS.ExtendedControls.ControlsLocalization.GetLocalizedText(System.Web.UI.Control,System.String,System.String,System.String)">
+            <summary>
+            Gets the localized text for the control.
+            </summary>
+            <param name="ctrl">Control for which the text is retrieved</param>
+            <param name="resourceString">Resource string to localize</param>
+            <param name="source">Source for the localization - may be 'database' or 'file'</param>
+            <param name="text">Text to localize</param>
+        </member>
+        <member name="M:CMS.ExtendedControls.ControlsLocalization.ApplyResourcePrefixes(System.String,System.Collections.Generic.ICollection{System.String})">
+            <summary>
+            Applies resource prefixes to the given string name
+            </summary>
+            <param name="stringName">String name</param>
+            <param name="prefixes">List of prefixes to apply</param>
+        </member>
+        <member name="M:CMS.ExtendedControls.ControlsLocalization.GetPrefixFromControlHierarchy(System.Web.UI.Control)">
+            <summary>
+            Gets all non-empty prefixes from control hierarchy (via control parent).
+            </summary>        
+        </member>
+        <member name="T:CMS.ExtendedControls.SelectablePageTypeEnum">
+            <summary>
+            Defines which page types can be selected in the given dialog.
+            </summary>
+        </member>
+        <member name="F:CMS.ExtendedControls.SelectablePageTypeEnum.All">
+            <summary>
+            All page types can be selected.
+            </summary>
+        </member>
+        <member name="F:CMS.ExtendedControls.SelectablePageTypeEnum.Standard">
+            <summary>
+            Only standard pages can be selected. Content-only pages cannot be selected.
+            </summary>
+        </member>
+        <member name="F:CMS.ExtendedControls.SelectablePageTypeEnum.ContentOnly">
+            <summary>
+            Only content only pages can be selected. Standard pages cannot be selected.
             </summary>
         </member>
         <member name="T:CMS.ExtendedControls.DocumentComponentEvents">
@@ -1431,6 +1462,11 @@
             Indicates if security parameters in macros are handled automatically.
             </summary>
         </member>
+        <member name="P:CMS.ExtendedControls.CMSTextBox.DecodeMacrosBeforeSign">
+            <summary>
+            Indicates if macro expressions should be decoded before security parameters are computed. Default <c>False</c>.
+            </summary>
+        </member>
         <member name="P:CMS.ExtendedControls.CMSTextBox.IsLiveSite">
             <summary>
             Indicates if control is used on live site.
@@ -1444,8 +1480,12 @@
         <member name="P:CMS.ExtendedControls.CMSTextBox.Text">
             <summary>
             Gets or sets the text content of the System.Web.UI.WebControls.TextBox control.
-            If ProcessMacroSecurity is true, macro security parameters are processed.
+            If ProcessMacroSecurity is true, macro security parameters are processed.       
             </summary>
+            <remarks>
+            IMPORTANT: keyword "new" is at use to hide macro signatures from output. 
+            In case of "override" keyword, macros in CMSTextArea controls (such as the transformation editor) will be display with full signature (hash).
+            </remarks>
         </member>
         <member name="P:CMS.ExtendedControls.CMSTextBox.EnableAutoComplete">
             <summary>
@@ -1745,6 +1785,11 @@
             Icon leading the alert message.
             </summary>
         </member>
+        <member name="P:CMS.ExtendedControls.AlertLabel.LabelClientID">
+            <summary>
+            Returns the client ID of the label element.
+            </summary>
+        </member>
         <member name="T:CMS.ExtendedControls.DialogHandlers">
             <summary>
             Dialog handlers.
@@ -2032,11 +2077,6 @@
             Indicates if the action should be visible due to attributes values
             </summary>
         </member>
-        <member name="P:CMS.ExtendedControls.ActionsConfig.HeaderAction.IsLiveSite">
-            <summary>
-            Indicates if action is used on a live site
-            </summary>
-        </member>
         <member name="P:CMS.ExtendedControls.ActionsConfig.HeaderAction.GenerateSeparatorBeforeAction">
             <summary>
             Indicates whether separator class should be used before current item
@@ -2044,7 +2084,7 @@
         </member>
         <member name="P:CMS.ExtendedControls.ActionsConfig.HeaderAction.Text">
             <summary>
-            Specifies the the caption of the item.
+            Specifies the caption of the item.
             Sample value: "Caption string"
             (Has higher priority than the resource string.)
             </summary>
@@ -2072,7 +2112,7 @@
         <member name="P:CMS.ExtendedControls.ActionsConfig.HeaderAction.ButtonStyle">
             <summary>
             Style of the header action button. Only applicable when action has no alternative actions.
-            Multibutton (button displaying alternative actions) is always default
+            Multi-button (button displaying alternative actions) is always default.
             </summary>
         </member>
         <member name="P:CMS.ExtendedControls.ActionsConfig.HeaderAction.Enabled">
@@ -2108,7 +2148,7 @@
         <member name="P:CMS.ExtendedControls.ActionsConfig.HeaderAction.Inactive">
             <summary>
             Indicates if the action is inactive. Only applicable when action has alternative action.
-            When inactive action can't be executed. Clicking on the action is used to toogle the visibility of alternative actions.
+            When inactive action can't be executed. Clicking on the action is used to toggle the visibility of alternative actions.
             </summary>
         </member>
         <member name="P:CMS.ExtendedControls.ActionsConfig.HeaderAction.ValidationGroup">
@@ -2173,11 +2213,10 @@
             Class for the comment action.
             </summary>
         </member>
-        <member name="M:CMS.ExtendedControls.ActionsConfig.CommentAction.#ctor(System.Web.UI.Page,System.String)">
+        <member name="M:CMS.ExtendedControls.ActionsConfig.CommentAction.#ctor(System.String)">
             <summary>
             Constructor
             </summary>
-            <param name="page">Page</param>
             <param name="actionName">Action name</param>
         </member>
         <member name="T:CMS.ExtendedControls.ActionsConfig.CustomizeAction">
@@ -2185,7 +2224,7 @@
             Class for the customize action.
             </summary>
         </member>
-        <member name="M:CMS.ExtendedControls.ActionsConfig.CustomizeAction.#ctor(System.Web.UI.Page)">
+        <member name="M:CMS.ExtendedControls.ActionsConfig.CustomizeAction.#ctor">
             <summary>
             Constructor
             </summary>
@@ -2195,7 +2234,7 @@
             Class for the delete action.
             </summary>
         </member>
-        <member name="M:CMS.ExtendedControls.ActionsConfig.DeleteAction.#ctor(System.Web.UI.Page)">
+        <member name="M:CMS.ExtendedControls.ActionsConfig.DeleteAction.#ctor">
             <summary>
             Constructor
             </summary>
@@ -2205,7 +2244,7 @@
             Class for the document approve action.
             </summary>
         </member>
-        <member name="M:CMS.ExtendedControls.ActionsConfig.DocumentApproveAction.#ctor(System.Web.UI.Page)">
+        <member name="M:CMS.ExtendedControls.ActionsConfig.DocumentApproveAction.#ctor">
             <summary>
             Constructor
             </summary>
@@ -2215,7 +2254,7 @@
             Class for the document archive action.
             </summary>
         </member>
-        <member name="M:CMS.ExtendedControls.ActionsConfig.DocumentArchiveAction.#ctor(System.Web.UI.Page)">
+        <member name="M:CMS.ExtendedControls.ActionsConfig.DocumentArchiveAction.#ctor">
             <summary>
             Constructor
             </summary>
@@ -2225,7 +2264,7 @@
             Class for the document check-in action.
             </summary>
         </member>
-        <member name="M:CMS.ExtendedControls.ActionsConfig.DocumentCheckInAction.#ctor(System.Web.UI.Page)">
+        <member name="M:CMS.ExtendedControls.ActionsConfig.DocumentCheckInAction.#ctor">
             <summary>
             Constructor
             </summary>
@@ -2235,7 +2274,7 @@
             Class for the document check-out action.
             </summary>
         </member>
-        <member name="M:CMS.ExtendedControls.ActionsConfig.DocumentCheckOutAction.#ctor(System.Web.UI.Page)">
+        <member name="M:CMS.ExtendedControls.ActionsConfig.DocumentCheckOutAction.#ctor">
             <summary>
             Constructor
             </summary>
@@ -2245,7 +2284,7 @@
             Class for the direct document publish action.
             </summary>
         </member>
-        <member name="M:CMS.ExtendedControls.ActionsConfig.DocumentPublishAction.#ctor(System.Web.UI.Page)">
+        <member name="M:CMS.ExtendedControls.ActionsConfig.DocumentPublishAction.#ctor">
             <summary>
             Constructor
             </summary>
@@ -2255,7 +2294,7 @@
             Class for the reject action.
             </summary>
         </member>
-        <member name="M:CMS.ExtendedControls.ActionsConfig.DocumentRejectAction.#ctor(System.Web.UI.Page)">
+        <member name="M:CMS.ExtendedControls.ActionsConfig.DocumentRejectAction.#ctor">
             <summary>
             Constructor
             </summary>
@@ -2265,7 +2304,7 @@
             Class for the document undo check-out action.
             </summary>
         </member>
-        <member name="M:CMS.ExtendedControls.ActionsConfig.DocumentUndoCheckOutAction.#ctor(System.Web.UI.Page)">
+        <member name="M:CMS.ExtendedControls.ActionsConfig.DocumentUndoCheckOutAction.#ctor">
             <summary>
             Constructor
             </summary>
@@ -2275,7 +2314,7 @@
             Class for the save action.
             </summary>
         </member>
-        <member name="M:CMS.ExtendedControls.ActionsConfig.SaveAction.#ctor(System.Web.UI.Page)">
+        <member name="M:CMS.ExtendedControls.ActionsConfig.SaveAction.#ctor">
             <summary>
             Constructor
             </summary>
@@ -3233,6 +3272,21 @@
             User control base.
             </summary>
         </member>
+        <member name="T:CMS.ExtendedControls.IResourcePrefixManager">
+            <summary>
+            Manages the resource prefixes on the controls level
+            </summary>
+        </member>
+        <member name="P:CMS.ExtendedControls.IResourcePrefixManager.ResourcePrefix">
+            <summary>
+            Prefix for the resource strings which are used for the localization by the control and its child controls. 
+            </summary>
+        </member>
+        <member name="P:CMS.ExtendedControls.IResourcePrefixManager.ResourcePrefixes">
+            <summary>
+            List of cached resource prefixes for the parent hierarchy
+            </summary>
+        </member>
         <member name="M:CMS.ExtendedControls.AbstractUserControl.ResolveUrl(System.String)">
             <summary>
             Resolves the given URL
@@ -3374,10 +3428,19 @@
         </member>
         <member name="M:CMS.ExtendedControls.AbstractUserControl.GetString(System.String,System.String)">
             <summary>
-            Returns localized string.
+            Returns the localized string of the control's hierarchically highest parent that has the <see cref="P:CMS.ExtendedControls.AbstractUserControl.ResourcePrefix"/> property and its translation defined. 
             </summary>
-            <param name="stringName">String to localize</param>
-            <param name="culture">Culture to be used for localization</param>
+            <remarks>
+            <para>
+            If no parent but the control has the property defined, returns the control's localized string.
+            </para>
+            <para>
+            If none of them have the <see cref="P:CMS.ExtendedControls.AbstractUserControl.ResourcePrefix"/> property defined, returns the default resource string translation.
+            </para>
+            </remarks>
+            <param name="stringName">String to localize.</param>
+            <param name="culture">Culture to be used for localization.</param>
+            <seealso cref="P:CMS.ExtendedControls.AbstractUserControl.ResourcePrefix"/>
         </member>
         <member name="M:CMS.ExtendedControls.AbstractUserControl.ShowChangesSaved">
             <summary>
@@ -3529,6 +3592,24 @@
             Document manager control
             </summary>
         </member>
+        <member name="P:CMS.ExtendedControls.AbstractUserControl.ResourcePrefix">
+            <summary>
+            Prefix for the resource strings which are used for the localization by the control and its child controls. 
+            </summary>
+            <remarks>If custom translation is not defined, the default resource string translation is used. Localization is called through <see cref="M:CMS.ExtendedControls.AbstractUserControl.GetString(System.String,System.String)"/> method.</remarks>
+            <example>The following code is internally represented as "customprefix.ok|general.ok" resource string key if the property is set to the "customprefix" value.
+            <code>
+            ResourcePrefix = "customprefix";
+            var localizedString = GetString("general.ok");
+            </code>
+            </example>
+            <seealso cref="M:CMS.ExtendedControls.AbstractUserControl.GetString(System.String,System.String)"/>
+        </member>
+        <member name="P:CMS.ExtendedControls.AbstractUserControl.ResourcePrefixes">
+            <summary>
+            List of cached resource prefixes for the parent hierarchy
+            </summary>
+        </member>
         <member name="P:CMS.ExtendedControls.AbstractUserControl.CurrentPageInfo">
             <summary>
             Current page info
@@ -3601,7 +3682,7 @@
         </member>
         <member name="F:CMS.ExtendedControls.HeaderActions.TYPE_LINKBUTTON">
             <summary>
-            Link button button type
+            Link button type
             </summary>
         </member>
         <member name="F:CMS.ExtendedControls.HeaderActions.TYPE_HYPERLINK">
@@ -3616,7 +3697,7 @@
         </member>
         <member name="F:CMS.ExtendedControls.HeaderActions.ActionControlCreated">
             <summary>
-            Event fired before and after every action control contruction
+            Event fired before and after every action control construction.
             </summary>
         </member>
         <member name="M:CMS.ExtendedControls.HeaderActions.RaiseActionPerformed(System.Object,System.Web.UI.WebControls.CommandEventArgs)">
@@ -3626,41 +3707,87 @@
         </member>
         <member name="M:CMS.ExtendedControls.HeaderActions.ReloadData">
             <summary>
-            Reloads the action data.
-            </summary>
-        </member>
-        <member name="M:CMS.ExtendedControls.HeaderActions.IsVisible">
-            <summary>
-            Indicates if the menu has content to display
+            Reloads the action panel - creates actions from the <see cref="P:CMS.ExtendedControls.HeaderActions.ActionsList"/>.
             </summary>
         </member>
         <member name="M:CMS.ExtendedControls.HeaderActions.AddAction(CMS.ExtendedControls.ActionsConfig.HeaderAction)">
             <summary>
-            Adds action.
+            Adds given action to the <see cref="P:CMS.ExtendedControls.HeaderActions.ActionsList"/>.
             </summary>
             <param name="action">Action</param>
         </member>
         <member name="M:CMS.ExtendedControls.HeaderActions.AddActions(CMS.ExtendedControls.ActionsConfig.HeaderAction[])">
             <summary>
-            Adds the list of header actions
+            Adds the list of header actions to the <see cref="P:CMS.ExtendedControls.HeaderActions.ActionsList"/>.
             </summary>
             <param name="actions">Header actions</param>
         </member>
         <member name="M:CMS.ExtendedControls.HeaderActions.InsertAction(System.Int32,CMS.ExtendedControls.ActionsConfig.HeaderAction)">
             <summary>
-            Inserts action at specified index.
+            Inserts action to the <see cref="P:CMS.ExtendedControls.HeaderActions.ActionsList"/> at specified index.
             </summary>
             <param name="index">Index</param>
             <param name="action">Action</param>
         </member>
         <member name="M:CMS.ExtendedControls.HeaderActions.ReloadAdditionalControls">
             <summary>
-            Reload additional actions.
+            Reloads additional controls panel from the list <see cref="P:CMS.ExtendedControls.HeaderActions.AdditionalControls"/>.
             </summary>
+        </member>
+        <member name="M:CMS.ExtendedControls.HeaderActions.HasAnyVisibleAction">
+            <summary>
+            Indicates if the menu has any action to display.
+            </summary>
+        </member>
+        <member name="M:CMS.ExtendedControls.HeaderActions.IsVisible">
+            <summary>
+            Indicates if the menu has content to display.
+            </summary>
+        </member>
+        <member name="M:CMS.ExtendedControls.HeaderActions.Clear">
+            <summary>
+            Clears content rendered by header actions control.
+            </summary>
+        </member>
+        <member name="M:CMS.ExtendedControls.HeaderActions.CheckPermissions(System.String,System.String)">
+            <summary>
+            Returns true if user has permission for given resource.
+            Returns true for empty resource name or permission.
+            </summary>
+            <param name="resourceName">Resource name</param>
+            <param name="permission">Permission name to check</param>
+        </member>
+        <member name="M:CMS.ExtendedControls.HeaderActions.IsActionVisible(CMS.ExtendedControls.ActionsConfig.HeaderAction)">
+            <summary>
+            Indicates if given action can be added to the header.
+            </summary>
+            <param name="action">Action to be checked</param>
+        </member>
+        <member name="M:CMS.ExtendedControls.HeaderActions.RegisterSaveShortcutScript(CMS.ExtendedControls.ActionsConfig.HeaderAction,System.String)">
+            <summary>
+            Register the CRTL+S shortcut.
+            </summary>
+            <param name="action">Save header action</param>
+            <param name="scriptID">Id of the save control</param>
         </member>
         <member name="E:CMS.ExtendedControls.HeaderActions.ActionPerformed">
             <summary>
             Event which raises when LinkButton is used for action and its Command event raises.
+            </summary>
+        </member>
+        <member name="P:CMS.ExtendedControls.HeaderActions.UpdatePanel">
+            <summary>
+            Update panel
+            </summary>
+        </member>
+        <member name="P:CMS.ExtendedControls.HeaderActions.ActionsPanel">
+            <summary>
+            Panel for actions.
+            </summary>
+        </member>
+        <member name="P:CMS.ExtendedControls.HeaderActions.AdditionalControlsPanel">
+            <summary>
+            Panel for additional controls.
             </summary>
         </member>
         <member name="P:CMS.ExtendedControls.HeaderActions.UseBasicStyles">
@@ -3673,48 +3800,14 @@
             Indicates if container should be rendered
             </summary>
         </member>
-        <member name="P:CMS.ExtendedControls.HeaderActions.UpdatePanel">
-            <summary>
-            Update panel
-            </summary>
-        </member>
         <member name="P:CMS.ExtendedControls.HeaderActions.PerformFullPostBack">
             <summary>
             Indicates if the actions should perform full post-back
             </summary>
         </member>
-        <member name="P:CMS.ExtendedControls.HeaderActions.Actions">
-            <summary>
-            Gets or sets the array of actions. The meaning of the indexes:
-            (0,0): Type of the link (HyperLink or LinkButton), 
-            (0,1): Text of the action link, 
-            (0,2): JavaScript command to be performed OnClick action, 
-            (0,3): NavigationUrl of the HyperLink (or PostBackUrl of LinkButton), 
-            (0,4): Tooltip of the action link, 
-            (0,5): Action image URL, 
-            (0,6): CommandName of the LinkButton Command event, 
-            (0,7): CommandArgument of the LinkButton Command event.
-            (0,8): Register shortcut action (TRUE/FALSE)
-            (0,9): Enabled state of the action (TRUE/FALSE)
-            (0,10): Visibility of the action (TRUE/FALSE)
-            (0,11): Hyperlink target (only if type is hyperlink).
-            (0,12): Use ImageButton instead of Image (TRUE/FALSE).
-            At least first two arguments must be defined.
-            </summary>
-        </member>
-        <member name="P:CMS.ExtendedControls.HeaderActions.ActionsList">
-            <summary>
-            Gets or sets the list of actions
-            </summary>
-        </member>
         <member name="P:CMS.ExtendedControls.HeaderActions.Enabled">
             <summary>
-            Gets or sets the enabled property of all actions.
-            </summary>
-        </member>
-        <member name="P:CMS.ExtendedControls.HeaderActions.PanelCssClass">
-            <summary>
-            Gets or sets CssClass of the panel where all the actions are placed.
+            Indicates if control is enabled.
             </summary>
         </member>
         <member name="P:CMS.ExtendedControls.HeaderActions.UseSmallIcons">
@@ -3722,14 +3815,34 @@
             Indicates if small icons should be used for actions
             </summary>
         </member>
-        <member name="P:CMS.ExtendedControls.HeaderActions.AdditionalControls">
+        <member name="P:CMS.ExtendedControls.HeaderActions.ActionsList">
             <summary>
-            Additional controls
+            Gets or sets the list of actions
+            </summary>
+        </member>
+        <member name="P:CMS.ExtendedControls.HeaderActions.PanelCssClass">
+            <summary>
+            Gets or sets CssClass of the panel where all the actions are placed.
             </summary>
         </member>
         <member name="P:CMS.ExtendedControls.HeaderActions.AdditionalControlsCssClass">
             <summary>
             Additional controls CSS class
+            </summary>
+        </member>
+        <member name="P:CMS.ExtendedControls.HeaderActions.AdditionalControls">
+            <summary>
+            Additional controls list
+            </summary>
+        </member>
+        <member name="P:CMS.ExtendedControls.HeaderActions.ProcessedBaseButtons">
+            <summary>
+            List of processed base buttons
+            </summary>
+        </member>
+        <member name="P:CMS.ExtendedControls.HeaderActions.ShortcutAction">
+            <summary>
+            Action that is connected with a keyboard shortcut.
             </summary>
         </member>
         <member name="T:CMS.ExtendedControls.ICMSObjectManager">
@@ -3873,6 +3986,11 @@
         <member name="P:CMS.ExtendedControls.FileSystemDialogConfiguration.ShowFolders">
             <summary>
             Determines if folder mode is turned on or if file should be selected.
+            </summary>
+        </member>
+        <member name="P:CMS.ExtendedControls.FileSystemDialogConfiguration.AllowZipFolders">
+            <summary>
+            Determines if the selector should display zip folders.
             </summary>
         </member>
         <member name="P:CMS.ExtendedControls.FileSystemDialogConfiguration.EditorClientID">
@@ -5019,11 +5137,6 @@
             </summary>
             <param name="useDocumentHelper">If true, the document helper is used to update the document</param>
         </member>
-        <member name="M:CMS.ExtendedControls.ICMSDocumentManager.RemoveWireframe">
-            <summary>
-            Removes the wireframe from current document
-            </summary>
-        </member>
         <member name="M:CMS.ExtendedControls.ICMSDocumentManager.ClearContentChanged">
             <summary>
             Clears content changed flag
@@ -6016,6 +6129,29 @@
             <param name="handler">Handler control</param>
             <param name="ex">Exception to report</param>
         </member>
+        <member name="M:CMS.ExtendedControls.ControlsExtensions.GetString(System.Web.UI.Control,System.String)">
+            <summary>
+            Gets the string by the specified resource key
+            </summary>
+            <param name="ctrl">Object</param>
+            <param name="resourceKey">Resource key</param>
+        </member>
+        <member name="M:CMS.ExtendedControls.ControlsExtensions.AddLocalizedItem(System.Web.UI.WebControls.ListControl,System.String,System.String)">
+            <summary>
+            Adds a localized item to the list control
+            </summary>
+            <param name="listControl">List control</param>
+            <param name="resourceKey">Resource string</param>
+            <param name="value">Item value</param>
+        </member>
+        <member name="M:CMS.ExtendedControls.ControlsExtensions.CreateLocalizedItem(System.Web.UI.WebControls.ListControl,System.String,System.String)">
+            <summary>
+            Creates a localized item for the given list control
+            </summary>
+            <param name="listControl">List control</param>
+            <param name="resourceKey">Resource string</param>
+            <param name="value">Item value</param>
+        </member>
         <member name="M:CMS.ExtendedControls.ControlsExtensions.GetRenderedHTML(System.Web.UI.WebControls.WebControl)">
             <summary>
             Returns HTML which would be rendered by control to page.
@@ -6513,13 +6649,6 @@
             <param name="ext">Extension to check</param>
             <param name="isContentFile">Content file item flag</param>
         </member>
-        <member name="M:CMS.ExtendedControls.CMSDialogHelper.IsItemSelectable(CMS.ExtendedControls.SelectableContentEnum,System.String)">
-            <summary>
-            Indicates whether the file with specified extension is selectable according specified condition.
-            </summary>        
-            <param name="selectableContent">Indicates what type of files is selectable</param>
-            <param name="ext">Extension of the file to check</param>
-        </member>
         <member name="M:CMS.ExtendedControls.CMSDialogHelper.RegisterDialogHelper(System.Web.UI.Page)">
             <summary>
             Ensures registration of dialog helper JavaScript.
@@ -6849,6 +6978,11 @@
         <member name="P:CMS.ExtendedControls.DialogConfiguration.SelectableContent">
             <summary>
             Dialog selectable content.
+            </summary>
+        </member>
+        <member name="P:CMS.ExtendedControls.DialogConfiguration.SelectablePageTypes">
+            <summary>
+            Dialog selectable page types.
             </summary>
         </member>
         <member name="P:CMS.ExtendedControls.DialogConfiguration.CustomFormatCode">
@@ -7501,6 +7635,11 @@
         <member name="F:CMS.ExtendedControls.DialogParameters.FILE_SIZE">
             <summary>
             File size.
+            </summary>
+        </member>
+        <member name="F:CMS.ExtendedControls.DialogParameters.CONTENT_CHANGED">
+            <summary>
+            Content changed flag
             </summary>
         </member>
         <member name="M:CMS.ExtendedControls.DialogParameters.GetImageParameters(System.Collections.Hashtable)">
@@ -8194,6 +8333,11 @@
         <member name="P:CMS.ExtendedControls.UploaderHelper.TargetFolderPath">
             <summary>
             Path to the target folder.
+            </summary>
+        </member>
+        <member name="P:CMS.ExtendedControls.UploaderHelper.TempPath">
+            <summary>
+            Path to the temporary directory used for all uploaded files.
             </summary>
         </member>
         <member name="P:CMS.ExtendedControls.UploaderHelper.TargetFileName">
@@ -9036,14 +9180,6 @@
             Returns dataset with columns Text and Value for a dropdown list source. If resource prefix is defined, text is resolved as resource string "[prefix].value"
             </summary>
         </member>
-        <member name="M:CMS.ExtendedControls.ControlsHelper.AddDataRow(System.Data.DataTable,System.String,System.String)">
-            <summary>
-            Adds data row with text and value to given table
-            </summary>
-            <param name="table">Data table</param>
-            <param name="text">Item text</param>
-            <param name="value">Item value</param>
-        </member>
         <member name="M:CMS.ExtendedControls.ControlsHelper.ToolkitCombinedScriptHandler(System.Web.HttpContext)">
             <summary>
             Handle URLs for combined script request generated by toolkit script manager
@@ -9259,13 +9395,6 @@
             </summary>
             <param name="page">Page</param>
         </member>
-        <member name="M:CMS.ExtendedControls.ControlsHelper.ChildCausedPostBack(System.Web.UI.Control,System.Boolean)">
-            <summary>
-            Determines whether any child controls of given control caused the postback.
-            </summary>
-            <param name="parent">Parent control</param>
-            <param name="recursive">Indicates whether the whole control tree should be searched or just first level of children.</param>
-        </member>
         <member name="M:CMS.ExtendedControls.ControlsHelper.ChildCausedPostBackInternal(System.Web.UI.Control,System.Boolean)">
             <summary>
             Determines whether any child controls of given control caused the postback.
@@ -9461,7 +9590,7 @@
             Takes the <see cref="T:CMS.Helpers.EnumStringRepresentationAttribute"/> into account when working with the enum values.
             </remarks>
         </member>
-        <member name="M:CMS.ExtendedControls.ControlsHelper.FillListControlWithEnum(System.Web.UI.WebControls.ListControl,System.Type,System.String,System.Boolean,System.Boolean,System.Collections.Generic.List{System.String})">
+        <member name="M:CMS.ExtendedControls.ControlsHelper.FillListControlWithEnum(System.Web.UI.WebControls.ListControl,System.Type,System.String,System.Boolean,System.Boolean,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String})">
             <summary>
             Fills the specified <see cref="T:System.Web.UI.WebControls.ListControl"/> with the items created from the specified enum type.
             </summary>
@@ -9484,11 +9613,15 @@
             <remarks>
             Takes the <see cref="T:CMS.Helpers.EnumStringRepresentationAttribute"/> into account when working with the enum values.
             </remarks>
+            <param name="selectedCategories">
+            Only enums from selected enum categories will be used. 
+            </param>
         </member>
-        <member name="M:CMS.ExtendedControls.ControlsHelper.GetEnumListItem(System.Type,System.String,System.String,System.Boolean)">
+        <member name="M:CMS.ExtendedControls.ControlsHelper.GetEnumListItem(System.Web.UI.WebControls.ListControl,System.Type,System.String,System.String,System.Boolean)">
             <summary>
             Gets list item for enumeration.
             </summary>
+            <param name="listControl">List control</param>
             <param name="enumType">Enum type</param>
             <param name="name">Enum item name</param>
             <param name="resourcePrefix">
@@ -9932,11 +10065,6 @@
             If true, the ViewState has been already tracked.
             </summary>
         </member>
-        <member name="F:CMS.ExtendedControls.InlineUserControl.properties">
-            <summary>
-            Control properties.
-            </summary>
-        </member>
         <member name="M:CMS.ExtendedControls.InlineUserControl.OnContentLoaded">
             <summary>
             Method that is called when the control content is loaded.
@@ -9972,6 +10100,11 @@
             </summary>
             <param name="propertyName">Property name to set</param>
             <param name="value">New property value</param>
+        </member>
+        <member name="P:CMS.ExtendedControls.InlineUserControl.Properties">
+            <summary>
+            Control properties.
+            </summary>
         </member>
         <member name="P:CMS.ExtendedControls.InlineUserControl.Parameter">
             <summary>
@@ -10407,6 +10540,11 @@
         <member name="P:CMS.ExtendedControls.Uploader.TooltipBody">
             <summary>
             Tool tip body.
+            </summary>
+        </member>
+        <member name="P:CMS.ExtendedControls.Uploader.UploadControl">
+            <summary>
+            Returns inner upload control.
             </summary>
         </member>
         <member name="E:CMS.ExtendedControls.Uploader.OnDeleteFile">

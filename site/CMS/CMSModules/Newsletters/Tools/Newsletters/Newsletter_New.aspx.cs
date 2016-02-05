@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -242,7 +242,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_New : C
             task.TaskLastResult = string.Empty;
             task.TaskName = ValidationHelper.GetCodeName("DynamicNewsletter." + editedObject.NewsletterName, "_", maxLength - newsletterGUID.Length) + newsletterGUID;
             task.TaskSiteID = SiteContext.CurrentSiteID;
-            task.TaskNextRunTime = SchedulingHelper.GetNextTime(task.TaskInterval, new DateTime(), new DateTime());
+            task.TaskNextRunTime = SchedulingHelper.GetNextTime(ScheduleInterval.TaskInterval);
             task.TaskData = newsletterGUID;
             // Set task for processing in external service
             task.TaskAllowExternalService = true;

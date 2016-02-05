@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalSimplePage.master"
-    EnableEventValidation="false" AutoEventWireup="True" Codebehind="EditTextFile.aspx.cs"
+    EnableEventValidation="false" AutoEventWireup="True"  Codebehind="EditTextFile.aspx.cs"
     Inherits="CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSelector_EditTextFile"
     Theme="Default" %>
 

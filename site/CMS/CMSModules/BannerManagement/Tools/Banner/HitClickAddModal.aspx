@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_BannerManagement_Tools_Banner_HitClickAddModal" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Theme="Default" Codebehind="HitClickAddModal.aspx.cs" %>
+    Theme="Default"  Codebehind="HitClickAddModal.aspx.cs" %>
 
 <asp:Content runat="server" ContentPlaceHolderID="plcContent" ID="content">
     <div class="form-horizontal">

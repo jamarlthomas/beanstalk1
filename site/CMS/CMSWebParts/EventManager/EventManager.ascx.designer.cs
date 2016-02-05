@@ -153,7 +153,7 @@ public partial class CMSWebParts_EventManager_EventManager {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSTextBox txtPhone;
+    protected global::CMSFormControls_Inputs_InternationalPhone txtPhone;
     
     /// <summary>
     /// btnRegister control.

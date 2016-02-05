@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.Base;
@@ -57,7 +57,11 @@ public partial class CMSModules_BannedIP_Tools_BannedIP_List : CMSBannedIPsPage
         // Set disabled module info
         int currentSiteID = ((SiteID > 0) ? SiteID : SelectedSiteID);
 
-        if (currentSiteID <= 0)
+        if (currentSiteID < 0)
+        {
+            ucDisabledModule.KeyScope = DisabledModuleScope.AllSitesAndGlobal;
+        }
+        else if (currentSiteID == 0)
         {
             ucDisabledModule.KeyScope = DisabledModuleScope.Global;
         }

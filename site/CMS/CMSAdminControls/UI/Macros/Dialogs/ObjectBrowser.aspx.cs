@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 
 using CMS.UIControls;
@@ -11,6 +11,7 @@ public partial class CMSAdminControls_UI_Macros_Dialogs_ObjectBrowser : GlobalAd
     {
         editorElem.Editor.ShowToolbar = false;
         editorElem.MixedMode = false;
+        editorElem.Editor.DynamicHeight = true;
 
         treeElem.VirtualMode = false;
         treeElem.DisplayValues = false;

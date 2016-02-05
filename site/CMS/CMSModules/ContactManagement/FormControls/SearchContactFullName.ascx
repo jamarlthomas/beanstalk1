@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SearchContactFullName.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SearchContactFullName.ascx.cs"
     Inherits="CMSModules_ContactManagement_FormControls_SearchContactFullName" %>
 <asp:Panel CssClass="form-horizontal form-filter" runat="server" ID="pnlSearch" DefaultButton="btnSelect">
     <div class="form-group">

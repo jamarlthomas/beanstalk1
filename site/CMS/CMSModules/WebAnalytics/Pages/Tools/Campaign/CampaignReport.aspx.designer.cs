@@ -12,6 +12,15 @@
 public partial class CMSModules_WebAnalytics_Pages_Tools_Campaign_CampaignReport {
     
     /// <summary>
+    /// reportHeaderActions control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMSModules_WebAnalytics_Controls_ReportHeader reportHeaderActions;
+    
+    /// <summary>
     /// pnlDisabled control.
     /// </summary>
     /// <remarks>
@@ -28,15 +37,6 @@ public partial class CMSModules_WebAnalytics_Pages_Tools_Campaign_CampaignReport
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMSAdminControls_Basic_DisabledModuleInfo ucDisabledModule;
-    
-    /// <summary>
-    /// reportHeaderActions control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMSModules_WebAnalytics_Controls_ReportHeader reportHeaderActions;
     
     /// <summary>
     /// ucGraphPreLoader control.

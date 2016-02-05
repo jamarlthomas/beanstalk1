@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_AbuseReport_AbuseReport_ObjectDetails" Title="Untitled Page"
-    ValidateRequest="false" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" Codebehind="AbuseReport_ObjectDetails.aspx.cs" %>
+    ValidateRequest="false" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"  Codebehind="AbuseReport_ObjectDetails.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/ObjectDataViewer.ascx" TagName="ObjectDataViewer"
     TagPrefix="cms" %>

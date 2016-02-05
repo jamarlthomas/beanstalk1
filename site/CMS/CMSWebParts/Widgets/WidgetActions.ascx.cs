@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Web;
 using System.Web.UI;
+using System.Linq;
+using System.Xml;
 
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -10,7 +11,6 @@ using CMS.PortalEngine;
 using CMS.DocumentEngine;
 using CMS.SiteProvider;
 using CMS.WorkflowEngine;
-using CMS.UIControls;
 using CMS.ExtendedControls.ActionsConfig;
 using CMS.Controls;
 using CMS.DataEngine;
@@ -433,6 +433,63 @@ public partial class CMSWebParts_Widgets_WidgetActions : CMSAbstractWebPart, IPo
 
 
     /// <summary>
+    /// Removes document content for all editor widgets in a given document.
+    /// </summary>
+    /// <param name="treeNode">Document to update</param>
+    /// <param name="pti">Page template instance</param>
+    /// <param name="omitUpdate">Indicates whether update on a given document should be omitted</param>
+    private void ClearEditorWidgetsContent(TreeNode treeNode, PageTemplateInstance pti, bool omitUpdate)
+    {
+        var documentWebPartsXml = treeNode.GetStringValue("DocumentWebParts", String.Empty);
+
+        if (String.IsNullOrEmpty(documentWebPartsXml))
+        {
+            return;
+        }
+
+        var webPartIds = new List<string>();
+
+        // Get web part IDs from DocumentWebParts column
+        webPartIds.AddRange(GetWebPartIDs(documentWebPartsXml));
+
+        // Get web part IDs from page template (widget zones only) and combine them with existing list. 
+        webPartIds.AddRange(GetWebPartIDs(pti.GetZonesXML(WidgetZoneTypeEnum.Editor)));
+
+        // Remove web part IDs from DocumentContent
+        foreach (var wpId in webPartIds.Distinct())
+        {
+            treeNode.DocumentContent.EditableWebParts.Remove(wpId);
+        }
+
+        treeNode.SetValue("DocumentContent", treeNode.DocumentContent.GetContentXml());
+
+        if (!omitUpdate)
+        {
+            DocumentHelper.UpdateDocument(treeNode, TreeProvider);
+        }
+    }
+
+
+    /// <summary>
+    /// Returns collection of web part IDs found within a given XML string. 
+    /// </summary>
+    /// <param name="sourceXml">Source XML</param>
+    private IEnumerable<string> GetWebPartIDs(string sourceXml)
+    {
+        if (String.IsNullOrEmpty(sourceXml))
+        {
+            return Enumerable.Empty<string>();
+        }
+
+        var tempDoc = new XmlDocument();
+        tempDoc.LoadXml(sourceXml);
+        return tempDoc.SelectNodes("//webpart").Cast<XmlNode>()
+            .Select(n => n.Attributes["controlid"].Value)
+            .ToList();
+    }
+
+
+    /// <summary>
     /// Handles reset button click. Resets zones of specified type to default settings.
     /// </summary>
     protected void btnReset_Click(object sender, EventArgs e)
@@ -479,6 +536,8 @@ public partial class CMSWebParts_Widgets_WidgetActions : CMSAbstractWebPart, IPo
                     {
                         node.SetValue("DocumentWebParts", String.Empty);
                     }
+
+                    ClearEditorWidgetsContent(node, pi.UsedPageTemplateInfo.TemplateInstance, updateDocument);
 
                     // Delete all variants 
                     if (pi.UsedPageTemplateInfo != null)
@@ -617,7 +676,7 @@ public partial class CMSWebParts_Widgets_WidgetActions : CMSAbstractWebPart, IPo
     private string GetAddWidgetButtonText()
     {
         String culture = ((PortalContext.ViewMode == ViewModeEnum.EditLive) || (PortalContext.ViewMode == ViewModeEnum.LiveSite)) ? DocumentContext.CurrentDocumentCulture.CultureCode : CultureHelper.PreferredUICultureCode;
-        return HTMLHelper.HTMLEncode(DataHelper.GetNotEmpty(AddButtonText, GetString("widgets.addwidget", culture)));
+        return DataHelper.GetNotEmpty(AddButtonText, GetString("widgets.addwidget", culture));
     }
 
 
@@ -628,7 +687,7 @@ public partial class CMSWebParts_Widgets_WidgetActions : CMSAbstractWebPart, IPo
     private string GetResetButtonText()
     {
         String culture = ((PortalContext.ViewMode == ViewModeEnum.EditLive) || (PortalContext.ViewMode == ViewModeEnum.LiveSite)) ? DocumentContext.CurrentDocumentCulture.CultureCode : CultureHelper.PreferredUICultureCode;
-        return HTMLHelper.HTMLEncode(DataHelper.GetNotEmpty(ResetButtonText, GetString("widgets.resettodefault", culture)));
+        return DataHelper.GetNotEmpty(ResetButtonText, GetString("widgets.resettodefault", culture));
     }
 
     #endregion

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.LicenseProvider;
@@ -8,9 +8,10 @@ using CMS.PortalEngine;
 using CMS.DocumentEngine;
 using CMS.SiteProvider;
 using CMS.UIControls;
+using CMS.DataEngine;
+using CMS.FormEngine;
 
 using TreeNode = CMS.DocumentEngine.TreeNode;
-using CMS.DataEngine;
 
 public partial class CMSModules_Blogs_Controls_NewBlog : CMSUserControl
 {
@@ -56,7 +57,7 @@ public partial class CMSModules_Blogs_Controls_NewBlog : CMSUserControl
 
 
     /// <summary>
-    /// Blog side columnt text.
+    /// Blog side column text.
     /// </summary>
     public string BlogSideColumnText
     {
@@ -120,7 +121,7 @@ public partial class CMSModules_Blogs_Controls_NewBlog : CMSUserControl
 
 
     /// <summary>
-    /// Indicates if new comments requir to be moderated before publishing.
+    /// Indicates if new comments require to be moderated before publishing.
     /// </summary>
     public bool BlogModerateComments
     {
@@ -247,6 +248,16 @@ public partial class CMSModules_Blogs_Controls_NewBlog : CMSUserControl
 
                 if (!CheckPermissions || user.IsAuthorizedToCreateNewDocument(parent, "cms.blog"))
                 {
+                    // Check if blog description allows empty value
+                    FormInfo formInfo = new FormInfo(blogClass.ClassFormDefinition);
+                    FormFieldInfo fieldInfo = formInfo.GetFormField("BlogDescription");
+                    if ((fieldInfo != null) && !fieldInfo.AllowEmpty && String.IsNullOrWhiteSpace(txtDescription.Text))
+                    {
+                        lblError.Visible = true;
+                        lblError.Text = GetString("blogs.newblog.descriptionempty");
+                        return;
+                    }
+
                     bool useParentNodeGroupID = tree.UseParentNodeGroupID;
                     TreeNode blogNode;
                     try
@@ -295,9 +306,6 @@ public partial class CMSModules_Blogs_Controls_NewBlog : CMSUserControl
                             }
                         }
 
-                        // Trackbacks are denied by default
-                        blogNode.SetValue("BlogEnableTrackbacks", false);
-
                         blogNode.DocumentName = txtName.Text.Trim();
                         blogNode.DocumentCulture = LocalizationContext.PreferredCultureCode;
                         DocumentHelper.InsertDocument(blogNode, parent, tree);
@@ -310,7 +318,7 @@ public partial class CMSModules_Blogs_Controls_NewBlog : CMSUserControl
                     if (RedirectToNewBlog)
                     {
                         // Redirect to the new blog
-                        URLHelper.Redirect(DocumentURLProvider.GetUrl(blogNode.NodeAliasPath));
+                        URLHelper.Redirect(DocumentURLProvider.GetUrl(blogNode));
                     }
                     else
                     {
@@ -332,12 +340,14 @@ public partial class CMSModules_Blogs_Controls_NewBlog : CMSUserControl
             }
         }
 
-        if (errorMessage != "")
+        if (errorMessage == "")
         {
-            // Display error message
-            lblError.Visible = true;
-            lblError.Text = errorMessage;
+            return;
         }
+
+        // Display error message
+        lblError.Visible = true;
+        lblError.Text = errorMessage;
     }
 
 

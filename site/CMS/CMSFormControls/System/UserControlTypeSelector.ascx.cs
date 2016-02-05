@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
-using System.Web.UI.WebControls;
 using System.Web.UI;
 
-using CMS.FormControls;
+using CMS.Controls;
+using CMS.ExtendedControls;
 using CMS.FormEngine;
 using CMS.Helpers;
-using CMS.SiteProvider;
-using CMS.Membership;
-using CMS.Controls;
 
 public partial class CMSFormControls_System_UserControlTypeSelector : CMSAbstractBaseFilterControl
 {
@@ -17,9 +13,7 @@ public partial class CMSFormControls_System_UserControlTypeSelector : CMSAbstrac
 
     private string mSelectedValue = String.Empty;
     private bool mIncludeAllItem = true;
-    private string mDataType = null;
     private FieldEditorControlsEnum mFieldEditorControls = FieldEditorControlsEnum.All;
-    private bool mIsPrimary = false;
 
     #endregion
 
@@ -37,7 +31,7 @@ public partial class CMSFormControls_System_UserControlTypeSelector : CMSAbstrac
             string where = null;
             if (ValidationHelper.GetInteger(Value, -1) >= 0)
             {
-                where = "UserControlType = " + ((int)ControlType).ToString();
+                where = "UserControlType = " + ((int)ControlType);
             }
 
             base.WhereCondition = where;
@@ -102,7 +96,7 @@ public partial class CMSFormControls_System_UserControlTypeSelector : CMSAbstrac
 
 
     /// <summary>
-    /// Gets or sets whether "all" item is present in the list.
+    /// Gets or sets whether "all" item is present in the list. True by default.
     /// </summary>
     public bool IncludeAllItem
     {
@@ -138,14 +132,8 @@ public partial class CMSFormControls_System_UserControlTypeSelector : CMSAbstrac
     /// </summary>
     public string DataType
     {
-        get
-        {
-            return mDataType;
-        }
-        set
-        {
-            mDataType = value;
-        }
+        get;
+        set;
     }
 
 
@@ -166,23 +154,17 @@ public partial class CMSFormControls_System_UserControlTypeSelector : CMSAbstrac
 
 
     /// <summary>
-    /// Primary field to limit form control types.
+    /// Primary field to limit form control types. False by default.
     /// </summary>
     public bool IsPrimary
     {
-        get
-        {
-            return mIsPrimary;
-        }
-        set
-        {
-            mIsPrimary = value;
-        }
+        get;
+        set;
     }
 
 
     /// <summary>
-    /// Indicates if field is External.
+    /// Indicates if field is External. False by default.
     /// </summary>
     public bool External
     {
@@ -207,7 +189,7 @@ public partial class CMSFormControls_System_UserControlTypeSelector : CMSAbstrac
             drpType.SelectedValue = mSelectedValue;
         }
 
-        drpType.SelectedIndexChanged += new EventHandler(drpType_SelectedIndexChanged);
+        drpType.SelectedIndexChanged += drpType_SelectedIndexChanged;
     }
 
 
@@ -240,11 +222,12 @@ public partial class CMSFormControls_System_UserControlTypeSelector : CMSAbstrac
         drpType.SelectedValue = null;
         drpType.ClearSelection();
 
-        // Load control dynamicaly with limited set of available types
+        // Load control dynamically with limited set of available types
         if (!String.IsNullOrEmpty(DataType))
         {
             drpType.DataTextField = "text";
             drpType.DataValueField = "value";
+
             DataSet ds = FormHelper.GetAvailableControlTypes(DataType, FieldEditorControls, (IsPrimary && !External));
             if (!DataHelper.DataSourceIsEmpty(ds))
             {
@@ -257,41 +240,17 @@ public partial class CMSFormControls_System_UserControlTypeSelector : CMSAbstrac
         // Load control with all types
         else
         {
-            foreach (FormUserControlTypeEnum en in new FormUserControlTypeEnum[]
-                                                       {
-                                                           FormUserControlTypeEnum.Captcha, FormUserControlTypeEnum.Filter, FormUserControlTypeEnum.Input, FormUserControlTypeEnum.Multifield,
-                                                           FormUserControlTypeEnum.Selector, FormUserControlTypeEnum.Uploader, FormUserControlTypeEnum.Viewer, FormUserControlTypeEnum.Visibility
-                                                       })
+            ControlsHelper.FillListControlWithEnum<FormUserControlTypeEnum>(drpType, null, true);
+        }
+
+        // Remove all item (unspecified) if not allowed
+        if (!IncludeAllItem)
+        {
+            var allItem = drpType.Items.FindByValue("-1");
+            if (allItem != null)
             {
-                drpType.Items.Add(new ListItem(GetString("formcontrolstype." + en.ToString()), Convert.ToInt32(en).ToString()));
+                drpType.Items.Remove(allItem);
             }
-        }
-
-        // Include 'all' item in first position
-        if (IncludeAllItem)
-        {
-            drpType.Items.Insert(0, new ListItem(GetString("general.selectall"), Convert.ToInt32(FormUserControlTypeEnum.Unspecified).ToString()));
-        }
-    }
-
-
-    /// <summary>
-    /// Loads control with items.
-    /// </summary>
-    /// <param name="controlTypes">Specified control types</param>
-    public void ReLoadUserControl(List<FormUserControlTypeEnum> controlTypes)
-    {
-        drpType.Items.Clear();
-
-        foreach (FormUserControlTypeEnum controlType in controlTypes)
-        {
-            drpType.Items.Add(new ListItem(GetString("formcontrolstype." + controlType.ToString()), Convert.ToInt32(controlType).ToString()));
-        }
-
-        // Include 'all' item in first position
-        if (IncludeAllItem)
-        {
-            drpType.Items.Insert(0, new ListItem(GetString("general.selectall"), Convert.ToInt32(FormUserControlTypeEnum.Unspecified).ToString()));
         }
     }
 

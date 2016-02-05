@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.DataEngine;
 using CMS.Helpers;
@@ -20,16 +20,6 @@ public partial class CMSModules_PortalEngine_Controls_WebParts_WebPartSelector :
     #region "Webpart selector properties"
 
     /// <summary>
-    /// If true, only wireframe web parts are offered.
-    /// </summary>
-    public bool ShowWireframeOnlyWebparts
-    {
-        get;
-        set;
-    }
-
-
-    /// <summary>
     /// Indicates whether inherited webpart will be displayed in selector.
     /// </summary>
     public bool ShowInheritedWebparts
@@ -46,7 +36,7 @@ public partial class CMSModules_PortalEngine_Controls_WebParts_WebPartSelector :
 
 
     /// <summary>
-    /// Indicates whether show only basic webparts (no wireframes or UI)
+    /// Indicates whether show only basic webparts.
     /// </summary>
     public bool ShowOnlyBasicWebparts
     {
@@ -191,12 +181,9 @@ public partial class CMSModules_PortalEngine_Controls_WebParts_WebPartSelector :
             treeElem.MultipleRoots = false;
             treeUI.Visible = false;
             treeUI.StopProcessing = true;
-            treeWireframes.Visible = false;
-            treeWireframes.StopProcessing = true;
         }
 
         treeElem.OnItemSelected += treeElem_OnItemSelected;
-        treeWireframes.OnItemSelected += treeElem_OnItemSelected;
         treeUI.OnItemSelected += treeElem_OnItemSelected;
 
 
@@ -208,20 +195,6 @@ public partial class CMSModules_PortalEngine_Controls_WebParts_WebPartSelector :
             where = SqlHelper.AddWhereCondition(flatElem.UniFlatSelector.WhereCondition, "WebPartParentID IS NULL");
         }
 
-        // Where conditions for wireframe
-        if (!PortalHelper.IsWireframingEnabled(SiteContext.CurrentSiteName))
-        {
-            treeWireframes.Visible = false;
-        }
-        else if (ShowWireframeOnlyWebparts)
-        {
-            treeElem.StopProcessing = true;
-            treeElem.Visible = false;
-
-            treeWireframes.ShowRecentlyUsed = true;
-            where = SqlHelper.AddWhereCondition(where, "WebPartType=" + (int)WebPartTypeEnum.Wireframe);
-        }
-
         if (!ShowUIWebparts)
         {
             treeUI.StopProcessing = true;
@@ -231,9 +204,6 @@ public partial class CMSModules_PortalEngine_Controls_WebParts_WebPartSelector :
         {
             treeElem.StopProcessing = true;
             treeElem.Visible = false;
-
-            treeWireframes.StopProcessing = true;
-            treeWireframes.Visible = false;
         }
 
         flatElem.UniFlatSelector.WhereCondition = where;
@@ -259,7 +229,7 @@ public partial class CMSModules_PortalEngine_Controls_WebParts_WebPartSelector :
         // Pass currently selected category to flat selector
         if (RequestHelper.IsPostBack())
         {
-            flatElem.TreeSelectedItem = ShowWireframeOnlyWebparts ? treeWireframes.SelectedItem : (ShowUIWebparts ? treeUI.SelectedItem : treeElem.SelectedItem);
+            flatElem.TreeSelectedItem = ShowUIWebparts ? treeUI.SelectedItem : treeElem.SelectedItem;
         }
     }
 
@@ -300,7 +270,7 @@ public partial class CMSModules_PortalEngine_Controls_WebParts_WebPartSelector :
     /// </summary>
     public void ResetToDefault()
     {
-        string rootCategory = (ShowWireframeOnlyWebparts ? "Wireframes" : ShowUIWebparts ? "UIWebparts" : "/");
+        string rootCategory = ShowUIWebparts ? "UIWebparts" : "/";
 
         // Get root webpart category
         WebPartCategoryInfo wci = WebPartCategoryInfoProvider.GetWebPartCategoryInfoByCodeName(rootCategory);
@@ -311,12 +281,7 @@ public partial class CMSModules_PortalEngine_Controls_WebParts_WebPartSelector :
             string selItem = wci.CategoryID.ToString();
 
             // Expand root node
-            if (ShowWireframeOnlyWebparts)
-            {
-                treeWireframes.SelectedItem = selItem;
-                treeWireframes.SelectPath = "/";
-            }
-            else if (ShowUIWebparts)
+            if (ShowUIWebparts)
             {
                 treeUI.SelectedItem = selItem;
                 treeUI.SelectPath = "/";

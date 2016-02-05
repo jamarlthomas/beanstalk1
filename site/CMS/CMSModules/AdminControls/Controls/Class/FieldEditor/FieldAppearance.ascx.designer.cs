@@ -45,7 +45,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldAp
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.FormControls.VisibilityControl ctrlVisibility;
+    protected global::CMS.FormControls.EditingFormControl ctrlVisibility;
     
     /// <summary>
     /// lblVisibilityControl control.

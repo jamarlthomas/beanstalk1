@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 
 using CMS;
+using CMS.DocumentEngine;
 using CMS.ExtendedControls;
 using CMS.FormControls;
 using CMS.Helpers;
 using CMS.Membership;
-using CMS.SiteProvider;
 using CMS.UIControls;
 
 using TreeNode = CMS.DocumentEngine.TreeNode;
@@ -97,48 +97,9 @@ public class MetaDataControlExtender : ControlExtender<CMSForm>
     public override void OnInit()
     {
         Control.OnBeforeSave += Control_OnBeforeSave;
+        Control.OnAfterSave += Control_OnAfterSave;
         Control.Page.Load += Page_Load;
         Control.Page.PreRender += Page_PreRender;
-    }
-
-
-    /// <summary>
-    /// PreRender event handler.
-    /// </summary>
-    protected void Page_PreRender(object sender, EventArgs e)
-    {
-        if ((Node != null) && (TagGroupSelector != null))
-        {
-            bool noneSelected = ValidationHelper.GetInteger(TagGroupSelector.Value, 0) == 0;
-
-            object val;
-            inheritedValues.TryGetValue("DocumentTagGroupID", out val);
-            int parentValue = ValidationHelper.GetInteger(val, 0);
-
-            // Allow empty value in selector if node has no tag group selected and parent tag group also isn't set
-            TagGroupSelector.SetValue("AllowEmpty", noneSelected || ((Node.DocumentTagGroupID == 0) && (parentValue == 0)));
-
-            // Get all groups from original page site ID
-            TagGroupSelector.SetValue("WhereCondition", "[TagGroupSiteID] = " + Node.OriginalNodeSiteID);
-
-            if (!TagGroupSelector.HasData)
-            {
-                // Hide tag module controls and show information if no tag group exists
-                Control.MessagesPlaceHolder.ShowInformation(ResHelper.GetString("PageProperties.TagsInfo"));
-                Control.FieldsToHide.Add("DocumentTagGroupID");
-                Control.FieldsToHide.Add("DocumentTagGroupIDInherit");
-                Control.FieldsToHide.Add("DocumentTags");
-            }
-            else
-            {
-                Control.FieldControls["DocumentTags"].Enabled = !noneSelected;
-                if (noneSelected)
-                {
-                    // Clear tags if no tag group selected
-                    Control.FieldControls["DocumentTags"].Text = String.Empty;
-                }
-            }
-        }
     }
 
 
@@ -147,47 +108,79 @@ public class MetaDataControlExtender : ControlExtender<CMSForm>
     /// </summary>
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Node != null)
+        if (Node == null)
         {
-            bool nodeIsRoot = Node.IsRoot();
+            return;
+        }
 
-            pageOptionsVisible = MembershipContext.AuthenticatedUser.IsAuthorizedPerUIElement(UIModuleName, UIPageElementName);
-            if (pageOptionsVisible && !nodeIsRoot)
+        bool nodeIsRoot = Node.IsRoot();
+
+        pageOptionsVisible = MembershipContext.AuthenticatedUser.IsAuthorizedPerUIElement(UIModuleName, UIPageElementName);
+        if (pageOptionsVisible && !nodeIsRoot)
+        {
+            SetupInheritCheckbox("DocumentPageTitle");
+            SetupInheritCheckbox("DocumentPageDescription");
+            SetupInheritCheckbox("DocumentPageKeyWords");
+        }
+
+        tagsVisible = MembershipContext.AuthenticatedUser.IsAuthorizedPerUIElement(UIModuleName, UITagsElementName);
+        if (tagsVisible)
+        {
+            if (!nodeIsRoot)
             {
-                SetupInheritCheckbox("DocumentPageTitle");
-                SetupInheritCheckbox("DocumentPageDescription");
-                SetupInheritCheckbox("DocumentPageKeyWords");
-            }
-
-            tagsVisible = MembershipContext.AuthenticatedUser.IsAuthorizedPerUIElement(UIModuleName, UITagsElementName);
-            if (tagsVisible)
-            {
-                if (!nodeIsRoot)
-                {
-                    SetupInheritCheckbox("DocumentTagGroupID");
-                }
-
-                if (TagGroupSelector != null)
-                {
-                    TagGroupSelector.OnSelectionChanged += selector_OnSelectionChanged;
-                }
-            }
-
-            if (!pageOptionsVisible && !tagsVisible)
-            {
-                // Redirect to info message if no UI available
-                URLHelper.Redirect(UIHelper.GetInformationUrl("uiprofile.uinotavailable"));
+                SetupInheritCheckbox("DocumentTagGroupID");
             }
         }
+
+        if (!pageOptionsVisible && !tagsVisible)
+        {
+            // Redirect to info message if no UI available
+            URLHelper.Redirect(UIHelper.GetInformationUrl("uiprofile.uinotavailable"));
+        }
+
+        InitializeTagSelector();
     }
 
 
     /// <summary>
-    /// OnSelectionChanged event handler.
+    /// PreRender event handler.
     /// </summary>
-    protected void selector_OnSelectionChanged(object sender, EventArgs e)
+    protected void Page_PreRender(object sender, EventArgs e)
     {
-        InitializeTagSelector();
+        if ((Node == null) || (TagGroupSelector == null))
+        {
+            return;
+        }
+
+        bool noneSelected = ValidationHelper.GetInteger(TagGroupSelector.Value, 0) == 0;
+
+        object val;
+        inheritedValues.TryGetValue("DocumentTagGroupID", out val);
+        int parentValue = ValidationHelper.GetInteger(val, 0);
+
+        // Allow empty value in selector if node has no tag group selected and parent tag group also isn't set
+        TagGroupSelector.SetValue("AllowEmpty", noneSelected || ((Node.DocumentTagGroupID == 0) && (parentValue == 0)));
+
+        // Get all groups from original page site ID
+        TagGroupSelector.SetValue("WhereCondition", "[TagGroupSiteID] = " + Node.OriginalNodeSiteID);
+
+        if (!TagGroupSelector.HasData)
+        {
+            // Hide tag module controls and show information if no tag group exists
+            Control.MessagesPlaceHolder.ShowInformation(ResHelper.GetString("PageProperties.TagsInfo"));
+            Control.FieldsToHide.Add("DocumentTagGroupID");
+            Control.FieldsToHide.Add("DocumentTagGroupIDInherit");
+            Control.FieldsToHide.Add("DocumentTags");
+        }
+        else
+        {
+            Control.FieldControls["DocumentTags"].Enabled = !noneSelected;
+            if (noneSelected)
+            {
+                // Clear tags if no tag group selected
+                Control.FieldControls["DocumentTags"].Text = String.Empty;
+            }
+        }
     }
 
 
@@ -223,6 +216,26 @@ public class MetaDataControlExtender : ControlExtender<CMSForm>
 
 
     /// <summary>
+    /// Ensures special handling for DocumentTagGroup field on subpages. If any tag group is selected, inherited configuration is set.
+    /// </summary>
+    protected void Control_OnAfterSave(object sender, EventArgs e)
+    {
+        if (!tagsVisible || (Node.DocumentTagGroupID > 0) || Node.IsRoot())
+        {
+            return;
+        }
+        
+        CMSCheckBox checkBox = GetCheckBox("DocumentTagGroupID");
+        FormEngineUserControl mainControl = Control.FieldControls["DocumentTagGroupID"];
+        if ((checkBox != null) && (mainControl != null))
+        {
+            checkBox.Checked = true;
+            mainControl.Enabled = false;
+        }
+    }
+
+
+    /// <summary>
     /// CheckedChanged event handler.
     /// </summary>
     protected void checkBox_CheckedChanged(object sender, EventArgs e)
@@ -252,7 +265,7 @@ public class MetaDataControlExtender : ControlExtender<CMSForm>
 
             if (item.Key == "DocumentTagGroupID")
             {
-                InitializeTagSelector();
+                EnableTagSelector();
             }
         }
     }
@@ -349,9 +362,22 @@ public class MetaDataControlExtender : ControlExtender<CMSForm>
         int groupId = ValidationHelper.GetInteger(TagGroupSelector.Value, 0);
         if (groupId > 0)
         {
-            // Init tag selector control after tag group selector change
-            Control.FieldControls["DocumentTags"].Enabled = true;
+            // Set GroupId for tag selector control
             Control.FieldControls["DocumentTags"].SetValue("TagGroupID", groupId);
+        }
+    }
+
+
+    /// <summary>
+    /// Enables tag selector by selected value of tag group selector.
+    /// Tag selector is enabled if tag group selector has selected value.
+    /// </summary>
+    private void EnableTagSelector()
+    {
+        int groupId = ValidationHelper.GetInteger(TagGroupSelector.Value, 0);
+        if (groupId > 0)
+        {
+            Control.FieldControls["DocumentTags"].Enabled = true;
         }
     }
 

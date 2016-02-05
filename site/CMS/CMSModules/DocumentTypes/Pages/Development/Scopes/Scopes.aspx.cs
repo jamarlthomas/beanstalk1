@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -10,7 +10,7 @@ using CMS.SiteProvider;
 using CMS.UIControls;
 using CMS.UIControls.UniGridConfig;
 
-[EditedObject(DataClassInfo.OBJECT_TYPE_DOCUMENTTYPE, "objectid")]
+[EditedObject(DocumentTypeInfo.OBJECT_TYPE_DOCUMENTTYPE, "objectid")]
 public partial class CMSModules_DocumentTypes_Pages_Development_Scopes_Scopes : GlobalAdminPage
 {
     #region "Variables"

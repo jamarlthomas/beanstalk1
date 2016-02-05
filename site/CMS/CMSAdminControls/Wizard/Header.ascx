@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Wizard_Header" Codebehind="Header.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Wizard_Header"  Codebehind="Header.ascx.cs" %>
 <div class="wizard-header">
     <div class="wizard-title">
         <asp:Label ID="lblTitle" runat="server" />

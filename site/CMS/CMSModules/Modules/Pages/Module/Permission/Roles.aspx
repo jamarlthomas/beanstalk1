@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Roles.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Roles.aspx.cs"
     Theme="Default" Inherits="CMSModules_Modules_Pages_Module_Permission_Roles"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 
@@ -52,7 +52,7 @@
                 <cms:UniMatrix ID="gridMatrix" runat="server" CssClass="permission-matrix" QueryName="CMS.Permission.GetRolePermissionMatrix"
                     RowItemIDColumn="RoleID" ColumnItemIDColumn="PermissionID" RowItemDisplayNameColumn="RoleDisplayName"
                     ColumnItemDisplayNameColumn="PermissionDisplayName" RowTooltipColumn="RowDisplayName" FirstColumnClass="first-column"
-                    ColumnTooltipColumn="PermissionDescription" ItemTooltipColumn="PermissionDescription" AddFillingColumn="true" />
+                    ColumnTooltipColumn="PermissionDescription" ItemTooltipColumn="PermissionDescription" AddFillingColumn="true" MaxFilterLength="100" />
             </asp:PlaceHolder>
         </ContentTemplate>
     </cms:CMSUpdatePanel>

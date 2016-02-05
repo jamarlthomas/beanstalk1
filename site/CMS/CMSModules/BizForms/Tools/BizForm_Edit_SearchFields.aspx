@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_BizForms_Tools_BizForm_Edit_SearchFields"  
-    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Custom Table Edit - Search" Codebehind="BizForm_Edit_SearchFields.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_BizForms_Tools_BizForm_Edit_SearchFields"  
+    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Custom Table Edit - Search"  Codebehind="BizForm_Edit_SearchFields.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/SmartSearch/Controls/Edit/SearchFields.ascx"
     TagName="SearchFields" TagPrefix="cms" %>

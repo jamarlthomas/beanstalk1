@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_Macros_Dialogs_Default"
-    Codebehind="Default.aspx.cs" %>
+     Codebehind="Default.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

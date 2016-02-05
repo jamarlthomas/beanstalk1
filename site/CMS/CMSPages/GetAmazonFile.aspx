@@ -1,1 +1,0 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSPages_GetAmazonFile" EnableSessionState="ReadOnly" Codebehind="GetAmazonFile.aspx.cs" %>

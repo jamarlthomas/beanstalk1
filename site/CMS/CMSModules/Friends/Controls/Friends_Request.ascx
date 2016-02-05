@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Friends_Controls_Friends_Request" Codebehind="Friends_Request.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Friends_Controls_Friends_Request"  Codebehind="Friends_Request.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/Membership/FormControls/Users/selectuser.ascx" TagName="selectuser" TagPrefix="cms" %>
 

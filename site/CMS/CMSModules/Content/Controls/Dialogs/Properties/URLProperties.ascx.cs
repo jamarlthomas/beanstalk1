@@ -26,6 +26,18 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_URLPropertie
 
 
     /// <summary>
+    /// Indicates whether the 'content changed' flag should be set.
+    /// </summary>
+    private bool ContentChanged
+    {
+        get
+        {
+            return (QueryHelper.GetString("contentchanged", "") != "false");
+        }
+    }
+
+
+    /// <summary>
     /// Indicates whether the properties are used for single path selector form control.
     /// </summary>
     private bool IsSelectSinglePath
@@ -549,16 +561,14 @@ if (wopener) {
     /// </summary>
     private void SaveSession()
     {
-        Hashtable savedProperties = SessionHelper.GetValue("DialogSelectedParameters") as Hashtable;
-        if (savedProperties == null)
-        {
-            savedProperties = new Hashtable();
-        }
-        Hashtable props = GetItemProperties();
+        var savedProperties = SessionHelper.GetValue("DialogSelectedParameters") as Hashtable ?? new Hashtable();
+        var props = GetItemProperties();
+
         foreach (DictionaryEntry entry in props)
         {
             savedProperties[entry.Key] = entry.Value;
         }
+
         SessionHelper.SetValue("DialogSelectedParameters", savedProperties);
     }
 
@@ -569,14 +579,7 @@ if (wopener) {
     /// <param name="display">Indicates if size selector should be displayed</param>
     private void DisplaySizeSelector(bool display)
     {
-        if (display)
-        {
-            plcSizeSelector.Visible = true;
-        }
-        else
-        {
-            plcSizeSelector.Visible = false;
-        }
+        plcSizeSelector.Visible = display;
     }
 
 
@@ -648,10 +651,10 @@ if (wopener) {
     /// <summary>
     /// Loads the properties into control.
     /// </summary>
-    /// <param name="properties">Collection with properties</param>
-    public override void LoadItemProperties(Hashtable properties)
+    /// <param name="p">Collection with properties</param>
+    public override void LoadItemProperties(Hashtable p)
     {
-        LoadProperties(properties);
+        LoadProperties(p);
         if (tabImageGeneral.Visible)
         {
             LoadPreview();
@@ -769,7 +772,11 @@ if (wopener) {
 
             if (IsRelationship || IsSelectPath)
             {
-                txtSelectPath.Text = SqlHelper.EscapeLikeText(properties[DialogParameters.DOC_NODEALIASPATH].ToString(""));
+                var aliasPath = SqlHelper.EscapeLikeText(properties[DialogParameters.DOC_NODEALIASPATH].ToString(""));
+                if (!String.IsNullOrEmpty(aliasPath))
+                {
+                    txtSelectPath.Text = aliasPath;
+                }
 
                 if (IsSelectPath && !IsSelectSinglePath)
                 {
@@ -904,6 +911,12 @@ if (wopener) {
                 path = path.Substring(0, path.Length - 2);
             }
             retval[DialogParameters.DOC_NODEALIASPATH] = path;
+
+            if (!ContentChanged)
+            {
+                // Don't set 'content changed' flag
+                retval[DialogParameters.CONTENT_CHANGED] = false;
+            }
 
             // Fill target node id only if single path selection is enabled or in relationship dialog
             if (IsSelectSinglePath || IsRelationship)

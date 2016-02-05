@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_LiveControls_Groups" Codebehind="Groups.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_LiveControls_Groups"  Codebehind="Groups.ascx.cs" %>
 <%@ Register src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" tagname="HeaderActions" tagprefix="cms" %>
 <%@ Register Src="~/CMSModules/Forums/Controls/LiveControls/Group.ascx" TagName="GroupEdit" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Forums/Controls/Groups/GroupNew.ascx" TagName="GroupNew" TagPrefix="cms" %>

@@ -343,12 +343,6 @@ function NewDocument(parentNodeId, className) {
     }
 }
 
-function ConvertDocument(parentNodeId, convertDocumentId) {
-    if ((parent !== this) && parent.ConvertDocument) {
-        parent.ConvertDocument(parentNodeId, convertDocumentId);
-    }
-}
-
 function DeleteDocument(nodeId) {
     if ((parent !== this) && parent.DeleteDocument) {
         parent.DeleteDocument(nodeId);

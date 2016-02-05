@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="True" Codebehind="SubscriptionApproval.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="True"  Codebehind="SubscriptionApproval.aspx.cs"
     Inherits="CMSModules_Newsletters_CMSPages_SubscriptionApproval" Theme="Default" %>
 
 <%@ Register Src="~/CMSModules/Newsletters/Controls/SubscriptionApproval.ascx" TagName="SubscriptionApproval"

@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="Forum post detail" Inherits="CMSModules_Groups_CMSPages_ForumPostApprove"
-    Theme="Default" Codebehind="ForumPostApprove.aspx.cs" %>
+    Theme="Default"  Codebehind="ForumPostApprove.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Forums/Controls/Posts/PostApprove.ascx" TagName="PostApprove"
     TagPrefix="cms" %>

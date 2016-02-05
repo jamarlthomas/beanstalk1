@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSInstall_Controls_WizardSteps_LicenseDialog" Codebehind="LicenseDialog.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSInstall_Controls_WizardSteps_LicenseDialog"  Codebehind="LicenseDialog.ascx.cs" %>
 <table class="install-wizard-new-site" border="0" cellpadding="0" cellspacing="0">
     <tr>
         <td style="padding-bottom: 10px">
@@ -23,7 +23,7 @@
     </tr>
     <tr>
         <td>
-            <cms:CMSTextArea ID="txtLicense" runat="server" MaxLength="100" Rows="10" />
+            <cms:CMSTextArea ID="txtLicense" runat="server" Rows="10" />
         </td>
     </tr>
     <tr>

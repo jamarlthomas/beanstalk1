@@ -1,5 +1,4 @@
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Security.Principal;
@@ -32,14 +31,13 @@ public partial class CMSModules_Objects_Controls_ObjectsRecycleBin : CMSUserCont
     private bool mIsSingleSite = true;
     private bool mRestrictUsers = true;
 
-    private static readonly Hashtable mInfos = new Hashtable();
     private string mOrderBy = "VersionDeletedWhen DESC";
     private string mObjectDisplayName = String.Empty;
     private string mItemsPerPage = String.Empty;
     private string mGMTTooltip;
     private What currentWhat = default(What);
 
-    private CMSAbstractRecycleBinFilterControl filter = null;
+    private CMSAbstractRecycleBinFilterControl filter;
 
     #endregion
 
@@ -178,19 +176,7 @@ public partial class CMSModules_Objects_Controls_ObjectsRecycleBin : CMSUserCont
             return mCurrentSite;
         }
     }
-
-
-    /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
+    
 
     /// <summary>
     /// Current Error.
@@ -199,11 +185,11 @@ public partial class CMSModules_Objects_Controls_ObjectsRecycleBin : CMSUserCont
     {
         get
         {
-            return ValidationHelper.GetString(mInfos["ObjectRestoreError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mInfos["ObjectRestoreError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -215,11 +201,11 @@ public partial class CMSModules_Objects_Controls_ObjectsRecycleBin : CMSUserCont
     {
         get
         {
-            return ValidationHelper.GetString(mInfos["ObjectRestoreInfo_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Information;
         }
         set
         {
-            mInfos["ObjectRestoreInfo_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Information = value;
         }
     }
 
@@ -511,13 +497,13 @@ function ContextBinAction_", ugRecycleBin.ClientID, @"(action, versionId) {
         filter.SiteID = (CurrentSite != null ? CurrentSite.SiteID : -1);
         filter.IsSingleSite = IsSingleSite;
         filter.DisplayUsersFromAllSites = !RestrictUsers;
+        
         // Initialize events
         ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
         ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-        ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
         ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
     }
-    
+
 
     protected override void OnPreRender(EventArgs e)
     {
@@ -542,41 +528,39 @@ function ContextBinAction_", ugRecycleBin.ClientID, @"(action, versionId) {
     /// <summary>
     /// Restores objects selected in UniGrid with binding to current site.
     /// </summary>
-    private void RestoreToCurrentSite(object parameter)
+    private void RestoreToCurrentSite(BinSettingsContainer settings)
     {
-        Restore(parameter, Action.RestoreToCurrentSite);
+        Restore(settings, Action.RestoreToCurrentSite);
     }
 
 
     /// <summary>
     /// Restores objects selected in UniGrid without site bindings.
     /// </summary>
-    private void RestoreWithoutSiteBindings(object parameter)
+    private void RestoreWithoutSiteBindings(BinSettingsContainer settings)
     {
-        Restore(parameter, Action.RestoreWithoutSiteBindings);
+        Restore(settings, Action.RestoreWithoutSiteBindings);
     }
 
 
     /// <summary>
     /// Restores objects selected in UniGrid with site bindings and children.
     /// </summary>
-    private void RestoreWithChildren(object parameter)
+    private void RestoreWithChildren(BinSettingsContainer settings)
     {
-        Restore(parameter, Action.Restore);
+        Restore(settings, Action.Restore);
     }
 
 
     /// <summary>
     /// Restores objects selected in UniGrid.
     /// </summary>
-    private void Restore(object parameter, Action action)
+    private void Restore(BinSettingsContainer settings, Action action)
     {
         try
         {
             // Begin log
             AddLog(ResHelper.GetString("objectversioning.recyclebin.restoringobjects", mCurrentCulture));
-
-            BinSettingsContainer settings = (BinSettingsContainer)parameter;
 
             if (settings.User.IsAuthorizedPerResource("cms.globalpermissions", "RestoreObjects"))
             {
@@ -595,8 +579,7 @@ function ContextBinAction_", ugRecycleBin.ClientID, @"(action, versionId) {
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state == CMSThread.ABORT_REASON_STOP)
+            if (CMSThread.Stopped(ex))
             {
                 // When canceled
                 CurrentInfo = ResHelper.GetString("Recyclebin.RestorationCanceled", mCurrentCulture);
@@ -735,11 +718,10 @@ function ContextBinAction_", ugRecycleBin.ClientID, @"(action, versionId) {
     /// <summary>
     /// Empties recycle bin.
     /// </summary>
-    private void EmptyBin(object parameter)
+    private void EmptyBin(BinSettingsContainer settings)
     {
         // Begin log
         AddLog(ResHelper.GetString("Recyclebin.EmptyingBin", mCurrentCulture));
-        BinSettingsContainer settings = (BinSettingsContainer)parameter;
 
         try
         {
@@ -750,8 +732,9 @@ function ContextBinAction_", ugRecycleBin.ClientID, @"(action, versionId) {
                 {
                     string versionObjType = Convert.ToString(dr["VersionObjectType"]);
                     string objName = HTMLHelper.HTMLEncode(ResHelper.LocalizeString(ValidationHelper.GetString(dr["VersionObjectDisplayName"], string.Empty)));
-                    string siteName = null;
                     SiteInfo currentSite = settings.Site;
+                    
+                    string siteName;
                     if (currentSite != null)
                     {
                         siteName = currentSite.SiteName;
@@ -793,8 +776,7 @@ function ContextBinAction_", ugRecycleBin.ClientID, @"(action, versionId) {
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state != CMSThread.ABORT_REASON_STOP)
+            if (!CMSThread.Stopped(ex))
             {
                 // Log error
                 CurrentError = "Error occurred: " + ResHelper.GetString("general.seeeventlog", mCurrentCulture);
@@ -826,12 +808,6 @@ function ContextBinAction_", ugRecycleBin.ClientID, @"(action, versionId) {
     }
 
 
-    private void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
-    }
-
-
     private void ctlAsyncLog_OnError(object sender, EventArgs e)
     {
         HandlePossibleErrors();
@@ -842,17 +818,7 @@ function ContextBinAction_", ugRecycleBin.ClientID, @"(action, versionId) {
     {
         HandlePossibleErrors();
     }
-
-
-    /// <summary>
-    /// Ensures the logging context.
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext log = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-        return log;
-    }
-
+    
 
     /// <summary>
     /// Adds the log information.
@@ -860,14 +826,12 @@ function ContextBinAction_", ugRecycleBin.ClientID, @"(action, versionId) {
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
 
     private void HandlePossibleErrors()
     {
-        CurrentLog.Close();
         TerminateCallbacks();
         if (!String.IsNullOrEmpty(CurrentError))
         {
@@ -877,7 +841,7 @@ function ContextBinAction_", ugRecycleBin.ClientID, @"(action, versionId) {
         {
             ShowConfirmation(CurrentInfo);
         }
-        ugRecycleBin.ResetSelection();
+        ugRecycleBin.ResetSelection(doPostback: false);
     }
 
 
@@ -898,9 +862,7 @@ function ContextBinAction_", ugRecycleBin.ClientID, @"(action, versionId) {
 
         CurrentError = string.Empty;
         CurrentInfo = string.Empty;
-        CurrentLog.Close();
-        EnsureLog();
-
+        
         ctlAsyncLog.RunAsync(action, WindowsIdentity.GetCurrent());
     }
 
@@ -914,9 +876,7 @@ function ContextBinAction_", ugRecycleBin.ClientID, @"(action, versionId) {
         pnlLog.Visible = true;
 
         CurrentError = string.Empty;
-        CurrentLog.Close();
-        EnsureLog();
-
+       
         int actionValue = ValidationHelper.GetInteger(drpAction.SelectedValue, 0);
         Action action = (Action)actionValue;
 
@@ -937,8 +897,6 @@ function ContextBinAction_", ugRecycleBin.ClientID, @"(action, versionId) {
                 break;
         }
 
-        ctlAsyncLog.Parameter = binSettings;
-
         switch (action)
         {
             case Action.Restore:
@@ -950,15 +908,15 @@ function ContextBinAction_", ugRecycleBin.ClientID, @"(action, versionId) {
                     switch (action)
                     {
                         case Action.Restore:
-                            RunAsync(RestoreWithChildren);
+                            RunAsync(p => RestoreWithChildren(binSettings));
                             break;
 
                         case Action.RestoreToCurrentSite:
-                            RunAsync(RestoreToCurrentSite);
+                            RunAsync(p => RestoreToCurrentSite(binSettings));
                             break;
 
                         case Action.RestoreWithoutSiteBindings:
-                            RunAsync(RestoreWithoutSiteBindings);
+                            RunAsync(p => RestoreWithoutSiteBindings(binSettings));
                             break;
                     }
                 }
@@ -968,7 +926,7 @@ function ContextBinAction_", ugRecycleBin.ClientID, @"(action, versionId) {
                 {
                     ctlAsyncLog.TitleText = GetString("recyclebin.emptyingbin");
 
-                    RunAsync(EmptyBin);
+                    RunAsync(p => EmptyBin(binSettings));
                 }
                 break;
         }
@@ -1086,31 +1044,25 @@ function ContextBinAction_", ugRecycleBin.ClientID, @"(action, versionId) {
 
             case "destroy":
                 ObjectVersionHistoryInfo verInfo = ObjectVersionHistoryInfoProvider.GetVersionHistoryInfo(versionHistoryId);
+                if (verInfo != null)
+                {
+                    // Get object site name
+                    string siteName = (CurrentSite != null) ? CurrentSite.SiteName : SiteInfoProvider.GetSiteName(verInfo.VersionObjectSiteID);
 
-                // Get object site name
-                string siteName = null;
-                if (CurrentSite != null)
-                {
-                    siteName = CurrentSite.SiteName;
-                }
-                else
-                {
-                    siteName = SiteInfoProvider.GetSiteName(verInfo.VersionObjectSiteID);
-                }
-
-                if ((verInfo != null) && CurrentUser.IsAuthorizedPerObject(PermissionsEnum.Destroy, verInfo.VersionObjectType, siteName))
-                {
-                    ObjectVersionManager.DestroyObjectHistory(verInfo.VersionObjectType, verInfo.VersionObjectID);
-                    ShowConfirmation(GetString("ObjectVersioning.Recyclebin.DestroyOK"));
-                }
-                else
-                {
-                    ShowError(String.Format(ResHelper.GetString("objectversioning.recyclebin.destructionfailedpermissions"), HTMLHelper.HTMLEncode(ResHelper.LocalizeString(verInfo.VersionObjectDisplayName))));
+                    if (CurrentUser.IsAuthorizedPerObject(PermissionsEnum.Destroy, verInfo.VersionObjectType, siteName))
+                    {
+                        ObjectVersionManager.DestroyObjectHistory(verInfo.VersionObjectType, verInfo.VersionObjectID);
+                        ShowConfirmation(GetString("ObjectVersioning.Recyclebin.DestroyOK"));
+                    }
+                    else
+                    {
+                        ShowError(String.Format(ResHelper.GetString("objectversioning.recyclebin.destructionfailedpermissions"), HTMLHelper.HTMLEncode(ResHelper.LocalizeString(verInfo.VersionObjectDisplayName))));
+                    }
                 }
                 break;
         }
 
-        ugRecycleBin.ResetSelection();
+        ugRecycleBin.ResetSelection(doPostback: false);
     }
 
     #endregion

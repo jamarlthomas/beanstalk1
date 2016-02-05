@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Forums_Controls_AttachmentList" Codebehind="AttachmentList.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Forums_Controls_AttachmentList"  Codebehind="AttachmentList.ascx.cs" %>
 <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
 <table class="AttachmentTable" cellpadding="0" cellspacing="0">
     <asp:PlaceHolder runat="server" ID="plcListHeader">

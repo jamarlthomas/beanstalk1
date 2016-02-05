@@ -1,5 +1,5 @@
-<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true" Inherits="CMSModules_BannerManagement_Tools_Category_Category_New"
-    Title="Banner Management - New Category" Theme="Default" Codebehind="Category_New.aspx.cs" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true" Inherits="CMSModules_BannerManagement_Tools_Category_Category_New"
+    Title="Banner Management - New Category" Theme="Default"  Codebehind="Category_New.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/BannerManagement/Controls/CategoryEdit.ascx" TagName="CategoryEdit" TagPrefix="cms" %>
 

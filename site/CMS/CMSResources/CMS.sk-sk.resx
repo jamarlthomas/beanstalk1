@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="abtest.invalidname" xml:space="preserve">
     <value>Vložte, prosím, platný názov A/B testu. Kódový názov môže obsahovať len alfanumerické znaky, medzery a určité špeciálne znaky (_, -, ).</value>
@@ -3192,9 +3192,6 @@
   <data name="content.ui.widgetproperties" xml:space="preserve">
     <value>Vlastnosti widgetu</value>
   </data>
-  <data name="content.ui.wireframe" xml:space="preserve">
-    <value>Wireframe</value>
-  </data>
   <data name="content.undocheckedoutdocs" xml:space="preserve">
     <value>Zruš uzamknutie pre zamknuté dokumenty</value>
   </data>
@@ -3965,9 +3962,6 @@
   </data>
   <data name="development-webpart_edit.typewidgetonly" xml:space="preserve">
     <value>Len widget</value>
-  </data>
-  <data name="development-webpart_edit.typewireframe" xml:space="preserve">
-    <value>Wireframe</value>
   </data>
   <data name="development-workflow_general.autopublish" xml:space="preserve">
     <value>Automaticky publikovať zmeny</value>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Ecommerce;
 using CMS.Helpers;
@@ -13,7 +13,7 @@ public partial class CMSModules_Ecommerce_Controls_MyDetails_MyCredit : CMSAdmin
     #region "Variables"
 
     private CurrencyInfo mCurrency = null;
-    private double rate = 1;
+    private decimal rate = 1m;
 
     #endregion
 
@@ -86,16 +86,16 @@ public partial class CMSModules_Ecommerce_Controls_MyDetails_MyCredit : CMSAdmin
                 gridCreditEvents.WhereCondition = "EventCustomerID = " + CustomerId + " AND ISNULL(EventSiteID, 0) = " + creditSiteId;
 
                 // Get total credit value
-                double credit = CreditEventInfoProvider.GetTotalCredit(CustomerId, SiteContext.CurrentSiteID);
+                decimal credit = (decimal)CreditEventInfoProvider.GetTotalCredit(CustomerId, SiteContext.CurrentSiteID);
 
                 if (Currency != null)
                 {
                     // Convert credit to current currency when using one
-                    rate = (double)CurrencyConverter.GetExchangeRate(creditSiteId == 0, Currency.CurrencyCode, SiteContext.CurrentSiteID);
-                    credit = ExchangeRateInfoProvider.ApplyExchangeRate(credit, rate);
+                    CurrencyConverter.TryGetExchangeRate(creditSiteId == 0, Currency.CurrencyCode, SiteContext.CurrentSiteID, ref rate);
+                    credit = CurrencyConverter.ApplyExchangeRate(credit, rate);
                 }
 
-                lblCreditValue.Text = CurrencyInfoProvider.GetFormattedPrice(credit, Currency);
+                lblCreditValue.Text = CurrencyInfoProvider.GetFormattedPrice((double)credit, Currency);
             }
             else
             {
@@ -125,8 +125,8 @@ public partial class CMSModules_Ecommerce_Controls_MyDetails_MyCredit : CMSAdmin
                 return String.Empty;
 
             case "eventcreditchange":
-                var credit = ExchangeRateInfoProvider.ApplyExchangeRate(ValidationHelper.GetDouble(parameter, 0), rate);
-                return CurrencyInfoProvider.GetFormattedPrice(credit, Currency);
+                var credit = CurrencyConverter.ApplyExchangeRate(ValidationHelper.GetDecimal(parameter, 0m), rate);
+                return CurrencyInfoProvider.GetFormattedPrice((double)credit, Currency);
         }
 
         return parameter;

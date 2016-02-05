@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_ContactManagement_Pages_Tools_Automation_List"
-    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Codebehind="List.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_ContactManagement_Pages_Tools_Automation_List"
+    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default"  Codebehind="List.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
@@ -10,7 +10,7 @@
         <GridActions>
             <ug:Action Name="edit" Caption="$general.edit$" FontIconClass="icon-edit" FontIconStyle="Allow" />
             <ug:Action Name="delete" ExternalSourceName="delete" Caption="$general.delete$" FontIconClass="icon-bin" FontIconStyle="Critical"
-                Confirmation="$general.confirmdelete$" />
+                Confirmation="$ma.process.delete.confirm$" />
         </GridActions>
         <GridColumns>
             <ug:Column Source="WorkflowDisplayName" Caption="$ma.processname$" Wrap="false" Localize="true">

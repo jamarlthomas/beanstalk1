@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.Core;
@@ -78,11 +78,11 @@ public partial class CMSModules_Ecommerce_Pages_Tools_DiscountCoupons_DiscountCo
         {
             if (mDiscountCouponInfoObj.IsGlobal)
             {
-                RedirectToAccessDenied("CMS.Ecommerce", "EcommerceGlobalModify");
+                RedirectToAccessDenied(ModuleName.ECOMMERCE, EcommercePermissions.ECOMMERCE_MODIFYGLOBAL);
             }
             else
             {
-                RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyDiscounts");
+                RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyDiscounts");
             }
         }
 
@@ -127,11 +127,11 @@ public partial class CMSModules_Ecommerce_Pages_Tools_DiscountCoupons_DiscountCo
             {
                 if (mDiscountCouponInfoObj.IsGlobal)
                 {
-                    RedirectToAccessDenied("CMS.Ecommerce", "EcommerceGlobalModify");
+                    RedirectToAccessDenied(ModuleName.ECOMMERCE, EcommercePermissions.ECOMMERCE_MODIFYGLOBAL);
                 }
                 else
                 {
-                    RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyDiscounts");
+                    RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyDiscounts");
                 }
             }
 
@@ -172,7 +172,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_DiscountCoupons_DiscountCo
         where = SqlHelper.AddWhereCondition(where, "(SKUEnabled = 1) AND (SKUProductType != 'DONATION')");
 
         // Include only products from user's departments
-        if (!ECommerceContext.IsUserAuthorizedForPermission("AccessAllDepartments"))
+        if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.PRODUCTS_ACCESSALLDEPARTMENTS))
         {
             where = SqlHelper.AddWhereCondition(where, String.Format("(SKUDepartmentID IN (SELECT DepartmentID FROM COM_UserDepartment WHERE UserID = {0}) OR (SKUDepartmentID IS NULL))", MembershipContext.AuthenticatedUser.UserID));
         }

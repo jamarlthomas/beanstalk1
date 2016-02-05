@@ -1,17 +1,12 @@
-using System;
-using System.Data;
-using System.Collections;
-using System.Web;
+﻿using System;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 
 using CMS.FormControls;
 using CMS.Helpers;
 
-public partial class CMSFormControls_Selectors_FontSelector : FormEngineUserControl
+public partial class CMSFormControls_Selectors_FontSelector : FormEngineUserControl, ICallbackEventHandler
 {
-    #region Variables
+    #region "Variables"
 
     private string mDefaultFont = "Arial";
     private string mDefaultStyle = "Regular";
@@ -22,22 +17,6 @@ public partial class CMSFormControls_Selectors_FontSelector : FormEngineUserCont
 
 
     #region "Public properties"
-
-    /// <summary>
-    /// Gets or sets the enabled state of the control.
-    /// </summary>
-    public override bool Enabled
-    {
-        get
-        {
-            return base.Enabled;
-        }
-        set
-        {
-            base.Enabled = value;
-        }
-    }
-
 
     /// <summary>
     /// Gets or sets field value.
@@ -118,6 +97,7 @@ public partial class CMSFormControls_Selectors_FontSelector : FormEngineUserCont
         }
     }
 
+
     /// <summary>
     /// ClientId of font type text box.
     /// </summary>
@@ -132,95 +112,92 @@ public partial class CMSFormControls_Selectors_FontSelector : FormEngineUserCont
     #endregion
 
 
-    #region "Methods"
+    #region "Control events"
 
-    /// <summary>
-    /// Returns true if user control is valid.
-    /// </summary>
-    public override bool IsValid()
+    protected override void OnLoad(EventArgs e)
     {
-        return true;
-    }
-
-
-    public void SetOnChangeAttribute(string fnc)
-    {
-        txtFontType.Attributes["onchange"] = fnc;
-    }
-
-
-    protected void Page_Load(object sender, EventArgs e)
-    {
-        btnClearFont.Visible = DisplayClearButton;
-
-        registerScripts();
-
-        // Setup 'Select' button
-        btnChangeFontType.Text = ResHelper.GetString("fontselector.select");
-        btnChangeFontType.Attributes.Add("OnClick", "SelectFont('" + hfValue.ClientID + "','" + txtFontType.ClientID + "');return false;");
-
-        btnClearFont.Text = ResHelper.GetString("fontselector.clear");
+        base.OnLoad(e);
 
         if (hfValue.Value != String.Empty)
         {
             txtFontType.Text = hfValue.Value;
         }
-
-        // Add font parameters to selector dialog
-        if (txtFontType.Text == String.Empty)
-        {
-            WindowHelper.Add(hfValue.ClientID, String.Format("{0};{1};{2};;", DefaultFont, DefaultStyle, DefaultSize));
-        }
-        else
-        {
-            WindowHelper.Add(hfValue.ClientID, txtFontType.Text);
-        }
     }
 
 
-    private void registerScripts()
+    protected override void OnPreRender(EventArgs e)
     {
-        // Register dialog script
-        ScriptHelper.RegisterDialogScript(Page);
+        base.OnPreRender(e);
 
-        string postBack = Page.ClientScript.GetPostBackEventReference(hfValue, "");
+        btnChangeFontType.OnClientClick = Page.ClientScript.GetCallbackEventReference(this, "document.getElementById('" + txtFontType.ClientID + "').value", "selectFont", null) + ";return false;";
+        
+        btnClearFont.Visible = DisplayClearButton;
 
-        // Register script for refresh data
-        ScriptHelper.RegisterClientScriptBlock(Page, typeof(Page), "RegisterPostabackScript", ScriptHelper.GetScript(
-@"
-function refreshData() {
-    " + postBack + @";
-}"
-        ));
-
-        // Create script for open dialog and get parameters
-        string script = ScriptHelper.GetScript(
-@" 
-function SelectFont(hdID,ftID) {
-        modalDialog('" + ResolveUrl("~/CMSFormControls/Selectors/FontSelectorDialog.aspx") + @"?HiddenID=' + hdID + '&FontTypeID=' + ftID, 'FontSelector', 500, 470);
-}
-function getParameters(val,hf,tb) {                  
-    document.getElementById (hf).value= val;              
-    document.getElementById (tb).value= val;
-    refreshData(); 
-}
-"
-        );
-
-        ScriptHelper.RegisterClientScriptBlock(Page, typeof(Page), "script", script);
+        RegisterScripts();
     }
 
-    #endregion
-
-
-    #region Event handlers
 
     protected void btnClearFont_Click(object sender, EventArgs e)
     {
         // Clear value in selector
         txtFontType.Text = String.Empty;
         hfValue.Value = String.Empty;
-        WindowHelper.Add("FontSelector", String.Empty);
+    }
+
+    #endregion
+
+
+    #region "Methods"
+
+    private void RegisterScripts()
+    {
+        // Register dialog script
+        ScriptHelper.RegisterDialogScript(Page);
+
+        // Create script for open dialog, get parameters and refresh
+        string script = @" 
+function selectFont(queryParams) {
+    modalDialog('" + ResolveUrl("~/CMSFormControls/Selectors/FontSelectorDialog.aspx") + @"' + queryParams, 'FontSelector', 500, 470);
+}
+function setParameters(val,hf,tb) {
+    document.getElementById(hf).value = val;
+    document.getElementById(tb).value = val;
+}";
+
+        ScriptHelper.RegisterClientScriptBlock(this, typeof(String), "FontSelectorScripts", script, true);
+    }
+
+
+    /// <summary>
+    /// Sets "onchange" javascript function to control's input.
+    /// </summary>
+    /// <param name="fnction"></param>
+    public void SetOnChangeAttribute(string fnction)
+    {
+        txtFontType.Attributes["onchange"] = fnction;
+    }
+
+    #endregion
+
+
+    #region "Callback handlers"
+
+    private string callBackArg;
+
+
+    public string GetCallbackResult()
+    {
+        // Add font parameters for selector dialog
+        string value = (String.IsNullOrEmpty(callBackArg)) ? String.Format("{0};{1};{2};;", DefaultFont, DefaultStyle, DefaultSize) : callBackArg;
+        WindowHelper.Add(hfValue.ClientID, value);
+
+        return String.Format("?hiddenId={0}&fontTypeId={1}", hfValue.ClientID, txtFontType.ClientID);
+    }
+
+
+    public void RaiseCallbackEvent(string eventArgument)
+    {
+        callBackArg = eventArgument;
     }
 
     #endregion

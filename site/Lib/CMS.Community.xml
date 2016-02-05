@@ -56,6 +56,26 @@
             Represents the Community module.
             </summary>
         </member>
+        <member name="F:CMS.Community.CommunityModule.FRIENDS_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for friends.
+            </summary>
+        </member>
+        <member name="F:CMS.Community.CommunityModule.GROUP_MEMBER_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for group member.
+            </summary>
+        </member>
+        <member name="F:CMS.Community.CommunityModule.GROUP_INVITATION_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for group invitation.
+            </summary>
+        </member>
+        <member name="F:CMS.Community.CommunityModule.GROUP_MEMBER_INVITATION_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for group member invitation.
+            </summary>
+        </member>
         <member name="M:CMS.Community.CommunityModule.#ctor">
             <summary>
             Default constructor
@@ -305,6 +325,11 @@
             Constructor - Creates a new FriendListInfo object from the given DataRow.
             </summary>
             <param name="dr">DataRow with the object data</param>
+        </member>
+        <member name="M:CMS.Community.FriendListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
         </member>
         <member name="M:CMS.Community.FriendListInfo.GetDataQueryInternal">
             <summary>
@@ -631,7 +656,7 @@
         </member>
         <member name="P:CMS.Community.FriendsActionControl.AutomaticApprovment">
             <summary>
-            Indicates if automatic approvment should be performed.
+            Indicates if automatic approvement should be performed.
             </summary>
         </member>
         <member name="P:CMS.Community.FriendsActionControl.SelectedFriends">
@@ -717,13 +742,10 @@
             <param name="result">Cloning result</param>
             <param name="originalObject">Original source BaseInfo (object being cloned)</param>
         </member>
-        <member name="M:CMS.Community.GroupInfo.InsertAsClonePostprocessing(CMS.DataEngine.CloneSettings,CMS.DataEngine.CloneResult,CMS.DataEngine.BaseInfo)">
+        <member name="M:CMS.Community.GroupInfo.LoadDefaultData">
             <summary>
-            Clones the role bindings.
+            Loads the default data to the object.
             </summary>
-            <param name="settings">Cloning settings</param>
-            <param name="result">Result of the cloning - messages in this object will be altered by processing this method</param>
-            <param name="originalObject">Original source BaseInfo (object being cloned)</param>
         </member>
         <member name="M:CMS.Community.GroupInfo.#ctor">
             <summary>
@@ -1125,6 +1147,11 @@
             Constructor - Creates a new GroupMemberListInfo object from the given DataRow.
             </summary>
             <param name="dr">DataRow with the object data</param>
+        </member>
+        <member name="M:CMS.Community.GroupMemberListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
         </member>
         <member name="M:CMS.Community.GroupMemberListInfo.GetDataQueryInternal">
             <summary>

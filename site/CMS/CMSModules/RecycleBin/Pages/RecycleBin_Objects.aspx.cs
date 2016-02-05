@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 
 using CMS.ExtendedControls;
@@ -36,6 +36,7 @@ public partial class CMSModules_RecycleBin_Pages_RecycleBin_Objects : GlobalAdmi
         siteSelector.DropDownSingleSelect.AutoPostBack = true;
         siteSelector.OnlyRunningSites = false;
         siteSelector.AllowAll = false;
+        CurrentMaster.DisplaySiteSelectorPanel = true;
         
         // Add special fields
         siteSelector.UniSelector.SpecialFields.Add(new SpecialField() {Text = GetString("RecycleBin.AllSitesAndGlobal"), Value = "0"});
@@ -74,7 +75,7 @@ public partial class CMSModules_RecycleBin_Pages_RecycleBin_Objects : GlobalAdmi
         // Hide site selector if there are no sites
         if (!siteSelector.UniSelector.HasData)
         {
-            pnlSiteSelector.Visible = false;
+            pnlSiteSelector.Visible = false;            
         }
         base.OnPreRender(e);
     }

@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Title="Groups - Delete group" Inherits="CMSModules_Groups_Tools_Group_Delete"
-    Theme="Default" Codebehind="Group_Delete.aspx.cs" %>
+    Theme="Default"  Codebehind="Group_Delete.aspx.cs" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <cms:MessagesPlaceHolder ID="plcMess" runat="server" />

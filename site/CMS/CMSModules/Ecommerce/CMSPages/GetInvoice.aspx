@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_CMSPages_GetInvoice" Codebehind="GetInvoice.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_CMSPages_GetInvoice"  Codebehind="GetInvoice.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

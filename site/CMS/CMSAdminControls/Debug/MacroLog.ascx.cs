@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls;
 using CMS.UIControls;
@@ -21,8 +21,8 @@ public partial class CMSAdminControls_Debug_MacroLog : MacroLog
 
             HeaderText = GetString("MacroLog.Info");
 
-            gridMacros.DataSource = dt;
-            gridMacros.DataBind();
+            // Bind the data
+            BindGrid(gridMacros, dt);
         }
     }
 }

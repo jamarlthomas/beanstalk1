@@ -169,7 +169,7 @@
             <param name="eventData1">Subscription event data 1</param>
             <param name="eventData2">Subscription event data 2</param>
             <param name="siteId">ID of the site where the event belongs</param>
-            <param name="where">Additional WHERE conditoin</param>
+            <param name="where">Additional WHERE condition</param>
             <param name="resolverData">Custom data for macro resolver (DataRow or DataClass object)</param>
             <param name="resolverSourceParameters">Resolver special macros (couples [name, value])</param>
         </member>
@@ -695,6 +695,11 @@
             Class providing notification subscription info management.
             </summary>
         </member>
+        <member name="M:CMS.Notifications.NotificationSubscriptionInfoProvider.GetNotificationSubscriptions">
+            <summary>
+            Returns the query for all notification subscriptions.
+            </summary>   
+        </member>
         <member name="M:CMS.Notifications.NotificationSubscriptionInfoProvider.GetNotificationSubscriptionInfo(System.Int32)">
             <summary>
             Returns the notification subscription info structure for the specified notification subscription.
@@ -735,6 +740,18 @@
             </summary>
             <param name="notificationSubscriptionId">Notification subscription ID</param>
         </member>
+        <member name="M:CMS.Notifications.NotificationSubscriptionInfoProvider.GetWhereConditionObject(System.String,System.String,System.Int32,System.String,System.String,System.Int32,CMS.DataEngine.IWhereCondition)">
+            <summary>
+            Returns complete WHERE condition for subscriptions which should be searched according to the given parameters.
+            </summary>
+            <param name="eventSource">Subscription event source</param>
+            <param name="eventCode">Subscription event code</param>
+            <param name="eventObjectId">Subscription event object ID</param>
+            <param name="eventData1">Subscription event data 1</param>
+            <param name="eventData2">Subscription event data 2</param>
+            <param name="siteId">ID of the site where the event belongs</param>
+            <param name="where">Additional WHERE condition</param>
+        </member>
         <member name="M:CMS.Notifications.NotificationSubscriptionInfoProvider.GetWhereCondition(System.String,System.String,System.Int32,System.String,System.String,System.Int32,System.String)">
             <summary>
             Returns complete WHERE condition for subscriptions which should be searched according to the given parameters.
@@ -745,7 +762,25 @@
             <param name="eventData1">Subscription event data 1</param>
             <param name="eventData2">Subscription event data 2</param>
             <param name="siteId">ID of the site where the event belongs</param>
-            <param name="where">Additional WHERE conditoin</param>
+            <param name="where">Additional WHERE condition</param>
+        </member>
+        <member name="M:CMS.Notifications.NotificationSubscriptionInfoProvider.GetNotificationSubscriptionInfoInternal(System.Int32)">
+            <summary>
+            Returns the notification subscription info structure for the specified notification subscription.
+            </summary>
+            <param name="notificationSubscriptionId">Notification subscription ID</param>
+        </member>
+        <member name="M:CMS.Notifications.NotificationSubscriptionInfoProvider.DeleteNotificationSubscriptionInfoInternal(CMS.Notifications.NotificationSubscriptionInfo)">
+            <summary>
+            Deletes specified notificationSubscription.
+            </summary>
+            <param name="infoObj">Notification subscription object</param>
+        </member>
+        <member name="M:CMS.Notifications.NotificationSubscriptionInfoProvider.SetNotificationSubscriptionInfoInternal(CMS.Notifications.NotificationSubscriptionInfo)">
+            <summary>
+            Sets (updates or inserts) specified notification subscription.
+            </summary>
+            <param name="notificationSubscription">Notification subscription to set</param>
         </member>
         <member name="T:CMS.Notifications.NotificationTemplateInfo">
             <summary>
@@ -827,6 +862,11 @@
             Constructor
             </summary>
         </member>
+        <member name="M:CMS.Notifications.NotificationTemplateInfoProvider.GetNotificationTemplates">
+            <summary>
+            Returns the query for all notification templates.
+            </summary>   
+        </member>
         <member name="M:CMS.Notifications.NotificationTemplateInfoProvider.GetNotificationTemplateInfo(System.String)">
             <summary>
             Returns the global notification template.
@@ -851,7 +891,7 @@
             Gets all the templates filtered by given WHERE condition and ordered by specified ORDER BY statement.
             </summary>
             <param name="where">Where condition to use</param>
-            <param name="orderBy">Order by statement to use</param>        
+            <param name="orderBy">Order by statement to use</param>     
         </member>
         <member name="M:CMS.Notifications.NotificationTemplateInfoProvider.GetTemplates(System.String,System.String,System.Int32,System.String)">
             <summary>
@@ -1000,10 +1040,15 @@
             Class providing notification template text info management.
             </summary>
         </member>
-        <member name="F:CMS.Notifications.NotificationTemplateTextInfoProvider.mTemplateTextsByName">
+        <member name="M:CMS.Notifications.NotificationTemplateTextInfoProvider.CreateTextsDictionary">
             <summary>
-            Hashtable indexed by key "[gatewayID]_[templateID]".
+            Creates the texts dictionary
             </summary>
+        </member>
+        <member name="M:CMS.Notifications.NotificationTemplateTextInfoProvider.GetNotificationTemplateTexts">
+            <summary>
+            Returns the query for all notification templates.
+            </summary>   
         </member>
         <member name="M:CMS.Notifications.NotificationTemplateTextInfoProvider.Clear(System.Boolean)">
             <summary>
@@ -1025,13 +1070,6 @@
             <param name="templateTextId">Template text ID</param>        
         </member>
         <member name="M:CMS.Notifications.NotificationTemplateTextInfoProvider.GetNotificationTemplateTextInfo(System.Int32,System.Int32)">
-            <summary>
-            Returns the notification template text info structure for the specified notification template text.
-            </summary>
-            <param name="gatewayId">Gateway ID</param>
-            <param name="templateId">Template ID</param>
-        </member>
-        <member name="M:CMS.Notifications.NotificationTemplateTextInfoProvider.GetNotificationTemplateTextInfoFromDB(System.Int32,System.Int32)">
             <summary>
             Returns the notification template text info structure for the specified notification template text.
             </summary>
@@ -1063,15 +1101,23 @@
             </summary>
             <param name="templateTextId">Template text ID</param>
         </member>
-        <member name="F:CMS.Notifications.NotificationTemplateTextInfoProvider.tableLock">
+        <member name="M:CMS.Notifications.NotificationTemplateTextInfoProvider.GetNotificationTemplateTextInfoInternal(System.Int32)">
             <summary>
-            Table lock for loading.
+            Returns the notification template text info structure for the specified notification template text.
             </summary>
+            <param name="templateTextId">Template text ID</param>
         </member>
-        <member name="M:CMS.Notifications.NotificationTemplateTextInfoProvider.LoadTemplateTexts">
+        <member name="M:CMS.Notifications.NotificationTemplateTextInfoProvider.DeleteNotificationTemplateTextInfoInternal(CMS.Notifications.NotificationTemplateTextInfo)">
             <summary>
-            Loads the gateways to the hashtables.
+            Deletes specified notification template text info.
             </summary>
+            <param name="infoObj">Notification template text to be deleted</param>       
+        </member>
+        <member name="M:CMS.Notifications.NotificationTemplateTextInfoProvider.SetNotificationTemplateTextInfoInternal(CMS.Notifications.NotificationTemplateTextInfo)">
+            <summary>
+            Sets (updates or inserts) specified notification template text.
+            </summary>
+            <param name="infoObj">Notification template to be set</param>   
         </member>
         <member name="M:CMS.Notifications.NotificationTemplateTextInfoProvider.GetHashKey(System.Int32,System.Int32)">
             <summary>
@@ -1079,6 +1125,13 @@
             </summary>
             <param name="gatewayId">ID of the gateway</param>
             <param name="templateId">ID of the template</param>
+        </member>
+        <member name="M:CMS.Notifications.NotificationTemplateTextInfoProvider.GetNotificationTemplateTextInfoFromDB(System.Int32,System.Int32)">
+            <summary>
+            Returns the notification template text info structure for the specified notification template text.
+            </summary>
+            <param name="gatewayId">Gateway ID</param>
+            <param name="templateId">Template ID</param>
         </member>
         <member name="P:CMS.Notifications.NotificationTemplateTextInfoProvider.TemplateTextsByName">
             <summary>

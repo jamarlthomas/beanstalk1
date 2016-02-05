@@ -1,7 +1,7 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartSKUPriceDetail"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Title="Shopping cart - Product price detail" Codebehind="ShoppingCartSKUPriceDetail.aspx.cs" %>
+    Title="Shopping cart - Product price detail"  Codebehind="ShoppingCartSKUPriceDetail.aspx.cs" %>
 
 <%@ Register Src="ShoppingCartSKUPriceDetail.ascx" TagName="ShoppingCartSKUPriceDetail"
     TagPrefix="cms" %>

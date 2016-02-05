@@ -541,10 +541,10 @@ if ((window.parent != null) && (/parentelemid={0}/i.test(window.location.href)) 
             }
 
             // Check if class exists
-            DataClassInfo ci = DataClassInfoProvider.GetDataClassInfo("CMS.File");
+            DataClassInfo ci = DataClassInfoProvider.GetDataClassInfo(SystemDocumentTypes.File);
             if (ci == null)
             {
-                throw new Exception(string.Format(GetString("dialogs.newfile.classnotfound"), "CMS.File"));
+                throw new Exception(string.Format(GetString("dialogs.newfile.classnotfound"), SystemDocumentTypes.File));
             }
 
 
@@ -564,7 +564,7 @@ if ((window.parent != null) && (/parentelemid={0}/i.test(window.location.href)) 
             // Check user permissions
             if (!RaiseOnCheckPermissions("Create", this))
             {
-                if (!MembershipContext.AuthenticatedUser.IsAuthorizedToCreateNewDocument(parentNode, "CMS.File"))
+                if (!MembershipContext.AuthenticatedUser.IsAuthorizedToCreateNewDocument(parentNode, SystemDocumentTypes.File))
                 {
                     throw new Exception(string.Format(GetString("dialogs.newfile.notallowed"), NodeClassName));
                 }
@@ -588,7 +588,7 @@ if ((window.parent != null) && (/parentelemid={0}/i.test(window.location.href)) 
             // Make sure the file name with extension respects maximum file name
             fileName = TreePathUtils.EnsureMaxFileNameLength(fileName, ci.ClassName);
 
-            node = TreeNode.New("CMS.File", TreeProvider);
+            node = TreeNode.New(SystemDocumentTypes.File, TreeProvider);
             node.DocumentCulture = LocalizationContext.PreferredCultureCode;
             node.DocumentName = fileName;
             if (NodeGroupID > 0)
@@ -637,7 +637,7 @@ if ((window.parent != null) && (/parentelemid={0}/i.test(window.location.href)) 
             // Delete the document if something failed
             if (newDocumentCreated && (node != null) && (node.DocumentID > 0))
             {
-                DocumentHelper.DeleteDocument(node, TreeProvider, false, true, true);
+                DocumentHelper.DeleteDocument(node, TreeProvider, false, true);
             }
 
             message = ex.Message;
@@ -660,21 +660,32 @@ if ((window.parent != null) && (/parentelemid={0}/i.test(window.location.href)) 
             string afterSaveScript = null;
             if (!string.IsNullOrEmpty(AfterSaveJavascript))
             {
-                afterSaveScript = String.Format(@"
+                afterSaveScript = String.Format(
+@"
 if (window.{0} != null){{
-    window.{0}();
+    window.{0}(files);
 }} else if ((window.parent != null) && (window.parent.{0} != null)){{
-    window.parent.{0}();
-}}", AfterSaveJavascript);
+    window.parent.{0}(files);
+}}", 
+                    AfterSaveJavascript
+                );
             }
 
-            afterSaveScript += String.Format(@"
+            afterSaveScript += String.Format(
+@"
 if (typeof(parent.DFU) !== 'undefined') {{ 
     parent.DFU.OnUploadCompleted({0}); 
 }} 
 if ((window.parent != null) && (/parentelemid={1}/i.test(window.location.href)) && (window.parent.InitRefresh_{1} != null)){{
     window.parent.InitRefresh_{1}({2}, false, false{3}{4});
-}}", ScriptHelper.GetString(containerId), ParentElemID, ScriptHelper.GetString(message.Trim()), ((nodeInfo != "") ? ", '" + nodeInfo + "'" : ""), (InsertMode ? ", 'insert'" : ", 'update'"));
+}}
+", 
+                ScriptHelper.GetString(containerId), 
+                ParentElemID, 
+                ScriptHelper.GetString(message.Trim()), 
+                ((nodeInfo != "") ? ", '" + nodeInfo + "'" : ""), 
+                (InsertMode ? ", 'insert'" : ", 'update'")
+            );
 
             ScriptHelper.RegisterStartupScript(this, typeof(string), "afterSaveScript_" + ClientID, ScriptHelper.GetScript(afterSaveScript));
         }
@@ -789,8 +800,16 @@ if ((window.parent != null) && (/parentelemid={1}/i.test(window.location.href)) 
             {
                 if (!string.IsNullOrEmpty(AfterSaveJavascript))
                 {
-                    afterSaveScript = "if (window." + AfterSaveJavascript + " != null){window." + AfterSaveJavascript + "()}";
-                    afterSaveScript += "else if ((window.parent != null) && (window.parent." + AfterSaveJavascript + " != null)){window.parent." + AfterSaveJavascript + "()}";
+                    afterSaveScript = String.Format(
+@"
+if (window.{0} != null) {{
+    window.{0}(files)
+}} else if ((window.parent != null) && (window.parent.{0} != null)) {{
+    window.parent.{0}(files) 
+}}
+", 
+                        AfterSaveJavascript
+                    );
                 }
                 else
                 {
@@ -883,12 +902,16 @@ if ((window.parent != null) && (/parentelemid={1}/i.test(window.location.href)) 
             {
                 if (!string.IsNullOrEmpty(AfterSaveJavascript))
                 {
-                    afterSaveScript = String.Format(@"
-                        if (window.{0} != null) {{
-                            window.{0}()
-                        }} else if ((window.parent != null) && (window.parent.{0} != null)) {{
-                            window.parent.{0}() 
-                        }}", AfterSaveJavascript);
+                    afterSaveScript = String.Format(
+@"
+if (window.{0} != null) {{
+    window.{0}(files)
+}} else if ((window.parent != null) && (window.parent.{0} != null)) {{
+    window.parent.{0}(files) 
+}}
+", 
+                        AfterSaveJavascript
+                    );
                 }
                 else
                 {

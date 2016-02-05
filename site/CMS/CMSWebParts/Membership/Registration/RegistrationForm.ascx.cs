@@ -1,16 +1,10 @@
-using System;
-using System.Data;
-using System.Collections;
+﻿using System;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 
 using CMS.DocumentEngine;
 using CMS.EmailEngine;
 using CMS.EventLog;
 using CMS.Helpers;
-using CMS.Globalization;
 using CMS.Localization;
 using CMS.PortalControls;
 using CMS.PortalEngine;
@@ -21,6 +15,7 @@ using CMS.WebAnalytics;
 using CMS.Protection;
 using CMS.DataEngine;
 using CMS.MacroEngine;
+using CMS.Core;
 
 public partial class CMSWebParts_Membership_Registration_RegistrationForm : CMSAbstractWebPart
 {
@@ -467,7 +462,7 @@ public partial class CMSWebParts_Membership_Registration_RegistrationForm : CMSA
             lblConfirmPassword.Text = ConfirmPasswordText;
             btnOk.Text = ButtonText;
             lblCaptcha.Text = CaptchaText;
-            
+
             if (MFAuthenticationHelper.IsMultiFactorAutEnabled && !MFAuthenticationHelper.IsMultiFactorAutRequired)
             {
                 plcMFIsRequired.Visible = true;
@@ -642,7 +637,7 @@ public partial class CMSWebParts_Membership_Registration_RegistrationForm : CMSA
 
             ui.Enabled = EnableUserAfterRegistration;
             ui.UserURLReferrer = MembershipContext.AuthenticatedUser.URLReferrer;
-            ui.UserCampaign = AnalyticsHelper.Campaign;
+            ui.UserCampaign = Service<ICampaignService>.Entry().CampaignCode;
 
             ui.SetPrivilegeLevel(UserPrivilegeLevelEnum.None);
 
@@ -723,19 +718,6 @@ public partial class CMSWebParts_Membership_Registration_RegistrationForm : CMSA
             // Set password            
             UserInfoProvider.SetPassword(ui, passStrength.Text);
 
-
-            // Prepare macro data source for email resolver
-            UserInfo userForMail = ui.Clone();
-            userForMail.SetValue("UserPassword", string.Empty);
-
-            object[] data = new object[1];
-            data[0] = userForMail;
-
-            // Prepare resolver for notification and welcome emails
-            MacroResolver resolver = MacroContext.CurrentResolver;
-            resolver.SetAnonymousSourceData(data);
-            resolver.Settings.EncodeResolvedValues = true;
-
             #region "Welcome Emails (confirmation, waiting for approval)"
 
             bool error = false;
@@ -773,23 +755,7 @@ public partial class CMSWebParts_Membership_Registration_RegistrationForm : CMSA
                     ModuleCommands.OnlineMarketingCreateRelation(ui.UserID, 0, contactId);
                 }
 
-                // Prepare macro replacements
-                string[,] replacements = new string[6, 2];
-                replacements[0, 0] = "confirmaddress";
-                replacements[0, 1] = AuthenticationHelper.GetRegistrationApprovalUrl(ApprovalPage, ui.UserGUID, siteName, NotifyAdministrator);
-                replacements[1, 0] = "username";
-                replacements[1, 1] = plainUserName;
-                replacements[2, 0] = "password";
-                replacements[2, 1] = passStrength.Text;
-                replacements[3, 0] = "Email";
-                replacements[3, 1] = txtEmail.Text;
-                replacements[4, 0] = "FirstName";
-                replacements[4, 1] = txtFirstName.Text;
-                replacements[5, 0] = "LastName";
-                replacements[5, 1] = txtLastName.Text;
-
-                // Set resolver
-                resolver.SetNamedSourceData(replacements);
+                var resolver = MembershipResolvers.GetMembershipRegistrationResolver(ui, passStrength.Text, AuthenticationHelper.GetRegistrationApprovalUrl(ApprovalPage, ui.UserGUID, siteName, NotifyAdministrator));
 
                 // Email message
                 EmailMessage email = new EmailMessage();
@@ -797,9 +763,12 @@ public partial class CMSWebParts_Membership_Registration_RegistrationForm : CMSA
                 email.Recipients = ui.Email;
 
                 email.From = EmailHelper.GetSender(template, SettingsKeyInfoProvider.GetValue(siteName + ".CMSNoreplyEmailAddress"));
+
+                // Enable macro encoding for body
+                resolver.Settings.EncodeResolvedValues = true;
                 email.Body = resolver.ResolveMacros(template.TemplateText);
 
-                resolver.Settings.EncodeResolvedValues = false;
+                // Disable macro encoding for plaintext body and subject
                 email.PlainTextBody = resolver.ResolveMacros(template.TemplatePlainText);
                 email.Subject = resolver.ResolveMacros(emailSubject);
 
@@ -839,8 +808,8 @@ public partial class CMSWebParts_Membership_Registration_RegistrationForm : CMSA
             if (!requiresConfirmation && NotifyAdministrator && (FromAddress != String.Empty) && (ToAddress != String.Empty))
             {
                 EmailTemplateInfo mEmailTemplate = null;
-
-                if (requiresAdminApprove)
+                MacroResolver resolver = MembershipResolvers.GetRegistrationResolver(ui);
+                if (SettingsKeyInfoProvider.GetBoolValue(siteName + ".CMSRegistrationAdministratorApproval"))
                 {
                     mEmailTemplate = EmailTemplateProvider.GetEmailTemplate("Registration.Approve", siteName);
                 }
@@ -856,26 +825,17 @@ public partial class CMSWebParts_Membership_Registration_RegistrationForm : CMSA
                 }
                 else
                 {
-                    string[,] replacements = new string[4, 2];
-                    replacements[0, 0] = "firstname";
-                    replacements[0, 1] = ui.FirstName;
-                    replacements[1, 0] = "lastname";
-                    replacements[1, 1] = ui.LastName;
-                    replacements[2, 0] = "email";
-                    replacements[2, 1] = ui.Email;
-                    replacements[3, 0] = "username";
-                    replacements[3, 1] = plainUserName;
-
-                    // Set resolver
-                    resolver.SetNamedSourceData(replacements);
-
                     EmailMessage message = new EmailMessage();
 
                     message.EmailFormat = EmailFormatEnum.Default;
                     message.From = EmailHelper.GetSender(mEmailTemplate, FromAddress);
                     message.Recipients = ToAddress;
+
+                    // Enable macro encoding for body
+                    resolver.Settings.EncodeResolvedValues = true;
                     message.Body = resolver.ResolveMacros(mEmailTemplate.TemplateText);
 
+                    // Disable macro encoding for plaintext body and subject
                     resolver.Settings.EncodeResolvedValues = false;
                     message.PlainTextBody = resolver.ResolveMacros(mEmailTemplate.TemplatePlainText);
                     message.Subject = resolver.ResolveMacros(EmailHelper.GetSubject(mEmailTemplate, GetString("RegistrationForm.EmailSubject")));
@@ -904,7 +864,7 @@ public partial class CMSWebParts_Membership_Registration_RegistrationForm : CMSA
             // Track successful registration conversion
             if (TrackConversionName != String.Empty)
             {
-                if (AnalyticsHelper.AnalyticsEnabled(siteName) && AnalyticsHelper.TrackConversionsEnabled(siteName) && !AnalyticsHelper.IsIPExcluded(siteName, RequestContext.UserHostAddress))
+                if (AnalyticsHelper.AnalyticsEnabled(siteName) && !AnalyticsHelper.IsIPExcluded(siteName, RequestContext.UserHostAddress))
                 {
                     // Log conversion
                     HitLogProvider.LogConversions(siteName, LocalizationContext.PreferredCultureCode, TrackConversionName, 0, ConversionValue);
@@ -994,14 +954,14 @@ public partial class CMSWebParts_Membership_Registration_RegistrationForm : CMSA
                     url = Server.UrlDecode(url);
 
                     // Check that url is relative path or hash is ok
-                    if (url.StartsWithCSafe("~") || url.StartsWithCSafe("/") || QueryHelper.ValidateHash("hash"))
+                    if (url.StartsWithCSafe("~") || url.StartsWithCSafe("/") || QueryHelper.ValidateHash("hash", "aliaspath"))
                     {
                         URLHelper.Redirect(url);
                     }
                     // Absolute path with wrong hash
                     else
                     {
-                        URLHelper.Redirect(ResolveUrl("~/CMSMessages/Error.aspx?title=" + ResHelper.GetString("general.badhashtitle") + "&text=" + ResHelper.GetString("general.badhashtext")));
+                        URLHelper.Redirect(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext"));
                     }
                 }
             }

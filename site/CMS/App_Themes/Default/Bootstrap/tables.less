@@ -430,7 +430,6 @@ table {
 //
 // Event Log
 // --------------------------------------------------
-
 .event-log {
     .error {
         background-color: @color-red-130;
@@ -438,6 +437,15 @@ table {
 
     .warning {
         background-color: @color-orange-100;
+    }
+}
+
+//
+// Web farm - tasks error identifier
+// -------------------------------------------------
+.web-farm {
+    .error {
+        background-color: @color-red-130;
     }
 }
 
@@ -606,4 +614,9 @@ table {
             height: @base-unit * 2 !important;
         }
     }
+}
+
+// Clear history button on the Versions tab in page properties
+.clear-history {
+    margin-top: @base-unit;
 }

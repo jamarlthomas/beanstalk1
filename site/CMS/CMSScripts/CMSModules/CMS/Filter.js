@@ -248,8 +248,10 @@ cmsdefine(["Underscore", "CMS/Eventhub", "jQuery"], function (_, EventHub, $) {
             newselectedItem = this.visibleItems[0];
         }
 
-        this.selectItem(newselectedItem.$el);
-        this.selectedItem = newselectedItem;
+        if (newselectedItem) {
+            this.selectItem(newselectedItem.$el);
+            this.selectedItem = newselectedItem;
+        }
     };
 
 
@@ -269,8 +271,10 @@ cmsdefine(["Underscore", "CMS/Eventhub", "jQuery"], function (_, EventHub, $) {
             newselectedItem = this.visibleItems[this.visibleItems.length - 1];
         }
 
-        this.selectItem(newselectedItem.$el);
-        this.selectedItem = newselectedItem;
+        if (newselectedItem) {
+            this.selectItem(newselectedItem.$el);
+            this.selectedItem = newselectedItem;
+        }
     };
 
 

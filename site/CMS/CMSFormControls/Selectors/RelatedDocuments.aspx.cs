@@ -12,9 +12,9 @@ public partial class CMSFormControls_Selectors_RelatedDocuments : CMSModalPage
 {
     #region "Variables"
 
-    private TreeProvider mTreeProvider = null;
-    private TreeNode node = null;
-    private string externalControlID = null;
+    private TreeProvider mTreeProvider;
+    private TreeNode node;
+    private string externalControlID;
 
     #endregion
 
@@ -80,7 +80,7 @@ public partial class CMSFormControls_Selectors_RelatedDocuments : CMSModalPage
         else
         {
             addRelatedDocument.Visible = false;
-            string url = ResolveUrl("~/CMSMessages/Error.aspx?title=" + GetString("dialogs.badhashtitle") + "&text=" + GetString("dialogs.badhashtext") + "&cancel=1");
+            string url = ResolveUrl(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
             ltlScript.Text = ScriptHelper.GetScript("window.location = '" + url + "';");
         }
     }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -17,16 +17,75 @@ using TreeNode = CMS.DocumentEngine.TreeNode;
 
 public partial class CMSModules_Content_FormControls_Relationships_RelatedDocuments : ReadOnlyFormEngineUserControl
 {
+    #region "Constants"
+
+    private const string ADHOC_RELATIONSHIP_NAME = "##AUTO##";
+
+    #endregion
+
+
     #region "Variables"
 
     private TreeProvider mTreeProvider;
     private bool mShowAddRelation = true;
     private DialogConfiguration mConfig;
+    private string mAdHocRelationshipName;
 
     #endregion
 
 
     #region "Private properties"
+
+    /// <summary>
+    /// Control is used as form field of Page data type (as ad hoc relationship).
+    /// </summary>
+    private bool IsAdHocRelationship
+    {
+        get
+        {
+            return (FieldInfo != null) && (FieldInfo.DataType == DocumentFieldDataType.DocRelationships);
+        }
+    }
+
+
+    /// <summary>
+    /// Ad-hoc relationship name based on document type class name and field GUID.
+    /// </summary>
+    private string AdHocRelationshipName
+    {
+        get
+        {
+            if (mAdHocRelationshipName != null)
+            {
+                return mAdHocRelationshipName;
+            }
+
+            if (!IsAdHocRelationship)
+            {
+                throw new NotSupportedException("[RelatedDocuments.AdHocRelationshipName]: Control can be used only for a Page data type of a form field.");
+            }
+
+            if (TreeNode != null)
+            {
+                mAdHocRelationshipName = RelationshipNameInfoProvider.GetAdHocRelationshipNameCodeName(TreeNode.NodeClassName, FieldInfo);
+            }
+
+            return mAdHocRelationshipName;
+        }
+    }
+
+
+    /// <summary>
+    /// Indicates if relationship name is created as ad-hoc within first relation created.
+    /// </summary>
+    private bool UseAdHocRelationshipName
+    {
+        get
+        {
+            return RelationshipName.EqualsCSafe(ADHOC_RELATIONSHIP_NAME, true);
+        }
+    }
+
 
     /// <summary>
     /// Gets the configuration for Copy and Move dialog.
@@ -35,22 +94,25 @@ public partial class CMSModules_Content_FormControls_Relationships_RelatedDocume
     {
         get
         {
-            if (mConfig == null)
+            if (mConfig != null)
             {
-                mConfig = new DialogConfiguration();
-                mConfig.HideLibraries = true;
-                mConfig.ContentSelectedSite = SiteContext.CurrentSiteName;
-                mConfig.HideAnchor = true;
-                mConfig.HideAttachments = true;
-                mConfig.HideContent = false;
-                mConfig.HideEmail = true;
-                mConfig.HideLibraries = true;
-                mConfig.HideWeb = true;
-                mConfig.ContentSelectedSite = SiteContext.CurrentSiteName;
-                mConfig.OutputFormat = OutputFormatEnum.Custom;
-                mConfig.CustomFormatCode = "relationship";
-                mConfig.ContentSites = AvailableSitesEnum.OnlyCurrentSite;
+                return mConfig;
             }
+
+            mConfig = new DialogConfiguration();
+            mConfig.HideLibraries = true;
+            mConfig.ContentSelectedSite = SiteContext.CurrentSiteName;
+            mConfig.HideAnchor = true;
+            mConfig.HideAttachments = true;
+            mConfig.HideContent = false;
+            mConfig.HideEmail = true;
+            mConfig.HideLibraries = true;
+            mConfig.HideWeb = true;
+            mConfig.ContentSelectedSite = SiteContext.CurrentSiteName;
+            mConfig.OutputFormat = OutputFormatEnum.Custom;
+            mConfig.CustomFormatCode = "relationship";
+            mConfig.ContentSites = AvailableSitesEnum.OnlyCurrentSite;
+            mConfig.AdditionalQueryParameters = "contentchanged=false";
             return mConfig;
         }
     }
@@ -161,8 +223,14 @@ public partial class CMSModules_Content_FormControls_Relationships_RelatedDocume
     /// </summary>
     public string StartingPath
     {
-        get;
-        set;
+        get
+        {
+            return GetValue("StartingPath", "/");
+        }
+        set
+        {
+            SetValue("StartingPath", value);
+        }
     }
 
 
@@ -183,12 +251,7 @@ public partial class CMSModules_Content_FormControls_Relationships_RelatedDocume
     {
         get
         {
-            if (mTreeProvider == null)
-            {
-                mTreeProvider = new TreeProvider(MembershipContext.AuthenticatedUser);
-            }
-
-            return mTreeProvider;
+            return mTreeProvider ?? (mTreeProvider = new TreeProvider(MembershipContext.AuthenticatedUser));
         }
     }
 
@@ -245,101 +308,157 @@ public partial class CMSModules_Content_FormControls_Relationships_RelatedDocume
     /// </summary>
     protected void Page_Load(object sender, EventArgs e)
     {
+        // Object type cannot be defined in xml definition -> it would ignore code behind configuration
+        UniGridRelationship.ObjectType = (IsAdHocRelationship) ? RelationshipInfo.OBJECT_TYPE_ADHOC : RelationshipInfo.OBJECT_TYPE;
+
         if (StopProcessing)
         {
             UniGridRelationship.StopProcessing = StopProcessing;
+            return;
+        }
+
+        // Set tree node from Form object
+        if ((TreeNode == null) && (Form != null) && (Form.EditedObject != null))
+        {
+            var node = Form.EditedObject as TreeNode;
+            if ((node != null) && (Form.Mode == FormModeEnum.Update))
+            {
+                TreeNode = node;
+            }
+            else
+            {
+                ShowInformation(GetString("relationship.editdocumenterror"));
+            }
+        }
+
+        if (TreeNode != null)
+        {
+            InitUniGrid();
+
+            int nodeId = TreeNode.NodeID;
+
+            // Add relationship name condition
+            var condition = new WhereCondition().WhereIn("RelationshipNameID", new IDQuery<RelationshipNameInfo>().Where(GetRelationshipNameCondition()));
+
+            // Switch sides is disabled
+            if (!AllowSwitchSides)
+            {
+                condition.WhereEquals(DefaultSide ? "RightNodeID" : "LeftNodeID", nodeId);
+            }
+            else
+            {
+                condition.Where(new WhereCondition().WhereEquals("RightNodeID", nodeId).Or().WhereEquals("LeftNodeID", nodeId));
+            }
+
+            InitFilterVisibility();
+
+            UniGridRelationship.WhereCondition = condition.ToString(true);
+
+            if (ShowAddRelation)
+            {
+                btnNewRelationship.OnClientClick = GetAddRelatedDocumentScript() + " return false;";
+            }
+            else
+            {
+                pnlNewLink.Visible = false;
+            }
         }
         else
         {
-            // Set tree node from Form object
-            if ((TreeNode == null) && (Form != null) && (Form.EditedObject != null))
+            UniGridRelationship.StopProcessing = true;
+            UniGridRelationship.Visible = false;
+
+            btnNewRelationship.Enabled = false;
+        }
+
+        if (RequestHelper.IsPostBack())
+        {
+            string target = Request[Page.postEventSourceID];
+            if ((target != pnlUpdate.ClientID) && (target != pnlUpdate.UniqueID))
             {
-                TreeNode node = Form.EditedObject as TreeNode;
-                if ((node != null) && (Form.Mode == FormModeEnum.Update))
-                {
-                    TreeNode = node;
-                }
-                else
-                {
-                    ShowError(GetString("relationship.editdocumenterror"));
-                }
+                return;
             }
 
-            if (TreeNode != null)
+            string action = Request[Page.postEventArgumentID];
+            if (string.IsNullOrEmpty(action))
             {
-                // Set unigrid
-                UniGridRelationship.OnExternalDataBound += UniGridRelationship_OnExternalDataBound;
-                UniGridRelationship.OnBeforeDataReload += UniGridRelationship_OnBeforeDataReload;
-                UniGridRelationship.OnAction += UniGridRelationship_OnAction;
-                UniGridRelationship.ZeroRowsText = GetString("relationship.nodatafound");
-                UniGridRelationship.ShowActionsMenu = !IsLiveSite;
-
-                int nodeId = TreeNode.NodeID;
-                bool oneRelationshipName = !string.IsNullOrEmpty(RelationshipName);
-
-                WhereCondition condition = new WhereCondition();
-
-                if (oneRelationshipName)
-                {
-                    condition.WhereIn("RelationshipNameID", new IDQuery<RelationshipNameInfo>().WhereEquals("RelationshipName", RelationshipName));
-                }
-
-                // Switch sides is disabled
-                if (!AllowSwitchSides)
-                {
-                    condition.WhereEquals(DefaultSide ? "RightNodeID" : "LeftNodeID", nodeId);
-                }
-                else
-                {
-                    condition.Where(new WhereCondition().WhereEquals("RightNodeID", nodeId).Or().WhereEquals("LeftNodeID", nodeId));
-                }
-
-                UniGridRelationship.WhereCondition = condition.ToString(true);
-
-                if (ShowAddRelation)
-                {
-                    btnNewRelationship.OnClientClick = GetAddRelatedDocumentScript() + " return false;";
-                }
-                else
-                {
-                    pnlNewLink.Visible = false;
-                }
-            }
-            else
-            {
-                UniGridRelationship.StopProcessing = true;
-                UniGridRelationship.Visible = false;
-                pnlNewLink.Visible = false;
+                return;
             }
 
-            if (RequestHelper.IsPostBack())
+            switch (action.ToLowerCSafe())
             {
-                string target = Request[Page.postEventSourceID];
-                if ((target == pnlUpdate.ClientID) || (target == pnlUpdate.UniqueID))
-                {
-                    string action = Request[Page.postEventArgumentID];
-
-                    if (!string.IsNullOrEmpty(action))
-                    {
-                        switch (action.ToLowerCSafe())
-                        {
-                            // Insert from 'Select document' dialog
-                            case "insertfromselectdocument":
-                                SaveRelationship();
-                                break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                bool inserted = QueryHelper.GetBoolean("inserted", false);
-                if (inserted)
-                {
-                    ShowConfirmation(GetString("relationship.wasadded"));
-                }    
+                // Insert from 'Select document' dialog
+                case "insertfromselectdocument":
+                    SaveRelationship();
+                    break;
             }
         }
+        else
+        {
+            bool inserted = QueryHelper.GetBoolean("inserted", false);
+            if (inserted)
+            {
+                ShowConfirmation(GetString("relationship.wasadded"));
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// Initializes the filter visibility
+    /// </summary>
+    private void InitFilterVisibility()
+    {
+        if (!AllowSwitchSides)
+        {
+            // Hide filter for the default side (always current document)
+            var hideField = DefaultSide ? "RightNode" : "LeftNode";
+            UniGridRelationship.FilterForm.FieldsToHide.Add(hideField);
+        }
+
+        if (!String.IsNullOrEmpty(RelationshipName))
+        {
+            // Hide filter for relationship name (always the same)
+            UniGridRelationship.FilterForm.FieldsToHide.Add("RelationshipName");
+        }
+    }
+
+
+    /// <summary>
+    /// Gets where condition for selecting relationship names
+    /// </summary>
+    private WhereCondition GetRelationshipNameCondition()
+    {
+        var relationshipNameCondition = new WhereCondition();
+
+        if (!UseAdHocRelationshipName)
+        {
+            relationshipNameCondition.Where(new WhereCondition().WhereFalse("RelationshipNameIsAdHoc").Or().WhereNull("RelationshipNameIsAdHoc"));
+
+            if (!String.IsNullOrEmpty(RelationshipName))
+            {
+                relationshipNameCondition.WhereEquals("RelationshipName", RelationshipName);
+            }
+        }
+        else
+        {
+            relationshipNameCondition.WhereEquals("RelationshipName", AdHocRelationshipName);
+        }
+
+        return relationshipNameCondition;
+    }
+
+
+    private void InitUniGrid()
+    {
+        // Set unigrid
+        UniGridRelationship.OnExternalDataBound += UniGridRelationship_OnExternalDataBound;
+        UniGridRelationship.OnBeforeDataReload += UniGridRelationship_OnBeforeDataReload;
+        UniGridRelationship.OnAction += UniGridRelationship_OnAction;
+        UniGridRelationship.ZeroRowsText = GetString("relationship.nodatafound");
+        UniGridRelationship.ShowActionsMenu = !IsLiveSite;
+        UniGridRelationship.ShowExportMenu = true;
+        UniGridRelationship.OrderBy = "RelationshipOrder";
     }
 
     #endregion
@@ -402,28 +521,24 @@ public partial class CMSModules_Content_FormControls_Relationships_RelatedDocume
             return;
         }
 
-        if (actionName == "delete")
+        switch (actionName.ToLowerCSafe())
         {
-            string[] parameters = ((string)actionArgument).Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            if (parameters.Length == 3)
-            {
-                // Parse parameters
-                int leftNodeId = ValidationHelper.GetInteger(parameters[0], 0);
-                int rightNodeId = ValidationHelper.GetInteger(parameters[1], 0);
-                int relationshipNameId = ValidationHelper.GetInteger(parameters[2], 0);
+            case "delete":
+                var relationshipId = actionArgument.ToInteger(0);
 
                 // If parameters are valid
-                if ((leftNodeId > 0) && (rightNodeId > 0) && (relationshipNameId > 0))
+                if (relationshipId > 0)
                 {
                     // Remove relationship
-                    RelationshipInfoProvider.RemoveRelationship(leftNodeId, rightNodeId, relationshipNameId);
+                    RelationshipInfoProvider.RemoveRelationship(relationshipId);
 
                     // Log synchronization
                     DocumentSynchronizationHelper.LogDocumentChange(TreeNode.NodeSiteName, TreeNode.NodeAliasPath, TaskTypeEnum.UpdateDocument, TreeProvider);
 
                     ShowConfirmation(GetString("relationship.wasdeleted"));
                 }
-            }
+
+                break;
         }
     }
 
@@ -446,8 +561,20 @@ public partial class CMSModules_Content_FormControls_Relationships_RelatedDocume
                 return tr;
 
             case "delete":
-                CMSGridActionButton btn = ((CMSGridActionButton)sender);
+                var btn = ((CMSGridActionButton)sender);
                 btn.PreRender += imgDelete_PreRender;
+                break;
+            // Hide ordering actions if relationship is not ad hoc and does not support ordering
+            case "moveup":
+            case "movedown":
+                {
+                    var button = sender as CMSGridActionButton;
+                    if (button != null)
+                    {
+                        // Ordering is not supported for standard relationships. Available only for ad-hoc.
+                        button.Visible = IsAdHocRelationship;
+                    }
+                }
                 break;
         }
 
@@ -479,52 +606,61 @@ public partial class CMSModules_Content_FormControls_Relationships_RelatedDocume
     /// </summary>
     public void SaveRelationship()
     {
-        if (TreeNode != null)
+        if (TreeNode == null)
         {
-            // Check modify permissions
-            if (MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(TreeNode, NodePermissionsEnum.Modify) == AuthorizationResultEnum.Denied)
+            return;
+        }
+
+        // Check modify permissions
+        if (MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(TreeNode, NodePermissionsEnum.Modify) == AuthorizationResultEnum.Denied)
+        {
+            return;
+        }
+
+        bool currentNodeIsOnLeftSide = !DefaultSide;
+
+        // Selected node Id
+        int selectedNodeId = ValidationHelper.GetInteger(hdnSelectedNodeId.Value, 0);
+
+        var relationshipName = UseAdHocRelationshipName ? RelationshipNameInfoProvider.GetAdHocRelationshipNameCodeName(TreeNode.ClassName, FieldInfo) : RelationshipName;
+        var relationshipNameInfo = RelationshipNameInfoProvider.GetRelationshipNameInfo(relationshipName);
+
+        int relationshipNameId;
+        if (relationshipNameInfo != null)
+        {
+            relationshipNameId = relationshipNameInfo.RelationshipNameId;
+        }
+        else
+        {
+            throw new NullReferenceException("[RelatedDocuments.SaveRelationship]: Missing relationship name to use for relation.");
+        }
+
+        if ((selectedNodeId <= 0) || (relationshipNameId <= 0))
+        {
+            return;
+        }
+
+        try
+        {
+            // Left side
+            if (currentNodeIsOnLeftSide)
             {
-                return;
+                RelationshipInfoProvider.AddRelationship(TreeNode.NodeID, selectedNodeId, relationshipNameId);
+            }
+            // Right side
+            else
+            {
+                RelationshipInfoProvider.AddRelationship(selectedNodeId, TreeNode.NodeID, relationshipNameId);
             }
 
-            bool currentNodeIsOnLeftSide = !DefaultSide;
-            // Selected node Id
-            int selectedNodeId = ValidationHelper.GetInteger(hdnSelectedNodeId.Value, 0);
+            // Log synchronization
+            DocumentSynchronizationHelper.LogDocumentChange(TreeNode.NodeSiteName, TreeNode.NodeAliasPath, TaskTypeEnum.UpdateDocument, TreeProvider);
 
-            // Get relationshipname
-            RelationshipNameInfo relationshipNameInfo = RelationshipNameInfoProvider.GetRelationshipNameInfo(RelationshipName);
-
-            int relationshipNameId = 0;
-            if (relationshipNameInfo != null)
-            {
-                relationshipNameId = relationshipNameInfo.RelationshipNameId;
-            }
-
-            if ((selectedNodeId > 0) && (relationshipNameId > 0))
-            {
-                try
-                {
-                    // Left side
-                    if (currentNodeIsOnLeftSide)
-                    {
-                        RelationshipInfoProvider.AddRelationship(TreeNode.NodeID, selectedNodeId, relationshipNameId);
-                    }
-                    // Right side
-                    else
-                    {
-                        RelationshipInfoProvider.AddRelationship(selectedNodeId, TreeNode.NodeID, relationshipNameId);
-                    }
-
-                    // Log synchronization
-                    DocumentSynchronizationHelper.LogDocumentChange(TreeNode.NodeSiteName, TreeNode.NodeAliasPath, TaskTypeEnum.UpdateDocument, TreeProvider);
-
-                    ShowConfirmation(GetString("relationship.wasadded"));
-                }
-                catch (Exception ex)
-                {
-                    ShowError(ex.Message);
-                }
-            }
+            ShowConfirmation(GetString("relationship.wasadded"));
+        }
+        catch (Exception ex)
+        {
+            ShowError(ex.Message);
         }
     }
 

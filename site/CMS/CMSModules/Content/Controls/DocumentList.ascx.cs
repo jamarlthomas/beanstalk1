@@ -39,7 +39,7 @@ public partial class CMSModules_Content_Controls_DocumentList : CMSUserControl, 
     private SiteInfo currentSiteInfo;
     private TreeProvider mTree;
     private TreeNode mNode;
-    private ArrayList mFlagsControls;
+    private HashSet<DocumentFlagsControl> mFlagsControls;
     private DataSet mSiteCultures;
     private DialogConfiguration mConfig;
     private string mCultureCode;
@@ -57,7 +57,6 @@ public partial class CMSModules_Content_Controls_DocumentList : CMSUserControl, 
     private bool mShowDocumentMarks = true;
     private string aliasPath;
     private string mSelectItemJSFunction = "SelectItem";
-    private string mWhereCondition = string.Empty;
     private string mOrderBy = "NodeLevel ASC, NodeOrder ASC, NodeName ASC, NodeAlias ASC";
     private string mDeleteReturnUrl = string.Empty;
     private string mPublishReturnUrl = string.Empty;
@@ -101,11 +100,11 @@ public partial class CMSModules_Content_Controls_DocumentList : CMSUserControl, 
     /// <summary>
     /// Hashtable with document flags controls.
     /// </summary>
-    private ArrayList FlagsControls
+    private HashSet<DocumentFlagsControl> FlagsControls
     {
         get
         {
-            return mFlagsControls ?? (mFlagsControls = new ArrayList());
+            return mFlagsControls ?? (mFlagsControls = new HashSet<DocumentFlagsControl>());
         }
     }
 
@@ -338,16 +337,10 @@ public partial class CMSModules_Content_Controls_DocumentList : CMSUserControl, 
     /// <summary>
     /// Where condition used to restrict selection of documents.
     /// </summary>
-    public string WhereCodition
+    public WhereCondition WhereCondition
     {
-        get
-        {
-            return mWhereCondition;
-        }
-        set
-        {
-            mWhereCondition = value;
-        }
+        get;
+        set;
     }
 
 
@@ -598,56 +591,62 @@ public partial class CMSModules_Content_Controls_DocumentList : CMSUserControl, 
         InitializeFilterForm();
         InitializeMassActionsControl();
 
-        if (NodeID > 0)
+        if (NodeID <= 0)
         {
-            checkPermissions = Tree.CheckDocumentUIPermissions(currentSiteName);
+            return;
+        }
 
-            if (Node != null)
+        checkPermissions = Tree.CheckDocumentUIPermissions(currentSiteName);
+
+        if (Node != null)
+        {
+            if (currentUserInfo.IsAuthorizedPerDocument(Node, NodePermissionsEnum.ExploreTree) != AuthorizationResultEnum.Allowed)
             {
-                if (currentUserInfo.IsAuthorizedPerDocument(Node, NodePermissionsEnum.ExploreTree) != AuthorizationResultEnum.Allowed)
-                {
-                    CMSPage.RedirectToAccessDenied("CMS.Content", "exploretree");
-                }
-
-                aliasPath = Node.NodeAliasPath;
+                CMSPage.RedirectToAccessDenied("CMS.Content", "exploretree");
             }
 
-            ScriptHelper.RegisterLoader(Page);
-            ScriptHelper.RegisterDialogScript(Page);
-            ScriptHelper.RegisterJQuery(Page);
+            aliasPath = Node.NodeAliasPath;
+        }
 
-            // Prepare JavaScript for actions
-            StringBuilder actionScript = new StringBuilder();
-            actionScript.Append(
-                @" function MoveNode(action, nodeId){
+        ScriptHelper.RegisterLoader(Page);
+        ScriptHelper.RegisterDialogScript(Page);
+        ScriptHelper.RegisterJQuery(Page);
+
+        // Prepare JavaScript for actions
+        StringBuilder actionScript = new StringBuilder();
+        actionScript.Append(
+            @" function MoveNode(action, nodeId){
     document.getElementById('", hdnMoveId.ClientID, @"').value = action + ';' + nodeId ;
     ", Page.ClientScript.GetPostBackEventReference(this, "move"), @"  
 }");
 
-            ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "actionScript", ScriptHelper.GetScript(actionScript.ToString()));
+        ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "actionScript", ScriptHelper.GetScript(actionScript.ToString()));
 
-            // Setup the grid
-            gridDocuments.OrderBy = OrderBy;
-            gridDocuments.OnExternalDataBound += gridDocuments_OnExternalDataBound;
-            gridDocuments.OnDataReload += gridDocuments_OnDataReload;
-            gridDocuments.GridView.RowDataBound += GridView_RowDataBound;
-            gridDocuments.GridView.RowCreated += GridView_RowCreated;
-            gridDocuments.ShowActionsMenu = true;
+        // Setup the grid
+        gridDocuments.OrderBy = OrderBy;
+        gridDocuments.OnExternalDataBound += gridDocuments_OnExternalDataBound;
+        gridDocuments.OnDataReload += gridDocuments_OnDataReload;
+        gridDocuments.GridView.RowDataBound += GridView_RowDataBound;
+        gridDocuments.GridView.RowCreated += GridView_RowCreated;
+        gridDocuments.ShowActionsMenu = true;
 
-            // Initialize columns
-            string columns = @"DocumentLastVersionName, DocumentGUID, DocumentName, NodeParentID, NodeLevel, NodeOrder, NodeName, NodeAlias, NodeHasChildren, 
-                    ClassDisplayName, DocumentModifiedWhen, Published, DocumentLastVersionNumber, DocumentMenuRedirectURL, DocumentMenuRedirectToFirstChild, DocumentLastVersionMenuRedirectUrl, DocumentIsArchived, DocumentCheckedOutByUserID,
-                    DocumentPublishedVersionHistoryID, DocumentWorkflowStepID, DocumentCheckedOutVersionHistoryID, DocumentNamePath, DocumentPublishFrom, DocumentType, DocumentLastVersionType, NodeAliasPath, DocumentIsWaitingForTranslation";
+        // Initialize columns
+        string columns = @"DocumentGUID, DocumentName, NodeParentID, NodeLevel, NodeOrder, NodeName, NodeAlias, NodeHasChildren, 
+                    ClassDisplayName, DocumentModifiedWhen, DocumentLastVersionNumber, DocumentMenuRedirectURL, DocumentMenuRedirectToFirstChild, DocumentIsArchived, DocumentCheckedOutByUserID,
+                    DocumentPublishedVersionHistoryID, DocumentWorkflowStepID, DocumentCheckedOutVersionHistoryID, DocumentNamePath, DocumentPublishFrom, DocumentType, NodeAliasPath, DocumentIsWaitingForTranslation";
 
-            if (checkPermissions)
-            {
-                columns = SqlHelper.MergeColumns(columns, TreeProvider.SECURITYCHECK_REQUIRED_COLUMNS);
-            }
-            gridDocuments.Columns = SqlHelper.MergeColumns(columns, AdditionalColumns);
+        if (checkPermissions)
+        {
+            columns = SqlHelper.MergeColumns(columns, DocumentColumnLists.SECURITYCHECK_REQUIRED_COLUMNS);
+        }
 
-            // Store the refresh node id. It will be used for refreshing the dialog after dialog actions are performed (move, delete...)
-            StringBuilder refreshScripts = new StringBuilder();
-            refreshScripts.Append(@"
+        columns = SqlHelper.MergeColumns(columns, DocumentColumnLists.GETPUBLISHED_REQUIRED_COLUMNS);
+
+        gridDocuments.Columns = SqlHelper.MergeColumns(columns, AdditionalColumns);
+
+        // Store the refresh node id. It will be used for refreshing the dialog after dialog actions are performed (move, delete...)
+        StringBuilder refreshScripts = new StringBuilder();
+        refreshScripts.Append(@"
 function RefreshTree()
 {
     if((parent != null) && (parent.RefreshTree != null))
@@ -668,13 +667,12 @@ function RefreshGrid()
     RefreshTree();
 ", gridDocuments.GetReloadScript(), @"
 }");
-            // Register refresh scripts
-            string refreshScript = ScriptHelper.GetScript(refreshScripts.ToString());
-            ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "refreshListing", refreshScript);
+        // Register refresh scripts
+        string refreshScript = ScriptHelper.GetScript(refreshScripts.ToString());
+        ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "refreshListing", refreshScript);
 
-            // Get all possible columns to retrieve
-            gridDocuments.AllColumns = SqlHelper.JoinColumnList(ObjectTypeManager.GetColumnNames(PredefinedObjectType.NODE, PredefinedObjectType.DOCUMENTLOCALIZATION));
-        }
+        // Get all possible columns to retrieve
+        gridDocuments.AllColumns = SqlHelper.JoinColumnList(ObjectTypeManager.GetColumnNames(PredefinedObjectType.NODE, PredefinedObjectType.DOCUMENTLOCALIZATION));
     }
 
 
@@ -798,30 +796,27 @@ function RefreshGrid()
             if (FlagsControls.Count != 0)
             {
                 // Get all document node IDs
-                string nodeIds = null;
+                HashSet<int> nodeIds = new HashSet<int>();
                 foreach (DocumentFlagsControl ucDocFlags in FlagsControls)
                 {
-                    nodeIds += ucDocFlags.NodeID + ",";
+                    nodeIds.Add(ucDocFlags.NodeID);
                 }
 
-                if (nodeIds != null)
-                {
-                    nodeIds = nodeIds.TrimEnd(',');
-                }
+                var condition = new WhereCondition();
+                condition.WhereIn("NodeID", nodeIds);
 
                 // Get all culture documents
-                Tree.SelectQueryName = "SelectVersions";
-                DataSet dsDocs = Tree.SelectNodes(currentSiteName, "/%", TreeProvider.ALL_CULTURES, false, null, "NodeID IN (" + nodeIds + ")", null, -1, false, 0, "NodeID, VersionNumber, DocumentCulture, DocumentModifiedWhen, DocumentLastPublished");
+                DataSet docs = Tree.SelectNodes(currentSiteName, "/%", TreeProvider.ALL_CULTURES, false, null, condition.ToString(true), null, -1, false, 0, "NodeID, DocumentLastVersionNumber, DocumentCulture, DocumentModifiedWhen, DocumentLastPublished");
 
-                if (!DataHelper.DataSourceIsEmpty(dsDocs))
+                if (!DataHelper.DataSourceIsEmpty(docs))
                 {
-                    GroupedDataSource gDSDocs = new GroupedDataSource(dsDocs, "NodeID");
+                    var groupedDocs = new GroupedDataSource(docs, "NodeID");
 
                     // Initialize the document flags controls
-                    foreach (DocumentFlagsControl ucDocFlags in FlagsControls)
+                    foreach (var docFlagCtrl in FlagsControls)
                     {
-                        ucDocFlags.DataSource = gDSDocs;
-                        ucDocFlags.ReloadData();
+                        docFlagCtrl.DataSource = groupedDocs;
+                        docFlagCtrl.ReloadData();
                     }
                 }
             }
@@ -839,125 +834,155 @@ function RefreshGrid()
     {
         dataLoaded = true;
 
-        if (Node != null)
+        if (Node == null)
         {
-            if (gridDocuments.FilterForm.FieldControls != null)
+            return null;
+        }
+
+        if (gridDocuments.FilterForm.FieldControls != null)
+        {
+            // Get value of filter checkbox
+            FormEngineUserControl checkboxControl = gridDocuments.FilterForm.FieldControls["ShowAllLevels"];
+            if (checkboxControl != null)
             {
-                // Get value of filter checkbox
-                FormEngineUserControl checkboxControl = gridDocuments.FilterForm.FieldControls["ShowAllLevels"];
-                if (checkboxControl != null)
-                {
-                    ShowAllLevels = ValidationHelper.GetBoolean(checkboxControl.Value, false);
-                }
-            }
-
-            // Setup where condition
-            string where;
-            if (ShowAllLevels)
-            {
-                if (!checkPermissions)
-                {
-                    // Add required columns if check permissions is false because of all levels enabled (Browse tree security check is performed)
-                    columns = SqlHelper.MergeColumns(TreeProvider.SECURITYCHECK_REQUIRED_COLUMNS, columns);
-                }
-
-                string path = aliasPath ?? string.Empty;
-                path = path.TrimEnd('/');
-                where = string.Format("NodeAliasPath LIKE N'{0}/%' AND NodeLevel > 0", SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(path)));
-            }
-            else
-            {
-                where = string.Format("NodeParentID = {0} AND NodeLevel = {1}", Node.NodeID, Node.NodeLevel + 1);
-
-                // Extend the where condition to include the root document
-                if (RequiresDialog && (Node != null) && (Node.NodeParentID == 0))
-                {
-                    where = SqlHelper.AddWhereCondition(where, "NodeParentID = 0", "OR");
-                    OrderBy = "NodeParentID ASC" + ((OrderBy.Length > 0) ? "," : "") + OrderBy;
-                }
-            }
-            if (ClassID > 0)
-            {
-                where = SqlHelper.AddWhereCondition(where, "NodeClassID = " + ClassID);
-            }
-            where = SqlHelper.AddWhereCondition(where, WhereCodition);
-            completeWhere = SqlHelper.AddWhereCondition(completeWhere, where);
-
-            // Get the site
-            SiteInfo si = SiteInfoProvider.GetSiteInfo(Node.NodeSiteID);
-            if (si != null)
-            {
-                DataSet ds = null;
-                if (!checkPermissions || (MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(Node, NodePermissionsEnum.Read) == AuthorizationResultEnum.Allowed))
-                {
-                    // Merge document and grid specific columns
-                    columns = SqlHelper.MergeColumns(TreeProvider.SELECTNODES_REQUIRED_COLUMNS, columns);
-
-                    var query = DocumentHelper.GetDocuments()
-                                       .TopN(gridDocuments.TopN)
-                                       .Columns(columns)
-                                       .OnSite(currentSiteName)
-                                       .Published(false)
-                                       .CombineWithDefaultCulture()
-                                       .Culture(GetSiteCultures())
-                                       .Where(completeWhere)
-                                       .OrderBy(OrderBy);
-
-                    query.Offset = currentOffset;
-                    query.MaxRecords = currentPageSize;
-
-                    if (ClassID > 0)
-                    {
-                        query.ClassName = DataClassInfoProvider.GetClassName(ClassID);
-                    }
-
-                    ds = query.Result;
-                    totalRecords = query.TotalRecords;
-                }
-                else
-                {
-                    gridDocuments.ZeroRowsText = GetString("ContentTree.ReadDocumentDenied");
-                }
-
-                // Check permissions
-                if (checkPermissions || ShowAllLevels)
-                {
-                    NodePermissionsEnum[] permissions = null;
-
-                    if (checkPermissions && ShowAllLevels)
-                    {
-                        permissions = new[]
-                        {
-                            NodePermissionsEnum.Read,
-                            NodePermissionsEnum.ExploreTree
-                        };
-                    }
-                    else if (checkPermissions)
-                    {
-                        permissions = new[]
-                        {
-                            NodePermissionsEnum.Read
-                        };
-                    }
-                    else if (ShowAllLevels)
-                    {
-                        permissions = new[]
-                        {
-                            NodePermissionsEnum.ExploreTree
-                        };
-                    }
-
-                    ds = TreeSecurityProvider.FilterDataSetByPermissions(ds, permissions, currentUserInfo, false, true);
-                }
-
-                // Hide mass actions when no data
-                ctrlMassActions.Visible = !DataHelper.DataSourceIsEmpty(ds);
-
-                // Set the data source
-                return ds;
+                ShowAllLevels = ValidationHelper.GetBoolean(checkboxControl.Value, false);
             }
         }
+
+        // Get the site
+        SiteInfo si = SiteInfoProvider.GetSiteInfo(Node.NodeSiteID);
+        if (si == null)
+        {
+            return null;
+        }
+
+        if (ShowAllLevels && !checkPermissions)
+        {
+            // Add required columns if check permissions is false because of all levels enabled (Browse tree security check is performed)
+            columns = SqlHelper.MergeColumns(DocumentColumnLists.SECURITYCHECK_REQUIRED_COLUMNS, columns);
+        }
+
+        if (!checkPermissions || (MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(Node, NodePermissionsEnum.Read) == AuthorizationResultEnum.Allowed))
+        {
+            var completeCondition = new WhereCondition(GetLevelWhereCondition(ShowAllLevels, ref currentOrder))
+                .And(WhereCondition)
+                .And(new WhereCondition(completeWhere) { WhereIsComplex = true });
+
+            // Merge document and grid specific columns
+            columns = SqlHelper.MergeColumns(DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS, columns);
+
+            // Add additional order by column to ensure correct deterministic ordering in all cases (eg. order by NodeHasChilder)
+            currentOrder = String.Join(",", currentOrder, "NodeID ASC");
+
+            var query = DocumentHelper.GetDocuments()
+                                      .TopN(gridDocuments.TopN)
+                                      .Columns(columns)
+                                      .OnSite(currentSiteName)
+                                      .Published(false)
+                                      .CombineWithDefaultCulture()
+                                      .Culture(GetSiteCultures())
+                                      .Where(completeCondition)
+                                      .OrderBy(currentOrder);
+
+            // Do not apply published from / to columns to make sure the published information is correctly evaluated
+            query.Properties.ExcludedVersionedColumns = new[] { "DocumentPublishFrom", "DocumentPublishTo" };
+
+            query.Offset = currentOffset;
+            query.MaxRecords = currentPageSize;
+
+            if (ClassID > 0)
+            {
+                query.ClassName = DataClassInfoProvider.GetClassName(ClassID);
+            }
+
+            DataSet ds = query.Result;
+            totalRecords = query.TotalRecords;
+                
+            ds = FilterPagesByPermissions(ds, checkPermissions, ShowAllLevels);
+            return ds;
+        }
+
+        gridDocuments.ZeroRowsText = GetString("ContentTree.ReadDocumentDenied");
+            
+        // Hide mass actions when no data
+        ctrlMassActions.Visible = false;
         return null;
+    }
+
+
+    private DataSet FilterPagesByPermissions(DataSet ds, bool checkPermission, bool showAllLevels)
+    {
+
+        if (!checkPermission && !showAllLevels)
+        {
+            return ds;
+        }
+
+        NodePermissionsEnum[] permissions;
+
+        // Get permissions to check
+        if (checkPermission && showAllLevels)
+        {
+            permissions = new[]
+            {
+                NodePermissionsEnum.Read,
+                NodePermissionsEnum.ExploreTree
+            };
+        }
+        else if (checkPermission)
+        {
+            permissions = new[]
+            {
+                NodePermissionsEnum.Read
+            };
+        }
+        else
+        {
+            // Check only for 'Show all levels'
+            permissions = new[]
+            {
+                NodePermissionsEnum.ExploreTree
+            };
+        }
+
+        return TreeSecurityProvider.FilterDataSetByPermissions(ds, permissions, currentUserInfo, false, true);
+    }
+
+
+    /// <summary>
+    /// Creates level where condition.
+    /// </summary>
+    /// <param name="showAllLevels">Indicates if pages from all levels should be retrieved</param>
+    /// <param name="orderBy">Current order by</param>
+    private WhereCondition GetLevelWhereCondition(bool showAllLevels, ref string orderBy)
+    {
+        var levelCondition = new WhereCondition();
+        if (showAllLevels)
+        {
+            string path = aliasPath ?? string.Empty;
+            levelCondition.WhereStartsWith("NodeAliasPath", path.TrimEnd('/') + "/")
+                          .WhereGreaterThan("NodeLevel", 0);
+        }
+        else
+        {
+            levelCondition.WhereEquals("NodeParentID", Node.NodeID)
+                          .WhereEquals("NodeLevel", Node.NodeLevel + 1);
+
+            // Extend the where condition to include the root document
+            if (RequiresDialog && (Node != null) && (Node.NodeParentID == 0))
+            {
+                levelCondition.Or().WhereNull("NodeParentID");
+
+                orderBy = String.Join(",","NodeParentID ASC", orderBy);
+            }
+        }
+
+        if (ClassID > 0)
+        {
+            levelCondition.WhereEquals("NodeClassID", ClassID);
+        }
+
+        return levelCondition;
     }
 
 
@@ -978,20 +1003,21 @@ function RefreshGrid()
                     CMSGridActionButton btn = ((CMSGridActionButton)sender);
                     // Current row is the Root document
                     isRootDocument = (ValidationHelper.GetInteger(data["NodeParentID"], 0) == 0);
-                    isCurrentDocument = (ValidationHelper.GetInteger(data["NodeID"], 0) == WOpenerNodeID);
-                    string culture = ValidationHelper.GetString(data["DocumentCulture"], string.Empty);
+                    currentNodeId = ValidationHelper.GetInteger(data["NodeID"], 0);
+                    isCurrentDocument = (currentNodeId == WOpenerNodeID);
 
+                    string culture = ValidationHelper.GetString(data["DocumentCulture"], string.Empty);
                     // Existing document culture
                     if (culture.ToLowerCSafe() == CultureCode.ToLowerCSafe())
                     {
-                        string url = ResolveUrl(!isRootDocument ? DocumentURLProvider.GetUrl(Convert.ToString(data["NodeAliasPath"])) : "~/");
-
+                        // Force redirection to the root document in case of on-site editing (to ensure that user is not redirected to default alias path document)
+                        string url = ResolveUrl(!isRootDocument ? DocumentURLProvider.GetPresentationUrlHandlerPath(culture, currentNodeId) : "~/");
+                     
                         btn.OnClientClick = "ViewItem(" + ScriptHelper.GetString(url) + "); return false;";
                     }
                     // New culture version
                     else
                     {
-                        currentNodeId = ValidationHelper.GetInteger(data["NodeID"], 0);
                         btn.OnClientClick = "wopener.NewDocumentCulture(" + currentNodeId + ", '" + CultureCode + "'); CloseDialog(); return false;";
                     }
                 }
@@ -1045,12 +1071,6 @@ function RefreshGrid()
                 }
                 break;
 
-            case "published":
-                {
-                    // Published state
-                    return UniGridFunctions.ColoredSpanYesNo(parameter);
-                }
-
             case "versionnumber":
                 {
                     // Version number
@@ -1090,6 +1110,9 @@ function RefreshGrid()
 
                     StringBuilder sb = new StringBuilder();
 
+                    var isFile = className.EqualsCSafe(SystemDocumentTypes.File, true);
+                    string extension = isFile ? ValidationHelper.GetString(data["DocumentType"], String.Empty) : String.Empty;
+
                     if (ShowDocumentTypeIcon)
                     {
                         // Prepare tooltip for document type icon
@@ -1099,9 +1122,8 @@ function RefreshGrid()
                             iconTooltip = string.Format("onmouseout=\"UnTip()\" onmouseover=\"Tip('{0}')\"", HTMLHelper.HTMLEncode(ResHelper.LocalizeString(classDisplayName)));
                         }
 
-                        if (className.EqualsCSafe("cms.file", true))
+                        if (isFile)
                         {
-                            string extension = ValidationHelper.GetString(data["DocumentType"], string.Empty);
                             sb.Append(UIHelper.GetFileIcon(Page, extension, additionalAttributes: iconTooltip));
                         }
                         // Use class icons
@@ -1157,7 +1179,7 @@ function RefreshGrid()
                         IDataContainer container = new DataRowContainer(data);
 
                         // Add icons and use current culture of processed node because of 'Not translated document' icon
-                        sb.Append(" ", DocumentHelper.GetDocumentMarks(Page, currentSiteName, ValidationHelper.GetString(container.GetValue("DocumentCulture"), string.Empty), stepType, container));
+                        sb.Append(" ", DocumentUIHelper.GetDocumentMarks(Page, currentSiteName, ValidationHelper.GetString(container.GetValue("DocumentCulture"), string.Empty), stepType, container));
                     }
 
                     return sb.ToString();
@@ -1203,7 +1225,6 @@ function RefreshGrid()
                         ucDocFlags.SiteCultures = SiteCultures;
                         ucDocFlags.NodeID = currentNodeId;
                         ucDocFlags.StopProcessing = true;
-                        ucDocFlags.ItemUrl = ResolveUrl(DocumentURLProvider.GetUrl(Convert.ToString(data["NodeAliasPath"])));
 
                         // Keep the control for later usage
                         FlagsControls.Add(ucDocFlags);
@@ -1219,21 +1240,14 @@ function RefreshGrid()
                 {
                     return string.Empty;
                 }
-                else
-                {
-                    DateTime modifiedWhen = ValidationHelper.GetDateTime(parameter, DateTimeHelper.ZERO_TIME);
-                    currentUserInfo = currentUserInfo ?? MembershipContext.AuthenticatedUser;
-                    currentSiteInfo = currentSiteInfo ?? SiteContext.CurrentSite;
 
-                    if (sourceName.EqualsCSafe("modifiedwhen", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        return TimeZoneHelper.ConvertToUserTimeZone(modifiedWhen, true, currentUserInfo, currentSiteInfo);
-                    }
-                    else
-                    {
-                        return TimeZoneHelper.GetUTCLongStringOffset(currentUserInfo, currentSiteInfo);
-                    }
-                }
+                DateTime modifiedWhen = ValidationHelper.GetDateTime(parameter, DateTimeHelper.ZERO_TIME);
+                currentUserInfo = currentUserInfo ?? MembershipContext.AuthenticatedUser;
+                currentSiteInfo = currentSiteInfo ?? SiteContext.CurrentSite;
+
+                return sourceName.EqualsCSafe("modifiedwhen", StringComparison.InvariantCultureIgnoreCase)
+                    ? TimeZoneHelper.ConvertToUserTimeZone(modifiedWhen, true, currentUserInfo, currentSiteInfo)
+                    : TimeZoneHelper.GetUTCLongStringOffset(currentUserInfo, currentSiteInfo);
 
             case "classdisplayname":
             case "classdisplaynametooltip":
@@ -1267,15 +1281,14 @@ function RefreshGrid()
     /// </summary>
     private string[] GetSiteCultures()
     {
-        CMSList<string> sortedCultures = new CMSList<string>(false, true);
-        sortedCultures.Add(LocalizationContext.PreferredCultureCode, CultureHelper.GetDefaultCultureCode(currentSiteName));
-
-        foreach (var culture in CultureSiteInfoProvider.GetSiteCultureCodes(currentSiteName))
+        var sortedCultures = new List<string>
         {
-            sortedCultures.Add(culture);
-        }
+            LocalizationContext.PreferredCultureCode, 
+            CultureHelper.GetDefaultCultureCode(currentSiteName)
+        };
+        sortedCultures.AddRange(CultureSiteInfoProvider.GetSiteCultureCodes(currentSiteName));
 
-        return sortedCultures.ToArray();
+        return sortedCultures.Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
     }
 
 
@@ -1375,8 +1388,8 @@ function RefreshGrid()
         });
 
         if (CultureSiteInfoProvider.IsSiteMultilingual(currentSiteName) &&
-            LicenseHelper.CheckFeature(RequestContext.CurrentDomain, FeatureEnum.TranslationServices) && 
-            TranslationServiceHelper.IsTranslationAllowed(currentSiteName) && 
+            LicenseHelper.CheckFeature(RequestContext.CurrentDomain, FeatureEnum.TranslationServices) &&
+            TranslationServiceHelper.IsTranslationAllowed(currentSiteName) &&
             TranslationServiceHelper.AnyServiceAvailable(currentSiteName))
         {
             ctrlMassActions.AddMassAction(new MassActionItem
@@ -1486,12 +1499,14 @@ function RefreshGrid()
         {
             // Register the refresh script after the 'move' action is performed
             Hashtable parameters = WindowHelper.GetItem(Identifier) as Hashtable;
-            if ((parameters != null) && (parameters.Count > 0))
+            if ((parameters == null) || (parameters.Count <= 0))
             {
-                int refreshNodeId = ValidationHelper.GetInteger(parameters["refreshnodeid"], 0);
-                string refreshScript = "parent.RefreshTree(" + refreshNodeId + ", " + refreshNodeId + ")";
-                ScriptHelper.RegisterStartupScript(this, typeof(string), "refreshAfterMove", refreshScript, true);
+                return;
             }
+
+            int refreshNodeId = ValidationHelper.GetInteger(parameters["refreshnodeid"], 0);
+            string refreshScript = "parent.RefreshTree(" + refreshNodeId + ", " + refreshNodeId + ")";
+            ScriptHelper.RegisterStartupScript(this, typeof(string), "refreshAfterMove", refreshScript, true);
         }
     }
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -141,8 +141,8 @@ public partial class CMSWebParts_General_EditDocumentLink : CMSAbstractWebPart
                         }
                     }
 
-                    onsiteEditUrl = URLHelper.UpdateParameterInUrl(onsiteEditUrl, "returnurl", HTMLHelper.HTMLEncode(HttpUtility.UrlEncode(retUrl)));
-                    sb.Append(onsiteEditUrl);
+                    onsiteEditUrl = URLHelper.UpdateParameterInUrl(onsiteEditUrl, "editurl", HttpUtility.UrlEncode(retUrl));
+                    sb.Append(HTMLHelper.EncodeForHtmlAttribute(onsiteEditUrl));
                 }
                 // CMSDesk edit
                 else

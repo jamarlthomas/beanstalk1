@@ -1,10 +1,4 @@
-using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
+﻿using System;
 
 using CMS.FormEngine;
 using CMS.Helpers;
@@ -47,6 +41,86 @@ public partial class CMSWebParts_Membership_Profile_MyProfile : CMSAbstractWebPa
         }
     }
 
+
+    /// <summary>
+    /// Relative URL where user is redirected, after form content is successfully modified.
+    /// </summary>
+    public string AfterSaveRedirectURL
+    {
+        get
+        {
+            return ValidationHelper.GetString(GetValue("AfterSaveRedirectURL"), String.Empty);
+        }
+        set
+        {
+            SetValue("AfterSaveRedirectURL", value);
+        }
+    }
+
+
+    /// <summary>
+    /// Submit button label. Valid input is a resource string. Default value is general.submit.
+    /// </summary>
+    public string SubmitButtonResourceString
+    {
+        get
+        {
+            return DataHelper.GetNotEmpty(GetValue("SubmitButtonResourceString"), "general.submit");
+        }
+        set
+        {
+            SetValue("SubmitButtonResourceString", value);
+        }
+    }
+
+
+    /// <summary>
+    /// Displays required field mark next to field labels if fields are required. Default value is false.
+    /// </summary>
+    public bool MarkRequiredFields
+    {
+        get
+        {
+            return ValidationHelper.GetBoolean(GetValue("MarkRequiredFields"), false);
+        }
+        set
+        {
+            SetValue("MarkRequiredFields", value);
+        }
+    }
+
+
+    /// <summary>
+    /// Displays colon behind label text in form. Default value is true.
+    /// </summary>
+    public bool UseColonBehindLabel
+    {
+        get
+        {
+            return ValidationHelper.GetBoolean(GetValue("UseColonBehindLabel"), true);
+        }
+        set
+        {
+            SetValue("UseColonBehindLabel", value);
+        }
+    }
+
+
+    /// <summary>
+    /// Form CSS class.
+    /// </summary>
+    public string FormCSSClass
+    {
+        get
+        {
+            return ValidationHelper.GetString(GetValue("FormCSSClass"), String.Empty);
+        }
+        set
+        {
+            SetValue("FormCSSClass", value);
+        }
+    }
+
     #endregion
 
 
@@ -79,6 +153,12 @@ public partial class CMSWebParts_Membership_Profile_MyProfile : CMSAbstractWebPa
             {
                 myProfile.AlternativeFormName = AlternativeFormName;
                 myProfile.AllowEditVisibility = AllowEditVisibility;
+                myProfile.AfterSaveRedirectURL = AfterSaveRedirectURL;
+                myProfile.SubmitButtonResourceString = SubmitButtonResourceString;
+                myProfile.FormCSSClass = FormCSSClass;
+                myProfile.MarkRequiredFields = MarkRequiredFields;
+                myProfile.UseColonBehindLabel = UseColonBehindLabel;
+                myProfile.ValidationErrorMessage = GetString("general.errorvalidationerror");
             }
             else
             {

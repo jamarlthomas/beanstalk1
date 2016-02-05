@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Chat_Controls_SupportChatHeader" Codebehind="SupportChatHeader.ascx.cs" %>
+    Inherits="CMSModules_Chat_Controls_SupportChatHeader"  Codebehind="SupportChatHeader.ascx.cs" %>
 
 <li runat="server" id="headerIcon">
     <h2 class="sr-only"><%= GetString("chat.support.title") %></h2>

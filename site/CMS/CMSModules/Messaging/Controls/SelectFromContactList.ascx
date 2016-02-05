@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Messaging_Controls_SelectFromContactList" Codebehind="SelectFromContactList.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Messaging_Controls_SelectFromContactList"  Codebehind="SelectFromContactList.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <cms:CMSUpdatePanel ID="pnlContactList" runat="server">
     <ContentTemplate>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Web.UI;
 
@@ -8,15 +9,17 @@ using CMS.Newsletters;
 using CMS.SiteProvider;
 using CMS.Membership;
 using CMS.UIControls;
+using CMS.WebAnalytics;
 
 public partial class CMSModules_Newsletters_Controls_EditIssue : CMSAdminControl
 {
     #region "Variables"
 
-    private bool loaded;
-    private bool validated;
-    private bool mIsDialogMode;
-    private int mTemplateID = 0;
+    private bool mLoaded;
+    private bool mValidated;
+    private int mTemplateID;
+    private const string DEFAULT_UTM_MEDIUM = "email";
+    private NewsletterInfo mNewsletter;
 
     #endregion
 
@@ -61,29 +64,12 @@ public partial class CMSModules_Newsletters_Controls_EditIssue : CMSAdminControl
                     mTemplateID = ValidationHelper.GetInteger(hdnTemplateID.Value, 0);
                 }
             }
-            
+
             return mTemplateID;
         }
         set
         {
             mTemplateID = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Indicates that the control is used in new dialog.
-    /// </summary>
-    public bool IsDialogMode
-    {
-        get
-        {
-            return mIsDialogMode;
-        }
-        set
-        {
-            mIsDialogMode = value;
-            contentBody.IsDialogMode = value;
         }
     }
 
@@ -113,6 +99,18 @@ public partial class CMSModules_Newsletters_Controls_EditIssue : CMSAdminControl
         }
     }
 
+
+    /// <summary>
+    /// Gets the newsletter.
+    /// </summary>
+    public NewsletterInfo Newsletter
+    {
+        get
+        {
+            return mNewsletter ?? (mNewsletter = NewsletterInfoProvider.GetNewsletterInfo(NewsletterID));
+        }
+    }
+
     #endregion
 
 
@@ -124,7 +122,7 @@ public partial class CMSModules_Newsletters_Controls_EditIssue : CMSAdminControl
         {
             return;
         }
-  
+
         ReloadData(false);
     }
 
@@ -147,12 +145,21 @@ public partial class CMSModules_Newsletters_Controls_EditIssue : CMSAdminControl
     protected void lnkToggleAdvanced_Click(object sender, EventArgs e)
     {
         ShowAdvancedOptions = !plcAdvanced.Visible;
-        
+
         // Switch simple and advanced
         InitSimpleAdvancedOptions();
 
         // JS function for resizing is specified in Newsletter_ContentEditor.ascx
         ScriptManager.RegisterStartupScript(Page, typeof(string), "ResizeContent_" + ClientID, "if (SetIFrameHeight) { SetIFrameHeight(); }", true);
+    }
+
+
+    /// <summary>
+    /// Shows or hides UTM parameters settings.
+    /// </summary>
+    protected void chkIssueUseUTM_CheckedChanged(object sender, EventArgs e)
+    {
+        pnlUTMParameters.Visible = chkIssueUseUTM.Checked;
     }
 
     #endregion
@@ -166,7 +173,8 @@ public partial class CMSModules_Newsletters_Controls_EditIssue : CMSAdminControl
     /// <param name="forceReload">Indicates if force reload should be used</param>
     public override void ReloadData(bool forceReload)
     {
-        if (!loaded || forceReload)
+        var isABTest = false;
+        if (!mLoaded || forceReload)
         {
             IssueInfo issue = null;
             if (IssueID > 0)
@@ -185,13 +193,15 @@ public partial class CMSModules_Newsletters_Controls_EditIssue : CMSAdminControl
                     {
                         txtSubject.Text = issue.IssueSubject;
                         chkShowInArchive.Checked = issue.IssueShowInNewsletterArchive;
+                        chkIssueUseUTM.Checked = issue.IssueUseUTM;
                     }
+
+                    isABTest = issue.IssueIsABTest;
                 }
             }
 
             // Get newsletter object
-            NewsletterInfo newsletterObj = NewsletterInfoProvider.GetNewsletterInfo(NewsletterID);
-            if (newsletterObj != null)
+            if (Newsletter != null)
             {
                 // Modify where condition of template selector if issue exists
                 string issueTemplateWhere = (issue != null) ? string.Format(" OR TemplateID IN (SELECT IssueTemplateID From Newsletter_NewsletterIssue WHERE IssueID={0})", issue.IssueID) : string.Empty;
@@ -199,7 +209,7 @@ public partial class CMSModules_Newsletters_Controls_EditIssue : CMSAdminControl
                 // Initialize template selector
                 issueTemplate.WhereCondition = String.Format("(TemplateType='{0}') AND (TemplateID IN (SELECT NewsletterTemplateID FROM Newsletter_Newsletter WHERE NewsletterID={1})" +
                     " OR TemplateID IN (SELECT TemplateID FROM Newsletter_EmailTemplateNewsletter WHERE NewsletterID={1}){2}) AND (TemplateSiteID={3})",
-                    EmailTemplateType.Issue, NewsletterID, issueTemplateWhere, newsletterObj.NewsletterSiteID);
+                    EmailTemplateType.Issue, NewsletterID, issueTemplateWhere, Newsletter.NewsletterSiteID);
 
                 if (TemplateID > 0)
                 {
@@ -218,39 +228,88 @@ public partial class CMSModules_Newsletters_Controls_EditIssue : CMSAdminControl
                 if (TemplateID <= 0)
                 {
                     // Get ID of default template
-                    issueTemplate.Value = TemplateID = newsletterObj.NewsletterTemplateID;
+                    issueTemplate.Value = TemplateID = Newsletter.NewsletterTemplateID;
+                }
+
+                // Prevent selecting none value in campaign selector if there is no campaign
+                if (CampaignInfoProvider.GetCampaigns().OnSite(SiteContext.CurrentSiteID).Count == 0)
+                {
+                    radUTMCampaignExisting.Checked = false;
+                    radUTMCampaignExisting.Enabled = false;
+                    selectorUTMCampaign.Enabled = false;
+                    radUTMCampaignNew.Checked = true;
+                    txtIssueUTMCampaign.Enabled = true;
                 }
 
                 // Initialize inputs and content controls
-                if (!RequestHelper.IsPostBack() || (IsDialogMode && !forceReload && string.IsNullOrEmpty(txtSenderName.Text)) || forceReload)
+                if (!RequestHelper.IsPostBack() || forceReload)
                 {
-                    txtSenderName.Text = (issue != null ? issue.IssueSenderName : newsletterObj.NewsletterSenderName);
+                    txtSenderName.Text = (issue != null ? issue.IssueSenderName : Newsletter.NewsletterSenderName);
+                    txtSenderEmail.Text = (issue != null ? issue.IssueSenderEmail : Newsletter.NewsletterSenderEmail);
+                    txtIssueUTMSource.Text = (issue != null ? issue.IssueUTMSource : string.Empty);
+
+                    if (issue != null)
+                    {
+                        if (CampaignInfoProvider.GetCampaignByUTMCode(issue.IssueUTMCampaign, SiteContext.CurrentSiteName) != null)
+                        {
+                            selectorUTMCampaign.Value = issue.IssueUTMCampaign;
+                            selectorUTMCampaign.Reload(forceReload);
+
+                            selectorUTMCampaign.Enabled = true;
+
+                            radUTMCampaignExisting.Checked = true;
+                            radUTMCampaignNew.Checked = false;
+                            txtIssueUTMCampaign.Enabled = false;
+                        }
+                        else
+                        {
+                            txtIssueUTMCampaign.Text = issue.IssueUTMCampaign;
+                            txtIssueUTMCampaign.Enabled = true;
+                            
+                            radUTMCampaignExisting.Checked = false;
+                            radUTMCampaignNew.Checked = true;
+                            selectorUTMCampaign.Enabled = false;
+                        }
+                    }
                 }
-                if (!RequestHelper.IsPostBack() || (IsDialogMode && !forceReload && string.IsNullOrEmpty(txtSenderEmail.Text)) || forceReload)
+                else
                 {
-                    txtSenderEmail.Text = (issue != null ? issue.IssueSenderEmail : newsletterObj.NewsletterSenderEmail);
+                    if (issue != null)
+                    {
+                        if (string.IsNullOrEmpty(txtIssueUTMSource.Text.Trim()))
+                        {
+                            txtIssueUTMSource.Text = Normalize(Newsletter.NewsletterName + "_" + txtSubject.Text.Trim());
+                        }
+
+                        if (string.IsNullOrEmpty(txtIssueUTMCampaign.Text.Trim()))
+                        {
+                            txtIssueUTMCampaign.Text = Newsletter.NewsletterName.ToLower();
+                        }
+                    }
                 }
 
                 contentBody.NewsletterID = NewsletterID;
                 contentBody.IssueID = IssueID;
                 contentBody.TemplateID = TemplateID;
-                contentBody.IsDialogMode = IsDialogMode;
                 contentBody.Enabled = Enabled;
                 contentBody.ReloadData(forceReload);
 
                 // Set simple/advanced options visibility
                 InitSimpleAdvancedOptions();
 
+                txtIssueUTMCampaign.Attributes["placeholder"] = Newsletter.NewsletterName.ToLower();
+
                 // Set flag
-                loaded = true;
+                mLoaded = true;
             }
         }
 
-        txtSubject.Enabled = Enabled;
-        txtSenderEmail.Enabled = Enabled;
-        txtSenderName.Enabled = Enabled;
-        issueTemplate.Enabled = Enabled;
-        chkShowInArchive.Enabled = Enabled;
+        txtIssueUTMMedium.Text = DEFAULT_UTM_MEDIUM;
+        chkShowInArchive.Enabled = txtSubject.Enabled = txtSenderEmail.Enabled = txtSenderName.Enabled = issueTemplate.Enabled = Enabled;
+        chkIssueUseUTM.Enabled = pnlIssueUTMCampaign.Enabled = pnlIssueUTMMedium.Enabled = pnlIssueUTMSource.Enabled = Enabled;
+        pnlUTMParameters.Visible = chkIssueUseUTM.Checked;
+
+        InitTooltips(isABTest);
     }
 
 
@@ -268,7 +327,7 @@ public partial class CMSModules_Newsletters_Controls_EditIssue : CMSAdminControl
             ErrorMessage = GetString("Newsletter_Edit.ErrorEmailFormat");
         }
 
-        return validated = String.IsNullOrEmpty(ErrorMessage);
+        return mValidated = String.IsNullOrEmpty(ErrorMessage);
     }
 
 
@@ -277,9 +336,9 @@ public partial class CMSModules_Newsletters_Controls_EditIssue : CMSAdminControl
     /// </summary>
     public bool Save()
     {
-        if (validated || IsValid())
+        if (mValidated || IsValid())
         {
-            IssueInfo issue = null;
+            IssueInfo issue;
 
             if (IssueID == 0)
             {
@@ -301,6 +360,33 @@ public partial class CMSModules_Newsletters_Controls_EditIssue : CMSAdminControl
                 issue.IssueShowInNewsletterArchive = chkShowInArchive.Checked;
                 issue.IssueSenderName = txtSenderName.Text.Trim();
                 issue.IssueSenderEmail = txtSenderEmail.Text.Trim();
+                issue.IssueUseUTM = chkIssueUseUTM.Checked;
+
+                var normalizedUtmSource = Normalize(txtIssueUTMSource.Text.Trim());
+                if (string.IsNullOrEmpty(normalizedUtmSource))
+                {
+                    normalizedUtmSource = Normalize(Newsletter.NewsletterName + "_" + txtSubject.Text.Trim());
+                }
+                txtIssueUTMSource.Text = issue.IssueUTMSource = normalizedUtmSource;
+
+                if (radUTMCampaignNew.Checked)
+                {
+                    var normalizedUtmCampaign = Normalize(txtIssueUTMCampaign.Text.Trim());
+                    if (string.IsNullOrEmpty(normalizedUtmCampaign))
+                    {
+                        normalizedUtmCampaign = Normalize(Newsletter.NewsletterName);
+                    }
+                    txtIssueUTMCampaign.Text = issue.IssueUTMCampaign = normalizedUtmCampaign;
+                }
+                else
+                {
+                    issue.IssueUTMCampaign = selectorUTMCampaign.Value.ToString().ToLower();
+                }
+
+                if (issue.IssueIsABTest)
+                {
+                    SynchronizeUTMParameters(issue);
+                }
 
                 // Saves content of editable region(s)
                 // Get content from hidden field
@@ -309,7 +395,7 @@ public partial class CMSModules_Newsletters_Controls_EditIssue : CMSAdminControl
                 if (!string.IsNullOrEmpty(content))
                 {
                     // Split content for each region, separator is '#|#'
-                    regions = content.Split(new [] { "#|#" }, StringSplitOptions.RemoveEmptyEntries);
+                    regions = content.Split(new[] { "#|#" }, StringSplitOptions.RemoveEmptyEntries);
                 }
                 issue.IssueText = IssueHelper.GetContentXML(regions);
 
@@ -367,7 +453,17 @@ public partial class CMSModules_Newsletters_Controls_EditIssue : CMSAdminControl
     {
         plcAdvanced.Visible = ShowAdvancedOptions;
         imgToggleAdvanced.ImageUrl = (ShowAdvancedOptions ? GetImageUrl("Design/Controls/UniGrid/Actions/SortUp.png") : GetImageUrl("Design/Controls/UniGrid/Actions/SortDown.png"));
-        lnkToggleAdvanced.Text = (ShowAdvancedOptions ? GetString("install.HideAdvancedOptions") : GetString("install.ShowAdvancedOptions"));
+        lnkToggleAdvanced.Text = (ShowAdvancedOptions ? GetString("newsletterissue.hideadvancedoptions") : GetString("newsletterissue.showadvancedoptions"));
+    }
+
+
+    /// <summary>
+    /// Radio buttons for UTM campaign checked changed.
+    /// </summary>
+    protected void radUTMCampaign_OnCheckedChanged(object sender, EventArgs e)
+    {
+        txtIssueUTMCampaign.Enabled = radUTMCampaignNew.Checked;
+        selectorUTMCampaign.Enabled = radUTMCampaignExisting.Checked;
     }
 
 
@@ -445,6 +541,61 @@ $cmsj(function () {{
 }});", hdnIssueContent.ClientID);
 
         ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "EditIssueScript_" + ClientID, script, true);
+    }
+
+    #endregion
+
+
+    #region "Private methods"
+
+    private void InitTooltips(bool isABTest)
+    {
+        pnlIssueUTMSource.ToolTip = lblIssueUTMSource.ToolTip = lblScreenReaderIssueUTMSource.Text = iconHelpIssueUTMSource.ToolTip = GetString("newsletterissue.utm.source.description");
+        pnlIssueUTMMedium.ToolTip = lblIssueUTMMedium.ToolTip = lblScreenReaderIssueUTMMedium.Text = iconHelpIssueUTMMedium.ToolTip = GetString("newsletterissue.utm.medium.description");
+        pnlIssueUTMCampaign.ToolTip = lblIssueUTMCampaign.ToolTip = GetString("newsletterissue.utm.campaign.description");
+        lblSubject.ToolTip = GetString("newsletterissue.subject.description");
+        pnlIssueSenderName.ToolTip = lblSenderName.ToolTip = GetString("newsletterissue.sender.name.description");
+        pnlIssueSenderEmail.ToolTip = lblSenderEmail.ToolTip = GetString("newsletterissue.sender.email.description");
+        pnlIssueTemplate.ToolTip = lblTemplate.ToolTip = GetString("newsletterissue.template.description");
+        pnlIssueArchive.ToolTip = lblArchive.ToolTip = GetString("newslettertemplate_edit.showinarchive.description");
+
+        var useUTMTooltipText = GetString("newsletterissue.utm.use.description") + (isABTest ? " " + GetString("newsletterissue.utm.use.description.ab") : "");
+        pnlIssueUseUTM.ToolTip = lblIssueUseUTM.ToolTip = lblScreenReaderIssueUseUTM.Text = iconHelpIssueUseUTM.ToolTip = useUTMTooltipText;
+
+        ScriptHelper.RegisterBootstrapTooltip(Page, ".info-icon > i");
+    }
+
+
+    /// <summary>
+    /// Returns string that can be later used in URL and it is safe for the analytics.
+    /// </summary>
+    private string Normalize(string input)
+    {
+        input = input.Replace(' ', '_');
+        return ValidationHelper.GetCodeName(input, "", 200, useUnicode: false).ToLower();
+    }
+
+
+    /// <summary>
+    /// Synchronize UTM parameters between all A/B test variants.
+    /// </summary>
+    /// <param name="issue">Issue</param>
+    private void SynchronizeUTMParameters(IssueInfo issue)
+    {
+        var variants = IssueInfoProvider.GetIssues()
+                                        .WhereNotEquals("IssueID", issue.IssueID)
+                                        .And(w => w.WhereEquals("IssueVariantOfIssueID", issue.IssueVariantOfIssueID)
+                                                   .Or()
+                                                   .WhereEquals("IssueID", issue.IssueVariantOfIssueID))
+                                        .ToList();
+
+        foreach (var variant in variants)
+        {
+            variant.IssueUTMCampaign = issue.IssueUTMCampaign;
+            variant.IssueUTMSource = issue.IssueUTMSource;
+            variant.IssueUseUTM = issue.IssueUseUTM;
+            IssueInfoProvider.SetIssueInfo(variant);
+        }
     }
 
     #endregion

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="PageLayouts.ascx.cs" Inherits="CMSModules_DeviceProfile_Controls_PageLayouts" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="PageLayouts.ascx.cs" Inherits="CMSModules_DeviceProfile_Controls_PageLayouts" %>
 
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SocialMedia_Controls_LinkedIn_LinkedInCompanySearchBox"
-    Codebehind="LinkedInCompanySearchBox.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SocialMedia_Controls_LinkedIn_LinkedInCompanySearchBox"
+     Codebehind="LinkedInCompanySearchBox.ascx.cs" %>
 
 <asp:Panel ID="pnlFilter" runat="server" EnableViewState="false" DefaultButton="btnSearch" CssClass="form-horizontal form-filter">
     <div class="form-group">

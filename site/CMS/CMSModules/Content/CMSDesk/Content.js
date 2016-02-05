@@ -226,12 +226,6 @@ function DeleteDocument(nodeId) {
 }
 
 /*#region CONTENT ACTIONS*/
-function ConvertDocument(parentNodeId, convertDocumentId) {
-    if ((parentNodeId != 0) && (convertDocumentId != 0)) {
-        NewItem(parentNodeId, null, false, '&convertdocumentid=' + convertDocumentId);
-    }
-}
-
 // New item action
 function NewItem(nodeId, classId, refreshTree, query) {
     if (!CheckChanges()) {

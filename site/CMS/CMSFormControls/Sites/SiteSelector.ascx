@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_Sites_SiteSelector"
-    Codebehind="SiteSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_Sites_SiteSelector"
+     Codebehind="SiteSelector.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"
     TagPrefix="cms" %>
 <asp:Panel ID="pnlSelector" runat="server" CssClass="site-selector">

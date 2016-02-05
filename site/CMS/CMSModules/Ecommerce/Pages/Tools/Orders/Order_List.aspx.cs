@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.Ecommerce;
@@ -19,7 +19,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Orders_Order_List : CMSEco
         {
             Text = ResHelper.GetString("Order_List.NewItemCaption"),
             RedirectUrl = "Order_New.aspx?customerid=" +  QueryHelper.GetInteger("customerid", 0),
-            Enabled = ECommerceContext.IsUserAuthorizedForPermission("ModifyOrders")
+            Enabled = ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.ORDERS_MODIFY)
         });
     }
 

@@ -87,14 +87,18 @@
                     left: o.left,
                     top: o.top,
                     width: o.width,
-                    height: o.height
+                    height: o.height,
+                    opacity: '',
+                    display: ''
                 });
             } else {
                 overlay.css({
                     left: 0,
                     top: 0,
                     width: '100%',
-                    height: '100%'
+                    height: '100%',
+                    opacity: '',
+                    display: ''
                 });
             }
 

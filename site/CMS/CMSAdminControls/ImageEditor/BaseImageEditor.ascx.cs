@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Text;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 using CMS.EventLog;
@@ -349,22 +348,6 @@ public partial class CMSAdminControls_ImageEditor_BaseImageEditor : CMSUserContr
 
 
     /// <summary>
-    /// Script literal.
-    /// </summary>
-    public Literal LtlScript
-    {
-        get
-        {
-            return ltlScript;
-        }
-        set
-        {
-            ltlScript = value;
-        }
-    }
-
-
-    /// <summary>
     /// Result for renaming file.
     /// </summary>
     public string GetNameResult
@@ -579,6 +562,15 @@ public partial class CMSAdminControls_ImageEditor_BaseImageEditor : CMSUserContr
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        // Register tooltip script
+        ScriptHelper.RegisterTooltip(Page);
+        // Register wopener script
+        ScriptHelper.RegisterWOpenerScript(Page);
+        // Register only numbers script
+        ScriptHelper.RegisterOnlyNumbersScript(Page);
+        // Register script file
+        ScriptHelper.RegisterScriptFile(Page, ResolveUrl("~/CMSAdminControls/ImageEditor/BaseImageEditor.js"));
+
         RegisterTrimScript();
 
         if (LoadImageType != null)
@@ -586,7 +578,7 @@ public partial class CMSAdminControls_ImageEditor_BaseImageEditor : CMSUserContr
             LoadImageType();
         }
 
-        ltlScript.Text = "";
+        RegisterResizeIFrameScripts();
 
         if (!URLHelper.IsPostback())
         {
@@ -658,18 +650,33 @@ public partial class CMSAdminControls_ImageEditor_BaseImageEditor : CMSUserContr
     }
 
 
+    /// <summary>
+    /// Registers scripts for resizing iframe.
+    /// </summary>
+    private void RegisterResizeIFrameScripts()
+    {
+        var script = @"
+function resizeIframe() {
+    var fameElem = document.getElementById('" + frameImg.ClientID + @"');
+    var propElem = document.getElementById('divProperties');
+    var height = document.documentElement.clientHeight - 130; // footer height
+
+    fameElem.style.height = Math.max(height - 16, 0) + 'px';
+    propElem.style.height = Math.max(height - 20, 0) + 'px';
+    fameElem.style.width = '100%';
+};
+
+function afterResize() {
+    resizeIframe();
+}";
+        ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "ResizeIFrameScript", script, true);
+    }
+
+
     protected override void OnPreRender(EventArgs e)
     {
         base.OnPreRender(e);
-
-        // Register tooltip script
-        ScriptHelper.RegisterTooltip(Page);
-        // Register wopener script
-        ScriptHelper.RegisterWOpenerScript(Page);
-        // Register only numbers script
-        ScriptHelper.RegisterOnlyNumbersScript(Page);
-        // Register script file
-        ScriptHelper.RegisterScriptFile(Page, ResolveUrl("~/CMSAdminControls/ImageEditor/BaseImageEditor.js"));
+        
         // Initialize scripts
         StringBuilder sb = new StringBuilder();
         if (IsUndoEnabled() || IsRedoEnabled())
@@ -955,12 +962,10 @@ public partial class CMSAdminControls_ImageEditor_BaseImageEditor : CMSUserContr
     protected void InitializeStrings(bool reloadName)
     {
         // Initialize strings that are not dependent on any value
-        btnConvert.Text = GetString("general.ok");
         radByPercentage.AutoPostBack = true;
         radByPercentage.ResourceString = "img.resizebypercent";
         radByAbsolute.ResourceString = "img.resizebyabsolute";
         chkMaintainRatio.ResourceString = "img.maintainratio";
-        btnChangeMetaData.Text = GetString("general.ok");
         lblQualityFailed.Visible = false;
         lblValidationFailedResize.Visible = false;
 
@@ -1383,33 +1388,33 @@ public partial class CMSAdminControls_ImageEditor_BaseImageEditor : CMSUserContr
     /// </summary>
     public bool IsUndoRedoPossible()
     {
-        if (ViewState["IsUndoRedoPossible"] == null)
+        if (ViewState["IsUndoRedoPossible"] != null)
         {
-            bool storeFilesInFileSystem = TempFileInfoProvider.StoreFilesInFileSystem(SiteContext.CurrentSiteName);
-            bool storeFilesInDatabase = TempFileInfoProvider.StoreFilesInDatabase(SiteContext.CurrentSiteName);
+            return ValidationHelper.GetBoolean(ViewState["IsUndoRedoPossible"], true);
+        }
 
-            if (storeFilesInDatabase)
+        var filesLocationType = FileHelper.FilesLocationType(SiteContext.CurrentSiteName);
+        if (filesLocationType != FilesLocationTypeEnum.FileSystem)
+        {
+            ViewState["IsUndoRedoPossible"] = true;
+        }
+        else
+        {
+            if (filesLocationType != FilesLocationTypeEnum.Database)
             {
-                ViewState["IsUndoRedoPossible"] = true;
-            }
-            else
-            {
-                if (storeFilesInFileSystem)
+                string dir = TempFileInfoProvider.GetTempFilesFolderPath(TempFileInfoProvider.IMAGE_EDITOR_FOLDER, InstanceGUID);
+                if (DirectoryHelper.CheckPermissions(dir))
                 {
-                    string dir = TempFileInfoProvider.GetTempFilesFolderPath(TempFileInfoProvider.IMAGE_EDITOR_FOLDER, InstanceGUID);
-                    if (DirectoryHelper.CheckPermissions(dir))
-                    {
-                        ViewState["IsUndoRedoPossible"] = true;
-                    }
-                    else
-                    {
-                        ViewState["IsUndoRedoPossible"] = false;
-                    }
+                    ViewState["IsUndoRedoPossible"] = true;
                 }
                 else
                 {
                     ViewState["IsUndoRedoPossible"] = false;
                 }
+            }
+            else
+            {
+                ViewState["IsUndoRedoPossible"] = false;
             }
         }
 

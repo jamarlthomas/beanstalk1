@@ -1,4 +1,4 @@
-using CMS.Ecommerce;
+﻿using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.UIControls;
 using CMS.ExtendedControls;

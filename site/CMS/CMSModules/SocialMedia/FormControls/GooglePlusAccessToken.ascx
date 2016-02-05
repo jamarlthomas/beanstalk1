@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="GooglePlusAccessToken.ascx.cs" Inherits="CMSModules_SocialMedia_FormControls_GooglePlusAccessToken" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="GooglePlusAccessToken.ascx.cs" Inherits="CMSModules_SocialMedia_FormControls_GooglePlusAccessToken" %>
 
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">
     <ContentTemplate>

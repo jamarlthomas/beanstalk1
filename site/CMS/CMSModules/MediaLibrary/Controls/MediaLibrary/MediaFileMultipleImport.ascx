@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileMultipleImport"
-    Codebehind="MediaFileMultipleImport.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileMultipleImport"
+     Codebehind="MediaFileMultipleImport.ascx.cs" %>
 <%@ Register Src="~/CMSInlineControls/MediaControl.ascx" TagPrefix="cms" TagName="MediaPreview" %>
 <%@ Register Src="~/CMSInlineControls/ImageControl.ascx" TagPrefix="cms" TagName="ImagePreview" %>
 <%@ Register Src="~/CMSFormControls/System/LocalizableTextBox.ascx" TagName="LocalizableTextBox"
@@ -51,7 +51,7 @@
         <div class="form-group">
             <div class="editing-form-value-cell-offset editing-form-value-cell">
                 <cms:CMSButton ID="btnImportFile" runat="server" EnableViewState="false" ButtonStyle="Primary"
-                    OnClick="btnImportFile_Click" ValidationGroup="MediaFileImport" />
+                    OnClick="btnImportFile_Click" ValidationGroup="MediaFileImport" DisableAfterSubmit="true" />
                 <cms:CMSButton ID="btnImportCancel" runat="server" EnableViewState="false" ButtonStyle="Primary"
                     OnClick="btnImportCancel_Click" />
             </div>

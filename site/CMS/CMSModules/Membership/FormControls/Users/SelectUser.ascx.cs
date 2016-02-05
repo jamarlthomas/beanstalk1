@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.DataEngine;
 using CMS.ExtendedControls;
@@ -227,7 +227,7 @@ public partial class CMSModules_Membership_FormControls_Users_SelectUser : FormE
     /// <summary>
     /// Gets or sets the resource prefix of uni-selector. If not set default values are used.
     /// </summary>
-    public string ResourcePrefix
+    public override string ResourcePrefix
     {
         get
         {

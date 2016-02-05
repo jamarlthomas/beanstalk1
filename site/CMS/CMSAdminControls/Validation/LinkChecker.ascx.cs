@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,7 +9,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web.UI.WebControls;
 using System.Data;
-using System.Collections;
 using System.Web;
 
 using CMS.DataEngine;
@@ -33,17 +32,14 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
 
     #region "Variables"
 
-    private Regex mMatchUrlRegex = null;
-    private bool mUseServerRequest = false;
-    private static readonly Hashtable mErrors = new Hashtable();
+    private Regex mMatchUrlRegex;
     private string currentCulture = CultureHelper.DefaultUICultureCode;
-    private static DataSet mDataSource = null;
-    private static readonly Hashtable mDataSources = new Hashtable();
+    
     private string mUrlRequestExceptions = ";webresource;";
     private const string mSkipUrlsStartingWith = ";javascript;mail;ftp;";
-    private int mValidationDelay = 0;
-    private string mErrorText = null;
-    private string mInfoText = null;
+    private int mValidationDelay;
+    private string mErrorText;
+    private string mInfoText;
 
     #endregion
 
@@ -67,13 +63,20 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
     /// </summary>
     public bool UseServerRequestType
     {
+        get;
+        set;
+    }
+
+
+    private DataSet AsyncDataSource
+    {
         get
         {
-            return mUseServerRequest;
+            return ctlAsyncLog.ProcessData.Data as DataSet;
         }
         set
         {
-            mUseServerRequest = value;
+            ctlAsyncLog.ProcessData.Data = value;
         }
     }
 
@@ -85,31 +88,20 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
     {
         get
         {
-            if (mDataSource == null)
+            if (AsyncDataSource == null)
             {
-                mDataSource = base.DataSource ?? mDataSources[ctlAsyncLog.ProcessGUID] as DataSet;
+                AsyncDataSource = base.DataSource;
             }
-            base.DataSource = mDataSource;
 
-            return mDataSource;
+            base.DataSource = AsyncDataSource;
+
+            return AsyncDataSource;
         }
         set
         {
-            mDataSource = value;
-            mDataSources[ctlAsyncLog.ProcessGUID] = mDataSource;
-            base.DataSource = mDataSource;
-        }
-    }
+            AsyncDataSource = value;
 
-
-    /// <summary>
-    /// Current log context
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
+            base.DataSource = AsyncDataSource;
         }
     }
 
@@ -121,11 +113,11 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
     {
         get
         {
-            return ValidationHelper.GetString(mErrors["LinkChecker_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mErrors["LinkChecker_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -232,7 +224,7 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
     private void SetupControls()
     {
         IsLiveSite = false;
-        
+
         if (!RequestHelper.IsCallback())
         {
             InitializeScripts();
@@ -243,9 +235,8 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
         // Initialize events
         ctlAsyncLog.OnFinished += ctlAsync_OnFinished;
         ctlAsyncLog.OnError += ctlAsync_OnError;
-        ctlAsyncLog.OnRequestLog += ctlAsync_OnRequestLog;
         ctlAsyncLog.OnCancel += ctlAsync_OnCancel;
-        
+
         ctlAsyncLog.TitleText = GetString("validation.link.checkingurls");
         HeaderActions.ActionsList.Clear();
 
@@ -258,7 +249,7 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
 
         // View HTML code
         string click = GetViewSourceActionClick();
-        
+
         HeaderAction viewCode = new HeaderAction();
         viewCode.OnClientClick = click;
         viewCode.Text = GetString("validation.viewcode");
@@ -324,11 +315,10 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
         DataSource = null;
         pnlGrid.Visible = false;
 
-        CurrentLog.Close();
         CurrentError = string.Empty;
-        EnsureLog();
 
         // Get the full domain
+        ctlAsyncLog.EnsureLog();
         ctlAsyncLog.Parameter = RequestContext.FullDomain + ";" + URLHelper.GetFullApplicationUrl() + ";" + URLHelper.RemoveProtocolAndDomain(Url);
         ctlAsyncLog.RunAsync(CheckLinks, WindowsIdentity.GetCurrent());
     }
@@ -424,7 +414,7 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
                 {
                     ShowWarning(text);
                 }
-                
+
                 lblResults.Visible = true;
                 lblResults.Text = ResHelper.GetString("validation.validationresults");
                 gridValidationResult.Visible = true;
@@ -491,7 +481,7 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
         {
             Dictionary<int, string> urls = new Dictionary<int, string>();
             int counter = 0;
-            string[] skippedUrlsStartingWith = mSkipUrlsStartingWith.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] skippedUrlsStartingWith = mSkipUrlsStartingWith.Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
             // Process URLs found in document
             foreach (Match m in MatchUrlRegex.Matches(html))
@@ -554,7 +544,7 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
         Uri reqUri = null;
         HttpStatusCode statusCode = HttpStatusCode.OK;
         string statusDescription = null;
-        bool loadDataFromResponse = true;
+        string[] exceptions = UrlRequestExceptions.ToLowerCSafe().Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
         // Process URLs
         while (index < urls.Count)
@@ -562,9 +552,9 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
             string url = urls[index + indexOffset];
             string type = "E";
             bool cont = false;
-            loadDataFromResponse = true;
-            string time = null;
-            HttpWebResponse response = null;
+            bool loadDataFromResponse = true;
+            string time;
+            HttpWebResponse response;
             bool sslWarning = false;
 
             try
@@ -574,12 +564,13 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
                 // Create HEAD web request for each URL
                 HttpWebRequest req = (HttpWebRequest)WebRequest.Create(URLHelper.GetAbsoluteUrl(url, urlParams[0], urlParams[1], urlParams[2]));
                 req.Method = "HEAD";
+                req.UserAgent = "CMS-LinkChecker";
                 req.AllowAutoRedirect = false;
 
                 // If exception use GET request instead
-                foreach (string exception in UrlRequestExceptions.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (string exception in exceptions)
                 {
-                    if (url.ToLowerCSafe().Contains(exception.ToLowerCSafe()))
+                    if (url.ToLowerCSafe().Contains(exception))
                     {
                         req.Method = "GET";
                         break;
@@ -600,7 +591,8 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
                 catch (WebException e)
                 {
                     response = (HttpWebResponse)e.Response;
-                    if ((e.InnerException != null) && (e.InnerException is AuthenticationException))
+
+                    if (e.InnerException is AuthenticationException)
                     {
                         statusDescription = e.InnerException.Message;
                         statusCode = HttpStatusCode.SwitchingProtocols;
@@ -610,7 +602,7 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
                 }
 
                 sw.Stop();
-                time = "(" + sw.ElapsedMilliseconds.ToString() + " ms)";
+                time = "(" + sw.ElapsedMilliseconds + " ms)";
                 reqUri = req.RequestUri;
             }
             catch
@@ -773,8 +765,7 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state == CMSThread.ABORT_REASON_STOP)
+            if (CMSThread.Stopped(ex))
             {
                 // When canceled
                 AddLog(ResHelper.GetString("validation.link.abort", currentCulture));
@@ -853,20 +844,10 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
         mInfoText = CurrentError;
         pnlLog.Visible = false;
         pnlGrid.Visible = true;
-        CurrentLog.Close();
-
+        
         PostProcessData();
     }
-
-
-    /// <summary>
-    /// On request log event
-    /// </summary>
-    private void ctlAsync_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
-    }
-
+    
 
     /// <summary>
     /// On error event
@@ -880,7 +861,6 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
         ctlAsyncLog.Parameter = null;
         DataSource = null;
         mErrorText = CurrentError;
-        CurrentLog.Close();
     }
 
 
@@ -890,7 +870,6 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
     private void ctlAsync_OnFinished(object sender, EventArgs e)
     {
         mErrorText = CurrentError;
-        CurrentLog.Close();
         pnlLog.Visible = false;
         pnlGrid.Visible = true;
 
@@ -925,15 +904,7 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
     /// <param name="addWholeLine">Indicates if log text forms whole line</param>
     protected void AddLog(string newLog, bool addWholeLine)
     {
-        EnsureLog();
-        if (addWholeLine)
-        {
-            LogContext.AppendLine(newLog);
-        }
-        else
-        {
-            LogContext.Append(newLog);
-        }
+        ctlAsyncLog.AddLog(newLog, addWholeLine);
     }
 
 
@@ -961,7 +932,7 @@ public partial class CMSAdminControls_Validation_LinkChecker : DocumentValidator
             DataSource.Tables.Clear();
             DataSource.Tables.Add(dtResult);
 
-            dtResult = DocumentValidationHelper.ProcessValidationResult(DataSource, DocumentValidationEnum.Link, new Dictionary<string, object> { { "culture", currentCulture } });
+            DocumentValidationHelper.ProcessValidationResult(DataSource, DocumentValidationEnum.Link, new Dictionary<string, object> { { "culture", currentCulture } });
         }
 
         SetupControls();

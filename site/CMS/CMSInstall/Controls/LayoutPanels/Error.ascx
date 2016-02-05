@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Error.ascx.cs" Inherits="CMSInstall_Controls_LayoutPanels_Error" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Error.ascx.cs" Inherits="CMSInstall_Controls_LayoutPanels_Error" %>
 <%@ Register TagPrefix="cms" TagName="Help" Src="~/CMSAdminControls/UI/PageElements/Help.ascx" %>
 <asp:PlaceHolder ID="plcError" runat="server" EnableViewState="False">
     <div class="install-error">

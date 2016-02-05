@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 
 using CMS.EventLog;
@@ -324,17 +324,7 @@ public partial class CMSAdminControls_ImageEditor_ImageEditor : CMSUserControl
                     if (VersionHistoryID != 0)
                     {
                         // Get the versioned attachment
-                        AttachmentHistoryInfo attachmentVersion = VersionManager.GetAttachmentVersion(VersionHistoryID, attachmentGuid);
-                        if (attachmentVersion != null)
-                        {
-                            // Create new attachment object
-                            ai = new AttachmentInfo(attachmentVersion.Generalized.DataClass);
-                            if (ai != null)
-                            {
-                                AttachmentHistoryID = attachmentVersion.AttachmentHistoryID;
-                                ai.AttachmentVersionHistoryID = VersionHistoryID;
-                            }
-                        }
+                        ai = DocumentHelper.GetAttachment(attachmentGuid, VersionHistoryID);
                     }
                     // Else get file without binary data
                     else
@@ -562,12 +552,10 @@ public partial class CMSAdminControls_ImageEditor_ImageEditor : CMSUserControl
         }
 
         string siteName = SiteContext.CurrentSiteName;
-
-        bool storeFilesToDisk = SettingsKeyInfoProvider.GetBoolValue(siteName + ".CMSStoreFilesInFileSystem");
-        bool storeFilesInDatabase = SettingsKeyInfoProvider.GetBoolValue(siteName + ".CMSStoreFilesInDatabase");
+        var filesLocationType = FileHelper.FilesLocationType(siteName);
 
         // Check only if store files in file system is enabled
-        if (storeFilesToDisk && !storeFilesInDatabase)
+        if (filesLocationType == FilesLocationTypeEnum.FileSystem)
         {
             // Get path to media file folder
             string path = DirectoryHelper.CombinePath(Server.MapPath("~/"), siteName);
@@ -717,8 +705,8 @@ public partial class CMSAdminControls_ImageEditor_ImageEditor : CMSUserControl
                                 ai = AttachmentInfoProvider.GetAttachmentInfo(ai.AttachmentGUID, CurrentSiteName);
                             }
 
-                            // If extension changed update CMS.File extension
-                            if ((node.NodeClassName.ToLowerCSafe() == "cms.file") && (node.DocumentExtensions != extension))
+                            // If extension changed update file extension
+                            if (node.IsFile() && (node.DocumentExtensions != extension))
                             {
                                 // Update document extensions if no custom are used
                                 if (!node.DocumentUseCustomExtensions)
@@ -771,7 +759,7 @@ public partial class CMSAdminControls_ImageEditor_ImageEditor : CMSUserControl
                                 ai.AttachmentImageHeight = height;
                             }
                             // Ensure object
-                            ai.MakeComplete(true);
+                            ai.MakeComplete(false);
                             if (VersionHistoryID > 0)
                             {
                                 VersionManager.SaveAttachmentVersion(ai, VersionHistoryID);
@@ -797,11 +785,6 @@ public partial class CMSAdminControls_ImageEditor_ImageEditor : CMSUserControl
                             if (autoCheck && (VersionManager != null) && (VersionHistoryID > 0))
                             {
                                 VersionManager.CheckIn(node, null);
-                            }
-
-                            if (RefreshAfterAction)
-                            {
-                                InitRefreshAfterAction(ai.AttachmentGUID);
                             }
                         }
                     }
@@ -939,14 +922,11 @@ public partial class CMSAdminControls_ImageEditor_ImageEditor : CMSUserControl
     /// <param name="imageGuid">Image GUID</param>
     private void InitRefreshAfterAction(Guid imageGuid)
     {
-        if (String.IsNullOrEmpty(externalControlID))
-        {
-            baseImageEditor.LtlScript.Text = ScriptHelper.GetScript("Refresh();");
-        }
-        else
-        {
-            baseImageEditor.LtlScript.Text = ScriptHelper.GetScript(String.Format("InitRefresh({0}, false, false, '{1}', 'refresh')", ScriptHelper.GetString(externalControlID), imageGuid));
-        }
+        var script = String.IsNullOrEmpty(externalControlID) 
+            ? "Refresh();" 
+            : String.Format("InitRefresh({0}, false, false, '{1}', 'refresh')", ScriptHelper.GetString(externalControlID), imageGuid);
+
+        ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "RefreshAfterAction", script, true);
     }
 
 
@@ -977,17 +957,7 @@ public partial class CMSAdminControls_ImageEditor_ImageEditor : CMSUserControl
                     // If using workflow then get versioned attachment
                     if (VersionHistoryID != 0)
                     {
-                        AttachmentHistoryInfo attachmentVersion = VersionManager.GetAttachmentVersion(VersionHistoryID, attachmentGuid);
-                        if (attachmentVersion != null)
-                        {
-                            // Create new attachment object
-                            ai = new AttachmentInfo(attachmentVersion.Generalized.DataClass);
-                            if (ai != null)
-                            {
-                                AttachmentHistoryID = attachmentVersion.AttachmentHistoryID;
-                                ai.AttachmentVersionHistoryID = VersionHistoryID;
-                            }
-                        }
+                        ai = DocumentHelper.GetAttachment(attachmentGuid, VersionHistoryID);
                     }
                     // Else get file without binary data
                     else

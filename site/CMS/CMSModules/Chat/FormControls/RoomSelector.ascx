@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Chat_FormControls_RoomSelector"
-    Codebehind="RoomSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Chat_FormControls_RoomSelector"
+     Codebehind="RoomSelector.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"
     TagPrefix="cms" %>
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server" UpdateMode="Conditional">

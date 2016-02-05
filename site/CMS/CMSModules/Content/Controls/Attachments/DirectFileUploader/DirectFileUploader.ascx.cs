@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Text;
-using System.Web.UI.WebControls;
 
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -21,7 +20,7 @@ public partial class CMSModules_Content_Controls_Attachments_DirectFileUploader_
     #region "Variables"
 
     private bool mEnabled = true;
-    private string mIFrameUrl = null;
+    private string mIFrameUrl;
     private MediaSourceEnum mSourceType = MediaSourceEnum.DocumentAttachments;
 
     #endregion
@@ -208,6 +207,23 @@ public partial class CMSModules_Content_Controls_Attachments_DirectFileUploader_
         {
             base.AttachmentGUID = value;
             mfuDirectUploader.AttachmentGUID = AttachmentGUID;
+        }
+    }
+
+
+    /// <summary>
+    /// Indicates if full refresh should be performed after uploading attachments under workflow
+    /// </summary>
+    public override bool FullRefresh
+    {
+        get
+        {
+            return base.FullRefresh;
+        }
+        set
+        {
+            base.FullRefresh = value;
+            mfuDirectUploader.FullRefresh = value;
         }
     }
 
@@ -605,7 +621,7 @@ public partial class CMSModules_Content_Controls_Attachments_DirectFileUploader_
 
 
     /// <summary>
-    /// Upload mode for the silverlight uploader application.
+    /// Upload mode for the uploader application.
     /// </summary>
     public override MultifileUploaderModeEnum UploadMode
     {
@@ -718,7 +734,6 @@ public partial class CMSModules_Content_Controls_Attachments_DirectFileUploader_
         set
         {
             base.Category = value;
-            ;
             mfuDirectUploader.Category = Category;
         }
     }
@@ -736,7 +751,7 @@ public partial class CMSModules_Content_Controls_Attachments_DirectFileUploader_
         set
         {
             base.MetaFileID = value;
-            mfuDirectUploader.MediaFileID = MetaFileID;
+            mfuDirectUploader.MetaFileID = MetaFileID;
         }
     }
 
@@ -753,7 +768,6 @@ public partial class CMSModules_Content_Controls_Attachments_DirectFileUploader_
         set
         {
             base.ObjectID = value;
-            ;
             mfuDirectUploader.ObjectID = ObjectID;
         }
     }
@@ -771,7 +785,6 @@ public partial class CMSModules_Content_Controls_Attachments_DirectFileUploader_
         set
         {
             base.ObjectType = value;
-            ;
             mfuDirectUploader.ObjectType = ObjectType;
         }
     }
@@ -802,37 +815,38 @@ public partial class CMSModules_Content_Controls_Attachments_DirectFileUploader_
             if (ControlGroup != null)
             {
                 // First instance of the control is loaded
-                RequestStockHelper.Add(DIRECT_FILE_UPLOADER_STORAGE_KEY, ControlKey, true, true);
+                RequestStockHelper.AddToStorage(DIRECT_FILE_UPLOADER_STORAGE_KEY, ControlKey, true, true);
 
-                StringBuilder sb = new StringBuilder();
-                sb.Append(
-                    @"
-function DFULoadIframes_", ControlKey, @"() {
-    var iframe = document.getElementById('", uploaderFrame.ClientID, @"');
-    if (iframe!=null) {
+                string script = String.Format(@"
+function DFULoadIframes_{0}() {{
+    if (window.File && window.FileReader && window.FileList && window.Blob) {{
+        return;
+    }}
+    var iframe = document.getElementById('{1}');
+    if (iframe!=null) {{
         iframe.setAttribute('allowTransparency','true');
-        if (window.DFUframes != null) {
-            var iframes = $cmsj('iframe.", IFrameCSSClass, @"');
-            for(var i = 0; i < iframes.length; i++) {
+        if (window.DFUframes != null) {{
+            var iframes = $cmsj('iframe.{2}');
+            for(var i = 0; i < iframes.length; i++) {{
                 var f = iframes[i];
                 var p = f.parentNode.parentNode;
                 var imgs = p.getElementsByTagName('img');
-                if ((imgs != null) && (imgs[0] != null)) {
+                if ((imgs != null) && (imgs[0] != null)) {{
                     p.removeChild(imgs[0]);
-                }
+                }}
                 var o = null;
                 var cw = iframe.contentWindow;
                 if (cw != null)
-                { 
+                {{ 
                     var cwd = cw.document;
-                    if (cwd != null) {
+                    if (cwd != null) {{
                         var cn = cwd.childNodes;
-                        if ((cn != null) && (cn.length > 0) && (cn[1].innerHTML != null)) {
+                        if ((cn != null) && (cn.length > 0) && (cn[1].innerHTML != null)) {{
                             var containerId = DFUframes[f.id].match(/containerid=([^&]+)/i)[1];
                     
                             o = cn[1].innerHTML;
-                            o = o.replace(/action=[^\\s]+/, 'action=""' + DFUframes[f.id] + '""').replace('", ERROR_FUNCTION, @"','');
-                            o = o.replace(/(\.\.\/)+App_Themes\//ig, '", ResolveUrl("~"), @"App_Themes/');
+                            o = o.replace(/action=[^\\s]+/, 'action=""' + DFUframes[f.id] + '""').replace('{3}','');
+                            o = o.replace(/(\.\.\/)+App_Themes\//ig, '{4}App_Themes/');
                             o = o.replace(/OnUploadBegin\('[^']+'\)/ig, 'OnUploadBegin(\'' + containerId + '\')');
 
                             var cd = f.contentWindow.document;
@@ -841,23 +855,15 @@ function DFULoadIframes_", ControlKey, @"() {
 
                             f.style.display = '';
                             f.setAttribute('allowTransparency','true');
-                        }
-                    }
-                }
-            }
-        }
-    }
-}"
-                    );
+                        }}
+                    }}
+                }}
+            }}
+        }}
+    }}
+}}", ControlKey, uploaderFrame.ClientID, IFrameCSSClass, ERROR_FUNCTION, ResolveUrl("~"));
 
-                string script = sb.ToString();
-
-                ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "DFUIframesLoader_" + ControlKey, ScriptHelper.GetScript(script));
-
-                if (RequestHelper.IsAsyncPostback())
-                {
-                    ScriptHelper.RegisterStartupScript(this, typeof(string), "DFUIframesLoader_" + ControlKey, ScriptHelper.GetScript(script));
-                }
+                RegisterScript("DFUIframesLoader_" + ControlKey, script);
             }
         }
     }
@@ -870,6 +876,10 @@ function DFULoadIframes_", ControlKey, @"() {
     {
         mIFrameUrl = null;
         LoadIFrame();
+
+        // Initialize design
+        InitDesign();
+
         mfuDirectUploader.ContainerID = containerDiv.ClientID;
         mfuDirectUploader.OnUploadBegin = "DFU.OnUploadBegin";
         mfuDirectUploader.OnUploadCompleted = "DFU.OnUploadCompleted";
@@ -892,7 +902,7 @@ function DFULoadIframes_", ControlKey, @"() {
     private void LoadIFrame()
     {
         // Set iframe attributes
-        if ((ControlGroup == null) || !ValidationHelper.GetBoolean(RequestStockHelper.GetItem(DIRECT_FILE_UPLOADER_STORAGE_KEY, ControlKey, true), false))
+        if ((ControlGroup == null) || !ValidationHelper.GetBoolean(RequestStockHelper.GetItem(DIRECT_FILE_UPLOADER_STORAGE_KEY, ControlKey), false))
         {
             uploaderFrame.Attributes.Add("src", ResolveUrl(IFrameUrl));
 
@@ -909,7 +919,7 @@ function DFULoadIframes_", ControlKey, @"() {
                 else
                 {
                     string script = String.Format("var frameElem = document.getElementById('{0}'); if(frameElem) {{ frameElem.setAttribute('allowTransparency','true') }}", uploaderFrame.ClientID);
-                    ScriptHelper.RegisterStartupScript(this, typeof(string), "DFUTrans_" + ClientID, ScriptHelper.GetScript(script));
+                    ScriptHelper.RegisterStartupScript(this, typeof(string), "DFUTrans_" + ClientID, script, true);
                 }
             }
         }
@@ -920,18 +930,11 @@ function DFULoadIframes_", ControlKey, @"() {
             string script = String.Format("if(!window.DFUframes) {{ var DFUframes = new Object(); }}if(!window.DFUpanels) {{ var DFUpanels = new Object(); }}DFUframes['{0}'] = {1};",
                                           uploaderFrame.ClientID,
                                           ScriptHelper.GetString(ResolveUrl(IFrameUrl)));
-            ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "DFUArrays_" + ClientID, ScriptHelper.GetScript(script));
-            if (RequestHelper.IsAsyncPostback())
-            {
-                ScriptHelper.RegisterStartupScript(this, typeof(string), "DFUArrays_" + ClientID, ScriptHelper.GetScript(script));
-            }
+            RegisterScript("DFUArrays_" + ClientID, script);
         }
 
         uploaderFrame.Attributes.Add("title", uploaderFrame.ID);
         uploaderFrame.Attributes.Add("name", uploaderFrame.ClientID);
-
-        // Initialize design
-        InitDesign();
     }
 
 
@@ -993,16 +996,20 @@ function DFULoadIframes_", ControlKey, @"() {
             containerDiv.Attributes.Add("class", ControlGroup);
         }
 
-        string initScript = ScriptHelper.GetScript(String.Format("if (typeof(DFU) !== 'undefined') {{ DFU.initializeDesign({0}); }}", ScriptHelper.GetString(containerDiv.ClientID)));
+        string initScript = String.Format("if (typeof(DFU) !== 'undefined') {{ $cmsj(function () {{DFU.initializeDesign({0});}}); }}", ScriptHelper.GetString(containerDiv.ClientID));
 
-        if (ControlsHelper.IsInAsyncPostback(Page))
-        {
-            ScriptHelper.RegisterStartupScript(this, typeof(string), "DFUInit_" + ClientID, initScript);
-        }
-        else
-        {
-            ltlScript.Text = initScript;
-        }
+        RegisterScript("DFUInit_" + ClientID, initScript);
+    }
+
+
+    /// <summary>
+    /// Registers script to the page. The script is enclosed in HTML script tag.
+    /// </summary>
+    /// <param name="key">A unique identifier for the script block</param>
+    /// <param name="script">The registered script</param>
+    private void RegisterScript(string key, string script)
+    {
+        ScriptHelper.RegisterStartupScript(this, typeof(string), key, script, true);
     }
 
     #endregion

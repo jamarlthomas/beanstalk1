@@ -675,6 +675,33 @@
             Quantity of purchased items.
             </summary>
         </member>
+        <member name="T:CMS.StrandsRecommender.StrandsRecommenderUsageDataSource">
+            <summary>
+            Module usage tracking data source for Strands recommender module.
+            </summary>
+        </member>
+        <member name="F:CMS.StrandsRecommender.StrandsRecommenderUsageDataSource.mSettingsToLog">
+            <summary>
+            Settings keys which are logged.
+            </summary>
+        </member>
+        <member name="M:CMS.StrandsRecommender.StrandsRecommenderUsageDataSource.GetData">
+            <summary>
+            Get all module statistical data.
+            </summary>
+        </member>
+        <member name="M:CMS.StrandsRecommender.StrandsRecommenderUsageDataSource.GetSettingsUsage(System.Boolean)">
+            <summary>
+            Returns how many times is specific setting used with value which is not same as default value. 
+            Only settings on running sites (if <paramref name="global"/> is true), not hidden and not custom are retrieved.
+            Only global settings when <paramref name="global"/> is false.
+            </summary>
+        </member>
+        <member name="P:CMS.StrandsRecommender.StrandsRecommenderUsageDataSource.Name">
+            <summary>
+            Get the data source name.
+            </summary>
+        </member>
         <member name="T:CMS.StrandsRecommender.StrandsSettings">
             <summary>
             Methods for accessing Strands Recommender settings.

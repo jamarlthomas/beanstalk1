@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Linq;
 using System.Web.UI.WebControls;
@@ -62,7 +62,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Languages : CMSProper
         gridLanguages.OnDataReload += gridDocuments_OnDataReload;
         gridLanguages.OnExternalDataBound += gridLanguages_OnExternalDataBound;
         gridLanguages.ShowActionsMenu = true;
-        gridLanguages.Columns = "DocumentName,  Published";
+        gridLanguages.Columns = SqlHelper.MergeColumns("DocumentName", DocumentColumnLists.GETPUBLISHED_REQUIRED_COLUMNS);
         gridLanguages.AllColumns = SqlHelper.JoinColumnList(ObjectTypeManager.GetColumnNames(PredefinedObjectType.NODE, PredefinedObjectType.DOCUMENTLOCALIZATION));
 
         pnlContainer.Enabled = !DocumentManager.ProcessingAction;
@@ -147,13 +147,13 @@ public partial class CMSModules_Content_CMSDesk_Properties_Languages : CMSProper
                             switch (status)
                             {
                                 case TranslationStatusEnum.NotAvailable:
-                                    img.IconCssClass = "icon-plus"; 
+                                    img.IconCssClass = "icon-plus";
                                     img.IconStyle = GridIconStyle.Allow;
                                     img.ToolTip = GetString("transman.createnewculture");
                                     break;
 
                                 default:
-                                    img.IconCssClass = "icon-edit"; 
+                                    img.IconCssClass = "icon-edit";
                                     img.IconStyle = GridIconStyle.Allow;
                                     img.ToolTip = GetString("transman.editculture");
                                     break;
@@ -171,7 +171,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Languages : CMSProper
                                 {
                                     // Existing culture version
                                     ScriptHelper.RegisterWOpenerScript(Page);
-                                    string url = ResolveUrl(DocumentURLProvider.GetUrl(Node.NodeAliasPath, Node.DocumentUrlPath, currentSiteInfo.SiteName));
+                                    var url = ResolveUrl(DocumentURLProvider.GetUrl(Node));
                                     url = URLHelper.AppendQuery(url, "lang=" + culture);
                                     img.OnClientClick = "window.refreshPageOnClose = true; window.reloadPageUrl = " + ScriptHelper.GetString(url) + "; if (wopener.RefreshWOpener) { wopener.RefreshWOpener(window); } CloseDialog();";
                                 }
@@ -215,7 +215,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_Languages : CMSProper
                 }
                 string statusName = GetString("transman." + status);
                 string statusHtml = "<span class=\"" + status + "\">" + statusName + "</span>";
-                // .Outdated
                 return statusHtml;
 
             case "documentculturedisplayname":
@@ -229,20 +228,16 @@ public partial class CMSModules_Content_CMSDesk_Properties_Languages : CMSProper
                 {
                     return "-";
                 }
-                else
+
+                if (sourceName.EqualsCSafe("documentmodifiedwhen", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    if (sourceName.EqualsCSafe("documentmodifiedwhen", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        DateTime modifiedWhen = ValidationHelper.GetDateTime(parameter, DateTimeHelper.ZERO_TIME);
-                        return TimeZoneHelper.ConvertToUserTimeZone(modifiedWhen, true, currentUserInfo, currentSiteInfo);
-                    }
-                    else
-                    {
-                        return TimeZoneHelper.GetUTCLongStringOffset(CurrentUser, currentSiteInfo);
-                    }
+                    DateTime modifiedWhen = ValidationHelper.GetDateTime(parameter, DateTimeHelper.ZERO_TIME);
+                    return TimeZoneHelper.ConvertToUserTimeZone(modifiedWhen, true, currentUserInfo, currentSiteInfo);
                 }
 
-            case "versionnumber":
+                return TimeZoneHelper.GetUTCLongStringOffset(CurrentUser, currentSiteInfo);
+
+            case "documentlastversionnumber":
                 if (string.IsNullOrEmpty(parameter.ToString()))
                 {
                     return "-";
@@ -255,135 +250,140 @@ public partial class CMSModules_Content_CMSDesk_Properties_Languages : CMSProper
                     parameter = "-";
                 }
                 return HTMLHelper.HTMLEncode(parameter.ToString());
-
-            case "published":
-                bool published = ValidationHelper.GetBoolean(parameter, false);
-                if (published)
-                {
-                    return "<span class=\"DocumentPublishedYes\">" + GetString("General.Yes") + "</span>";
-                }
-                else
-                {
-                    return "<span class=\"DocumentPublishedNo\">" + GetString("General.No") + "</span>";
-                }
         }
+
         return parameter;
     }
 
 
     protected DataSet gridDocuments_OnDataReload(string completeWhere, string currentOrder, int currentTopN, string columns, int currentOffset, int currentPageSize, ref int totalRecords)
     {
-        string currentSiteName = SiteContext.CurrentSiteName;
-
-        // Check if node is not null
-        if (Node != null)
+        if (Node == null)
         {
-            // Get documents
-            int topN = gridLanguages.GridView.PageSize * (gridLanguages.GridView.PageIndex + 1 + gridLanguages.GridView.PagerSettings.PageButtonCount);
-            columns = SqlHelper.MergeColumns(SqlHelper.MergeColumns(TreeProvider.SELECTNODES_REQUIRED_COLUMNS, columns), "DocumentModifiedWhen, VersionNumber, DocumentLastPublished, DocumentIsWaitingForTranslation");
-            DataSet documentsDS = DocumentHelper.GetDocuments(currentSiteName, Node.NodeAliasPath, TreeProvider.ALL_CULTURES, false, null, null, null, -1, false, topN, columns, Tree);
-            DataTable documents = documentsDS.Tables[0];
+            return null;
+        }
 
-            if (!DataHelper.DataSourceIsEmpty(documents))
+        // Get documents
+        string currentSiteName = SiteContext.CurrentSiteName;
+        int topN = gridLanguages.GridView.PageSize * (gridLanguages.GridView.PageIndex + 1 + gridLanguages.GridView.PagerSettings.PageButtonCount);
+
+        columns = SqlHelper.MergeColumns(SqlHelper.MergeColumns(DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS, columns), "DocumentModifiedWhen, DocumentLastVersionNumber, DocumentLastPublished, DocumentIsWaitingForTranslation");
+
+        var query = 
+            DocumentHelper.GetDocuments()
+                .OnSite(currentSiteName)
+                .Path(Node.NodeAliasPath)
+                .AllCultures()
+                .Published(false)
+                .TopN(topN)
+                .Columns(columns);
+
+        // Do not apply published from / to columns to make sure the published information is correctly evaluated
+        query.Properties.ExcludedVersionedColumns = new[] { "DocumentPublishFrom", "DocumentPublishTo" };
+
+        var data = query.Result;
+           
+        if (DataHelper.DataSourceIsEmpty(data))
+        {
+            return null;
+        }
+
+        var documents = data.Tables[0];
+
+        // Get site cultures
+        var allSiteCultures = CultureSiteInfoProvider.GetSiteCultures(currentSiteName).Copy();
+
+        // Rename culture column to enable row transfer
+        allSiteCultures.Tables[0].Columns[2].ColumnName = "DocumentCulture";
+
+        // Create where condition for row transfer
+        string where = documents.Rows.Cast<DataRow>().Aggregate("DocumentCulture NOT IN (", (current, row) => current + ("'" + SqlHelper.EscapeQuotes(ValidationHelper.GetString(row["DocumentCulture"], string.Empty)) + "',"));
+        where = where.TrimEnd(',') + ")";
+
+        // Transfer missing cultures, keep original list of site cultures
+        DataHelper.TransferTableRows(documents, allSiteCultures.Copy().Tables[0], where, null);
+        DataHelper.EnsureColumn(documents, "DocumentCultureDisplayName", typeof(string));
+
+        // Ensure culture names
+        foreach (DataRow cultDR in documents.Rows)
+        {
+            string cultureCode = cultDR["DocumentCulture"].ToString();
+            DataRow[] cultureRow = allSiteCultures.Tables[0].Select("DocumentCulture='" + cultureCode + "'");
+            if (cultureRow.Length > 0)
             {
-                // Get site cultures
-                DataSet allSiteCultures = CultureSiteInfoProvider.GetSiteCultures(currentSiteName).Copy();
-
-                // Rename culture column to enable row transfer
-                allSiteCultures.Tables[0].Columns[2].ColumnName = "DocumentCulture";
-
-                // Create where condition for row transfer
-                string where = documents.Rows.Cast<DataRow>().Aggregate("DocumentCulture NOT IN (", (current, row) => current + ("'" + SqlHelper.EscapeQuotes(ValidationHelper.GetString(row["DocumentCulture"], string.Empty)) + "',"));
-                where = where.TrimEnd(',') + ")";
-
-                // Transfer missing cultures, keep original list of site cultures
-                DataHelper.TransferTableRows(documents, allSiteCultures.Copy().Tables[0], where, null);
-                DataHelper.EnsureColumn(documents, "DocumentCultureDisplayName", typeof(string));
-
-                // Ensure culture names
-                foreach (DataRow cultDR in documents.Rows)
-                {
-                    string cultureCode = cultDR["DocumentCulture"].ToString();
-                    DataRow[] cultureRow = allSiteCultures.Tables[0].Select("DocumentCulture='" + cultureCode + "'");
-                    if (cultureRow.Length > 0)
-                    {
-                        cultDR["DocumentCultureDisplayName"] = cultureRow[0]["CultureName"].ToString();
-                    }
-                }
-
-                // Ensure default culture to be first
-                DataRow[] culturreDRs = documents.Select("DocumentCulture='" + DefaultSiteCulture + "'");
-                if (culturreDRs.Length <= 0)
-                {
-                    throw new Exception("[ReloadData]: Default site culture '" + DefaultSiteCulture + "' is not assigned to the current site.");
-                }
-
-                DataRow defaultCultureRow = culturreDRs[0];
-
-                DataRow dr = documents.NewRow();
-                dr.ItemArray = defaultCultureRow.ItemArray;
-                documents.Rows.InsertAt(dr, 0);
-                documents.Rows.Remove(defaultCultureRow);
-
-                // Get last modification date of default culture
-                defaultCultureRow = documents.Select("DocumentCulture='" + DefaultSiteCulture + "'")[0];
-                defaultLastModification = ValidationHelper.GetDateTime(defaultCultureRow["DocumentModifiedWhen"], DateTimeHelper.ZERO_TIME);
-                defaultLastPublished = ValidationHelper.GetDateTime(defaultCultureRow["DocumentLastPublished"], DateTimeHelper.ZERO_TIME);
-
-                // Add column containing translation status
-                documents.Columns.Add("TranslationStatus", typeof(TranslationStatusEnum));
-
-                // Get proper translation status and store it to datatable
-                foreach (DataRow document in documents.Rows)
-                {
-                    TranslationStatusEnum status;
-                    int documentId = ValidationHelper.GetInteger(document["DocumentID"], 0);
-                    if (documentId == 0)
-                    {
-                        status = TranslationStatusEnum.NotAvailable;
-                    }
-                    else
-                    {
-                        string versionNumber = ValidationHelper.GetString(DataHelper.GetDataRowValue(document, "VersionNumber"), null);
-                        
-                        if (ValidationHelper.GetBoolean(document["DocumentIsWaitingForTranslation"], false))
-                        {
-                            status = TranslationStatusEnum.WaitingForTranslation;
-                        }
-                        else
-                        {
-                            DateTime lastModification;
-
-                            // Check if document is outdated
-                            if (versionNumber != null)
-                            {
-                                lastModification = ValidationHelper.GetDateTime(document["DocumentLastPublished"], DateTimeHelper.ZERO_TIME);
-                                status = (lastModification < defaultLastPublished) ? TranslationStatusEnum.Outdated : TranslationStatusEnum.Translated;
-                            }
-                            else
-                            {
-                                lastModification = ValidationHelper.GetDateTime(document["DocumentModifiedWhen"], DateTimeHelper.ZERO_TIME);
-                                status = (lastModification < defaultLastModification) ? TranslationStatusEnum.Outdated : TranslationStatusEnum.Translated;
-                            }
-                        }
-                    }
-                    document["TranslationStatus"] = status;
-                }
-
-                // Bind datasource
-                DataSet filteredDocuments = documentsDS.Clone();
-                DataRow[] filteredDocs = documents.Select(gridLanguages.GetFilter());
-
-                foreach (DataRow row in filteredDocs)
-                {
-                    filteredDocuments.Tables[0].ImportRow(row);
-                }
-
-                return filteredDocuments;
+                cultDR["DocumentCultureDisplayName"] = cultureRow[0]["CultureName"].ToString();
             }
         }
 
-        return null;
+        // Ensure default culture to be first
+        DataRow[] cultureDRs = documents.Select("DocumentCulture='" + DefaultSiteCulture + "'");
+        if (cultureDRs.Length <= 0)
+        {
+            throw new Exception("[ReloadData]: Default site culture '" + DefaultSiteCulture + "' is not assigned to the current site.");
+        }
+
+        DataRow defaultCultureRow = cultureDRs[0];
+
+        DataRow dr = documents.NewRow();
+        dr.ItemArray = defaultCultureRow.ItemArray;
+        documents.Rows.InsertAt(dr, 0);
+        documents.Rows.Remove(defaultCultureRow);
+
+        // Get last modification date of default culture
+        defaultCultureRow = documents.Select("DocumentCulture='" + DefaultSiteCulture + "'")[0];
+        defaultLastModification = ValidationHelper.GetDateTime(defaultCultureRow["DocumentModifiedWhen"], DateTimeHelper.ZERO_TIME);
+        defaultLastPublished = ValidationHelper.GetDateTime(defaultCultureRow["DocumentLastPublished"], DateTimeHelper.ZERO_TIME);
+
+        // Add column containing translation status
+        documents.Columns.Add("TranslationStatus", typeof(TranslationStatusEnum));
+
+        // Get proper translation status and store it to datatable
+        foreach (DataRow document in documents.Rows)
+        {
+            TranslationStatusEnum status;
+            int documentId = ValidationHelper.GetInteger(document["DocumentID"], 0);
+            if (documentId == 0)
+            {
+                status = TranslationStatusEnum.NotAvailable;
+            }
+            else
+            {
+                string versionNumber = DataHelper.GetStringValue(document, "DocumentLastVersionNumber", null);
+
+                if (ValidationHelper.GetBoolean(document["DocumentIsWaitingForTranslation"], false))
+                {
+                    status = TranslationStatusEnum.WaitingForTranslation;
+                }
+                else
+                {
+                    DateTime lastModification;
+
+                    // Check if document is outdated
+                    if (versionNumber != null)
+                    {
+                        lastModification = ValidationHelper.GetDateTime(document["DocumentLastPublished"], DateTimeHelper.ZERO_TIME);
+                        status = (lastModification < defaultLastPublished) ? TranslationStatusEnum.Outdated : TranslationStatusEnum.Translated;
+                    }
+                    else
+                    {
+                        lastModification = ValidationHelper.GetDateTime(document["DocumentModifiedWhen"], DateTimeHelper.ZERO_TIME);
+                        status = (lastModification < defaultLastModification) ? TranslationStatusEnum.Outdated : TranslationStatusEnum.Translated;
+                    }
+                }
+            }
+            document["TranslationStatus"] = status;
+        }
+
+        // Bind datasource
+        DataSet filteredDocuments = data.Clone();
+        DataRow[] filteredDocs = documents.Select(gridLanguages.GetFilter());
+
+        foreach (DataRow row in filteredDocs)
+        {
+            filteredDocuments.Tables[0].ImportRow(row);
+        }
+
+        return filteredDocuments;
     }
 
     #endregion

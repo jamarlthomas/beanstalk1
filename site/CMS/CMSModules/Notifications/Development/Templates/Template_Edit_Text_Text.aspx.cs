@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Base;
@@ -37,7 +37,7 @@ public partial class CMSModules_Notifications_Development_Templates_Template_Edi
         if (gateway != null)
         {
             CurrentMaster.HeaderActions.ActionPerformed += HeaderActions_ActionPerformed;
-            CurrentMaster.HeaderActions.ActionsList.Add(new SaveAction(Page));
+            CurrentMaster.HeaderActions.ActionsList.Add(new SaveAction());
 
             // Initializes page breadcrumbs
             PageBreadcrumbs.Items.Add(new BreadcrumbItem()

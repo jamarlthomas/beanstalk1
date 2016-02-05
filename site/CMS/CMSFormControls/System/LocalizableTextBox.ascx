@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="LocalizableTextBox.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="LocalizableTextBox.ascx.cs"
     Inherits="CMSFormControls_System_LocalizableTextBox" %>
 
 <cms:ActionContainer runat="server" ID="cntrlContainer">

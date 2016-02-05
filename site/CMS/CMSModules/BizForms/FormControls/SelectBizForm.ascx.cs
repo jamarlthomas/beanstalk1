@@ -1,28 +1,20 @@
-using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
+﻿using System;
 
+using CMS.DataEngine;
 using CMS.ExtendedControls;
 using CMS.FormControls;
-using CMS.FormEngine;
 using CMS.Helpers;
-using CMS.Base;
 using CMS.SiteProvider;
-using CMS.Membership;
 using CMS.UIControls;
-using CMS.DataEngine;
 
 public partial class CMSModules_BizForms_FormControls_SelectBizForm : FormEngineUserControl
 {
     #region "Variables"
 
-    private int mSiteID = 0;
+    private bool mSetupFinished;
 
     #endregion
+
 
     #region "Public properties"
 
@@ -85,6 +77,9 @@ public partial class CMSModules_BizForms_FormControls_SelectBizForm : FormEngine
             {
                 pnlUpdate.LoadContainer();
             }
+
+            SetupSelector();
+
             uniSelector.Value = value;
         }
     }
@@ -95,14 +90,8 @@ public partial class CMSModules_BizForms_FormControls_SelectBizForm : FormEngine
     /// </summary>
     public int SiteID
     {
-        get
-        {
-            return mSiteID;
-        }
-        set
-        {
-            mSiteID = value;
-        }
+        get;
+        set;
     }
 
 
@@ -152,35 +141,36 @@ public partial class CMSModules_BizForms_FormControls_SelectBizForm : FormEngine
         }
         else
         {
-            // If current control context is widget or livesite hide site selector
-            if (ControlsHelper.CheckControlContext(this, ControlContext.WIDGET_PROPERTIES) || ControlsHelper.CheckControlContext(this, ControlContext.LIVE_SITE))
-            {
-                ShowSiteFilter = false;
-            }
-
-            ReloadData();
+            SetupSelector();
         }
     }
 
 
     /// <summary>
-    /// Reloads the data in the selector.
+    /// Configures the selector.
     /// </summary>
-    public void ReloadData()
+    private void SetupSelector()
     {
+        if (mSetupFinished)
+        {
+            return;
+        }
+
+        // If current control context is widget or livesite hide site selector
+        if (ControlsHelper.CheckControlContext(this, ControlContext.WIDGET_PROPERTIES) || ControlsHelper.CheckControlContext(this, ControlContext.LIVE_SITE))
+        {
+            ShowSiteFilter = false;
+        }
+
         uniSelector.IsLiveSite = IsLiveSite;
 
         // Return form name or ID according to type of field (if no field specified form name is returned)
         if ((FieldInfo != null) && DataTypeManager.IsInteger(TypeEnum.Field, FieldInfo.DataType))
         {
-            // Store old value
-            object value = uniSelector.Value;
             uniSelector.ReturnColumnName = "FormID";
             uniSelector.SelectionMode = SelectionModeEnum.SingleDropDownList;
             ShowSiteFilter = false;
             uniSelector.AllowEmpty = true;
-            // Reset previously saved value
-            uniSelector.Value = value;
         }
         else
         {
@@ -200,6 +190,8 @@ public partial class CMSModules_BizForms_FormControls_SelectBizForm : FormEngine
             int siteId = (SiteID == 0) ? SiteContext.CurrentSiteID : SiteID;
             uniSelector.WhereCondition = SqlHelper.AddWhereCondition(uniSelector.WhereCondition, "FormSiteID = " + siteId);
         }
+
+        mSetupFinished = true;
     }
 
 

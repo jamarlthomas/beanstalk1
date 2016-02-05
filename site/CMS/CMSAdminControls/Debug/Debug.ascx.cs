@@ -29,8 +29,11 @@ public partial class CMSAdminControls_Debug_Debug : CMSUserControl
                 }
             }
         }
+      
+        ScriptHelper.RegisterModule(this, "CMS/DebugControl", pnlDebugContainer.ClientID);
     }
-    
+
+
     protected override void Render(HtmlTextWriter writer)
     {
         // Do not render if nothing is displayed

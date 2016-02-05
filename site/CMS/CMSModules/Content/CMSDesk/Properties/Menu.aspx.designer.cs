@@ -291,6 +291,15 @@ public partial class CMSModules_Content_CMSDesk_Properties_Menu {
     protected global::CMS.ExtendedControls.CMSCheckBox chkExcludeFromSearch;
     
     /// <summary>
+    /// plcAdvancedSearch control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.PlaceHolder plcAdvancedSearch;
+    
+    /// <summary>
     /// lblSitemapChange control.
     /// </summary>
     /// <remarks>
@@ -451,105 +460,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_Menu {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.CMSTextBox txtMenuItemRightImage;
-    
-    /// <summary>
-    /// headMenuItemDesignOnMouseOver control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedHeading headMenuItemDesignOnMouseOver;
-    
-    /// <summary>
-    /// lblMenuItemStyleMouseOverr control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblMenuItemStyleMouseOverr;
-    
-    /// <summary>
-    /// txtMenuItemStyleMouseOver control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSTextBox txtMenuItemStyleMouseOver;
-    
-    /// <summary>
-    /// lblCssClassMouseOver control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblCssClassMouseOver;
-    
-    /// <summary>
-    /// txtCssClassMouseOver control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSTextBox txtCssClassMouseOver;
-    
-    /// <summary>
-    /// lblMenuItemLeftmageMouseOver control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblMenuItemLeftmageMouseOver;
-    
-    /// <summary>
-    /// txtMenuItemLeftImageMouseOver control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSTextBox txtMenuItemLeftImageMouseOver;
-    
-    /// <summary>
-    /// lblMenuItemImageMouseOver control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblMenuItemImageMouseOver;
-    
-    /// <summary>
-    /// txtMenuItemImageMouseOver control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSTextBox txtMenuItemImageMouseOver;
-    
-    /// <summary>
-    /// lblMenuItemRightImageMouseOver control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblMenuItemRightImageMouseOver;
-    
-    /// <summary>
-    /// txtMenuItemRightImageMouseOver control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSTextBox txtMenuItemRightImageMouseOver;
     
     /// <summary>
     /// headMenuItemDesignHighlighted control.

@@ -418,12 +418,6 @@
             Clears bad words culture dictionary.
             </summary>
         </member>
-        <member name="M:CMS.Protection.BadWordInfoProvider.GetReplacementFromSettings(System.String)">
-            <summary>
-            Gets default replacement from settings.
-            </summary>
-            <param name="siteName">Site name</param>
-        </member>
         <member name="M:CMS.Protection.BadWordInfoProvider.GetBadWords(System.Int32)">
             <summary>
             Returns all bad words for given culture.
@@ -635,35 +629,6 @@
             <param name="currentUserId">ID of current user</param>
             <param name="validate">Function performing validation of checked object after respective bad words are removed. No further processing is done when validation fails.</param>
         </member>
-        <member name="M:CMS.Protection.BadWordsHelper.CheckBadWords(CMS.DataEngine.GeneralizedInfo,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Int32)">
-            <summary>
-            Performs bad words check.
-            </summary>
-            <param name="obj">GeneralizedInfo info object</param>
-            <param name="columns">Columns to check (column name and column size). If columns size is zero, column has maximal size and will not checked.</param>
-            <param name="currentUserId">ID of current user</param>
-        </member>
-        <member name="M:CMS.Protection.BadWordsHelper.CheckBadWords(CMS.DataEngine.GeneralizedInfo,System.Collections.Generic.Dictionary{System.String,System.Int32},System.String,System.String,System.Int32)">
-            <summary>
-            Performs bad words check.
-            </summary>
-            <param name="obj">GeneralizedInfo info object</param>
-            <param name="columns">Columns to check (column name and column size). If columns size is zero, column has maximal size and will not checked.</param>
-            <param name="approvalColumn">Approval column name</param>
-            <param name="approvalUserColumn">Approval user column name</param>
-            <param name="currentUserId">ID of current user</param>
-        </member>
-        <member name="M:CMS.Protection.BadWordsHelper.CheckBadWords(CMS.DataEngine.GeneralizedInfo,System.Collections.Generic.Dictionary{System.String,System.Int32},System.String,System.String,System.String,System.Int32)">
-            <summary>
-            Performs bad words check.
-            </summary>
-            <param name="obj">Abstract info object</param>
-            <param name="columns">Columns to check (column name and column size). If columns size is zero, column has maximal size and will not checked.</param>
-            <param name="approvalColumn">Approval column name</param>
-            <param name="approvalUserColumn">Approval user column name</param>
-            <param name="reportTitle">Abuse report title</param>
-            <param name="currentUserId">ID of current user</param>
-        </member>
         <member name="M:CMS.Protection.BadWordsHelper.GetOptimizedUrl(System.String)">
             <summary>
             Gets URL of reported abuse and performs optimizations.
@@ -822,25 +787,6 @@
             Bool indicating that IP was denied.
             </summary>
         </member>
-        <member name="F:CMS.Protection.BannedIPInfoProvider.mGlobalBannedIPs">
-            <summary>
-            Stores global banned IPs and if it is allowed.
-            </summary>
-        </member>
-        <member name="F:CMS.Protection.BannedIPInfoProvider.mSitesBannedIPs">
-            <summary>
-            Stores site related banned IPs and if it is allowed.
-            </summary>
-        </member>
-        <member name="F:CMS.Protection.BannedIPInfoProvider.mCachedBannedIPs">
-            <summary>
-            Contains denied IP address which accessed site from last change in banned IP.
-            </summary>
-        </member>
-        <member name="F:CMS.Protection.BannedIPInfoProvider.mLastChange">
-            <summary>
-            Sets the last change date time.        /// </summary>
-        </member>
         <member name="M:CMS.Protection.BannedIPInfoProvider.GetBannedIPInfo(System.Int32)">
             <summary>
             Returns the BannedIPInfo structure for the specified bannedIP.
@@ -872,7 +818,7 @@
         </member>
         <member name="M:CMS.Protection.BannedIPInfoProvider.IsAllowed(System.String,CMS.Protection.BanControlEnum)">
             <summary>
-            Returns true if client IP address( from HttpContext) is allowed to access the site, false if it is banned.
+            Returns true if client IP address (from HttpContext) is allowed to access the site, false if it is banned.
             </summary>
             <param name="siteName">Ban settings of this site will be used</param>   
             <param name="banType">Which ban type should be checked</param>
@@ -907,10 +853,24 @@
             Returns true if BannedIP module is enabled for specified site (Settings key).
             </summary>
         </member>
-        <member name="M:CMS.Protection.BannedIPInfoProvider.LoadBannedIPs">
+        <member name="M:CMS.Protection.BannedIPInfoProvider.LoadCachedIPs">
             <summary>
-            Load all banned ip from DB to Hash tables.
+            Load all banned ip from DB to Hash tables if not yet loaded.
             </summary>
+        </member>
+        <member name="M:CMS.Protection.BannedIPInfoProvider.ReloadCachedIPs(System.Boolean)">
+            <summary>
+            Reload all banned ip from DB to Hash tables.
+            </summary>
+            <param name="logWebFarm">Enables or disables webfarm task logging, if false no task is logged</param>
+        </member>
+        <member name="M:CMS.Protection.BannedIPInfoProvider.ProcessWebFarmTask(System.String,System.String,System.Byte[])">
+            <summary>
+            Runs the processing of specific web farm task for current provider
+            </summary>
+            <param name="actionName">Action name</param>
+            <param name="data">Custom task data</param>
+            <param name="binary">Binary data</param>
         </member>
         <member name="M:CMS.Protection.BannedIPInfoProvider.GetInfoById(System.Int32,System.Boolean)">
             <summary>
@@ -937,6 +897,24 @@
             </summary>
             <param name="infoObj">BannedIP object</param>
         </member>
+        <member name="M:CMS.Protection.BannedIPInfoProvider.IsBannedIPEnabledInternal(System.String)">
+            <summary>
+            Returns true if BannedIP module is enabled for specified site (Settings key).
+            </summary>
+        </member>
+        <member name="M:CMS.Protection.BannedIPInfoProvider.GetBannedIPsInternal">
+            <summary>
+            Returns the query for all banned IPs.
+            </summary>   
+        </member>
+        <member name="M:CMS.Protection.BannedIPInfoProvider.IsAllowedInternal(System.String,System.String,CMS.Protection.BanControlEnum)">
+            <summary>
+            Returns true if client IP address is allowed to access the site, false if it is banned.
+            </summary>
+            <param name="ipAddress">Check this IP address</param>
+            <param name="siteName">Ban settings of this site will be used</param>        
+            <param name="banType">Which ban type should be checked</param>
+        </member>
         <member name="M:CMS.Protection.BannedIPInfoProvider.GetRegularIPAddress(System.String)">
             <summary>
             Returns regular expression corresponding to ip address.
@@ -958,6 +936,16 @@
             Returns BanControlEnum string code derived from type of enumeration and enum value.
             </summary>
         </member>
+        <member name="M:CMS.Protection.BannedIPInfoProvider.GetMatchingBannedIpInfo(System.Collections.Generic.IEnumerable{CMS.Protection.BannedIPInfo},System.String,System.Int32)">
+            <summary>
+            Gets BannedIPInfo from the given list that best match the given address a ban type mask.
+            </summary>
+        </member>
+        <member name="M:CMS.Protection.BannedIPInfoProvider.CompareIpAddressSpecificity(CMS.Protection.BannedIPInfo,CMS.Protection.BannedIPInfo)">
+            <summary>
+            Returns positive value if the first info is more specific than the second. Negative value means the second info is more specific. Zero means equal specificity.
+            </summary>
+        </member>
         <member name="P:CMS.Protection.BannedIPInfoProvider.GlobalBannedIPs">
             <summary>
             Stores global banned IPs and if it is allowed.
@@ -970,13 +958,146 @@
         </member>
         <member name="P:CMS.Protection.BannedIPInfoProvider.CachedBannedIPs">
             <summary>
-            Contains denied IP address which accessed site from last change in banned IP.
+            Contains denied IP address which accessed site from last change in banned IP info objects.
+            Increases performance when attacker is spamming.
             </summary>
         </member>
         <member name="P:CMS.Protection.BannedIPInfoProvider.LastChange">
             <summary>
             Returns time of the last change in banned IP settings.
             </summary>
+        </member>
+        <member name="P:CMS.Protection.BannedIPInfoProvider.LastChangeInternal">
+            <summary>
+            Returns time of the last change in banned IP settings.
+            </summary>
+        </member>
+        <member name="T:CMS.Protection.CsrfException">
+            <summary>
+            Exception which is thrown when the CSRF attack is detected.
+            </summary>
+        </member>
+        <member name="M:CMS.Protection.CsrfException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMS.Protection.CsrfException"/> class.
+            </summary>
+        </member>
+        <member name="M:CMS.Protection.CsrfException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMS.Protection.CsrfException"/> class with a specified error message.
+            </summary>
+            <param name="message">Exception's message</param>
+        </member>
+        <member name="M:CMS.Protection.CsrfException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMS.Protection.CsrfException"/> class with a specified error message and a reference to the inner exception that is the cause of the CSRF exception.
+            </summary>
+            <param name="message">Exception's message</param>
+            <param name="inner">The exception that is the cause of the CSRF exception</param>
+        </member>
+        <member name="M:CMS.Protection.CsrfException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMS.Protection.CsrfException"/> class with serialized data.
+            </summary>
+            <param name="info">The SerializationInfo that holds the serialized object data about the CSRF exception.</param>
+            <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
+        </member>
+        <member name="T:CMS.Protection.CsrfProtection">
+            <summary>
+            Implementation of the stateless CSRF defence based on comparing hidden field value with cookie value.
+            </summary>
+        </member>
+        <member name="F:CMS.Protection.CsrfProtection.HIDDEN_FIELD_NAME">
+            <summary>
+            Defines the name of the hidden field used to store CSRF token.
+            </summary>
+        </member>
+        <member name="F:CMS.Protection.CsrfProtection.PURPOSES">
+            <summary>
+            Defines the key derivation string used by MachineKey.Protect and MachineKey.Unprotect methods.
+            The 'purposes' parameter helps ensure that some protected data can be consumed only by the
+            component that originally generated it. Applications should take care to ensure that each
+            subsystem uses a unique 'purposes' list.
+            </summary>
+        </member>
+        <member name="M:CMS.Protection.CsrfProtection.PreInit">
+            <summary>
+            Registers event handler.
+            </summary>
+        </member>
+        <member name="M:CMS.Protection.CsrfProtection.ValidateCsrfTokens(System.Byte[],System.Byte[])">
+            <summary>
+            Validates the hidden field and cookie tokens.
+            </summary>
+            <param name="cookieToken">Cookie token</param>
+            <param name="hiddenFieldToken">Hidden field token</param>
+            <exception cref="T:CMS.Protection.CsrfException">Thrown when <paramref name="cookieToken"/> or <paramref name="hiddenFieldToken"/> is null or tokens do not match.</exception>
+        </member>
+        <member name="M:CMS.Protection.CsrfProtection.EnsureCsrfToken">
+            <summary>
+            Ensures the CSRF token exists. If not it will create a new one.
+            </summary>
+        </member>
+        <member name="M:CMS.Protection.CsrfProtection.CreateCsrfToken">
+            <summary>
+            Creates the CSRF token.
+            </summary>
+        </member>
+        <member name="M:CMS.Protection.CsrfProtection.IsVulnerableRequest(System.Web.HttpRequestBase)">
+            <summary>
+            Indicates whether specified request should be checked for CSRF attack vulnerability.
+            </summary>
+            <remarks>
+            Only POST request with Form data containing the __EVENTTARGET parameter is considered as vulnerable.
+            __EVENTTARGET parameter in Form data means that request is made by Web Forms application.
+            </remarks>
+            <param name="httpRequest"><see cref="T:System.Web.HttpRequestBase"/> instance.</param>
+            <returns>True if request should be checked; otherwise false.</returns>
+        </member>
+        <member name="M:CMS.Protection.CsrfProtection.FormHasEventTargetValue(System.Web.HttpRequestBase)">
+            <summary>
+            Checks whether request form exists and is implemented and contains __EVENTTARGET value.
+            </summary>
+            <param name="httpRequest"><see cref="T:System.Web.HttpRequestBase"/> instance.</param>
+            <returns>True if form exists and contains __EVENTTARGET value; otherwise false.</returns>
+        </member>
+        <member name="M:CMS.Protection.CsrfProtection.IncludeTokenInPage(System.Web.UI.Page,System.Byte[])">
+            <summary>
+            Registers CSRF token in hidden field and includes it into page.
+            </summary>
+            <param name="page">Page the CSRF token should be includes to.</param>
+            <param name="csrfToken">CSRF token.</param>
+        </member>
+        <member name="M:CMS.Protection.CsrfProtection.ThrowCsrfException(System.Exception)">
+            <summary>
+            Throws a CSRF exception.
+            </summary>
+        </member>
+        <member name="P:CMS.Protection.CsrfProtection.Instance">
+            <summary>
+            Singleton instance of <see cref="T:CMS.Protection.CsrfProtection"/> class.
+            </summary>
+        </member>
+        <member name="T:CMS.Protection.CsrfProtectionHelper">
+            <summary>
+            Helper class for CSRF protection module.
+            </summary>
+        </member>
+        <member name="M:CMS.Protection.CsrfProtectionHelper.RegisterHiddenField(System.Web.UI.Page,System.String,System.String)">
+            <summary>
+            Register hidden field on the page.
+            </summary>
+            <param name="page">Page</param>
+            <param name="hiddenFieldName">Hidden field name</param>
+            <param name="hiddenFieldValue">Hidden field value</param>
+        </member>
+        <member name="M:CMS.Protection.CsrfProtectionHelper.RegisterHiddenFieldInternal(System.Web.UI.Page,System.String,System.String)">
+            <summary>
+            Register hidden field on the page.
+            </summary>
+            <param name="page">Page</param>
+            <param name="hiddenFieldName">Hidden field name</param>
+            <param name="hiddenFieldValue">Hidden field value</param>
         </member>
         <member name="T:CMS.Membership.FloodProtectionHelper">
             <summary>
@@ -989,6 +1110,11 @@
             </summary>
             <param name="sitename">Site name</param> 
             <param name="ui">User info object</param>
+        </member>
+        <member name="P:CMS.Membership.FloodProtectionHelper.MaxPoolCapacity">
+            <summary>
+            Maximum pool capacity
+            </summary>
         </member>
         <member name="P:CMS.Membership.FloodProtectionHelper.UserBasedProtection">
             <summary>
@@ -1093,6 +1219,11 @@
             </summary>
             <param name="result">Result table</param>
             <param name="denied">Denied table to add</param>
+        </member>
+        <member name="P:CMS.Protection.CheckParameters.DefaultQueryParameters">
+            <summary>
+            Default query parameters that are allowed
+            </summary>
         </member>
         <member name="P:CMS.Protection.CheckParameters.AllowCheck">
             <summary>
@@ -1325,6 +1456,11 @@
         <member name="M:CMS.Protection.ProtectionModule.#ctor">
             <summary>
             Default constructor
+            </summary>
+        </member>
+        <member name="M:CMS.Protection.ProtectionModule.OnPreInit">
+            <summary>
+            Module pre-initialization
             </summary>
         </member>
         <member name="M:CMS.Protection.ProtectionModule.ClearHashtables(System.Boolean)">

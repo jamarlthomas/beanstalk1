@@ -36,6 +36,16 @@
             <param name="orderBy">Order by clause</param>
             <param name="combineWithDefaultCulture">Specifies if return the default culture document when specified culture not found</param>
         </member>
+        <member name="M:CMS.SearchProviderSQL.SearchProvider.GetWordSearchResult(System.String,System.String,System.String,System.String,CMS.DataEngine.QueryDataParameters)">
+            <summary>
+            Gets search results based on document text fields
+            </summary>
+            <param name="className">Class name</param>
+            <param name="word">Word to search</param>
+            <param name="whereCondition">Where condition</param>
+            <param name="orderBy">Order by expression</param>
+            <param name="queryParams">Query parameters for backward compatibility</param>
+        </member>
         <member name="M:CMS.SearchProviderSQL.SearchProvider.IntersectResultItems(System.Data.DataSet@,System.Data.DataSet[])">
             <summary>
             Intersects the result items.

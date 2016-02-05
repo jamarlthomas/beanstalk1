@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="ContactStatusDialog.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="ContactStatusDialog.aspx.cs"
     Inherits="CMSModules_ContactManagement_FormControls_ContactStatusDialog" Title="Contact status"
     EnableEventValidation="false" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Theme="Default" %>

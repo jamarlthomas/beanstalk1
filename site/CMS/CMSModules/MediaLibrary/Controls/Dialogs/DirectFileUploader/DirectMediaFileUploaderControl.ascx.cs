@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.UI;
 
@@ -17,7 +17,7 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_DirectFileUploader
 {
     #region "Variables"
 
-    private MediaLibraryInfo mLibraryInfo = null;
+    private MediaLibraryInfo mLibraryInfo;
 
     #endregion
 
@@ -36,10 +36,6 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_DirectFileUploader
                 mLibraryInfo = MediaLibraryInfoProvider.GetMediaLibraryInfo(LibraryID);
             }
             return mLibraryInfo;
-        }
-        set
-        {
-            mLibraryInfo = value;
         }
     }
 
@@ -84,7 +80,7 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_DirectFileUploader
         }
         else
         {
-            Page.Error += new EventHandler(Page_Error);
+            Page.Error += Page_Error;
 
             // Initialize uploader
             FileUploadControl.Attributes.Add("class", "fileUpload");
@@ -103,25 +99,24 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_DirectFileUploader
 
     protected void btnHidden_Click(object sender, EventArgs e)
     {
-        if (!StopProcessing)
+        if (StopProcessing)
         {
-            try
-            {
-                switch (SourceType)
-                {
-                    case MediaSourceEnum.MediaLibraries:
-                        HandleLibrariesUpload();
-                        break;
+            return;
+        }
 
-                    default:
-                        break;
-                }
-            }
-            catch (Exception ex)
+        try
+        {
+            switch (SourceType)
             {
-                EventLogProvider.LogException("DIRECTFILEUPLOADER", "UPLOADFILE", ex);
-                OnError(e);
+                case MediaSourceEnum.MediaLibraries:
+                    HandleLibrariesUpload();
+                    break;
             }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("DIRECTFILEUPLOADER", "UPLOADFILE", ex);
+            OnError(e);
         }
     }
 
@@ -187,7 +182,7 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_DirectFileUploader
                                     ucFileUpload.PostedFile.InputStream.Read(previewFileBinary, 0, ucFileUpload.PostedFile.ContentLength);
 
                                     // Delete current preview thumbnails
-                                    MediaFileInfoProvider.DeleteMediaFilePreview(siteName, mediaFile.FileLibraryID, mediaFile.FilePath, false);
+                                    MediaFileInfoProvider.DeleteMediaFilePreview(siteName, mediaFile.FileLibraryID, mediaFile.FilePath);
 
                                     // Save preview file
                                     MediaFileInfoProvider.SaveFileToDisk(siteName, LibraryInfo.LibraryFolder, previewFolder, previewName, previewExtension, mediaFile.FileGUID, previewFileBinary, false, false);
@@ -213,7 +208,7 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_DirectFileUploader
                             if (DirectoryHelper.CheckPermissions(path, false, true, true, true))
                             {
                                 // Delete existing media file
-                                MediaFileInfoProvider.DeleteMediaFile(LibraryInfo.LibrarySiteID, LibraryInfo.LibraryID, mediaFile.FilePath, true, false);
+                                MediaFileInfoProvider.DeleteMediaFile(LibraryInfo.LibrarySiteID, LibraryInfo.LibraryID, mediaFile.FilePath, true);
 
                                 // Update media file preview
                                 if (MediaLibraryHelper.HasPreview(siteName, LibraryInfo.LibraryID, mediaFile.FilePath))
@@ -234,7 +229,7 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_DirectFileUploader
                                 }
 
                                 // Receive media info on newly posted file
-                                mediaFile = GetUpdatedFile(mediaFile.Generalized.DataClass);
+                                mediaFile = GetUpdatedFile(mediaFile);
 
                                 // Save media file information
                                 MediaFileInfoProvider.SetMediaFileInfo(mediaFile);
@@ -316,13 +311,13 @@ if ((window.parent != null) && (/parentelemid={1}/i.test(window.location.href)) 
     /// Gets media file info object representing the updated version of original file.
     /// </summary>
     /// <param name="originalFile">Original file data</param>
-    private MediaFileInfo GetUpdatedFile(IDataClass originalFile)
+    private MediaFileInfo GetUpdatedFile(MediaFileInfo originalFile)
     {
         // Get info on media file from uploaded file
         MediaFileInfo mediaFile = new MediaFileInfo(ucFileUpload.PostedFile, LibraryID, LibraryFolderPath, ResizeToWidth, ResizeToHeight, ResizeToMaxSideSize, LibraryInfo.LibrarySiteID);
 
         // Create new file based on original
-        MediaFileInfo updatedMediaFile = new MediaFileInfo(originalFile)
+        MediaFileInfo updatedMediaFile = new MediaFileInfo(originalFile, false)
                                              {
                                                  // Update necessary information
                                                  FileName = mediaFile.FileName,

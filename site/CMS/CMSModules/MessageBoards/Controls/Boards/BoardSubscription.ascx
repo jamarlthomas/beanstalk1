@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MessageBoards_Controls_Boards_BoardSubscription"
-    Codebehind="BoardSubscription.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MessageBoards_Controls_Boards_BoardSubscription"
+     Codebehind="BoardSubscription.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Membership/FormControls/Users/selectuser.ascx" TagName="UserSelector"
     TagPrefix="cms" %>
 <cms:CMSUpdatePanel runat="server" ID="pnlUpdate" UpdateMode="Always">

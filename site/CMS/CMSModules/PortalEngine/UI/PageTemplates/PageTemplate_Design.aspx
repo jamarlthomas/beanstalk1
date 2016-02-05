@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_PageTemplates_PageTemplate_Design"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_PageTemplates_PageTemplate_Design"
     ValidateRequest="false" MaintainScrollPositionOnPostback="true" EnableEventValidation="false"
-    Codebehind="PageTemplate_Design.aspx.cs" %>
+     Codebehind="PageTemplate_Design.aspx.cs" %>
 
 <%=DocType%>
 <html xmlns="http://www.w3.org/1999/xhtml" <%=XmlNamespace%>>

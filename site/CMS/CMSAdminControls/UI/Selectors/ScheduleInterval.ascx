@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_Selectors_ScheduleInterval"
-    Codebehind="ScheduleInterval.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_Selectors_ScheduleInterval"
+     Codebehind="ScheduleInterval.ascx.cs" %>
 
 <asp:Panel runat="server" ID="pnlBody">
     <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
@@ -22,8 +22,7 @@
                         AssociatedControlID="dateTimePicker" />
                 </div>
                 <div class="editing-form-value-cell">
-                    <cms:DateTimePicker ID="dateTimePicker" runat="server" SupportFolder="~/CMSAdminControls/Calendar"
-                        EditTime="true" />
+                    <cms:DateTimePicker ID="dateTimePicker" runat="server" />
                 </div>
             </div>
         </asp:PlaceHolder>

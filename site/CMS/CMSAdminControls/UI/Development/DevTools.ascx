@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="DevTools.ascx.cs" Inherits="CMSAdminControls_UI_Development_DevTools" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="DevTools.ascx.cs" Inherits="CMSAdminControls_UI_Development_DevTools" %>
     <div class="dev-tools cms-bootstrap">
         <div class="dev-tools-content">
             <asp:Literal runat="server" ID="ltlActions" EnableViewState="False" />

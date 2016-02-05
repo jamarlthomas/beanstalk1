@@ -1,7 +1,9 @@
-using System;
+﻿using System;
 using System.Data;
+using System.Web.UI;
 
 using CMS.Core;
+using CMS.FormControls;
 using CMS.Helpers;
 using CMS.PortalEngine;
 using CMS.Base;
@@ -20,18 +22,17 @@ public partial class CMSModules_Content_CMSDesk_Properties_Template : CMSPropert
 {
     #region "Variables & constants"
 
-    TreeNode node = null;
+    private TreeNode node;
 
-    protected string mSave = null;
-    protected string mClone = null;
-    protected string mEditTemplateProperties = null;
+    private CurrentUserInfo currentUser = null;
 
-    protected CurrentUserInfo currentUser = null;
+    private bool hasModifyPermission = false;
 
-    protected bool hasModifyPermission = false;
-    protected bool selectorEnabled = true;
+    private bool selectorEnabled = true;
 
-    protected PageTemplateInfo pti = null;
+    private PageTemplateInfo pageTemplateInfo = null;
+
+    private ICMSDocumentManager mDocumentManager;
 
     #endregion
 
@@ -69,6 +70,27 @@ public partial class CMSModules_Content_CMSDesk_Properties_Template : CMSPropert
         }
     }
 
+
+    /// <summary>
+    /// Document manager control.
+    /// </summary>
+    public override ICMSDocumentManager DocumentManager
+    {
+        get
+        {
+            if (mDocumentManager == null)
+            {
+                // Use base implementation of DocumentManager and apply custom initialization
+                mDocumentManager = base.DocumentManager;
+
+                // Non-version data is modified
+                mDocumentManager.UseDocumentHelper = false;
+            }
+
+            return mDocumentManager;
+        }
+    }
+
     #endregion
 
 
@@ -78,9 +100,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_Template : CMSPropert
     {
         // Culture independent data
         SplitModeAllwaysRefresh = true;
-
-        // Non-version data is modified
-        DocumentManager.UseDocumentHelper = false;
 
         base.OnInit(e);
 
@@ -118,12 +137,8 @@ public partial class CMSModules_Content_CMSDesk_Properties_Template : CMSPropert
         // Keep information whether current user has modify permission
         if (node != null)
         {
-            int id = 0;
-            PageTemplateCategoryInfo ptci = PageTemplateCategoryInfoProvider.GetPageTemplateCategoryInfo("/");
-            if (ptci != null)
-            {
-                id = ptci.CategoryId;
-            }
+            PageTemplateCategoryInfo category = PageTemplateCategoryInfoProvider.GetPageTemplateCategoryInfo("/");
+            int id = (category != null) ? category.CategoryId : 0;
 
             hasModifyPermission = DocumentUIHelper.CheckDocumentPermissions(node, PermissionsEnum.Modify);
             btnSelect.OnClientClick = "modalDialog('" + ResolveUrl("~/CMSModules/PortalEngine/UI/Layout/PageTemplateSelector.aspx") + "?rootcategoryid=" + id + "&documentid=" + node.DocumentID + "&nodeguid=" + node.NodeGUID + "', 'PageTemplateSelection', '90%', '85%'); return false;";
@@ -139,12 +154,17 @@ function RefreshPage() {
     document.location.replace(document.location);
 }
 
-function OnSelectPageTemplate(templateId) {
+function OnSelectPageTemplate(templateId, action) {
     document.getElementById('" + hdnSelected.ClientID + @"').value = templateId;
-    " + ClientScript.GetPostBackEventReference(btnSelect, null) + @"
-}
-"
-));
+    if (action == 'refresh') {
+        // Refresh page if request is from 'Save as new page template' dialog
+        RefreshPage();
+    }
+    else {
+        // Do post back to the Select button if request is from the 'Page template' selector
+        " + ClientScript.GetPostBackEventReference(btnSelect, String.Empty) + @"
+    }
+}"));
 
         // Reflect processing action
         pnlInherits.Enabled = DocumentManager.AllowSave;
@@ -179,20 +199,22 @@ function OnSelectPageTemplate(templateId) {
     private void HandleCultureSettings()
     {
         // Check multilingual mode
-        if (!CultureSiteInfoProvider.IsSiteMultilingual(SiteContext.CurrentSiteName))
+        if (CultureSiteInfoProvider.IsSiteMultilingual(SiteContext.CurrentSiteName))
         {
-            if (radThisCulture.Checked)
-            {
-                radThisCulture.ResourceString = "Template.OwnOne";
-                plcAllCultures.Visible = false;
-                plcThisCulture.Visible = true;
-            }
-            else
-            {
-                radAllCultures.ResourceString = "Template.OwnOne";
-                plcThisCulture.Visible = false;
-                plcAllCultures.Visible = true;
-            }
+            return;
+        }
+
+        if (radThisCulture.Checked)
+        {
+            radThisCulture.ResourceString = "Template.OwnOne";
+            plcAllCultures.Visible = false;
+            plcThisCulture.Visible = true;
+        }
+        else
+        {
+            radAllCultures.ResourceString = "Template.OwnOne";
+            plcThisCulture.Visible = false;
+            plcAllCultures.Visible = true;
         }
     }
 
@@ -209,10 +231,10 @@ function OnSelectPageTemplate(templateId) {
     /// <summary>
     /// Gets the inherited page template from the parent node
     /// </summary>
-    /// <param name="node">Document node</param>
-    protected int GetInheritedPageTemplateId(TreeNode node)
+    /// <param name="currentNode">Document node</param>
+    protected int GetInheritedPageTemplateId(TreeNode currentNode)
     {
-        string aliasPath = node.NodeAliasPath;
+        string aliasPath = currentNode.NodeAliasPath;
 
         // For root, there is no inheritance possible
         if (String.IsNullOrEmpty(aliasPath) || (aliasPath == "/"))
@@ -222,19 +244,17 @@ function OnSelectPageTemplate(templateId) {
 
         aliasPath = TreePathUtils.GetParentPath(aliasPath);
 
-        // Get the page info
-        PageInfo pi = PageInfoProvider.GetPageInfo(node.NodeSiteName, aliasPath, node.DocumentCulture, node.DocumentUrlPath, node.NodeParentID, true);
-        if (pi != null)
+        // Get the parent page info
+        PageInfo pi = PageInfoProvider.GetPageInfo(currentNode.NodeSiteName, aliasPath, currentNode.DocumentCulture, null, currentNode.NodeParentID, true);
+        if (pi == null)
         {
-            // Get template used by the page info
-            pti = pi.UsedPageTemplateInfo;
-            if (pti != null)
-            {
-                return pti.PageTemplateId;
-            }
+            return 0;
         }
 
-        return 0;
+        // Get template used by the page info
+        pageTemplateInfo = pi.UsedPageTemplateInfo;
+
+        return pageTemplateInfo != null ? pageTemplateInfo.PageTemplateId : 0;
     }
 
 
@@ -243,7 +263,7 @@ function OnSelectPageTemplate(templateId) {
     /// </summary>
     protected void ReloadControls()
     {
-        TreeNode node = DocumentManager.Node;
+        node = Node;
 
         if (node.NodeAliasPath == "/")
         {
@@ -280,20 +300,21 @@ function OnSelectPageTemplate(templateId) {
         }
 
         // Set modal dialogs
-        btnSave.OnClientClick = "modalDialog('" + ResolveUrl("~/CMSModules/PortalEngine/UI/Layout/SaveNewPageTemplate.aspx") + "?startingpath=/&templateId=" + templateId + "&siteid=" + SiteContext.CurrentSiteID + "', 'SaveNewTemplate', 720, 430); return false;";
+        string modalScript = String.Format("modalDialog('{0}?startingpath=/&templateId={1}&siteid={2}&documentid={3}&inherits={4}', 'SaveNewTemplate', 720, 430); return false;", ResolveUrl("~/CMSModules/PortalEngine/UI/Layout/SaveNewPageTemplate.aspx"), templateId, SiteContext.CurrentSiteID, Node.DocumentID, radInherit.Checked);
+        btnSave.OnClientClick = modalScript;
 
         String url = UIContextHelper.GetElementDialogUrl("cms.design", "PageTemplate.EditPageTemplate", templateId, String.Format("aliaspath={0}", node.NodeAliasPath));
         btnEditTemplateProperties.OnClientClick = "modalDialog('" + url + "', 'Template edit', '95%', '95%');return false;";
 
         // Load the page template name
-        pti = PageTemplateInfoProvider.GetPageTemplateInfo(templateId);
-        if (pti != null)
+        pageTemplateInfo = PageTemplateInfoProvider.GetPageTemplateInfo(templateId);
+        if (pageTemplateInfo != null)
         {
-            txtTemplate.Text = ResHelper.LocalizeString(pti.DisplayName);
+            txtTemplate.Text = ResHelper.LocalizeString(pageTemplateInfo.DisplayName);
 
             plcUISave.Visible = true;
-            plcUIEdit.Visible = (!pti.IsReusable || currentUser.IsAuthorizedPerUIElement("CMS.Content", "Template.ModifySharedTemplates"));
-            plcUIClone.Visible = pti.IsReusable || inherit;
+            plcUIEdit.Visible = (!pageTemplateInfo.IsReusable || currentUser.IsAuthorizedPerUIElement("CMS.Content", "Template.ModifySharedTemplates"));
+            plcUIClone.Visible = pageTemplateInfo.IsReusable || inherit;
         }
         else
         {
@@ -364,58 +385,61 @@ function OnSelectPageTemplate(templateId) {
     /// </summary>
     private void LoadData()
     {
-        TreeNode node = Node;
-        if (node != null)
+        node = Node;
+        if (node == null)
         {
-            if (node.IsRoot())
-            {
-                // Hide inheritance options for root node
-                pnlInherits.Visible = false;
-            }
-            else
-            {
-                inheritElem.Value = Node.NodeInheritPageLevels;
-
-                // Try get info whether exist linked document in path
-                DataSet ds = DocumentManager.Tree.SelectNodes(SiteContext.CurrentSiteName, "/%", node.DocumentCulture, false, null, "NodeLinkedNodeID IS NOT NULL AND (N'" + SqlHelper.EscapeQuotes(Node.NodeAliasPath) + "' LIKE NodeAliasPath + '%')", null, -1, false, 1, "Count(*) AS NumOfDocs");
-
-                // If node is not link or none of parent documents is not linked document use document name path
-                if (!node.IsLink && ValidationHelper.GetInteger(DataHelper.GetDataRowValue(ds.Tables[0].Rows[0], "NumOfDocs"), 0) == 0)
-                {
-                    inheritElem.TreePath = TreePathUtils.GetParentPath("/" + Node.DocumentNamePath);
-                }
-                else
-                {
-                    // Otherwise use alias path
-                    inheritElem.TreePath = TreePathUtils.GetParentPath("/" + Node.NodeAliasPath);
-                }
-            }
-
-            if (node.NodeInheritPageTemplate)
-            {
-                // Document inherits template
-                radInherit.Checked = true;
-            }
-            else
-            {
-                // Document has its own template
-                int templateId = node.GetUsedPageTemplateId();
-
-                if (node.NodeTemplateForAllCultures)
-                {
-                    radAllCultures.Checked = true;
-                }
-                else
-                {
-                    radThisCulture.Checked = true;
-                }
-
-                // Set selected template ID
-                SelectedTemplateID = templateId;
-            }
-
-            ReloadControls();
+            return;
         }
+
+        if (node.IsRoot())
+        {
+            // Hide inheritance options for root node
+            pnlInherits.Visible = false;
+        }
+        else
+        {
+            inheritElem.Value = Node.NodeInheritPageLevels;
+
+            // Try get info whether exist linked document in path
+            DataSet ds = DocumentManager.Tree.SelectNodes(SiteContext.CurrentSiteName, "/%", node.DocumentCulture, false, null, "NodeLinkedNodeID IS NOT NULL AND (N'" + SqlHelper.EscapeQuotes(Node.NodeAliasPath) + "' LIKE NodeAliasPath + '%')", null, -1, false, 1, "Count(*) AS NumOfDocs");
+
+            // If node is not link or none of parent documents is not linked document use document name path
+            if (!node.IsLink && DataHelper.GetIntValue(ds.Tables[0].Rows[0], "NumOfDocs") == 0)
+            {
+                inheritElem.TreePath = TreePathUtils.GetParentPath("/" + Node.DocumentNamePath);
+            }
+            else
+            {
+                // Otherwise use alias path
+                inheritElem.TreePath = TreePathUtils.GetParentPath("/" + Node.NodeAliasPath);
+            }
+        }
+
+        if (node.NodeInheritPageTemplate)
+        {
+            // Document inherits template
+            radInherit.Checked = true;
+        }
+        else
+        {
+            // Document has its own template
+            int templateId = node.GetUsedPageTemplateId();
+            radInherit.Checked = false;
+
+            if (node.NodeTemplateForAllCultures)
+            {
+                radAllCultures.Checked = true;
+            }
+            else
+            {
+                radThisCulture.Checked = true;
+            }
+
+            // Set selected template ID
+            SelectedTemplateID = templateId;
+        }
+
+        ReloadControls();
     }
 
     #endregion
@@ -437,18 +461,20 @@ function OnSelectPageTemplate(templateId) {
     /// </summary>
     protected void btnClone_Click(object sender, EventArgs e)
     {
-        if ((pti != null) && hasModifyPermission)
+        if ((pageTemplateInfo != null) && hasModifyPermission)
         {
-            TreeNode node = Node;
+            node = Node;
 
             // Clone the info
             string docName = node.GetDocumentName();
             string displayName = "Ad-hoc: " + docName;
 
-            PageTemplateInfo newInfo = PageTemplateInfoProvider.CloneTemplateAsAdHoc(pti, displayName, SiteContext.CurrentSiteID, node.NodeGUID);
+            PageTemplateInfo newInfo = PageTemplateInfoProvider.CloneTemplateAsAdHoc(pageTemplateInfo, displayName, SiteContext.CurrentSiteID, node.NodeGUID);
 
             newInfo.Description = String.Format(GetString("PageTemplate.AdHocDescription"), Node.DocumentNamePath);
             PageTemplateInfoProvider.SetPageTemplateInfo(newInfo);
+
+            CheckOutTemplate(newInfo);
 
             // Assign the selected template for all cultures and save
             SelectedTemplateID = newInfo.PageTemplateId;
@@ -464,17 +490,33 @@ function OnSelectPageTemplate(templateId) {
     }
 
 
+    /// <summary>
+    /// Checks out the page template
+    /// </summary>
+    /// <param name="pageTemplateInfo">Page template to check out</param>
+    private void CheckOutTemplate(PageTemplateInfo pageTemplateInfo)
+    {
+        var objectManager = CMSObjectManager.GetCurrent(Page);
+        if ((objectManager != null) && CMSObjectManager.KeepNewObjectsCheckedOut)
+        {
+            objectManager.CheckOutObject(pageTemplateInfo);
+        }
+    }
+
+
     protected void DocumentManager_OnValidateData(object sender, DocumentManagerEventArgs e)
     {
-        if (!radInherit.Checked)
+        if (radInherit.Checked)
         {
-            // Set the selected template ID
-            int templateId = SelectedTemplateID;
-            if (templateId <= 0)
-            {
-                e.IsValid = false;
-                e.ErrorMessage = GetString("newpage.templateerror");
-            }
+            return;
+        }
+
+        // Set the selected template ID
+        int templateId = SelectedTemplateID;
+        if (templateId <= 0)
+        {
+            e.IsValid = false;
+            e.ErrorMessage = GetString("newpage.templateerror");
         }
     }
 
@@ -530,19 +572,12 @@ function OnSelectPageTemplate(templateId) {
 
 
     /// <summary>
-    /// Sets the template id to the given document
+    /// Sets the template id to the current document
     /// </summary>
-    /// <param name="node">Document node</param>
+    /// <param name="templateId">Page template ID</param>
     private void SetTemplateId(int templateId)
     {
-        if (radAllCultures.Checked)
-        {
-            Node.NodeTemplateID = templateId;
-        }
-        else
-        {
-            Node.NodeTemplateID = 0;
-        }
+        Node.NodeTemplateID = radAllCultures.Checked ? templateId : 0;
 
         Node.DocumentPageTemplateID = templateId;
         Node.NodeTemplateForAllCultures = radAllCultures.Checked;

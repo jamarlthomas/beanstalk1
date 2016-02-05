@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="System.ascx.cs" Inherits="CMSModules_System_Controls_System" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="System.ascx.cs" Inherits="CMSModules_System_Controls_System" %>
 
 <asp:Panel ID="pnlBody" runat="server" SkinID="Default">
     <cms:MessagesPlaceHolder ID="plcMess" runat="server" />

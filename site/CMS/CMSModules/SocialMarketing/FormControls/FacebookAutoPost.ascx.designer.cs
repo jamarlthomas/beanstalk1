@@ -54,7 +54,7 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.FormControls.FormControl pageSelector;
+    protected global::CMSAdminControls_UI_UniSelector_UniSelector pageSelector;
     
     /// <summary>
     /// txtPost control.
@@ -66,22 +66,13 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost {
     protected global::CMS.ExtendedControls.CMSTextArea txtPost;
     
     /// <summary>
-    /// chkShortenUrls control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSCheckBox chkShortenUrls;
-    
-    /// <summary>
     /// urlShortenerSelector control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.FormControls.FormControl urlShortenerSelector;
+    protected global::CMSModules_SocialMarketing_FormControls_AvailableUrlShortenerSelector urlShortenerSelector;
     
     /// <summary>
     /// publishDateTime control.
@@ -108,5 +99,5 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.FormControls.FormControl campaingSelector;
+    protected global::CMSAdminControls_UI_UniSelector_UniSelector campaingSelector;
 }

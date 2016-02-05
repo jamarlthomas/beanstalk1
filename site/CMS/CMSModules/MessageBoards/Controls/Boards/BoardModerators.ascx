@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_MessageBoards_Controls_Boards_BoardModerators" Codebehind="BoardModerators.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_MessageBoards_Controls_Boards_BoardModerators"  Codebehind="BoardModerators.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Membership/FormControls/Users/securityAddUsers.ascx" TagName="SelectUser" TagPrefix="cms" %>
 
 <cms:MessagesPlaceHolder ID="plcMess" runat="server" />

@@ -1,8 +1,8 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MessageBoards_Controls_Messages_MessageEdit" Codebehind="MessageEdit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MessageBoards_Controls_Messages_MessageEdit"  Codebehind="MessageEdit.ascx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/Captcha/SecurityCode.ascx" TagName="SecurityCode" TagPrefix="cms" %>
 
-<cms:LocalizedLabel ID="lblAlreadyrated" runat="server" EnableViewState="false" ResourceString="board.messageedit.alreadyrated" CssClass="AlreadyRatedMessage" Visible="false" />
+<cms:LocalizedLabel ID="lblAlreadyrated" runat="server" EnableViewState="false" CssClass="AlreadyRatedMessage" Visible="false" />
 <asp:Panel ID="pnlMessageEdit" runat="server" CssClass="message-edit">
     <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
     <div class="form-horizontal">
@@ -34,7 +34,7 @@
                     <asp:Label CssClass="control-label" ID="lblURL" AssociatedControlID="txtURL" runat="server" EnableViewState="false" />
                 </div>
                 <div class="editing-form-value-cell">
-                    <cms:CMSTextBox ID="txtURL" runat="server" EnableViewState="false" MaxLength="450" ProcessMacroSecurity="false" />
+                    <cms:CMSTextBox ID="txtURL" runat="server" EnableViewState="false" MaxLength="440" ProcessMacroSecurity="false" />
                 </div>
             </div>
         </asp:PlaceHolder>
@@ -94,7 +94,7 @@
             <div class="form-group">
                 <div class="editing-form-value-cell editing-form-value-cell-offset">
                     <cms:CMSCheckBox ID="chkSubscribe" runat="server" EnableViewState="false" />
-                    <cms:LocalizedLabel ID="lblSubscribe" runat="server" CssClass="control-label" ResourceString="board.messageedit.subscribe" AssociatedControlID="chkSubscribe" />
+                    <cms:LocalizedLabel ID="lblSubscribe" runat="server" CssClass="control-label" AssociatedControlID="chkSubscribe" />
                 </div>
             </div>
         </asp:PlaceHolder>
@@ -110,7 +110,7 @@
         <asp:PlaceHolder ID="pnlOkButton" runat="server" Visible="true">
             <div class="form-group form-group-submit">
                 <cms:LocalizedButton ID="btnOk" runat="server" ButtonStyle="Primary" OnClick="btnOk_Click"
-                    EnableViewState="false" ResourceString="general.add" />
+                    EnableViewState="false" />
             </div>
         </asp:PlaceHolder>
     </div>

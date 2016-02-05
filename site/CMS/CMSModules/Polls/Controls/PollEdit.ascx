@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Polls_Controls_PollEdit"
-    Codebehind="PollEdit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Polls_Controls_PollEdit"
+     Codebehind="PollEdit.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Polls/Controls/PollProperties.ascx" TagName="PollProperties"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Polls/Controls/AnswerList.ascx" TagName="AnswerList"

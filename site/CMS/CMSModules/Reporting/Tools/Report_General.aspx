@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_Tools_Report_General"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_Tools_Report_General"
     Theme="Default" ValidateRequest="false" EnableEventValidation="false" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
-    Codebehind="Report_General.aspx.cs" %>
+     Codebehind="Report_General.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/System/LocalizableTextBox.ascx" TagName="LocalizableTextBox"
     TagPrefix="cms" %>
@@ -37,8 +37,7 @@
             return InsertHTML(imageurl);
         }
         //]]>
-    </script>
-    <asp:Literal runat="server" ID="ltlScript" />
+    </script>    
     <cms:CMSPanel runat="server" ID="pnlMenu" CssClass="cms-edit-menu" FixedPosition="true">
         <cms:HeaderActions ID="actionsElem" ShortID="a" runat="server" IsLiveSite="false" />
     </cms:CMSPanel>

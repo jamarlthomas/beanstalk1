@@ -8,7 +8,6 @@ using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.UIControls;
 
-
 public partial class CMSModules_AdminControls_Controls_Documents_OutdatedDocumentsFilter : CMSAbstractBaseFilterControl
 {
     #region "Constants"
@@ -18,8 +17,6 @@ public partial class CMSModules_AdminControls_Controls_Documents_OutdatedDocumen
     private const string SOURCE_CLASSDISPLAYNAME = "ClassDisplayName";
 
     private const string SOURCE_DOCUMENTNAME = "DocumentName";
-
-    private const string SOURCE_NODESITEID = "NodeSiteID";
 
     #endregion
 
@@ -158,60 +155,59 @@ public partial class CMSModules_AdminControls_Controls_Documents_OutdatedDocumen
                 break;
         }
 
-        string where = "((DocumentCreatedByUserID = @UserID OR DocumentModifiedByUserID = @UserID OR DocumentCheckedOutByUserID = @UserID) AND " + SOURCE_MODIFIEDWHEN + "<= '" + olderThan + "' AND " + SOURCE_NODESITEID + "=@SiteID)";
+        var where = new WhereCondition().WhereLessOrEquals(SOURCE_MODIFIEDWHEN, olderThan);
+
         // Add where condition
         if (!string.IsNullOrEmpty(txtDocumentName.Text))
         {
-            where = SqlHelper.AddWhereCondition(where, GetOutdatedWhereCondition(SOURCE_DOCUMENTNAME, drpDocumentName, txtDocumentName));
-        }
-        if (!string.IsNullOrEmpty(txtDocumentType.Text))
-        {
-            where = SqlHelper.AddWhereCondition(where, GetOutdatedWhereCondition(SOURCE_CLASSDISPLAYNAME, drpDocumentType, txtDocumentType));
+            AddOutdatedWhereCondition(where, SOURCE_DOCUMENTNAME, drpDocumentName, txtDocumentName);
         }
 
-        return where;
+        if (!string.IsNullOrEmpty(txtDocumentType.Text))
+        {
+            AddOutdatedWhereCondition(where, SOURCE_CLASSDISPLAYNAME, drpDocumentType, txtDocumentType);
+        }
+
+        return where.ToString(true);
     }
 
 
     /// <summary>
     /// Gets where condition based on value of given controls.
     /// </summary>
+    /// <param name="where">Where condition</param>
     /// <param name="column">Column to compare</param>
     /// <param name="drpOperator">List control with operator</param>
     /// <param name="valueBox">Text control with value</param>
     /// <returns>Where condition for outdated documents</returns>
-    private string GetOutdatedWhereCondition(string column, ListControl drpOperator, ITextControl valueBox)
+    private void AddOutdatedWhereCondition(WhereCondition where, string column, ListControl drpOperator, ITextControl valueBox)
     {
-        string condition = drpOperator.SelectedValue;
-        string value = SqlHelper.EscapeQuotes(valueBox.Text);
-        value = TextHelper.LimitLength(value, 100);
+        var value = TextHelper.LimitLength(valueBox.Text, 100);
 
-        string where = column + " ";
-        if (string.IsNullOrEmpty(value))
+        if (!String.IsNullOrEmpty(value))
         {
-            where = string.Empty;
-        }
-        else
-        {
+            string condition = drpOperator.SelectedValue;
+            
             // Create condition based on operator
             switch (condition)
             {
                 case WhereBuilder.LIKE:
+                    where.WhereContains(column, value);
+                    break;
+
                 case WhereBuilder.NOT_LIKE:
-                    where += condition + " N'%" + SqlHelper.EscapeLikeText(value) + "%'";
+                    where.WhereNotContains(column, value);
                     break;
 
                 case WhereBuilder.EQUAL:
-                case WhereBuilder.NOT_EQUAL:
-                    where += condition + " N'" + value + "'";
+                    where.WhereEquals(column, value);
                     break;
 
-                default:
-                    where = string.Empty;
+                case WhereBuilder.NOT_EQUAL:
+                    where.WhereNotEquals(column, value);
                     break;
             }
         }
-        return where;
     }
 
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.Helpers;
@@ -429,7 +429,7 @@ public partial class CMSModules_PortalEngine_Controls_Layout_PageTemplateFlatSel
         }
 
         // Create hidden fields
-        ltrHidden.Text += "<input type=\"hidden\" id=\"selectedTemplateIsPortal\" value=\"" + portal + "\" />";
+        ltrHidden.Text = "<input type=\"hidden\" id=\"selectedTemplateIsPortal\" value=\"" + portal + "\" />";
         ltrHidden.Text += "<input type=\"hidden\" id=\"selectedTemplateIsReusable\" value=\"" + reusable + "\" />";
 
         if (!String.IsNullOrEmpty(description))

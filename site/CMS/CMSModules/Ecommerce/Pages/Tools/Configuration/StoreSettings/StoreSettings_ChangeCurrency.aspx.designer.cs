@@ -174,15 +174,6 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_StoreSetting
     protected global::CMS.ExtendedControls.CMSCheckBox chkProductPrices;
     
     /// <summary>
-    /// chkFlatTaxes control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSCheckBox chkFlatTaxes;
-    
-    /// <summary>
     /// chkDiscounts control.
     /// </summary>
     /// <remarks>
@@ -208,24 +199,6 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_StoreSetting
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.CMSCheckBox chkShipping;
-    
-    /// <summary>
-    /// plcRecountDocuments control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.PlaceHolder plcRecountDocuments;
-    
-    /// <summary>
-    /// chkDocuments control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSCheckBox chkDocuments;
     
     /// <summary>
     /// ltlScript control.

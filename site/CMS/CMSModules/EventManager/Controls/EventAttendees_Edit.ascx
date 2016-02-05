@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSModules/EventManager/Controls/EventAttendees_Edit.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSModules/EventManager/Controls/EventAttendees_Edit.ascx.cs"
     Inherits="CMSModules_EventManager_Controls_EventAttendees_Edit" %>
 
 <cms:MessagesPlaceHolder ID="plcMess" runat="server" />

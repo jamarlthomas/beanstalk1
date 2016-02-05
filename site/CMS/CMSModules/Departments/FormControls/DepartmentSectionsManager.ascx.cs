@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -153,6 +153,11 @@ public partial class CMSModules_Departments_FormControls_DepartmentSectionsManag
     /// </summary>
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Form == null)
+        {
+            return;
+        }
+
         GenerateContent();
 
         // Attach on after save event
@@ -168,90 +173,98 @@ public partial class CMSModules_Departments_FormControls_DepartmentSectionsManag
     /// </summary>
     private void Page_PreRender(object sender, EventArgs e)
     {
-        if (mDocumentSaved)
+        if ((Form == null) || !mDocumentSaved)
         {
-            TreeNode editedNode = Form.EditedObject as TreeNode;
-
-            // Create or rebuild department content index
-            CreateDepartmentContentSearchIndex(editedNode);
-
-            if (AclInfoProvider.HasOwnAcl(editedNode))
-            {
-                ForumInfo fi = ForumInfoProvider.GetForumInfo("Default_department_" + editedNode.NodeGUID, SiteContext.CurrentSiteID);
-                MediaLibraryInfo mi = MediaLibraryInfoProvider.GetMediaLibraryInfo("Department_" + editedNode.NodeGUID, SiteContext.CurrentSiteName);
-
-                // Check if forum of media library exists
-                if ((fi != null) || (mi != null))
-                {
-                    // Get allowed roles ID
-                    int aclID = ValidationHelper.GetInteger(editedNode.GetValue("NodeACLID"), 0);
-                    DataSet listRoles = AclItemInfoProvider.GetAllowedRoles(aclID, NodePermissionsEnum.Read, "RoleID");
-                    string roleIDs = null;
-
-                    if (!DataHelper.DataSourceIsEmpty(listRoles))
-                    {
-                        IList<string> roles = DataHelper.GetStringValues(listRoles.Tables[0], "RoleID");
-                        roleIDs = TextHelper.Join(";", roles);
-                    }
-
-                    // Set permissions for forum
-                    if (fi != null)
-                    {
-                        // Get resource object
-                        ResourceInfo resForums = ResourceInfoProvider.GetResourceInfo("CMS.Forums");
-
-                        // Get permissions IDs
-                        DataSet dsForumPerm = PermissionNameInfoProvider.GetPermissionNames("ResourceID = " + resForums.ResourceId + " AND (PermissionName != '" + CMSAdminControl.PERMISSION_READ + "' AND PermissionName != '" + CMSAdminControl.PERMISSION_MODIFY + "')", null, 0, "PermissionID");
-                        string forumPermissions = null;
-                        if (!DataHelper.DataSourceIsEmpty(dsForumPerm))
-                        {
-                            foreach (DataRow drForumPerm in dsForumPerm.Tables[0].Rows)
-                            {
-                                forumPermissions += drForumPerm["PermissionID"] + ";";
-                            }
-                            forumPermissions = forumPermissions.TrimEnd(';');
-                        }
-
-                        // Delete old permissions apart attach file permission
-                        ForumRoleInfoProvider.DeleteAllRoles("ForumID = " + fi.ForumID + " AND PermissionID IN (" + forumPermissions.Replace(";", ", ") + ")");
-
-                        // Set forum permissions
-                        ForumRoleInfoProvider.SetPermissions(fi.ForumID, roleIDs, forumPermissions);
-
-                        // Log staging task
-                        SynchronizationHelper.LogObjectChange(fi, TaskTypeEnum.UpdateObject);
-                    }
-
-                    // Set permissions for media library
-                    if (mi != null)
-                    {
-                        // Get resource object
-                        ResourceInfo resMediaLibs = ResourceInfoProvider.GetResourceInfo("CMS.MediaLibrary");
-
-                        // Get permissions IDs
-                        DataSet dsMediaLibPerm = PermissionNameInfoProvider.GetPermissionNames("ResourceID = " + resMediaLibs.ResourceId + " AND (PermissionName = 'LibraryAccess' OR PermissionName = 'FileCreate')", null, 0, "PermissionID");
-                        string mediaLibPermissions = null;
-                        if (!DataHelper.DataSourceIsEmpty(dsMediaLibPerm))
-                        {
-                            foreach (DataRow drMediaLibPerm in dsMediaLibPerm.Tables[0].Rows)
-                            {
-                                mediaLibPermissions += drMediaLibPerm["PermissionID"] + ";";
-                            }
-                            mediaLibPermissions = mediaLibPermissions.TrimEnd(';');
-                        }
-
-                        // Delete old permissions only for Create file and See library content permissions
-                        MediaLibraryRolePermissionInfoProvider.DeleteAllRoles("LibraryID = " + mi.LibraryID + " AND PermissionID IN (" + mediaLibPermissions.Replace(";", ", ") + ")");
-
-                        // Set media library permissions
-                        MediaLibraryRolePermissionInfoProvider.SetPermissions(mi.LibraryID, roleIDs, mediaLibPermissions);
-
-                        // Log staging task
-                        SynchronizationHelper.LogObjectChange(mi, TaskTypeEnum.UpdateObject);
-                    }
-                }
-            }
+            return;
         }
+
+        TreeNode editedNode = Form.EditedObject as TreeNode;
+
+        // Create or rebuild department content index
+        CreateDepartmentContentSearchIndex(editedNode);
+
+        if ((editedNode == null) || !editedNode.NodeIsACLOwner)
+        {
+            return;
+        }
+
+        ForumInfo fi = ForumInfoProvider.GetForumInfo("Default_department_" + editedNode.NodeGUID, SiteContext.CurrentSiteID);
+        MediaLibraryInfo mi = MediaLibraryInfoProvider.GetMediaLibraryInfo("Department_" + editedNode.NodeGUID, SiteContext.CurrentSiteName);
+
+        // Check if forum of media library exists
+        if ((fi == null) && (mi == null))
+        {
+            return;
+        }
+
+        // Get allowed roles ID
+        int aclID = ValidationHelper.GetInteger(editedNode.GetValue("NodeACLID"), 0);
+        DataSet listRoles = AclItemInfoProvider.GetAllowedRoles(aclID, NodePermissionsEnum.Read, "RoleID");
+        string roleIDs = null;
+
+        if (!DataHelper.DataSourceIsEmpty(listRoles))
+        {
+            IList<string> roles = DataHelper.GetStringValues(listRoles.Tables[0], "RoleID");
+            roleIDs = TextHelper.Join(";", roles);
+        }
+
+        // Set permissions for forum
+        if (fi != null)
+        {
+            // Get resource object
+            ResourceInfo resForums = ResourceInfoProvider.GetResourceInfo("CMS.Forums");
+
+            // Get permissions IDs
+            DataSet dsForumPerm = PermissionNameInfoProvider.GetPermissionNames("ResourceID = " + resForums.ResourceID + " AND (PermissionName != '" + CMSAdminControl.PERMISSION_READ + "' AND PermissionName != '" + CMSAdminControl.PERMISSION_MODIFY + "')", null, 0, "PermissionID");
+            string forumPermissions = null;
+            if (!DataHelper.DataSourceIsEmpty(dsForumPerm))
+            {
+                foreach (DataRow drForumPerm in dsForumPerm.Tables[0].Rows)
+                {
+                    forumPermissions += drForumPerm["PermissionID"] + ";";
+                }
+                forumPermissions = forumPermissions.TrimEnd(';');
+            }
+
+            // Delete old permissions apart attach file permission
+            ForumRoleInfoProvider.DeleteAllRoles("ForumID = " + fi.ForumID + " AND PermissionID IN (" + forumPermissions.Replace(";", ", ") + ")");
+
+            // Set forum permissions
+            ForumRoleInfoProvider.SetPermissions(fi.ForumID, roleIDs, forumPermissions);
+
+            // Log staging task
+            SynchronizationHelper.LogObjectChange(fi, TaskTypeEnum.UpdateObject);
+        }
+
+        // Set permissions for media library
+        if (mi == null)
+        {
+            return;
+        }
+
+        // Get resource object
+        ResourceInfo resMediaLibs = ResourceInfoProvider.GetResourceInfo("CMS.MediaLibrary");
+
+        // Get permissions IDs
+        DataSet dsMediaLibPerm = PermissionNameInfoProvider.GetPermissionNames("ResourceID = " + resMediaLibs.ResourceID + " AND (PermissionName = 'LibraryAccess' OR PermissionName = 'FileCreate')", null, 0, "PermissionID");
+        string mediaLibPermissions = null;
+        if (!DataHelper.DataSourceIsEmpty(dsMediaLibPerm))
+        {
+            foreach (DataRow drMediaLibPerm in dsMediaLibPerm.Tables[0].Rows)
+            {
+                mediaLibPermissions += drMediaLibPerm["PermissionID"] + ";";
+            }
+            mediaLibPermissions = mediaLibPermissions.TrimEnd(';');
+        }
+
+        // Delete old permissions only for Create file and See library content permissions
+        MediaLibraryRolePermissionInfoProvider.DeleteAllRoles("LibraryID = " + mi.LibraryID + " AND PermissionID IN (" + mediaLibPermissions.Replace(";", ", ") + ")");
+
+        // Set media library permissions
+        MediaLibraryRolePermissionInfoProvider.SetPermissions(mi.LibraryID, roleIDs, mediaLibPermissions);
+
+        // Log staging task
+        SynchronizationHelper.LogObjectChange(mi, TaskTypeEnum.UpdateObject);
     }
 
 
@@ -530,11 +543,6 @@ public partial class CMSModules_Departments_FormControls_DepartmentSectionsManag
         {
             return;
         }
-
-        // Create additional folders
-        //MediaLibraryInfoProvider.CreateMediaLibraryFolder(SiteContext.CurrentSiteName, mlInfo.LibraryID, "Videos", false);
-        //MediaLibraryInfoProvider.CreateMediaLibraryFolder(SiteContext.CurrentSiteName, mlInfo.LibraryID, "Other", false);
-        //MediaLibraryInfoProvider.CreateMediaLibraryFolder(SiteContext.CurrentSiteName, mlInfo.LibraryID, "Photos & Images", false);
     }
 
 
@@ -643,10 +651,10 @@ public partial class CMSModules_Departments_FormControls_DepartmentSectionsManag
         TreeNode editedNode = Form.EditedObject as TreeNode;
 
         // Get department template source document
-        TreeNode sourceNode = DocumentHelper.GetDocument(SiteContext.CurrentSiteName, DepartmentTemplatePath, null, true, null, null, null, 0, false, null, TreeProvider);
+        TreeNode sourceNode = DocumentHelper.GetDocument(SiteContext.CurrentSiteName, DepartmentTemplatePath, null, true, null, null, null, TreeProvider.ALL_LEVELS, false, null, TreeProvider);
 
-        // Copy relevant template data to department document
-        if (sourceNode != null)
+        // Copy relevant template data to department document. Proceed only when creating a department, updating a department must not rewrite its data with template's data.
+        if (Form.IsInsertMode && (sourceNode != null))
         {
             string excludeColumns = "DocumentName;NodeAlias;DocumentTagGroupID;DocumentStylesheetID;DocumentPublishFrom;DocumentPublishTo";
             DocumentHelper.CopyNodeData(sourceNode, editedNode, new CopyNodeDataSettings(true, true, false, true, true, false, false, false, excludeColumns));
@@ -687,7 +695,7 @@ public partial class CMSModules_Departments_FormControls_DepartmentSectionsManag
             string selectedDocs = ";" + Value + ";";
 
             // Get already created documents under edited document
-            DataSet dsExistingDocs = DocumentHelper.GetDocuments(SiteContext.CurrentSiteName, editedNode.NodeAliasPath + "/%", editedNode.DocumentCulture, true, null, null, null, 1, false, 0, "NodeAlias, " + TreeProvider.SELECTNODES_REQUIRED_COLUMNS, null);
+            DataSet dsExistingDocs = DocumentHelper.GetDocuments(SiteContext.CurrentSiteName, editedNode.NodeAliasPath + "/%", editedNode.DocumentCulture, true, null, null, null, 1, false, 0, "NodeAlias, " + DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS, null);
             StringBuilder sbExistDocs = new StringBuilder();
 
             // Process existing documents to obtain list of aliases
@@ -702,8 +710,6 @@ public partial class CMSModules_Departments_FormControls_DepartmentSectionsManag
             // Set same ordering as for original template documents
             bool orgUseAutomaticOrdering = TreeProvider.UseAutomaticOrdering;
             TreeProvider.UseAutomaticOrdering = false;
-
-            int targetClassId = ValidationHelper.GetInteger(editedNode.GetValue("NodeClassID"), 0);
 
             // Process template documents
             foreach (DataRow drDoc in TemplateDocuments.Tables[0].Rows)

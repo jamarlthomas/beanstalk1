@@ -1,70 +1,63 @@
 using System;
 using System.Web.UI.WebControls;
 
-using CMS.DataEngine;
-using CMS.ExtendedControls;
-using CMS.FormControls;
 using CMS.FormEngine;
 using CMS.Helpers;
+using CMS.UIControls;
 
-public partial class CMSFormControls_Basic_RadioButtonsControl : FormEngineUserControl
+public partial class CMSFormControls_Basic_RadioButtonsControl : ListFormControl
 {
     #region "Variables"
 
-    private string mSelectedValue;
     private RepeatDirection mRepeatDirection = RepeatDirection.Vertical;
     private RepeatLayout mRepeatLayout = RepeatLayout.Flow;
+    private int mRepeatColumns = -1;
+    private const string DEFAULT_CSS_CLASS = "RadioButtonList";
 
     #endregion
 
 
-    #region "Properties"
+    #region "Protected properties"
 
-    /// <summary>
-    /// Gets or sets the enabled state of the control.
-    /// </summary>
-    public override bool Enabled
+    protected override ListControl ListControl
     {
         get
         {
-            return list.Enabled;
-        }
-        set
-        {
-            list.Enabled = value;
+            return list;
         }
     }
 
 
-    /// <summary>
-    /// Gets or sets form control value.
-    /// </summary>
-    public override object Value
+    protected override ListSelectionMode SelectionMode
     {
         get
         {
-            return list.SelectedValue;
-        }
-        set
-        {
-            LoadAndSelectList();
-            
-            if ((value != null) || ((FieldInfo != null) && FieldInfo.AllowEmpty))
-            {
-                if (FieldInfo != null)
-                {
-                    // Convert the value to a proper type
-                    value = ConvertInputValue(value);
-                }
-
-                mSelectedValue = ValidationHelper.GetString(value, String.Empty);
-
-                list.ClearSelection();
-                FormHelper.SelectSingleValue(mSelectedValue, list);
-            }
+            return ListSelectionMode.Single;
         }
     }
 
+
+    protected override string FormControlName
+    {
+        get
+        {
+            return FormFieldControlTypeCode.RADIOBUTTONS;
+        }
+    }
+
+
+    protected override string DefaultCssClass
+    {
+        get
+        {
+            return DEFAULT_CSS_CLASS;
+        }
+    }
+
+    #endregion
+
+
+    #region "Public properties"
 
     /// <summary>
     /// Returns display name of the value.
@@ -86,7 +79,7 @@ public partial class CMSFormControls_Basic_RadioButtonsControl : FormEngineUserC
         get
         {
             string direction = ValidationHelper.GetString(GetValue("repeatdirection"), String.Empty);
-            if (!Enum.TryParse<RepeatDirection>(direction, true, out mRepeatDirection))
+            if (!Enum.TryParse(direction, true, out mRepeatDirection))
             {
                 mRepeatDirection = RepeatDirection.Vertical;
             }
@@ -108,7 +101,7 @@ public partial class CMSFormControls_Basic_RadioButtonsControl : FormEngineUserC
         get
         {
             string layout = ValidationHelper.GetString(GetValue("RepeatLayout"), String.Empty);
-            if (!Enum.TryParse<RepeatLayout>(layout, true, out mRepeatLayout))
+            if (!Enum.TryParse(layout, true, out mRepeatLayout))
             {
                 mRepeatLayout = RepeatLayout.Flow;
             }
@@ -121,79 +114,39 @@ public partial class CMSFormControls_Basic_RadioButtonsControl : FormEngineUserC
         }
     }
 
+
+    /// <summary>
+    /// Specifies the number of columns to display in the list control. The default is 0, which indicates that this property is not set.
+    /// </summary>
+    public int RepeatColumns
+    {
+        get
+        {
+            if (mRepeatColumns < 0)
+            {
+                mRepeatColumns = ValidationHelper.GetInteger(GetValue("RepeatColumns"), 0);
+            }
+            return mRepeatColumns;
+        }
+        set
+        {
+            mRepeatColumns = value;
+        }
+    }
+
     #endregion
 
 
-    #region "Methods"
+    #region "Control events"
 
-    protected void Page_Load(object sender, EventArgs e)
+    protected override void OnLoad(EventArgs e)
     {
-        LoadAndSelectList();
+        base.OnLoad(e);
 
-        list.SelectedIndexChanged += (s, ea) => RaiseOnChanged();
-
-        // Apply styles
-        if (!String.IsNullOrEmpty(CssClass))
-        {
-            list.AddCssClass(CssClass);
-            CssClass = null;
-        }
-        else if (String.IsNullOrEmpty(list.CssClass))
-        {
-            list.AddCssClass("RadioButtonList");
-        }
-        if (!String.IsNullOrEmpty(ControlStyle))
-        {
-            list.Attributes.Add("style", ControlStyle);
-            ControlStyle = null;
-        }
-
-        CheckRegularExpression = true;
-        CheckFieldEmptiness = true;
-    }
-
-
-    /// <summary>
-    /// Loads and selects control.
-    /// </summary>
-    private void LoadAndSelectList()
-    {
-        if (list.Items.Count == 0)
-        {
-            // Set control direction
-            list.RepeatDirection = RepeatDirection;
-
-            // Set control layout
-            list.RepeatLayout = RepeatLayout;
-
-            string options = GetResolvedValue<string>("options", null);
-            string query = ValidationHelper.GetString(GetValue("query"), null);
-
-            try
-            {
-                FormHelper.LoadItemsIntoList(options, query, list.Items, FieldInfo, ContextResolver);
-            }
-            catch (Exception ex)
-            {
-                DisplayException(ex);
-            }
-
-            FormHelper.SelectSingleValue(mSelectedValue, list);
-        }
-    }
-
-
-    /// <summary>
-    /// Displays exception control with current error.
-    /// </summary>
-    /// <param name="ex">Thrown exception</param>
-    private void DisplayException(Exception ex)
-    {
-        FormControlError ctrlError = new FormControlError();
-        ctrlError.FormControlName = FormFieldControlTypeCode.RADIOBUTTONS;
-        ctrlError.InnerException = ex;
-        Controls.Add(ctrlError);
-        list.Visible = false;
+        // Set control direction, layout and columns
+        list.RepeatDirection = RepeatDirection;
+        list.RepeatLayout = RepeatLayout;
+        list.RepeatColumns = RepeatColumns;
     }
 
     #endregion

@@ -1,5 +1,9 @@
-﻿.settings-group-inline .datacom-fields-mapping div {
-    display: block;
+﻿.settings-group-inline {
+    .datacom-fields-mapping {
+        div {
+            display: block;
+        }
+    }
 }
 
 .datacom-fields-mapping {
@@ -10,5 +14,15 @@
 
     div.cms-form-group-text {
         display: inline-block;
+    }
+
+    td {
+        height: @base-unit * 1.5;
+        width: @base-unit * 12;
+    }
+
+    table {
+        margin-bottom: @base-unit * 0.5;
+        margin-top: @base-unit * 0.25;
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="CustomTableSubmit.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_ActivityDetails_CustomTableSubmit" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="CustomTableSubmit.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_ActivityDetails_CustomTableSubmit" %>
 
 <div class="form-horizontal">
     <div class="form-group">

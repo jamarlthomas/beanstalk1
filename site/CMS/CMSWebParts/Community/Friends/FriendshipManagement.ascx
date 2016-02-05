@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Community_Friends_FriendshipManagement" Codebehind="~/CMSWebParts/Community/Friends/FriendshipManagement.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Community_Friends_FriendshipManagement"  Codebehind="~/CMSWebParts/Community/Friends/FriendshipManagement.ascx.cs" %>
 <div class="FriendsManagement">
     <asp:PlaceHolder ID="plcConfirm" runat="server" Visible="false">
         <asp:Label ID="lblConfirm" runat="server" EnableViewState="false" CssClass="InfoLabel" /><br />

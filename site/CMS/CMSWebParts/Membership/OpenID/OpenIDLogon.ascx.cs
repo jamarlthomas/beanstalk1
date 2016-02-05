@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
@@ -427,7 +427,7 @@ public partial class CMSWebParts_Membership_OpenID_OpenIDLogon : CMSAbstractWebP
                 // Check if OpenID module is enabled
                 if (SettingsKeyInfoProvider.GetBoolValue(SiteContext.CurrentSiteName + ".CMSEnableOpenID"))
                 {
-                    ltlScript.Text = ScriptHelper.GetIncludeScript(PROVIDERS_LOCATION + "OpenIDSelector.js");
+                    ltlScript.Text = ScriptHelper.GetScriptTag(PROVIDERS_LOCATION + "OpenIDSelector.js");
                     lblError.Text = GetString("openid.invalidid");
 
                     SetProviders();

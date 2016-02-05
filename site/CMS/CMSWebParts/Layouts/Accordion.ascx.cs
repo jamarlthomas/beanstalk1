@@ -1,6 +1,4 @@
-using System;
-
-using AjaxControlToolkit;
+﻿using System;
 
 using CMS.Controls;
 using CMS.Helpers;
@@ -214,7 +212,7 @@ public partial class CMSWebParts_Layouts_Accordion : CMSAbstractLayoutWebPart
         }
 
         // Add the tabs
-        Accordion acc = new Accordion();
+        var acc = new CMSAccordion();
         acc.ID = "acc";
         AddControl(acc);
 
@@ -237,7 +235,7 @@ public partial class CMSWebParts_Layouts_Accordion : CMSAbstractLayoutWebPart
         for (int i = 1; i <= Panes; i++)
         {
             // Create new pane
-            AccordionPane pane = new AccordionPane();
+            var pane = new CMSAccordionPane();
             pane.ID = "pane" + i;
 
             // Prepare the header
@@ -245,6 +243,7 @@ public partial class CMSWebParts_Layouts_Accordion : CMSAbstractLayoutWebPart
             if (headers.Length >= i)
             {
                 header = ResHelper.LocalizeString(headers[i - 1]);
+                header = HTMLHelper.HTMLEncode(header);
             }
             if (String.IsNullOrEmpty(header))
             {
@@ -254,7 +253,7 @@ public partial class CMSWebParts_Layouts_Accordion : CMSAbstractLayoutWebPart
             pane.Header = new TextTransformationTemplate(header);
             acc.Panes.Add(pane);
 
-            AddZone(ID + "_" + i, header, pane.ContentContainer);
+            pane.WebPartZone = AddZone(ID + "_" + i, header, pane.ContentContainer);
         }
 
         // Setup the accordion

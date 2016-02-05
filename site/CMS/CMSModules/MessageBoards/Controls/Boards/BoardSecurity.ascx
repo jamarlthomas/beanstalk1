@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_MessageBoards_Controls_Boards_BoardSecurity" Codebehind="BoardSecurity.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_MessageBoards_Controls_Boards_BoardSecurity"  Codebehind="BoardSecurity.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Membership/FormControls/Roles/securityAddRoles.ascx" TagName="AddRoles" TagPrefix="cms" %>
 
 <cms:MessagesPlaceHolder ID="plcMess" runat="server" />

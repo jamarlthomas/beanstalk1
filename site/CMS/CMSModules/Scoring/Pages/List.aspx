@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="List.aspx.cs" Inherits="CMSModules_Scoring_Pages_List" Title="Score list"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="List.aspx.cs" Inherits="CMSModules_Scoring_Pages_List" Title="Score list"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 
 <%@ Register Src="~/CMSModules/Scoring/Controls/UI/Score/List.ascx"

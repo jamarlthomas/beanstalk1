@@ -30,6 +30,8 @@
             <param name="toCurrencyCode">Code of the currency to convert amount to (e.g. EUR).</param>
             <param name="siteID">ID of the site on which the conversion is done.</param>
             <returns>Amount converted to target currency on specific site.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when currency with given code does not exist in the system.</exception>
+            <exception cref="T:CMS.Ecommerce.InvalidCurrencyConversionException">Thrown when conversion fails (e.g. exchange rate not found).</exception>
         </member>
         <member name="M:CMS.Ecommerce.CurrencyConverter.Convert(System.Decimal,System.Boolean,System.String,System.Int32)">
             <summary>
@@ -40,6 +42,8 @@
             <param name="toCurrencyCode">Code of the currency to convert amount to (e.g. EUR).</param>
             <param name="siteID">ID of the site on which the conversion is done.</param>
             <returns>Amount converted to target currency on specific site.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when currency with given code does not exist in the system.</exception>
+            <exception cref="T:CMS.Ecommerce.InvalidCurrencyConversionException">Thrown when conversion fails (e.g. exchange rate not found).</exception>
         </member>
         <member name="M:CMS.Ecommerce.CurrencyConverter.GetExchangeRate(System.String,System.String,System.Int32)">
             <summary>
@@ -50,6 +54,20 @@
             <param name="toCurrencyCode">Code of currency to convert amount to, e.g. USD, EUR.</param>
             <param name="siteID">ID of the site for which the rate is calculated.</param>
             <returns>Exchange rate from one currency to another currency on specific site.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when currency with given code does not exist in the system.</exception>
+            <exception cref="T:CMS.Ecommerce.InvalidCurrencyConversionException">Thrown when conversion fails (e.g. exchange rate not found).</exception>
+        </member>
+        <member name="M:CMS.Ecommerce.CurrencyConverter.TryGetExchangeRate(System.String,System.String,System.Int32,System.Decimal@)">
+            <summary>
+            Calculates exchange rate for conversion from one currency to another. 
+            Example: if 1 USD = 16 CZK then this method returns 1/16 = 0.0625 for conversion from USD to CZK.
+            All exceptions are logged into event log.
+            </summary>
+            <param name="fromCurrencyCode">Code of currency in which amount is expressed, e.g. USD, EUR.</param>
+            <param name="toCurrencyCode">Code of currency to convert amount to, e.g. USD, EUR.</param>
+            <param name="siteID">ID of the site for which the rate is calculated.</param>
+            <param name="rate">When this method returns, contains exchange rate from one currency to another currency on specific site.</param>
+            <returns>True if exchange rate was obtained successfully; otherwise, false.</returns>
         </member>
         <member name="M:CMS.Ecommerce.CurrencyConverter.GetExchangeRate(System.Boolean,System.String,System.Int32)">
             <summary>
@@ -59,7 +77,29 @@
             <param name="fromGlobalMain">Indicates if conversion is done from global main currency or from site main currency.</param>
             <param name="toCurrencyCode">Code of currency to convert amount to, e.g. USD, EUR.</param>
             <param name="siteID">ID of the site for which the rate is calculated.</param>
-            <returns>Exchange rate from one currency to another currency on specific site.</returns>
+            <returns>Exchange rate from main currency to another currency on specific site.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when currency with given code does not exist in the system.</exception>
+            <exception cref="T:CMS.Ecommerce.InvalidCurrencyConversionException">Thrown when conversion fails (e.g. exchange rate not found).</exception>
+        </member>
+        <member name="M:CMS.Ecommerce.CurrencyConverter.TryGetExchangeRate(System.Boolean,System.String,System.Int32,System.Decimal@)">
+            <summary>
+            Calculates exchange rate for conversion from main currency to different currency. 
+            Example: if 1 USD = 16 CZK then this method returns 1/16 = 0.0625 for conversion from USD to CZK.
+            All exceptions are logged into event log.
+            </summary>
+            <param name="fromGlobalMain">Indicates if conversion is done from global main currency or from site main currency.</param>
+            <param name="toCurrencyCode">Code of currency to convert amount to, e.g. USD, EUR.</param>
+            <param name="siteID">ID of the site for which the rate is calculated.</param>
+            <param name="rate">When this method returns, contains exchange rate from main currency to different currency on specific site.</param>
+            <returns>True if exchange rate was obtained successfully; otherwise, false.</returns>
+        </member>
+        <member name="M:CMS.Ecommerce.CurrencyConverter.ApplyExchangeRate(System.Decimal,System.Decimal)">
+            <summary>
+            Applies given exchange rate to monetary amount. If rate is negative, amount is returned with no change.
+            </summary>
+            <param name="amount">Monetary amount.</param>
+            <param name="rate">Exchange rate to be applied.</param>
+            <returns>Amount converted using given rate.</returns>
         </member>
         <member name="M:CMS.Ecommerce.CurrencyConverter.GetConverter(System.Int32)">
             <summary>
@@ -125,6 +165,8 @@
             <param name="inCurrencyCode">Code of currency in which amount is expressed, e.g. USD, EUR.</param>
             <param name="toCurrencyCode">Code of currency to convert amount to, e.g. USD, EUR.</param>
             <returns>Amount converted to currency specified by toCurrencyCode parameter.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when currency with given code does not exist in the system.</exception>
+            <exception cref="T:CMS.Ecommerce.InvalidCurrencyConversionException">Thrown when conversion fails (e.g. exchange rate not found).</exception>
         </member>
         <member name="M:CMS.Ecommerce.ICurrencyConverter.GetExchangeRate(System.String,System.String)">
             <summary>
@@ -133,6 +175,8 @@
             </summary>
             <param name="fromCurrencyCode">Code of currency in which amount is expressed, e.g. USD, EUR.</param>
             <param name="toCurrencyCode">Code of currency to convert amount to, e.g. USD, EUR.</param>
+            <exception cref="T:System.ArgumentException">Thrown when currency with given code does not exist in the system.</exception>
+            <exception cref="T:CMS.Ecommerce.InvalidCurrencyConversionException">Thrown when conversion fails (e.g. exchange rate not found).</exception>
         </member>
         <member name="M:CMS.Ecommerce.ExchangeRates.DefaultCurrencyConverter.#ctor(System.Func{System.String,CMS.Ecommerce.CurrencyInfo},System.Func{CMS.Ecommerce.CurrencyInfo,System.Decimal},System.Func{System.Decimal})">
             <summary>
@@ -150,14 +194,18 @@
             <param name="inCurrencyCode">Code of currency in which amount is expressed.</param>
             <param name="toCurrencyCode">Code of currency to convert amount to.</param>
             <returns>Amount converted to currency specified by toCurrencyCode parameter.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when currency with given code does not exist in the system.</exception>
+            <exception cref="T:CMS.Ecommerce.InvalidCurrencyConversionException">Thrown when conversion fails (e.g. exchange rate not found).</exception> 
         </member>
         <member name="M:CMS.Ecommerce.ExchangeRates.DefaultCurrencyConverter.GetExchangeRate(System.String,System.String)">
             <summary>
             Returns exchange rate for conversion from one currency to another. 
             Example: if 1 USD = 16 CZK then this method returns 1/16 = 0.0625 for conversion from USD to CZK.
             </summary>
-            <param name="fromCurrencyCode">Code of currency in which amount is expressed.</param>
-            <param name="toCurrencyCode">Code of currency to convert amount to.</param>
+            <param name="fromCurrencyCode">Code of currency in which amount is expressed, e.g. USD, EUR.</param>
+            <param name="toCurrencyCode">Code of currency to convert amount to, e.g. USD, EUR.</param>
+            <exception cref="T:System.ArgumentException">Thrown when currency with given code does not exist in the system.</exception>
+            <exception cref="T:CMS.Ecommerce.InvalidCurrencyConversionException">Thrown when conversion fails (e.g. exchange rate not found).</exception>
         </member>
         <member name="M:CMS.Ecommerce.ExchangeRates.DefaultCurrencyConverter.GetExchangeRate(CMS.Ecommerce.CurrencyInfo,CMS.Ecommerce.CurrencyInfo)">
             <summary>
@@ -165,6 +213,17 @@
             </summary>
             <param name="fromCurrency">Source currency.</param>
             <param name="toCurrency">Target currency.</param>
+        </member>
+        <member name="T:CMS.Ecommerce.InvalidCurrencyConversionException">
+            <summary>
+            The exception that is thrown when currency conversion fails.
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.InvalidCurrencyConversionException.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="message">Message</param>
         </member>
         <member name="T:CMS.Ecommerce.CarrierInfo">
             <summary>
@@ -721,11 +780,6 @@
         <member name="P:CMS.Ecommerce.IItemTax.ItemTaxValue">
             <summary>
             Tax class value.
-            </summary>
-        </member>
-        <member name="P:CMS.Ecommerce.IItemTax.ItemTaxIsFlat">
-            <summary>
-            True - tax class value is flat, False (default) - tax class value is relative.
             </summary>
         </member>
         <member name="P:CMS.Ecommerce.IItemTax.ItemTaxIsGlobal">
@@ -2297,13 +2351,6 @@
             Number of units the discount should be applied to
             </summary>
         </member>
-        <member name="M:CMS.Ecommerce.IConditionalDiscount.LogUseOnce(CMS.Ecommerce.ShoppingCartInfo,CMS.Ecommerce.ShoppingCartItemInfo)">
-            <summary>
-            Informs this discount that it was applied for given cart in context of specified product.
-            </summary>
-            <param name="cart">Shopping cart where the discount is used.</param>
-            <param name="item">Cart item on which the discount was applied. Use null if discount is not applied to any particular item.</param>
-        </member>
         <member name="P:CMS.Ecommerce.IConditionalDiscount.DiscountProductCondition">
             <summary>
             Macro condition regarding products which must be satisfied to be able to use discount
@@ -2437,13 +2484,6 @@
             </summary>
             <param name="item">Item to apply discount to.</param>
             <param name="basePrice">Base price to apply discount to. It is the item price with all previous discounts applied.</param>
-        </member>
-        <member name="M:CMS.Ecommerce.DiscountInfo.LogUseOnce(CMS.Ecommerce.ShoppingCartInfo,CMS.Ecommerce.ShoppingCartItemInfo)">
-            <summary>
-            Logs the use of this discount. Decrements used coupon code use count.
-            </summary>
-            <param name="cart">Shopping cart where the discount is used.</param>
-            <param name="item">Cart item on which the discount was applied. Use null if discount is not applied to any particular item.</param>
         </member>
         <member name="M:CMS.Ecommerce.DiscountInfo.LogUseOnce(System.String)">
             <summary>
@@ -2791,14 +2831,6 @@
             </summary>
             <param name="cart">Shopping cart to return filter for.</param>
         </member>
-        <member name="M:CMS.Ecommerce.DiscountInfoProvider.LogDiscountUseOnce(CMS.Ecommerce.DiscountInfo,CMS.Ecommerce.ShoppingCartInfo,CMS.Ecommerce.ShoppingCartItemInfo)">
-            <summary>
-            Logs the use of given discount in given cart for specified product if present.
-            </summary>
-            <param name="discount">Used discount.</param>
-            <param name="cart">Shopping cart where the discount is used.</param>
-            <param name="item">Cart item on which the discount was applied. Use null if discount is not applied to any particular item.</param>
-        </member>
         <member name="M:CMS.Ecommerce.DiscountInfoProvider.LogDiscountUseOnce(CMS.Ecommerce.DiscountInfo,System.String)">
             <summary>
             Informs this discount that it was applied.
@@ -2889,14 +2921,6 @@
             Returns CartDiscountsFilter for given shopping cart. This filter will be used during shopping cart evaluation.
             </summary>
             <param name="cart">Shopping cart to return filter for.</param>
-        </member>
-        <member name="M:CMS.Ecommerce.DiscountInfoProvider.LogDiscountUseOnceInternal(CMS.Ecommerce.DiscountInfo,CMS.Ecommerce.ShoppingCartInfo,CMS.Ecommerce.ShoppingCartItemInfo)">
-            <summary>
-            Logs the use of given discount in given cart for specified product if present.
-            </summary>
-            <param name="discount">Used discount.</param>
-            <param name="cart">Shopping cart where the discount is used.</param>
-            <param name="item">Cart item on which the discount was applied. Use null if discount is not applied to any particular item.</param>
         </member>
         <member name="M:CMS.Ecommerce.DiscountInfoProvider.LogDiscountUseOnceInternal(CMS.Ecommerce.DiscountInfo,System.String)">
             <summary>
@@ -3621,6 +3645,15 @@
             Returns list of discount applications.
             </summary>
         </member>
+        <member name="M:CMS.Ecommerce.MultiBuyDiscountsApplicator.GetSavings(CMS.Ecommerce.IMultiBuyDiscount,CMS.Ecommerce.ShoppingCartItemInfo,System.Int32,System.Boolean)">
+            <summary>
+            Returns discount saving for particular item.
+            </summary>
+            <param name="discount">Discount object</param>
+            <param name="item">Discounted item</param>
+            <param name="units">Discounted units count</param>
+            <param name="applyExchangeRate">Indicates if exchange rate from main currency is applied</param>
+        </member>
         <member name="M:CMS.Ecommerce.MultiBuyDiscountsApplicator.RememberDiscountApplication(CMS.Ecommerce.IMultiBuyDiscount,CMS.Ecommerce.ShoppingCartItemInfo,System.Int32)">
             <summary>
             Stores the information about application of discount on particular item.
@@ -3628,6 +3661,11 @@
             <param name="discount">Discount applied on item.</param>
             <param name="item">Item on which dhe discount was applied.</param>
             <param name="units">Number of discounted units.</param>
+        </member>
+        <member name="P:CMS.Ecommerce.MultiBuyDiscountsApplicator.DiscountApplications">
+            <summary>
+            Dictionary of multibuy discounts application [Discount -> [CartItem -> DiscountedUnitsCount]]
+            </summary>
         </member>
         <member name="T:CMS.Ecommerce.MultiBuyDiscountsAutoAdder">
             <summary>
@@ -4134,6 +4172,11 @@
             </summary>
             <param name="cart">Shopping cart info object to get applicator for.</param>
         </member>
+        <member name="M:CMS.Ecommerce.MultiBuyDiscountInfoProvider.GetMultiBuyDiscountsAplicator">
+            <summary>
+            Returns an instance of MultiBuyDiscountsApplicator.
+            </summary>
+        </member>
         <member name="M:CMS.Ecommerce.MultiBuyDiscountInfoProvider.AcceptsCoupon(CMS.Ecommerce.MultiBuyDiscountInfo,System.String,System.Boolean)">
             <summary>
             Indicates if given coupon code is suitable for discount. Returns false if discount has no codes assigned.
@@ -4212,6 +4255,11 @@
             Returns an instance of MultiBuyDiscountsEvaluator to be used for given shopping cart.
             </summary>
             <param name="cart">Shopping cart info object to get applicator for.</param>
+        </member>
+        <member name="M:CMS.Ecommerce.MultiBuyDiscountInfoProvider.GetMultiBuyDiscountsApplicatorInternal">
+            <summary>
+            Returns an instance of MultiBuyDiscountsApplicator.
+            </summary>
         </member>
         <member name="M:CMS.Ecommerce.MultiBuyDiscountInfoProvider.AcceptsCouponInternal(CMS.Ecommerce.MultiBuyDiscountInfo,System.String,System.Boolean)">
             <summary>
@@ -4494,6 +4542,50 @@
             Returns true if the factory is able to create the object of the given type
             </summary>
             <param name="objectType">Object type</param>
+        </member>
+        <member name="T:CMS.Ecommerce.InfoSerializer`1">
+            <summary>
+            Class designated for serialization of any AbstractInfo object into XML or
+            deserialization of corresponding XML into info object of generic type.
+            </summary>
+            <typeparam name="TInfo">Type of info object</typeparam>
+        </member>
+        <member name="M:CMS.Ecommerce.InfoSerializer`1.Serialize(`0)">
+            <summary>
+            Serializes given ObjectInfo into XML. The name of root element in resulted XML 
+            matches table name of info object.
+            </summary>
+            <param name="objectInfo">Info object to serialize</param>
+            <returns>String containing given ObjectInfo serialized into XML format.</returns>
+        </member>
+        <member name="M:CMS.Ecommerce.InfoSerializer`1.Deserialize(System.String)">
+            <summary>
+            Deserializes given XML string into ObjectInfo. 
+            </summary>
+            <param name="xmlString">XML data in string</param>
+            <returns>Deserialized InfoObject</returns>
+        </member>
+        <member name="M:CMS.Ecommerce.InfoSerializer`1.Deserialize(CMS.Helpers.XmlData)">
+            <summary>
+            Deserializes given XML into InfoObject. If info object contains a field that is not listed in XML, 
+            the field will contain its default value. If the XML contains an element that has no 
+            corresponding field in the class, the element is ignored.
+            If table name of current info object does not match with the root element of 
+            given XML, the method throws IllegalArgumentException. 
+            This is basic implicit conversion which handles only column add/remove scenario through 
+            versions. Any changes of column type or other explicit conversions must be covered in
+            custom method PerformConversion.
+            </summary>
+            <param name="xmlData">XMLData object containing info object to serialize.</param>
+            <returns>Deserialized InfoObject</returns>
+        </member>
+        <member name="M:CMS.Ecommerce.InfoSerializer`1.Convert(CMS.Helpers.XmlData,System.String,System.Type)">
+            <summary>
+            Converts XML string to correct type given column Name and type.
+            </summary>
+            <param name="data">XML Data set containing all data</param>
+            <param name="columnName">Name of the converting column</param>
+            <param name="type">Object type of the converting column</param>
         </member>
         <member name="T:CMS.Ecommerce.OrderPaidEventArgs">
             <summary>
@@ -4851,6 +4943,13 @@
             </summary>
             <param name="context">Live tile context.</param>
         </member>
+        <member name="M:CMS.Ecommerce.DepartmentMethods.GetDepartmentTaxClassSelectorWhereCondition(CMS.MacroEngine.EvaluationContext,System.Object[])">
+            <summary>
+            Returns where condition to select tax classes which can be assigned to edited department.
+            </summary>
+            <param name="context">Evaluation context with child resolver</param>
+            <param name="parameters">Method parameters</param>
+        </member>
         <member name="T:CMS.Ecommerce.EcommerceTransformationFunctions">
             <summary>
             Summary description for Functions.
@@ -4916,18 +5015,19 @@
         </member>
         <member name="M:CMS.Ecommerce.EcommerceTransformationFunctions.GetProductUrl(System.Object,System.Object,System.Object)">
             <summary>
-            Returns user friendly URL of the specified SKU and site name.
+            Returns user friendly URL of the specified SKU and site name. Does not uses hash tables to create URL.
             </summary>
             <param name="skuGuid">SKU Guid</param>
             <param name="skuName">SKU Name</param>
             <param name="siteNameObj">Site Name</param>
         </member>
-        <member name="M:CMS.Ecommerce.EcommerceTransformationFunctions.GetProductUrl(System.Object,System.Object)">
+        <member name="M:CMS.Ecommerce.EcommerceTransformationFunctions.GetProductUrlByID(System.Object,System.Object,System.Object)">
             <summary>
-            Returns user friendly URL of the specified SKU.
+            Returns user friendly URL of the specified SKU and site name. Uses hash tables to create URL.
             </summary>
-            <param name="skuGuid">SKU Guid</param>
+            <param name="skuID">SKU ID</param>
             <param name="skuName">SKU Name</param>
+            <param name="siteNameObj">Site Name</param>
         </member>
         <member name="M:CMS.Ecommerce.EcommerceTransformationFunctions.GetEproductUrl(System.Object,System.Object,System.Object)">
             <summary>
@@ -4984,6 +5084,12 @@
             <param name="Id">Internal status ID</param>
             <param name="column">Column name</param>
         </member>
+        <member name="M:CMS.Ecommerce.EcommerceTransformationFunctions.GetFormattedWeight(System.Double)">
+            <summary>
+            Returns formatted weight, based on mass unit format configuration.
+            </summary>
+            <param name="weight">"Weight to be formatted."</param>
+        </member>
         <member name="M:CMS.Ecommerce.EcommerceTransformationFunctions.GetPublicStatus(System.Object,System.String)">
             <summary>
             Gets object from the specified column of the public status with specific ID.
@@ -5028,8 +5134,8 @@
             Returns SKURetailPrice or price before discounts if saving is bigger.
             Returns zero if price saving is zero.
             </summary>
-            <param name="sku"></param>
-            <param name="taxes"></param>
+            <param name="sku">Product to calculate original price for.</param>
+            <param name="taxes">Indicates whether original price is returned including taxes.</param>
         </member>
         <member name="M:CMS.Ecommerce.EcommerceTransformationFunctions.GetSKUNodeAlias(CMS.Ecommerce.SKUInfo)">
             <summary>
@@ -5097,6 +5203,13 @@
             <param name="context">Evaluation context with child resolver</param>
             <param name="parameters">Method parameters</param>
         </member>
+        <member name="M:CMS.Ecommerce.EcommerceMethods.GetFormattedWeight(CMS.MacroEngine.EvaluationContext,System.Object[])">
+            <summary>
+            Returns formatted weight, based on mass unit format configuration.
+            </summary>
+            <param name="context">Evaluation context with child resolver</param>
+            <param name="parameters">Method parameters</param>
+        </member>
         <member name="M:CMS.Ecommerce.EcommerceMethods.GetSKUPriceSaving(CMS.MacroEngine.EvaluationContext,System.Object[])">
             <summary>
             Returns amount of saved money based on the difference between product seller price and product list price or price before discount.
@@ -5116,6 +5229,13 @@
         <member name="M:CMS.Ecommerce.EcommerceMethods.ShoppingCartURL(CMS.MacroEngine.EvaluationContext,System.Object[])">
             <summary>
             Returns URL to the shopping cart.
+            </summary>
+            <param name="context">Evaluation context with child resolver</param>
+            <param name="parameters">Method parameters</param>
+        </member>
+        <member name="M:CMS.Ecommerce.EcommerceMethods.ShoppingCartProducts(CMS.MacroEngine.EvaluationContext,System.Object[])">
+            <summary>
+            Returns products of the shopping cart. Bundle items and product options are excluded.
             </summary>
             <param name="context">Evaluation context with child resolver</param>
             <param name="parameters">Method parameters</param>
@@ -5431,46 +5551,6 @@
             Indicates if system automatically assigns default tax classes to new products based on department configuration.
             </summary>
         </member>
-        <member name="T:CMS.Ecommerce.ECommerceModuleMetadata">
-            <summary>
-            Represents the E-commerce module metadata.
-            </summary>
-        </member>
-        <member name="M:CMS.Ecommerce.ECommerceModuleMetadata.#ctor">
-            <summary>
-            Default constructor
-            </summary>
-        </member>
-        <member name="T:CMS.Ecommerce.EcommerceResolvers">
-            <summary>
-            Resolvers used in e-mail templates and other macro visual components.
-            </summary>
-        </member>
-        <member name="P:CMS.Ecommerce.EcommerceResolvers.SKUResolver">
-            <summary>
-            Returns SKU resolver.
-            </summary>
-        </member>
-        <member name="P:CMS.Ecommerce.EcommerceResolvers.CartResolver">
-            <summary>
-            Simplified shopping cart resolver.
-            </summary>
-        </member>
-        <member name="P:CMS.Ecommerce.EcommerceResolvers.ShoppingCartResolver">
-            <summary>
-            Shopping cart resolver.
-            </summary>
-        </member>
-        <member name="P:CMS.Ecommerce.EcommerceResolvers.EcommerceResolver">
-            <summary>
-            E-commerce e-mail template macro resolver.
-            </summary>
-        </member>
-        <member name="P:CMS.Ecommerce.EcommerceResolvers.EcommerceEproductExpirationResolver">
-            <summary>
-            E-commerce expiring e-product e-mail template macro resolver.
-            </summary>
-        </member>
         <member name="T:CMS.Ecommerce.ECommerceContext">
             <summary>
             E-commerce context.
@@ -5581,23 +5661,19 @@
             </summary>
             <param name="customer">Customer object</param>
         </member>
-        <member name="M:CMS.Ecommerce.ECommerceContext.SetCurrentShoppingCart(CMS.Ecommerce.ShoppingCartInfo)">
-            <summary>
-            Sets cookie, context values according to given shopping cart.
-            </summary>
-            <param name="cart">Shopping cart info object.</param>
-        </member>
-        <member name="M:CMS.Ecommerce.ECommerceContext.GetPreferredCurrencyID(CMS.Membership.UserInfo,CMS.Ecommerce.CustomerInfo)">
-            <summary>
-            Returns preferred currency of customer.
-            </summary>
-            <param name="currentUser">Current user.</param>
-            <param name="customer">Current customer.</param>
-            <returns></returns>
-        </member>
         <member name="P:CMS.Ecommerce.ECommerceContext.MoreCurrenciesUsedOnSite">
             <summary>
             Returns true, if more than one currency is used and enabled on current site, otherwise false.
+            </summary>
+        </member>
+        <member name="P:CMS.Ecommerce.ECommerceContext.OnlyOneShippingOptionAvailableOnSite">
+            <summary>
+            Returns true, if there is only one shipping option available on current site, otherwise false.
+            </summary>
+        </member>
+        <member name="P:CMS.Ecommerce.ECommerceContext.OnlyOnePaymentOptionAvailableOnSite">
+            <summary>
+            Returns true, if there is only one payment option available on current site, otherwise false.
             </summary>
         </member>
         <member name="P:CMS.Ecommerce.ECommerceContext.IsExchangeRateFromGlobalMainCurrencyMissing">
@@ -5608,7 +5684,7 @@
         </member>
         <member name="P:CMS.Ecommerce.ECommerceContext.CurrentCustomer">
             <summary>
-            Current customer.
+            Customer from current shopping cart.
             </summary>
         </member>
         <member name="P:CMS.Ecommerce.ECommerceContext.CurrentCustomerCountry">
@@ -5667,9 +5743,59 @@
             Current product public status.
             </summary>
         </member>
+        <member name="T:CMS.Ecommerce.ECommerceModuleMetadata">
+            <summary>
+            Represents the E-commerce module metadata.
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.ECommerceModuleMetadata.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="T:CMS.Ecommerce.EcommerceResolvers">
+            <summary>
+            Resolvers used in e-mail templates and other macro visual components.
+            </summary>
+        </member>
+        <member name="P:CMS.Ecommerce.EcommerceResolvers.SKUResolver">
+            <summary>
+            Returns SKU resolver.
+            </summary>
+        </member>
+        <member name="P:CMS.Ecommerce.EcommerceResolvers.CartResolver">
+            <summary>
+            Simplified shopping cart resolver.
+            </summary>
+        </member>
+        <member name="P:CMS.Ecommerce.EcommerceResolvers.ShoppingCartResolver">
+            <summary>
+            Shopping cart resolver.
+            </summary>
+        </member>
+        <member name="P:CMS.Ecommerce.EcommerceResolvers.EcommerceResolver">
+            <summary>
+            E-commerce e-mail template macro resolver.
+            </summary>
+        </member>
+        <member name="P:CMS.Ecommerce.EcommerceResolvers.EcommerceEproductExpirationResolver">
+            <summary>
+            E-commerce expiring e-product e-mail template macro resolver.
+            </summary>
+        </member>
         <member name="T:CMS.Ecommerce.ECommerceModule">
             <summary>
             Represents the E-commerce module.
+            </summary>
+        </member>
+        <member name="F:CMS.Ecommerce.ECommerceModule.ECOMMERCE_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for ecommerce.
+            </summary>
+        </member>
+        <member name="F:CMS.Ecommerce.ECommerceModule.ECOMMERCE_EPRODUCT_EXPIRATION_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for ecommerce e-product expiration.
             </summary>
         </member>
         <member name="M:CMS.Ecommerce.ECommerceModule.#ctor">
@@ -5682,11 +5808,6 @@
             Initializes the module
             </summary>
         </member>
-        <member name="M:CMS.Ecommerce.ECommerceModule.CheckPermissions_Before(System.Object,CMS.DataEngine.ObjectSecurityEventArgs)">
-            <summary>
-            Checks permissions for e-commerce macro rules.
-            </summary>
-        </member>
         <member name="M:CMS.Ecommerce.ECommerceModule.SynchronizeTask_After(System.Object,CMS.Synchronization.StagingTaskEventArgs)">
             <summary>
              Fires after the staging processes task.
@@ -5695,12 +5816,6 @@
         <member name="M:CMS.Ecommerce.ECommerceModule.ProcessTask_Before(System.Object,CMS.Synchronization.StagingSynchronizationEventArgs)">
             <summary>
             Fires before the staging processes task.
-            </summary>
-        </member>
-        <member name="M:CMS.Ecommerce.ECommerceModule.Import_Before(System.Object,CMS.CMSImportExport.ImportBaseEventArgs)">
-            <summary>
-            Ensures that global shipping options are imported to 8.2 and higher version.
-            Since 8.2 only site shipping options are allowed.
             </summary>
         </member>
         <member name="M:CMS.Ecommerce.ECommerceModule.ClearHashtables(System.Boolean)">
@@ -5962,11 +6077,6 @@
             Represents CMSStoreAllowGlobalDepartments e-commerce setting key name.
             </summary>
         </member>
-        <member name="F:CMS.Ecommerce.ECommerceSettings.ALLOW_GLOBAL_SHIPPING_OPTIONS">
-            <summary>
-            Represents CMSStoreAllowGlobalShippingOptions e-commerce setting key name.
-            </summary>
-        </member>
         <member name="F:CMS.Ecommerce.ECommerceSettings.ALLOW_GLOBAL_PAYMENT_METHODS">
             <summary>
             Represents CMSStoreAllowGlobalPaymentMethods e-commerce setting key name.
@@ -6110,6 +6220,16 @@
         <member name="F:CMS.Ecommerce.ECommerceSettings.AUTOMATIC_REGISTRATION_EMAIL_TEMPLATE">
             <summary>
             Represents CMSStoreAutoRegistrationEmailTemplate e-commerce setting key name.
+            </summary>
+        </member>
+        <member name="F:CMS.Ecommerce.ECommerceSettings.SHOPPING_CART_EXPIRATION_PERIOD">
+            <summary>
+            Represents CMSShoppingCartExpirationPeriod e-commerce setting key name.
+            </summary>
+        </member>
+        <member name="F:CMS.Ecommerce.ECommerceSettings.MARK_SHOPPING_CART_AS_ABANDONED_PERIOD">
+            <summary>
+            Represents CMSMarkShoppingCartAsAbandonedPeriod e-commerce setting key name.
             </summary>
         </member>
         <member name="M:CMS.Ecommerce.ECommerceSettings.AllowAnonymousCustomers(CMS.DataEngine.SiteInfoIdentifier)">
@@ -6264,12 +6384,6 @@
         <member name="M:CMS.Ecommerce.ECommerceSettings.AllowGlobalDepartments(CMS.DataEngine.SiteInfoIdentifier)">
             <summary>
             Indicates if global departments are allowed.
-            </summary>
-            <param name="siteIdentifier">Code name or ID of the site. Use null or empty string for global setting</param>
-        </member>
-        <member name="M:CMS.Ecommerce.ECommerceSettings.AllowGlobalShippingOptions(CMS.DataEngine.SiteInfoIdentifier)">
-            <summary>
-            Indicates if global shipping options are allowed.
             </summary>
             <param name="siteIdentifier">Code name or ID of the site. Use null or empty string for global setting</param>
         </member>
@@ -6429,6 +6543,20 @@
             </summary>
             <param name="siteIdentifier">Code name or ID of the site. Use null or empty string for global setting</param>
         </member>
+        <member name="M:CMS.Ecommerce.ECommerceSettings.ShoppingCartExpirationPeriod(CMS.DataEngine.SiteInfoIdentifier)">
+            <summary>
+            Number of days before the shopping cart is expired.
+            Default value is 30 days.
+            </summary>
+            <param name="siteIdentifier">Code name or ID of the site. Use null or empty string for global setting</param>
+        </member>
+        <member name="M:CMS.Ecommerce.ECommerceSettings.MarkShoppingCartAsAbandonedPeriod(CMS.DataEngine.SiteInfoIdentifier)">
+            <summary>
+            Number of hours after which are shopping carts marked as abandoned.
+            Default value is 4 hours.
+            </summary>
+            <param name="siteIdentifier">Code name or ID of the site. Use null or empty string for global setting</param>
+        </member>
         <member name="M:CMS.Ecommerce.ECommerceSettings.GetGlobalKeyForType(System.String)">
             <summary>
             Returns settings key name allowing global object of given object type.
@@ -6493,12 +6621,6 @@
             <summary>
             Indicates if meta file should be used for product image. Value is taken from webconfig key CMSUseMetaFileForProductImage.
             Default value is true.
-            </summary>
-        </member>
-        <member name="P:CMS.Ecommerce.ECommerceSettings.ShoppingCartExpirationPeriod">
-            <summary>
-            Number of days before the shopping cart is expired. Value is taken from webconfig key CMSShoppingCartExpirationPeriod.
-            Default value is 30 days.
             </summary>
         </member>
         <member name="P:CMS.Ecommerce.ECommerceSettings.ProvidersCacheMinutes">
@@ -6795,6 +6917,47 @@
             Taxes are based on shipping address.
             </summary>
         </member>
+        <member name="T:CMS.Ecommerce.DocumentHandlers">
+            <summary>
+            Provides handlers for special SKUs actions within document actions
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.DocumentHandlers.Init">
+            <summary>
+            Initializes the document handlers
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.DocumentHandlers.EnsureProductSiteConsistency(System.Object,CMS.DocumentEngine.DocumentEventArgs)">
+            <summary>
+            Removes sku from document when document is moved to another site. 
+            SKU is removed only if is not accessible on target site.
+            </summary>
+        </member>
+        <member name="T:CMS.Ecommerce.MacroEngineHandlers">
+            <summary>
+            Provides handlers for Ecommerce and MacroEngine modules interaction.
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.MacroEngineHandlers.Init">
+            <summary>
+            Initializes the macro rules handlers.
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.MacroEngineHandlers.CheckPermissions_Before(System.Object,CMS.DataEngine.ObjectSecurityEventArgs)">
+            <summary>
+            Checks permissions for e-commerce macro rules.
+            </summary>
+        </member>
+        <member name="T:CMS.Ecommerce.MembershipHandlers">
+            <summary>
+            Provides handlers for Ecommerce and Membership modules interaction.
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.MembershipHandlers.Init">
+            <summary>
+            Initializes the membership handlers.
+            </summary>
+        </member>
         <member name="T:CMS.Ecommerce.SKUImport">
             <summary>
             Handles special actions during the SKU import process.
@@ -6842,6 +7005,12 @@
         <member name="M:CMS.Ecommerce.ImportSpecialActions.Init">
             <summary>
             Initializes export handlers
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.ImportSpecialActions.Import_Before(System.Object,CMS.CMSImportExport.ImportBaseEventArgs)">
+            <summary>
+            Ensures that global shipping options are imported to 8.2 and higher version.
+            Since 8.2 only site shipping options are allowed.
             </summary>
         </member>
         <member name="T:CMS.Ecommerce.OrderAddressInfo">
@@ -7940,11 +8109,6 @@
             Tax class value. It can be either relative or flat according to the ItemTaxClassIsFlat property.
             </summary>
         </member>
-        <member name="P:CMS.Ecommerce.ItemTax.ItemTaxIsFlat">
-            <summary>
-            True - tax class value is flat, False (default) - tax class is relative.
-            </summary>
-        </member>
         <member name="P:CMS.Ecommerce.ItemTax.ItemTaxIsGlobal">
             <summary>
             True - tax class value is set in global main currency, False (default) - tax class value is set in site main currency. 
@@ -7961,17 +8125,17 @@
             Tax class custom data.
             </summary>
         </member>
-        <member name="T:CMS.Ecommerce.ECommerceSynchronization">
+        <member name="T:CMS.Ecommerce.EcommerceSynchronization">
             <summary>
             Web farm synchronization for the E-commerce module
             </summary>
         </member>
-        <member name="M:CMS.Ecommerce.ECommerceSynchronization.Init">
+        <member name="M:CMS.Ecommerce.EcommerceSynchronization.Init">
             <summary>
             Initializes the tasks for media files synchronization
             </summary>
         </member>
-        <member name="M:CMS.Ecommerce.ECommerceSynchronization.RecalculateValuesCleanup(System.String,System.String,CMS.Core.BinaryData)">
+        <member name="M:CMS.Ecommerce.EcommerceSynchronization.RecalculateValuesCleanup(System.String,System.String[],CMS.Core.BinaryData)">
             <summary>
             Memory cleanup after currency change recalculation
             </summary>
@@ -10361,12 +10525,6 @@
             <param name="siteId">ID of the site the currencies should be retrieved from. If set to 0, global currencies are retrieved</param>
             <param name="onlyEnabled">If true, only enabled currencies are returned</param>
         </member>
-        <member name="M:CMS.Ecommerce.CurrencyInfoProvider.GetCurrenciesWithExchangeRate(System.Int32)">
-            <summary>
-            Returns data query with the enabled currencies which have the exchange rate set.
-            </summary>
-            <param name="siteId">Site ID</param>
-        </member>
         <member name="M:CMS.Ecommerce.CurrencyInfoProvider.IsCurrencyWithExchangeRate(System.Int32,System.Int32)">
             <summary>
             Returns true if site specified by its ID has defined exchange rate to given currency. Only enabled currencies are searched.
@@ -10458,7 +10616,7 @@
             </summary>
             <param name="siteId">ID of the site, which main currency is to be changed</param>
             <param name="newCurrencyId">ID of the new main currency</param>
-            <param name="coefficient">Exchange rate which will be used wen recalculating</param>
+            <param name="coefficient">Exchange rate which will be used when recalculating</param>
             <param name="roundTo">Number of decimal digits to which the result will be rounded</param>
             <param name="settings">Determines which objects are to be recalculated</param>
         </member>
@@ -10499,12 +10657,6 @@
             </summary>
             <param name="siteId">ID of the site the currencies should be retrieved from. If set to 0, global currencies are retrieved</param>
             <param name="onlyEnabled">True - only enabled currencies from the specified site are returned. False - all site currencies are returned</param>
-        </member>
-        <member name="M:CMS.Ecommerce.CurrencyInfoProvider.GetCurrenciesWithExchangeRateInternal(System.Int32)">
-            <summary>
-            Returns data query with the enabled currencies which have the exchange rate set.
-            </summary>
-            <param name="siteId">Site ID</param>
         </member>
         <member name="M:CMS.Ecommerce.CurrencyInfoProvider.IsCurrencyWithExchangeRateInternal(System.Int32,System.Int32)">
             <summary>
@@ -10590,7 +10742,7 @@
             </summary>
             <param name="siteId">ID of the site, which main currency is to be changed</param>
             <param name="newCurrencyId">ID of the new main currency</param>
-            <param name="rate">Exchange rate which will be used wen recalculating</param>
+            <param name="rate">Exchange rate which will be used when recalculating</param>
             <param name="round">Number of decimal digits to which the result will be rounded</param>
             <param name="settings">Determines which objects are to be recalculated</param>
         </member>
@@ -10963,6 +11115,20 @@
             <param name="emailTemplateCodeName">Template</param>
             <param name="siteId">Site Id</param>
         </member>
+        <member name="M:CMS.Ecommerce.CustomerInfoProvider.CopyDataFromCustomerToUser(CMS.Ecommerce.CustomerInfo,CMS.Membership.UserInfo)">
+            <summary>
+            Copies customers data to user object (first name, last name, full name, phone, email). Returns true if data were different. 
+            </summary>
+            <param name="customer">Customer info object as a source of user info data.</param>
+            <param name="user">User info object to be updated.</param>
+        </member>
+        <member name="M:CMS.Ecommerce.CustomerInfoProvider.CopyDataFormUserToCustomer(CMS.Ecommerce.CustomerInfo,CMS.Membership.UserInfo)">
+            <summary>
+            Copies users data to customer object (first name, last name, phone, email). Returns true if data were different. 
+            </summary>
+            <param name="customer">Customer to be updated.</param>
+            <param name="user">User info as a source of data.</param>
+        </member>
         <member name="M:CMS.Ecommerce.CustomerInfoProvider.GetCustomerInfoInternal(System.Int32)">
             <summary>
             Returns customer with specified ID.
@@ -11034,6 +11200,20 @@
             <param name="password">New password</param>
             <param name="username">New username</param>
         </member>
+        <member name="M:CMS.Ecommerce.CustomerInfoProvider.CopyDataFromCustomerToUserInternal(CMS.Ecommerce.CustomerInfo,CMS.Membership.UserInfo)">
+            <summary>
+            Copies customers data to user object (first name, last name, full name, phone, email). Returns true if data were different. 
+            </summary>
+            <param name="customer">Customer info object as a source of user info data.</param>
+            <param name="user">User info object to be updated.</param>
+        </member>
+        <member name="M:CMS.Ecommerce.CustomerInfoProvider.CopyDataFromUserToCustomerInternal(CMS.Ecommerce.CustomerInfo,CMS.Membership.UserInfo)">
+            <summary>
+            Copies users data to customer object (first name, last name, phone, email). Returns true if data were different. 
+            </summary>
+            <param name="customer">Customer to be updated.</param>
+            <param name="user">User info as a source of data.</param>
+        </member>
         <member name="M:CMS.Ecommerce.CustomerInfoProvider.SendLoginDetailsNotificationEmailInternal(CMS.Membership.UserInfo,System.String,System.String,System.Int32)">
             <summary>
             Send login details notification email based on given template. Resolves macros "UserName", "Password", "UserFullName", "AccountUrl".
@@ -11043,6 +11223,17 @@
             <param name="password">New password</param>
             <param name="emailTemplateCodeName">Template</param>
             <param name="siteId">Site Id</param>
+        </member>
+        <member name="M:CMS.Ecommerce.CustomerInfoProvider.SynchronizeCustomers(CMS.Membership.UserInfo)">
+            <summary>
+            Selects collection of customers for given user and ensures synchronization of values first name, last name, phone and email.
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.CustomerInfoProvider.SynchronizeUser(CMS.Ecommerce.CustomerInfo)">
+            <summary>
+            Ensures synchronization of customer's user if customer's first name, last name, phone or email has changed.
+            </summary>
+            <param name="customer"></param>
         </member>
         <member name="T:CMS.Ecommerce.DepartmentInfo">
             <summary>
@@ -12048,7 +12239,7 @@
         <member name="M:CMS.Ecommerce.ExchangeRateInfoProvider.GetLastExchangeRate(System.Int32,System.Int32,System.Boolean)">
             <summary>
             Returns valid exchange rate between main currency of the specified site and currency specified by currencyID
-            or last invalid exchange rate if no valid rate found or 1 if no exchange rate found.
+            or last invalid exchange rate if no valid rate found. Throws an exception when currency or exchange rate not found.
             </summary>
             <param name="currencyId">ID of the currency to which we want exchange</param>
             <param name="siteId">ID of the site for which the exchange rate should be returned</param>
@@ -12112,11 +12303,13 @@
         <member name="M:CMS.Ecommerce.ExchangeRateInfoProvider.GetLastExchangeRateInternal(System.Int32,System.Int32,System.Boolean)">
             <summary>
             Returns valid exchange rate between main currency of the specified site and currency specified by currencyID
-            or last invalid exchange rate if no valid rate found or 1 if no exchange rate found.
+            or last invalid exchange rate if no valid rate found. Throws an exception when currency or exchange rate not found.
             </summary>
             <param name="currencyId">ID of the currency to which we want exchange</param>
             <param name="siteId">ID of the site for which the exchange rate should be returned</param>
             <param name="fromGlobal">If set to true, exchange rate between global main currency and specified site currency is calculated and returned. Has effect only when converting to site currency</param>
+            <exception cref="T:System.ArgumentException">Thrown when currency with given code does not exist in the system.</exception>
+            <exception cref="T:CMS.Ecommerce.InvalidCurrencyConversionException">Thrown when trying to convert currencies among different sites.</exception>
         </member>
         <member name="M:CMS.Ecommerce.ExchangeRateInfoProvider.ApplyExchangeRateInternal(System.Double,System.Double)">
             <summary>
@@ -12153,10 +12346,11 @@
         <member name="M:CMS.Ecommerce.ExchangeRateInfoProvider.GetLastExchangeRateFromDB(System.Int32,System.Int32)">
             <summary>
             Returns valid exchange rate between main currency of the specified site and currency specified by ID
-            or last invalid exchange rate if no valid rate found or 1 if no exchange rate found. Takes data from database.
+            or last invalid exchange rate if no valid rate found. Throws an exception when exchange rate not found. Takes data from database.
             </summary>
             <param name="currencyId">ID of the currency to which we want exchange</param>
             <param name="siteId">ID of the site for which the exchange rate should be returned</param>
+            <exception cref="T:CMS.Ecommerce.InvalidCurrencyConversionException">Thrown when no suitable exchange rate found.</exception>
         </member>
         <member name="T:CMS.Ecommerce.ExchangeTableInfo">
             <summary>
@@ -12321,13 +12515,6 @@
             </summary>
             <param name="siteId">Site ID</param>
         </member>
-        <member name="M:CMS.Ecommerce.ExchangeTableInfoProvider.IsExchangeRateFromGlobalMainCurrencyMissing(System.Int32)">
-            <summary>
-            Indicates if exchange rate from global main currency is missing in the last valid exchange table. Returns false if site uses
-            global currencies or global exchange rates or code of site main currency is the same as code of global main currency.
-            </summary>
-            <param name="siteId">Site ID</param>
-        </member>
         <member name="M:CMS.Ecommerce.ExchangeTableInfoProvider.RecalculateExchangeRateFromGlobalMainCurrency(System.Single,System.Int32,System.String,System.Int32)">
             <summary>
             Recalculates exchange rates from global main currency using the given coefficient.
@@ -12340,7 +12527,7 @@
         <member name="M:CMS.Ecommerce.ExchangeTableInfoProvider.GetLastExchangeRateFromGlobalMainCurrency(System.Int32)">
             <summary>
             Returns valid exchange rate from global main currency to the currency of the specified site
-            or last invalid exchange rate if no valid rate found or 1 if no exchange rate found.
+            or last invalid exchange rate if no valid rate found. Throws an exception when no rate found.
             If site uses global currencies or global currency code equals site currency code, 1 is returned automatically.
             </summary>
             <param name="siteId">ID of the site for which the exchange rate should be returned</param>  
@@ -12389,13 +12576,6 @@
             </summary>
             <param name="siteId">Site ID</param>
         </member>
-        <member name="M:CMS.Ecommerce.ExchangeTableInfoProvider.IsExchangeRateFromGlobalMainCurrencyMissingInternal(System.Int32)">
-            <summary>
-            Indicates if exchange rate from global main currency is missing in the last valid exchange table. Returns false if site uses
-            global currencies or global exchange rates or code of site main currency is the same as code of global main currency.
-            </summary>
-            <param name="siteId">Site ID</param>
-        </member>
         <member name="M:CMS.Ecommerce.ExchangeTableInfoProvider.RecalculateExchangeRateFromGlobalMainCurrencyInternal(System.Single,System.Int32,System.String,System.Int32)">
             <summary>
             Recalculates exchange rates from global main currency using the given coefficient.
@@ -12408,10 +12588,11 @@
         <member name="M:CMS.Ecommerce.ExchangeTableInfoProvider.GetLastExchangeRateFromGlobalMainCurrencyInternal(System.Int32)">
             <summary>
             Returns valid exchange rate from global main currency to the currency of the specified site
-            or last invalid exchange rate if no valid rate found or 1 if no exchange rate found.
+            or last invalid exchange rate if no valid rate found. Throws an exception when no rate found.
             If site uses global currencies or global currency code equals site currency code, 1 is returned automatically.
             </summary>
-            <param name="siteId">ID of the site for which the exchange rate should be returned</param>      
+            <param name="siteId">ID of the site for which the exchange rate should be returned</param>
+            <exception cref="T:CMS.Ecommerce.InvalidCurrencyConversionException">Thrown when exchange rate from global main currency is not specified.</exception>
         </member>
         <member name="M:CMS.Ecommerce.ExchangeTableInfoProvider.GetLastValidTableInfo(System.Int32,CMS.Helpers.CacheSettings)">
             <summary>
@@ -12666,11 +12847,6 @@
         <member name="P:CMS.Ecommerce.ManufacturerInfo.ManufacturerEnabled">
             <summary>
             Manufacturer enabled.
-            </summary>
-        </member>
-        <member name="P:CMS.Ecommerce.ManufacturerInfo.ManufacturerIsImportant">
-            <summary>
-            Indicates if manufacturer is important. This flag is mostly used for filter purposes.
             </summary>
         </member>
         <member name="P:CMS.Ecommerce.ManufacturerInfo.ManufacturerID">
@@ -13286,13 +13462,9 @@
         <member name="P:CMS.Ecommerce.OrderInfo.OrderShippingTaxes">
             <summary>
             Xml content with the summary of the taxes which were applied to the selected shipping option. 
-            Contains tags "TaxClassID", "TaxClassDisplayName", "TaxClassZeroIfIDSupplied", "TaxValue", "TaxIsFlat". The root tag is ShippingTaxes.
-            </summary>
-        </member>
-        <member name="P:CMS.Ecommerce.OrderInfo.OrderContentTaxes">
-            <summary>
-            Xml content with the summary of the taxes which were applied shopping cart item.
-            Contains tags "SKUID", "TaxClassID", "TaxClassDisplayName", "TaxClassZeroIfIDSupplied", "TaxValue", "TaxIsFlat". The root tag is ContentTaxes.
+            Contains tags "TaxClassID", "TaxClassDisplayName", "TaxClassZeroIfIDSupplied", "TaxValue", "TaxIsFlat".
+            The "TaxIsFlat" tag is available only in CMS 8.2 and lower versions.
+            The root tag is ShippingTaxes.
             </summary>
         </member>
         <member name="P:CMS.Ecommerce.OrderInfo.OrderTotalTax">
@@ -13511,16 +13683,6 @@
             </summary>
             <param name="logTasks">If true, web farm tasks are logged</param>
         </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GenerateData">
-            <summary>
-            Generate sample data
-            </summary>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.DeleteData">
-            <summary>
-            Delete sample data
-            </summary>
-        </member>
         <member name="M:CMS.Ecommerce.OrderInfoProvider.GetOrders(System.Int32)">
             <summary>
             Returns query for all orders for specified site.
@@ -13538,93 +13700,6 @@
             Returns invoice number generated from given shopping cart data.
             </summary>
             <param name="cart">Shopping cart info object to generate invoice number for</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetInvoice(System.Int32)">
-            <summary>
-            Returns html code that represents invoice of order specified by ID.
-            </summary>
-            <param name="orderId">Order ID</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetInvoice(CMS.Ecommerce.ShoppingCartInfo)">
-            <summary>
-            Returns html code that represents invoice of order loaded in the given shopping cart.
-            </summary>
-            <param name="cart">Shopping cart with order data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetAddress(CMS.Ecommerce.IAddress)">
-            <summary>
-            Returns html code that represents address. Used for generating of invoice.
-            </summary>
-            <param name="address">Address</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetPaymentOption(System.Int32)">
-            <summary>
-            Returns html code that represents payment option. Used for generating of invoice.
-            </summary>
-            <param name="paymentId">Payment option ID</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetShippingOption(System.Int32)">
-            <summary>
-            Returns html code that represents shipping option. Used for generating of invoice.
-            </summary>
-            <param name="shippingId">Shipping option ID</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetInvoiceNumber(CMS.Ecommerce.OrderInfo)">
-            <summary>
-            Returns html code that represents invoice number. Used for generating of invoice.
-            </summary>
-            <param name="order">Order data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetOrderDate(CMS.Ecommerce.OrderInfo)">
-            <summary>
-            Returns html code that represents date of order. Used for generating of invoice.
-            </summary>
-            <param name="order">Order data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetOrderNote(CMS.Ecommerce.OrderInfo)">
-            <summary>
-            Returns html code that represents note of order. Used for generating of invoice.
-            </summary>
-            <param name="order">Order data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetProductList(CMS.Ecommerce.ShoppingCartInfo)">
-            <summary>
-            Returns html code that represents product list. Used for generating of invoice.
-            </summary>
-            <param name="cart">Shopping cart data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetTotalPrice(System.Double,CMS.Ecommerce.CurrencyInfo)">
-            <summary>
-            Returns html code that represents total price of order. Used for generating of invoice.
-            </summary>
-            <param name="value">Price value</param>
-            <param name="currency">Currency to use</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetTaxRecapitulation(System.Data.DataTable,CMS.Ecommerce.CurrencyInfo)">
-            <summary>
-            Returns html code that represents info about used taxes. Used for generating of invoice.
-            </summary>
-            <param name="taxes">Table with the tax summary</param>
-            <param name="currency">Currency data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetTaxRegistrationID(CMS.Ecommerce.CustomerInfo)">
-            <summary>
-            Returns html code that represents info about customer tax registration ID. Used for generating of invoice.
-            </summary>
-            <param name="customerObj">Customer data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetOrganizationID(CMS.Ecommerce.CustomerInfo)">
-            <summary>
-            Returns html code that represents info about customer tax registration ID. Used for generating of invoice.
-            </summary>
-            <param name="customerObj">Customer data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetTotalShipping(System.Double,CMS.Ecommerce.CurrencyInfo)">
-            <summary>
-            Returns html code that represents total shipping of order. Used for generating of invoice.
-            </summary>
-            <param name="value">Price value</param>
-            <param name="currency">Currency to use</param>
         </member>
         <member name="M:CMS.Ecommerce.OrderInfoProvider.CreateEmailMacroResolver(CMS.Ecommerce.ShoppingCartInfo)">
             <summary>
@@ -13803,93 +13878,6 @@
             <param name="skui">SKU</param>
             <param name="now">Date and time to use as current date and time value</param>
         </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetInvoiceInternal(System.Int32)">
-            <summary>
-            Returns html code that represents invoice of order specified by ID.
-            </summary>
-            <param name="orderId">Order ID</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetInvoiceInternal(CMS.Ecommerce.ShoppingCartInfo)">
-            <summary>
-            Returns html code that represents invoice of order loaded in the given shopping cart.
-            </summary>
-            <param name="cart">Shopping cart with order data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetAddressInternal(CMS.Ecommerce.IAddress)">
-            <summary>
-            Returns html code that represents address. Used for generating of invoice.
-            </summary>
-            <param name="address">Address ID</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetPaymentOptionInternal(System.Int32)">
-            <summary>
-            Returns html code that represents payment option. Used for generating of invoice.
-            </summary>
-            <param name="paymentId">Payment option ID</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetShippingOptionInternal(System.Int32)">
-            <summary>
-            Returns html code that represents shipping option. Used for generating of invoice.
-            </summary>
-            <param name="shippingId">Shipping option ID</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetInvoiceNumberInternal(CMS.Ecommerce.OrderInfo)">
-            <summary>
-            Returns html code that represents invoice number. Used for generating of invoice.
-            </summary>
-            <param name="order">Order data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetOrderDateInternal(CMS.Ecommerce.OrderInfo)">
-            <summary>
-            Returns html code that represents date of order. Used for generating of invoice.
-            </summary>
-            <param name="order">Order data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetOrderNoteInternal(CMS.Ecommerce.OrderInfo)">
-            <summary>
-            Returns html code that represents note of order. Used for generating of invoice.
-            </summary>
-            <param name="order">Order data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetProductListInternal(CMS.Ecommerce.ShoppingCartInfo)">
-            <summary>
-            Returns html code that represents product list. Used for generating of invoice.
-            </summary>
-            <param name="cart">Shopping cart data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetTotalPriceInternal(System.Double,CMS.Ecommerce.CurrencyInfo)">
-            <summary>
-            Returns html code that represents total price of order. Used for generating of invoice.
-            </summary>
-            <param name="value">Price value</param>
-            <param name="currency">Currency to use</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetTaxRecapitulationInternal(System.Data.DataTable,CMS.Ecommerce.CurrencyInfo)">
-            <summary>
-            Returns html code that represents info about used taxes. Used for generating of invoice.
-            </summary>
-            <param name="taxes">Table with the tax summary</param>
-            <param name="currency">Currency data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetTaxRegistrationIDInternal(CMS.Ecommerce.CustomerInfo)">
-            <summary>
-            Returns html code that represents info about customer tax registration ID. Used for generating of invoice.
-            </summary>
-            <param name="customerObj">Customer data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetOrganizationIDInternal(CMS.Ecommerce.CustomerInfo)">
-            <summary>
-            Returns html code that represents info about customer tax registration ID. Used for generating of invoice.
-            </summary>
-            <param name="customerObj">Customer data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GetTotalShippingInternal(System.Double,CMS.Ecommerce.CurrencyInfo)">
-            <summary>
-            Returns html code that represents total shipping of order. Used for generating of invoice.
-            </summary>
-            <param name="value">Price value</param>
-            <param name="currency">Currency to use</param>
-        </member>
         <member name="M:CMS.Ecommerce.OrderInfoProvider.CreateEmailMacroResolverInternal(CMS.Ecommerce.ShoppingCartInfo)">
             <summary>
             Creates the macro resolver for the given shopping cart.
@@ -13948,16 +13936,6 @@
             <param name="defaultSubject">E-mail default subject. It is used if template subject is not specified</param>
             <param name="toCustomer">True - it is a notification to customer. False - it is a notification to administrator</param>
             <param name="eventSource">Source of the event which is logged when sending fails</param>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.GenerateDataInternal">
-            <summary>
-            Generate sample data internal
-            </summary>
-        </member>
-        <member name="M:CMS.Ecommerce.OrderInfoProvider.DeleteDataInternal">
-            <summary>
-            Delete sample data internal
-            </summary>
         </member>
         <member name="T:CMS.Ecommerce.OrderItemInfo">
             <summary>
@@ -15832,11 +15810,6 @@
             Indicates whether product prices will be recalculated.
             </summary>
         </member>
-        <member name="P:CMS.Ecommerce.RecalculationSettings.Taxes">
-            <summary>
-            Indicates whether flat taxes will be recalculated.
-            </summary>
-        </member>
         <member name="P:CMS.Ecommerce.RecalculationSettings.Discounts">
             <summary>
             Indicates whether discounts will be recalculated.
@@ -15852,15 +15825,53 @@
             Indicates whether shipping options charges and costs will be recalculated.
             </summary>
         </member>
-        <member name="P:CMS.Ecommerce.RecalculationSettings.Documents">
-            <summary>
-            Indicates whether prices in used in products will be recalculated.
-            </summary>
-        </member>
         <member name="P:CMS.Ecommerce.RecalculationSettings.Orders">
             <summary>
             Indicates whether order total price and order items' prices in main currency will be recalculated.
             </summary>
+        </member>
+        <member name="T:CMS.Ecommerce.Internal.DancingGoatSampleDataGenerator">
+            <summary>
+            Sample ecommerce data generator providing sample data for Dancing Goat demo site.
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.Internal.DancingGoatSampleDataGenerator.Generate(System.Int32)">
+            <summary>
+            Generates sample ecommerce data. Suitable only for Dancing Goat demo site.
+            </summary>
+            <param name="siteID">ID of the site to generate sample data for.</param>
+        </member>
+        <member name="M:CMS.Ecommerce.Internal.DancingGoatSampleDataGenerator.#ctor">
+            <summary>
+            Constructor. Creates new instance of DancingGoatSampleDataGenerator.
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.Internal.DancingGoatSampleDataGenerator.GenerateEcommerceData(System.Int32)">
+            <summary>
+            Runs generator of Ecommerce data. It includes Customers, Orders, Order items and Order addresses
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.Internal.DancingGoatSampleDataGenerator.GenerateOrderItems(CMS.Ecommerce.OrderInfo,System.Collections.Generic.IList{CMS.Ecommerce.SKUInfo},System.Double@)">
+            <summary>
+            Generates order items to given order using random products. Computes order
+            price and sets it to given totalPrice parameter.
+            </summary>
+            <param name="order">Order object to assign items</param>
+            <param name="products">List of products to select random order items from.</param>
+            <param name="totalPrice">Computed order price</param>
+        </member>
+        <member name="M:CMS.Ecommerce.Internal.DancingGoatSampleDataGenerator.GenerateCustomer(System.String,System.Int32)">
+            <summary>
+            Generates customer with random name and returns the customer object.
+            </summary>
+            <param name="fullName">Full name of customer</param>
+            <param name="siteID">ID of the site to assign customer to</param>
+        </member>
+        <member name="M:CMS.Ecommerce.Internal.DancingGoatSampleDataGenerator.GenerateOrderAddress(System.Int32)">
+            <summary>
+            Generates order address and returns address object.
+            </summary>
+            <param name="countryID">ID of the country to be used in new address</param>
         </member>
         <member name="T:CMS.Ecommerce.EProductReminder">
             <summary>
@@ -15901,6 +15912,29 @@
             Table with customer expiring e-products
             </summary>
         </member>
+        <member name="T:CMS.Ecommerce.MarkCartAbandoned">
+            <summary>
+            Provides an ITask interface to mark abandoned shopping carts.
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.MarkCartAbandoned.Execute(CMS.Scheduler.TaskInfo)">
+            <summary>
+            Executes the publish action.
+            </summary>
+            <param name="task">Task to process</param>
+        </member>
+        <member name="M:CMS.Ecommerce.MarkCartAbandoned.IsShoppingCartAbandoned(CMS.Ecommerce.ShoppingCartInfo)">
+            <summary>
+            Checks if the given shopping cart is marked as abandoned and the ShoppingCartAbandoned activity is logged.
+            </summary>
+            <param name="cart">Shopping cart object</param>
+        </member>
+        <member name="M:CMS.Ecommerce.MarkCartAbandoned.FilterAbandonedCarts(CMS.DataEngine.ObjectQuery{CMS.Ecommerce.ShoppingCartInfo})">
+            <summary>
+            Allows filter abandoned carts used to log the ShoppingCartAbandoned activity.
+            </summary>
+            <param name="abandonedCarts">All non-empty expired shopping carts</param>
+        </member>
         <member name="T:CMS.Ecommerce.ShoppingCartCleaner">
             <summary>
             Provides an ITask interface to delete old shopping carts.
@@ -15932,14 +15966,14 @@
             Not known integer constant.
             </summary>
         </member>
+        <member name="F:CMS.Ecommerce.ShoppingCartInfo.NOT_KNOWN_DECIMAL">
+            <summary>
+            Unknown decimal constant.
+            </summary>
+        </member>
         <member name="F:CMS.Ecommerce.ShoppingCartInfo.TYPEINFO">
             <summary>
             Type information.
-            </summary>
-        </member>
-        <member name="F:CMS.Ecommerce.ShoppingCartInfo.DUMMY_CART">
-            <summary>
-            Dummy shopping cart object for macro resolver intellisense
             </summary>
         </member>
         <member name="F:CMS.Ecommerce.ShoppingCartInfo.mShoppingCartCustomData">
@@ -15999,6 +16033,11 @@
             <param name="info">Serialization info</param>
             <param name="context">Streaming context</param>
         </member>
+        <member name="M:CMS.Ecommerce.ShoppingCartInfo.CreateDummyCart">
+            <summary>
+            Creates a dummy shopping cart object
+            </summary>
+        </member>
         <member name="M:CMS.Ecommerce.ShoppingCartInfo.RegisterProperties">
             <summary>
             Register the custom properties
@@ -16019,11 +16058,6 @@
             Returns subset of CatalogDiscounts which are to be applied to given product.
             </summary>
             <param name="sku">SKU to get discounts for.</param>
-        </member>
-        <member name="M:CMS.Ecommerce.ShoppingCartInfo.LogDiscountsUse">
-            <summary>
-            Logs the use of all discounts used in this shopping cart.
-            </summary>
         </member>
         <member name="M:CMS.Ecommerce.ShoppingCartInfo.SetShoppingCartItem(CMS.Ecommerce.ShoppingCartItemParameters)">
             <summary>
@@ -16112,6 +16146,11 @@
             Invalidates product discount filter.
             </summary>
         </member>
+        <member name="M:CMS.Ecommerce.ShoppingCartInfo.InvalidateDiscounts">
+            <summary>
+            Invalidates cart content discounts.
+            </summary>
+        </member>
         <member name="M:CMS.Ecommerce.ShoppingCartInfo.InvalidateCalculations(System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
             Invalidates specific calculations.
@@ -16172,6 +16211,11 @@
         <member name="P:CMS.Ecommerce.ShoppingCartInfo.ShoppingCartUserID">
             <summary>
             ID of the registered user the shopping cart belongs to.
+            </summary>
+        </member>
+        <member name="P:CMS.Ecommerce.ShoppingCartInfo.ShoppingCartContactID">
+            <summary>
+            Shopping cart contact ID.
             </summary>
         </member>
         <member name="P:CMS.Ecommerce.ShoppingCartInfo.ShoppingCartBillingAddressID">
@@ -16264,9 +16308,14 @@
             Indicates if shopping cart has relevant coupon code.
             </summary>
         </member>
+        <member name="P:CMS.Ecommerce.ShoppingCartInfo.HasAppliedCoupon">
+            <summary>
+            Indicates if shopping cart has applied coupon code
+            </summary>
+        </member>
         <member name="P:CMS.Ecommerce.ShoppingCartInfo.ShippingOption">
             <summary>
-            Selected shipping option.
+            Selected shipping option. If none is selected and there is only one available, it is selected automatically.
             </summary>
         </member>
         <member name="P:CMS.Ecommerce.ShoppingCartInfo.Currency">
@@ -16276,7 +16325,7 @@
         </member>
         <member name="P:CMS.Ecommerce.ShoppingCartInfo.PaymentOption">
             <summary>
-            Selected payment method.
+            Selected payment method. If none is selected and there is only one available, it is selected automatically.
             </summary>
         </member>
         <member name="P:CMS.Ecommerce.ShoppingCartInfo.InvalidationEnabled">
@@ -16314,6 +16363,16 @@
             Returns list of all catalog discounts which may affect this shopping cart.
             </summary>
         </member>
+        <member name="P:CMS.Ecommerce.ShoppingCartInfo.PossibleMultiBuyDiscounts">
+            <summary>
+            List of all multi buy discount with correct coupon code, even though current cart doesn't meet its buy condition.    
+            </summary>
+        </member>
+        <member name="P:CMS.Ecommerce.ShoppingCartInfo.AcceptedDiscounts">
+            <summary>
+            List of all accepted discount coupons
+            </summary>
+        </member>
         <member name="P:CMS.Ecommerce.ShoppingCartInfo.ShippingTaxes">
             <summary>
             Taxes which should be applied to the selected shipping option.
@@ -16322,7 +16381,7 @@
         <member name="P:CMS.Ecommerce.ShoppingCartInfo.ContentTable">
             <summary>
             Table with the shopping cart items.
-            </summary>
+            </summary>        
         </member>
         <member name="P:CMS.Ecommerce.ShoppingCartInfo.ContentTaxesTable">
             <summary>
@@ -16714,6 +16773,7 @@
             Creates or updates order based on the data of the specified shopping cart.
             </summary>
             <param name="cartObj">Shopping cart data</param>
+            <exception cref="T:System.InvalidOperationException">Thrown when ShoppingCartCustomerID and/or ShoppingCartCurrencyID not set.</exception>
         </member>
         <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.SetOrder(CMS.Ecommerce.ShoppingCartInfo,System.Boolean)">
             <summary>
@@ -16721,6 +16781,7 @@
             </summary>
             <param name="cartObj">Shopping cart data</param>
             <param name="generateInvoice">Indicates if new invoice should be generated from the new order data. It is True by default.</param>
+            <exception cref="T:System.InvalidOperationException">Thrown when ShoppingCartCustomerID and/or ShoppingCartCurrencyID not set.</exception>
         </member>
         <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.SetOrderItems(CMS.Ecommerce.ShoppingCartInfo)">
             <summary>
@@ -16756,6 +16817,17 @@
             Evaluates active discounts and auto add items which can be for free to the shopping cart.
             </summary>
             <param name="cart">Shopping cart where items will be automatically added in case they could be given for free. </param>
+        </member>
+        <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.GetCurrentShoppingCart">
+            <summary>
+            Returns current shopping cart for current user on current site.
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.MakeShoppingCartCurrent(CMS.Ecommerce.ShoppingCartInfo)">
+            <summary>
+            Sets given cart as current users current cart.
+            </summary>
+            <param name="cart">Cart to be set as current users current cart</param>
         </member>
         <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.CreateShoppingCartInfo(System.Int32)">
             <summary>
@@ -16900,6 +16972,12 @@
             </summary>
             <param name="cart">Shopping cart to calculate discounts for.</param>
         </member>
+        <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.EvaluateMultiBuyDiscounts(CMS.Ecommerce.ShoppingCartInfo)">
+            <summary>
+            Evaluates multibuy discounts and returns MultiBuyDiscountsApplicator with applied discounts. 
+            </summary>
+            <param name="cart">Shopping cart</param>
+        </member>
         <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.CalculateItemsDiscount(CMS.Ecommerce.ShoppingCartInfo)">
             <summary>
             Calculates catalog discount which should be applied to the total items price.
@@ -16998,18 +17076,20 @@
             <param name="cart">Shopping cart</param>
             <param name="orderID">ID of order which should be added to shopping cart.</param>
         </member>
+        <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.CopyShoppingCartItems(CMS.Ecommerce.ShoppingCartInfo,CMS.Ecommerce.ShoppingCartInfo)">
+            <summary>
+            Updates destination shopping cart with source shopping cart.
+            <para>If such product configuration already exists in the shopping cart, only its quantity is updated.</para>       
+            </summary>
+            <param name="sourceCart">Original shopping cart</param>
+            <param name="destinationCart">The cart where to copy items</param>
+            <returns>Returns true if all ordered items were successfully added to cart.</returns>
+        </member>
         <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.GetShoppingCartResolver(CMS.Ecommerce.ShoppingCartInfo)">
             <summary>
             Returns initialized shopping cart resolver.
             </summary>
             <param name="cart">Shopping cart data</param>        
-        </member>
-        <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.GetShoppingCartResolver(CMS.Ecommerce.ShoppingCartInfo,System.Boolean)">
-            <summary>
-            Returns initialized shopping cart resolver.
-            </summary>
-            <param name="cart">Shopping cart data to be used for resolver initialization</param>
-            <param name="specialMacros">If true, special macros are added to the resolver (due to the backward compatibility).</param>
         </member>
         <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.GetOrderInvoice(CMS.Ecommerce.ShoppingCartInfo)">
             <summary>
@@ -17090,6 +17170,7 @@
             </summary>
             <param name="cartObj">Shopping cart data</param>
             <param name="generateInvoice">Indicates if new invoice should be generated from the new order data. It is True by default.</param>
+            <exception cref="T:System.InvalidOperationException">Thrown when ShoppingCartCustomerID and/or ShoppingCartCurrencyID not set.</exception>
         </member>
         <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.SetOrderItemsInternal(CMS.Ecommerce.ShoppingCartInfo)">
             <summary>
@@ -17132,6 +17213,40 @@
             Evaluates active discounts and auto add items which can be for free to the shopping cart.
             </summary>
             <param name="cart">Shopping cart where items will be automatically added in case they could be given for free. </param>
+        </member>
+        <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.GetCurrentShoppingCartInternal">
+            <summary>
+            Returns current shopping cart for current user on current site.
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.CartCanBeUsedOnSiteInternal(CMS.Ecommerce.ShoppingCartInfo,CMS.DataEngine.SiteInfoIdentifier)">
+            <summary>
+            Returns true if given cart can be used on given site.
+            </summary>
+            <param name="cart">Shopping cart to be checked.</param>
+            <param name="site">ID or name of the site.</param>
+        </member>
+        <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.AssignCartToUserInternal(CMS.Ecommerce.ShoppingCartInfo,CMS.Membership.UserInfo)">
+            <summary>
+            Assigns given cart to specified user. Cart's currency is switched to user's preferred one if cart is empty.
+            </summary>
+            <param name="cart">Assigned shopping cart.</param>
+            <param name="user">New owner of the cart.</param>
+        </member>
+        <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.FindExistingShoppingCartInternal(CMS.Membership.UserInfo,System.String)">
+            <summary>
+            Gets registered users most recent shopping cart on given site from the database.
+            This method also recalculates the cart found in DB.
+            </summary>
+            <param name="user">Registered user to get cart for.</param>
+            <param name="siteName">Name of the site to get cart from.</param>
+            <returns>Found shopping cart.</returns>
+        </member>
+        <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.MakeShoppingCartCurrentInternal(CMS.Ecommerce.ShoppingCartInfo)">
+            <summary>
+            Sets given cart as current user's current cart.
+            </summary>
+            <param name="cart">Cart to be set as current users current cart.</param>
         </member>
         <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.CreateShoppingCartInfoInternal(System.Int32)">
             <summary>
@@ -17291,6 +17406,12 @@
             </summary>
             <param name="cart">Shopping cart to calculate discounts for.</param>
         </member>
+        <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.EvaluateMultiBuyDiscountsInternal(CMS.Ecommerce.ShoppingCartInfo)">
+            <summary>
+            Evaluates multibuy discounts and returns MultiBuyDiscountsApplicator with applied discounts. 
+            </summary>
+            <param name="cart">Shopping cart</param>
+        </member>
         <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.CalculateItemsDiscountInternal(CMS.Ecommerce.ShoppingCartInfo)">
             <summary>
             Calculates catalog discount which should be applied to the total items price.
@@ -17397,12 +17518,20 @@
             <param name="cart">Shopping cart</param>
             <param name="orderID">ID of order which should be added to shopping cart.</param>
         </member>
-        <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.GetShoppingCartResolverInternal(CMS.Ecommerce.ShoppingCartInfo,System.Boolean)">
+        <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.CopyShoppingCartItemsInternal(CMS.Ecommerce.ShoppingCartInfo,CMS.Ecommerce.ShoppingCartInfo)">
+            <summary>
+            Updates destination shopping cart with source shopping cart.
+            <para>If such product configuration already exists in the shopping cart, only its quantity is updated.</para>       
+            </summary>
+            <param name="sourceCart">Original shopping cart</param>
+            <param name="destinationCart">The cart where to copy items</param>
+            <returns>Returns true if all ordered items were successfully added to cart.</returns>
+        </member>
+        <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.GetShoppingCartResolverInternal(CMS.Ecommerce.ShoppingCartInfo)">
             <summary>
             Returns initialized shopping cart resolver
             </summary>
             <param name="cart">Shopping cart data to be used for resolver initialization</param>
-            <param name="specialMacros">If true, special macros are added to the resolver (due to the backward compatibility).</param>
         </member>
         <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.GetOrderInvoiceInternal(CMS.Ecommerce.ShoppingCartInfo)">
             <summary>
@@ -17412,7 +17541,7 @@
         </member>
         <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.ApplyMultiBuyDiscounts(CMS.Ecommerce.ShoppingCartInfo)">
             <summary>
-            Applies multibuy discounts to given shopping cart object. Returns DiscountsReport with informations about applied discounts.
+            Applies multibuy discounts to given shopping cart object. Returns DiscountsReport with information about applied discounts.
             </summary>
             <param name="cart">Shopping cart to evaluate multibuy discounts on.</param>
         </member>
@@ -17457,11 +17586,6 @@
             Gets the data for the shopping cart resolver. (selector -> data object) of the shopping cart objects
             </summary>
             <param name="cart">Shopping cart from which the data are loaded</param>
-        </member>
-        <member name="M:CMS.Ecommerce.ShoppingCartInfoProvider.GetShoppingCartResolverSpecialMacros(CMS.Ecommerce.ShoppingCartInfo)">
-            <summary>
-            Gets the array of old macros, couples (macro, replacement) for the shopping cart resolver (Due to the backward compatibility).
-            </summary>
         </member>
         <member name="T:CMS.Ecommerce.ShoppingCartItemInfo">
             <summary>
@@ -17776,6 +17900,11 @@
         <member name="P:CMS.Ecommerce.ShoppingCartItemInfo.IsTextAttribute">
             <summary>
             Gets a value indicating whether is text attribute.
+            </summary>        
+        </member>
+        <member name="P:CMS.Ecommerce.ShoppingCartItemInfo.IsAttributeOption">
+            <summary>
+            Gets a value indicating whether is attribute option (e.g. product color).
             </summary>        
         </member>
         <member name="P:CMS.Ecommerce.ShoppingCartItemInfo.IsProductOption">
@@ -18549,6 +18678,16 @@
             <param name="action">Object action</param>
             <param name="domainName">Domain name, if not set, uses current domain</param>
         </member>
+        <member name="M:CMS.Ecommerce.SKUInfo.InsertAsCloneInternal(CMS.DataEngine.CloneSettings,CMS.DataEngine.CloneResult,CMS.DataEngine.BaseInfo)">
+            <summary>
+            This method is called on cloned object prepared in memory by InsertAsClone method. 
+            Override if you need to do further actions before inserting actual object to DB (insert special objects, modify foreign keys, copy files, etc.).
+            Calls Insert() by default.
+            </summary>
+            <param name="settings">Cloning settings</param>
+            <param name="result">Result of the cloning - messages in this object will be altered by processing this method</param>
+            <param name="originalObject">Original source BaseInfo (object being cloned)</param>
+        </member>
         <member name="M:CMS.Ecommerce.SKUInfo.InsertAsClonePostprocessing(CMS.DataEngine.CloneSettings,CMS.DataEngine.CloneResult,CMS.DataEngine.BaseInfo)">
             <summary>
             This method is called once the object is completely cloned (with all children, bindings, etc.).
@@ -18878,6 +19017,16 @@
             Gets a value indicating whether is accessory product.
             </summary>      
         </member>
+        <member name="P:CMS.Ecommerce.SKUInfo.IsTextAttribute">
+            <summary>
+            Gets a value indicating whether is text attribute.
+            </summary>      
+        </member>
+        <member name="P:CMS.Ecommerce.SKUInfo.IsAttributeOption">
+            <summary>
+            Gets a value indicating whether is attribute option (e.g. product color).
+            </summary>      
+        </member>
         <member name="P:CMS.Ecommerce.SKUInfo.IsProductVariant">
             <summary>
             Indicates if current SKU is representing product variant.
@@ -19032,9 +19181,17 @@
         </member>
         <member name="M:CMS.Ecommerce.SKUInfoProvider.GetSKUUrl(System.Guid,System.String,System.String)">
             <summary>
-            Returns user friendly URL of the specified product.
+            Returns user friendly URL of the specified product. Does not uses hash tables to crate SKU.
             </summary>
             <param name="skuGuid">Product unique identifier (GUID)</param>
+            <param name="skuName">Product name</param>
+            <param name="siteName">Site Name</param>
+        </member>
+        <member name="M:CMS.Ecommerce.SKUInfoProvider.GetSKUUrl(System.Int32,System.String,System.String)">
+            <summary>
+            Returns user friendly URL of the specified product. Uses hash tables.
+            </summary>
+            <param name="skuID">Product ID</param>
             <param name="skuName">Product name</param>
             <param name="siteName">Site Name</param>
         </member>
@@ -19092,16 +19249,6 @@
             <param name="roundTo">Number of significant digits the number should be rounded to</param>
             <param name="where">Additional WHERE condition</param>
             <param name="siteId">Id of the site which records are to be recalculated</param>
-        </member>
-        <member name="M:CMS.Ecommerce.SKUInfoProvider.RecalculateProductDocuments(System.Single,System.Int32,System.String,System.Int32)">
-            <summary>
-            Recalculate prices in fields of all product documents which are mapped to SKU price field. This method is invoked 
-            in case of changing main currency.
-            </summary>
-            <param name="coefficient">Factor by which values are recalculated</param>        
-            <param name="roundTo">Number of significant digits the number should be rounded to</param>
-            <param name="where">Additional WHERE condition for View_CMS_Tree_Joined filtering</param>
-            <param name="siteId">Id of the site which main currency was changed (0 for global main currency changed)</param>
         </member>
         <member name="M:CMS.Ecommerce.SKUInfoProvider.SortProductOptionsAlphabetically(System.Int32)">
             <summary>
@@ -19300,6 +19447,14 @@
             <param name="skuName">Product name</param>
             <param name="siteName">Site Name</param>
         </member>
+        <member name="M:CMS.Ecommerce.SKUInfoProvider.GetSKUUrlInternal(System.Int32,System.String,System.String)">
+            <summary>
+            Returns user friendly URL of the specified product. Method uses hash tables.
+            </summary>
+            <param name="skuID">Product ID</param>
+            <param name="skuName">Product name</param>
+            <param name="siteName">Site Name</param>
+        </member>
         <member name="M:CMS.Ecommerce.SKUInfoProvider.UpdateInventoryInternal(CMS.Ecommerce.ShoppingCartInfo)">
             <summary>
             Updates products' available items in database according to the products' units of the specified shopping cart.
@@ -19314,16 +19469,6 @@
             <param name="roundTo">Number of significant digits the number should be rounded to</param>
             <param name="where">Additional WHERE condition</param>
             <param name="siteId">ID of the site which records are to be recalculated</param>
-        </member>
-        <member name="M:CMS.Ecommerce.SKUInfoProvider.RecalculateProductDocumentsInternal(System.Single,System.Int32,System.String,System.Int32)">
-            <summary>
-            Recalculate prices in fields of all product documents which are mapped to SKU price field. This method is invoked 
-            in case of changing main currency.
-            </summary>
-            <param name="coefficient">Factor by which values are recalculated</param>        
-            <param name="roundTo">Number of significant digits the number should be rounded to</param>
-            <param name="where">Additional WHERE condition for View_CMS_Tree_Joined filtering</param>
-            <param name="siteId">Id of the site which main currency was changed (0 for global main currency changed)</param>
         </member>
         <member name="M:CMS.Ecommerce.SKUInfoProvider.SortProductOptionsAlphabeticallyInternal(System.Int32)">
             <summary>
@@ -19459,6 +19604,14 @@
             Returns BundleInventoryType string.
             </summary>
             <param name="bundleInventoryType">Bundle inventory type</param>
+        </member>
+        <member name="M:CMS.Ecommerce.SKUInfoProvider.GetPermanentURL(System.String,System.String,CMS.Ecommerce.SKUInfo)">
+            <summary>
+            Returns user friendly URL of the specified product.
+            </summary>
+            <param name="skuName">Product name</param>
+            <param name="siteName">Site Name</param>
+            <param name="sku">Product for which URL is created</param>
         </member>
         <member name="M:CMS.Ecommerce.SKUInfoProvider.UpdateInventory(CMS.Ecommerce.SKUInfo,System.Int32,CMS.Ecommerce.ShoppingCartItemInfo)">
             <summary>
@@ -20077,11 +20230,6 @@
             ID of the tax class.
             </summary>
         </member>
-        <member name="P:CMS.Ecommerce.TaxClassCountryInfo.IsFlatValue">
-            <summary>
-            Indicates whether the value is flat or not.
-            </summary>
-        </member>
         <member name="T:CMS.Ecommerce.TaxClassCountryInfoProvider">
             <summary>
             Class providing TaxClassCountryInfo management.
@@ -20132,17 +20280,6 @@
             <param name="srcTaxClassId">ID of the tax class used as source</param>
             <param name="dstTaxClassId">ID of the tax class used as destination</param>
         </member>
-        <member name="M:CMS.Ecommerce.TaxClassCountryInfoProvider.RecalculateCountryTaxes(System.Single,System.Int32,System.Boolean,System.Boolean,System.String,System.Int32)">
-            <summary>
-            Recalculates country-dependent value of tax class using the given coefficient.
-            </summary>
-            <param name="coefficient">Factor by which values are recalculated</param>        
-            <param name="roundTo">Number of significant digits the number should be rounded to</param>
-            <param name="flatValues">Indicates if flat values should be recalculated</param>
-            <param name="relativeValues">Indicates if relative values should be recalculated</param>
-            <param name="where">Additional WHERE condition</param>
-            <param name="siteId">ID of the site which records are to be recalculated</param>
-        </member>
         <member name="M:CMS.Ecommerce.TaxClassCountryInfoProvider.GetTaxClassCountryInfoInternal(System.Int32,System.Int32)">
             <summary>
             Returns relationship between specified tax class and country.
@@ -20168,17 +20305,6 @@
             This method is used in the administration user interface when configuring values of the specified tax for all countries.
             </summary>
             <param name="classId">Tax class ID</param>
-        </member>
-        <member name="M:CMS.Ecommerce.TaxClassCountryInfoProvider.RecalculateCountryTaxesInternal(System.Single,System.Int32,System.Boolean,System.Boolean,System.String,System.Int32)">
-            <summary>
-            Recalculates country-dependent value of tax class using the given coefficient.
-            </summary>
-            <param name="coefficient">Factor by which values are recalculated</param>        
-            <param name="roundTo">Number of significant digits the number should be rounded to</param>
-            <param name="flatValues">Indicates if flat values should be recalculated</param>
-            <param name="relativeValues">Indicates if relative values should be recalculated</param>
-            <param name="where">Additional WHERE condition</param>
-            <param name="siteId">ID of the site which records are to be recalculated</param>
         </member>
         <member name="M:CMS.Ecommerce.TaxClassCountryInfoProvider.CopyCountryTaxesInternal(System.Int32,System.Int32)">
             <summary>
@@ -20367,9 +20493,16 @@
             <param name="taxValue">Tax value, either flat or relative</param>
             <param name="isFlat">True - tax value is flat, False - tax value is relative</param>
         </member>
+        <member name="M:CMS.Ecommerce.TaxClassInfoProvider.ApplyTax(System.Double,System.Double)">
+            <summary>
+            Returns the modified price after the specified tax is applied.
+            </summary>
+            <param name="price">Price the tax should be applied to</param>
+            <param name="taxValue">Tax value, either flat or relative</param>
+        </member>
         <member name="M:CMS.Ecommerce.TaxClassInfoProvider.GetTaxValue(System.Double,System.Double,System.Boolean)">
             <summary>
-            Returns calculated tax based on the product price and tax type.
+            Returns calculated tax based on the product price and tax value.
             </summary>
             <param name="price">Price the tax should be calculated from</param>
             <param name="taxValue">Tax value</param>
@@ -20377,22 +20510,18 @@
             True - tax value is flat (both price and tax value must be expressed in the same currency to obtain correct result), 
             False - tax value is relative (currency of the price is not important).</param>
         </member>
+        <member name="M:CMS.Ecommerce.TaxClassInfoProvider.GetTaxValue(System.Double,System.Double)">
+            <summary>
+            Returns calculated tax based on the product price and tax value. For zero tax returns 0.
+            </summary>
+            <param name="price">Price the tax should be calculated from</param>
+            <param name="taxValue">Tax value</param>
+        </member>
         <member name="M:CMS.Ecommerce.TaxClassInfoProvider.CopyFromGlobal(System.Int32)">
             <summary>
             Copies site-specific tax class options from global tax class list.
             </summary>
             <param name="siteId">Id of the site for which new tax classes are to be created</param>
-        </member>
-        <member name="M:CMS.Ecommerce.TaxClassInfoProvider.RecalculateTaxes(System.Single,System.Int32,System.Boolean,System.Boolean,System.String,System.Int32)">
-            <summary>
-            Recalculates tax class values (values for countries and states) using the given coefficient.
-            </summary>
-            <param name="coefficient">Factor by which values are recalculated</param>        
-            <param name="roundTo">Number of significant digits the number should be rounded to</param>
-            <param name="flatValues">Indicates if flat values should be recalculated</param>
-            <param name="relativeValues">Indicates if relative values should be recalculated</param>
-            <param name="where">Additional WHERE condition</param>
-            <param name="siteId">ID of the site which records are to be recalculated</param>
         </member>
         <member name="M:CMS.Ecommerce.TaxClassInfoProvider.GetTaxes(CMS.Ecommerce.ShoppingCartInfo)">
             <summary>
@@ -20464,38 +20593,25 @@
             <param name="countryId">Country ID</param>  
             <param name="zipCode">ZIP code - for later use, not implemented yet.</param>
         </member>
-        <member name="M:CMS.Ecommerce.TaxClassInfoProvider.GetTaxValueInternal(System.Double,System.Double,System.Boolean)">
+        <member name="M:CMS.Ecommerce.TaxClassInfoProvider.GetTaxValueInternal(System.Double,System.Double)">
             <summary>
-            Returns tax value based on the product price and tax type.
+            Returns tax value based on the product price.
             </summary>
             <param name="price">Price the tax should be calculated from</param>
             <param name="taxValue">Tax value</param>
-            <param name="isFlat">True - tax value is flat, False - tax value is relative</param>
         </member>
-        <member name="M:CMS.Ecommerce.TaxClassInfoProvider.ApplyTaxInternal(System.Double,System.Double,System.Boolean)">
+        <member name="M:CMS.Ecommerce.TaxClassInfoProvider.ApplyTaxInternal(System.Double,System.Double)">
             <summary>
             Returns the modified price after the specified tax is applied.
             </summary>
             <param name="price">Price the tax should be applied to</param>
             <param name="taxValue">Tax value, either flat or relative</param>
-            <param name="isFlat">True - tax value is flat, False - tax value is relative</param>
         </member>
         <member name="M:CMS.Ecommerce.TaxClassInfoProvider.CopyFromGlobalInternal(System.Int32)">
             <summary>
             Copies site-specific tax class options from global tax class list.
             </summary>
             <param name="siteId">Id of the site for which new tax classes are to be created</param>
-        </member>
-        <member name="M:CMS.Ecommerce.TaxClassInfoProvider.RecalculateTaxesInternal(System.Single,System.Int32,System.Boolean,System.Boolean,System.String,System.Int32)">
-            <summary>
-            Recalculates tax class values (values for countries and states) using the given coefficient.
-            </summary>
-            <param name="coefficient">Factor by which values are recalculated</param>        
-            <param name="roundTo">Number of significant digits the number should be rounded to</param>
-            <param name="flatValues">Indicates if flat values should be recalculated</param>
-            <param name="relativeValues">Indicates if relative values should be recalculated</param>
-            <param name="where">Additional WHERE condition</param>
-            <param name="siteId">ID of the site which records are to be recalculated</param>
         </member>
         <member name="M:CMS.Ecommerce.TaxClassInfoProvider.GetTaxesInternal(CMS.Ecommerce.ShoppingCartInfo)">
             <summary>
@@ -20525,7 +20641,7 @@
             <summary>
             Returns ITaxClassInfo object created from the given data row.
             </summary>
-            <param name="dr">Data row with the tax calculated data. Names of data row columns: TaxClassID, TaxClassDisplayName, TaxClassZeroIfIDSupplied, TaxValue, TaxIsFlat, TaxIsGlobal</param>        
+            <param name="dr">Data row with the tax calculated data. Names of data row columns: TaxClassID, TaxClassDisplayName, TaxClassZeroIfIDSupplied, TaxValue, TaxIsGlobal</param>        
         </member>
         <member name="T:CMS.Ecommerce.TaxClassStateInfo">
             <summary>
@@ -20586,11 +20702,6 @@
             ID of the tax class.
             </summary>
         </member>
-        <member name="P:CMS.Ecommerce.TaxClassStateInfo.IsFlatValue">
-            <summary>
-            Indicates whether the value is flat or not.
-            </summary>
-        </member>
         <member name="P:CMS.Ecommerce.TaxClassStateInfo.StateID">
             <summary>
             ID of the state.
@@ -20631,17 +20742,6 @@
             </summary>
             <param name="taxClassId">Tax class ID</param>
             <param name="stateId">State ID</param>
-        </member>
-        <member name="M:CMS.Ecommerce.TaxClassStateInfoProvider.RecalculateStateTaxes(System.Single,System.Int32,System.Boolean,System.Boolean,System.String,System.Int32)">
-            <summary>
-            Recalculates state-dependent value of tax class using the given coefficient.
-            </summary>
-            <param name="coefficient">Factor by which values are recalculated</param>        
-            <param name="roundTo">Number of significant digits the number should be rounded to</param>
-            <param name="flatValues">Indicates if flat values should be recalculated</param>
-            <param name="relativeValues">Indicates if relative values should be recalculated</param>
-            <param name="where">Additional WHERE condition</param>
-            <param name="siteId">ID of the site which records are to be recalculated</param>
         </member>
         <member name="M:CMS.Ecommerce.TaxClassStateInfoProvider.GetStatesAndTaxValues(System.Int32,System.Int32)">
             <summary>
@@ -20684,17 +20784,6 @@
             Deletes relationship between specified tax class and state.
             </summary>
             <param name="infoObj">Tax class-state relationship to be deleted</param>
-        </member>
-        <member name="M:CMS.Ecommerce.TaxClassStateInfoProvider.RecalculateStateTaxesInternal(System.Single,System.Int32,System.Boolean,System.Boolean,System.String,System.Int32)">
-            <summary>
-            Recalculates state-dependent value of tax class using the given coefficient.
-            </summary>
-            <param name="coefficient">Factor by which values are recalculated</param>        
-            <param name="roundTo">Number of significant digits the number should be rounded to</param>
-            <param name="flatValues">Indicates if flat values should be recalculated</param>
-            <param name="relativeValues">Indicates if relative values should be recalculated</param>
-            <param name="where">Additional WHERE condition</param>
-            <param name="siteId">ID of the site which records are to be recalculated</param>
         </member>
         <member name="M:CMS.Ecommerce.TaxClassStateInfoProvider.GetStatesAndTaxValuesInternal(System.Int32,System.Int32)">
             <summary>
@@ -21200,11 +21289,10 @@
             </summary>
             <param name="columnName">Column name</param>
         </member>
-        <member name="M:CMS.Ecommerce.SKUTreeNode.ResetChanges(System.Boolean)">
+        <member name="M:CMS.Ecommerce.SKUTreeNode.ResetChanges">
             <summary>
             Resets the object changes and keeps the new values as unchanged.
             </summary>
-            <param name="asUnchanged">If true, the changed columns won't contain anything. If false, the previous values are discarded, but all the columns will be marked as changed.</param>
         </member>
         <member name="M:CMS.Ecommerce.SKUTreeNode.RevertChanges">
             <summary>
@@ -21223,11 +21311,10 @@
             </summary>
             <param name="excludedColumns">List of columns excluded from change (separated by ';')</param>
         </member>
-        <member name="M:CMS.Ecommerce.SKUTreeNode.AddTypeSpecificColumns(System.Collections.Generic.List{System.String})">
+        <member name="M:CMS.Ecommerce.SKUTreeNode.GetTypeSpecificColumnNames">
             <summary>
-            Adds the columns that are specific to the document type
+            Gets the column names that are specific to the type
             </summary>
-            <param name="names">List of column names</param>
         </member>
         <member name="M:CMS.Ecommerce.SKUTreeNode.Clone(System.Boolean)">
             <summary>
@@ -21242,17 +21329,11 @@
             <param name="destNode">Destination node</param>
             <param name="settings">Copy settings</param>
         </member>
-        <member name="M:CMS.Ecommerce.SKUTreeNode.LoadFromDataRow(System.Data.DataRow)">
-            <summary>
-            Loads the object data from given DataRow.
-            </summary>
-            <param name="dr">Data row with the data</param>
-        </member>
-        <member name="M:CMS.Ecommerce.SKUTreeNode.LoadFromDataContainer(CMS.Base.IDataContainer)">
+        <member name="M:CMS.Ecommerce.SKUTreeNode.LoadData(CMS.DataEngine.LoadDataSettings)">
             <summary>
             Loads the object data from given data container.
             </summary>
-            <param name="data">Container with the data</param>
+            <param name="settings">Data settings</param>
         </member>
         <member name="M:CMS.Ecommerce.SKUTreeNode.InsertTreeNodeData(CMS.DataEngine.BaseInfo)">
             <summary>
@@ -21280,92 +21361,19 @@
             <summary>
             Handles removing of dependencies for product document.
             </summary>
-            <param name="settings">Settings used for deleting documents</param>
-        </member>
-        <member name="M:CMS.Ecommerce.SKUTreeNode.CreateDefaultSKU">
-            <summary>
-            Creates default E-Commerce SKU for the document if configured, does not save the document. Returns true on success, false on error or null when module entry not found.
-            </summary>
-        </member>
-        <member name="M:CMS.Ecommerce.SKUTreeNode.SynchronizeFields(System.Boolean,System.Boolean)">
-            <summary>
-            Ensures the same values in document fields and their mapped SKU fields plus ensures the same values in DocumentName, DocumentSKUName and SKUName fields. 
-            Please note that SKU fields are updated only if it is possible, i.e. it is either default culture version or SKU field is empty.
-            </summary>
-            <param name="fromDocumentToSKU">True (default) - fields are synchronized in direction from document to SKU, False - fields are synchronized in direction from SKU to document</param>
-            <param name="reverseSynchronizationIfEmpty">True (default) - field is synchronized reversely to the direction given by fromDocumentToSKU parameter if source field of the synchronization is empty, 
-            False - all fields are always synchronized in direction given by the fromDocumentToSKU parameter</param>
-        </member>
-        <member name="M:CMS.Ecommerce.SKUTreeNode.SynchronizeFields">
-            <summary>
-            Ensures the same values in document fields and their mapped SKU fields plus ensures the same values in DocumentName, DocumentSKUName and SKUName fields. 
-            Please note that SKU fields are updated only if it is possible, i.e. it is either default culture version or SKU field is empty.
-            </summary>      
+            <param name="settings">Delete document settings</param>
         </member>
         <member name="M:CMS.Ecommerce.SKUTreeNode.SetSKU">
             <summary>
             Inserts or updates the internal SKU object
             </summary>
         </member>
-        <member name="M:CMS.Ecommerce.SKUTreeNode.SetSKUColumn(System.String,System.Object,System.Boolean)">
+        <member name="M:CMS.Ecommerce.SKUTreeNode.SetSKUColumn(System.String,System.Object)">
             <summary>
-            Sets value of the specified SKU column and its document paired column if any.
+            Sets value of the specified SKU column
             </summary>
             <param name="column">SKU column to be set</param>
             <param name="value">Value to be used</param>
-            <param name="fromDocument">Indicates if the given value comes from the corresponding document mapped column</param>               
-        </member>
-        <member name="M:CMS.Ecommerce.SKUTreeNode.EnsureSKUColumnValue(System.String,System.Object,System.Boolean)">
-            <summary>
-            For the given SKU field ensures correct value coming from its mapped document field. 
-            </summary>
-            <param name="columnName">Name of the SKU field</param>
-            <param name="value">Value coming from corresponding mapped document field.</param>
-            <param name="convert">Indicates if type conversion from document field type to SKU field type should be performed</param>  
-        </member>
-        <member name="M:CMS.Ecommerce.SKUTreeNode.GetMappedDocumentColumn(System.String)">
-            <summary>
-            Returns name of the document field which is mapped to the given SKU field. If there is no document field mapped to the given SKU field, returns null.
-            </summary>
-            <param name="skuColumn">SKU column name</param> 
-        </member>
-        <member name="M:CMS.Ecommerce.SKUTreeNode.GetMappedSKUColumn(System.String)">
-            <summary>
-            Returns name of the SKU field which is mapped to the given document field. If there is no SKU field mapped to the given document field, returns null.
-            </summary>
-            <param name="docColumn">Document column name</param>         
-        </member>
-        <member name="M:CMS.Ecommerce.SKUTreeNode.SetPairedSKUColumn(System.String,System.Object)">
-            <summary>
-            Sets SKU paired column of the given document column. Returns True if paired column is found, otherwise returns False.
-            Paired columns: (DocumentSKUName or DocumentName -> SKUName, DocumentSKUDescription -> SKUDescription, DocumentSKUShortDescription -> SKUShortDescription)
-            </summary>
-            <param name="docColumn">Document column</param>
-            <param name="value">Value</param>
-        </member>
-        <member name="M:CMS.Ecommerce.SKUTreeNode.SetPairedDocumentColumns(System.String,System.Object)">
-            <summary>
-            Sets all document paired columns of the given SKU column. Returns True if paired column is found, otherwise returns False.
-            Paired columns: (SKUName -> DocumentSKUName and DocumentName, SKUDescription -> DocumentSKUDescription, SKUShortDescription -> DocumentSKUShortDescription)
-            </summary>
-            <param name="skuColumn">SKU column</param> 
-            <param name="value">SKU column value</param>
-        </member>
-        <member name="M:CMS.Ecommerce.SKUTreeNode.SynchronizeFromSKUColumn(System.String,System.String)">
-            <summary>
-            Gets value from the given SKU column and synchronizes its value to the mapped document column. 
-            Alternatively synchronizes in reverse direction, i.e. from the given document column, in case SKU column value is empty. 
-            </summary>
-            <param name="skuColumn">SKU column name which is used as a source of the synchronization.</param>
-            <param name="docColumn">Document column name which is used as an alternative source of the synchronization in case SKU column value is empty.</param>
-        </member>
-        <member name="M:CMS.Ecommerce.SKUTreeNode.SynchronizeFromDocumentColumn(System.String,System.String)">
-            <summary>
-            Gets value from the given document column and synchronizes its value to the mapped SKU column. 
-            Alternatively synchronizes in reverse direction, i.e. from the given SKU column, in case document column value is empty. 
-            </summary>
-            <param name="docColumn">Document column name which is used as a source of the synchronization.</param>
-            <param name="skuColumn">SKU column name which is used as an alternative source of the synchronization in case document column value is empty.</param>
         </member>
         <member name="M:CMS.Ecommerce.SKUTreeNode.EnsureConsistency">
             <summary>
@@ -21417,10 +21425,18 @@
             Returns true if the object changed.
             </summary>       
         </member>
-        <member name="P:CMS.Ecommerce.SKUTreeNode.ProductDataClass">
+        <member name="T:CMS.Ecommerce.SKUInfoSerializer">
             <summary>
-            Data class configuration of the product document.
+            Provides conversion method for SKUInfo deserialization.
             </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.SKUInfoSerializer.Convert(CMS.Helpers.XmlData,System.String,System.Type)">
+            <summary>
+            Deserialization for SKU specific fields.
+            </summary>
+            <param name="data">XML Data set containing all data</param>
+            <param name="columnName">Name of the converting column</param>
+            <param name="type">Object type of the converting column</param>
         </member>
     </members>
 </doc>

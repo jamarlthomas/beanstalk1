@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Base;
 using CMS.Controls;
@@ -320,7 +320,7 @@ public partial class CMSFormControls_Filters_SiteFilter : CMSAbstractBaseFilterC
                         if (filtered != null)
                         {
                             BaseInfo infoObj = ModuleManager.GetReadOnlyObject(filtered.ObjectType);
-                            return infoObj.TypeInfo.GetSiteWhereCondition(siteId, false);
+                            return infoObj.TypeInfo.GetSiteWhereCondition(siteId, false).ToString(true);
                         }
                     }
                 }

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SubscriptionEdit.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SubscriptionEdit.ascx.cs"
     Inherits="CMSModules_Reporting_Controls_SubscriptionEdit" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/Selectors/ScheduleInterval.ascx" TagName="ScheduleInterval"

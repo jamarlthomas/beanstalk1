@@ -11,6 +11,9 @@ using CMS.UIControls;
 [UIElement(ModuleName.ECOMMERCE, "Products")]
 public partial class CMSModules_Ecommerce_Pages_Tools_Products_New_ProductOrSection : CMSProductsPage
 {
+    private const string CONTENT_CMSDESK_FOLDER = "~/CMSModules/Content/CMSDesk/";
+
+
     protected override void OnPreInit(EventArgs e)
     {
         CheckExploreTreePermission();
@@ -31,7 +34,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_New_ProductOrSect
         int parentNodeId = QueryHelper.GetInteger("parentnodeid", 0);
         string parentCulture = QueryHelper.GetString("parentculture", null);
 
-        var newSectionUrl = ResolveUrl("~/CMSModules/Content/CMSDesk/Edit/Edit.aspx");
+        var newSectionUrl = ResolveUrl(CONTENT_CMSDESK_FOLDER + "Edit/Edit.aspx");
         newSectionUrl = URLHelper.AddParameterToUrl(newSectionUrl, "action", "new");
         newSectionUrl = URLHelper.AddParameterToUrl(newSectionUrl, "mode", "productssection");
 
@@ -49,7 +52,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_New_ProductOrSect
     {
         // Register script
         ScriptHelper.RegisterJQuery(this);
-        ScriptHelper.RegisterScriptFile(this, "~/CMSModules/Content/CMSDesk/New/New.js");
+        ScriptHelper.RegisterScriptFile(this, CONTENT_CMSDESK_FOLDER + "New/New.js");
 
         EnsureProductBreadcrumbs(PageBreadcrumbs, "com.newproductorsection", false, true, false);
     }

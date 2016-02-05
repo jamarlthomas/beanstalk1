@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_LiveSelectors_InsertYouTubeVideo_Default"
-    EnableEventValidation="false" Codebehind="Default.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_LiveSelectors_InsertYouTubeVideo_Default"
+    EnableEventValidation="false"  Codebehind="Default.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

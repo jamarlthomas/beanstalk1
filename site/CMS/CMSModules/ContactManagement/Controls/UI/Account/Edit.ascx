@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_ContactManagement_Controls_UI_Account_Edit"
-    Codebehind="Edit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_ContactManagement_Controls_UI_Account_Edit"
+     Codebehind="Edit.ascx.cs" %>
 <%@ Register TagPrefix="cms" TagName="AnchorDropup" Src="~/CMSAdminControls/UI/PageElements/AnchorDropup.ascx" %>
 
 <asp:Panel ID="panelMergedAccountDetails" runat="server" CssClass="contactmanagement-accountdetail-accountmergedinto">

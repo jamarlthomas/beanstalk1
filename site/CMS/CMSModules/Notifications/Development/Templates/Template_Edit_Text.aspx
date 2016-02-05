@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Notifications_Development_Templates_Template_Edit_Text"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Notifications_Development_Templates_Template_Edit_Text"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Templates edit - text"
-    Codebehind="Template_Edit_Text.aspx.cs" %>
+     Codebehind="Template_Edit_Text.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Notifications/Controls/TemplateText.ascx" TagName="TemplateText"
     TagPrefix="cms" %>

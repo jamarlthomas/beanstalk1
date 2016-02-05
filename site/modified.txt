@@ -1,0 +1,2 @@
+The upgrade files were copied into the target directory with the '.new' extension. Merge your custom changes into these files and remove the '.new' extensions afterwards.
+C:\Users\Rohit\Documents\clients\Afton\afton-11700-website\site\CMS\CMSScripts\Vendor\CSV-JS\.gitignore

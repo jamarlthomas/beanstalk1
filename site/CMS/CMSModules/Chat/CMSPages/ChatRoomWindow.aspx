@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalSimplePage.master"
-    Inherits="CMSModules_Chat_CMSPages_ChatRoomWindow" Theme="Default" Codebehind="ChatRoomWindow.aspx.cs" EnableEventValidation="false" %>
+    Inherits="CMSModules_Chat_CMSPages_ChatRoomWindow" Theme="Default"  Codebehind="ChatRoomWindow.aspx.cs" EnableEventValidation="false" %>
 
 <%@ Register Src="~/CMSWebParts/Chat/ChatRoomMessages.ascx" TagName="ChatRoomMessages"
     TagPrefix="cms" %>

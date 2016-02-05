@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 
+using CMS.Base;
 using CMS.Core;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
@@ -212,7 +213,14 @@ public partial class CMSModules_Content_Controls_NewCultureVersion : CMSUserCont
                 {
                     // Create the version first
                     TreeNode newCulture = TreeNode.New(Node.ClassName);
-                    DocumentHelper.CopyNodeData(sourceNode, newCulture, new CopyNodeDataSettings(true, null) { UpdateOriginalValues = true });
+                    DocumentHelper.CopyNodeData(sourceNode, newCulture, new CopyNodeDataSettings(true, null) { ResetChanges = true });
+
+                    if (Node.ClassName.ToLowerCSafe() == "cms.blogpost")
+                    {
+                        // Ensure blog post hierarchy if node is blog post
+                        newCulture.DocumentCulture = RequiredCulture;
+                        DocumentHelper.EnsureBlogPostHierarchy(newCulture, DocumentHelper.GetDocument(newCulture.NodeParentID, TreeProvider.ALL_CULTURES, Tree), Tree);
+                    }
 
                     var settings = new NewCultureDocumentSettings(newCulture, RequiredCulture, Tree)
                     {
@@ -242,7 +250,7 @@ public partial class CMSModules_Content_Controls_NewCultureVersion : CMSUserCont
                     // Refresh page
                     if (RequiresDialog)
                     {
-                        string url = URLHelper.ResolveUrl(DocumentURLProvider.GetUrl(newCulture.NodeAliasPath) + "?" + URLHelper.LanguageParameterName + "=" + RequiredCulture);
+                        string url = URLHelper.ResolveUrl(DocumentURLProvider.GetUrl(newCulture) + "?" + URLHelper.LanguageParameterName + "=" + RequiredCulture);
                         ScriptHelper.RegisterStartupScript(this, typeof(string), "NewCultureRefreshAction", ScriptHelper.GetScript(" wopener.location = " + ScriptHelper.GetString(url) + "; CloseDialog();"));
                     }
                     else
@@ -311,7 +319,7 @@ public partial class CMSModules_Content_Controls_NewCultureVersion : CMSUserCont
                     string script;
                     if (RequiresDialog)
                     {
-                        string url = URLHelper.ResolveUrl(DocumentURLProvider.GetUrl(Node.NodeAliasPath) + "?" + URLHelper.LanguageParameterName + "=" + RequiredCulture);
+                        string url = URLHelper.ResolveUrl(DocumentURLProvider.GetUrl(Node) + "?" + URLHelper.LanguageParameterName + "=" + RequiredCulture);
                         script = "window.top.location = " + ScriptHelper.GetString(url) + ";";
                     }
                     else

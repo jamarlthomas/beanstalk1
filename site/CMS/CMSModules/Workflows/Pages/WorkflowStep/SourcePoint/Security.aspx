@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default"
-    AutoEventWireup="true" Codebehind="Security.aspx.cs" Inherits="CMSModules_Workflows_Pages_WorkflowStep_SourcePoint_Security"
+    AutoEventWireup="true"  Codebehind="Security.aspx.cs" Inherits="CMSModules_Workflows_Pages_WorkflowStep_SourcePoint_Security"
     Title="Workflows - Source Point Security" %>
 
 <%@ Register Src="~/CMSModules/Workflows/Controls/UI/WorkflowStep/Security.ascx"

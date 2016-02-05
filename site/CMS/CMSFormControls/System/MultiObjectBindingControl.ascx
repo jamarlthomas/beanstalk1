@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="MultiObjectBindingControl.ascx.cs" Inherits="CMSFormControls_System_MultiObjectBindingControl" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="MultiObjectBindingControl.ascx.cs" Inherits="CMSFormControls_System_MultiObjectBindingControl" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"
     TagPrefix="cms" %>
 

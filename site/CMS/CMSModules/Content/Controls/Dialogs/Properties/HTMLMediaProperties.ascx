@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaProperties" Codebehind="HTMLMediaProperties.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaProperties"  Codebehind="HTMLMediaProperties.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/General/WidthHeightSelector.ascx"
     TagPrefix="cms" TagName="WidthHeightSelector" %>
@@ -213,11 +213,8 @@
                                     (<cms:LocalizedLinkButton ID="btnRemoveLink2" runat="server" ResourceString="dialogs.behavior.removelink" />
                                     <cms:LocalizedLabel ID="lblRemoveLinkText2" runat="server" EnableViewState="false" ResourceString="dialogs.behavior.removelinktext" />)
                                 </asp:Panel>
-                                <cms:CMSRadioButton ID="radImageLarger" runat="server" ResourceString="dialogs.image.behaviorlarger"
-                                    GroupName="imgBehavior" />
                             </div>
                         </div>
-                        <cms:WidthHeightSelector ID="imgWidthHeightElem" runat="server" />
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -422,5 +419,3 @@
     </cms:JQueryTabContainer>
 </asp:Panel>
 <asp:Button ID="btnSizeRefreshHidden" runat="server" CssClass="HiddenButton" EnableViewState="false" />
-<asp:Button ID="btnBehaviorSizeRefreshHidden" runat="server" CssClass="HiddenButton"
-    EnableViewState="false" />

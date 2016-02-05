@@ -1,7 +1,7 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_Messaging_CMSPages_PublicMessageUserSelector" Title="Untitled Page"
     ValidateRequest="false" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master"
-    Theme="default" Codebehind="PublicMessageUserSelector.aspx.cs" %>
+    Theme="default"  Codebehind="PublicMessageUserSelector.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Messaging/Controls/SearchUser.ascx" TagName="SearchUser"
     TagPrefix="cms" %>

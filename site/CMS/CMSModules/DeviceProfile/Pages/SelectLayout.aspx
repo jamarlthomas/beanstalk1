@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    AutoEventWireup="true" Codebehind="SelectLayout.aspx.cs" Inherits="CMSModules_DeviceProfile_Pages_SelectLayout"
+    AutoEventWireup="true"  Codebehind="SelectLayout.aspx.cs" Inherits="CMSModules_DeviceProfile_Pages_SelectLayout"
     Theme="Default" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniFlatSelector.ascx" TagName="UniFlatSelector"

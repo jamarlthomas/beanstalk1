@@ -18,7 +18,7 @@ public partial class CMSFormControls_LiveSelectors_InsertImageOrMedia_Footer : C
         {
             footerElem.StopProcessing = true;
             footerElem.Visible = false;
-            string url = ResolveUrl("~/CMSMessages/Error.aspx?title=" + GetString("dialogs.badhashtitle") + "&text=" + GetString("dialogs.badhashtext") + "&cancel=1");
+            string url = ResolveUrl(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
             ltlScript.Text = ScriptHelper.GetScript("if (window.parent != null) { window.parent.location = '" + url + "' }");
         }
     }

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Widgets_FormControls_SelectZoneType" Codebehind="SelectZoneType.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Widgets_FormControls_SelectZoneType"  Codebehind="SelectZoneType.ascx.cs" %>
 <script type="text/javascript">
     $cmsj(document).ready(function () {
         var radioBtns = $cmsj("#<%=rblOptions.ClientID %> [type=radio]");

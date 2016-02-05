@@ -62,22 +62,6 @@ public partial class CMSFormControls_System_EnumSelector : FormEngineUserControl
 
 
     /// <summary>
-    /// Gets or sets the resource prefix to use for item text localization.
-    /// </summary>
-    public string ResourcePrefix
-    {
-        get
-        {
-            return GetValue<string>("ResourcePrefix", null);
-        }
-        set
-        {
-            SetValue("ResourcePrefix", value);
-        }
-    }
-
-
-    /// <summary>
     /// Gets or sets a value that indicates if the items should be sorted.
     /// </summary>
     public bool Sort
@@ -244,6 +228,22 @@ public partial class CMSFormControls_System_EnumSelector : FormEngineUserControl
         }
     }
 
+
+    /// <summary>
+    /// Gets or sets selected enum categories separated by semicolon.
+    /// </summary>
+    public string SelectedCategories
+    {
+        get
+        {
+            return GetValue<string>("SelectedCategories", String.Empty);
+        }
+        set
+        {
+            SetValue("SelectedCategories", (string)value);
+        }
+    }
+
     #endregion
 
 
@@ -318,7 +318,9 @@ public partial class CMSFormControls_System_EnumSelector : FormEngineUserControl
 
         // Fill the control with enumeration values
         var excludedValues = !string.IsNullOrEmpty(ExcludedValues) ? ExcludedValues.Split(';').ToList() : null;
-        ControlsHelper.FillListControlWithEnum(ctrl, enumType, ResourcePrefix, sort: Sort, useStringRepresentation: UseStringRepresentation, excludedValues: excludedValues);
+        var selectedCategories = !string.IsNullOrEmpty(SelectedCategories) ? SelectedCategories.Split(';').ToList() : null;
+
+        ControlsHelper.FillListControlWithEnum(ctrl, enumType, null, Sort, UseStringRepresentation, excludedValues, selectedCategories);
 
         if (!String.IsNullOrEmpty(CssClass))
         {
@@ -379,12 +381,8 @@ public partial class CMSFormControls_System_EnumSelector : FormEngineUserControl
         }
         else
         {
-            CurrentSelector.SelectedValue = stringValue;
-            // Preselect first item if no selected value
-            if (CurrentSelector.SelectedIndex < 0)
-            {
-                CurrentSelector.SelectedIndex = 0;
-            }
+            var selectedItem = CurrentSelector.Items.FindByValue(stringValue);
+            CurrentSelector.SelectedIndex = selectedItem != null ? CurrentSelector.Items.IndexOf(selectedItem) : 0;
         }
     }
 

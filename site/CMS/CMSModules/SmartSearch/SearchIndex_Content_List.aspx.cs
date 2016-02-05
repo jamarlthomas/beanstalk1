@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
+using CMS.CustomTables;
 using CMS.DocumentEngine;
 using CMS.Helpers;
 using CMS.Membership;
@@ -63,7 +64,7 @@ public partial class CMSModules_SmartSearch_SearchIndex_Content_List : GlobalAdm
                     break;
 
                 // Custom tables
-                case DataClassInfo.OBJECT_TYPE_CUSTOMTABLE:
+                case CustomTableInfo.OBJECT_TYPE_CUSTOMTABLE:
                     customTableList.Visible = true;
                     customTableList.StopProcessing = false;
                     customTableList.OnAction += contentList_OnAction;

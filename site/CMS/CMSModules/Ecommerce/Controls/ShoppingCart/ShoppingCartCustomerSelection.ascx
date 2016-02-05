@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartCustomerSelection"
-    Codebehind="ShoppingCartCustomerSelection.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartCustomerSelection"
+     Codebehind="ShoppingCartCustomerSelection.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Ecommerce/FormControls/CustomerSelector.ascx" TagName="CustomerSelector"
     TagPrefix="cms" %>
 <cms:LocalizedHeading runat="server" ID="headCustomer" Level="3" ResourceString="shoppingcart.selectcustomer" EnableViewState="false" />

@@ -6,6 +6,7 @@ using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.SiteProvider;
+using CMS.Synchronization;
 using CMS.UIControls;
 
 public partial class CMSAdminControls_UI_UniGrid_Controls_ObjectMenu : CMSContextMenuControl
@@ -18,35 +19,34 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_ObjectMenu : CMSContex
         // Get the object type
         string param = ContextMenu.Parameter;
         string objectType = null;
-        bool groupObject = false;
+        bool showMoveActions = false;
         if (param != null)
         {
-            string[] parms = param.Split(';');
-            objectType = parms[0];
-            if (parms.Length == 2)
-            {
-                groupObject = ValidationHelper.GetBoolean(parms[1], false);
-            }
+            string[] parameters = param.Split(';');
+            objectType = parameters[0];
+
+            showMoveActions = (parameters.Length >= 3) && ValidationHelper.GetBoolean(parameters[2], false);
         }
 
         // Get empty info
-        GeneralizedInfo obj = null;
+        GeneralizedInfo emptyObject = null;
         ObjectTypeInfo ti = null;
         
         if (objectType != null)
         {
-            obj = ModuleManager.GetReadOnlyObject(objectType);
-            
-            ti = obj.TypeInfo;
+            var uiContextSiteId = ValidationHelper.GetInteger(UIContext["SiteID"], 0);
+            emptyObject = UniGridFunctions.GetEmptyObjectWithSiteID(objectType, uiContextSiteId);
+
+            ti = emptyObject.TypeInfo;
 
             // Get correct info for listings
             if (ti.Inherited)
             {
-                obj = ModuleManager.GetReadOnlyObject(ti.OriginalObjectType);
+                emptyObject = UniGridFunctions.GetEmptyObjectWithSiteID(ti.OriginalObjectType, uiContextSiteId);
             }
         }
 
-        if (obj == null)
+        if (emptyObject == null)
         {
             Visible = false;
             return;
@@ -57,10 +57,20 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_ObjectMenu : CMSContex
 
         string menuId = ContextMenu.MenuID;
 
+        if (ti.OrderColumn != ObjectTypeInfo.COLUMN_NAME_UNKNOWN && showMoveActions)
+        {
+            iMoveUp.Attributes.Add("onclick", "ContextMoveObject_" + ClientID + "('#moveup', GetContextMenuParameter('" + menuId + "'))");
+            iMoveDown.Attributes.Add("onclick", "ContextMoveObject_" + ClientID + "('#movedown', GetContextMenuParameter('" + menuId + "'))");
+        }
+        else
+        {
+            iMoveUp.Visible = false;
+            iMoveDown.Visible = false;
+        }
+
         // Relationships
         if (ti.HasObjectRelationships)
         {
-            iRelationships.Text = ResHelper.GetString("General.Relationships");
             iRelationships.Attributes.Add("onclick", "ContextRelationships(GetContextMenuParameter('" + menuId + "'));");
         }
         else
@@ -73,7 +83,6 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_ObjectMenu : CMSContex
         {
             if (curUser.IsAuthorizedPerResource("cms.globalpermissions", "ExportObjects", curSiteName))
             {
-                iExport.Text = ResHelper.GetString("General.Export");
                 iExport.Attributes.Add("onclick", "ContextExportObject(GetContextMenuParameter('" + menuId + "'), false);");
             }
             else
@@ -85,7 +94,6 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_ObjectMenu : CMSContex
             {
                 if (curUser.IsAuthorizedPerResource("cms.globalpermissions", "BackupObjects", curSiteName))
                 {
-                    iBackup.Text = ResHelper.GetString("General.Backup");
                     iBackup.Attributes.Add("onclick", "ContextExportObject(GetContextMenuParameter('" + menuId + "'), true);");
                 }
                 else
@@ -95,7 +103,6 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_ObjectMenu : CMSContex
 
                 if (curUser.IsAuthorizedPerResource("cms.globalpermissions", "RestoreObjects", curSiteName))
                 {
-                    iRestore.Text = ResHelper.GetString("General.Restore");
                     iRestore.Attributes.Add("onclick", "ContextRestoreObject(GetContextMenuParameter('" + menuId + "'), true);");
                 }
                 else
@@ -117,9 +124,8 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_ObjectMenu : CMSContex
         }
 
         // Versioning
-        if (obj.AllowRestore && UniGridFunctions.ObjectSupportsDestroy(obj) && curUser.IsAuthorizedPerObject(PermissionsEnum.Destroy, ti.ObjectType, curSiteName))
+        if (ObjectVersionManager.AllowObjectRestore(emptyObject) && UniGridFunctions.ObjectSupportsDestroy(emptyObject) && curUser.IsAuthorizedPerObject(PermissionsEnum.Destroy, emptyObject, curSiteName))
         {
-            iDestroy.Text = ResHelper.GetString("security.destroy");
             iDestroy.Attributes.Add("onclick", "ContextDestroyObject_" + ClientID + "(GetContextMenuParameter('" + menuId + "'))");
         }
         else
@@ -128,9 +134,8 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_ObjectMenu : CMSContex
         }
 
         // Clonning
-        if (obj.AllowClone)
+        if (emptyObject.AllowClone)
         {
-            iClone.Text = ResHelper.GetString("general.clone");
             iClone.Attributes.Add("onclick", "ContextCloneObject" + "(GetContextMenuParameter('" + menuId + "'))");
         }
         else
@@ -139,13 +144,15 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_ObjectMenu : CMSContex
         }
 
         bool ancestor = iRelationships.Visible;
-        sep1.Visible = (iClone.Visible || iDestroy.Visible) && ancestor;
+        sepCloneDestroy.Visible = (iClone.Visible || iDestroy.Visible) && ancestor;
         ancestor |= (iClone.Visible || iDestroy.Visible);
-        sep2.Visible = (iBackup.Visible || iRestore.Visible || iExport.Visible) && ancestor;
+        sepExport.Visible = (iBackup.Visible || iRestore.Visible || iExport.Visible) && ancestor;
+        ancestor |= (iBackup.Visible || iRestore.Visible || iExport.Visible);
+        sepMove.Visible = (iMoveUp.Visible || iMoveDown.Visible) && ancestor;
 
-        Visible = iRelationships.Visible || iExport.Visible || iBackup.Visible || iDestroy.Visible || iClone.Visible;
+        Visible = iRelationships.Visible || iExport.Visible || iBackup.Visible || iDestroy.Visible || iClone.Visible || iMoveUp.Visible || iMoveDown.Visible;
     }
-
+    
 
     protected override void OnPreRender(EventArgs e)
     {
@@ -169,7 +176,8 @@ function ContextExportObject(definition, backup) {
 }
 
 function ContextRestoreObject(definition, backup) {
-    var query = '';
+    var query = '&ug=UG_", ContextMenu.ParentElementClientID, @"';
+
     if (backup) {
         query += '&backup=true';
     }
@@ -187,21 +195,30 @@ function ContextCloneObject(definition) {
             {
                 sb = new StringBuilder();
                 sb.Append(@"
-function ContextDestroyObject_", ClientID, @"(definition)
-{
+function ContextDestroyObject_", ClientID, @"(definition) {
    if(confirm(", ScriptHelper.GetLocalizedString("objectversioning.destroyobjectconfirmation"), @")) {
-      var ug = window.CMS.UG_", ContextMenu.ParentElementClientID, @"
-      if (ug.destroy) {
-          var param = definition.toString().split(',');
-          if ((param != null) && (param.length == 2)) {
-              ug.destroy(param[1]);
-          }
+      var ug = window.CMS.UG_", ContextMenu.ParentElementClientID, @";
+      if (ug.destroy && definition && definition.length == 2) {
+          ug.destroy(definition[1]);
       }
    }
 }");
 
                 // Register destroy script for particular menu
                 ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "ObjectMenuDestroyScript_" + ClientID, sb.ToString(), true);
+            }
+
+            if (iMoveUp.Visible || iMoveDown.Visible)
+            {
+                sb = new StringBuilder();
+                sb.Append(@"
+function ContextMoveObject_", ClientID, @"(commandName, definition) {
+    var ug = window.CMS.UG_", ContextMenu.ParentElementClientID, @";
+    if (ug.command && definition && definition.length == 2) {
+        ug.command(commandName, definition[1]);
+    }
+}");
+                ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "ObjectMenuMoveScript_" + ClientID, sb.ToString(), true);
             }
         }
     }

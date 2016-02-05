@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Relationship - Select page" Language="C#" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master"
-    AutoEventWireup="true" Codebehind="RelatedDocuments.aspx.cs" Inherits="CMSFormControls_LiveSelectors_RelatedDocuments"
+    AutoEventWireup="true"  Codebehind="RelatedDocuments.aspx.cs" Inherits="CMSFormControls_LiveSelectors_RelatedDocuments"
     Theme="Default" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Relationships/AddRelatedDocument.ascx"

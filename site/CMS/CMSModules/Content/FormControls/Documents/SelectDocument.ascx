@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_FormControls_Documents_SelectDocument"
-    Codebehind="SelectDocument.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_FormControls_Documents_SelectDocument"
+     Codebehind="SelectDocument.ascx.cs" %>
 <%@ Register TagPrefix="cms" Namespace="CMS.UIControls" Assembly="CMS.UIControls" %>
 <cms:CMSUpdatePanel ID="pnlUpdateHidden" runat="server">
     <ContentTemplate>

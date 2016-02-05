@@ -37,15 +37,9 @@ public partial class CMSEdit_default : AbstractCMSPage
             }
 
             // Try get return URL
-            string queryUrl = QueryHelper.GetString("returnurl", String.Empty);
+            string queryUrl = QueryHelper.GetString("editurl", String.Empty);
             if (!String.IsNullOrEmpty(queryUrl) && (queryUrl.StartsWithCSafe("~/") || queryUrl.StartsWithCSafe("/")))
             {
-                // Remove return url duplication if exist
-                int commaIndex = queryUrl.IndexOfCSafe(",", 0, false);
-                if (commaIndex > 0)
-                {
-                    queryUrl = queryUrl.Substring(0, commaIndex);
-                }
                 returnUrl = URLHelper.ResolveUrl(queryUrl);
             }
             // Use default alias path if return url isn't defined

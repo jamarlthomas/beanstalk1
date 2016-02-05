@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Inherits="CMSModules_Workflows_Workflow_Documents" Title="Workflow - Pages"
-    ValidateRequest="false" Theme="Default" Codebehind="Workflow_Documents.aspx.cs" %>
+    ValidateRequest="false" Theme="Default"  Codebehind="Workflow_Documents.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/Filters/DocumentFilter.ascx" TagName="DocumentFilter"
     TagPrefix="cms" %>
@@ -11,7 +11,7 @@
 
 <asp:Content ContentPlaceHolderID="plcContent" ID="content" runat="server">
     <asp:Panel runat="server" ID="pnlLog" Visible="false">
-        <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+        <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="Documents" />
     </asp:Panel>
     <asp:Panel ID="pnlContent" runat="server">
         <asp:PlaceHolder ID="plcFilter" runat="server">

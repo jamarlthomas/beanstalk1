@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.Localization;
@@ -155,7 +155,7 @@ public partial class CMSWebParts_General_pageplaceholder : CMSAbstractWebPart
                     path = MacroResolver.ResolveCurrentPath(path);
 
                     // Get specific page
-                    usePage = PageInfoProvider.GetPageInfo(SiteContext.CurrentSiteName, path, LocalizationContext.PreferredCultureCode, null, false);
+                    usePage = PageInfoProvider.GetPageInfo(SiteContext.CurrentSiteName, path, LocalizationContext.PreferredCultureCode, null, SiteContext.CurrentSite.CombineWithDefaultCulture);
                     if (PortalManager.ViewMode != ViewModeEnum.LiveSite)
                     {
                         viewMode = ViewModeEnum.Preview;

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/Ecommerce/Donate.ascx.cs" Inherits="CMSWebParts_Ecommerce_Donate" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/Ecommerce/Donate.ascx.cs" Inherits="CMSWebParts_Ecommerce_Donate" %>
 
 <%@ Register TagPrefix="cms" TagName="DonationProperties" Src="~/CMSModules/Ecommerce/Controls/ProductOptions/DonationProperties.ascx" %>
 <%@ Register TagPrefix="cms" TagName="ShoppingCartItemSelector" Src="~/CMSModules/Ecommerce/Controls/ProductOptions/ShoppingCartItemSelector.ascx" %>

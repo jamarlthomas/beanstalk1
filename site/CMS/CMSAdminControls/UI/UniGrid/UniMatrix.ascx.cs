@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -104,6 +104,22 @@ public partial class CMSAdminControls_UI_UniGrid_UniMatrix : UniMatrix
         }
     }
 
+
+    /// <summary>
+    /// Gets or sets the maximum input length for the search field
+    /// </summary>
+    public int MaxFilterLength
+    {
+        get
+        {
+            return txtFilter.MaxLength;
+        }
+        set
+        {
+            txtFilter.MaxLength = value;
+        }
+    }
+
     #endregion
 
 
@@ -154,7 +170,8 @@ public partial class CMSAdminControls_UI_UniGrid_UniMatrix : UniMatrix
         pagerElem.UniPager.CurrentPage = 1;
 
         // Get the expression
-        string expr = txtFilter.Text.Trim();
+        txtFilter.Text = txtFilter.Text.Trim().Truncate(MaxFilterLength);
+        string expr = txtFilter.Text;
 
         SetFilterWhere(expr);
 

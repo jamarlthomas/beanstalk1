@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_CMSPages_Unsubscribe"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_CMSPages_Unsubscribe"
     Theme="Default" MasterPageFile="~/CMSMasterPages/LiveSite/SimplePage.master"
-    Codebehind="Unsubscribe.aspx.cs" %>
+     Codebehind="Unsubscribe.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Forums/Controls/Unsubscription.ascx" TagName="Unsubscription"
     TagPrefix="cms" %>

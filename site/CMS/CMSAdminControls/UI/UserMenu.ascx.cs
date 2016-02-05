@@ -175,10 +175,9 @@ public partial class CMSAdminControls_UI_UserMenu : CMSUserControl
     /// </summary>
     private bool EnsureUICultures()
     {
-        DataSet ds = CultureInfoProvider.GetUICultures(topN: 0, columns: "COUNT (CultureID)");
-
         // Show selector only if there are more UI cultures than one
-        if (!DataHelper.DataSourceIsEmpty(ds) && (ValidationHelper.GetInteger(ds.Tables[0].Rows[0][0], 0) > 1))
+        var count = CultureInfoProvider.GetUICultures().Count;
+        if (count > 1)
         {
             lnkUICultures.Visible = true;
             lnkUICultures.OnClientClick = ucUICultures.GetSelectionDialogScript();

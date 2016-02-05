@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Theme="Default"
-    Inherits="CMSFormControls_Selectors_InsertImageOrMedia_Tabs_WebLink" EnableEventValidation="false" Codebehind="Tabs_WebLink.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Theme="Default"
+    Inherits="CMSFormControls_Selectors_InsertImageOrMedia_Tabs_WebLink" EnableEventValidation="false"  Codebehind="Tabs_WebLink.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/Web/WebLinkSelector.ascx" TagName="WebLinkSelector"
     TagPrefix="cms" %>

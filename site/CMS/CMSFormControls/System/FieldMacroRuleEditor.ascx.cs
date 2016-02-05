@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Data;
 using System.Web.UI;
 
 using CMS.Base;
 using CMS.DataEngine;
-using CMS.ExtendedControls;
 using CMS.FormControls;
 using CMS.FormEngine;
 using CMS.Helpers;
@@ -39,14 +39,12 @@ public partial class CMSFormControls_System_FieldMacroRuleEditor : FormEngineUse
             mMacroRule = (FieldMacroRule)value;
             if (mMacroRule != null)
             {
-                string userName = null;
-                string rule = MacroProcessor.RemoveDataMacroBrackets(mMacroRule.MacroRule);
-                rule = MacroSecurityProcessor.RemoveMacroSecurityParams(rule, out userName);
-                rule = ValidationHelper.GetString(MacroExpression.ExtractParameter(rule, "rule", 1).Value, string.Empty);
-
-                mMacroRuleTree = new MacroRuleTree();
-                mMacroRuleTree.LoadFromXml(rule);
-                mSelectedRuleName = mMacroRuleTree.Children[0].RuleName;
+                MacroRuleTree tempRule = mMacroRule.GetMacroRuleTree();
+                if (tempRule != null && tempRule.Children.Count > 0)
+                {
+                    mMacroRuleTree = tempRule.Children[0];
+                    mSelectedRuleName = mMacroRuleTree.RuleName;
+                }
             }
             else
             {
@@ -70,7 +68,7 @@ public partial class CMSFormControls_System_FieldMacroRuleEditor : FormEngineUse
             string selectedValue = ValidationHelper.GetString(ViewState["LastSelected"], string.Empty);
             if (string.IsNullOrEmpty(selectedValue) && (mMacroRuleTree != null))
             {
-                selectedValue = mMacroRuleTree.Children[0].RuleName;
+                selectedValue = mMacroRuleTree.RuleName;
             }
             if (string.IsNullOrEmpty(selectedValue))
             {
@@ -205,20 +203,21 @@ public partial class CMSFormControls_System_FieldMacroRuleEditor : FormEngineUse
             // Prepare form for rule parameters
             FormInfo fi = new FormInfo(mri.MacroRuleParameters);
             formProperties.FormInformation = fi;
-            formProperties.DataRow = fi.GetDataRow();
+            DataRow data = fi.GetDataRow();
+            formProperties.DataRow = data;
 
             fi.LoadDefaultValues(formProperties.DataRow, FormResolveTypeEnum.AllFields);
-            if ((mMacroRule != null) && (mMacroRuleTree != null) && mMacroRuleTree.Children[0].RuleName.EqualsCSafe(mSelectedRuleName, true))
+            if ((mMacroRule != null) && (mMacroRuleTree != null) && mMacroRuleTree.RuleName.EqualsCSafe(mSelectedRuleName, true))
             {
                 // Set params from rule given by Value property
-                foreach (DictionaryEntry entry in mMacroRuleTree.Children[0].Parameters)
+                foreach (DictionaryEntry entry in mMacroRuleTree.Parameters)
                 {
                     string paramName = ValidationHelper.GetString(entry.Key, string.Empty);
-                    MacroRuleParameter param = (MacroRuleParameter)entry.Value;
-
-                    if (!string.IsNullOrEmpty(paramName) && (param != null) && formProperties.DataRow.Table.Columns.Contains(paramName))
+                    MacroRuleParameter param = entry.Value as MacroRuleParameter;
+                    
+                    if ((param != null) && data.Table.Columns.Contains(paramName))
                     {
-                        formProperties.DataRow[paramName] = param.Value;
+                        data[paramName] = param.Value;
                     }
                 }
 
@@ -292,17 +291,18 @@ public partial class CMSFormControls_System_FieldMacroRuleEditor : FormEngineUse
                     childern.Parameters.Add(paramName, param);
                 }
             }
+            
+            string macroRule = string.Format("Rule(\"{0}\", \"{1}\")", MacroElement.EscapeSpecialChars(main.GetCondition()), MacroElement.EscapeSpecialChars(main.GetXML()));
 
-            fmr = new FieldMacroRule();
-            fmr.ErrorMessage = txtErrorMsg.Text;
-            fmr.MacroRule = string.Format("Rule(\"{0}\", \"{1}\")", MacroElement.EscapeSpecialChars(main.GetCondition()), MacroElement.EscapeSpecialChars(main.GetXML()));
-
-            if (!MacroSecurityProcessor.IsSimpleMacro(fmr.MacroRule))
+            if (!MacroSecurityProcessor.IsSimpleMacro(macroRule))
             {
                 // Sign complex macros
-                fmr.MacroRule = MacroSecurityProcessor.AddMacroSecurityParams(fmr.MacroRule, MembershipContext.AuthenticatedUser.UserName);
+                macroRule = MacroSecurityProcessor.AddMacroSecurityParams(macroRule, MembershipContext.AuthenticatedUser.UserName);
             }
-            fmr.MacroRule = string.Format("{{%{0}%}}", fmr.MacroRule);
+
+            fmr = new FieldMacroRule();
+            fmr.MacroRule = string.Format("{{%{0}%}}", macroRule);
+            fmr.ErrorMessage = txtErrorMsg.Text;
         }
 
         return fmr;

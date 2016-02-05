@@ -102,24 +102,6 @@ public partial class CMSModules_Content_Controls_Dialogs_YouTube_YouTubeProperti
     protected global::CMS.ExtendedControls.CMSCheckBox chkAutoplay;
     
     /// <summary>
-    /// lblLoop control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblLoop;
-    
-    /// <summary>
-    /// chkLoop control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSCheckBox chkLoop;
-    
-    /// <summary>
     /// lblIncludeRelated control.
     /// </summary>
     /// <remarks>

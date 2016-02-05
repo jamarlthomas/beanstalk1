@@ -98,7 +98,12 @@ public partial class CMSFormControls_Filters_ObjectFilter : CMSAbstractBaseFilte
     /// </summary>
     private void SetupControl()
     {
-        if ((Parameters != null) && (Parameters["ObjectType"] != null))
+        if (Parameters == null)
+        {
+            return;
+        }
+
+        if (Parameters["ObjectType"] != null)
         {
             // Get current object
             currentObject = ModuleManager.GetObject(ValidationHelper.GetString(Parameters["ObjectType"], String.Empty));
@@ -117,6 +122,13 @@ public partial class CMSFormControls_Filters_ObjectFilter : CMSAbstractBaseFilte
             {
                 plcParentObject.Visible = false;
             }
+        }
+
+
+        if (Parameters["CurrentSiteOnly"] != null)
+        {
+            siteSelector.Value = SiteContext.CurrentSiteID;
+            plcSite.Visible = !ValidationHelper.GetBoolean(Parameters["CurrentSiteOnly"], false);
         }
     }
 

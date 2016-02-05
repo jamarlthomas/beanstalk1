@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_SmartSearch_SearchIndex_Content_Edit"
-    ValidateRequest="false" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Title="Search Index - Edit" Codebehind="SearchIndex_Content_Edit.aspx.cs" %>
+    ValidateRequest="false" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Title="Search Index - Edit"  Codebehind="SearchIndex_Content_Edit.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/SmartSearch/Controls/UI/SearchIndex_Content_Edit.ascx"
     TagName="ContentEdit" TagPrefix="cms" %>

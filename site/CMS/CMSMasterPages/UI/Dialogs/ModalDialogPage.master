@@ -1,5 +1,5 @@
 <%@ Master Language="C#" AutoEventWireup="true" Inherits="CMSMasterPages_UI_Dialogs_ModalDialogPage"
-    Codebehind="ModalDialogPage.master.cs" %>
+     Codebehind="ModalDialogPage.master.cs" %>
 
 <%@ Register Src="~/CMSModules/Objects/Controls/Locking/ObjectEditPanel.ascx" TagName="ObjectEditPanel"
     TagPrefix="cms" %>
@@ -51,7 +51,7 @@
                 <div id="CKToolbar">
                 </div>
             </div>
-            <asp:Panel ID="divContent" runat="server" ClientIDMode="Static" CssClass="dialog-content">
+            <asp:Panel ID="divContent" runat="server" ClientIDMode="Static" CssClass="dialog-content dialog-content-scrollable">
                 <cms:CMSUpdateProgress ID="up" runat="server" HandlePostback="true" />
                 <asp:PlaceHolder runat="server" ID="plcLabels" />
                 <asp:ContentPlaceHolder ID="plcContent" runat="server" />

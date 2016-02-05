@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="UserMenu.ascx.cs" Inherits="CMSAdminControls_UI_UserMenu" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="UserMenu.ascx.cs" Inherits="CMSAdminControls_UI_UserMenu" %>
 <%@ Import Namespace="CMS.Membership" %>
 <%@ Import Namespace="CMS.PortalEngine" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelectorControl" TagPrefix="cms" %>

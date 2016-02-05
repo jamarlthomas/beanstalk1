@@ -1,12 +1,12 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_System_Deployment"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_System_Deployment"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="System - Deployment"
-    Codebehind="System_Deployment.aspx.cs" %>
+     Codebehind="System_Deployment.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/AsyncLogDialog.ascx" TagName="AsyncLog"
     TagPrefix="cms" %>
 <asp:Content ContentPlaceHolderID="plcBeforeBody" runat="server" ID="cntBeforeBody">
     <asp:Panel runat="server" ID="pnlLog" Visible="false">
-        <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+        <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="Deployment" />
     </asp:Panel>
     <asp:Literal runat="server" ID="ltlScript" EnableViewState="false" />
 </asp:Content>

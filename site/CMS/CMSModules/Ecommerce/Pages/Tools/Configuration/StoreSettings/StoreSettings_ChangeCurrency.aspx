@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_Configuration_StoreSettings_StoreSettings_ChangeCurrency"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_Configuration_StoreSettings_StoreSettings_ChangeCurrency"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Codebehind="StoreSettings_ChangeCurrency.aspx.cs" %>
+     Codebehind="StoreSettings_ChangeCurrency.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/ECommerce/FormControls/CurrencySelector.ascx" TagName="CurrencySelector"
     TagPrefix="cms" %>
@@ -78,10 +78,6 @@
                                 Checked="true" EnableViewState="false" />
                         </div>
                         <div class="checkbox">
-                            <cms:CMSCheckBox ID="chkFlatTaxes" runat="server" ResourceString="StoreSettings_ChangeCurrency.ChangeTaxes"
-                                Checked="true" EnableViewState="false" />
-                        </div>
-                        <div class="checkbox">
                             <cms:CMSCheckBox ID="chkDiscounts" runat="server" ResourceString="StoreSettings_ChangeCurrency.ChangeDiscounts"
                                 Checked="true" EnableViewState="false" />
                         </div>
@@ -93,12 +89,6 @@
                             <cms:CMSCheckBox ID="chkShipping" runat="server" ResourceString="StoreSettings_ChangeCurrency.ChangeShipping"
                                 Checked="true" EnableViewState="false" />
                         </div>
-                        <asp:PlaceHolder ID="plcRecountDocuments" runat="server">
-                            <div class="checkbox">
-                                <cms:CMSCheckBox ID="chkDocuments" runat="server" ResourceString="StoreSettings_ChangeCurrency.ChangeDocuments"
-                                    Checked="true" EnableViewState="false" />
-                            </div>
-                        </asp:PlaceHolder>
                     </div>
                 </div>
             </div>

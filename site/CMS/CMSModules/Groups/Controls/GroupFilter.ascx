@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Groups_Controls_GroupFilter" Codebehind="GroupFilter.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Groups_Controls_GroupFilter"  Codebehind="GroupFilter.ascx.cs" %>
 <asp:Panel runat="server" ID="pnlFilter" DefaultButton="btnSearch">
     <div class="form-horizontal form-filter">
         <div class="form-group">

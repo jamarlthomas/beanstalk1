@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Linq;
 using System.Text;
@@ -128,15 +128,15 @@ public partial class CMSModules_ContactManagement_Controls_UI_Contact_Accounts :
     /// <summary>
     /// Dialog control identifier.
     /// </summary>
-    private string Identifier
+    private Guid Identifier
     {
         get
         {
-            string identifier = hdnValue.Value;
-            if (string.IsNullOrEmpty(identifier))
+            Guid identifier;
+            if (!Guid.TryParse(hdnValue.Value, out identifier))
             {
-                identifier = Guid.NewGuid().ToString();
-                hdnValue.Value = identifier;
+                identifier = Guid.NewGuid();
+                hdnValue.Value = identifier.ToString();
             }
 
             return identifier;
@@ -199,7 +199,7 @@ public partial class CMSModules_ContactManagement_Controls_UI_Contact_Accounts :
         {
             drpAction.Items.Add(new ListItem(GetString("general." + Action.SelectAction), Convert.ToInt32(Action.SelectAction).ToString()));
             drpAction.Items.Add(new ListItem(GetString("general.remove"), Convert.ToInt32(Action.Remove).ToString()));
-            drpAction.Items.Add(new ListItem(GetString("om.contactrole.select"), Convert.ToInt32(Action.SelectRole).ToString()));
+            drpAction.Items.Add(new ListItem(GetString("om.contactrole.selectitem"), Convert.ToInt32(Action.SelectRole).ToString()));
             drpWhat.Items.Add(new ListItem(GetString("om.account." + What.Selected), Convert.ToInt32(What.Selected).ToString()));
             drpWhat.Items.Add(new ListItem(GetString("om.account." + What.All), Convert.ToInt32(What.All).ToString()));
         }
@@ -608,7 +608,7 @@ var dialogParams_", ClientID, @" = '';");
             mParameters["allownone"] = "1";
             mParameters["issitemanager"] = ContactHelper.IsSiteManager;
 
-            WindowHelper.Add(Identifier, mParameters);
+            WindowHelper.Add(Identifier.ToString(), mParameters);
 
             queryString = "?params=" + Identifier;
             queryString = URLHelper.AddParameterToUrl(queryString, "hash", QueryHelper.GetHash(queryString));

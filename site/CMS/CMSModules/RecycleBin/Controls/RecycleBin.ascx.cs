@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -33,7 +31,6 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
     private bool mRestrictUsers = true;
     private SiteInfo mSelectedSite;
 
-    private static readonly Hashtable mInfos = new Hashtable();
     private string mOrderBy = "VersionDeletedWhen DESC";
     private string mDocumentAge = String.Empty;
     private string mDocumentName = String.Empty;
@@ -199,29 +196,17 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
 
 
     /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
-
-    /// <summary>
     /// Current Error.
     /// </summary>
     public string CurrentError
     {
         get
         {
-            return ValidationHelper.GetString(mInfos["RestoreError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mInfos["RestoreError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -233,11 +218,11 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
     {
         get
         {
-            return ValidationHelper.GetString(mInfos["RestoreInfo_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Information;
         }
         set
         {
-            mInfos["RestoreInfo_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Information = value;
         }
     }
 
@@ -475,7 +460,6 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
         // Initialize events
         ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
         ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-        ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
         ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
     }
 
@@ -601,8 +585,7 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state == CMSThread.ABORT_REASON_STOP)
+            if (CMSThread.Stopped(ex))
             {
                 // When canceled
                 CurrentInfo = ResHelper.GetString("Recyclebin.RestorationCanceled", mCurrentCulture);
@@ -701,13 +684,14 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
     {
         // Begin log
         AddLog(ResHelper.GetString("Recyclebin.EmptyingBin", mCurrentCulture));
+
         BinSettingsContainer settings = (BinSettingsContainer)parameter;
         CurrentUserInfo currentUserInfo = settings.User;
 
-        DataSet recycleBin;
         string where = null;
         DateTime modifiedFrom = DateTimeHelper.ZERO_TIME;
         DateTime modifiedTo = DateTimeHelper.ZERO_TIME;
+
         switch (settings.CurrentWhat)
         {
             case What.AllDocuments:
@@ -724,7 +708,8 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
                 }
                 break;
         }
-        recycleBin = VersionHistoryInfoProvider.GetRecycleBin((mSelectedSite != null) ? mSelectedSite.SiteID : 0, 0, where, "DocumentNamePath ASC", -1, null, modifiedFrom, modifiedTo);
+
+        DataSet recycleBin = VersionHistoryInfoProvider.GetRecycleBin((mSelectedSite != null) ? mSelectedSite.SiteID : 0, 0, @where, "DocumentNamePath ASC", -1, null, modifiedFrom, modifiedTo);
 
         try
         {
@@ -767,8 +752,7 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state != CMSThread.ABORT_REASON_STOP)
+            if (!CMSThread.Stopped(ex))
             {
                 // Log error
                 LogException("DESTROYDOC", ex);
@@ -792,12 +776,6 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
     }
 
 
-    private void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
-    }
-
-
     private void ctlAsyncLog_OnError(object sender, EventArgs e)
     {
         HandlePossibleErrors();
@@ -808,17 +786,7 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
     {
         HandlePossibleErrors();
     }
-
-
-    /// <summary>
-    /// Ensures the logging context.
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext log = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-        return log;
-    }
-
+    
 
     /// <summary>
     /// Adds the log information.
@@ -826,14 +794,12 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
 
     private void HandlePossibleErrors()
     {
-        CurrentLog.Close();
         TerminateCallbacks();
         if (!String.IsNullOrEmpty(CurrentError))
         {
@@ -843,7 +809,7 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
         {
             ShowConfirmation(CurrentInfo);
         }
-        ugRecycleBin.ResetSelection();
+        ugRecycleBin.ResetSelection(doPostback: false);
     }
 
 
@@ -865,9 +831,7 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
 
         CurrentError = string.Empty;
         CurrentInfo = string.Empty;
-        CurrentLog.Close();
-        EnsureLog();
-
+        
         ctlAsyncLog.RunAsync(action, WindowsIdentity.GetCurrent());
     }
 
@@ -881,9 +845,7 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
         pnlLog.Visible = true;
 
         CurrentError = string.Empty;
-        CurrentLog.Close();
-        EnsureLog();
-
+        
         int actionValue = ValidationHelper.GetInteger(drpAction.SelectedValue, 0);
         Action action = (Action)actionValue;
 
@@ -904,21 +866,19 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
                 break;
         }
 
-        ctlAsyncLog.Parameter = binSettings;
-
         switch (action)
         {
             case Action.Restore:
                 {
                     ctlAsyncLog.TitleText = GetString("Recyclebin.RestoringDocuments");
-                    RunAsync(Restore);
+                    RunAsync(p => Restore(binSettings));
                 }
                 break;
 
             case Action.Delete:
                 {
                     ctlAsyncLog.TitleText = GetString("recyclebin.emptyingbin");
-                    RunAsync(EmptyBin);
+                    RunAsync(p => EmptyBin(binSettings));
                 }
                 break;
         }
@@ -992,7 +952,7 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
                         }
                         else
                         {
-                            ShowError(String.Format(ResHelper.GetString("Recyclebin.RestorationFailedPermissions", mCurrentCulture), doc.DocumentNamePath));
+                            ShowError(String.Format(ResHelper.GetString("Recyclebin.RestorationFailedPermissions", mCurrentCulture), HTMLHelper.HTMLEncode(doc.DocumentNamePath)));
                         }
                     }
                     catch (Exception ex)
@@ -1012,7 +972,7 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
                         }
                         else
                         {
-                            ShowError(String.Format(ResHelper.GetString("recyclebin.destructionfailedpermissions", mCurrentCulture), doc.DocumentNamePath));
+                            ShowError(String.Format(ResHelper.GetString("recyclebin.destructionfailedpermissions", mCurrentCulture), HTMLHelper.HTMLEncode(doc.DocumentNamePath)));
                         }
                     }
                     catch (Exception ex)
@@ -1023,7 +983,7 @@ public partial class CMSModules_RecycleBin_Controls_RecycleBin : CMSUserControl
                 break;
         }
 
-        ugRecycleBin.ResetSelection();
+        ugRecycleBin.ResetSelection(doPostback: false);
     }
 
     #endregion

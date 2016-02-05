@@ -1,9 +1,8 @@
-using System;
-using System.Data;
+﻿using System;
+using System.Globalization;
 
 using CMS.Helpers;
 using CMS.SiteProvider;
-using CMS.Membership;
 using CMS.DocumentEngine;
 using CMS.UIControls;
 using CMS.Ecommerce;
@@ -22,6 +21,9 @@ public partial class CMSPages_Ecommerce_GetProduct : CMSPage
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        // Set correct culture
+        SetLiveCulture();
+
         // Initialization
         productId = QueryHelper.GetInteger("productId", 0);
         skuGuid = QueryHelper.GetGuid("skuguid", Guid.Empty);
@@ -53,19 +55,25 @@ public partial class CMSPages_Ecommerce_GetProduct : CMSPage
 
         if ((where != null) && (currentSite != null))
         {
-            TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-            DataSet ds = tree.SelectNodes(currentSite.SiteName, "/%", TreeProvider.ALL_CULTURES, true, "", where);
-            if (!DataHelper.DataSourceIsEmpty(ds))
+            var node = DocumentHelper.GetDocuments()
+                         .Path("/", PathTypeEnum.Section)
+                         .Culture(CultureInfo.CurrentCulture.Name)
+                         .CombineWithDefaultCulture()
+                         .Where(where)
+                         .Published()
+                         .FirstObject;
+
+            if (node != null)
             {
-                // Ger specified product url 
-                url = DocumentURLProvider.GetUrl(Convert.ToString(ds.Tables[0].Rows[0]["NodeAliasPath"]));
+                // Get specified product url 
+                url = DocumentURLProvider.GetUrl(node);
             }
         }
 
         if ((url != "") && (currentSite != null))
         {
             // Redirect to specified product 
-            URLHelper.RedirectPermanent(url, currentSite.SiteName);
+            URLHelper.Redirect(url);
         }
         else
         {

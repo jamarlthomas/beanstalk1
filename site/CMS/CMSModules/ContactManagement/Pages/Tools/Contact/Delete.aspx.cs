@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Data;
 using System.Security.Principal;
@@ -6,17 +6,16 @@ using System.Text;
 using System.Threading;
 
 using CMS.Base;
+using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.OnlineMarketing;
-using CMS.UIControls;
 
 public partial class CMSModules_ContactManagement_Pages_Tools_Contact_Delete : CMSContactManagementContactsPage
 {
     #region "Private variables"
 
     private int contactSiteId;
-    private static readonly Hashtable mErrors = new Hashtable();
     private Hashtable mParameters;
     private string mReturnScript;
     private int mSiteID;
@@ -29,29 +28,17 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Contact_Delete : C
     #region "Properties"
 
     /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
-
-    /// <summary>
     /// Current Error.
     /// </summary>
     private string CurrentError
     {
         get
         {
-            return ValidationHelper.GetString(mErrors["DeleteError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mErrors["DeleteError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -152,7 +139,6 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Contact_Delete : C
             // Initialize events
             ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
             ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-            ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
             ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
 
             ctlAsyncLog.MaxLogLines = 1000;
@@ -187,7 +173,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Contact_Delete : C
                         {
                             PageTitle.TitleText += " \"" + HTMLHelper.HTMLEncode(fullName) + "\"";
                         }
-                        contactSiteId = ValidationHelper.GetInteger(DataHelper.GetDataRowValue(rows[0], "ContactSiteID"), 0);
+                        contactSiteId = DataHelper.GetIntValue(rows[0], "ContactSiteID");
                     }
                     else if (rows.Count > 1)
                     {
@@ -277,8 +263,8 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Contact_Delete : C
         if (row != null)
         {
             // Compose full contact name
-            fullName = string.Format("{0} {1}", ValidationHelper.GetString(DataHelper.GetDataRowValue(row, "ContactLastName"), string.Empty),
-                                     ValidationHelper.GetString(DataHelper.GetDataRowValue(row, "ContactFirstName"), string.Empty)).Trim();
+            fullName = string.Format("{0} {1}", DataHelper.GetStringValue(row, "ContactLastName"),
+                                     DataHelper.GetStringValue(row, "ContactFirstName")).Trim();
         }
 
         return fullName;
@@ -318,10 +304,11 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Contact_Delete : C
                 AddLog((ci.ContactLastName + " " + ci.ContactFirstName).Trim());
                 ContactHelper.Delete(ci, chkChildren.Checked, chkMoveRelations.Checked);
             }
+
             ds = ContactInfoProvider.GetContacts()
-                                    .TopN(500)
-                                    .Where(WhereCondition)
-                                    .OrderBy("ContactLastName");
+                    .TopN(500)
+                    .Where(WhereCondition)
+                    .OrderBy("ContactLastName");
         }
     }
 
@@ -335,8 +322,6 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Contact_Delete : C
         pnlContent.Visible = false;
 
         CurrentError = string.Empty;
-        CurrentLog.Close();
-        EnsureLog();
     }
 
 
@@ -346,6 +331,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Contact_Delete : C
     private void RunAsyncDelete()
     {
         // Run the async method
+        ctlAsyncLog.EnsureLog();
         ctlAsyncLog.Parameter = ReturnScript;
         ctlAsyncLog.RunAsync(Delete, WindowsIdentity.GetCurrent());
     }
@@ -384,8 +370,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Contact_Delete : C
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state == CMSThread.ABORT_REASON_STOP)
+            if (CMSThread.Stopped(ex))
             {
                 // When canceled
                 AddError(GetString("om.deletioncanceled"));
@@ -415,13 +400,6 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Contact_Delete : C
             ShowError(CurrentError);
         }
         ShowConfirmation(canceled);
-        CurrentLog.Close();
-    }
-
-
-    private void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
     }
 
 
@@ -436,14 +414,11 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Contact_Delete : C
         {
             ShowError(CurrentError);
         }
-        CurrentLog.Close();
     }
 
 
     private void ctlAsyncLog_OnFinished(object sender, EventArgs e)
     {
-        CurrentLog.Close();
-
         if (!string.IsNullOrEmpty(CurrentError))
         {
             ctlAsyncLog.Parameter = null;
@@ -459,24 +434,12 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Contact_Delete : C
 
 
     /// <summary>
-    /// Ensures the logging context.
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext log = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-
-        return log;
-    }
-
-
-    /// <summary>
     /// Adds the log information.
     /// </summary>
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
 

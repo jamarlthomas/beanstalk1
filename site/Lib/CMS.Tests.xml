@@ -29,6 +29,170 @@
             (ie. Database is created before first test run and it is deleted after last test run)
             </summary>
         </member>
+        <member name="T:CMS.Tests.AppStateReset">
+            <summary>
+            Provides support for reset of application state
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.StartsWithCMS(System.Reflection.Assembly)">
+            <summary>
+            Returns true if the assembly name starts with CMS
+            </summary>
+            <param name="asm">Assembly</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.Reset">
+            <summary>
+            Resets the 
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.ResetType(System.Type)">
+            <summary>
+            Resets a specific type
+            </summary>
+            <param name="type">Type to reset</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.RunStaticConstructor(System.Type)">
+            <summary>
+            Runs a type static constructor to re-initialize its fields
+            </summary>
+            <param name="type">Type</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.GetAssemblyTypes(System.Collections.Generic.IEnumerable{System.Reflection.AssemblyName})">
+            <summary>
+            Gets the list of types to reset
+            </summary>
+            <param name="assemblies">Assemblies to process</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.GetTypes(System.Reflection.Assembly)">
+            <summary>
+            Gets types from the given assembly
+            </summary>
+            <param name="asm">Assembly</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.GetCoveredAssemblies">
+            <summary>
+            Gets the list of covered assemblies
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.GetInitSequence(System.Collections.Generic.List{System.Reflection.Assembly})">
+            <summary>
+            Gets the initialization sequence for the given assemblies
+            </summary>
+            <param name="asmList">Assembly list</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.GetInitSequence(System.Reflection.Assembly)">
+            <summary>
+            Gets the initialization sequence for the given assembly
+            </summary>
+            <param name="asm">Assembly</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.TypeIsSupported(System.Type)">
+            <summary>
+            Checks if the given type is supported for reset
+            </summary>
+            <param name="type">Type to check</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.IsCompilerGenerated(System.Type)">
+            <summary>
+            Checks if the given type if compiler generated type
+            </summary>
+            <param name="type">Type to check</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.Log(System.Int32,System.String,System.String)">
+            <summary>
+            Adds a new record to the log file
+            </summary>
+            <param name="indent">Indentation</param>
+            <param name="mark">Text mark (should be 4 chars or less)</param>
+            <param name="text">Text to log</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.ReadFields(System.Collections.Generic.IEnumerable{System.Reflection.FieldInfo})">
+            <summary>
+            Reads all the given fields to cause default initialization of types
+            </summary>
+            <param name="fields">Fields to read</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.ResetFields(System.Collections.Generic.IEnumerable{System.Reflection.FieldInfo})">
+            <summary>
+            Resets the given list of fields to their type defaults
+            </summary>
+            <param name="fields">Fields to reset</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.GetFieldsToReset(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Clears the class static fields of the given type to default type values
+            </summary>
+            <param name="types">Types</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.GetFieldsToReset(System.Type)">
+            <summary>
+            Clears the class static fields of the given type to default type values
+            </summary>
+            <param name="type">Type</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.CannotResetField(System.Reflection.FieldInfo)">
+            <summary>
+            Returns true if the application reset is able to reset the given field
+            </summary>
+            <param name="field">Field to check</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.IsSystemField(System.Reflection.FieldInfo)">
+            <summary>
+            Returns true if the given field is a special system field
+            </summary>
+            <param name="field">Field to check</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.GetFieldState(System.Type,System.Object)">
+            <summary>
+            Gets the current field state of the given type and object instance
+            </summary>
+            <param name="type">Type</param>
+            <param name="instance">Instance</param>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.RestoreFieldState(System.Object,System.Collections.Generic.IEnumerable{CMS.Tests.AppStateReset.FieldState})">
+            <summary>
+            Restores the field state for the given object
+            </summary>
+            <param name="instance">Object instance</param>
+            <param name="fieldStates">Field states returned earlier by <see cref="M:CMS.Tests.AppStateReset.GetFieldState(System.Type,System.Object)"/></param>
+        </member>
+        <member name="P:CMS.Tests.AppStateReset.LogFile">
+            <summary>
+            Log file
+            </summary>
+        </member>
+        <member name="P:CMS.Tests.AppStateReset.AssemblyCondition">
+            <summary>
+            Assembly condition for resetting state. Default if prefix "CMS."
+            </summary>
+        </member>
+        <member name="T:CMS.Tests.AppStateReset.FieldState">
+            <summary>
+            Container for holding the specific field state
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AppStateReset.FieldState.#ctor(System.Reflection.FieldInfo,System.Object)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="field"></param>
+            <param name="value"></param>
+        </member>
+        <member name="P:CMS.Tests.AppStateReset.FieldState.Field">
+            <summary>
+            Field info
+            </summary>
+        </member>
+        <member name="P:CMS.Tests.AppStateReset.FieldState.Value">
+            <summary>
+            Field value
+            </summary>
+        </member>
+        <member name="T:CMS.Tests.AutomatedTestsWithConnString">
+            <summary>
+            Base class for tests that use connection string from config file
+            </summary>
+        </member>
         <member name="T:CMS.Tests.AutomatedTestsWithData">
             <summary>
             Base class for automated tests with data support
@@ -39,25 +203,67 @@
             Base class for advanced tests
             </summary>
         </member>
-        <member name="F:CMS.Tests.AutomatedTests.APP_KEY_EXCLUDED_CATEGORIES">
+        <member name="T:CMS.Tests.IMSTestSetup">
             <summary>
-            Name of app key for excluded categories
+            Interface that define methods required for test initialization of MSTests.
             </summary>
         </member>
-        <member name="F:CMS.Tests.AutomatedTests.APP_KEY_RESTRICTED_CATEGORIES">
+        <member name="M:CMS.Tests.IMSTestSetup.InitializeTestClass">
             <summary>
-            Name of app key for restricted categories
+            Initializes the test class for all MSTests.
+            </summary>
+            <remarks>
+            Calling this method in NUnit tests causes duplicate initialization.
+            </remarks>
+        </member>
+        <member name="M:CMS.Tests.IMSTestSetup.CleanUpTestClass">
+            <summary>
+            Cleans up the class after all MSTests run.
+            </summary>
+            <remarks>
+            Calling this method in NUnit tests causes duplicate initialization.
+            </remarks>
+        </member>
+        <member name="F:CMS.Tests.AutomatedTests.DATA_FOLDER">
+            <summary>
+            Path to the data folder. Default is "Data\\"
             </summary>
         </member>
-        <member name="M:CMS.Tests.AutomatedTests.#ctor(System.Boolean)">
+        <member name="F:CMS.Tests.AutomatedTests.APP_KEY_LICENSE_KEY">
             <summary>
-            Constructor
+            Name of app key for license key that is used in isolated integration tests.
             </summary>
-            <param name="isolated">If true, the test context is isolated</param>
         </member>
         <member name="M:CMS.Tests.AutomatedTests.#ctor">
             <summary>
             Constructor
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTests.AddExtender(CMS.Tests.TestExtender)">
+            <summary>
+            Adds the test extender
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTests.GetTestExtenders">
+            <summary>
+            Gets the current test extenders
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTests.RunExtenderAction``1(System.Action{CMS.Tests.TestExtender},System.Boolean)">
+            <summary>
+            Gets the current test extenders
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTests.InitializeTestClassInternal">
+            <summary>
+            Initializes the test class for all tests<para/>
+            Note: Calling this method in NUnit tests causes duplicate initialization
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTests.CleanUpTestClassInternal">
+            <summary>
+            Cleans up the class after all tests are run <para/>
+            Note: Calling this method in NUnit tests causes duplicate clean up
             </summary>
         </member>
         <member name="M:CMS.Tests.AutomatedTests.InitFixtureBase">
@@ -75,6 +281,11 @@
             Inits test base (Ensures static context, reset handlers)
             </summary>
         </member>
+        <member name="M:CMS.Tests.AutomatedTests.LoadTestName">
+            <summary>
+            Loads the current test name into the context
+            </summary>
+        </member>
         <member name="M:CMS.Tests.AutomatedTests.CleanUpBase">
             <summary>
             Cleans test base (Restore static context)
@@ -84,6 +295,12 @@
             <summary>
             Initializes the text fixture for all tests
             </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTests.IsMSTest(System.Type)">
+            <summary>
+            Returns true if the given test is a MS test type
+            </summary>
+            <param name="testType">Test type</param>
         </member>
         <member name="M:CMS.Tests.AutomatedTests.Dispose">
             <summary>
@@ -101,14 +318,9 @@
             </summary>
             <returns>A path to the Kentico solution folder, if found; otherwise, null.</returns>
         </member>
-        <member name="M:CMS.Tests.AutomatedTests.CheckCategories">
-            <summary>
-            Tests from not restricted or excluded categories are ignored
-            </summary>
-        </member>
         <member name="M:CMS.Tests.AutomatedTests.GetTestAppSetting(System.String)">
             <summary>
-            Gets the app setting from the 
+            Gets the app setting from test configuration file 
             </summary>
             <param name="name">App setting name</param>
         </member>
@@ -118,35 +330,126 @@
             </summary>
             <param name="name">Connection string name</param>
         </member>
-        <member name="M:CMS.Tests.AutomatedTests.GetClassAndAssemblyCategories">
-            <summary>
-            Get categories assigned to current test class and assembly.
-            </summary>
-            <returns>String array of all categories assigned to current test class and assembly.</returns>
-        </member>
         <member name="M:CMS.Tests.AutomatedTests.CleanUpDataContext">
             <summary>
             Cleans up the data context
             </summary>
         </member>
-        <member name="P:CMS.Tests.AutomatedTests.LockContext">
+        <member name="M:CMS.Tests.AutomatedTests.TestMilestone">
             <summary>
-            If true, the test locks the context
+            Milestone
             </summary>
         </member>
-        <member name="P:CMS.Tests.AutomatedTests.UniqueStaticContext">
+        <member name="M:CMS.Tests.AutomatedTests.CreateReset">
             <summary>
-            If true, the test uses it's own unique static context. Note that this only applies to static variables defined through CMSStatic and CMSStaticObject.
+            Creates the reset instance
             </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTests.AutomaticAppStateReset">
+            <summary>
+            Resets the application state in case the application already went through pre-initialization phase. Does not perform reset for the first executed test.
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTests.ResetAppState(System.String)">
+            <summary>
+            Resets the application state
+            </summary>
+            <param name="logFile">Optional file to log the reset sequence</param>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTests.ResetAppStateForFixture">
+            <summary>
+            Reset the application state (if not first test fixture)
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTests.InitApplication">
+            <summary>
+            Performs application initialization if not already initialized
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTests.EndApplication">
+            <summary>
+            Performs application end 
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTests.InitializeTestClass">
+            <summary>
+            Initialize MSTest class for all tests.
+            </summary>
+            <remarks>
+            Calling this method in NUnit tests causes duplicate initialization.
+            </remarks>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTests.CleanUpTestClass">
+            <summary>
+            Cleans up the MSTest class after all tests.
+            </summary>
+            <remarks>
+            Calling this method in NUnit tests causes duplicate initialization.
+            </remarks>
         </member>
         <member name="P:CMS.Tests.AutomatedTests.GlobalTestsConfig">
             <summary>
             Global configuration file for tests (Tests.config located in root directory)
             </summary>
         </member>
-        <member name="M:CMS.Tests.AutomatedTestsWithData.CleanUpFakes">
+        <member name="P:CMS.Tests.AutomatedTests.Current">
+            <summary>
+            Current test class 
+            </summary>
+        </member>
+        <member name="P:CMS.Tests.AutomatedTests.TestExtenders">
+            <summary>
+            List of current test extenders
+            </summary>
+        </member>
+        <member name="P:CMS.Tests.AutomatedTests.FirstTest">
+            <summary>
+            Returns true if the test is the first one executed in this fixture
+            </summary>
+        </member>
+        <member name="P:CMS.Tests.AutomatedTests.FirstTestInDomain">
+            <summary>
+            Returns true if the test is the first one executed on current domain
+            </summary>
+        </member>
+        <member name="P:CMS.Tests.AutomatedTests.TestInitialized">
+            <summary>
+            Returns true if the test was correctly initialized
+            </summary>
+        </member>
+        <member name="P:CMS.Tests.AutomatedTests.ApplicationInitialized">
+            <summary>
+            Returns true if the application is currently initialized
+            </summary>
+        </member>
+        <member name="P:CMS.Tests.AutomatedTests.LastTestName">
+            <summary>
+            Last test name
+            </summary>
+        </member>
+        <member name="P:CMS.Tests.AutomatedTests.CurrentTestName">
+            <summary>
+            Current test name
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTestsWithData.TestsWithDataFixtureSetup">
+            <summary>
+            Fixture setup
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTestsWithData.TestsWithDataSetup">
+            <summary>
+            Test setup
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTestsWithData.TestsWithDataTearDown">
             <summary>
             Cleans test base (Restore static context)
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTestsWithData.TestsWithDataFixtureTearDown">
+            <summary>
+            Fixture tear down
             </summary>
         </member>
         <member name="M:CMS.Tests.AutomatedTestsWithData.ResetAllFakes">
@@ -159,10 +462,11 @@
             Returns the entry which provides the fake methods from various modules
             </summary>
         </member>
-        <member name="M:CMS.Tests.AutomatedTestsWithData.Fake``1">
+        <member name="M:CMS.Tests.AutomatedTestsWithData.Fake``1(CMS.DataEngine.InfoFakeSettings)">
             <summary>
             Fakes the data for the given info
             </summary>
+            <param name="settings">Fake settings</param>
         </member>
         <member name="M:CMS.Tests.AutomatedTestsWithData.Fake``2(``1,System.Boolean)">
             <summary>
@@ -178,11 +482,26 @@
             <param name="idFrom">Starting object ID</param>
             <param name="idTo">Ending object ID</param>
         </member>
-        <member name="M:CMS.Tests.AutomatedTestsWithData.FakeObject``1(System.Int32)">
+        <member name="M:CMS.Tests.AutomatedTestsWithData.FakeObject``1(System.Int32,System.Int32,System.Action{``0})">
             <summary>
             Fakes the data for the given info
             </summary>
             <param name="id">ID of the fake object</param>
+            <param name="siteId">Optional site ID of the object</param>
+            <param name="finalizer">Optional action allowing to seed additional fields.</param>
+            <remarks>
+            When <paramref name="finalizer"/> is called, provided <typeparamref name="TInfo"/> object has following properties already set:
+            <see cref="P:CMS.DataEngine.BaseInfo.GeneralizedInfoWrapper.ObjectID"/>,
+            <see cref="P:CMS.DataEngine.BaseInfo.GeneralizedInfoWrapper.ObjectCodeName"/>,
+            <see cref="P:CMS.DataEngine.BaseInfo.GeneralizedInfoWrapper.ObjectGUID"/>,
+            <see cref="P:CMS.DataEngine.BaseInfo.GeneralizedInfoWrapper.ObjectDisplayName"/>.
+            </remarks>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTestsWithData.GetTestGuid(System.Int32)">
+            <summary>
+            Gets a predictable test GUID for the given ID
+            </summary>
+            <param name="id">Source ID</param>
         </member>
         <member name="M:CMS.Tests.AutomatedTestsWithData.GetClassXmlSchema``1(System.Boolean)">
             <summary>
@@ -190,24 +509,73 @@
             </summary>
             <param name="getFromParentType">If true, the columns from parent type are extracted</param>
         </member>
+        <member name="M:CMS.Tests.AutomatedTestsWithData.FakeLicense">
+            <summary>
+            Fakes the license for localhost according to related config key
+            </summary>
+        </member>
+        <member name="P:CMS.Tests.AutomatedTestsWithData.ConnectionAvailable">
+            <summary>
+            Indicates whether the db connection is available
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTestsWithConnString.TestsWithConnStringFixtureSetup">
+            <summary>
+            Sets up the test database before all tests
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTestsWithConnString.TestsWithConnStringSetup">
+            <summary>
+            Sets up the test database
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTestsWithConnString.TestsWithConnStringTearDown">
+            <summary>
+            Cleans up the test database
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTestsWithConnString.TestsWithConnStringFixtureTearDown">
+            <summary>
+            Test fixture tear down
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTestsWithConnString.FakeEventLogProvider">
+            <summary>
+            Fakes the event log provider to attach additional actions for test behavior
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTestsWithConnString.SetupConnectionStrings">
+            <summary>
+            Sets up the connection strings for the test
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.AutomatedTestsWithConnString.GetTestApplicationSettings(System.String)">
+            <summary>
+            Reads settings from test application configuration file. 
+            </summary>
+            <param name="key">Setting key.</param> 
+        </member>
+        <member name="T:CMS.Tests.ExtraDatabaseAttribute">
+            <summary>
+            Provides an extra database within the given test
+            The extra database can be use by a block of code using method ExecuteWithExtraDatabase
+            You can alternatively use method <see cref="M:CMS.Tests.IsolatedIntegrationTests.EnsureExtraDatabase(System.String)"/> to initialize an extra database on-the-fly
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.ExtraDatabaseAttribute.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="name">Database name</param>
+        </member>
+        <member name="P:CMS.Tests.ExtraDatabaseAttribute.Name">
+            <summary>
+            Database name
+            </summary>
+        </member>
         <member name="T:CMS.Tests.DatabaseProperties">
             <summary>
             Represents properties of a database used in isolated integration tests.
-            </summary>
-        </member>
-        <member name="F:CMS.Tests.DatabaseProperties.mName">
-            <summary>
-            The name of the database.
-            </summary>
-        </member>
-        <member name="F:CMS.Tests.DatabaseProperties.mFileName">
-            <summary>
-            The name of the database file.
-            </summary>
-        </member>
-        <member name="F:CMS.Tests.DatabaseProperties.mLogFileName">
-            <summary>
-            The name of the database log file.
             </summary>
         </member>
         <member name="M:CMS.Tests.DatabaseProperties.#ctor(System.String,System.String,System.String)">
@@ -249,6 +617,108 @@
             Gets the name of the database log file.
             </summary>
         </member>
+        <member name="P:CMS.Tests.DatabaseProperties.Detached">
+            <summary>
+            If true, the database has been already detached
+            </summary>
+        </member>
+        <member name="T:CMS.Tests.InitSequenceAnalyzer">
+            <summary>
+            Analyzes the init sequence of the given list of types
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.InitSequenceAnalyzer.#ctor(System.Collections.Generic.List{System.Type},System.Collections.Generic.IEnumerable{System.Reflection.AssemblyName},System.Action{System.Int32,System.String,System.String})">
+            <summary>
+            Constructor
+            </summary>
+            <param name="types">List of types to analyze</param>
+            <param name="assemblies">Assemblies</param>
+            <param name="logAction">Log action</param>
+        </member>
+        <member name="M:CMS.Tests.InitSequenceAnalyzer.NotLog(System.Int32,System.String,System.String)">
+            <summary>
+            Adds a new record to the log file
+            </summary>
+            <param name="indent">Indentation</param>
+            <param name="mark">Text mark (should be 4 chars or less)</param>
+            <param name="text">Text to log</param>
+        </member>
+        <member name="M:CMS.Tests.InitSequenceAnalyzer.PrepareCollections">
+            <summary>
+            Prepares the necessary collections for analysis of the init sequence
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.InitSequenceAnalyzer.GetInitSequence">
+            <summary>
+            Analyzes the init sequence and returns the ordered list of types to initialize
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.InitSequenceAnalyzer.GetInitSequence(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Gets the init sequence for the given type list
+            </summary>
+            <param name="types">Type list</param>
+        </member>
+        <member name="M:CMS.Tests.InitSequenceAnalyzer.GetInitSequence(System.Type,System.Int32)">
+            <summary>
+            Runs the static constructor of the given type
+            </summary>
+            <param name="type">Type</param>
+            <param name="indent">Call indentation</param>
+        </member>
+        <member name="M:CMS.Tests.InitSequenceAnalyzer.IsProcessedType(System.Type)">
+            <summary>
+            Returns true if the given type is allowed to be processed
+            </summary>
+            <param name="type">Type to check</param>
+        </member>
+        <member name="M:CMS.Tests.InitSequenceAnalyzer.GetInitSequence(System.Reflection.MethodBase,System.Boolean,System.Int32)">
+            <summary>
+            Gets the init sequence for the given method
+            </summary>
+            <param name="method">Method to analyze</param>
+            <param name="processInherited">If true, processing of the inherited (overridden) methods is allowed</param>
+            <param name="indent">Log indentation</param>
+        </member>
+        <member name="M:CMS.Tests.InitSequenceAnalyzer.GetInitSequenceFromMethodBody(System.Reflection.MethodBase,System.Int32)">
+            <summary>
+            Gets the initialization sequence from the given method body
+            </summary>
+            <param name="method">Method to examine</param>
+            <param name="indent">Log indent</param>
+        </member>
+        <member name="M:CMS.Tests.InitSequenceAnalyzer.GetReferencedMembers(System.Reflection.MethodBase)">
+            <summary>
+            Gets the list of members directly referenced by the given method. Does not examine the members recursively.
+            </summary>
+            <param name="method">Method to check</param>
+        </member>
+        <member name="M:CMS.Tests.InitSequenceAnalyzer.GetInitSequenceFromInheritedMethods(System.Reflection.MethodBase,System.Int32)">
+            <summary>
+            Gets the init sequence for the method call from inherited types
+            </summary>
+            <param name="method">Base method</param>
+            <param name="indent">Log indent</param>
+        </member>
+        <member name="M:CMS.Tests.InitSequenceAnalyzer.ParametersMatch(System.Reflection.ParameterInfo[],System.Reflection.ParameterInfo[])">
+            <summary>
+            Checks if two given arrays of parameters match
+            </summary>
+            <param name="p1">First parameters</param>
+            <param name="p2">Second parameters</param>
+        </member>
+        <member name="M:CMS.Tests.InitSequenceAnalyzer.StaticConstructorCallsMethod(System.Type,System.Reflection.MethodInfo)">
+            <summary>
+            Returns true if the static constructor of the given type calls the given method
+            </summary>
+            <param name="type">Type to check</param>
+            <param name="registerMethod">Method to check</param>
+        </member>
+        <member name="P:CMS.Tests.InitSequenceAnalyzer.Log">
+            <summary>
+            Log function
+            </summary>
+        </member>
         <member name="T:CMS.Tests.IsolatedIntegrationTests">
             <summary>
             Allows integration tests to run in isolation as for each test a clean database with current schema and default objects is created.
@@ -276,21 +746,6 @@
             A name of the instance of Microsoft SQL Server Express LocalDB that will be used to run the tests.
             </summary>
         </member>
-        <member name="F:CMS.Tests.IsolatedIntegrationTests.mDatabaseName">
-            <summary>
-            A name of the database for the current test run.
-            </summary>
-        </member>
-        <member name="F:CMS.Tests.IsolatedIntegrationTests.mSharedDatabaseName">
-            <summary>
-            A name of the shared database for the current test fixture.
-            </summary>
-        </member>
-        <member name="F:CMS.Tests.IsolatedIntegrationTests.mSharedDatabaseForAllTests">
-            <summary>
-            <para>Indicates if the same database is used for all tests in same test class.</para>
-            </summary>
-        </member>
         <member name="F:CMS.Tests.IsolatedIntegrationTests.mCreateDatabaseBeforeTests">
             <summary>
             <para>Indicates if database is created before TestFixtureSetup.</para>
@@ -312,50 +767,100 @@
             Initializes a new instance of the <see cref="T:CMS.Tests.IsolatedIntegrationTests"/> class.
             </summary>
         </member>
-        <member name="M:CMS.Tests.IsolatedIntegrationTests.InitDatabase">
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.IsolatedIntegrationTestsSetup">
             <summary>
             Initializes the current test environment.
             </summary>
         </member>
-        <member name="M:CMS.Tests.IsolatedIntegrationTests.InitSharedDatabase(System.String)">
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.SetConnectionAndHashSalts(CMS.Tests.DatabaseProperties)">
             <summary>
-            Init shared instance database in MSTest tests.
-            Note: Use this method in method marked with [ClassInitialize] attribute.
+            Sets connection strings and hash salt for all set up databases
             </summary>
-            <param name="suffix">Database suffix</param>
+            <param name="database">Test database</param>
         </member>
-        <member name="M:CMS.Tests.IsolatedIntegrationTests.InitSharedDatabaseNUnit">
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.InitializeTestClassInternal">
             <summary>
-            /// Init shared instance database in NUnit tests.
+            Initializes the test class for all tests<para/>
+            Note: Calling this method in NUnit tests causes duplicate initialization
             </summary>
         </member>
-        <member name="M:CMS.Tests.IsolatedIntegrationTests.CleanUpDatabase">
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.CleanUpTestClassInternal">
+            <summary>
+            Cleans up the class after all tests are run <para/>
+            Note: Calling this method in NUnit tests causes duplicate clean up
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.InitAppAndDatabaseBeforeTests">
+            <summary>
+            Inits shared database (if required)
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.IsolatedIntegrationTestsFixtureSetup">
+            <summary>
+            Init shared instance database in NUnit tests.
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.IsolatedIntegrationTestsTearDown">
             <summary>
             Cleans the current test environment.
             </summary>
         </member>
-        <member name="M:CMS.Tests.IsolatedIntegrationTests.CleanUpSharedDatabaseNUnit">
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.IsolatedIntegrationTestsFixtureTearDown">
             <summary>
             Removes shared instance database in NUnit tests.
             Note: This method is called automatically in NUnit tests.
             </summary>
         </member>
-        <member name="M:CMS.Tests.IsolatedIntegrationTests.CleanUpSharedDatabase">
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.GetTestUniqueIndex">
             <summary>
-            Removes shared instance database in MSTest tests.
-            Note: Use this method in method marked with [ClassCleanup] attribute.
+            Gets a unique index for the test run.
+            All calls from a single test run return the same index.
             </summary>
         </member>
-        <member name="M:CMS.Tests.IsolatedIntegrationTests.EnsureLocalDatabase(System.String,System.String)">
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.EnsureLicense">
+            <summary>
+            Inserts the license for localhost according to related config key
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.ExecuteOnceAcrossAppDomains(System.Action,System.String,System.Boolean)">
+            <summary>
+            Ensures that the given action is executed only once at a time across all application domains using <see cref="T:System.Threading.Mutex"/>
+            </summary>
+            <param name="action">Action to execute</param>
+            <param name="mutexName">Name of the <see cref="T:System.Threading.Mutex"/> to use</param>
+            <param name="waitForCompletion">If true, the other callers wait for the action completion</param>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.GetMutexSecuritySettings">
+            <summary>
+            Returns Mutex security settings to allow access to it by multiple users
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.EnsureLocalDatabases(System.String,System.String)">
             <summary>
             Provides a current version of the instance database.
             </summary>
         </member>
-        <member name="M:CMS.Tests.IsolatedIntegrationTests.ReleaseLocalDatabase(System.String)">
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.EnsureMasterDatabase(System.String)">
+            <summary>
+            Ensures the master database as a source for local databases
+            </summary>
+            <param name="masterDatabaseName">Master database name</param>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.EnsureLocalDatabase(CMS.Tests.DatabaseProperties,System.String)">
+            <summary>
+            Provides a current version of the instance database.
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.ReleaseDatabases(CMS.Tests.DatabaseProperties)">
             <summary>
             Removes the instance database with the specified name.
             </summary>
-            <param name="databaseName">Name of instance database</param>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.ReleaseLocalDatabase(CMS.Tests.DatabaseProperties)">
+            <summary>
+            Removes the instance database with the specified name.
+            </summary>
+            <param name="database">Name of instance database</param>
         </member>
         <member name="M:CMS.Tests.IsolatedIntegrationTests.CreateInstanceDatabase(CMS.Tests.DatabaseProperties,CMS.Tests.DatabaseProperties)">
             <summary>
@@ -369,6 +874,12 @@
             Removes the specified database.
             </summary>
             <param name="database">Properties of the database to remove.</param>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.DetachDatabase(CMS.Tests.DatabaseProperties)">
+            <summary>
+            Detaches the given database so it can be deleted
+            </summary>
+            <param name="database">Database to detach</param>
         </member>
         <member name="M:CMS.Tests.IsolatedIntegrationTests.EnsureMasterDatabase(CMS.Tests.DatabaseProperties)">
             <summary>
@@ -386,6 +897,11 @@
             Initializes the specified master database using current SQL scripts and default data.
             </summary>
             <param name="database">Properties of the master database to initialize.</param>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.UpdateMacroSignatures(System.Object,CMS.DataEngine.DataSetPostProcessingEventArgs)">
+            <summary>
+            Updates macro signatures in default data.
+            </summary>
         </member>
         <member name="M:CMS.Tests.IsolatedIntegrationTests.HandleDatabaseInstallationMessage(System.String,CMS.DataEngine.MessageTypeEnum)">
             <summary>
@@ -419,7 +935,7 @@
             <param name="databaseName">A name of the instance database.</param>
             <returns>Properties of the instance database.</returns>
         </member>
-        <member name="M:CMS.Tests.IsolatedIntegrationTests.GetConnectionString">
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.GetServerConnectionString">
             <summary>
             Gets a connection string for the LocalDB instance.
             </summary>
@@ -432,11 +948,86 @@
             <param name="database">Properties of the instance database to connect to.</param>
             <returns>A connection string for the specified instance database.</returns>
         </member>
-        <member name="M:CMS.Tests.IsolatedIntegrationTests.CheckAllTestsCategories">
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.SetConnectionAndHashSalt(CMS.Tests.DatabaseProperties)">
             <summary>
-            Performs category check for all tests in current test class.
+            Sets connection strings and hash salt for all set up databases
             </summary>
-            <returns>True if at least one test passed the category check.</returns>
+            <param name="database">Test database</param>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.InitSharedDatabase(System.String)">
+            <summary>
+            Init shared instance database in MSTest tests.
+            Note: Use this method in method marked with [ClassInitialize] attribute.
+            </summary>
+            <param name="suffix">Database suffix</param>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.CleanUpSharedDatabase">
+            <summary>
+            Removes shared instance database in MSTest tests.
+            Note: Use this method in method marked with [ClassCleanup] attribute.
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.EnsureExtraDatabases(System.String)">
+            <summary>
+            Provides extra databases for the test
+            </summary>
+            <param name="instanceDatabaseName">Instance database name. Used as a base name for extra databases</param>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.SetExtraDatabasesConnectionStrings">
+            <summary>
+            Sets connection strings for all extra databases
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.CreateExtraDatabase(CMS.Tests.DatabaseProperties,System.String,System.String)">
+            <summary>
+            Creates a specified extra database and adds it to the list of databases
+            </summary>
+            <param name="masterDatabase">Master database</param>
+            <param name="instanceDatabaseName">Instance database name</param>
+            <param name="extraDbName">Extra database name</param>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.SetExtraDatabaseConnectionString(System.String,CMS.Tests.DatabaseProperties)">
+            <summary>
+            Sets connection string for an extra database
+            </summary>
+            <param name="extraDbName">Database name</param>
+            <param name="extraDb">Database properties</param>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.ReleaseExtraDatabases">
+            <summary>
+            Releases all allocated extra databases
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.ExecuteWithAllDatabases(System.Action{System.String})">
+            <summary>
+            Executes the same given action in the context of all test databases. 
+            Original database is handled first.
+            </summary>
+            <param name="action">Action to execute</param>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.EnsureExtraDatabase(System.String)">
+            <summary>
+            Ensures the specified extra database for the test
+            </summary>
+            <param name="dbName">Database name</param>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.ExecuteWithExtraDatabase(System.String,System.Action{System.String})">
+            <summary>
+            Executes the given action in the context of the given extra database
+            </summary>
+            <param name="dbName">Database name</param>
+            <param name="action">Action to execute</param>
+        </member>
+        <member name="M:CMS.Tests.IsolatedIntegrationTests.ExtraDatabaseExists(System.String)">
+            <summary>
+            Returns true if the given extra database exists
+            </summary>
+            <param name="dbName">Database name</param>
+        </member>
+        <member name="P:CMS.Tests.IsolatedIntegrationTests.MutexSecuritySettings">
+            <summary>
+            Returns Mutex security settings to allow access to it by multiple users
+            </summary>
         </member>
         <member name="P:CMS.Tests.IsolatedIntegrationTests.DatabaseScriptFolderPath">
             <summary>
@@ -453,40 +1044,120 @@
             Gets a name of the instance of Microsoft SQL Server Express LocalDB that will be used to create a database.
             </summary>
         </member>
-        <member name="T:CMS.Tests.IsolatedUnitTests">
+        <member name="P:CMS.Tests.IsolatedIntegrationTests.SharedDatabaseForAllTests">
             <summary>
-            Base class for unit test with isolation of the context
+            <para>Indicates if the same database is used for all tests in same test class.</para>
             </summary>
         </member>
-        <member name="T:CMS.Tests.UnitTests">
+        <member name="T:CMS.Tests.TestsCategoryCheck">
             <summary>
-            Base class for integration tests
+            Provides methods for checking the test categories
             </summary>
         </member>
-        <member name="M:CMS.Tests.UnitTests.#ctor(System.Boolean)">
+        <member name="F:CMS.Tests.TestsCategoryCheck.APP_KEY_EXCLUDED_CATEGORIES">
             <summary>
-            Constructor
-            </summary>
-            <param name="isolated">If true, the test context is isolated</param>
-        </member>
-        <member name="M:CMS.Tests.UnitTests.#ctor">
-            <summary>
-            Constructor
+            Name of app key for excluded categories
             </summary>
         </member>
-        <member name="M:CMS.Tests.UnitTests.InitTestFakes">
+        <member name="F:CMS.Tests.TestsCategoryCheck.APP_KEY_RESTRICTED_CATEGORIES">
             <summary>
-            Initializes the test
+            Name of app key for restricted categories
             </summary>
         </member>
-        <member name="M:CMS.Tests.UnitTests.ResetAllFakes">
+        <member name="M:CMS.Tests.TestsCategoryCheck.CheckCategories(System.Type)">
             <summary>
-            Resets all fakes
+            Tests from not restricted or excluded categories are ignored
             </summary>
         </member>
-        <member name="M:CMS.Tests.IsolatedUnitTests.#ctor">
+        <member name="M:CMS.Tests.TestsCategoryCheck.CheckAllTestsCategories(System.Type)">
             <summary>
-            Constructor
+            Performs category check for all tests in current test class.
+            </summary>
+            <param name="type">Test type</param>
+            <returns>True if at least one test passed the category check.</returns>
+        </member>
+        <member name="M:CMS.Tests.TestsCategoryCheck.GetClassAndAssemblyCategories(System.Type)">
+            <summary>
+            Get categories assigned to current test class and assembly.
+            </summary>
+            <param name="type">Test type</param>
+            <returns>String array of all categories assigned to current test class and assembly.</returns>
+        </member>
+        <member name="T:CMS.Tests.TestExtender`1">
+            <summary>
+            Generic base class for test extender
+            </summary>
+            <typeparam name="TParentTest">Type of parent test. This type specifies on which test level the extender should be applied</typeparam>
+        </member>
+        <member name="T:CMS.Tests.TestExtender">
+            <summary>
+            Base class for test extenders
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.TestExtender.FixtureSetUp">
+            <summary>
+            Test fixture setup
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.TestExtender.SetUp">
+            <summary>
+            Test setup
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.TestExtender.FixtureTearDown">
+            <summary>
+            Test fixture tear down
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.TestExtender.TearDown">
+            <summary>
+            Test tear down
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.TestExtender.TestMilestone">
+            <summary>
+            Test milestone
+            </summary>
+        </member>
+        <member name="P:CMS.Tests.TestExtender.Milestone">
+            <summary>
+            Milestone action
+            </summary>
+        </member>
+        <member name="T:CMS.Tests.WebAppInstanceTests">
+            <summary>
+            Base class for integration tests that require running web app instance.
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.WebAppInstanceTests.SetupConnectionStrings">
+            <summary>
+            Sets up the connection strings for the test
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.WebAppInstanceTests.InitializeTestClassInternal">
+            <summary>
+            Initializes the test class for all tests<para/>
+            Note: Calling this method in NUnit tests causes duplicate initialization
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.WebAppInstanceTests.InitWebAppInstanceTestFixture">
+            <summary>
+            Initializes web app instance test fixture.
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.WebAppInstanceTests.InitWebAppInstanceTests">
+            <summary>
+            Initializes web app instance test.
+            </summary>
+        </member>
+        <member name="P:CMS.Tests.WebAppInstanceTests.Site">
+            <summary>
+            Site that is running on the <see cref="P:CMS.Tests.WebAppInstanceTests.InstanceUrl"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.Tests.WebAppInstanceTests.InstanceUrl">
+            <summary>
+            Url of requested web application.
             </summary>
         </member>
         <member name="T:CMS.Tests.Benchmark">
@@ -600,10 +1271,11 @@
             </summary>
             <param name="parentTests">Parent unit tests</param>
         </member>
-        <member name="M:CMS.Tests.FakeMethods.Info``1">
+        <member name="M:CMS.Tests.FakeMethods.Info``1(CMS.DataEngine.InfoFakeSettings)">
             <summary>
             Fakes the data for the given info
             </summary>
+            <param name="settings">Fake settings</param>
         </member>
         <member name="M:CMS.Tests.FakeMethods.InfoProvider``2">
             <summary>
@@ -641,12 +1313,11 @@
             Nested class structures
             </summary>
         </member>
-        <member name="M:CMS.Tests.FakeClassStructureInfo.#ctor(System.Type,System.Boolean)">
+        <member name="M:CMS.Tests.FakeClassStructureInfo.#ctor(CMS.DataEngine.InfoFakeSettings)">
             <summary>
             Constructor
             </summary>
-            <param name="type">Class type to fake</param>
-            <param name="getFromParentType">If true, the columns from parent type are extracted</param>
+            <param name="settings">Fake settings</param>
         </member>
         <member name="M:CMS.Tests.FakeClassStructureInfo.AddNestedClass(CMS.DataEngine.ClassStructureInfo)">
             <summary>
@@ -682,6 +1353,16 @@
             
             </summary>
         </member>
+        <member name="P:CMS.Tests.FakeClassStructureInfo.ClassName">
+            <summary>
+            Class name.
+            </summary>
+        </member>
+        <member name="P:CMS.Tests.FakeClassStructureInfo.IDColumn">
+            <summary>
+            ID column name.
+            </summary>
+        </member>
         <member name="M:CMS.Tests.FakeClassStructureInfo`1.#ctor">
             <summary>
             Constructor
@@ -705,6 +1386,11 @@
         <member name="T:CMS.Tests.Category.IsolatedIntegrationAttribute">
             <summary>
             Isolated integration test category
+            </summary>
+        </member>
+        <member name="T:CMS.Tests.Category.UITestsAttribute">
+            <summary>
+            UI test category
             </summary>
         </member>
         <member name="T:CMS.Tests.Category.JavaScriptAttribute">
@@ -747,12 +1433,108 @@
             </summary>
             <param name="assertionsToRun">Assertions to be executed</param>
         </member>
-        <member name="M:CMS.Tests.CMSAssert.QueryEquals(System.String,System.String)">
+        <member name="M:CMS.Tests.CMSAssert.WithMessage(System.String,System.Action)">
+            <summary>
+            Executes assertion and adds additional message if assertion fails
+            </summary>
+            <param name="message">Extra message in case assertion fails</param>
+            <param name="assertionToRun">Assertion to be executed</param>
+        </member>
+        <member name="M:CMS.Tests.CMSAssert.GetMessage(System.Exception)">
+            <summary>
+            Gets the full exception message from all inner exceptions
+            </summary>
+            <param name="ex">Exception</param>
+        </member>
+        <member name="M:CMS.Tests.CMSAssert.InThreads(System.Int32,System.Action{System.Int32})">
+            <summary>
+            Runs multiple actions in the given number of threads and reports all failed assertions and errors 
+            </summary>
+            <param name="count">Threads count</param>
+            <param name="action">Thread action</param>
+        </member>
+        <member name="M:CMS.Tests.CMSAssert.PropertyValuesEqual(System.Object,System.Object,System.Func{System.Reflection.PropertyInfo,System.Boolean})">
+            <summary>
+            Asserts two objects by comparing their property values
+            </summary>
+            <param name="actual">Current object</param>
+            <param name="expected">Expected object</param>
+            <param name="condition">Property condition</param>
+        </member>
+        <member name="M:CMS.Tests.CMSAssert.QueryEquals(CMS.DataEngine.WhereCondition,System.String,System.String)">
             <summary>
             Asserts whether two queries equal
             </summary>
             <param name="current">Current query</param>
             <param name="expected">Expected query</param>
+            <param name="message">Optional error message</param>
+        </member>
+        <member name="M:CMS.Tests.CMSAssert.QueryEquals(System.String,System.String,System.String)">
+            <summary>
+            Asserts whether two queries equal
+            </summary>
+            <param name="current">Current query</param>
+            <param name="expected">Expected query</param>
+            <param name="message">Optional error message</param>
+        </member>
+        <member name="M:CMS.Tests.CMSAssert.TextEquals(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Asserts whether two queries equal
+            </summary>
+            <param name="current">Current query</param>
+            <param name="expected">Expected query</param>
+            <param name="message">Optional error message</param>
+            <param name="normalizeWhiteSpaces">If true, the input texts are normalized to avoid mismatch on whitespaces</param>
+        </member>
+        <member name="M:CMS.Tests.CMSAssert.TextEquals(System.String,System.String,System.String,CMS.Helpers.TextNormalizationSettings)">
+            <summary>
+            Asserts whether two queries equal
+            </summary>
+            <param name="current">Current query</param>
+            <param name="expected">Expected query</param>
+            <param name="message">Optional error message</param>
+            <param name="settings">Text normalization settings</param>
+        </member>
+        <member name="T:CMS.Tests.JSONConstraint">
+            <summary>
+            Constraint that compares two JSON sources with each other.
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.JSONConstraint.Matches(System.Object)">
+            <summary>
+            Tests whether the constraint is satisfied by a given value.
+            </summary>
+            <param name="actualValue">The value to be tested</param>
+            <returns>True for success, false for failure</returns>
+        </member>
+        <member name="M:CMS.Tests.JSONConstraint.WriteDescriptionTo(NUnit.Framework.Constraints.MessageWriter)">
+            <summary>
+            Writes the constraint description to a MessageWriter
+            </summary>
+            <param name="writer">The writer on which the description is displayed</param>
+        </member>
+        <member name="M:CMS.Tests.JSONConstraint.WriteActualValueTo(NUnit.Framework.Constraints.MessageWriter)">
+            <summary>
+            Write the actual value for a failing constraint test to a
+            MessageWriter. The default implementation simply writes
+            the raw value of actual, leaving it to the writer to
+            perform any formatting.
+            </summary>
+            <param name="writer">The writer on which the actual value is displayed</param>
+        </member>
+        <member name="M:CMS.Tests.JSONConstraint.IsSimilarTo(System.String)">
+            <summary>
+            Creates JSONConstraint which compares the test-Object with the given string.
+            </summary>
+            <param name="expectedJSON"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CMS.Tests.JSONConstraint.IsSimilarTo(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Creates JSONConstraint which compares the test-Object with the given JObject.
+            </summary>
+            <param name="expectedJObject"></param>
+            <returns></returns>
         </member>
         <member name="T:CMS.Tests.InfoFake`1">
             <summary>
@@ -779,16 +1561,17 @@
             Nested fakes
             </summary>
         </member>
-        <member name="M:CMS.Tests.InfoFake.#ctor(System.Type)">
+        <member name="M:CMS.Tests.InfoFake.#ctor(CMS.DataEngine.InfoFakeSettings)">
             <summary>
             Constructor
             </summary>
+            <param name="settings">Fake settings</param>
         </member>
-        <member name="M:CMS.Tests.InfoFake.FakeInfo(System.Type)">
+        <member name="M:CMS.Tests.InfoFake.FakeInfo(CMS.DataEngine.InfoFakeSettings)">
             <summary>
             Fakes the info object
             </summary>
-            <param name="type">Info type to fake</param>
+            <param name="settings">Fake settings</param>
         </member>
         <member name="M:CMS.Tests.InfoFake.ResetInfo(System.Type)">
             <summary>
@@ -811,10 +1594,22 @@
             Faked class structure info
             </summary>
         </member>
-        <member name="M:CMS.Tests.InfoFake`1.#ctor">
+        <member name="P:CMS.Tests.InfoFake.FakeClassStructureInfo">
+            <summary>
+            Faked class structure info
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.InfoFake`1.#ctor(CMS.DataEngine.InfoFakeSettings)">
             <summary>
             Constructor
             </summary>
+            <param name="settings">Fake settings</param>
+        </member>
+        <member name="M:CMS.Tests.InfoFake`1.EnsureSettingsWithType(CMS.DataEngine.InfoFakeSettings)">
+            <summary>
+            Applies type to settings
+            </summary>
+            <param name="settings">Fake settings</param>
         </member>
         <member name="T:CMS.Tests.InfoProviderFake`2">
             <summary>
@@ -844,6 +1639,11 @@
         <member name="F:CMS.Tests.InfoProviderFake`2.mDataFaked">
             <summary>
             If true, the data of the provider was faked
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.InfoProviderFake`2.EnsureDefaultProvider">
+            <summary>
+            Ensures the default provider object
             </summary>
         </member>
         <member name="M:CMS.Tests.InfoProviderFake`2.#ctor(`1,System.Boolean)">
@@ -898,6 +1698,11 @@
             Resets the fake
             </summary>
         </member>
+        <member name="P:CMS.Tests.InfoProviderFake`2.ProviderIsDefault">
+            <summary>
+            Returns true if the used provider is a default provider
+            </summary>
+        </member>
         <member name="P:CMS.Tests.InfoProviderFake`2.DataQuerySource">
             <summary>
             Gets the data query source
@@ -918,30 +1723,49 @@
             Original provider object
             </summary>
         </member>
+        <member name="T:CMS.Tests.UnitTests">
+            <summary>
+            Base class for integration tests
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.UnitTests.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.UnitTests.UnitTestsSetUp">
+            <summary>
+            Initializes the test
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.UnitTests.ResetAllFakes">
+            <summary>
+            Resets all fakes
+            </summary>
+        </member>
         <member name="T:CMS.Tests.IntegrationTests">
             <summary>
             Base class for integration tests
             </summary>
         </member>
-        <member name="M:CMS.Tests.IntegrationTests.#ctor(System.Boolean)">
+        <member name="M:CMS.Tests.IntegrationTests.IntegrationTestsFixtureSetup">
             <summary>
-            Constructor
-            </summary>
-            <param name="isolated">If true, the test context is isolated</param>
-        </member>
-        <member name="M:CMS.Tests.IntegrationTests.#ctor">
-            <summary>
-            Constructor
+            Fixture setup
             </summary>
         </member>
-        <member name="M:CMS.Tests.IntegrationTests.InitDatabase">
+        <member name="M:CMS.Tests.IntegrationTests.IntegrationTestsSetup">
             <summary>
-            Sets up the test database
+            Test setup
             </summary>
         </member>
-        <member name="M:CMS.Tests.IntegrationTests.FakeEventLogProvider">
+        <member name="M:CMS.Tests.IntegrationTests.IntegrationTestsTearDown">
             <summary>
-            Fakes the event log provider to attach additional actions for test behavior
+            Test tear down
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.IntegrationTests.IntegrationTestsFixtureTearDown">
+            <summary>
+            Fixture tear down
             </summary>
         </member>
         <member name="M:CMS.Tests.IntegrationTests.SetupConnectionStrings">
@@ -949,14 +1773,37 @@
             Sets up the connection strings for the test
             </summary>
         </member>
-        <member name="M:CMS.Tests.IntegrationTests.CleanUpDatabase">
-            <summary>
-            Cleans up the test database
-            </summary>
-        </member>
         <member name="P:CMS.Tests.IntegrationTests.TestOMSeparation">
             <summary>
             If true, the test will simulate the run in a context of separated OM database
+            </summary>
+        </member>
+        <member name="T:CMS.Tests.TestsConfig">
+            <summary>
+            Shared tests configuration
+            </summary>
+        </member>
+        <member name="M:CMS.Tests.TestsConfig.GetSolutionFolderPath">
+            <summary>
+            Gets a path to the root folder of the Kentico solution provided that it contains a test project with current test.
+            </summary>
+            <returns>A path to the Kentico solution folder, if found; otherwise, null.</returns>
+        </member>
+        <member name="M:CMS.Tests.TestsConfig.GetTestAppSetting(System.String)">
+            <summary>
+            Gets the app setting from test configuration file 
+            </summary>
+            <param name="name">App setting name</param>
+        </member>
+        <member name="M:CMS.Tests.TestsConfig.GetTestConnectionString(System.String)">
+            <summary>
+            Gets the connection string of the given name from test configuration file
+            </summary>
+            <param name="name">Connection string name</param>
+        </member>
+        <member name="P:CMS.Tests.TestsConfig.GlobalTestsConfig">
+            <summary>
+            Global configuration file for tests (Tests.config located in root directory)
             </summary>
         </member>
         <member name="T:CMS.Tests.UnitTestExtensions">
@@ -969,12 +1816,13 @@
             Gets the unique SQL query mark for a unit test
             </summary>
         </member>
-        <member name="M:CMS.Tests.UnitTestExtensions.FakeExecution(CMS.DataEngine.IDataQuery,System.Action{CMS.DataEngine.ExecuteQueryEventArgs{System.Data.DataSet}})">
+        <member name="M:CMS.Tests.UnitTestExtensions.FakeExecution(CMS.DataEngine.IDataQuery,System.Action{CMS.DataEngine.ExecuteQueryEventArgs{System.Data.DataSet}},System.Boolean)">
             <summary>
             Fakes the execution of a query
             </summary>
             <param name="query">Query to fake</param>
             <param name="execution">Execution code</param>
+            <param name="cancel">True when query execution should be canceled</param>
         </member>
         <member name="T:CMS.Tests.FakeStorageProvider">
              <summary>
@@ -1014,7 +1862,7 @@
             <summary>
             Returns new instance of FileInfo object.
             </summary>
-            <param name="filename">File name</param>
+            <param name="fileName">File name</param>
         </member>
         <member name="M:CMS.Tests.FakeStorageProvider.GetDirectoryInfo(System.String)">
             <summary>

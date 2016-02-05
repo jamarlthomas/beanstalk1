@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Pages_Users_User_Edit_CustomFields"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Pages_Users_User_Edit_CustomFields"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="User edit - Custom fields"
-    Codebehind="User_Edit_CustomFields.aspx.cs" %>
+     Codebehind="User_Edit_CustomFields.aspx.cs" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <div class="UserCustomFields">

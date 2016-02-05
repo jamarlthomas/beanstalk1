@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Messaging_CMSPages_SendMessage"
-    MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalSimplePage.master" Theme="default" Codebehind="SendMessage.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Messaging_CMSPages_SendMessage"
+    MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalSimplePage.master" Theme="default"  Codebehind="SendMessage.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Messaging/Controls/SendMessage.ascx" TagName="SendMessage"
     TagPrefix="cms" %>

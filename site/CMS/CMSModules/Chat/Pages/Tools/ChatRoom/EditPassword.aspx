@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Chat room properties – Password"
-    Inherits="CMSModules_Chat_Pages_Tools_ChatRoom_EditPassword" Theme="Default" Codebehind="EditPassword.aspx.cs" %>
+    Inherits="CMSModules_Chat_Pages_Tools_ChatRoom_EditPassword" Theme="Default"  Codebehind="EditPassword.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Membership/FormControls/Passwords/PasswordStrength.ascx" TagName="PasswordStrength"
     TagPrefix="cms" %>

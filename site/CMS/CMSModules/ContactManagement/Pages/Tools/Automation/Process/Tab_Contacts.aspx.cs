@@ -103,6 +103,9 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Automation_Process
             listContacts.SiteID = siteSelector.SiteID;
         }
 
+        // Use local Header actions
+        HeaderActions = headerActions;
+
         // Add Refresh action button
         AddHeaderAction(new HeaderAction()
         {
@@ -111,7 +114,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Automation_Process
         });
 
         ucSelector.UniSelector.DialogButton.ResourceString = "ma.automationprocess.select";
-
+        
         InitContactSelector();
     }
 

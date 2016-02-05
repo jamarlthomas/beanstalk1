@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Friends_Controls_FriendsRejectedList"
-    Codebehind="FriendsRejectedList.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Friends_Controls_FriendsRejectedList"
+     Codebehind="FriendsRejectedList.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <asp:Panel ID="pnlBody" runat="server" CssClass="Panel">
     <asp:PlaceHolder ID="plcLink" runat="server">

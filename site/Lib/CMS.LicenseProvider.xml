@@ -63,10 +63,19 @@
             Initializes the handlers
             </summary>
         </member>
-        <member name="M:CMS.LicenseProvider.LicenseHandlers.CheckApplicationValidity(System.Object,System.EventArgs)">
+        <member name="M:CMS.LicenseProvider.LicenseHandlers.CheckApplicationValidityAndLicense(System.Object,System.EventArgs)">
             <summary>
-            Checks the application validity
+            Checks the application validity and license for external application
             </summary>
+        </member>
+        <member name="M:CMS.LicenseProvider.LicenseHandlers.CheckLicenseForCurrentDomainInExternalApplication">
+            <summary>
+            Checks whether a license for the current domain exists and is valid.
+            When the license is not valid, respond with HTTP503 status code.
+            </summary>
+            <remarks>
+            Prevents an external application (e.g. MVC) with registered CMSApplication module from running without license.
+            </remarks>
         </member>
         <member name="T:CMS.LicenseProvider.CanDisableLicenseCheckAttribute">
             <summary>
@@ -166,11 +175,6 @@
         <member name="F:CMS.LicenseProvider.LicenseHelperInternal.mA7FB6">
             <summary>
             License version document table
-            </summary>
-        </member>
-        <member name="F:CMS.LicenseProvider.LicenseHelperInternal.mEventLogStrategies">
-            <summary>
-            EventLog strategy.
             </summary>
         </member>
         <member name="M:CMS.LicenseProvider.LicenseHelperInternal.ValidateLicenseForDomain(System.String)">
@@ -311,11 +315,6 @@
             License version document table
             </summary>
         </member>
-        <member name="P:CMS.LicenseProvider.LicenseHelperInternal.LoggingStrategy">
-            <summary>
-            Provides logging strategy.
-            </summary>
-        </member>
         <member name="T:CMS.LicenseProvider.LicenseModuleMetadata">
             <summary>
             Represents the License module metadata.
@@ -386,12 +385,6 @@
             Returns true if the version is valid.
             </summary>
         </member>
-        <member name="M:CMS.LicenseProvider.LicenseHelper.ValidateLicenseForUrl(System.String)">
-            <summary>
-            Validates license for specified URL.
-            </summary>
-            <param name="url">URL</param>
-        </member>
         <member name="M:CMS.LicenseProvider.LicenseHelper.ValidateLicenseForDomain(System.String)">
             <summary>
             Validates license for specified domain.
@@ -411,13 +404,6 @@
             </summary>
             <param name="domain">Domain</param>
             <param name="feature">Feature type</param>
-        </member>
-        <member name="M:CMS.LicenseProvider.LicenseHelper.ReportLicenseError(System.String,System.String)">
-            <summary>
-            Reports the invalid license, either by redirecting to given URL, or by throwing .
-            </summary>
-            <param name="redirectUrl">URL to redirect</param>
-            <param name="message">Message to report</param>
         </member>
         <member name="M:CMS.LicenseProvider.LicenseHelper.CheckFeature(System.String,CMS.DataEngine.FeatureEnum)">
             <summary>

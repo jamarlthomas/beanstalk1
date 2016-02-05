@@ -192,13 +192,9 @@ function NewWebPart(wz) {
     setIsLayoutZone(isLayoutZone);
 
     var url = webPartsPath + 'WebPartSelector.aspx';
-    if (window.isWireframe) {
-        url += '?wireframe=true';
+    if (window.isUI) {
+        url += '?isui=true';
     }
-    else
-        if (window.isUI) {
-            url += '?isui=true';
-        }
 
     modalDialog(url, 'selectwebpart', '90%', '85%');
 }

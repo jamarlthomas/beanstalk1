@@ -1,4 +1,4 @@
-﻿cmsdefine(['CMS/EventHub', 'CMS/Application', 'jQuery', 'jQueryJScrollPane'], function (hub, application, $) {
+﻿cmsdefine(['CMS/EventHub', 'CMS/Application', 'jQuery', 'CMS/UrlHelper', 'jQueryJScrollPane'], function (hub, application, $, urlHelper) {
     // Default Tabs data
     var tabsData = {
         // Element selectors
@@ -321,7 +321,7 @@
             }
         }
     }),
-        
+
     initScroller = function () {
         // Cache elements
         $window = $(window);
@@ -436,7 +436,7 @@
 
         overlayer = $('#tabOverlayer');
         overlayer.click(hideHiddenTabs);
-
+        
         // Allow back if 
         backAvailable =
             // Window is not dialog
@@ -444,9 +444,10 @@
             // And if there is a parent
             (parent != window) && (
                 // And parent is app list and did not raise this page (the page is not app root)
-                application.getData('isAppList', parent) && (document.referrer != parent.document.location.href.split('#')[0]) ||
+                application.getData('isAppList', parent) && !application.getData('isApplication') ||
                 // Or parent is vertical tabs
-                application.getData('isVerticalTabs', parent)
+                application.getData('isVerticalTabs', parent) ||
+                urlHelper.getParameter(window.location.href, 'allownavigationtolisting')
             );
 
         if (backAvailable) {

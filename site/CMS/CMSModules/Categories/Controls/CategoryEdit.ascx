@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Categories_Controls_CategoryEdit"
-    Codebehind="CategoryEdit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Categories_Controls_CategoryEdit"
+     Codebehind="CategoryEdit.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" TagName="HeaderActions" TagPrefix="cms" %>
 
 <cms:HeaderActions ID="headerActions" runat="server" PanelCssClass="cms-edit-menu" />

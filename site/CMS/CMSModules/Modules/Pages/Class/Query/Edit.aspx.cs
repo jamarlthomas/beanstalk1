@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.Helpers;
@@ -32,8 +32,8 @@ public partial class CMSModules_Modules_Pages_Class_Query_Edit : GlobalAdminPage
     protected void Page_Init(object sender, EventArgs e)
     {
         // Get the current class ID
-        var classID = queryEdit.ClassID = QueryHelper.GetInteger("parentobjectid", 0);
-        var moduleID = queryEdit.ModuleID = QueryHelper.GetInteger("moduleid", 0);
+        queryEdit.ClassID = QueryHelper.GetInteger("parentobjectid", 0);
+        queryEdit.ModuleID = QueryHelper.GetInteger("moduleid", 0);
     }
 
 

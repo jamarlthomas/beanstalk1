@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Contacts.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_ContactGroup_Contacts" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Contacts.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_ContactGroup_Contacts" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
@@ -9,9 +9,9 @@
     <cms:ContactSelector ID="contactSelector" runat="server" IsLiveSite="false" />
 </asp:Panel>
 <asp:Panel ID="pnlContent" runat="server" CssClass="PageContent">
+    <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
     <cms:CMSUpdatePanel ID="pnlUpdate" runat="server" UpdateMode="Conditional" ShowProgress="true">
         <ContentTemplate>
-            <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
             <cms:CMSUpdateProgress ID="loading" runat="server" HandlePostback="true" DisplayTimeout="100" />
             <cms:UniGrid runat="server" ID="gridElem" OrderBy="ContactLastName" ObjectType="om.contactgroupcontactlist"
                 ShowObjectMenu="false" IsLiveSite="false" RememberStateByParam="issitemanager" Columns="ContactID,ContactFirstName,ContactLastName,ContactEmail,ContactStatusID,ContactCountryID,ContactGroupMemberFromCondition,ContactGroupMemberFromAccount,ContactGroupMemberFromManual,ContactSiteID">

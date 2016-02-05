@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="EditToolbar.ascx.cs" Inherits="CMSModules_PortalEngine_Controls_OnSiteEdit_EditToolbar" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="EditToolbar.ascx.cs" Inherits="CMSModules_PortalEngine_Controls_OnSiteEdit_EditToolbar" %>
 <%@ Register Src="~/CMSAdminControls/UI/UIProfiles/UIToolbar.ascx" TagName="UIToolbar"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/AdvancedPopupHandler.ascx" TagName="AdvancedPopupHandler"
@@ -23,7 +23,8 @@
                 if (window.CMSContentManager) {
                     reloadUrl = $cmsj.param.querystring(reloadUrl, "cmscontentchanged=" + CMSContentManager.contentModified());
                     if (!CMSContentManager.contentModified()) {
-                        reloadUrl = reloadUrl.replace(/\?cmscontentchanged=([^&]*)$/gi, '');
+                        // Remove cmscontentchanged from URL and preserve & or ? correctly
+                        reloadUrl = reloadUrl.replace(/((&)|(\\?))cmscontentchanged=([^&]*)(&)?/gi, '$3$2');
                     }
                 }
 

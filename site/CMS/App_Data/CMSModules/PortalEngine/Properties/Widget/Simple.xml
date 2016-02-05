@@ -1,3 +1,11 @@
-<form>
-	<field column="WidgetTitle" fieldcaption="{$widgets.widgettitle$}" visible="true" columntype="text" fieldtype="textbox" allowempty="true" isPK="false" system="false" columnsize="200" fielddescription="{$documentation.widgets.widgetpropertiestitle$}" publicfield="false" spellcheck="true" guid="d5637c54-f986-4620-8edb-20ff2e5aa956" />
+<form version="2">
+    <field column="WidgetTitle" visible="true" columntype="text" allowempty="true" columnsize="200" publicfield="false" guid="f43f0168-40ba-4460-888f-763b5a9248ad">
+        <properties>
+            <fielddescription>{$documentation.widgets.widgetpropertiestitle$}</fielddescription>
+            <fieldcaption>{$widgets.widgettitle$}</fieldcaption>
+        </properties>
+        <settings>
+            <controlname>textboxcontrol</controlname>
+        </settings>
+    </field>
 </form>

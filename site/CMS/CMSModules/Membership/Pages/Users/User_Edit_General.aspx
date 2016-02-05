@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Pages_Users_User_Edit_General"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Pages_Users_User_Edit_General"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="User Edit - General"
-    Codebehind="User_Edit_General.aspx.cs" %>
+     Codebehind="User_Edit_General.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/Cultures/SiteCultureSelector.ascx" TagName="SiteCultureSelector"
     TagPrefix="cms" %>
@@ -197,7 +197,7 @@
                         ResourceString="Administration-User_Edit_General.UserStartingPath" />
                 </div>
                 <div class="editing-form-value-cell">
-                    <cms:CMSTextBox runat="server" ID="txtUserStartingPath" />
+                    <cms:CMSTextBox runat="server" ID="txtUserStartingPath" MaxLength="200"/>
                 </div>
             </div>
             <div class="form-group">

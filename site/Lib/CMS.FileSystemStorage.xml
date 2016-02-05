@@ -21,47 +21,25 @@
             </summary>
             <param name="info">System info</param>
         </member>
-        <member name="M:CMS.FileSystemStorage.DirectoryInfo.CreateSubdirectory(System.String)">
+        <member name="M:CMS.FileSystemStorage.DirectoryInfo.CreateSubdirectoryInternal(System.String)">
             <summary>
             Creates subdirectory.
             </summary>
             <param name="subdir">Subdirectory to create</param>
         </member>
-        <member name="M:CMS.FileSystemStorage.DirectoryInfo.Delete">
+        <member name="M:CMS.FileSystemStorage.DirectoryInfo.DeleteInternal">
             <summary>
             Deletes directory.
             </summary>
         </member>
-        <member name="M:CMS.FileSystemStorage.DirectoryInfo.GetFiles">
-            <summary>
-            Returns a file list from the current directory.
-            </summary>        
-        </member>
-        <member name="M:CMS.FileSystemStorage.DirectoryInfo.GetFiles(System.String,CMS.IO.SearchOption)">
+        <member name="M:CMS.FileSystemStorage.DirectoryInfo.GetFilesInternal(System.String,CMS.IO.SearchOption)">
             <summary>
             Returns a file list from the current directory.
             </summary>
             <param name="searchPattern">Search pattern</param>
             <param name="searchOption">Search options</param>      
         </member>
-        <member name="M:CMS.FileSystemStorage.DirectoryInfo.GetFiles(System.String)">
-            <summary>
-            Returns a file list from the current directory.
-            </summary>
-            <param name="searchPattern">Search pattern</param>              
-        </member>
-        <member name="M:CMS.FileSystemStorage.DirectoryInfo.GetDirectories">
-            <summary>
-            Returns the subdirectories of the current directory.
-            </summary>        
-        </member>
-        <member name="M:CMS.FileSystemStorage.DirectoryInfo.GetDirectories(System.String)">
-            <summary>
-            Returns the subdirectories of the current directory.
-            </summary>        
-            <param name="searchPattern">Search pattern</param>
-        </member>
-        <member name="M:CMS.FileSystemStorage.DirectoryInfo.GetDirectories(System.String,CMS.IO.SearchOption)">
+        <member name="M:CMS.FileSystemStorage.DirectoryInfo.GetDirectoriesInternal(System.String,CMS.IO.SearchOption)">
             <summary>
             Returns an array of directories in the current DirectoryInfo matching the given search criteria and using a value
             to determine whether to search subdirectories.
@@ -211,40 +189,34 @@
             </summary>
             <param name="info">System file info</param>
         </member>
-        <member name="M:CMS.FileSystemStorage.FileInfo.CreateText">
+        <member name="M:CMS.FileSystemStorage.FileInfo.CreateTextInternal">
             <summary>
             Creates or opens a file for writing UTF-8 encoded text.
             </summary> 
         </member>
-        <member name="M:CMS.FileSystemStorage.FileInfo.Delete">
+        <member name="M:CMS.FileSystemStorage.FileInfo.DeleteInternal">
             <summary>
             Deletes file.
             </summary>
         </member>
-        <member name="M:CMS.FileSystemStorage.FileInfo.OpenRead">
+        <member name="M:CMS.FileSystemStorage.FileInfo.OpenReadInternal">
             <summary>
             Opens file for reading.
             </summary> 
         </member>
-        <member name="M:CMS.FileSystemStorage.FileInfo.OpenText">
+        <member name="M:CMS.FileSystemStorage.FileInfo.OpenTextInternal">
             <summary>
             Creates stream which reads from file.
             </summary> 
         </member>
-        <member name="M:CMS.FileSystemStorage.FileInfo.CopyTo(System.String,System.Boolean)">
+        <member name="M:CMS.FileSystemStorage.FileInfo.CopyToInternal(System.String,System.Boolean)">
             <summary>
             Copies an existing file to a new file, allowing the overwriting of an existing file.
             </summary>
             <param name="destFileName">Destination file name</param>
             <param name="overwrite">Whether overwriting is allowed</param>
         </member>
-        <member name="M:CMS.FileSystemStorage.FileInfo.CopyTo(System.String)">
-            <summary>
-            Copies an existing file to a new file, allowing the overwriting of an existing file.
-            </summary>
-            <param name="destFileName">Destination file name</param>        
-        </member>
-        <member name="M:CMS.FileSystemStorage.FileInfo.MoveTo(System.String)">
+        <member name="M:CMS.FileSystemStorage.FileInfo.MoveToInternal(System.String)">
             <summary>
             Copies an existing file to a new file, allowing the overwriting of an existing file.
             </summary>
@@ -592,6 +564,12 @@
             <summary>
             Gets or sets system stream.
             </summary>
+        </member>
+        <member name="P:CMS.FileSystemStorage.FileStream.CanSeek">
+            <summary>
+            Gets a value indicating whether the current stream supports seeking.
+            </summary>
+            <returns>True if the stream supports seeking, false otherwise.</returns>
         </member>
         <member name="P:CMS.FileSystemStorage.FileStream.Length">
             <summary>

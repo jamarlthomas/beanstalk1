@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Controls;
 using CMS.Helpers;
@@ -89,7 +89,7 @@ public partial class CMSWebParts_Text_pagedtext : CMSAbstractWebPart
         }
         set
         {
-            SetValue("SelctOnlyPublished", value);
+            SetValue("SelectOnlyPublished", value);
         }
     }
 

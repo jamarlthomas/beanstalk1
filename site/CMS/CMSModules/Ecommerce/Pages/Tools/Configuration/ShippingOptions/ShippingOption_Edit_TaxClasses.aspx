@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    AutoEventWireup="true" Codebehind="ShippingOption_Edit_TaxClasses.aspx.cs" Inherits="CMSModules_Ecommerce_Pages_Tools_Configuration_ShippingOptions_ShippingOption_Edit_TaxClasses"
+    AutoEventWireup="true"  Codebehind="ShippingOption_Edit_TaxClasses.aspx.cs" Inherits="CMSModules_Ecommerce_Pages_Tools_Configuration_ShippingOptions_ShippingOption_Edit_TaxClasses"
     Theme="Default" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"

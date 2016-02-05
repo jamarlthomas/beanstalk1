@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
 
 using CMS;
@@ -25,7 +26,7 @@ public class SiteEditCulturesExtender : ControlExtender<UniSelector>
     private SiteInfo siteInfo;
     private string currentValues;
     private const string ASSIGN_ARGUMENT_NAME = "assign";
-    bool reloadData = false;
+    bool reloadData;
 
     #endregion
 
@@ -98,7 +99,7 @@ public class SiteEditCulturesExtender : ControlExtender<UniSelector>
             Control.Visible = false;
 
             // Add link that assign the default content culture to the site
-            LocalizedHyperlink linkButton = new LocalizedHyperlink()
+            LocalizedHyperlink linkButton = new LocalizedHyperlink
             {
                 ResourceString = "sitecultures.assigntodefault",
                 NavigateUrl = "javascript:" + ControlsHelper.GetPostBackEventReference(Control.Page, ASSIGN_ARGUMENT_NAME) + ";"
@@ -116,11 +117,11 @@ public class SiteEditCulturesExtender : ControlExtender<UniSelector>
         }
 
         // Get the active cultures from DB
-        DataSet ds = CultureInfoProvider.GetCultures("CultureID IN (SELECT CultureID FROM CMS_SiteCulture WHERE SiteID = " + siteInfo.SiteID + ")", null, 0, "CultureID");
-        if (!DataHelper.DataSourceIsEmpty(ds))
+        var cultureIds = GetCurrentCultureIds();
+        if (cultureIds.Count > 0)
         {
-            currentValues = TextHelper.Join(";", DataHelper.GetStringValues(ds.Tables[0], "CultureID"));
-        }  
+            currentValues = TextHelper.Join(";", cultureIds);
+        }
     }
 
 
@@ -136,77 +137,175 @@ public class SiteEditCulturesExtender : ControlExtender<UniSelector>
             return;
         }
 
-        bool reloadNeeded = false;
+        bool allCulturesProcessed = true;
 
         // Remove old items
-        string newValues = ValidationHelper.GetString(Control.Value, String.Empty);
-        string removedCultures = DataHelper.GetNewItemsInList(newValues, currentValues);
-        if (!String.IsNullOrEmpty(removedCultures))
+        var removedCultureIds = GetRemovedCultureIds();
+        if (removedCultureIds != null)
         {
-            string[] removedCultureIDs = removedCultures.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            if (removedCultureIDs != null)
-            {
-                // Initialize tree provider
-                TreeProvider tree = new TreeProvider();
-
-                // Add all new items to site
-                foreach (string cultureID in removedCultureIDs)
-                {
-                    CultureInfo ci = CultureInfoProvider.GetCultureInfo(ValidationHelper.GetInteger(cultureID, 0));
-                    if (ci != null)
-                    {
-                        // Get the documents assigned to the culture being removed
-                        DataSet nodes = tree.SelectNodes(siteInfo.SiteName, "/%", ci.CultureCode, false, null, null, null, -1, false);
-                        if (DataHelper.DataSourceIsEmpty(nodes))
-                        {
-                            CultureSiteInfoProvider.RemoveCultureFromSite(ci.CultureCode, siteInfo.SiteName);
-                        }
-                        else
-                        {
-                            reloadNeeded = true;
-                            Control.AddError(String.Format(ResHelper.GetString("site_edit_cultures.errorremoveculturefromsite"), ci.CultureCode) + '\n', null);
-                        }
-                    }
-                }
-            }
+            allCulturesProcessed &= RemoveFromSite(removedCultureIds);
         }
 
-        // Catch license limitations Exception  
-        try
+        // Add new items
+        var newCultureIds = GetAddedCultureIds();
+        if (newCultureIds != null)
         {
-            // Add new items
-            string newCultures = DataHelper.GetNewItemsInList(currentValues, newValues);
-            if (!String.IsNullOrEmpty(newCultures))
-            {
-                string[] newCultureIDs = newCultures.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                if (newCultureIDs != null)
-                {
-                    // Add all new items to site
-                    foreach (string cultureID in newCultureIDs)
-                    {
-                        int id = ValidationHelper.GetInteger(cultureID, 0);
-                        CultureSiteInfoProvider.AddCultureToSite(id, siteInfo.SiteID);
-                    }
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            reloadNeeded = true;
-            Control.ShowError(ex.Message);
+            allCulturesProcessed &= AddToSite(newCultureIds);
         }
 
-        if (reloadNeeded)
+        // Refresh selection with skipped cultures
+        if (!allCulturesProcessed)
         {
-            // Get the active cultures from DB
-            DataSet ds = CultureInfoProvider.GetCultures("CultureID IN (SELECT CultureID FROM CMS_SiteCulture WHERE SiteID = " + siteInfo.SiteID + ")", null, 0, "CultureID");
-            if (!DataHelper.DataSourceIsEmpty(ds))
+            var cultureIds = GetCurrentCultureIds();
+            if (cultureIds.Count > 0)
             {
-                currentValues = TextHelper.Join(";", DataHelper.GetStringValues(ds.Tables[0], "CultureID"));
+                currentValues = TextHelper.Join(";", cultureIds);
                 Control.Value = currentValues;
                 Control.Reload(true);
             }
         }
+    }
+
+
+    /// <summary>
+    /// Returns list of current culture identifiers.
+    /// </summary>
+    private IList<int> GetCurrentCultureIds()
+    {
+        return CultureInfoProvider.GetCultures()
+                                  .Column("CultureID")
+                                  .WhereIn("CultureID", CultureSiteInfoProvider.GetCultureSites()
+                                                                               .Column("CultureID")
+                                                                               .WhereEquals("SiteID", siteInfo.SiteID))
+                                  .GetListResult<int>();
+    }
+
+
+    /// <summary>
+    /// Returns list of culture identifiers which should be added to site.
+    /// </summary>
+    private IEnumerable<int> GetAddedCultureIds()
+    {
+        var selectedValues = ValidationHelper.GetString(Control.Value, String.Empty);
+        var newValues = DataHelper.GetNewItemsInList(currentValues, selectedValues);
+        if (string.IsNullOrEmpty(newValues))
+        {
+            return null;
+        }
+
+        return newValues
+            .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+            .Select(int.Parse)
+            .ToList();
+    }
+
+
+    /// <summary>
+    /// Returns list of culture identifiers which should be removed from site.
+    /// </summary>
+    private IEnumerable<int> GetRemovedCultureIds()
+    {
+        var selectedValues = ValidationHelper.GetString(Control.Value, String.Empty);
+        var removedValues = DataHelper.GetNewItemsInList(selectedValues, currentValues);
+        if (string.IsNullOrEmpty(removedValues))
+        {
+            return null;
+        }
+
+        return removedValues
+            .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+            .Select(int.Parse)
+            .ToList();
+    }
+
+
+    /// <summary>
+    /// Assigns given cultures to the edited site.
+    /// </summary>
+    /// <param name="cultureIds">Identifiers of cultures meant for adding.</param>
+    /// <returns>Returns <c>true</c> if all cultures were successfully added.</returns>
+    private bool AddToSite(IEnumerable<int> cultureIds)
+    {
+        bool allCulturesAdded = true;
+        try
+        {
+            bool changed = false;
+            foreach (int cultureId in cultureIds)
+            {
+                CultureSiteInfoProvider.AddCultureToSite(cultureId, siteInfo.SiteID);
+                changed = true;
+            }
+
+            if (changed)
+            {
+                Control.ShowChangesSaved();
+            }
+        }
+        catch (Exception ex)
+        {
+            allCulturesAdded = false;
+            Control.ShowError(ex.Message);
+        }
+
+        return allCulturesAdded;
+    }
+
+
+    /// <summary>
+    /// Removes cultures from edited site. Default culture is skipped and is not removed. Also cultures which
+    /// are assigned to documents are not removed. 
+    /// </summary>
+    /// <param name="cultureIds">Set of culture identifiers to delete.</param>
+    /// <returns>Returns <c>true</c> if all cultures were successfully removed.</returns>
+    private bool RemoveFromSite(IEnumerable<int> cultureIds)
+    {
+        bool allCulturesDeleted = true;
+        bool changed = false;
+        var defaultCultureCode = CultureHelper.GetDefaultCultureCode(siteInfo.SiteName);
+        var tree = new TreeProvider();
+
+        // Remove all selected items from site
+        foreach (int cultureId in cultureIds)
+        {
+            var culture = CultureInfoProvider.GetCultureInfo(cultureId);
+            if (culture == null)
+            {
+                continue;
+            }
+
+            // Skip default cultrue deletion
+            if (culture.CultureCode.EqualsCSafe(defaultCultureCode, true))
+            {
+                allCulturesDeleted = false;
+                Control.AddError(String.Format(ResHelper.GetString("site_edit_cultures.errordeletedefaultculture"), HTMLHelper.HTMLEncode(culture.CultureName)) + '\n');
+                continue;
+            }
+
+            var cultureDocumentsCount = tree.SelectNodes()
+                                            .OnSite(siteInfo.SiteName)
+                                            .CombineWithDefaultCulture(false)
+                                            .Culture(culture.CultureCode)
+                                            .Published(false)
+                                            .Count;
+
+            // Skip culture if any document translated to this culture
+            if (cultureDocumentsCount > 0)
+            {
+                allCulturesDeleted = false;
+                Control.AddError(String.Format(ResHelper.GetString("site_edit_cultures.errorremoveculturefromsite"), HTMLHelper.HTMLEncode(culture.CultureName)) + '\n');
+                continue;
+            }
+
+            CultureSiteInfoProvider.RemoveCultureFromSite(culture.CultureCode, siteInfo.SiteName);
+            changed = true;
+        }
+
+        if (changed)
+        {
+            Control.ShowChangesSaved();
+        }
+
+        return allCulturesDeleted;
     }
 
 

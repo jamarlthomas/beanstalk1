@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.Core;
@@ -15,14 +15,14 @@ using CMS.DataEngine;
 [CheckLicence(FeatureEnum.Newsletters)]
 public partial class CMSModules_Newsletters_Tools_Customers_Customer_Edit_Newsletters : CMSDeskPage
 {
-    private int siteId = 0;
+    private int siteId;
     private int customerSiteId = -1;
     private string currentValues = string.Empty;
-    private string email = null;
-    private string firstName = null;
-    private string lastName = null;
+    private string email;
+    private string firstName;
+    private string lastName;
     private int customerUserId = -1;
-
+    private readonly ISubscriptionService mSubscriptionService = Service<ISubscriptionService>.Entry();
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -131,10 +131,9 @@ public partial class CMSModules_Newsletters_Tools_Customers_Customer_Edit_Newsle
                     int newsletterId = ValidationHelper.GetInteger(item, 0);
 
                     // If subscriber is subscribed, unsubscribe him
-                    if (SubscriberInfoProvider.IsSubscribed(sb.SubscriberID, newsletterId))
+                    if (mSubscriptionService.IsSubscribed(sb.SubscriberID, newsletterId))
                     {
-                        SubscriberInfoProvider.Unsubscribe(sb.SubscriberID, newsletterId);
-
+                        mSubscriptionService.RemoveSubscription(sb.SubscriberID, newsletterId);
                         changed = true;
                     }
                 }
@@ -150,10 +149,14 @@ public partial class CMSModules_Newsletters_Tools_Customers_Customer_Edit_Newsle
                     int newsletterId = ValidationHelper.GetInteger(item, 0);
 
                     // If subscriber is not subscribed, subscribe him
-                    if (!SubscriberInfoProvider.IsSubscribed(sb.SubscriberID, newsletterId))
+                    if (!mSubscriptionService.IsSubscribed(sb.SubscriberID, newsletterId))
                     {
-                        SubscriberInfoProvider.Subscribe(sb.SubscriberID, newsletterId, DateTime.Now);
-
+                        mSubscriptionService.Subscribe(sb.SubscriberID, newsletterId, new SubscribeSettings()
+                        {
+                            SendConfirmationEmail = true,
+                            RequireOptIn = true,
+                            RemoveAlsoUnsubscriptionFromAllNewsletters = false,
+                        });
                         changed = true;
                     }
                 }
@@ -177,7 +180,7 @@ public partial class CMSModules_Newsletters_Tools_Customers_Customer_Edit_Newsle
         if (sb != null)
         {
             // Get selected newsletters
-            DataSet ds = SubscriberNewsletterInfoProvider.GetEnabledSubscriberNewsletters().WhereEquals("SubscriberID", sb.SubscriberID).Column("NewsletterID");
+            DataSet ds = SubscriberNewsletterInfoProvider.GetSubscriberNewsletters().WhereEquals("SubscriberID", sb.SubscriberID).Column("NewsletterID");
             if (!DataHelper.DataSourceIsEmpty(ds))
             {
                 currentValues = TextHelper.Join(";", DataHelper.GetStringValues(ds.Tables[0], "NewsletterID"));

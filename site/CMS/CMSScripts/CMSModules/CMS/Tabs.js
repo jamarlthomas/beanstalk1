@@ -1,4 +1,4 @@
-﻿cmsdefine(['CMS/EventHub', 'CMS/NavigationBlocker', 'jQuery'], function (EventHub, NavigationBlocker, $) {
+﻿cmsdefine(['CMS/EventHub', 'CMS/NavigationBlocker', 'jQuery', 'CMS/UrlHelper'], function (EventHub, NavigationBlocker, $, UrlHelper) {
     'use strict';
 
     var history = [],
@@ -30,7 +30,7 @@
                     if ((target == '_blank') || (target == '_new')) {
                         window.open(url);
                     } else if (target == '_self') {
-                        this.location.href = url;
+                        window.location.href = url;
                     } else if (target != '') {
                         var frame;
 
@@ -109,11 +109,24 @@
                 tabTitle.text(text);
             }
         },
+        ensureQueryParamForTabs = function (element, queryParam, queryParamValue) {
+            element.find("li[data-href], li[data-href] > a").each(function () {
+                var $this = $(this),
+                attributeName = $this.is("a") ? "href" : "data-href",
+
+                url = $this.attr(attributeName),
+                queryString = UrlHelper.getQueryString(url);
+
+                queryString = UrlHelper.setParameter(queryString, queryParam, queryParamValue);
+                $this.attr(attributeName, UrlHelper.removeQueryString(url) + queryString);
+            });
+        },
         tabs = function (initScript) {
             this.selTab = selTab;
             this.redir = redir;
             this.back = back;
             this.getHistory = getHistory;
+            this.ensureQueryParamForTabs = ensureQueryParamForTabs;
 
             window.Tabs = this;
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 
 using CMS.DocumentEngine;
@@ -11,7 +11,7 @@ using CMS.PortalEngine;
 using CMS.Base;
 using CMS.SiteProvider;
 using CMS.Membership;
-using CMS.SocialMedia.Facebook;
+using CMS.MembershipProvider.Facebook;
 using CMS.UIControls;
 using CMS.WebAnalytics;
 using CMS.Protection;
@@ -594,7 +594,8 @@ public partial class CMSWebParts_Membership_FacebookConnect_FacebookConnectLogon
                 // Default message informing about misconfiguration is dispalyed.
                 StringBuilder parameter = new StringBuilder();
                 parameter.Append(UIElementInfoProvider.GetApplicationNavigationString("cms", "Settings") + " -> ");
-                parameter.Append(GetString("settingscategory.socialmedia") + " -> ");
+                parameter.Append(GetString("settingscategory.cmsmembership") + " -> ");
+                parameter.Append(GetString("settingscategory.cmsmembershipauthentication") + " -> ");
                 parameter.Append(GetString("settingscategory.cmsfacebookconnect"));
                 if (MembershipContext.AuthenticatedUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.GlobalAdmin))
                 {

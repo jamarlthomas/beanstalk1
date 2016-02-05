@@ -4,6 +4,7 @@ cmsdefine([
     'angular-resource',
     'angular-animate',
     'angularSortable',
+    'angular-ellipsis',
     'CMS.ApplicationDashboard/DashboardController',
     'CMS.ApplicationDashboard/DashboardDirectives',
     'CMS.ApplicationDashboard/DashboardServices'
@@ -13,6 +14,7 @@ cmsdefine([
     angularResource,
     angularAnimate,
     angularSortable,
+    angularEllipsis,
     cmsDashboardController,
     cmsDashboardDirectives,
     cmsDashboardServices
@@ -21,12 +23,13 @@ cmsdefine([
         // Create cms.dashboard angular module
         var moduleName = 'cms.ApplicationDashboard',
             module = angular.module(moduleName, [
-            cmsDashboardDirectives.Module,
-            cmsDashboardServices.Module,
-            'ngRoute',
-            'ngResource',
-            'ngAnimate',
-            'ui.sortable'
+                cmsDashboardDirectives.Module,
+                cmsDashboardServices.Module,
+                'ngRoute',
+                'ngResource',
+                'ngAnimate',
+                'ui.sortable',
+                'dibari.angular-ellipsis'
         ]);
 
         // Configure routes

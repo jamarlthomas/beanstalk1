@@ -1,7 +1,5 @@
-using System;
+﻿using System;
 using System.Collections;
-using System.Web;
-using System.Web.UI;
 
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -18,7 +16,7 @@ public partial class CMSModules_Content_Controls_Dialogs_General_DialogFooter : 
 
     private OutputFormatEnum mOutputFormat = OutputFormatEnum.HTMLMedia;
     private string CustomOutputCode = "";
-    private bool mIsYouTubeDialog = false;
+    private bool mIsYouTubeDialog;
 
     #endregion
 
@@ -163,7 +161,7 @@ public partial class CMSModules_Content_Controls_Dialogs_General_DialogFooter : 
         if (!RequestHelper.IsPostBack())
         {
             ltlScript.Text = ScriptHelper.GetScript("function DoHiddenPostback(){" + Page.ClientScript.GetPostBackEventReference(btnHidden, "") + "}");
-            string getSelectionScript = null;
+            string getSelectionScript;
             if (UseEditorScript())
             {
                 string clientId = QueryHelper.GetString("editor_clientid", "");
@@ -390,12 +388,9 @@ public partial class CMSModules_Content_Controls_Dialogs_General_DialogFooter : 
                             selectionTable[DialogParameters.FLASH_WIDTH] = selectionTable[DialogParameters.URL_WIDTH];
                             selectionTable[DialogParameters.FLASH_HEIGHT] = selectionTable[DialogParameters.URL_HEIGHT];
                             break;
-
-                        default:
-                            break;
                     }
 
-                    if ((ms.SourceType == MediaSourceEnum.Content) && (ms.AttachmentGuid != null) && (ms.FileName != null) && (OutputFormat == OutputFormatEnum.NodeGUID))
+                    if ((ms.SourceType == MediaSourceEnum.Content) && (ms.FileName != null) && (OutputFormat == OutputFormatEnum.NodeGUID))
                     {
                         string fileUrl = AttachmentURLProvider.GetPermanentAttachmentUrl(ms.NodeGuid, ms.FileName);
                         selectionTable[DialogParameters.URL_URL] = URLHelper.ResolveUrl(fileUrl);

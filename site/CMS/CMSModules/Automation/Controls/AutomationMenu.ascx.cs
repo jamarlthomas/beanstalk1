@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
@@ -753,7 +753,7 @@ public partial class CMSModules_Automation_Controls_AutomationMenu : BaseEditMen
     {
         AutomationManager.RenderScript = true;
 
-        CommentAction comment = new CommentAction(Page, name)
+        CommentAction comment = new CommentAction(name)
                                    {
                                        Tooltip = string.Format(ResHelper.GetString("EditMenu.Comment" + name, ResourceCulture), objectName),
                                        OnClientClick = string.Format("AddComment_{0}('{1}',{2},'{0}');", ClientID, name, StateObject.StateID),

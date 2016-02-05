@@ -36,7 +36,7 @@ public partial class CMSFormControls_Selectors_FontSelector {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSButton btnChangeFontType;
+    protected global::CMS.ExtendedControls.LocalizedButton btnChangeFontType;
     
     /// <summary>
     /// btnClearFont control.
@@ -45,7 +45,7 @@ public partial class CMSFormControls_Selectors_FontSelector {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSButton btnClearFont;
+    protected global::CMS.ExtendedControls.LocalizedButton btnClearFont;
     
     /// <summary>
     /// hfValue control.

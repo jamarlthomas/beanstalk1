@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="false" Codebehind="Insights.aspx.cs" Inherits="CMSModules_SocialMarketing_Pages_Insights" %>
+﻿<%@ Page Language="C#" AutoEventWireup="false"  Codebehind="Insights.aspx.cs" Inherits="CMSModules_SocialMarketing_Pages_Insights" %>
 <!DOCTYPE html>
 <html>
 <head runat="server" enableviewstate="false">

@@ -44,7 +44,7 @@ public partial class CMSWebParts_DocumentWizard_DocumentWizardManager : CMSAbstr
 
 
     /// <summary>
-    /// Determines which document types to load. The document types are specified by a list of code names separated by semicolons (;). The * wildcard can be used as a substitute for a random sequence of characters. For example, Product.* would include document types such as Product.Camera, Product.CellPhone, Product.Computer etc. If left empty, the web part retrieves all document types by default. Please note that in this case (empty value), only the common data columns from View_CMS_Tree_Joined are available. When writing transformations, WHERE conditions etc., bear in mind that the specific fields of individual document types are not included..
+    /// Determines which document types to load. The document types are specified by a list of code names separated by semicolons (;). The * wildcard can be used as a substitute for a random sequence of characters. For example, Product.* would include document types such as Product.Camera, Product.CellPhone, Product.Computer etc. If left empty, the web part retrieves all document types by default. Please note that in this case (empty value), only the common data columns from document view are available. When writing transformations, WHERE conditions etc., bear in mind that the specific fields of individual document types are not included..
     /// </summary>
     public string ClassNames
     {

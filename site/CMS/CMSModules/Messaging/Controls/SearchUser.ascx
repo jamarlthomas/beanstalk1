@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Messaging_Controls_SearchUser" Codebehind="SearchUser.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Messaging_Controls_SearchUser"  Codebehind="SearchUser.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
 <div class="ListPanel">
@@ -14,7 +14,7 @@
             </div>
             <div class="form-group form-group-buttons">
                 <div class="filter-form-buttons-cell">
-                    <cms:LocalizedButton ID="btnSearch" runat="server" OnClick="btnSearch_Click" ResourceString="general.search" ButtonStyle="Primary" />
+                    <cms:LocalizedButton ID="btnSearch" runat="server" ResourceString="general.search" ButtonStyle="Primary" />
                 </div>
             </div>
         </div>

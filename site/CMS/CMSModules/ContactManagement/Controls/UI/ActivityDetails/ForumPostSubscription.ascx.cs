@@ -1,4 +1,4 @@
-using CMS.OnlineMarketing;
+﻿using CMS.OnlineMarketing;
 
 public partial class CMSModules_ContactManagement_Controls_UI_ActivityDetails_ForumPostSubscription : ActivityDetail
 {

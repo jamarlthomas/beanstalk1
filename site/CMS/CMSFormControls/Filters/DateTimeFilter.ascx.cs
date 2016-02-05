@@ -4,7 +4,6 @@ using CMS.Base;
 using CMS.DataEngine;
 using CMS.ExtendedControls;
 using CMS.FormControls;
-using CMS.FormEngine;
 using CMS.Globalization;
 using CMS.Helpers;
 
@@ -26,32 +25,23 @@ public partial class CMSFormControls_Filters_DateTimeFilter : FormEngineUserCont
             {
                 return null;
             }
-            else
-            {
-                return dtmTimeFrom.SelectedDateTime;
-            }
+            
+            return dtmTimeFrom.SelectedDateTime;
         }
         set
         {
             if (GetValue("timezonetype") != null)
             {
-                dtmTimeFrom.TimeZone = (TimeZoneTypeEnum)GetValue<string>("timezonetype", String.Empty).ToEnum<TimeZoneTypeEnum>();
+                dtmTimeFrom.TimeZone = GetValue("timezonetype", String.Empty).ToEnum<TimeZoneTypeEnum>();
             }
             if (GetValue("timezone") != null)
             {
-                dtmTimeFrom.CustomTimeZone = TimeZoneInfoProvider.GetTimeZoneInfo(GetValue<string>("timezone", ""));
+                dtmTimeFrom.CustomTimeZone = TimeZoneInfoProvider.GetTimeZoneInfo(GetValue("timezone", ""));
             }
 
             string strValue = ValidationHelper.GetString(value, "");
 
-            if (DateTimeHelper.IsNowOrToday(strValue))
-            {
-                dtmTimeFrom.SelectedDateTime = DateTime.Now;
-            }
-            else
-            {
-                dtmTimeFrom.SelectedDateTime = ValidationHelper.GetDateTimeSystem(value, DateTimeHelper.ZERO_TIME);
-            }
+            dtmTimeFrom.SelectedDateTime = DateTimeHelper.IsNowOrToday(strValue) ? DateTime.Now : ValidationHelper.GetDateTimeSystem(value, DateTimeHelper.ZERO_TIME);
         }
     }
 
@@ -74,7 +64,7 @@ public partial class CMSFormControls_Filters_DateTimeFilter : FormEngineUserCont
 
 
     /// <summary>
-    /// Gets name of the field for second date value. Default value is 'SecondDatetime'.
+    /// Gets name of the field for second date value. Default value is '{FieldName}SecondDatetime' where {FieldName} is name of the current field.
     /// </summary>
     protected string SecondDateFieldName
     {
@@ -83,7 +73,7 @@ public partial class CMSFormControls_Filters_DateTimeFilter : FormEngineUserCont
             if (string.IsNullOrEmpty(mSecondDateFieldName))
             {
                 // Get name of the field for second date value
-                mSecondDateFieldName = DataHelper.GetNotEmpty(GetValue("SecondDateFieldName"), "SecondDatetime");
+                mSecondDateFieldName = DataHelper.GetNotEmpty(GetValue("SecondDateFieldName"), Field + "SecondDatetime");
             }
             return mSecondDateFieldName;
         }
@@ -94,24 +84,65 @@ public partial class CMSFormControls_Filters_DateTimeFilter : FormEngineUserCont
 
     #region "Methods"
 
-    protected void Page_Load(object sender, EventArgs e)
+    protected override void CreateChildControls()
     {
-        // Setup control
+        base.CreateChildControls();
+
+        CheckFieldEmptiness = false;
+        InitFilterControls();
+
+        LoadOtherValues();
+    }
+
+
+    /// <summary>
+    /// Loads the other fields values to the state of the form control.
+    /// </summary>
+    public override void LoadOtherValues()
+    {
+        // User defined extensions
+        dtmTimeTo.SelectedDateTime = ValidationHelper.GetDateTime(GetColumnValue(SecondDateFieldName), DateTimeHelper.ZERO_TIME, CultureHelper.EnglishCulture);
+    }
+
+
+    /// <summary>
+    /// Returns other values related to this form control.
+    /// </summary>
+    /// <returns>Returns an array where first dimension is attribute name and the second dimension is its value.</returns>
+    public override object[,] GetOtherValues()
+    {
+        if (Form.Data is DataRowContainer)
+        {
+            if (!ContainsColumn(SecondDateFieldName))
+            {
+                Form.DataRow.Table.Columns.Add(SecondDateFieldName);
+            }
+        }
+
+        // Set properties names
+        object[,] values = new object[3, 2];
+        values[0, 0] = SecondDateFieldName;
+        values[0, 1] = dtmTimeTo.SelectedDateTime;
+        return values;
+    }
+
+
+    /// <summary>
+    /// Initializes filter calendar controls.
+    /// </summary>
+    private void InitFilterControls()
+    {
         if (FieldInfo != null)
         {
             dtmTimeFrom.AllowEmptyValue = FieldInfo.AllowEmpty;
             dtmTimeTo.AllowEmptyValue = FieldInfo.AllowEmpty;
         }
-        dtmTimeFrom.DisplayNow = ValidationHelper.GetBoolean(GetValue("displaynow"), true);
-        dtmTimeTo.DisplayNow = ValidationHelper.GetBoolean(GetValue("displaynow"), true);
-        dtmTimeFrom.EditTime = ValidationHelper.GetBoolean(GetValue("edittime"), EditTime);
-        dtmTimeTo.EditTime = ValidationHelper.GetBoolean(GetValue("edittime"), EditTime);
-        dtmTimeFrom.SupportFolder = "~/CMSAdminControls/Calendar";
-        dtmTimeTo.SupportFolder = "~/CMSAdminControls/Calendar";
+
+        dtmTimeFrom.DisplayNow = dtmTimeTo.DisplayNow = ValidationHelper.GetBoolean(GetValue("displaynow"), true);
+        dtmTimeFrom.EditTime = dtmTimeTo.EditTime = ValidationHelper.GetBoolean(GetValue("edittime"), EditTime);
+        dtmTimeFrom.IsLiveSite = dtmTimeTo.IsLiveSite = IsLiveSite;
         dtmTimeFrom.DateTimeTextBox.AddCssClass("EditingFormCalendarTextBox");
         dtmTimeTo.DateTimeTextBox.AddCssClass("EditingFormCalendarTextBox");
-        dtmTimeFrom.IsLiveSite = IsLiveSite;
-        dtmTimeTo.IsLiveSite = IsLiveSite;
 
         if (!String.IsNullOrEmpty(CssClass))
         {
@@ -124,23 +155,6 @@ public partial class CMSFormControls_Filters_DateTimeFilter : FormEngineUserCont
             dtmTimeFrom.Attributes.Add("style", ControlStyle);
             dtmTimeTo.Attributes.Add("style", ControlStyle);
             ControlStyle = null;
-        }
-
-        CheckFieldEmptiness = false;
-
-        LoadOtherValues();
-    }
-
-
-    /// <summary>
-    /// Loads the other fields values to the state of the form control
-    /// </summary>
-    public override void LoadOtherValues()
-    {
-        // User defined extensions
-        if (ContainsColumn(SecondDateFieldName))
-        {
-            dtmTimeTo.SelectedDateTime = ValidationHelper.GetDateTime(Form.Data.GetValue(SecondDateFieldName), DateTimeHelper.ZERO_TIME, "en-us");
         }
     }
 
@@ -159,16 +173,13 @@ public partial class CMSFormControls_Filters_DateTimeFilter : FormEngineUserCont
         if (required && checkEmptiness && (String.IsNullOrEmpty(strValueFrom) && String.IsNullOrEmpty(strValueTo)))
         {
             // Empty error
-            if (ErrorMessage != null)
+            if ((ErrorMessage != null) && !ErrorMessage.EqualsCSafe(ResHelper.GetString("BasicForm.InvalidInput"), true))
             {
-                if (ErrorMessage != ResHelper.GetString("BasicForm.InvalidInput"))
-                {
-                    ValidationError = ErrorMessage;
-                }
-                else
-                {
-                    ValidationError += ResHelper.GetString("BasicForm.ErrorEmptyValue");
-                }
+                ValidationError = ErrorMessage;
+            }
+            else
+            {
+                ValidationError += ResHelper.GetString("BasicForm.ErrorEmptyValue");
             }
             return false;
         }
@@ -205,51 +216,55 @@ public partial class CMSFormControls_Filters_DateTimeFilter : FormEngineUserCont
 
 
     /// <summary>
-    /// Returns other values related to this form control.
-    /// </summary>
-    /// <returns>Returns an array where first dimension is attribute name and the second dimension is its value.</returns>
-    public override object[,] GetOtherValues()
-    {
-        if (Form.Data is DataRowContainer)
-        {
-            if (!ContainsColumn(SecondDateFieldName))
-            {
-                Form.DataRow.Table.Columns.Add(SecondDateFieldName);
-            }
-        }
-
-        // Set properties names
-        object[,] values = new object[3, 2];
-        values[0, 0] = SecondDateFieldName;
-        values[0, 1] = dtmTimeTo.SelectedDateTime;
-        return values;
-    }
-
-
-    /// <summary>
     /// Gets where condition.
     /// </summary>
     public override string GetWhereCondition()
     {
-        string fromDate = FormHelper.GetDateTimeValueInSystemCulture(ValidationHelper.GetString(dtmTimeFrom.SelectedDateTime, string.Empty).Trim());
-        string toDate = FormHelper.GetDateTimeValueInSystemCulture(ValidationHelper.GetString(dtmTimeTo.SelectedDateTime, string.Empty).Trim());
-        string opFrom = ">=";
-        string opTo = "<=";
+        EnsureChildControls();
+
+        DateTime dateFrom = dtmTimeFrom.SelectedDateTime;
+        DateTime dateTo = dtmTimeTo.SelectedDateTime;
+        string fieldName = (FieldInfo != null) ? FieldInfo.Name : Field;
         string where = null;
 
         if (String.IsNullOrEmpty(WhereConditionFormat))
         {
-            WhereConditionFormat = "[{0}] {2} '{1}'";
-        }
+            // Get default where condition
+            WhereCondition condition = null;
 
-        if (!String.IsNullOrEmpty(fromDate) && (fromDate != DateTimeHelper.ZERO_TIME.ToString()))
-        {
-            where = string.Format(WhereConditionFormat, (FieldInfo != null) ? FieldInfo.Name : null, fromDate, opFrom);
-        }
+            if (dateFrom != DateTimeHelper.ZERO_TIME)
+            {
+                condition = new WhereCondition(fieldName, QueryOperator.GreaterOrEquals, dateFrom);
+            }
 
-        if (!String.IsNullOrEmpty(toDate) && (toDate != DateTimeHelper.ZERO_TIME.ToString()))
+            if (dateTo != DateTimeHelper.ZERO_TIME)
+            {
+                if (condition == null)
+                {
+                    condition = new WhereCondition();
+                }
+
+                condition.And().WhereLessOrEquals(fieldName, dateTo);
+            }
+
+            if (condition != null)
+            {
+                where = condition.ToString(true);
+            }
+        }
+        else
         {
-            where = SqlHelper.AddWhereCondition(where, string.Format(WhereConditionFormat, (FieldInfo != null) ? FieldInfo.Name : null, toDate, opTo));
+            if (dateFrom != DateTimeHelper.ZERO_TIME)
+            {
+                // Add "from date" where condition
+                where = String.Format(WhereConditionFormat, fieldName, dateFrom.ToString(CultureHelper.EnglishCulture), ">=");
+            }
+
+            if (dateTo != DateTimeHelper.ZERO_TIME)
+            {
+                // Add "to date" where condition
+                where = SqlHelper.AddWhereCondition(where, String.Format(WhereConditionFormat, fieldName, dateTo.ToString(CultureHelper.EnglishCulture), "<="));
+            }
         }
 
         return where;

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_UI_MediaLibrarySecurity"
-    Codebehind="MediaLibrarySecurity.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_UI_MediaLibrarySecurity"
+     Codebehind="MediaLibrarySecurity.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniMatrix.ascx" TagName="UniMatrix"
     TagPrefix="cms" %>
 <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
@@ -12,4 +12,4 @@
     RowItemDisplayNameColumn="RoleDisplayName" ColumnItemDisplayNameColumn="PermissionDisplayName"
     ColumnItemTooltipColumn="PermissionDescription" RowTooltipColumn="RowDisplayName"
     ColumnTooltipColumn="PermissionDescription" ItemTooltipColumn="PermissionDescription"
-    AddGlobalObjectSuffix="true" SiteIDColumnName="SiteID" FirstColumnClass="first-column" />
+    AddGlobalObjectSuffix="true" SiteIDColumnName="SiteID" FirstColumnClass="first-column" MaxFilterLength="100" />

@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSInstall_Controls_WizardSteps_WagDialog" Codebehind="WagDialog.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSInstall_Controls_WizardSteps_WagDialog"  Codebehind="WagDialog.ascx.cs" %>
 <asp:Label ID="lblError" runat="server" CssClass="ErrorLabel" EnableViewState="false"
     Visible="false" />
 <table class="install-wizard" border="0" cellpadding="0" cellspacing="10">

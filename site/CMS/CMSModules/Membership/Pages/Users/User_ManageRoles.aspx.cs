@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Web.UI.WebControls;
@@ -26,14 +26,14 @@ public partial class CMSModules_Membership_Pages_Users_User_ManageRoles : CMSMod
         if (user != null)
         {
             // Check UI elements
-            if (!user.IsAuthorizedPerUIElement("CMS.Users", "Users"))
+            if (!user.IsAuthorizedPerUIElement("CMS.Users", "CmsDesk.Roles"))
             {
-                RedirectToUIElementAccessDenied("CMS.Users", "Users");
+                RedirectToUIElementAccessDenied("CMS.Users", "CmsDesk.Roles");
             }
 
-            if (!user.IsAuthorizedPerUIElement("CMS.Roles", "Roles"))
+            if (!user.IsAuthorizedPerUIElement("CMS.Roles", "Users"))
             {
-                RedirectToUIElementAccessDenied("CMS.Roles", "Roles");
+                RedirectToUIElementAccessDenied("CMS.Roles", "Users");
             }
 
             // Check "read" permissions

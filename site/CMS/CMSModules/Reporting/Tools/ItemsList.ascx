@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_Tools_ItemsList"
-    Codebehind="~/CMSModules/Reporting/Tools/ItemsList.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_Tools_ItemsList"
+     Codebehind="~/CMSModules/Reporting/Tools/ItemsList.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Reporting/FormControls/ReportItemSelector.ascx" TagName="BasicReportSelector"
     TagPrefix="cms" %>
 <table class="reporting-items-list">

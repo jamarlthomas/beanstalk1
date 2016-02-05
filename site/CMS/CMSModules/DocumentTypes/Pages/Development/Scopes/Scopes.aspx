@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_DocumentTypes_Pages_Development_Scopes_Scopes"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Page type edit - Scopes list"
-    Theme="Default" Codebehind="Scopes.aspx.cs" %>
+    Theme="Default"  Codebehind="Scopes.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagPrefix="cms" TagName="UniSelector" %>
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector"

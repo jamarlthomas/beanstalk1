@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 
 using CMS.Core;
-using CMS.Helpers;
 using CMS.Globalization;
+using CMS.Helpers;
 using CMS.UIControls;
 
 using TimeZoneInfo = CMS.Globalization.TimeZoneInfo;
@@ -10,16 +10,17 @@ using TimeZoneInfo = CMS.Globalization.TimeZoneInfo;
 [UIElementAttribute(ModuleName.CMS, "Development.TimeZones")]
 public partial class CMSModules_TimeZones_Pages_TimeZone_Edit : GlobalAdminPage
 {
-    protected int zoneid = 0;
+    private int zoneId;
 
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        // Control initialization				
+        // Control initialization
         rfvName.ErrorMessage = GetString("TimeZ.Edit.rfvName");
         rfvDisplayName.ErrorMessage = GetString("TimeZ.Edit.rfvDisplayName");
         rfvGMT.ErrorMessage = GetString("TimeZ.Edit.rfvGMT");
         rvGMTDouble.ErrorMessage = GetString("TimeZ.Edit.rvGMTDouble");
+        lblTimeZoneRuleStart.Text = lblTimeZoneRuleEnd.Text = GetString("general.na");
         rvGMTDouble.MinimumValue = (-12.0).ToString();
         rvGMTDouble.MaximumValue = (13.0).ToString();
 
@@ -27,11 +28,11 @@ public partial class CMSModules_TimeZones_Pages_TimeZone_Edit : GlobalAdminPage
         startRuleEditor.TitleText = GetString("TimeZ.Edit.TimeZoneRuleStartRule");
         endRuleEditor.TitleText = GetString("TimeZ.Edit.TimeZoneRuleEndRule");
 
-        // Get timeZone id from querystring		
-        zoneid = QueryHelper.GetInteger("zoneid", 0);
-        if (zoneid > 0)
+        // Get timeZone id from query string
+        zoneId = QueryHelper.GetInteger("zoneid", 0);
+        if (zoneId > 0)
         {
-            var timeZoneObj = TimeZoneInfoProvider.GetTimeZoneInfo(zoneid);
+            var timeZoneObj = TimeZoneInfoProvider.GetTimeZoneInfo(zoneId);
             //Set edited object
             EditedObject = timeZoneObj;
 
@@ -52,34 +53,32 @@ public partial class CMSModules_TimeZones_Pages_TimeZone_Edit : GlobalAdminPage
                 }
             }
         }
-        else
-        {
-            plcDSTInfo.Visible = false;
-        }
 
-        // Initializes page title control		
-        PageBreadcrumbs.Items.Add(new BreadcrumbItem()
+        // Initializes page title control
+        PageBreadcrumbs.Items.Add(new BreadcrumbItem
         {
             Text = GetString("TimeZ.Edit.ItemList"),
             RedirectUrl = "~/CMSModules/TimeZones/Pages/TimeZone_List.aspx"
         });
 
-        PageBreadcrumbs.Items.Add(new BreadcrumbItem()
+        PageBreadcrumbs.Items.Add(new BreadcrumbItem
         {
             Text = currentTimeZone
         });
 
-        if (QueryHelper.GetString("zoneid", "") != "")
-        {
-            PageTitle.TitleText = GetString("timez.edit.properties");
-        }
-        else
-        {
-            PageTitle.TitleText = GetString("timez.edit.newtimezone");
-        }
+        PageTitle.TitleText = (zoneId > 0) ? GetString("timez.edit.properties") : GetString("timez.edit.newtimezone");
 
         startRuleEditor.Enabled = chkTimeZoneDaylight.Checked;
         endRuleEditor.Enabled = chkTimeZoneDaylight.Checked;
+    }
+
+
+    protected override void OnPreRender(EventArgs e)
+    {
+        base.OnPreRender(e);
+
+        lblTimeZoneDisplayName.AssociatedControlClientID = txtTimeZoneDisplayName.TextBox.ClientID;
+        lblTimeZoneName.AssociatedControlClientID = txtTimeZoneName.TextBox.ClientID;
     }
 
 
@@ -93,22 +92,15 @@ public partial class CMSModules_TimeZones_Pages_TimeZone_Edit : GlobalAdminPage
         txtTimeZoneDisplayName.Text = timeZoneObj.TimeZoneDisplayName;
         txtTimeZoneGMT.Text = Convert.ToString(timeZoneObj.TimeZoneGMT);
         chkTimeZoneDaylight.Checked = timeZoneObj.TimeZoneDaylight;
+
         if (timeZoneObj.TimeZoneDaylight)
         {
             lblTimeZoneRuleStart.Text = timeZoneObj.TimeZoneRuleStartIn.ToString();
             lblTimeZoneRuleEnd.Text = timeZoneObj.TimeZoneRuleEndIn.ToString();
             startRuleEditor.Rule = timeZoneObj.TimeZoneRuleStartRule;
             endRuleEditor.Rule = timeZoneObj.TimeZoneRuleEndRule;
-        }
 
-        if (lblTimeZoneRuleStart.Text.Trim() == String.Empty)
-        {
-            lblTimeZoneRuleStart.Text = GetString("general.na");
-        }
-
-        if (lblTimeZoneRuleEnd.Text.Trim() == String.Empty)
-        {
-            lblTimeZoneRuleEnd.Text = GetString("general.na");
+            plcDSTInfo.Visible = true;
         }
     }
 
@@ -125,6 +117,7 @@ public partial class CMSModules_TimeZones_Pages_TimeZone_Edit : GlobalAdminPage
             .IsCodeName(txtTimeZoneName.Text, GetString("general.invalidcodename"))
             .IsDouble(txtTimeZoneGMT.Text, rvGMTDouble.ErrorMessage)
             .Result;
+
         if (chkTimeZoneDaylight.Checked)
         {
             if ((!startRuleEditor.IsValid()) || (!endRuleEditor.IsValid()))
@@ -133,24 +126,19 @@ public partial class CMSModules_TimeZones_Pages_TimeZone_Edit : GlobalAdminPage
             }
         }
 
-        if (errorMessage == "")
+        if (String.IsNullOrEmpty(errorMessage))
         {
-            // timeZoneName must to be unique
+            // TimeZoneName must to be unique
             TimeZoneInfo timeZoneObj = TimeZoneInfoProvider.GetTimeZoneInfo(txtTimeZoneName.Text.Trim());
 
-            // if timeZoneName value is unique														
-            if ((timeZoneObj == null) || (timeZoneObj.TimeZoneID == zoneid))
+            // If timeZoneName value is unique														
+            if ((timeZoneObj == null) || (timeZoneObj.TimeZoneID == zoneId))
             {
-                // if timeZoneName value is unique -> determine whether it is update or insert 
+                // If timeZoneName value is unique -> determine whether it is update or insert 
                 if ((timeZoneObj == null))
                 {
-                    // get TimeZoneInfo object by primary key
-                    timeZoneObj = TimeZoneInfoProvider.GetTimeZoneInfo(zoneid);
-                    if (timeZoneObj == null)
-                    {
-                        // create new item -> insert
-                        timeZoneObj = new TimeZoneInfo();
-                    }
+                    // Get TimeZoneInfo object by primary key or create new one
+                    timeZoneObj = TimeZoneInfoProvider.GetTimeZoneInfo(zoneId) ?? new TimeZoneInfo();
                 }
 
                 timeZoneObj.TimeZoneName = txtTimeZoneName.Text.Trim();

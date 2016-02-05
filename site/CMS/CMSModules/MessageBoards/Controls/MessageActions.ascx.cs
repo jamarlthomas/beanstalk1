@@ -1,9 +1,11 @@
-using System;
+﻿using System;
+using System.Web.UI;
 
+using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.MessageBoards;
 
-public partial class CMSModules_MessageBoards_Controls_MessageActions : BoardMessageActions
+public partial class CMSModules_MessageBoards_Controls_MessageActions : BoardMessageActions, IPostBackEventHandler
 {
     protected void Page_PreRender(object sender, EventArgs e)
     {
@@ -42,29 +44,27 @@ public partial class CMSModules_MessageBoards_Controls_MessageActions : BoardMes
     /// </summary>
     private void ProcessData()
     {
-        lnkEdit.OnClientClick = "EditBoardMessage('" + ResolveUrl("~/CMSModules/MessageBoards/CMSPages/Message_Edit.aspx") + "?messageid=" + MessageID.ToString() + "&messageboardid=" + MessageBoardID.ToString() + "');return false;";
+        lnkEdit.OnClientClick = string.Format("EditBoardMessage('{0}?messageid={1}&messageboardid={2}');return false;", ResolveUrl("~/CMSModules/MessageBoards/CMSPages/Message_Edit.aspx"), MessageID, MessageBoardID);
+        lnkDelete.OnClientClick = string.Format("if(ConfirmDelete()) {{ {0}; }} return false;", GetPostBackEventReference("delete"));
+        lnkApprove.OnClientClick = string.Format("{0}; return false;", GetPostBackEventReference("approve"));
+        lnkReject.OnClientClick = string.Format("{0}; return false;", GetPostBackEventReference("reject"));
+    }
+
+
+    private string GetPostBackEventReference(string actionName)
+    {
+        return ControlsHelper.GetPostBackEventReference(this, string.Format("{0};{1}", actionName, MessageID));
     }
 
     #endregion
 
 
-    #region "Event handlers"
+    #region "Public methods"
 
-    protected void lnkDelete_Click(object sender, EventArgs e)
+    public void RaisePostBackEvent(string eventArgument)
     {
-        FireOnBoardMessageAction("delete", MessageID);
-    }
-
-
-    protected void lnkApprove_Click(object sender, EventArgs e)
-    {
-        FireOnBoardMessageAction("approve", MessageID);
-    }
-
-
-    protected void lnkReject_Click(object sender, EventArgs e)
-    {
-        FireOnBoardMessageAction("reject", MessageID);
+        var parts = eventArgument.Split(';');
+        FireOnBoardMessageAction(parts[0], parts[1]);
     }
 
     #endregion

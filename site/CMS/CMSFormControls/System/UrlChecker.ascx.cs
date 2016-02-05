@@ -13,7 +13,6 @@ using CMS.ExtendedControls;
 using CMS.FormControls;
 using CMS.Helpers;
 using CMS.Base;
-using CMS.UIControls;
 
 public partial class CMSFormControls_System_UrlChecker : FormEngineUserControl, ICallbackEventHandler
 {
@@ -67,7 +66,7 @@ public partial class CMSFormControls_System_UrlChecker : FormEngineUserControl, 
 
 
     /// <summary>
-    /// Indicates whether a detailed error report (i.e. stack track) should be displayed.
+    /// Indicates whether a detailed error report (i.e. exception message) should be displayed.
     /// </summary>
     public bool ShowDetailedError
     {
@@ -131,6 +130,22 @@ public partial class CMSFormControls_System_UrlChecker : FormEngineUserControl, 
 
 
     /// <summary>
+    /// Indicates if redirected responses are allowed from server
+    /// </summary>
+    public bool AllowAutoRedirect
+    {
+        get
+        {
+            return GetValue("AllowAutoRedirect", true);
+        }
+        set
+        {
+            SetValue("AllowAutoRedirect", value);
+        }
+    }
+
+
+    /// <summary>
     /// URL suffix for complete server URL.
     /// </summary>
     public string UrlSuffix
@@ -143,23 +158,6 @@ public partial class CMSFormControls_System_UrlChecker : FormEngineUserControl, 
         {
             SetValue("UrlSuffix", value);
         }
-    }
-
-
-    /// <summary>
-    /// Resource string prefix.
-    /// </summary>
-    public string ResourcePrefix
-    {
-        get
-        {
-            return GetValue("ResourcePrefix", String.Empty);
-        }
-        set
-        {
-            SetValue("ResourcePrefix", value);
-        }
-
     }
 
 
@@ -281,7 +279,7 @@ function UpdateStatusLabel_", ClientID, @"(value, context)
 function CheckServer_", ClientID, @"()
 { 
     var item = $cmsj('#", pnlStatus.ClientID, @"');
-    item.text(", ScriptHelper.GetLocalizedString(ResourcePrefix + ".processing|urlchecker.processing"), @");
+    item.text(", ScriptHelper.GetLocalizedString("urlchecker.processing"), @");
     $cmsj('#", pnlStatus.ClientID, STATUS_DETAIL_SUFFIX, @"').remove(); 
     var control = $cmsj('#", txtDomain.ClientID, @"'); 
     var textboxValue = control.val(); 
@@ -300,7 +298,7 @@ function CheckServer_", ClientID, @"()
         }
 
         // Initialize controls
-        btnCheckServer.Text = btnCheckServer.ToolTip = GetString(ResourcePrefix + ".checkserver|urlchecker.checkserver");
+        btnCheckServer.Text = btnCheckServer.ToolTip = GetString("urlchecker.checkserver");
         btnCheckServer.Attributes.Add("onclick", "CheckServer_" + ClientID + "();return false;");
 
         #endregion
@@ -315,7 +313,7 @@ function CheckServer_", ClientID, @"()
             lblSuffix.Visible = false;
         }
 
-        txtDomain.WatermarkText = GetString(ResourcePrefix + ".specifyapproot|urlchecker.specifyapproot");
+        txtDomain.WatermarkText = GetString("urlchecker.specifyapproot");
 
         CheckMinMaxLength = true;
         CheckRegularExpression = true;
@@ -349,7 +347,7 @@ function CheckServer_", ClientID, @"()
     {
         string[] param = parameters.Split('|');
         string result = null;
-
+        
         try
         {
             string url = param[0];
@@ -381,8 +379,15 @@ function CheckServer_", ClientID, @"()
             }
             else
             {
+                SecurityHelper.EnsureCertificateSecurity();
+
                 // Send HTTP request
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+
+                if (!AllowAutoRedirect)
+                {
+                    request.AllowAutoRedirect = false;
+                }
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
                 // Process result
@@ -432,13 +437,19 @@ function CheckServer_", ClientID, @"()
     /// <returns>URL status text</returns>
     private string SetStatusText(HttpWebResponse response)
     {
+        string errorText;
         if ((response == null) || (response.StatusCode == HttpStatusCode.OK))
         {
             return SetStatusText();
         }
+        else if (response.StatusCode == HttpStatusCode.Redirect)
+        {
+            errorText = GetErrorText("Response status code: Redirect found", ResHelper.GetString("stagingeditserver.serverurl.redirectfound"));
+            return SetStatusText(errorText);
+        }
 
         // If web response is available, obtain status from that
-        string errorText = GetErrorText("Response status code: " + response.StatusCode, response.StatusDescription);
+        errorText = GetErrorText("Response status code: " + response.StatusCode, response.StatusDescription);
         return SetStatusText(errorText);
     }
 
@@ -455,7 +466,7 @@ function CheckServer_", ClientID, @"()
             return SetStatusText();
         }
 
-        string errorText = GetErrorText(exception.Message, exception.StackTrace);
+        string errorText = GetErrorText(exception.Message, null);
         return SetStatusText(errorText);
     }
 
@@ -587,6 +598,27 @@ function CheckServer_", ClientID, @"()
         return new Tuple<IEnumerable<WebControl>, WebControl>(statusControls, pnlErrorDetail);
     }
 
+
+    /// <summary>
+    /// Checks if specified process is currently running.
+    /// </summary>
+    /// <param name="process">Async process to check its status</param>
+    private bool ProcessIsRunning(AsyncWorker process)
+    {
+        switch (process.Status)
+        {
+            // Process not running statuses
+            case AsyncWorkerStatusEnum.Unknown:
+            case AsyncWorkerStatusEnum.Stopped:
+            case AsyncWorkerStatusEnum.Finished:
+            case AsyncWorkerStatusEnum.Error:
+                return false;
+
+            default:
+                return true;
+        }
+    }
+
     #endregion
 
 
@@ -598,12 +630,14 @@ function CheckServer_", ClientID, @"()
     public string GetCallbackResult()
     {
         string result = GetCurrentResult(CurrentProcessGUID.ToString());
+
         // If worker finished return result
         if (!String.IsNullOrEmpty(result))
         {
             mResults.Remove("ServerCheckerResult_" + CurrentProcessGUID);
             return "true|" + result;
         }
+
         return "false|" + CurrentProcessGUID;
     }
 
@@ -620,7 +654,7 @@ function CheckServer_", ClientID, @"()
             // If not checking callback, run new request
             if (args[0].ToLowerCSafe() == "true")
             {
-                if (Worker.Status == AsyncWorkerStatusEnum.Stopped)
+                if (!ProcessIsRunning(Worker))
                 {
                     CurrentProcessGUID = Guid.NewGuid();
                     if (!String.IsNullOrEmpty(args[1]) && (args[1].ToLowerCSafe() != UrlSuffix.ToLowerCSafe()))
@@ -638,7 +672,7 @@ function CheckServer_", ClientID, @"()
                     }
                     else
                     {
-                        SetCurrentResult(CurrentProcessGUID.ToString(), GetString(ResourcePrefix + ".urlnotavailable|urlchecker.urlnotavailable"));
+                        SetCurrentResult(CurrentProcessGUID.ToString(), GetString("urlchecker.urlnotavailable"));
                     }
                 }
             }

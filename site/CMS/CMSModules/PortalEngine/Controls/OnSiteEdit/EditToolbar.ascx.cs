@@ -47,7 +47,7 @@ public partial class CMSModules_PortalEngine_Controls_OnSiteEdit_EditToolbar : C
 
     private string checkChanges = " if (!CheckChanges()) { return false; } ";
     private int mNodeId = -1;
-    
+
     #endregion
 
 
@@ -140,10 +140,10 @@ public partial class CMSModules_PortalEngine_Controls_OnSiteEdit_EditToolbar : C
             // Check if there is required a redirect to the specific document
             if (QueryHelper.Contains("onsitenodeid"))
             {
-                int nodeId = QueryHelper.GetInteger("onsitenodeid", 0);
-                TreeProvider treeProvider = new TreeProvider();
-                TreeNode node = treeProvider.SelectSingleNode(nodeId);
-                string url = URLHelper.ResolveUrl(DocumentURLProvider.GetUrl(node.NodeAliasPath, string.Empty /* ensure getting the link (not the linked document) */, node.NodeSiteName, RequestContext.CurrentURLLangPrefix));
+                var nodeId = QueryHelper.GetInteger("onsitenodeid", 0);
+                var treeProvider = new TreeProvider();
+                var node = treeProvider.SelectSingleNode(nodeId);
+                var url = URLHelper.ResolveUrl(DocumentURLProvider.GetUrl(node));
                 URLHelper.Redirect(url);
             }
         }
@@ -181,9 +181,9 @@ public partial class CMSModules_PortalEngine_Controls_OnSiteEdit_EditToolbar : C
         }
 
         // Check whether user is authorized to edit page
-        if ((pi != null) 
-            && AuthenticationHelper.IsAuthenticated() 
-            && cui.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor, SiteContext.CurrentSiteName) 
+        if ((pi != null)
+            && AuthenticationHelper.IsAuthenticated()
+            && cui.CheckPrivilegeLevel(UserPrivilegeLevelEnum.Editor, SiteContext.CurrentSiteName)
             && ((IsPageNotFound && pi.NodeID == 0) || cui.IsAuthorizedPerTreeNode(pi.NodeID, NodePermissionsEnum.Read) == AuthorizationResultEnum.Allowed)
             && CMSPage.CheckUIElementAccessHierarchical(element, redirectToAccessDenied: false))
         {
@@ -542,8 +542,10 @@ public partial class CMSModules_PortalEngine_Controls_OnSiteEdit_EditToolbar : C
             // Toolbar - New button script
             string scriptNew = GetModalDialogScript(newUrl, "newpage");
 
+            const string CONTENT_CMSDESK_FOLDER = "~/CMSModules/Content/CMSDesk/";
+
             // Toolbar - Properties button script
-            string scriptProperties = GetModalDialogScript(ResolveUrl("~/CMSModules/Content/CMSDesk/Properties/Properties_Frameset.aspx?mode=editlive&documentid=" + pi.DocumentID), "propertiespage");
+            string scriptProperties = GetModalDialogScript(ResolveUrl(CONTENT_CMSDESK_FOLDER + "Properties/Properties_Frameset.aspx?mode=editlive&documentid=" + pi.DocumentID), "propertiespage");
 
             // Display items from current level by default
             int nodeId = pi.NodeParentID;
@@ -566,11 +568,11 @@ public partial class CMSModules_PortalEngine_Controls_OnSiteEdit_EditToolbar : C
             }
 
             // Listing
-            string listItemUrl = ResolveUrl("~/CMSModules/Content/CMSDesk/View/listing.aspx?dialog=1&wopenernodeid=" + pi.NodeID + "&nodeid=##id##");
+            string listItemUrl = ResolveUrl(CONTENT_CMSDESK_FOLDER + "View/listing.aspx?dialog=1&wopenernodeid=" + pi.NodeID + "&nodeid=##id##");
             string scriptListItem = GetModalDialogScript(listItemUrl.Replace("##id##", nodeId.ToString()), "listingpage");
 
             // New culture
-            string newCultureUrl = ResolveUrl("~/CMSModules/Content/CMSDesk/New/NewCultureVersion.aspx?nodeid=##id##&culture=##cult##&dialog=1");
+            string newCultureUrl = ResolveUrl(CONTENT_CMSDESK_FOLDER + "New/NewCultureVersion.aspx?nodeid=##id##&culture=##cult##&dialog=1");
 
             script.Append(@"
                 var OEIsRTL = ", (isRTL ? "true" : "false"), @";
@@ -775,24 +777,14 @@ public partial class CMSModules_PortalEngine_Controls_OnSiteEdit_EditToolbar : C
         if (PortalHelper.IsOnSiteEditingEnabled(SiteContext.CurrentSiteName) && AuthenticationHelper.IsAuthenticated())
         {
             // Remove the "viewmode" param from url and redirect
-            string returnUrl = URLHelper.RemoveParameterFromUrl(RequestContext.CurrentURL, "viewmode");
+            var returnUrl = GetURLWithoutViewMode();
 
             PortalContext.ViewMode = viewMode;
 
             // Switch view mode
-            if (viewMode.IsEditLive())
+            if (viewMode.IsEditLive() && (URLRewritingContext.CurrentPageInfoSource == PageInfoSource.DefaultAliasPath))
             {
-                //  Handle default alias path
-                if (URLRewritingContext.CurrentPageInfoSource == PageInfoSource.DefaultAliasPath)
-                {
-                    string aliasPath = PageInfoProvider.GetDefaultAliasPath(RequestContext.CurrentDomain, SiteContext.CurrentSiteName);
-                    if (!String.IsNullOrEmpty(aliasPath))
-                    {
-                        string query = URLHelper.GetQuery(returnUrl);
-                        returnUrl = URLHelper.ResolveUrl(DocumentURLProvider.GetUrl(aliasPath));
-                        returnUrl = URLHelper.AppendQuery(returnUrl, query);
-                    }
-                }
+                returnUrl = GetUrlOfDocumentWithDefaultAliasPath();
             }
             else if (is404)
             {
@@ -803,6 +795,38 @@ public partial class CMSModules_PortalEngine_Controls_OnSiteEdit_EditToolbar : C
             // Redirect to the URL
             URLHelper.Redirect(returnUrl);
         }
+    }
+
+
+    /// <summary>
+    /// Removes query string parameter viewmode from currentURL.
+    /// </summary>
+    private static string GetURLWithoutViewMode()
+    {
+        return URLHelper.RemoveParameterFromUrl(RequestContext.CurrentURL, "viewmode");
+    }
+
+
+    /// <summary>
+    /// Generates URL for document displayed under default alias path.
+    /// </summary>
+    /// <returns></returns>
+    private static string GetUrlOfDocumentWithDefaultAliasPath()
+    {
+        var returnUrl = GetURLWithoutViewMode();
+        var node = DocumentContext.CurrentDocument;
+        string query = URLHelper.GetQuery(returnUrl);
+
+        // Default alias path exists
+        string aliasPath = PageInfoProvider.GetDefaultAliasPath(RequestContext.CurrentDomain, SiteContext.CurrentSiteName);
+        if (!String.IsNullOrEmpty(aliasPath) && (node != null))
+        {
+            var url = URLHelper.ResolveUrl(DocumentURLProvider.GetUrl(node));
+            url = URLHelper.AppendQuery(url, query);
+            returnUrl = URLHelper.ResolveUrl(url);
+        }
+
+        return returnUrl;
     }
 
 

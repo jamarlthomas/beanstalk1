@@ -21,9 +21,8 @@ public partial class CMSAdminControls_UI_UniMenu_OnSiteEdit_CultureMenu : CMSUse
 {
     #region "Private variables"
 
-    private Dictionary<string, string> mNodeCultures = null;
-    private InfoDataSet<CultureInfo> mSiteCultures = null;
-    private PageInfo pi = null;
+    private Dictionary<string, string> mNodeCultures;
+    private PageInfo pi;
 
     #endregion
 
@@ -40,7 +39,7 @@ public partial class CMSAdminControls_UI_UniMenu_OnSiteEdit_CultureMenu : CMSUse
             if (mNodeCultures == null)
             {
                 // Get all language versions
-                TreeNodeDataSet culturesDs = GetNodeCultures();
+                var culturesDs = GetNodeCultures();
                 mNodeCultures = new Dictionary<string, string>();
 
                 // Create culture/UrlPath collection
@@ -59,23 +58,6 @@ public partial class CMSAdminControls_UI_UniMenu_OnSiteEdit_CultureMenu : CMSUse
         }
     }
 
-
-    /// <summary>
-    /// Gets all the site cultures.
-    /// </summary>
-    private InfoDataSet<CultureInfo> SiteCultures
-    {
-        get
-        {
-            if (mSiteCultures == null)
-            {
-                mSiteCultures = CultureSiteInfoProvider.GetSiteCultures(SiteContext.CurrentSiteName);
-            }
-
-            return mSiteCultures;
-        }
-    }
-
     #endregion
 
 
@@ -86,9 +68,7 @@ public partial class CMSAdminControls_UI_UniMenu_OnSiteEdit_CultureMenu : CMSUse
     /// </summary>
     protected void Page_Load(object sender, EventArgs e)
     {
-        string prefferedCultureCode = LocalizationContext.PreferredCultureCode;
-        string defaultString = GetString("general.default");
-
+        string preferredCultureCode = LocalizationContext.PreferredCultureCode;
         InfoDataSet<CultureInfo> siteCultures = CultureSiteInfoProvider.GetSiteCultures(SiteContext.CurrentSiteName);
         pi = DocumentContext.CurrentPageInfo ?? DocumentContext.CurrentCultureInvariantPageInfo ?? new PageInfo();
 
@@ -96,7 +76,7 @@ public partial class CMSAdminControls_UI_UniMenu_OnSiteEdit_CultureMenu : CMSUse
         MenuItem cultureItem = new MenuItem();
         cultureItem.CssClass = "BigButton";
         cultureItem.ImageAlign = ImageAlign.Top;
-        cultureItem.ImagePath = URLHelper.UnResolveUrl(UIHelper.GetFlagIconUrl(Page, prefferedCultureCode, "16x16"), SystemContext.ApplicationPath);
+        cultureItem.ImagePath = URLHelper.UnResolveUrl(UIHelper.GetFlagIconUrl(Page, preferredCultureCode, "16x16"), SystemContext.ApplicationPath);
         cultureItem.Text = GetString("general.cultures");
         cultureItem.Tooltip = GetString("onsiteedit.languageselector");
         cultureItem.ImageAltText = GetString("general.cultures");
@@ -107,11 +87,10 @@ public partial class CMSAdminControls_UI_UniMenu_OnSiteEdit_CultureMenu : CMSUse
             string iconUrl = UIHelper.GetFlagIconUrl(Page, culture.CultureCode, "16x16");
             string cultureName = culture.CultureName;
             string cultureCode = culture.CultureCode;
-            string cultureShortName = culture.CultureShortName;
 
-            if (cultureCode != prefferedCultureCode)
+            if (cultureCode != preferredCultureCode)
             {
-                SubMenuItem menuItem = new SubMenuItem()
+                SubMenuItem menuItem = new SubMenuItem
                 {
                     Text = cultureName,
                     Tooltip = cultureName,
@@ -156,11 +135,11 @@ public partial class CMSAdminControls_UI_UniMenu_OnSiteEdit_CultureMenu : CMSUse
     /// <summary>
     /// Returns all culture nodes
     /// </summary>
-    protected TreeNodeDataSet GetNodeCultures()
+    protected DataSet GetNodeCultures()
     {
         // Get all language versions
         TreeProvider tp = new TreeProvider(MembershipContext.AuthenticatedUser);
-        return tp.SelectNodes(SiteContext.CurrentSiteName, "/%", TreeProvider.ALL_CULTURES, false, null, "NodeID = " + pi.NodeID, "DocumentCulture", -1, false, 0, "DocumentCulture, DocumentUrlPath");
+        return tp.SelectNodes(SiteContext.CurrentSiteName, TreeProvider.ALL_DOCUMENTS, TreeProvider.ALL_CULTURES, false, null, "NodeID = " + pi.NodeID, "DocumentCulture", -1, false, 0, "DocumentCulture, DocumentUrlPath");
     }
 
     #endregion

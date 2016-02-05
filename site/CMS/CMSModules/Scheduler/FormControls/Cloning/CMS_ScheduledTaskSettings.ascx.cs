@@ -1,4 +1,4 @@
-using CMS.UIControls;
+﻿using CMS.UIControls;
 
 public partial class CMSModules_Scheduler_FormControls_Cloning_CMS_ScheduledTaskSettings : CloneSettingsControl
 {

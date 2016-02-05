@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Text;
 using System.Web.UI;
@@ -194,15 +194,15 @@ public partial class CMSFormControls_System_LocalizableTextBox : LocalizableForm
     {
         get
         {
-            // Return macro contained in hidden field if text is macro
-            if (IsLocalizationMacro && !IsInplaceMacro(OriginalValue) && LocalizationExists)
+            if (MacroProcessor.IsLocalizationMacro(TextBox.Text) || !IsLocalizationMacro || !LocalizationExists)
             {
-                return OriginalValue;
+                // Return plain text contained in textbox - new localization macro is inserted or field is not localized
+                return TextBox.Text;
             }
-            // Return plain text contained in textbox
             else
             {
-                return TextBox.Text;
+                // Return macro stored in hidden field - localization macro is already set and textbox contains translation
+                return OriginalValue;
             }
         }
         set
@@ -217,7 +217,7 @@ public partial class CMSFormControls_System_LocalizableTextBox : LocalizableForm
 
             string valueStr = OriginalValue = ValidationHelper.GetString(value, null);
 
-            if (!IsInplaceMacro(valueStr) && LocalizationExists)
+            if (MacroProcessor.IsLocalizationMacro(valueStr) && !IsInplaceMacro(valueStr) && LocalizationExists)
             {
                 using (LocalizationActionContext context = new LocalizationActionContext())
                 {
@@ -369,7 +369,7 @@ public partial class CMSFormControls_System_LocalizableTextBox : LocalizableForm
 
 
     /// <summary>
-    /// If TRUE then resource string key selection is skipped. Instead resource string key is automaticaly created from entered text.
+    /// If TRUE then resource string key selection is skipped. Instead resource string key is automatically created from entered text.
     /// Also when removing localization it also deletes resource string key assigned.
     /// </summary>
     public bool AutomaticMode
@@ -478,7 +478,7 @@ public partial class CMSFormControls_System_LocalizableTextBox : LocalizableForm
         }
 
         // Ensure the text in textbox
-        if (IsLocalizationMacro && !IsInplaceMacro(TextBox.Text) && RequestHelper.IsPostBack())
+        if (IsLocalizationMacro && LocalizationExists && !IsInplaceMacro(TextBox.Text) && RequestHelper.IsPostBack())
         {
             using (LocalizationActionContext context = new LocalizationActionContext())
             {
@@ -725,12 +725,13 @@ function LocalizationDialog", ClientID, @"(value) {
     /// <returns>Returns TRUE if resource string was successfully modified</returns>
     public override bool Save()
     {
-        // Save changes only when macro is edited
-        if (IsLocalizationMacro && mUserHasPermissionForLocalizations)
+        // Save changes only when translation is edited
+        if (IsLocalizationMacro && mUserHasPermissionForLocalizations && LocalizationExists && !IsInplaceMacro(OriginalValue))
         {
             string resKey = GetResouceKeyFromString(OriginalValue);
 
-            if (!IsInplaceMacro(TextBox.Text))
+            // Prevent from creating translation containing macro
+            if (!MacroProcessor.IsLocalizationMacro(TextBox.Text))
             {
                 resKey = resKey.Trim();
 
@@ -761,7 +762,7 @@ function LocalizationDialog", ClientID, @"(value) {
         }
         return false;
     }
-
+    
 
     /// <summary>
     /// Gets the resource string name from the text
@@ -818,7 +819,7 @@ function LocalizationDialog", ClientID, @"(value) {
         if (!String.IsNullOrEmpty(TextBox.Text.Trim()))
         {
             // Initialize resource string
-            OriginalValue = LocalizationHelper.GetUniqueResStringKey(TextBox.Text.Trim(), ResourceKeyPrefix, true, MAX_KEY_LENGTH);
+            OriginalValue = LocalizationHelper.GetUniqueResStringKey(TextBox.Text.Trim(), ResourceKeyPrefix, MAX_KEY_LENGTH);
 
             string cultureCode = CultureHelper.PreferredUICultureCode;
             if (String.IsNullOrEmpty(cultureCode))

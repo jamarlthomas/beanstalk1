@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -95,6 +95,8 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Orders_Order_Edit_AddItems
 
         if (plcSelector.Visible)
         {
+            // Remove css class dialog-content-scrollable to turn off position:relative. Our Selector control needs to overflow content container and hide dialog footer with his footer button.            
+            CurrentMaster.PanelContent.RemoveCssClass("dialog-content-scrollable");
             // Get product name and price
             SKUInfo skuObj = SKUInfoProvider.GetSKUInfo(SKUID);
             string skuName = "";
@@ -253,9 +255,9 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Orders_Order_Edit_AddItems
     protected void BtnAdd_Click(object sender, EventArgs e)
     {
         // Check 'EcommerceModify' permission
-        if (!ECommerceContext.IsUserAuthorizedForPermission("ModifyOrders"))
+        if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.ORDERS_MODIFY))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyOrders");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyOrders");
         }
 
         string allUnits = null;

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI;
 
@@ -597,10 +597,10 @@ public partial class CMSFormControls_Sites_SiteSelector : FormEngineUserControl
         if (OnlyRunningSites)
         {
             // Running status where condition
-            string where = "[SiteStatus] = N'" + SiteInfoProvider.SiteStatusToString(SiteStatusEnum.Running) + "'";
+            var siteStatusWhere = new WhereCondition().WhereEquals("SiteStatus", SiteStatusEnum.Running.ToStringRepresentation());
 
             // Combine where conditions
-            uniSelector.WhereCondition = SqlHelper.AddWhereCondition(uniSelector.WhereCondition, where);
+            uniSelector.WhereCondition = SqlHelper.AddWhereCondition(uniSelector.WhereCondition, siteStatusWhere.ToString(true));
         }
 
         // Only sites assigned to user

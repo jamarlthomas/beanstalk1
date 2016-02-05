@@ -12,7 +12,7 @@
 public partial class CMSModules_ContactManagement_FormControls_SalesForce_Description {
     
     /// <summary>
-    /// MainUpdatePanel control.
+    /// pnlUpdate control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
@@ -27,5 +27,5 @@ public partial class CMSModules_ContactManagement_FormControls_SalesForce_Descri
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSAdminControls_UI_Macros_MacroEditor DescriptionMacroEditor;
+    protected global::CMS.UIControls.MacroEditor DescriptionMacroEditor;
 }

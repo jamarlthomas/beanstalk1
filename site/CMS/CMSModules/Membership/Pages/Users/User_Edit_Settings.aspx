@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Pages_Users_User_Edit_Settings"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Pages_Users_User_Edit_Settings"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="User edit - Custom fields"
-    Codebehind="User_Edit_Settings.aspx.cs" %>
+     Codebehind="User_Edit_Settings.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Membership/FormControls/Avatars/UserPictureEdit.ascx"
     TagName="UserPictureFormControl" TagPrefix="upfc" %>
@@ -124,7 +124,7 @@
                         DisplayColon="true" />
                 </div>
                 <div class="editing-form-value-cell">
-                    <cms:CMSTextBox ID="txtLinkedInID" runat="server" MaxLength="450" />
+                    <cms:CMSTextBox ID="txtLinkedInID" runat="server" MaxLength="100" />
                 </div>
             </div>
             <div class="form-group">
@@ -196,7 +196,7 @@
                     <asp:Label AssociatedControlID="txtPhone" CssClass="control-label" ID="lblUserPhone" runat="server" EnableViewState="false" />
                 </div>
                 <div class="editing-form-value-cell">
-                    <cms:CMSTextBox ID="txtPhone" runat="server" />
+                    <cms:CMSTextBox ID="txtPhone" runat="server" MaxLength="26" />
                 </div>
             </div>
             <div class="form-group">

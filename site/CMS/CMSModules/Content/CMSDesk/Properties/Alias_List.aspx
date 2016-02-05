@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_Alias_List"
-    Theme="Default" Codebehind="Alias_List.aspx.cs" MaintainScrollPositionOnPostback="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_Alias_List"
+    Theme="Default" CodeBehind="Alias_List.aspx.cs" MaintainScrollPositionOnPostback="true"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
@@ -20,7 +20,8 @@
                 <div class="form-horizontal">
                     <div class="form-group">
                         <div class="editing-form-label-cell">
-                            <cms:LocalizedLabel CssClass="control-label" ID="lblAlias" runat="server" EnableViewState="false" ResourceString="GeneralProperties.Alias" ShowRequiredMark="true" AssociatedControlID="txtAlias" />
+                            <cms:LocalizedLabel CssClass="control-label" ID="lblAlias" runat="server" EnableViewState="false" 
+                                ResourceString="GeneralProperties.Alias" ShowRequiredMark="true" AssociatedControlID="txtAlias" DisplayColon="true" />
                         </div>
                         <div class="editing-form-value-cell">
                             <cms:CMSTextBox ID="txtAlias" runat="server" MaxLength="50" />
@@ -70,8 +71,7 @@
                         OrderBy="AliasID" />
                 </div>
             </asp:Panel>
-    </asp:Panel>
-    </cms:UIPlaceHolder>
+        </cms:UIPlaceHolder>
     </asp:Panel>
     <div class="Clear">
     </div>

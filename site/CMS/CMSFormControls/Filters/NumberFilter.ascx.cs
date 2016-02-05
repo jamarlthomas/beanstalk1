@@ -9,7 +9,7 @@ using CMS.Helpers;
 
 public partial class CMSFormControls_Filters_NumberFilter : FormEngineUserControl
 {
-    protected string mOperatorFieldName = null;
+    protected string mOperatorFieldName;
 
 
     #region "Properties"
@@ -54,7 +54,7 @@ public partial class CMSFormControls_Filters_NumberFilter : FormEngineUserContro
 
 
     /// <summary>
-    /// Gets name of the field for operator value. Default value is 'Operator'.
+    /// Gets name of the field for operator value. Default value is '{FieldName}Operator' where {FieldName} is name of the current field.
     /// </summary>
     protected string OperatorFieldName
     {
@@ -63,7 +63,7 @@ public partial class CMSFormControls_Filters_NumberFilter : FormEngineUserContro
             if (string.IsNullOrEmpty(mOperatorFieldName))
             {
                 // Get name of the field for operator value
-                mOperatorFieldName = DataHelper.GetNotEmpty(GetValue("OperatorFieldName"), "Operator");
+                mOperatorFieldName = DataHelper.GetNotEmpty(GetValue("OperatorFieldName"), Field + "Operator");
             }
             return mOperatorFieldName;
         }
@@ -75,8 +75,14 @@ public partial class CMSFormControls_Filters_NumberFilter : FormEngineUserContro
     /// </summary>
     public string DefaultOperator
     {
-        get;
-        set;
+        get
+        {
+            return ValidationHelper.GetString(GetValue("DefaultOperator"), "=");
+        }
+        set
+        {
+            SetValue("DefaultOperator", value);
+        }
     }
 
     #endregion
@@ -84,35 +90,23 @@ public partial class CMSFormControls_Filters_NumberFilter : FormEngineUserContro
 
     #region "Methods"
 
-    protected void Page_Load(object sender, EventArgs e)
+    protected override void CreateChildControls()
     {
+        base.CreateChildControls();
+
         CheckFieldEmptiness = false;
         InitFilterDropDown();
 
-        if (ContainsColumn(OperatorFieldName))
-        {
-            LoadOtherValues();
-        }
-        else
-        {
-            // Set default operator
-            if (!RequestHelper.IsPostBack() && (DefaultOperator != null))
-            {
-                drpOperator.SelectedValue = DefaultOperator;
-            }
-        }
+        LoadOtherValues();
     }
 
 
     /// <summary>
-    /// Loads the other fields values to the state of the form control
+    /// Loads the other fields values to the state of the form control.
     /// </summary>
     public override void LoadOtherValues()
     {
-        if (ContainsColumn(OperatorFieldName))
-        {
-            drpOperator.SelectedValue = ValidationHelper.GetString(Form.Data.GetValue(OperatorFieldName), "0");
-        }
+        drpOperator.SelectedValue = ValidationHelper.GetString(GetColumnValue(OperatorFieldName), DefaultOperator);
     }
 
 
@@ -141,7 +135,7 @@ public partial class CMSFormControls_Filters_NumberFilter : FormEngineUserContro
 
 
     /// <summary>
-    /// Initializes operator filter dropdown list.
+    /// Initializes operator filter drop-down list.
     /// </summary>
     private void InitFilterDropDown()
     {
@@ -163,6 +157,8 @@ public partial class CMSFormControls_Filters_NumberFilter : FormEngineUserContro
     /// </summary>
     public override string GetWhereCondition()
     {
+        EnsureChildControls();
+
         var value = ValidationHelper.GetString(Value, String.Empty);
         string op = drpOperator.SelectedValue;
         bool isTimeSpan = false;
@@ -173,15 +169,29 @@ public partial class CMSFormControls_Filters_NumberFilter : FormEngineUserContro
             return null;
         }
 
+        // Convert value to default culture format
+        value = DataHelper.ConvertValueToDefaultCulture(value, !isTimeSpan ? typeof (double) : typeof (TimeSpan));
+
         if (String.IsNullOrEmpty(WhereConditionFormat))
         {
-            WhereConditionFormat = !isTimeSpan ? "[{0}] {2} {1}" : "[{0}] {2} '{1}'";
+            // Get default where condition
+            object typedValue;
+            if (isTimeSpan)
+            {
+                typedValue = ValidationHelper.GetTimeSpanSystem(value, TimeSpan.MinValue);
+            }
+            else
+            {
+                typedValue = ValidationHelper.GetDoubleSystem(value, Double.NaN);
+            }
+
+            return new WhereCondition(FieldInfo.Name, op.ToEnum<QueryOperator>(), typedValue).ToString(true);
         }
 
         try
         {
-            // Format where condition
-            return String.Format(WhereConditionFormat, FieldInfo.Name, DataHelper.ConvertValueToDefaultCulture(value, !isTimeSpan ? typeof(double) : typeof(TimeSpan)), op);
+            // Return custom where condition
+            return String.Format(WhereConditionFormat, FieldInfo.Name, value, op);
         }
         catch (Exception ex)
         {

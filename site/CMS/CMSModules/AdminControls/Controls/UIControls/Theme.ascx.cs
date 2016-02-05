@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Text;
 
 using CMS.UIControls;
@@ -11,7 +8,7 @@ using CMS.Helpers;
 using CMS.PortalEngine;
 using CMS.ExtendedControls;
 using CMS.IO;
-using CMS.DataEngine;
+
 
 public partial class CMSModules_AdminControls_Controls_UIControls_Theme : CMSAbstractUIWebpart
 {
@@ -154,13 +151,14 @@ public partial class CMSModules_AdminControls_Controls_UIControls_Theme : CMSAbs
             }
 
             // Setup the browser
-            FileSystemDialogConfiguration config = new FileSystemDialogConfiguration();
+            var config = new FileSystemDialogConfiguration();
             config.StartingPath = filePath;
             config.AllowedExtensions = AllowedExtensions;
             config.NewTextFileExtension = NewTextFileExtension;
             config.ShowFolders = false;
+            config.AllowZipFolders = true;
             config.AllowManage = true;
-
+            
             selFile.Config = config;
         }
     }

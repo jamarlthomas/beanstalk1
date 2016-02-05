@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -50,12 +50,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_E
             RedirectToAccessDenied(issue.TypeInfo.ModuleName, "AuthorIssues");
         }
 
-        // Reset master page content CSS class
-        CurrentMaster.PanelContent.CssClass = string.Empty;
-
-        // Ensure correct padding
-        CurrentMaster.MessagesPlaceHolder.OffsetX = 16;
-        CurrentMaster.MessagesPlaceHolder.OffsetY = 8;
+        CurrentMaster.PanelContent.CssClass = "email-content";
 
         // Get newsletter and check its existence
         newsletter = NewsletterInfoProvider.GetNewsletterInfo(issue.IssueNewsletterID);
@@ -73,7 +68,6 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_E
         // Initialize edit control
         editElem.IssueID = issueId;
         editElem.NewsletterID = issue.IssueNewsletterID;
-        editElem.IsDialogMode = false;
 
         InitHeaderActions(issueId);
     }
@@ -146,7 +140,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_E
         CurrentMaster.HeaderActions.ActionsList.Clear();
 
         // Init save button
-        CurrentMaster.HeaderActions.ActionsList.Add(new SaveAction(this)
+        CurrentMaster.HeaderActions.ActionsList.Add(new SaveAction
         {
             OnClientClick = "if (GetContent != null) {return GetContent();} else {return false;}",
             Enabled = editingEnabled

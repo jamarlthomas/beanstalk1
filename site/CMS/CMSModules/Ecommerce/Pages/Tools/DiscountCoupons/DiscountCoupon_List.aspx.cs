@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.Core;
@@ -29,7 +29,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_DiscountCoupons_DiscountCo
 
         HandleGridsSiteIDColumn(gridElem);
 
-        if (AllowGlobalObjects && ExchangeTableInfoProvider.IsExchangeRateFromGlobalMainCurrencyMissing(SiteContext.CurrentSiteID))
+        if (AllowGlobalObjects && ECommerceContext.IsExchangeRateFromGlobalMainCurrencyMissing)
         {
             ShowWarning(GetString("com.NeedExchangeRateFromGlobal"));
         }
@@ -96,11 +96,11 @@ public partial class CMSModules_Ecommerce_Pages_Tools_DiscountCoupons_DiscountCo
             {
                 if (discountCouponInfoObj.IsGlobal)
                 {
-                    RedirectToAccessDenied("CMS.Ecommerce", "EcommerceGlobalModify");
+                    RedirectToAccessDenied(ModuleName.ECOMMERCE, EcommercePermissions.ECOMMERCE_MODIFYGLOBAL);
                 }
                 else
                 {
-                    RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyDiscounts");
+                    RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyDiscounts");
                 }
             }
 

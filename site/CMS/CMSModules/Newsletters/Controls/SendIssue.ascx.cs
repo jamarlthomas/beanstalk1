@@ -5,6 +5,7 @@ using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.Newsletters;
 using CMS.UIControls;
+using CMS.Core;
 
 public partial class CMSModules_Newsletters_Controls_SendIssue : CMSAdminControl
 {
@@ -200,8 +201,7 @@ public partial class CMSModules_Newsletters_Controls_SendIssue : CMSAdminControl
         }
         else
         {
-            IssueSender sender = new IssueSender(IssueInfoProvider.GetIssueInfo(IssueID));
-            sender.SendAsync(draftEmails);
+            Service<IIssueSender>.Entry().SendAsync(IssueInfoProvider.GetIssueInfo(IssueID), draftEmails);
         }
 
         return String.IsNullOrEmpty(ErrorMessage);
@@ -220,8 +220,7 @@ public partial class CMSModules_Newsletters_Controls_SendIssue : CMSAdminControl
             // Remove all previously scheduled tasks (if any)
             NewsletterTasksManager.DeleteMailoutTask(issue.IssueGUID, issue.IssueSiteID);
             // Schedule new task for new mailout time
-            IssueSender issueSender = new IssueSender(issue);
-            issueSender.Send(when);
+            Service<IIssueSender>.Entry().Send(issue, when);
         }
     }
     

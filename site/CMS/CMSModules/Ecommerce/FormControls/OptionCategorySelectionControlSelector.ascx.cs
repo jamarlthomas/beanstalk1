@@ -91,17 +91,20 @@ public partial class CMSModules_Ecommerce_FormControls_OptionCategorySelectionCo
     {
         base.OnLoad(e);
 
-        // Option category type currently selected in the form
-        OptionCategoryType = ValidationHelper.GetString(Form.FieldControls[OptionCategoryTypeColumn].Value, "").ToEnum<OptionCategoryTypeEnum>();
-
-        if (OptionCategoryType != OriginalOptionCategoryType)
+        if (Form != null)
         {
-            // Delete all options and fill drop down list according to the current category type
-            drpSelectionTypeEnum.Items.Clear();
-            ConfigureSelectionTypeControl();
+            // Option category type currently selected in the form
+            OptionCategoryType = ValidationHelper.GetString(Form.FieldControls[OptionCategoryTypeColumn].Value, "").ToEnum<OptionCategoryTypeEnum>();
 
-            // Remember category type
-            OriginalOptionCategoryType = OptionCategoryType;
+            if (OptionCategoryType != OriginalOptionCategoryType)
+            {
+                // Delete all options and fill drop down list according to the current category type
+                drpSelectionTypeEnum.Items.Clear();
+                ConfigureSelectionTypeControl();
+
+                // Remember category type
+                OriginalOptionCategoryType = OptionCategoryType;
+            }
         }
     }
 

@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Categories_Pages_Administration_Category_List"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Categories_Pages_Administration_Category_List"
     MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" Theme="Default" Title="Categories List"
-    Codebehind="Category_List.aspx.cs" EnableEventValidation="false" %>
+     Codebehind="Category_List.aspx.cs" EnableEventValidation="false" %>
 
 <%@ Register Src="~/CMSModules/Categories/Controls/Categories.ascx" TagName="Categories"
     TagPrefix="cms" %>

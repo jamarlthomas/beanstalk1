@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileEdit"
-    Codebehind="MediaFileEdit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileEdit"
+     Codebehind="MediaFileEdit.ascx.cs" %>
 <%@ Register Src="~/CMSInlineControls/MediaControl.ascx" TagPrefix="cms" TagName="MediaPreview" %>
 <%@ Register Src="~/CMSInlineControls/ImageControl.ascx" TagPrefix="cms" TagName="ImagePreview" %>
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/MediaLibrary/MediaFileUpload.ascx"
@@ -251,7 +251,7 @@
         <ContentTemplate>
             <cms:CMSUpdatePanel ID="pnlUpdateVersions" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
-                    <asp:Panel ID="pnlTabVersions" CssClass="PageContent" runat="server">
+                    <asp:Panel ID="pnlTabVersions" CssClass="PageContent media-file-versions" runat="server">
                         <cms:VersionList ID="objectVersionList" runat="server" />
                         <asp:Button ID="btnHidden" runat="server" CssClass="HiddenButton" EnableViewState="false"
                             OnClick="btnHidden_Click" />

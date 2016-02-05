@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_WebPartProperties_buttons"
-    Theme="default" Codebehind="WebPartProperties_buttons.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_WebPartProperties_buttons"
+    Theme="default"  Codebehind="WebPartProperties_buttons.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" %>
 
 <asp:Content ID="pnlContent" ContentPlaceHolderID="plcContent" runat="server">
     <asp:Panel runat="server" ID="pnlContent" CssClass="dialog-footer">

@@ -27,5 +27,5 @@ public partial class CMSModules_AdminControls_Controls_UIControls_GeneralSelecto
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.UIControls.UniSelector selectorElem;
+    protected global::CMSAdminControls_UI_UniSelector_UniSelector selectorElem;
 }

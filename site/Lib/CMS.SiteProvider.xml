@@ -205,12 +205,12 @@
         </member>
         <member name="M:CMS.SiteProvider.SiteDeletionManager.DeleteSite(System.Object)">
             <summary>
-            Import execution.
+            Deletes the entire site.
             </summary>
         </member>
         <member name="M:CMS.SiteProvider.SiteDeletionManager.DeleteSiteInternal">
             <summary>
-            Import execution.
+            Deletes the entire site.
             </summary>
         </member>
         <member name="P:CMS.SiteProvider.SiteDeletionManager.DeletionInfo">
@@ -238,6 +238,21 @@
             Fires when the site with all the document structure and object is being deleted
             </summary>
         </member>
+        <member name="T:CMS.SiteProvider.RunningSiteException">
+            <summary>
+            Running site exception.
+            </summary>
+        </member>
+        <member name="M:CMS.SiteProvider.RunningSiteException.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:CMS.SiteProvider.RunningSiteException.#ctor(System.String)">
+            <summary>
+            Constructor with message.
+            </summary>
+        </member>
         <member name="T:CMS.SiteProvider.SiteListInfo">
             <summary>
             Represents entry for site listing
@@ -263,6 +278,11 @@
             Constructor - Creates a new SiteListInfo object from the given DataRow.
             </summary>
             <param name="dr">DataRow with the object data</param>
+        </member>
+        <member name="M:CMS.SiteProvider.SiteListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
         </member>
         <member name="M:CMS.SiteProvider.SiteListInfo.GetDataQueryInternal">
             <summary>
@@ -318,6 +338,11 @@
         <member name="F:CMS.SiteProvider.CultureSiteInfoProvider.tableLock">
             <summary>
             Table lock for loading.
+            </summary>
+        </member>
+        <member name="M:CMS.SiteProvider.CultureSiteInfoProvider.GetCultureSites">
+            <summary>
+            Returns all bindings between cultures and sites.
             </summary>
         </member>
         <member name="M:CMS.SiteProvider.CultureSiteInfoProvider.GetCultureSites(System.String,System.String,System.String,System.Int32)">
@@ -406,7 +431,7 @@
         </member>
         <member name="M:CMS.SiteProvider.CultureSiteInfoProvider.GetSiteCultureCodes(System.String)">
             <summary>
-            Returns the arraylist containing the culture codes of the specified site.
+            Returns a list containing the culture codes of the specified site.
             If this feature not available for license type, returns only the first culture found
             </summary>
             <param name="siteName">Site name</param>
@@ -440,16 +465,10 @@
         </member>
         <member name="M:CMS.SiteProvider.CultureSiteInfoProvider.CheckCultureCode(System.String,System.String)">
             <summary>
-            Check if culture code is in web, and return culturecode, if no, return default culture code.
+            Check if culture code is in web, and return culture code, if no, return default culture code.
             </summary>
             <param name="cultureCode">Culture code</param>
             <param name="siteName">Site name</param>
-        </member>
-        <member name="M:CMS.SiteProvider.CultureSiteInfoProvider.Clear(System.Boolean)">
-            <summary>
-            Clears the hashtables.
-            </summary>
-            <param name="logTasks">If true, web farm tasks are logged</param>
         </member>
         <member name="M:CMS.SiteProvider.CultureSiteInfoProvider.ClearSiteCultures(System.Boolean)">
             <summary>
@@ -489,14 +508,10 @@
             <param name="siteName">Site name</param>
             <param name="cultureCode">Culture code</param>
         </member>
-        <member name="M:CMS.SiteProvider.CultureSiteInfoProvider.GetCultureSitesInternal(System.String,System.String,System.String,System.Int32)">
+        <member name="M:CMS.SiteProvider.CultureSiteInfoProvider.GetCultureSitesInternal">
             <summary>
-            Returns the bindings between cultures and sites.
+            Returns all bindings between cultures and sites.
             </summary>
-            <param name="columns">Data columns to return</param>
-            <param name="where">Where condition to filter data</param>
-            <param name="orderBy">Order by statement</param>
-            <param name="topN">Specifies number of returned records</param>        
         </member>
         <member name="M:CMS.SiteProvider.CultureSiteInfoProvider.GetCultureSiteInfoInternal(System.Int32,System.Int32)">
             <summary>
@@ -950,7 +965,7 @@
         </member>
         <member name="M:CMS.SiteProvider.SiteInfo.CreateDomainAliasesTable(System.Data.DataSet)">
             <summary>
-            Creates hashteble from given dataset.
+            Creates hashtable from given dataset.
             </summary>
             <param name="ds">Dataset contains with document aliases</param>
             <returns>Created hashtable.</returns>
@@ -980,6 +995,12 @@
             Clears site domain aliases hash table.
             </summary>
         </member>
+        <member name="M:CMS.SiteProvider.SiteInfo.GetDomainName(System.String)">
+            <summary>
+            Returns domain name of the given URL.
+            </summary>
+            <param name="url">Relative or absolute URL</param>
+        </member>
         <member name="P:CMS.SiteProvider.SiteInfo.CombineWithDefaultCulture">
             <summary>
             Combine with default culture?
@@ -998,6 +1019,16 @@
         <member name="P:CMS.SiteProvider.SiteInfo.DomainName">
             <summary>
             Site domain name.
+            </summary>
+        </member>
+        <member name="P:CMS.SiteProvider.SiteInfo.SitePresentationURL">
+            <summary>
+            Presentation URL of the site.
+            </summary>
+        </member>
+        <member name="P:CMS.SiteProvider.SiteInfo.SitePresentationDomain">
+            <summary>
+            Domain name which is parsed from the SitePresentationURL property.
             </summary>
         </member>
         <member name="P:CMS.SiteProvider.SiteInfo.SiteID">
@@ -1075,6 +1106,11 @@
             Offline message.
             </summary>
         </member>
+        <member name="P:CMS.SiteProvider.SiteInfo.SiteIsContentOnly">
+            <summary>
+            Indicates whether the site is used only for storing content and is not responsible for live site presentation.
+            </summary>
+        </member>
         <member name="T:CMS.SiteProvider.SiteInfoProvider">
             <summary>
             Class to provide the Site management.
@@ -1085,7 +1121,7 @@
             Table of the running site infos indexed by the domain names. [domainName -> SiteInfo]
             </summary>
         </member>
-        <member name="F:CMS.SiteProvider.SiteInfoProvider.EMPTY_SITE">
+        <member name="F:CMS.SiteProvider.SiteInfoProvider.mEmptySite">
             <summary>
             Empty site info
             </summary>
@@ -1215,27 +1251,11 @@
             </summary>
             <param name="siteName">Site name of the site to stop</param>
         </member>
-        <member name="M:CMS.SiteProvider.SiteInfoProvider.UpdateRunningInfo(CMS.SiteProvider.SiteInfo)">
-            <summary>
-            Updates the information within the running sites table based on the given site.
-            </summary>
-            <param name="siteInfo">Site info</param>
-        </member>
         <member name="M:CMS.SiteProvider.SiteInfoProvider.GetSiteNameFromUrl(System.String)">
             <summary>
             Returns site name from url.
             </summary>
             <param name="url">Url</param>
-        </member>
-        <member name="F:CMS.SiteProvider.SiteInfoProvider.tableLock">
-            <summary>
-            Table lock for loading.
-            </summary>
-        </member>
-        <member name="M:CMS.SiteProvider.SiteInfoProvider.LoadSites">
-            <summary>
-            Loads the sites information.
-            </summary>
         </member>
         <member name="M:CMS.SiteProvider.SiteInfoProvider.GetRunningSiteInfoObject(System.String,System.String)">
             <summary>
@@ -1354,35 +1374,21 @@
         </member>
         <member name="M:CMS.SiteProvider.SiteInfoProvider.Clear(System.Boolean)">
             <summary>
-            Clears the hashtable.
+            Clears all the provider hashtables.
             </summary>
             <param name="logTasks">If true, web farm tasks are logged</param>
         </member>
-        <member name="M:CMS.SiteProvider.SiteInfoProvider.RemoveFromHash(System.String)">
+        <member name="M:CMS.SiteProvider.SiteInfoProvider.AddToRunningSites(CMS.SiteProvider.SiteInfo)">
             <summary>
-            Remove from hash table.
+            Add domain, presentation URL and all domain aliases to the RunningSites dictionary.
             </summary>
-            <param name="siteName">Site name</param>
+            <param name="site">SiteInfo object to be added</param>
         </member>
-        <member name="M:CMS.SiteProvider.SiteInfoProvider.RemoveFromRunningSites(System.String)">
+        <member name="M:CMS.SiteProvider.SiteInfoProvider.RemoveFromRunningSites(CMS.SiteProvider.SiteInfo)">
             <summary>
-            Remove domain alias from running sites, and create web farm task.
+            Remove site from the RunningSites dictionary.
             </summary>
-            <param name="domainAlias">Domain alias to remove</param>
-        </member>
-        <member name="M:CMS.SiteProvider.SiteInfoProvider.RemoveFromRunningSites(System.String,System.Boolean)">
-            <summary>
-            Remove domain alias from running sites, and create web farm task.
-            </summary>
-            <param name="domainAlias">Domain alias to remove</param>
-            <param name="logSynchronization">Indicates if web farm task should be logged</param>
-        </member>
-        <member name="M:CMS.SiteProvider.SiteInfoProvider.AddToRunningSites(System.String,CMS.SiteProvider.SiteInfo)">
-            <summary>
-            Remove domain alias from running sites, and create web farm task.
-            </summary>
-            <param name="domainAlias">Domain alias name</param>
-            <param name="si">SiteInfo object</param>
+            <param name="site">SiteInfo object to be removed</param>
         </member>
         <member name="M:CMS.SiteProvider.SiteInfoProvider.CheckDomainNameForCollision(System.String,System.Int32)">
             <summary>
@@ -1392,19 +1398,6 @@
             <param name="siteId">ID of the site which holds the domain name (site is excluded from result)</param>
             <returns>Dataset with data of the first site which is running under specified domain name.</returns>
         </member>
-        <member name="M:CMS.SiteProvider.SiteInfoProvider.SiteStatusToEnum(System.String)">
-            <summary>
-            Returns StatusEnum based on status codename.
-            </summary>
-            <param name="status">Status codename</param>        
-        </member>
-        <member name="M:CMS.SiteProvider.SiteInfoProvider.SiteStatusToString(CMS.SiteProvider.SiteStatusEnum)">
-            <summary>
-            Returns string code name of site status
-            The codename is in uppercase!
-            </summary>
-            <param name="status">Site status</param>        
-        </member>
         <member name="M:CMS.SiteProvider.SiteInfoProvider.ProcessWebFarmTask(System.String,System.String,System.Byte[])">
             <summary>
             Runs the processing of specific web farm task for current provider
@@ -1413,24 +1406,14 @@
             <param name="data">Custom data</param>
             <param name="binary">Binary data</param>
         </member>
+        <member name="P:CMS.SiteProvider.SiteInfoProvider.EmptySite">
+            <summary>
+            Empty site info
+            </summary>
+        </member>
         <member name="P:CMS.SiteProvider.SiteInfoProvider.RunningSites">
             <summary>
             Table of the running site infos indexed by the domain names. [domainName -> SiteInfo]
-            </summary>
-        </member>
-        <member name="T:CMS.SiteProvider.RunningSiteException">
-            <summary>
-            Running site exception.
-            </summary>
-        </member>
-        <member name="M:CMS.SiteProvider.RunningSiteException.#ctor">
-            <summary>
-            Constructor.
-            </summary>
-        </member>
-        <member name="M:CMS.SiteProvider.RunningSiteException.#ctor(System.String)">
-            <summary>
-            Constructor with message.
             </summary>
         </member>
     </members>

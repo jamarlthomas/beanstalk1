@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSelector_FileSystemView"
-    Codebehind="FileSystemView.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSelector_FileSystemView"
+     Codebehind="FileSystemView.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/Selectors/LinkMediaSelector/Search.ascx"
     TagName="DialogSearch" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/Selectors/FileSystemSelector/InnerFileSystemView.ascx"

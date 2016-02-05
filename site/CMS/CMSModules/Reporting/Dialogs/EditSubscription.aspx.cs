@@ -40,7 +40,7 @@ public partial class CMSModules_Reporting_Dialogs_EditSubscription : CMSModalPag
         if (subEdit.Save())
         {
             String alertScript = edit ? String.Empty : "wopener.window.alert(" + ScriptHelper.GetLocalizedString("reportsubscription.subscribed") + ");";
-            String refreshScript = edit ? "if (wopener.refreshCurrentPage != null) wopener.refreshCurrentPage();" : String.Empty;
+            String refreshScript = edit ? "if (wopener.refreshCurrentPage != null) { wopener.refreshCurrentPage(); }" : String.Empty;
             ScriptHelper.RegisterStartupScript(Page, typeof(String), "CloseScript", ScriptHelper.GetScript(refreshScript + "CloseDialog();" + alertScript));
         }
     }

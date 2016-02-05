@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/Chat/ChatLogin.ascx.cs" Inherits="CMSWebParts_Chat_ChatLogin" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/Chat/ChatLogin.ascx.cs" Inherits="CMSWebParts_Chat_ChatLogin" %>
 
 <%-- Panel: whole webpart --%>
 <asp:Panel runat="server" CssClass="ChatWebpartContainer ChatWebpartContainerLogin">

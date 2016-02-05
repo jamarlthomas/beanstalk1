@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Community_Friends_FriendsViewer" Codebehind="~/CMSWebParts/Community/Friends/FriendsViewer.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Community_Friends_FriendsViewer"  Codebehind="~/CMSWebParts/Community/Friends/FriendsViewer.ascx.cs" %>
 <%@ Register TagPrefix="cms" Namespace="CMS.Community" Assembly="CMS.Community" %>
 <cms:BasicRepeater ID="repFriends" runat="server" />
 <cms:FriendsDataSource ID="srcFriends" runat="server" />

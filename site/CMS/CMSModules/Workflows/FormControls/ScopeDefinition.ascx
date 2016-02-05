@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Codebehind="ScopeDefinition.ascx.cs" Inherits="CMSModules_Workflows_FormControls_ScopeDefinition" %>
+﻿<%@ Control Language="C#"  Codebehind="ScopeDefinition.ascx.cs" Inherits="CMSModules_Workflows_FormControls_ScopeDefinition" %>
 
 <%@ Register Src="~/CMSModules/Content/FormControls/Documents/SelectPath.ascx"
     TagName="SelectPath" TagPrefix="cms" %>

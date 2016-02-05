@@ -66,24 +66,12 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_BBLinkProper
         LoadProperties(properties);
         if (item.Url != null)
         {
-            string shortUrl = URLHelper.RemoveProtocol(item.Url);
-            string protocol = item.Url.Substring(0, item.Url.Length - shortUrl.Length);
-            if ((protocol == "http://") || (protocol == "https://") ||
-                (protocol == "ftp://") || (protocol == "news://"))
-            {
-                urlSelectElem.LinkProtocol = protocol;
-                urlSelectElem.LinkURL = shortUrl;
-            }
-            else
-            {
-                urlSelectElem.LinkProtocol = "other";
-                urlSelectElem.LinkURL = item.Url;
-            }
+            urlSelectElem.LinkURL = item.Url;
             urlSelectElem.LinkText = item.Name;
 
             if (item.MediaType == MediaTypeEnum.Flash)
             {
-                urlSelectElem.LinkURL = URLHelper.UpdateParameterInUrl(urlSelectElem.LinkURL, "ext", "." + item.Extension.TrimStart('.'));
+                urlSelectElem.LinkURL = URLHelper.UpdateParameterInUrl(item.Url, "ext", "." + item.Extension.TrimStart('.'));
             }
         }
         SaveSession();
@@ -91,7 +79,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_BBLinkProper
 
 
     /// <summary>
-    /// Loads the properites into control.
+    /// Loads the properties into control.
     /// </summary>
     /// <param name="properties">Collection of properties</param>
     public override void LoadItemProperties(Hashtable properties)
@@ -101,7 +89,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_BBLinkProper
 
 
     /// <summary>
-    /// Loads the properites into control.
+    /// Loads the properties into control.
     /// </summary>
     /// <param name="properties">Collection of properties</param>
     public override void LoadProperties(Hashtable properties)

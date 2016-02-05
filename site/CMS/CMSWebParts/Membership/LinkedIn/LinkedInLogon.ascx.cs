@@ -1,9 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Web.Security;
-using System.Web.UI.WebControls;
-using System.Data;
 using System.Web;
 
 using CMS.DocumentEngine;
@@ -591,7 +588,8 @@ public partial class CMSWebParts_Membership_LinkedIn_LinkedInLogon : CMSAbstract
                 // Default message informing about misconfiguration is dispalyed.
                 StringBuilder parameter = new StringBuilder();
                 parameter.Append(UIElementInfoProvider.GetApplicationNavigationString("cms", "Settings") + " -> ");
-                parameter.Append(GetString("settingscategory.socialmedia") + " -> ");
+                parameter.Append(GetString("settingscategory.cmsmembership") + " -> ");
+                parameter.Append(GetString("settingscategory.cmsmembershipauthentication") + " -> ");
                 parameter.Append(GetString("settingscategory.cmslinkedin"));
                 if (MembershipContext.AuthenticatedUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.GlobalAdmin))
                 {

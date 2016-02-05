@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SiteSelector.ascx.cs" Inherits="CMSModules_BannerManagement_Controls_Filters_SiteSelector" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SiteSelector.ascx.cs" Inherits="CMSModules_BannerManagement_Controls_Filters_SiteSelector" %>
 <asp:Panel CssClass="Filter" runat="server" ID="pnlSearch">
     <div class="form-horizontal form-filter">
         <div class="form-group">

@@ -1,12 +1,11 @@
-using System;
-using System.Collections;
+﻿using System;
 using System.Security.Principal;
 using System.Collections.Generic;
 using System.Text;
 
 using CMS.Base;
 using CMS.Core;
-using CMS.EventLog;
+using CMS.DataEngine;
 using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.Membership;
@@ -19,23 +18,7 @@ using CMS.UIControls;
 public partial class CMSModules_Newsletters_Tools_ImportExportSubscribers_Subscriber_Import : CMSNewsletterPage
 {
     #region "Variables and properties"
-
-    private static Hashtable errors = new Hashtable();
-    private static Hashtable message = new Hashtable();
-
-
-    /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
-
+    
     /// <summary>
     /// Messages placeholder
     /// </summary>
@@ -44,6 +27,39 @@ public partial class CMSModules_Newsletters_Tools_ImportExportSubscribers_Subscr
         get
         {
             return plcMessages;
+        }
+    }
+
+
+    private string CurrentInfo
+    {
+        get
+        {
+            return ctlAsyncLog.ProcessData.Information;
+        }
+        set
+        {
+            ctlAsyncLog.ProcessData.Information = value;
+        }
+    }
+
+
+    private List<string> AsyncErrors
+    {
+        get
+        {
+            var errors = ctlAsyncLog.ProcessData.Data as List<string>;
+            if (errors == null)
+            {
+                errors = new List<string>();
+                ctlAsyncLog.ProcessData.Data = errors;
+            }
+
+            return errors;
+        }
+        set
+        {
+            ctlAsyncLog.ProcessData.Data = value;
         }
     }
 
@@ -71,7 +87,6 @@ public partial class CMSModules_Newsletters_Tools_ImportExportSubscribers_Subscr
         // Initialize events
         ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
         ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-        ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
         ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
 
         ctlAsyncLog.MaxLogLines = 1000;
@@ -91,9 +106,6 @@ public partial class CMSModules_Newsletters_Tools_ImportExportSubscribers_Subscr
     protected void RunAsync(AsyncAction action)
     {
         pnlLog.Visible = true;
-
-        CurrentLog.Close();
-        EnsureLog();
 
         ctlAsyncLog.RunAsync(action, WindowsIdentity.GetCurrent());
     }
@@ -140,16 +152,16 @@ public partial class CMSModules_Newsletters_Tools_ImportExportSubscribers_Subscr
                     newsletterIds.Add(newsletter.NewsletterID);
                 }
             }
-            CurrentLog.Close();
-            EnsureLog();
-            errors[ctlAsyncLog.ProcessGUID] = null;
+            
+            AsyncErrors = null;
 
             // Add subscribers to site and subscribe them to selected newsletters
             if (radSubscribe.Checked)
             {
-                ctlAsyncLog.Parameter = new object[] { txtImportSub.Text, newsletterIds, siteId, true, chkSendConfirmation.Checked, chkDoNotSubscribe.Checked, chkRequireOptIn.Checked, ctlAsyncLog.ProcessGUID, errors };
-                RunAsync(SubscriberImporter.ImportSubscribersToSite);
-                message[ctlAsyncLog.ProcessGUID] = GetString("Subscriber_Import.SubscribersImported");
+                var parameter = new object[] { txtImportSub.Text, newsletterIds, siteId, true, chkSendConfirmation.Checked, chkDoNotSubscribe.Checked, chkRequireOptIn.Checked, ctlAsyncLog.ProcessGUID, AsyncErrors };
+                RunAsync(p => SubscriberImporter.ImportSubscribersToSite(parameter));
+
+                CurrentInfo = GetString("Subscriber_Import.SubscribersImported");
                 ctlAsyncLog.TitleText = GetString("newsletters.importingsubscribers");
             }
             // Unsubscribe inserted subscribers from selected newsletters
@@ -157,9 +169,10 @@ public partial class CMSModules_Newsletters_Tools_ImportExportSubscribers_Subscr
             {
                 if (newsletterIds.Count > 0)
                 {
-                    ctlAsyncLog.Parameter = new object[] { txtImportSub.Text, newsletterIds, siteId, chkSendConfirmation.Checked, ctlAsyncLog.ProcessGUID, errors };
-                    RunAsync(SubscriberInfoProvider.UnsubscribeFromNewsletters);
-                    message[ctlAsyncLog.ProcessGUID] = GetString("Subscriber_Import.SubscribersUnsubscribed");
+                    var parameter = new object[] { txtImportSub.Text, newsletterIds, siteId, chkSendConfirmation.Checked, ctlAsyncLog.ProcessGUID, AsyncErrors };
+                    RunAsync(p => SubscriberInfoProvider.RemoveSubscriptions(parameter));
+                    
+                    CurrentInfo = GetString("Subscriber_Import.SubscribersUnsubscribed");
                     ctlAsyncLog.TitleText = GetString("newsletters.unsubscribing");
                 }
                 else
@@ -170,10 +183,10 @@ public partial class CMSModules_Newsletters_Tools_ImportExportSubscribers_Subscr
             // Delete inserted subscribers
             else if (radDelete.Checked)
             {
+                var parameter = new object[] { txtImportSub.Text, siteId, ctlAsyncLog.ProcessGUID, AsyncErrors };
+                RunAsync(p => SubscriberInfoProvider.DeleteSubscribers(parameter));
 
-                ctlAsyncLog.Parameter = new object[] { txtImportSub.Text, siteId, ctlAsyncLog.ProcessGUID, errors };
-                RunAsync(SubscriberInfoProvider.DeleteSubscribers);
-                message[ctlAsyncLog.ProcessGUID] = GetString("Subscriber_Import.SubscribersDeleted");
+                CurrentInfo = GetString("Subscriber_Import.SubscribersDeleted");
                 ctlAsyncLog.TitleText = GetString("newsletters.deleting");
             }
         }
@@ -184,37 +197,30 @@ public partial class CMSModules_Newsletters_Tools_ImportExportSubscribers_Subscr
     }
 
 
-    protected LogContext EnsureLog()
-    {
-        LogContext log = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-
-        return log;
-    }
-
-
     private void DisplayMessages()
     {
-        CurrentLog.Close();
         TerminateCallbacks();
 
-        List<string> listOfErrors = (List<string>)errors[ctlAsyncLog.ProcessGUID] ?? new List<string>();
-        StringBuilder errorsString = new StringBuilder();
-
-        foreach (var singleError in listOfErrors)
+        var listOfErrors = AsyncErrors;
+        if (listOfErrors != null)
         {
-            errorsString.Append("<div>" + singleError + "</div>");
+            var errorsString = new StringBuilder();
+
+            foreach (var singleError in listOfErrors)
+            {
+                errorsString.Append("<div>" + singleError + "</div>");
+            }
+
+            string htmlError = errorsString.ToString();
+
+            if (!String.IsNullOrEmpty(htmlError))
+            {
+                ShowError(htmlError.Remove(htmlError.Length - 6));
+                return;
+            }
         }
 
-        string htmlError = errorsString.ToString();
-
-        if (!String.IsNullOrEmpty(htmlError))
-        {
-            ShowError(htmlError.Remove(htmlError.Length - 6));
-        }
-        else
-        {
-            ShowConfirmation((string)message[ctlAsyncLog.ProcessGUID]);
-        }
+        ShowConfirmation(CurrentInfo);
     }
 
 
@@ -228,13 +234,7 @@ public partial class CMSModules_Newsletters_Tools_ImportExportSubscribers_Subscr
 
 
     #region "Handling async thread"
-
-    private void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
-    }
-
-
+    
     private void ctlAsyncLog_OnError(object sender, EventArgs e)
     {
         DisplayMessages();
@@ -249,8 +249,7 @@ public partial class CMSModules_Newsletters_Tools_ImportExportSubscribers_Subscr
 
     private void ctlAsyncLog_OnCancel(object sender, EventArgs e)
     {
-        ctlAsyncLog.Parameter = null;
-        message[ctlAsyncLog.ProcessGUID] = GetString("Subscriber_Import.cancelled");
+        CurrentInfo = GetString("Subscriber_Import.cancelled");
         DisplayMessages();
     }
 

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Viewers_Documents_ImageGallery" Codebehind="~/CMSWebParts/Viewers/Documents/imagegallery.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Viewers_Documents_ImageGallery"  Codebehind="~/CMSWebParts/Viewers/Documents/imagegallery.ascx.cs" %>
 
 <table cellspacing="0">
     <asp:PlaceHolder ID="plcButtonsTop" runat="server">
@@ -28,7 +28,7 @@
     </asp:PlaceHolder>
     <tr>
         <td colspan="3" style="height: 76px">
-            <cms:CMSDataList ID="lstImages" runat="server" ClassNames="CMS.File" EnablePaging="true" />
+            <cms:CMSDataList ID="lstImages" runat="server" EnablePaging="true" />
         </td>
     </tr>
     <asp:PlaceHolder ID="plcButtonsBottom" runat="server" />

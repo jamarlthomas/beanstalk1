@@ -1,12 +1,12 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Inherits="CMSModules_Content_CMSDesk_PublishArchive" Title="Publishes or archives multiple pages"
-    ValidateRequest="false" Theme="Default" Codebehind="PublishArchive.aspx.cs" %>
+    ValidateRequest="false" Theme="Default"  Codebehind="PublishArchive.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/AsyncLogDialog.ascx" TagName="AsyncLog"
     TagPrefix="cms" %>
 <asp:Content ContentPlaceHolderID="plcBeforeBody" runat="server" ID="cntBeforeBody">
     <asp:Panel runat="server" ID="pnlLog" Visible="false">
-        <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+        <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="Documents" />
     </asp:Panel>
 </asp:Content>
 <asp:Content ID="cntContent" ContentPlaceHolderID="plcContent" runat="server" EnableViewState="false">

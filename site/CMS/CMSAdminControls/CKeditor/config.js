@@ -1,19 +1,13 @@
-﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.html or http://ckeditor.com/license
-*/
-CKEDITOR.editorConfig = function (config) {
+﻿/**
+ * @license Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
 
-    config.allowedContent = true; // To disable CKEditor ACF
-    config.dialog_backgroundCoverColor = '#888888';
-    config.skin = 'moono';
+CKEDITOR.editorConfig = function( config ) {
+	config.allowedContent = true; // To disable CKEditor ACF
     config.enterMode = CKEDITOR.ENTER_BR;
     config.shiftEnterMode = CKEDITOR.ENTER_P;
     config.entities_latin = false;
-
-    /* CMS */
-    config.plugins += ',showborders';
-    /* CMS end */
 
     var sourceName = config.useInlineMode ? 'Sourcedialog' : 'Source';
 
@@ -30,10 +24,9 @@ CKEDITOR.editorConfig = function (config) {
         ['Maximize']
     ];
 
-    config.toolbar_Full =
-    [
+    config.toolbar_Full = [
         [sourceName, '-'],
-        ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', 'SpellChecker', 'Scayt', '-'],
+        ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', 'Scayt', '-'],
         ['Undo', 'Redo', 'Find', 'Replace', 'RemoveFormat', '-'],
         ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-'],
         ['NumberedList', 'BulletedList', 'Outdent', 'Indent', 'Blockquote', 'CreateDiv', '-'],
@@ -48,26 +41,8 @@ CKEDITOR.editorConfig = function (config) {
         ['Maximize', 'ShowBlocks']
     ];
 
-    config.toolbar_Wireframe =
-    [
-	    ['Cut', 'Copy', 'PasteText', '-'],
-	    ['Undo', 'Redo', 'Find', 'Replace', 'RemoveFormat', '-'],
-	    ['Bold', 'Italic', 'Underline', 'Strike', '-'],
-	    ['NumberedList', 'BulletedList', '-'],
-	    ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-'],
-	    ['InsertLink', 'Unlink', '-'],
-	    ['InsertImageOrMedia', 'QuicklyInsertImage', 'Table', '-'],
-	    ['Format']
-    ];
-
-    config.toolbar_Basic =
-    [
+    config.toolbar_Basic = [
 	    ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'InsertLink', 'Unlink']
-    ];
-
-    config.toolbar_ProjectManagement =
-    [
-	    ['Bold', 'Italic', 'Underline', 'Strike', '-', 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', 'RemoveFormat', '-', 'NumberedList', 'BulletedList', '-', 'TextColor', 'BGColor']
     ];
 
     config.toolbar_BizForm = [
@@ -135,7 +110,7 @@ CKEDITOR.editorConfig = function (config) {
 
     config.toolbar_Invoice = [
         ['Source', '-'],
-        ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', 'SpellChecker', 'Scayt', '-'],
+        ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', 'Scayt', '-'],
         ['Undo', 'Redo', 'Find', 'Replace', 'RemoveFormat', '-'],
         ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-'],
         ['NumberedList', 'BulletedList', 'Outdent', 'Indent', 'Blockquote', 'CreateDiv', '-'],

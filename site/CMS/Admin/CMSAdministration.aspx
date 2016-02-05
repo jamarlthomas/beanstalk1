@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="Admin_CMSAdministration" Codebehind="CMSAdministration.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="Admin_CMSAdministration"  Codebehind="CMSAdministration.aspx.cs"
     MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" Theme="Default" Title="Administration" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/ScreenLock/ScreenLockDialog.ascx" TagName="ScreenLockDialog"
@@ -84,7 +84,7 @@
         function SetLiveSiteURL(liveSiteURL) {
             if (!liveSiteURL) {
                 // Set default URL to root
-                liveSiteURL = '<%= CMS.Base.SystemContext.ApplicationPath.TrimEnd('/') + "/" %>?viewmode=livesite';
+                liveSiteURL = '<%= DefaultLiveSiteUrl %>';
             }
 
             var element = document.getElementById('<%= lnkLiveSite.ClientID %>');

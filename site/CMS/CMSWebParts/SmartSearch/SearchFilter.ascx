@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_SmartSearch_SearchFilter" Codebehind="~/CMSWebParts/SmartSearch/SearchFilter.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_SmartSearch_SearchFilter"  Codebehind="~/CMSWebParts/SmartSearch/SearchFilter.ascx.cs" %>
 <cms:LocalizedLabel runat="server" ID="lblError" Visible="false" CssClass="ErrorLabel"></cms:LocalizedLabel>
 
 <cms:LocalizedLabel ID="lblFilter" runat="server" Display="false" EnableViewState="false" ResourceString="srch.filter" />

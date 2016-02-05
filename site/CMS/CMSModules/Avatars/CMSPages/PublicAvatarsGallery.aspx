@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Avatars_CMSPages_PublicAvatarsGallery"
-    MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master" Theme="Default" Codebehind="PublicAvatarsGallery.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Avatars_CMSPages_PublicAvatarsGallery"
+    MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master" Theme="Default"  Codebehind="PublicAvatarsGallery.aspx.cs" %>
 <%@ Register Src="~/CMSModules/Avatars/Controls/AvatarsGallery.ascx" TagName="Gallery"
     TagPrefix="cms" %>
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">

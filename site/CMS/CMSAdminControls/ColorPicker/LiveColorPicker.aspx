@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_ColorPicker_LiveColorPicker"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_ColorPicker_LiveColorPicker"
     Theme="Default" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master"
-    Title="Color picker" Codebehind="LiveColorPicker.aspx.cs" %>
+    Title="Color picker"  Codebehind="LiveColorPicker.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/ColorPicker/ColorPicker.ascx" TagName="ColorPicker"
     TagPrefix="cms" %>

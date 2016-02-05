@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -255,7 +255,7 @@ function fs_" + ClientID + @"(sender)
 
             string fsInit = @"
 $cmsj(document).ready(function(){
-    if(window.wopener && top.$visiblePopup)
+    if(window.wopener && (top != null) && top.$visiblePopup)
     {  
         var topFrame = GetTop();
         if(top.isTitleWindow(topFrame, window) && !topFrame.fullScreenButtonAvailable)

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="MergeSuggested.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="MergeSuggested.ascx.cs"
     Inherits="CMSModules_ContactManagement_Controls_UI_Contact_MergeSuggested" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>

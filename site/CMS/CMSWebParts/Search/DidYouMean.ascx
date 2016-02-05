@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Search_DidYouMean" Codebehind="~/CMSWebParts/Search/DidYouMean.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Search_DidYouMean"  Codebehind="~/CMSWebParts/Search/DidYouMean.ascx.cs" %>
 <asp:PlaceHolder ID="plcDidYouMean" runat="server" EnableViewState="false">
     <div class="DidYouMean">
         <span class="DidYouText">

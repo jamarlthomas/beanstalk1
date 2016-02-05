@@ -12,6 +12,15 @@
 public partial class CMSModules_Membership_Pages_Roles_Role_Edit_Permissions_Matrix {
     
     /// <summary>
+    /// prmhdrHeader control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMSModules_Permissions_Controls_PermissionsFilter prmhdrHeader;
+    
+    /// <summary>
     /// prmMatrix control.
     /// </summary>
     /// <remarks>

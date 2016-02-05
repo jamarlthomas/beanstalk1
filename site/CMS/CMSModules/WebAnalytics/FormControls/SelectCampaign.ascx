@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SelectCampaign.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SelectCampaign.ascx.cs"
     Inherits="CMSModules_WebAnalytics_FormControls_SelectCampaign" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"
     TagPrefix="cms" %>

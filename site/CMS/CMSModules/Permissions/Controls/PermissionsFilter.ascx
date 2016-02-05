@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="PermissionsFilter.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="PermissionsFilter.ascx.cs"
     Inherits="CMSModules_Permissions_Controls_PermissionsFilter" %>
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector"
     TagPrefix="cms" %>
@@ -7,7 +7,7 @@
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Membership/FormControls/Users/SelectUser.ascx" TagName="UserSelector"
     TagPrefix="cms" %>
-<asp:Panel ID="PanelOptions" runat="server" CssClass="permission-filter">
+<asp:Panel ID="PanelOptions" runat="server">
     <div class="form-horizontal form-filter">
         <asp:PlaceHolder ID="plcSite" runat="server">
             <div class="form-group">
@@ -39,7 +39,7 @@
                 <cms:CMSUpdatePanel ID="pnlUpdateSelectors" runat="server" UpdateMode="Always">
                     <ContentTemplate>
                         <cms:ModuleSelector runat="server" ID="moduleSelector" IsLiveSite="false" DisplayOnlyWithPermission="true"
-                            DisplayOnlyForGivenSite="true" DisplayAllModules="true" />
+                            DisplayOnlyForGivenSite="true" DisplayAllModules="true" FilterMode="true" />
                         <cms:ClassSelector runat="server" ID="docTypeSelector" IsLiveSite="false" OnlyDocumentTypes="true" />
                         <cms:ClassSelector runat="server" ID="customTableSelector" IsLiveSite="false" OnlyCustomTables="true" />
                     </ContentTemplate>

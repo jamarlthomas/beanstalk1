@@ -70,25 +70,6 @@ public partial class CMSModules_EventLog_Controls_EventLog : CMSAdminControl, IC
         }
     }
 
-
-    /// <summary>
-    /// Dialog control identifier
-    /// </summary>
-    private string Identifier
-    {
-        get
-        {
-            string identifier = hdnIdentifier.Value;
-            if (string.IsNullOrEmpty(identifier))
-            {
-                identifier = Guid.NewGuid().ToString();
-                hdnIdentifier.Value = identifier;
-            }
-
-            return identifier;
-        }
-    }
-
     #endregion
 
 
@@ -260,7 +241,7 @@ public partial class CMSModules_EventLog_Controls_EventLog : CMSAdminControl, IC
     #endregion
 
 
-    #region "Methods"
+    #region "Private methods"
 
     /// <summary>
     /// Generates site filter where condition.
@@ -281,6 +262,26 @@ public partial class CMSModules_EventLog_Controls_EventLog : CMSAdminControl, IC
         return whereCond;
     }
 
+
+    /// <summary>
+    /// Gets the dialog identifier used for sharing data between windows.
+    /// </summary>
+    /// <returns>Dialog identifier</returns>
+    private Guid GetDialogIdentifier()
+    {
+        Guid identifier;
+
+        // Try parse the identifier as a Guid value
+        if (!Guid.TryParse(hdnIdentifier.Value, out identifier))
+        {
+            // If the identifier value is not a valid Guid value, generates a new Guid
+            identifier = Guid.NewGuid();
+            hdnIdentifier.Value = identifier.ToString();
+        }
+
+        return identifier;
+    }
+
     #endregion
 
 
@@ -297,9 +298,13 @@ public partial class CMSModules_EventLog_Controls_EventLog : CMSAdminControl, IC
         mParameters["where"] = whereCondition;
         mParameters["orderby"] = gridEvents.SortDirect;
 
-        WindowHelper.Add(Identifier, mParameters);
+        // Get the dialog identifier
+        Guid dialogIdentifier = GetDialogIdentifier();
 
-        string queryString = "?params=" + Identifier;
+        // Store the dialog identifier with appropriate data in the session
+        WindowHelper.Add(dialogIdentifier.ToString(), mParameters);
+
+        string queryString = "?params=" + dialogIdentifier;
 
         if (SiteID > 0)
         {

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Inherits="CMSModules_Workflows_Workflow_General" Theme="Default" Codebehind="Workflow_General.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+    Inherits="CMSModules_Workflows_Workflow_General" Theme="Default"  Codebehind="Workflow_General.aspx.cs" %>
 <%@ Register Src="~/CMSModules/Workflows/Controls/UI/Workflow/Edit.ascx"
     TagName="WorkflowEdit" TagPrefix="cms" %>
 

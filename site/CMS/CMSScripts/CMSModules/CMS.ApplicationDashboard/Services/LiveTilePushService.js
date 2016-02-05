@@ -1,4 +1,4 @@
-﻿cmsdefine(["require", "exports", 'angular', 'CMS/Application'], function(cmsrequire, exports, angular, application) {
+﻿cmsdefine(["require", "exports", 'angular', 'CMS/Application'], function (cmsrequire, exports, angular, application) {
     var Service = (function () {
         function Service($interval, $http) {
             var _this = this;
@@ -10,14 +10,17 @@
             this.POLLING_INTERVAL = 20;
             this.start = function (applicationGuid, newDataCallback, noDataCallback) {
                 var oldData = null, getData = function () {
-                    _this.$http.get(application.getData('applicationUrl') + 'cmsapi/LiveTile/', { params: { guid: applicationGuid } }).success(function (newLiveTileData) {
-                        if (!newLiveTileData.HasData) {
+                    _this.$http.post(application.getData('applicationUrl') + 'cmsapi/Tile/UpdateTile?tileModelType=applicationLiveTileModel', { applicationGuid: applicationGuid }).success(function (newLiveTileData) {
+                        if (!newLiveTileData || isNaN(newLiveTileData.Value)) {
                             oldData = null;
                             noDataCallback();
                             return;
                         }
 
-                        var data = newLiveTileData.Data;
+                        var data = {
+                            Value: newLiveTileData.Value,
+                            Description: newLiveTileData.Description
+                        };
 
                         if (!angular.equals(oldData, data)) {
                             oldData = data;
@@ -39,7 +42,7 @@
             this.stop = function (interval) {
                 _this.$interval.cancel(interval);
             };
-        }
+            }
         Service.$inject = [
             '$interval',
             '$http'

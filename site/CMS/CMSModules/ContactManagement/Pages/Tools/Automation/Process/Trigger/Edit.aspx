@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Edit.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Edit.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Title="Objectworkflowtrigger properties" Inherits="CMSModules_ContactManagement_Pages_Tools_Automation_Process_Trigger_Edit"
     Theme="Default" %>
 

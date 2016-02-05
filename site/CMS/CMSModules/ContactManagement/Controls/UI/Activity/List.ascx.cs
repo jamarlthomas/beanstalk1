@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Text;
 using System.Web.UI;
@@ -260,15 +260,15 @@ public partial class CMSModules_ContactManagement_Controls_UI_Activity_List : CM
     /// <summary>
     /// Dialog control identifier.
     /// </summary>
-    private string Identifier
+    private Guid Identifier
     {
         get
         {
-            string identifier = hdnIdentifier.Value;
-            if (string.IsNullOrEmpty(identifier))
+            Guid identifier;
+            if (!Guid.TryParse(hdnIdentifier.Value, out identifier))
             {
-                identifier = Guid.NewGuid().ToString();
-                hdnIdentifier.Value = identifier;
+                identifier = Guid.NewGuid();
+                hdnIdentifier.Value = identifier.ToString();
             }
 
             return identifier;
@@ -526,33 +526,31 @@ function SelectValue_" + ClientID + @"(valueID) {
 
             mParameters["siteid"] = SiteID;
 
-            WindowHelper.Add(Identifier, mParameters);
+            WindowHelper.Add(Identifier.ToString(), mParameters);
             queryString = "?params=" + Identifier;
             queryString = URLHelper.AddParameterToUrl(queryString, "hash", QueryHelper.GetHash(queryString));
 
             return queryString;
         }
-        else
+
+        mParameters["where"] = gridElem.WhereCondition;
+        string sortDirection = gridElem.SortDirect;
+        if (String.IsNullOrEmpty(sortDirection))
         {
-            mParameters["where"] = gridElem.WhereCondition;
-            string sortDirection = gridElem.SortDirect;
-            if (String.IsNullOrEmpty(sortDirection))
-            {
-                sortDirection = gridElem.OrderBy;
-            }
-            mParameters["orderby"] = sortDirection;
-            mParameters["ismerged"] = IsMergedContact;
-            mParameters["isglobal"] = IsGlobalContact;
-            mParameters["issitemanager"] = ContactHelper.IsSiteManager;
-
-            WindowHelper.Add(Identifier, mParameters);
-
-            queryString = "?params=" + Identifier;
-            queryString = URLHelper.AddParameterToUrl(queryString, "hash", QueryHelper.GetHash(queryString));
-            queryString = URLHelper.AddParameterToUrl(queryString, "activityid", ActivityID.ToString());
-
-            return queryString;
+            sortDirection = gridElem.OrderBy;
         }
+        mParameters["orderby"] = sortDirection;
+        mParameters["ismerged"] = IsMergedContact;
+        mParameters["isglobal"] = IsGlobalContact;
+        mParameters["issitemanager"] = ContactHelper.IsSiteManager;
+
+        WindowHelper.Add(Identifier.ToString(), mParameters);
+
+        queryString = "?params=" + Identifier;
+        queryString = URLHelper.AddParameterToUrl(queryString, "hash", QueryHelper.GetHash(queryString));
+        queryString = URLHelper.AddParameterToUrl(queryString, "activityid", ActivityID.ToString());
+
+        return queryString;
     }
 
 

@@ -14,7 +14,7 @@ public partial class CMSModules_OnlineMarketing_Pages_Content_MVTest_New : CMSMV
     protected void Page_Load(object sender, EventArgs e)
     {
         // Set disabled module info
-        ucDisabledModule.SettingsKeys = "CMSAnalyticsEnabled;CMSMVTEnabled;CMSAnalyticsTrackConversions";
+        ucDisabledModule.SettingsKeys = "CMSAnalyticsEnabled;CMSMVTEnabled";
         ucDisabledModule.ParentPanel = pnlDisabled;
 
         InitBreadcrumbs();

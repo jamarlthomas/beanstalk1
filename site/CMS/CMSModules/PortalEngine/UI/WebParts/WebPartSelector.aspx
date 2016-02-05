@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_PortalEngine_UI_WebParts_WebPartSelector" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Theme="Default" Title="Select web part" Codebehind="WebPartSelector.aspx.cs" %>
+    Theme="Default" Title="Select web part"  Codebehind="WebPartSelector.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/PortalEngine/Controls/WebParts/WebPartSelector.ascx"
     TagName="WebPartSelector" TagPrefix="cms" %>

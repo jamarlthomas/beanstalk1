@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Accounts.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_ContactGroup_Accounts" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Accounts.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_ContactGroup_Accounts" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
@@ -9,9 +9,9 @@
     <cms:AccountSelector ID="accountSelector" runat="server" IsLiveSite="false" />
 </asp:Panel>
 <asp:Panel ID="pnlContent" runat="server" CssClass="PageContent">
+    <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
     <cms:CMSUpdatePanel ID="pnlUpdate" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
-            <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
             <cms:UniGrid runat="server" ID="gridElem" OrderBy="AccountName" ObjectType="om.contactgroupaccountlist"
                 ShowObjectMenu="false" IsLiveSite="false" Columns="AccountID,AccountName,AccountStatusID,AccountCountryID,AccountSiteID" RememberStateByParam="issitemanager">
                 <GridActions Parameters="AccountID">

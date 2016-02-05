@@ -1,12 +1,9 @@
-using System;
-using System.Web.UI.WebControls;
+﻿using System;
 
 using CMS.FormControls;
 using CMS.Helpers;
 using CMS.SiteProvider;
-using CMS.Membership;
 using CMS.UIControls;
-using CMS.Base;
 using CMS.ExtendedControls;
 using CMS.Chat;
 using CMS.DataEngine;
@@ -30,7 +27,7 @@ public partial class CMSModules_Chat_FormControls_RoomSelector : FormEngineUserC
 
     /// <summary>
     /// Gets or sets ID of the site. User of this site are displayed
-    /// Use 0 for current siteid, -1 for all sites(no filter)
+    /// Use 0 for current site, -1 for all sites(no filter)
     /// Note: SiteID is not used if site filter is enabled
     /// </summary>
     public int SiteID
@@ -179,9 +176,9 @@ public partial class CMSModules_Chat_FormControls_RoomSelector : FormEngineUserC
 
 
     /// <summary>
-    /// Gets or sets the resource prefix of uni selector. If not set default values are used.
+    /// Gets or sets the resource prefix of uniselector. If not set default values are used.
     /// </summary>
-    public string ResourcePrefix
+    public override string ResourcePrefix
     {
         get
         {
@@ -283,7 +280,7 @@ public partial class CMSModules_Chat_FormControls_RoomSelector : FormEngineUserC
 
 
     /// <summary>
-    /// Additional users to show identificated by user IDs.
+    /// Additional users to show identified by user IDs.
     /// </summary>
     public int[] AdditionalRooms
     {
@@ -336,7 +333,7 @@ public partial class CMSModules_Chat_FormControls_RoomSelector : FormEngineUserC
     protected void SetupControls()
     {
         //Display only current site's rooms
-        usRooms.WhereCondition = SqlHelper.AddWhereCondition(usRooms.WhereCondition, string.Format("((ChatRoomSiteID = {0}) OR ChatRoomSiteID IS NULL) AND (ChatRoomPassword = '' ) AND (ChatRoomIsOneToOne = 0) AND (ChatRoomPrivate = 0)", (SiteID > 0) ? SiteID : SiteContext.CurrentSiteID));
+        usRooms.WhereCondition = SqlHelper.AddWhereCondition(usRooms.WhereCondition, string.Format("((ChatRoomSiteID = {0}) OR ChatRoomSiteID IS NULL) AND (ISNULL(ChatRoomPassword, '') = '' ) AND (ChatRoomIsOneToOne = 0) AND (ChatRoomPrivate = 0)", (SiteID > 0) ? SiteID : SiteContext.CurrentSiteID));
 
         // Set prefix if not set
         if (ResourcePrefix == String.Empty)
@@ -359,7 +356,7 @@ public partial class CMSModules_Chat_FormControls_RoomSelector : FormEngineUserC
             usRooms.WhereCondition = SqlHelper.AddWhereCondition(usRooms.WhereCondition, where);
         }
 
-        // Add aditional rooms
+        // Add additional rooms
         if ((AdditionalRooms != null) && (AdditionalRooms.Length > 0))
         {
             usRooms.WhereCondition = SqlHelper.AddWhereCondition(usRooms.WhereCondition, SqlHelper.GetWhereCondition("ChatRoomID", AdditionalRooms), "OR");
@@ -376,11 +373,11 @@ public partial class CMSModules_Chat_FormControls_RoomSelector : FormEngineUserC
 
 
     /// <summary>
-    /// Creates child controls and loads update panle container if it is required.
+    /// Creates child controls and loads update panel container if it is required.
     /// </summary>
     protected override void CreateChildControls()
     {
-        // If selector is not defined load updat panel container
+        // If selector is not defined load update panel container
         if (usRooms == null)
         {
             pnlUpdate.LoadContainer();

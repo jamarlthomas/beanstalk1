@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.Ecommerce;
@@ -86,16 +86,16 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Customers_Customer_Edit_Cr
         // Check modify permission
         if (!ECommerceContext.IsUserAuthorizedToModifyCustomer())
         {
-            RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyCustomers");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyCustomers");
         }
 
         // Check if using global credit
         if (creditSiteId <= 0)
         {
             // Check Ecommerce global modify permission
-            if (!ECommerceContext.IsUserAuthorizedForPermission("EcommerceGlobalModify"))
+            if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.ECOMMERCE_MODIFYGLOBAL))
             {
-                RedirectToAccessDenied("CMS.Ecommerce", "EcommerceGlobalModify");
+                RedirectToAccessDenied(ModuleName.ECOMMERCE, EcommercePermissions.ECOMMERCE_MODIFYGLOBAL);
             }
         }
     }

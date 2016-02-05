@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 
 using CMS.Helpers;
@@ -66,7 +66,7 @@ public partial class CMSModules_MediaLibrary_FormControls_LiveSelectors_InsertIm
         else
         {
             createFolder.Visible = false;
-            string url = ResolveUrl(String.Format("~/CMSMessages/Error.aspx?title={0}&text={1}&cancel=1", GetString("dialogs.badhashtitle"), GetString("dialogs.badhashtext")));
+            string url = ResolveUrl(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
             ScriptHelper.RegisterStartupScript(Page, typeof(string), "redirect", ScriptHelper.GetScript(String.Format("if (window.parent != null) {{ window.parent.location = '{0}' }}", url)));
         }
     }

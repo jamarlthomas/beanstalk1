@@ -1,10 +1,9 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Data;
 
 using CMS.DocumentEngine;
 using CMS.Helpers;
-using CMS.PortalEngine;
 using CMS.UIControls;
 using CMS.SiteProvider;
 using CMS.Membership;
@@ -34,7 +33,7 @@ public partial class CMSModules_Objects_FormControls_Cloning_CMS_UserSettings : 
     {
         get
         {
-            return UserSettingsInfo.OBJECT_TYPE + ";" + PredefinedObjectType.FRIEND + ";" + PredefinedObjectType.PROJECTADHOCTASK + ";" + PersonalizationInfo.OBJECT_TYPE + ";" + PersonalizationInfo.OBJECT_TYPE_DASHBOARD + ";" + OpenIDUserInfo.OBJECT_TYPE;
+            return UserSettingsInfo.OBJECT_TYPE + ";" + PredefinedObjectType.FRIEND + ";" + PersonalizationInfo.OBJECT_TYPE + ";" + PersonalizationInfo.OBJECT_TYPE_DASHBOARD + ";" + OpenIDUserInfo.OBJECT_TYPE;
         }
     }
 

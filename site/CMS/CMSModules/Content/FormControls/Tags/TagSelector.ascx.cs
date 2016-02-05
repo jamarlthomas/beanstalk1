@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Web.UI;
+using System.Collections;
 
 using CMS.FormControls;
 using CMS.Helpers;
@@ -17,6 +18,26 @@ public partial class CMSModules_Content_FormControls_Tags_TagSelector : FormEngi
 
 
     #region "Properties"
+
+    /// <summary>
+    /// Gets dialog identifier.
+    /// </summary>
+    private string DialogIdentifier
+    {
+        get
+        {
+            if (String.IsNullOrEmpty(hdnDialogIdentifier.Value))
+            {
+                if (String.IsNullOrEmpty(Request.Form[hdnDialogIdentifier.UniqueID]))
+                {
+                    hdnDialogIdentifier.Value = Guid.NewGuid().ToString();
+                }
+            }
+
+            return HTMLHelper.HTMLEncode(hdnDialogIdentifier.Value);
+        }
+    }
+
 
     /// <summary>
     /// Enable/disable control.
@@ -95,7 +116,7 @@ public partial class CMSModules_Content_FormControls_Tags_TagSelector : FormEngi
             if ((mGroupId == 0) && (Form != null))
             {
                 TreeNode node = (TreeNode)Form.EditedObject;
-                
+
                 // When inserting new document
                 if (Form.IsInsertMode)
                 {
@@ -149,6 +170,57 @@ public partial class CMSModules_Content_FormControls_Tags_TagSelector : FormEngi
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        RegisterScripts();
+        
+        btnSelect.Click += btnSelect_Click;
+        btnSelect.Text = GetString("general.select");
+    }
+
+
+    protected void Page_PreRender(object sender, EventArgs e)
+    {
+        // Enable / Disable control
+        txtTags.Enabled = Enabled;
+        btnSelect.Enabled = Enabled;
+        if (Enabled)
+        {
+            autoComplete.ContextKey = GroupId.ToString();
+        }
+    }
+
+
+    protected void btnSelect_Click(object sender, EventArgs e)
+    {
+        SetDialogParameters();
+
+        ScriptHelper.RegisterStartupScript(Page, typeof(string), "tagSelect", ScriptHelper.GetScript(String.Format("tagSelect('{0}');", DialogIdentifier)));
+    }
+
+    #endregion
+
+
+    #region "Methods"
+
+    /// <summary>
+    /// Sets the dialog parameters to the context.
+    /// </summary>
+    private void SetDialogParameters()
+    {
+        var p = new Hashtable();
+
+        p["textbox"] = txtTags.ClientID;
+        p["group"] = GroupId;
+        p["tags"] = txtTags.Text;
+
+        WindowHelper.Add(DialogIdentifier, p);
+    }
+
+
+    /// <summary>
+    /// Registers required scripts
+    /// </summary>
+    private void RegisterScripts()
+    {
         // Ensure Script Manager is the first control on the page
         using (ScriptManager sMgr = ScriptManager.GetCurrent(Page))
         {
@@ -173,27 +245,8 @@ function itemSelected(source, eventArgs) {
     }
 }
 ", true);
-
-        btnSelect.Text = GetString("general.select");
     }
 
-
-    protected void Page_PreRender(object sender, EventArgs e)
-    {
-        // Enable / Disable control
-        txtTags.Enabled = Enabled;
-        btnSelect.Enabled = Enabled;
-        if (Enabled)
-        {
-            autoComplete.ContextKey = GroupId.ToString();
-            btnSelect.OnClientClick = String.Format("tagSelect('{0}','{1}'); return false;", txtTags.ClientID, GroupId);
-        }
-    }
-
-    #endregion
-
-
-    #region "Methods"
 
     /// <summary>
     /// Returns tag JS script.
@@ -204,14 +257,11 @@ function itemSelected(source, eventArgs) {
 
         // Build script with modal dialog opener and set textbox functions
         return String.Format(@"
-function tagSelect(id,group){{
-    var textbox = document.getElementById(id);
-    if (textbox != null){{
-        var tags = encodeURIComponent(textbox.value.replace(/\|/,""-"").replace(/%/,""-"")).replace(/&/,""%26"");
-        modalDialog('{0}?textbox='+ id +'&group='+ group +'&tags=' + tags, 'TagSelector', 790, 670);
-    }}
+function tagSelect(id) {{
+    modalDialog('{0}?params='+ id, 'TagSelector', 790, 670);
 }}
-function setTagsToTextBox(textBoxId,tagString){{
+
+function setTagsToTextBox(textBoxId, tagString) {{
     if (textBoxId != '') {{
         var textbox = document.getElementById(textBoxId);
         if (textbox != null){{

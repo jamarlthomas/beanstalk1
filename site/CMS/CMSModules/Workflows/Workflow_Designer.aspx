@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" AutoEventWireup="true"
-    Codebehind="Workflow_Designer.aspx.cs" Inherits="CMSModules_Workflows_Workflow_Designer"
+     Codebehind="Workflow_Designer.aspx.cs" Inherits="CMSModules_Workflows_Workflow_Designer"
     Title="Workflow Edit - Designer" %>
 
 <%@ Register Src="~/CMSModules/Workflows/Controls/WorkflowDesigner.ascx" TagName="WorkflowDesigner"

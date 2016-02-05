@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.Localization;
@@ -128,7 +128,7 @@ public partial class CMSModules_OnlineMarketing_Controls_UI_ContentPersonalizati
             if ((mPageTemplateID <= 0) && (Node != null))
             {
                 // Get the template id from the TreeNode
-                PageInfo pi = PageInfoProvider.GetPageInfo(SiteContext.CurrentSiteName, Node.NodeAliasPath, LocalizationContext.PreferredCultureCode, null, Node.NodeID, tree.CombineWithDefaultCulture);
+                PageInfo pi = PageInfoProvider.GetPageInfo(Node.NodeSiteName, Node.NodeAliasPath, Node.DocumentCulture, null, Node.NodeID, false);
                 if ((pi != null) && (pi.UsedPageTemplateInfo != null))
                 {
                     mPageTemplateID = pi.UsedPageTemplateInfo.PageTemplateId;

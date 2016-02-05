@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Groups_Tools_Roles_Role_New"
-    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Roles - New Role" Theme="Default" Codebehind="Role_New.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Groups_Tools_Roles_Role_New"
+    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Roles - New Role" Theme="Default"  Codebehind="Role_New.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Membership/Controls/Roles/RoleEdit.ascx" TagName="RoleEdit" TagPrefix="cms" %>
 

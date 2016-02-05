@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 
 using CMS.Helpers;
@@ -21,7 +21,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
 
 
     /// <summary>
-    /// Delete folder button
+    /// Enable delete folder button
     /// </summary>
     public bool EnableDeleteFolder
     {
@@ -32,6 +32,22 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
         set
         {
             btnDelete.Enabled = value;
+        }
+    }
+
+
+    /// <summary>
+    /// Enable add folder button
+    /// </summary>
+    public bool EnableAddFolder
+    {
+        get
+        {
+            return btnAdd.Enabled;
+        }
+        set
+        {
+            btnAdd.Enabled = value;
         }
     }
 

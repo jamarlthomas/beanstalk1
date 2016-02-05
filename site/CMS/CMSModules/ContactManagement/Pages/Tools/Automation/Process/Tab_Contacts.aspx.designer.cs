@@ -57,6 +57,15 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Automation_Process
     protected global::CMS.ExtendedControls.LocalizedLabel lblWarnStart;
     
     /// <summary>
+    /// headerActions control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMSAdminControls_UI_PageElements_HeaderActions headerActions;
+    
+    /// <summary>
     /// pnlUpdate control.
     /// </summary>
     /// <remarks>

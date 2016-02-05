@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_LiveControls_Forum" Codebehind="Forum.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_LiveControls_Forum"  Codebehind="Forum.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Forums/Controls/Forums/ForumEdit.ascx" TagName="ForumEdit"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Forums/Controls/Forums/ForumModerators.ascx" TagName="ForumModerator"

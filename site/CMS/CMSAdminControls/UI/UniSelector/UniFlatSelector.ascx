@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSAdminControls_UI_UniSelector_UniFlatSelector" Codebehind="UniFlatSelector.ascx.cs" %> 
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSAdminControls_UI_UniSelector_UniFlatSelector"  Codebehind="UniFlatSelector.ascx.cs" %> 
 <%@ Register Src="~/CMSAdminControls/UI/Pager/UIPager.ascx" TagName="UIPager"
     TagPrefix="cms" %>
 <div id="<%=ClientID%>" class="UniFlatSelector">

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web.UI;
 
@@ -118,6 +118,7 @@ public partial class CMSModules_Content_FormControls_Documents_SelectPath : Form
                     mConfig.OutputFormat = OutputFormatEnum.Custom;
                     mConfig.CustomFormatCode = "selectpath";
                     mConfig.SelectableContent = SelectableContentEnum.AllContent;
+                    mConfig.SelectablePageTypes = SelectablePageTypes;
                     mConfig.EditorClientID = SinglePathMode ? txtNodeId.ClientID : txtPath.ClientID;
                     mConfig.ContentUseRelativeUrl = UseRelativeUrl;
 
@@ -156,6 +157,22 @@ public partial class CMSModules_Content_FormControls_Documents_SelectPath : Form
             }
 
             return mConfig;
+        }
+    }
+
+
+    /// <summary>
+    /// Dialog selectable page types.
+    /// </summary>
+    public SelectablePageTypeEnum SelectablePageTypes
+    {
+        get
+        {
+            return ValidationHelper.GetString(GetValue("SelectablePageTypes"), "").ToEnum<SelectablePageTypeEnum>();
+        }
+        set
+        {
+            SetValue("SelectablePageTypes", value.ToString());
         }
     }
 

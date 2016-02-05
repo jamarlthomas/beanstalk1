@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="WidgetDocumentation.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="WidgetDocumentation.aspx.cs"
     Inherits="CMSModules_Widgets_LiveDialogs_WidgetDocumentation" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master"
     Theme="Default" %>
 

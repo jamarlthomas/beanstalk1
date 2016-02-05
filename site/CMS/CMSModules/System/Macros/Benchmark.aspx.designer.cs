@@ -27,7 +27,7 @@ public partial class CMSModules_System_Macros_Benchmark {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSAdminControls_UI_Macros_MacroEditor editorElem;
+    protected global::CMS.UIControls.MacroEditor editorElem;
     
     /// <summary>
     /// lblIterations control.

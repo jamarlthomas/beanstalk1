@@ -24,6 +24,12 @@ body, html {
     width: 100%;
     background-color: @color-white;
     box-shadow: @shadow;
+
+    table{
+        border: none;
+        margin-bottom: 0px;
+    }
+
 }
 
 .OnSiteSlider, .RTL .LTR .OnSiteSlider {
@@ -396,17 +402,15 @@ body, html {
     .ActionIcon,
     .IconRight {
         display: table-cell;
+        min-width: @base-unit*2;
+        line-height: @base-unit*2;
 
         i {
             padding: @base-unit*0.5;
         }
     }
 
-    .Icon {
-        text-align: center;
-        color: @color-white;
-    }
-
+    .Icon,
     .ActionIcon {
         color: @color-white;
     }

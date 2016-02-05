@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 
 using CMS.Controls;
 using CMS.Helpers;
+using CMS.MacroEngine;
 using CMS.PortalControls;
 using CMS.Base;
 using CMS.DocumentEngine;
@@ -742,12 +743,8 @@ public partial class CMSWebParts_Attachments_DocumentAttachments : CMSAbstractWe
             {
                 ucAttachments.CultureCode = CultureCode;
             }
-            if (string.IsNullOrEmpty(Path))
-            {
-                Path = DocumentContext.CurrentAliasPath;
-            }
-            Path = TreePathUtils.EnsureSingleNodePath(Path);
-            ucAttachments.Path = Path;
+          
+            ucAttachments.Path = TreePathUtils.EnsureSingleNodePath(MacroResolver.ResolveCurrentPath(Path));
             ucAttachments.SiteName = SiteName;
             ucAttachments.TopN = TopN;
 

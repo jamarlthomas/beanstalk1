@@ -666,6 +666,7 @@ body.cms-bootstrap,
   color: #403e3d;
   font-size: 16px;
   padding: 8px 4px;
+  vertical-align: top;
 }
 .WebPart .WebPartHandle {
   cursor: move;
@@ -811,25 +812,6 @@ body.cms-bootstrap,
 }
 .WebPartZoneHeaderOrphaned .WebPartZoneActiveContextMenu .WebPartZoneLeftAction {
   background: #ececec;
-}
-.WebPartZoneSimpleHeader {
-  height: 0;
-  overflow: visible;
-  margin: 0px 1px;
-  cursor: default;
-  color: #403e3d;
-}
-.WebPartZoneSimpleHeader .SimpleZoneAction {
-  display: inline-block;
-  background-color: #e5e5e5;
-}
-.WebPartZoneSimpleHeader .SimpleZoneAction i {
-  cursor: pointer;
-  font-size: 16px;
-  padding: 8px 8px;
-}
-.WebPartZoneSimpleHeader .SimpleZoneAction i:hover {
-  color: #0f6194;
 }
 .WebPartZoneActiveContextMenu .SimpleZoneAction {
   color: #0f6194;
@@ -999,6 +981,9 @@ body.cms-bootstrap,
 }
 .WebPartDesign .PageHeaderLine {
   border-bottom: solid 1px #aaa;
+}
+.WebPartDesign .WebPartZoneContent {
+  border: none;
 }
 .WebPartDefaultContentEnvelope {
   background-color: #c5cbd0;
@@ -1340,24 +1325,16 @@ body.cms-bootstrap,
   font-weight: bold;
 }
 .cms-bootstrap .PageContent {
-  padding: 16px;
+  padding: 16px 16px 0 16px;
+}
+.cms-bootstrap .PageContentAfterForm {
+  padding: 0 16px 16px 16px;
 }
 .cms-bootstrap .cke_dialog .cke_dialog_contents_body {
   padding: 17px 10px 5px;
 }
 .cms-bootstrap .cke_dialog .cke_dialog_ui_vbox_child {
   padding: 5px 0;
-}
-.cms-bootstrap .ObjectEditMenuInfo {
-  clear: both;
-  background-color: #e5e5e5;
-  overflow: hidden;
-  padding: 8px 16px;
-  color: #262524;
-  text-align: left;
-}
-.RTL .cms-bootstrap .ObjectEditMenuInfo {
-  text-align: right;
 }
 .cms-bootstrap #CMSHeaderDiv.LTR * {
   direction: ltr;
@@ -1466,84 +1443,21 @@ html {
 .cellspacing_0 {
   border-spacing: 0;
 }
-.WorkflowInfo,
-.RTL .LTR .WorkflowInfo {
-  display: block;
-  text-align: left;
-  direction: ltr;
-}
-.RTL .WorkflowInfo {
-  text-align: right;
-  direction: rtl;
-}
-.PageManagerWorkflowInfo,
-.RTL .LTR .PageManagerWorkflowInfo {
-  background-color: #e5e5e5;
-  overflow: hidden;
-  padding: 8px 16px;
-  margin: 0;
-  color: #000;
-  text-align: left;
-}
-.RTL .PageManagerWorkflowInfo {
-  padding: 4px 10px 4px 5px;
-  text-align: right;
-}
-.PageManagerInfo {
-  color: #000000;
-  background-color: #ffffff;
-  display: block;
-  padding: 4px 3px 3px 10px;
-  border-bottom: solid 1px #a4b2bc;
-}
-.RTL .PageManagerInfo {
-  padding: 4px 10px 3px 3px;
-}
-.PageManagerError {
-  color: #ff0000;
-  background-color: #ffffff;
-  display: block;
-  padding: 3px;
-  border-bottom: solid 1px #a4b2bc;
-}
-.PageManagerPreviewInfo {
+.preview-info {
   top: 0;
   width: 100%;
   text-align: left;
-  color: #000000 !important;
-  padding: 4px 5px 4px 10px !important;
+  color: #262524 !important;
+  padding: 8px 16px;
   border-bottom: solid 1px #a4b2bc !important;
-  background-color: #F5FAFF !important;
+  background-color: #f5faff !important;
 }
-.RTL .PageManagerPreviewInfo {
-  text-align: right !important;
-  padding: 4px 10px 4px 5px !important;
+.preview-info-text {
+  color: #262524;
 }
-.PreviewInfo {
-  color: #000000;
-}
-.PreviewInfoLink {
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #0000ff;
+.preview-info-link {
+  color: #0f6194;
   font-weight: bold;
-  text-decoration: underline;
-}
-.SaveIndicator {
-  background-color: #89a;
-  color: #000000;
-  display: block;
-  z-index: 20250;
-  position: absolute;
-  text-align: center;
-  width: 110%;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-.PassiveIndicator {
-  z-index: 20249;
 }
 .AttachmentsList {
   border: none;
@@ -1636,6 +1550,8 @@ html {
 }
 .EditableTextTextBox {
   margin: 0;
+  color: inherit;
+  background-color: inherit;
 }
 .CMSEditModeButtonClear {
   clear: both;
@@ -1784,9 +1700,6 @@ fieldset .PageContent {
 }
 .DropDownField {
   width: 294px;
-}
-.IE9 .DropDownField {
-  width: 296px;
 }
 .DropDownFieldShort {
   width: 50px;

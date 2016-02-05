@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_Macros_MacroSelector"
-    Codebehind="MacroSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_Macros_MacroSelector"
+     Codebehind="MacroSelector.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/Macros/MacroTreeEditor.ascx" TagName="MacroTreeEditor"
     TagPrefix="cms" %>
 <div class="control-group-inline">

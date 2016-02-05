@@ -30,13 +30,13 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_ObjectMenu {
     protected global::CMS.ExtendedControls.ContextMenuItem iRelationships;
     
     /// <summary>
-    /// sep1 control.
+    /// sepCloneDestroy control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.ContextMenuSeparator sep1;
+    protected global::CMS.ExtendedControls.ContextMenuSeparator sepCloneDestroy;
     
     /// <summary>
     /// iClone control.
@@ -57,13 +57,13 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_ObjectMenu {
     protected global::CMS.ExtendedControls.ContextMenuItem iDestroy;
     
     /// <summary>
-    /// sep2 control.
+    /// sepExport control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.ContextMenuSeparator sep2;
+    protected global::CMS.ExtendedControls.ContextMenuSeparator sepExport;
     
     /// <summary>
     /// iExport control.
@@ -91,4 +91,31 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_ObjectMenu {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.ContextMenuItem iRestore;
+    
+    /// <summary>
+    /// sepMove control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.ContextMenuSeparator sepMove;
+    
+    /// <summary>
+    /// iMoveUp control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.ContextMenuItem iMoveUp;
+    
+    /// <summary>
+    /// iMoveDown control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.ContextMenuItem iMoveDown;
 }

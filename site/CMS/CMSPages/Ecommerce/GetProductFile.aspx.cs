@@ -7,58 +7,42 @@ using CMS.UIControls;
 
 public partial class CMSPages_Ecommerce_GetProductFile : AbstractCMSPage
 {
-    #region "Variables"
-
-    private Guid token = Guid.Empty;
-
-    #endregion
-
-
-    #region "Page methods"
-
-    protected override void OnInit(EventArgs e)
-    {
-        base.OnInit(e);
-
-        // Get download token from URL
-        token = QueryHelper.GetGuid("token", Guid.Empty);
-    }
-
-
     protected void Page_Load(object sender, EventArgs e)
     {
-        string errorMessage = null;
+        // Set default error message
+        var errorMessageResString = "getproductfile.existerror";
 
         // Get order item SKU file
-        OrderItemSKUFileInfo oiskufi = OrderItemSKUFileInfoProvider.GetOrderItemSKUFileInfo(token);
-
-        if (oiskufi != null)
+        var token = QueryHelper.GetGuid("token", Guid.Empty);
+        var orderedFile = OrderItemSKUFileInfoProvider.GetOrderItemSKUFileInfo(token);
+        if (orderedFile != null)
         {
             // Get parent order item
-            OrderItemInfo oii = OrderItemInfoProvider.GetOrderItemInfo(oiskufi.OrderItemID);
-
-            if (oii != null)
+            var orderItem = OrderItemInfoProvider.GetOrderItemInfo(orderedFile.OrderItemID);
+            if (orderItem != null)
             {
                 // If download is not expired
-                if ((oii.OrderItemValidTo.CompareTo(DateTimeHelper.ZERO_TIME) == 0) || (oii.OrderItemValidTo.CompareTo(DateTime.Now) > 0))
+                if ((orderItem.OrderItemValidTo.CompareTo(DateTimeHelper.ZERO_TIME) == 0) || (orderItem.OrderItemValidTo.CompareTo(DateTime.Now) > 0))
                 {
                     // Get SKU file
-                    SKUFileInfo skufi = SKUFileInfoProvider.GetSKUFileInfo(oiskufi.FileID);
+                    var skuFile = SKUFileInfoProvider.GetSKUFileInfo(orderedFile.FileID);
 
-                    if (skufi != null)
+                    if (skuFile != null)
                     {
                         // Decide how to process the file based on file type
-                        switch (skufi.FileType.ToLowerCSafe())
+                        switch (skuFile.FileType.ToLowerCSafe())
                         {
                             case "metafile":
                                 // Set parameters to current context
-                                Context.Items["fileguid"] = skufi.FileMetaFileGUID;
+                                Context.Items["fileguid"] = skuFile.FileMetaFileGUID;
                                 Context.Items["disposition"] = "attachment";
 
-                                // Perform server side redirect to download
+                                // Handle request using metafile handler
                                 Response.Clear();
-                                Server.Transfer(URLHelper.ResolveUrl("~/CMSPages/GetMetaFile.aspx"));
+                                var handler = new GetMetaFileHandler();
+                                handler.ProcessRequest(Context);
                                 Response.End();
+
                                 return;
                         }
                     }
@@ -66,27 +50,14 @@ public partial class CMSPages_Ecommerce_GetProductFile : AbstractCMSPage
                 else
                 {
                     // Set error message
-                    errorMessage = ResHelper.GetString("getproductfile.expirederror");
+                    errorMessageResString = "getproductfile.expirederror";
                 }
             }
         }
 
-        // If error message not set
-        if (String.IsNullOrEmpty(errorMessage))
-        {
-            // Set default error message
-            errorMessage = ResHelper.GetString("getproductfile.existerror");
-        }
-
-        // Set error message to current context
-        Context.Items["title"] = ResHelper.GetString("getproductfile.error");
-        Context.Items["text"] = errorMessage;
-
         // Perform server side redirect to error page
         Response.Clear();
-        Server.Transfer(URLHelper.ResolveUrl("~/CMSMessages/Error.aspx"));
+        Server.Transfer(UIHelper.GetErrorPageUrl("getproductfile.error", errorMessageResString));
         Response.End();
     }
-
-    #endregion
 }

@@ -219,6 +219,7 @@
         color: @design-icon-color;
         font-size: @base-unit;
         padding: @design-header-padding (@base-unit * 0.25);
+        vertical-align: top;
     }
 }
 
@@ -319,29 +320,6 @@
 
 .WebPartZoneHeaderOrphaned .WebPartZoneActiveContextMenu .WebPartZoneLeftAction {
     background: #ececec;
-}
-
-.WebPartZoneSimpleHeader {
-    height: 0;
-    overflow: visible;
-    margin: 0px 1px;
-    cursor: default;
-    color: @design-icon-color;
-
-    .SimpleZoneAction {
-        display: inline-block;
-        background-color: @color-gray-150;
-
-        i {
-            cursor: pointer;
-            font-size: @base-unit;
-            padding: @design-header-menu-padding;
-
-            &:hover {
-                color: @design-icon-hover-color;
-            }
-        }
-    }
 }
 
 .WebPartZoneActiveContextMenu .SimpleZoneAction {
@@ -551,6 +529,10 @@
 
     .PageHeaderLine {
         border-bottom: solid 1px #aaa;
+    }
+
+    .WebPartZoneContent {
+        border: none;
     }
 }
 

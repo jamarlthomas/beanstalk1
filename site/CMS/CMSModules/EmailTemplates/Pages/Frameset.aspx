@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Frameset.aspx.cs" Inherits="CMSModules_EmailTemplates_Pages_Frameset" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Frameset.aspx.cs" Inherits="CMSModules_EmailTemplates_Pages_Frameset" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/TabsFrameset.ascx" TagName="TabsFrameset"
     TagPrefix="cms" %>

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_OnlineMarketing_Controls_Content_CombinationPanel"
-    Codebehind="CombinationPanel.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_OnlineMarketing_Controls_Content_CombinationPanel"
+     Codebehind="CombinationPanel.ascx.cs" %>
 <%@ Register Src="~/CMSModules/OnlineMarketing/FormControls/SelectMVTCombination.ascx"
     TagName="CombinationSelector" TagPrefix="cms" %>
 

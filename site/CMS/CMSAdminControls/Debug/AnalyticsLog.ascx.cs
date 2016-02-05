@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 
 using CMS.ExtendedControls;
@@ -25,8 +25,8 @@ public partial class CMSAdminControls_Debug_AnalyticsLog : AnalyticsLog
 
             HeaderText = GetString("AnalyticsLog.Info");
 
-            gridAnalytics.DataSource = dt;
-            gridAnalytics.DataBind();
+            // Bind the data
+            BindGrid(gridAnalytics, dt);
         }
     }
 }

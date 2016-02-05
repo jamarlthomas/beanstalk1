@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Blogs_Controls_BlogPostSubscriptions" Codebehind="BlogPostSubscriptions.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Blogs_Controls_BlogPostSubscriptions"  Codebehind="BlogPostSubscriptions.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <cms:MessagesPlaceHolder ID="plcMess" runat="server" LiveSiteOnly="true" />
 <div class="BlogPostSubscriptions">

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.PortalControls;
@@ -222,7 +222,7 @@ public partial class CMSWebParts_Viewers_Documents_cmsviewer : CMSAbstractWebPar
         }
         set
         {
-            SetValue("SelctOnlyPublished", value);
+            SetValue("SelectOnlyPublished", value);
             viewElem.SelectOnlyPublished = value;
         }
     }

@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_System_ActivityBar" Codebehind="ActivityBar.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_System_ActivityBar"  Codebehind="ActivityBar.ascx.cs" %>
 <div class="ActivityBar" style="overflow: hidden;" id="activityBar">
     &nbsp;        
 </div>

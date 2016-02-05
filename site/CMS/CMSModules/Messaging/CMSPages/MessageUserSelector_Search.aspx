@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_Messaging_CMSPages_MessageUserSelector_Search" Theme="Default"
-    EnableEventValidation="false" MasterPageFile="~/CMSMasterPages/LiveSite/EmptyPage.master" Codebehind="MessageUserSelector_Search.aspx.cs" %>
+    EnableEventValidation="false" MasterPageFile="~/CMSMasterPages/LiveSite/EmptyPage.master"  Codebehind="MessageUserSelector_Search.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Messaging/Controls/SearchUser.ascx" TagName="SearchUser"
     TagPrefix="cms" %>

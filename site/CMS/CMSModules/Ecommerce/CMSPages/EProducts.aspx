@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Download" Language="C#" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master"
-    AutoEventWireup="true" Codebehind="EProducts.aspx.cs" Inherits="CMSModules_Ecommerce_CMSPages_EProducts"
+    AutoEventWireup="true"  Codebehind="EProducts.aspx.cs" Inherits="CMSModules_Ecommerce_CMSPages_EProducts"
     Theme="Default" %>
 
 <%@ Register TagPrefix="cms" TagName="UniGrid" Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" %>

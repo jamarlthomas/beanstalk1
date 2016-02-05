@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_MediaLibrary_Controls_LiveControls_MediaFileUploader" Codebehind="MediaFileUploader.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_MediaLibrary_Controls_LiveControls_MediaFileUploader"  Codebehind="MediaFileUploader.ascx.cs" %>
 
 <div class="MediaFileUploader">
     <cms:LocalizedLabel runat="server" ID="lblInfo" CssClass="InfoLabel" EnableViewState="false"

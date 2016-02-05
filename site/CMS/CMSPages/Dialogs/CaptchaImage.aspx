@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSPages_Dialogs_CaptchaImage" Codebehind="CaptchaImage.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSPages_Dialogs_CaptchaImage"  Codebehind="CaptchaImage.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

@@ -48,7 +48,7 @@ public partial class CMSModuleLoader
             SettingsKeyInfo setting = e.Object as SettingsKeyInfo;
             if (setting.KeyName == "CMSSalesForceLeadReplicationMapping")
             {
-                SettingsKeyInfoProvider.SetValue("CMSSalesForceLeadReplicationMappingDateTime", DateTime.Now.ToString("s"));
+                SettingsKeyInfoProvider.SetGlobalValue("CMSSalesForceLeadReplicationMappingDateTime", DateTime.Now.ToString("s"));
             }
         }
 

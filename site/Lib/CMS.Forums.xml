@@ -765,6 +765,14 @@
             <param name="searchText">Text to search</param>
             <param name="columns">Name of the columns where the text should be searched</param>    
         </member>
+        <member name="M:CMS.Forums.ForumViewer.GetMemberProfileUrl(System.String)">
+            <summary>
+            Gets member profile URL based on settings key. Replaces the wildcards
+            for user name and culture code
+            </summary>
+            <param name="userName">User name for wildcard substitution.</param>
+            <returns>Member profile URL with resolved wildcards.</returns>
+        </member>
         <member name="M:CMS.Forums.ForumViewer.CanVote(System.Int32)">
             <summary>
             Returns true if user can vote to the selected post, if yes, save info about it.
@@ -1201,6 +1209,61 @@
             Groups ("sometext") from within the text regular expression.
             </summary>
         </member>
+        <member name="T:CMS.Forums.GetForumAttachmentHandler">
+            <summary>
+            Handles requests for forum attachment files.
+            </summary>
+        </member>
+        <member name="F:CMS.Forums.GetForumAttachmentHandler.useClientCache">
+            <summary>
+            Sets to false to disable the client caching.
+            </summary>
+        </member>
+        <member name="F:CMS.Forums.GetForumAttachmentHandler.largeFilesCacheMinutes">
+            <summary>
+            Sets to 0 if you do not wish to cache large files.
+            </summary>
+        </member>
+        <member name="M:CMS.Forums.GetForumAttachmentHandler.ProcessRequestInternal(System.Web.HttpContextBase)">
+            <summary>
+            Processes the handler request
+            </summary>
+            <param name="context">Handler context</param>
+        </member>
+        <member name="M:CMS.Forums.GetForumAttachmentHandler.ProcessFile">
+            <summary>
+            Processes the file.
+            </summary>
+        </member>
+        <member name="M:CMS.Forums.GetForumAttachmentHandler.SendFile(CMS.Forums.CMSOutputForumAttachment)">
+            <summary>
+            Sends the given file within response.
+            </summary>
+            <param name="file">File to send</param>
+        </member>
+        <member name="M:CMS.Forums.GetForumAttachmentHandler.SetResponseContentType(CMS.Forums.CMSOutputForumAttachment)">
+            <summary>
+            Sets content type of the response based on file MIME type
+            </summary>
+            <param name="file">Output file</param>
+        </member>
+        <member name="M:CMS.Forums.GetForumAttachmentHandler.GetOutputDataDependency(CMS.Forums.ForumAttachmentInfo)">
+            <summary>
+            Returns the output data dependency based on the given attachment record.
+            </summary>
+            <param name="fi">ForumAttachmentInfo object</param>
+        </member>
+        <member name="M:CMS.Forums.GetForumAttachmentHandler.EnsurePhysicalFile(CMS.Forums.CMSOutputForumAttachment)">
+            <summary>
+            Ensures the physical file.
+            </summary>
+            <param name="file">Output file</param>
+        </member>
+        <member name="P:CMS.Forums.GetForumAttachmentHandler.AllowCache">
+            <summary>
+            Returns true if the process allows cache.
+            </summary>
+        </member>
         <member name="T:CMS.Forums.ForumsUploader">
             <summary>
             Multifile forums uploader class for Http handler.
@@ -1412,17 +1475,17 @@
             Initializes the tasks for media files synchronization
             </summary>
         </member>
-        <member name="M:CMS.Forums.ForumsSynchronization.CheckSynchronizeForumAttachments">
+        <member name="M:CMS.Forums.ForumsSynchronization.CheckSynchronizeForumAttachments(CMS.Core.IWebFarmTask)">
             <summary>
             Returns true if the synchronization of the forum attachments is allowed
             </summary>
         </member>
-        <member name="M:CMS.Forums.ForumsSynchronization.CheckSynchronizeDeleteForumAttachments">
+        <member name="M:CMS.Forums.ForumsSynchronization.CheckSynchronizeDeleteForumAttachments(CMS.Core.IWebFarmTask)">
             <summary>
             Returns true if the synchronization of the deletion of the forum attachments is allowed
             </summary>
         </member>
-        <member name="M:CMS.Forums.ForumsSynchronization.UpdateForumAttachment(System.String,System.String,CMS.Core.BinaryData)">
+        <member name="M:CMS.Forums.ForumsSynchronization.UpdateForumAttachment(System.String,System.String[],CMS.Core.BinaryData)">
             <summary>
             Updates the forum attachment
             </summary>
@@ -1430,7 +1493,7 @@
             <param name="data">Task data</param>
             <param name="binaryData">Task binary data</param>
         </member>
-        <member name="M:CMS.Forums.ForumsSynchronization.DeleteForumAttachment(System.String,System.String,CMS.Core.BinaryData)">
+        <member name="M:CMS.Forums.ForumsSynchronization.DeleteForumAttachment(System.String,System.String[],CMS.Core.BinaryData)">
             <summary>
             Updates the forum attachment
             </summary>
@@ -1478,6 +1541,11 @@
             Constructor - Creates a new ForumSubscriptionWithPostInfo object from the given DataRow.
             </summary>
             <param name="dr">DataRow with the object data</param>
+        </member>
+        <member name="M:CMS.Forums.ForumSubscriptionWithPostInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
         </member>
         <member name="M:CMS.Forums.ForumSubscriptionWithPostInfo.GetDataQueryInternal">
             <summary>
@@ -1733,7 +1801,7 @@
             <param name="siteName">Site name</param>
             <param name="attachmentFileName">Name of the file to be deleted</param>
             <param name="deleteDirectory">Determines whether delete specified directory or not</param>
-            <param name="synchronization">Indicates wehther the method is called due to synchronization</param>
+            <param name="synchronization">Indicates whether the method is called due to synchronization</param>
         </member>
         <member name="M:CMS.Forums.ForumAttachmentInfoProvider.GetAttachmentFile(System.Guid,System.String)">
             <summary>
@@ -1830,17 +1898,6 @@
             <param name="height">New height</param>
             <param name="maxSideSize">Max side size</param>
         </member>
-        <member name="M:CMS.Forums.ForumAttachmentInfoProvider.StoreFilesInFileSystem(System.String)">
-            <summary>
-            Indicates whether the files should be stored in the file system according the global settings.
-            </summary>                
-        </member>
-        <member name="M:CMS.Forums.ForumAttachmentInfoProvider.StoreFilesInDatabase(System.String)">
-            <summary>
-            Indicates whether the files should be stored in the DB according to the global settings.
-            </summary>        
-            <param name="siteName">Site name</param>
-        </member>
         <member name="M:CMS.Forums.ForumAttachmentInfoProvider.GenerateThumbnails(System.String)">
             <summary>
             Returns the current settings whether the thumbnails should be generated.
@@ -1903,6 +1960,16 @@
         <member name="T:CMS.Forums.ForumsModule">
             <summary>
             Represents the Forums module.
+            </summary>
+        </member>
+        <member name="F:CMS.Forums.ForumsModule.FORUM_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for forum.
+            </summary>
+        </member>
+        <member name="F:CMS.Forums.ForumsModule.FORUM_SUBSCRIPTION_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for forum subscription.
             </summary>
         </member>
         <member name="M:CMS.Forums.ForumsModule.#ctor">
@@ -2378,21 +2445,6 @@
             <summary>
             Gets setting value indicating if double opt-in should be enabled
             </summary>
-        </member>
-        <member name="M:CMS.Forums.ForumGroupInfoProvider.GetForumGroupInfo(System.String,System.String,System.String)">
-            <summary>
-            Returns the ForumGroupInfo structure for the specified forumGroup.
-            </summary>
-            <param name="forumGroupName">ForumGroup name</param>
-            <param name="siteName">Site name</param>
-            <param name="groupName">Community group name</param>
-        </member>
-        <member name="M:CMS.Forums.ForumGroupInfoProvider.GetForumGroupInfo(System.String,System.String)">
-            <summary>
-            Returns the ForumGroupInfo structure for the specified forumGroup.
-            </summary>
-            <param name="forumGroupName">ForumGroup name</param>
-            <param name="siteName">Site name</param>
         </member>
         <member name="M:CMS.Forums.ForumGroupInfoProvider.GetGroupsInternal(System.String,System.String,System.Int32,System.String)">
             <summary>
@@ -3746,11 +3798,6 @@
             Constructor - Creates an empty ForumPostInfo object.
             </summary>
         </member>
-        <member name="M:CMS.Forums.ForumPostInfo.#ctor(CMS.DataEngine.IDataClass)">
-            <summary>
-            Constructor - Creates a new ForumPostInfo object from the given DataRow.
-            </summary>
-        </member>
         <member name="M:CMS.Forums.ForumPostInfo.#ctor(System.Data.DataRow)">
             <summary>
             Constructor - Creates a new ForumPostInfo object from the given DataRow.
@@ -3946,11 +3993,6 @@
         <member name="T:CMS.Forums.ForumPostInfoProvider">
             <summary>
             Class providing ForumPostInfo management.
-            </summary>
-        </member>
-        <member name="F:CMS.Forums.ForumPostInfoProvider.ForumPostIdLength">
-            <summary>
-            Post ID Path length. Default = 8 '00000001/000000001'
             </summary>
         </member>
         <member name="M:CMS.Forums.ForumPostInfoProvider.GetForumPostInfoByGUID(System.Guid)">
@@ -4411,6 +4453,11 @@
             </summary>
             <param name="postInfo">Post to be moved</param>
             <param name="forumId">ID of the forum where the post will be moved</param>
+        </member>
+        <member name="P:CMS.Forums.ForumPostInfoProvider.ForumPostIdLength">
+            <summary>
+            Post ID Path length. Default = 8 '00000001/000000001'
+            </summary>
         </member>
         <member name="P:CMS.Forums.ForumPostInfoProvider.MaxPostLevel">
             <summary>

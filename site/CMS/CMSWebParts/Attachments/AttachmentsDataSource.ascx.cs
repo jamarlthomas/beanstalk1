@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
+using CMS.MacroEngine;
 using CMS.PortalControls;
 using CMS.DocumentEngine;
 
@@ -307,8 +308,7 @@ public partial class CMSWebParts_Attachments_AttachmentsDataSource : CMSAbstract
             {
                 Path = DocumentContext.CurrentAliasPath;
             }
-            Path = TreePathUtils.EnsureSingleNodePath(Path);
-            srcAttach.Path = Path;
+            srcAttach.Path = TreePathUtils.EnsureSingleNodePath(MacroResolver.ResolveCurrentPath(Path));
             srcAttach.OrderBy = OrderBy;
             srcAttach.TopN = SelectTopN;
             srcAttach.WhereCondition = WhereCondition;

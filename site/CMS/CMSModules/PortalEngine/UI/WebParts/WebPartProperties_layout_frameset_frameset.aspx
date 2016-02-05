@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="WebPartProperties_layout_frameset_frameset.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="WebPartProperties_layout_frameset_frameset.aspx.cs"
     Inherits="CMSModules_PortalEngine_UI_WebParts_WebPartProperties_layout_frameset_frameset" %>
 
 <!DOCTYPE html>

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_Controls_WebParts_WebPartZoneProperties"
-    Codebehind="WebPartZoneProperties.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_Controls_WebParts_WebPartZoneProperties"
+     Codebehind="WebPartZoneProperties.ascx.cs" %>
 <style type="text/css">
     .ContentEditorToolbar
     {

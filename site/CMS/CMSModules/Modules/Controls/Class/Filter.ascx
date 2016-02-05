@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Filter.ascx.cs" Inherits="CMSModules_Modules_Controls_Class_Filter" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Filter.ascx.cs" Inherits="CMSModules_Modules_Controls_Class_Filter" %>
 <asp:Panel runat="server" DefaultButton="btnSearch" CssClass="form-horizontal form-filter">
     <div class="form-group">
         <div class="filter-form-label-cell">

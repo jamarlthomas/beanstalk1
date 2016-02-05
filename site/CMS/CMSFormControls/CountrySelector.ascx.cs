@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls;
 using CMS.FormControls;
 using CMS.FormEngine;
-using CMS.Helpers;
 using CMS.Globalization;
+using CMS.Helpers;
 using CMS.UIControls;
 
 public partial class CMSFormControls_CountrySelector : FormEngineUserControl
@@ -17,6 +17,8 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
     private bool mUseCodeNameForSelection = true;
     private bool? mAddSelectCountryRecord;
     private bool? mEnableStateSelection;
+    private bool? mUseStateSelection;
+
     private ReturnType returnWhat = ReturnType.Both;
 
     /// <summary>
@@ -55,6 +57,19 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
             return CountryDropDown.ClientID;
         }
     }
+
+
+    /// <summary>
+    /// Gets client ID of the country drop down list.
+    /// </summary>
+    public override string InputClientID
+    {
+        get
+        {
+            return CountryDropDown.ClientID;
+        }
+    }
+
 
 
     /// <summary>
@@ -255,7 +270,7 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
     {
         get
         {
-            if (plcStates.Visible)
+            if (UseStateSelection)
             {
                 // Check id using code name for selection
                 if (UseCodeNameForSelection)
@@ -346,7 +361,7 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
     {
         get
         {
-            if (plcStates.Visible)
+            if (UseStateSelection)
             {
                 if (UseCodeNameForSelection)
                 {
@@ -508,7 +523,7 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
     {
         get
         {
-            return (!plcStates.Visible) || (StateDropDown.Items.Count == 0) || (StateID > 0);
+            return (StateID > 0) || !UseStateSelection;
         }
     }
 
@@ -525,6 +540,20 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
         set
         {
             SetValue("StateIDColumnName", value);
+        }
+    }
+
+    #endregion
+
+
+    #region "Private properties"
+
+    private bool UseStateSelection
+    {
+        get
+        {
+            var value = mUseStateSelection ?? (mUseStateSelection = EnableStateSelection && uniSelectorState.HasData);
+            return (bool)value;
         }
     }
 
@@ -584,6 +613,7 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
             uniSelectorState.MaxDisplayedItems = (DisplayAllItems ? 100 : UniSelector.DefaultMaxDisplayedItems);
             uniSelectorState.MaxDisplayedTotalItems = uniSelectorState.MaxDisplayedItems + 50;
             uniSelectorState.WhereCondition = "CountryID = " + CountryID;
+            mUseStateSelection = null;
 
             if (UseCodeNameForSelection)
             {
@@ -591,6 +621,15 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
                 uniSelectorState.NoneRecordValue = String.Empty;
                 uniSelectorCountry.AllRecordValue = String.Empty;
                 uniSelectorCountry.NoneRecordValue = String.Empty;
+            }
+
+            if (HasDependingFields)
+            {
+                ControlsHelper.RegisterPostbackControl(uniSelectorCountry);
+
+                uniSelectorState.OnSelectionChanged += (o, args) => RaiseOnChanged();
+                uniSelectorState.DropDownSingleSelect.AutoPostBack = true;
+                ControlsHelper.RegisterPostbackControl(uniSelectorState);
             }
         }
     }
@@ -606,7 +645,7 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
         if (CountryID > 0)
         {
             uniSelectorState.StopProcessing = false;
-            plcStates.Visible = EnableStateSelection && uniSelectorState.HasData;
+            plcStates.Visible = UseStateSelection;
         }
         else
         {
@@ -627,6 +666,7 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
 
             uniSelectorState.StopProcessing = false;
             uniSelectorState.Reload(true);
+            mUseStateSelection = null;
 
             // Raise change event
             RaiseOnChanged();
@@ -668,9 +708,10 @@ public partial class CMSFormControls_CountrySelector : FormEngineUserControl
         {
             countryId = ValidationHelper.GetInteger(uniSelectorCountry.Value, 0);
         }
-        uniSelectorState.WhereCondition = "CountryID = " + countryId;
 
+        uniSelectorState.WhereCondition = "CountryID = " + countryId;
         uniSelectorState.Reload(forceReload);
+        mUseStateSelection = null;
     }
 
 

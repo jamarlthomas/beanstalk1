@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Membership_OpenID_OpenIDLogon" Codebehind="~/CMSWebParts/Membership/OpenID/OpenIDLogon.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Membership_OpenID_OpenIDLogon"  Codebehind="~/CMSWebParts/Membership/OpenID/OpenIDLogon.ascx.cs" %>
 <asp:Panel ID="pnlLogon" runat="server" class="OpenIDContainer">
     <cms:CMSTextBox ID="txtInput" runat="server" />
     <asp:Literal ID="ltlScript" runat="server" EnableViewState="false" />

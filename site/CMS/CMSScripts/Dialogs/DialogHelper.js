@@ -20,6 +20,10 @@ function InitGlobalVariables() {
     window.webPropertiesObj = $cmsj('.DialogWebProperties');
     window.menuElem = $cmsj('.cms-edit-menu');
     window.viewElem = $cmsj('.DialogViewContent');
+
+    window.tabsElem = $cmsj('.nav-tabs-container-horizontal');
+    window.fullSizeInnerTab = $cmsj('.media-properties-tab');
+
     if ($cmsj('.DialogHeader').length > 0) {
         window.titleElem = $cmsj('.DialogHeader');
     }
@@ -234,7 +238,7 @@ function SetPreviewBox() {
                     previewObj.width(previewWidth);
                     // Height
                     if (propertiesFullObj.length > 0) {
-                        previewObj.height(mainBlockElem.height() - 160);
+                        previewObj.height(mainBlockElem.height() - 196);
                     }
                     else {
                         previewObj.height(380);
@@ -256,15 +260,16 @@ function InitializeDesign() {
     ResetListItemWidth();
 
     var menuHeight = menuElem.outerHeight();
+
+    var mainBlockHeight = containerElem.height();
+    if (titleElem.parents(".UIHeader").length == 0) {
+        // Decrease the content height only when not used in the Portal engine UI
+        mainBlockHeight -= titleElem.outerHeight();
+    }
+    mainBlockElem.height(mainBlockHeight);
+
     // Dialog view content height
     if (viewElem.length > 0) {
-        var mainBlockHeight = containerElem.height();
-        if (titleElem.parents(".UIHeader").length == 0) {
-            // Decrease the content height only when not used in the Portal engine UI
-            mainBlockHeight -= titleElem.outerHeight();
-        }
-        mainBlockElem.height(mainBlockHeight);
-
         var mainHeight = mainBlockHeight - menuHeight;
         var propHeight = propElem.outerHeight();
         var padds = parseInt(viewElem.css('padding-top'), 10) + parseInt(viewElem.css('padding-bottom'), 10);
@@ -340,6 +345,27 @@ function InitializeDesign() {
         }
     }
 
+    var fullSizePropertiesVisible = (propertiesFullObj.length > 0);
+    var webTabPropertiesVisible = (webPropertiesObj.length > 0);
+    
+    if (fullSizePropertiesVisible || webTabPropertiesVisible) {
+        // Set new height
+        var newHeight = containerElem.height() - tabsElem.height();
+
+        // Content tab full size properties are visible
+        if (fullSizePropertiesVisible) {
+            newHeight -= menuHeight;
+        }
+
+        // Web tab properties are visible
+        if (webTabPropertiesVisible) {
+            newHeight = newHeight - viewElem.outerHeight() - resizerElemV.height();
+        }
+          
+        fullSizeInnerTab.height(newHeight);
+    }
+    
+    
     // Dialog preview box
     SetPreviewBox();
 
@@ -370,5 +396,26 @@ function onYouTubePlayerReady(playerId) {
     if (!window.youTubeLoaded) {
         $cmsj('div.youtube-loader').hide();
         window.youTubeLoaded = true;
+    }
+}
+
+// Handling for ASPX pages
+function HandleAspxPageDialog(pnlHeaderId) {
+    var isCalledAsDialog = (window.location.search.indexOf('dialog=') > 0) && (window.location.search.indexOf('isindialog=') < 0);
+
+    if (!isCalledAsDialog) {
+        setTimeout(function () {
+            if (top && typeof top.addBackgroundClickHandler === 'function') {
+                top.addBackgroundClickHandler(this);
+            }
+        }, 500);
+    }
+
+    if (wopener && (wopener !== window) && isCalledAsDialog) {
+        $cmsj('#hdnPermission').addClass('hidden');
+    } else {
+        var headerElem = $cmsj('#' + pnlHeaderId);
+        headerElem.addClass('hidden');
+        headerElem.prev().addClass('hidden');
     }
 }

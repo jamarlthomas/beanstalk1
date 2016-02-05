@@ -12,15 +12,6 @@
 public partial class CMSModules_OnlineMarketing_Pages_Content_ABTesting_ABVariant_NewPage {
     
     /// <summary>
-    /// menuElem control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMSModules_Content_Controls_EditMenu menuElem;
-    
-    /// <summary>
     /// pnlDisabled control.
     /// </summary>
     /// <remarks>

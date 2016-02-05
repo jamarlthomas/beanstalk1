@@ -149,6 +149,23 @@ cmsdefine(['Underscore'], function (_) {
             }
 
             return url.slice(questionMarkPosition + 1);
+        },
+
+
+        /**
+        * Removes query string from given URL.
+        *
+        * @param {string} url - URL, query string is optional
+        * @return {string} URL without query string
+        */
+        removeQueryString = function (url) {
+            var questionMarkPosition = url.indexOf('?');
+
+            if (questionMarkPosition === -1) {
+                return url;
+            }
+
+            return url.slice(0, questionMarkPosition);
         };
     
 
@@ -162,6 +179,7 @@ cmsdefine(['Underscore'], function (_) {
         removeParameter: removeParameter,
         getParameters: getParams,
         buildQueryString: buildQueryString,
-        getQueryString: getQueryString
+        getQueryString: getQueryString,
+        removeQueryString: removeQueryString
     };
 });

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -6,42 +6,29 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 
+using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.OnlineMarketing;
 using CMS.Base;
-using CMS.UIControls;
 
 public partial class CMSModules_ContactManagement_Pages_Tools_Account_Delete : CMSContactManagementAccountsPage
 {
     #region "Private variables"
 
-    private IList<string> accountIds = null;
-    private int accountSiteId = 0;
-    private static readonly Hashtable mErrors = new Hashtable();
-    private Hashtable mParameters = null;
-    private string mReturnScript = null;
-    private int mSiteID = 0;
-    private bool issitemanager = false;
-    private int numberOfDeletedAccounts = 0;
+    private IList<string> accountIds;
+    private int accountSiteId;
+    private Hashtable mParameters;
+    private string mReturnScript ;
+    private int mSiteID;
+    private bool issitemanager;
+    private int numberOfDeletedAccounts;
 
     #endregion
 
 
     #region "Properties"
-
-    /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
-
+    
     /// <summary>
     /// Current Error.
     /// </summary>
@@ -49,11 +36,11 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Account_Delete : C
     {
         get
         {
-            return ValidationHelper.GetString(mErrors["DeleteError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mErrors["DeleteError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -137,7 +124,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Account_Delete : C
             {
                 mSiteID = ValidationHelper.GetInteger(Parameters["siteid"], 0);
             }
-            ;
+            
             return mSiteID;
         }
     }
@@ -155,7 +142,6 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Account_Delete : C
             // Initialize events
             ctlAsyncLog.OnFinished += ctlAsync_OnFinished;
             ctlAsyncLog.OnError += ctlAsync_OnError;
-            ctlAsyncLog.OnRequestLog += ctlAsync_OnRequestLog;
             ctlAsyncLog.OnCancel += ctlAsync_OnCancel;
 
             ctlAsyncLog.MaxLogLines = 1000;
@@ -186,10 +172,10 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Account_Delete : C
                     // Data set contains only one item
                     if (rows.Count == 1)
                     {
-                        PageTitle.TitleText += " \"" + HTMLHelper.HTMLEncode(ValidationHelper.GetString(DataHelper.GetDataRowValue(rows[0], "AccountName"), "N/A")) + "\"";
+                        PageTitle.TitleText += " \"" + HTMLHelper.HTMLEncode(DataHelper.GetStringValue(rows[0], "AccountName", "N/A")) + "\"";
                         accountIds = new List<string>(1);
-                        accountIds.Add(ValidationHelper.GetString(DataHelper.GetDataRowValue(rows[0], "AccountID"), string.Empty));
-                        accountSiteId = ValidationHelper.GetInteger(DataHelper.GetDataRowValue(rows[0], "AccountSiteID"), 0);
+                        accountIds.Add(DataHelper.GetStringValue(rows[0], "AccountID"));
+                        accountSiteId = DataHelper.GetIntValue(rows[0], "AccountSiteID");
                         numberOfDeletedAccounts = 1;
                     }
                     else if (rows.Count > 1)
@@ -201,16 +187,17 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Account_Delete : C
                         // Display list with names of deleted items
                         pnlAccountList.Visible = true;
 
-                        string name = null;
                         StringBuilder builder = new StringBuilder();
 
                         for (int i = 0; i < rows.Count; i++)
                         {
-                            name = ValidationHelper.GetString(DataHelper.GetDataRowValue(rows[i], "AccountName"), string.Empty);
+                            string name = DataHelper.GetStringValue(rows[i], "AccountName");
+
                             builder.Append("<div>");
                             builder.Append(HTMLHelper.HTMLEncode(name));
                             builder.Append("</div>");
                         }
+
                         // Display three dots after last record
                         if (rows.Count == 1000)
                         {
@@ -281,8 +268,6 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Account_Delete : C
         pnlContent.Visible = false;
 
         CurrentError = string.Empty;
-        CurrentLog.Close();
-        EnsureLog();
     }
 
 
@@ -292,6 +277,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Account_Delete : C
     private void RunAsyncDelete()
     {
         // Run the async method
+        ctlAsyncLog.EnsureLog();
         ctlAsyncLog.Parameter = ReturnScript;
         ctlAsyncLog.RunAsync(Delete, WindowsIdentity.GetCurrent());
     }
@@ -325,8 +311,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Account_Delete : C
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state == CMSThread.ABORT_REASON_STOP)
+            if (CMSThread.Stopped(ex))
             {
                 // When canceled
                 AddError(GetString("om.deletioncanceled"));
@@ -395,10 +380,9 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Account_Delete : C
     private void DeleteItems()
     {
         // Delete the accounts
-        AccountInfo ai = null;
         foreach (string accountId in accountIds)
         {
-            ai = AccountInfoProvider.GetAccountInfo(ValidationHelper.GetInteger(accountId, 0));
+            var ai = AccountInfoProvider.GetAccountInfo(ValidationHelper.GetInteger(accountId, 0));
             if (ai != null)
             {
                 // Display name of deleted account
@@ -426,13 +410,6 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Account_Delete : C
             ShowError(CurrentError);
         }
         ShowConfirmation(canceled);
-        CurrentLog.Close();
-    }
-
-
-    private void ctlAsync_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
     }
 
 
@@ -447,14 +424,11 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Account_Delete : C
         {
             ShowError(CurrentError);
         }
-        CurrentLog.Close();
     }
 
 
     private void ctlAsync_OnFinished(object sender, EventArgs e)
     {
-        CurrentLog.Close();
-
         if (!string.IsNullOrEmpty(CurrentError))
         {
             ctlAsyncLog.Parameter = null;
@@ -467,18 +441,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Account_Delete : C
             ltlScript.Text += ScriptHelper.GetScript(ctlAsyncLog.Parameter.ToString());
         }
     }
-
-
-    /// <summary>
-    /// Ensures the logging context.
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext log = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-
-        return log;
-    }
-
+    
 
     /// <summary>
     /// Adds the log information.
@@ -486,8 +449,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Account_Delete : C
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
 

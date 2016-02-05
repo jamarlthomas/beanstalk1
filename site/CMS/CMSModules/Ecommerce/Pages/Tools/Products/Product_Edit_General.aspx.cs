@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 
+using CMS.Core;
 using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.PortalEngine;
@@ -103,12 +104,12 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Gene
         if (IsProductOption)
         {
             // Check UI personalization for product option
-            CheckUIElementAccessHierarchical("CMS.Ecommerce", "ProductOptions.Options.General");
+            CheckUIElementAccessHierarchical(ModuleName.ECOMMERCE, "ProductOptions.Options.General");
         }
         else
         {
             // Check UI personalization for product
-            CheckUIElementAccessHierarchical("CMS.Ecommerce", "Products.General");
+            CheckUIElementAccessHierarchical(ModuleName.ECOMMERCE, "Products.General");
         }
     }
 

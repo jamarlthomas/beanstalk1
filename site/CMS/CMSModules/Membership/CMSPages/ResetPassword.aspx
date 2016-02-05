@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="ResetPassword.aspx.cs" Inherits="CMSModules_Membership_CMSPages_ResetPassword"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="ResetPassword.aspx.cs" Inherits="CMSModules_Membership_CMSPages_ResetPassword"
     MasterPageFile="~/CMSMasterPages/LiveSite/SimplePage.master" Theme="Default"
     Title="ResetPassword" %>
 

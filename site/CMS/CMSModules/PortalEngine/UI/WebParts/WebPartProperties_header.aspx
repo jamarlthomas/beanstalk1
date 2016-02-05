@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_WebPartProperties_header"
-    Theme="Default" Codebehind="WebPartProperties_header.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_WebPartProperties_header"
+    Theme="Default"  Codebehind="WebPartProperties_header.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/PageTitle.ascx" TagName="PageTitle"
     TagPrefix="cms" %>

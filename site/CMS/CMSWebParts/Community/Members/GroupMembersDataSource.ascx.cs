@@ -1,4 +1,4 @@
-using CMS.Community;
+﻿using CMS.Community;
 using CMS.Helpers;
 using CMS.PortalControls;
 using CMS.SiteProvider;

@@ -26,7 +26,7 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
 {
     #region "Private variables"
 
-    private List<string> targetCultures;
+    private HashSet<string> targetCultures;
 
     private bool isSelect;
     private readonly List<int> nodeIds = new List<int>();
@@ -35,7 +35,6 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
     private CurrentUserInfo currentUser;
     private SiteInfo currentSite;
 
-    private static readonly Hashtable mErrors = new Hashtable();
     private Hashtable mParameters;
 
     private readonly string defaultCulture = CultureHelper.GetDefaultCultureCode(SiteContext.CurrentSiteName);
@@ -63,29 +62,17 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
 
 
     /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
-
-    /// <summary>
     /// Current Error.
     /// </summary>
     private string CurrentError
     {
         get
         {
-            return ValidationHelper.GetString(mErrors["TranslateError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mErrors["TranslateError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -229,7 +216,6 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
         // Initialize events
         ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
         ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-        ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
         ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
 
         isSelect = QueryHelper.GetBoolean("select", false);
@@ -244,7 +230,7 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
         translationElem.DisplayTargetlanguage = displayTargetLanguage;
 
         // Get target culture(s)
-        targetCultures = displayTargetLanguage ? translationElem.TargetLanguages : new List<string>(new[] { QueryHelper.GetString("targetculture", currentCulture) });
+        targetCultures = displayTargetLanguage ? translationElem.TargetLanguages : new HashSet<string>(new[] { QueryHelper.GetString("targetculture", currentCulture) });
 
         // Set the target settings
         var settings = new TranslationSettings();
@@ -322,12 +308,13 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
             else
             {
                 // Exclude root of the website from multiple translation requested by document listing bulk action
-                string where = SqlHelper.AddWhereCondition("ClassName <> 'CMS.Root'", WhereCondition);
+                var where = new WhereCondition(WhereCondition)
+                    .WhereNotEquals("ClassName", SystemDocumentTypes.Root);
 
                 allDocs = tree.SelectNodes(currentSite.SiteName, parentAliasPath.TrimEnd(new[] { '/' }) + "/%",
-                    TreeProvider.ALL_CULTURES, true, ClassID > 0 ? DataClassInfoProvider.GetClassName(ClassID) : TreeProvider.ALL_CLASSNAMES, where,
+                    TreeProvider.ALL_CULTURES, true, ClassID > 0 ? DataClassInfoProvider.GetClassName(ClassID) : TreeProvider.ALL_CLASSNAMES, where.ToString(true),
                     "DocumentName", AllLevels ? TreeProvider.ALL_LEVELS : 1, false, 0,
-                    TreeProvider.SELECTNODES_REQUIRED_COLUMNS + ",DocumentName,NodeParentID,NodeSiteID,NodeAliasPath");
+                    DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS + ",DocumentName,NodeParentID,NodeSiteID,NodeAliasPath");
 
                 if (!DataHelper.DataSourceIsEmpty(allDocs))
                 {
@@ -351,7 +338,7 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
                     string docList = null;
 
                     cancelNodeId = string.IsNullOrEmpty(parentAliasPath)
-                        ? ValidationHelper.GetInteger(DataHelper.GetDataRowValue(ds.Tables[0].Rows[0], "NodeParentID"), 0)
+                        ? DataHelper.GetIntValue(ds.Tables[0].Rows[0], "NodeParentID")
                         : TreePathUtils.GetNodeIdByAliasPath(currentSite.SiteName, parentAliasPath);
 
                     foreach (DataTable table in ds.Tables)
@@ -363,7 +350,7 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
                             docList += HTMLHelper.HTMLEncode(name);
                             if (isLink)
                             {
-                                docList += DocumentHelper.GetDocumentMarkImage(Page, DocumentMarkEnum.Link);
+                                docList += DocumentUIHelper.GetDocumentMarkImage(Page, DocumentMarkEnum.Link);
                             }
                             docList += "<br />";
                             lblDocuments.Text = docList;
@@ -466,7 +453,7 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
             // If in select mode, prepare node IDs now
             TreeProvider tree = new TreeProvider();
             DataSet ds = tree.SelectNodes(CurrentSiteName, pathElem.Value.ToString(), TreeProvider.ALL_CULTURES, true, TreeProvider.ALL_CLASSNAMES, null,
-                null, TreeProvider.ALL_LEVELS, false, 0, TreeProvider.SELECTNODES_REQUIRED_COLUMNS + ",DocumentName,NodeParentID,NodeSiteID,NodeAliasPath");
+                null, TreeProvider.ALL_LEVELS, false, 0, DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS + ",DocumentName,NodeParentID,NodeSiteID,NodeAliasPath");
 
             if (!DataHelper.DataSourceIsEmpty(ds))
             {
@@ -502,11 +489,8 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
         pnlContent.Visible = false;
 
         CurrentError = string.Empty;
-        CurrentLog.Close();
-        EnsureLog();
 
-        ctlAsyncLog.Parameter = AllLevels;
-        ctlAsyncLog.RunAsync(Translate, WindowsIdentity.GetCurrent());
+        ctlAsyncLog.RunAsync(p => Translate(AllLevels), WindowsIdentity.GetCurrent());
     }
 
     #endregion
@@ -519,7 +503,7 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
     /// </summary>
     private void Translate(object parameter)
     {
-        if (parameter == null || nodeIds.Count < 1)
+        if ((parameter == null) || nodeIds.Count < 1)
         {
             return;
         }
@@ -535,6 +519,7 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
         int pageCount = 0;
         bool oneSubmission = translationElem.CreateSeparateSubmission;
         bool success = false;
+        bool separateSubmissionCreated = false;
 
         TreeProvider tree = new TreeProvider();
         tree.AllowAsyncActions = false;
@@ -632,7 +617,7 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
                         if (chkSkipTranslated.Checked)
                         {
                             // Skip already translated
-                            targetLanguages = targetLanguages.Except(DocumentHelper.GetTranslatedCultures(nodeId));
+                            targetLanguages = targetLanguages.Except(node.GetTranslatedCultures());
                         }
 
                         foreach (var targetLanguage in targetLanguages)
@@ -681,13 +666,26 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
                         // Each page has own submission if human service is used
                         if (!oneSubmission && (humanService != null))
                         {
-                            SubmitSubmissionToService(itemCount, submission, charCount, wordCount, submissionFileName, humanService, true);
+                            if (itemCount > 0)
+                            {
+                                SubmitSubmissionToService(itemCount, submission, charCount, wordCount, submissionFileName, humanService, true);
 
-                            // Reset counter
-                            itemCount = 0;
+                                // Reset counters
+                                itemCount = 0;
+                                charCount = 0;
+                                wordCount = 0;
+                                
+                                // Reset submission file name
+                                submissionFileName = null;
 
-                            // Reset submission file name
-                            submissionFileName = null;
+                                // At least one submission was created
+                                separateSubmissionCreated = true;
+                            }
+                            else
+                            {
+                                // No documents were submitted to translation delete empty submission
+                                TranslationSubmissionInfoProvider.DeleteTranslationSubmissionInfo(submission);
+                            }
 
                             // Reset submission to create new for next page
                             submission = null;
@@ -702,6 +700,7 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
                         // Store parent ID to refresh UI
                         refreshId = node.NodeParentID;
                     }
+
                     success = true;
                 }
                 else
@@ -716,8 +715,7 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state == CMSThread.ABORT_REASON_STOP)
+            if (CMSThread.Stopped(ex))
             {
                 // When canceled
                 AddError(ResHelper.GetString("TranslateDocument.TranslationCanceled", currentUICulture));
@@ -735,6 +733,7 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
         }
         finally
         {
+            var showAllAlreadyTranslatedError = false;
             if (itemCount > 0)
             {
                 // All pages are submitted via only one submission or using machine service
@@ -754,16 +753,27 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
             else if (oneSubmission)
             {
                 TranslationSubmissionInfoProvider.DeleteTranslationSubmissionInfo(submission);
+
                 // Log error only if the translation was successfully processed
                 if (success)
                 {
-                    AddError(ResHelper.GetString("TranslateDocument.DocumentsAlreadyTranslated", currentUICulture));
+                    showAllAlreadyTranslatedError = true;
                 }
+            }
+            else if (!separateSubmissionCreated)
+            {
+                // Separate submissions were used and no one was created 
+                showAllAlreadyTranslatedError = true;
+            }
+
+            if (showAllAlreadyTranslatedError)
+            {
+                AddError(ResHelper.GetString("TranslateDocument.DocumentsAlreadyTranslated", currentUICulture));
             }
 
             if (IsDialog)
             {
-                ctlAsyncLog.Parameter = "wopener.location.replace(wopener.location); CloseDialog(); wopener.RefreshTree(null, null);";
+                ctlAsyncLog.Parameter = "wopener.location.replace(wopener.location); CloseDialog(); if (wopener.RefreshTree) { wopener.RefreshTree(null, null);}";
             }
             else
             {
@@ -895,13 +905,6 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
         {
             ShowError(CurrentError);
         }
-        CurrentLog.Close();
-    }
-
-
-    private void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
     }
 
 
@@ -913,14 +916,12 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
         }
         ctlAsyncLog.Parameter = null;
         ShowError(CurrentError);
-        CurrentLog.Close();
     }
 
 
     private void ctlAsyncLog_OnFinished(object sender, EventArgs e)
     {
         ShowError(CurrentError);
-        CurrentLog.Close();
 
         if (!string.IsNullOrEmpty(CurrentError))
         {
@@ -936,23 +937,12 @@ public partial class CMSModules_Translations_Pages_TranslateDocuments : CMSTrans
 
 
     /// <summary>
-    /// Ensures the logging context.
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext log = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-        return log;
-    }
-
-
-    /// <summary>
     /// Adds the log information.
     /// </summary>
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
 

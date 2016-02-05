@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSMessages_AccessDenied"
-    Theme="Default" EnableEventValidation="false" Codebehind="AccessDenied.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSMessages_AccessDenied"
+    Theme="Default" EnableEventValidation="false"  Codebehind="AccessDenied.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/PageTitle.ascx" TagName="PageTitle"
     TagPrefix="cms" %>

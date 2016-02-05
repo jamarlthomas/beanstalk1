@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.Membership;
@@ -17,7 +17,9 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_List : CMSPrope
     #region "Private variables"
 
     bool mIsRoot;
+    bool aliasChanged;
     String mOldAliasPath = String.Empty;
+    
 
     #endregion
 
@@ -53,7 +55,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_List : CMSPrope
         DocumentManager.OnAfterAction += DocumentManager_OnAfterAction;
 
         // Initialize node
-        mIsRoot = (Node.NodeClassName.ToLowerCSafe() == "cms.root");
+        mIsRoot = Node.IsRoot();
 
         UniGridAlias.StopProcessing = pnlUIDocumentAlias.IsHidden;
 
@@ -71,6 +73,15 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_List : CMSPrope
 
         if (Node != null)
         {
+            // Hide parts which are not relevant to content only nodes
+            if (ShowContentOnlyProperties)
+            {
+                pnlUIPath.Visible = false;
+                pnlUIExtended.Visible = false;
+                pnlUIDocumentAlias.Visible = false;
+                headAlias.Visible = false;
+            }
+
             if (Node.NodeAliasPath == "/")
             {
                 valAlias.Visible = false;
@@ -101,10 +112,9 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_List : CMSPrope
 
             lblExtensions.Text = GetString("doc.urls.urlextensions") + ResHelper.Colon;
 
-            var siteName = Node.NodeSiteName;
             if (!mIsRoot)
             {
-                txtAlias.Enabled = !TreePathUtils.AutomaticallyUpdateDocumentAlias(siteName);
+                txtAlias.Enabled = !TreePathUtils.AutomaticallyUpdateDocumentAlias(Node.NodeSiteName);
             }
 
             if (!RequestHelper.IsPostBack())
@@ -113,11 +123,8 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_List : CMSPrope
             }
 
             // Get automatic URL path
-            var urlPath = TreePathUtils.GetUrlPathFromNamePath(Node.DocumentNamePath, Node.NodeLevel, siteName);
             var culture = CultureHelper.GetShortCultureCode(Node.DocumentCulture);
-            urlPath = Tree.GetUniqueUrlPath(urlPath, DocumentID, siteName, culture);
-
-            ctrlURL.AutomaticURLPath = urlPath;
+            ctrlURL.AutomaticURLPath = TreePathUtils.GetUniqueUrlPath(Node, culture);
 
             // Reflect processing action
             pnlPageContent.Enabled = DocumentManager.AllowSave;
@@ -137,7 +144,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_List : CMSPrope
                     // Parse the URL path
                     string urlPath = ValidationHelper.GetString(parameter, "");
 
-                    return TreePathUtils.GetURLPathDisplayName(urlPath);
+                    return TreePathUtils.GetUrlPathDisplayName(urlPath);
                 }
         }
 
@@ -195,9 +202,10 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_List : CMSPrope
     {
         txtAlias.Text = Node.NodeAlias;
 
-        // If alias was changed, update all related MVTests
+        // Check if alias was changed
         if (Node.NodeAliasPath != mOldAliasPath)
         {
+            // Update all related MVTests
             ModuleCommands.OnlineMarketingMoveMVTests(Node.NodeAliasPath, mOldAliasPath, SiteContext.CurrentSiteID);
         }
 
@@ -205,12 +213,22 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_List : CMSPrope
         LoadURLPath(Node);
 
         UniGridAlias.ReloadData();
+
+        if ((!pnlUIAlias.IsHidden || !pnlUIPath.IsHidden) && aliasChanged && (PortalContext.ViewMode == ViewModeEnum.EditLive))
+        {
+            // Get the updated document url
+            string url = URLHelper.ResolveUrl(DocumentURLProvider.GetUrl(Node));
+
+            // Register redirect script
+            string reloadScript = "if (parent.parent.frames['header'] != null) { parent.parent.frames['header'].reloadPageUrl =" + ScriptHelper.GetString(url) + "; }";
+            ScriptHelper.RegisterStartupScript(this, typeof(string), "reloadScript", reloadScript, true);
+        }
     }
 
 
     private void DocumentManager_OnSaveData(object sender, DocumentManagerEventArgs e)
     {
-        bool aliasChanged = false;
+        aliasChanged = false;
 
         // ALIAS group is displayed
         if (!pnlUIAlias.IsHidden)
@@ -232,8 +250,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_List : CMSPrope
             }
         }
 
-        var siteName = Node.NodeSiteName;
-
         // PATH group is displayed
         if (!pnlUIPath.IsHidden)
         {
@@ -248,33 +264,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_List : CMSPrope
             aliasChanged |= (ctrlURL.URLPath != Node.DocumentUrlPath);
 
             Node.DocumentUseNamePathForUrlPath = !ctrlURL.IsCustom;
-            if (Node.DocumentUseNamePathForUrlPath)
-            {
-                string urlPath = TreePathUtils.GetUrlPathFromNamePath(Node.DocumentNamePath, Node.NodeLevel, siteName);
-                Node.DocumentUrlPath = urlPath;
-            }
-            else
-            {
-                Node.DocumentUrlPath = TreePathUtils.GetSafeUrlPath(ctrlURL.URLPath, siteName, true);
-            }
-        }
-
-        if ((!pnlUIAlias.IsHidden || !pnlUIPath.IsHidden) && aliasChanged && (PortalContext.ViewMode == ViewModeEnum.EditLive))
-        {
-            // Redirect the parent page to the new document alias
-            string newAliasPath = string.Empty;
-            if (Node.Parent != null)
-            {
-                newAliasPath = Node.Parent.NodeAliasPath.TrimEnd('/');
-            }
-            newAliasPath += "/" + Node.NodeAlias;
-
-            // Get the updated document url
-            string url = URLHelper.ResolveUrl(DocumentURLProvider.GetUrl(newAliasPath, Node.DocumentUrlPath, siteName, RequestContext.CurrentURLLangPrefix));
-
-            // Register redirect script
-            string reloadScript = "if (parent.parent.frames['header'] != null) { parent.parent.frames['header'].reloadPageUrl =" + ScriptHelper.GetString(url) + "; }";
-            ScriptHelper.RegisterStartupScript(this, typeof(string), "reloadScript", reloadScript, true);
+            Node.DocumentUrlPath = Node.DocumentUseNamePathForUrlPath ? TreePathUtils.GetUrlPathFromNamePath(Node) : TreePathUtils.GetSafeUrlPath(ctrlURL.URLPath, Node.NodeSiteName);
         }
 
         // EXTENDED group is displayed

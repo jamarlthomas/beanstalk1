@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Core;
@@ -92,6 +92,14 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_S
     }
 
 
+    protected override void OnPreRender(EventArgs e)
+    {
+        base.OnPreRender(e);
+
+        HandleBreadcrumbsScripts();
+    }
+
+
     protected void sendVariant_OnChanged(object sender, EventArgs e)
     {
         ShowInformationInternal(sendVariant.InfoMessage);
@@ -166,6 +174,20 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_S
     }
 
 
+    protected void hdrActions_ActionPerformed(object sender, CommandEventArgs e)
+    {
+        switch (e.CommandName)
+        {
+            case ComponentEvents.SAVE:
+                Save();
+                break;
+            case ComponentEvents.SUBMIT:
+                Send();
+                break;
+        }
+    }
+
+
     /// <summary>
     /// Initializes header action control.
     /// </summary>
@@ -179,7 +201,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_S
         // Init save button
         if (isActiveABTest)
         {
-            hdrActions.ActionsList.Add(new SaveAction(this));
+            hdrActions.ActionsList.Add(new SaveAction());
         }
 
         // Init send button
@@ -211,17 +233,18 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_S
     }
 
 
-    protected void hdrActions_ActionPerformed(object sender, CommandEventArgs e)
+    /// <summary>
+    /// Handles manual rendering of breadcrumbs.
+    /// On this page the breadcrumbs needs to be hard-coded in order to be able to access single email via link and ensure consistency of breadcrumbs.
+    /// </summary>
+    private void HandleBreadcrumbsScripts()
     {
-        switch (e.CommandName)
-        {
-            case ComponentEvents.SAVE:
-                Save();
-                break;
-            case ComponentEvents.SUBMIT:
-                Send();
-                break;
-        }
+        ScriptHelper.RegisterRequireJs(Page);
+
+        ControlsHelper.RegisterClientScriptBlock(this, Page, typeof(string), "BreadcrumbsOverwriting", ScriptHelper.GetScript(@"
+        cmsrequire(['CMS/EventHub'], function(hub) {
+              hub.publish('OverwriteBreadcrumbs', " + IssueHelper.GetBreadcrumbsData((IssueInfo)EditedObject, (NewsletterInfo)EditedObjectParent) + @");
+        });"));
     }
 
     #endregion

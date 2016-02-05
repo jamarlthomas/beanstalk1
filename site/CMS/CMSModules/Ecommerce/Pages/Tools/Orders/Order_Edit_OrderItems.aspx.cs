@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.Ecommerce;
@@ -105,7 +105,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Orders_Order_Edit_OrderIte
         // check 'EcommerceModify' permission
         if (!ECommerceContext.IsUserAuthorizedForPermission(permissionType))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", permissionType);
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, permissionType);
         }
     }
 

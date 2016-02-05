@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Community;
 using CMS.DocumentEngine;
@@ -574,6 +574,8 @@ public partial class CMSWebParts_Community_MessageBoards_GroupMessageBoard : CMS
             msgBoard.BoardProperties.ShowDeleteButton = ShowDelete;
             msgBoard.BoardProperties.ShowEditButton = ShowEdit;
             msgBoard.BoardProperties.ShowRejectButton = ShowReject;
+
+            msgBoard.FormResourcePrefix = ResourcePrefix;
 
             // Set caching
             msgBoard.CacheItemName = CacheItemName;

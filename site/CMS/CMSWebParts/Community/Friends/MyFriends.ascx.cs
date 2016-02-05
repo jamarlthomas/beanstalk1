@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.PortalControls;
@@ -114,24 +114,6 @@ public partial class CMSWebParts_Community_Friends_MyFriends : CMSAbstractWebPar
         {
             SetValue("DisplayFriendsRejected", value);
             myFriendsElem.DisplayFriendsRejected = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Gets or sets the User ID.
-    /// </summary>
-    [Obsolete("Use UserName instead")]
-    public int UserID
-    {
-        get
-        {
-            return CurrentUser.UserID;
-        }
-        set
-        {
-            SetValue("UserID", value);
-            myFriendsElem.UserID = value;
         }
     }
 

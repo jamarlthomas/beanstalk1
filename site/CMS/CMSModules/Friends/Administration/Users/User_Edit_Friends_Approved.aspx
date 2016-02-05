@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Friends_Administration_Users_User_Edit_Friends_Approved"
-    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="default" Codebehind="User_Edit_Friends_Approved.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Friends_Administration_Users_User_Edit_Friends_Approved"
+    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="default"  Codebehind="User_Edit_Friends_Approved.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Friends/Controls/FriendsList.ascx" TagName="FriendsList"
     TagPrefix="cms" %>

@@ -1,10 +1,10 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_DragOperation"
-    Codebehind="DragOperation.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_DragOperation"
+     Codebehind="DragOperation.ascx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/AsyncLogDialog.ascx" TagName="AsyncLog"
     TagPrefix="cms" %>
 <asp:Panel runat="server" ID="pnlLog" Visible="false">
-    <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+    <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="Documents" />
 </asp:Panel>
 <asp:Panel runat="server" ID="pnlContent" CssClass="PageContent">
     <cms:MessagesPlaceHolder ID="plcMess" runat="server" />

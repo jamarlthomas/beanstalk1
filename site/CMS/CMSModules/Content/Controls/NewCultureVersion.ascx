@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="NewCultureVersion.ascx.cs" Inherits="CMSModules_Content_Controls_NewCultureVersion" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="NewCultureVersion.ascx.cs" Inherits="CMSModules_Content_Controls_NewCultureVersion" %>
 <%@ Register TagPrefix="cms" TagName="SiteCultureSelector" Src="~/CMSFormControls/Cultures/SiteCultureSelector.ascx" %>
 <%@ Register TagPrefix="cms" TagName="TranslationServiceSelector" Src="~/CMSModules/Translations/Controls/TranslationServiceSelector.ascx" %>
 

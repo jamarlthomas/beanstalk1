@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Subscriber_Contacts.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Subscriber_Contacts.aspx.cs"
     Inherits="CMSModules_ContactManagement_Pages_Tools_Contact_Subscriber_Contacts"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Newsletter subscriber - contact group contacts" %>
 

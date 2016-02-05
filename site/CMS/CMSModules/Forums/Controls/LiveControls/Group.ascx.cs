@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Web;
@@ -85,18 +85,15 @@ public partial class CMSModules_Forums_Controls_LiveControls_Group : CMSAdminIte
         plcForumList.Visible = true;
         forumList.Visible = true;
 
-
         tabElem.TabControlIdPrefix = "group";
         groupEdit.GroupID = mGroupId;
         groupEdit.DisplayMode = DisplayMode;
 
         forumNew.GroupID = mGroupId;
-        forumNew.CommunityGroupGUID = CommunityGroupGUID;
-        forumNew.DisplayMode = DisplayMode;
-
         forumNew.DisplayMode = DisplayMode;
 
         forumList.GroupID = mGroupId;
+        forumList.DisplayMode = DisplayMode;
 
         int forumId = ValidationHelper.GetInteger(ViewState["ForumID"], 0);
         forumEdit.ForumID = forumId;

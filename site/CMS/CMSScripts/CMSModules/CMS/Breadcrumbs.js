@@ -19,8 +19,19 @@ cmsdefine(['CMS/EventHub', 'CMS/UrlHelper', 'CMS/NavigationBlocker', 'Underscore
          * @param {String} onClientClick - JavaScript code from server to call on breadcrumb click
          */
         generateOnBreadcrumbClickCallback = function (isRootBreadcrumb, url, frame, onClientClick) {
-            return function(e) {
+            var that = this;
+            return function (e) {
                 if (navigationBlocker.canNavigate()) {
+
+                    // Makes sure that after redirect the breadcrumbs will be again rendered automatically
+                    that.breadcrumbsOverwritten = false;
+
+                    // If its being navigated by single object link, change the application breadcrumbs link to call the event that will open application using the app list
+                    if (isRootBreadcrumb && that.isSingleObject) {
+                        hub.publish('SingleObjectNavigationAppBreadcrumbClick', { appId: that.appId, tabName: that.tabName });
+                        return true;
+                    }
+
                     var queryString,
                         onClientClickResult = true;
 
@@ -57,7 +68,7 @@ cmsdefine(['CMS/EventHub', 'CMS/UrlHelper', 'CMS/NavigationBlocker', 'Underscore
 
             this.moreBreadcrumbsText = data.moreBreadcrumbsText;
             this.splitViewText = data.splitViewModeText;
-
+      
             // Breadcrumb elements wrapper
             this.$breadcrumbsWrapper = $('#js-nav-breadcrumb');
             this.$navBar = $('.navbar.cms-navbar');
@@ -71,13 +82,21 @@ cmsdefine(['CMS/EventHub', 'CMS/UrlHelper', 'CMS/NavigationBlocker', 'Underscore
             this.breadcrumbsData = [];
             this.rootBreadcrumbData = {};
 
+            // For single object navigation
+            this.isSingleObject = false;
+            this.appId = null;
+            this.tabName = null;
+            
+            // For enabling manual override of breadcrumb rendering
+            this.breadcrumbsOverwritten = false;
+
             // Subscribe to Breadcrumbs_Back to allow sub-pages to go back in the hierarchy level
             hub.subscribe('Breadcrumbs_Back', function (p) {
                 that.goBack(p);
             });
 
             // Shortcut key
-            hub.subscribe('KeyPressed', function(e) {
+            hub.subscribe('KeyPressed', function (e) {
                 if (e.ctrlKey && e.altKey) {
                     // CTRL + ALT + Left arrow = Back
                     if (e.key == 37) {
@@ -91,6 +110,14 @@ cmsdefine(['CMS/EventHub', 'CMS/UrlHelper', 'CMS/NavigationBlocker', 'Underscore
             // the load time. Then use the Mole to get information about
             // current Breadcrumbs and render them
             hub.subscribe('ApplicationChanged', function (application) {
+
+                // If property was set to true, manual overwriting of breadcrumbs is performing,
+                // automatic processing of breadcrumbs could be performed later and therefore 
+                // it would overwrite manually set breadcrumbs.
+                if (that.breadcrumbsOverwritten) {
+                    return;
+                }
+                
                 var flattenedApplication = _.flatten(application, true);
 
                 // Stop whole breadcrumb rerendering when there is a 'breadcrumbsRefresh'
@@ -113,8 +140,45 @@ cmsdefine(['CMS/EventHub', 'CMS/UrlHelper', 'CMS/NavigationBlocker', 'Underscore
                 that.clearBreadcrumbs();
                 that.renderBreadcrumbs();
             }, 1000 / 30)); // 30 FPS is far enough
+
+            // Subscribe to navigation to single object
+            hub.subscribe("NavigatingToSingleObject", function (appParams) {
+                that.isSingleObject = true;
+                that.appId = appParams.appId;
+                if (appParams.hashParameters) {
+                    that.tabName = appParams.hashParameters.parenttabname;
+                }
+            });
+
+            // Subscribe to navigation to application
+            hub.subscribe("NavigationToApplication", function () {
+                that.isSingleObject = false;
+                that.appId = null;
+            });
+
+            // Subscribe to breadcrumbs overwrite event. This event is used when breadcrumbs has to be 
+            // rendered manually and not automatically from frames. This should be performed only in rare 
+            // scenarios, e.g. when redirecting to single object deeper in the tree hierarchy.
+            hub.subscribe("OverwriteBreadcrumbs", function(breadcrumbs) {
+                that.breadcrumbsOverwritten = true;
+                that.clearBreadcrumbs();
+
+                if (breadcrumbs && breadcrumbs.data && breadcrumbs.data.length) {
+                    breadcrumbs.data.forEach(function(breadcrumb) {
+                        var suffix = breadcrumb.suffix ? " (" + breadcrumb.suffix + ")" : "";
+                        breadcrumb.frame = window;
+                        
+                        that.renderBreadcrumb(breadcrumb, $.prototype.appendTo, that.$breadcrumbsWrapper, !breadcrumb.redirectUrl, breadcrumb.isRoot, suffix, breadcrumb.suffix ? "breadcrumb-last" : "");
+                    });
+                }
+
+                // Make sure that every change of the hash reenables automatical rendering
+                $(window).one("hashchange", function () {
+                    that.breadcrumbsOverwritten = false;
+                });
+            });
         };
-    
+
     /**
      * Goes back to the closest clickable breadcrumb
      */
@@ -338,7 +402,7 @@ cmsdefine(['CMS/EventHub', 'CMS/UrlHelper', 'CMS/NavigationBlocker', 'Underscore
 
         // Update window title
         $selector = $('.cms-nav-breadcrumb select');
-        
+
         if ($selector.val() != '0') {
             title = $selector.find('option:selected').html();
         } else {
@@ -484,12 +548,12 @@ cmsdefine(['CMS/EventHub', 'CMS/UrlHelper', 'CMS/NavigationBlocker', 'Underscore
         if (isRootBreadcrumb) {
             $breadcrumb.addClass('no-ico');
         }
-
+        
         if (isNotClickable) {
             $breadcrumb.html(breadcrumbText);
         } else {
             $breadcrumbLink = $('<a href="javascript:void(0)">' + breadcrumbText + '</a>');
-            $breadcrumbLink.click(generateOnBreadcrumbClickCallback(isRootBreadcrumb, breadcrumb.redirectUrl, breadcrumb.frame, breadcrumb.onClientClick));
+            $breadcrumbLink.click(generateOnBreadcrumbClickCallback.call(this, isRootBreadcrumb, breadcrumb.redirectUrl, breadcrumb.frame, breadcrumb.onClientClick));
             $breadcrumb.append($breadcrumbLink);
         }
 

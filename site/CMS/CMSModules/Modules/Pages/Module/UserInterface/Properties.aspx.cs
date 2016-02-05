@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Data;
 using System.Web;
 using System.Xml;
@@ -9,11 +8,9 @@ using CMS.Core;
 using CMS.ExtendedControls;
 using CMS.FormEngine;
 using CMS.Helpers;
-using CMS.IO;
 using CMS.Modules;
 using CMS.PortalEngine;
 using CMS.UIControls;
-
 
 [UIElement(ModuleName.CMS, "Modules.UserInterface.Properties")]
 public partial class CMSModules_Modules_Pages_Module_UserInterface_Properties : GlobalAdminPage
@@ -55,9 +52,8 @@ public partial class CMSModules_Modules_Pages_Module_UserInterface_Properties : 
         // Load default properties from XML
         XmlDocument xml = new XmlDocument();
         xml.Load(ResolveUrl(HttpContext.Current.Server.MapPath(UIContextHelper.BEFOREPROPERTIESDEFINITION)));
-        String merged = xml.InnerXml;
 
-        // Load UI element and element's page tempalte (if any)
+        // Load UI element and element's page template (if any)
         mUIElementInfo = UIElementInfoProvider.GetUIElementInfo(QueryHelper.GetInteger("elementID", 0));
 
         if (mUIElementInfo != null)
@@ -73,10 +69,9 @@ public partial class CMSModules_Modules_Pages_Module_UserInterface_Properties : 
             // Create form info
             FormInfo fi = (pti != null) ? pti.PageTemplatePropertiesForm : PortalFormHelper.GetUIElementDefaultPropertiesForm(UIElementPropertiesPosition.Both);
             form.FormInformation = fi;
-            form.MacroTable = new Hashtable();
 
             // Load data row from properties
-            DataRow dr = fi.GetDataRow(true);
+            DataRow dr = fi.GetDataRow();
             fi.LoadDefaultValues(dr);
             if ((mUIElementInfo == null) || !mUIElementInfo.IsApplication)
             {

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_MessageBoards_Controls_NewSubscription" Codebehind="NewSubscription.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_MessageBoards_Controls_NewSubscription"  Codebehind="NewSubscription.ascx.cs" %>
 
 <asp:Panel ID="pnlContent" runat="server" CssClass="new-subscription-form">
                 <cms:MessagesPlaceHolder ID="plcMessages" runat="server" />

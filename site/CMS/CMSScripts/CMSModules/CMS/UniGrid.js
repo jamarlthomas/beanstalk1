@@ -18,6 +18,14 @@
             });
         },
 
+        showFilter = function () {
+            postback('ShowFilter');
+        },
+
+        reset = function () {
+            postback('Reset');
+        },
+
         reload = function () {
             postback('Reload');
         },
@@ -86,7 +94,7 @@
             }
         },
 
-        getCheckboxes = function() {
+        getCheckboxes = function () {
             return $('#' + config.gridId).find("input[type='checkbox']");
         },
 
@@ -128,7 +136,6 @@
 
             sel = get(config.hdnSelId);
 
-            selFlag = false;
             selStorage = {};
 
             inputs.each(function (i, e) {
@@ -140,13 +147,23 @@
             }
 
             setHash('');
-            postback('ClearOriginallySelectedItems');
+            if (config.doPostback) {
+                postback('ClearOriginallySelectedItems');
+            }
         },
 
         checkSelection = function () {
             var sel = get(config.hdnSelId);
 
             return ((!sel) || (sel.value == '') || (sel.value == '|'));
+        },
+            
+        initMove = function (arg) {
+            var argObj = get(config.hdnCmdArgId);
+
+            if (argObj != null) {
+                argObj.value = arg;
+            }
         };
 
         if (config.resetSelection) {
@@ -154,6 +171,39 @@
         }
 
         window.CMS = window.CMS || {};
+
+        if (config.allowSorting) {
+            var gridBody = $cmsj('#' + config.id + ' tbody');
+            if (gridBody != null) {
+                gridBody.sortable({
+                    axis: 'y',
+                    cancel: '',
+                    containment: 'parent',
+                    cursor: 'move',
+                    handle: 'button.js-_move',
+                    helper: fixWidthHelper,
+                    tolerance: 'pointer',
+                    start: function (event, ui) {
+                        $cmsj(this).attr('data-previndex', ui.item.index());
+                    },
+                    update: function (event, ui) {
+                        var previousIndex = $cmsj(this).attr('data-previndex');
+                        var newIndex = ui.item.index();
+                        var argObj = get(config.hdnCmdArgId);
+                        if (argObj != null) {
+                            command('#move', argObj.value + ':' + previousIndex + ':' + newIndex);
+                        }
+                    }
+                }).disableSelection();
+            }
+        }
+
+        function fixWidthHelper(e, ui) {
+            ui.children().each(function () {
+                $cmsj(this).width($cmsj(this).width());
+            });
+            return ui;
+        }
 
         return window.CMS['UG_' + config.id] = {
             clearSelection: clearSelection,
@@ -163,7 +213,10 @@
             destroy: destroy,
             selectAll: selectAll,
             select: select,
-            redir: redir
+            redir: redir,
+            reset: reset,
+            showFilter: showFilter,
+            initMove: initMove
         };
     }
 

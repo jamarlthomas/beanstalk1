@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_ContentTree"
-    Codebehind="ContentTree.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_ContentTree"
+     Codebehind="ContentTree.ascx.cs" %>
 <asp:Label runat="server" ID="lblError" ForeColor="Red" EnableViewState="false" />
 <asp:PlaceHolder runat="server" ID="plcDrag" EnableViewState="false">
     <asp:Literal runat="server" ID="ltlCaptureCueCtrlShift" EnableViewState="false" />

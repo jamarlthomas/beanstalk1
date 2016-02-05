@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Widgets_Controls_WidgetFlatSelector" Codebehind="WidgetFlatSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Widgets_Controls_WidgetFlatSelector"  Codebehind="WidgetFlatSelector.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniFlatSelector.ascx" TagName="UniFlatSelector"
     TagPrefix="cms" %>
 

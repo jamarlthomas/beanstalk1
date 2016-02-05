@@ -10,22 +10,4 @@
 
 
 public partial class CMSModules_WebAnalytics_Pages_Tools_Campaign_Tab_General {
-    
-    /// <summary>
-    /// pnlContent control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlContent;
-    
-    /// <summary>
-    /// editElem control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMSModules_WebAnalytics_Controls_UI_Campaign_Edit editElem;
 }
