@@ -2,7 +2,7 @@
 
 namespace CMS.Mvc.ViewModels.Product
 {
-    public class RelatedProductCardViewModel : LinkItemViewModel
+    public class RelatedProductCardViewModel : LinkViewModel
     {
         public string ImageUrl { get; set; }
         public string Header { get; set; }

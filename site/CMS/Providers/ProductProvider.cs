@@ -4,25 +4,30 @@ using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.ViewModels.Product;
 using CMS.Mvc.ViewModels.Shared;
+using System;
+
 
 namespace CMS.Mvc.Providers
 {
     public class ProductProvider : IProductProvider
     {
-        public Product GetProduct(string alias)
-        {
-            return ContentHelper.GetDocByName<Product>(Product.CLASS_NAME, alias);
-        }
 
+        public List<Product> GetProductItems(List<Guid> guids, string siteName)
+        {
+            return ContentHelper.GetDocsByGuids<Product>(guids, siteName);
+        }
+		public Product GetProduct(string alias) {
+            return ContentHelper.GetDocByName<Product>(Product.CLASS_NAME, alias);
+			}
         public List<BreadCrumbLinkItemViewModel> GetBreadcrumb(string name)
         {
             return ContentHelper.GetBreadcrumb<Product>(Product.CLASS_NAME, name);
         }
 
 
-        public List<LinkItemViewModel> GetAvailableRegions(Product product)
+        public List<LinkViewModel> GetAvailableRegions(Product product)
         {
-            return new List<LinkItemViewModel> { new LinkItemViewModel { Reference = "#", Title = "Asia Pacific" } };
+            return new List<LinkViewModel> { new LinkViewModel { Reference = "#", Title = "Asia Pacific" } };
         }
 
 

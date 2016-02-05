@@ -41,25 +41,21 @@ namespace CMS.Mvc.Controllers.Afton
             var home = _homeProvider.GetHomeItems().First();
 			foreach (var primaryTile in _primaryTilesProvider.GetPrimaryTiles(StringToGuidsConvertHelper.ParseGuids(home.ManagedBlocks), home.Site.DisplayName))
             {
-				TileViewModel tile = null;
+				var tile = AutoMapper.Mapper.Map<TileViewModel>(primaryTile);
                 if (primaryTile is Document)
                 {
-					tile = MapData<Document, TileViewModel>(primaryTile as Document);
 					tile.TypeName = "Document";
                 }
                 else if (primaryTile is CustomNews)
                 {
-					tile = MapData<CustomNews, TileViewModel>(primaryTile as CustomNews);
 					tile.TypeName = "News";
                 }
                 else if (primaryTile is Event)
                 {
-					tile = MapData<Event, TileViewModel>(primaryTile as Event);
 					tile.TypeName = "Events";
                 }
                 else if (primaryTile is Solution)
                 {
-                    tile = MapData<Solution, TileViewModel>(primaryTile as Solution);
                     tile.TypeName = "Solution";
                 }
 				if (tile != null)

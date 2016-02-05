@@ -110,7 +110,7 @@ namespace CMS.Mvc.Helpers
                 ).ToList();
         }
 
-		public static List<T> GetDocByGuids<T>(List<Guid> guids, string siteName) 
+		public static List<T> GetDocsByGuids<T>(List<Guid> guids, string siteName) 
 			where T : TreeNode, new()
 		{
 			return guids.Select(guid => _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName)) as T).ToList();
