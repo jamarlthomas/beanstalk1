@@ -2,8 +2,6 @@
     
     .pollSurvey { @include gallery(6 of 12); margin-bottom: gutter();
         
-        .title { padding: 13px 0px; background: #184b9f; color: #FFF; text-align: center; font-size: 16px; }
-        
         .itemC { background: #eeeded; padding: 15px;
             
             form.pole { padding-top: 20px;      
@@ -37,8 +35,6 @@
                 }//ul
                 
                 .voteMessage { padding: 10px 0px 15px 0px; font-size: 26px; line-height: 30px; color: #184b9f; text-align: center; }
-                 
-                .viewReslutsLink { display: block; margin: 0px auto; padding: 10px 0px; width: 90%; text-align: center; color: #FFF; background: #4c9d2f; border: 0px; text-decoration: none; }
 
                 
             }//voteResults

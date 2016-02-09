@@ -71,20 +71,33 @@ html(lang='en')
                                             
                                             div(class="voteDetails") 270 Votes | 11 days, 2 hours left
                                             
-                                        
+                                            
                                 div(class="pollSurvey")
                                     
                                     div(class="itemC")
                                     
                                         div(class="txt") Which segment of off-road vehicle additives best fits your company’s needs?
 
-                                        div(class="voteResults")
-                                            ul
-                                                li(class="selected") Agricultural segment - <strong>65%</strong>
-                                                li Construction segment - <strong>21%</strong>
-                                                li Mining segment - <strong>14%</strong>
-                                            
-                                            div(class="voteMessage") Thank You!
+                                        form(class="pole")
+
+                                            label
+                                                input(type="radio" name="question" value="Agriculture segment")
+                                                span
+                                                | Agriculture segment
+
+                                            label
+                                                input(type="radio" name="question" value="Construction segment")
+                                                span
+                                                | Construction segment
+
+                                            label
+                                                input(type="radio" name="question" value="Mining segment")
+                                                span
+                                                | Mining segment
+
+                                            input(class="vote" type="submit" value="Submit Your Vote")
+
+                                            div(class="voteDetails") 270 Votes | 11 days, 2 hours left
                                             
                                         
                                 div(class="pollSurvey")
@@ -113,6 +126,7 @@ html(lang='en')
                                             input(class="vote" type="submit" value="Submit Your Vote")
 
                                             div(class="voteDetails") 270 Votes | 11 days, 2 hours left
+                                            
                                             
                                 div(class="pollSurvey")
                                     
@@ -199,52 +213,7 @@ html(lang='en')
                         
                             
                 div(id="lftCol-sidebar")
-                    
-                    div(class="sidbarBoxCTitle") We value your opinion!
-                    
-                    div(class="sidbarBoxC")
-                    
-                        div(class="txt") Which segment of off-road vehicle additives best fits your company’s needs?
-
-                        form(class="pole")
-
-                            label
-                                input(type="radio" name="question" value="Agriculture segment")
-                                span
-                                | Agriculture segment
-
-                            label
-                                input(type="radio" name="question" value="Construction segment")
-                                span
-                                | Construction segment
-
-                            label
-                                input(type="radio" name="question" value="Mining segment")
-                                span
-                                | Mining segment
-
-                            input(class="vote" type="submit" value="Submit Your Vote")
-
-                            div(class="voteDetails") 270 Votes | 11 days, 2 hours left
-                                
-                                
-                    div(class="sidbarBoxCTitle") We value your opinion!
-                    
-                    div(class="sidbarBoxC")
-                    
-                        div(class="txt") Which segment of off-road vehicle additives best fits your company’s needs?
-                            
-                        div(class="voteResults")
-                            ul
-                                li(class="selected") Agricultural segment - <strong>65%</strong>
-                                li Construction segment - <strong>21%</strong>
-                                li Mining segment - <strong>14%</strong>
-
-                            div(class="voteMessage") Thank You!
-
-                            a(href="#" class="viewReslutsLink") View All Polls and Results
-                                
-                    
+                                        
                     img(class="sidbarImg" src="page-images/sidebar-images/sidebar-contact.jpg")
                     
                     div(class="sidbarBoxC")
