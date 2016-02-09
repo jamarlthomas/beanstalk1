@@ -16,29 +16,7 @@ $( document ).ready(function() {
     getDocTypeFilter.find("#clearFilterB").remove();    
     $("#mFilterSolution").append(getDocTypeFilter);
     
-    
-    /*
-    var getSolutionFilter = "";
-    if($("#filterSolution-Driveline").html()!== undefined){   
-        getSolutionFilter = $("#filterSolution-Driveline").html();
-    }
-    if($("#filterSolution-Fuel").html()!== undefined){   
-        getSolutionFilter = getSolutionFilter + $("#filterSolution-Fuel").html();
-    }
-    if($("#filterSolution-EngineOil").html()!== undefined){   
-        getSolutionFilter = getSolutionFilter + $("#filterSolution-EngineOil").html();
-    }
-    if($("#filterSolution-Industrial").html()!== undefined){   
-        getSolutionFilter = getSolutionFilter + $("#filterSolution-Industrial").html();
-    }
-    if($("#filterSolution-LubricantComponentsl").html()!== undefined){   
-        getSolutionFilter = getSolutionFilter + $("#filterSolution-LubricantComponents").html();
-    }
-    $("#mFilterSolution").append(getSolutionFilter);
-    if(getSolutionFilter==""){
-        $("#mobileFilterNav li:eq(2)").css({"display": "none"});
-    }
-    */
+
 
    //Open Filter Navigation
     $('#mobileFilterBtn').click(function(e) {
@@ -106,7 +84,7 @@ $( document ).ready(function() {
     });
     
     
-
+    //** Note control of the checkboxes are handled in product-filter.js
     
     
     //Reset button needs to reset all desktop items
