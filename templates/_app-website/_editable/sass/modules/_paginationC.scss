@@ -1,25 +1,21 @@
 .paginationC { padding: 22px 0px; border: 1px solid #4c9d2f; text-align: center;
-
-    a { margin: 0px 25px; color: #4c9d2f; text-decoration: none; 
+    
+    ul { margin: 0px; padding: 0px; }
+    li { margin: 0px; padding: 0px; display: inline; list-style: none;
+    
+        &.active a { color: #114294; }
+        
+        &.disabled a { color: #000; }
+        
+    }
+    
+    a { margin: 0px 18px; color: #4c9d2f; text-decoration: none; 
 
         &:hover { color: #114294; }
-
-        &.nextGroup { color: #000;
-
-            //*** Breakpoints ***
-            @include breakpoint($bp3) { display:none; }
-        }
-
-        &.sendToEnd { 
-
-            //*** Breakpoints ***
-            @include breakpoint($bp3) { display:none; }
-
-        }
-
+        
         //*** Breakpoints ***
         @include breakpoint($bp2) { margin: 0px 2.5%; font-size: 16px; }
-        @include breakpoint($bp3) { margin: 0px 3%; font-size: 18px; }
+        @include breakpoint($bp3) { font-size: 18px; }
 
     }//a
 
@@ -29,13 +25,15 @@
             @include breakpoint($bp3) { content: "<"; }
         }
     }
-
+    
+    
     a.next {
         &:before { content: "NEXT";
             //*** Breakpoints ***
             @include breakpoint($bp3) { content: ">"; }
         }
     }
+    
 
 }//paginationC
 

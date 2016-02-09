@@ -56,7 +56,24 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// 
+        /// Sidebar Component Items.
+        /// </summary>
+        [DatabaseField]
+        public string SidebarItems
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
+            }
+            set
+            {
+                SetValue("SidebarItems", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Title.
         /// </summary>
         [DatabaseField]
         public string Title
@@ -68,23 +85,6 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("Title", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Subtitle.
-        /// </summary>
-        [DatabaseField]
-        public string Subtitle
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("Subtitle"), "");
-            }
-            set
-            {
-                SetValue("Subtitle", value);
             }
         }
 
@@ -107,23 +107,6 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Content.
-        /// </summary>
-        [DatabaseField]
-        public string Content
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("Content"), "");
-            }
-            set
-            {
-                SetValue("Content", value);
-            }
-        }
-
-
-        /// <summary>
         /// Description.
         /// </summary>
         [DatabaseField]
@@ -141,120 +124,35 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Region.
+        /// Content.
         /// </summary>
         [DatabaseField]
-        public string Region
+        public string Content
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Region"), "");
+                return ValidationHelper.GetString(GetValue("Content"), "");
             }
             set
             {
-                SetValue("Region", value);
+                SetValue("Content", value);
             }
         }
 
 
         /// <summary>
-        /// Benefits.
+        /// Regions.
         /// </summary>
         [DatabaseField]
-        public string Benefits
+        public string Regions
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Benefits"), "");
+                return ValidationHelper.GetString(GetValue("Regions"), "");
             }
             set
             {
-                SetValue("Benefits", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Dosage.
-        /// </summary>
-        [DatabaseField]
-        public string Dosage
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("Dosage"), "");
-            }
-            set
-            {
-                SetValue("Dosage", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Characteristics.
-        /// </summary>
-        [DatabaseField]
-        public string Characteristics
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("Characteristics"), "");
-            }
-            set
-            {
-                SetValue("Characteristics", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Approvals.
-        /// </summary>
-        [DatabaseField]
-        public string Approvals
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("Approvals"), "");
-            }
-            set
-            {
-                SetValue("Approvals", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Handling Information.
-        /// </summary>
-        [DatabaseField]
-        public string HandlingInformation
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("HandlingInformation"), "");
-            }
-            set
-            {
-                SetValue("HandlingInformation", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Comparison.
-        /// </summary>
-        [DatabaseField]
-        public string Comparison
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("Comparison"), "");
-            }
-            set
-            {
-                SetValue("Comparison", value);
+                SetValue("Regions", value);
             }
         }
 
