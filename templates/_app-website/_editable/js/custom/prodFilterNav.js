@@ -3,8 +3,6 @@ $( document ).ready(function() {
     //Load Filters from the page into mobile naviagion
     var getRegionFilter = $("#filterRegion").clone();
     getRegionFilter.find(".filterHdr").remove();
-    //getRegionFilter.find("[ng-model]").removeAttr("ng-model");
-    getRegionFilter.find("[ng-click]").removeAttr("ng-click");
     $("#mFilterRegion").append(getRegionFilter);
     
     var getDocTypeFilter = $("#filterDocumentType").clone();
@@ -16,7 +14,29 @@ $( document ).ready(function() {
     getDocTypeFilter.find("#clearFilterB").remove();    
     $("#mFilterSolution").append(getDocTypeFilter);
     
-
+    
+    /*
+    var getSolutionFilter = "";
+    if($("#filterSolution-Driveline").html()!== undefined){   
+        getSolutionFilter = $("#filterSolution-Driveline").html();
+    }
+    if($("#filterSolution-Fuel").html()!== undefined){   
+        getSolutionFilter = getSolutionFilter + $("#filterSolution-Fuel").html();
+    }
+    if($("#filterSolution-EngineOil").html()!== undefined){   
+        getSolutionFilter = getSolutionFilter + $("#filterSolution-EngineOil").html();
+    }
+    if($("#filterSolution-Industrial").html()!== undefined){   
+        getSolutionFilter = getSolutionFilter + $("#filterSolution-Industrial").html();
+    }
+    if($("#filterSolution-LubricantComponentsl").html()!== undefined){   
+        getSolutionFilter = getSolutionFilter + $("#filterSolution-LubricantComponents").html();
+    }
+    $("#mFilterSolution").append(getSolutionFilter);
+    if(getSolutionFilter==""){
+        $("#mobileFilterNav li:eq(2)").css({"display": "none"});
+    }
+    */
 
    //Open Filter Navigation
     $('#mobileFilterBtn').click(function(e) {
@@ -84,9 +104,28 @@ $( document ).ready(function() {
     });
     
     
-    //** Note control of the searc, checkboxes and reset button are handled in product-filter.js
-    
+    //If checkbox is clicked in mobile check it on page
+    $("#mobileFilterNav input[type='checkbox']").click(function() {
+        
+        //get checked items name
+        var getName = $(this).attr("name")
+        var getValue = $(this).attr("value")
+        var getStatus = $(this).is(':checked')
 
+        //Add checked to the correct checkbox on the page
+        if(getStatus){
+            $("#filterC input[name='" + getName + "'][value='" + getValue + "']").prop('checked', true);
+        }else{
+            $("#filterC input[name='" + getName + "'][value='" + getValue + "']").prop('checked', false);
+        }
+        
+    });
     
+    
+    //Reset button needs to reset all desktop items
+    $("#mobileFilterForm #mobileClearFilterB input").click(function() {
+        $('#filterC')[0].reset();
+        
+    });
     
 });

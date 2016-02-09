@@ -1,37 +1,13 @@
 ﻿@model CMS.Mvc.ViewModels.Product.RelatedProductCardViewModel
-@if (!string.IsNullOrWhiteSpace(Model.Reference))
-{
-    <a href="@Url.Content(Model.Reference)">
-        <div class="cardBtnIndicator">
-            <img src="~/images/card-btn-indicator.png" />
-        </div>
-        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
-        {
-            <img src="@Url.Content(Model.ImageUrl)" />
-        }
-        <div class="textAreaC">
-            <div class="cardTitle">@Model.Title</div>
-            <div class="cardHdr">@Model.Header</div>
-            <div class="cardSubHdr">@Model.SubHeader</div>
-            <div class="cardTxt">@Model.Text</div>
-        </div>
-    </a>
-}
-else
-{
-    <a>
-        <div class="cardBtnIndicator">
-            <img src="~/images/card-btn-indicator.png" />
-        </div>
-        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
-        {
-            <img src="@Url.Content(Model.ImageUrl)" />
-        }
-        <div class="textAreaC">
-            <div class="cardTitle">@Model.Title</div>
-            <div class="cardHdr">@Model.Header</div>
-            <div class="cardSubHdr">@Model.SubHeader</div>
-            <div class="cardTxt">@Model.Text</div>
-        </div>
-    </a>
-}
+<a href="@Url.Content(@Model.Reference)">
+    <div class="cardBtnIndicator">
+        <img src="~/images/card-btn-indicator.png">
+    </div>
+    <img src="@Url.Content(@Model.ImageUrl)">
+    <div class="textAreaC">
+        <div class="cardTitle">@Model.Title</div>
+        <div class="cardHdr">@Model.Header</div>
+        <div class="cardSubHdr">@Model.SubHeader</div>
+        <div class="cardTxt">@Model.Text</div>
+    </div>
+</a>

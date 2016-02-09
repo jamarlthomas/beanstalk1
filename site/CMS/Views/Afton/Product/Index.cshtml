@@ -4,27 +4,6 @@
     ViewBag.Title = "Product";
     Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
-<script>
-    head.js(
-        { home_rotator: "@Url.Content("~/Scripts/custom/homeSlideShow.min.js")" },
-        { search_box: "@Url.Content("~/Scripts/custom/search.min.js")" },
-        { language_selector: "@Url.Content("~/Scripts/custom/langSel.min.js")" },
-        { mega_menu_drop_down: "@Url.Content("~/Scripts/custom/megaMenu.min.js")" },
-        { mobile_nav: "@Url.Content("~/Scripts/custom/mobileNav.min.js")" },
-        { disclaimer_copyright: "@Url.Content("~/Scripts/custom/copyrightDate.min.js")" },
-
-        { card_Animations: "@Url.Content("~/Scripts/custom/cards.min.js")" },
-        { sbu_Landing_Nav: "@Url.Content("~/Scripts/custom/sbuLandingDropDown.min.js")" },
-        { accordion_Nav: "@Url.Content("~/Scripts/custom/accordion.min.js")" },
-        { card_Animations: "@Url.Content("~/Scripts/custom/print.min.js")" },
-        { language_Document_selector: "@Url.Content("~/Scripts/custom/langDocSel.min.js")" },
-        function() {
-            //loadCSS
-            //	{LABEL: "URL/PATH"},
-            //);
-        }
-    );
-</script>
 
 <div id="printArea"></div>
 <div id="contentAreaC">
@@ -35,29 +14,27 @@
             @Html.Partial("~/Views/Afton/Product/_productMainContent.cshtml", @Model.ContentCopyArea)
         </div>
         <div id="lftCol-sidebar">
-            @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar)
-
+            @Html.Partial("~/Views/Afton/Product/_contactUs.cshtml", @Model.ContactUs)
+            @Html.Partial("~/Views/Afton/Product/_stayInformed.cshtml", @Model.StayInformed)
+            @Html.Partial("~/Views/Afton/Product/_insightsAndResoursesWidget.cshtml", @Model.InsightsAndResourcesWidget)
+            @Html.Partial("~/Views/Afton/Product/_passion.cshtml", @Model.PassionWidget)
+           
         </div>
     </div>
     @Html.Partial("~/Views/Afton/Product/_relatedProducts.cshtml", @Model.RelatedProducts)
     @Html.Partial("~/Views/Afton/Product/_insightsAndResourcesSection.cshtml", @Model.InsightsAndResourcesSection)
-
+   
 </div>
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-56686002384632a9" async="async"></script>
-<script>
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-10080511-2']);
-    _gaq.push(['_setDomainName', '.aftonchemical.com']);
-    _gaq.push(['_trackPageview']);
 
-    (function () {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-
-
-</script>
+@*
+    4.1. Content/copy area - added
+    4.2. Contact widget
+    4.3. Product data sheet download widget
+    4.4. Stay informed widget
+    4.5. Join product conversation widget
+    4.6. Insights & Resourses widget
+    4.7. Product List widget
+*@
 
 
 

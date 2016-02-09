@@ -1,0 +1,25 @@
+﻿@using CMS.Mvc.ViewModels.Product
+@model InsightsAndResourcesWidgetViewModel
+<div class="sidbarBoxC">
+    <div class="hdr">Insights & Resources</div>
+    <div class="twoCol">
+        @foreach (InsightsAndResourcesBlockViewModel block in @Model.InsightsAndResourcesBlocks)
+        {
+            @Html.Partial("~/Views/Afton/Product/_leftSideBlock.cshtml", block)
+        }
+        @*<a href="#">
+            <img src="~/images/page-images/sidebar-images/sidebar-res-driveline.jpg">
+            <div class="txtCol">
+                <div class="sTxt">Driveline Article</div>
+                <um>sundae culles aboritia aut acit volorum eumqui toratemquam.</um>
+            </div>
+        </a>
+        <a href="#">
+            <img src="~/images/page-images/sidebar-images/sidebar-res-prod.jpg">
+            <div class="txtCol">
+                <div class="sTxt">Driveline Article</div>
+                <um>sundae culles aboritia aut acit volorum eumqui toratemquam.</um>
+            </div>
+        </a>*@
+    </div>
+</div>
