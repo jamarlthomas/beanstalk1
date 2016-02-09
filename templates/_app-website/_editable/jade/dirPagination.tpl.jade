@@ -1,0 +1,17 @@
+div(class="paginationC")
+    ul(class="pagination" ng-if="1 < pages.length")
+
+        li(class="beginLink" ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }")
+            a(href="" ng-click="setCurrent(1)") &laquo;
+
+        li(class="backLink" class="testlink" ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }" class="ng-scope")
+            a(href="" ng-click="setCurrent(pagination.current - 1)" class="ng-binding prev")
+
+        li(class="pageNumLink" ng-repeat="pageNumber in pages track by $index" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }")
+            a(href="" ng-click="setCurrent(pageNumber)") {{ pageNumber }}
+
+        li(class="forwardLink" ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }" class="ng-scope")
+            a(href="" ng-click="setCurrent(pagination.current + 1)" class="ng-binding next")
+
+        li(class="endLink" ng-if="boundaryLinks"  ng-class="{ disabled : pagination.current == pagination.last }")
+            a(href="" ng-click="setCurrent(pagination.last)") &raquo;

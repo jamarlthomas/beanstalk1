@@ -1,0 +1,12 @@
+﻿@using CMS.Mvc.ViewModels.Shared.SidebarComponents
+@model DocumentsWidgetViewModel
+<div class="sidbarBoxC">
+    <div class="hdr">@Model.Title</div>
+    <div class="twoCol">
+        @foreach (DocumentBlockViewModel block in @Model.DocumentBlocks)
+        {
+            @Html.Partial("~/Views/Afton/Shared/Sidebar/_leftSideBlock.cshtml", block)
+        }
+    </div>
+</div>
+

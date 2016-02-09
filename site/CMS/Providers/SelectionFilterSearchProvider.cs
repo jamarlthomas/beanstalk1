@@ -26,7 +26,7 @@ namespace CMS.Mvc.Providers
 			if (!string.IsNullOrEmpty(documentTypesIds) || !string.IsNullOrEmpty(solutionsIds))
 			{
 				query.Append("+NodeParentID:(");
-				var idsArray = string.Format("{0},{1}", documentTypesIds, solutionsIds).Split(',');
+				var idsArray = string.Format("{0},{1}", documentTypesIds, solutionsIds).Split(new char[] {','}, System.StringSplitOptions.RemoveEmptyEntries);
 				for (int i = 0; i < idsArray.Length - 1; i++)
 				{
 					query.AppendFormat("(int){0} ", idsArray[i]);
