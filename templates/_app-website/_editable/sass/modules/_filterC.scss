@@ -49,9 +49,9 @@
                 
                         input[type="checkbox"] { display:none; }
 
-                        input[type="checkbox"] +  span { display:inline-block; width: 18px; height: 13px; margin: -3px 4px 0 -22px; vertical-align: middle; cursor: pointer; background:url(../../images/check-box.png) left top no-repeat; }
+                        input[type="checkbox"] +  span.checkboxDisplay { display:inline-block; width: 18px; height: 13px; margin: -3px 4px 0 -22px; vertical-align: middle; cursor: pointer; background:url(../../images/check-box.png) left top no-repeat; }
 
-                        input[type="checkbox"]:checked + span { background:url(../../images/check-box-a.png) left top no-repeat; }          
+                        input[type="checkbox"]:checked + span.checkboxDisplay { background:url(../../images/check-box-a.png) left top no-repeat; }          
 
                     }//label
                     
@@ -64,7 +64,7 @@
             }//filterColC
             
             //*** Breakpoints ***
-            @include breakpoint($bp2) { display: none; }
+            @include breakpoint($bp2) { xdisplay: none; } 
             
         }//filterC
 

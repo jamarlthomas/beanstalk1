@@ -5,9 +5,9 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
     
     //function to update global varables for checkboxes when URL loads
     $scope.updateCheckboxItems = function(htmlRef, htmlRef2, urlDataIDs, checkboxesRef){
-
+        
         if(typeof urlDataIDs !== "undefined" && urlDataIDs != -1 && urlDataIDs != ""){
-
+            
             //build array from values found
             tempURLArray = urlDataIDs.split(",")
             
@@ -17,24 +17,29 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
             //Update global ID's in string format 
             retStringIDs = $scope.arrayToString2(tempURLArray)
             
+            //Build a Temporary Array to hold the text display
             retArrayText = [];
-             
+            
             //loop through all the URL IDs
             for (i=0; i < tempURLArray.length; i++) { 
                 
                 //find checkbox in HTML and get the checkbox model
-                tempModelID = $(htmlRef + " input[data-id='" + tempURLArray[i] +"']").attr("ng-model")
+                tempModelID = $("#filter" + htmlRef + " input[data-id='" + tempURLArray[i] +"']").attr("ng-model")
                 
-                //get just the id number
+                //get just the id number                
                 tempModelID = tempModelID.replace(htmlRef2, "");
                 tempModelID = tempModelID.replace("[", "");
                 tempModelID = tempModelID.replace("]", "");
                  
                 //Check the correct checkbox on the page
-                checkboxesRef[tempModelID] = true;            
+                checkboxesRef[tempModelID] = true;
+                
+                //check correct mobile checkbox
+                $("#mFilter" + htmlRef + " input[data-id='" + tempURLArray[i] +"']").prop('checked', true);
+                
                
                 //Find the checkbox in the html and get the text
-                tempTextValue = $("#filterRegion input[data-id='" + tempURLArray[i] +"']").attr("data-text")
+                tempTextValue = $("#filterRegion input[data-id='" + tempURLArray[i] +"']" ).parent().find(".txt").html()
                 
                 //Update global Array of Text items   
                 retArrayText.push(tempTextValue);
@@ -43,6 +48,7 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
             
             //Update global Text Items in text format
             var retSelected = $scope.arrayToString(retArrayText);
+
             
             return [ retArrayIDs, retStringIDs, retArrayText, retSelected ]
 
@@ -51,104 +57,137 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
     }
     
     
-    //Watch URL
+    //Watch URL    
     $scope.$on('$locationChangeSuccess', function(event, next, current) { 
         
         var getURLPath = $location.path();
         var getURLPathArray = getURLPath.split("/")
         
-        //*** Regional Updates
-        var urlRegionsValues = getURLPathArray[2];
-        
-        //setup refrence to checkboxes
-        $scope.region = [];
-        var regionCheckboxesRef = $scope.region;
-        
-        //based on URL ID's make updates
-        var returnVars = $scope.updateCheckboxItems("#filterRegion","region", urlRegionsValues, regionCheckboxesRef);
-        
-        //update global variables
-        if(typeof returnVars !== "undefined"){
-            $scope.regionArrayID = returnVars[0];        
-            $scope.regionStringID = returnVars[1];
-            $scope.regionArrayText = returnVars[2];
-            $scope.regionSelected = returnVars[3];
-        } 
-        
-        
-        //*** DocType Updates
-        var urlDocTypesValues = getURLPathArray[4];
-        
-        //setup refrence to checkboxes
-        $scope.docType = [];
-        var docTypeCheckboxesRef = $scope.docType;
-        
-        //based on URL ID's make updates
-        var returnVars = $scope.updateCheckboxItems("#filterDocumentType","docType",urlDocTypesValues, docTypeCheckboxesRef);
-        
-        //update global variables
-        if(typeof returnVars !== "undefined"){
-            $scope.docTypeArrayID = returnVars[0];        
-            $scope.docTypeStringID = returnVars[1];
-            $scope.docTypeArrayText = returnVars[2];
-            $scope.docTypeSelected = returnVars[3];
-        }
-        
-        
-        //*** Solution Updates
-        var urlSolutionValues = getURLPathArray[8];
-        
-        //setup refrence to checkboxes
-        $scope.solution = [];
-        var solutionCheckboxesRef = $scope.solution;
-        
-        //based on URL ID's make updates
-        var returnVars = $scope.updateCheckboxItems("#filterSolution","solution",urlSolutionValues, solutionCheckboxesRef);
-        
-        //update global variables
-        if(typeof returnVars !== "undefined"){
-            $scope.solutionArrayID = returnVars[0];        
-            $scope.solutionStringID = returnVars[1];
-            $scope.solutionArrayText = returnVars[2];
-            $scope.solutionSelected = returnVars[3];
-        }
-        
-        
-        //*** Sorting Updates
-        var urlSortValue = getURLPathArray[10];
-        
-        //update global sort value
-        $scope.sortItems = urlSortValue
-        
-        //update the real drop down
-        $("#filterSort .customSelectC ul").find("li[value='" + urlSortValue + "']").prop('selected', true);
-        
-        //update html drop down        
-        $scope.mytimeout = $timeout(function() {
+        //if there isn't a defined path add the default one
+        if(getURLPath == "") {
+         
+            $location.path("/regions/-1/documents/-1/SBU/-1/solutions/-1/sort/Newest/page/1/search/");
             
-            $("#filterSort .customSelectC .currentItem").text(urlSortValue)
+        }else{
+
+        
+            //*** Regional Updates
+            var urlRegionsValues = getURLPathArray[2];
+
+            //setup refrence to checkboxes
+            $scope.region = [];
+            var regionCheckboxesRef = $scope.region;
             
-        }, 800);
+            //uncheck items for mobile
+            $("#mFilterRegion input").prop('checked', false);
+            
+            //based on URL ID's make updates
+            var returnVars = $scope.updateCheckboxItems("Region","region", urlRegionsValues, regionCheckboxesRef);
+            
+            
+            //update global variables
+            if(typeof returnVars !== "undefined"){
+                $scope.regionArrayID = returnVars[0];        
+                $scope.regionStringID = returnVars[1];
+                $scope.regionArrayText = returnVars[2];
+                $scope.regionSelected = returnVars[3];
+            } 
+            
+
+            //*** DocType Updates
+            var urlDocTypesValues = getURLPathArray[4];
+
+            //setup refrence to checkboxes
+            $scope.docType = [];
+            var docTypeCheckboxesRef = $scope.docType;
+            
+            //clear all mobile items so they can be added 
+            $("#mFilterDocType input").prop('checked', false);
+            
+            //based on URL ID's make updates
+            var returnVars = $scope.updateCheckboxItems("DocumentType","docType",urlDocTypesValues, docTypeCheckboxesRef);
+
+            //update global variables
+            if(typeof returnVars !== "undefined"){
+                $scope.docTypeArrayID = returnVars[0];        
+                $scope.docTypeStringID = returnVars[1];
+                $scope.docTypeArrayText = returnVars[2];
+                $scope.docTypeSelected = returnVars[3];
+            }
+ 
+
+            //*** Solution Updates
+            var urlSolutionValues = getURLPathArray[8];
+
+            //setup refrence to checkboxes
+            $scope.solution = [];
+            var solutionCheckboxesRef = $scope.solution;
+            
+            //clear all mobile items so they can be added 
+            $("#mFilterSolution input").prop('checked', false);
+            
+            //based on URL ID's make updates
+            var returnVars = $scope.updateCheckboxItems("Solution","solution",urlSolutionValues, solutionCheckboxesRef);
+
+            //update global variables
+            if(typeof returnVars !== "undefined"){
+                $scope.solutionArrayID = returnVars[0];        
+                $scope.solutionStringID = returnVars[1];
+                $scope.solutionArrayText = returnVars[2];
+                $scope.solutionSelected = returnVars[3];
+            }
+
+
+            //*** Sorting Updates
+            var urlSortValue = getURLPathArray[10];
+
+            if(typeof urlSortValue == "undefined"){
+                urlSortValue = "Newest"
+            }
+
+            //update global sort value
+            $scope.sortItems = urlSortValue
+
+            //update the real drop down
+            $("#filterSort .customSelectC ul").find("li[value='" + urlSortValue + "']").prop('selected', true);
+
+            //update html drop down
+
+            $scope.mytimeout = $timeout(function() {
+
+                $("#filterSort .customSelectC .currentItem").text(urlSortValue)
+
+            }, 800);
+
+
+
+            //*** Paging Updates
+            var urlPageNumValue = getURLPathArray[12];
+
+            if(typeof urlPageNumValue == "undefined"){
+                urlPageNumValue = "1"
+            }
+
+            //update paging
+            $scope.pageNumber = urlPageNumValue
+
+
+            //*** Search Updates
+            var urlSearchValues = getURLPathArray[14];
+
+            if(typeof urlSearchValues == "undefined"){
+                urlSearchValues = ""
+            }
+
+            //add text to search box
+            $scope.searchFilter = urlSearchValues;
+
+
+            //run ajax request
+            $scope.runQuery();
         
-        
-        
-        //*** Paging Updates
-        var urlPageNumValue = getURLPathArray[12];
-        
-        $scope.pageNumber = urlPageNumValue
-        
-        
-        //*** Search Updates
-        var urlSearchValues = getURLPathArray[14];
-        
-        //add text to search box
-        $scope.searchFilter = urlSearchValues;
-        
-        
-        
-        //run ajax request
-        $scope.runQuery();
-        
+        }
+            
     });
     
     
@@ -403,7 +442,7 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
 
               //For No results
               $scope.checkForResults = function(){                  
-                  console.log("test")
+
                 //check if there are any results returned
                 if($scope.prodfilterResults === null){
                   return true;
@@ -413,9 +452,124 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
 
               }
 
-          });
+        }); 
 
     }
+    
+    
+    //Mobile Checkbox Filter
+    $scope.URL_RegionNumArrayStore = [];
+    $("#mobileFilterNav").on("click", "input[type='checkbox']", function() {
+        
+        //get URL
+        var getUrl = $location.path();
+        var getUrlArray = getUrl.split("/");
+
+        //put sections into strings & array storage
+        URL_RegionNum = getUrlArray[2];
+        $scope.URL_RegionNumArray =  URL_RegionNum.split(",");                
+
+        /*
+        URL_DocTypeNum = getUrlArray[4];
+        URL_DocTypeNumArray = [];
+        if(typeof URL_DocTypeNumArray !== "undefined"){
+            //URL_DocTypeNumArray =  URL_DocTypeNum.split(",")
+        }
+
+        URL_SolutionNum = getUrlArray[8];
+        URL_SolutionNumArray = [];
+        if(typeof URL_SolutionNumArray !== "undefined"){
+            //URL_SolutionNumArray =  URL_SolutionNum.split(",")
+        }
+        */
+
+        
+        //get checked items attributes
+        var getID = $(this).attr("data-id")
+        var getStatus = $(this).is(':checked')
+
+        var ngModel = $(this).attr("ng-model")
+        var ngModelNumArray = ngModel.split("[")
+        var ngModelName = ngModelNumArray[0].replace("[", "")
+        
+        
+        
+
+        //Assign the correct id to the right part of the path        
+        switch(ngModelName) {
+
+            case "region":
+                console.log("X")
+                if(getStatus){//if status was set to true add
+                    if($scope.URL_RegionNumArray[0] == "-1"){ $scope.URL_RegionNumArrayStore.splice("-1",1); }
+                    $scope.URL_RegionNumArrayStore.push(getID);
+                    URL_RegionNum = $scope.arrayToString2($scope.URL_RegionNumArrayStore);
+                }else{//remove item
+                    var itemToRemove = $scope.URL_RegionNumArrayStore.indexOf(getID);
+                     $scope.URL_RegionNumArrayStore.splice(itemToRemove,1);
+                    URL_RegionNum = $scope.arrayToString2($scope.URL_RegionNumArrayStore);
+                }
+                break;
+            /*
+            case "docType":
+
+                if(getStatus){//if status was set to true add
+                    if(URL_DocTypeNumArray[0] == "-1"){ URL_DocTypeNumArray.splice("-1",1); }
+                    URL_DocTypeNumArray.push(getID);
+                    URL_DocTypeNum = $scope.arrayToString2(URL_DocTypeNumArray);                    
+                }else{//remove item
+                    var itemToRemove = URL_DocTypeNumArray.indexOf(getID);
+                    URL_DocTypeNumArray.splice(itemToRemove,1);
+                    URL_DocTypeNum = $scope.arrayToString2(URL_DocTypeNumArray);
+                }
+                break;
+
+            case "solution":
+
+                if(getStatus){//if status was set to true add
+                    if(URL_SolutionNumArray[0] == "-1"){ URL_SolutionNumArray.splice("-1",1); }
+                    URL_SolutionNumArray.push(getID);
+                    URL_SolutionNum = $scope.arrayToString2(URL_SolutionNumArray);
+                }else{//remove item
+                    var itemToRemove = URL_SolutionNumArray.indexOf(getID);
+                    URL_SolutionNumArray.splice(itemToRemove,1);
+                    URL_SolutionNum = $scope.arrayToString2(URL_SolutionNumArray);
+                }
+                break;
+            */
+        }
+        
+        
+        
+        
+        $timeout.cancel($scope.mytimeout2); 
+        $scope.mytimeout2 = $timeout(function() {
+            
+            /*
+            //reset stored scope variables
+            $scope.regionStringID = URL_RegionNum
+            $scope.docTypeStringID = URL_DocTypeNum
+            $scope.solutionStringID = URL_SolutionNum
+            
+            
+            //update path should update display and checkboxes automatically
+            $scope.$apply(
+
+                $location.path("/regions/" + URL_RegionNum + "/documents/" + URL_DocTypeNum + "/SBU/" + getUrlArray[6] + "/solutions/" + URL_SolutionNum + "/sort/" + getUrlArray[10] +"/page/" + getUrlArray[12] + "/search/" + getUrlArray[14])
+            )
+            */
+        }, 800)
+      
+            
+            
+        
+
+           
+
+        
+    });
+    
+  
 
     
 }]);
@@ -427,7 +581,7 @@ $( document ).ready(function() {
 
     //If checkbox is clicked in the page check it on mobile
     $("#filterC input[type='checkbox']").click(function() {
-        console.log("tst")
+        //console.log("tst")
         //get checked items name
         var getName = $(this).attr("name")
         var getValue = $(this).attr("value")

@@ -62,24 +62,24 @@ html(lang='en' ng-app="prodFilterApp")
                                     div(class="filterHdr") Region
                                       
                                     label
-                                        input(type="checkbox" ng-model="region[0]" data-id="100" data-text="North America"  ng-click="regionWatch('100','North America',region[0])")
-                                        span
-                                        | North America
+                                        input(type="checkbox" ng-model="region[0]" data-id="100" ng-click="regionWatch('100','North America',region[0])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") North America
 
                                     label
-                                        input(type="checkbox" ng-model="region[1]" data-text="Latin America" data-id="52" ng-click="regionWatch('52','Latin America',region[1])")
-                                        span
-                                        | Latin America
+                                        input(type="checkbox" ng-model="region[1]" data-id="52" ng-click="regionWatch('52','Latin America',region[1])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Latin America
 
                                     label
-                                        input(type="checkbox" ng-model="region[2]" data-text="EMEAI" data-id="60" ng-click="regionWatch('60','EMEAI',region[2])")
-                                        span
-                                        | EMEAI
+                                        input(type="checkbox" ng-model="region[2]" data-id="60" ng-click="regionWatch('60','EMEAI',region[2])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") EMEAI
 
                                     label
-                                        input(type="checkbox" ng-model="region[3]" data-text="Asia" data-id="540" ng-click="regionWatch('540','Asia',region[3])")
-                                        span
-                                        | Asia
+                                        input(type="checkbox" ng-model="region[3]" data-id="540" ng-click="regionWatch('540','Asia',region[3])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Asia
 
                                 <hr>
 
@@ -88,34 +88,34 @@ html(lang='en' ng-app="prodFilterApp")
                                     div(class="filterHdr") Document Type
 
                                     label
-                                        input(type="checkbox" ng-model="docType[0]" data-text="Product Data Sheets" data-id="98" ng-click="docTypeWatch('98','Product Data Sheets',docType[0])")
-                                        span
-                                        | Product Data Sheets
+                                        input(type="checkbox" ng-model="docType[0]" data-id="98" ng-click="docTypeWatch('98','Product Data Sheets',docType[0])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Product Data Sheets
 
                                     label
-                                        input(type="checkbox" ng-model="docType[1]" data-text="Articles" data-id="35" ng-click="docTypeWatch('35','Articless',docType[1])")
-                                        span
-                                        | Articles
+                                        input(type="checkbox" ng-model="docType[1]" data-id="35" ng-click="docTypeWatch('35','Articless',docType[1])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Articles
 
                                     label
-                                        input(type="checkbox" ng-model="docType[2]" data-text="White Papers" data-id="77" ng-click="docTypeWatch('77','White Papers',docType[2])")
-                                        span
-                                        | White Papers
+                                        input(type="checkbox" ng-model="docType[2]" data-id="77" ng-click="docTypeWatch('77','White Papers',docType[2])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") White Papers
 
                                     label
-                                        input(type="checkbox" ng-model="docType[3]" data-text="Research" data-id="11" ng-click="docTypeWatch('11','Research',docType[3])")
-                                        span
-                                        | Research
+                                        input(type="checkbox" ng-model="docType[3]" data-id="11" ng-click="docTypeWatch('11','Research',docType[3])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Research
 
                                     label
-                                        input(type="checkbox" ng-model="docType[4]" data-text="Technical Documents" data-id="62" ng-click="docTypeWatch('62','Technical Documents',docType[4])")
-                                        span
-                                        | Technical Documents
+                                        input(type="checkbox" ng-model="docType[4]" data-id="62" ng-click="docTypeWatch('62','Technical Documents',docType[4])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Technical Documents
 
                                     label
-                                        input(type="checkbox" ng-model="docType[5]" data-text="Product Reviews" data-id="41" ng-click="docTypeWatch('41','Product Reviews',docType[5])")
-                                        span
-                                        | Product Reviews
+                                        input(type="checkbox" ng-model="docType[5]" data-id="41" ng-click="docTypeWatch('41','Product Reviews',docType[5])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Product Reviews
 
                                 div(class="filterGroup" id="filterSolution")
 
@@ -124,63 +124,63 @@ html(lang='en' ng-app="prodFilterApp")
                                     div(class="filterSecHdr") Driveline
 
                                     label
-                                        input(type="checkbox" ng-model="solution[0]" data-text="Automatic Transmission" data-id="508"  ng-click="solutionWatch('508','Automatic Transmission',solution[0])")
-                                        span
-                                        | Automatic Transmission
+                                        input(type="checkbox" ng-model="solution[0]" data-id="508" ng-click="solutionWatch('508','Automatic Transmission',solution[0])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Automatic Transmission
 
                                     label
-                                        input(type="checkbox" ng-model="solution[1]" data-text="Continously Variable Transmission (CVT)" data-id="451" ng-click="solutionWatch('451','Continously Variable Transmission (CVT)',solution[1])")
-                                        span
-                                        | Continously Variable Transmission (CVT)
+                                        input(type="checkbox" ng-model="solution[1]" data-id="451" ng-click="solutionWatch('451','Continously Variable Transmission (CVT)',solution[1])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Continously Variable Transmission (CVT)
 
                                     label
-                                        input(type="checkbox" ng-model="solution[2]" data-text="Dual Clutch Transmission (DCT)" data-id="789" ng-click="solutionWatch('789','Dual Clutch Transmission (DCT)',solution[2])")
-                                        span
-                                        | Dual Clutch Transmission (DCT)
+                                        input(type="checkbox" ng-model="solution[2]" data-id="789" ng-click="solutionWatch('789','Dual Clutch Transmission (DCT)',solution[2])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Dual Clutch Transmission (DCT)
 
                                     label
-                                        input(type="checkbox" ng-model="solution[3]" data-text="Automotive Gear" data-id="123"  ng-click="solutionWatch('123','Automotive Gear',solution[3])")
-                                        span
-                                        | Automotive Gear
+                                        input(type="checkbox" ng-model="solution[3]" data-id="123" ng-click="solutionWatch('123','Automotive Gear',solution[3])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Automotive Gear
 
                                     label
-                                        input(type="checkbox" ng-model="solution[4]" data-text="Power Steering" data-id="951" ng-click="solutionWatch('951','Power Steering',solution[4])")
-                                        span
-                                        | Power Steering
+                                        input(type="checkbox" ng-model="solution[4]" data-id="951" ng-click="solutionWatch('951','Power Steering',solution[4])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Power Steering
 
                                     label
-                                        input(type="checkbox" ng-model="solution[5]" data-text="Heavy Machinery" data-id="555" ng-click="solutionWatch('555','Heavy Machinery',solution[5])")
-                                        span
-                                        | Heavy Machinery
+                                        input(type="checkbox" ng-model="solution[5]" data-id="555" ng-click="solutionWatch('555','Heavy Machinery',solution[5])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Heavy Machinery
 
 
                                     br
                                     div(class="filterSecHdr") Fuel
 
                                     label
-                                        input(type="checkbox" ng-model="solution[6]" data-text="Diesel Additives" data-id="777" ng-click="solutionWatch('777','Diesel Additives',solution[6])")
-                                        span
-                                        | Diesel Additives
+                                        input(type="checkbox" ng-model="solution[6]" data-id="777" ng-click="solutionWatch('777','Diesel Additives',solution[6])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Diesel Additives
 
                                     label
-                                        input(type="checkbox" ng-model="solution[7]" data-text="Gasoline Additives" data-id="333" ng-click="solutionWatch('333','Gasoline Additives',solution[7])")
-                                        span
-                                        | Gasoline Additives
+                                        input(type="checkbox" ng-model="solution[7]" data-id="333" ng-click="solutionWatch('333','Gasoline Additives',solution[7])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Gasoline Additives
 
                                     label
-                                        input(type="checkbox" ng-model="solution[8]" data-text="Octane Improver" data-id="222" ng-click="solutionWatch('222','Octane Improver',solution[8])")
-                                        span
-                                        | Octane Improver
+                                        input(type="checkbox" ng-model="solution[8]" data-id="222" ng-click="solutionWatch('222','Octane Improver',solution[8])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Octane Improver
 
                                     label
-                                        input(type="checkbox" ng-model="solution[9]" data-text="Alternative Fuels" data-id="665" ng-click="solutionWatch('665','Alternative Fuels',solution[9])")
-                                        span
-                                        | Alternative Fuels
+                                        input(type="checkbox" ng-model="solution[9]" data-id="665" ng-click="solutionWatch('665','Alternative Fuels',solution[9])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Alternative Fuels
 
                                     label
-                                        input(type="checkbox" ng-model="solution[10]" data-text="Home Heating Fuel" data-id="771" ng-click="solutionWatch('771','Home Heating Fuel',solution[10])")
-                                        span
-                                        | Home Heating Fuel
+                                        input(type="checkbox" ng-model="solution[10]" data-id="771" ng-click="solutionWatch('771','Home Heating Fuel',solution[10])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Home Heating Fuel
 
 
                                     br
@@ -188,141 +188,141 @@ html(lang='en' ng-app="prodFilterApp")
 
                                     label
                                         input(type="checkbox" ng-model="solution[11]" data-text="Diesel Oil" data-id="1111" ng-click="solutionWatch('1111','Diesel Oil',solution[11])")
-                                        span
-                                        | Diesel Oil
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Diesel Oil
 
                                     label
                                         input(type="checkbox" ng-model="solution[12]" data-text="Gasoline Oil" data-id="2222" ng-click="solutionWatch('2222','Gasoline Oil',solution[12])")
-                                        span
-                                        | Gasoline Oil
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Gasoline Oil
 
 
                                     br
                                     div(class="filterSecHdr") Industrial
 
                                     label
-                                        input(type="checkbox" ng-model="solution[13]" data-text="Compressor" data-id="6666" ng-click="solutionWatch('6666','Compressor',solution[13])")
-                                        span
-                                        | Compressor
+                                        input(type="checkbox" ng-model="solution[13]" data-id="6666" ng-click="solutionWatch('6666','Compressor',solution[13])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Compressor
 
                                     label
-                                        input(type="checkbox" ng-model="solution[14]" data-text="Grease" data-id="5555" ng-click="solutionWatch('5555','Grease',solution[14])")
-                                        span
-                                        | Grease
+                                        input(type="checkbox" ng-model="solution[14]" data-id="5555" ng-click="solutionWatch('5555','Grease',solution[14])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Grease
 
                                     label
-                                        input(type="checkbox" ng-model="solution[15]" data-text="Hydrulic" data-id="7777" ng-click="solutionWatch('7777','Hydrulic',solution[15])")
-                                        span
-                                        | Hydrulic
+                                        input(type="checkbox" ng-model="solution[15]" data-id="7777" ng-click="solutionWatch('7777','Hydrulic',solution[15])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Hydrulic
 
                                     label
-                                        input(type="checkbox" ng-model="solution[16]" data-text="Industrial Gear" data-id="1223" ng-click="solutionWatch('1223','Industrial Gear',solution[16])")
-                                        span
-                                        | Industrial Gear
+                                        input(type="checkbox" ng-model="solution[16]" data-id="1223" ng-click="solutionWatch('1223','Industrial Gear',solution[16])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Industrial Gear
 
                                     label
-                                        input(type="checkbox" ng-model="solution[17]" data-text="Metalworking" data-id="7896" ng-click="solutionWatch('7896','Metalworking',solution[17])")
-                                        span
-                                        | Metalworking
+                                        input(type="checkbox" ng-model="solution[17]" data-id="7896" ng-click="solutionWatch('7896','Metalworking',solution[17])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Metalworking
 
                                     label
-                                        input(type="checkbox" ng-model="solution[18]" data-text="Corrosion Inhibitors" data-id="4512" ng-click="solutionWatch('4512','Corrosion Inhibitors',solution[18])")
-                                        span
-                                        | Corrosion Inhibitors
+                                        input(type="checkbox" ng-model="solution[18]" data-id="4512" ng-click="solutionWatch('4512','Corrosion Inhibitors',solution[18])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Corrosion Inhibitors
 
                                     label
-                                        input(type="checkbox" ng-model="solution[19]" data-text="Couplers" data-id="9578" ng-click="solutionWatch('9578','Couplerss',solution[19])")
-                                        span
-                                        | Couplers
+                                        input(type="checkbox" ng-model="solution[19]" data-id="9578" ng-click="solutionWatch('9578','Couplerss',solution[19])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Couplers
 
                                     label
-                                        input(type="checkbox" ng-model="solution[20]" data-text="Demist Agents" data-id="6689" ng-click="solutionWatch('6689','Demist Agents',solution[20])")
-                                        span
-                                        | Demist Agents
+                                        input(type="checkbox" ng-model="solution[20]" data-id="6689" ng-click="solutionWatch('6689','Demist Agents',solution[20])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Demist Agents
 
                                     label
-                                        input(type="checkbox" ng-model="solution[21]" data-text="Emulsifiers" data-id="1187" ng-click="solutionWatch('1187','Emulsifiers',solution[21])")
-                                        span
-                                        | Emulsifiers
+                                        input(type="checkbox" ng-model="solution[21]" data-id="1187" ng-click="solutionWatch('1187','Emulsifiers',solution[21])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Emulsifiers
 
                                     label
-                                        input(type="checkbox" ng-model="solution[22]" data-text="Lubricity and EP Additives" data-id="3351" ng-click="solutionWatch('3351','Lubricity and EP Additives',solution[22])")
-                                        span
-                                        | Lubricity and EP Additives
+                                        input(type="checkbox" ng-model="solution[22]" data-id="3351" ng-click="solutionWatch('3351','Lubricity and EP Additives',solution[22])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Lubricity and EP Additives
 
                                     label
-                                        input(type="checkbox" ng-model="solution[23]" data-text="Packages" data-id="7723" ng-click="solutionWatch('7723','Packages',solution[23])")
-                                        span
-                                        | Packages
+                                        input(type="checkbox" ng-model="solution[23]" data-id="7723" ng-click="solutionWatch('7723','Packages',solution[23])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Packages
 
                                     label
-                                        input(type="checkbox" ng-model="solution[24]" data-text="Quench Additives" data-id="75631" ng-click="solutionWatch('75631','Quench Additives',solution[24])")
-                                        span
-                                        | Quench Additives
+                                        input(type="checkbox" ng-model="solution[24]" data-id="75631" ng-click="solutionWatch('75631','Quench Additives',solution[24])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Quench Additives
 
                                     label
-                                        input(type="checkbox" ng-model="solution[25]" data-text="Sideway" data-id="98735" ng-click="solutionWatch('98735','Sideway',solution[25])")
-                                        span
-                                        | Sideway
+                                        input(type="checkbox" ng-model="solution[25]" data-id="98735" ng-click="solutionWatch('98735','Sideway',solution[25])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Sideway
 
                                     label
-                                        input(type="checkbox" ng-model="solution[26]" data-text="Turbine" data-id="11984" ng-click="solutionWatch('11984','Turbine',solution[26])")
-                                        span
-                                        | Turbine
+                                        input(type="checkbox" ng-model="solution[26]" data-id="11984" ng-click="solutionWatch('11984','Turbine',solution[26])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Turbine
 
 
                                     br   
                                     div(class="filterSecHdr") Lubricant Components
 
                                     label
-                                        input(type="checkbox" ng-model="solution[27]" data-text="Couplers" data-id="65234" ng-click="solutionWatch('65234','Couplers',solution[27])")
-                                        span
-                                        | Couplers
+                                        input(type="checkbox" ng-model="solution[27]" data-id="65234" ng-click="solutionWatch('65234','Couplers',solution[27])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Couplers
 
                                     label
-                                        input(type="checkbox" ng-model="solution[28]" data-text="Detergents & Corrosion Inhibitors" data-id="78925" ng-click="solutionWatch('78925','Detergents & Corrosion Inhibitors',solution[28])")
-                                        span
-                                        | Detergents & Corrosion Inhibitors
+                                        input(type="checkbox" ng-model="solution[28]" data-id="78925" ng-click="solutionWatch('78925','Detergents & Corrosion Inhibitors',solution[28])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Detergents & Corrosion Inhibitors
 
                                     label
-                                        input(type="checkbox" ng-model="solution[29]" data-text="Extreme Pressure Agents & Antiwear Agents" data-id="93146" ng-click="solutionWatch('93146','Extreme Pressure Agents & Antiwear Agents',solution[29])")
-                                        span
-                                        | Extreme Pressure Agents & Antiwear Agents
+                                        input(type="checkbox" ng-model="solution[29]" data-id="93146" ng-click="solutionWatch('93146','Extreme Pressure Agents & Antiwear Agents',solution[29])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Extreme Pressure Agents & Antiwear Agents
 
                                     label
-                                        input(type="checkbox" ng-model="solution[30]" data-text="Foam Inhibitors" data-id="15972" ng-click="solutionWatch('15972','Foam Inhibitors',solution[30])")
-                                        span
-                                        | Foam Inhibitors
+                                        input(type="checkbox" ng-model="solution[30]" data-id="15972" ng-click="solutionWatch('15972','Foam Inhibitors',solution[30])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Foam Inhibitors
 
                                     label
-                                        input(type="checkbox" ng-model="solution[31]" data-text="Friction Modifiers" data-id="559930" ng-click="solutionWatch('559930','Friction Modifiers',solution[31])")
-                                        span
-                                        | Friction Modifiers
+                                        input(type="checkbox" ng-model="solution[31]" data-id="559930" ng-click="solutionWatch('559930','Friction Modifiers',solution[31])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Friction Modifiers
 
                                     label
-                                        input(type="checkbox" ng-model="solution[32]" data-text="Pour Point Depressants" data-id="11774" ng-click="solutionWatch('11774','Pour Point Depressants',solution[32])")
-                                        span
-                                        | Pour Point Depressants
+                                        input(type="checkbox" ng-model="solution[32]" data-id="11774" ng-click="solutionWatch('11774','Pour Point Depressants',solution[32])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Pour Point Depressants
 
                                     label
-                                        input(type="checkbox" ng-model="solution[33]" data-text="Seal Swell Additives" data-id="559931" ng-click="solutionWatch('559931','Seal Swell Additives',solution[33])")
-                                        span
-                                        | Seal Swell Additives
+                                        input(type="checkbox" ng-model="solution[33]" data-id="559931" ng-click="solutionWatch('559931','Seal Swell Additives',solution[33])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Seal Swell Additives
 
                                     label
-                                        input(type="checkbox" ng-model="solution[34]" data-text="Tackiness Additives" data-id="991166" ng-click="solutionWatch('991166','Tackiness Additives',solution[34])")
-                                        span
-                                        | Tackiness Additives
+                                        input(type="checkbox" ng-model="solution[34]" data-id="991166" ng-click="solutionWatch('991166','Tackiness Additives',solution[34])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Tackiness Additives
 
                                     label
-                                        input(type="checkbox" ng-model="solution[35]" data-text="Thickeners & Viscosity Index" data-id="789642" ng-click="solutionWatch('789642','Thickeners & Viscosity Index',solution[35])")
-                                        span
-                                        | Thickeners & Viscosity Index
+                                        input(type="checkbox" ng-model="solution[35]" data-id="789642" ng-click="solutionWatch('789642','Thickeners & Viscosity Index',solution[35])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Thickeners & Viscosity Index
 
                                     label
-                                        input(type="checkbox" ng-model="solution[36]" data-text="Improvers" data-id="115566" ng-click="solutionWatch('115566','Improvers',solution[36])")
-                                        span
-                                        | Improvers
+                                        input(type="checkbox" ng-model="solution[36]" data-id="115566" ng-click="solutionWatch('115566','Improvers',solution[36])")
+                                        span(class="checkboxDisplay")
+                                        span(class="txt") Improvers
 
                                     input(id="clearFilterB" type="reset" ng-click="reset()" value="Clear All")
 
@@ -345,7 +345,7 @@ html(lang='en' ng-app="prodFilterApp")
                              div(id="filterSort")
                                 div(class="customSelectC standard")
                                     div(class="orgSelect")
-                                        select(name="sort" ng-model="sortItems" xng-change="sorting()")
+                                        select(name="sort" ng-model="sortItems")
                                             option(value="Newest") Newest
                                             option(value="Oldest") Oldest
 

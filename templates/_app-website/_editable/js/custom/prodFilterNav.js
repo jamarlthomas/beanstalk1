@@ -3,6 +3,8 @@ $( document ).ready(function() {
     //Load Filters from the page into mobile naviagion
     var getRegionFilter = $("#filterRegion").clone();
     getRegionFilter.find(".filterHdr").remove();
+    //getRegionFilter.find("[ng-model]").removeAttr("ng-model");
+    getRegionFilter.find("[ng-click]").removeAttr("ng-click");
     $("#mFilterRegion").append(getRegionFilter);
     
     var getDocTypeFilter = $("#filterDocumentType").clone();
@@ -104,22 +106,7 @@ $( document ).ready(function() {
     });
     
     
-    //If checkbox is clicked in mobile check it on page
-    $("#mobileFilterNav input[type='checkbox']").click(function() {
-        
-        //get checked items name
-        var getName = $(this).attr("name")
-        var getValue = $(this).attr("value")
-        var getStatus = $(this).is(':checked')
 
-        //Add checked to the correct checkbox on the page
-        if(getStatus){
-            $("#filterC input[name='" + getName + "'][value='" + getValue + "']").prop('checked', true);
-        }else{
-            $("#filterC input[name='" + getName + "'][value='" + getValue + "']").prop('checked', false);
-        }
-        
-    });
     
     
     //Reset button needs to reset all desktop items
