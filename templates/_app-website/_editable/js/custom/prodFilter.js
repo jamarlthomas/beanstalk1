@@ -37,9 +37,9 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
                 //check correct mobile checkbox
                 $("#mFilter" + htmlRef + " input[data-id='" + tempURLArray[i] +"']").prop('checked', true);
                 
-               
                 //Find the checkbox in the html and get the text
-                tempTextValue = $("#filter" + htmlRef + " input[data-id='" + tempURLArray[i] +"']" ).parent().find(".txt").html()
+                tempTextValue = "";
+                tempTextValue = $("#filter" + htmlRef + " input[data-id='" + tempURLArray[i] +"']" ).parent().find(".txt").html();
                 
                 //Update global Array of Text items   
                 retArrayText.push(tempTextValue);
@@ -48,7 +48,7 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
             
             //Update global Text Items in text format
             var retSelected = $scope.arrayToString(retArrayText);
-                        
+            
             
             return [ retArrayIDs, retStringIDs, retArrayText, retSelected ]
 
@@ -97,7 +97,8 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
                 $scope.regionArrayText = []
                 $scope.regionSelected = "All"
             }
-                        
+             
+             
 
             //*** DocType Updates
             var urlDocTypesValues = getURLPathArray[4];
@@ -190,6 +191,10 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
             //*** Search Updates
             var urlSearchValues = getURLPathArray[14];
 
+            //Add search to mobile search box
+            $("#mobileFilterSearch input").attr("value", getURLPathArray[14])
+            
+            
             if(typeof urlSearchValues == "undefined"){
                 urlSearchValues = ""
             }
@@ -259,6 +264,14 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
     //Search Click
     $scope.searchFilter = "";
     $scope.search = function(searchItem) {
+        
+        //reset attributes with new search
+        $scope.pageNumber = "1";
+        $scope.sortItems = "Newest"
+        
+        //Add search to mobile search box
+        $("#mobileFilterSearch input").attr("value", searchItem)
+        
         $scope.pathUpdate();
     }
     
@@ -277,6 +290,10 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
         //Text Storage -  for display of items selected
         $scope.regionArrayText = $scope.updateArray($scope.regionArrayText, text, value);
         $scope.regionSelected = $scope.arrayToString($scope.regionArrayText);
+        
+        //reset attributes with new search
+        $scope.pageNumber = "1";
+        $scope.sortItems = "Newest"
         
         $scope.pathUpdateDebounce();
         
@@ -297,7 +314,11 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
         //Text Storage -  for display of items selected
         $scope.docTypeArrayText = $scope.updateArray($scope.docTypeArrayText, text, value);
         $scope.docTypeSelected = $scope.arrayToString($scope.docTypeArrayText);
-         
+        
+        //reset attributes with new search
+        $scope.pageNumber = "1";
+        $scope.sortItems = "Newest"
+        
         $scope.pathUpdateDebounce();
        
     };
@@ -317,6 +338,10 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
         //Text Storage -  for display of items selected
         $scope.solutionArrayText = $scope.updateArray($scope.solutionArrayText, text, value);
         $scope.solutionSelected = $scope.arrayToString($scope.solutionArrayText);
+        
+        //reset attributes with new search
+        $scope.pageNumber = "1";
+        $scope.sortItems = "Newest"
         
         $scope.pathUpdateDebounce();
        
@@ -472,6 +497,42 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
     }
     
     
+    
+    //Add search main filter search
+    $("#mobileFilterSearch input").bind("enterKey",function(e){
+        
+        //get the value entered
+        mSearchbox = $(this).val();
+        
+        //update the desktop item
+        $scope.$apply(function(){
+            $scope.searchFilter = mSearchbox;
+        })
+        
+        
+        //get URL
+        var getUrl = $location.path();
+        var getUrlArray = getUrl.split("/");
+        
+        
+        //reset attributes with new search
+        $scope.pageNumber = "1";
+        $scope.sortItems = "Newest"
+        
+        
+        $scope.$apply(
+            //update path should update display and checkboxes automatically
+            $location.path("/regions/" + getUrlArray[2] + "/documents/" + getUrlArray[4] + "/SBU/" + getUrlArray[6] + "/solutions/" + getUrlArray[8] + "/sort/Newest/page/1/search/" + mSearchbox)
+        )
+        
+    });
+    $("#mobileFilterSearch input").keyup(function(e){
+        if(e.keyCode == 13){ $(this).trigger("enterKey"); }
+    });
+    
+    
+    
+    
     //Mobile Checkbox Filter
     $("#mobileFilterNav").on("click", "input[type='checkbox']", function() {      
         
@@ -504,55 +565,35 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
             })               
             URL_SolutionNum = $scope.arrayToString2(tempSolutionURLArray);
             
+            
+            //reset attributes with new search
+            $scope.pageNumber = "1";
+            $scope.sortItems = "Newest"
+            
              
             $scope.$apply(
             
                 //update path should update display and checkboxes automatically
-                $location.path("/regions/" + URL_RegionNum + "/documents/" + URL_DocTypeNum + "/SBU/" + getUrlArray[6] + "/solutions/" + URL_SolutionNum + "/sort/" + getUrlArray[10] +"/page/" + getUrlArray[12] + "/search/" + getUrlArray[14])
+                $location.path("/regions/" + URL_RegionNum + "/documents/" + URL_DocTypeNum + "/SBU/" + getUrlArray[6] + "/solutions/" + URL_SolutionNum + "/sort/Newest/page/1/search/" + getUrlArray[14])
             
             )
                 
             
         }, 800);    
         
-      
-
-        
     });
     
-  
+    
+    //Reset button needs to reset all desktop items
+    $("#mobileFilterForm #mobileClearFilterB input").click(function() {
+        
+        $scope.$apply(
+            $scope.reset()
+        )
+        
+    });
 
     
 }]);
 
 
-
-/*
-$( document ).ready(function() {
-
-    //If checkbox is clicked in the page check it on mobile
-    $("#filterC input[type='checkbox']").click(function() {
-        //console.log("tst")
-        //get checked items name
-        var getName = $(this).attr("name")
-        var getValue = $(this).attr("value")
-        var getStatus = $(this).is(':checked')
-
-        //Add checked to the correct checkbox on the page
-        if(getStatus){
-            $("#mobileFilterNav input[name='" + getName + "'][value='" + getValue + "']").prop('checked', true);
-        }else{
-            $("#mobileFilterNav input[name='" + getName + "'][value='" + getValue + "']").prop('checked', false);
-        }
-        
-    });
-    
-    //Reset button needs to reset all mobile items
-    $("input#clearFilterB").click(function() {
-        $('#mobileFilterForm')[0].reset();
-        
-    });
-    
-    
-});
-*/

@@ -84,13 +84,9 @@ $( document ).ready(function() {
     });
     
     
-    //** Note control of the checkboxes are handled in product-filter.js
+    //** Note control of the searc, checkboxes and reset button are handled in product-filter.js
     
+
     
-    //Reset button needs to reset all desktop items
-    $("#mobileFilterForm #mobileClearFilterB input").click(function() {
-        $('#filterC')[0].reset();
-        
-    });
     
 });

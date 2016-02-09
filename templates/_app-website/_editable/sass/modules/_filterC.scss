@@ -64,7 +64,7 @@
             }//filterColC
             
             //*** Breakpoints ***
-            @include breakpoint($bp2) { xdisplay: none; } 
+            @include breakpoint($bp2) { display: none; } 
             
         }//filterC
 
