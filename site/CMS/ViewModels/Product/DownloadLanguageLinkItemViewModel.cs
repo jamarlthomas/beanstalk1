@@ -1,5 +1,4 @@
 ﻿using CMS.Mvc.ViewModels.Shared;
-using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 
 namespace CMS.Mvc.ViewModels.Product
 {

@@ -11,6 +11,5 @@ namespace CMS.Mvc.ViewModels.SelectionFilter
 		public List<CheckBoxViewModel> DocumentTypesList { get; set; }
 		public List<CheckBoxViewModel> RegionsList { get; set; }
 		public List<SBUFilterViewModel> SBUList { get; set; }
-		public SelectionFilterSearchViewModel SearchResults { get; set; }
 	}
 }
