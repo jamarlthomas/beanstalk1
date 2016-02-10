@@ -1,0 +1,59 @@
+#termsAcronymsHdrC { min-height: 160px;
+
+    #searchDD { float: left;
+
+        input{ margin-top: 20px; padding: 0px 15px; width: 210px; height: 35px;
+        
+            //*** Breakpoints ***
+            @include breakpoint($bp2) { width: 100%; }
+            
+        }
+
+        //*** Breakpoints ***
+        @include breakpoint($bp2) { float: none; width: 100%; }
+
+    }//searchDD
+
+
+    #sortDD { float: right;
+
+        .customSelectC { width: 120px;
+
+            //*** Breakpoints ***
+            @include breakpoint($bp2) { width: 100%; }
+
+        }       
+
+        //*** Breakpoints ***
+        @include breakpoint($bp2) { float: none; padding-top: 10px; }
+
+    }//sortDD
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp2) { width: calc(100% - 15px); margin: 0px auto; padding-bottom: 30px; }
+    
+    
+}//termsAcronymsHdrC
+
+
+#termsAcronymsC { 
+
+    .termsAcronyms { @include container; margin-bottom: 2px; background: #f4f4f4;
+    
+        .term { @include span(2 of 8); padding: 18px 0px 18px 18px; font-weight: bold;
+        
+            //*** Breakpoints ***
+            @include breakpoint($bp2) { @include span(full); padding-right: 18px; padding-bottom: 0px; }
+            
+        }
+        
+        .def { @include span(6 of 8 last); padding: 18px 18px 18px 0px;
+        
+            //*** Breakpoints ***
+            @include breakpoint($bp2) { @include span(full); padding-left: 18px; }
+        }
+        
+    }//termsAcronyms
+    
+}//termsAcronymsC
+
