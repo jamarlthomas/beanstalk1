@@ -17,21 +17,21 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(Product.CLASS_NAME, typeof(Product))]
+[assembly: RegisterDocumentType(Document.CLASS_NAME, typeof(Document))]
 
 namespace CMS.DocumentEngine.Types
 {
     /// <summary>
     /// Sample item class.
     /// </summary>
-    public partial class Product : TreeNode
+    public partial class Document : TreeNode
     {
         #region "Constants"
 
         /// <summary>
         /// Class name of the item.
         /// </summary>
-        public const string CLASS_NAME = "custom.Product";
+        public const string CLASS_NAME = "custom.Document";
 
         #endregion
 
@@ -39,18 +39,18 @@ namespace CMS.DocumentEngine.Types
         #region "Properties"
 
         /// <summary>
-        /// ProductID.
+        /// CustomDocumentID.
         /// </summary>
         [DatabaseField]
-        public int ProductID
+        public int CustomDocumentID
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("ProductID"), 0);
+                return ValidationHelper.GetInteger(GetValue("CustomDocumentID"), 0);
             }
             set
             {
-                SetValue("ProductID", value);
+                SetValue("CustomDocumentID", value);
             }
         }
 
@@ -73,40 +73,6 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Sidebar Component Items.
-        /// </summary>
-        [DatabaseField]
-        public string SidebarItems
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
-            }
-            set
-            {
-                SetValue("SidebarItems", value);
-            }
-        }
-
-
-        /// <summary>
-        /// TileImage.
-        /// </summary>
-        [DatabaseField]
-        public string TileImage
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("TileImage"), "");
-            }
-            set
-            {
-                SetValue("TileImage", value);
-            }
-        }
-
-
-        /// <summary>
         /// Description.
         /// </summary>
         [DatabaseField]
@@ -124,52 +90,86 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Content.
+        /// Abstract.
         /// </summary>
         [DatabaseField]
-        public string Content
+        public string Abstract
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Content"), "");
+                return ValidationHelper.GetString(GetValue("Abstract"), "");
             }
             set
             {
-                SetValue("Content", value);
+                SetValue("Abstract", value);
             }
         }
 
 
         /// <summary>
-        /// Regions.
+        /// Copy.
         /// </summary>
         [DatabaseField]
-        public string Regions
+        public string Copy
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Regions"), "");
+                return ValidationHelper.GetString(GetValue("Copy"), "");
             }
             set
             {
-                SetValue("Regions", value);
+                SetValue("Copy", value);
             }
         }
 
 
         /// <summary>
-        /// PdfReference.
+        /// HomeImage.
         /// </summary>
         [DatabaseField]
-        public string PdfReference
+        public string HomeImage
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("PdfReference"), "");
+                return ValidationHelper.GetString(GetValue("HomeImage"), "");
             }
             set
             {
-                SetValue("PdfReference", value);
+                SetValue("HomeImage", value);
+            }
+        }
+
+
+        /// <summary>
+        /// HeroImage.
+        /// </summary>
+        [DatabaseField]
+        public string HeroImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HeroImage"), "");
+            }
+            set
+            {
+                SetValue("HeroImage", value);
+            }
+        }
+
+
+        /// <summary>
+        /// IsHighlightedOnInsightsPage.
+        /// </summary>
+        [DatabaseField]
+        public bool IsHighlightedOnInsightsPage
+        {
+            get
+            {
+                return ValidationHelper.GetBoolean(GetValue("IsHighlightedOnInsightsPage"), false);
+            }
+            set
+            {
+                SetValue("IsHighlightedOnInsightsPage", value);
             }
         }
 
@@ -181,7 +181,7 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Constructor.
         /// </summary>
-        public Product()
+        public Document()
             : base(CLASS_NAME)
         {
         }

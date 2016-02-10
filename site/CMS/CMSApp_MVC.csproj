@@ -56,6 +56,10 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.MediaLibrary, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.MediaLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.Search, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.Search.dll</HintPath>
@@ -63,8 +67,20 @@
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.WorkflowEngine, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.WorkflowEngine.dll</HintPath>
+    </Reference>
     <Reference Include="EmitMapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EmitMapper.1.0.0\lib\EmitMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.8.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.8\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.8.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itextsharp.xmlworker.5.5.8\lib\itextsharp.xmlworker.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -173,6 +189,7 @@
     <Compile Include="Controllers\Afton\BaseController.cs" />
     <Compile Include="Controllers\Afton\FAQController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
+    <Compile Include="Helpers\AftonData.cs" />
     <Compile Include="Controllers\Afton\DocumentController.cs" />
     <Compile Include="Controllers\Afton\InsightsAndResourcesController.cs" />
     <Compile Include="Interfaces\IFAQPageProvider.cs" />
@@ -192,6 +209,9 @@
     <Compile Include="Models\Afton\Shared\SideBarComponents\LeftNavigation.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\PollSurveyAnswer.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\PollSurvey.cs" />
+    <Compile Include="Old_App_Code\GeneratePdf.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Providers\FAQPageProvider.cs" />
     <Compile Include="Providers\FAQTopicProvider.cs" />
     <Compile Include="Providers\LeftNavigationProvider.cs" />
@@ -282,6 +302,9 @@
     <Compile Include="ViewModels\FAQ\FAQTopicViewModel.cs" />
     <Compile Include="ViewModels\Product\LeftSideBlockViewModel.cs" />
     <Compile Include="ViewModels\Shared\ProductViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\DocumentBlockViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\GenericSidebarBlockViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\InsightsAndResourcesBlockViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\LeftNavigationItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\PollSurveyAnswerViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\PollSurveySubmitViewModel.cs" />
@@ -364,6 +387,8 @@
     <Content Include="fonts\HelveticaNeueLTStd-Roman\2F7DEF_0_0.woff2" />
     <Content Include="css\maps\normalize.min.css.map" />
     <Content Include="css\maps\styles.min.css.map" />
+    <Content Include="Pdf\Template.html" />
+    <Content Include="Pdf\fake.html" />
     <Content Include="images\accordMinus.png" />
     <Content Include="images\accordPlus.png" />
     <Content Include="images\b-search.gif" />
@@ -418,7 +443,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="web.config" />
+    <Content Include="web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="packages.config" />
     <Content Include="Views\Afton\Shared\Master.cshtml" />
     <Content Include="Views\Afton\Auxiliary\Index.cshtml" />
@@ -482,7 +509,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\" />
-    <Folder Include="Infrastructure\Helpers\" />
+    <Folder Include="Pdf\Temp\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CorporateSite\News\Detail.cshtml" />
