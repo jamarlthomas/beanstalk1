@@ -17,21 +17,21 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(FAQItem.CLASS_NAME, typeof(FAQItem))]
+[assembly: RegisterDocumentType(PollSurveyAnswer.CLASS_NAME, typeof(PollSurveyAnswer))]
 
 namespace CMS.DocumentEngine.Types
 {
     /// <summary>
     /// Sample item class.
     /// </summary>
-    public partial class FAQItem : TreeNode
+    public partial class PollSurveyAnswer : TreeNode
     {
         #region "Constants"
 
         /// <summary>
         /// Class name of the item.
         /// </summary>
-        public const string CLASS_NAME = "custom.FAQItem";
+        public const string CLASS_NAME = "custom.PollSurveyAnswer";
 
         #endregion
 
@@ -39,86 +39,52 @@ namespace CMS.DocumentEngine.Types
         #region "Properties"
 
         /// <summary>
-        /// FAQItemID.
+        /// PollSurveyAnswerID.
         /// </summary>
         [DatabaseField]
-        public int FAQItemID
+        public int PollSurveyAnswerID
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("FAQItemID"), 0);
+                return ValidationHelper.GetInteger(GetValue("PollSurveyAnswerID"), 0);
             }
             set
             {
-                SetValue("FAQItemID", value);
+                SetValue("PollSurveyAnswerID", value);
             }
         }
 
 
         /// <summary>
-        /// Question.
+        /// Title.
         /// </summary>
         [DatabaseField]
-        public string Question
+        public string Title
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Question"), "");
+                return ValidationHelper.GetString(GetValue("Title"), "");
             }
             set
             {
-                SetValue("Question", value);
+                SetValue("Title", value);
             }
         }
 
 
         /// <summary>
-        /// Answer.
+        /// Vote.
         /// </summary>
         [DatabaseField]
-        public string Answer
+        public int Vote
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Answer"), "");
+                return ValidationHelper.GetInteger(GetValue("Vote"), 0);
             }
             set
             {
-                SetValue("Answer", value);
-            }
-        }
-
-
-        /// <summary>
-        /// RelatedSBU.
-        /// </summary>
-        [DatabaseField]
-        public string RelatedSBU
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("RelatedSBU"), "");
-            }
-            set
-            {
-                SetValue("RelatedSBU", value);
-            }
-        }
-
-
-        /// <summary>
-        /// FAQTopic.
-        /// </summary>
-        [DatabaseField]
-        public string FAQTopic
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("FAQTopic"), "");
-            }
-            set
-            {
-                SetValue("FAQTopic", value);
+                SetValue("Vote", value);
             }
         }
 
@@ -130,7 +96,7 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Constructor.
         /// </summary>
-        public FAQItem()
+        public PollSurveyAnswer()
             : base(CLASS_NAME)
         {
         }

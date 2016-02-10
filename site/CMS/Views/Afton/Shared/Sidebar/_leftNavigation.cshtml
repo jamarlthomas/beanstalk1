@@ -1,0 +1,15 @@
+﻿@model CMS.Mvc.ViewModels.Shared.SidebarComponents.LeftNavigationViewModel
+Menu title: @Model.Title <br/>
+Menu:
+@foreach (var navItem  in Model.NavItems)
+{
+    <p><a href="@navItem.Link">@navItem.Title</a>
+        <ul>
+            Submenu:
+            @foreach (var subNavItem  in navItem.SubMenu)
+            {
+                <li><a href="@subNavItem.Link">@subNavItem.Title</a></li>
+            }
+        </ul>
+    </p>
+}

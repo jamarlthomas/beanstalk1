@@ -17,21 +17,21 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(FAQItem.CLASS_NAME, typeof(FAQItem))]
+[assembly: RegisterDocumentType(FAQPage.CLASS_NAME, typeof(FAQPage))]
 
 namespace CMS.DocumentEngine.Types
 {
     /// <summary>
     /// Sample item class.
     /// </summary>
-    public partial class FAQItem : TreeNode
+    public partial class FAQPage : TreeNode
     {
         #region "Constants"
 
         /// <summary>
         /// Class name of the item.
         /// </summary>
-        public const string CLASS_NAME = "custom.FAQItem";
+        public const string CLASS_NAME = "custom.FAQPage";
 
         #endregion
 
@@ -39,86 +39,52 @@ namespace CMS.DocumentEngine.Types
         #region "Properties"
 
         /// <summary>
-        /// FAQItemID.
+        /// FAQPageID.
         /// </summary>
         [DatabaseField]
-        public int FAQItemID
+        public int FAQPageID
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("FAQItemID"), 0);
+                return ValidationHelper.GetInteger(GetValue("FAQPageID"), 0);
             }
             set
             {
-                SetValue("FAQItemID", value);
+                SetValue("FAQPageID", value);
             }
         }
 
 
         /// <summary>
-        /// Question.
+        /// Title.
         /// </summary>
         [DatabaseField]
-        public string Question
+        public string Title
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Question"), "");
+                return ValidationHelper.GetString(GetValue("Title"), "");
             }
             set
             {
-                SetValue("Question", value);
+                SetValue("Title", value);
             }
         }
 
 
         /// <summary>
-        /// Answer.
+        /// Sidebar Component Items.
         /// </summary>
         [DatabaseField]
-        public string Answer
+        public string SidebarItems
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Answer"), "");
+                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
             }
             set
             {
-                SetValue("Answer", value);
-            }
-        }
-
-
-        /// <summary>
-        /// RelatedSBU.
-        /// </summary>
-        [DatabaseField]
-        public string RelatedSBU
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("RelatedSBU"), "");
-            }
-            set
-            {
-                SetValue("RelatedSBU", value);
-            }
-        }
-
-
-        /// <summary>
-        /// FAQTopic.
-        /// </summary>
-        [DatabaseField]
-        public string FAQTopic
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("FAQTopic"), "");
-            }
-            set
-            {
-                SetValue("FAQTopic", value);
+                SetValue("SidebarItems", value);
             }
         }
 
@@ -130,7 +96,7 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Constructor.
         /// </summary>
-        public FAQItem()
+        public FAQPage()
             : base(CLASS_NAME)
         {
         }

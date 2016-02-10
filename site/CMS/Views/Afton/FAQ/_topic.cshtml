@@ -1,0 +1,9 @@
+﻿<h3> @Model.Name </h3>
+<p>Questions list:</p>
+@foreach (var faqItem in Model.Items)
+{
+    <p>
+        Question: @faqItem.Question <br/>
+        Answer:  @Html.Raw(faqItem.Answer)
+    </p>
+}

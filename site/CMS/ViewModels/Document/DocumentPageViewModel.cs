@@ -1,7 +1,7 @@
 ﻿using CMS.Mvc.ViewModels.Shared;
 using System.Collections.Generic;
 
-namespace CMS.Mvc.ViewModels.Document
+namespace CMS.Mvc.ViewModels.DocumentsViewModel
 {
     public class DocumentPageViewModel
     {

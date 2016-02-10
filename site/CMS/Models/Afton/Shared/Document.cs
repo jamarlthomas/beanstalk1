@@ -21,6 +21,7 @@ using CMS.DocumentEngine;
 
 namespace CMS.DocumentEngine.Types
 {
+
 	/// <summary>
 	/// Sample item class.
 	/// </summary>
@@ -188,4 +189,5 @@ namespace CMS.DocumentEngine.Types
 
 		#endregion
 	}
+
 }
