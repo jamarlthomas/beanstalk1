@@ -281,6 +281,7 @@
     <Compile Include="ViewModels\FAQ\FAQPageViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQTopicViewModel.cs" />
     <Compile Include="ViewModels\Product\LeftSideBlockViewModel.cs" />
+    <Compile Include="ViewModels\Shared\ProductViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\LeftNavigationItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\PollSurveyAnswerViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\PollSurveySubmitViewModel.cs" />
