@@ -4950,6 +4950,7 @@
     <Content Include="DancingGoat\Fonts\SourceSansPro-Bold.woff" />
     <Content Include="DancingGoat\Fonts\SourceSansPro-Light.woff" />
     <Content Include="DancingGoat\Fonts\SourceSansPro-Regular.woff" />
+    <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
   </ItemGroup>
   <ItemGroup>

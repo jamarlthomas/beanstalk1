@@ -56,23 +56,6 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Sidebar Component Items.
-        /// </summary>
-        [DatabaseField]
-        public string SidebarItems
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
-            }
-            set
-            {
-                SetValue("SidebarItems", value);
-            }
-        }
-
-
-        /// <summary>
         /// Title.
         /// </summary>
         [DatabaseField]
@@ -85,6 +68,23 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("Title", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Sidebar Component Items.
+        /// </summary>
+        [DatabaseField]
+        public string SidebarItems
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
+            }
+            set
+            {
+                SetValue("SidebarItems", value);
             }
         }
 
@@ -153,6 +153,23 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("Regions", value);
+            }
+        }
+
+
+        /// <summary>
+        /// PdfReference.
+        /// </summary>
+        [DatabaseField]
+        public string PdfReference
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("PdfReference"), "");
+            }
+            set
+            {
+                SetValue("PdfReference", value);
             }
         }
 

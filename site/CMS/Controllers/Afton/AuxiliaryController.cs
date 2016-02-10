@@ -3,6 +3,8 @@ using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Infrastructure;
 using CMS.Mvc.Infrastructure.Localization;
+using CMS.Mvc.Old_App_Code;
+
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -11,11 +13,9 @@ namespace CMS.Mvc.Controllers.Afton
         [Route("Auxiliary")]
         public ActionResult Index()
         {
-            //var translProvider = RouteValueTranslationProvider.GetProvider();
-            //TranslationsUtility.LoadTranslations(translProvider);
+            var gen = new GeneratePdf();
+            gen.Execute();
 
-            //var a = ContentHelper.GetDocByName<Product>(Product.CLASS_NAME, "Sample-product-1");
-            var b = ContentHelper.GetDocs<Product>(Product.CLASS_NAME);
             return View("~/Views/Afton/Auxiliary/Index.cshtml");
         }
     }

@@ -19,7 +19,7 @@ using CMS.DocumentEngine;
 
 [assembly: RegisterDocumentType(Document.CLASS_NAME, typeof(Document))]
 
-namespace CMS.DocumentEngine.Types 
+namespace CMS.DocumentEngine.Types
 {
     /// <summary>
     /// Sample item class.
@@ -56,40 +56,6 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// 
-        /// </summary>
-        [DatabaseField]
-        public string HomeImage
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("HomeImage"), "");
-            }
-            set
-            {
-                SetValue("HomeImage", value);
-            }
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [DatabaseField]
-        public string Description
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("Description"), "");
-            }
-            set
-            {
-                SetValue("Description", value);
-            }
-        }
-
-
-        /// <summary>
         /// Title.
         /// </summary>
         [DatabaseField]
@@ -102,6 +68,23 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("Title", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Description.
+        /// </summary>
+        [DatabaseField]
+        public string Description
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Description"), "");
+            }
+            set
+            {
+                SetValue("Description", value);
             }
         }
 
@@ -136,6 +119,40 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("Copy", value);
+            }
+        }
+
+
+        /// <summary>
+        /// HomeImage.
+        /// </summary>
+        [DatabaseField]
+        public string HomeImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HomeImage"), "");
+            }
+            set
+            {
+                SetValue("HomeImage", value);
+            }
+        }
+
+
+        /// <summary>
+        /// HeroImage.
+        /// </summary>
+        [DatabaseField]
+        public string HeroImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HeroImage"), "");
+            }
+            set
+            {
+                SetValue("HeroImage", value);
             }
         }
 

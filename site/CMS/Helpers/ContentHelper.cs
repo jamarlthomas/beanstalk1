@@ -8,6 +8,7 @@ using CMS.DocumentEngine.Types;
 using CMS.Helpers;
 using CMS.Helpers.UniGraphConfig;
 using CMS.Localization;
+using CMS.MediaLibrary;
 using CMS.Mvc.ViewModels.Product;
 using CMS.Mvc.ViewModels.Shared;
 using CMS.PortalEngine;
@@ -61,13 +62,15 @@ namespace CMS.Mvc.Helpers
                 "nodeid|{0}"
                 );
         }
-        public static List<BreadCrumbLinkItemViewModel> GetBreadcrumb<T>(string className, string name) where T : TreeNode, new()
+
+        public static List<BreadCrumbLinkItemViewModel> GetBreadcrumb<T>(string className, string name)
+            where T : TreeNode, new()
         {
             var doc = GetDocByName<T>(className, name);
             var list = new List<Link>();
             TraverseNodes(doc, list);
 
-            list.Add(new Link() { Title = "Home", Reference = "Home" });
+            list.Add(new Link() {Title = "Home", Reference = "Home"});
             list.Reverse();
             string currReference = "";
             var breadcrumbList = list.Select(item =>
@@ -87,7 +90,7 @@ namespace CMS.Mvc.Helpers
         {
             object val;
             if (!doc.TryGetProperty("ExcludeFromSiteMap", out val))
-                list.Add(new Link() { Title = doc.DocumentName, Reference = doc.NodeAlias });
+                list.Add(new Link() {Title = doc.DocumentName, Reference = doc.NodeAlias});
 
             if (doc.Parent.NodeAliasPath == "/")
                 return;
@@ -105,12 +108,15 @@ namespace CMS.Mvc.Helpers
         }
 
 
-        public static List<T> GetDocChildrenByName<T>(string childrenClassName, string docName, int limit = Int32.MaxValue)
+        public static List<T> GetDocChildrenByName<T>(string childrenClassName, string docName,
+            int limit = Int32.MaxValue)
             where T : TreeNode, new()
         {
             docName = docName.Replace(' ', '-');
             return HandleQueryableData<T>(
-                q => q.Where(item => item.Parent.NodeAlias.Equals(docName, StringComparison.CurrentCultureIgnoreCase)).Take(limit),
+                q =>
+                    q.Where(item => item.Parent.NodeAlias.Equals(docName, StringComparison.CurrentCultureIgnoreCase))
+                        .Take(limit),
                 childrenClassName,
                 string.Format("cc_{0}_ccn_{1}_dn_{2}_lim_{3}", CurrentCulture, childrenClassName, docName, limit),
                 string.Format("nodes|afton|{0}|all", childrenClassName.ToLower())
@@ -120,7 +126,11 @@ namespace CMS.Mvc.Helpers
         public static List<T> GetDocsByGuids<T>(IEnumerable<Guid> guids, string siteName = null)
             where T : TreeNode, new()
         {
-            return guids.Select(guid => _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T).ToList();
+            return
+                guids.Select(
+                    guid =>
+                        _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid,
+                            siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T).ToList();
         }
 
         public static List<TreeNode> GetDocsByPath(string aliasPath, int maxRelativeLevel = 1, string classNames = "*")
@@ -138,7 +148,9 @@ namespace CMS.Mvc.Helpers
                     AliasPath = aliasPath + "/%",
                     MaxRelativeLevel = maxRelativeLevel,
                 }).Where(i => i != null).ToList();
-            }, new CacheSettings(CachingTime, string.Format("pth_{0}_mrl_{1}_cn_{2}", aliasPath, maxRelativeLevel, classNames)));
+            },
+                new CacheSettings(CachingTime,
+                    string.Format("pth_{0}_mrl_{1}_cn_{2}", aliasPath, maxRelativeLevel, classNames)));
         }
 
         internal static List<T> GetSiblings<T>(T node) where T : TreeNode, new()
@@ -158,47 +170,47 @@ namespace CMS.Mvc.Helpers
             switch (PortalContext.ViewMode)
             {
                 case ViewModeEnum.Preview:
-                    {
-                        var doc = DocumentHelper.GetDocuments(className).Published(false)
-                            .OrderBy("NodeLevel", "NodeOrder", "NodeName")
-                            .FirstOrDefault(predicate);
-                        return (T)doc;
-                    }
+                {
+                    var doc = DocumentHelper.GetDocuments(className).Published(false)
+                        .OrderBy("NodeLevel", "NodeOrder", "NodeName")
+                        .FirstOrDefault(predicate);
+                    return (T) doc;
+                }
                 case ViewModeEnum.LiveSite:
+                {
+                    if (!string.IsNullOrWhiteSpace(cacheKey))
                     {
-                        if (!string.IsNullOrWhiteSpace(cacheKey))
-                        {
-                            return CacheHelper.Cache(cs =>
-                            {
-                                TreeProvider tree = new TreeProvider();
-                                var doc = tree.SelectNodes(className).Published()
-                                    .OrderBy("NodeLevel", "NodeOrder", "NodeName")
-                                    .FirstOrDefault(predicate);
-                                if (string.IsNullOrWhiteSpace(cacheDependencyKey))
-                                    if (doc != null)
-                                        cacheDependencyKey = string.Format(cachedependenciesFormat, doc.NodeID);
-                                if (!string.IsNullOrWhiteSpace(cacheDependencyKey))
-                                    cs.CacheDependency = CacheHelper.GetCacheDependency(cacheDependencyKey);
-                                return (T)doc;
-                            },
-                                new CacheSettings(CachingTime, cacheKey));
-                        }
-                        else
+                        return CacheHelper.Cache(cs =>
                         {
                             TreeProvider tree = new TreeProvider();
                             var doc = tree.SelectNodes(className).Published()
                                 .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                                 .FirstOrDefault(predicate);
-                            return (T)doc;
-                        }
+                            if (string.IsNullOrWhiteSpace(cacheDependencyKey))
+                                if (doc != null)
+                                    cacheDependencyKey = string.Format(cachedependenciesFormat, doc.NodeID);
+                            if (!string.IsNullOrWhiteSpace(cacheDependencyKey))
+                                cs.CacheDependency = CacheHelper.GetCacheDependency(cacheDependencyKey);
+                            return (T) doc;
+                        },
+                            new CacheSettings(CachingTime, cacheKey));
                     }
-                default:
+                    else
                     {
-                        var doc = DocumentHelper.GetDocuments(className)
+                        TreeProvider tree = new TreeProvider();
+                        var doc = tree.SelectNodes(className).Published()
                             .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                             .FirstOrDefault(predicate);
-                        return (T)doc;
+                        return (T) doc;
                     }
+                }
+                default:
+                {
+                    var doc = DocumentHelper.GetDocuments(className)
+                        .OrderBy("NodeLevel", "NodeOrder", "NodeName")
+                        .FirstOrDefault(predicate);
+                    return (T) doc;
+                }
             }
         }
 
@@ -209,41 +221,41 @@ namespace CMS.Mvc.Helpers
             switch (PortalContext.ViewMode)
             {
                 case ViewModeEnum.Preview:
-                    {
-                        var treeNodes = DocumentHelper.GetDocuments(className)
-                            .Published(false)
-                            .OrderBy("NodeLevel", "NodeOrder", "NodeName");
-                        return constraint(treeNodes).Select(it => (TResult)it);
-                    }
+                {
+                    var treeNodes = DocumentHelper.GetDocuments(className)
+                        .Published(false)
+                        .OrderBy("NodeLevel", "NodeOrder", "NodeName");
+                    return constraint(treeNodes).Select(it => (TResult) it);
+                }
                 case ViewModeEnum.LiveSite:
+                {
+                    if (!string.IsNullOrWhiteSpace(cacheKey))
                     {
-                        if (!string.IsNullOrWhiteSpace(cacheKey))
-                        {
-                            return CacheHelper.Cache(cs =>
-                            {
-                                var tree = new TreeProvider();
-                                var treeNodes = tree.SelectNodes(className)
-                                    .Published()
-                                    .OrderBy("NodeLevel", "NodeOrder", "NodeName");
-                                if (!string.IsNullOrWhiteSpace(cacheDependencyKey))
-                                    cs.CacheDependency = CacheHelper.GetCacheDependency(cacheDependencyKey);
-                                return constraint(treeNodes).Select(item => (TResult)item).Where(i => i != null);
-                            }, new CacheSettings(CachingTime, cacheKey));
-                        }
-                        else
+                        return CacheHelper.Cache(cs =>
                         {
                             var tree = new TreeProvider();
-                            var baseNodes = tree.SelectNodes(className);
-                            var treeNodes = baseNodes.Published()
+                            var treeNodes = tree.SelectNodes(className)
+                                .Published()
                                 .OrderBy("NodeLevel", "NodeOrder", "NodeName");
-                            return constraint(treeNodes).Select(item => (TResult)item).Where(i => i != null);
-                        }
+                            if (!string.IsNullOrWhiteSpace(cacheDependencyKey))
+                                cs.CacheDependency = CacheHelper.GetCacheDependency(cacheDependencyKey);
+                            return constraint(treeNodes).Select(item => (TResult) item).Where(i => i != null);
+                        }, new CacheSettings(CachingTime, cacheKey));
                     }
-                default:
+                    else
                     {
-                        return constraint(DocumentHelper.GetDocuments(className)
-                            .OrderBy("NodeLevel", "NodeOrder", "NodeName")).Select(it => (TResult)it);
+                        var tree = new TreeProvider();
+                        var baseNodes = tree.SelectNodes(className);
+                        var treeNodes = baseNodes.Published()
+                            .OrderBy("NodeLevel", "NodeOrder", "NodeName");
+                        return constraint(treeNodes).Select(item => (TResult) item).Where(i => i != null);
                     }
+                }
+                default:
+                {
+                    return constraint(DocumentHelper.GetDocuments(className)
+                        .OrderBy("NodeLevel", "NodeOrder", "NodeName")).Select(it => (TResult) it);
+                }
             }
         }
 
@@ -251,7 +263,10 @@ namespace CMS.Mvc.Helpers
         {
             int intId;
             int[] intIds = stringIds.Where(id => int.TryParse(id, out intId)).Select(int.Parse).ToArray();
-            return intIds.Select(id => DocumentHelper.GetDocument(id, new TreeProvider())).Where(item => item != null).ToList();
+            return
+                intIds.Select(id => DocumentHelper.GetDocument(id, new TreeProvider()))
+                    .Where(item => item != null)
+                    .ToList();
         }
 
     }

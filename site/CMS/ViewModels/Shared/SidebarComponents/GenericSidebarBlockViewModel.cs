@@ -7,12 +7,7 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
     {
         public GenericSidebarBlockViewModel(TreeNode item) : base(item)
         {
-            DefaultImage = ((GenericSidebarBlock)item).DefaultImage;
-        }
-
-        protected override void Load()
-        {
-            base.Load();
+            DefaultImage = ((GenericSidebarBlock) item).DefaultImage;
         }
     }
 }
