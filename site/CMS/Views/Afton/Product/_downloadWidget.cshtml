@@ -24,7 +24,14 @@
             </div>
         }
         <div id="downloadDocsC">
-            <a href="@Url.Content(Model.DownloadLink)" class="downloadBtn">Download @Html.Raw(Model.Title) <span class="icon-download"></span></a>
+            @if (!string.IsNullOrWhiteSpace(Model.DownloadLink))
+            {
+                <a href="@Url.Content(Model.DownloadLink)" class="downloadBtn">Download @Html.Raw(Model.Title) <span class="icon-download"></span></a>
+            }
+            else
+            {
+                <a class="downloadBtn">Download @Html.Raw(Model.Title) <span class="icon-download"></span></a>
+            }
             @if (Model.TranslationAvailable.Any())
             {
                 <div id="translate-doc">
@@ -32,7 +39,10 @@
                     <ul id="langDocDropDown" style="display: none;">
                         @foreach (var translation in Model.TranslationAvailable)
                         {
-                            <li id="@translation.LanguageId"><a href="@Url.Content(translation.Reference)">@translation.Title</a></li>
+                            if (!string.IsNullOrWhiteSpace(translation.Reference))
+                            {
+                                <li id="@translation.LanguageId"><a href="@Url.Content(translation.Reference)">@translation.Title</a></li>
+                            }
                         }
                         @* <li id="langGerman"><a href="#">German</a></li>
                             <li id="langJapanese"><a href="#">日本語</a></li>

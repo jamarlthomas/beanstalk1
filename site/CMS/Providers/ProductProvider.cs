@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
@@ -9,18 +10,18 @@ using CMS.Mvc.ViewModels.Shared;
 
 namespace CMS.Mvc.Providers
 {
-    public class ProductProvider: IProductProvider
+    public class ProductProvider : IProductProvider
     {
         public Product CurrentProduct { get; set; }
 
-		public List<Product> GetProductItems(List<Guid> guids, string siteName)
+        public List<Product> GetProductItems(List<Guid> guids, string siteName)
         {
             return ContentHelper.GetDocsByGuids<Product>(guids, siteName);
-		}
+        }
 
         public Product GetProduct(string alias)
         {
-            CurrentProduct =  ContentHelper.GetDocByName<Product>(Product.CLASS_NAME, alias);
+            CurrentProduct = ContentHelper.GetDocByName<Product>(Product.CLASS_NAME, alias);
             return CurrentProduct;
         }
 
@@ -38,17 +39,21 @@ namespace CMS.Mvc.Providers
         //ToDo: 
         public List<DownloadLanguageLinkItemViewModel> GetAvailableTranslations(Product product)
         {
-            return new List<DownloadLanguageLinkItemViewModel>
-            {
-                new DownloadLanguageLinkItemViewModel { LanguageId = "langEnglish", Reference = "#", Title = "English" },
-                new DownloadLanguageLinkItemViewModel { LanguageId = "langGerman", Reference = "#", Title = "German" }
-            };
+            return product.CultureVersions.Select(
+                item =>
+                    new DownloadLanguageLinkItemViewModel()
+                    {
+                        LanguageId = item.DocumentCulture,
+                        Reference = ((Product)item).PdfReference,
+                        Title = new CultureInfo(item.DocumentCulture).NativeName
+                    }).ToList();
+
         }
 
         //ToDo
         public string GetDownloadLink(Product product)
         {
-            return "#";
+            return product.PdfReference;
         }
 
 
