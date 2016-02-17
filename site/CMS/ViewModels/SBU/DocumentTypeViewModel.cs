@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
+using CMS.Mvc.ViewModels.Shared;
 
 namespace CMS.Mvc.ViewModels.SBU
 {
-    public class DocumentTypeViewModel
-    {
-        public string Title { get; set; }
-        public List<DocumentViewModel> Documents { get; set; }
-    }
+	public class DocumentTypeViewModel
+	{
+		public string Title { get; set; }
+		public List<DocumentViewModel> Documents { get; set; }
+	}
 }

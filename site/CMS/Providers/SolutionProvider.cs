@@ -13,16 +13,11 @@ namespace CMS.Mvc.Providers
         public List<Solution> GetSolutionItems(string alias)
         {
             return ContentHelper.GetDocChildrenByName<Solution>(Solution.CLASS_NAME, alias);
-		}
+        }
 
 		public List<Solution> GetSolutionItems()
 		{
 			return ContentHelper.GetDocs<Solution>(Solution.CLASS_NAME);
 		}
-		
-		public Solution GetSolution(string alias)
-		{
-			return ContentHelper.GetDocByName<Solution>(Solution.CLASS_NAME, alias);
-		}
-	}
+    }
 }

@@ -2,39 +2,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title></title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="robots" content="index,follow">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    @Styles.Render("~/bundles/css")
-    @Scripts.Render("~/bundles/js")
-    <script>
-        head.js(
-            { home_rotator: "@Url.Content("~/Scripts/custom/homeSlideShow.min.js")" },
-            { search_box: "@Url.Content("~/Scripts/custom/search.min.js")" },
-            { language_selector: "@Url.Content("~/Scripts/custom/langSel.min.js")" },
-            { mega_menu_drop_down: "@Url.Content("~/Scripts/custom/megaMenu.min.js")" },
-            { mobile_nav: "@Url.Content("~/Scripts/custom/mobileNav.min.js")" },
-            { disclaimer_copyright: "@Url.Content("~/Scripts/custom/copyrightDate.min.js")" },
-            { card_Animations: "@Url.Content("~/Scripts/custom/cards.min.js")" },
-            { sbu_Landing_Nav: "@Url.Content("~/Scripts/custom/sbuLandingDropDown.min.js")" },
-            { sbu_Landing_Nav: "@Url.Content("~/Scripts/custom/accordion.min.js")" },
+	<title></title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="robots" content="index,follow">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	@Styles.Render("~/bundles/css")
+	@Styles.RenderFormat("<link rel=\"stylesheet\"  href=\"{0}\" media=\"print\" />", "~/bundles/css/print")
+	@Scripts.Render("~/bundles/js")
+	<script>
+		head.js(
+			{ home_rotator: "@Url.Content("~/Scripts/custom/homeSlideShow.min.js")" },
+			{ search_box: "@Url.Content("~/Scripts/custom/search.min.js")" },
+			{ language_selector: "@Url.Content("~/Scripts/custom/langSel.min.js")" },
+			{ mega_menu_drop_down: "@Url.Content("~/Scripts/custom/megaMenu.min.js")" },
+			{ mobile_nav: "@Url.Content("~/Scripts/custom/mobileNav.min.js")" },
+			{ disclaimer_copyright: "@Url.Content("~/Scripts/custom/copyrightDate.min.js")" },
+
+			{ card_Animations: "@Url.Content("~/Scripts/custom/cards.min.js")" },
+			{ sbu_Landing_Nav: "@Url.Content("~/Scripts/custom/sbuLandingDropDown.min.js")" },
+			{ accordion_Nav: "@Url.Content("~/Scripts/custom/accordion.min.js")" },
+            { card_Animations: "@Url.Content("~/Scripts/custom/print.min.js")" },
             { language_Document_selector: "@Url.Content("~/Scripts/custom/langDocSel.min.js")" },
-            function () { }
-        );
-    </script>
+			function () { }
+		);
+	</script>
 
 </head>
 <body>
-    @{ Html.RenderAction("Index", "Master"); }
-
-    <main>
-        @RenderBody()
-    </main>
-    @{ Html.RenderAction("Footer", "Master"); }
+	@{ Html.RenderAction("Index", "Master", new { title = ViewBag.Title }); }
+	<main>
+		@RenderBody()
+	</main>
+	@{ Html.RenderAction("Footer", "Master"); }
 	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-56686002384632a9" async="async"></script>
 	<script>
 		var _gaq = _gaq || [];
@@ -52,5 +54,4 @@
 	</script>
 
 </body>
-   
 </html>

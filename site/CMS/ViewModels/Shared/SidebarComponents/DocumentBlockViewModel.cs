@@ -1,11 +1,9 @@
 ﻿using System.Web;
-using CMS.DocumentEngine.Types;
-
 namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
 {
     public class DocumentBlockViewModel: SidebarComponentWithDefaultImageViewModel
     {
-        public DocumentBlockViewModel(Document item)
+        public DocumentBlockViewModel(DocumentEngine.Types.Document item)
             : base(item)
         {
             Title = item.Title;

@@ -11,7 +11,7 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
         public DocumentsWidgetViewModel(TreeNode item) : base(item)
         {
             DefaultImage = ((DocumentSidebarComponent)item).DefaultImage;
-            DocumentBlocks = ContentHelper.GetDocsByGuids<Document>(StringToGuidsConvertHelper.ParseGuids(((DocumentSidebarComponent) item).DocumentItems))
+            DocumentBlocks = ContentHelper.GetDocsByGuids<CMS.DocumentEngine.Types.Document>(StringToGuidsConvertHelper.ParseGuids(((DocumentSidebarComponent)item).DocumentItems))
                 .Select(doc => new DocumentBlockViewModel(doc) {DefaultImage = this.DefaultImage}).ToList();
         }
 

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using CMS.Mvc.ViewModels.Shared;
-using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 
 namespace CMS.Mvc.ViewModels.Product
 {
@@ -10,7 +9,7 @@ namespace CMS.Mvc.ViewModels.Product
 
         public string TileImage { get; set; }
         public string Description { get; set; }
-        public List<LinkItemViewModel> AvailableIn { get; set; }
+        public List<LinkViewModel> AvailableIn { get; set; }
         public List<DownloadLanguageLinkItemViewModel> TranslationAvailable { get; set; }
         public string DownloadLink { get; set; }
     }

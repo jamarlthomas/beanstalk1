@@ -42,10 +42,10 @@ namespace CMS.Mvc.Controllers.Afton
         {
             var model = MapData<SolutionBusinessUnit, SBUViewModel>(_solutionBusinessUnitProvider.GetSolutionBusinessUnit(name));
             model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItemUnits(name, 4));
-			model.DocumentTypes = MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypeUnits(name, 12));
+			model.DocumentTypes = MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes(name, 12));
             foreach (var item in model.DocumentTypes)
             {
-                item.Documents = MapData<Document, DocumentViewModel>(_documentProvider.GetDocumentUnits(item.Title));
+                item.Documents = MapData<Document, DocumentViewModel>(_documentProvider.GetDocuments(item.Title));
             }
 			model.Solutions = MapData<Solution, TileViewModel>(_solutionProvider.GetSolutionItems(name)).Where(w => !string.IsNullOrEmpty(w.HomeImage)).ToList();
             return View("~/Views/Afton/SBU/Index.cshtml", model);

@@ -40,13 +40,15 @@ namespace CMS.Mvc.Providers
         public List<DownloadLanguageLinkItemViewModel> GetAvailableTranslations(Product product)
         {
             return product.CultureVersions.Select(
-                item =>
-                    new DownloadLanguageLinkItemViewModel()
-                    {
-                        LanguageId = item.DocumentCulture,
-                        Reference = ((Product)item).PdfReference,
-                        Title = new CultureInfo(item.DocumentCulture).NativeName
-                    }).ToList();
+                item => new DownloadLanguageLinkItemViewModel()
+                {
+                    LanguageId = item.DocumentCulture,
+                    Reference = ((Product)item).PdfReference,
+                    Title =
+                        (((new CultureInfo(item.DocumentCulture)).NativeName).IndexOf("(", StringComparison.Ordinal) > 0)
+                            ? (new CultureInfo(item.DocumentCulture)).NativeName.Substring(0, ((new CultureInfo(item.DocumentCulture)).NativeName).IndexOf("(", StringComparison.Ordinal)).TrimEnd()
+                            : (new CultureInfo(item.DocumentCulture)).NativeName.TrimEnd()
+                }).ToList();
 
         }
 
