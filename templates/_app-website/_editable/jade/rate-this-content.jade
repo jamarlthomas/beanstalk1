@@ -160,7 +160,22 @@ html(lang='en')
                                 a(href="#" class="prev")
                                 span(class="pageNumbers")
                                 a(href="#" class="next")
-                            
+                                
+                                
+                        div(id="rateContentC")
+                        
+                            form(id="rateContent")
+                                | Was this content helpful?
+                                div(id="answers") 
+                                    input(type="button" value="Yes" class="rateBtn")
+                                    input(type="button" value="No" class="rateBtn")                                
+                                    
+                            form(id="ratePopup" style="display: none;")
+                                a(href="#" id="closeSubmit") X
+                                | <strong>Thank you!</strong> If you wish, you may provide additional feedback.<br>
+                                textarea(maxlength="140" placeholder="Optional Comment (140 characters or less)" id="rateComment")
+                                input(type="submit" value="Submit" id="rateSubmit")
+                                
                             
                 div(id="lftCol-sidebar")
                     

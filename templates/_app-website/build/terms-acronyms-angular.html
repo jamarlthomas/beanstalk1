@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="termsAcronymsApp">
   <head>
     <title></title>
     <meta name="description" content="">
@@ -25,6 +25,7 @@
     <script src="https://code.angularjs.org/1.4.8/angular.js"></script>
     <script src="assets-layout/js/library/dirPagination.min.js"></script>
     <script src="assets-layout/js/custom/prodFilter.min.js"></script>
+    <script src="assets-layout/js/custom/terms-acronyms.min.js"></script>
     <script src="assets-layout/js/custom/ellipsesText.min.js"></script>
     <script src="assets-layout/js/custom/columnizeText.min.js"></script>
     <script src="assets-layout/js/library/head.min.js">       </script>
@@ -46,6 +47,8 @@
           {product_Filter_Nav: "assets-layout/js/custom/prodFilterNav.min.js"},
           {FAQ_Download: "assets-layout/js/custom/faqDropDown.min.js"},
           {long_page_pagination: "assets-layout/js/custom/documentPagination.min.js"},
+          {Polls_And_Surveys: "assets-layout/js/custom/polls-surveys.min.js"},
+          {Rate_This_Content: "assets-layout/js/custom/rate-this-content.min.js"},
           
           function(){
               //loadCSS
@@ -55,7 +58,7 @@
       ); 
     </script>
   </head>
-  <body>
+  <body ng-controller="termsAcronymFilterCntl">
     <div id="mobileNavC1">
       <div id="mobileNavC">
         <div id="menuHdrC">
@@ -123,30 +126,6 @@
             <li><a href="#">Contact</a></li>
           </ul>
         </div>
-      </div>
-    </div>
-    <div id="mobileFilterNavC1">
-      <div id="mobileFilterNavC">
-        <div id="mobileFilterHdr">Filter by:<a href="#" id="menuFilterclose"><img src="images/filter-close.png"></a></div>
-        <form id="mobileFilterForm">
-          <div id="mobileFilterSearch">
-            <input type="text" placeholder="Enter Search Term">
-          </div>
-          <ul id="mobileFilterNav">
-            <li><a href="#">Region</a>
-              <div id="mFilterRegion" class="mobileFilterNavItems"></div>
-            </li>
-            <li><a href="#">Document Type</a>
-              <div id="mFilterDocumentType" class="mobileFilterNavItems"></div>
-            </li>
-            <li><a href="#">Solution</a>
-              <div id="mFilterSolution" class="mobileFilterNavItems"></div>
-            </li>
-          </ul>
-          <div id="mobileClearFilterB">
-            <input type="reset" value="Clear All">
-          </div>
-        </form>
       </div>
     </div>
     <div id="topHeaderC">
@@ -399,315 +378,112 @@
       </div>
     </div>
     <div id="contentAreaC">
-      <div class="fullWidth2 txtPaddingTop">
-        <div id="breadCrumbsC">
-          <div id="breadCrumbs"><a href="#">Home</a><a href="#">Driveline Additives</a><a href="#">Automotive Gear</a><a href="#">Automotive Gear Products</a>HiTEC® 385: Gear Oil Additive</div>
-        </div>
-      </div>
-      <div class="fullWidth txtPaddingTop">
-        <div class="txtPaddingTop txtPaddingBtm">
-          <h1>Page Title</h1><a href="#" class="viewAll">View all Afton Insights and Resources</a>
-        </div>
-      </div>
-      <div id="mobileFilterBtnC" style="display: none;"><a href="#" id="mobileFilterBtn">
-          <div id="mobileFilterTxt">Filter</div><img id="mobileFilterImg" src="images/filter-open.gif"></a></div>
-      <div id="filterAreaC" class="padBtm">
-        <div id="filterArea">
-          <form id="filterC">
-            <div id="filterLabel">Filter by: </div>
-            <div id="filterColC">
-              <input id="filterSearch" type="text" placeholder="Enter Search Term"><hr>
-              <div id="filterRegion" class="filterGroup">
-                <div class="filterHdr">Region</div>
-                <label>
-                  <input type="checkbox" name="region" value="North America"><span></span>North America
-                </label>
-                <label>
-                  <input type="checkbox" name="region" value="Latin America"><span></span>Latin America
-                </label>
-                <label>
-                  <input type="checkbox" name="region" value="EMEAI"><span></span>EMEAI
-                </label>
-                <label>
-                  <input type="checkbox" name="region" value="Asia"><span></span>Asia
-                </label>
-              </div><hr>
-              <div id="filterDocumentType" class="filterGroup">
-                <div class="filterHdr">Document Type</div>
-                <label>
-                  <input type="checkbox" name="Doc Type" value="Product Data Sheets"><span></span>Product Data Sheets
-                </label>
-                <label>
-                  <input type="checkbox" name="Doc Type" value="Articles"><span></span>Articles
-                </label>
-                <label>
-                  <input type="checkbox" name="Doc Type" value="White Papers"><span></span>White Papers
-                </label>
-                <label>
-                  <input type="checkbox" name="Doc Type" value="Research"><span></span>Research
-                </label>
-                <label>
-                  <input type="checkbox" name="Doc Type" value="Technical Documents"><span></span>Technical Documents
-                </label>
-                <label>
-                  <input type="checkbox" name="Doc Type" value="Product Reviews"><span></span>Product Reviews
-                </label>
-              </div>
-              <div id="filterSolution" class="filterGroup">
-                <div class="filterHdr">Solution</div>
-                <div class="filterSecHdr">Driveline</div>
-                <label>
-                  <input type="checkbox" name="Sol Driveline" value="Automatic Transmission"><span></span>Automatic Transmission
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Driveline" value="Continously Variable Transmission (CVT)"><span></span>Continously Variable Transmission (CVT)
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Driveline" value="Dual Clutch Transmission (DCT)"><span></span>Dual Clutch Transmission (DCT)
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Driveline" value="Automotive Gear"><span></span>Automotive Gear
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Driveline" value="Power Steering"><span></span>Power Steering
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Driveline" value="Heavy Machinery"><span></span>Heavy Machinery
-                </label><br>
-                <div class="filterSecHdr">Fuel</div>
-                <label>
-                  <input type="checkbox" name="Sol Fuel" value="Diesel Additives"><span></span>Diesel Additives
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Fuel" value="Gasoline Additives"><span></span>Gasoline Additives
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Fuel" value="Octane Improver"><span></span>Octane Improver
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Fuel" value="Alternative Fuels"><span></span>Alternative Fuels
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Fuel" value="Home Heating Fuel"><span></span>Home Heating Fuel
-                </label><br>
-                <div class="filterSecHdr">Engine Oil</div>
-                <label>
-                  <input type="checkbox" name="Sol Engine" value="Diesel"><span></span>Diesel Oil
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Engine" value="Gasoline Oil"><span></span>Gasoline Oil
-                </label><br>
-                <div class="filterSecHdr">Industrial</div>
-                <label>
-                  <input type="checkbox" name="Sol Ind" value="Compressor"><span></span>Compressor
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Ind" value="Grease"><span></span>Grease
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Ind" value="Hydrulic"><span></span>Hydrulic
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Ind" value="Industrial Gear"><span></span>Industrial Gear
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Ind" value="Metalworking"><span></span>Metalworking
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Ind" value="Corrosion Inhibitors"><span></span>Corrosion Inhibitors
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Ind" value="Couplers"><span></span>Couplers
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Ind" value="Demist Agents"><span></span>Demist Agents
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Ind" value="Emulsifiers"><span></span>Emulsifiers
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Ind" value="Lubricity and EP Additives"><span></span>Lubricity and EP Additives
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Ind" value="Packages"><span></span>Packages
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Ind" value="Quench Additives"><span></span>Quench Additives
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Ind" value="Sideway"><span></span>Sideway
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Ind" value="Turbine"><span></span>Turbine
-                </label><br>
-                <div class="filterSecHdr">Lubricant Components</div>
-                <label>
-                  <input type="checkbox" name="Sol Lub" value="Couplers"><span></span>Couplers
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Lub" value="Detergents &amp; Corrosion Inhibitors"><span></span>Detergents & Corrosion Inhibitors
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Lub" value="Extreme Pressure Agents &amp; Antiwear Agents"><span></span>Extreme Pressure Agents & Antiwear Agents
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Lub" value="Foam Inhibitors"><span></span>Foam Inhibitors
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Lub" value="Friction Modifiers"><span></span>Friction Modifiers
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Lub" value="Pour Point Depressants"><span></span>Pour Point Depressants
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Lub" value="Seal Swell Additives"><span></span>Seal Swell Additives
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Lub" value="Tackiness Additives"><span></span>Tackiness Additives
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Lub" value="Thickeners &amp; Viscosity Index"><span></span>Thickeners & Viscosity Index
-                </label>
-                <label>
-                  <input type="checkbox" name="Sol Lub" value="Improvers"><span></span>Improvers
-                </label>
-                <input id="clearFilterB" type="reset" value="Clear All">
-              </div>
+      <div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
+        <div id="rtCol-contentArea">
+          <div id="breadCrumbsC">
+            <div id="breadCrumbs"><a href="#">Home</a><a href="#">Driveline Additives</a><a href="#">Automotive Gear</a><a href="#">Automotive Gear Products</a>HiTEC® 385: Gear Oil Additive</div>
+          </div>
+          <div id="termsAcronymsHdrC" class="txtPaddingTop">
+            <h1>Terms & Acronyms</h1><br>
+            <div id="searchDD">
+              <input ng-model="acronymTermSearch" placeholder="Search Terms &amp; Acronyms">
             </div>
-          </form>
-          <div id="filterResultsC">
-            <div id="filterHdr">
-              <div id="filterNum">16 Results</div>
-              <div id="filterList">Current Selection:  <span class="hdr">Region: </span>All
-                / <span class="hdr">Document Type: </span>Articles
-                /  <span class="hdr">Solution: </span>Continuously Variable Transmission (CVT), Gasoline Oil, Grease, Couplers
-              </div>
-              <div id="filterSort">
-                <div class="customSelectC standard">
-                  <div class="orgSelect">
-                    <select name="sort">
-                      <option value="Newest">Newest</option>
-                      <option value="Oldest">Oldest</option>
-                    </select>
-                  </div>
+            <div id="acronymsTermSortDD">Sort by:<br>
+              <div class="customSelectC standard">
+                <div class="orgSelect">
+                  <select name="terms" ng-model="acronymTermSort">
+                    <option value="name">A-Z</option>
+                    <option value="-name">Z-A</option>
+                  </select>
                 </div>
               </div>
             </div>
-            <div class="cards3C">
-              <div class="cards3"><a href="#" class="cardC">
-                  <div class="cardHdrC">
-                    <div class="cardHdr">Result Title Here</div>
-                  </div>
-                  <div class="cardTxtC">
-                    <div class="cardTxt">consectetur adipiscing elit, sed do eiusmod tempor.</div>
-                  </div>
-                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div></a><a href="#" class="cardC">
-                  <div class="cardHdrC">
-                    <div class="cardHdr">Result Title Here</div>
-                  </div>
-                  <div class="cardTxtC">
-                    <div class="cardTxt">consectetur adipiscing elit, sed do eiusmod tempor.</div>
-                  </div>
-                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div></a><a href="#" class="cardC">
-                  <div class="cardHdrC">
-                    <div class="cardHdr">Result Title Here</div>
-                  </div>
-                  <div class="cardTxtC">
-                    <div class="cardTxt">consectetur adipiscing elit, sed do eiusmod tempor.</div>
-                  </div>
-                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div></a><a href="#" class="cardC">
-                  <div class="cardHdrC">
-                    <div class="cardHdr">Result Title Here</div>
-                  </div>
-                  <div class="cardTxtC">
-                    <div class="cardTxt">consectetur adipiscing elit, sed do eiusmod tempor.</div>
-                  </div>
-                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div></a><a href="#" class="cardC">
-                  <div class="cardHdrC">
-                    <div class="cardHdr">Result Title Here</div>
-                  </div>
-                  <div class="cardTxtC">
-                    <div class="cardTxt">consectetur adipiscing elit, sed do eiusmod tempor.</div>
-                  </div>
-                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div></a><a href="#" class="cardC">
-                  <div class="cardHdrC">
-                    <div class="cardHdr">Result Title Here</div>
-                  </div>
-                  <div class="cardTxtC">
-                    <div class="cardTxt">consectetur adipiscing elit, sed do eiusmod tempor.</div>
-                  </div>
-                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div></a><a href="#" class="cardC">
-                  <div class="cardHdrC">
-                    <div class="cardHdr">Result Title Here</div>
-                  </div>
-                  <div class="cardTxtC">
-                    <div class="cardTxt">consectetur adipiscing elit, sed do eiusmod tempor.</div>
-                  </div>
-                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div></a><a href="#" class="cardC">
-                  <div class="cardHdrC">
-                    <div class="cardHdr">Result Title Here</div>
-                  </div>
-                  <div class="cardTxtC">
-                    <div class="cardTxt">consectetur adipiscing elit, sed do eiusmod tempor.</div>
-                  </div>
-                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div></a><a href="#" class="cardC">
-                  <div class="cardHdrC">
-                    <div class="cardHdr">Result Title Here</div>
-                  </div>
-                  <div class="cardTxtC">
-                    <div class="cardTxt">consectetur adipiscing elit, sed do eiusmod tempor.</div>
-                  </div>
-                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div></a><a href="#" class="cardC">
-                  <div class="cardHdrC">
-                    <div class="cardHdr">Result Title Here</div>
-                  </div>
-                  <div class="cardTxtC">
-                    <div class="cardTxt">consectetur adipiscing elit, sed do eiusmod tempor.</div>
-                  </div>
-                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div></a><a href="#" class="cardC">
-                  <div class="cardHdrC">
-                    <div class="cardHdr">Result Title Here</div>
-                  </div>
-                  <div class="cardTxtC">
-                    <div class="cardTxt">consectetur adipiscing elit, sed do eiusmod tempor.</div>
-                  </div>
-                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div></a><a href="#" class="cardC">
-                  <div class="cardHdrC">
-                    <div class="cardHdr">Result Title Here</div>
-                  </div>
-                  <div class="cardTxtC">
-                    <div class="cardTxt">consectetur adipiscing elit, sed do eiusmod tempor.</div>
-                  </div>
-                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div></a><a href="#" class="cardC">
-                  <div class="cardHdrC">
-                    <div class="cardHdr">Result Title Here</div>
-                  </div>
-                  <div class="cardTxtC">
-                    <div class="cardTxt">consectetur adipiscing elit, sed do eiusmod tempor.</div>
-                  </div>
-                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div></a><a href="#" class="cardC">
-                  <div class="cardHdrC">
-                    <div class="cardHdr">Result Title Here</div>
-                  </div>
-                  <div class="cardTxtC">
-                    <div class="cardTxt">consectetur adipiscing elit, sed do eiusmod tempor.</div>
-                  </div>
-                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div></a><a href="#" class="cardC">
-                  <div class="cardHdrC">
-                    <div class="cardHdr">Result Title Here</div>
-                  </div>
-                  <div class="cardTxtC">
-                    <div class="cardTxt">consectetur adipiscing elit, sed do eiusmod tempor.</div>
-                  </div>
-                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div></a></div>
+          </div>
+          <div id="termsAcronymsC" class="txtPaddingBtm">
+            <div dir-paginate="item in data | filter:acronymTermSearch | orderBy:acronymTermSort | itemsPerPage: itemsPerpage" class="termsAcronyms"> 
+              <div class="term">{{item.name}}</div>
+              <div class="def">{{item.description}}</div>
             </div>
-            <div class="paginationC"><a href="#" class="prev"></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><span class="nextGroup">...</span><a href="#" class="sendToEnd">49</a><a href="#">50</a><a href="#" class="next"></a></div>
+            <div ng-hide="dataLoaded()">Loading Items...</div>
+            <div ng-show="!(data | filter:acronymTermSearch).length">No Items found</div><br>
+            <dir-pagination-controls max-size="7" boundary-links="false" template-url="dirPagination.tpl.html"></dir-pagination-controls>
+          </div>
+        </div>
+        <div id="lftCol-sidebar">
+          <div id="sidbarHdrC" class="altSidbarstyles">
+            <h2>Sub Navigation Title</h2>
+          </div>
+          <div id="sidbarNavC">
+            <ul>
+              <li><a href="#">Sub Navigation Title</a></li>
+              <li><a href="#">Sub Navigation Title</a></li>
+              <li><a href="#">Sub Navigation Title</a></li>
+              <li><a href="#">Sub Navigation Title</a></li>
+              <li><a href="#">Sub Navigation Title</a></li>
+              <li><a href="#">Sub Navigation Title</a></li>
+              <li><a href="#">Sub Navigation Title</a></li>
+              <li><a href="#">Sub Navigation Title</a></li>
+              <li><a href="#">Sub Navigation Title</a></li>
+              <li><a href="#">Sub Navigation Title </a></li>
+            </ul>
+          </div><img src="page-images/sidebar-images/sidebar-contact.jpg" class="sidbarImg">
+          <div class="sidbarBoxC">
+            <div class="hdr">Contact for More Information</div>
+            <div class="txt">Um sundae culles aboritia as aut acit volorum eumqui quam quidele secatec toratemquam.</div>
+            <div class="customSelectC sidebarOpt">
+              <div class="orgSelect">
+                <select name="Countries">
+                  <option value="">Select Your Country</option>
+                  <option value="Afghanistan">Afghanistan</option>
+                  <option value="Albania">Albania</option>
+                  <option value="Algeria">Algeria</option>
+                  <option value="American Samoa">American Samoa</option>
+                  <option value="Andorra">Andorra</option>
+                  <option value="Angola">Angola</option>
+                  <option value="Anguilla">Anguilla</option>
+                  <option value="Antartica">Antarctica</option>
+                  <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                  <option value="Argentina">Argentina</option>
+                  <option value="Armenia">Armenia</option>
+                  <option value="Aruba">Aruba</option>
+                  <option value="Australia">Australia</option>
+                  <option value="Austria">Austria</option>
+                  <option value="Azerbaijan">Azerbaijan</option>
+                  <option value="Bahamas">Bahamas</option>
+                  <option value="Bahrain">Bahrain</option>
+                  <option value="Bangladesh">Bangladesh</option>
+                  <option value="Barbados">Barbados</option>
+                  <option value="Belarus">Belarus</option>
+                  <option value="Belgium">Belgium</option>
+                  <option value="Belize">Belize</option>
+                  <option value="Benin">Benin</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="sidbarBoxC">
+            <div class="hdr">Stay Informed</div>
+            <div class="txt">Um sundae culles aboritia as aut acit volorum eumqui quam quidele secatec toratemquam.</div>
+            <input type="text" placeholder="Email Address" class="txtBox">
+            <input type="submit" value="Submit" class="submitBtn">
+          </div>
+          <div class="sidbarBoxC">
+            <div class="hdr">Insights & Resources</div>
+            <div class="twoCol"><a href="#"><img src="page-images/sidebar-images/sidebar-res-driveline.jpg">
+                <div class="txtCol">
+                  <div class="sTxt">Driveline Article</div>
+                  <Um>sundae culles aboritia aut acit volorum eumqui toratemquam.</Um>
+                </div></a><a href="#"><img src="page-images/sidebar-images/sidebar-res-prod.jpg">
+                <div class="txtCol">
+                  <div class="sTxt">Driveline Article</div>
+                  <Um>sundae culles aboritia aut acit volorum eumqui toratemquam.</Um>
+                </div></a></div>
           </div>
         </div>
       </div>
       <div class="borders bgPattern padTopBtm">
         <div class="fullWidth">
-          <h2>Personalized Content Title</h2>
+          <h2>Personalized Content Title </h2>
         </div>
         <div class="cardsC">
           <div class="cards"><a href="http://google.com">
