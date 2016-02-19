@@ -49,4 +49,4 @@ body.printPage #stickyFooterC { display: none; }
 body.printPage #contentAreaC { display: none; }
 body.printPage #footerC { display: none; }
 body.printPage #printArea img.inContent { width: 395px!important; }
-
+body.printPage #printArea #document { width: 100%; margin: 0px; }

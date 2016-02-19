@@ -1,6 +1,6 @@
 #newsletter-signup {
     
-    input { display: block; padding: 15px; margin-bottom: 30px; width: 70%;
+    input { display: block; padding: 15px; margin-bottom: 30px; width: 70%; border: 1px solid #CCC;
     
         //*** Breakpoints ***
         @include breakpoint($bp2) { width: 100%; }
