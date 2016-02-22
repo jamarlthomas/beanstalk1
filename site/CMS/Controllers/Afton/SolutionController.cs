@@ -3,7 +3,6 @@ using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
-using CMS.Mvc.ViewModels.Solution;
 using CMS.Mvc.ViewModels.Shared;
 using System.Web.Mvc;
 

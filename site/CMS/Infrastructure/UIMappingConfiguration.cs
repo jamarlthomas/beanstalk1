@@ -1,7 +1,5 @@
-﻿using System.Linq;
-using System.Web;
+﻿using System.Web;
 using CMS.DocumentEngine.Types;
-using CMS.Mvc.Helpers;
 using CMS.Mvc.ViewModels.Product;
 using Infrastructure.Mapper;
 
@@ -26,6 +24,7 @@ namespace CMS.Mvc.Infrastructure
             }
         protected override void Collections()
         {
+            CreateListMap<Product, RelatedProductCardViewModel>();
             
         }
 

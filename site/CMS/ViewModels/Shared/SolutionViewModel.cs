@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using CMS.Mvc.ViewModels.Solution;
 using System.Linq;
 using System.Web;
 using CMS.Mvc.ViewModels.Product;

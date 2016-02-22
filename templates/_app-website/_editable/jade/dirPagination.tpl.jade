@@ -1,4 +1,4 @@
-div(class="paginationC")
+div(class="paginationC" ng-if="1 < pages.length") 
     ul(class="pagination" ng-if="1 < pages.length")
 
         li(class="beginLink" ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }")

@@ -20,6 +20,7 @@ using CMS.DataEngine;
 using CMS.SiteProvider;
 using WebGrease;
 using ServerInfo = System.Web.Helpers.ServerInfo;
+using System.Configuration;
 
 namespace CMS.Mvc.Helpers
 {
@@ -70,8 +71,6 @@ namespace CMS.Mvc.Helpers
             var list = new List<Link>();
             TraverseNodes(doc, list);
 
-            //list.Add(new Link() { Title = "Home", Reference = "Home" }); //We don't need this
-                                                                           //Because we have object "Home" in the root
             list.Reverse();
             string currReference = string.Empty;
             var breadcrumbList = list.Select(item =>
