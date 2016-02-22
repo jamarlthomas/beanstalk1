@@ -1,9 +1,10 @@
-﻿<h3> @Model.Name </h3>
-<p>Questions list:</p>
-@foreach (var faqItem in Model.Items)
-{
-    <p>
-        Question: @faqItem.Question <br/>
-        Answer:  @Html.Raw(faqItem.Answer)
-    </p>
-}
+﻿<h2>@Model.Name</h2>
+<ul class="accordC txtPaddingTop">
+    @foreach (var faqItem in Model.Items)
+    {
+        <li>
+            <div class="icon"></div><a href="#">@faqItem.Question</a>
+            <div style="display: none;" class="reveal">@Html.Raw(faqItem.Answer)</div>
+        </li>
+    }
+</ul>
