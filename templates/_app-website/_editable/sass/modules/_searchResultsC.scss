@@ -1,0 +1,47 @@
+#searchResultC { 
+    
+    #searchHdr { margin: 0px auto; width: 1235px; border-bottom: 1px solid #595959;
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { width: calc(100% - 15px) }
+        
+    }
+    
+    #searchResult { @include gridContainer;
+        
+        a.searchResultItem { display: block; padding: 35px 0px; border-bottom: 1px solid #595959; overflow: auto; 
+            
+            .searchImgC { @include span(2 of 12);
+                
+                img { width: 100%; }
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp2) { @include span(4 of 12); }
+                @include breakpoint($bp3) { @include span(full); }
+                
+            }//searchImgC
+            
+            .searchContentC { @include span(8 of 12 first);
+                
+                h2 { padding-bottom: 30px; transition: 0.5s;
+                
+                    .docType { font-size: 16px; }
+                    
+                    //*** Breakpoints ***
+                    @include breakpoint($bp3) { padding-top: 10px; padding-bottom: 10px; }
+                    
+                }//h2
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp2) { @include span(7.5 of 12 first); } 
+                @include breakpoint($bp3) { @include span(full); }
+                
+            }//searchContentC
+            
+            &:hover h2 { color: #50a84a; }
+            
+        }//a.searchResultItem
+        
+    }//searchResult
+    
+}//searchResultC

@@ -1,0 +1,79 @@
+#contactC {
+    
+    input { display: block; padding: 15px; margin-bottom: 30px; width: 90%; border: 1px solid #CCC;
+    
+        //*** Breakpoints ***
+        @include breakpoint($bp2) { width: 100%; }
+    
+    }
+    
+    .customSelectC { margin: 5px 0px 30px 0px; width: 250px; }
+    
+    textarea { display: block; padding: 15px; margin-bottom: 30px; width: 90%; min-height: 250px; border: 1px solid #CCC;
+    
+        //*** Breakpoints ***
+        @include breakpoint($bp2) { width: 100%; }
+    }
+    
+    input.subscribe { background: #4c9d2f; border: 0px; color: #FFF; }
+    
+    label { display: block;  margin: 0px 0px 5px 22px;
+                
+        input[type="checkbox"] { display:none; }
+
+        input[type="checkbox"] +  span.checkboxDisplay { display:inline-block; width: 18px; height: 13px; margin: -3px 4px 0 -22px; vertical-align: middle; cursor: pointer; background:url(../../images/check-box.png) left top no-repeat; }
+
+        input[type="checkbox"]:checked + span.checkboxDisplay { background:url(../../images/check-box-a.png) left top no-repeat; }          
+
+    }//label
+    
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp2) { width: calc(100% - 15px); margin: 0px auto; padding-bottom: 30px; }
+
+}//#contactC
+
+
+
+
+
+.salesOfficesC { @include container; margin-bottom: 30px;
+    
+    &:first-child { padding-top: 80px;
+
+        //*** Breakpoints ***
+        @include breakpoint($bp2) { padding-top: 0px; }
+    }
+    
+    
+    img { @include span(3 of 6);
+    
+        //*** Breakpoints ***
+        @include breakpoint($bp3) { @include span(full); }
+        
+    }//img
+
+    .sales-address { @include span(3 of 6 last);
+    
+        .address-header { font-weight: bold; color: #184a9e;
+        
+            //*** Breakpoints ***
+            @include breakpoint($bp3) { padding-top: 20px; }
+        
+        }
+        
+        a { display: inline-block; margin-top: 8px; padding: 10px; background: #4c9d2f; color: #FFF; text-decoration: none;
+        
+            &:hover { color: #EEE; }
+            
+        }//a
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp3) { @include span(full); }
+        
+    }//sales-address
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp2) { width: calc(100% - 15px); margin: 0px auto; padding-bottom: 30px; }
+
+}//salesOfficesC

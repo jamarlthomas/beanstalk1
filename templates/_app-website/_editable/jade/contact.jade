@@ -1,0 +1,177 @@
+doctype 
+
+html(lang='en')
+
+    head
+        
+        title=""
+        meta(name="description" content="")
+        meta(name="keywords" content="")
+        
+        include includes/_scripts_header.jade
+        
+    body
+    
+        include includes/_mobileNav.jade
+        
+        include includes/_header.jade
+        
+        div(id="contentAreaC")
+        
+            div(id="twoColumnC-sidebar2" class="txtPaddingTop padBtm")
+            
+                div(id="lftCol-contentArea")
+                
+                    div(id="contactC")
+                       
+                        h1 Contact
+                        
+                        br
+                        | All fields are required.
+
+                        input(placeholder="First Name")
+
+                        input(placeholder="Last Name")
+
+                        input(placeholder="Company Name")
+
+                        input(placeholder="Email")
+
+                        input(placeholder="Phone (Country Code + Number)")
+
+                        div(class="customSelectC standard")
+                            div(class="orgSelect")
+                                select(name="newsletter-lang")
+                                    option(value="") Select Your Country
+                                    option(value="Afghanistan") Afghanistan
+                                    option(value="Albania") Albania
+                                    option(value="Algeria") Algeria
+                                    option(value="American Samoa") American Samoa
+                                    option(value="Andorra") Andorra
+                                    option(value="Angola") Angola
+                                    option(value="Anguilla") Anguilla
+                                    option(value="Antartica") Antarctica
+                                    option(value="Antigua and Barbuda") Antigua and Barbuda
+                                    option(value="Argentina") Argentina
+                                    option(value="Armenia") Armenia
+                                    option(value="Aruba") Aruba
+                                    option(value="Australia") Australia
+                                    option(value="Austria") Austria
+                                    option(value="Azerbaijan") Azerbaijan
+                                    option(value="Bahamas") Bahamas
+                                    option(value="Bahrain") Bahrain
+                                    option(value="Bangladesh") Bangladesh
+                                    option(value="Barbados") Barbados
+                                    option(value="Belarus") Belarus
+                                    option(value="Belgium") Belgium
+                                    option(value="Belize") Belize
+                                    option(value="Benin") Benin
+                            
+                        textarea(placeholder="Enter Your Message")
+                        
+                        strong Stay informed about Afton products, and services.
+                        br
+                        br
+                        
+                        label
+                            input(type="checkbox")
+                            span(class="checkboxDisplay")
+                            span(class="txt") Yes, I would like to recieve the Afton Email Newsletter.&nbsp;
+                            a(href="#") Privacy Statement
+                        
+                        br
+                        br
+                        
+                        input(type="submit" class="subscribe" value="Submit")
+                        
+                
+                div(id="rtCol-sidebar")
+                
+                    div(class="salesOfficesC")
+                        
+                        img(src="page-images/contact/map-asia.gif")
+                        
+                        div(class="sales-address")
+                            
+                            div(class="address-header") Asia Pacific
+                            
+                            | 111 Somerset Road, #09-05<br>
+                            | TripleOne Somerset<br>
+                            | Singapore 238164<br>
+                            strong Asia<br>
+                            | T: +65 673-20822<br>
+                            
+                            a(href="#") View Sales Offices
+                            
+                            
+                    div(class="salesOfficesC")
+                        
+                        img(src="page-images/contact/map-europe.gif")
+                        
+                        div(class="sales-address")
+                            
+                            div(class="address-header") Europe, Middle East, Africa, India (EMEAI)
+
+                            | London Road, Bracknell<br>
+                            | Berkshire RG12 2UW<br>
+                            strong England<br>
+                            | T: +44 1344 304-141<br>
+                            
+                            a(href="#") View Sales Offices
+                            
+                            
+                    div(class="salesOfficesC")
+                        
+                        img(src="page-images/contact/map-latin.gif")
+                        
+                        div(class="sales-address")
+                            
+                            div(class="address-header") Latin America Region
+
+                            | Industria de Aditivos LTDA<br>
+                            | Avendia Rio de Janeiro 901 (Parte)<br>
+                            | CEP-20931-675<br>
+                            strong Brazil<br>
+                            | T: +55 21 3295-4050<br>
+                            
+                            a(href="#") View Sales Offices
+                            
+                            
+                    div(class="salesOfficesC")
+                        
+                        img(src="page-images/contact/map-NA.gif")
+                        
+                        div(class="sales-address")
+                            
+                            div(class="address-header") North American Region
+
+                            | 500 Spring Streett<br>
+                            | Richmond VA 23219<br>
+                            strong USA<br>
+                            | T: +1 804-788-5800<br>
+                            
+                            a(href="#") View Sales Offices
+                    
+                    
+
+            div(class="fullWidth borderTop padTopBtm")
+            
+                h1 Emergency Response
+                
+                br
+                | Afton Chemical Corporation's emergency response telephone numbers are:<br>
+                strong (800) 403-0044&nbsp;
+                | U.S. and Canada<br>
+                strong (804) 648-7727&nbsp;
+                | Outside North America<br>
+                strong (800) 424-9300&nbsp;
+                | CHEMTREC number used on most of Ethyl's U.S. bulk shipping containers and shipping documents<br>
+                br
+
+                | These telephone numbers are published on Afton Chemical MSDSs, literature, and some shipping documents. CHEMTREC, CANUTEC and others use these numbers to inform Afton Chemical of an incident involving Afton Chemical products. Afton Chemical has emergency response coverage 24 hours a day, 7 days a week. A trained Afton Chemical Coordinator is on call to respond to any emergency.
+                
+                
+                            
+                            
+        include includes/_footer.jade
+                            
