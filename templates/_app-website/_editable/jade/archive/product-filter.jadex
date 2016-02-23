@@ -480,8 +480,8 @@ html(lang='en')
                             a(href="#") 2
                             a(href="#") 3
                             a(href="#") 4
+                            a(href="#") 5
                             span(class="nextGroup") ...
-                            a(href="#" class="sendToEnd") 49
                             a(href="#") 50
                             a(href="#" class="next")
                                 

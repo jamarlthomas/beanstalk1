@@ -15,7 +15,7 @@
     }//searchDD
 
 
-    #sortDD { float: right;
+    #acronymsTermSortDD { float: right;
 
         .customSelectC { width: 120px;
 
@@ -30,7 +30,7 @@
     }//sortDD
     
     //*** Breakpoints ***
-    @include breakpoint($bp2) { width: calc(100% - 15px); margin: 0px auto; padding-bottom: 30px; }
+    @include breakpoint($bp2) { width: calc(100% - 40px); margin: 0px 20px 0px 20px; padding-bottom: 30px; }
     
     
 }//termsAcronymsHdrC
@@ -54,6 +54,8 @@
         }
         
     }//termsAcronyms
+    
+    @include breakpoint($bp2) { width: calc(100% - 40px); margin: 0px 20px 0px 20px; }
     
 }//termsAcronymsC
 
