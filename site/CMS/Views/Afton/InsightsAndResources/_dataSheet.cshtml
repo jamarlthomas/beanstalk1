@@ -1,0 +1,8 @@
+﻿<h2 class="txtPaddingTop">@Model.Title</h2>
+<ul>
+    @foreach (var link in Model.Links)
+    {
+        <li><a href="@link.Reference">@link.Title</a></li>
+    }
+</ul>
+<a href="#" class="viewMore">View All @Model.Title ></a>
