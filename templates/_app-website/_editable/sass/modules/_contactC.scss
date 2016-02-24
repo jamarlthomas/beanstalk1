@@ -62,9 +62,9 @@
         
         }
         
-        a { display: inline-block; margin-top: 8px; padding: 10px; background: #4c9d2f; color: #FFF; text-decoration: none;
+        a.viewOffices { display: inline-block; margin-top: 8px; padding: 10px; background: #4c9d2f; color: #FFF; text-decoration: none;
         
-            &:hover { color: #EEE; }
+            &:hover { background: #247408; }
             
         }//a
         

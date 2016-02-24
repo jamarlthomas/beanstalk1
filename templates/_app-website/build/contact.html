@@ -22,6 +22,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.4/hammer.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.columnizer/1.6.0/jquery.columnizer.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.actual/1.0.17/jquery.actual.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-placeholder/2.3.1/jquery.placeholder.min.js"></script>
     <script src="https://code.angularjs.org/1.4.8/angular.js"></script>
     <script src="assets-layout/js/library/dirPagination.min.js"></script>
     <script src="assets-layout/js/custom/prodFilter.min.js"></script>
@@ -49,6 +50,7 @@
           {long_page_pagination: "assets-layout/js/custom/documentPagination.min.js"},
           {Polls_And_Surveys: "assets-layout/js/custom/polls-surveys.min.js"},
           {Rate_This_Content: "assets-layout/js/custom/rate-this-content.min.js"},
+          {form_placholder: "assets-layout/js/custom/formPollyfill.min.js"},
           
           function(){
               //loadCSS
@@ -381,74 +383,76 @@
       <div id="twoColumnC-sidebar2" class="txtPaddingTop padBtm">
         <div id="lftCol-contentArea">
           <div id="contactC">
-            <h1>Contact</h1><br>All fields are required.
-            <input placeholder="First Name">
-            <input placeholder="Last Name">
-            <input placeholder="Company Name">
-            <input placeholder="Email">
-            <input placeholder="Phone (Country Code + Number)">
-            <div class="customSelectC standard">
-              <div class="orgSelect">
-                <select name="newsletter-lang">
-                  <option value="">Select Your Country</option>
-                  <option value="Afghanistan">Afghanistan</option>
-                  <option value="Albania">Albania</option>
-                  <option value="Algeria">Algeria</option>
-                  <option value="American Samoa">American Samoa</option>
-                  <option value="Andorra">Andorra</option>
-                  <option value="Angola">Angola</option>
-                  <option value="Anguilla">Anguilla</option>
-                  <option value="Antartica">Antarctica</option>
-                  <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-                  <option value="Argentina">Argentina</option>
-                  <option value="Armenia">Armenia</option>
-                  <option value="Aruba">Aruba</option>
-                  <option value="Australia">Australia</option>
-                  <option value="Austria">Austria</option>
-                  <option value="Azerbaijan">Azerbaijan</option>
-                  <option value="Bahamas">Bahamas</option>
-                  <option value="Bahrain">Bahrain</option>
-                  <option value="Bangladesh">Bangladesh</option>
-                  <option value="Barbados">Barbados</option>
-                  <option value="Belarus">Belarus</option>
-                  <option value="Belgium">Belgium</option>
-                  <option value="Belize">Belize</option>
-                  <option value="Benin">Benin</option>
-                </select>
+            <h1>Contact</h1><br>
+            <form>All fields are required.
+              <input placeholder="First Name" required>
+              <input placeholder="Last Name" required>
+              <input placeholder="Company Name" required>
+              <input placeholder="Email" required>
+              <input placeholder="Phone (Country Code + Number)" required>
+              <div class="customSelectC standard">
+                <div class="orgSelect">
+                  <select name="newsletter-lang" required>
+                    <option value="">Select Your Country</option>
+                    <option value="Afghanistan">Afghanistan</option>
+                    <option value="Albania">Albania</option>
+                    <option value="Algeria">Algeria</option>
+                    <option value="American Samoa">American Samoa</option>
+                    <option value="Andorra">Andorra</option>
+                    <option value="Angola">Angola</option>
+                    <option value="Anguilla">Anguilla</option>
+                    <option value="Antartica">Antarctica</option>
+                    <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                    <option value="Argentina">Argentina</option>
+                    <option value="Armenia">Armenia</option>
+                    <option value="Aruba">Aruba</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Austria">Austria</option>
+                    <option value="Azerbaijan">Azerbaijan</option>
+                    <option value="Bahamas">Bahamas</option>
+                    <option value="Bahrain">Bahrain</option>
+                    <option value="Bangladesh">Bangladesh</option>
+                    <option value="Barbados">Barbados</option>
+                    <option value="Belarus">Belarus</option>
+                    <option value="Belgium">Belgium</option>
+                    <option value="Belize">Belize</option>
+                    <option value="Benin">Benin</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            <textarea placeholder="Enter Your Message"></textarea><strong>Stay informed about Afton products, and services.</strong><br><br>
-            <label>
-              <input type="checkbox"><span class="checkboxDisplay"></span><span class="txt">Yes, I would like to recieve the Afton Email Newsletter.&nbsp;</span><a href="#">Privacy Statement</a>
-            </label><br><br>
-            <input type="submit" value="Submit" class="subscribe">
+              <textarea placeholder="Enter Your Message" required></textarea><strong>Stay informed about Afton products, and services.</strong><br><br>
+              <label>
+                <input type="checkbox"><span class="checkboxDisplay"></span><span class="txt">Yes, I would like to recieve the Afton Email Newsletter.&nbsp;</span><a href="#">Privacy Statement</a>
+              </label><br><br>
+              <input type="submit" value="Submit" class="subscribe">
+            </form>
           </div>
         </div>
         <div id="rtCol-sidebar">
-          <div class="salesOfficesC"><img src="page-images/contact/map-asia.gif">
+          <div class="salesOfficesC"><a href="#"><img src="page-images/contact/map-asia.gif"></a>
             <div class="sales-address">
               <div class="address-header">Asia Pacific</div>111 Somerset Road, #09-05<br>
               TripleOne Somerset<br>
-              Singapore 238164<br><strong>Asia<br></strong>T: +65 673-20822<br><a href="#">View Sales Offices</a>
+              Singapore 238164<br><strong>Asia<br></strong>T: +65 673-20822<br><a href="#" class="viewOffices">View Sales Offices</a>
             </div>
           </div>
-          <div class="salesOfficesC"><img src="page-images/contact/map-europe.gif">
+          <div class="salesOfficesC"><a href="#"><img src="page-images/contact/map-europe.gif"></a>
             <div class="sales-address">
               <div class="address-header">Europe, Middle East, Africa, India (EMEAI)</div>London Road, Bracknell<br>
-              Berkshire RG12 2UW<br><strong>England<br></strong>T: +44 1344 304-141<br><a href="#">View Sales Offices</a>
+              Berkshire RG12 2UW<br><strong>England<br></strong>T: +44 1344 304-141<br><a href="#" class="viewOffices">View Sales Offices</a>
             </div>
           </div>
-          <div class="salesOfficesC"><img src="page-images/contact/map-latin.gif">
+          <div class="salesOfficesC"><a href="#"><img src="page-images/contact/map-latin.gif"></a>
             <div class="sales-address">
               <div class="address-header">Latin America Region</div>Industria de Aditivos LTDA<br>
               Avendia Rio de Janeiro 901 (Parte)<br>
-              CEP-20931-675<br><strong>Brazil<br></strong>T: +55 21 3295-4050<br><a href="#">View Sales Offices</a>
+              CEP-20931-675<br><strong>Brazil<br></strong>T: +55 21 3295-4050<br><a href="#" class="viewOffices">View Sales Offices</a>
             </div>
           </div>
-          <div class="salesOfficesC"><img src="page-images/contact/map-NA.gif">
+          <div class="salesOfficesC"><a href="#"><img src="page-images/contact/map-NA.gif"></a>
             <div class="sales-address">
               <div class="address-header">North American Region</div>500 Spring Streett<br>
-              Richmond VA 23219<br><strong>USA<br></strong>T: +1 804-788-5800<br><a href="#">View Sales Offices</a>
+              Richmond VA 23219<br><strong>USA<br></strong>T: +1 804-788-5800<br><a href="#" class="viewOffices">View Sales Offices</a>
             </div>
           </div>
         </div>
