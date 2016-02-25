@@ -516,6 +516,7 @@
     <Content Include="Views\Afton\Document\Index.cshtml" />
     <Content Include="Views\Afton\Document\_header.cshtml" />
     <Content Include="Views\Afton\Document\_content.cshtml" />
+    <Content Include="Views\Afton\InsightsAndResources\_dataSheet.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

@@ -1,20 +1,26 @@
 ﻿@using CMS.Mvc.ViewModels.InsightsAndResources
 @model InsightsAndResourcesViewModel
 @{
-	ViewBag.Title = @Model.Title;
-	Layout = "~/Views/Afton/Shared/Master.cshtml";
+    ViewBag.Title = @Model.Title;
+    Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
 
-@Model.Title
-<hr />
-
-Description:<br />
-@Html.Raw(Model.Description)
-<hr />
-
-@Html.Partial("~/Views/Afton/InsightsAndResources/_insightsListing.cshtml", Model.InsightsListing)
-<hr />
-
-Tiles:
-@Html.Partial("~/Views/Afton/InsightsAndResources/_resourcesTiles.cshtml", Model.Tiles)
-<hr />
+<div id="sbuLandingHdrC">
+    <div id="sbuLandingHdr">
+        <div class="hdrTxtBoxC">
+            <div class="hdrTxtBox">
+                <div class="sbuHeadline">@Model.Headline</div>
+                <div class="sbuTxt">@Model.Subheadline</div>
+            </div>
+        </div>
+        <div style="display:none;" class="sbuImgBoxC2"><img src="@Url.Content(Model.HeroImage)"></div>
+    </div>
+    <div class="sbuImgBoxC"><img src="@Url.Content(Model.HeroImage)"></div>
+</div>
+<div class="borders2 padTop padBtm">
+    <div class="fullWidth">
+        <h1 class="txtPaddingTop">@Model.Title</h1>
+        @Html.Partial("~/Views/Afton/InsightsAndResources/_insightsListing.cshtml", Model.InsightsListing)
+    </div>
+    @Html.Partial("~/Views/Afton/InsightsAndResources/_resourcesTiles.cshtml", Model.Tiles)
+</div>

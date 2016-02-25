@@ -1,4 +1,19 @@
-﻿@foreach (var tile in Model)
-{
-	<p>@tile.Title</p>
-}
+﻿<div class="cards4C bgGray padTop padBtm">
+    <div class="cards4">
+        @foreach (var tile in Model)
+        {
+            <a href="#" class="cardC">
+                <div class="cardHdrC">
+                    <div class="cardHdr">@tile.Title</div>
+                </div>
+                <div class="cardTxtC">
+                    <div class="cardTxt">@Html.Raw(tile.Description)</div>
+                </div>
+                <div class="cardBtnIndicator">
+                    <img src="@Url.Content("~/images/card-btn-indicator.png")">
+                </div>
+            </a>
+        }
+    </div>
+</div>
+
