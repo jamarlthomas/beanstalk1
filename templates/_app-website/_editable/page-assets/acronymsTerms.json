@@ -1,0 +1,29 @@
+{
+    "results": [
+        {"name": "A/F", "description": "air/fuel ratio"},
+        {"name": "AAM", "description": "Alliance of Automobile Manufacturers"},
+        {"name": "AAMA", "description": "American Automobile Manufacturers Association"},
+        {"name": "AAR", "description": "American Association of Railroads"},
+        {"name": "ABIL", "description": "agriculture-based industrial lubricants"},
+        {"name": "ABOT", "description": "aluminum beaker oxidation test"},
+        {"name": "ACC", "description": "American Chemistry Council"},
+        {"name": "ACEA", "description": "Association des Constructeurs Européens d’Automobiles"},
+        {"name": "ACERT", "description": "Advanced Combustion Emission Reduction Technology (Caterpillar)"},
+        {"name": "AECC", "description": "Automobile Emissions Control by Catalyst"},
+        {"name": "AFC", "description": "adaptive fuel control"},
+        {"name": "AFNOR", "description": "Association Français de Normalisation"},
+        {"name": "AFV", "description": "alternate fuel vehicle"},
+        {"name": "AGMA", "description": "American Gear Manufacturer’s Association"},
+        {"name": "AHEM", "description": "Association of Hydraulic Equipment Manufacturers"},
+        {"name": "AIAM", "description": "Association of International Automobile Manufacturers"},
+        {"name": "AIChE", "description": "American Institute of Chemical Engineers"},
+        {"name": "AK", "description": "antiknocks"},
+        {"name": "ALAPCO", "description": "Association of Local Air Pollution Control Officials"},
+        {"name": "and", "description": "Engine Technologies"},
+        {"name": "ANFAVEA", "description": "Brazil Auto Manufacturer’s Association"},
+        {"name": "ANIQ", "description": "Mexican equivalent to the CMA"},
+        {"name": "ANPRM", "description": "advance notice of proposed rule making (US-EPA)"},
+        {"name": "ANSI", "description": "American National Standards Institute"}
+    ],
+    "itemsPerPage": 20
+}

@@ -1,6 +1,6 @@
 doctype 
 
-html(lang='en')
+html(lang='en' ng-app="termsAcronymsApp")
 
     head
         
@@ -10,7 +10,7 @@ html(lang='en')
         
         include includes/_scripts_header.jade
         
-    body
+    body(ng-controller="termsAcronymFilterCntl")
     
         include includes/_mobileNav.jade
         
@@ -36,82 +36,29 @@ html(lang='en')
                         br
                         
                         div(id="searchDD")
-                            input(placeholder="Search Terms & Acronyms")
+                            input(ng-model="acronymTermSearch" placeholder="Search Terms & Acronyms")
                         
-                        div(id="sortDD")
+                        div(id="acronymsTermSortDD")
                             | Sort by:<br>
                             div(class="customSelectC standard")
                                 div(class="orgSelect")
-                                    select(name="terms")
-                                        option(value="A-Z") A-Z
-                                        option(value="Z-A") Z-A
+                                    select(name="terms" ng-model="acronymTermSort")
+                                        option(value="name") A-Z
+                                        option(value="-name") Z-A
                                         
                                         
                      div(id="termsAcronymsC" class="txtPaddingBtm")
                      
-                        div(class="termsAcronyms")
-                            div(class="term") Acronym or Term
-                            div(class="def") Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing. Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing.
+                        div(class="termsAcronyms" dir-paginate="item in data | filter:acronymTermSearch | orderBy:acronymTermSort | itemsPerPage: itemsPerpage") 
+                            div(class="term") {{item.name}}
+                            div(class="def") {{item.description}}
                         
-                        div(class="termsAcronyms")
-                            div(class="term") Acronym or Term Acronym or Term Acronym or Term
-                            div(class="def") Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing.
-                            
-                        div(class="termsAcronyms")
-                            div(class="term") Acronym or Term
-                            div(class="def") Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing. Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing. Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing. Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing.
-                            
-                        div(class="termsAcronyms")
-                            div(class="term") Acronym or Term
-                            div(class="def") Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing.
-                            
-                        div(class="termsAcronyms")
-                            div(class="term") Acronym or Term
-                            div(class="def") Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing. Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing.
+                        div(ng-hide="dataLoaded()") Loading Items...
+                        div(ng-show="!(data | filter:acronymTermSearch).length") No Items found
+                        br
                         
-                        div(class="termsAcronyms")
-                            div(class="term") Acronym or Term
-                            div(class="def") Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing.
-                            
-                        div(class="termsAcronyms")
-                            div(class="term") Acronym or Term
-                            div(class="def") Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing. Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing. Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing. Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing.
-                            
-                        div(class="termsAcronyms")
-                            div(class="term") Acronym or Term
-                            div(class="def") Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing.
-                            
-                        div(class="termsAcronyms")
-                            div(class="term") Acronym or Term
-                            div(class="def") Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing. Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing.
-                        
-                        div(class="termsAcronyms")
-                            div(class="term") Acronym or Term Acronym or Term Acronym or Term
-                            div(class="def") Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing.
-                            
-                        div(class="termsAcronyms")
-                            div(class="term") Acronym or Term
-                            div(class="def") Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing. Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing. Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing. Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing.
-                            
-                        div(class="termsAcronyms")
-                            div(class="term") Acronym or Term
-                            div(class="def") Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing.
-                            
-                        div(class="termsAcronyms")
-                            div(class="term") Acronym or Term
-                            div(class="def") Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing. Acronym or term definition ipsum ipsum dolor sit amet, consectetur adipis cing.
-                    
-                        div(class="padBtm padTop")
-                            div(class="paginationC")
-                                a(href="#" class="prev")
-                                a(href="#") 1
-                                a(href="#") 2
-                                a(href="#") 3
-                                a(href="#") 4
-                                a(href="#") 5
-                                span(class="nextGroup") ...
-                                a(href="#") 50
-                                a(href="#" class="next")
+                        dir-pagination-controls(max-size="7" boundary-links="false" template-url="dirPagination.tpl.html")
+
                     
                             
                 div(id="lftCol-sidebar")
