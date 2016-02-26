@@ -88,6 +88,40 @@ namespace CMS.DocumentEngine.Types
             }
         }
 
+
+        /// <summary>
+        /// Email Placeholder.
+        /// </summary>
+        [DatabaseField]
+        public string EmailPlaceholder
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("EmailPlaceholder"), "");
+            }
+            set
+            {
+                SetValue("EmailPlaceholder", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Submit Button Text.
+        /// </summary>
+        [DatabaseField]
+        public string SubmitButtonText
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("SubmitButtonText"), "");
+            }
+            set
+            {
+                SetValue("SubmitButtonText", value);
+            }
+        }
+
         #endregion
 
 

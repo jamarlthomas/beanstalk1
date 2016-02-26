@@ -190,6 +190,7 @@
     <Compile Include="Controllers\Afton\FAQController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
     <Compile Include="Helpers\AftonData.cs" />
+    <Compile Include="Interfaces\IDocumentConstantProvider.cs" />
     <Compile Include="Interfaces\IFAQPageProvider.cs" />
     <Compile Include="Interfaces\ILeftNavigationProvider.cs" />
     <Compile Include="Interfaces\ILookupProvider.cs" />
@@ -209,6 +210,7 @@
     <Compile Include="Controllers\Afton\SidebarPageController.cs" />
     <Compile Include="Models\Afton\Shared\Country.cs" />
     <Compile Include="Models\Afton\Shared\Document.cs" />
+    <Compile Include="Models\Afton\Shared\DocumentConstant.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\ContactUs.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\DocumentSidebarComponent.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\GenericSidebarBlock.cs" />
@@ -221,6 +223,7 @@
     <Compile Include="Old_App_Code\GeneratePdf.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Providers\DocumentConstantProvider.cs" />
     <Compile Include="Providers\FAQPageProvider.cs" />
     <Compile Include="Providers\FAQTopicProvider.cs" />
     <Compile Include="Providers\LeftNavigationProvider.cs" />
@@ -307,6 +310,7 @@
     <Compile Include="Providers\SolutionBusinessUnitProvider.cs" />
     <Compile Include="Providers\ContentMenuItemProvider.cs" />
     <Compile Include="Providers\PagesMenuItemProvider.cs" />
+    <Compile Include="ViewModels\Document\DocumentConstantViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQPageViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQTopicViewModel.cs" />
     <Compile Include="ViewModels\Product\LeftSideBlockViewModel.cs" />
@@ -477,7 +481,6 @@
     <Content Include="Views\Afton\Solution\_description.cshtml" />
     <Content Include="Views\Afton\Solution\_heroImage.cshtml" />
     <Content Include="Views\Afton\Solution\_sidebar.cshtml" />
-    <Content Include="Views\Afton\Shared\_stayInformed.cshtml" />
     <Content Include="Views\Afton\SBU\_solutions.cshtml" />
     <Content Include="Views\Afton\Home\_heroContent.cshtml" />
     <Content Include="Views\Afton\Product\Index.cshtml" />
@@ -506,17 +509,18 @@
     <Content Include="Views\Afton\Shared\Sidebar\_sideBar.cshtml" />
     <Content Include="Views\Afton\Document\Index.cshtml" />
     <Content Include="Views\Afton\Document\_header.cshtml" />
-    <Content Include="Views\Afton\Document\_content.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_documentWidget.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_pollSurvey.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_leftNavigation.cshtml" />
     <Content Include="Views\Afton\FAQ\_topic.cshtml" />
     <Content Include="Views\Afton\FAQ\_dropdown.cshtml" />
     <Content Include="Views\Afton\FAQ\Index.cshtml" />
-    <Content Include="Views\Afton\Document\Index.cshtml" />
-    <Content Include="Views\Afton\Document\_header.cshtml" />
-    <Content Include="Views\Afton\Document\_content.cshtml" />
     <Content Include="Views\Afton\InsightsAndResources\_dataSheet.cshtml" />
+    <Content Include="Views\Afton\Shared\Sidebar\_contactUs.cshtml" />
+    <Content Include="Views\Afton\Shared\Sidebar\_genericSidebarBlock.cshtml" />
+    <Content Include="Views\Afton\Shared\Sidebar\_insightsAndResoursesWidget.cshtml" />
+    <Content Include="Views\Afton\Shared\Sidebar\_leftSideBlock.cshtml" />
+    <Content Include="Views\Afton\Shared\Sidebar\_stayInformed.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
