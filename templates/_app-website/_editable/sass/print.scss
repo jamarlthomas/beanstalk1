@@ -1,12 +1,12 @@
 @import '_variables';
-
+ 
 @media print {
     
     @page { size: 100%;  margin: 3%; padding: 0px; }
     
     body { padding-top: 0px; }
     
-    a { transition: 0.0s!important; }
+    *{ transition: none !important; box-shadow: none!important; }
     
     #topHeaderC { position: relative;
         
@@ -31,12 +31,20 @@
 
     } 
     
+    
     .headerImgC { display: none; }
     
+    /*
     .cards2C .cards2 a {
         @include gallery(4 of 12 break);
     }
+    */
     
+    .cards2C .cards2 { max-width: 100%; }
+    .cards2C .cards2 a { 
+        @include gallery(4 of 12 break);
+    } 
+     
     
     #topHeaderC { width: 100%!important; height: 80px!important; }
     #topHeader { width: 100%!important; height: 80px!important; }
