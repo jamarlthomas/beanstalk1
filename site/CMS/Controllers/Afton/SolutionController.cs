@@ -4,7 +4,6 @@ using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Shared;
-using CMS.Mvc.ViewModels.Product;
 using System.Web.Mvc;
 
 namespace CMS.Mvc.Controllers.Afton

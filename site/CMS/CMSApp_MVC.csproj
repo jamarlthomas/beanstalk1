@@ -56,15 +56,31 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.MediaLibrary, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.MediaLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.Search, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.Search.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.WorkflowEngine, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.WorkflowEngine.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="EmitMapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EmitMapper.1.0.0\lib\EmitMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.8.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.8\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.8.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itextsharp.xmlworker.5.5.8\lib\itextsharp.xmlworker.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -171,7 +187,16 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
+    <Compile Include="Controllers\Afton\FAQController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
+    <Compile Include="Helpers\AftonData.cs" />
+    <Compile Include="Interfaces\IFAQPageProvider.cs" />
+    <Compile Include="Interfaces\ILeftNavigationProvider.cs" />
+    <Compile Include="Interfaces\ILookupProvider.cs" />
+    <Compile Include="Interfaces\IPollSurveyAnswerProvider.cs" />
+    <Compile Include="Interfaces\IFAQTopicProvider.cs" />
+    <Compile Include="Interfaces\ISidebarProvider.cs" />
+    <Compile Include="Models\Afton\FAQ\FAQPage.cs" />
     <Compile Include="Controllers\Afton\DocumentController.cs" />
     <Compile Include="Controllers\Afton\InsightsAndResourcesController.cs" />
     <Compile Include="Controllers\Afton\ProductController.cs" />
@@ -181,6 +206,26 @@
     <Compile Include="Controllers\Afton\MasterController.cs" />
     <Compile Include="Helpers\SearchHelper.cs" />
     <Compile Include="Helpers\RegionsHelper.cs" />
+    <Compile Include="Controllers\Afton\SidebarPageController.cs" />
+    <Compile Include="Models\Afton\Shared\Country.cs" />
+    <Compile Include="Models\Afton\Shared\Document.cs" />
+    <Compile Include="Models\Afton\Shared\SideBarComponents\ContactUs.cs" />
+    <Compile Include="Models\Afton\Shared\SideBarComponents\DocumentSidebarComponent.cs" />
+    <Compile Include="Models\Afton\Shared\SideBarComponents\GenericSidebarBlock.cs" />
+    <Compile Include="Models\Afton\Shared\SideBarComponents\GenericSidebarComponentWithDefaultImage.cs" />
+    <Compile Include="Models\Afton\Shared\SideBarComponents\InsightsAndResourcesWidget.cs" />
+    <Compile Include="Models\Afton\Shared\SideBarComponents\LeftNavigation.cs" />
+    <Compile Include="Models\Afton\Shared\SideBarComponents\PollSurveyAnswer.cs" />
+    <Compile Include="Models\Afton\Shared\SideBarComponents\PollSurvey.cs" />
+    <Compile Include="Models\Afton\Shared\SideBarComponents\StayInformed.cs" />
+    <Compile Include="Old_App_Code\GeneratePdf.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\FAQPageProvider.cs" />
+    <Compile Include="Providers\FAQTopicProvider.cs" />
+    <Compile Include="Providers\LeftNavigationProvider.cs" />
+    <Compile Include="Providers\LookupProvider.cs" />
+    <Compile Include="Providers\PollSurveyAnswerProvider.cs" />
     <Compile Include="Helpers\CultureHelper.cs" />
     <Compile Include="Helpers\StringToGuidsConvertHelper.cs" />
     <Compile Include="Helpers\DivideHelper.cs" />
@@ -196,7 +241,6 @@
     <Compile Include="CMS_MvcModule\CMS_MvcModuleMetadata.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModule.cs" />
     <Compile Include="Infrastructure\Localization\TranslationsUtility.cs" />
-    <Compile Include="Interfaces\ILookupProvider.cs" />
     <Compile Include="Interfaces\IResourceTileProvider.cs" />
     <Compile Include="Interfaces\ISelectionFilterSearchProvider.cs" />
     <Compile Include="Interfaces\ISelectionFilterPageProvider.cs" />
@@ -222,8 +266,7 @@
     <Compile Include="Models\Afton\ProductSelectionFilter\SelectionFilterPage.cs" />
     <Compile Include="Models\Afton\SBU\FAQTopic.cs" />
     <Compile Include="Models\Afton\SBU\FAQItem.cs" />
-    <Compile Include="Models\Afton\Shared\Document.cs" />
-    <Compile Include="Models\Afton\Shared\DocumentType.cs" />
+    <Compile Include="Models\Afton\SBU\DocumentType.cs" />
     <Compile Include="Models\Afton\Master\FooterNavItem.cs" />
     <Compile Include="Models\Afton\Master\MegaMenuDescriptionedItem.cs" />
     <Compile Include="Models\Afton\Master\MegaMenuLinkItem.cs" />
@@ -245,7 +288,6 @@
     <Compile Include="Models\Afton\Shared\Region.cs" />
     <Compile Include="Models\CorporateSite\News.cs" />
     <Compile Include="Properties\MvcAssemblyInfo.cs" />
-    <Compile Include="Providers\LookupProvider.cs" />
     <Compile Include="Providers\ResourceTileProvider.cs" />
     <Compile Include="Providers\SelectionFilterSearchProvider.cs" />
     <Compile Include="Providers\SelectionFilterPageProvider.cs" />
@@ -260,17 +302,41 @@
     <Compile Include="Providers\MegaMenuLinkItemProvider.cs" />
     <Compile Include="Providers\MegaMenuThumbnailedItemProvider.cs" />
     <Compile Include="Providers\ProductProvider.cs" />
+    <Compile Include="Providers\SidebarProvider.cs" />
     <Compile Include="Providers\SolutionProvider.cs" />
     <Compile Include="Providers\SolutionBusinessUnitProvider.cs" />
     <Compile Include="Providers\ContentMenuItemProvider.cs" />
     <Compile Include="Providers\PagesMenuItemProvider.cs" />
+    <Compile Include="ViewModels\FAQ\FAQPageViewModel.cs" />
+    <Compile Include="ViewModels\FAQ\FAQTopicViewModel.cs" />
+    <Compile Include="ViewModels\Product\LeftSideBlockViewModel.cs" />
+    <Compile Include="ViewModels\Shared\ProductViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\DocumentBlockViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\DocumentsWidgetViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\GenericSidebarBlockViewModel.cs" />
+    <Compile Include="ViewModels\Shared\BaseLoadViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\ContactUsViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\CountryViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\InsightsAndResourcesWidgetViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\InsightsAndResourcesBlockViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\LeftNavigationItemViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\PollSurveyAnswerViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\PollSurveySubmitViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SolutionViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\LeftSideBlockViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\LeftNavigationViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\PollSurveyViewModel.cs" />
     <Compile Include="ViewModels\SBU\AnchorMenuItemViewModel.cs" />
     <Compile Include="ViewModels\Document\DocumentPageViewModel.cs" />
     <Compile Include="ViewModels\InsightsAndResources\InsightsListingItemViewModel.cs" />
     <Compile Include="ViewModels\InsightsAndResources\InsightsAndResourcesViewModel.cs" />
     <Compile Include="ViewModels\Shared\LinkViewModel.cs" />
     <Compile Include="ViewModels\Shared\RegionViewModel.cs" />
-    <Compile Include="ViewModels\Shared\SolutionViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\SidebarComponentWithDefaultImageViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\SidebarContainerWithDefaultImage.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\SideBarItemViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\SideBarViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SidebarComponents\StayInformedViewModel.cs" />
     <Compile Include="ViewModels\Shared\TileViewModel.cs" />
     <Compile Include="ViewModels\Home\HeroContentViewModel.cs" />
     <Compile Include="ViewModels\Home\HomeViewModel.cs" />
@@ -285,10 +351,7 @@
     <Compile Include="ViewModels\SelectionFilter\SelectionFilterViewModel.cs" />
     <Compile Include="ViewModels\Product\DownloadLanguageLinkItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\BreadCrumbLinkItemViewModel.cs" />
-    <Compile Include="ViewModels\Product\InsightsAndResourcesBlockViewModel.cs" />
     <Compile Include="ViewModels\Product\InsightsAndResourcesCard.cs" />
-    <Compile Include="ViewModels\Product\LeftSideBlockViewModel.cs" />
-    <Compile Include="ViewModels\Product\PassionBlockViewModel.cs" />
     <Compile Include="ViewModels\Product\RelatedProductCardViewModel.cs" />
     <Compile Include="ViewModels\Master\MegaMenuSolutionBusinessUnitViewModel.cs" />
     <Compile Include="ViewModels\Master\MegaMenuLinkItemViewModel.cs" />
@@ -297,16 +360,12 @@
     <Compile Include="ViewModels\Master\PagesMenuItemViewModel.cs" />
     <Compile Include="ViewModels\Master\ContentMenuItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\BreadCrumbViewModel.cs" />
-    <Compile Include="ViewModels\Product\ContactUsViewModel.cs" />
     <Compile Include="ViewModels\Product\DownloadWidgetViewModel.cs" />
     <Compile Include="ViewModels\Product\InsightsAndResourcesSectionViewModel.cs" />
-    <Compile Include="ViewModels\Product\InsightsAndResourcesWidgetViewModel.cs" />
-    <Compile Include="ViewModels\Product\PassionWidgetViewModel.cs" />
     <Compile Include="ViewModels\Product\ProductPageViewModel.cs" />
     <Compile Include="ViewModels\Product\ProductViewModel.cs" />
     <Compile Include="ViewModels\Product\RelatedProductsViewModel.cs" />
-    <Compile Include="ViewModels\Product\StayInformedViewModel.cs" />
-    <Compile Include="ViewModels\SBU\FAQItemViewModel.cs" />
+    <Compile Include="ViewModels\Shared\FAQItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\DocumentViewModel.cs" />
     <Compile Include="ViewModels\SBU\DocumentTypeViewModel.cs" />
     <Compile Include="ViewModels\SBU\SBUViewModel.cs" />
@@ -341,6 +400,8 @@
     <Content Include="fonts\HelveticaNeueLTStd-Roman\2F7DEF_0_0.woff2" />
     <Content Include="css\maps\normalize.min.css.map" />
     <Content Include="css\maps\styles.min.css.map" />
+    <Content Include="Pdf\Template.html" />
+    <Content Include="Pdf\fake.html" />
     <Content Include="images\accordMinus.png" />
     <Content Include="images\accordPlus.png" />
     <Content Include="images\b-search.gif" />
@@ -395,7 +456,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="web.config" />
+    <Content Include="web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="packages.config" />
     <Content Include="Views\Afton\Shared\Master.cshtml" />
     <Content Include="Views\Afton\Auxiliary\Index.cshtml" />
@@ -438,6 +501,18 @@
     <Content Include="Views\Afton\SelectionFilter\_documentTypeCheckBoxes.cshtml" />
     <Content Include="Views\Afton\SelectionFilter\_regionCheckBoxes.cshtml" />
     <Content Include="Views\Afton\SelectionFilter\_SBUCheckBoxes.cshtml" />
+    <Content Include="Views\Afton\SelectionFilter\_searchResults.cshtml" />
+    <Content Include="css\maps\print.min.css.map" />
+    <Content Include="Views\Afton\Shared\Sidebar\_sideBar.cshtml" />
+    <Content Include="Views\Afton\Document\Index.cshtml" />
+    <Content Include="Views\Afton\Document\_header.cshtml" />
+    <Content Include="Views\Afton\Document\_content.cshtml" />
+    <Content Include="Views\Afton\Shared\Sidebar\_documentWidget.cshtml" />
+    <Content Include="Views\Afton\Shared\Sidebar\_pollSurvey.cshtml" />
+    <Content Include="Views\Afton\Shared\Sidebar\_leftNavigation.cshtml" />
+    <Content Include="Views\Afton\FAQ\_topic.cshtml" />
+    <Content Include="Views\Afton\FAQ\_dropdown.cshtml" />
+    <Content Include="Views\Afton\FAQ\Index.cshtml" />
     <Content Include="Views\Afton\Document\Index.cshtml" />
     <Content Include="Views\Afton\Document\_header.cshtml" />
     <Content Include="Views\Afton\Document\_content.cshtml" />
@@ -450,7 +525,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\" />
-    <Folder Include="Infrastructure\Helpers\" />
+    <Folder Include="Pdf\Temp\" />
     <Folder Include="ViewModels\Solution\" />
   </ItemGroup>
   <ItemGroup>
@@ -484,9 +559,10 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)..\Lib\*" "$(TargetDir)" /y /r
-xcopy "$(ProjectDir)..\Lib\Azure\*" "$(TargetDir)" /y /r
-</PostBuildEvent>
+    <PostBuildEvent>
+      xcopy "$(ProjectDir)..\Lib\*" "$(TargetDir)" /y /r
+      xcopy "$(ProjectDir)..\Lib\Azure\*" "$(TargetDir)" /y /r
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>del /F "$(ProjectDir)bin\CMS.Mvc*.Impl.*"</PreBuildEvent>

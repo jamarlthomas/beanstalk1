@@ -1,0 +1,50 @@
+﻿@using CMS.Mvc.ViewModels.Shared.SidebarComponents
+@model SidebarViewModel
+@foreach (var component in Model.Items)
+{
+    switch (((SidebarItemViewModel)component).ClassName)
+    {
+        case "custom.StayInformed":
+        {
+
+            @Html.Partial("~/Views/Afton/Shared/Sidebar/_stayInformed.cshtml", component)
+            break;
+        }
+        case "custom.ContactUs":
+        {
+            @Html.Partial("~/Views/Afton/Shared/Sidebar/_contactUs.cshtml", component)
+            break;
+        }
+        case "custom.InsightsAndResourcesWidget":
+        {
+            @Html.Partial("~/Views/Afton/Shared/Sidebar/_insightsAndResoursesWidget.cshtml", component)
+            break;
+        }
+        case "custom.GenericSidebarBlock":
+        {
+            @Html.Partial("~/Views/Afton/Shared/Sidebar/_genericSidebarBlock.cshtml", component)
+            break;
+        }
+
+        case "custom.DocumentSidebarComponent":
+        {
+            @Html.Partial("~/Views/Afton/Shared/Sidebar/_documentWidget.cshtml", component)
+            break;
+        }
+            
+        case "custom.PollSurvey":
+        {
+            @Html.Partial("~/Views/Afton/Shared/Sidebar/_pollSurvey.cshtml", component)
+            break;
+        }
+        case "custom.LeftNavigation":
+        {
+            @Html.Partial("~/Views/Afton/Shared/Sidebar/_leftNavigation.cshtml", component)
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+}
