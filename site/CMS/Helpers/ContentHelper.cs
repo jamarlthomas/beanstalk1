@@ -130,7 +130,7 @@ namespace CMS.Mvc.Helpers
                 guids.Select(
                     guid =>
                         _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid,
-                            siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T).ToList();
+                            siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T).Where(w => w != null).ToList();
         }
 
         public static List<TreeNode> GetDocsByPath(string aliasPath, int maxRelativeLevel = 1, string classNames = "*")

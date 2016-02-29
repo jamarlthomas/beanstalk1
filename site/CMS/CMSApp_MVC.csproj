@@ -188,12 +188,14 @@
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
     <Compile Include="Controllers\Afton\FAQController.cs" />
+    <Compile Include="Controllers\Afton\NewsAndEventsController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
     <Compile Include="Helpers\AftonData.cs" />
     <Compile Include="Interfaces\IDocumentConstantProvider.cs" />
     <Compile Include="Interfaces\IFAQPageProvider.cs" />
     <Compile Include="Interfaces\ILeftNavigationProvider.cs" />
     <Compile Include="Interfaces\ILookupProvider.cs" />
+    <Compile Include="Interfaces\INewsAndEventsPageProvier.cs" />
     <Compile Include="Interfaces\IPollSurveyAnswerProvider.cs" />
     <Compile Include="Interfaces\IFAQTopicProvider.cs" />
     <Compile Include="Interfaces\ISidebarProvider.cs" />
@@ -208,6 +210,7 @@
     <Compile Include="Helpers\SearchHelper.cs" />
     <Compile Include="Helpers\RegionsHelper.cs" />
     <Compile Include="Controllers\Afton\SidebarPageController.cs" />
+    <Compile Include="Models\Afton\NewsAndEvents\NewsAndEventsPage.cs" />
     <Compile Include="Models\Afton\Shared\Country.cs" />
     <Compile Include="Models\Afton\Shared\Document.cs" />
     <Compile Include="Models\Afton\Shared\DocumentConstant.cs" />
@@ -226,6 +229,7 @@
     <Compile Include="Providers\DocumentConstantProvider.cs" />
     <Compile Include="Providers\FAQPageProvider.cs" />
     <Compile Include="Providers\FAQTopicProvider.cs" />
+    <Compile Include="Providers\NewsAndEventsPageProvier.cs" />
     <Compile Include="Providers\LeftNavigationProvider.cs" />
     <Compile Include="Providers\LookupProvider.cs" />
     <Compile Include="Providers\PollSurveyAnswerProvider.cs" />
@@ -251,7 +255,7 @@
     <Compile Include="Interfaces\IDocumentProvider.cs" />
     <Compile Include="Interfaces\IHomeProvider.cs" />
     <Compile Include="Interfaces\IInsightsResourcesProvider.cs" />
-    <Compile Include="Interfaces\IPrimaryTilesProvider.cs" />
+    <Compile Include="Interfaces\ITilesProvider.cs" />
     <Compile Include="Interfaces\IProductProvider.cs" />
     <Compile Include="Interfaces\ISolutionProvider.cs" />
     <Compile Include="Interfaces\IHeroContentProvider.cs" />
@@ -264,8 +268,8 @@
     <Compile Include="Interfaces\IPagesMenuItemProvider.cs" />
     <Compile Include="Helpers\ContentHelper.cs" />
     <Compile Include="Models\Afton\InsightsAndResources\InsightsResources.cs" />
-    <Compile Include="Models\Afton\GenericPage.cs" />
-    <Compile Include="Models\Afton\Link.cs" />
+    <Compile Include="Models\Afton\Shared\GenericPage.cs" />
+    <Compile Include="Models\Afton\Shared\Link.cs" />
     <Compile Include="Models\Afton\ProductSelectionFilter\SelectionFilterPage.cs" />
     <Compile Include="Models\Afton\SBU\FAQTopic.cs" />
     <Compile Include="Models\Afton\SBU\FAQItem.cs" />
@@ -277,15 +281,15 @@
     <Compile Include="Models\Afton\Master\ContentMenuItem.cs" />
     <Compile Include="Models\Afton\Master\FooterNavCategory.cs" />
     <Compile Include="Models\Afton\Master\PagesMenuItem.cs" />
-    <Compile Include="Models\Afton\Event.cs" />
-    <Compile Include="Models\Afton\CustomNews.cs" />
+    <Compile Include="Models\Afton\Shared\Event.cs" />
+    <Compile Include="Models\Afton\Shared\CustomNews.cs" />
     <Compile Include="Models\Afton\Shared\Product.cs" />
     <Compile Include="Models\Afton\SBU\AnchorMenuItem.cs" />
     <Compile Include="Models\Afton\SBU\SolutionBusinessUnit.cs" />
     <Compile Include="Models\Afton\Shared\Solution.cs" />
-    <Compile Include="Models\Afton\GenericModel.cs" />
+    <Compile Include="Models\Afton\Shared\GenericModel.cs" />
     <Compile Include="Models\Afton\Home\HeroContent.cs" />
-    <Compile Include="Models\Afton\Home.cs" />
+    <Compile Include="Models\Afton\Home\Home.cs" />
     <Compile Include="Models\Afton\Shared\SearchResultItem.cs" />
     <Compile Include="Models\Afton\Shared\SearchResult.cs" />
     <Compile Include="Models\Afton\Shared\Region.cs" />
@@ -296,7 +300,7 @@
     <Compile Include="Providers\SelectionFilterPageProvider.cs" />
     <Compile Include="Providers\DocumentProvider.cs" />
     <Compile Include="Providers\InsightsResourcesProvider.cs" />
-    <Compile Include="Providers\PrimaryTilesProvider.cs" />
+    <Compile Include="Providers\TilesProvider.cs" />
     <Compile Include="Providers\HomeProvider.cs" />
     <Compile Include="Providers\DocumentTypeProvider.cs" />
     <Compile Include="Providers\FooterNavItemProvider.cs" />
@@ -313,6 +317,7 @@
     <Compile Include="ViewModels\Document\DocumentConstantViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQPageViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQTopicViewModel.cs" />
+    <Compile Include="ViewModels\NewsAndEvents\NewsAndEventsPageViewModel.cs" />
     <Compile Include="ViewModels\Product\LeftSideBlockViewModel.cs" />
     <Compile Include="ViewModels\Shared\ProductViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\DocumentBlockViewModel.cs" />
@@ -521,6 +526,8 @@
     <Content Include="Views\Afton\Shared\Sidebar\_insightsAndResoursesWidget.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_leftSideBlock.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_stayInformed.cshtml" />
+    <Content Include="Views\Afton\NewsAndEvents\Index.cshtml" />
+    <Content Include="Views\Afton\NewsAndEvents\_tiles.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

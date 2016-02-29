@@ -1,0 +1,11 @@
+﻿@using CMS.Mvc.ViewModels.NewsAndEvents
+@model NewsAndEventsPageViewModel
+@{
+    ViewBag.Title = string.Empty;
+    Layout = "~/Views/Afton/Shared/Master.cshtml";
+}
+
+<h1>@Model.Title</h1>
+<p>@Html.Raw(Model.Description)</p>
+
+@Html.Partial("~/Views/Afton/NewsAndEvents/_tiles.cshtml", Model.Tiles)
