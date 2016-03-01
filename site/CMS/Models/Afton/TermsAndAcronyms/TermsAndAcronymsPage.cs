@@ -141,6 +141,40 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Loading Label.
+        /// </summary>
+        [DatabaseField]
+        public string LoadingLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("LoadingLabel"), "");
+            }
+            set
+            {
+                SetValue("LoadingLabel", value);
+            }
+        }
+
+
+        /// <summary>
+        /// No Items Label.
+        /// </summary>
+        [DatabaseField]
+        public string NoItemsLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("NoItemsLabel"), "");
+            }
+            set
+            {
+                SetValue("NoItemsLabel", value);
+            }
+        }
+
+
+        /// <summary>
         /// Sidebar Items.
         /// </summary>
         [DatabaseField]

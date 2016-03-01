@@ -2,7 +2,7 @@
 {
     public class TermViewModel
     {
-        public string TermAcronym { get; set; }
-        public string Definition { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
     }
 }

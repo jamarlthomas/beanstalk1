@@ -5,5 +5,39 @@
     Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
 
-@*@{Html.RenderPartial("~/Views/Afton/SBU/_heroImage.cshtml", model);}*@
-
+<div id="contentAreaC" ng-app="termsAcronymsApp">
+    <div id="twoColumnC-sidebar" class="txtPaddingTop padBtm" ng-controller="termsAcronymFilterCntl">
+        <div id="rtCol-contentArea">
+            @{Html.RenderPartial("~/Views/Afton/Shared/_breadCrumb.cshtml", @Model.BreadCrumb);}
+            <div id="termsAcronymsHdrC" class="txtPaddingTop">
+                <h1>@Model.Title</h1><br>
+                <div id="searchDD">
+                    <input ng-model="acronymTermSearch" placeholder="@Model.SearchLabel @Model.Title">
+                </div>
+                <div id="acronymsTermSortDD">
+                    @Model.SortLabel<br>
+                    <div class="customSelectC standard">
+                        <div class="orgSelect">
+                            <select name="terms" ng-model="acronymTermSort">
+                                <option value="name">@Model.FirstCharInAlphabetLabel-@Model.LastCharInAlphabetLabel</option>
+                                <option value="-name">@Model.LastCharInAlphabetLabel-@Model.FirstCharInAlphabetLabel</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="termsAcronymsC" class="txtPaddingBtm">
+                <div dir-paginate="item in data | filter:acronymTermSearch | orderBy:acronymTermSort | itemsPerPage: itemsPerpage" class="termsAcronyms">
+                    <div class="term">{{item.name}}</div>
+                    <div class="def">{{item.description}}</div>
+                </div>
+                <div ng-hide="dataLoaded()">@Model.LoadingLabel</div>
+                <div ng-show="!(data | filter:acronymTermSearch).length">@Model.NoItemsLabel</div><br>
+                <dir-pagination-controls max-size="7" boundary-links="false" template-url="@Url.Content("~/Content/Templates/dirPagination.tpl.html")"></dir-pagination-controls>
+            </div>
+        </div>
+        <div id="lftCol-sidebar">
+            @{Html.RenderPartial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar);}
+        </div>
+    </div>
+</div>

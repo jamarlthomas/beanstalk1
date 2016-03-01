@@ -6,6 +6,7 @@ using CMS.Mvc.ViewModels.NewsAndEvents;
 using CMS.Mvc.ViewModels.Shared;
 using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 using CMS.Mvc.ViewModels.TermsAndAcronyms;
+using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -29,6 +30,21 @@ namespace CMS.Mvc.Controllers.Afton
             _termProvider = termProvider;
         }
 
+        public JsonResult Data()
+        {
+            var model = new TermsListViewModel
+            {
+                itemsPerPage = int.Parse(ConfigurationManager.AppSettings["TermsAndAcronymsItemsPerPage"]),
+                results = _termProvider.GetTerms(_termsAndAcronymsPageProvider.GetTermsAndAcronymsPages().First().NodeAlias).Select(
+                term => new TermViewModel
+                {
+                    name = term.TermAcronym,
+                    description = term.Definition
+                }).ToList()
+            };
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult Index()
         {
             var page = _termsAndAcronymsPageProvider.GetTermsAndAcronymsPages().First();
@@ -42,7 +58,6 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 Items = MapSidebar(_sidebarProvider.GetSideBarItems(StringToGuidsConvertHelper.ParseGuids(page.SidebarItems)), page)
             };
-            model.Terms = MapData<Term, TermViewModel>(_termProvider.GetTerms(page.NodeAlias));
 
             return View("~/Views/Afton/TermsAndAcronyms/Index.cshtml", model);
         }

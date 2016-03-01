@@ -386,9 +386,11 @@
     <Compile Include="ViewModels\SBU\DocumentTypeViewModel.cs" />
     <Compile Include="ViewModels\SBU\SBUViewModel.cs" />
     <Compile Include="ViewModels\TermsAndAcronyms\TermsAndAcronymsPageViewModel.cs" />
+    <Compile Include="ViewModels\TermsAndAcronyms\TermsListViewModel.cs" />
     <Compile Include="ViewModels\TermsAndAcronyms\TermViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Templates\dirPagination.tpl.html" />
     <Content Include="css\normalize.min.css" />
     <Content Include="css\styles.min.css" />
     <Content Include="fonts\fonts.css" />
@@ -451,16 +453,27 @@
     <Content Include="Scripts\custom\cards.min.js" />
     <Content Include="Scripts\custom\columnizeText.min.js" />
     <Content Include="Scripts\custom\copyrightDate.min.js" />
+    <Content Include="Scripts\custom\customSelectDropDown.min.js" />
+    <Content Include="Scripts\custom\documentPagination.min.js" />
     <Content Include="Scripts\custom\ellipsesText.min.js" />
+    <Content Include="Scripts\custom\faqDropDown.min.js" />
+    <Content Include="Scripts\custom\formPollyfill.min.js" />
     <Content Include="Scripts\custom\homeSlideShow.min.js" />
     <Content Include="Scripts\custom\langDocSel.min.js" />
     <Content Include="Scripts\custom\langSel.min.js" />
     <Content Include="Scripts\custom\megaMenu.min.js" />
     <Content Include="Scripts\custom\mobileCheck.min.js" />
     <Content Include="Scripts\custom\mobileNav.min.js" />
+    <Content Include="Scripts\custom\polls-surveys.min.js" />
     <Content Include="Scripts\custom\print.min.js" />
+    <Content Include="Scripts\custom\prodFilter.min.js" />
+    <Content Include="Scripts\custom\prodFilterNav.min.js" />
+    <Content Include="Scripts\custom\rate-this-content.min.js" />
     <Content Include="Scripts\custom\sbuLandingDropDown.min.js" />
     <Content Include="Scripts\custom\search.min.js" />
+    <Content Include="Scripts\custom\terms-acronyms.min.js" />
+    <Content Include="Scripts\library\angular.js" />
+    <Content Include="Scripts\library\dirPagination.min.js" />
     <Content Include="Scripts\library\hammer.min.js" />
     <Content Include="Scripts\library\head.min.js" />
     <Content Include="Scripts\library\jquery.actual.min.js" />
@@ -469,6 +482,7 @@
     <Content Include="Scripts\library\jquery.dotdotdot.min.js" />
     <Content Include="Scripts\library\jquery.easing.min.js" />
     <Content Include="Scripts\library\jquery.min.js" />
+    <Content Include="Scripts\library\jquery.placeholder.min.js" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -538,7 +552,6 @@
     <Content Include="Views\Afton\NewsAndEvents\Index.cshtml" />
     <Content Include="Views\Afton\NewsAndEvents\_tiles.cshtml" />
     <Content Include="Views\Afton\TermsAndAcronyms\Index.cshtml" />
-    <Content Include="Views\Afton\TermsAndAcronyms\_terms.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -547,7 +560,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\" />
     <Folder Include="Pdf\Temp\" />
     <Folder Include="ViewModels\Solution\" />
   </ItemGroup>

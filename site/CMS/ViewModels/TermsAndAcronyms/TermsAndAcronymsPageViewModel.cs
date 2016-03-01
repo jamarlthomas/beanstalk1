@@ -12,7 +12,8 @@ namespace CMS.Mvc.ViewModels.TermsAndAcronyms
         public string SortLabel { get; set; }
         public string FirstCharInAlphabetLabel { get; set; }
         public string LastCharInAlphabetLabel { get; set; }
-        public List<TermViewModel> Terms { get; set; }
+        public string LoadingLabel { get; set; }
+        public string NoItemsLabel { get; set; }
 
         public BreadCrumbViewModel BreadCrumb { get; set; }
         public SidebarViewModel SideBar { get; set; }
