@@ -188,6 +188,7 @@
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
     <Compile Include="Controllers\Afton\FAQController.cs" />
+    <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
     <Compile Include="Controllers\Afton\NewsAndEventsController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
     <Compile Include="Helpers\AftonData.cs" />
@@ -195,6 +196,8 @@
     <Compile Include="Interfaces\IFAQPageProvider.cs" />
     <Compile Include="Interfaces\ILeftNavigationProvider.cs" />
     <Compile Include="Interfaces\ILookupProvider.cs" />
+    <Compile Include="Interfaces\ITermProvider.cs" />
+    <Compile Include="Interfaces\ITermsAndAcronymsPageProvider.cs" />
     <Compile Include="Interfaces\INewsAndEventsPageProvier.cs" />
     <Compile Include="Interfaces\IPollSurveyAnswerProvider.cs" />
     <Compile Include="Interfaces\IFAQTopicProvider.cs" />
@@ -223,12 +226,16 @@
     <Compile Include="Models\Afton\Shared\SideBarComponents\PollSurveyAnswer.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\PollSurvey.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\StayInformed.cs" />
+    <Compile Include="Models\Afton\TermsAndAcronyms\Term.cs" />
+    <Compile Include="Models\Afton\TermsAndAcronyms\TermsAndAcronymsPage.cs" />
     <Compile Include="Old_App_Code\GeneratePdf.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Providers\DocumentConstantProvider.cs" />
     <Compile Include="Providers\FAQPageProvider.cs" />
     <Compile Include="Providers\FAQTopicProvider.cs" />
+    <Compile Include="Providers\TermProvider.cs" />
+    <Compile Include="Providers\TermsAndAcronymsPageProvider.cs" />
     <Compile Include="Providers\NewsAndEventsPageProvier.cs" />
     <Compile Include="Providers\LeftNavigationProvider.cs" />
     <Compile Include="Providers\LookupProvider.cs" />
@@ -378,6 +385,8 @@
     <Compile Include="ViewModels\Shared\DocumentViewModel.cs" />
     <Compile Include="ViewModels\SBU\DocumentTypeViewModel.cs" />
     <Compile Include="ViewModels\SBU\SBUViewModel.cs" />
+    <Compile Include="ViewModels\TermsAndAcronyms\TermsAndAcronymsPageViewModel.cs" />
+    <Compile Include="ViewModels\TermsAndAcronyms\TermViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\normalize.min.css" />
@@ -528,6 +537,8 @@
     <Content Include="Views\Afton\Shared\Sidebar\_stayInformed.cshtml" />
     <Content Include="Views\Afton\NewsAndEvents\Index.cshtml" />
     <Content Include="Views\Afton\NewsAndEvents\_tiles.cshtml" />
+    <Content Include="Views\Afton\TermsAndAcronyms\Index.cshtml" />
+    <Content Include="Views\Afton\TermsAndAcronyms\_terms.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
