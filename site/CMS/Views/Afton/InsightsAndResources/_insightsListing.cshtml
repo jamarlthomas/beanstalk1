@@ -1,10 +1,25 @@
-﻿@foreach (var insightsListingItem in Model)
-{
-	<h3>@insightsListingItem.Title</h3>
-	<p>
-		@foreach (var link in insightsListingItem.Links)
-		{
-			<a href="#">@link.Title</a>
-		}
-	</p>
-}
+﻿@using CMS.Mvc.ViewModels.InsightsAndResources
+@using System.Collections.Generic
+@model List<InsightsListingItemViewModel>
+    <div class="threeColGridC">
+        <div class="twoColGrid-lft">
+            <div class="threeColGrid-lft dataSheets">
+                @for (var i = 0; i < 2 && i < Model.Count; i++)
+                {
+                    @Html.Partial("~/Views/Afton/InsightsAndResources/_dataSheet.cshtml", Model[i])
+                }
+            </div>
+            <div class="threeColGrid-mid dataSheets">
+                @for (var i = 2; i < 4 && i < Model.Count; i++)
+                {
+                    @Html.Partial("~/Views/Afton/InsightsAndResources/_dataSheet.cshtml", Model[i])
+                }
+            </div>
+        </div>
+        <div class="threeColGrid-rt dataSheets">
+            @for (var i = 4; i < 6 && i < Model.Count; i++)
+            {
+                @Html.Partial("~/Views/Afton/InsightsAndResources/_dataSheet.cshtml", Model[i])
+            }
+        </div>
+    </div>
