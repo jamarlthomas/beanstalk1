@@ -9,11 +9,16 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
         {}
 
         public string Copy { get; set; }
+        public string EmailPlaceholder { get; set; }
+        public string SubmitButtonText { get; set; }
 
         protected override void Load()
         {
             base.Load();
-            Copy = ((StayInformed)item).Copy;
+            var stayInformedItem = (StayInformed)item;
+            Copy = stayInformedItem.Copy;
+            EmailPlaceholder = stayInformedItem.EmailPlaceholder;
+            SubmitButtonText = stayInformedItem.SubmitButtonText;
         }
     }
 }

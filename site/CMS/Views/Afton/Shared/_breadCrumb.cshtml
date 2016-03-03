@@ -1,10 +1,10 @@
 ﻿@model CMS.Mvc.ViewModels.Shared.BreadCrumbViewModel
 <div id="breadCrumbsC">
     <div id="breadCrumbs">
-        @foreach (var link in @Model.BreadcrumbLinkItems)
+        @for (var i = 0; i < Model.BreadcrumbLinkItems.Count - 1; i++)
         {
-            <a href="@Url.Content("~/" + @link.Reference)">@link.Title</a>
+            <a href="@Url.Content("~/" + @Model.BreadcrumbLinkItems[i].Reference)">@Model.BreadcrumbLinkItems[i].Title</a>
         }
-        @*<a href="#">Home</a><a href="#">Driveline Additives</a><a href="#">Automotive Gear</a><a href="#">Automotive Gear Products</a>HiTEC® 385: Gear Oil Additive*@
+        @Model.BreadcrumbLinkItems[Model.BreadcrumbLinkItems.Count - 1].Title
     </div>
 </div>
