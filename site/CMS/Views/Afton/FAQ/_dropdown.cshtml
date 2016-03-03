@@ -1,7 +1,12 @@
-﻿<ul>
-    @foreach (var topic in Model)
-    {
-        <li>@topic.Name</li>
-    }
-</ul>
-<hr/>
+﻿<div class="subTxt">Sort by:</div>
+<div class="customSelectC standard">
+    <div class="orgSelect">
+        <select name="faqs">
+            <option value="View-All">View All FAQs</option>
+            @foreach (var topic in Model)
+            {
+                <option value="Driveline-Additives">@topic.Name</option>
+            }
+        </select>
+    </div>
+</div>
