@@ -17,6 +17,7 @@
 
 @import 'grid-layouts/_twoColumnC-sidebar';
 
+@import 'grid-layouts/_twoColumnC-sidebar2';
 
 //Modules
 
@@ -75,6 +76,10 @@
 @import 'modules/_document'; 
 
 @import 'modules/_rate-contentC'; 
+
+@import 'modules/_searchResultsC'; 
+
+@import 'modules/_contactC'; 
 
 @import '_footer';
  

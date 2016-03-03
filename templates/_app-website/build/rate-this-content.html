@@ -22,6 +22,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.4/hammer.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.columnizer/1.6.0/jquery.columnizer.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.actual/1.0.17/jquery.actual.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-placeholder/2.3.1/jquery.placeholder.min.js"></script>
     <script src="https://code.angularjs.org/1.4.8/angular.js"></script>
     <script src="assets-layout/js/library/dirPagination.min.js"></script>
     <script src="assets-layout/js/custom/prodFilter.min.js"></script>
@@ -49,6 +50,7 @@
           {long_page_pagination: "assets-layout/js/custom/documentPagination.min.js"},
           {Polls_And_Surveys: "assets-layout/js/custom/polls-surveys.min.js"},
           {Rate_This_Content: "assets-layout/js/custom/rate-this-content.min.js"},
+          {form_placholder: "assets-layout/js/custom/formPollyfill.min.js"},
           
           function(){
               //loadCSS
@@ -406,18 +408,19 @@
           <div id="contentC">              
             <div id="mainContentC" class="documentPagination">
               <h2>The accurate measure of cetane number</h2>
-              <p>Q. Why is cetane number important? <br>Cetane number is a measure of the compression ignition behaviour of a diesel fuel. The higher the cetane number the shorter the ignition delay period, a diesel fuel having a high cetane number has good ignition properties. Increasing the natural cetane level of a fuel with cetane improver additives has a positive impact on:</p><br>
+              <p><strong>Q. Why is cetane number important?</strong><br> Cetane number is a measure of the compression ignition behaviour of a diesel fuel. The higher the cetane number the shorter the ignition delay period, a diesel fuel having a high cetane number has good ignition properties. Increasing the natural cetane level of a fuel with cetane improver additives has a positive impact on:</p><br>
               <ul>
                 <li>Refinery economics by offering a cost effective route to specification compliance</li>
                 <li>Cold start operability</li>
                 <li>Reducing harmful exhaust emissions</li>
                 <li>Reducing combustion noise</li>
               </ul><br><img src="page-images/document/sample-doc-img-1.gif" class="inContent"><br><br>
-              <p>Q. How is the cetane number determined? <br>The standard method for determining the cetane number of a diesel fuel is the ASTM D613 method which uses the Cooperative Fuel Research Committee (CFR) engine technique. The procedure, which was introduced in 1941, determines the cetane number of a diesel fuel comparing its ignition quality with two reference blends of known cetane number under the same operating conditions.</p>
+              <p><strong>Q. How is the cetane number determined?</strong><br></p>
+              <The>standard method for determining the cetane number of a diesel fuel is the ASTM D613 method which uses the Cooperative Fuel Research Committee (CFR) engine technique. The procedure, which was introduced in 1941, determines the cetane number of a diesel fuel comparing its ignition quality with two reference blends of known cetane number under the same operating conditions.</The>
               <p>The method uses a single-cylinder CFR engine operated under specified conditions and the cetane number scale is based on the two reference fuels. ASTM D613 has been used for many years but is known to be a time consuming test of limited precision. It also requires</p><img src="page-images/document/sample-doc-img-2.jpg" class="inContent"><br><br>
-              <p>Q. What is Cetane Index? <br>Due to the shortcomings of the CFR engine test refineries have developed prediction equations known as cetane index. Cetane index is a convenient tool by which refineries can ensure their fuel meets the cetane number specification. The cetane index prediction equation is based upon the density and mid-boiling point of the ASTM D86 distillation. Although cetane index gives a reasonable prediction of cetane number it cannot be accepted as a true measure of the cetane number of a diesel fuel. Consequently there has, for a long time, been a requirement for a more convenient and more precise alternative to the CFR procedure for cetane number determination.</p><img src="page-images/document/sample-doc-img-3.gif" class="inContent"><br><br>
-              <p>Q. And new methods? <br>In 1994 a Canadian company, Advanced Engine Technology, developed an alternative procedure for the determination of the cetane number of diesel fuel. This method is referred to as the Ignition Quality Tester (IQT). This procedure is more convenient than ASTM D613 and correlates better to the ignition characteristics than cetane index. It also provides cetane number determinations within 20 minutes and has better precision than the CFR engine. The procedure was published as ASTM D6890 in 2004 and in 2006 was included in the US diesel fuel specification, ASTM D975. There are now more than 100 installations of this equipment worldwide with 45 in Europe and 26 operating in local refineries.</p>
-              <p>Q. How does the IQT system work? <br>This procedure works on the basis of compression ignition technique where fuel is directly injected into compressed air controlled at a specific temperature and pressure. Time from injection to combustion is measured as the ignition delay period and an equation is then used to calculate the derived cetane number. The graph below clearly demonstrates the close correlation between cetane number from the CFR engine and the derived cetane number from the IQT test both with and without the use of cetane improver. </p>
+              <p><strong>Q. What is Cetane Index?</strong><br> Due to the shortcomings of the CFR engine test refineries have developed prediction equations known as cetane index. Cetane index is a convenient tool by which refineries can ensure their fuel meets the cetane number specification. The cetane index prediction equation is based upon the density and mid-boiling point of the ASTM D86 distillation. Although cetane index gives a reasonable prediction of cetane number it cannot be accepted as a true measure of the cetane number of a diesel fuel. Consequently there has, for a long time, been a requirement for a more convenient and more precise alternative to the CFR procedure for cetane number determination.</p><img src="page-images/document/sample-doc-img-3.gif" class="inContent"><br><br>
+              <p><strong>Q. And new methods?</strong><br> In 1994 a Canadian company, Advanced Engine Technology, developed an alternative procedure for the determination of the cetane number of diesel fuel. This method is referred to as the Ignition Quality Tester (IQT). This procedure is more convenient than ASTM D613 and correlates better to the ignition characteristics than cetane index. It also provides cetane number determinations within 20 minutes and has better precision than the CFR engine. The procedure was published as ASTM D6890 in 2004 and in 2006 was included in the US diesel fuel specification, ASTM D975. There are now more than 100 installations of this equipment worldwide with 45 in Europe and 26 operating in local refineries.</p>
+              <p><strong>Q. How does the IQT system work?</strong><br> This procedure works on the basis of compression ignition technique where fuel is directly injected into compressed air controlled at a specific temperature and pressure. Time from injection to combustion is measured as the ignition delay period and an equation is then used to calculate the derived cetane number. The graph below clearly demonstrates the close correlation between cetane number from the CFR engine and the derived cetane number from the IQT test both with and without the use of cetane improver. </p>
               <p>The application of this procedure together with the use of cetane improver has allowed refineries to cost effectively meet diesel fuel cetane number requirements.</p><img src="page-images/document/sample-doc-img-4.jpg" class="inContent"><br><br>
               <h2>Summary</h2>
               <p>Refineries are under increasing pressure to meet demanding fuel specifications in the most cost effective way. This requires the application of test methods which are both accurate and capable of delivering results within the required time scale, dictated by fuel production and delivery. The IQT test procedure is proven to deliver the timely and reliable results refineries need. In addition, the IQT test allows refineries to meet the cetane number specification by either component blending or the application of cetane improver additive. Afton uses IQT for cetane measurements and for supporting product performance claims. Afton Chemical has internal IQT test capabilities. </p>
@@ -444,7 +447,7 @@
             <div class="padBtm">
               <div style="display: none;" class="paginationC"><a href="#" class="prev"></a><span class="pageNumbers"></span><a href="#" class="next"></a></div>
             </div>
-            <div id="rateContentC">
+            <div id="rateContentC" class="padBtm">
               <form id="rateContent">Was this content helpful?
                 <div id="answers"> 
                   <input type="button" value="Yes" class="rateBtn">

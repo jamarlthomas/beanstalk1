@@ -1,0 +1,34 @@
+#twoColumnC-sidebar2 { margin: 0px auto; width: 1235px; @include cf;
+    
+    #lftCol-contentArea { @include span(6 of 12);
+    
+        #contentC {
+        
+            h1 { 
+
+                //*** Breakpoints ***
+                @include breakpoint($bp3) { font-size: 30px; }
+
+            }//h1
+            
+            @include breakpoint($bp2) { width: calc(100% - 40px); margin: 0px 20px 0px 20px;  }
+            
+        }//contentC
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp2) { @include span(full); }
+        
+    }
+    
+    #rtCol-sidebar { @include span(6 of 12 last);
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp2) { @include span(full); }
+    
+    }
+    
+    //*** Breakpoints ***
+    @include breakpoint($bp1) { width: 98%; }
+    @include breakpoint($bp2) { width: 100%; }
+
+}//twoColumnC-sidebar

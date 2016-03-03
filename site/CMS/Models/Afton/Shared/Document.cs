@@ -124,7 +124,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// HomeImage.
+        /// Home Image.
         /// </summary>
         [DatabaseField]
         public string HomeImage
@@ -141,7 +141,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// HeroImage.
+        /// Hero Image.
         /// </summary>
         [DatabaseField]
         public string HeroImage
@@ -158,7 +158,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// IsHighlightedOnInsightsPage.
+        /// Is Highlighted On Insights Page.
         /// </summary>
         [DatabaseField]
         public bool IsHighlightedOnInsightsPage
@@ -170,6 +170,23 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("IsHighlightedOnInsightsPage", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Sidebar Items.
+        /// </summary>
+        [DatabaseField]
+        public string SidebarItems
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
+            }
+            set
+            {
+                SetValue("SidebarItems", value);
             }
         }
 

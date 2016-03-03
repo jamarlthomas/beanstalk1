@@ -1,18 +1,16 @@
 ﻿@model CMS.Mvc.ViewModels.Shared.SidebarComponents.LeftNavigationViewModel
-<div id="lftCol-sidebar">
-    <div id="sidbarHdrC" class="altSidbarstyles">
-        <h2>@Model.Title</h2>
-    </div>
-    <div id="sidbarNavC">
-        <ul>
-            @foreach (var navItem in Model.NavItems)
+<div id="sidbarHdrC" class="altSidbarstyles">
+    <h2>@Model.Title</h2>
+</div>
+<div id="sidbarNavC">
+    <ul>
+        @foreach (var navItem in Model.NavItems)
+        {
+            <li><a href="@navItem.Link">@navItem.Title</a></li>
+            foreach (var subNavItem in navItem.SubMenu)
             {
-                <li><a href="@navItem.Link">@navItem.Title</a></li>
-                foreach (var subNavItem in navItem.SubMenu)
-                {
-                    <li><a href="@subNavItem.Link">@subNavItem.Title</a></li>
-                }
+                <li><a href="@subNavItem.Link">@subNavItem.Title</a></li>
             }
-        </ul>
-    </div>
+        }
+    </ul>
 </div>
