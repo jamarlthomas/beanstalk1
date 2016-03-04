@@ -11,6 +11,6 @@
 #faqItems {
     
     //*** Breakpoints ***
-        @include breakpoint($bp2) { width: calc(100% - 40px); margin: 0px 20px 0px 20px; }
+    @include breakpoint($bp2) { width: calc(100% - 40px); margin: 0px 20px 0px 20px; }
     
 }//faqItems
