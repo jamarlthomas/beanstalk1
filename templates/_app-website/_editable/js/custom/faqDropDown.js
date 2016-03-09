@@ -1,23 +1,45 @@
 $( document ).ready(function() {
     
-    //on drop down change navigate to a new url
-    $('#faqsHdrC .selectC select').on('change', function () {
+    //function that handles updating FAQs for desktop an mobile
+    updateFAQ = function(sectedFAQ) {
         
-        //get path without page name
-        var newPath = location.href.substring(0, location.href.lastIndexOf("/")+1)
-
-        //find item selected value
-        var faqReq = $(this).val();
+        if(sectedFAQ == "View-All-FAQs"){
         
-        //if not view all
-        if(faqReq != "View-All" ){
+            //reveal all faqs
+            $('#faqItems .faqGroup').fadeIn(300);    
             
-            newPath = newPath + faqReq
+        }else {
+        
+            //hide all faq groups
+            $('#faqItems .faqGroup').css({"display":"none"})
+
+            //reveal correct faq 
+            $("#" + sectedFAQ).fadeIn(300);
             
         }
         
-        window.location = newPath;
+    }
+    
+    
+    //For list item click for desktop
+    $('#faqDD .dropDownItemsC').on("click", "li", function(e) {
         
-      }); 
+        var selFaq = $(this).text();
+        selFaq = selFaq.replace(/ |_/g,"-")
+        
+        //update FAQs
+        updateFAQ(selFaq);
+        
+    });
+    
+    //For mobile drop down
+    $('#faqDD .orgSelect select').change(function(){
+        
+        var selFaq = $(this).find(":selected").val();
+        
+        //update FAQs
+        updateFAQ(selFaq);
+        
+    })
     
 });
