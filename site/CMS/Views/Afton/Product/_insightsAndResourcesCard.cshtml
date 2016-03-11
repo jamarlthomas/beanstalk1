@@ -1,20 +1,65 @@
 ﻿@model CMS.Mvc.ViewModels.Product.InsightsAndResourcesCard
-<a href="@Url.Content(@Model.Reference)">
-    <div class="cardBtnIndicator"><img src="~/images/card-btn-indicator.png"></div>
-    <div class="overlayC">
-        <div class="overlay">
-            <div class="cardTitle">@Model.Title</div>
-            <div class="cardHdr">@Model.Header</div>
+@if (!string.IsNullOrWhiteSpace(Model.Reference))
+{
+    <a href="@Url.Content(@Model.Reference)">
+        <div class="cardBtnIndicator">
+            <img src="~/images/card-btn-indicator.png" />
         </div>
-        <div class="cardDate">@Model.Date.ToString("MMMM dd, YYYY")</div>
-    </div>
-    <div style="opacity: 0.0;" class="hoverOverlayC">
-        <div class="hoverOverlay">
-            <div class="hoverOverlayTxt">@Model.Summary</div>
+        <div class="overlayC">
+            <div class="overlay">
+                <div class="cardTitle">@Model.Title</div>
+                <div class="cardHdr">@Model.Header</div>
+            </div>
+            <div class="cardDate">@Model.Date.ToString("MMMM dd, YYYY")</div>
         </div>
-        <div class="cardLearnMore">
-            Read More
-            <span class="icon-arrow"></span>
+        <div style="opacity: 0.0;" class="hoverOverlayC">
+            <div class="hoverOverlay">
+                <div class="hoverOverlayTxt">@Model.Summary</div>
+            </div>
+            <div class="cardLearnMore">
+                Read More
+                <span class="icon-arrow"></span>
+            </div>
         </div>
-    </div><img src="@Url.Content(@Model.ImageUrl)">
-</a>
+        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+        {
+            <img src="@Url.Content(@Model.ImageUrl)" alt="" />
+        }
+        else
+        {
+            <img alt="" />
+        }
+    </a>
+}
+else
+{
+    <a>
+        <div class="cardBtnIndicator">
+            <img src="~/images/card-btn-indicator.png" />
+        </div>
+        <div class="overlayC">
+            <div class="overlay">
+                <div class="cardTitle">@Model.Title</div>
+                <div class="cardHdr">@Model.Header</div>
+            </div>
+            <div class="cardDate">@Model.Date.ToString("MMMM dd, YYYY")</div>
+        </div>
+        <div style="opacity: 0.0;" class="hoverOverlayC">
+            <div class="hoverOverlay">
+                <div class="hoverOverlayTxt">@Model.Summary</div>
+            </div>
+            <div class="cardLearnMore">
+                Read More
+                <span class="icon-arrow"></span>
+            </div>
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+        {
+            <img src="@Url.Content(@Model.ImageUrl)" alt="" />
+        }
+        else
+        {
+            <img alt="" />
+        }
+    </a>
+}

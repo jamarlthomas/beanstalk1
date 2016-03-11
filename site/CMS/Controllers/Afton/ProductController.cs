@@ -2,24 +2,29 @@
 using System.Linq;
 using System.Web.Mvc;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Product;
 using CMS.Mvc.ViewModels.Shared;
-using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 
 namespace CMS.Mvc.Controllers.Afton
 {
     public class ProductController: SidebarPageController
     {
         private readonly IProductProvider _productProvider;
+        private readonly PersonalisationProvider<InsightsResources> _personalisationProvider;
         public ProductController()
         {
             _productProvider = new ProductProvider();
+            _personalisationProvider = new PersonalisationProvider<InsightsResources>();
         }
 
         //[Route("Product/{alias}")]
+        //[PageViewActionFilter]
+        [PageVisitActivity]
+        [DownloadActivity]
         public ActionResult Index(string name)
         {
             var product = _productProvider.GetProduct(name);
@@ -28,10 +33,16 @@ namespace CMS.Mvc.Controllers.Afton
             productModel.BreadCrumb.BreadcrumbLinkItems = _productProvider.GetBreadcrumb(name);
             productModel.DownloadWidget = GetDownloadwidget(product);
 
-            productModel.ContentCopyArea = MapData<Product, CMS.Mvc.ViewModels.Product.ProductViewModel>(product);
+            productModel.ContentCopyArea = MapData<Product, ViewModels.Product.ProductViewModel>(product);
             productModel.RelatedProducts = GetRelatedProductsWidget(product);
-            productModel.InsightsAndResourcesSection.InsightsAndResourcesCards = new List<InsightsAndResourcesCard>();
+            productModel.InsightsAndResourcesSection.InsightsAndResourcesCards = GetInsightAndResourcesCards();// new List<InsightsAndResourcesCard>();
+
             return View("~/Views/Afton/Product/Index.cshtml", productModel);
+        }
+
+        private List<InsightsAndResourcesCard> GetInsightAndResourcesCards()
+        {
+            return MapData<InsightsResources, InsightsAndResourcesCard>(_personalisationProvider.GetPersonalizedItems());
         }
 
         private RelatedProductsViewModel GetRelatedProductsWidget(Product product)
@@ -41,10 +52,6 @@ namespace CMS.Mvc.Controllers.Afton
             widget.Products = MapData<Product, RelatedProductCardViewModel>(products);  
             return widget;
         }
-
-        
-
-      
         private DownloadWidgetViewModel GetDownloadwidget(Product product)
         {
             return new DownloadWidgetViewModel()

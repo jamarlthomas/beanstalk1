@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Web;
 using System.Web.Configuration;
 using CMS.DataEngine.Generators;
 using CMS.DocumentEngine;
@@ -18,6 +19,8 @@ using System.Configuration;
 using System.Linq;
 using CMS.DataEngine;
 using CMS.SiteProvider;
+using iTextSharp.text.pdf.codec;
+using Microsoft.Ajax.Utilities;
 using WebGrease;
 using ServerInfo = System.Web.Helpers.ServerInfo;
 using System.Configuration;
@@ -32,9 +35,10 @@ namespace CMS.Mvc.Helpers
                 : int.Parse(WebConfigurationManager.AppSettings.Get("CacheContentMinutes"));
 
         private static readonly string CurrentCulture = LocalizationContext.CurrentCulture.CultureCode;
-
+        private static HttpContext context = HttpContext.Current;
         private static readonly TreeProvider _treeProvider = new TreeProvider();
-
+        public const string NodeIdKey = "PageViewNodeId";
+        public const string NodeAliasPathKey = "PageViewDocumentPath";
         public static List<TreeNode> GetAllNodes()
         {
             if (PortalContext.ViewMode == ViewModeEnum.Preview)
@@ -166,21 +170,23 @@ namespace CMS.Mvc.Helpers
         private static T HandleData<T>(Expression<Func<TreeNode, bool>> predicate, string className, string cacheKey,
             string cacheDependencyKey, string cachedependenciesFormat = "") where T : TreeNode, new()
         {
-
+            T node;
             switch (PortalContext.ViewMode)
             {
                 case ViewModeEnum.Preview:
                     {
-                        var doc = DocumentHelper.GetDocuments(className).Published(false)
+                        node = (T)DocumentHelper.GetDocuments(className).Published(false)
                             .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                             .FirstOrDefault(predicate);
-                        return (T)doc;
+                        break;
                     }
+
+
                 case ViewModeEnum.LiveSite:
                     {
                         if (!string.IsNullOrWhiteSpace(cacheKey))
                         {
-                            return CacheHelper.Cache(cs =>
+                            node = CacheHelper.Cache(cs =>
                             {
                                 TreeProvider tree = new TreeProvider();
                                 var doc = tree.SelectNodes(className).Published()
@@ -198,19 +204,34 @@ namespace CMS.Mvc.Helpers
                         else
                         {
                             TreeProvider tree = new TreeProvider();
-                            var doc = tree.SelectNodes(className).Published()
+                            node = (T)tree.SelectNodes(className).Published()
                                 .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                                 .FirstOrDefault(predicate);
-                            return (T)doc;
                         }
+                        break;
                     }
+
                 default:
                     {
-                        var doc = DocumentHelper.GetDocuments(className)
+                        node = (T)DocumentHelper.GetDocuments(className)
                             .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                             .FirstOrDefault(predicate);
-                        return (T)doc;
+                        break;
+                        //return (T) doc;
                     }
+            }
+
+            if (node != null)
+                SaveNodeId(node);
+            return node;
+        }
+
+        private static void SaveNodeId(TreeNode node)
+        {
+            if (context.Items[ContentHelper.NodeIdKey] == null)
+            {
+                context.Items[ContentHelper.NodeIdKey] = node.NodeID;
+                context.Items[ContentHelper.NodeAliasPathKey] = node.NodeAliasPath;
             }
         }
 
@@ -269,5 +290,9 @@ namespace CMS.Mvc.Helpers
                     .ToList();
         }
 
+        public static List<T> GetPersonalizedContent<T>() where T : new()
+        {
+            return new List<T>() { new T() };
+        }
     }
 }

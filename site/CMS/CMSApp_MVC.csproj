@@ -60,9 +60,29 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.MediaLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.Membership, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.Membership.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.OnlineMarketing, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.OnlineMarketing.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.Personas, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.Personas.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.Search, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.Search.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.Taxonomy, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.Taxonomy.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.WebAnalytics, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.WebAnalytics.dll</HintPath>
     </Reference>
     <Reference Include="CMS.WorkflowEngine, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -70,6 +90,10 @@
     </Reference>
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="CMSApp_MVC, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\CMSApp_MVC.dll</HintPath>
     </Reference>
     <Reference Include="EmitMapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EmitMapper.1.0.0\lib\EmitMapper.dll</HintPath>
@@ -180,6 +204,13 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ActionFilters\BaseActivityFilter.cs" />
+    <Compile Include="ActionFilters\PageVisitActivity.cs" />
+    <Compile Include="ActionFilters\DownloadActivity.cs" />
+    <Compile Include="ActionFilters\PageViewActionFilter.cs" />
+    <Compile Include="ActionFilters\PrintActivity.cs" />
+    <Compile Include="ActionFilters\RateActivity.cs" />
+    <Compile Include="ActionFilters\ShareActivity.cs" />
     <Compile Include="App_Start\MappingConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -188,6 +219,8 @@
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
     <Compile Include="Controllers\Afton\FAQController.cs" />
+    <Compile Include="Interfaces\IPersonalisationProvider.cs" />
+    <Compile Include="Providers\PersonalisationProvider.cs" />
     <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
     <Compile Include="Controllers\Afton\NewsAndEventsController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
@@ -217,6 +250,8 @@
     <Compile Include="Models\Afton\Shared\Country.cs" />
     <Compile Include="Models\Afton\Shared\Document.cs" />
     <Compile Include="Models\Afton\Shared\DocumentConstant.cs" />
+    <Compile Include="Models\Afton\Shared\Personalization\PersonalizedContentModel.cs" />
+    <Compile Include="Models\Afton\Shared\Personalization\PersonalizationCategoryPointsModel.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\ContactUs.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\DocumentSidebarComponent.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\GenericSidebarBlock.cs" />
