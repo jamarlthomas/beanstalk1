@@ -1,0 +1,79 @@
+.cardsSM_C {
+
+    .cardsSM { @include gridContainer; padding-top: 25px; padding-bottom: 15px; 
+        
+        a { position: relative; margin-bottom: gutter(); display: block; box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.15); background: #FFF; text-decoration: none; overflow: hidden; transition: none;
+            
+            .cardBtnIndicator { position: absolute; bottom: 10px; right: 10px; z-index: 11;
+                
+                img { width: 23px; }
+                
+            }//cardBtnIndicator
+            
+            .cardHdrC { height: 123px; padding: 20px 14px 0px 14px; background-color: #114294; background-size: cover; background-position: center center;
+                
+                .cardHdrTxt { font: 33px HelveticaNeueLT-Thin; color: #FFF; }
+                 
+            }//cardHdrC
+            
+            .cardTextAreaC { padding: 16px 14px; height: 175px;
+            
+                .cardTextArea { height: 112px; overflow: hidden;
+                    
+                    .cardType { padding-bottom: 15px; font-size: 14px; color: #0c419a; }
+                    .cardHdrText { padding-bottom: 0px; font-size: 20px; color: #0c419a; }
+                    .cardSubHdr { padding-bottom: 3px; font-size: 14px; color: #595959; }
+                    .cardTxt { font-size: 12px; line-height: 15px; color: #595959; }
+                
+                }//cardTextArea
+                
+                .cardDate { padding-top: 10px; font-size: 12px; }    
+                
+            }//textAreaC
+            
+  
+        }//a
+        
+        
+    }//cardsSM
+    
+    .cardsSM a:hover { box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.40) }
+    
+    
+    //4 column gallery
+    .fourCol a { @include gallery(3 of 12);
+
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { @include gallery(4 of 12); }
+        @include breakpoint($bp2) { @include gallery(6 of 12); }
+        @include breakpoint($bp3) { 
+
+            @include gallery(12 of 12 break);
+
+            &:nth-child(n) {
+                clear: both;
+            }
+        }//breakpoint($bp3)
+
+    }
+    
+    
+    //3 column gallery
+    .threeCol { padding-left: 0px; padding-right: 0px; }
+    .threeCol a { @include gallery(4 of 12); 
+
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { @include gallery(6 of 12); } 
+        @include breakpoint($bp3) { 
+
+            @include gallery(12 of 12 break);
+
+            &:nth-child(n) {
+                clear: both;
+            }
+        }//breakpoint($bp3)
+
+    }
+    
+    
+}//cardsSM_C

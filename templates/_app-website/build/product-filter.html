@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="termsAcronymsApp">
+<html lang="en">
   <head>
     <title></title>
     <meta name="description" content="">
@@ -60,7 +60,7 @@
       ); 
     </script>
   </head>
-  <body ng-controller="termsAcronymFilterCntl">
+  <body>
     <div id="mobileNavC1">
       <div id="mobileNavC">
         <div id="menuHdrC">
@@ -128,6 +128,30 @@
             <li><a href="#">Contact</a></li>
           </ul>
         </div>
+      </div>
+    </div>
+    <div id="mobileFilterNavC1">
+      <div id="mobileFilterNavC">
+        <div id="mobileFilterHdr">Filter by:<a href="#" id="menuFilterclose"><img src="images/filter-close.png"></a></div>
+        <form id="mobileFilterForm">
+          <div id="mobileFilterSearch">
+            <input type="text" placeholder="Enter Search Term">
+          </div>
+          <ul id="mobileFilterNav">
+            <li><a href="#">Region</a>
+              <div id="mFilterRegion" class="mobileFilterNavItems"></div>
+            </li>
+            <li><a href="#">Document Type</a>
+              <div id="mFilterDocumentType" class="mobileFilterNavItems"></div>
+            </li>
+            <li><a href="#">Solution</a>
+              <div id="mFilterSolution" class="mobileFilterNavItems"></div>
+            </li>
+          </ul>
+          <div id="mobileClearFilterB">
+            <input type="reset" value="Clear All">
+          </div>
+        </form>
       </div>
     </div>
     <div id="topHeaderC">
@@ -380,112 +404,300 @@
       </div>
     </div>
     <div id="contentAreaC">
-      <div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
-        <div id="rtCol-contentArea">
-          <div id="breadCrumbsC">
-            <div id="breadCrumbs"><a href="#">Home</a><a href="#">Driveline Additives</a><a href="#">Automotive Gear</a><a href="#">Automotive Gear Products</a>HiTEC® 385: Gear Oil Additive</div>
-          </div>
-          <div id="termsAcronymsHdrC" class="txtPaddingTop">
-            <h1>Terms & Acronyms</h1><br>
-            <div id="searchDD">
-              <input ng-model="acronymTermSearch" placeholder="Search Terms &amp; Acronyms">
-            </div>
-            <div id="acronymsTermSortDD">Sort by:<br>
-              <div class="customSelectC standard">
-                <div class="orgSelect">
-                  <select name="terms" ng-model="acronymTermSort">
-                    <option value="name">A-Z</option>
-                    <option value="-name">Z-A</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div id="termsAcronymsC" class="txtPaddingBtm">
-            <div dir-paginate="item in data | filter:acronymTermSearch | orderBy:acronymTermSort | itemsPerPage: itemsPerpage" class="termsAcronyms"> 
-              <div class="term">{{item.name}}</div>
-              <div class="def">{{item.description}}</div>
-            </div>
-            <div ng-hide="dataLoaded()">Loading Items...</div>
-            <div ng-show="!(data | filter:acronymTermSearch).length">No Items found</div><br>
-            <dir-pagination-controls max-size="7" boundary-links="false" template-url="dirPagination.tpl.html"></dir-pagination-controls>
-          </div>
+      <div class="fullWidth2 txtPaddingTop">
+        <div id="breadCrumbsC">
+          <div id="breadCrumbs"><a href="#">Home</a><a href="#">Driveline Additives</a><a href="#">Automotive Gear</a><a href="#">Automotive Gear Products</a>HiTEC® 385: Gear Oil Additive</div>
         </div>
-        <div id="lftCol-sidebar">
-          <div id="sidebarHdrC" class="altSidbarstyles">
-            <h2>Sub Navigation Title</h2>
-          </div>
-          <div id="sidebarNavC">
-            <ul>
-              <li><a href="#">Couplers</a></li>
-              <li><a href="#" class="hasChildren">Detergents & Corrosion Inhibitors</a></li>
-              <li><a href="#" class="active">Dispersants & Emulsifiers</a>
-                <ul>
-                  <li><a href="#">Tertiary Navigation</a></li>
-                  <li><a href="#">Tertiary Navigation</a></li>
-                  <li><a href="#">Tertiary Navigation</a></li>
-                </ul>
-              </li>
-              <li><a href="#" class="hasChildren">Extreme Pressure Agents & Antiwear Agents</a></li>
-              <li><a href="#">Foam Inhibitors</a></li>
-              <li><a href="#" class="hasChildren">Friction Modifiers</a></li>
-              <li><a href="#">Pour Point Depressants</a></li>
-              <li><a href="#">Seal Swell Additives</a></li>
-              <li><a href="#">Tackiness Additives</a></li>
-              <li><a href="#">Thickeners & Viscosity Index Improvers </a></li>
-            </ul>
-          </div>
-          <div class="sidebarBoxC">
-            <div class="hdr">Stay Informed</div>
-            <div class="txt">Um sundae culles aboritia as aut acit volorum eumqui quam quidele secatec toratemquam.</div>
-            <form>
-              <div class="customSelectC standard">
-                <div class="orgSelect">
-                  <select name="Countries">
-                    <option value="">Select Newsletter Language</option>
-                    <option value="English">English</option>
-                    <option value="Chinese">简体中文</option>
-                    <option value="Germain">German</option>
-                    <option value="Japenese">日本語</option>
-                    <option value="Russian">Russian</option>
-                    <option value="Spanish">Español</option>
-                    <option value="Português">Português</option>
-                    <option value="French">French</option>
-                  </select>
+      </div>
+      <div class="fullWidth txtPaddingTop">
+        <div class="txtPaddingTop txtPaddingBtm">
+          <h1>Page Title</h1><a href="#" class="viewAll">View all Afton Insights and Resources</a>
+        </div>
+      </div>
+      <div id="mobileFilterBtnC" style="display: none;"><a href="#" id="mobileFilterBtn">
+          <div id="mobileFilterTxt">Filter</div><img id="mobileFilterImg" src="images/filter-open.gif"></a></div>
+      <div id="filterAreaC" class="padBtm">
+        <div id="filterArea">
+          <form id="filterC">
+            <div id="filterLabel">Filter by: </div>
+            <div id="filterColC">
+              <input id="filterSearch" type="text" placeholder="Enter Search Term" ng-model="searchFilter" ng-keypress="($event.which === 13)?search(searchFilter):0"><hr>
+              <div id="filterRegion" class="filterGroup">
+                <div class="filterHdr">Region</div>
+                <label>
+                  <input type="checkbox" ng-model="region[0]" data-id="100" ng-click="regionWatch('100','North America',region[0])"><span class="checkboxDisplay"></span><span class="txt">North America</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="region[1]" data-id="52" ng-click="regionWatch('52','Latin America',region[1])"><span class="checkboxDisplay"></span><span class="txt">Latin America</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="region[2]" data-id="60" ng-click="regionWatch('60','EMEAI',region[2])"><span class="checkboxDisplay"></span><span class="txt">EMEAI</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="region[3]" data-id="540" ng-click="regionWatch('540','Asia',region[3])"><span class="checkboxDisplay"></span><span class="txt">Asia</span>
+                </label>
+              </div><hr>
+              <div id="filterDocumentType" class="filterGroup">
+                <div class="filterHdr">Document Type</div>
+                <label>
+                  <input type="checkbox" ng-model="docType[0]" data-id="98" ng-click="docTypeWatch('98','Product Data Sheets',docType[0])"><span class="checkboxDisplay"></span><span class="txt">Product Data Sheets</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="docType[1]" data-id="35" ng-click="docTypeWatch('35','Articless',docType[1])"><span class="checkboxDisplay"></span><span class="txt">Articles</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="docType[2]" data-id="77" ng-click="docTypeWatch('77','White Papers',docType[2])"><span class="checkboxDisplay"></span><span class="txt">White Papers</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="docType[3]" data-id="11" ng-click="docTypeWatch('11','Research',docType[3])"><span class="checkboxDisplay"></span><span class="txt">Research</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="docType[4]" data-id="62" ng-click="docTypeWatch('62','Technical Documents',docType[4])"><span class="checkboxDisplay"></span><span class="txt">Technical Documents</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="docType[5]" data-id="41" ng-click="docTypeWatch('41','Product Reviews',docType[5])"><span class="checkboxDisplay"></span><span class="txt">Product Reviews</span>
+                </label>
+              </div>
+              <div id="filterSolution" class="filterGroup">
+                <div class="filterHdr">Solution</div>
+                <div class="filterSecHdr">Driveline</div>
+                <label>
+                  <input type="checkbox" ng-model="solution[0]" data-id="508" ng-click="solutionWatch('508','Automatic Transmission',solution[0])"><span class="checkboxDisplay"></span><span class="txt">Automatic Transmission</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[1]" data-id="451" ng-click="solutionWatch('451','Continously Variable Transmission (CVT)',solution[1])"><span class="checkboxDisplay"></span><span class="txt">Continously Variable Transmission (CVT)</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[2]" data-id="789" ng-click="solutionWatch('789','Dual Clutch Transmission (DCT)',solution[2])"><span class="checkboxDisplay"></span><span class="txt">Dual Clutch Transmission (DCT)</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[3]" data-id="123" ng-click="solutionWatch('123','Automotive Gear',solution[3])"><span class="checkboxDisplay"></span><span class="txt">Automotive Gear</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[4]" data-id="951" ng-click="solutionWatch('951','Power Steering',solution[4])"><span class="checkboxDisplay"></span><span class="txt">Power Steering</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[5]" data-id="555" ng-click="solutionWatch('555','Heavy Machinery',solution[5])"><span class="checkboxDisplay"></span><span class="txt">Heavy Machinery</span>
+                </label><br>
+                <div class="filterSecHdr">Fuel</div>
+                <label>
+                  <input type="checkbox" ng-model="solution[6]" data-id="777" ng-click="solutionWatch('777','Diesel Additives',solution[6])"><span class="checkboxDisplay"></span><span class="txt">Diesel Additives</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[7]" data-id="333" ng-click="solutionWatch('333','Gasoline Additives',solution[7])"><span class="checkboxDisplay"></span><span class="txt">Gasoline Additives</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[8]" data-id="222" ng-click="solutionWatch('222','Octane Improver',solution[8])"><span class="checkboxDisplay"></span><span class="txt">Octane Improver</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[9]" data-id="665" ng-click="solutionWatch('665','Alternative Fuels',solution[9])"><span class="checkboxDisplay"></span><span class="txt">Alternative Fuels</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[10]" data-id="771" ng-click="solutionWatch('771','Home Heating Fuel',solution[10])"><span class="checkboxDisplay"></span><span class="txt">Home Heating Fuel</span>
+                </label><br>
+                <div class="filterSecHdr">Engine Oil</div>
+                <label>
+                  <input type="checkbox" ng-model="solution[11]" data-text="Diesel Oil" data-id="1111" ng-click="solutionWatch('1111','Diesel Oil',solution[11])"><span class="checkboxDisplay"></span><span class="txt">Diesel Oil</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[12]" data-text="Gasoline Oil" data-id="2222" ng-click="solutionWatch('2222','Gasoline Oil',solution[12])"><span class="checkboxDisplay"></span><span class="txt">Gasoline Oil</span>
+                </label><br>
+                <div class="filterSecHdr">Industrial</div>
+                <label>
+                  <input type="checkbox" ng-model="solution[13]" data-id="6666" ng-click="solutionWatch('6666','Compressor',solution[13])"><span class="checkboxDisplay"></span><span class="txt">Compressor</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[14]" data-id="5555" ng-click="solutionWatch('5555','Grease',solution[14])"><span class="checkboxDisplay"></span><span class="txt">Grease</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[15]" data-id="7777" ng-click="solutionWatch('7777','Hydrulic',solution[15])"><span class="checkboxDisplay"></span><span class="txt">Hydrulic</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[16]" data-id="1223" ng-click="solutionWatch('1223','Industrial Gear',solution[16])"><span class="checkboxDisplay"></span><span class="txt">Industrial Gear</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[17]" data-id="7896" ng-click="solutionWatch('7896','Metalworking',solution[17])"><span class="checkboxDisplay"></span><span class="txt">Metalworking</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[18]" data-id="4512" ng-click="solutionWatch('4512','Corrosion Inhibitors',solution[18])"><span class="checkboxDisplay"></span><span class="txt">Corrosion Inhibitors</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[19]" data-id="9578" ng-click="solutionWatch('9578','Couplerss',solution[19])"><span class="checkboxDisplay"></span><span class="txt">Couplers</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[20]" data-id="6689" ng-click="solutionWatch('6689','Demist Agents',solution[20])"><span class="checkboxDisplay"></span><span class="txt">Demist Agents</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[21]" data-id="1187" ng-click="solutionWatch('1187','Emulsifiers',solution[21])"><span class="checkboxDisplay"></span><span class="txt">Emulsifiers</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[22]" data-id="3351" ng-click="solutionWatch('3351','Lubricity and EP Additives',solution[22])"><span class="checkboxDisplay"></span><span class="txt">Lubricity and EP Additives</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[23]" data-id="7723" ng-click="solutionWatch('7723','Packages',solution[23])"><span class="checkboxDisplay"></span><span class="txt">Packages</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[24]" data-id="75631" ng-click="solutionWatch('75631','Quench Additives',solution[24])"><span class="checkboxDisplay"></span><span class="txt">Quench Additives</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[25]" data-id="98735" ng-click="solutionWatch('98735','Sideway',solution[25])"><span class="checkboxDisplay"></span><span class="txt">Sideway</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[26]" data-id="11984" ng-click="solutionWatch('11984','Turbine',solution[26])"><span class="checkboxDisplay"></span><span class="txt">Turbine</span>
+                </label><br>
+                <div class="filterSecHdr">Lubricant Components</div>
+                <label>
+                  <input type="checkbox" ng-model="solution[27]" data-id="65234" ng-click="solutionWatch('65234','Couplers',solution[27])"><span class="checkboxDisplay"></span><span class="txt">Couplers</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[28]" data-id="78925" ng-click="solutionWatch('78925','Detergents &amp; Corrosion Inhibitors',solution[28])"><span class="checkboxDisplay"></span><span class="txt">Detergents & Corrosion Inhibitors</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[29]" data-id="93146" ng-click="solutionWatch('93146','Extreme Pressure Agents &amp; Antiwear Agents',solution[29])"><span class="checkboxDisplay"></span><span class="txt">Extreme Pressure Agents & Antiwear Agents</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[30]" data-id="15972" ng-click="solutionWatch('15972','Foam Inhibitors',solution[30])"><span class="checkboxDisplay"></span><span class="txt">Foam Inhibitors</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[31]" data-id="559930" ng-click="solutionWatch('559930','Friction Modifiers',solution[31])"><span class="checkboxDisplay"></span><span class="txt">Friction Modifiers</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[32]" data-id="11774" ng-click="solutionWatch('11774','Pour Point Depressants',solution[32])"><span class="checkboxDisplay"></span><span class="txt">Pour Point Depressants</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[33]" data-id="559931" ng-click="solutionWatch('559931','Seal Swell Additives',solution[33])"><span class="checkboxDisplay"></span><span class="txt">Seal Swell Additives</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[34]" data-id="991166" ng-click="solutionWatch('991166','Tackiness Additives',solution[34])"><span class="checkboxDisplay"></span><span class="txt">Tackiness Additives</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[35]" data-id="789642" ng-click="solutionWatch('789642','Thickeners &amp; Viscosity Index',solution[35])"><span class="checkboxDisplay"></span><span class="txt">Thickeners & Viscosity Index</span>
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="solution[36]" data-id="115566" ng-click="solutionWatch('115566','Improvers',solution[36])"><span class="checkboxDisplay"></span><span class="txt">Improvers</span>
+                </label>
+                <input id="clearFilterB" type="reset" ng-click="reset()" value="Clear All">
+              </div>
+            </div>
+          </form>
+          <div id="filterResultsC">
+            <div id="filterHdr">
+              <div id="filterNum">16 Results</div>
+              <div id="filterList">Current Selection:  <span class="hdr">Region: </span>All
+                / <span class="hdr">Document Type: </span>Articles
+                /  <span class="hdr">Solution: </span>Continuously Variable Transmission (CVT), Gasoline Oil, Grease, Couplers
+              </div>
+              <div id="filterSort">
+                <div class="customSelectC standard">
+                  <div class="orgSelect">
+                    <select name="sort">
+                      <option value="Newest">Newest</option>
+                      <option value="Oldest">Oldest</option>
+                    </select>
+                  </div>
                 </div>
-              </div><br><br>
-              <input type="text" placeholder="Email Address" class="txtBox">
-              <input type="submit" value="Submit" class="submitBtn"><br><br>
-            </form>
-            <div class="txt"> <a href="#">Learn More</a>&nbsp; about our newsletter.</div>
-          </div><a href="#" class="sidebarBoxC">
-            <div class="title">DocumentTitle</div>
-            <div class="twoCol"><img src="page-images/cards/sample-cardv2.jpg">
-              <div class="txtCol">
-                <div class="cat">Category Title</div>
-                <div class="date">May 1, 2015</div>
-                <Um>sundae culles aboritia aut acit volorum eumqui toratemquam.</Um>
               </div>
-            </div></a><a href="#" class="sidebarBoxC">
-            <div class="title">Title</div>
-            <div class="twoCol"><img src="page-images/cards/sample-cardv2.jpg">
-              <div class="txtCol">
-                <Um>sundae culles aboritia aut acit volorum eumqui toratemquam.</Um>
-              </div>
-            </div></a><a href="#" class="sidebarBoxC">
-            <div class="title">General Title</div>
-            <div class="twoCol"><img src="page-images/cards/sample-cardv2.jpg">
-              <div class="txtCol">
-                <div class="cat">Category Title</div>
-                <Um>sundae culles aboritia aut acit volorum eumqui toratemquam.</Um>
-              </div>
-            </div></a><a href="#" class="sidebarBoxC">
-            <div class="title">General Title</div>Um sundae culles aboritia aut acit volorum eumqui toratemquam.</a>
+            </div>
+            <div class="cardsSM_C">
+              <div class="cardsSM threeCol"><a href="#">
+                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+                  <div class="cardHdrC">
+                    <div class="cardHdrTxt">Terms and Acronyms</div>
+                  </div>
+                  <div class="cardTextAreaC">
+                    <div class="cardTextArea">
+                      <div class="cardType">Driveline Additives</div>
+                      <div class="cardHdrText">HiTEC® 349</div>
+                      <div class="cardSubHdr">Manual Transmissions</div>
+                      <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                    </div>
+                    <div class="cardDate">May 1, 2016</div>
+                  </div></a><a href="#">
+                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+                  <div style="background-image: url(page-images/cards/sample-cardv2a.jpg);" class="cardHdrC"></div>
+                  <div class="cardTextAreaC">
+                    <div class="cardTextArea">
+                      <div class="cardType">Driveline Additives</div>
+                      <div class="cardHdrText">HiTEC® 349</div>
+                      <div class="cardSubHdr">Manual Transmissions</div>
+                      <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                    </div>
+                    <div class="cardDate">May 1, 2016</div>
+                  </div></a><a href="#">
+                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+                  <div style="background-image: url(page-images/cards/sample-cardv2a.jpg);" class="cardHdrC"></div>
+                  <div class="cardTextAreaC">
+                    <div class="cardTextArea">
+                      <div class="cardHdrText">HiTEC® 349</div>
+                      <div class="cardSubHdr">Manual Transmissions</div>
+                      <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                    </div>
+                  </div></a><a href="#">
+                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+                  <div class="cardHdrC">
+                    <div class="cardHdrTxt">Title Goes Here 2 Lines</div>
+                  </div>
+                  <div class="cardTextAreaC">
+                    <div class="cardTextArea">
+                      <div class="cardType">Driveline Additives</div>
+                      <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                    </div>
+                    <div class="cardDate">May 1, 2016</div>
+                  </div></a><a href="#">
+                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+                  <div class="cardHdrC">
+                    <div class="cardHdrTxt">Terms and Acronyms</div>
+                  </div>
+                  <div class="cardTextAreaC">
+                    <div class="cardTextArea">
+                      <div class="cardType">Driveline Additives</div>
+                      <div class="cardHdrText">HiTEC® 349</div>
+                      <div class="cardSubHdr">Manual Transmissions</div>
+                      <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                    </div>
+                    <div class="cardDate">May 1, 2016</div>
+                  </div></a><a href="#">
+                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+                  <div style="background-image: url(page-images/cards/sample-cardv2a.jpg);" class="cardHdrC"></div>
+                  <div class="cardTextAreaC">
+                    <div class="cardTextArea">
+                      <div class="cardType">Type</div>
+                      <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials. Another The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.  Another The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                    </div>
+                    <div class="cardDate">May 1, 2016</div>
+                  </div></a><a href="#">
+                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+                  <div style="background-image: url(page-images/cards/sample-cardv2a.jpg);" class="cardHdrC"></div>
+                  <div class="cardTextAreaC">
+                    <div class="cardTextArea">
+                      <div class="cardType">Driveline Additives</div>
+                      <div class="cardHdrText">HiTEC® 349</div>
+                      <div class="cardSubHdr">Manual Transmissions</div>
+                      <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                    </div>
+                    <div class="cardDate">May 1, 2016</div>
+                  </div></a><a href="#">
+                  <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+                  <div class="cardHdrC">
+                    <div class="cardHdrTxt">Title Goes Here 2 Lines</div>
+                  </div>
+                  <div class="cardTextAreaC">
+                    <div class="cardTextArea">
+                      <div class="cardType">Driveline Additives</div>
+                      <div class="cardHdrText">HiTEC® 349</div>
+                      <div class="cardSubHdr">Manual Transmissions</div>
+                      <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials. The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                    </div>
+                    <div class="cardDate">May 1, 2016</div>
+                  </div></a></div>
+            </div>
+            <div class="paginationC"><a href="#" class="prev"></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><span class="nextGroup">...</span><a href="#">50</a><a href="#" class="next"></a></div>
+          </div>
         </div>
       </div>
       <div class="borders bgPattern padTopBtm">
         <div class="fullWidth">
-          <h2>Personalized Content Title </h2>
+          <h2>Personalized Content Title</h2>
         </div>
         <div class="cardsC">
           <div class="cards"><a href="http://google.com">

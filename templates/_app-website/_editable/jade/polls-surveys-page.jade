@@ -37,8 +37,10 @@ html(lang='en')
                         div(id="mainContentC")
 
                             h1 Polls & Surveys
-
+                            
+                            <strong>We value your opinion!</strong>
                             p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque bibendum, libero ac cursus euismod, enim nibh dapibus turpis, eget pellentesque orci neque a leo. Nunc faucibus, purus ac lacinia tempus, dolor velit tincidunt metus, ac porttitor lectus mauris vitae dolor. Aenean bibendum sapien id tellus ultrices hendrerit.
+                            br
                             
                             h2 Current Polls & Surveys
                             
@@ -70,15 +72,34 @@ html(lang='en')
                                             input(class="vote" type="submit" value="Submit Your Vote")
                                             
                                             div(class="voteDetails") 270 Votes | 11 days, 2 hours left
-                                         
-                                         
-                                         div(class="voteResults" style="display: none")
-                                            ul
-                                                li(class="selected") Agricultural segment - <strong>65%</strong>
-                                                li Construction segment - <strong>21%</strong>
-                                                li Mining segment - <strong>14%</strong>
                                             
-                                            div(class="voteMessage") Thank You!
+                                            
+                                div(class="pollSurvey")
+                                    
+                                    div(class="itemC")
+                                    
+                                        div(class="txt") Which segment of off-road vehicle additives best fits your company’s needs?
+
+                                        form(class="pole")
+
+                                            label
+                                                input(type="radio" name="question" value="Agriculture segment")
+                                                span
+                                                | Agriculture segment
+
+                                            label
+                                                input(type="radio" name="question" value="Construction segment")
+                                                span
+                                                | Construction segment
+
+                                            label
+                                                input(type="radio" name="question" value="Mining segment")
+                                                span
+                                                | Mining segment
+
+                                            input(class="vote" type="submit" value="Submit Your Vote")
+
+                                            div(class="voteDetails") 270 Votes | 11 days, 2 hours left
                                             
                                         
                                 div(class="pollSurvey")
@@ -108,14 +129,6 @@ html(lang='en')
 
                                             div(class="voteDetails") 270 Votes | 11 days, 2 hours left
                                             
-                                        div(class="voteResults" style="display: none")
-                                            ul
-                                                li(class="selected") Agricultural segment - <strong>65%</strong>
-                                                li Construction segment - <strong>21%</strong>
-                                                li Mining segment - <strong>14%</strong>
-                                            
-                                            div(class="voteMessage") Thank You!
-                                            
                                             
                                 div(class="pollSurvey")
                                     
@@ -143,14 +156,6 @@ html(lang='en')
                                             input(class="vote" type="submit" value="Submit Your Vote")
 
                                             div(class="voteDetails") 270 Votes | 11 days, 2 hours left
-                                            
-                                        div(class="voteResults" style="display: none")
-                                            ul
-                                                li(class="selected") Agricultural segment - <strong>65%</strong>
-                                                li Construction segment - <strong>21%</strong>
-                                                li Mining segment - <strong>14%</strong>
-                                            
-                                            div(class="voteMessage") Thank You!
                                 
                             hr
 
@@ -210,45 +215,7 @@ html(lang='en')
                         
                             
                 div(id="lftCol-sidebar")
-                    
-                    div(class="sidebarBoxCTitle") We value your opinion!
-                    
-                    div(class="sidebarBoxC")
-                    
-                        div(class="txt") Which segment of off-road vehicle additives best fits your company’s needs?
-
-                        form(class="pole")
-
-                            label
-                                input(type="radio" name="question" value="Agriculture segment")
-                                span
-                                | Agriculture segment
-
-                            label
-                                input(type="radio" name="question" value="Construction segment")
-                                span
-                                | Construction segment
-
-                            label
-                                input(type="radio" name="question" value="Mining segment")
-                                span
-                                | Mining segment
-
-                            input(class="vote" type="submit" value="Submit Your Vote")
-
-                            div(class="voteDetails") 270 Votes | 11 days, 2 hours left
-                          
-                          
-                          div(class="voteResults" style="display:none")
-                            ul
-                                li(class="selected") Agricultural segment - <strong>65%</strong>
-                                li Construction segment - <strong>21%</strong>
-                                li Mining segment - <strong>14%</strong>
-
-                            div(class="voteMessage") Thank You!
-
-                            a(href="#" class="viewReslutsLink") View All Polls and Results
-                            
+                                        
                     div(class="sidebarBoxC")
                         
                         div(class="hdr") Stay Informed

@@ -442,10 +442,6 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
     //function to handle query searches
     $scope.runQuery = function() {              
 
-        
-        //Sample URL Feed
-        //$scope.ajaxRequest = "http://localhost:51872/filter/regions/-1/documents/-1/SBU/-1/solutions/-1"
-
         //create ajax request        
         $scope.ajaxRequest = "http://localhost:51872/filter/"
         $scope.ajaxRequest = $scope.ajaxRequest + "regions/" + $scope.regionStringID
@@ -461,6 +457,8 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
         $scope.dataLoaded = function(){return false};
         $scope.prodfilterResults = "";
 
+        //Sample Angular Feed Test
+        //$scope.ajaxRequest = "page-assets/filter.json"
 
         //Run Ajax
         $http.get($scope.ajaxRequest)

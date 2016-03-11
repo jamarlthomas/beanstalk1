@@ -1,4 +1,4 @@
-#sidbarHdrC { position: relative; height: 70px; background: #FFF;
+#sidebarHdrC { position: relative; height: 70px; background: #FFF;
     
     h2 { position: absolute; position: absolute; top: 50%; left: 15px; right: 15px; transform: translateY(-50%);
     
@@ -10,22 +10,36 @@
     //*** Breakpoints ***
     @include breakpoint($bp2) { display: none; xborder-top: 1px solid #a6a6a6 }
     
-}//sidbarHdrC
+}//sidebarHdrC
 
 
-#sidbarHdrC.altSidbarstyles { background: #f4f4f4; color: #0c419a; border-bottom: 1px solid #a6a6a6; }
+#sidebarHdrC.altSidbarstyles { background: #f4f4f4; color: #0c419a; border-bottom: 1px solid #a6a6a6; }
 
 
-#sidbarNavC { padding-bottom: 12px;
+#sidebarNavC { padding-bottom: 12px;
     
     ul { margin: 0px; padding: 0px; 
     
         li { margin: 0px; padding: 0px; list-style: none; border-bottom: 1px solid #a6a6a6; 
-        
-            a { padding: 10px 15px; display: block; background: #e2e2e2; text-decoration: none; font-size: 16px; color: #595959;
+            
+            a { position: relative; padding: 10px 15px; display: block; background: #e2e2e2; text-decoration: none; font-size: 16px; color: #595959;
             
                 &:hover { background: #4c9d2f; color: #FFF; }
                 
+            }
+            
+            a.hasChildren:after { content: "\e900"; position: absolute; font: 13px icomoon; right: 10px; top: 50%; transform: translateY(-50%); }
+            
+            a.active { background: #f3f3f3; color: #4c9d2f;
+                
+                &:after { content: "\e900"; position: absolute; font: 13px icomoon; right: 10px; top: 50%; transform: translateY(-50%) rotate(90deg); }
+            
+            }
+            
+            //submenu
+            li { border: none;
+            
+                a { padding-left: 30px; background: #f3f3f3; color: #4c9d2f; }
             }
             
         }//li
@@ -35,27 +49,36 @@
     //*** Breakpoints ***
     @include breakpoint($bp2) { display: none; }
     
-}//sidbarNavC
+}//sidebarNavC
 
 
-.sidbarBoxCTitle { padding: 13px 0px; background: #184b9f; color: #FFF; text-align: center; font-size: 16px; }
+.sidebarBoxCTitle { padding: 13px 0px; background: #184b9f; color: #FFF; text-align: center; font-size: 16px; }
 
-.sidbarImg { display: block; width: 100%; }
+.sidebarImg { display: block; width: 100%; }
 
-.sidbarBoxC { padding: 15px; background: #eeeded; margin-bottom: 10px;
+a.sidebarBoxC { display: block; color: #595959; text-decoration: none; }
+a.sidebarBoxC:hover { background: #f4f4f4; }
+a.sidebarBoxC:hover .twoCol img { transform: scale(1.02,1.02); }
+
+.sidebarBoxC { padding: 15px; background: #eeeded; margin-bottom: 10px;
     
-    .hdr { padding-bottom: 5px; color: #0c419a; font-size: 16px; }
+    .hdr { padding-bottom: 5px; color: #0c419a; font-size: 17px; }
     
-    .txt { padding-bottom: 10px; }
+    .title { padding-bottom: 5px; color: #4c9d2f; font-size: 17px; }
+    
+    .txt { padding-bottom: 10px;
+    
+        a { color: #4c9d2f; }
+    }
     
     .customSelectC { width: 100%; }
-        
-    ::-webkit-input-placeholder { color: #FFF; }
-    :-moz-placeholder { color: #FFF; }
-    ::-moz-placeholder { color: #FFF; }
-    :-ms-input-placeholder { color: #FFF; }
     
-    .txtBox { float: left; width: 70%; padding: 10px; background: #595959; color: #FFF; border: 0px; }
+    ::-webkit-input-placeholder { color: #595959; }
+    :-moz-placeholder { color: #595959; }
+    ::-moz-placeholder { color: #595959; }
+    :-ms-input-placeholder { color: #595959; }
+    
+    .txtBox { float: left; width: 70%; padding: 10px; background: #FFF; border: 0px; }
     
     .submitBtn { padding: 10px 0px; width: 30%; background: #4c9d2f; color: #FFF; border: 0px; }
     
@@ -100,24 +123,22 @@
         
     .twoCol { @include container;
         
-        a { display: block; margin-bottom: gutter(3); overflow: hidden;
-        
-            img { display: block; width: 100%; @include span(2 of 4); transition: 0.5s; }
+        img { display: block; width: 100%; @include span(2 of 4); transition: 0.5s; }
 
-            .txtCol { @include span(2 of 4 last); font-size: 14px; line-height: 18px;
+        .txtCol { @include span(2 of 4 last); font-size: 14px; line-height: 18px;
+
+            .cat { padding-bottom: 2px; color: #1c4da0; font-size: 16px; }
             
-                .sTxt { padding-bottom: 2px; color: #4c9d2f; font-size: 16px; }
-                
-            }//txtCol
+            .date { font-size: 11px; }
 
-        }//a
+        }//txtCol
+
         
-        a:hover img { transform: scale(1.02,1.02); }
         
-        a:last-child { margin-bottom: 0px; }
+        //a:last-child { margin-bottom: 0px; }
         
     }//twoCol
     
-}//sidbarBoxC
+}//sidebarBoxC
 
 

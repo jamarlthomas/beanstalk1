@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="termsAcronymsApp">
+<html lang="en">
   <head>
     <title></title>
     <meta name="description" content="">
@@ -60,7 +60,7 @@
       ); 
     </script>
   </head>
-  <body ng-controller="termsAcronymFilterCntl">
+  <body>
     <div id="mobileNavC1">
       <div id="mobileNavC">
         <div id="menuHdrC">
@@ -379,62 +379,142 @@
         <div id="stickyFoot"><a href="#">Contact</a></div>
       </div>
     </div>
+    <div id="printArea"></div>
     <div id="contentAreaC">
       <div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
         <div id="rtCol-contentArea">
           <div id="breadCrumbsC">
             <div id="breadCrumbs"><a href="#">Home</a><a href="#">Driveline Additives</a><a href="#">Automotive Gear</a><a href="#">Automotive Gear Products</a>HiTEC® 385: Gear Oil Additive</div>
           </div>
-          <div id="termsAcronymsHdrC" class="txtPaddingTop">
-            <h1>Terms & Acronyms</h1><br>
-            <div id="searchDD">
-              <input ng-model="acronymTermSearch" placeholder="Search Terms &amp; Acronyms">
-            </div>
-            <div id="acronymsTermSortDD">Sort by:<br>
-              <div class="customSelectC standard">
-                <div class="orgSelect">
-                  <select name="terms" ng-model="acronymTermSort">
-                    <option value="name">A-Z</option>
-                    <option value="-name">Z-A</option>
-                  </select>
+          <div id="contentC">              
+            <div id="mainContentC">
+              <h1>Polls & Surveys</h1><strong>We value your opinion!</strong>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque bibendum, libero ac cursus euismod, enim nibh dapibus turpis, eget pellentesque orci neque a leo. Nunc faucibus, purus ac lacinia tempus, dolor velit tincidunt metus, ac porttitor lectus mauris vitae dolor. Aenean bibendum sapien id tellus ultrices hendrerit.</p><br>
+              <h2>Current Polls & Surveys</h2>
+              <div class="pollSurveyC">
+                <div class="pollSurvey">
+                  <div class="itemC">
+                    <div class="txt">Which segment of off-road vehicle additives best fits your company’s needs?</div>
+                    <form class="pole">
+                      <label>
+                        <input type="radio" name="question" value="Agriculture segment"><span></span>Agriculture segment
+                      </label>
+                      <label>
+                        <input type="radio" name="question" value="Construction segment"><span></span>Construction segment
+                      </label>
+                      <label>
+                        <input type="radio" name="question" value="Mining segment"><span></span>Mining segment
+                      </label>
+                      <input type="submit" value="Submit Your Vote" class="vote">
+                      <div class="voteDetails">270 Votes | 11 days, 2 hours left</div>
+                    </form>
+                  </div>
+                </div>
+                <div class="pollSurvey">
+                  <div class="itemC">
+                    <div class="txt">Which segment of off-road vehicle additives best fits your company’s needs?</div>
+                    <form class="pole">
+                      <label>
+                        <input type="radio" name="question" value="Agriculture segment"><span></span>Agriculture segment
+                      </label>
+                      <label>
+                        <input type="radio" name="question" value="Construction segment"><span></span>Construction segment
+                      </label>
+                      <label>
+                        <input type="radio" name="question" value="Mining segment"><span></span>Mining segment
+                      </label>
+                      <input type="submit" value="Submit Your Vote" class="vote">
+                      <div class="voteDetails">270 Votes | 11 days, 2 hours left</div>
+                    </form>
+                  </div>
+                </div>
+                <div class="pollSurvey">
+                  <div class="itemC">
+                    <div class="txt">Which segment of off-road vehicle additives best fits your company’s needs?</div>
+                    <form class="pole">
+                      <label>
+                        <input type="radio" name="question" value="Agriculture segment"><span></span>Agriculture segment
+                      </label>
+                      <label>
+                        <input type="radio" name="question" value="Construction segment"><span></span>Construction segment
+                      </label>
+                      <label>
+                        <input type="radio" name="question" value="Mining segment"><span></span>Mining segment
+                      </label>
+                      <input type="submit" value="Submit Your Vote" class="vote">
+                      <div class="voteDetails">270 Votes | 11 days, 2 hours left</div>
+                    </form>
+                  </div>
+                </div>
+                <div class="pollSurvey">
+                  <div class="itemC">
+                    <div class="txt">Which segment of off-road vehicle additives best fits your company’s needs?</div>
+                    <form class="pole">
+                      <label>
+                        <input type="radio" name="question" value="Agriculture segment"><span></span>Agriculture segment
+                      </label>
+                      <label>
+                        <input type="radio" name="question" value="Construction segment"><span></span>Construction segment
+                      </label>
+                      <label>
+                        <input type="radio" name="question" value="Mining segment"><span></span>Mining segment
+                      </label>
+                      <input type="submit" value="Submit Your Vote" class="vote">
+                      <div class="voteDetails">270 Votes | 11 days, 2 hours left</div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <h2>Past Polls & Surveys</h2>
+              <div class="pollSurveyC">
+                <div class="pollSurvey">
+                  <div class="itemC">
+                    <div class="txt">Which segment of off-road vehicle additives best fits your company’s needs?</div>
+                    <div class="voteResults">
+                      <ul>
+                        <li>Agricultural segment - <strong>65%</strong></li>
+                        <li>Construction segment - <strong>21%</strong></li>
+                        <li>Mining segment - <strong>14%</strong></li>
+                      </ul>
+                      <div class="voteMessage">This Poll is Closed.</div>
+                      <div class="voteDetails">270 Votes | 12/1/15 - 12/10/15</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pollSurvey">
+                  <div class="itemC">
+                    <div class="txt">Which segment of off-road vehicle additives best fits your company’s needs?</div>
+                    <div class="voteResults">
+                      <ul>
+                        <li>Agricultural segment - <strong>65%</strong></li>
+                        <li>Construction segment - <strong>21%</strong></li>
+                        <li>Mining segment - <strong>14%</strong></li>
+                      </ul>
+                      <div class="voteMessage">This Poll is Closed.</div>
+                      <div class="voteDetails">270 Votes | 12/1/15 - 12/10/15</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pollSurvey">
+                  <div class="itemC">
+                    <div class="txt">Which segment of off-road vehicle additives best fits your company’s needs?</div>
+                    <div class="voteResults">
+                      <ul>
+                        <li>Agricultural segment - <strong>65%</strong></li>
+                        <li>Construction segment - <strong>21%</strong></li>
+                        <li>Mining segment - <strong>14%</strong></li>
+                      </ul>
+                      <div class="voteMessage">This Poll is Closed.</div>
+                      <div class="voteDetails">270 Votes | 12/1/15 - 12/10/15</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div id="termsAcronymsC" class="txtPaddingBtm">
-            <div dir-paginate="item in data | filter:acronymTermSearch | orderBy:acronymTermSort | itemsPerPage: itemsPerpage" class="termsAcronyms"> 
-              <div class="term">{{item.name}}</div>
-              <div class="def">{{item.description}}</div>
-            </div>
-            <div ng-hide="dataLoaded()">Loading Items...</div>
-            <div ng-show="!(data | filter:acronymTermSearch).length">No Items found</div><br>
-            <dir-pagination-controls max-size="7" boundary-links="false" template-url="dirPagination.tpl.html"></dir-pagination-controls>
-          </div>
         </div>
         <div id="lftCol-sidebar">
-          <div id="sidebarHdrC" class="altSidbarstyles">
-            <h2>Sub Navigation Title</h2>
-          </div>
-          <div id="sidebarNavC">
-            <ul>
-              <li><a href="#">Couplers</a></li>
-              <li><a href="#" class="hasChildren">Detergents & Corrosion Inhibitors</a></li>
-              <li><a href="#" class="active">Dispersants & Emulsifiers</a>
-                <ul>
-                  <li><a href="#">Tertiary Navigation</a></li>
-                  <li><a href="#">Tertiary Navigation</a></li>
-                  <li><a href="#">Tertiary Navigation</a></li>
-                </ul>
-              </li>
-              <li><a href="#" class="hasChildren">Extreme Pressure Agents & Antiwear Agents</a></li>
-              <li><a href="#">Foam Inhibitors</a></li>
-              <li><a href="#" class="hasChildren">Friction Modifiers</a></li>
-              <li><a href="#">Pour Point Depressants</a></li>
-              <li><a href="#">Seal Swell Additives</a></li>
-              <li><a href="#">Tackiness Additives</a></li>
-              <li><a href="#">Thickeners & Viscosity Index Improvers </a></li>
-            </ul>
-          </div>
           <div class="sidebarBoxC">
             <div class="hdr">Stay Informed</div>
             <div class="txt">Um sundae culles aboritia as aut acit volorum eumqui quam quidele secatec toratemquam.</div>
@@ -458,34 +538,65 @@
               <input type="submit" value="Submit" class="submitBtn"><br><br>
             </form>
             <div class="txt"> <a href="#">Learn More</a>&nbsp; about our newsletter.</div>
-          </div><a href="#" class="sidebarBoxC">
-            <div class="title">DocumentTitle</div>
-            <div class="twoCol"><img src="page-images/cards/sample-cardv2.jpg">
-              <div class="txtCol">
-                <div class="cat">Category Title</div>
-                <div class="date">May 1, 2015</div>
-                <Um>sundae culles aboritia aut acit volorum eumqui toratemquam.</Um>
-              </div>
-            </div></a><a href="#" class="sidebarBoxC">
-            <div class="title">Title</div>
-            <div class="twoCol"><img src="page-images/cards/sample-cardv2.jpg">
-              <div class="txtCol">
-                <Um>sundae culles aboritia aut acit volorum eumqui toratemquam.</Um>
-              </div>
-            </div></a><a href="#" class="sidebarBoxC">
-            <div class="title">General Title</div>
-            <div class="twoCol"><img src="page-images/cards/sample-cardv2.jpg">
-              <div class="txtCol">
-                <div class="cat">Category Title</div>
-                <Um>sundae culles aboritia aut acit volorum eumqui toratemquam.</Um>
-              </div>
-            </div></a><a href="#" class="sidebarBoxC">
-            <div class="title">General Title</div>Um sundae culles aboritia aut acit volorum eumqui toratemquam.</a>
+          </div>
         </div>
+      </div>
+      <div class="bgGray padTopBtm">
+        <div class="fullWidth">
+          <h2>Automotive Gear Products</h2>
+        </div>
+        <div class="cardsSM_C">
+          <div class="cardsSM fourCol"><a href="#">
+              <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+              <div style="background-image: url(page-images/cards/sample-cardv2a.jpg);" class="cardHdrC"></div>
+              <div class="cardTextAreaC">
+                <div class="cardTextArea">
+                  <div class="cardType">Driveline Additives</div>
+                  <div class="cardHdrText">HiTEC® 349</div>
+                  <div class="cardSubHdr">Manual Transmissions</div>
+                  <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                </div>
+                <div class="cardDate">May 1, 2016</div>
+              </div></a><a href="#">
+              <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+              <div style="background-image: url(page-images/cards/sample-cardv2a.jpg);" class="cardHdrC"></div>
+              <div class="cardTextAreaC">
+                <div class="cardTextArea">
+                  <div class="cardType">Driveline Additives</div>
+                  <div class="cardHdrText">HiTEC® 349</div>
+                  <div class="cardSubHdr">Manual Transmissions</div>
+                  <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                </div>
+                <div class="cardDate">May 1, 2016</div>
+              </div></a><a href="#">
+              <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+              <div style="background-image: url(page-images/cards/sample-cardv2a.jpg);" class="cardHdrC"></div>
+              <div class="cardTextAreaC">
+                <div class="cardTextArea">
+                  <div class="cardType">Driveline Additives</div>
+                  <div class="cardHdrText">HiTEC® 349</div>
+                  <div class="cardSubHdr">Manual Transmissions</div>
+                  <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                </div>
+                <div class="cardDate">May 1, 2016</div>
+              </div></a><a href="#">
+              <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
+              <div style="background-image: url(page-images/cards/sample-cardv2a.jpg);" class="cardHdrC"></div>
+              <div class="cardTextAreaC">
+                <div class="cardTextArea">
+                  <div class="cardType">Driveline Additives</div>
+                  <div class="cardHdrText">HiTEC® 349</div>
+                  <div class="cardSubHdr">Manual Transmissions</div>
+                  <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                </div>
+                <div class="cardDate">May 1, 2016</div>
+              </div></a></div>
+        </div>
+        <div class="fullWidth"><a href="#" class="viewAllBtn">View All Automotive Gear Products</a></div>
       </div>
       <div class="borders bgPattern padTopBtm">
         <div class="fullWidth">
-          <h2>Personalized Content Title </h2>
+          <h2>Insights & Resources  </h2>
         </div>
         <div class="cardsC">
           <div class="cards"><a href="http://google.com">

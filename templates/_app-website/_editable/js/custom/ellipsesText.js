@@ -21,7 +21,7 @@ $(document).ready(function() {
     $("#megaMenuC").css({"opacity":1.0})
     
     
-    //ellipses for cards
+    //ellipses for Large Cards
     $(".cardsC .cards a .overlay").dotdotdot({
       ellipsis	: '... ',
       wrap		: 'word',
@@ -31,7 +31,7 @@ $(document).ready(function() {
     });
     
 
-    //ellipses for cards hover txt
+    //ellipses for large cards hover txt
     $(".cardsC .cards a .hoverOverlay").dotdotdot({
       ellipsis	: '... ',
       wrap		: 'word',
@@ -39,22 +39,16 @@ $(document).ready(function() {
     });
     
     
-    //ellipses for cards v2
-    $(".cards2C .cards2 .textAreaC").dotdotdot({
+    //ellipses for small cards
+    $(".cardsSM_C .cardsSM .cardHdrC").dotdotdot({
       ellipsis	: '... ',
       wrap		: 'word',
       watch: 'window'
     });
     
     
-    //ellipses for cards v3
-    $(".cards3C .cards3 .cardHdrC").dotdotdot({
-      ellipsis	: '... ',
-      wrap		: 'word',
-      watch: 'window'
-    });
-    
-    $(".cards3C .cards3 .cardTxtC").dotdotdot({
+    //ellipses for small cards
+    $(".cardsSM_C .cardsSM .cardTextArea").dotdotdot({
       ellipsis	: '... ',
       wrap		: 'word',
       watch: 'window'
