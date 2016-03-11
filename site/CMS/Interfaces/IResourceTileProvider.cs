@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 namespace CMS.Mvc.Interfaces
 {
-	public interface IResourceTileProvider
+    public interface IResourceTileProvider
     {
-		List<TreeNode> GetTiles(string guids, string siteName);
+        List<TreeNode> GetTiles(string guids);
     }
 }

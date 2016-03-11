@@ -66,7 +66,7 @@ namespace CMS.Mvc.Controllers.Afton
                     Description = page.StayInformedTileDescription
                 }
             };
-            model.Tiles.AddRange(_resourceTileProvider.GetTiles(page.FeaturedContentList, page.Site.DisplayName)
+            model.Tiles.AddRange(_resourceTileProvider.GetTiles(page.FeaturedContentList)
                 .Select(s => Mapper.Map<TileViewModel>(s)).ToList());
             return View("~/Views/Afton/InsightsAndResources/Index.cshtml", model);
         }
