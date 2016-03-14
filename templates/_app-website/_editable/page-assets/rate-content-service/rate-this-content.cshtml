@@ -1,0 +1,21 @@
+﻿
+@{
+    //***********
+    // Notes: Use Razor Pages to Query String that returns JSON Data
+    // load this URL /rate-this-content?init=[value]
+
+    //Check submit type
+    if(Request.QueryString["init"] != null){
+        string getJson = File.ReadAllText(HttpContext.Current.Server.MapPath("~/init.json"));
+        Response.Write(getJson);
+    }
+
+    if(Request.QueryString["id"] != null){
+        string getJson = File.ReadAllText(HttpContext.Current.Server.MapPath("~/init.json"));
+        Response.Write(getJson);
+    }
+
+
+
+    
+}

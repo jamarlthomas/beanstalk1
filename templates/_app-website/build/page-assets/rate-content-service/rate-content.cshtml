@@ -1,0 +1,30 @@
+
+@{
+    //***********
+    // Notes: Use Razor Pages to Query String that returns JSON Data
+    // load this URL /generateJSON?getJson=file    
+    //***********
+
+    //get json Values
+    var getJsonVal = Request.QueryString["getJson"];
+    //Response.Write(getJsonVal);
+    
+    //based on request send back json
+    switch(getJsonVal){
+        
+        case "file":
+
+            string getJson = File.ReadAllText(HttpContext.Current.Server.MapPath("~/sample.json"));
+            Response.Write(getJson);
+            break;
+
+        case "manual":
+            var createData = new[] { "one", "two", "three", "four" };
+            var dataToJson = Json.Encode(createData);
+            Response.Write(dataToJson);
+            break;
+
+    }
+
+    
+}
