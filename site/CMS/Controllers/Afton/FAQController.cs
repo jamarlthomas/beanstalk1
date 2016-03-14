@@ -28,7 +28,7 @@ namespace CMS.Mvc.Controllers.Afton
                 MenuSelectedItem = _insightsResourcesProvider.GetInsightsResourcesByName(page.Parent.NodeAlias).Title,
                 SideBar = new SidebarViewModel()
                 {
-                    Items = MapSidebar(_sidebarProvider.GetSideBarItems(StringToGuidsConvertHelper.ParseGuids(page.SidebarItems)), page)
+                    Items = MapSidebar(_sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(page.SidebarItems)), page)
                 },
                 Topics = _faqTopicProvider.GetFaqTopics().Select(topic => new FAQTopicViewModel
                 {

@@ -17,7 +17,7 @@ namespace CMS.Mvc.Providers
 			request.ClassNames = "custom.Product;custom.Document";
 			request.SortOrder = string.Format("documentcreatedwhen {0}", !string.IsNullOrEmpty(request.SortOrder) && request.SortOrder.ToUpper().Equals("DESC") ? "DESC" : "ASC");
 			request.AdditiveQuery = AdditiveQueryBuilder(request.DocumentTypesIds, request.SolutionsIds, request.Regions);
-			return SearchHelper.PerformSearch(request);
+			return ContentHelper.PerformSearch(request);
 		}
 
 		private string AdditiveQueryBuilder(string documentTypesIds, string solutionsIds, string regions)

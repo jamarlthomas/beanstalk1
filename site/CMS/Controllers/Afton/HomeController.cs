@@ -39,7 +39,7 @@ namespace CMS.Mvc.Controllers.Afton
                 PrimaryTiles = new List<TileViewModel>()
             };
             var home = _homeProvider.GetHomeItems().First();
-			foreach (var primaryTile in _tilesProvider.GetTiles(StringToGuidsConvertHelper.ParseGuids(home.ManagedBlocks)))
+			foreach (var primaryTile in _tilesProvider.GetTiles(UtilsHelper.ParseGuids(home.ManagedBlocks)))
             {
 				var tile = AutoMapper.Mapper.Map<TileViewModel>(primaryTile);
                 if (primaryTile is Document)

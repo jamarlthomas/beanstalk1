@@ -115,7 +115,7 @@ namespace CMS.Mvc.Controllers.Afton
 				model.State = parent is SolutionBusinessUnit ?
 					SelectionFilterPageStateEnum.SBU :
 					parent is Solution ? SelectionFilterPageStateEnum.Solution : SelectionFilterPageStateEnum.Base;
-				model.RegionsList = RegionsHelper.GetRegions().Select(s => new CheckBoxViewModel { Title = s }).ToList();
+				model.RegionsList = UtilsHelper.GetRegions().Select(s => new CheckBoxViewModel { Title = s }).ToList();
 				return View("~/Views/Afton/SelectionFilter/Index.cshtml", model);
 			}
 			return null;

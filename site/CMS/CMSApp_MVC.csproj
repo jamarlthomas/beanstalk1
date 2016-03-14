@@ -192,6 +192,7 @@
     <Compile Include="Controllers\Afton\NewsAndEventsController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
     <Compile Include="Helpers\AftonData.cs" />
+    <Compile Include="Helpers\ContentHelper.cs" />
     <Compile Include="Interfaces\IDocumentConstantProvider.cs" />
     <Compile Include="Interfaces\IFAQPageProvider.cs" />
     <Compile Include="Interfaces\ILeftNavigationProvider.cs" />
@@ -210,8 +211,6 @@
     <Compile Include="Controllers\Afton\SBUController.cs" />
     <Compile Include="Controllers\Afton\HomeController.cs" />
     <Compile Include="Controllers\Afton\MasterController.cs" />
-    <Compile Include="Helpers\SearchHelper.cs" />
-    <Compile Include="Helpers\RegionsHelper.cs" />
     <Compile Include="Controllers\Afton\SidebarPageController.cs" />
     <Compile Include="Models\Afton\NewsAndEvents\NewsAndEventsPage.cs" />
     <Compile Include="Models\Afton\Shared\Country.cs" />
@@ -240,9 +239,7 @@
     <Compile Include="Providers\LeftNavigationProvider.cs" />
     <Compile Include="Providers\LookupProvider.cs" />
     <Compile Include="Providers\PollSurveyAnswerProvider.cs" />
-    <Compile Include="Helpers\CultureHelper.cs" />
-    <Compile Include="Helpers\StringToGuidsConvertHelper.cs" />
-    <Compile Include="Helpers\DivideHelper.cs" />
+    <Compile Include="Helpers\UtilsHelper.cs" />
     <Compile Include="Infrastructure\Localization\IRouteValueTranslationProvider.cs" />
     <Compile Include="Infrastructure\Localization\RouteCollectionExtensions.cs" />
     <Compile Include="Infrastructure\Localization\RouteDictionary.cs" />
@@ -273,7 +270,6 @@
     <Compile Include="Interfaces\IMegaMenuThumbnailedItemProvider.cs" />
     <Compile Include="Interfaces\IContentMenuItemProvider.cs" />
     <Compile Include="Interfaces\IPagesMenuItemProvider.cs" />
-    <Compile Include="Helpers\ContentHelper.cs" />
     <Compile Include="Models\Afton\InsightsAndResources\InsightsResources.cs" />
     <Compile Include="Models\Afton\Shared\GenericPage.cs" />
     <Compile Include="Models\Afton\Shared\Link.cs" />
