@@ -63,7 +63,8 @@ namespace CMS.Mvc.Controllers.Afton
                 new TileViewModel 
                 {
                     Title = page.StayInformedTileTitle,
-                    Description = page.StayInformedTileDescription
+                    Description = page.StayInformedTileDescription,
+                    Url = "/StayInformed"
                 }
             };
             model.Tiles.AddRange(_resourceTileProvider.GetTiles(page.FeaturedContentList)

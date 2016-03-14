@@ -193,6 +193,7 @@
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
     <Compile Include="Helpers\AftonData.cs" />
     <Compile Include="Helpers\ContentHelper.cs" />
+    <Compile Include="Helpers\RouteHelper.cs" />
     <Compile Include="Interfaces\IDocumentConstantProvider.cs" />
     <Compile Include="Interfaces\IFAQPageProvider.cs" />
     <Compile Include="Interfaces\ILeftNavigationProvider.cs" />
