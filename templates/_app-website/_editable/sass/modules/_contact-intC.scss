@@ -1,0 +1,31 @@
+#contact-intC { 
+    
+    #contactHdr { margin: 0px auto; width: 1235px;
+        
+        //*** Breakpoints ***
+        @include breakpoint($bp1) { width: calc(100% - 15px) }
+        
+    }
+    
+    #contactResults { @include gridContainer; padding-bottom: gutter();
+        
+        .contactResultItem { @include gallery(4 of 12); margin-bottom: gutter(); padding: 20px; height: 370px; background: #f3f3f3; 
+            
+            .officeName { font-weight: 700; color: #184a9e; }
+            
+            //*** Breakpoints ***
+            @include breakpoint($bp1) { @include gallery(6 of 12 break); }
+            @include breakpoint($bp2) { 
+                @include gallery(12 of 12 break); 
+                &:nth-child(n) {
+                    clear: both;   
+                } 
+            }//breapoint 3
+            
+            
+        }//contactResultItem
+        
+        
+    }//contactResults
+    
+}//contact-intC
