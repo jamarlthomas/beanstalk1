@@ -228,6 +228,9 @@
     <Compile Include="Models\Afton\Shared\SideBarComponents\StayInformed.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\Term.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\TermsAndAcronymsPage.cs" />
+    <Compile Include="Models\ExtendedModels\Solution.cs" />
+    <Compile Include="Models\ExtendedModels\CustomNews.cs" />
+    <Compile Include="Models\ExtendedModels\Document.cs" />
     <Compile Include="Old_App_Code\GeneratePdf.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -529,7 +532,6 @@
     <Content Include="Views\Afton\SelectionFilter\_documentTypeCheckBoxes.cshtml" />
     <Content Include="Views\Afton\SelectionFilter\_regionCheckBoxes.cshtml" />
     <Content Include="Views\Afton\SelectionFilter\_SBUCheckBoxes.cshtml" />
-    <Content Include="Views\Afton\SelectionFilter\_searchResults.cshtml" />
     <Content Include="css\maps\print.min.css.map" />
     <Content Include="Views\Afton\Shared\Sidebar\_sideBar.cshtml" />
     <Content Include="Views\Afton\Document\Index.cshtml" />
@@ -549,6 +551,7 @@
     <Content Include="Views\Afton\NewsAndEvents\Index.cshtml" />
     <Content Include="Views\Afton\NewsAndEvents\_tiles.cshtml" />
     <Content Include="Views\Afton\TermsAndAcronyms\Index.cshtml" />
+    <Content Include="Views\Afton\SelectionFilter\_searchResults.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

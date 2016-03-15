@@ -1,22 +1,32 @@
 ﻿using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.Infrastructure.Models;
+using System.Text;
 
 namespace CMS.Mvc.Helpers
 {
     public static class RouteHelper
     {
-        public static string GetUrl(TreeNode node)
+        public const string NULL_VALUE_PLACEHOLDER = "-1";
+
+        public static string GetSelectionFilterUrl(SearchRequest searchRequest, string name = null)
         {
-            var nodeType = node.GetType();
-            if (nodeType == typeof(Document) || nodeType == typeof(CustomNews))
+            StringBuilder sb = new StringBuilder("/SelectionFilter/Index");
+            if (!string.IsNullOrEmpty(name))
             {
-                return string.Format("/Document/Index/{0}", node.NodeAlias);
+                sb.AppendFormat("/{0}", name);
             }
-            if (nodeType == typeof(Solution))
+            sb.AppendFormat("?Regions={0}", searchRequest.Regions ?? NULL_VALUE_PLACEHOLDER);
+            sb.AppendFormat("&DocumentTypesIds={0}", searchRequest.DocumentTypesIds ?? NULL_VALUE_PLACEHOLDER);
+            sb.AppendFormat("&SBUId={0}", searchRequest.SBUId ?? NULL_VALUE_PLACEHOLDER);
+            sb.AppendFormat("&SolutionsIds={0}", searchRequest.SolutionsIds ?? NULL_VALUE_PLACEHOLDER);
+            sb.AppendFormat("&SortOrder={0}", searchRequest.SortOrder ?? string.Empty);
+            sb.AppendFormat("&Query={0}", searchRequest.Query ?? string.Empty);
+            if (searchRequest.PageNumber.HasValue)
             {
-                return string.Format("/Solution/Index/{0}/{1}", node.NodeAlias, node.Parent.NodeAlias);
+                sb.AppendFormat("&PageNumber={0}", searchRequest.PageNumber);
             }
-            return node.NodeAliasPath;
+            return sb.ToString();
         }
     }
 }

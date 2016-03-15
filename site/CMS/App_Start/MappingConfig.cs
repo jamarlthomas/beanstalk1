@@ -19,8 +19,7 @@ namespace CMS.Mvc.App_Start
         {
             var cmsTypes = Assembly.GetExecutingAssembly().GetTypes()
                 .Where(t => String.Equals(t.Namespace, "CMS.DocumentEngine.Types", StringComparison.Ordinal))
-                .Select(type => AutoMapper.Mapper.CreateMap(type, typeof(TileViewModel))
-                    .ForMember("Url", opts => opts.MapFrom<string>(src => RouteHelper.GetUrl(src as TreeNode)))).ToList();
+                .Select(type => AutoMapper.Mapper.CreateMap(type, typeof(TileViewModel))).ToList();
         }
     }
 }
