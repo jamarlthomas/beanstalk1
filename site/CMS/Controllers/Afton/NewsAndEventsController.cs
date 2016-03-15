@@ -33,7 +33,7 @@ namespace CMS.Mvc.Controllers.Afton
             var model = MapData<NewsAndEventsPage, NewsAndEventsPageViewModel>(page);
 
             model.Tiles = _tilesProvider
-                .GetTiles(StringToGuidsConvertHelper.ParseGuids(page.ContentManagedTiles)).Select(tile => AutoMapper.Mapper.Map<TileViewModel>(tile)).ToList();
+                .GetTiles(UtilsHelper.ParseGuids(page.ContentManagedTiles)).Select(tile => AutoMapper.Mapper.Map<TileViewModel>(tile)).ToList();
             return View("~/Views/Afton/NewsAndEvents/Index.cshtml", model);
         }
     }

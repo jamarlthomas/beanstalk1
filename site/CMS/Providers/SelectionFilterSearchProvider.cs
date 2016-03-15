@@ -17,7 +17,7 @@ namespace CMS.Mvc.Providers
 			request.ClassNames = "custom.Product;custom.Document";
 			request.SortOrder = string.Format("documentcreatedwhen {0}", !string.IsNullOrEmpty(request.SortOrder) && request.SortOrder.ToUpper().Equals("DESC") ? "DESC" : "ASC");
 			request.AdditiveQuery = AdditiveQueryBuilder(request.DocumentTypesIds, request.SolutionsIds, request.Regions);
-			return SearchHelper.PerformSearch(request);
+			return ContentHelper.PerformSearch(request);
 		}
 
 		private string AdditiveQueryBuilder(string documentTypesIds, string solutionsIds, string regions)
@@ -26,7 +26,7 @@ namespace CMS.Mvc.Providers
 			if (!string.IsNullOrEmpty(documentTypesIds) || !string.IsNullOrEmpty(solutionsIds))
 			{
 				query.Append("+NodeParentID:(");
-				var idsArray = string.Format("{0},{1}", documentTypesIds, solutionsIds).Split(',');
+                var idsArray = string.Format("{0},{1}", documentTypesIds, solutionsIds).Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
 				for (int i = 0; i < idsArray.Length - 1; i++)
 				{
 					query.AppendFormat("(int){0} ", idsArray[i]);

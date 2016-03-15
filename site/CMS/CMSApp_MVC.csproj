@@ -192,6 +192,8 @@
     <Compile Include="Controllers\Afton\NewsAndEventsController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
     <Compile Include="Helpers\AftonData.cs" />
+    <Compile Include="Helpers\ContentHelper.cs" />
+    <Compile Include="Helpers\RouteHelper.cs" />
     <Compile Include="Interfaces\IDocumentConstantProvider.cs" />
     <Compile Include="Interfaces\IFAQPageProvider.cs" />
     <Compile Include="Interfaces\ILeftNavigationProvider.cs" />
@@ -210,8 +212,6 @@
     <Compile Include="Controllers\Afton\SBUController.cs" />
     <Compile Include="Controllers\Afton\HomeController.cs" />
     <Compile Include="Controllers\Afton\MasterController.cs" />
-    <Compile Include="Helpers\SearchHelper.cs" />
-    <Compile Include="Helpers\RegionsHelper.cs" />
     <Compile Include="Controllers\Afton\SidebarPageController.cs" />
     <Compile Include="Models\Afton\NewsAndEvents\NewsAndEventsPage.cs" />
     <Compile Include="Models\Afton\Shared\Country.cs" />
@@ -228,6 +228,9 @@
     <Compile Include="Models\Afton\Shared\SideBarComponents\StayInformed.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\Term.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\TermsAndAcronymsPage.cs" />
+    <Compile Include="Models\ExtendedModels\Solution.cs" />
+    <Compile Include="Models\ExtendedModels\CustomNews.cs" />
+    <Compile Include="Models\ExtendedModels\Document.cs" />
     <Compile Include="Old_App_Code\GeneratePdf.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -240,9 +243,7 @@
     <Compile Include="Providers\LeftNavigationProvider.cs" />
     <Compile Include="Providers\LookupProvider.cs" />
     <Compile Include="Providers\PollSurveyAnswerProvider.cs" />
-    <Compile Include="Helpers\CultureHelper.cs" />
-    <Compile Include="Helpers\StringToGuidsConvertHelper.cs" />
-    <Compile Include="Helpers\DivideHelper.cs" />
+    <Compile Include="Helpers\UtilsHelper.cs" />
     <Compile Include="Infrastructure\Localization\IRouteValueTranslationProvider.cs" />
     <Compile Include="Infrastructure\Localization\RouteCollectionExtensions.cs" />
     <Compile Include="Infrastructure\Localization\RouteDictionary.cs" />
@@ -273,7 +274,6 @@
     <Compile Include="Interfaces\IMegaMenuThumbnailedItemProvider.cs" />
     <Compile Include="Interfaces\IContentMenuItemProvider.cs" />
     <Compile Include="Interfaces\IPagesMenuItemProvider.cs" />
-    <Compile Include="Helpers\ContentHelper.cs" />
     <Compile Include="Models\Afton\InsightsAndResources\InsightsResources.cs" />
     <Compile Include="Models\Afton\Shared\GenericPage.cs" />
     <Compile Include="Models\Afton\Shared\Link.cs" />
@@ -532,7 +532,6 @@
     <Content Include="Views\Afton\SelectionFilter\_documentTypeCheckBoxes.cshtml" />
     <Content Include="Views\Afton\SelectionFilter\_regionCheckBoxes.cshtml" />
     <Content Include="Views\Afton\SelectionFilter\_SBUCheckBoxes.cshtml" />
-    <Content Include="Views\Afton\SelectionFilter\_searchResults.cshtml" />
     <Content Include="css\maps\print.min.css.map" />
     <Content Include="Views\Afton\Shared\Sidebar\_sideBar.cshtml" />
     <Content Include="Views\Afton\Document\Index.cshtml" />
@@ -552,6 +551,7 @@
     <Content Include="Views\Afton\NewsAndEvents\Index.cshtml" />
     <Content Include="Views\Afton\NewsAndEvents\_tiles.cshtml" />
     <Content Include="Views\Afton\TermsAndAcronyms\Index.cshtml" />
+    <Content Include="Views\Afton\SelectionFilter\_searchResults.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

@@ -56,7 +56,7 @@ namespace CMS.Mvc.Controllers.Afton
             };
             model.SideBar = new SidebarViewModel
             {
-                Items = MapSidebar(_sidebarProvider.GetSideBarItems(StringToGuidsConvertHelper.ParseGuids(page.SidebarItems)), page)
+                Items = MapSidebar(_sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(page.SidebarItems)), page)
             };
 
             return View("~/Views/Afton/TermsAndAcronyms/Index.cshtml", model);

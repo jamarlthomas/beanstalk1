@@ -2,7 +2,7 @@
     <div class="cards4">
         @foreach (var tile in Model)
         {
-            <a href="#" class="cardC">
+            <a href="@tile.DocumentUrlPath" class="cardC">
                 <div class="cardHdrC">
                     <div class="cardHdr">@tile.Title</div>
                 </div>
@@ -16,4 +16,3 @@
         }
     </div>
 </div>
-

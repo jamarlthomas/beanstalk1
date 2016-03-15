@@ -71,7 +71,7 @@ namespace CMS.Mvc.Controllers.Afton
             }
             return PartialView("~/Views/Afton/Master/_header.cshtml", new MasterViewModel
             {
-                SelectedCulture = CultureHelper.GetCultureDisplayName(CultureInfo.CurrentCulture),
+                SelectedCulture = UtilsHelper.GetCultureDisplayName(CultureInfo.CurrentCulture),
                 MainNavList = mainNavList,
                 UtilityNavList = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems()),
 				Title = title

@@ -141,6 +141,23 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// View All Label.
+        /// </summary>
+        [DatabaseField]
+        public string ViewAllLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("ViewAllLabel"), "");
+            }
+            set
+            {
+                SetValue("ViewAllLabel", value);
+            }
+        }
+
+
+        /// <summary>
         /// Product Data Sheets Title.
         /// </summary>
         [DatabaseField]

@@ -59,7 +59,7 @@ namespace CMS.Mvc.Controllers.Afton
                 },
                 SideBar = new SidebarViewModel
                 {
-                    Items = MapSidebar(_sidebarProvider.GetSideBarItems(StringToGuidsConvertHelper.ParseGuids(document.SidebarItems)), document)
+                    Items = MapSidebar(_sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(document.SidebarItems)), document)
                 }
             });
         }
