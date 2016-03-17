@@ -13,6 +13,13 @@
             
             .officeName { font-weight: 700; color: #184a9e; }
             
+            a { color: #595959; text-decoration: none;
+               
+                @include breakpoint($bp3) {
+                    color: #4c9d2f;
+                }
+            }
+            
             //*** Breakpoints ***
             @include breakpoint($bp1) { @include gallery(6 of 12 break); }
             @include breakpoint($bp2) { 
@@ -21,6 +28,8 @@
                     clear: both;   
                 } 
             }//breapoint 3
+            
+            
             
             
         }//contactResultItem
