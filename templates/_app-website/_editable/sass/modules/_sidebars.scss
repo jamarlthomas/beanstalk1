@@ -30,16 +30,22 @@
             
             a.hasChildren:after { content: "\e900"; position: absolute; font: 13px icomoon; right: 10px; top: 50%; transform: translateY(-50%); }
             
-            a.active { background: #f3f3f3; color: #4c9d2f;
-                
-                &:after { content: "\e900"; position: absolute; font: 13px icomoon; right: 10px; top: 50%; transform: translateY(-50%) rotate(90deg); }
+            a.active { color: #0c419a;
             
+                &:hover { background: #4c9d2f; color: #FFF; }
+                
+            }//active
+            
+            a.open { background: #f3f3f3; 
+            
+                &:hover { background: #4c9d2f; color: #FFF; }
+                
             }
             
             //submenu
             li { border: none;
             
-                a { padding-left: 30px; background: #f3f3f3; color: #4c9d2f; }
+                a { padding-left: 30px; background: #f3f3f3; }
             }
             
         }//li
