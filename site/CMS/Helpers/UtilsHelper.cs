@@ -57,5 +57,10 @@ namespace CMS.Mvc.Helpers
             }
             return new string[] { LeftPart.ToString(), RightPart.ToString() };
         }
+
+        public static DateTime ConvertToCST(DateTime input)
+        {
+            return TimeZoneInfo.ConvertTime(input, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"));
+        }
     }
 }

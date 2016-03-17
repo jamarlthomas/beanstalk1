@@ -14,21 +14,21 @@ namespace CMS.Mvc.Controllers.Afton
     {
         private readonly IHeroContentProvider _heroContentProvider;
         private readonly IHomeProvider _homeProvider;
-        private readonly ITilesProvider _tilesProvider;
+        private readonly ITreeNodesProvider _treeNodesProvider;
         public HomeController()
         {
             _heroContentProvider = new HeroContentProvider();
             _homeProvider = new HomeProvider();
-            _tilesProvider = new TilesProvider();
+            _treeNodesProvider = new TreeNodesProvider();
         }
 
         public HomeController(IHeroContentProvider heroContentProvider,
             IHomeProvider homeProvider,
-            ITilesProvider tilesProvider)
+            ITreeNodesProvider treeNodesProvider)
         {
             _heroContentProvider = heroContentProvider;
             _homeProvider = homeProvider;
-            _tilesProvider = tilesProvider;
+            _treeNodesProvider = treeNodesProvider;
         }
 
         public ActionResult Index()
@@ -39,7 +39,7 @@ namespace CMS.Mvc.Controllers.Afton
                 PrimaryTiles = new List<TileViewModel>()
             };
             var home = _homeProvider.GetHomeItems().First();
-			foreach (var primaryTile in _tilesProvider.GetTiles(UtilsHelper.ParseGuids(home.ManagedBlocks)))
+			foreach (var primaryTile in _treeNodesProvider.GetTreeNodes(home.ManagedBlocks))
             {
 				var tile = AutoMapper.Mapper.Map<TileViewModel>(primaryTile);
                 if (primaryTile is Document)

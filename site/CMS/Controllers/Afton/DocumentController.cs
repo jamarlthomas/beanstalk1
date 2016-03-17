@@ -45,8 +45,8 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 documentViewModel.DocumentPublishFrom = (DateTime)document.GetValue("DocumentCreatedWhen");
             }
-            
-            documentViewModel.DocumentPublishFrom = TimeZoneInfo.ConvertTime(documentViewModel.DocumentPublishFrom, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"));
+
+            documentViewModel.DocumentPublishFrom = UtilsHelper.ConvertToCST(documentViewModel.DocumentPublishFrom);
             documentViewModel.Constant = MapData<DocumentConstant, DocumentConstantViewModel>(_documentConstantProvider.GetDocumentConstants().First());
             
             return View("~/Views/Afton/Document/Index.cshtml", new DocumentPageViewModel()

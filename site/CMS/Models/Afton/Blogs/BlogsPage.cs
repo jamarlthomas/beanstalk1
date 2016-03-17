@@ -17,21 +17,21 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(NewsAndEventsPage.CLASS_NAME, typeof(NewsAndEventsPage))]
+[assembly: RegisterDocumentType(BlogsPage.CLASS_NAME, typeof(BlogsPage))]
 
 namespace CMS.DocumentEngine.Types
 {
     /// <summary>
     /// Sample item class.
     /// </summary>
-    public partial class NewsAndEventsPage : TreeNode
+    public partial class BlogsPage : TreeNode
     {
         #region "Constants"
 
         /// <summary>
         /// Class name of the item.
         /// </summary>
-        public const string CLASS_NAME = "custom.NewsAndEventsPage";
+        public const string CLASS_NAME = "custom.BlogsPage";
 
         #endregion
 
@@ -39,18 +39,18 @@ namespace CMS.DocumentEngine.Types
         #region "Properties"
 
         /// <summary>
-        /// NewsAndEventsPageID.
+        /// BlogsPageID.
         /// </summary>
         [DatabaseField]
-        public int NewsAndEventsPageID
+        public int BlogsPageID
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("NewsAndEventsPageID"), 0);
+                return ValidationHelper.GetInteger(GetValue("BlogsPageID"), 0);
             }
             set
             {
-                SetValue("NewsAndEventsPageID", value);
+                SetValue("BlogsPageID", value);
             }
         }
 
@@ -90,23 +90,6 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// News And Events.
-        /// </summary>
-        [DatabaseField]
-        public string NewsAndEvents
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("NewsAndEvents"), "");
-            }
-            set
-            {
-                SetValue("NewsAndEvents", value);
-            }
-        }
-
-
-        /// <summary>
         /// Content Managed Tiles.
         /// </summary>
         [DatabaseField]
@@ -119,6 +102,23 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("ContentManagedTiles", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Read More Label.
+        /// </summary>
+        [DatabaseField]
+        public string ReadMoreLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("ReadMoreLabel"), "");
+            }
+            set
+            {
+                SetValue("ReadMoreLabel", value);
             }
         }
 
@@ -158,72 +158,37 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Read More Label.
+        /// All Categories Select Option.
         /// </summary>
         [DatabaseField]
-        public string ReadMoreLabel
+        public string AllCategoriesSelectOption
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("ReadMoreLabel"), "");
+                return ValidationHelper.GetString(GetValue("AllCategoriesSelectOption"), "");
             }
             set
             {
-                SetValue("ReadMoreLabel", value);
+                SetValue("AllCategoriesSelectOption", value);
             }
         }
 
 
         /// <summary>
-        /// All News Events Selector Value.
+        /// All Authors Select Option.
         /// </summary>
         [DatabaseField]
-        public string AllNewsEventsSelectorValue
+        public string AllAuthorsSelectOption
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("AllNewsEventsSelectorValue"), "");
+                return ValidationHelper.GetString(GetValue("AllAuthorsSelectOption"), "");
             }
             set
             {
-                SetValue("AllNewsEventsSelectorValue", value);
+                SetValue("AllAuthorsSelectOption", value);
             }
         }
-
-
-        /// <summary>
-        /// News Selector Value.
-        /// </summary>
-        [DatabaseField]
-        public string NewsSelectorValue
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("NewsSelectorValue"), "");
-            }
-            set
-            {
-                SetValue("NewsSelectorValue", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Events Selector Value.
-        /// </summary>
-        [DatabaseField]
-        public string EventsSelectorValue
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("EventsSelectorValue"), "");
-            }
-            set
-            {
-                SetValue("EventsSelectorValue", value);
-            }
-        }
-
 
         /// <summary>
         /// TilesLabel.
@@ -257,6 +222,7 @@ namespace CMS.DocumentEngine.Types
                 SetValue("ViewAllLabel", value);
             }
         }
+
 
         /// <summary>
         /// Posted Label.
@@ -315,7 +281,7 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Constructor.
         /// </summary>
-        public NewsAndEventsPage()
+        public BlogsPage()
             : base(CLASS_NAME)
         {
         }

@@ -1,7 +1,8 @@
-﻿﻿using CMS.DocumentEngine;
+﻿using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Helpers;
 using CMS.Localization;
+using CMS.Membership;
 using CMS.Mvc.Infrastructure.Models;
 using CMS.Mvc.ViewModels.Shared;
 using CMS.PortalEngine;
@@ -190,6 +191,14 @@ namespace CMS.Mvc.Helpers
                     Date = s.Field<string>("Created")
                 }).ToList()
             };
+        }
+
+        public static List<UserInfo> GetUsers()
+        {
+            return CacheHelper.Cache(cs =>
+            {
+                return UserInfoProvider.GetUsers().ToList();
+            }, new CacheSettings(CachingTime, "get_all_users"));
         }
 
         internal static List<T> GetSiblings<T>(T node) where T : TreeNode, new()

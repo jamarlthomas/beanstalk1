@@ -1,5 +1,5 @@
-﻿@using CMS.Mvc.ViewModels.NewsAndEvents
-@model NewsAndEventsPageViewModel
+﻿@using CMS.Mvc.ViewModels.Blogs
+@model BlogsPageViewModel
 @{
     ViewBag.Title = string.Empty;
     Layout = "~/Views/Afton/Shared/Master.cshtml";
@@ -8,8 +8,8 @@
 <div id="newsC">
     <div id="newsHdr" class="padTop padBtm">
         @{ Html.RenderPartial("~/Views/Afton/Shared/NewsEventsAndBlog/_header.cshtml", Model); }
-        @{ Html.RenderPartial("~/Views/Afton/NewsAndEvents/_selectors.cshtml", Model); }
+        @{ Html.RenderPartial("~/Views/Afton/Blogs/_selectors.cshtml", Model); }
     </div>
-    @{ Html.RenderPartial("~/Views/Afton/NewsAndEvents/_dataList.cshtml", Model); }
+    @{ Html.RenderPartial("~/Views/Afton/Blogs/_dataList.cshtml", Model); }
 </div>
 @{ Html.RenderPartial("~/Views/Afton/Shared/NewsEventsAndBlog/_tiles.cshtml", Model); }
