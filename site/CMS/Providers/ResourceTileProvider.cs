@@ -11,7 +11,7 @@ namespace CMS.Mvc.Providers
     {
         public List<TreeNode> GetTiles(string guids)
         {
-            return ContentHelper.GetDocsByGuids<TreeNode>(StringToGuidsConvertHelper.ParseGuids(guids));
+            return ContentHelper.GetDocsByGuids<TreeNode>(UtilsHelper.ParseGuids(guids));
         }
     }
 }

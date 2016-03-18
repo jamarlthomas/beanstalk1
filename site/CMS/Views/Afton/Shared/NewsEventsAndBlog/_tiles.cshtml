@@ -1,0 +1,26 @@
+﻿<div class="bgGray padTopBtm">
+    <div class="fullWidth">
+        <h2>@Model.TilesLabel</h2>
+    </div>
+    <div class="cardsSM_C">
+        <div class="cardsSM fourCol">
+            @foreach (var tile in Model.Tiles)
+            {
+                <a href="@tile.DocumentUrlPath">
+                    <div class="cardBtnIndicator"><img src="~/images/card-btn-indicator.png"></div>
+                    <div style="background-image: url(@(string.IsNullOrEmpty(tile.HomeImage) ? string.Empty : Url.Content(tile.HomeImage))" class="cardHdrC"></div>
+                    <div class="cardTextAreaC">
+                        <div class="cardTextArea">
+                            <div class="cardType">@tile.TypeName</div>
+                            <div class="cardHdrText">@tile.Title</div>
+                            <div class="cardSubHdr">@tile.Copy</div>
+                            <div class="cardTxt">@Html.Raw(tile.Description)</div>
+                        </div>
+                        <div class="cardDate">@tile.Date.ToString("MMM dd, yyyy")</div>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+    <div class="fullWidth"><a href="#" class="viewAllBtn">@Model.ViewAllLabel @Model.TilesLabel</a></div>
+</div>

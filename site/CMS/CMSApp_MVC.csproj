@@ -60,6 +60,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.MediaLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.Membership, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.Membership.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.Search, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.Search.dll</HintPath>
@@ -188,20 +192,30 @@
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
     <Compile Include="Controllers\Afton\FAQController.cs" />
+    <Compile Include="Controllers\Afton\BlogsController.cs" />
     <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
     <Compile Include="Controllers\Afton\NewsAndEventsController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
     <Compile Include="Helpers\AftonData.cs" />
+    <Compile Include="Helpers\ContentHelper.cs" />
+    <Compile Include="Helpers\RouteHelper.cs" />
+    <Compile Include="Interfaces\IBlogPostProvider.cs" />
+    <Compile Include="Interfaces\IBlogCategoryProvider.cs" />
     <Compile Include="Interfaces\IDocumentConstantProvider.cs" />
     <Compile Include="Interfaces\IFAQPageProvider.cs" />
+    <Compile Include="Interfaces\IUsersProvider.cs" />
     <Compile Include="Interfaces\ILeftNavigationProvider.cs" />
     <Compile Include="Interfaces\ILookupProvider.cs" />
+    <Compile Include="Interfaces\IBlogsPageProvider.cs" />
     <Compile Include="Interfaces\ITermProvider.cs" />
     <Compile Include="Interfaces\ITermsAndAcronymsPageProvider.cs" />
     <Compile Include="Interfaces\INewsAndEventsPageProvier.cs" />
     <Compile Include="Interfaces\IPollSurveyAnswerProvider.cs" />
     <Compile Include="Interfaces\IFAQTopicProvider.cs" />
     <Compile Include="Interfaces\ISidebarProvider.cs" />
+    <Compile Include="Models\Afton\Blogs\BlogCategory.cs" />
+    <Compile Include="Models\Afton\Blogs\BlogPost.cs" />
+    <Compile Include="Models\Afton\Blogs\BlogsPage.cs" />
     <Compile Include="Models\Afton\FAQ\FAQPage.cs" />
     <Compile Include="Controllers\Afton\DocumentController.cs" />
     <Compile Include="Controllers\Afton\InsightsAndResourcesController.cs" />
@@ -210,8 +224,6 @@
     <Compile Include="Controllers\Afton\SBUController.cs" />
     <Compile Include="Controllers\Afton\HomeController.cs" />
     <Compile Include="Controllers\Afton\MasterController.cs" />
-    <Compile Include="Helpers\SearchHelper.cs" />
-    <Compile Include="Helpers\RegionsHelper.cs" />
     <Compile Include="Controllers\Afton\SidebarPageController.cs" />
     <Compile Include="Models\Afton\NewsAndEvents\NewsAndEventsPage.cs" />
     <Compile Include="Models\Afton\Shared\Country.cs" />
@@ -228,21 +240,27 @@
     <Compile Include="Models\Afton\Shared\SideBarComponents\StayInformed.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\Term.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\TermsAndAcronymsPage.cs" />
+    <Compile Include="Models\ExtendedModels\BlogPost.cs" />
+    <Compile Include="Models\ExtendedModels\Solution.cs" />
+    <Compile Include="Models\ExtendedModels\CustomNews.cs" />
+    <Compile Include="Models\ExtendedModels\Document.cs" />
     <Compile Include="Old_App_Code\GeneratePdf.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Providers\BlogPostProvider.cs" />
     <Compile Include="Providers\DocumentConstantProvider.cs" />
+    <Compile Include="Providers\BlogCategoryProvider.cs" />
+    <Compile Include="Providers\UsersProvider.cs" />
     <Compile Include="Providers\FAQPageProvider.cs" />
     <Compile Include="Providers\FAQTopicProvider.cs" />
+    <Compile Include="Providers\BlogsPageProvider.cs" />
     <Compile Include="Providers\TermProvider.cs" />
     <Compile Include="Providers\TermsAndAcronymsPageProvider.cs" />
     <Compile Include="Providers\NewsAndEventsPageProvier.cs" />
     <Compile Include="Providers\LeftNavigationProvider.cs" />
     <Compile Include="Providers\LookupProvider.cs" />
     <Compile Include="Providers\PollSurveyAnswerProvider.cs" />
-    <Compile Include="Helpers\CultureHelper.cs" />
-    <Compile Include="Helpers\StringToGuidsConvertHelper.cs" />
-    <Compile Include="Helpers\DivideHelper.cs" />
+    <Compile Include="Helpers\UtilsHelper.cs" />
     <Compile Include="Infrastructure\Localization\IRouteValueTranslationProvider.cs" />
     <Compile Include="Infrastructure\Localization\RouteCollectionExtensions.cs" />
     <Compile Include="Infrastructure\Localization\RouteDictionary.cs" />
@@ -273,7 +291,6 @@
     <Compile Include="Interfaces\IMegaMenuThumbnailedItemProvider.cs" />
     <Compile Include="Interfaces\IContentMenuItemProvider.cs" />
     <Compile Include="Interfaces\IPagesMenuItemProvider.cs" />
-    <Compile Include="Helpers\ContentHelper.cs" />
     <Compile Include="Models\Afton\InsightsAndResources\InsightsResources.cs" />
     <Compile Include="Models\Afton\Shared\GenericPage.cs" />
     <Compile Include="Models\Afton\Shared\Link.cs" />
@@ -307,7 +324,7 @@
     <Compile Include="Providers\SelectionFilterPageProvider.cs" />
     <Compile Include="Providers\DocumentProvider.cs" />
     <Compile Include="Providers\InsightsResourcesProvider.cs" />
-    <Compile Include="Providers\TilesProvider.cs" />
+    <Compile Include="Providers\TreeNodesProvider.cs" />
     <Compile Include="Providers\HomeProvider.cs" />
     <Compile Include="Providers\DocumentTypeProvider.cs" />
     <Compile Include="Providers\FooterNavItemProvider.cs" />
@@ -321,11 +338,16 @@
     <Compile Include="Providers\SolutionBusinessUnitProvider.cs" />
     <Compile Include="Providers\ContentMenuItemProvider.cs" />
     <Compile Include="Providers\PagesMenuItemProvider.cs" />
+    <Compile Include="ViewModels\Blogs\SelectorItemViewModel.cs" />
+    <Compile Include="ViewModels\Blogs\BlogPostViewModel.cs" />
+    <Compile Include="ViewModels\Blogs\BlogsPageViewModel.cs" />
     <Compile Include="ViewModels\Document\DocumentConstantViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQPageViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQTopicViewModel.cs" />
     <Compile Include="ViewModels\NewsAndEvents\NewsAndEventsPageViewModel.cs" />
+    <Compile Include="ViewModels\NewsAndEvents\NewsAndEventViewModel.cs" />
     <Compile Include="ViewModels\Product\LeftSideBlockViewModel.cs" />
+    <Compile Include="ViewModels\Shared\NewsEventsAndBlogBasePageViewModel.cs" />
     <Compile Include="ViewModels\Shared\ProductViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\DocumentBlockViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\DocumentsWidgetViewModel.cs" />
@@ -532,7 +554,6 @@
     <Content Include="Views\Afton\SelectionFilter\_documentTypeCheckBoxes.cshtml" />
     <Content Include="Views\Afton\SelectionFilter\_regionCheckBoxes.cshtml" />
     <Content Include="Views\Afton\SelectionFilter\_SBUCheckBoxes.cshtml" />
-    <Content Include="Views\Afton\SelectionFilter\_searchResults.cshtml" />
     <Content Include="css\maps\print.min.css.map" />
     <Content Include="Views\Afton\Shared\Sidebar\_sideBar.cshtml" />
     <Content Include="Views\Afton\Document\Index.cshtml" />
@@ -550,8 +571,16 @@
     <Content Include="Views\Afton\Shared\Sidebar\_leftSideBlock.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_stayInformed.cshtml" />
     <Content Include="Views\Afton\NewsAndEvents\Index.cshtml" />
-    <Content Include="Views\Afton\NewsAndEvents\_tiles.cshtml" />
+    <Content Include="Views\Afton\Shared\NewsEventsAndBlog\_tiles.cshtml" />
     <Content Include="Views\Afton\TermsAndAcronyms\Index.cshtml" />
+    <Content Include="Views\Afton\SelectionFilter\_searchResults.cshtml" />
+    <Content Include="Views\Afton\Shared\NewsEventsOrBlogLayout.cshtml" />
+    <Content Include="Views\Afton\Shared\NewsEventsAndBlog\_header.cshtml" />
+    <Content Include="Views\Afton\NewsAndEvents\_selectors.cshtml" />
+    <Content Include="Views\Afton\NewsAndEvents\_dataList.cshtml" />
+    <Content Include="Views\Afton\Blogs\Index.cshtml" />
+    <Content Include="Views\Afton\Blogs\_dataList.cshtml" />
+    <Content Include="Views\Afton\Blogs\_selectors.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

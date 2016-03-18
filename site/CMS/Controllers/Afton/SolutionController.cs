@@ -36,7 +36,7 @@ namespace CMS.Mvc.Controllers.Afton
 			var solution = solutions.First(f => f.Title == name);
 			var solutionViewModel = MapData<Solution, SolutionViewModel>(solution);
 			solutionViewModel.SidebarSolutions = MapData<Solution, SolutionViewModel>(solutions);
-			var featuredProductListGuids = StringToGuidsConvertHelper.ParseGuids(solution.FeaturedProductList).Take(4).ToList();
+			var featuredProductListGuids = UtilsHelper.ParseGuids(solution.FeaturedProductList).Take(4).ToList();
 			solutionViewModel.Products = MapData<Product, ProductViewModel>(_productProvider.GetProductItems(featuredProductListGuids, solution.Site.DisplayName));
 			solutionViewModel.ParentName = parentName;
 			return View("~/Views/Afton/Solution/Index.cshtml", solutionViewModel);

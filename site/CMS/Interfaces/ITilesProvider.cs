@@ -4,8 +4,9 @@ using System.Collections.Generic;
 
 namespace CMS.Mvc.Interfaces
 {
-    public interface ITilesProvider
+    public interface ITreeNodesProvider
     {
-        List<TreeNode> GetTiles(List<Guid> guids);
+        List<TreeNode> GetTreeNodes(List<Guid> guids);
+        List<TreeNode> GetTreeNodes(string guids);
     }
 }
