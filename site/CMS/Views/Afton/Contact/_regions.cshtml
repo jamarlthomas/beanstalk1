@@ -1,0 +1,10 @@
+﻿<h2>Regions</h2>
+@foreach (var region in Model)
+{
+    <p>
+        <h3>@region.Title</h3>
+        @Html.Raw(region.Address)<br />
+        @region.CountryName <br />
+        @region.Phone <br />
+    </p>
+}

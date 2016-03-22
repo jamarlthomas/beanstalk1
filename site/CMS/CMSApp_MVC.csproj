@@ -191,6 +191,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
+    <Compile Include="Controllers\Afton\ContactController.cs" />
+    <Compile Include="Controllers\Afton\EmergencyResponseViewMode.cs" />
     <Compile Include="Controllers\Afton\FAQController.cs" />
     <Compile Include="Controllers\Afton\BlogsController.cs" />
     <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
@@ -202,7 +204,11 @@
     <Compile Include="Interfaces\IBlogPostProvider.cs" />
     <Compile Include="Interfaces\IBlogCategoryProvider.cs" />
     <Compile Include="Interfaces\IDocumentConstantProvider.cs" />
+    <Compile Include="Interfaces\ICountryProvider.cs" />
+    <Compile Include="Interfaces\ISalesOfficeProvider.cs" />
+    <Compile Include="Interfaces\IRegionProvider.cs" />
     <Compile Include="Interfaces\IFAQPageProvider.cs" />
+    <Compile Include="Interfaces\IContactPageProvider.cs" />
     <Compile Include="Interfaces\IUsersProvider.cs" />
     <Compile Include="Interfaces\ILeftNavigationProvider.cs" />
     <Compile Include="Interfaces\ILookupProvider.cs" />
@@ -216,6 +222,8 @@
     <Compile Include="Models\Afton\Blogs\BlogCategory.cs" />
     <Compile Include="Models\Afton\Blogs\BlogPost.cs" />
     <Compile Include="Models\Afton\Blogs\BlogsPage.cs" />
+    <Compile Include="Models\Afton\Contact\SalesOffice.cs" />
+    <Compile Include="Models\Afton\Contact\ContactPage.cs" />
     <Compile Include="Models\Afton\FAQ\FAQPage.cs" />
     <Compile Include="Controllers\Afton\DocumentController.cs" />
     <Compile Include="Controllers\Afton\InsightsAndResourcesController.cs" />
@@ -248,8 +256,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Providers\BlogPostProvider.cs" />
+    <Compile Include="Providers\SalesOfficeProvider.cs" />
     <Compile Include="Providers\DocumentConstantProvider.cs" />
     <Compile Include="Providers\BlogCategoryProvider.cs" />
+    <Compile Include="Providers\ContactPageProvider.cs" />
+    <Compile Include="Providers\RegionProvider.cs" />
+    <Compile Include="Providers\CountryProvider.cs" />
     <Compile Include="Providers\UsersProvider.cs" />
     <Compile Include="Providers\FAQPageProvider.cs" />
     <Compile Include="Providers\FAQTopicProvider.cs" />
@@ -341,12 +353,16 @@
     <Compile Include="ViewModels\Blogs\SelectorItemViewModel.cs" />
     <Compile Include="ViewModels\Blogs\BlogPostViewModel.cs" />
     <Compile Include="ViewModels\Blogs\BlogsPageViewModel.cs" />
+    <Compile Include="ViewModels\Contact\ContactPageViewModel.cs" />
+    <Compile Include="ViewModels\Contact\CountryViewModel.cs" />
+    <Compile Include="ViewModels\Contact\ContactRegionViewModel.cs" />
     <Compile Include="ViewModels\Document\DocumentConstantViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQPageViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQTopicViewModel.cs" />
     <Compile Include="ViewModels\NewsAndEvents\NewsAndEventsPageViewModel.cs" />
     <Compile Include="ViewModels\NewsAndEvents\NewsAndEventViewModel.cs" />
     <Compile Include="ViewModels\Product\LeftSideBlockViewModel.cs" />
+    <Compile Include="ViewModels\Shared\EmergencyResponseViewModel.cs" />
     <Compile Include="ViewModels\Shared\NewsEventsAndBlogBasePageViewModel.cs" />
     <Compile Include="ViewModels\Shared\ProductViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\DocumentBlockViewModel.cs" />
@@ -581,6 +597,10 @@
     <Content Include="Views\Afton\Blogs\Index.cshtml" />
     <Content Include="Views\Afton\Blogs\_dataList.cshtml" />
     <Content Include="Views\Afton\Blogs\_selectors.cshtml" />
+    <Content Include="Views\Afton\Contact\Index.cshtml" />
+    <Content Include="Views\Afton\Contact\_form.cshtml" />
+    <Content Include="Views\Afton\Shared\_emergencyResponse.cshtml" />
+    <Content Include="Views\Afton\Contact\_regions.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
