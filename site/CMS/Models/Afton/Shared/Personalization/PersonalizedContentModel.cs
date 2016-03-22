@@ -56,7 +56,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// 
+        /// Persona.
         /// </summary>
         [DatabaseField]
         public string Persona
@@ -90,7 +90,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Default.
+        /// If True, use this content item as reference for the case that persona is not determinable.
         /// </summary>
         [DatabaseField]
         public bool Default

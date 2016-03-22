@@ -20,21 +20,28 @@ namespace CMS.Mvc.ActionFilters
             AddActivity(ActivityType, ActivityTitleTemplate);
             base.OnActionExecuted(filterContext);
         }
-
         protected abstract string ActivityType { get; }
         protected abstract string ActivityTitleTemplate { get; }
-
         private IDictionary Items { get; set; }
-        private int _nodeId;
-        private string _path;
-        private ContactInfo _currentContact;
+        protected int NodeId;
+        protected string Path;
+        protected ContactInfo CurrentContact;
+        protected string ObjectName;
 
         private void Initialize(ActionExecutedContext filterContext)
         {
             InitContextItems(filterContext);
-            _nodeId = GetNodeId();
-            _path = GetPath();
-            _currentContact = GetCurrentContact();
+            NodeId = GetNodeId();
+            Path = GetPath();
+            ObjectName = GetObjectName();
+            CurrentContact = GetCurrentContact();
+        }
+
+        private string GetObjectName()
+        {
+            return (Items[ContentHelper.ObjectNameKey] != null)
+               ? (string)Items[ContentHelper.ObjectNameKey]
+               : string.Empty;
         }
         private ContactInfo GetCurrentContact()
         {
@@ -56,17 +63,18 @@ namespace CMS.Mvc.ActionFilters
         }
         private void AddActivity(string activityType, string activityTitleTemplate)
         {
-            if (_nodeId != 0 || !string.IsNullOrWhiteSpace(_path))
+            if (NodeId != 0 || !string.IsNullOrWhiteSpace(Path))
             {
 
                 var activity = new ActivityInfo()
                 {
+                    ActivityNodeID = NodeId,
                     ActivityType = activityType,
-                    ActivityTitle = string.Format(activityTitleTemplate, _nodeId),
+                    ActivityTitle = string.Format(activityTitleTemplate, NodeId),
                     ActivitySiteID = SiteContext.CurrentSiteID,
-                    ActivityOriginalContactID = _currentContact.ContactID,
-                    ActivityActiveContactID = _currentContact.ContactID,
-                    ActivityURL = _path
+                    ActivityOriginalContactID = CurrentContact.ContactID,
+                    ActivityActiveContactID = CurrentContact.ContactID,
+                    ActivityURL = Path
                 };
                 ActivityInfoProvider.SetActivityInfo(activity);
             }
@@ -75,6 +83,7 @@ namespace CMS.Mvc.ActionFilters
         {
             Items.Remove(ContentHelper.NodeIdKey);
             Items.Remove(ContentHelper.NodeAliasPathKey);
+            Items.Remove(ContentHelper.ObjectNameKey);
         }
     }
 }

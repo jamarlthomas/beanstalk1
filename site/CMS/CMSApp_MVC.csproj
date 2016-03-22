@@ -207,7 +207,6 @@
     <Compile Include="ActionFilters\BaseActivityFilter.cs" />
     <Compile Include="ActionFilters\PageVisitActivity.cs" />
     <Compile Include="ActionFilters\DownloadActivity.cs" />
-    <Compile Include="ActionFilters\PageViewActionFilter.cs" />
     <Compile Include="ActionFilters\PrintActivity.cs" />
     <Compile Include="ActionFilters\RateActivity.cs" />
     <Compile Include="ActionFilters\ShareActivity.cs" />
@@ -269,6 +268,7 @@
     <Compile Include="Providers\DocumentConstantProvider.cs" />
     <Compile Include="Providers\FAQPageProvider.cs" />
     <Compile Include="Providers\FAQTopicProvider.cs" />
+    <Compile Include="Models\Afton\Shared\Personalization\PersonalizedContent.cs" />
     <Compile Include="Providers\TermProvider.cs" />
     <Compile Include="Providers\TermsAndAcronymsPageProvider.cs" />
     <Compile Include="Providers\NewsAndEventsPageProvier.cs" />

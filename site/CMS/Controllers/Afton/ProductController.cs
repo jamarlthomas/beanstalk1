@@ -14,11 +14,11 @@ namespace CMS.Mvc.Controllers.Afton
     public class ProductController: SidebarPageController
     {
         private readonly IProductProvider _productProvider;
-        private readonly PersonalisationProvider<InsightsResources> _personalisationProvider;
+        private readonly IPersonalisationProvider<Document> _personalisationProvider;
         public ProductController()
         {
             _productProvider = new ProductProvider();
-            _personalisationProvider = new PersonalisationProvider<InsightsResources>();
+            _personalisationProvider = new PersonalisationProvider<Document>();
         }
 
         //[Route("Product/{alias}")]
@@ -42,7 +42,9 @@ namespace CMS.Mvc.Controllers.Afton
 
         private List<InsightsAndResourcesCard> GetInsightAndResourcesCards()
         {
-            return MapData<InsightsResources, InsightsAndResourcesCard>(_personalisationProvider.GetPersonalizedItems());
+            var irs = MapData<Document, InsightsAndResourcesCard>(_personalisationProvider.GetPersonalizedItems());
+            return irs;
+            
         }
 
         private RelatedProductsViewModel GetRelatedProductsWidget(Product product)

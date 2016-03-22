@@ -39,6 +39,7 @@ namespace CMS.Mvc.Helpers
         private static readonly TreeProvider _treeProvider = new TreeProvider();
         public const string NodeIdKey = "PageViewNodeId";
         public const string NodeAliasPathKey = "PageViewDocumentPath";
+        public const string ObjectNameKey = "ObjectName";
         public static List<TreeNode> GetAllNodes()
         {
             if (PortalContext.ViewMode == ViewModeEnum.Preview)
@@ -189,7 +190,7 @@ namespace CMS.Mvc.Helpers
                             node = CacheHelper.Cache(cs =>
                             {
                                 TreeProvider tree = new TreeProvider();
-                                var doc = tree.SelectNodes(className).Published()
+                                var doc = tree.SelectNodes(className)//.Published()
                                     .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                                     .FirstOrDefault(predicate);
                                 if (string.IsNullOrWhiteSpace(cacheDependencyKey))
@@ -222,16 +223,17 @@ namespace CMS.Mvc.Helpers
             }
 
             if (node != null)
-                SaveNodeId(node);
+                SaveNode(node);
             return node;
         }
 
-        private static void SaveNodeId(TreeNode node)
+        private static void SaveNode(TreeNode node)
         {
             if (context.Items[ContentHelper.NodeIdKey] == null)
             {
                 context.Items[ContentHelper.NodeIdKey] = node.NodeID;
                 context.Items[ContentHelper.NodeAliasPathKey] = node.NodeAliasPath;
+                context.Items[ContentHelper.ObjectNameKey] = node.NodeAlias;
             }
         }
 
@@ -290,7 +292,7 @@ namespace CMS.Mvc.Helpers
                     .ToList();
         }
 
-        public static List<T> GetPersonalizedContent<T>() where T : new()
+        public static List<T> GetPersonalizedContent<T>(string className) where T : new()
         {
             return new List<T>() { new T() };
         }

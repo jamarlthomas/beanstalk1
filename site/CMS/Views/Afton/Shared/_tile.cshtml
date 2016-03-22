@@ -24,12 +24,17 @@
 						<div class="cardDate">@item.Date.Value.ToString("MMMM dd, yyyy")</div>
 					}
 				</div>
-				<div style="opacity: 0.0;" class="hoverOverlayC">
-					<div class="hoverOverlay">
-						<div class="hoverOverlayTxt">@(item.HoverContent ?? "Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late...")</div>
-					</div>
-					<div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-				</div><img src="@Url.Content(item.HomeImage)">
+			    <div style="opacity: 0.0;" class="hoverOverlayC">
+			        <div class="hoverOverlay">
+			            <div class="hoverOverlayTxt">@(item.HoverContent ?? "Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late...")</div>
+			        </div>
+			        <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+			    </div>
+			    @if (!string.IsNullOrWhiteSpace(item.HomeImage))
+			    {
+			        <img src="@Url.Content(item.HomeImage)"/>
+			    }
+                
 			</a>
 		}
 	</div>

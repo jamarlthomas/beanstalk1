@@ -7,5 +7,6 @@ namespace CMS.Mvc.ViewModels.Home
     {
         public List<HeroContentViewModel> HeroContentList { get; set; }
         public List<TileViewModel> PrimaryTiles { get; set; }
+        public List<TileViewModel> TrendingTiles { get; set; } 
     }
 }
