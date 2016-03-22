@@ -7,6 +7,5 @@ namespace CMS.Mvc.Interfaces
     public interface IContactPageProvider
     {
         ContactPage GetContactPage();
-        List<BreadCrumbLinkItemViewModel> GetBreadcrumb(string name);
     }
 }

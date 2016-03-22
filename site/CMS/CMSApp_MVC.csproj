@@ -195,6 +195,7 @@
     <Compile Include="Controllers\Afton\EmergencyResponseViewMode.cs" />
     <Compile Include="Controllers\Afton\FAQController.cs" />
     <Compile Include="Controllers\Afton\BlogsController.cs" />
+    <Compile Include="Controllers\Afton\ATCToolsController.cs" />
     <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
     <Compile Include="Controllers\Afton\NewsAndEventsController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
@@ -219,6 +220,7 @@
     <Compile Include="Interfaces\IPollSurveyAnswerProvider.cs" />
     <Compile Include="Interfaces\IFAQTopicProvider.cs" />
     <Compile Include="Interfaces\ISidebarProvider.cs" />
+    <Compile Include="Models\Afton\ATCTools\ATCToolsPage.cs" />
     <Compile Include="Models\Afton\Blogs\BlogCategory.cs" />
     <Compile Include="Models\Afton\Blogs\BlogPost.cs" />
     <Compile Include="Models\Afton\Blogs\BlogsPage.cs" />

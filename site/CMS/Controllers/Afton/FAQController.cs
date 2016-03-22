@@ -17,6 +17,7 @@ namespace CMS.Mvc.Controllers.Afton
         public readonly IFAQPageProvider _faqPageProvider = new FAQPageProvider();
         public readonly IFAQTopicProvider _faqTopicProvider = new FAQTopicProvider();
         public readonly IInsightsResourcesProvider _insightsResourcesProvider = new InsightsResourcesProvider();
+        public readonly ITreeNodesProvider _treeNodesProvider = new TreeNodesProvider();
 
         public ActionResult Index()
         {
@@ -37,7 +38,7 @@ namespace CMS.Mvc.Controllers.Afton
                 }).ToList(),
                 BreadCrumb = new BreadCrumbViewModel
                 {
-                    BreadcrumbLinkItems = _faqPageProvider.GetBreadcrumb(page.NodeAlias)
+                    BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(page.DocumentGUID)
                 }
             };
             return View("~/Views/Afton/FAQ/Index.cshtml", model);

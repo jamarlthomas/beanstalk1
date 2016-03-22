@@ -44,7 +44,7 @@ namespace CMS.Mvc.Controllers.Afton
             var viewModel = MapData<ContactPage, ContactPageViewModel>(page);
             viewModel.BreadCrumb = new BreadCrumbViewModel
             {
-                BreadcrumbLinkItems = _contactPageProvider.GetBreadcrumb(page.NodeName)
+                BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(page.DocumentGUID)
             };
 
             viewModel.EmergencyResponse = MapData<ContactPage, EmergencyResponseViewModel>(page);
