@@ -13,6 +13,6 @@ namespace CMS.Mvc.ViewModels.Blogs
         public string BlogPostBody { get; set; }
         public string AuthorName { get; set; }
         public Guid BlogPostTeaser { get; set; }
-        public string DocumentUrlPath { get; set; }
+        public string DocumentNamePath { get; set; }
     }
 }

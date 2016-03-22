@@ -7,7 +7,7 @@
                 <h2>@item.Title</h2>
                 <div class="newsInfo">@Model.PostedLabel @item.Date.ToString("M/d/yy | h:mm tt CST")</div>
                 <div class="newsTxt">@Html.Raw(item.Description)</div>
-                <a href="@item.DocumentUrlPath" class="newsMore">@Model.ReadMoreLabel</a>
+                <a href="@item.DocumentNamePath" class="newsMore">@Model.ReadMoreLabel</a>
             </div>
         </div>
     }
