@@ -9,7 +9,5 @@ namespace CMS.Mvc.Interfaces
     public interface ISidebarProvider
     {
         List<TreeNode> GetSideBarItems(IEnumerable<Guid> ids);
-
-        List<Country> GetCountries();
     }
 }

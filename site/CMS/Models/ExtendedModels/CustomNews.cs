@@ -1,5 +1,4 @@
-﻿
-namespace CMS.DocumentEngine.Types
+﻿namespace CMS.DocumentEngine.Types
 {
     public partial class CustomNews
     {

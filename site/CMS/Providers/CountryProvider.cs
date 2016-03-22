@@ -7,12 +7,11 @@ using CMS.Mvc.Interfaces;
 
 namespace CMS.Mvc.Providers
 {
-    public class SidebarProvider : ISidebarProvider
+    public class CountryProvider : ICountryProvider
     {
-        public List<TreeNode> GetSideBarItems(IEnumerable<Guid> ids)
+        public List<Country> GetCountries()
         {
-            var nodes = ContentHelper.GetDocsByGuids<TreeNode>(ids);
-            return nodes;
+            return ContentHelper.GetDocs<Country>(Country.CLASS_NAME);
         }
     }
 }

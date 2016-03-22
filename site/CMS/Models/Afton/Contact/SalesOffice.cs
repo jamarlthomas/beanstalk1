@@ -17,21 +17,21 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(Region.CLASS_NAME, typeof(Region))]
+[assembly: RegisterDocumentType(SalesOffice.CLASS_NAME, typeof(SalesOffice))]
 
 namespace CMS.DocumentEngine.Types
 {
     /// <summary>
     /// Sample item class.
     /// </summary>
-    public partial class Region : TreeNode
+    public partial class SalesOffice : TreeNode
     {
         #region "Constants"
 
         /// <summary>
         /// Class name of the item.
         /// </summary>
-        public const string CLASS_NAME = "custom.Region";
+        public const string CLASS_NAME = "custom.SalesOffice";
 
         #endregion
 
@@ -39,18 +39,18 @@ namespace CMS.DocumentEngine.Types
         #region "Properties"
 
         /// <summary>
-        /// RegionID.
+        /// SalesOfficeID.
         /// </summary>
         [DatabaseField]
-        public int RegionID
+        public int SalesOfficeID
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("RegionID"), 0);
+                return ValidationHelper.GetInteger(GetValue("SalesOfficeID"), 0);
             }
             set
             {
-                SetValue("RegionID", value);
+                SetValue("SalesOfficeID", value);
             }
         }
 
@@ -73,18 +73,69 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Description.
+        /// Address.
         /// </summary>
         [DatabaseField]
-        public string Description
+        public string Address
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Description"), "");
+                return ValidationHelper.GetString(GetValue("Address"), "");
             }
             set
             {
-                SetValue("Description", value);
+                SetValue("Address", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Country.
+        /// </summary>
+        [DatabaseField]
+        public string Country
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Country"), "");
+            }
+            set
+            {
+                SetValue("Country", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Phone.
+        /// </summary>
+        [DatabaseField]
+        public string Phone
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Phone"), "");
+            }
+            set
+            {
+                SetValue("Phone", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Serving Countries.
+        /// </summary>
+        [DatabaseField]
+        public string ServingCountries
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("ServingCountries"), "");
+            }
+            set
+            {
+                SetValue("ServingCountries", value);
             }
         }
 
@@ -96,7 +147,7 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Constructor.
         /// </summary>
-        public Region()
+        public SalesOffice()
             : base(CLASS_NAME)
         {
         }
