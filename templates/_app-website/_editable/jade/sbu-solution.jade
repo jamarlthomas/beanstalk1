@@ -62,27 +62,56 @@ html(lang='en')
 
 
                 div(id="lftCol-sidebar")
-                    div(id="sidbarHdrC")
+                    div(id="sidebarHdrC")
                         h2 Lubricant Component Solutions
 
-                    div(id="sidbarNavC")
+                    div(id="sidebarNavC")
                         ul
                             li: a(href="#") Couplers
-                            li: a(href="#") Detergents & Corrosion Inhibitors
-                            li: a(href="#") Dispersants & Emulsifiers
-                            li: a(href="#") Extreme Pressure Agents & Antiwear Agents
+                            li: a(href="#" class="hasChildren") Detergents & Corrosion Inhibitors
+                            li
+                                a(href="#" class="open active") Dispersants & Emulsifiers
+                                ul
+                                    li: a(href="#") Tertiary Navigation
+                                    li: a(href="#") Tertiary Navigation
+                                    li: a(href="#") Tertiary Navigation
+                                    
+                            li: a(href="#" class="hasChildren") Extreme Pressure Agents & Antiwear Agents
                             li: a(href="#") Foam Inhibitors
-                            li: a(href="#") Friction Modifiers
+                            li: a(href="#" class="hasChildren") Friction Modifiers
                             li: a(href="#") Pour Point Depressants
                             li: a(href="#") Seal Swell Additives
                             li: a(href="#") Tackiness Additives
                             li: a(href="#") Thickeners & Viscosity Index Improvers 
 
-                    div(class="sidbarBoxC")
+                    div(class="sidebarBoxC")
+                        
                         div(class="hdr") Stay Informed
                         div(class="txt") Um sundae culles aboritia as aut acit volorum eumqui quam quidele secatec toratemquam.
-                        input(type="text" class="txtBox" placeholder="Email Address")
-                        input(type="submit" class="submitBtn" value="Submit")
+                        
+                        form
+                            div(class="customSelectC standard")
+                              div(class="orgSelect")
+                                select(name="Countries")
+                                    option(value="") Select Newsletter Language
+                                    option(value="English") English
+                                    option(value="Chinese") 简体中文
+                                    option(value="Germain") German
+                                    option(value="Japenese") 日本語
+                                    option(value="Russian") Russian
+                                    option(value="Spanish") Español
+                                    option(value="Português") Português
+                                    option(value="French") French
+                            br
+                            br
+                            input(type="text" class="txtBox" placeholder="Email Address")
+                            input(type="submit" class="submitBtn" value="Submit")
+                            br 
+                            br
+                            
+                        div(class="txt") 
+                            a(href="#") Learn More
+                            | &nbsp; about our newsletter.
 
 
 
@@ -90,60 +119,72 @@ html(lang='en')
                 div(class="fullWidth")
                         h2 Automotive Gear Products
 
-                div(class="cards2C")
-                    div(class="cards2")
+                div(class="cardsSM_C")
+                    div(class="cardsSM fourCol")
 
                         a(href="#")
 
                             div(class="cardBtnIndicator")
                                 img(src="images/card-btn-indicator.png") 
+                            
+                            div(class="cardHdrC" style="background-image: url(page-images/cards/sample-cardv2a.jpg);")
 
-                            img(src="page-images/cards/sample-cardv2.jpg")
-
-                            div(class="textAreaC")
-                                div(class="cardTitle") Driveline Additives
-                                div(class="cardHdr") HiTEC® 349
-                                div(class="cardSubHdr") Manual Transmissions
-                                div(class="cardTxt") The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials. 
-
+                            div(class="cardTextAreaC")
+                                div(class="cardTextArea")
+                                    div(class="cardType") Driveline Additives
+                                    div(class="cardHdrText") HiTEC® 349
+                                    div(class="cardSubHdr") Manual Transmissions
+                                    div(class="cardTxt") The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.
+                            
+                                div(class="cardDate") May 1, 2016
+                        
                         a(href="#")
 
                             div(class="cardBtnIndicator")
                                 img(src="images/card-btn-indicator.png") 
+                            
+                            div(class="cardHdrC" style="background-image: url(page-images/cards/sample-cardv2a.jpg);")
 
-                            img(src="page-images/cards/sample-cardv2.jpg")
-
-                            div(class="textAreaC")
-                                div(class="cardTitle") Driveline Additives
-                                div(class="cardHdr") HiTEC® 349
-                                div(class="cardSubHdr") Manual Transmissions
-                                div(class="cardTxt") The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.
-
+                            div(class="cardTextAreaC")
+                                div(class="cardTextArea")
+                                    div(class="cardType") Driveline Additives
+                                    div(class="cardHdrText") HiTEC® 349
+                                    div(class="cardSubHdr") Manual Transmissions
+                                    div(class="cardTxt") The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.
+                            
+                                div(class="cardDate") May 1, 2016
+                                
                         a(href="#")
 
                             div(class="cardBtnIndicator")
                                 img(src="images/card-btn-indicator.png") 
+                            
+                            div(class="cardHdrC" style="background-image: url(page-images/cards/sample-cardv2a.jpg);")
 
-                            img(src="page-images/cards/sample-cardv2.jpg")
-
-                            div(class="textAreaC")
-                                div(class="cardTitle") Driveline Additives
-                                div(class="cardHdr") HiTEC® 349
-                                div(class="cardSubHdr") Manual Transmissions
-                                div(class="cardTxt") The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.
-
+                            div(class="cardTextAreaC")
+                                div(class="cardTextArea")
+                                    div(class="cardType") Driveline Additives
+                                    div(class="cardHdrText") HiTEC® 349
+                                    div(class="cardSubHdr") Manual Transmissions
+                                    div(class="cardTxt") The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.
+                            
+                                div(class="cardDate") May 1, 2016
+                                
                         a(href="#")
 
                             div(class="cardBtnIndicator")
                                 img(src="images/card-btn-indicator.png") 
+                            
+                            div(class="cardHdrC" style="background-image: url(page-images/cards/sample-cardv2a.jpg);")
 
-                            img(src="page-images/cards/sample-cardv2.jpg")
-
-                            div(class="textAreaC")
-                                div(class="cardTitle") Driveline Additives
-                                div(class="cardHdr") HiTEC® 349
-                                div(class="cardSubHdr") Manual Transmissions
-                                div(class="cardTxt") The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.
+                            div(class="cardTextAreaC")
+                                div(class="cardTextArea")
+                                    div(class="cardType") Driveline Additives
+                                    div(class="cardHdrText") HiTEC® 349
+                                    div(class="cardSubHdr") Manual Transmissions
+                                    div(class="cardTxt") The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.
+                            
+                                div(class="cardDate") May 1, 2016
 
 
                 div(class="fullWidth")

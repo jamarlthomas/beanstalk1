@@ -50,11 +50,13 @@
     #topHeader { width: 100%!important; height: 80px!important; }
     header { width: 100%!important; height: 80px!important; min-height: 80px!important; transition: 0.0s!important; }
     
+    
 }
     
-//Print Page
+//Print Page (button)
 body.printPage #stickyFooterC { display: none; }
 body.printPage #contentAreaC { display: none; }
 body.printPage #footerC { display: none; }
 body.printPage #printArea img.inContent { width: 395px!important; }
-body.printPage #printArea #document { width: 100%; margin: 0px; }
+body.printPage #printArea #document { width: 100%; margin: 0px; padding-bottom: 0px; }
+body.printPage #printArea .noPrintDisplay { display: none; }

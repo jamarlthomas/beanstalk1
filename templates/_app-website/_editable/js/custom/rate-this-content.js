@@ -1,11 +1,12 @@
 $( document ).ready(function() {
- 
+    
+    storeRateID = "";
     
     //Initial Rate 
     $('.rateBtn').on('click', function(e) {
         
         e.preventDefault();
-        
+            
         var helpfulValue = $(this).val();
         
         //open popup
@@ -16,18 +17,17 @@ $( document ).ready(function() {
         
         });
         
-        var form_data = 'answer=' + helpfulValue;
-        
-        //submit helpfulValue server
-        $.ajax({
-            //type: "POST", 
-            url: "?" + form_data,                 
-            data: form_data,
-            success: function (response) {
-                console.log(form_data);
-            }
-        }); 
-                
+        //submit rating and store id that is returned so we can sumbit comment
+        var url = "http://localhost:22062/rate-this-content"
+        $.getJSON( url, { init: helpfulValue } )
+          .done(function( data ) {
+            storeRateID = data.Rating[0].id;            
+          })
+          .fail(function( jqxhr, textStatus, error ) {
+            var err = textStatus + ", " + error;
+            //console.log( "Request Failed: " + err ); 
+        });
+           
         
     });
     
@@ -50,16 +50,15 @@ $( document ).ready(function() {
         
         $("#ratePopup").fadeOut(500);
         
-        var form_data = 'comment=' + comment;
-        
         //submit comment
         $.ajax({
-            //type: "POST", 
-            url: "?" + form_data,                 
-            data: form_data,
+            type: "POST", 
+            url: "http://localhost:22062/rate-this-content",                 
+            data:{ "id": storeRateID, "comment": comment }, 
             success: function (response) {
-                console.log(form_data);
-            }
+                //console.log(response);
+            },
+            dataType: "json"
         }); 
         
         
