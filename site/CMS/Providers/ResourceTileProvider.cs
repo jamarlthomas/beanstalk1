@@ -7,11 +7,11 @@ using System.Linq;
 
 namespace CMS.Mvc.Providers
 {
-	public class ResourceTileProvider : IResourceTileProvider
+    public class ResourceTileProvider : IResourceTileProvider
     {
-		public List<TreeNode> GetTiles(string guids, string siteName)
-		{
-			return ContentHelper.GetDocsByGuids<TreeNode>(StringToGuidsConvertHelper.ParseGuids(guids), siteName);
-		}
+        public List<TreeNode> GetTiles(string guids)
+        {
+            return ContentHelper.GetDocsByGuids<TreeNode>(UtilsHelper.ParseGuids(guids));
+        }
     }
 }

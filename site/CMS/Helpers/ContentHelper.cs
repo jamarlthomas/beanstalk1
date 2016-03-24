@@ -1,29 +1,21 @@
 ﻿using System.Linq.Expressions;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Web;
+﻿using System.Web;
 using System.Web.Configuration;
-using CMS.DataEngine.Generators;
-using CMS.DocumentEngine;
+﻿using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Helpers;
-using CMS.Helpers.UniGraphConfig;
 using CMS.Localization;
-using CMS.MediaLibrary;
-using CMS.Mvc.ViewModels.Product;
+using CMS.Membership;
+using CMS.Mvc.Infrastructure.Models;
 using CMS.Mvc.ViewModels.Shared;
 using CMS.PortalEngine;
+using CMS.Search;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
-using CMS.DataEngine;
-using CMS.SiteProvider;
-using iTextSharp.text.pdf.codec;
-using Microsoft.Ajax.Utilities;
-using WebGrease;
-using ServerInfo = System.Web.Helpers.ServerInfo;
-using System.Configuration;
+
 
 namespace CMS.Mvc.Helpers
 {
@@ -156,6 +148,61 @@ namespace CMS.Mvc.Helpers
             },
                 new CacheSettings(CachingTime,
                     string.Format("pth_{0}_mrl_{1}_cn_{2}", aliasPath, maxRelativeLevel, classNames)));
+        }
+
+        public static SearchResult PerformSearch(SearchRequest request)
+        {
+            DocumentSearchCondition docCondition = new DocumentSearchCondition
+            {
+                Culture = LocalizationContext.CurrentCulture.CultureCode,
+                ClassNames = request.ClassNames,
+            };
+
+            var condition = new SearchCondition(request.AdditiveQuery, SearchModeEnum.AllWords, SearchOptionsEnum.FullSearch, docCondition);
+            var searchText = SearchSyntaxHelper.CombineSearchCondition(request.Query, condition);
+
+            var parameters = new Search.SearchParameters
+            {
+                SearchFor = searchText,
+                SearchSort = request.SortOrder,
+                Path = "/%",
+                ClassNames = null,
+                CurrentCulture = LocalizationContext.CurrentCulture.CultureCode,
+                DefaultCulture = null,
+                CombineWithDefaultCulture = false,
+                CheckPermissions = false,
+                SearchInAttachments = false,
+                User = null,
+                SearchIndexes = request.IndexName,
+                NumberOfResults = Int32.MaxValue,
+                AttachmentWhere = null,
+                AttachmentOrderBy = null,
+                DisplayResults = request.RecordsOnPage,
+                NumberOfProcessedResults = Int32.MaxValue,
+                StartingPosition = request.PageNumber.HasValue ? (request.PageNumber.Value - 1) * request.RecordsOnPage : 0,
+            };
+
+            var results = Search.SearchHelper.Search(parameters);
+            if (results == null) return new SearchResult();
+            return new SearchResult
+            {
+                PageCount = (int)Math.Ceiling(1d * parameters.NumberOfResults / request.RecordsOnPage),
+                Items = results.Tables[0].AsEnumerable().Select(s => new SearchResultItem
+                {
+                    Title = s.Field<string>("Title"),
+                    Content = s.Field<string>("Content"),
+                    Image = s.Field<string>("Image"),
+                    Date = s.Field<string>("Created")
+                }).ToList()
+            };
+        }
+
+        public static List<UserInfo> GetUsers()
+        {
+            return CacheHelper.Cache(cs =>
+            {
+                return UserInfoProvider.GetUsers().ToList();
+            }, new CacheSettings(CachingTime, "get_all_users"));
         }
 
         internal static List<T> GetSiblings<T>(T node) where T : TreeNode, new()

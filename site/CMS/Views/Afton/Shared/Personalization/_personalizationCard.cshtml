@@ -1,4 +1,4 @@
-﻿@model CMS.Mvc.ViewModels.Product.InsightsAndResourcesCard
+﻿@model CMS.Mvc.ViewModels.Shared.Personalization.PersonalizationCardViewModel
 @if (!string.IsNullOrWhiteSpace(Model.Reference))
 {
     <a href="@Url.Content(@Model.Reference)">
@@ -7,14 +7,14 @@
         </div>
         <div class="overlayC">
             <div class="overlay">
-                <div class="cardTitle">@Model.Title</div>
-                <div class="cardHdr">@Model.Header</div>
+                <div class="cardTitle">@Model.TileTitle</div>
+                <div class="cardHdr">@Html.Raw(Model.Title)</div>
             </div>
             <div class="cardDate">@Model.Date.ToString("MMMM dd, YYYY")</div>
         </div>
         <div style="opacity: 0.0;" class="hoverOverlayC">
             <div class="hoverOverlay">
-                <div class="hoverOverlayTxt">@Model.Summary</div>
+                <div class="hoverOverlayTxt">@Model.TileOverlayText</div>
             </div>
             <div class="cardLearnMore">
                 Read More
@@ -39,14 +39,14 @@ else
         </div>
         <div class="overlayC">
             <div class="overlay">
-                <div class="cardTitle">@Model.Title</div>
-                <div class="cardHdr">@Model.Header</div>
+                <div class="cardTitle">@Model.TileTitle</div>
+                <div class="cardHdr">@Html.Raw(@Model.Title)</div>
             </div>
             <div class="cardDate">@Model.Date.ToString("MMMM dd, YYYY")</div>
         </div>
         <div style="opacity: 0.0;" class="hoverOverlayC">
             <div class="hoverOverlay">
-                <div class="hoverOverlayTxt">@Model.Summary</div>
+                <div class="hoverOverlayTxt">@Model.TileOverlayText</div>
             </div>
             <div class="cardLearnMore">
                 Read More

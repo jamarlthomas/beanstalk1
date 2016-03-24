@@ -14,25 +14,24 @@ namespace CMS.Mvc.Controllers.Afton
     {
         private readonly IHeroContentProvider _heroContentProvider;
         private readonly IHomeProvider _homeProvider;
-        private readonly ITilesProvider _tilesProvider;
         private readonly IPersonalisationProvider<Document> _personalisationProvider;
-
+        private readonly ITreeNodesProvider _treeNodesProvider;
         public HomeController()
         {
             _heroContentProvider = new HeroContentProvider();
             _homeProvider = new HomeProvider();
-            _tilesProvider = new TilesProvider();
             _personalisationProvider = new PersonalisationProvider<Document>();
+            _treeNodesProvider = new TreeNodesProvider();
         }
 
         public HomeController(IHeroContentProvider heroContentProvider,
             IHomeProvider homeProvider,
-            ITilesProvider tilesProvider,
+            ITreeNodesProvider treeNodesProvider,
             IPersonalisationProvider<Document> personalisationProvider)
         {
             _heroContentProvider = heroContentProvider;
             _homeProvider = homeProvider;
-            _tilesProvider = tilesProvider;
+            _treeNodesProvider = treeNodesProvider;
             _personalisationProvider = personalisationProvider;
         }
 
@@ -42,10 +41,10 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 HeroContentList = MapData<HeroContent, HeroContentViewModel>(_heroContentProvider.GetHeroContentItems()).Where(w => !string.IsNullOrEmpty(w.Image)).ToList(),
                 PrimaryTiles = new List<TileViewModel>(),
-                TrendingTiles = MapData<Document, TileViewModel>(_personalisationProvider.GetPersonalizedItems().Take(3).ToList())
+                TrendingTiles = new List<TileViewModel>() 
             };
             var home = _homeProvider.GetHomeItems().First();
-			foreach (var primaryTile in _tilesProvider.GetTiles(StringToGuidsConvertHelper.ParseGuids(home.ManagedBlocks)).Take(3))
+			foreach (var primaryTile in _treeNodesProvider.GetTreeNodes(home.ManagedBlocks).Take(3))
             {
 				var tile = AutoMapper.Mapper.Map<TileViewModel>(primaryTile);
                 if (primaryTile is Document)
@@ -69,12 +68,14 @@ namespace CMS.Mvc.Controllers.Afton
 					model.PrimaryTiles.Add(tile);
 				}
             }
-			for (int i = 0; i < model.PrimaryTiles.Count; i++)//mock for trending topics
-			{
-			    model.TrendingTiles[i] = AutoMapper.Mapper.Map<TileViewModel>(model.TrendingTiles[i]);
-			    model.TrendingTiles[i].TypeName = "Document";
-				model.TrendingTiles[i].IsTrending = true;
-			}
+            var persTiles = _personalisationProvider.GetPersonalizedItems().Take(3).ToArray();
+            foreach (var persTile in persTiles)
+            {
+                var tile = AutoMapper.Mapper.Map<TileViewModel>(persTile);
+                tile.TypeName = "Document";
+                tile.IsTrending = true;
+                model.TrendingTiles.Add(tile);
+            }
             return View("~/Views/Afton/Home/Index.cshtml", model);
         }
 

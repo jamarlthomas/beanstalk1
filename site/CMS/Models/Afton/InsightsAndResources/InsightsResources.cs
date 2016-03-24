@@ -90,7 +90,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// HeroImage.
+        /// Hero Image.
         /// </summary>
         [DatabaseField]
         public string HeroImage
@@ -141,7 +141,24 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// ProductDataSheetsTitle.
+        /// View All Label.
+        /// </summary>
+        [DatabaseField]
+        public string ViewAllLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("ViewAllLabel"), "");
+            }
+            set
+            {
+                SetValue("ViewAllLabel", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Product Data Sheets Title.
         /// </summary>
         [DatabaseField]
         public string ProductDataSheetsTitle
@@ -158,7 +175,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// StayInformedTileTitle.
+        /// Stay Informed Tile Title.
         /// </summary>
         [DatabaseField]
         public string StayInformedTileTitle
@@ -175,7 +192,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// StayInformedTileDescription.
+        /// Stay Informed Tile Description.
         /// </summary>
         [DatabaseField]
         public string StayInformedTileDescription

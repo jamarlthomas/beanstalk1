@@ -90,7 +90,24 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// 
+        /// News And Events.
+        /// </summary>
+        [DatabaseField]
+        public string NewsAndEvents
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("NewsAndEvents"), "");
+            }
+            set
+            {
+                SetValue("NewsAndEvents", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Content Managed Tiles.
         /// </summary>
         [DatabaseField]
         public string ContentManagedTiles
@@ -102,6 +119,191 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("ContentManagedTiles", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Sort Newest Label.
+        /// </summary>
+        [DatabaseField]
+        public string SortNewestLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("SortNewestLabel"), "");
+            }
+            set
+            {
+                SetValue("SortNewestLabel", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Sort Oldest Label.
+        /// </summary>
+        [DatabaseField]
+        public string SortOldestLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("SortOldestLabel"), "");
+            }
+            set
+            {
+                SetValue("SortOldestLabel", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Read More Label.
+        /// </summary>
+        [DatabaseField]
+        public string ReadMoreLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("ReadMoreLabel"), "");
+            }
+            set
+            {
+                SetValue("ReadMoreLabel", value);
+            }
+        }
+
+
+        /// <summary>
+        /// All News Events Selector Value.
+        /// </summary>
+        [DatabaseField]
+        public string AllNewsEventsSelectorValue
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("AllNewsEventsSelectorValue"), "");
+            }
+            set
+            {
+                SetValue("AllNewsEventsSelectorValue", value);
+            }
+        }
+
+
+        /// <summary>
+        /// News Selector Value.
+        /// </summary>
+        [DatabaseField]
+        public string NewsSelectorValue
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("NewsSelectorValue"), "");
+            }
+            set
+            {
+                SetValue("NewsSelectorValue", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Events Selector Value.
+        /// </summary>
+        [DatabaseField]
+        public string EventsSelectorValue
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("EventsSelectorValue"), "");
+            }
+            set
+            {
+                SetValue("EventsSelectorValue", value);
+            }
+        }
+
+
+        /// <summary>
+        /// TilesLabel.
+        /// </summary>
+        [DatabaseField]
+        public string TilesLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("TilesLabel"), "");
+            }
+            set
+            {
+                SetValue("TilesLabel", value);
+            }
+        }
+
+
+        /// <summary>
+        /// ViewAllLabel.
+        /// </summary>
+        [DatabaseField]
+        public string ViewAllLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("ViewAllLabel"), "");
+            }
+            set
+            {
+                SetValue("ViewAllLabel", value);
+            }
+        }
+
+        /// <summary>
+        /// Posted Label.
+        /// </summary>
+        [DatabaseField]
+        public string PostedLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("PostedLabel"), "");
+            }
+            set
+            {
+                SetValue("PostedLabel", value);
+            }
+        }
+
+        /// <summary>
+        /// Filter By Label.
+        /// </summary>
+        [DatabaseField]
+        public string FilterByLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("FilterByLabel"), "");
+            }
+            set
+            {
+                SetValue("FilterByLabel", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Sort By Label.
+        /// </summary>
+        [DatabaseField]
+        public string SortByLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("SortByLabel"), "");
+            }
+            set
+            {
+                SetValue("SortByLabel", value);
             }
         }
 

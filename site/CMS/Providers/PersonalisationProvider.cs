@@ -64,7 +64,7 @@ namespace CMS.Mvc.Providers
         private void PrioritizeDefaultContent(PersonalizedContentModel defaults)
         {
             var a = new List<PersonalizedContent<T>>();
-            var guids = StringToGuidsConvertHelper.ParseGuids(defaults.Documents);
+            var guids = UtilsHelper.ParseGuids(defaults.Documents);
             foreach (var guid in guids)
             {
                 var defItem = ContentList.FirstOrDefault(item => item.Item.DocumentGUID == guid);

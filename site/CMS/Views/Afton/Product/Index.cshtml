@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Product";
-    Layout = "~/Views/Afton/Shared/Master.cshtml";
+    Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
 }
 <script>
     head.js(
@@ -18,7 +18,7 @@
         { accordion_Nav: "@Url.Content("~/Scripts/custom/accordion.min.js")" },
         { card_Animations: "@Url.Content("~/Scripts/custom/print.min.js")" },
         { language_Document_selector: "@Url.Content("~/Scripts/custom/langDocSel.min.js")" },
-        function() {
+        function () {
             //loadCSS
             //	{LABEL: "URL/PATH"},
             //);
@@ -26,23 +26,40 @@
     );
 </script>
 
-<div id="printArea"></div>
-<div id="contentAreaC">
-    <div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
-        <div id="rtCol-contentArea">
-            @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", @Model.BreadCrumb)
-            @Html.Partial("~/Views/Afton/Product/_downloadWidget.cshtml", @Model.DownloadWidget)
-            @Html.Partial("~/Views/Afton/Product/_productMainContent.cshtml", @Model.ContentCopyArea)
-        </div>
-        <div id="lftCol-sidebar">
-            @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar)
+@*<div id="printArea"></div>
+    <div id="contentAreaC">
+        <div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
+            <div id="rtCol-contentArea">
+                @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", @Model.BreadCrumb)
+                @Html.Partial("~/Views/Afton/Product/_downloadWidget.cshtml", @Model.DownloadWidget)
+                @Html.Partial("~/Views/Afton/Product/_productMainContent.cshtml", @Model.ContentCopyArea)
+            </div>
+            <div id="lftCol-sidebar">
+                @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar)
 
+            </div>
         </div>
+        @Html.Partial("~/Views/Afton/Product/_relatedProducts.cshtml", @Model.RelatedProducts)
+        @{ Html.RenderAction("GetPeronalizedCards", "Personalization", new {sectionTitle = "Insights And Resources"}); }
+
+
+
+
+    </div>*@
+
+<div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
+    <div id="rtCol-contentArea">
+        @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", @Model.BreadCrumb)
+        @Html.Partial("~/Views/Afton/Product/_downloadWidget.cshtml", @Model.DownloadWidget)
+        @Html.Partial("~/Views/Afton/Product/_productMainContent.cshtml", @Model.ContentCopyArea)
     </div>
-    @Html.Partial("~/Views/Afton/Product/_relatedProducts.cshtml", @Model.RelatedProducts)
-    @Html.Partial("~/Views/Afton/Product/_insightsAndResourcesSection.cshtml", @Model.InsightsAndResourcesSection)
+    <div id="lftCol-sidebar">
+        @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar)
 
+    </div>
 </div>
+@Html.Partial("~/Views/Afton/Product/_relatedProducts.cshtml", @Model.RelatedProducts)
+
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-56686002384632a9" async="async"></script>
 <script>
     var _gaq = _gaq || [];

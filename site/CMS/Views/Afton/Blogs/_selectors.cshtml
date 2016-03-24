@@ -1,0 +1,39 @@
+﻿<div id="newsDD">
+    <div id="categoriesDD">
+        @Model.FilterByLabel<br>
+        <div class="customSelectC standard">
+            <div class="orgSelect">
+                <select name="categories">
+                    @foreach (var selectOption in Model.Categories)
+                    {
+                        <option value="@selectOption.Title">@selectOption.Title</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div id="authorsDD">
+        <br>
+        <div class="customSelectC standard">
+            <div class="orgSelect">
+                <select name="authors">
+                    @foreach (var selectOption in Model.Authors)
+                    {
+                        <option value="@selectOption.Title">@selectOption.Title</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div id="sortDD">
+        @Model.SortByLabel<br>
+        <div class="customSelectC standard">
+            <div class="orgSelect">
+                <select name="sort">
+                    <option value="@Model.SortNewestLabel">@Model.SortNewestLabel</option>
+                    <option value="@Model.SortOldestLabel">@Model.SortOldestLabel</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>

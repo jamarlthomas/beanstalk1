@@ -9,7 +9,8 @@
 	@Html.Partial("~/Views/Afton/Home/_heroContent.cshtml", Model.HeroContentList)
 	<div class="cardsC bgPattern">
 		@Html.Partial("~/Views/Afton/Shared/_tile.cshtml", Model.PrimaryTiles)
-        @Html.Partial("~/Views/Afton/Shared/_tile.cshtml", Model.TrendingTiles)
+        @{ Html.RenderAction("GetPeronalizedCards", "Personalization"); }
+        @*@Html.Partial("~/Views/Afton/Shared/_tile.cshtml", Model.TrendingTiles)*@
 	</div>
 	<div id="learnMoreC">
 		<div id="learnMore">

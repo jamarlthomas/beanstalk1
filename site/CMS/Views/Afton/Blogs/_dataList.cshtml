@@ -1,0 +1,17 @@
+﻿<div id="newsListC">
+    @foreach (var item in Model.BlogPosts)
+    {
+        <div class="newsItem">
+            <div class="newsImgC"><img src="@string.Format("CMSPages/GetFile.aspx?guid={0}", item.BlogPostTeaser)"></div>
+            <div class="newsContentC">
+                <h2>@item.BlogPostTitle</h2>
+                <div class="newsInfo">@item.Category | @Model.PostedLabel @item.AuthorName: @item.BlogPostDate.ToString("M/d/yy | h:mm tt CST")</div>
+                <div class="newsTxt">@Html.Raw(item.BlogPostBody)</div>
+                <a href="@item.DocumentUrlPath" class="newsMore">@Model.ReadMoreLabel</a>
+            </div>
+        </div>
+    }
+    <div class="fullWidth2 padBtm padTop">
+        <div class="paginationC"><a href="#" class="prev"></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><span class="nextGroup">...</span><a href="#">50</a><a href="#" class="next"></a></div>
+    </div>
+</div>

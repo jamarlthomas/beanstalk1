@@ -2,26 +2,24 @@
 @model DocumentPageViewModel
 @{
     ViewBag.Title = @Model.MenuItemTitle;
-    Layout = "~/Views/Afton/Shared/Master.cshtml";
+    ViewBag.PersonalizationSectionTitle = "Insights & Resources";
+    Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
 }
 
-<div id="printArea"></div>
-<div id="contentAreaC">
-    <div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
-        <div id="rtCol-contentArea">
-            @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", Model.BreadCrumb)
-            @Html.Partial("~/Views/Afton/Document/_header.cshtml", Model.Document)
-            <div id="contentC">
-                <div id="mainContentC" class="documentPagination">
-                    @Html.Raw(Model.Document.Abstract)
-                </div>
-                <div class="padBtm">
-                    <div style="display: none;" class="paginationC"><a href="#" class="prev"></a><span class="pageNumbers"></span><a href="#" class="next"></a></div>
-                </div>
+<div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
+    <div id="rtCol-contentArea">
+        @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", Model.BreadCrumb)
+        @Html.Partial("~/Views/Afton/Document/_header.cshtml", Model.Document)
+        <div id="contentC">
+            <div id="mainContentC" class="documentPagination">
+                @Html.Raw(Model.Document.Abstract)
+            </div>
+            <div class="padBtm">
+                <div style="display: none;" class="paginationC"><a href="#" class="prev"></a><span class="pageNumbers"></span><a href="#" class="next"></a></div>
             </div>
         </div>
-        <div id="lftCol-sidebar">
-            @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar)
-        </div>
+    </div>
+    <div id="lftCol-sidebar">
+        @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar)
     </div>
 </div>

@@ -10,7 +10,7 @@ namespace CMS.Mvc.ViewModels.Product
             BreadCrumb = new BreadCrumbViewModel();
             ContentCopyArea = new ProductViewModel();
             RelatedProducts = new RelatedProductsViewModel();
-            InsightsAndResourcesSection = new InsightsAndResourcesSectionViewModel();
+            //InsightsAndResourcesSection = new InsightsAndResourcesSectionViewModel();
             BreadCrumb = new BreadCrumbViewModel();
             DownloadWidget = new DownloadWidgetViewModel();
             SideBar = new SidebarViewModel();
@@ -18,7 +18,7 @@ namespace CMS.Mvc.ViewModels.Product
         public SidebarViewModel SideBar { get; set; }
         public ProductViewModel ContentCopyArea { get; set; }
         public RelatedProductsViewModel RelatedProducts { get; set; }
-        public InsightsAndResourcesSectionViewModel InsightsAndResourcesSection { get; set; }
+        //public InsightsAndResourcesSectionViewModel InsightsAndResourcesSection { get; set; }
         public BreadCrumbViewModel BreadCrumb { get; set; }
         public DownloadWidgetViewModel DownloadWidget { get; set; }
 
