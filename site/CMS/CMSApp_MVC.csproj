@@ -192,7 +192,6 @@
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
     <Compile Include="Controllers\Afton\ContactController.cs" />
-    <Compile Include="Controllers\Afton\EmergencyResponseViewMode.cs" />
     <Compile Include="Controllers\Afton\FAQController.cs" />
     <Compile Include="Controllers\Afton\BlogsController.cs" />
     <Compile Include="Controllers\Afton\ATCToolsController.cs" />
