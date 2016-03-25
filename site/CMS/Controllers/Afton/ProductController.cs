@@ -52,7 +52,7 @@ namespace CMS.Mvc.Controllers.Afton
             return new DownloadWidgetViewModel()
             {
                 Title = product.Title,
-                TileImage = product.TileImage,
+                //TileImage = product.TileImage,
                 Description = product.Description,
                 DownloadLink = _productProvider.GetDownloadLink(product),
                 AvailableIn = _productProvider.GetAvailableRegions(product).Select(item => new LinkViewModel() {Title = item}).ToList(),
