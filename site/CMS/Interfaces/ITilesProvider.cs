@@ -1,5 +1,6 @@
 ﻿using CMS.DocumentEngine;
 using System;
+using CMS.Mvc.ViewModels.Shared;
 using System.Collections.Generic;
 
 namespace CMS.Mvc.Interfaces
@@ -8,5 +9,6 @@ namespace CMS.Mvc.Interfaces
     {
         List<TreeNode> GetTreeNodes(List<Guid> guids);
         List<TreeNode> GetTreeNodes(string guids);
+        List<BreadCrumbLinkItemViewModel> GetBreadcrumb(Guid guid);
     }
 }

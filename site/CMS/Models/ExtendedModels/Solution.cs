@@ -2,7 +2,7 @@
 {
     public partial class Solution
     {
-        public override string DocumentUrlPath
+        public override string DocumentNamePath
         {
             get
             {

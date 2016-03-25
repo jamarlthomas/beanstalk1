@@ -78,7 +78,7 @@ namespace CMS.Mvc.Controllers.Afton
                 Links = _documentProvider.GetHighlightedDocuments(s.Title).Select(document => new LinkViewModel
                 {
                     Title = document.Title,
-                    Reference = document.DocumentUrlPath
+                    Reference = document.DocumentNamePath
                 }).ToList()
             }));
             model.Tiles = new List<TileViewModel>
@@ -87,7 +87,7 @@ namespace CMS.Mvc.Controllers.Afton
                 {
                     Title = page.StayInformedTileTitle,
                     Description = page.StayInformedTileDescription,
-                    DocumentUrlPath = "/StayInformed"
+                    DocumentNamePath = "/StayInformed"
                 }
             };
             model.Tiles.AddRange(_resourceTileProvider.GetTiles(page.FeaturedContentList)

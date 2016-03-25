@@ -23,6 +23,7 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly ISolutionBusinessUnitProvider _solutionBusinessUnitProvider;
         private readonly ISolutionProvider _solutionProvider;
         private readonly ISelectionFilterSearchProvider _selectionFilterSearchProvider;
+        private readonly ITreeNodesProvider _treeNodesProvider;
 
         public SelectionFilterController()
         {
@@ -33,6 +34,7 @@ namespace CMS.Mvc.Controllers.Afton
             _solutionBusinessUnitProvider = new SolutionBusinessUnitProvider();
             _solutionProvider = new SolutionProvider();
             _selectionFilterSearchProvider = new SelectionFilterSearchProvider();
+            _treeNodesProvider = new TreeNodesProvider();
         }
 
         public SelectionFilterController(IProductProvider productProvider,
@@ -41,7 +43,8 @@ namespace CMS.Mvc.Controllers.Afton
             IDocumentTypeProvider documentTypeProvider,
             ISolutionBusinessUnitProvider solutionBusinessUnitProvider,
             ISolutionProvider solutionProvider,
-            ISelectionFilterSearchProvider selectionFilterSearchProvider)
+            ISelectionFilterSearchProvider selectionFilterSearchProvider,
+            ITreeNodesProvider treeNodesProvider)
         {
             _productProvider = productProvider;
             _lookupProvider = lookupProvider;
@@ -50,6 +53,7 @@ namespace CMS.Mvc.Controllers.Afton
             _solutionBusinessUnitProvider = solutionBusinessUnitProvider;
             _solutionProvider = solutionProvider;
             _selectionFilterSearchProvider = selectionFilterSearchProvider;
+            _treeNodesProvider = treeNodesProvider;
         }
 
         [Route("filter/regions/{Regions}/documents/{DocumentTypesIds}/SBU/{SBUId}/solutions/{SolutionsIds}")]
@@ -69,7 +73,7 @@ namespace CMS.Mvc.Controllers.Afton
                     BreadCrumb = new BreadCrumbViewModel()
                 }
             };
-            model.Header.BreadCrumb.BreadcrumbLinkItems = _selectionFilterPageProvider.GetBreadcrumb(page.NodeAlias);
+            model.Header.BreadCrumb.BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(page.DocumentGUID);
             model.DocumentTypesList = MapData<DocumentType, CheckBoxViewModel>(_documentTypeProvider.GetDocumentTypes());
             model.SBUList = MapData<SolutionBusinessUnit, SBUFilterViewModel>(_solutionBusinessUnitProvider.GetSolutionBusinessUnits()).Where(w => !string.IsNullOrEmpty(w.Title)).ToList();
             foreach (var sbu in model.SBUList)

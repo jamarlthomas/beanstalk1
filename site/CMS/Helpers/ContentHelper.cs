@@ -57,39 +57,35 @@ namespace CMS.Mvc.Helpers
                 );
         }
 
-        public static List<BreadCrumbLinkItemViewModel> GetBreadcrumb<T>(string className, string name)
-            where T : TreeNode, new()
+        public static List<BreadCrumbLinkItemViewModel> GetBreadcrumb<T>(Guid guid) where T : TreeNode
         {
-            var doc = GetDocByName<T>(className, name);
-            var list = new List<Link>();
-            TraverseNodes(doc, list);
+            return GetBreadcrumb(GetDocByGuid<T>(guid));
+        }
 
-            list.Reverse();
-            string currReference = string.Empty;
-            var breadcrumbList = list.Select(item =>
+        public static List<BreadCrumbLinkItemViewModel> GetBreadcrumb<T>(string className, string name) where T : TreeNode, new()
+        {
+            return GetBreadcrumb(GetDocByName<T>(className, name));
+        }
+
+        private static List<BreadCrumbLinkItemViewModel> GetBreadcrumb<T>(T doc) where T : TreeNode
+        {
+            var breadcrumbList = new List<BreadCrumbLinkItemViewModel>();
+            object val;
+            TreeNode node = doc;
+            while (node.NodeAliasPath != "/")
             {
-                if (!string.IsNullOrWhiteSpace(item.Reference))
-                    currReference += "/" + item.Reference;
-                return new BreadCrumbLinkItemViewModel()
+                if (!node.TryGetProperty("ExcludeFromSiteMap", out val))
                 {
-                    Title = item.Title,
-                    Reference = currReference
-                };
-            }).ToList();
+                    breadcrumbList.Insert(0, new BreadCrumbLinkItemViewModel
+                       {
+                           Title = node.DocumentName,
+                           Reference = node.DocumentNamePath
+                       });
+                }
+                node = node.Parent;
+            }
             return breadcrumbList;
         }
-
-        private static void TraverseNodes(TreeNode doc, List<Link> list)
-        {
-            object val;
-            if (!doc.TryGetProperty("ExcludeFromSiteMap", out val))
-                list.Add(new Link() { Title = doc.DocumentName, Reference = doc.NodeAlias });
-
-            if (doc.Parent.NodeAliasPath == "/")
-                return;
-            TraverseNodes(doc.Parent, list);
-        }
-
 
         public static List<T> GetDocs<T>(string className) where T : TreeNode, new()
         {
@@ -116,15 +112,16 @@ namespace CMS.Mvc.Helpers
                 ).ToList();
         }
 
-        public static List<T> GetDocsByGuids<T>(IEnumerable<Guid> guids, string siteName = null) where T : class
+        public static T GetDocByGuid<T>(Guid guid, string siteName = null) where T : class
         {
             return CacheHelper.Cache(cs =>
-            {
-                return guids.Select(guid =>
-                        _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid,
-                            siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T).Where(w => w != null).ToList();
-            },
-                new CacheSettings(CachingTime, string.Format("guids_{0}", string.Join(string.Empty, guids))));
+                _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T,
+                new CacheSettings(CachingTime, string.Format("doc_guid_{0}", guid)));
+        }
+
+        public static List<T> GetDocsByGuids<T>(IEnumerable<Guid> guids, string siteName = null) where T : class
+        {
+            return guids.Select(guid => GetDocByGuid<T>(guid, siteName)).Where(w => w != null).ToList();
         }
 
         public static List<TreeNode> GetDocsByPath(string aliasPath, int maxRelativeLevel = 1, string classNames = "*")

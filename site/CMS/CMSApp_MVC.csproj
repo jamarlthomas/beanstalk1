@@ -192,9 +192,9 @@
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
     <Compile Include="Controllers\Afton\ContactController.cs" />
-    <Compile Include="Controllers\Afton\EmergencyResponseViewMode.cs" />
     <Compile Include="Controllers\Afton\FAQController.cs" />
     <Compile Include="Controllers\Afton\BlogsController.cs" />
+    <Compile Include="Controllers\Afton\ATCToolsController.cs" />
     <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
     <Compile Include="Controllers\Afton\NewsAndEventsController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
@@ -205,6 +205,7 @@
     <Compile Include="Interfaces\IBlogCategoryProvider.cs" />
     <Compile Include="Interfaces\IDocumentConstantProvider.cs" />
     <Compile Include="Interfaces\ICountryProvider.cs" />
+    <Compile Include="Interfaces\IATCToolsPageProvider.cs" />
     <Compile Include="Interfaces\ISalesOfficeProvider.cs" />
     <Compile Include="Interfaces\IRegionProvider.cs" />
     <Compile Include="Interfaces\IFAQPageProvider.cs" />
@@ -219,6 +220,7 @@
     <Compile Include="Interfaces\IPollSurveyAnswerProvider.cs" />
     <Compile Include="Interfaces\IFAQTopicProvider.cs" />
     <Compile Include="Interfaces\ISidebarProvider.cs" />
+    <Compile Include="Models\Afton\ATCTools\ATCToolsPage.cs" />
     <Compile Include="Models\Afton\Blogs\BlogCategory.cs" />
     <Compile Include="Models\Afton\Blogs\BlogPost.cs" />
     <Compile Include="Models\Afton\Blogs\BlogsPage.cs" />
@@ -249,6 +251,8 @@
     <Compile Include="Models\Afton\TermsAndAcronyms\Term.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\TermsAndAcronymsPage.cs" />
     <Compile Include="Models\ExtendedModels\BlogPost.cs" />
+    <Compile Include="Models\ExtendedModels\Home.cs" />
+    <Compile Include="Models\ExtendedModels\InsightsResources.cs" />
     <Compile Include="Models\ExtendedModels\Solution.cs" />
     <Compile Include="Models\ExtendedModels\CustomNews.cs" />
     <Compile Include="Models\ExtendedModels\Document.cs" />
@@ -256,6 +260,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Providers\BlogPostProvider.cs" />
+    <Compile Include="Providers\ATCToolsPageProvider.cs" />
     <Compile Include="Providers\SalesOfficeProvider.cs" />
     <Compile Include="Providers\DocumentConstantProvider.cs" />
     <Compile Include="Providers\BlogCategoryProvider.cs" />
@@ -350,6 +355,7 @@
     <Compile Include="Providers\SolutionBusinessUnitProvider.cs" />
     <Compile Include="Providers\ContentMenuItemProvider.cs" />
     <Compile Include="Providers\PagesMenuItemProvider.cs" />
+    <Compile Include="ViewModels\ATCTools\ATCToolsPageViewModel.cs" />
     <Compile Include="ViewModels\Blogs\SelectorItemViewModel.cs" />
     <Compile Include="ViewModels\Blogs\BlogPostViewModel.cs" />
     <Compile Include="ViewModels\Blogs\BlogsPageViewModel.cs" />
@@ -601,6 +607,7 @@
     <Content Include="Views\Afton\Contact\_form.cshtml" />
     <Content Include="Views\Afton\Shared\_emergencyResponse.cshtml" />
     <Content Include="Views\Afton\Contact\_regions.cshtml" />
+    <Content Include="Views\Afton\ATCTools\Index.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
