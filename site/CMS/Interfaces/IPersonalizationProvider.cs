@@ -6,5 +6,7 @@ namespace CMS.Mvc.Interfaces
     public interface IPersonalisationProvider
     {
         List<PersonalizedTile> GetPersonalizedItems();
+
+        string GetSectionTitle();
     }
 }

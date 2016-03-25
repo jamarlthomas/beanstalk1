@@ -221,6 +221,7 @@
     <Compile Include="Controllers\Afton\PersonalizationController.cs" />
     <Compile Include="Interfaces\IPersonalisationProvider.cs" />
     <Compile Include="Interfaces\IPersonalizationProvider.cs" />
+    <Compile Include="Models\Afton\Shared\Personalization\PersonalizationSettings.cs" />
     <Compile Include="Models\Afton\Shared\Personalization\PersonalizedTile.cs" />
     <Compile Include="Models\ExtendedModels\PersonalizedTile.cs" />
     <Compile Include="Providers\PersonalisationProvider.cs" />

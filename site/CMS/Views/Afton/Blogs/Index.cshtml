@@ -14,4 +14,4 @@
     @{ Html.RenderPartial("~/Views/Afton/Blogs/_dataList.cshtml", Model); }
 </div>
 @{ Html.RenderPartial("~/Views/Afton/Shared/NewsEventsAndBlog/_tiles.cshtml", Model); }
-@{ Html.RenderAction("GetPeronalizedCards", "Personalization", new { sectionTitle = ViewBag.PersonalizationSectionTitle }); }
+@{ Html.RenderAction("GetPeronalizedCards", "Personalization"); }

@@ -20,10 +20,10 @@ namespace CMS.Mvc.Controllers.Afton
             _personalizationProvider = new PersonalizationProvider();
         }
 
-        public ActionResult GetPeronalizedCards(string sectionTitle)
+        public ActionResult GetPeronalizedCards()
         {
             PersonalizationSectionViewModel model = new PersonalizationSectionViewModel();
-            model.Title = sectionTitle;
+            model.Title = _personalizationProvider.GetSectionTitle();
             var items = _personalizationProvider.GetPersonalizedItems();
             model.Cards = MapData<PersonalizedTile, PersonalizationCardViewModel>(items);
             return View("~/Views/Afton/Shared/Personalization/_personalizationSection.cshtml", model);

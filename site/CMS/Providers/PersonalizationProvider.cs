@@ -15,7 +15,7 @@ using System;
 
 namespace CMS.Mvc.Providers
 {
-    public class PersonalizationProvider: IPersonalisationProvider
+    public class PersonalizationProvider : IPersonalisationProvider
     {
         //private readonly string _className = (new T()).ClassName;
         private const int WeightsSum = 3;
@@ -179,5 +179,13 @@ namespace CMS.Mvc.Providers
 
 
 
+
+
+        public string GetSectionTitle()
+        {
+            var settings = ContentHelper.GetDocs<PersonalizationSettings>(PersonalizationSettings.CLASS_NAME)
+                .FirstOrDefault();
+            return (settings == null) ? "" : settings.PersonalizationSectionTitle;
+        }
     }
 }
