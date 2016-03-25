@@ -107,18 +107,18 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Text that appears on hover.
+        /// Text that appears on hover over the tile.
         /// </summary>
         [DatabaseField]
-        public string TileOverlayText
+        public string Description
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("TileOverlayText"), "");
+                return ValidationHelper.GetString(GetValue("Description"), "");
             }
             set
             {
-                SetValue("TileOverlayText", value);
+                SetValue("Description", value);
             }
         }
 

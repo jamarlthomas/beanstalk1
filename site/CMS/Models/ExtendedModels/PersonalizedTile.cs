@@ -7,7 +7,7 @@
             HomeImage = (string)item.GetValue("HomeImage");
             TileTitle = (string)item.GetValue("TileTitle");
             Title = (string)item.GetValue("Title");
-            TileOverlayText = (string)item.GetValue("TileOverlayText");
+            Description = (string)item.GetValue("Description");
         }
     }
 }

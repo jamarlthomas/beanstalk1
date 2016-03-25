@@ -14,16 +14,16 @@
         </div>
         <div style="opacity: 0.0;" class="hoverOverlayC">
             <div class="hoverOverlay">
-                <div class="hoverOverlayTxt">@Model.TileOverlayText</div>
+                <div class="hoverOverlayTxt">@Model.Description</div>
             </div>
             <div class="cardLearnMore">
                 Read More
                 <span class="icon-arrow"></span>
             </div>
         </div>
-        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+        @if (!string.IsNullOrWhiteSpace(Model.HomeImage))
         {
-            <img src="@Url.Content(@Model.ImageUrl)" alt="" />
+            <img src="@Url.Content(@Model.HomeImage)" alt="" />
         }
         else
         {
@@ -46,16 +46,16 @@ else
         </div>
         <div style="opacity: 0.0;" class="hoverOverlayC">
             <div class="hoverOverlay">
-                <div class="hoverOverlayTxt">@Model.TileOverlayText</div>
+                <div class="hoverOverlayTxt">@Model.Description</div>
             </div>
             <div class="cardLearnMore">
                 Read More
                 <span class="icon-arrow"></span>
             </div>
         </div>
-        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+        @if (!string.IsNullOrWhiteSpace(Model.HomeImage))
         {
-            <img src="@Url.Content(@Model.ImageUrl)" alt="" />
+            <img src="@Url.Content(@Model.HomeImage)" alt="" />
         }
         else
         {

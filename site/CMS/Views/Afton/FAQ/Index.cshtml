@@ -2,10 +2,10 @@
 @model FAQPageViewModel
 @{
     ViewBag.Title = Model.MenuSelectedItem;
-	Layout = "~/Views/Afton/Shared/Master.cshtml";
+    Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
 }
 
-<div id="contentAreaC">
+
     <div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
         <div id="rtCol-contentArea">
             @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", @Model.BreadCrumb)
@@ -24,4 +24,3 @@
             @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar)
         </div>
     </div>
-</div>

@@ -1,8 +1,6 @@
-﻿using System.Globalization;
-using System.Web;
+﻿using System.Web;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.ViewModels.Product;
-using CMS.Mvc.ViewModels.Shared;
 using CMS.Mvc.ViewModels.Shared.Personalization;
 using Infrastructure.Mapper;
 using ProductViewModel = CMS.Mvc.ViewModels.Product.ProductViewModel;
@@ -27,10 +25,10 @@ namespace CMS.Mvc.Infrastructure
                 .ForMember(s=>((Solution)s.Parent).Title, d=>d.SubHeader);
 
             CreateMap<PersonalizedTile, PersonalizationCardViewModel>()
-                .ForMember(s => s.HomeImage, d => d.ImageUrl)
+                .ForMember(s => s.HomeImage, d => d.HomeImage)
                 .ForMember(s => s.Title, d => d.Title)
                 .ForMember(s => s.DocumentPublishFrom, d => d.Date)
-                .ForMember(s => s.TileOverlayText, d => d.TileOverlayText);
+                .ForMember(s => s.Description, d => d.Description);
         }
         protected override void Collections()
         {
