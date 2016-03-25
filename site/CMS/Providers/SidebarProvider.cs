@@ -14,10 +14,5 @@ namespace CMS.Mvc.Providers
             var nodes = ContentHelper.GetDocsByGuids<TreeNode>(ids);
             return nodes;
         }
-
-        public List<Country> GetCountries()
-        {
-            return ContentHelper.GetDocs<Country>(Country.CLASS_NAME);
-        }
     }
 }

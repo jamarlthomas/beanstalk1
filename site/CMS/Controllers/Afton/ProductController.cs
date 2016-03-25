@@ -14,9 +14,11 @@ namespace CMS.Mvc.Controllers.Afton
     public class ProductController: SidebarPageController
     {
         private readonly IProductProvider _productProvider;
+        private readonly ITreeNodesProvider _treeNodesProvider;
         public ProductController()
         {
             _productProvider = new ProductProvider();
+            _treeNodesProvider = new TreeNodesProvider();
         }
 
         //[Route("Product/{alias}")]
@@ -24,8 +26,8 @@ namespace CMS.Mvc.Controllers.Afton
         {
             var product = _productProvider.GetProduct(name);
             ProductPageViewModel productModel = new ProductPageViewModel();
-            productModel.SideBar.Items = MapSidebar(_sidebarProvider.GetSideBarItems(StringToGuidsConvertHelper.ParseGuids(product.SidebarItems)), product);
-            productModel.BreadCrumb.BreadcrumbLinkItems = _productProvider.GetBreadcrumb(name);
+            productModel.SideBar.Items = MapSidebar(_sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(product.SidebarItems)), product);
+            productModel.BreadCrumb.BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(product.DocumentGUID);
             productModel.DownloadWidget = GetDownloadwidget(product);
 
             productModel.ContentCopyArea = MapData<Product, CMS.Mvc.ViewModels.Product.ProductViewModel>(product);

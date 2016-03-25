@@ -12,10 +12,5 @@ namespace CMS.Mvc.Providers
         {
             return ContentHelper.GetDocs<FAQPage>(FAQPage.CLASS_NAME);
         }
-
-        public List<BreadCrumbLinkItemViewModel> GetBreadcrumb(string name)
-        {
-            return ContentHelper.GetBreadcrumb<FAQPage>(FAQPage.CLASS_NAME, name);
-        }
     }
 }

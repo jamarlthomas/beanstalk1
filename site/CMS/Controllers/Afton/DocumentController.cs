@@ -17,21 +17,25 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly IDocumentProvider _documentProvider;
         private readonly IInsightsResourcesProvider _insightsAndResourcesPageProvider;
         private readonly IDocumentConstantProvider _documentConstantProvider;
+        private readonly ITreeNodesProvider _treeNodesProvider;
 
         public DocumentController()
         {
             _insightsAndResourcesPageProvider = new InsightsResourcesProvider();
             _documentProvider = new DocumentProvider();
             _documentConstantProvider = new DocumentConstantProvider();
+            _treeNodesProvider = new TreeNodesProvider();
         }
 
         public DocumentController(IInsightsResourcesProvider insightsAndResourcesPageProvider,
             IDocumentProvider documentProvider,
-            IDocumentConstantProvider documentConstantProvider)
+            IDocumentConstantProvider documentConstantProvider,
+            ITreeNodesProvider treeNodesProvider)
         {
             _insightsAndResourcesPageProvider = insightsAndResourcesPageProvider;
             _documentProvider = documentProvider;
             _documentConstantProvider = documentConstantProvider;
+            _treeNodesProvider = treeNodesProvider;
         }
 
         public ActionResult Index(string name)
@@ -45,8 +49,8 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 documentViewModel.DocumentPublishFrom = (DateTime)document.GetValue("DocumentCreatedWhen");
             }
-            
-            documentViewModel.DocumentPublishFrom = TimeZoneInfo.ConvertTime(documentViewModel.DocumentPublishFrom, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"));
+
+            documentViewModel.DocumentPublishFrom = UtilsHelper.ConvertToCST(documentViewModel.DocumentPublishFrom);
             documentViewModel.Constant = MapData<DocumentConstant, DocumentConstantViewModel>(_documentConstantProvider.GetDocumentConstants().First());
             
             return View("~/Views/Afton/Document/Index.cshtml", new DocumentPageViewModel()
@@ -55,11 +59,11 @@ namespace CMS.Mvc.Controllers.Afton
                 MenuItemTitle = _insightsAndResourcesPageProvider.GetInsightsResources().First().Title,
                 BreadCrumb = new BreadCrumbViewModel
                 {
-                    BreadcrumbLinkItems = _documentProvider.GetBreadcrumb(name)
+                    BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(document.DocumentGUID)
                 },
                 SideBar = new SidebarViewModel
                 {
-                    Items = MapSidebar(_sidebarProvider.GetSideBarItems(StringToGuidsConvertHelper.ParseGuids(document.SidebarItems)), document)
+                    Items = MapSidebar(_sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(document.SidebarItems)), document)
                 }
             });
         }

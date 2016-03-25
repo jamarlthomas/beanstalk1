@@ -16,18 +16,22 @@ namespace CMS.Mvc.Controllers.Afton
     {
         private readonly ITermsAndAcronymsPageProvider _termsAndAcronymsPageProvider;
         private readonly ITermProvider _termProvider;
+        private readonly ITreeNodesProvider _treeNodesProvider;
 
         public TermsAndAcronymsController()
         {
             _termsAndAcronymsPageProvider = new TermsAndAcronymsPageProvider();
             _termProvider = new TermProvider();
+            _treeNodesProvider = new TreeNodesProvider();
         }
 
         public TermsAndAcronymsController(ITermsAndAcronymsPageProvider termsAndAcronymsPageProvider,
-            ITermProvider termProvider)
+            ITermProvider termProvider,
+            ITreeNodesProvider treeNodesProvider)
         {
             _termsAndAcronymsPageProvider = termsAndAcronymsPageProvider;
             _termProvider = termProvider;
+            _treeNodesProvider = treeNodesProvider;
         }
 
         public JsonResult Data()
@@ -52,11 +56,11 @@ namespace CMS.Mvc.Controllers.Afton
             model.ParentTitle = (page.Parent as InsightsResources).Title;
             model.BreadCrumb = new BreadCrumbViewModel
             {
-                BreadcrumbLinkItems = _termsAndAcronymsPageProvider.GetBreadcrumb(page.NodeAlias)
+                BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(page.DocumentGUID)
             };
             model.SideBar = new SidebarViewModel
             {
-                Items = MapSidebar(_sidebarProvider.GetSideBarItems(StringToGuidsConvertHelper.ParseGuids(page.SidebarItems)), page)
+                Items = MapSidebar(_sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(page.SidebarItems)), page)
             };
 
             return View("~/Views/Afton/TermsAndAcronyms/Index.cshtml", model);

@@ -1,26 +1,19 @@
-﻿using System.Linq.Expressions;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Web.Configuration;
-using CMS.DataEngine.Generators;
-using CMS.DocumentEngine;
+﻿using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Helpers;
-using CMS.Helpers.UniGraphConfig;
 using CMS.Localization;
-using CMS.MediaLibrary;
-using CMS.Mvc.ViewModels.Product;
+using CMS.Membership;
+using CMS.Mvc.Infrastructure.Models;
 using CMS.Mvc.ViewModels.Shared;
 using CMS.PortalEngine;
+using CMS.Search;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
-using CMS.DataEngine;
-using CMS.SiteProvider;
-using WebGrease;
-using ServerInfo = System.Web.Helpers.ServerInfo;
-using System.Configuration;
+using System.Linq.Expressions;
+using System.Web.Configuration;
 
 namespace CMS.Mvc.Helpers
 {
@@ -64,39 +57,35 @@ namespace CMS.Mvc.Helpers
                 );
         }
 
-        public static List<BreadCrumbLinkItemViewModel> GetBreadcrumb<T>(string className, string name)
-            where T : TreeNode, new()
+        public static List<BreadCrumbLinkItemViewModel> GetBreadcrumb<T>(Guid guid) where T : TreeNode
         {
-            var doc = GetDocByName<T>(className, name);
-            var list = new List<Link>();
-            TraverseNodes(doc, list);
+            return GetBreadcrumb(GetDocByGuid<T>(guid));
+        }
 
-            list.Reverse();
-            string currReference = string.Empty;
-            var breadcrumbList = list.Select(item =>
+        public static List<BreadCrumbLinkItemViewModel> GetBreadcrumb<T>(string className, string name) where T : TreeNode, new()
+        {
+            return GetBreadcrumb(GetDocByName<T>(className, name));
+        }
+
+        private static List<BreadCrumbLinkItemViewModel> GetBreadcrumb<T>(T doc) where T : TreeNode
+        {
+            var breadcrumbList = new List<BreadCrumbLinkItemViewModel>();
+            object val;
+            TreeNode node = doc;
+            while (node.NodeAliasPath != "/")
             {
-                if (!string.IsNullOrWhiteSpace(item.Reference))
-                    currReference += "/" + item.Reference;
-                return new BreadCrumbLinkItemViewModel()
+                if (!node.TryGetProperty("ExcludeFromSiteMap", out val))
                 {
-                    Title = item.Title,
-                    Reference = currReference
-                };
-            }).ToList();
+                    breadcrumbList.Insert(0, new BreadCrumbLinkItemViewModel
+                       {
+                           Title = node.DocumentName,
+                           Reference = node.DocumentNamePath
+                       });
+                }
+                node = node.Parent;
+            }
             return breadcrumbList;
         }
-
-        private static void TraverseNodes(TreeNode doc, List<Link> list)
-        {
-            object val;
-            if (!doc.TryGetProperty("ExcludeFromSiteMap", out val))
-                list.Add(new Link() { Title = doc.DocumentName, Reference = doc.NodeAlias });
-
-            if (doc.Parent.NodeAliasPath == "/")
-                return;
-            TraverseNodes(doc.Parent, list);
-        }
-
 
         public static List<T> GetDocs<T>(string className) where T : TreeNode, new()
         {
@@ -123,14 +112,16 @@ namespace CMS.Mvc.Helpers
                 ).ToList();
         }
 
-        public static List<T> GetDocsByGuids<T>(IEnumerable<Guid> guids, string siteName = null)
-            where T : TreeNode, new()
+        public static T GetDocByGuid<T>(Guid guid, string siteName = null) where T : class
         {
-            return
-                guids.Select(
-                    guid =>
-                        _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid,
-                            siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T).Where(w => w != null).ToList();
+            return CacheHelper.Cache(cs =>
+                _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T,
+                new CacheSettings(CachingTime, string.Format("doc_guid_{0}", guid)));
+        }
+
+        public static List<T> GetDocsByGuids<T>(IEnumerable<Guid> guids, string siteName = null) where T : class
+        {
+            return guids.Select(guid => GetDocByGuid<T>(guid, siteName)).Where(w => w != null).ToList();
         }
 
         public static List<TreeNode> GetDocsByPath(string aliasPath, int maxRelativeLevel = 1, string classNames = "*")
@@ -151,6 +142,61 @@ namespace CMS.Mvc.Helpers
             },
                 new CacheSettings(CachingTime,
                     string.Format("pth_{0}_mrl_{1}_cn_{2}", aliasPath, maxRelativeLevel, classNames)));
+        }
+
+        public static SearchResult PerformSearch(SearchRequest request)
+        {
+            DocumentSearchCondition docCondition = new DocumentSearchCondition
+            {
+                Culture = LocalizationContext.CurrentCulture.CultureCode,
+                ClassNames = request.ClassNames,
+            };
+
+            var condition = new SearchCondition(request.AdditiveQuery, SearchModeEnum.AllWords, SearchOptionsEnum.FullSearch, docCondition);
+            var searchText = SearchSyntaxHelper.CombineSearchCondition(request.Query, condition);
+
+            var parameters = new Search.SearchParameters
+            {
+                SearchFor = searchText,
+                SearchSort = request.SortOrder,
+                Path = "/%",
+                ClassNames = null,
+                CurrentCulture = LocalizationContext.CurrentCulture.CultureCode,
+                DefaultCulture = null,
+                CombineWithDefaultCulture = false,
+                CheckPermissions = false,
+                SearchInAttachments = false,
+                User = null,
+                SearchIndexes = request.IndexName,
+                NumberOfResults = Int32.MaxValue,
+                AttachmentWhere = null,
+                AttachmentOrderBy = null,
+                DisplayResults = request.RecordsOnPage,
+                NumberOfProcessedResults = Int32.MaxValue,
+                StartingPosition = request.PageNumber.HasValue ? (request.PageNumber.Value - 1) * request.RecordsOnPage : 0,
+            };
+
+            var results = Search.SearchHelper.Search(parameters);
+            if (results == null) return new SearchResult();
+            return new SearchResult
+            {
+                PageCount = (int)Math.Ceiling(1d * parameters.NumberOfResults / request.RecordsOnPage),
+                Items = results.Tables[0].AsEnumerable().Select(s => new SearchResultItem
+                {
+                    Title = s.Field<string>("Title"),
+                    Content = s.Field<string>("Content"),
+                    Image = s.Field<string>("Image"),
+                    Date = s.Field<string>("Created")
+                }).ToList()
+            };
+        }
+
+        public static List<UserInfo> GetUsers()
+        {
+            return CacheHelper.Cache(cs =>
+            {
+                return UserInfoProvider.GetUsers().ToList();
+            }, new CacheSettings(CachingTime, "get_all_users"));
         }
 
         internal static List<T> GetSiblings<T>(T node) where T : TreeNode, new()

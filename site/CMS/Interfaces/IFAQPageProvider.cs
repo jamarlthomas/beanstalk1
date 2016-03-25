@@ -7,6 +7,5 @@ namespace CMS.Mvc.Interfaces
     public interface IFAQPageProvider
     {
         List<FAQPage> GetFAQPages();
-        List<BreadCrumbLinkItemViewModel> GetBreadcrumb(string name);
     }
 }

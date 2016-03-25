@@ -5,7 +5,11 @@
     Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
 
-<h1>@Model.Title</h1>
-<p>@Html.Raw(Model.Description)</p>
-
-@Html.Partial("~/Views/Afton/NewsAndEvents/_tiles.cshtml", Model.Tiles)
+<div id="newsC">
+    <div id="newsHdr" class="padTop padBtm">
+        @{ Html.RenderPartial("~/Views/Afton/Shared/NewsEventsAndBlog/_header.cshtml", Model); }
+        @{ Html.RenderPartial("~/Views/Afton/NewsAndEvents/_selectors.cshtml", Model); }
+    </div>
+    @{ Html.RenderPartial("~/Views/Afton/NewsAndEvents/_dataList.cshtml", Model); }
+</div>
+@{ Html.RenderPartial("~/Views/Afton/Shared/NewsEventsAndBlog/_tiles.cshtml", Model); }

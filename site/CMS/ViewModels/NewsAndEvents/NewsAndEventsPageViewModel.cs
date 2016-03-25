@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace CMS.Mvc.ViewModels.NewsAndEvents
 {
-    public class NewsAndEventsPageViewModel
+    public class NewsAndEventsPageViewModel : NewsEventsAndBlogBasePageViewModel
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public List<TileViewModel> Tiles { get; set; }
+        public string AllNewsEventsSelectorValue { get; set; }
+        public string NewsSelectorValue { get; set; }
+        public string EventsSelectorValue { get; set; }
+        public List<NewsAndEventViewModel> NewsAndEventsList { get; set; }
     }
 }
