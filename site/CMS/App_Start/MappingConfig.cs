@@ -14,6 +14,8 @@ namespace CMS.Mvc.App_Start
         public static void RegisterMappings()
         {
             AnyCMSModelToTileViewModelMapping();
+            AutoMapper.Mapper.CreateMap<CustomNews, NewsAndEventViewModel>();
+            AutoMapper.Mapper.CreateMap<Event, NewsAndEventViewModel>();
         }
 
         private static void AnyCMSModelToTileViewModelMapping()
@@ -22,8 +24,6 @@ namespace CMS.Mvc.App_Start
                 .Where(t => String.Equals(t.Namespace, "CMS.DocumentEngine.Types", StringComparison.Ordinal))
                 .Select(type => AutoMapper.Mapper.CreateMap(type, typeof(TileViewModel))
                 .ForMember("Date", opts => opts.MapFrom<DateTime>(src => (DateTime)(src as TreeNode).GetValue("DocumentCreatedWhen")))).ToList();
-            AutoMapper.Mapper.CreateMap<CustomNews, NewsAndEventViewModel>();
-            AutoMapper.Mapper.CreateMap<Event, NewsAndEventViewModel>();
         }
     }
 }

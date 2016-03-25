@@ -116,14 +116,15 @@ namespace CMS.Mvc.Helpers
                 ).ToList();
         }
 
-        public static List<T> GetDocsByGuids<T>(IEnumerable<Guid> guids, string siteName = null)
-            where T : TreeNode, new()
+        public static List<T> GetDocsByGuids<T>(IEnumerable<Guid> guids, string siteName = null) where T : class
         {
-            return
-                guids.Select(
-                    guid =>
+            return CacheHelper.Cache(cs =>
+            {
+                return guids.Select(guid =>
                         _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid,
                             siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T).Where(w => w != null).ToList();
+            },
+                new CacheSettings(CachingTime, string.Format("guids_{0}", string.Join(string.Empty, guids))));
         }
 
         public static List<TreeNode> GetDocsByPath(string aliasPath, int maxRelativeLevel = 1, string classNames = "*")

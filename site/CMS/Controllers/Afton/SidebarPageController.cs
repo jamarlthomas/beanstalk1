@@ -15,12 +15,14 @@ namespace CMS.Mvc.Controllers.Afton
         protected readonly ILeftNavigationProvider _leftNavigationProvider;
         protected readonly IPollSurveyAnswerProvider _pollSurveyAnswerProvider;
         protected readonly ISidebarProvider _sidebarProvider;
+        protected readonly ICountryProvider _countryProvider;
 
         public SidebarPageController()
         {
             _sidebarProvider = new SidebarProvider();
             _pollSurveyAnswerProvider = new PollSurveyAnswerProvider();
             _leftNavigationProvider = new LeftNavigationProvider();
+            _countryProvider = new CountryProvider();
         }
 
         public JsonResult SubmitEmail(string email)
@@ -57,7 +59,7 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 case ContactUs.CLASS_NAME:
                 {
-                    return new ContactUsViewModel(item, _sidebarProvider.GetCountries());
+                    return new ContactUsViewModel(item, _countryProvider.GetCountries());
                 }
                 case StayInformed.CLASS_NAME:
                 {
