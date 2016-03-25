@@ -19,6 +19,8 @@ $( document ).ready(function() {
         
         //submit rating and store id that is returned so we can sumbit comment
         var url = "http://localhost:22062/rate-this-content"
+        
+        
         $.getJSON( url, { init: helpfulValue } )
           .done(function( data ) {
             storeRateID = data.Rating[0].id;            
@@ -27,7 +29,7 @@ $( document ).ready(function() {
             var err = textStatus + ", " + error;
             //console.log( "Request Failed: " + err ); 
         });
-           
+        
         
     });
     
@@ -51,15 +53,14 @@ $( document ).ready(function() {
         $("#ratePopup").fadeOut(500);
         
         //submit comment
-        $.ajax({
-            type: "POST", 
-            url: "http://localhost:22062/rate-this-content",                 
-            data:{ "id": storeRateID, "comment": comment }, 
-            success: function (response) {
-                //console.log(response);
-            },
-            dataType: "json"
-        }); 
+        $.ajax({            
+            type: "POST",
+            url: "/rate-this-content",
+            data:{ 'id': storeRateID, 'comment': comment },
+            success: function(msg){
+                //console.log(msg);
+            }
+        });  
         
         
     });
