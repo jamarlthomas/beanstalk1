@@ -17,21 +17,21 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(Product.CLASS_NAME, typeof(Product))]
+[assembly: RegisterDocumentType(Solution.CLASS_NAME, typeof(Solution))]
 
 namespace CMS.DocumentEngine.Types
 {
     /// <summary>
     /// Sample item class.
     /// </summary>
-    public partial class Product : TreeNode
+    public partial class Solution : TreeNode
     {
         #region "Constants"
 
         /// <summary>
         /// Class name of the item.
         /// </summary>
-        public const string CLASS_NAME = "custom.Product";
+        public const string CLASS_NAME = "custom.Solution";
 
         #endregion
 
@@ -39,18 +39,35 @@ namespace CMS.DocumentEngine.Types
         #region "Properties"
 
         /// <summary>
-        /// ProductID.
+        /// SolutionID.
         /// </summary>
         [DatabaseField]
-        public int ProductID
+        public int SolutionID
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("ProductID"), 0);
+                return ValidationHelper.GetInteger(GetValue("SolutionID"), 0);
             }
             set
             {
-                SetValue("ProductID", value);
+                SetValue("SolutionID", value);
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
+        public string HomeImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HomeImage"), "");
+            }
+            set
+            {
+                SetValue("HomeImage", value);
             }
         }
 
@@ -73,69 +90,52 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Tile Title.
+        /// Subtitle.
         /// </summary>
         [DatabaseField]
-        public string TileTitle
+        public string Subtitle
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("TileTitle"), "");
+                return ValidationHelper.GetString(GetValue("Subtitle"), "");
             }
             set
             {
-                SetValue("TileTitle", value);
+                SetValue("Subtitle", value);
             }
         }
 
 
         /// <summary>
-        /// Image displayed on a tile.
+        /// HeroImage.
         /// </summary>
         [DatabaseField]
-        public string HomeImage
+        public string HeroImage
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("HomeImage"), "");
+                return ValidationHelper.GetString(GetValue("HeroImage"), "");
             }
             set
             {
-                SetValue("HomeImage", value);
+                SetValue("HeroImage", value);
             }
         }
 
 
         /// <summary>
-        /// Text that appears on hover.
+        /// NavigationIcon.
         /// </summary>
         [DatabaseField]
-        public string TileOverlayText
+        public string NavigationIcon
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("TileOverlayText"), "");
+                return ValidationHelper.GetString(GetValue("NavigationIcon"), "");
             }
             set
             {
-                SetValue("TileOverlayText", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Sidebar Component Items.
-        /// </summary>
-        [DatabaseField]
-        public string SidebarItems
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
-            }
-            set
-            {
-                SetValue("SidebarItems", value);
+                SetValue("NavigationIcon", value);
             }
         }
 
@@ -158,52 +158,35 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Content.
+        /// FeaturedProductList.
         /// </summary>
         [DatabaseField]
-        public string Content
+        public string FeaturedProductList
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Content"), "");
+                return ValidationHelper.GetString(GetValue("FeaturedProductList"), "");
             }
             set
             {
-                SetValue("Content", value);
+                SetValue("FeaturedProductList", value);
             }
         }
 
 
         /// <summary>
-        /// Regions.
+        /// Sidebar Items.
         /// </summary>
         [DatabaseField]
-        public string Regions
+        public string SidebarItems
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Regions"), "");
+                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
             }
             set
             {
-                SetValue("Regions", value);
-            }
-        }
-
-
-        /// <summary>
-        /// PdfReference.
-        /// </summary>
-        [DatabaseField]
-        public string PdfReference
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("PdfReference"), "");
-            }
-            set
-            {
-                SetValue("PdfReference", value);
+                SetValue("SidebarItems", value);
             }
         }
 
@@ -215,7 +198,7 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Constructor.
         /// </summary>
-        public Product()
+        public Solution()
             : base(CLASS_NAME)
         {
         }

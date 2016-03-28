@@ -207,6 +207,7 @@
     <Compile Include="Interfaces\IBlogPostProvider.cs" />
     <Compile Include="Interfaces\IBlogCategoryProvider.cs" />
     <Compile Include="Interfaces\IGlobalSearchProvider.cs" />
+    <Compile Include="Interfaces\ISolutionConstantsProvider.cs" />
     <Compile Include="Interfaces\IDocumentConstantProvider.cs" />
     <Compile Include="Interfaces\ICountryProvider.cs" />
     <Compile Include="Interfaces\IATCToolsPageProvider.cs" />
@@ -254,20 +255,25 @@
     <Compile Include="Models\Afton\Shared\SideBarComponents\PollSurveyAnswer.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\PollSurvey.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\StayInformed.cs" />
+    <Compile Include="Models\Afton\Solution\SolutionConstants.cs" />
+    <Compile Include="Models\Afton\Solution\Solution.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\Term.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\TermsAndAcronymsPage.cs" />
+    <Compile Include="Models\ExtendedModels\Product.cs" />
     <Compile Include="Models\ExtendedModels\BlogPost.cs" />
     <Compile Include="Models\ExtendedModels\Home.cs" />
     <Compile Include="Models\ExtendedModels\InsightsResources.cs" />
     <Compile Include="Models\ExtendedModels\Solution.cs" />
     <Compile Include="Models\ExtendedModels\CustomNews.cs" />
     <Compile Include="Models\ExtendedModels\Document.cs" />
+    <Compile Include="Models\ExtendedModels\SolutionBusinessUnit.cs" />
     <Compile Include="Old_App_Code\GeneratePdf.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Providers\BlogPostProvider.cs" />
     <Compile Include="Providers\ATCToolsPageProvider.cs" />
     <Compile Include="Providers\GlobalSearchPageProvider.cs" />
+    <Compile Include="Providers\SolutionConstantsProvider.cs" />
     <Compile Include="Providers\SalesOfficeProvider.cs" />
     <Compile Include="Providers\DocumentConstantProvider.cs" />
     <Compile Include="Providers\BlogCategoryProvider.cs" />
@@ -335,7 +341,6 @@
     <Compile Include="Models\Afton\Shared\Product.cs" />
     <Compile Include="Models\Afton\SBU\AnchorMenuItem.cs" />
     <Compile Include="Models\Afton\SBU\SolutionBusinessUnit.cs" />
-    <Compile Include="Models\Afton\Shared\Solution.cs" />
     <Compile Include="Models\Afton\Shared\GenericModel.cs" />
     <Compile Include="Models\Afton\Home\HeroContent.cs" />
     <Compile Include="Models\Afton\Home\Home.cs" />
@@ -438,6 +443,7 @@
     <Compile Include="ViewModels\Shared\DocumentViewModel.cs" />
     <Compile Include="ViewModels\SBU\DocumentTypeViewModel.cs" />
     <Compile Include="ViewModels\SBU\SBUViewModel.cs" />
+    <Compile Include="ViewModels\Solution\SolutionConstantsViewModel.cs" />
     <Compile Include="ViewModels\TermsAndAcronyms\TermsAndAcronymsPageViewModel.cs" />
     <Compile Include="ViewModels\TermsAndAcronyms\TermsListViewModel.cs" />
     <Compile Include="ViewModels\TermsAndAcronyms\TermViewModel.cs" />
@@ -561,7 +567,6 @@
     <Content Include="Views\Afton\SBU\_documents.cshtml" />
     <Content Include="Views\Afton\Solution\_description.cshtml" />
     <Content Include="Views\Afton\Solution\_heroImage.cshtml" />
-    <Content Include="Views\Afton\Solution\_sidebar.cshtml" />
     <Content Include="Views\Afton\SBU\_solutions.cshtml" />
     <Content Include="Views\Afton\Home\_heroContent.cshtml" />
     <Content Include="Views\Afton\Product\Index.cshtml" />
@@ -626,7 +631,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pdf\Temp\" />
-    <Folder Include="ViewModels\Solution\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CorporateSite\News\Detail.cshtml" />
