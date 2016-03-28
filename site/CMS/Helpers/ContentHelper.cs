@@ -144,7 +144,7 @@ namespace CMS.Mvc.Helpers
                     string.Format("pth_{0}_mrl_{1}_cn_{2}", aliasPath, maxRelativeLevel, classNames)));
         }
 
-        public static SearchResult PerformSearch(SearchRequest request)
+        public static SearchResult PerformSearch(BaseSearchRequest request)
         {
             DocumentSearchCondition docCondition = new DocumentSearchCondition
             {
@@ -176,7 +176,7 @@ namespace CMS.Mvc.Helpers
                 StartingPosition = request.PageNumber.HasValue ? (request.PageNumber.Value - 1) * request.RecordsOnPage : 0,
             };
 
-            var results = Search.SearchHelper.Search(parameters);
+            var results = SearchHelper.Search(parameters);
             if (results == null) return new SearchResult();
             return new SearchResult
             {

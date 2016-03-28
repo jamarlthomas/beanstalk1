@@ -57,12 +57,12 @@ namespace CMS.Mvc.Controllers.Afton
         }
 
         [Route("filter/regions/{Regions}/documents/{DocumentTypesIds}/SBU/{SBUId}/solutions/{SolutionsIds}")]
-        public JsonResult SearchAction(SearchRequest request)
+        public JsonResult SearchAction(SelectionFilterSearchRequest request)
         {
             return Json(Search(request), JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Index(string name, SearchRequest searchRequest)
+        public ActionResult Index(string name, SelectionFilterSearchRequest searchRequest)
         {
             var page = _selectionFilterPageProvider.GetSelectionFilterPage(name);
             var model = new SelectionFilterViewModel
@@ -105,7 +105,7 @@ namespace CMS.Mvc.Controllers.Afton
             return View("~/Views/Afton/SelectionFilter/Index.cshtml", model);
         }
 
-        private SelectionFilterSearchViewModel Search(SearchRequest request)
+        private SelectionFilterSearchViewModel Search(SelectionFilterSearchRequest request)
         {
             request.Regions = request.Regions == RouteHelper.NULL_VALUE_PLACEHOLDER ? null : request.Regions;
             if (request.DocumentTypesIds == RouteHelper.NULL_VALUE_PLACEHOLDER)

@@ -9,7 +9,7 @@ namespace CMS.Mvc.Helpers
     {
         public const string NULL_VALUE_PLACEHOLDER = "-1";
 
-        public static string GetSelectionFilterUrl(SearchRequest searchRequest, string name = null)
+        public static string GetSelectionFilterUrl(SelectionFilterSearchRequest searchRequest, string name = null)
         {
             StringBuilder sb = new StringBuilder("/SelectionFilter/Index");
             if (!string.IsNullOrEmpty(name))

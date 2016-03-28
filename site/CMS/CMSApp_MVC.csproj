@@ -195,17 +195,22 @@
     <Compile Include="Controllers\Afton\FAQController.cs" />
     <Compile Include="Controllers\Afton\BlogsController.cs" />
     <Compile Include="Controllers\Afton\ATCToolsController.cs" />
+    <Compile Include="Controllers\Afton\GlobalSearchController.cs" />
     <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
     <Compile Include="Controllers\Afton\NewsAndEventsController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
     <Compile Include="Helpers\AftonData.cs" />
     <Compile Include="Helpers\ContentHelper.cs" />
     <Compile Include="Helpers\RouteHelper.cs" />
+    <Compile Include="Infrastructure\Models\BaseSearchRequest.cs" />
+    <Compile Include="Infrastructure\Models\GlobalSearchRequest.cs" />
     <Compile Include="Interfaces\IBlogPostProvider.cs" />
     <Compile Include="Interfaces\IBlogCategoryProvider.cs" />
+    <Compile Include="Interfaces\IGlobalSearchProvider.cs" />
     <Compile Include="Interfaces\IDocumentConstantProvider.cs" />
     <Compile Include="Interfaces\ICountryProvider.cs" />
     <Compile Include="Interfaces\IATCToolsPageProvider.cs" />
+    <Compile Include="Interfaces\IGlobalSearchPageProvider.cs" />
     <Compile Include="Interfaces\ISalesOfficeProvider.cs" />
     <Compile Include="Interfaces\IRegionProvider.cs" />
     <Compile Include="Interfaces\IFAQPageProvider.cs" />
@@ -235,6 +240,7 @@
     <Compile Include="Controllers\Afton\HomeController.cs" />
     <Compile Include="Controllers\Afton\MasterController.cs" />
     <Compile Include="Controllers\Afton\SidebarPageController.cs" />
+    <Compile Include="Models\Afton\GlobalSearch\GlobalSearchPage.cs" />
     <Compile Include="Models\Afton\NewsAndEvents\NewsAndEventsPage.cs" />
     <Compile Include="Models\Afton\Shared\Country.cs" />
     <Compile Include="Models\Afton\Shared\Document.cs" />
@@ -261,12 +267,14 @@
     </Compile>
     <Compile Include="Providers\BlogPostProvider.cs" />
     <Compile Include="Providers\ATCToolsPageProvider.cs" />
+    <Compile Include="Providers\GlobalSearchPageProvider.cs" />
     <Compile Include="Providers\SalesOfficeProvider.cs" />
     <Compile Include="Providers\DocumentConstantProvider.cs" />
     <Compile Include="Providers\BlogCategoryProvider.cs" />
     <Compile Include="Providers\ContactPageProvider.cs" />
     <Compile Include="Providers\RegionProvider.cs" />
     <Compile Include="Providers\CountryProvider.cs" />
+    <Compile Include="Providers\GlobalSearchProvider.cs" />
     <Compile Include="Providers\UsersProvider.cs" />
     <Compile Include="Providers\FAQPageProvider.cs" />
     <Compile Include="Providers\FAQTopicProvider.cs" />
@@ -284,7 +292,7 @@
     <Compile Include="Infrastructure\Localization\RouteValueTranslationProvider.cs" />
     <Compile Include="Infrastructure\Localization\TranslatedRoute.cs" />
     <Compile Include="Infrastructure\Localization\TranslationItem.cs" />
-    <Compile Include="Infrastructure\Models\SearchRequest.cs" />
+    <Compile Include="Infrastructure\Models\SelectionFilterSearchRequest.cs" />
     <Compile Include="Infrastructure\UIMappingConfiguration.cs" />
     <Compile Include="Controllers\CorporateSite\NewsController.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModuleMetadata.cs" />
@@ -365,6 +373,7 @@
     <Compile Include="ViewModels\Document\DocumentConstantViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQPageViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQTopicViewModel.cs" />
+    <Compile Include="ViewModels\GlobalSearch\GlobalSearchPageViewModel.cs" />
     <Compile Include="ViewModels\NewsAndEvents\NewsAndEventsPageViewModel.cs" />
     <Compile Include="ViewModels\NewsAndEvents\NewsAndEventViewModel.cs" />
     <Compile Include="ViewModels\Product\LeftSideBlockViewModel.cs" />
