@@ -1,7 +1,5 @@
-﻿using System;
+﻿using CMS.Mvc.ViewModels.Shared;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace CMS.Mvc.ViewModels.GlobalSearch
 {
@@ -9,5 +7,10 @@ namespace CMS.Mvc.ViewModels.GlobalSearch
     {
         public string Title { get; set; }
         public string ResultsForLabel { get; set; }
+        public string SearchTerm { get; set; }
+        public int ResultsCount { get; set; }
+        public int PageCount { get; set; }
+        public List<ResultItemViewModel> Results { get; set; }
+        public PaginationViewModel Pagination { get; set; }
     }
 }

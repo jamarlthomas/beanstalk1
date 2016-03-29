@@ -19,6 +19,11 @@ namespace CMS.Mvc.Providers
             return GetTreeNodes(UtilsHelper.ParseGuids(guids));
         }
 
+        public TreeNode GetTreeNodeByNodeId(int id)
+        {
+            return ContentHelper.GetDocByNodeId<TreeNode>(id);
+        }
+
         public List<BreadCrumbLinkItemViewModel> GetBreadcrumb(Guid guid)
         {
             return ContentHelper.GetBreadcrumb<TreeNode>(guid);
