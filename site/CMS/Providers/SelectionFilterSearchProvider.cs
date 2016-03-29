@@ -10,7 +10,7 @@ namespace CMS.Mvc.Providers
 {
 	public class SelectionFilterSearchProvider : ISelectionFilterSearchProvider
 	{
-		public SearchResult PerformSearch(SearchRequest request)
+		public SearchResult PerformSearch(SelectionFilterSearchRequest request)
 		{
 			request.IndexName = "SelectionFilterSearch";
 			request.RecordsOnPage = int.Parse(ConfigurationManager.AppSettings["SelectionFilterRecordOnPageCount"]);

@@ -73,6 +73,57 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Tile Title.
+        /// </summary>
+        [DatabaseField]
+        public string TileTitle
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("TileTitle"), "");
+            }
+            set
+            {
+                SetValue("TileTitle", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Image displayed on a tile.
+        /// </summary>
+        [DatabaseField]
+        public string HomeImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HomeImage"), "");
+            }
+            set
+            {
+                SetValue("HomeImage", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Text that appears on hover.
+        /// </summary>
+        [DatabaseField]
+        public string TileOverlayText
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("TileOverlayText"), "");
+            }
+            set
+            {
+                SetValue("TileOverlayText", value);
+            }
+        }
+
+
+        /// <summary>
         /// Sidebar Component Items.
         /// </summary>
         [DatabaseField]
@@ -85,23 +136,6 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("SidebarItems", value);
-            }
-        }
-
-
-        /// <summary>
-        /// TileImage.
-        /// </summary>
-        [DatabaseField]
-        public string TileImage
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("TileImage"), "");
-            }
-            set
-            {
-                SetValue("TileImage", value);
             }
         }
 

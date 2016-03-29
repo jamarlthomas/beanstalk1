@@ -16,7 +16,7 @@ namespace CMS.Mvc.Infrastructure
             CreateMap<Product, DownloadWidgetViewModel>();
             CreateMap<Product, RelatedProductCardViewModel>()
                 .ForMember(s => s.Title, d => d.Header)
-                .ForMember(s => s.TileImage, d => d.ImageUrl)
+                //.ForMember(s => s.TileImage, d => d.ImageUrl)
                 .ForMember(s => s.Description, d => d.Text)
                 .ForMember(s=> RelatedProductCardViewModel.GetUrl(s), d=>d.Reference)
                 .ForMember(s=>((SolutionBusinessUnit)s.Parent.Parent).Title, d=>d.Title)
