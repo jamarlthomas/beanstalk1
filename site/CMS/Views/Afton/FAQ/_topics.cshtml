@@ -1,0 +1,17 @@
+﻿@foreach (var topic in Model.Topics)
+{
+    <div id="@topic.Id-FAQs" class="faqGroup">
+        <h2>@topic.Name @Model.Title </h2>
+        <ul class="accordC txtPaddingTop">
+            @foreach (var faqItem in topic.Items)
+            {
+                <li>
+                    <a href="#">
+                        <div class="icon"></div> @faqItem.Question
+                    </a>
+                    <div style="display: none;" class="reveal">@Html.Raw(faqItem.Answer)</div>
+                </li>
+            }
+        </ul>
+    </div>
+}

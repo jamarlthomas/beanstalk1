@@ -608,7 +608,7 @@
     <Content Include="Views\Afton\Shared\Sidebar\_documentWidget.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_pollSurvey.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_leftNavigation.cshtml" />
-    <Content Include="Views\Afton\FAQ\_topic.cshtml" />
+    <Content Include="Views\Afton\FAQ\_topics.cshtml" />
     <Content Include="Views\Afton\FAQ\_dropdown.cshtml" />
     <Content Include="Views\Afton\FAQ\Index.cshtml" />
     <Content Include="Views\Afton\InsightsAndResources\_dataSheet.cshtml" />

@@ -2,22 +2,19 @@
 @model FAQPageViewModel
 @{
     ViewBag.Title = Model.MenuSelectedItem;
-	Layout = "~/Views/Afton/Shared/Master.cshtml";
+    Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
 
 <div id="contentAreaC">
     <div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
         <div id="rtCol-contentArea">
-            @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", @Model.BreadCrumb)
+            @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", Model.BreadCrumb)
             <div id="faqsHdrC" class="txtPaddingTop padBtm">
                 <h1>@Model.Title</h1><br>
-                @Html.Partial("~/Views/Afton/FAQ/_dropdown.cshtml", @Model.Topics)
+                @Html.Partial("~/Views/Afton/FAQ/_dropdown.cshtml", Model)
             </div>
             <div id="faqItems">
-                @foreach (var topic in Model.Topics)
-                {
-                    @Html.Partial("~/Views/Afton/FAQ/_topic.cshtml", topic)
-                }
+                @Html.Partial("~/Views/Afton/FAQ/_topics.cshtml", Model)
             </div>
         </div>
         <div id="lftCol-sidebar">
