@@ -44,6 +44,7 @@ namespace CMS.Mvc.Providers
                 SolutionBusinessUnit.CLASS_NAME,
                 Term.CLASS_NAME,
                 TermsAndAcronymsPage.CLASS_NAME,
+                Region.CLASS_NAME,
             };
             var sb = new StringBuilder();
             for (int i = 0; i < allowedClasses.Count - 1; i++)

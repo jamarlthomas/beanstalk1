@@ -1,18 +1,28 @@
-﻿@Model.FormIntroducionText <br />
-@Model.FirstNamePlaceholder <br />
-@Model.LastNamePlaceholder <br />
-@Model.CompanyNamePlaceholder <br />
-@Model.EmailPlaceholder <br />
-@Model.PhonePlaceholder <br />
-@Model.SelectCountryPlaceholder <br />
-
-@foreach(var country in Model.Countries)
-{
-    <span>@country.NodeName</span><br />
-}
-
-@Model.MessagePlaceholder <br />
-@Model.NewsletterTitle <br />
-@Model.NewsletterCheckboxLabel <br />
-@Model.SubmitLabel <br />
-@Model.PromptLabel <br />
+﻿<div id="contactC">
+    <h1>@Model.Title</h1><br>
+    <form>
+        @Model.FormIntroducionText
+        <input placeholder="@Model.FirstNamePlaceholder" required>
+        <input placeholder="@Model.LastNamePlaceholder" required>
+        <input placeholder="@Model.CompanyNamePlaceholder" required>
+        <input placeholder="@Model.EmailPlaceholder" required>
+        <input placeholder="@Model.PhonePlaceholder" required>
+        <div class="customSelectC standard">
+            <div class="orgSelect">
+                <select name="newsletter-lang" required>
+                    <option value="">@Model.SelectCountryPlaceholder</option>
+                    @foreach (var country in Model.Countries)
+                    {
+                        <option value="@country.DocumentGUID">@country.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <textarea placeholder="@Model.MessagePlaceholder" required></textarea>
+        <strong>@Model.NewsletterTitle</strong><br><br>
+        <label>
+            <input type="checkbox"><span class="checkboxDisplay"></span><span class="txt">@Html.Raw(@Model.NewsletterCheckboxLabel)</span><a href="@Model.NewsletterPrivacyLink">@Model.NewsletterPrivacyLabel</a>
+        </label><br><br>
+        <input type="submit" value="@Model.SubmitLabel" class="subscribe">
+    </form>
+</div>

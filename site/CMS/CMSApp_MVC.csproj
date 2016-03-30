@@ -207,6 +207,7 @@
     <Compile Include="Infrastructure\Models\GlobalSearchRequest.cs" />
     <Compile Include="Interfaces\IBlogPostProvider.cs" />
     <Compile Include="Interfaces\IBlogCategoryProvider.cs" />
+    <Compile Include="Interfaces\IGenericPageProvider.cs" />
     <Compile Include="Interfaces\IPageTypeDisplayValueProvider.cs" />
     <Compile Include="Interfaces\IGlobalSearchProvider.cs" />
     <Compile Include="Interfaces\ISolutionConstantsProvider.cs" />
@@ -262,6 +263,8 @@
     <Compile Include="Models\Afton\Solution\Solution.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\Term.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\TermsAndAcronymsPage.cs" />
+    <Compile Include="Models\ExtendedModels\Country.cs" />
+    <Compile Include="Models\ExtendedModels\Region.cs" />
     <Compile Include="Models\ExtendedModels\GlobalSearchPage.cs" />
     <Compile Include="Models\ExtendedModels\Product.cs" />
     <Compile Include="Models\ExtendedModels\BlogPost.cs" />
@@ -277,6 +280,7 @@
     <Compile Include="Providers\BlogPostProvider.cs" />
     <Compile Include="Providers\ATCToolsPageProvider.cs" />
     <Compile Include="Providers\GlobalSearchPageProvider.cs" />
+    <Compile Include="Providers\GenericPageProvider.cs" />
     <Compile Include="Providers\PageTypeDisplayValueProvider.cs" />
     <Compile Include="Providers\SolutionConstantsProvider.cs" />
     <Compile Include="Providers\SalesOfficeProvider.cs" />
