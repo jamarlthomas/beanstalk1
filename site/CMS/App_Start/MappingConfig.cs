@@ -14,6 +14,8 @@ namespace CMS.Mvc.App_Start
         public static void RegisterMappings()
         {
             AnyCMSModelToTileViewModelMapping();
+            AutoMapper.Mapper.CreateMap<CustomNews, NewsAndEventViewModel>();
+            AutoMapper.Mapper.CreateMap<Event, NewsAndEventViewModel>();
         }
 
         private static void AnyCMSModelToTileViewModelMapping()

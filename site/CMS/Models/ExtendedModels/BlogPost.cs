@@ -2,7 +2,7 @@
 {
     public partial class BlogPost
     {
-        public override string DocumentUrlPath
+        public override string DocumentNamePath
         {
             get
             {

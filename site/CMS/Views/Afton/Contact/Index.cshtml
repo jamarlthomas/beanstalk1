@@ -1,0 +1,13 @@
+﻿@using CMS.Mvc.ViewModels.Contact
+@model ContactPageViewModel
+@{
+    ViewBag.Title = string.Empty;
+    Layout = "~/Views/Afton/Shared/Master.cshtml";
+}
+
+@{ Html.RenderPartial("~/Views/Afton/Shared/_breadCrumb.cshtml", Model.BreadCrumb); } 
+
+<h1>@Model.Title</h1>
+@{ Html.RenderPartial("~/Views/Afton/Contact/_form.cshtml", Model); }
+@{ Html.RenderPartial("~/Views/Afton/Contact/_regions.cshtml", Model.Regions); }
+@{ Html.RenderPartial("~/Views/Afton/Shared/_emergencyResponse.cshtml", Model.EmergencyResponse); }

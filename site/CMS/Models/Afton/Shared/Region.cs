@@ -56,7 +56,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Region Title.
+        /// Title.
         /// </summary>
         [DatabaseField]
         public string Title
@@ -68,6 +68,23 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("Title", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Description.
+        /// </summary>
+        [DatabaseField]
+        public string Description
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Description"), "");
+            }
+            set
+            {
+                SetValue("Description", value);
             }
         }
 

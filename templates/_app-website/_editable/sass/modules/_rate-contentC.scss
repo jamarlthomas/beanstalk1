@@ -1,4 +1,4 @@
-#rateContentC { position: relative; text-align: center;
+#rateContentC { position: relative;
     
     #rateContent { display: inline-block; margin: 0px auto; padding: 10px 15px; font-size: 17px; border: 1px solid #4c9d2f;
     
@@ -17,7 +17,7 @@
         
     }//rateContent
     
-    #ratePopup { background: #eeeded; margin-left:auto; margin-right:auto; position: absolute; bottom: 0px; left: 0px; right: 0px; width: 390px; padding: 22px; text-align: left; font-size: 17px;
+    #ratePopup { background: #eeeded; position: absolute; bottom: 0px; left: 0px; right: 0px; width: 390px; padding: 22px; text-align: left; font-size: 17px;
         
         #closeSubmit { padding: 7px; float: right;  width: 25px; height: 25px; border-radius: 25px; font-size: 17px; line-height: 11px; text-decoration: none; color: #595959; background: #FFF; transition: 1s;
         

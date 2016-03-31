@@ -1,9 +1,8 @@
-﻿
-namespace CMS.DocumentEngine.Types
+﻿namespace CMS.DocumentEngine.Types
 {
     public partial class Document
     {
-        public override string DocumentUrlPath
+        public override string DocumentNamePath
         {
             get
             {

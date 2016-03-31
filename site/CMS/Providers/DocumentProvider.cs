@@ -23,10 +23,5 @@ namespace CMS.Mvc.Providers
         {
             return ContentHelper.GetDocByName<Document>(Document.CLASS_NAME, alias);
         }
-
-        public List<BreadCrumbLinkItemViewModel> GetBreadcrumb(string name)
-        {
-            return ContentHelper.GetBreadcrumb<Document>(Document.CLASS_NAME, name);
-        }
     }
 }

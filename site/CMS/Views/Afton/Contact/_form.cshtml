@@ -1,0 +1,18 @@
+﻿@Model.FormIntroducionText <br />
+@Model.FirstNamePlaceholder <br />
+@Model.LastNamePlaceholder <br />
+@Model.CompanyNamePlaceholder <br />
+@Model.EmailPlaceholder <br />
+@Model.PhonePlaceholder <br />
+@Model.SelectCountryPlaceholder <br />
+
+@foreach(var country in Model.Countries)
+{
+    <span>@country.NodeName</span><br />
+}
+
+@Model.MessagePlaceholder <br />
+@Model.NewsletterTitle <br />
+@Model.NewsletterCheckboxLabel <br />
+@Model.SubmitLabel <br />
+@Model.PromptLabel <br />
