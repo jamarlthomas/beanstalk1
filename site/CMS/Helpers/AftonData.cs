@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using CMS.DocumentEngine.Types;
 
 namespace CMS.Mvc.Helpers
 {
@@ -19,6 +20,25 @@ namespace CMS.Mvc.Helpers
                 public static string FolderName { get { return @"Product\"; } }
                 public static string LibraryPath { get { return @"Afton\media\PdfFiles\"; } }
             }
+        }
+
+        public static List<string> PersonalizationTypes
+        {
+            get
+            {
+                return new List<string>()
+                {
+                    Product.CLASS_NAME,
+                    SolutionBusinessUnit.CLASS_NAME,
+                    Solution.CLASS_NAME,
+                    Document.CLASS_NAME,
+                    GenericPage.CLASS_NAME,
+                    CustomNews.CLASS_NAME,
+                    Event.CLASS_NAME,
+                    NewsAndEventsPage.CLASS_NAME
+                };
+            }
+            
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿@model CMS.Mvc.ViewModels.Shared.Personalization.PersonalizationCardViewModel
 @if (!string.IsNullOrWhiteSpace(Model.Reference))
 {
-    <a href="@Url.Content(@Model.Reference)">
+    <a href="@Url.Content(@Model.Reference)" class="trending">
         <div class="cardBtnIndicator">
             <img src="~/images/card-btn-indicator.png" />
         </div>
+        <div class="trendIndicator">Trending Topic</div>
         <div class="overlayC">
             <div class="overlay">
                 <div class="cardTitle">@Model.TileTitle</div>
@@ -33,10 +34,11 @@
 }
 else
 {
-    <a>
+    <a class="trending">
         <div class="cardBtnIndicator">
             <img src="~/images/card-btn-indicator.png" />
         </div>
+        <div class="trendIndicator">Trending Topic</div>
         <div class="overlayC">
             <div class="overlay">
                 <div class="cardTitle">@Model.TileTitle</div>

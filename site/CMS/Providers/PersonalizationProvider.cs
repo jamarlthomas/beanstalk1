@@ -15,16 +15,15 @@ using System;
 
 namespace CMS.Mvc.Providers
 {
-    public class PersonalizationProvider : IPersonalisationProvider
+    public class PersonalizationProvider : IPersonalizationProvider
     {
-        //private readonly string _className = (new T()).ClassName;
         private const int WeightsSum = 3;
         private const double AgeSortWeight = 1;
         private const double ViewsSortWeight = 1;
         private const double PointsSortWeight = 1;
         public PersonaInfo CurrentPersona { get; set; }
         public ContactInfo CurrentContact { get; set; }
-        public List<PersonalizedContent<TreeNode>> ContentList { get; set; }
+        public List<PersonalizedContent<PersonalizedTile>> ContentList { get; set; }
         public List<PersonalizedTile> GetPersonalizedItems()
         {
             GetPersona();
@@ -33,7 +32,9 @@ namespace CMS.Mvc.Providers
             if (CurrentPersona == null)
             {
                 GetDefaultRecommendedContent();
-                return ContentList.Select(item => GetPersonalizedTile(item.Item)).ToList();
+                return ContentList
+                    .Select(item => item.Item)
+                    .ToList();
             }
 
             GetLastDateTheVisitorViewedEachPieceOfContent();
@@ -46,18 +47,15 @@ namespace CMS.Mvc.Providers
             SortContentWeightedHigherForPersona();
             SortPopularContentBeforeStagnant();
 
-            var result = ContentList.OrderBy(item => item.Relevance).Select(item => GetPersonalizedTile(item.Item)).ToList();
+            var result = ContentList
+                .OrderBy(item => item.Relevance)
+                .Select(item => item.Item)
+                .ToList();
 
             return result;
 
         }
 
-        private PersonalizedTile GetPersonalizedTile(TreeNode item)
-        {
-            PersonalizedTile tile = new PersonalizedTile();
-            tile.Load(item);
-            return tile;
-        }
 
         private void GetDefaultRecommendedContent()
         {
@@ -70,7 +68,7 @@ namespace CMS.Mvc.Providers
 
         private void PrioritizeDefaultContent(PersonalizedContentModel defaults)
         {
-            var a = new List<PersonalizedContent<TreeNode>>();
+            var a = new List<PersonalizedContent<PersonalizedTile>>();
             var guids = UtilsHelper.ParseGuids(defaults.Documents);
             foreach (var guid in guids)
             {
@@ -86,7 +84,7 @@ namespace CMS.Mvc.Providers
 
         private void GetAllContent()
         {
-            ContentList = ContentHelper.GetDocs<TreeNode>("custom.Product").Select(item => new PersonalizedContent<TreeNode>(item)).ToList();
+            ContentList = ContentHelper.GetDocsOfTypes(AftonData.PersonalizationTypes).Select(item => new PersonalizedContent<PersonalizedTile>(item)).ToList();
         }
 
 
@@ -166,8 +164,7 @@ namespace CMS.Mvc.Providers
 
         private void GetPostedDateOfAllTheContent()
         {
-            //ContentList.ForEach(item => item.PostedDate = (DateTime) item.Item.GetValue("DocumentModifiedWhen"));
-            ContentList.ForEach(item => item.PostedDate = item.Item.DocumentPublishFrom);
+            ContentList.ForEach(item => item.PostedDate = (DateTime) item.Item.Item.GetValue("DocumentModifiedWhen"));
         }
 
         private void GetPersona()
@@ -177,15 +174,18 @@ namespace CMS.Mvc.Providers
         }
 
 
-
-
-
-
         public string GetSectionTitle()
         {
             var settings = ContentHelper.GetDocs<PersonalizationSettings>(PersonalizationSettings.CLASS_NAME)
                 .FirstOrDefault();
             return (settings == null) ? "" : settings.PersonalizationSectionTitle;
+        }
+
+
+        public List<PersonalizedTile> GetTrendingTiles()
+        {
+            var tt = GetPersonalizedItems();
+            return tt;
         }
     }
 }

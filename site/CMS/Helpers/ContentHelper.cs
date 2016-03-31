@@ -1,13 +1,16 @@
 ﻿using System.Linq.Expressions;
 ﻿using System.Web;
 using System.Web.Configuration;
-﻿using CMS.DocumentEngine;
+using CMS.Base;
+using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.Mvc.Infrastructure.Models;
+using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Shared;
+using CMS.Personas;
 using CMS.PortalEngine;
 using CMS.Search;
 using System;
@@ -29,9 +32,11 @@ namespace CMS.Mvc.Helpers
         private static readonly string CurrentCulture = LocalizationContext.CurrentCulture.CultureCode;
         private static HttpContext context = HttpContext.Current;
         private static readonly TreeProvider _treeProvider = new TreeProvider();
+        private static string _allContentKey = "";
         public const string NodeIdKey = "PageViewNodeId";
         public const string NodeAliasPathKey = "PageViewDocumentPath";
         public const string ObjectNameKey = "ObjectName";
+
         public static List<TreeNode> GetAllNodes()
         {
             if (PortalContext.ViewMode == ViewModeEnum.Preview)
@@ -127,7 +132,9 @@ namespace CMS.Mvc.Helpers
                 guids.Select(
                     guid =>
                         _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid,
-                            siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T).Where(w => w != null).ToList();
+                            siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T)
+                    .Where(w => w != null)
+                    .ToList();
         }
 
         public static List<TreeNode> GetDocsByPath(string aliasPath, int maxRelativeLevel = 1, string classNames = "*")
@@ -158,7 +165,8 @@ namespace CMS.Mvc.Helpers
                 ClassNames = request.ClassNames,
             };
 
-            var condition = new SearchCondition(request.AdditiveQuery, SearchModeEnum.AllWords, SearchOptionsEnum.FullSearch, docCondition);
+            var condition = new SearchCondition(request.AdditiveQuery, SearchModeEnum.AllWords,
+                SearchOptionsEnum.FullSearch, docCondition);
             var searchText = SearchSyntaxHelper.CombineSearchCondition(request.Query, condition);
 
             var parameters = new Search.SearchParameters
@@ -179,7 +187,8 @@ namespace CMS.Mvc.Helpers
                 AttachmentOrderBy = null,
                 DisplayResults = request.RecordsOnPage,
                 NumberOfProcessedResults = Int32.MaxValue,
-                StartingPosition = request.PageNumber.HasValue ? (request.PageNumber.Value - 1) * request.RecordsOnPage : 0,
+                StartingPosition =
+                    request.PageNumber.HasValue ? (request.PageNumber.Value - 1) * request.RecordsOnPage : 0,
             };
 
             var results = Search.SearchHelper.Search(parameters);
@@ -237,7 +246,7 @@ namespace CMS.Mvc.Helpers
                             node = CacheHelper.Cache(cs =>
                             {
                                 TreeProvider tree = new TreeProvider();
-                                var doc = tree.SelectNodes(className)//.Published()
+                                var doc = tree.SelectNodes(className) //.Published()
                                     .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                                     .FirstOrDefault(predicate);
                                 if (string.IsNullOrWhiteSpace(cacheDependencyKey))
@@ -341,7 +350,29 @@ namespace CMS.Mvc.Helpers
 
         public static List<T> GetPersonalizedContent<T>(string className) where T : new()
         {
+
             return new List<T>() { new T() };
+        }
+
+        internal static List<PersonalizedTile> GetDocsOfTypes(List<string> typeList)
+        {
+            return CacheHelper.Cache(coll =>
+            {
+                var prv = new TreeProvider();
+                var persTiles = new List<PersonalizedTile>();
+                foreach (var type in typeList)
+                {
+                    string type1 = type;
+                    var docs = CacheHelper.Cache(cs => prv.SelectNodes(type1), new CacheSettings(CachingTime, type1));
+                    docs.ToList().ForEach(item =>
+                    {
+                        var tile = new PersonalizedTile();
+                        tile.Load(item);
+                        persTiles.Add(tile);
+                    });
+                }
+                return persTiles;
+            }, new CacheSettings(CachingTime, String.Join("", typeList)));
         }
     }
 }

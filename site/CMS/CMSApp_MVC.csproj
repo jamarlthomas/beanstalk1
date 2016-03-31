@@ -219,12 +219,10 @@
     <Compile Include="Controllers\Afton\BaseController.cs" />
     <Compile Include="Controllers\Afton\FAQController.cs" />
     <Compile Include="Controllers\Afton\PersonalizationController.cs" />
-    <Compile Include="Interfaces\IPersonalisationProvider.cs" />
     <Compile Include="Interfaces\IPersonalizationProvider.cs" />
     <Compile Include="Models\Afton\Shared\Personalization\PersonalizationSettings.cs" />
     <Compile Include="Models\Afton\Shared\Personalization\PersonalizedTile.cs" />
     <Compile Include="Models\ExtendedModels\PersonalizedTile.cs" />
-    <Compile Include="Providers\PersonalisationProvider.cs" />
     <Compile Include="Controllers\Afton\BlogsController.cs" />
     <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
     <Compile Include="Controllers\Afton\NewsAndEventsController.cs" />
@@ -619,6 +617,9 @@
     <Content Include="Views\Afton\Blogs\_dataList.cshtml" />
     <Content Include="Views\Afton\Blogs\_selectors.cshtml" />
     <Content Include="Views\Afton\Shared\MasterWithPersonalizationCards.cshtml" />
+    <Content Include="Views\Afton\Home\_trendingTile.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

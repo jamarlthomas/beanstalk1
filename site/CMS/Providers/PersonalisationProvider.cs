@@ -160,7 +160,11 @@ namespace CMS.Mvc.Providers
         private void GetPostedDateOfAllTheContent()
         {
             //ContentList.ForEach(item => item.PostedDate = (DateTime) item.Item.GetValue("DocumentModifiedWhen"));
-            ContentList.ForEach(item => item.PostedDate = item.Item.DocumentPublishFrom);
+            ContentList.ForEach(item =>
+            {
+                item.PostedDate = (DateTime) item.Item.GetValue("DocumentCreatedWhen");
+
+            });
         }
 
         private void GetPersona()

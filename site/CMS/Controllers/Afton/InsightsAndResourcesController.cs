@@ -87,7 +87,7 @@ namespace CMS.Mvc.Controllers.Afton
                 {
                     Title = page.StayInformedTileTitle,
                     Description = page.StayInformedTileDescription,
-                    DocumentUrlPath = "/StayInformed"
+                    Reference = "/StayInformed"
                 }
             };
             model.Tiles.AddRange(_resourceTileProvider.GetTiles(page.FeaturedContentList)

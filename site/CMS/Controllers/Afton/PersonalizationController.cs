@@ -9,9 +9,9 @@ namespace CMS.Mvc.Controllers.Afton
 {
     public class PersonalizationController : BaseController
     {
-        private readonly IPersonalisationProvider _personalizationProvider;
+        private readonly IPersonalizationProvider _personalizationProvider;
 
-        public PersonalizationController(IPersonalisationProvider personalizationProvider)
+        public PersonalizationController(IPersonalizationProvider personalizationProvider)
         {
             _personalizationProvider = personalizationProvider;
         }

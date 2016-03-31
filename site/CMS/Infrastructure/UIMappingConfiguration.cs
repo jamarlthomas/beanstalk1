@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.ViewModels.Product;
 using CMS.Mvc.ViewModels.Shared.Personalization;
@@ -27,7 +28,7 @@ namespace CMS.Mvc.Infrastructure
             CreateMap<PersonalizedTile, PersonalizationCardViewModel>()
                 .ForMember(s => s.HomeImage, d => d.HomeImage)
                 .ForMember(s => s.Title, d => d.Title)
-                .ForMember(s => s.DocumentPublishFrom, d => d.Date)
+                .ForMember(s => (DateTime)s.Item.GetValue("DocumentModifiedWhen"), d => d.Date)
                 .ForMember(s => s.Description, d => d.Description);
         }
         protected override void Collections()
