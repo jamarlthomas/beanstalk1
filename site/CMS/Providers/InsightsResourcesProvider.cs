@@ -7,9 +7,9 @@ namespace CMS.Mvc.Providers
 {
     public class InsightsResourcesProvider : IInsightsResourcesProvider
     {
-        public List<InsightsResources> GetInsightsResources()
+        public InsightsResources GetInsightsResourcesPage()
         {
-            return ContentHelper.GetDocs<InsightsResources>(InsightsResources.CLASS_NAME);
+            return ContentHelper.GetDoc<InsightsResources>(InsightsResources.CLASS_NAME);
         }
 
         public InsightsResources GetInsightsResourcesByName(string name)

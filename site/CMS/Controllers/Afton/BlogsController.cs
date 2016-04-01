@@ -45,7 +45,7 @@ namespace CMS.Mvc.Controllers.Afton
         [PageVisitActivity]
         public ActionResult Index()
         {
-            var page = _blogsPageProvider.GetBlogsPages().First();
+            var page = _blogsPageProvider.GetBlogsPage();
             var model = MapData<BlogsPage, BlogsPageViewModel>(page);
             var users = _usersProvider.GetUsers();
             model.Authors = new List<SelectorItemViewModel>

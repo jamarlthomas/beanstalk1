@@ -30,7 +30,7 @@ namespace CMS.Mvc.Controllers.Afton
         [PageVisitActivity]
         public ActionResult Index()
         {
-            var page = _newsAndEventsPageProvier.GetNewsAndEventsPages().First();
+            var page = _newsAndEventsPageProvier.GetNewsAndEventsPage();
             var model = MapData<NewsAndEventsPage, NewsAndEventsPageViewModel>(page);
 
             model.NewsAndEventsList = _treeNodesProvider
