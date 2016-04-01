@@ -371,5 +371,15 @@ namespace CMS.Mvc.Helpers
                 return persTiles;
             }, new CacheSettings(CachingTime, String.Join("", typeList)));
         }
+
+        public static T GetDoc<T>(string className) where T : TreeNode, new()
+        {
+            var doc = GetDocs<T>(className).FirstOrDefault();
+            if (doc != null)
+            {
+                SaveNode(doc);
+            }
+            return doc;
+        }
     }
 }

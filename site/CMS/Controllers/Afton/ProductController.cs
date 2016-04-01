@@ -21,10 +21,7 @@ namespace CMS.Mvc.Controllers.Afton
             _treeNodesProvider = new TreeNodesProvider();
         }
 
-        //[Route("Product/{alias}")]
-        //[PageViewActionFilter]
         [PageVisitActivity]
-        [DownloadActivity]
         public ActionResult Index(string name)
         {
             var product = _productProvider.GetProduct(name);
