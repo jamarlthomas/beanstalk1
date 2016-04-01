@@ -47,6 +47,11 @@ namespace CMS.Mvc.Providers
             SortContentWeightedHigherForPersona();
             SortPopularContentBeforeStagnant();
 
+            if (ContentList.Count < 3)
+            {
+                PickDefaultsForCurrentPersona();
+            }
+
             var result = ContentList
                 .OrderBy(item => item.Relevance)
                 .Select(item => item.Item)
@@ -56,31 +61,37 @@ namespace CMS.Mvc.Providers
 
         }
 
+        private void PickDefaultsForCurrentPersona()
+        {
+            var personaDefaults = ContentHelper.GetDocs<PersonalizedContentModel>(new PersonalizedContentModel().ClassName).FirstOrDefault(item => item.Persona.Equals(CurrentPersona.PersonaDisplayName));
+            if (personaDefaults != null)
+            {
+                GetDefaultItems(personaDefaults);
+            }
+        }
+
+        private void GetDefaultItems(PersonalizedContentModel personaDefaults)
+        {
+            var defaultItems =
+                ContentHelper.GetDocsByGuids<TreeNode>(UtilsHelper.ParseGuids(personaDefaults.Documents));
+            defaultItems.ForEach(item =>
+            {
+                var pt = new PersonalizedTile();
+                pt.Load(item);
+                ContentList.Add(new PersonalizedContent<PersonalizedTile>(pt));
+            });
+        }
+
 
         private void GetDefaultRecommendedContent()
         {
             var defaults = ContentHelper.GetDocs<PersonalizedContentModel>(new PersonalizedContentModel().ClassName).FirstOrDefault(item => item.Default);
             if (defaults != null)
             {
-                PrioritizeDefaultContent(defaults);
+                GetDefaultItems(defaults);
             }
         }
 
-        private void PrioritizeDefaultContent(PersonalizedContentModel defaults)
-        {
-            var a = new List<PersonalizedContent<PersonalizedTile>>();
-            var guids = UtilsHelper.ParseGuids(defaults.Documents);
-            foreach (var guid in guids)
-            {
-                var defItem = ContentList.FirstOrDefault(item => item.Item.DocumentGUID == guid);
-                if (defItem != null)
-                {
-                    a.Add(defItem);
-                }
-            }
-            a.AddRange(ContentList.Where(item => !guids.Contains(item.Item.DocumentGUID)));
-            ContentList = a;
-        }
 
         private void GetAllContent()
         {
