@@ -1,4 +1,5 @@
-﻿using CMS.Mvc.Helpers;
+﻿using CMS.Mvc.ActionFilters;
+using CMS.Mvc.Helpers;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
@@ -26,7 +27,7 @@ namespace CMS.Mvc.Controllers.Afton
             _newsAndEventsPageProvier = newsAndEventsPageProvier;
             _treeNodesProvider = treeNodesProvider;
         }
-
+        [PageVisitActivity]
         public ActionResult Index()
         {
             var page = _newsAndEventsPageProvier.GetNewsAndEventsPages().First();

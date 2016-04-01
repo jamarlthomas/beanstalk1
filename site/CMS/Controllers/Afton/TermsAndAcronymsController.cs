@@ -1,4 +1,5 @@
 ﻿using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
@@ -48,7 +49,7 @@ namespace CMS.Mvc.Controllers.Afton
             };
             return Json(model, JsonRequestBehavior.AllowGet);
         }
-
+        [PageVisitActivity]
         public ActionResult Index()
         {
             var page = _termsAndAcronymsPageProvider.GetTermsAndAcronymsPages().First();

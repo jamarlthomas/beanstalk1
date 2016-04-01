@@ -1,4 +1,5 @@
 ﻿using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Home;
@@ -34,7 +35,7 @@ namespace CMS.Mvc.Controllers.Afton
             _treeNodesProvider = treeNodesProvider;
             _personalisationProvider = personalisationProvider;
         }
-
+        [PageVisitActivity]
         public ActionResult Index()
         {
             var model = new HomeViewModel

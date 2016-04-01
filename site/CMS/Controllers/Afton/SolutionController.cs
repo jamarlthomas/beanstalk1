@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
@@ -29,7 +30,7 @@ namespace CMS.Mvc.Controllers.Afton
             _solutionProvider = solutionProvider;
 			_productProvider = productProvider;
         }
-
+        [PageVisitActivity]
         public ActionResult Index(string name, string parentName)
         {
 			var solutions = _solutionProvider.GetSolutionItems(parentName);

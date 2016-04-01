@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.DocumentsViewModel;
@@ -37,7 +38,7 @@ namespace CMS.Mvc.Controllers.Afton
             _documentConstantProvider = documentConstantProvider;
             _treeNodesProvider = treeNodesProvider;
         }
-
+        [PageVisitActivity]
         public ActionResult Index(string name)
         {
             var document = _documentProvider.GetDocument(name);

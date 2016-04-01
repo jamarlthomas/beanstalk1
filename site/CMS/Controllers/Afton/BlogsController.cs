@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.DocumentEngine.Types;
 using CMS.Membership;
@@ -41,7 +42,7 @@ namespace CMS.Mvc.Controllers.Afton
             _blogCategoryProvider = blogCategoryProvider;
             _blogPostProvider = blogPostProvider;
         }
-
+        [PageVisitActivity]
         public ActionResult Index()
         {
             var page = _blogsPageProvider.GetBlogsPages().First();

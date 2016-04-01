@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.FAQ;
@@ -18,7 +19,7 @@ namespace CMS.Mvc.Controllers.Afton
         public readonly IFAQTopicProvider _faqTopicProvider = new FAQTopicProvider();
         public readonly IInsightsResourcesProvider _insightsResourcesProvider = new InsightsResourcesProvider();
         public readonly ITreeNodesProvider _treeNodesProvider = new TreeNodesProvider();
-
+        [PageVisitActivity]
         public ActionResult Index()
         {
             var faqItems = _faqItemProvider.GetFAQItems();

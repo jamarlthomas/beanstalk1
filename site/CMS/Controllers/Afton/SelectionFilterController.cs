@@ -1,5 +1,6 @@
 ﻿using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Infrastructure.Enums;
 using CMS.Mvc.Infrastructure.Models;
@@ -61,7 +62,7 @@ namespace CMS.Mvc.Controllers.Afton
         {
             return Json(Search(request), JsonRequestBehavior.AllowGet);
         }
-
+        [PageVisitActivity]
         public ActionResult Index(string name, SearchRequest searchRequest)
         {
             var page = _selectionFilterPageProvider.GetSelectionFilterPage(name);

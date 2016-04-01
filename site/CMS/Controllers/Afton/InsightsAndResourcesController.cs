@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using System.Linq;
 using System.Web.Mvc;
@@ -46,7 +47,7 @@ namespace CMS.Mvc.Controllers.Afton
             _resourceTileProvider = resourceTileProvider;
             _selectionFilterPageProvider = selectionFilterPageProvider;
         }
-
+        [PageVisitActivity]
         public ActionResult Index()
         {
             var page = _insightsAndResourcesPageProvider.GetInsightsResources().First();
