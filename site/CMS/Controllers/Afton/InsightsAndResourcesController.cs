@@ -50,7 +50,7 @@ namespace CMS.Mvc.Controllers.Afton
         [PageVisitActivity]
         public ActionResult Index()
         {
-            var page = _insightsAndResourcesPageProvider.GetInsightsResources().First();
+            var page = _insightsAndResourcesPageProvider.GetInsightsResourcesPage();
             var model = MapData<InsightsResources, InsightsAndResourcesViewModel>(page);
             model.InsightsListing = new List<InsightsListingItemViewModel>
             {

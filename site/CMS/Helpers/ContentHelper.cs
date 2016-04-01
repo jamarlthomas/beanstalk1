@@ -374,7 +374,12 @@ namespace CMS.Mvc.Helpers
 
         public static T GetDoc<T>(string className) where T : TreeNode, new()
         {
-            var doc = GetDocs<T>(className).FirstOrDefault();
+            return GetDoc<T>(className, arg => true);
+        }
+
+        public static T GetDoc<T>(string className, Func<T, bool> condition) where T : TreeNode, new()
+        {
+            var doc = GetDocs<T>(className).FirstOrDefault(condition);
             if (doc != null)
             {
                 SaveNode(doc);

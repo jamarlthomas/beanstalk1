@@ -23,7 +23,7 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index()
         {
             var faqItems = _faqItemProvider.GetFAQItems();
-            var page = _faqPageProvider.GetFAQPages().First();
+            var page = _faqPageProvider.GetFAQPage();
             var model = new FAQPageViewModel
             {
                 Title = page.Title,

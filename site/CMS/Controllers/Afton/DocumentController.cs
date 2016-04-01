@@ -57,7 +57,7 @@ namespace CMS.Mvc.Controllers.Afton
             return View("~/Views/Afton/Document/Index.cshtml", new DocumentPageViewModel()
             {
                 Document = documentViewModel,
-                MenuItemTitle = _insightsAndResourcesPageProvider.GetInsightsResources().First().Title,
+                MenuItemTitle = _insightsAndResourcesPageProvider.GetInsightsResourcesPage().Title,
                 BreadCrumb = new BreadCrumbViewModel
                 {
                     BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(document.DocumentGUID)
