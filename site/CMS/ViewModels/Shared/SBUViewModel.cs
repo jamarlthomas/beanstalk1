@@ -1,7 +1,7 @@
-﻿using CMS.Mvc.ViewModels.Shared;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using CMS.Mvc.ViewModels.SBU;
 
-namespace CMS.Mvc.ViewModels.SBU
+namespace CMS.Mvc.ViewModels.Shared
 {
     public class SBUViewModel
     {

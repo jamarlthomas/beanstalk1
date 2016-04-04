@@ -453,7 +453,7 @@
     <Compile Include="ViewModels\Shared\FAQItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\DocumentViewModel.cs" />
     <Compile Include="ViewModels\SBU\DocumentTypeViewModel.cs" />
-    <Compile Include="ViewModels\SBU\SBUViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SBUViewModel.cs" />
     <Compile Include="ViewModels\Solution\SolutionConstantsViewModel.cs" />
     <Compile Include="ViewModels\TermsAndAcronyms\TermsAndAcronymsPageViewModel.cs" />
     <Compile Include="ViewModels\TermsAndAcronyms\TermsListViewModel.cs" />
