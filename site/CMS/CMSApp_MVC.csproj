@@ -203,6 +203,9 @@
     <Compile Include="Helpers\ContentHelper.cs" />
     <Compile Include="Helpers\RouteHelper.cs" />
     <Compile Include="Infrastructure\Extentions\StringHtmlExtensions.cs" />
+    <Compile Include="Infrastructure\Models\NewsAndEventsRequest.cs" />
+    <Compile Include="Infrastructure\Models\BlogsRequest.cs" />
+    <Compile Include="Infrastructure\Models\BaseNewsEventsBlogRequest.cs" />
     <Compile Include="Infrastructure\Models\BaseSearchRequest.cs" />
     <Compile Include="Infrastructure\Models\GlobalSearchRequest.cs" />
     <Compile Include="Interfaces\IBlogPostProvider.cs" />
@@ -636,6 +639,7 @@
     <Content Include="Views\Afton\GlobalSearch\_header.cshtml" />
     <Content Include="Views\Afton\GlobalSearch\_searchResults.cshtml" />
     <Content Include="Views\Afton\Shared\_pagination.cshtml" />
+    <Content Include="Views\Afton\Shared\NewsEventsAndBlog\_sortSelector.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

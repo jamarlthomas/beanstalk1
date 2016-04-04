@@ -1,4 +1,5 @@
-﻿<div id="newsDD">
+﻿@model CMS.Mvc.ViewModels.Blogs.BlogsPageViewModel
+<div id="newsDD">
     <div id="categoriesDD">
         @Model.FilterByLabel<br>
         <div class="customSelectC standard">
@@ -26,14 +27,6 @@
         </div>
     </div>
     <div id="sortDD">
-        @Model.SortByLabel<br>
-        <div class="customSelectC standard">
-            <div class="orgSelect">
-                <select name="sort">
-                    <option value="@Model.SortNewestLabel">@Model.SortNewestLabel</option>
-                    <option value="@Model.SortOldestLabel">@Model.SortOldestLabel</option>
-                </select>
-            </div>
-        </div>
+        @{ Html.RenderPartial("~/Views/Afton/Shared/NewsEventsAndBlog/_sortSelector.cshtml", Model); }
     </div>
 </div>

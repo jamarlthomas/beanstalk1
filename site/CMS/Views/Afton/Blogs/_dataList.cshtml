@@ -1,4 +1,5 @@
-﻿<div id="newsListC">
+﻿@model CMS.Mvc.ViewModels.Blogs.BlogsPageViewModel
+<div id="newsListC">
     @foreach (var item in Model.BlogPosts)
     {
         <div class="newsItem">
@@ -11,7 +12,5 @@
             </div>
         </div>
     }
-    <div class="fullWidth2 padBtm padTop">
-        <div class="paginationC"><a href="#" class="prev"></a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><span class="nextGroup">...</span><a href="#">50</a><a href="#" class="next"></a></div>
-    </div>
+    @{ Html.RenderPartial("~/Views/Afton/Shared/_pagination.cshtml", @Model.Pagination); }
 </div>
