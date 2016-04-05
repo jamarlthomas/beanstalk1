@@ -11,7 +11,7 @@
             TileTitle = (string)item.GetValue("TileTitle");
             Title = (string)item.GetValue("Title");
             Description = (string)item.GetValue("Description");
-            Reference = item.DocumentUrlPath;
+            Reference = item.DocumentNamePath;
         }
 
     }

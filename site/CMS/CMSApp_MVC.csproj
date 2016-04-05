@@ -221,8 +221,11 @@
     <Compile Include="Controllers\Afton\FAQController.cs" />
     <Compile Include="Controllers\Afton\PersonalizationController.cs" />
     <Compile Include="Interfaces\IPersonalizationProvider.cs" />
+    <Compile Include="Models\Afton\Shared\NewsAndEventsPage.cs" />
     <Compile Include="Models\Afton\Shared\Personalization\PersonalizationSettings.cs" />
     <Compile Include="Models\Afton\Shared\Personalization\PersonalizedTile.cs" />
+    <Compile Include="Models\ExtendedModels\Event.cs" />
+    <Compile Include="Models\ExtendedModels\GenericPage.cs" />
     <Compile Include="Models\ExtendedModels\PersonalizedTile.cs" />
     <Compile Include="Controllers\Afton\BlogsController.cs" />
     <Compile Include="Controllers\Afton\ATCToolsController.cs" />
@@ -286,9 +289,11 @@
     <Compile Include="Models\ExtendedModels\BlogPost.cs" />
     <Compile Include="Models\ExtendedModels\Home.cs" />
     <Compile Include="Models\ExtendedModels\InsightsResources.cs" />
+    <Compile Include="Models\ExtendedModels\Product.cs" />
     <Compile Include="Models\ExtendedModels\Solution.cs" />
     <Compile Include="Models\ExtendedModels\CustomNews.cs" />
     <Compile Include="Models\ExtendedModels\Document.cs" />
+    <Compile Include="Models\ExtendedModels\SolutionBusinessUnit.cs" />
     <Compile Include="Old_App_Code\GeneratePdf.cs">
       <SubType>Code</SubType>
     </Compile>

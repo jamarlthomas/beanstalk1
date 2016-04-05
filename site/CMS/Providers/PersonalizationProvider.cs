@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
-using CMS.Helpers.UniGraphConfig;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Models.Afton.Shared.Personalization;

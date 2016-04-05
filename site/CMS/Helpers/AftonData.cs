@@ -31,11 +31,11 @@ namespace CMS.Mvc.Helpers
                     Product.CLASS_NAME,
                     SolutionBusinessUnit.CLASS_NAME,
                     Solution.CLASS_NAME,
-                    Document.CLASS_NAME,
+                    NewsAndEventsPage.CLASS_NAME,
                     GenericPage.CLASS_NAME,
                     CustomNews.CLASS_NAME,
                     Event.CLASS_NAME,
-                    NewsAndEventsPage.CLASS_NAME
+                    Document.CLASS_NAME
                 };
             }
             
