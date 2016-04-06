@@ -23,7 +23,7 @@
                 }
             </div>
         }
-        <div id="downloadDocsC">
+        <div id="downloadDocsC" class="noPrintDisplay">
             @if (!string.IsNullOrWhiteSpace(Model.DownloadLink))
             {
                 <a href="@Url.Content(Model.DownloadLink)" class="downloadBtn">Download @Html.Raw(Model.Title) <span class="icon-download"></span></a>
@@ -44,12 +44,6 @@
                                 <li id="@translation.LanguageId"><a href="@Url.Content(translation.Reference)">@translation.Title</a></li>
                             }
                         }
-                        @* <li id="langGerman"><a href="#">German</a></li>
-                            <li id="langJapanese"><a href="#">日本語</a></li>
-                            <li id="langRussian"><a href="#">Russian</a></li>
-                            <li id="langSpanish"><a href="#">Español</a></li>
-                            <li id="langPortugues"><a href="#">Português</a></li>
-                            <li id="langFrench"><a href="#">French</a></li>*@
                     </ul>
 
                 </div>
@@ -59,7 +53,7 @@
                 <div id="translate-doc">Translation not available</div>
             }
         </div>
-        <div id="socialC2">
+        <div id="socialC2" class="noPrintDisplay">
             <a class="addthis_button_compact">
                 <span class="icon-share"></span>
             </a>
