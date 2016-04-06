@@ -51,14 +51,10 @@ namespace CMS.Mvc.Controllers.Afton
         }
 
         [HttpGet]
-        public ActionResult Index(bool showPrompt = false)
+        public ActionResult Index(bool showSubmitSuccesied = false)
         {
             var page = _contactPageProvider.GetContactPage();
             var viewModel = MapData<ContactPage, ContactPageViewModel>(page);
-            if (!showPrompt)
-            {
-                viewModel.PromptLabel = string.Empty;
-            }
 
             var privacyStatement = _genericPageProvider.GetChildGenericPages(page.NodeAlias).First();
             viewModel.NewsletterPrivacyLabel = privacyStatement.Title;

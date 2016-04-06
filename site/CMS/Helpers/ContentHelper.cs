@@ -1,4 +1,5 @@
-﻿using CMS.DocumentEngine;
+﻿using CMS.Globalization;
+using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Helpers;
 using CMS.Localization;
@@ -212,6 +213,22 @@ namespace CMS.Mvc.Helpers
             {
                 return UserInfoProvider.GetUsers().ToList();
             }, new CacheSettings(CachingTime, "get_all_users"));
+        }
+
+        public static IEnumerable<CountryInfo> GetCountries()
+        {
+            return CacheHelper.Cache(cs =>
+            {
+                return CountryInfoProvider.GetAllCountries();
+            }, new CacheSettings(CachingTime, "get_all_countries"));
+        }
+
+        public static CountryInfo GetCountryByGuid(Guid guid)
+        {
+            return CacheHelper.Cache(cs =>
+            {
+                return (CountryInfo)CountryInfoProvider.GetInfoByGuid(CountryInfo.OBJECT_TYPE, guid);
+            }, new CacheSettings(CachingTime, string.Format("get_country_{0}", guid))); ;
         }
 
         internal static List<T> GetSiblings<T>(T node) where T : TreeNode, new()

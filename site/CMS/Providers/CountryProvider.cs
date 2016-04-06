@@ -12,12 +12,12 @@ namespace CMS.Mvc.Providers
     {
         public IEnumerable<CountryInfo> GetCountries()
         {
-            return CountryInfoProvider.GetAllCountries();
+            return ContentHelper.GetCountries();
         }
 
         public CountryInfo GetCountryByGuid(Guid guid)
         {
-            return (CountryInfo)CountryInfoProvider.GetInfoByGuid(CountryInfo.OBJECT_TYPE, guid);
+            return ContentHelper.GetCountryByGuid(guid);
         }
     }
 }

@@ -3,8 +3,7 @@
     @using (Html.BeginForm("Index", "Contact", FormMethod.Post))
     {
         <form>
-            @Model.PromptLabel <br />
-            @Model.FormIntroducionText
+            @Model.PromptLabel
             <input placeholder="@Model.FirstNamePlaceholder" required name="FirstName">
             <input placeholder="@Model.LastNamePlaceholder" required name="LastName">
             <input placeholder="@Model.CompanyNamePlaceholder" required name="CompanyName">
