@@ -88,6 +88,23 @@ namespace CMS.DocumentEngine.Types
             }
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
+        public string MapImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("MapImage"), "");
+            }
+            set
+            {
+                SetValue("MapImage", value);
+            }
+        }
+
         #endregion
 
 

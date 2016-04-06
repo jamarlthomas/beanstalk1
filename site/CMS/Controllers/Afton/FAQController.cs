@@ -26,6 +26,8 @@ namespace CMS.Mvc.Controllers.Afton
             var model = new FAQPageViewModel
             {
                 Title = page.Title,
+                SortByLabel = page.SortByLabel,
+                ViewAllLabel = page.ViewAllLabel,
                 MenuSelectedItem = _insightsResourcesProvider.GetInsightsResourcesByName(page.Parent.NodeAlias).Title,
                 SideBar = new SidebarViewModel()
                 {
@@ -34,6 +36,7 @@ namespace CMS.Mvc.Controllers.Afton
                 Topics = _faqTopicProvider.GetFaqTopics().Select(topic => new FAQTopicViewModel
                 {
                     Name = topic.Name,
+                    Id = topic.Name.Replace(' ', '-'),
                     Items = MapData<FAQItem, FAQItemViewModel>(faqItems.Where(w => Guid.Parse(w.FAQTopic) == topic.DocumentGUID))
                 }).ToList(),
                 BreadCrumb = new BreadCrumbViewModel

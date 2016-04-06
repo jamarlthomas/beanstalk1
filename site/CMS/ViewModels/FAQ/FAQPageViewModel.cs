@@ -9,6 +9,8 @@ namespace CMS.Mvc.ViewModels.FAQ
         public SidebarViewModel SideBar { get; set; }
         public string Title { get; set; }
         public string MenuSelectedItem { get; set; }
+        public string SortByLabel { get; set; }
+        public string ViewAllLabel { get; set; }
         public BreadCrumbViewModel BreadCrumb { get; set; }
         public List<FAQTopicViewModel> Topics { get; set; }
     }

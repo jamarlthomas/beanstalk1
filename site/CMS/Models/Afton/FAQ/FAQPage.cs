@@ -56,6 +56,23 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Tile Title.
+        /// </summary>
+        [DatabaseField]
+        public string TileTitle
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("TileTitle"), "");
+            }
+            set
+            {
+                SetValue("TileTitle", value);
+            }
+        }
+
+
+        /// <summary>
         /// Title.
         /// </summary>
         [DatabaseField]
@@ -68,6 +85,74 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("Title", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Image displayed on a tile.
+        /// </summary>
+        [DatabaseField]
+        public string HomeImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HomeImage"), "");
+            }
+            set
+            {
+                SetValue("HomeImage", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Text that appears on hover over the tile.
+        /// </summary>
+        [DatabaseField]
+        public string Description
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Description"), "");
+            }
+            set
+            {
+                SetValue("Description", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Sort By Label.
+        /// </summary>
+        [DatabaseField]
+        public string SortByLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("SortByLabel"), "");
+            }
+            set
+            {
+                SetValue("SortByLabel", value);
+            }
+        }
+
+
+        /// <summary>
+        /// View All FAQs Label.
+        /// </summary>
+        [DatabaseField]
+        public string ViewAllLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("ViewAllLabel"), "");
+            }
+            set
+            {
+                SetValue("ViewAllLabel", value);
             }
         }
 

@@ -8,13 +8,14 @@ using System.Web.Mvc;
 
 namespace CMS.Mvc.Controllers.Afton
 {
-    public class ContactController : SidebarPageController
+    public class ContactController : BaseController
     {
         private readonly IContactPageProvider _contactPageProvider;
         private readonly IRegionProvider _regionProvider;
         private readonly ICountryProvider _countryProvider;
         private readonly ISalesOfficeProvider _salesOfficeProvider;
         private readonly ITreeNodesProvider _treeNodesProvider;
+        private readonly IGenericPageProvider _genericPageProvider;
         
         public ContactController()
         {
@@ -23,39 +24,45 @@ namespace CMS.Mvc.Controllers.Afton
             _countryProvider = new CountryProvider();
             _salesOfficeProvider = new SalesOfficeProvider();
             _treeNodesProvider = new TreeNodesProvider();
+            _genericPageProvider = new GenericPageProvider();;
         }
 
         public ContactController(IContactPageProvider contactPageProvider,
             IRegionProvider regionProvider,
             ICountryProvider countryProvider,
             ISalesOfficeProvider salesOfficeProvider,
-            ITreeNodesProvider treeNodesProvider)
+            ITreeNodesProvider treeNodesProvider,
+            IGenericPageProvider genericPageProvider)
         {
             _contactPageProvider = contactPageProvider;
             _regionProvider = regionProvider;
             _countryProvider = countryProvider;
             _salesOfficeProvider = salesOfficeProvider;
             _treeNodesProvider = treeNodesProvider;
+            _genericPageProvider = genericPageProvider;
         }
 
-        public ActionResult Index(string name)
+        public ActionResult Index()
         {
             var page = _contactPageProvider.GetContactPage();
             var viewModel = MapData<ContactPage, ContactPageViewModel>(page);
-            viewModel.BreadCrumb = new BreadCrumbViewModel
-            {
-                BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(page.DocumentGUID)
-            };
+
+            var privacyStatement = _genericPageProvider.GetChildGenericPages(page.NodeAlias).First();
+            viewModel.NewsletterPrivacyLabel = privacyStatement.Title;
+            viewModel.NewsletterPrivacyLink = privacyStatement.DocumentNamePath;
 
             viewModel.EmergencyResponse = MapData<ContactPage, EmergencyResponseViewModel>(page);
             viewModel.Countries = MapData<Country, ContactCountryViewModel>(_countryProvider.GetCountries());
 
             viewModel.Regions = _regionProvider.GetRegions().Select(region =>
             {
-                var primarySalesOffice = _salesOfficeProvider.GetPrimarySalesOffice(region.NodeName);
+                var primarySalesOffice = _salesOfficeProvider.GetPrimarySalesOffice(region.NodeAlias);
                 var regionViewModel = MapData<SalesOffice, ContactRegionViewModel>(primarySalesOffice);
-                regionViewModel.CountryName = _treeNodesProvider.GetTreeNodes(primarySalesOffice.Country).First().NodeName;
+                var officeCountry = _treeNodesProvider.GetTreeNodes(primarySalesOffice.Country).First();
+                regionViewModel.CountryName = officeCountry.GetStringValue("Name", officeCountry.NodeName);
                 regionViewModel.Title = region.Title;
+                regionViewModel.DocumentNamePath = region.DocumentNamePath;
+                regionViewModel.MapImage = region.MapImage;
                 return regionViewModel;
             }).ToList();
             return View("~/Views/Afton/Contact/Index.cshtml", viewModel);

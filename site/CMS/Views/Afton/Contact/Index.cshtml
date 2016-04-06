@@ -5,9 +5,14 @@
     Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
 
-@{ Html.RenderPartial("~/Views/Afton/Shared/_breadCrumb.cshtml", Model.BreadCrumb); } 
-
-<h1>@Model.Title</h1>
-@{ Html.RenderPartial("~/Views/Afton/Contact/_form.cshtml", Model); }
-@{ Html.RenderPartial("~/Views/Afton/Contact/_regions.cshtml", Model.Regions); }
-@{ Html.RenderPartial("~/Views/Afton/Shared/_emergencyResponse.cshtml", Model.EmergencyResponse); }
+<div id="contentAreaC">
+    <div id="twoColumnC-sidebar2" class="txtPaddingTop padBtm">
+        <div id="lftCol-contentArea">
+            @{ Html.RenderPartial("~/Views/Afton/Contact/_form.cshtml", Model); }
+        </div>
+        <div id="rtCol-sidebar">
+            @{ Html.RenderPartial("~/Views/Afton/Contact/_regions.cshtml", Model); }
+        </div>
+    </div>
+    @{ Html.RenderPartial("~/Views/Afton/Shared/_emergencyResponse.cshtml", Model.EmergencyResponse); }
+</div>

@@ -9,6 +9,7 @@ namespace CMS.Mvc.Interfaces
     {
         List<TreeNode> GetTreeNodes(List<Guid> guids);
         List<TreeNode> GetTreeNodes(string guids);
+        TreeNode GetTreeNodeByNodeId(int id);
         List<BreadCrumbLinkItemViewModel> GetBreadcrumb(Guid guid);
     }
 }

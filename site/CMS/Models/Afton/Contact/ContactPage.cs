@@ -277,6 +277,23 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// View Sales Offices Label.
+        /// </summary>
+        [DatabaseField]
+        public string ViewSalesOfficesLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("ViewSalesOfficesLabel"), "");
+            }
+            set
+            {
+                SetValue("ViewSalesOfficesLabel", value);
+            }
+        }
+
+
+        /// <summary>
         /// Emergency Response Title.
         /// </summary>
         [DatabaseField]

@@ -1,11 +1,11 @@
-﻿<div class="subTxt">Sort by:</div>
-<div class="customSelectC standard">
+﻿<div class="subTxt">@Model.SortByLabel</div>
+<div id="faqDD" class="customSelectC standard">
     <div class="orgSelect">
         <select name="faqs">
-            <option value="View-All">View All FAQs</option>
-            @foreach (var topic in Model)
+            <option value="View-All-FAQs">@Model.ViewAllLabel</option>
+            @foreach (var topic in Model.Topics)
             {
-                <option value="Driveline-Additives">@topic.Name</option>
+                <option value="@topic.Id-FAQs">@topic.Name @Model.Title</option>
             }
         </select>
     </div>
