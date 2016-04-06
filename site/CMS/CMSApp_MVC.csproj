@@ -203,6 +203,7 @@
     <Compile Include="Helpers\ContentHelper.cs" />
     <Compile Include="Helpers\RouteHelper.cs" />
     <Compile Include="Infrastructure\Extentions\StringHtmlExtensions.cs" />
+    <Compile Include="Infrastructure\Models\MasterHeaderRequest.cs" />
     <Compile Include="Infrastructure\Models\NewsAndEventsRequest.cs" />
     <Compile Include="Infrastructure\Models\BlogsRequest.cs" />
     <Compile Include="Infrastructure\Models\BaseNewsEventsBlogRequest.cs" />

@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using CMS.Mvc.Infrastructure.Models;
+using System.Globalization;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
@@ -47,7 +48,7 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Footer()
         {
             var footer = new FooterViewModel();
-			footer.FooterNavCategories = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems());
+            footer.FooterNavCategories = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems());
             foreach (var category in footer.FooterNavCategories)
             {
                 category.FooterNavItems = MapData<FooterNavItem, FooterNavItemViewModel>(_footerNavItemProvider.GetFooterNavItems(category.Title));
@@ -56,7 +57,7 @@ namespace CMS.Mvc.Controllers.Afton
         }
 
         [ChildActionOnly]
-        public ActionResult Index(string title)
+        public ActionResult Index(MasterHeaderRequest request)
         {
             var mainNavList = MapData<ContentMenuItem, ContentMenuItemViewModel>(_contentMenuItemProvider.GetContentMenuItems());
             foreach (var contentMenuItem in mainNavList)
@@ -66,16 +67,14 @@ namespace CMS.Mvc.Controllers.Afton
                 if (solutionLink != null)
                 {
                     contentMenuItem.SolutionsLink = MapData<MegaMenuLinkItem, MegaMenuLinkItemViewModel>(solutionLink);
-					contentMenuItem.SolutionsLink.Solutions = MapData<SolutionBusinessUnit, MegaMenuSolutionBusinessUnitViewModel>(_solutionBusinessUnitProvider.GetSolutionBusinessUnits(contentMenuItem.SolutionsLink.Title));
+                    contentMenuItem.SolutionsLink.Solutions = MapData<SolutionBusinessUnit, MegaMenuSolutionBusinessUnitViewModel>(_solutionBusinessUnitProvider.GetSolutionBusinessUnits(contentMenuItem.SolutionsLink.Title));
                 }
             }
-            return PartialView("~/Views/Afton/Master/_header.cshtml", new MasterViewModel
-            {
-                SelectedCulture = UtilsHelper.GetCultureDisplayName(CultureInfo.CurrentCulture),
-                MainNavList = mainNavList,
-                UtilityNavList = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems()),
-				Title = title
-            });
+            var model = MapData<MasterHeaderRequest, MasterViewModel>(request);
+            model.SelectedCulture = UtilsHelper.GetCultureDisplayName(CultureInfo.CurrentCulture);
+            model.MainNavList = mainNavList;
+            model.UtilityNavList = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems());
+            return PartialView("~/Views/Afton/Master/_header.cshtml", model);
         }
     }
 }

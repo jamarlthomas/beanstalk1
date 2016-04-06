@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization
+@using CMS.Mvc.Infrastructure.Models
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,7 +41,7 @@
 
 </head>
 <body>
-	@{ Html.RenderAction("Index", "Master", new { title = ViewBag.Title }); }
+	@{ Html.RenderAction("Index", "Master", new MasterHeaderRequest { Title = ViewBag.Title, GlobalSearchQuery = ViewBag.GlobalSearchQuery }); }
 	<main>
 		@RenderBody()
 	</main>
