@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using CMS.DocumentEngine.Types;
+using CMS.Helpers;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Infrastructure;
 using CMS.Mvc.Infrastructure.Localization;
@@ -13,8 +14,14 @@ namespace CMS.Mvc.Controllers.Afton
         [Route("Auxiliary")]
         public ActionResult Index()
         {
-            var gen = new GeneratePdf();
-            gen.Execute();
+            
+
+            return View("~/Views/Afton/Auxiliary/Index.cshtml");
+        }
+        [Route("Auxiliary/ClearCache")]
+        public ActionResult ClearCache()
+        {
+            CacheHelper.ClearCache();
 
             return View("~/Views/Afton/Auxiliary/Index.cshtml");
         }

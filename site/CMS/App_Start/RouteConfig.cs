@@ -27,8 +27,8 @@ namespace CMS.Mvc
         {
             SetUpAftonRoutesFromKentico(routes);
 
-            routes.MapRoute("Master", "Master/{action}/{title}",
-                new {controller = "Master", action = "Index", title = UrlParameter.Optional});
+            //routes.MapRoute("Master", "Master/{action}/{title}",
+            //    new { controller = "Master", action = "Index", title = UrlParameter.Optional });
             
             routes.MapMvcAttributeRoutes();
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
