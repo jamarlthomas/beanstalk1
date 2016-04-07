@@ -56,6 +56,10 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.Globalization, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.Globalization.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.MediaLibrary, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.MediaLibrary.dll</HintPath>
@@ -63,6 +67,10 @@
     <Reference Include="CMS.Membership, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.Membership.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.OnlineMarketing, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.OnlineMarketing.dll</HintPath>
     </Reference>
     <Reference Include="CMS.Search, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -203,6 +211,8 @@
     <Compile Include="Helpers\ContentHelper.cs" />
     <Compile Include="Helpers\RouteHelper.cs" />
     <Compile Include="Infrastructure\Extentions\StringHtmlExtensions.cs" />
+    <Compile Include="Infrastructure\Models\UpdateContactRequest.cs" />
+    <Compile Include="Infrastructure\Models\MasterHeaderRequest.cs" />
     <Compile Include="Infrastructure\Models\NewsAndEventsRequest.cs" />
     <Compile Include="Infrastructure\Models\BlogsRequest.cs" />
     <Compile Include="Infrastructure\Models\BaseNewsEventsBlogRequest.cs" />
@@ -210,6 +220,7 @@
     <Compile Include="Infrastructure\Models\GlobalSearchRequest.cs" />
     <Compile Include="Interfaces\IBlogPostProvider.cs" />
     <Compile Include="Interfaces\IBlogCategoryProvider.cs" />
+    <Compile Include="Interfaces\IContactProvider.cs" />
     <Compile Include="Interfaces\IGenericPageProvider.cs" />
     <Compile Include="Interfaces\IPageTypeDisplayValueProvider.cs" />
     <Compile Include="Interfaces\IGlobalSearchProvider.cs" />
@@ -249,7 +260,6 @@
     <Compile Include="Controllers\Afton\SidebarPageController.cs" />
     <Compile Include="Models\Afton\GlobalSearch\GlobalSearchPage.cs" />
     <Compile Include="Models\Afton\NewsAndEvents\NewsAndEventsPage.cs" />
-    <Compile Include="Models\Afton\Shared\Country.cs" />
     <Compile Include="Models\Afton\Shared\Document.cs" />
     <Compile Include="Models\Afton\Shared\DocumentConstant.cs" />
     <Compile Include="Models\Afton\Shared\Routing\AftonRoute.cs" />
@@ -268,7 +278,6 @@
     <Compile Include="Models\Afton\Solution\Solution.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\Term.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\TermsAndAcronymsPage.cs" />
-    <Compile Include="Models\ExtendedModels\Country.cs" />
     <Compile Include="Models\ExtendedModels\Region.cs" />
     <Compile Include="Models\ExtendedModels\GlobalSearchPage.cs" />
     <Compile Include="Models\ExtendedModels\Product.cs" />
@@ -284,6 +293,7 @@
     </Compile>
     <Compile Include="Providers\BlogPostProvider.cs" />
     <Compile Include="Providers\ATCToolsPageProvider.cs" />
+    <Compile Include="Providers\ContactProvider.cs" />
     <Compile Include="Providers\GlobalSearchPageProvider.cs" />
     <Compile Include="Providers\GenericPageProvider.cs" />
     <Compile Include="Providers\PageTypeDisplayValueProvider.cs" />
