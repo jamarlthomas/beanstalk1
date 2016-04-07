@@ -1,14 +1,13 @@
-﻿using CMS.Globalization;
+﻿using CMS.DocumentEngine.Types;
+using CMS.Globalization;
 using CMS.Mvc.Infrastructure.Models;
-using CMS.OnlineMarketing;
-using CMS.DocumentEngine.Types;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Contact;
 using CMS.Mvc.ViewModels.Shared;
+using System;
 using System.Linq;
 using System.Web.Mvc;
-using System;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -21,6 +20,7 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly ITreeNodesProvider _treeNodesProvider;
         private readonly IGenericPageProvider _genericPageProvider;
         private readonly IContactProvider _contactProvider;
+        private readonly IRegionConstantsProvider _regionConstantsProvider;
         
         public ContactController()
         {
@@ -31,6 +31,7 @@ namespace CMS.Mvc.Controllers.Afton
             _treeNodesProvider = new TreeNodesProvider();
             _genericPageProvider = new GenericPageProvider();
             _contactProvider = new ContactProvider();
+            _regionConstantsProvider = new RegionConstantsProvider();
         }
 
         public ContactController(IContactPageProvider contactPageProvider,
@@ -39,7 +40,8 @@ namespace CMS.Mvc.Controllers.Afton
             ISalesOfficeProvider salesOfficeProvider,
             ITreeNodesProvider treeNodesProvider,
             IGenericPageProvider genericPageProvider,
-            IContactProvider contactProvider)
+            IContactProvider contactProvider,
+            IRegionConstantsProvider regionConstantsProvider)
         {
             _contactPageProvider = contactPageProvider;
             _regionProvider = regionProvider;
@@ -48,6 +50,7 @@ namespace CMS.Mvc.Controllers.Afton
             _treeNodesProvider = treeNodesProvider;
             _genericPageProvider = genericPageProvider;
             _contactProvider = contactProvider;
+            _regionConstantsProvider = regionConstantsProvider;
         }
 
         [HttpGet]
@@ -59,8 +62,7 @@ namespace CMS.Mvc.Controllers.Afton
             var privacyStatement = _genericPageProvider.GetChildGenericPages(page.NodeAlias).First();
             viewModel.NewsletterPrivacyLabel = privacyStatement.Title;
             viewModel.NewsletterPrivacyLink = privacyStatement.DocumentNamePath;
-            OnlineMarketingContext.GetCurrentContact();
-            viewModel.EmergencyResponse = MapData<ContactPage, EmergencyResponseViewModel>(page);
+            viewModel.EmergencyResponse = MapData<RegionConstants, EmergencyResponseViewModel>(_regionConstantsProvider.GetRegionConstants());
             viewModel.Countries = MapData<CountryInfo, ContactCountryViewModel>(_countryProvider.GetCountries());
 
             viewModel.Regions = _regionProvider.GetRegions().Select(region =>

@@ -204,6 +204,7 @@
     <Compile Include="Controllers\Afton\BlogsController.cs" />
     <Compile Include="Controllers\Afton\ATCToolsController.cs" />
     <Compile Include="Controllers\Afton\GlobalSearchController.cs" />
+    <Compile Include="Controllers\Afton\SalesOfficesController.cs" />
     <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
     <Compile Include="Controllers\Afton\NewsAndEventsController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="Infrastructure\Models\GlobalSearchRequest.cs" />
     <Compile Include="Interfaces\IBlogPostProvider.cs" />
     <Compile Include="Interfaces\IBlogCategoryProvider.cs" />
+    <Compile Include="Interfaces\IRegionConstantsProvider.cs" />
     <Compile Include="Interfaces\IContactProvider.cs" />
     <Compile Include="Interfaces\IGenericPageProvider.cs" />
     <Compile Include="Interfaces\IPageTypeDisplayValueProvider.cs" />
@@ -247,7 +249,8 @@
     <Compile Include="Models\Afton\Blogs\BlogCategory.cs" />
     <Compile Include="Models\Afton\Blogs\BlogPost.cs" />
     <Compile Include="Models\Afton\Blogs\BlogsPage.cs" />
-    <Compile Include="Models\Afton\Contact\SalesOffice.cs" />
+    <Compile Include="Models\Afton\Shared\RegionConstants.cs" />
+    <Compile Include="Models\Afton\Shared\SalesOffice.cs" />
     <Compile Include="Models\Afton\Contact\ContactPage.cs" />
     <Compile Include="Models\Afton\FAQ\FAQPage.cs" />
     <Compile Include="Controllers\Afton\DocumentController.cs" />
@@ -294,6 +297,7 @@
     <Compile Include="Providers\ContactProvider.cs" />
     <Compile Include="Providers\GlobalSearchPageProvider.cs" />
     <Compile Include="Providers\GenericPageProvider.cs" />
+    <Compile Include="Providers\RegionConstantsProvider.cs" />
     <Compile Include="Providers\PageTypeDisplayValueProvider.cs" />
     <Compile Include="Providers\SolutionConstantsProvider.cs" />
     <Compile Include="Providers\SalesOfficeProvider.cs" />
@@ -405,6 +409,9 @@
     <Compile Include="ViewModels\NewsAndEvents\NewsAndEventsPageViewModel.cs" />
     <Compile Include="ViewModels\NewsAndEvents\NewsAndEventViewModel.cs" />
     <Compile Include="ViewModels\Product\LeftSideBlockViewModel.cs" />
+    <Compile Include="ViewModels\SalesOffices\RegionViewModel.cs" />
+    <Compile Include="ViewModels\SalesOffices\CountryViewModel.cs" />
+    <Compile Include="ViewModels\SalesOffices\SalesOfficeViewModel.cs" />
     <Compile Include="ViewModels\Shared\EmergencyResponseViewModel.cs" />
     <Compile Include="ViewModels\Shared\NewsEventsAndBlogBasePageViewModel.cs" />
     <Compile Include="ViewModels\Shared\ProductViewModel.cs" />
@@ -650,6 +657,8 @@
     <Content Include="Views\Afton\GlobalSearch\_searchResults.cshtml" />
     <Content Include="Views\Afton\Shared\_pagination.cshtml" />
     <Content Include="Views\Afton\Shared\NewsEventsAndBlog\_sortSelector.cshtml" />
+    <Content Include="Views\Afton\SalesOffices\Index.cshtml" />
+    <Content Include="Views\Afton\SalesOffices\_offices.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

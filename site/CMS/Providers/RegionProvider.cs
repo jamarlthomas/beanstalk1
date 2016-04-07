@@ -13,5 +13,10 @@ namespace CMS.Mvc.Providers
         {
             return ContentHelper.GetDocs<Region>(Region.CLASS_NAME);
         }
+
+        public Region GetRegion(string alias)
+        {
+            return ContentHelper.GetDocByName<Region>(Region.CLASS_NAME, alias);
+        }
     }
 }

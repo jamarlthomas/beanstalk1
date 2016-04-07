@@ -41,7 +41,7 @@ namespace CMS.Mvc.Controllers.Afton
                 page.AllNewsEventsSelectorValue,
                 page.NewsSelectorValue,
                 page.EventsSelectorValue,
-            }.ToList();
+            };
 
             var recordsOnPage = Int32.Parse(ConfigurationManager.AppSettings["NewsEventsBlogsRecordOnPageCount"]);
 

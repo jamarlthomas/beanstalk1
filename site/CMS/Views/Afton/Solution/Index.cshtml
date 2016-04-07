@@ -1,24 +1,26 @@
 ﻿@using CMS.Mvc.ViewModels.Shared
 @model SolutionViewModel
 @{
-	ViewBag.Title = @Model.ParentName;
-	Layout = "~/Views/Afton/Shared/Master.cshtml";
+    ViewBag.Title = @Model.ParentName;
+    Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
 <div id="contentAreaC">
-	@Html.Partial("~/Views/Afton/Solution/_heroImage.cshtml", Model.HeroImage)
-	<div id="twoColumnC-sidebar" class="padBtm  negMargin">
-		<div id="rtCol-contentArea">
+    @Html.Partial("~/Views/Afton/Solution/_heroImage.cshtml", Model.HeroImage)
+    <div id="twoColumnC-sidebar" class="padBtm  negMargin">
+        <div id="rtCol-contentArea">
             @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", @Model.BreadCrumb)
-			<div id="contentC">
-				<h1 class="txtPaddingTop">
-					@Model.Title
-					<div class="subTxt">@Model.Subtitle</div>
-					<div id="socialC"><a class="addthis_button_compact"><span class="icon-share"></span></a></div>
-				</h1>
-				@Html.Partial("~/Views/Afton/Solution/_description.cshtml", Model.Description)
-			</div>
-		</div>
-        @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar)
-	</div>
-	@Html.Partial("~/Views/Afton/Solution/_productsList.cshtml", Model)
+            <div id="contentC">
+                <h1 class="txtPaddingTop">
+                    @Model.Title
+                    <div class="subTxt">@Model.Subtitle</div>
+                    <div id="socialC"><a class="addthis_button_compact"><span class="icon-share"></span></a></div>
+                </h1>
+                @Html.Partial("~/Views/Afton/Solution/_description.cshtml", Model.Description)
+            </div>
+        </div>
+        <div id="lftCol-sidebar">
+            @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar)
+        </div>
+    </div>
+    @Html.Partial("~/Views/Afton/Solution/_productsList.cshtml", Model)
 </div>

@@ -6,7 +6,7 @@
         {
             get
             {
-                return string.Format("TBD");
+                return string.Format("/SalesOffices/Index/{0}", this.NodeAlias);
             }
         }
     }
