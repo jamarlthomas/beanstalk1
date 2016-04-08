@@ -1,12 +1,16 @@
-﻿@foreach (var sbu in Model)
+﻿@using System.Collections.Generic
+@model List<CMS.Mvc.ViewModels.SelectionFilter.SBUFilterViewModel>
+
+@{var index = 0;}
+@foreach (var sbu in Model)
 {
-	<p>
-		@sbu.Title. Solutions:
-		@foreach (var solution in sbu.SolutionsList)
-		{
-			@solution.Title
-			
-		}
-	</p>
+    <div class="filterSecHdr">@sbu.Title</div>
+    foreach (var solution in sbu.SolutionsList)
+    {
+        <label>
+            <input type="checkbox" ng-model="solution[@index]" data-id="@solution.Value" ng-click="solutionWatch('@solution.Value','@solution.Title',solution[@index])">
+            <span class="checkboxDisplay"></span><span class="txt">@solution.Title</span>
+        </label>
+        index++;
+    }
 }
-<hr />

@@ -1,5 +1,11 @@
 ﻿@model CMS.Mvc.ViewModels.SelectionFilter.HeaderViewModel
 
-@Model.Title
-@Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", @Model.BreadCrumb)
-<hr />
+<div class="fullWidth txtPaddingTop">
+    <div class="txtPaddingTop txtPaddingBtm">
+        <h1>@Model.Title</h1>
+        @if (!string.IsNullOrEmpty(Model.ViewInsightsResourcesLink))
+        {
+            <a href="@Model.ViewInsightsResourcesLink" class="viewAll">@Model.ViewInsightsResourcesLabel</a>
+        }
+    </div>
+</div>

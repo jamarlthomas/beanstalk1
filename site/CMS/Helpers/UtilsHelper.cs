@@ -29,17 +29,6 @@ namespace CMS.Mvc.Helpers
             return input.Split(';').Select(s => Guid.Parse(s)).ToList();
         }
 
-        public static List<string> GetRegions()
-        {
-            return new List<string>
-            {
-                "Development",
-                "Network Administration",
-                "Programming",
-                "Technologies"
-            };
-        }
-
         public static string[] SeparateText(string text)
         {
             if (string.IsNullOrEmpty(text)) return null;

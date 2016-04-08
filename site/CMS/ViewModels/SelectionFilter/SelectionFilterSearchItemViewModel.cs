@@ -2,7 +2,6 @@
 using CMS.Mvc.ViewModels.SBU;
 using CMS.Mvc.ViewModels.Shared;
 
-
 namespace CMS.Mvc.ViewModels.SelectionFilter
 {
     public class SelectionFilterSearchItemViewModel
@@ -13,7 +12,7 @@ namespace CMS.Mvc.ViewModels.SelectionFilter
         public string Link { get; set; }
         public string Image { get; set; }
         public DateTime PostedDate { get; set; }
-        public SolutionViewModel Solution { get; set; }
-        public SBUViewModel SBU { get; set; }
+        public string Solution { get; set; }
+        public string SBU { get; set; }
     }
 }

@@ -7,9 +7,11 @@ using CMS.Mvc.ViewModels.Shared;
 
 namespace CMS.Mvc.ViewModels.SelectionFilter
 {
-	public class HeaderViewModel
-	{
-		public string Title { get; set; }
-		public BreadCrumbViewModel BreadCrumb { get; set; }
-	}
+    public class HeaderViewModel
+    {
+        public string Title { get; set; }
+        public string ViewInsightsResourcesLink { get; set; }
+        public string ViewInsightsResourcesLabel { get; set; }
+        public BreadCrumbViewModel BreadCrumb { get; set; }
+    }
 }

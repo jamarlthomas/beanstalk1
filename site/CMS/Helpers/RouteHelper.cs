@@ -16,16 +16,13 @@ namespace CMS.Mvc.Helpers
             {
                 sb.AppendFormat("/{0}", name);
             }
-            sb.AppendFormat("?Regions={0}", searchRequest.Regions ?? NULL_VALUE_PLACEHOLDER);
-            sb.AppendFormat("&DocumentTypesIds={0}", searchRequest.DocumentTypesIds ?? NULL_VALUE_PLACEHOLDER);
-            sb.AppendFormat("&SBUId={0}", searchRequest.SBUId ?? NULL_VALUE_PLACEHOLDER);
-            sb.AppendFormat("&SolutionsIds={0}", searchRequest.SolutionsIds ?? NULL_VALUE_PLACEHOLDER);
-            sb.AppendFormat("&SortOrder={0}", searchRequest.SortOrder ?? string.Empty);
-            sb.AppendFormat("&Query={0}", searchRequest.Query ?? string.Empty);
-            if (searchRequest.PageNumber.HasValue)
-            {
-                sb.AppendFormat("&PageNumber={0}", searchRequest.PageNumber);
-            }
+            sb.AppendFormat("#/regions/{0}", searchRequest.Regions ?? NULL_VALUE_PLACEHOLDER);
+            sb.AppendFormat("/documents/{0}", searchRequest.DocumentTypesIds ?? NULL_VALUE_PLACEHOLDER);
+            sb.AppendFormat("/SBU/{0}", searchRequest.SBUId ?? NULL_VALUE_PLACEHOLDER);
+            sb.AppendFormat("/solutions/{0}", searchRequest.SolutionsIds ?? NULL_VALUE_PLACEHOLDER);
+            sb.AppendFormat("/sort/{0}", searchRequest.SortOrder ?? "Newest");
+            sb.AppendFormat("/page/{0}", searchRequest.PageNumber ?? 1);
+            sb.AppendFormat("/search/{0}", searchRequest.Query ?? string.Empty);
             return sb.ToString();
         }
     }

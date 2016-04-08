@@ -221,6 +221,7 @@
     <Compile Include="Infrastructure\Models\GlobalSearchRequest.cs" />
     <Compile Include="Interfaces\IBlogPostProvider.cs" />
     <Compile Include="Interfaces\IBlogCategoryProvider.cs" />
+    <Compile Include="Interfaces\ISelectionFilterConstantsProvider.cs" />
     <Compile Include="Interfaces\IRegionConstantsProvider.cs" />
     <Compile Include="Interfaces\IContactProvider.cs" />
     <Compile Include="Interfaces\IGenericPageProvider.cs" />
@@ -249,6 +250,7 @@
     <Compile Include="Models\Afton\Blogs\BlogCategory.cs" />
     <Compile Include="Models\Afton\Blogs\BlogPost.cs" />
     <Compile Include="Models\Afton\Blogs\BlogsPage.cs" />
+    <Compile Include="Models\Afton\ProductSelectionFilter\SelectionFilterConstants.cs" />
     <Compile Include="Models\Afton\Shared\RegionConstants.cs" />
     <Compile Include="Models\Afton\Shared\SalesOffice.cs" />
     <Compile Include="Models\Afton\Contact\ContactPage.cs" />
@@ -279,6 +281,7 @@
     <Compile Include="Models\Afton\Solution\Solution.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\Term.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\TermsAndAcronymsPage.cs" />
+    <Compile Include="Models\ExtendedModels\SelectionFilterPage.cs" />
     <Compile Include="Models\ExtendedModels\Region.cs" />
     <Compile Include="Models\ExtendedModels\GlobalSearchPage.cs" />
     <Compile Include="Models\ExtendedModels\Product.cs" />
@@ -295,6 +298,7 @@
     <Compile Include="Providers\BlogPostProvider.cs" />
     <Compile Include="Providers\ATCToolsPageProvider.cs" />
     <Compile Include="Providers\ContactProvider.cs" />
+    <Compile Include="Providers\SelectionFilterConstantsProvider.cs" />
     <Compile Include="Providers\GlobalSearchPageProvider.cs" />
     <Compile Include="Providers\GenericPageProvider.cs" />
     <Compile Include="Providers\RegionConstantsProvider.cs" />
@@ -447,7 +451,6 @@
     <Compile Include="ViewModels\Home\HomeViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterNavItemViewModel.cs" />
     <Compile Include="ViewModels\Master\FooterViewModel.cs" />
-    <Compile Include="Infrastructure\Enums\SelectionFilterPageStateEnum.cs" />
     <Compile Include="ViewModels\SelectionFilter\SBUFilterViewModel.cs" />
     <Compile Include="ViewModels\SelectionFilter\CheckBoxViewModel.cs" />
     <Compile Include="ViewModels\SelectionFilter\HeaderViewModel.cs" />
@@ -554,6 +557,7 @@
     <Content Include="Scripts\custom\megaMenu.min.js" />
     <Content Include="Scripts\custom\mobileCheck.min.js" />
     <Content Include="Scripts\custom\mobileNav.min.js" />
+    <Content Include="Scripts\custom\news-blogs-DropDown.min.js" />
     <Content Include="Scripts\custom\polls-surveys.min.js" />
     <Content Include="Scripts\custom\print.min.js" />
     <Content Include="Scripts\custom\prodFilter.min.js" />
@@ -667,6 +671,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Infrastructure\Enums\" />
     <Folder Include="Pdf\Temp\" />
   </ItemGroup>
   <ItemGroup>

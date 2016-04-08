@@ -13,9 +13,9 @@ namespace CMS.Mvc.Providers
 		public SearchResult PerformSearch(SelectionFilterSearchRequest request)
 		{
 			request.IndexName = "SelectionFilterSearch";
-			request.RecordsOnPage = int.Parse(ConfigurationManager.AppSettings["SelectionFilterRecordOnPageCount"]);
+            request.RecordsOnPage = int.Parse(ConfigurationManager.AppSettings["SelectionFilterRecordOnPageCount"]);
 			request.ClassNames = "custom.Product;custom.Document";
-			request.SortOrder = string.Format("documentcreatedwhen {0}", !string.IsNullOrEmpty(request.SortOrder) && request.SortOrder.ToUpper().Equals("DESC") ? "DESC" : "ASC");
+            request.SortOrder = string.Format("documentcreatedwhen {0}", !string.IsNullOrEmpty(request.SortOrder) && request.SortOrder.ToUpper().Equals("NEWEST") ? "DESC" : "ASC");
 			request.AdditiveQuery = AdditiveQueryBuilder(request.DocumentTypesIds, request.SolutionsIds, request.Regions);
 			return ContentHelper.PerformSearch(request);
 		}
