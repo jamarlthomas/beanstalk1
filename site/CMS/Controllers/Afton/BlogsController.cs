@@ -84,7 +84,7 @@ namespace CMS.Mvc.Controllers.Afton
             }
 
             blogPosts = blogPosts.OrderBy(f => f.BlogPostDate);
-            if (!String.Equals(request.SortOrder, "DESC", StringComparison.OrdinalIgnoreCase))
+            if (!String.Equals(request.SortOrder, "ASC", StringComparison.OrdinalIgnoreCase))
             {
                 blogPosts = blogPosts.Reverse();
             }
