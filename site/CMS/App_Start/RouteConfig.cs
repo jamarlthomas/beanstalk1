@@ -25,8 +25,8 @@ namespace CMS.Mvc
         /// <param name="routes">The routes collection</param>
         public static void RegisterRoutes(RouteCollection routes)
         {
-            SetUpAftonRoutesFromKentico(routes);
-
+            SetUpRoutesFromKentico(routes);
+            SetUpConstantRoutes(routes);
             //routes.MapRoute("Master", "Master/{action}/{title}",
             //    new { controller = "Master", action = "Index", title = UrlParameter.Optional });
             
@@ -85,9 +85,16 @@ namespace CMS.Mvc
             //        true
             //        );
             //}
+
         }
 
-        private static void SetUpAftonRoutesFromKentico(RouteCollection routes)
+        private static void SetUpConstantRoutes(RouteCollection routes)
+        {
+            routes.MapRoute("SidebarPage", "SidebarPage/{action}", new { controller = "SidebarPage", action = "Index" });
+            routes.MapRoute("Master", "Master/{action}/{title}", new {controller = "Master", action = "Index", title = UrlParameter.Optional});
+        }
+
+        private static void SetUpRoutesFromKentico(RouteCollection routes)
         {
             var kenticoRoutes = ContentHelper.GetDocChildrenByName<AftonRoute>(AftonRoute.CLASS_NAME, "Routes");
             var localizedRoutes = new List<AftonRoute>();

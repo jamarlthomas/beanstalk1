@@ -18,7 +18,7 @@ namespace CMS.Mvc.Infrastructure
                 .ForMember(s => s.Title, d => d.Header)
                 //.ForMember(s => s.TileImage, d => d.ImageUrl)
                 .ForMember(s => s.Description, d => d.Text)
-                .ForMember(s=> RelatedProductCardViewModel.GetUrl(s), d=>d.Reference)
+                .ForMember(s=> s.DocumentNamePath, d=>d.Reference)
                 .ForMember(s=>((SolutionBusinessUnit)s.Parent.Parent).Title, d=>d.Title)
                 .ForMember(s=>((Solution)s.Parent).Title, d=>d.SubHeader);
             }

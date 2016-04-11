@@ -1,4 +1,6 @@
-﻿namespace CMS.DocumentEngine.Types
+﻿using CMS.Mvc.Helpers;
+
+namespace CMS.DocumentEngine.Types
 {
     public partial class InsightsResources
     {
@@ -6,7 +8,8 @@
         {
             get
             {
-                return "/InsightsAndResources";
+                var rt = RouteHelper.GetRoute("Insights And Resources");
+                return (rt != null) ? rt.Route : "/Insights-And-Resources";
             }
         }
     }

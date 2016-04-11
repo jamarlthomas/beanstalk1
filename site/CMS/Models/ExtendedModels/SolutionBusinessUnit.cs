@@ -1,4 +1,6 @@
-﻿namespace CMS.DocumentEngine.Types
+﻿using CMS.Mvc.Helpers;
+
+namespace CMS.DocumentEngine.Types
 {
     public partial class SolutionBusinessUnit
     {
@@ -6,7 +8,10 @@
         {
             get
             {
-                return string.Format("/SBU/Index/{0}", this.NodeAlias);
+                var rt = RouteHelper.GetRoute("Solution");
+                return (rt != null)
+                    ? rt.Route.Replace("{SBUName}", NodeAlias)
+                    :string.Format("/SBU/Index/{0}", this.NodeAlias);
             }
         }
     }

@@ -1,4 +1,8 @@
-﻿namespace CMS.DocumentEngine.Types
+﻿using System.Linq;
+using CMS.Mvc.Helpers;
+using iTextSharp.text;
+
+namespace CMS.DocumentEngine.Types
 {
     public partial class BlogPost
     {
@@ -6,7 +10,8 @@
         {
             get
             {
-                return string.Format("/Document/Index/{0}", this.NodeAlias);
+                var rt= RouteHelper.GetRoute("Document");
+                return (rt != null) ? rt.Route.Replace("{DocumentName}", this.NodeAlias) : string.Format("/Document/Index/{0}", this.NodeAlias);
             }
         }
 
