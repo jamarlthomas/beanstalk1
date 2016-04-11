@@ -19,5 +19,11 @@ namespace CMS.Mvc.Providers
         {
             return GetSalesOffices(parentName).First();
         }
+
+        public SalesOffice GetSalesOfficeByCountryGuid(Guid countryGuid)
+        {
+            return ContentHelper.GetDocs<SalesOffice>(SalesOffice.CLASS_NAME)
+                .FirstOrDefault(f => Guid.Parse(f.Country) == countryGuid || UtilsHelper.ParseGuids(f.ServingCountries).Any(guid => guid == countryGuid));
+        }
     }
 }

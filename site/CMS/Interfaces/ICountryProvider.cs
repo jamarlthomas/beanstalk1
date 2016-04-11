@@ -10,5 +10,6 @@ namespace CMS.Mvc.Interfaces
         IEnumerable<CountryInfo> GetCountries();
         IEnumerable<CountryInfo> GetCountries(List<Guid> guids);
         CountryInfo GetCountryByGuid(Guid guid);
+        CountryInfo GetCountryById(int id);
     }
 }

@@ -90,7 +90,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// 
+        /// Map Image.
         /// </summary>
         [DatabaseField]
         public string MapImage
@@ -102,6 +102,23 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("MapImage", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Email.
+        /// </summary>
+        [DatabaseField]
+        public string Email
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Email"), "");
+            }
+            set
+            {
+                SetValue("Email", value);
             }
         }
 
