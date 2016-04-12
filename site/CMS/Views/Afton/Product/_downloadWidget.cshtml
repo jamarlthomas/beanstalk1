@@ -35,7 +35,7 @@
             @if (Model.TranslationAvailable.Any())
             {
                 <div id="translate-doc">
-                    Translation Available: <a href="#" id="selDocLang">Select Language <span class="icon-arrow"></span></a>
+                    Translation Available: <a id="selDocLang">Select Language <span class="icon-arrow"></span></a>
                     <ul id="langDocDropDown" style="display: none;">
                         @foreach (var translation in Model.TranslationAvailable)
                         {
