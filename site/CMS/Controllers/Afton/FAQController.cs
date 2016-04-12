@@ -19,6 +19,7 @@ namespace CMS.Mvc.Controllers.Afton
         public readonly IFAQTopicProvider _faqTopicProvider = new FAQTopicProvider();
         public readonly IInsightsResourcesProvider _insightsResourcesProvider = new InsightsResourcesProvider();
         public readonly ITreeNodesProvider _treeNodesProvider = new TreeNodesProvider();
+
         [PageVisitActivity]
         public ActionResult Index()
         {

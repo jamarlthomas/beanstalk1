@@ -6,7 +6,7 @@
         {
             get
             {
-                return string.Format("/Solution/Index/{0}/{1}", this.NodeAlias, this.Parent != null ? this.Parent.NodeAlias : string.Empty);
+                return string.Format("/Solution/Index/{0}", this.NodeAlias);
             }
         }
     }

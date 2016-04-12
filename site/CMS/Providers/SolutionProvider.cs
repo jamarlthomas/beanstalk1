@@ -10,14 +10,19 @@ namespace CMS.Mvc.Providers
 {
     public class SolutionProvider : ISolutionProvider
     {
-        public List<Solution> GetSolutionItems(string alias)
+        public List<Solution> GetSolutions(string alias)
         {
             return ContentHelper.GetDocChildrenByName<Solution>(Solution.CLASS_NAME, alias);
         }
 
-		public List<Solution> GetSolutionItems()
-		{
-			return ContentHelper.GetDocs<Solution>(Solution.CLASS_NAME);
-		}
+        public List<Solution> GetSolutions()
+        {
+            return ContentHelper.GetDocs<Solution>(Solution.CLASS_NAME);
+        }
+
+        public Solution GetSolution(string alias)
+        {
+            return ContentHelper.GetDocByName<Solution>(Solution.CLASS_NAME, alias);
+        }
     }
 }

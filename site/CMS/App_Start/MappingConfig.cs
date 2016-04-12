@@ -1,11 +1,10 @@
-﻿using CMS.DocumentEngine.Types;
+﻿using CMS.DocumentEngine;
+using CMS.DocumentEngine.Types;
 using CMS.Mvc.ViewModels.NewsAndEvents;
 using CMS.Mvc.ViewModels.Shared;
 using System;
 using System.Linq;
 using System.Reflection;
-using CMS.Mvc.Helpers;
-using CMS.DocumentEngine;
 
 namespace CMS.Mvc.App_Start
 {

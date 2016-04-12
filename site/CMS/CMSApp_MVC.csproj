@@ -231,7 +231,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
     <Compile Include="Controllers\Afton\ContactController.cs" />
     <Compile Include="Controllers\Afton\FAQController.cs" />
@@ -377,7 +376,6 @@
     <Compile Include="Infrastructure\Localization\TranslationItem.cs" />
     <Compile Include="Infrastructure\Models\SelectionFilterSearchRequest.cs" />
     <Compile Include="Infrastructure\UIMappingConfiguration.cs" />
-    <Compile Include="Controllers\CorporateSite\NewsController.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModuleMetadata.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModule.cs" />
     <Compile Include="Infrastructure\Localization\TranslationsUtility.cs" />
@@ -634,7 +632,6 @@
     </Content>
     <Content Include="packages.config" />
     <Content Include="Views\Afton\Shared\Master.cshtml" />
-    <Content Include="Views\Afton\Auxiliary\Index.cshtml" />
     <Content Include="Views\Afton\Home\Index.cshtml" />
     <Content Include="Views\Afton\Master\_header.cshtml" />
     <Content Include="Views\Afton\SBU\Index.cshtml" />

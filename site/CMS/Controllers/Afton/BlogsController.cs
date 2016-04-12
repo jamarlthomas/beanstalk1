@@ -1,18 +1,17 @@
-﻿using System.Collections.Generic;
-using System;
-using System.Configuration;
+﻿using CMS.DocumentEngine.Types;
+using CMS.Membership;
 using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
-using CMS.DocumentEngine.Types;
-using CMS.Membership;
+using CMS.Mvc.Infrastructure.Models;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Blogs;
 using CMS.Mvc.ViewModels.Shared;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
-using CMS.Mvc.Infrastructure.Models;
-using System.Text.RegularExpressions;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -23,6 +22,7 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly IUsersProvider _usersProvider;
         private readonly IBlogCategoryProvider _blogCategoryProvider;
         private readonly IBlogPostProvider _blogPostProvider;
+        private static readonly int _recordsOnPage = Int32.Parse(ConfigurationManager.AppSettings["NewsEventsBlogsRecordOnPageCount"]);
 
         public BlogsController()
         {
@@ -45,70 +45,27 @@ namespace CMS.Mvc.Controllers.Afton
             _blogCategoryProvider = blogCategoryProvider;
             _blogPostProvider = blogPostProvider;
         }
+
         [PageVisitActivity]
         public ActionResult Index(BlogsRequest request)
         {
             var page = _blogsPageProvider.GetBlogsPage();
             var model = MapData<BlogsPage, BlogsPageViewModel>(page);
             var users = _usersProvider.GetUsers();
-            //model.Authors = new List<SelectorItemViewModel>
-            //{
-            //    new SelectorItemViewModel
-            //    {
-            //        Title = page.AllAuthorsSelectOption
-            //    }
-            //};
-            //model.Authors.AddRange(users.Select(s => new SelectorItemViewModel
-            //{
-            //    Title = s.FullName
-            //}));
-            //model.Authors = model.Authors.OrderBy(a => a.Title != request.Author).ToList();
+            
+            //model.Authors = GetAuthorsViewModel(request, page, users);
 
-            model.Categories = new List<SelectorItemViewModel>
-            {
-                new SelectorItemViewModel
-                {
-                    Title = page.AllCategoriesSelectOption
-                }
-            };
-            model.Categories.AddRange(MapData<BlogCategory, SelectorItemViewModel>(_blogCategoryProvider.GetBlogCategories(page.NodeAlias)));
-            model.Categories = model.Categories.OrderBy(a => a.Title != request.Category).ToList();
+            model.Categories = GetCategoriesViewModel(request, page);
 
-            IEnumerable<BlogPost> blogPosts = _blogPostProvider.GetBlogPosts();
+            var blogPostsList = _blogPostProvider.GetFilteredBlogPosts(request, page);
 
-            if (!string.IsNullOrEmpty(request.Category) && request.Category != page.AllCategoriesSelectOption)
-            {
-                blogPosts = blogPosts.Where(w => w.Category == request.Category);
-            }
-            //if (!string.IsNullOrEmpty(request.Author) && request.Author != page.AllAuthorsSelectOption)
-            //{
-            //    blogPosts = blogPosts.Where(w => users.First(f => f.UserID == w.DocumentCreatedByUserID).FullName == request.Author);
-            //}
+            model.BlogPosts = blogPostsList.Skip((request.Page - 1) * _recordsOnPage ?? 0).Take(_recordsOnPage).Select(post => MapPostToBlogPostViewModel(post, users)).ToList();
 
-            blogPosts = blogPosts.OrderBy(f => f.BlogPostDate);
-            if (!String.Equals(request.SortOrder, "ASC", StringComparison.OrdinalIgnoreCase))
-            {
-                blogPosts = blogPosts.Reverse();
-            }
-            var blogPostsList = blogPosts.ToList();
-
-            var recordsOnPage = Int32.Parse(ConfigurationManager.AppSettings["NewsEventsBlogsRecordOnPageCount"]);
-            model.BlogPosts = new List<BlogPostViewModel>();
-            foreach (var post in blogPostsList.Skip((request.Page - 1) * recordsOnPage ?? 0).Take(recordsOnPage))
-            {
-                var postViewModel = MapData<BlogPost, BlogPostViewModel>(post);
-                postViewModel.BlogPostDate = UtilsHelper.ConvertToCST(postViewModel.BlogPostDate);
-                postViewModel.Category = post.Category;
-                postViewModel.AuthorName = users.First(f => f.UserID == post.DocumentCreatedByUserID).FullName;
-                model.BlogPosts.Add(postViewModel);
-            }
-
-            model.Tiles = _treeNodesProvider
-                    .GetTreeNodes(page.ContentManagedTiles).Take(4).Select(tile => AutoMapper.Mapper.Map<TileViewModel>(tile)).ToList();
+            model.Tiles = _treeNodesProvider.GetTreeNodes(page.ContentManagedTiles).Take(4).Select(tile => AutoMapper.Mapper.Map<TileViewModel>(tile)).ToList();
 
             model.Pagination = new PaginationViewModel
             {
-                TotalPages = (int)Math.Ceiling((double)blogPostsList.Count / recordsOnPage),
+                TotalPages = (int)Math.Ceiling((double)blogPostsList.Count / _recordsOnPage),
                 CurrentPage = request.Page ?? 1,
                 BaseUrl = UtilsHelper.GetBaseUrlWithoutIntParam(Request.Url.PathAndQuery, "page"),
                 PageArgName = "page"
@@ -116,6 +73,44 @@ namespace CMS.Mvc.Controllers.Afton
             model.SelectedSortOrder = request.SortOrder;
 
             return View("~/Views/Afton/Blogs/Index.cshtml", model);
+        }
+
+        private List<SelectorItemViewModel> GetAuthorsViewModel(BlogsRequest request, BlogsPage page, List<UserInfo> users)
+        {
+            var result = new List<SelectorItemViewModel>
+            {
+                new SelectorItemViewModel
+                {
+                    Title = page.AllAuthorsSelectOption
+                }
+            };
+            result.AddRange(users.Select(s => new SelectorItemViewModel
+            {
+                Title = s.FullName
+            }));
+            return result.OrderBy(a => a.Title != request.Author).ToList();
+        }
+
+        private List<SelectorItemViewModel> GetCategoriesViewModel(BlogsRequest request, BlogsPage page)
+        {
+            var result = new List<SelectorItemViewModel>
+            {
+                new SelectorItemViewModel
+                {
+                    Title = page.AllCategoriesSelectOption
+                }
+            };
+            result.AddRange(MapData<BlogCategory, SelectorItemViewModel>(_blogCategoryProvider.GetBlogCategories(page.NodeAlias)));
+            return result.OrderBy(a => a.Title != request.Category).ToList();
+        }
+
+        private BlogPostViewModel MapPostToBlogPostViewModel(BlogPost post, List<UserInfo> users)
+        {
+            var postViewModel = MapData<BlogPost, BlogPostViewModel>(post);
+            postViewModel.BlogPostDate = UtilsHelper.ConvertToCST(postViewModel.BlogPostDate);
+            postViewModel.Category = post.Category;
+            postViewModel.AuthorName = users.First(f => f.UserID == post.DocumentCreatedByUserID).FullName;
+            return postViewModel;
         }
     }
 }

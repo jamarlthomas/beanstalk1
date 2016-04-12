@@ -7,9 +7,9 @@ namespace CMS.Mvc.Providers
 {
     public class DocumentConstantProvider : IDocumentConstantProvider
     {
-        public List<DocumentConstant> GetDocumentConstants()
+        public DocumentConstant GetDocumentConstants()
         {
-            return ContentHelper.GetDocs<DocumentConstant>(DocumentConstant.CLASS_NAME);
+            return ContentHelper.GetDoc<DocumentConstant>(DocumentConstant.CLASS_NAME);
         }
     }
 }

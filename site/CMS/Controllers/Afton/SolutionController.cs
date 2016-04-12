@@ -1,53 +1,51 @@
-﻿using CMS.Mvc.ViewModels.Shared.SidebarComponents;
-using System.Linq;
-using CMS.DocumentEngine.Types;
+﻿using CMS.DocumentEngine.Types;
 using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Shared;
-using System.Web.Mvc;
+using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 using CMS.Mvc.ViewModels.Solution;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace CMS.Mvc.Controllers.Afton
 {
     public class SolutionController : SidebarPageController
     {
-        private readonly ISolutionBusinessUnitProvider _solutionBusinessUnitProvider;
         private readonly ISolutionProvider _solutionProvider;
-        private readonly IProductProvider _productProvider;
         private readonly ITreeNodesProvider _treeNodesProvider;
         private readonly ISolutionConstantsProvider _solutionConstantsProvider;
 
         public SolutionController()
         {
-            _solutionBusinessUnitProvider = new SolutionBusinessUnitProvider();
             _solutionProvider = new SolutionProvider();
-            _productProvider = new ProductProvider();
             _treeNodesProvider = new TreeNodesProvider();
             _solutionConstantsProvider = new SolutionConstantsProvider();
         }
 
-        public SolutionController(ISolutionBusinessUnitProvider solutionBusinessUnitProvider,
-            ISolutionProvider solutionProvider,
+        public SolutionController(ISolutionProvider solutionProvider,
             IProductProvider productProvider,
             ITreeNodesProvider treeNodesProvider,
             ISolutionConstantsProvider solutionConstantsProvider)
         {
-            _solutionBusinessUnitProvider = solutionBusinessUnitProvider;
             _solutionProvider = solutionProvider;
-            _productProvider = productProvider;
             _treeNodesProvider = treeNodesProvider;
             _solutionConstantsProvider = solutionConstantsProvider;
         }
+
         [PageVisitActivity]
-        public ActionResult Index(string name, string parentName)
+        public ActionResult Index(string name)
         {
-            var solution = _solutionProvider.GetSolutionItems(parentName).First(f => f.NodeName == name);
+            var solution = _solutionProvider.GetSolution(name);
+
             var solutionViewModel = MapData<Solution, SolutionViewModel>(solution);
-            var featuredProductListGuids = UtilsHelper.ParseGuids(solution.FeaturedProductList).Take(4).ToList();
-            solutionViewModel.Products = MapData<Product, ProductViewModel>(_productProvider.GetProductItems(featuredProductListGuids, solution.Site.DisplayName));
-            solutionViewModel.ParentName = parentName;
+
+            solutionViewModel.Products = GetProductViewModels(solution);
+
+            solutionViewModel.ParentName = (solution.Parent as SolutionBusinessUnit).Title;
+
             solutionViewModel.SideBar = new SidebarViewModel
             {
                 Items = MapSidebar(_sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(solution.SidebarItems)), solution)
@@ -58,6 +56,11 @@ namespace CMS.Mvc.Controllers.Afton
             };
             solutionViewModel.Constants = MapData<SolutionConstants, SolutionConstantsViewModel>(_solutionConstantsProvider.GetSolutionConstants());
             return View("~/Views/Afton/Solution/Index.cshtml", solutionViewModel);
+        }
+
+        private List<ProductViewModel> GetProductViewModels(Solution solution)
+        {
+            return MapData<Product, ProductViewModel>(_treeNodesProvider.GetTreeNodes(solution.FeaturedProductList, 4).Cast<Product>());
         }
     }
 }

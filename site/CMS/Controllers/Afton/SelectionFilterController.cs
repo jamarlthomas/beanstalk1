@@ -91,7 +91,7 @@ namespace CMS.Mvc.Controllers.Afton
             model.SBUList = MapData<SolutionBusinessUnit, SBUFilterViewModel>(_solutionBusinessUnitProvider.GetParentOrDefaultSBUs(page));
             foreach (var sbu in model.SBUList)
             {
-                sbu.SolutionsList = _solutionProvider.GetSolutionItems(sbu.Title)
+                sbu.SolutionsList = _solutionProvider.GetSolutions(sbu.Title)
                     .Select(solution => new CheckBoxViewModel { Title = solution.Title, Value = solution.NodeID.ToString() }).ToList();
             }
             model.SBUList = model.SBUList.Where(w => w.SolutionsList != null && w.SolutionsList.Any()).ToList();
@@ -115,12 +115,12 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 if (request.SBUId != RouteHelper.NULL_VALUE_PLACEHOLDER)
                 {
-                    request.SolutionsIds = MapTreeNodesToIdStr(_solutionProvider.GetSolutionItems(
+                    request.SolutionsIds = MapTreeNodesToIdStr(_solutionProvider.GetSolutions(
                         TreePathUtils.GetAlias(TreePathUtils.GetAliasPathByNodeId(int.Parse(request.SBUId)))));
                 }
                 else
                 {
-                    request.SolutionsIds = MapTreeNodesToIdStr(_solutionProvider.GetSolutionItems());
+                    request.SolutionsIds = MapTreeNodesToIdStr(_solutionProvider.GetSolutions());
                 }
             }
 

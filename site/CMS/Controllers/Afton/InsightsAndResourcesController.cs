@@ -71,7 +71,7 @@ namespace CMS.Mvc.Controllers.Afton
                             Title = s.Title,
                             Reference = RouteHelper.GetSelectionFilterUrl(new SelectionFilterSearchRequest 
                                 {
-                                    SolutionsIds = string.Join(",", _solutionProvider.GetSolutionItems(s.NodeAlias).Select(solution => solution.NodeID)) 
+                                    SolutionsIds = string.Join(",", _solutionProvider.GetSolutions(s.NodeAlias).Select(solution => solution.NodeID)) 
                                 }, 
                                 childSelectionFilterPage != null ? childSelectionFilterPage.NodeAlias : null)
                         };
