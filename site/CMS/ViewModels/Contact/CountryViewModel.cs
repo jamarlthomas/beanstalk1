@@ -7,6 +7,7 @@ namespace CMS.Mvc.ViewModels.Contact
 {
     public class ContactCountryViewModel
     {
-        public string NodeName { get; set; }
+        public int CountryID { get; set; }
+        public string CountryDisplayName { get; set; }
     }
 }

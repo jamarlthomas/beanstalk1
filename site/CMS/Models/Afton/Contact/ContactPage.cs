@@ -73,23 +73,6 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Form Introducion Text.
-        /// </summary>
-        [DatabaseField]
-        public string FormIntroducionText
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("FormIntroducionText"), "");
-            }
-            set
-            {
-                SetValue("FormIntroducionText", value);
-            }
-        }
-
-
-        /// <summary>
         /// First Name Placeholder.
         /// </summary>
         [DatabaseField]
@@ -272,6 +255,23 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("PromptLabel", value);
+            }
+        }
+
+
+        /// <summary>
+        /// View Sales Offices Label.
+        /// </summary>
+        [DatabaseField]
+        public string ViewSalesOfficesLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("ViewSalesOfficesLabel"), "");
+            }
+            set
+            {
+                SetValue("ViewSalesOfficesLabel", value);
             }
         }
 

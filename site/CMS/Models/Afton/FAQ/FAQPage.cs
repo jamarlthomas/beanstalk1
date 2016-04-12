@@ -124,6 +124,40 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Sort By Label.
+        /// </summary>
+        [DatabaseField]
+        public string SortByLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("SortByLabel"), "");
+            }
+            set
+            {
+                SetValue("SortByLabel", value);
+            }
+        }
+
+
+        /// <summary>
+        /// View All FAQs Label.
+        /// </summary>
+        [DatabaseField]
+        public string ViewAllLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("ViewAllLabel"), "");
+            }
+            set
+            {
+                SetValue("ViewAllLabel", value);
+            }
+        }
+
+
+        /// <summary>
         /// Sidebar Component Items.
         /// </summary>
         [DatabaseField]

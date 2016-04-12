@@ -1,16 +1,13 @@
-﻿using System.Linq.Expressions;
-﻿using System.Web;
-using System.Web.Configuration;
+﻿﻿using System.Web;
 using CMS.Base;
+using CMS.Globalization;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.Mvc.Infrastructure.Models;
-using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Shared;
-using CMS.Personas;
 using CMS.PortalEngine;
 using CMS.Search;
 using System;
@@ -18,7 +15,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
-
+using System.Linq.Expressions;
+using System.Web.Configuration;
 
 namespace CMS.Mvc.Helpers
 {
@@ -123,10 +121,23 @@ namespace CMS.Mvc.Helpers
 
         public static T GetDocByGuid<T>(Guid guid, string siteName = null) where T : class
         {
-
             return CacheHelper.Cache(cs =>
                 _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T,
                 new CacheSettings(CachingTime, string.Format("doc_guid_{0}", guid)));
+        }
+
+        public static T GetDocByDocId<T>(int docId) where T : class
+        {
+            return CacheHelper.Cache(cs =>
+                _treeProvider.SelectSingleDocument(docId) as T,
+                new CacheSettings(CachingTime, string.Format("doc_id_{0}", docId)));
+        }
+
+        public static T GetDocByNodeId<T>(int nodeId) where T : class
+        {
+            return CacheHelper.Cache(cs =>
+                _treeProvider.SelectSingleNode(nodeId) as T,
+                new CacheSettings(CachingTime, string.Format("node_id_{0}", nodeId)));
         }
 
         public static List<T> GetDocsByGuids<T>(IEnumerable<Guid> guids, string siteName = null) where T : class
@@ -154,7 +165,7 @@ namespace CMS.Mvc.Helpers
                     string.Format("pth_{0}_mrl_{1}_cn_{2}", aliasPath, maxRelativeLevel, classNames)));
         }
 
-        public static SearchResult PerformSearch(SearchRequest request)
+        public static SearchResult PerformSearch(BaseSearchRequest request)
         {
             DocumentSearchCondition docCondition = new DocumentSearchCondition
             {
@@ -192,6 +203,7 @@ namespace CMS.Mvc.Helpers
             if (results == null) return new SearchResult();
             return new SearchResult
             {
+                ResultsCount = parameters.NumberOfResults,
                 PageCount = (int)Math.Ceiling(1d * parameters.NumberOfResults / request.RecordsOnPage),
                 Items = results.Tables[0].AsEnumerable().Select(s => new SearchResultItem
                 {
@@ -209,6 +221,22 @@ namespace CMS.Mvc.Helpers
             {
                 return UserInfoProvider.GetUsers().ToList();
             }, new CacheSettings(CachingTime, "get_all_users"));
+        }
+
+        public static IEnumerable<CountryInfo> GetCountries()
+        {
+            return CacheHelper.Cache(cs =>
+            {
+                return CountryInfoProvider.GetAllCountries();
+            }, new CacheSettings(CachingTime, "get_all_countries"));
+        }
+
+        public static CountryInfo GetCountryByGuid(Guid guid)
+        {
+            return CacheHelper.Cache(cs =>
+            {
+                return (CountryInfo)CountryInfoProvider.GetInfoByGuid(CountryInfo.OBJECT_TYPE, guid);
+            }, new CacheSettings(CachingTime, string.Format("get_country_{0}", guid))); ;
         }
 
         internal static List<T> GetSiblings<T>(T node) where T : TreeNode, new()
@@ -234,8 +262,6 @@ namespace CMS.Mvc.Helpers
                             .FirstOrDefault(predicate);
                         break;
                     }
-
-
                 case ViewModeEnum.LiveSite:
                     {
                         if (!string.IsNullOrWhiteSpace(cacheKey))
@@ -261,10 +287,10 @@ namespace CMS.Mvc.Helpers
                             node = (T)tree.SelectNodes(className).Published()
                                 .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                                 .FirstOrDefault(predicate);
+                            //return (T)doc;
                         }
                         break;
                     }
-
                 default:
                     {
                         node = (T)DocumentHelper.GetDocuments(className)

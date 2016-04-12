@@ -11,5 +11,7 @@ namespace CMS.Mvc.ViewModels.Contact
         public string Address { get; set; }
         public string CountryName { get; set; }
         public string Phone { get; set; }
+        public string MapImage { get; set; }
+        public string DocumentNamePath { get; set; }
     }
 }

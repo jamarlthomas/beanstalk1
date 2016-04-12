@@ -1,0 +1,18 @@
+﻿@model CMS.Mvc.ViewModels.GlobalSearch.GlobalSearchPageViewModel
+
+@{
+    ViewBag.Title = Model.Title;
+    ViewBag.GlobalSearchQuery = Model.SearchTerm;
+    Layout = "~/Views/Afton/Shared/Master.cshtml";
+}
+
+<div id="searchResultC">
+    @{ Html.RenderPartial("~/Views/Afton/GlobalSearch/_header.cshtml", @Model); }
+    <div id="searchResult">
+        @if (Model.Results != null && Model.Results.Count > 0)
+        { 
+            Html.RenderPartial("~/Views/Afton/GlobalSearch/_searchResults.cshtml", @Model.Results); 
+        }
+        @{ Html.RenderPartial("~/Views/Afton/Shared/_pagination.cshtml", @Model.Pagination); }
+    </div>
+</div>

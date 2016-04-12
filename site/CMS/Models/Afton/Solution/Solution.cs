@@ -56,18 +56,18 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Tile Title.
+        /// 
         /// </summary>
         [DatabaseField]
-        public string TileTitle
+        public string HomeImage
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("TileTitle"), "");
+                return ValidationHelper.GetString(GetValue("HomeImage"), "");
             }
             set
             {
-                SetValue("TileTitle", value);
+                SetValue("HomeImage", value);
             }
         }
 
@@ -85,40 +85,6 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("Title", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Image displayed on a tile.
-        /// </summary>
-        [DatabaseField]
-        public string HomeImage
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("HomeImage"), "");
-            }
-            set
-            {
-                SetValue("HomeImage", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Text that appears on hover over the tile.
-        /// </summary>
-        [DatabaseField]
-        public string Description
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("Description"), "");
-            }
-            set
-            {
-                SetValue("Description", value);
             }
         }
 
@@ -170,6 +136,23 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("NavigationIcon", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Description.
+        /// </summary>
+        [DatabaseField]
+        public string Description
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Description"), "");
+            }
+            set
+            {
+                SetValue("Description", value);
             }
         }
 

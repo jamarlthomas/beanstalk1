@@ -58,7 +58,7 @@ namespace CMS.Mvc.Controllers.Afton
                 {
                     Title = page.ProductDataSheetsTitle,
                     ViewAllLabel = page.ViewAllLabel,
-                    ViewAllUrl = RouteHelper.GetSelectionFilterUrl(new SearchRequest { DocumentTypesIds = ConfigurationManager.AppSettings["DocumentDataSheetDocumentTypeId"] }),
+                    ViewAllUrl = RouteHelper.GetSelectionFilterUrl(new SelectionFilterSearchRequest { DocumentTypesIds = ConfigurationManager.AppSettings["DocumentDataSheetDocumentTypeId"] }),
                     Links = _solutionBusinessUnitProvider.GetSolutionBusinessUnits().Select(s => 
                     {
                         var childSelectionFilterPage = _selectionFilterPageProvider.GetChildSelectionFilterPage(s.NodeAlias);
@@ -66,7 +66,7 @@ namespace CMS.Mvc.Controllers.Afton
                         {
                             Title = s.Title,
                             Reference = RouteHelper.GetSelectionFilterUrl(
-                                new SearchRequest { SBUId = s.NodeID.ToString() }, childSelectionFilterPage != null ? childSelectionFilterPage.NodeAlias : null)
+                                new SelectionFilterSearchRequest { SBUId = s.NodeID.ToString() }, childSelectionFilterPage != null ? childSelectionFilterPage.NodeAlias : null)
                         };
                     }).ToList()
                 }
@@ -75,7 +75,7 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 Title = s.Title,
                 ViewAllLabel = page.ViewAllLabel,
-                ViewAllUrl = RouteHelper.GetSelectionFilterUrl(new SearchRequest { DocumentTypesIds = s.NodeID.ToString() }),
+                ViewAllUrl = RouteHelper.GetSelectionFilterUrl(new SelectionFilterSearchRequest { DocumentTypesIds = s.NodeID.ToString() }),
                 Links = _documentProvider.GetHighlightedDocuments(s.Title).Select(document => new LinkViewModel
                 {
                     Title = document.Title,

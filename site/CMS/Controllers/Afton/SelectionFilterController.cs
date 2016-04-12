@@ -1,6 +1,6 @@
-﻿using CMS.DocumentEngine;
+﻿using System;
+using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
-using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Infrastructure.Enums;
 using CMS.Mvc.Infrastructure.Models;
@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
+using CMS.Mvc.ViewModels.SBU;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -25,45 +26,44 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly ISolutionProvider _solutionProvider;
         private readonly ISelectionFilterSearchProvider _selectionFilterSearchProvider;
         private readonly ITreeNodesProvider _treeNodesProvider;
+        private readonly IPageTypeDisplayValueProvider _pageTypeDisplayValueProvider;
+        
 
         public SelectionFilterController()
         {
-            _productProvider = new ProductProvider();
-            _lookupProvider = new LookupProvider();
             _selectionFilterPageProvider = new SelectionFilterPageProvider();
             _documentTypeProvider = new DocumentTypeProvider();
             _solutionBusinessUnitProvider = new SolutionBusinessUnitProvider();
             _solutionProvider = new SolutionProvider();
             _selectionFilterSearchProvider = new SelectionFilterSearchProvider();
             _treeNodesProvider = new TreeNodesProvider();
+            _pageTypeDisplayValueProvider = new PageTypeDisplayValueProvider();
         }
 
-        public SelectionFilterController(IProductProvider productProvider,
-            ILookupProvider lookupProvider,
-            ISelectionFilterPageProvider selectionFilterPageProvider,
+        public SelectionFilterController(ISelectionFilterPageProvider selectionFilterPageProvider,
             IDocumentTypeProvider documentTypeProvider,
             ISolutionBusinessUnitProvider solutionBusinessUnitProvider,
             ISolutionProvider solutionProvider,
             ISelectionFilterSearchProvider selectionFilterSearchProvider,
-            ITreeNodesProvider treeNodesProvider)
+            ITreeNodesProvider treeNodesProvider,
+            IPageTypeDisplayValueProvider pageTypeDisplayValueProvider)
         {
-            _productProvider = productProvider;
-            _lookupProvider = lookupProvider;
             _selectionFilterPageProvider = selectionFilterPageProvider;
             _documentTypeProvider = documentTypeProvider;
             _solutionBusinessUnitProvider = solutionBusinessUnitProvider;
             _solutionProvider = solutionProvider;
             _selectionFilterSearchProvider = selectionFilterSearchProvider;
             _treeNodesProvider = treeNodesProvider;
+            _pageTypeDisplayValueProvider = pageTypeDisplayValueProvider;
         }
 
         [Route("filter/regions/{Regions}/documents/{DocumentTypesIds}/SBU/{SBUId}/solutions/{SolutionsIds}")]
-        public JsonResult SearchAction(SearchRequest request)
+        public JsonResult SearchAction(SelectionFilterSearchRequest request)
         {
             return Json(Search(request), JsonRequestBehavior.AllowGet);
         }
-        [PageVisitActivity]
-        public ActionResult Index(string name, SearchRequest searchRequest)
+
+        public ActionResult Index(string name, SelectionFilterSearchRequest searchRequest)
         {
             var page = _selectionFilterPageProvider.GetSelectionFilterPage(name);
             var model = new SelectionFilterViewModel
@@ -106,7 +106,7 @@ namespace CMS.Mvc.Controllers.Afton
             return View("~/Views/Afton/SelectionFilter/Index.cshtml", model);
         }
 
-        private SelectionFilterSearchViewModel Search(SearchRequest request)
+        private SelectionFilterSearchViewModel Search(SelectionFilterSearchRequest request)
         {
             request.Regions = request.Regions == RouteHelper.NULL_VALUE_PLACEHOLDER ? null : request.Regions;
             if (request.DocumentTypesIds == RouteHelper.NULL_VALUE_PLACEHOLDER)
@@ -136,13 +136,25 @@ namespace CMS.Mvc.Controllers.Afton
             return new SelectionFilterSearchViewModel
             {
                 pagecount = searchResult.PageCount,
-                results = searchResult.Items.Select(s => new SelectionFilterSearchItemViewModel
-                {
-                    Title = s.Image,
-                    Description = s.Content,
-                    Link = s.Title,
-                    Type = TreePathUtils.GetClassNameByAliasPath(ConfigurationManager.AppSettings["SiteName"], s.Title).Split('.').Last()
-                }).ToList()
+                results = searchResult.Items.Select(MapSearchResult).ToList()
+            };
+        }
+
+        private SelectionFilterSearchItemViewModel MapSearchResult(SearchResultItem searchResultItem)
+        {
+            var nodeId = TreePathUtils.GetNodeIdByAliasPath(ConfigurationManager.AppSettings["SiteName"], searchResultItem.Title);
+            var node = _treeNodesProvider.GetTreeNodeByNodeId(nodeId);
+            var pageTypeDisplayValue = _pageTypeDisplayValueProvider.GetDisplayValue(node.ClassName);
+            return new SelectionFilterSearchItemViewModel
+            {
+                Title = searchResultItem.Date ?? node.GetStringValue("Title", string.Empty), //due kentico limitation date field used for title
+                Link = node.DocumentNamePath,
+                Description = searchResultItem.Content,
+                Image = searchResultItem.Image,
+                Type = pageTypeDisplayValue != null ? pageTypeDisplayValue.DisplayValue : string.Empty,
+                PostedDate = (DateTime)node.GetValue("DocumentCreatedWhen"),
+                SBU = node is Product ? MapData<SolutionBusinessUnit, SBUViewModel>(node.Parent.Parent as SolutionBusinessUnit) : null,
+                Solution = node is Product ? MapData<Solution, SolutionViewModel>(node.Parent as Solution) : null
             };
         }
 

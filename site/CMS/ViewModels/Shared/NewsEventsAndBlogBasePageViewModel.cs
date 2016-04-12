@@ -16,6 +16,8 @@ namespace CMS.Mvc.ViewModels.Shared
         public string PostedLabel { get; set; }
         public string FilterByLabel { get; set; }
         public string SortByLabel { get; set; }
+        public string SelectedSortOrder { get; set; }
+        public PaginationViewModel Pagination { get; set; }
         public List<TileViewModel> Tiles { get; set; }
     }
 }

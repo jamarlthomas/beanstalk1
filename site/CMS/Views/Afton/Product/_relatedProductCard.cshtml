@@ -5,15 +5,20 @@
         <div class="cardBtnIndicator">
             <img src="~/images/card-btn-indicator.png" />
         </div>
+
         @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
         {
-            <img src="@Url.Content(Model.ImageUrl)" />
+            <div style="background-image: url(@Url.Content(Model.ImageUrl));" class="cardHdrC"></div>
         }
-        <div class="textAreaC">
-            <div class="cardTitle">@Model.Title</div>
-            <div class="cardHdr">@Model.Header</div>
-            <div class="cardSubHdr">@Model.SubHeader</div>
-            <div class="cardTxt">@Model.Text</div>
+        <div class="cardTextAreaC">
+            <div class="cardTextArea">
+                <div class="cardType">@Model.Title</div>
+                <div class="cardHdrText">@Model.Header</div>
+                <div class="cardSubHdr">@Model.SubHeader</div>
+                @*<div class="cardTxt">@Model.Text</div>*@
+                <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+            </div>
+            <div class="cardDate">May 1, 2016</div>
         </div>
     </a>
 }
@@ -23,15 +28,20 @@ else
         <div class="cardBtnIndicator">
             <img src="~/images/card-btn-indicator.png" />
         </div>
+
         @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
         {
-            <img src="@Url.Content(Model.ImageUrl)" />
+            <div style="background-image: url(@Url.Content(Model.ImageUrl));" class="cardHdrC"></div>
         }
-        <div class="textAreaC">
-            <div class="cardTitle">@Model.Title</div>
-            <div class="cardHdr">@Model.Header</div>
-            <div class="cardSubHdr">@Model.SubHeader</div>
-            <div class="cardTxt">@Model.Text</div>
+        <div class="cardTextAreaC">
+            <div class="cardTextArea">
+                <div class="cardType">@Model.Title</div>
+                <div class="cardHdrText">@Model.Header</div>
+                <div class="cardSubHdr">@Model.SubHeader</div>
+                <div class="cardTxt">@Model.Text</div>
+                <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+            </div>
+            <div class="cardDate">May 1, 2016</div>
         </div>
     </a>
 }

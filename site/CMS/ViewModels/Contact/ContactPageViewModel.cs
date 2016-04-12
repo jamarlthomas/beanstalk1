@@ -9,7 +9,6 @@ namespace CMS.Mvc.ViewModels.Contact
     public class ContactPageViewModel
     {
         public string Title { get; set; }
-        public string FormIntroducionText { get; set; }
         public string FirstNamePlaceholder { get; set; }
         public string LastNamePlaceholder { get; set; }
         public string CompanyNamePlaceholder { get; set; }
@@ -20,11 +19,13 @@ namespace CMS.Mvc.ViewModels.Contact
         public string MessagePlaceholder { get; set; }
         public string NewsletterTitle { get; set; }
         public string NewsletterCheckboxLabel { get; set; }
+        public string NewsletterPrivacyLabel { get; set; }
+        public string NewsletterPrivacyLink { get; set; }
         public string SubmitLabel { get; set; }
         public string PromptLabel { get; set; }
+        public string ViewSalesOfficesLabel { get; set; }
 
         public List<ContactRegionViewModel> Regions { get; set; }
         public EmergencyResponseViewModel EmergencyResponse { get; set; }
-        public BreadCrumbViewModel BreadCrumb { get; set; }
     }
 }

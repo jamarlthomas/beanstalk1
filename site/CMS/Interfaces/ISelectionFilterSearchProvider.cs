@@ -8,6 +8,6 @@ namespace CMS.Mvc.Interfaces
 {
 	public interface ISelectionFilterSearchProvider
     {
-		SearchResult PerformSearch(SearchRequest request);
+		SearchResult PerformSearch(SelectionFilterSearchRequest request);
     }
 }

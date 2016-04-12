@@ -8,6 +8,7 @@ using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Product;
 using CMS.Mvc.ViewModels.Shared;
+using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -21,6 +22,7 @@ namespace CMS.Mvc.Controllers.Afton
             _treeNodesProvider = new TreeNodesProvider();
         }
 
+        //[Route("Product/{alias}")]
         [PageVisitActivity]
         public ActionResult Index(string name)
         {
@@ -30,9 +32,9 @@ namespace CMS.Mvc.Controllers.Afton
             productModel.BreadCrumb.BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(product.DocumentGUID);
             productModel.DownloadWidget = GetDownloadwidget(product);
 
-            productModel.ContentCopyArea = MapData<Product, ViewModels.Product.ProductViewModel>(product);
+            productModel.ContentCopyArea = MapData<Product, CMS.Mvc.ViewModels.Product.ProductViewModel>(product);
             productModel.RelatedProducts = GetRelatedProductsWidget(product);
-
+            
             return View("~/Views/Afton/Product/Index.cshtml", productModel);
         }
 
@@ -45,12 +47,16 @@ namespace CMS.Mvc.Controllers.Afton
             widget.Products = MapData<Product, RelatedProductCardViewModel>(products);  
             return widget;
         }
+
+        
+
+      
         private DownloadWidgetViewModel GetDownloadwidget(Product product)
         {
             return new DownloadWidgetViewModel()
             {
                 Title = product.Title,
-                TileImage = product.HomeImage,
+                //TileImage = product.TileImage,
                 Description = product.Description,
                 DownloadLink = _productProvider.GetDownloadLink(product),
                 AvailableIn = _productProvider.GetAvailableRegions(product).Select(item => new LinkViewModel() {Title = item}).ToList(),

@@ -1,0 +1,18 @@
+﻿@using System;
+@using CMS.Mvc.ViewModels.GlobalSearch
+@using System.Collections.Generic
+@model List<ResultItemViewModel>
+
+@foreach (var searchResult in Model)
+{
+    <a href="@searchResult.DocumentNamePath" class="searchResultItem">
+        @if (!string.IsNullOrEmpty(searchResult.Image))
+        {
+            <div class="searchImgC"><img src="@Url.Content(searchResult.Image)"></div>
+        }
+        <div class="searchContentC">
+            <h2>@Html.Raw(searchResult.Title) | <span class="docType">@searchResult.Type</span></h2>
+            <div class="newsTxt">@Html.Raw(!string.IsNullOrEmpty(searchResult.Content) ? searchResult.Content.TruncateHtml(140, "...") : string.Empty)</div>
+        </div>
+    </a>
+}

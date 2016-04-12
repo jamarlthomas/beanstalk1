@@ -56,6 +56,10 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.Globalization, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.Globalization.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.MediaLibrary, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.MediaLibrary.dll</HintPath>
@@ -222,6 +226,7 @@
     <Compile Include="Controllers\Afton\PersonalizationController.cs" />
     <Compile Include="Interfaces\IPersonalizationProvider.cs" />
     <Compile Include="Models\Afton\Shared\NewsAndEventsPage.cs" />
+    <Compile Include="Models\Afton\Shared\PageTypeDisplayValue.cs" />
     <Compile Include="Models\Afton\Shared\Personalization\PersonalizationSettings.cs" />
     <Compile Include="Models\Afton\Shared\Personalization\PersonalizedTile.cs" />
     <Compile Include="Models\ExtendedModels\Event.cs" />
@@ -229,17 +234,31 @@
     <Compile Include="Models\ExtendedModels\PersonalizedTile.cs" />
     <Compile Include="Controllers\Afton\BlogsController.cs" />
     <Compile Include="Controllers\Afton\ATCToolsController.cs" />
+    <Compile Include="Controllers\Afton\GlobalSearchController.cs" />
     <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
     <Compile Include="Controllers\Afton\NewsAndEventsController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
     <Compile Include="Helpers\AftonData.cs" />
     <Compile Include="Helpers\ContentHelper.cs" />
     <Compile Include="Helpers\RouteHelper.cs" />
+    <Compile Include="Infrastructure\Models\UpdateContactRequest.cs" />
+    <Compile Include="Infrastructure\Models\MasterHeaderRequest.cs" />
+    <Compile Include="Infrastructure\Models\NewsAndEventsRequest.cs" />
+    <Compile Include="Infrastructure\Models\BlogsRequest.cs" />
+    <Compile Include="Infrastructure\Models\BaseNewsEventsBlogRequest.cs" />
+    <Compile Include="Infrastructure\Models\BaseSearchRequest.cs" />
+    <Compile Include="Infrastructure\Models\GlobalSearchRequest.cs" />
     <Compile Include="Interfaces\IBlogPostProvider.cs" />
     <Compile Include="Interfaces\IBlogCategoryProvider.cs" />
+    <Compile Include="Interfaces\IContactProvider.cs" />
+    <Compile Include="Interfaces\IGenericPageProvider.cs" />
+    <Compile Include="Interfaces\IPageTypeDisplayValueProvider.cs" />
+    <Compile Include="Interfaces\IGlobalSearchProvider.cs" />
+    <Compile Include="Interfaces\ISolutionConstantsProvider.cs" />
     <Compile Include="Interfaces\IDocumentConstantProvider.cs" />
     <Compile Include="Interfaces\ICountryProvider.cs" />
     <Compile Include="Interfaces\IATCToolsPageProvider.cs" />
+    <Compile Include="Interfaces\IGlobalSearchPageProvider.cs" />
     <Compile Include="Interfaces\ISalesOfficeProvider.cs" />
     <Compile Include="Interfaces\IRegionProvider.cs" />
     <Compile Include="Interfaces\IFAQPageProvider.cs" />
@@ -269,8 +288,8 @@
     <Compile Include="Controllers\Afton\HomeController.cs" />
     <Compile Include="Controllers\Afton\MasterController.cs" />
     <Compile Include="Controllers\Afton\SidebarPageController.cs" />
+    <Compile Include="Models\Afton\GlobalSearch\GlobalSearchPage.cs" />
     <Compile Include="Models\Afton\NewsAndEvents\NewsAndEventsPage.cs" />
-    <Compile Include="Models\Afton\Shared\Country.cs" />
     <Compile Include="Models\Afton\Shared\Document.cs" />
     <Compile Include="Models\Afton\Shared\DocumentConstant.cs" />
     <Compile Include="Models\Afton\Shared\Personalization\PersonalizedContentModel.cs" />
@@ -284,12 +303,16 @@
     <Compile Include="Models\Afton\Shared\SideBarComponents\PollSurveyAnswer.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\PollSurvey.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\StayInformed.cs" />
+    <Compile Include="Models\Afton\Solution\SolutionConstants.cs" />
+    <Compile Include="Models\Afton\Solution\Solution.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\Term.cs" />
     <Compile Include="Models\Afton\TermsAndAcronyms\TermsAndAcronymsPage.cs" />
+    <Compile Include="Models\ExtendedModels\Region.cs" />
+    <Compile Include="Models\ExtendedModels\GlobalSearchPage.cs" />
+    <Compile Include="Models\ExtendedModels\Product.cs" />
     <Compile Include="Models\ExtendedModels\BlogPost.cs" />
     <Compile Include="Models\ExtendedModels\Home.cs" />
     <Compile Include="Models\ExtendedModels\InsightsResources.cs" />
-    <Compile Include="Models\ExtendedModels\Product.cs" />
     <Compile Include="Models\ExtendedModels\Solution.cs" />
     <Compile Include="Models\ExtendedModels\CustomNews.cs" />
     <Compile Include="Models\ExtendedModels\Document.cs" />
@@ -299,6 +322,11 @@
     </Compile>
     <Compile Include="Providers\BlogPostProvider.cs" />
     <Compile Include="Providers\ATCToolsPageProvider.cs" />
+    <Compile Include="Providers\ContactProvider.cs" />
+    <Compile Include="Providers\GlobalSearchPageProvider.cs" />
+    <Compile Include="Providers\GenericPageProvider.cs" />
+    <Compile Include="Providers\PageTypeDisplayValueProvider.cs" />
+    <Compile Include="Providers\SolutionConstantsProvider.cs" />
     <Compile Include="Providers\SalesOfficeProvider.cs" />
     <Compile Include="Providers\DocumentConstantProvider.cs" />
     <Compile Include="Providers\BlogCategoryProvider.cs" />
@@ -306,6 +334,7 @@
     <Compile Include="Providers\ContactPageProvider.cs" />
     <Compile Include="Providers\RegionProvider.cs" />
     <Compile Include="Providers\CountryProvider.cs" />
+    <Compile Include="Providers\GlobalSearchProvider.cs" />
     <Compile Include="Providers\UsersProvider.cs" />
     <Compile Include="Providers\FAQPageProvider.cs" />
     <Compile Include="Providers\FAQTopicProvider.cs" />
@@ -324,7 +353,7 @@
     <Compile Include="Infrastructure\Localization\RouteValueTranslationProvider.cs" />
     <Compile Include="Infrastructure\Localization\TranslatedRoute.cs" />
     <Compile Include="Infrastructure\Localization\TranslationItem.cs" />
-    <Compile Include="Infrastructure\Models\SearchRequest.cs" />
+    <Compile Include="Infrastructure\Models\SelectionFilterSearchRequest.cs" />
     <Compile Include="Infrastructure\UIMappingConfiguration.cs" />
     <Compile Include="Controllers\CorporateSite\NewsController.cs" />
     <Compile Include="CMS_MvcModule\CMS_MvcModuleMetadata.cs" />
@@ -367,7 +396,6 @@
     <Compile Include="Models\Afton\Shared\Product.cs" />
     <Compile Include="Models\Afton\SBU\AnchorMenuItem.cs" />
     <Compile Include="Models\Afton\SBU\SolutionBusinessUnit.cs" />
-    <Compile Include="Models\Afton\Shared\Solution.cs" />
     <Compile Include="Models\Afton\Shared\GenericModel.cs" />
     <Compile Include="Models\Afton\Home\HeroContent.cs" />
     <Compile Include="Models\Afton\Home\Home.cs" />
@@ -405,6 +433,8 @@
     <Compile Include="ViewModels\Document\DocumentConstantViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQPageViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQTopicViewModel.cs" />
+    <Compile Include="ViewModels\GlobalSearch\ResultItemViewModel.cs" />
+    <Compile Include="ViewModels\GlobalSearch\GlobalSearchPageViewModel.cs" />
     <Compile Include="ViewModels\NewsAndEvents\NewsAndEventsPageViewModel.cs" />
     <Compile Include="ViewModels\NewsAndEvents\NewsAndEventViewModel.cs" />
     <Compile Include="ViewModels\Product\LeftSideBlockViewModel.cs" />
@@ -437,6 +467,7 @@
     <Compile Include="ViewModels\Shared\SidebarComponents\SideBarItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\SideBarViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\StayInformedViewModel.cs" />
+    <Compile Include="ViewModels\Shared\PaginationViewModel.cs" />
     <Compile Include="ViewModels\Shared\TileViewModel.cs" />
     <Compile Include="ViewModels\Home\HeroContentViewModel.cs" />
     <Compile Include="ViewModels\Home\HomeViewModel.cs" />
@@ -468,7 +499,8 @@
     <Compile Include="ViewModels\Shared\FAQItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\DocumentViewModel.cs" />
     <Compile Include="ViewModels\SBU\DocumentTypeViewModel.cs" />
-    <Compile Include="ViewModels\SBU\SBUViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SBUViewModel.cs" />
+    <Compile Include="ViewModels\Solution\SolutionConstantsViewModel.cs" />
     <Compile Include="ViewModels\TermsAndAcronyms\TermsAndAcronymsPageViewModel.cs" />
     <Compile Include="ViewModels\TermsAndAcronyms\TermsListViewModel.cs" />
     <Compile Include="ViewModels\TermsAndAcronyms\TermViewModel.cs" />
@@ -603,13 +635,9 @@
     <Content Include="Views\Afton\Product\_downloadWidget.cshtml" />
     <Content Include="Views\Afton\Product\_productMainContent.cshtml" />
     <Content Include="Views\Afton\Product\_contactUs.cshtml" />
-    <Content Include="Views\Afton\Product\_insightsAndResoursesWidget.cshtml" />
-    <Content Include="Views\Afton\Product\_stayInformed.cshtml" />
-    <Content Include="Views\Afton\Product\_passion.cshtml" />
     <Content Include="Views\Afton\Product\_relatedProducts.cshtml" />
     <Content Include="Views\Afton\Shared\Personalization\_personalizationSection.cshtml" />
     <Content Include="Views\Afton\Shared\Personalization\_personalizationCard.cshtml" />
-    <Content Include="Views\Afton\Product\_leftSideBlock.cshtml" />
     <Content Include="Views\Afton\Product\_relatedProductCard.cshtml" />
     <Content Include="Views\Afton\SelectionFilter\Index.cshtml" />
     <Content Include="Views\Afton\SelectionFilter\_header.cshtml" />
@@ -623,6 +651,7 @@
     <Content Include="Views\Afton\Shared\Sidebar\_documentWidget.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_pollSurvey.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_leftNavigation.cshtml" />
+    <Content Include="Views\Afton\FAQ\_topics.cshtml" />
     <Content Include="Views\Afton\FAQ\_topic.cshtml" />
     <Content Include="Views\Afton\FAQ\_dropdown.cshtml" />
     <Content Include="Views\Afton\FAQ\Index.cshtml" />
@@ -636,7 +665,6 @@
     <Content Include="Views\Afton\Shared\NewsEventsAndBlog\_tiles.cshtml" />
     <Content Include="Views\Afton\TermsAndAcronyms\Index.cshtml" />
     <Content Include="Views\Afton\SelectionFilter\_searchResults.cshtml" />
-    <Content Include="Views\Afton\Shared\NewsEventsOrBlogLayout.cshtml" />
     <Content Include="Views\Afton\Shared\NewsEventsAndBlog\_header.cshtml" />
     <Content Include="Views\Afton\NewsAndEvents\_selectors.cshtml" />
     <Content Include="Views\Afton\NewsAndEvents\_dataList.cshtml" />
@@ -652,6 +680,11 @@
     <Content Include="Views\Afton\Shared\_emergencyResponse.cshtml" />
     <Content Include="Views\Afton\Contact\_regions.cshtml" />
     <Content Include="Views\Afton\ATCTools\Index.cshtml" />
+    <Content Include="Views\Afton\GlobalSearch\Index.cshtml" />
+    <Content Include="Views\Afton\GlobalSearch\_header.cshtml" />
+    <Content Include="Views\Afton\GlobalSearch\_searchResults.cshtml" />
+    <Content Include="Views\Afton\Shared\_pagination.cshtml" />
+    <Content Include="Views\Afton\Shared\NewsEventsAndBlog\_sortSelector.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -660,8 +693,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Infrastructure\Extentions\" />
     <Folder Include="Pdf\Temp\" />
-    <Folder Include="ViewModels\Solution\" />
     <Folder Include="Views\Personalization\" />
   </ItemGroup>
   <ItemGroup>

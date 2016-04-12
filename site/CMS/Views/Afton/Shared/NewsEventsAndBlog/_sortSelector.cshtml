@@ -1,0 +1,17 @@
+﻿@Model.SortByLabel<br>
+<div class="customSelectC standard">
+    <div class="orgSelect">
+        <select name="sort">
+            @if (String.Equals(Model.SelectedSortOrder, "DESC", StringComparison.OrdinalIgnoreCase))
+            {
+                <option value="@Model.SortOldestLabel">@Model.SortOldestLabel</option>
+                <option value="@Model.SortNewestLabel">@Model.SortNewestLabel</option>
+            }
+            else
+            {
+                <option value="@Model.SortNewestLabel">@Model.SortNewestLabel</option>
+                <option value="@Model.SortOldestLabel">@Model.SortOldestLabel</option>
+            }
+        </select>
+    </div>
+</div>

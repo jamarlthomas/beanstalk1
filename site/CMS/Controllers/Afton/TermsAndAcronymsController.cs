@@ -39,7 +39,7 @@ namespace CMS.Mvc.Controllers.Afton
         {
             var model = new TermsListViewModel
             {
-                itemsPerPage = int.Parse(ConfigurationManager.AppSettings["TermsAndAcronymsItemsPerPage"]),
+                itemsPerPage = int.Parse(ConfigurationManager.AppSettings["TermsAndAcronymsRecordOnPageCount"]),
                 results = _termProvider.GetTerms(_termsAndAcronymsPageProvider.GetTermsAndAcronymsPage().NodeAlias).Select(
                 term => new TermViewModel
                 {

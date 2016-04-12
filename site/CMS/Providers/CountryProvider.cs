@@ -4,14 +4,20 @@ using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
+using CMS.Globalization;
 
 namespace CMS.Mvc.Providers
 {
     public class CountryProvider : ICountryProvider
     {
-        public List<Country> GetCountries()
+        public IEnumerable<CountryInfo> GetCountries()
         {
-            return ContentHelper.GetDocs<Country>(Country.CLASS_NAME);
+            return ContentHelper.GetCountries();
+        }
+
+        public CountryInfo GetCountryByGuid(Guid guid)
+        {
+            return ContentHelper.GetCountryByGuid(guid);
         }
     }
 }

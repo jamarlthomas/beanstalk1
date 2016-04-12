@@ -1,15 +1,26 @@
 ﻿@model CMS.Mvc.ViewModels.Shared.SidebarComponents.LeftNavigationViewModel
-<div id="sidbarHdrC" class="altSidbarstyles">
+<div id="sidebarHdrC" class="altSidbarstyles">
     <h2>@Model.Title</h2>
 </div>
-<div id="sidbarNavC">
+<div id="sidebarNavC">
     <ul>
         @foreach (var navItem in Model.NavItems)
-        {
-            <li><a href="@navItem.Link">@navItem.Title</a></li>
-            foreach (var subNavItem in navItem.SubMenu)
             {
-                <li><a href="@subNavItem.Link">@subNavItem.Title</a></li>
+                if (navItem.SubMenu != null && navItem.SubMenu.Count() > 0)
+                {
+                <li>
+                    <a href="@navItem.Link" class="open active">@navItem.Title</a>
+                    <ul>
+                        @foreach (var subNavItem in navItem.SubMenu)
+                        {
+                            <li><a href="@subNavItem.Link">@subNavItem.Title</a></li>
+                        }
+                    </ul>
+                </li>
+            }
+            else
+            {
+                <li><a href="@navItem.Link">@navItem.Title</a></li>
             }
         }
     </ul>

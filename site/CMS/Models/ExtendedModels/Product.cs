@@ -1,4 +1,6 @@
-﻿namespace CMS.DocumentEngine.Types
+using System;
+
+namespace CMS.DocumentEngine.Types
 {
     public partial class Product
     {
@@ -9,5 +11,14 @@
                 return string.Format("/Product/Index/{0}", this.NodeAlias);
             }
         }
+
+        public DateTime DocumentCreatedWhen
+        {
+            get
+            {
+                return (DateTime)GetValue("DocumentCreatedWhen");
+            }
+        }
+        
     }
 }

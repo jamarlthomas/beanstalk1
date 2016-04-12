@@ -17,21 +17,21 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(Country.CLASS_NAME, typeof(Country))]
+[assembly: RegisterDocumentType(PageTypeDisplayValue.CLASS_NAME, typeof(PageTypeDisplayValue))]
 
 namespace CMS.DocumentEngine.Types
 {
     /// <summary>
     /// Sample item class.
     /// </summary>
-    public partial class Country : TreeNode
+    public partial class PageTypeDisplayValue : TreeNode
     {
         #region "Constants"
 
         /// <summary>
         /// Class name of the item.
         /// </summary>
-        public const string CLASS_NAME = "custom.Country";
+        public const string CLASS_NAME = "custom.PageTypeDisplayValue";
 
         #endregion
 
@@ -39,35 +39,52 @@ namespace CMS.DocumentEngine.Types
         #region "Properties"
 
         /// <summary>
-        /// CountryID.
+        /// PageTypeDisplayValuesID.
         /// </summary>
         [DatabaseField]
-        public int CountryID
+        public int PageTypeDisplayValuesID
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("CountryID"), 0);
+                return ValidationHelper.GetInteger(GetValue("PageTypeDisplayValuesID"), 0);
             }
             set
             {
-                SetValue("CountryID", value);
+                SetValue("PageTypeDisplayValuesID", value);
             }
         }
 
 
         /// <summary>
-        /// Country Code.
+        /// Title.
         /// </summary>
         [DatabaseField]
-        public string CountryCode
+        public string Title
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("CountryCode"), "");
+                return ValidationHelper.GetString(GetValue("Title"), "");
             }
             set
             {
-                SetValue("CountryCode", value);
+                SetValue("Title", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Display Value.
+        /// </summary>
+        [DatabaseField]
+        public string DisplayValue
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("DisplayValue"), "");
+            }
+            set
+            {
+                SetValue("DisplayValue", value);
             }
         }
 
@@ -79,7 +96,7 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Constructor.
         /// </summary>
-        public Country()
+        public PageTypeDisplayValue()
             : base(CLASS_NAME)
         {
         }
