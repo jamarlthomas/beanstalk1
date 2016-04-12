@@ -1,5 +1,4 @@
 ﻿using System;
-using CMS.Mvc.ViewModels.SBU;
 using CMS.Mvc.ViewModels.Shared;
 
 

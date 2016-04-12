@@ -153,7 +153,7 @@ namespace CMS.Mvc.Controllers.Afton
                 Image = searchResultItem.Image,
                 Type = pageTypeDisplayValue != null ? pageTypeDisplayValue.DisplayValue : string.Empty,
                 PostedDate = (DateTime)node.GetValue("DocumentCreatedWhen"),
-                SBU = node is Product ? MapData<SolutionBusinessUnit, SBUViewModel>(node.Parent.Parent as SolutionBusinessUnit) : null,
+                SBU = node is Product ? MapData<SolutionBusinessUnit, CMS.Mvc.ViewModels.Shared.SBUViewModel>(node.Parent.Parent as SolutionBusinessUnit) : null,
                 Solution = node is Product ? MapData<Solution, SolutionViewModel>(node.Parent as Solution) : null
             };
         }
