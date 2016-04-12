@@ -49,6 +49,7 @@ namespace CMS.Mvc.Controllers.Afton
             };
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+
         [PageVisitActivity]
         public ActionResult Index()
         {

@@ -32,7 +32,7 @@
                     <div class="def">{{item.description}}</div>
                 </div>
                 <div ng-hide="dataLoaded()">@Model.LoadingLabel</div>
-                <div ng-show="!(data | filter:acronymTermSearch).length">@Model.NoItemsLabel</div><br>
+                <div ng-show="!(data | filter:acronymTermSearch).length && dataLoaded()">@Model.NoItemsLabel</div><br>
                 <dir-pagination-controls max-size="7" boundary-links="false" template-url="@Url.Content("~/Content/Templates/dirPagination.tpl.html")"></dir-pagination-controls>
             </div>
         </div>
