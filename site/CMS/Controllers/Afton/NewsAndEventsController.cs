@@ -31,7 +31,8 @@ namespace CMS.Mvc.Controllers.Afton
             _newsAndEventsPageProvier = newsAndEventsPageProvier;
             _treeNodesProvider = treeNodesProvider;
         }
-	[PageVisitActivity]
+
+        [PageVisitActivity]
         public ActionResult Index(NewsAndEventsRequest request)
         {
             var page = _newsAndEventsPageProvier.GetNewsAndEventsPage();
@@ -43,13 +44,17 @@ namespace CMS.Mvc.Controllers.Afton
                 page.NewsSelectorValue,
                 page.EventsSelectorValue,
             };
+            if (!string.IsNullOrEmpty(request.Category))
+            {
+                model.Types = model.Types.OrderBy(s => !s.StartsWith(request.Category)).ToList();
+            }
 
             var recordsOnPage = Int32.Parse(ConfigurationManager.AppSettings["NewsEventsBlogsRecordOnPageCount"]);
 
             var contentList = _treeNodesProvider
                 .GetTreeNodes(page.NewsAndEvents)
-                .Where(w => String.Equals(request.Type, "NEWS", StringComparison.OrdinalIgnoreCase) ? w is CustomNews :
-                    !String.Equals(request.Type, "EVENTS", StringComparison.OrdinalIgnoreCase) || w is Event).ToList();
+                .Where(w => String.Equals(request.Category, page.NewsSelectorValue, StringComparison.OrdinalIgnoreCase) ? w is CustomNews :
+                    !String.Equals(request.Category, page.EventsSelectorValue, StringComparison.OrdinalIgnoreCase) || w is Event).ToList();
             model.NewsAndEventsList = contentList
                 .Skip((request.Page - 1) * recordsOnPage ?? 0)
                 .Take(recordsOnPage)
@@ -69,7 +74,9 @@ namespace CMS.Mvc.Controllers.Afton
             model.Pagination = new PaginationViewModel
             {
                 TotalPages = (int)Math.Ceiling((double)contentList.Count / recordsOnPage),
-                CurrentPage = request.Page ?? 1
+                CurrentPage = request.Page ?? 1,
+                BaseUrl = UtilsHelper.GetBaseUrlWithoutIntParam(Request.Url.PathAndQuery, "page"),
+                PageArgName = "page"
             };
             model.SelectedSortOrder = request.SortOrder;
 

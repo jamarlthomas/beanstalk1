@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace CMS.Mvc.Helpers
 {
@@ -50,6 +51,12 @@ namespace CMS.Mvc.Helpers
         public static DateTime ConvertToCST(DateTime input)
         {
             return TimeZoneInfo.ConvertTime(input, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"));
+        }
+
+        public static string GetBaseUrlWithoutIntParam(string baseUrl, string paramName)
+        {
+            var url = new Regex(string.Format(@"&*{0}=\d+", paramName)).Replace(baseUrl, string.Empty);
+            return url.Contains('?') ? url : string.Format("{0}?", url);
         }
     }
 }

@@ -12,6 +12,7 @@ using CMS.Mvc.ViewModels.Shared;
 using System.Linq;
 using System.Web.Mvc;
 using CMS.Mvc.Infrastructure.Models;
+using System.Text.RegularExpressions;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -44,24 +45,24 @@ namespace CMS.Mvc.Controllers.Afton
             _blogCategoryProvider = blogCategoryProvider;
             _blogPostProvider = blogPostProvider;
         }
-	[PageVisitActivity]
+        [PageVisitActivity]
         public ActionResult Index(BlogsRequest request)
         {
             var page = _blogsPageProvider.GetBlogsPage();
             var model = MapData<BlogsPage, BlogsPageViewModel>(page);
             var users = _usersProvider.GetUsers();
-            model.Authors = new List<SelectorItemViewModel>
-            {
-                new SelectorItemViewModel
-                {
-                    Title = page.AllAuthorsSelectOption
-                }
-            };
-            model.Authors.AddRange(users.Select(s => new SelectorItemViewModel
-            {
-                Title = s.FullName
-            }));
-            model.Authors = model.Authors.OrderBy(a => a.Title != request.Author).ToList();
+            //model.Authors = new List<SelectorItemViewModel>
+            //{
+            //    new SelectorItemViewModel
+            //    {
+            //        Title = page.AllAuthorsSelectOption
+            //    }
+            //};
+            //model.Authors.AddRange(users.Select(s => new SelectorItemViewModel
+            //{
+            //    Title = s.FullName
+            //}));
+            //model.Authors = model.Authors.OrderBy(a => a.Title != request.Author).ToList();
 
             model.Categories = new List<SelectorItemViewModel>
             {
@@ -74,15 +75,15 @@ namespace CMS.Mvc.Controllers.Afton
             model.Categories = model.Categories.OrderBy(a => a.Title != request.Category).ToList();
 
             IEnumerable<BlogPost> blogPosts = _blogPostProvider.GetBlogPosts();
-            
+
             if (!string.IsNullOrEmpty(request.Category) && request.Category != page.AllCategoriesSelectOption)
             {
                 blogPosts = blogPosts.Where(w => w.Category == request.Category);
             }
-            if (!string.IsNullOrEmpty(request.Author) && request.Author != page.AllAuthorsSelectOption)
-            {
-                blogPosts = blogPosts.Where(w => users.First(f => f.UserID == w.DocumentCreatedByUserID).FullName == request.Author);
-            }
+            //if (!string.IsNullOrEmpty(request.Author) && request.Author != page.AllAuthorsSelectOption)
+            //{
+            //    blogPosts = blogPosts.Where(w => users.First(f => f.UserID == w.DocumentCreatedByUserID).FullName == request.Author);
+            //}
 
             blogPosts = blogPosts.OrderBy(f => f.BlogPostDate);
             if (!String.Equals(request.SortOrder, "ASC", StringComparison.OrdinalIgnoreCase))
@@ -108,7 +109,9 @@ namespace CMS.Mvc.Controllers.Afton
             model.Pagination = new PaginationViewModel
             {
                 TotalPages = (int)Math.Ceiling((double)blogPostsList.Count / recordsOnPage),
-                CurrentPage = request.Page ?? 1
+                CurrentPage = request.Page ?? 1,
+                BaseUrl = UtilsHelper.GetBaseUrlWithoutIntParam(Request.Url.PathAndQuery, "page"),
+                PageArgName = "page"
             };
             model.SelectedSortOrder = request.SortOrder;
 
