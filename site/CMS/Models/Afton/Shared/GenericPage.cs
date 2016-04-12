@@ -21,103 +21,154 @@ using CMS.DocumentEngine;
 
 namespace CMS.DocumentEngine.Types
 {
-	/// <summary>
-	/// Sample item class.
-	/// </summary>
-	public partial class GenericPage : TreeNode
-	{
-		#region "Constants"
+    /// <summary>
+    /// Sample item class.
+    /// </summary>
+    public partial class GenericPage : TreeNode
+    {
+        #region "Constants"
 
-		/// <summary>
-		/// Class name of the item.
-		/// </summary>
-		public const string CLASS_NAME = "custom.GenericPage";
+        /// <summary>
+        /// Class name of the item.
+        /// </summary>
+        public const string CLASS_NAME = "custom.GenericPage";
 
-		#endregion
-
-
-		#region "Properties"
-
-		/// <summary>
-		/// GenericPageID.
-		/// </summary>
-		[DatabaseField]
-		public int GenericPageID
-		{
-			get
-			{
-				return ValidationHelper.GetInteger(GetValue("GenericPageID"), 0);
-			}
-			set
-			{
-				SetValue("GenericPageID", value);
-			}
-		}
+        #endregion
 
 
-		/// <summary>
-		/// 
-		/// </summary>
-		[DatabaseField]
-		public string Title
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Title"), "");
-			}
-			set
-			{
-				SetValue("Title", value);
-			}
-		}
+        #region "Properties"
+
+        /// <summary>
+        /// GenericPageID.
+        /// </summary>
+        [DatabaseField]
+        public int GenericPageID
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("GenericPageID"), 0);
+            }
+            set
+            {
+                SetValue("GenericPageID", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Copy.
-		/// </summary>
-		[DatabaseField]
-		public string Copy
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Copy"), "");
-			}
-			set
-			{
-				SetValue("Copy", value);
-			}
-		}
+        /// <summary>
+        /// Tile Title.
+        /// </summary>
+        [DatabaseField]
+        public string TileTitle
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("TileTitle"), "");
+            }
+            set
+            {
+                SetValue("TileTitle", value);
+            }
+        }
 
 
-		/// <summary>
-		/// 
-		/// </summary>
-		[DatabaseField]
-		public DateTime PostedDate
-		{
-			get
-			{
-				return ValidationHelper.GetDateTime(GetValue("PostedDate"), DateTimeHelper.ZERO_TIME);
-			}
-			set
-			{
-				SetValue("PostedDate", value);
-			}
-		}
-
-		#endregion
+        /// <summary>
+        /// Title.
+        /// </summary>
+        [DatabaseField]
+        public string Title
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Title"), "");
+            }
+            set
+            {
+                SetValue("Title", value);
+            }
+        }
 
 
-		#region "Constructors"
+        /// <summary>
+        /// Image displayed on a tile.
+        /// </summary>
+        [DatabaseField]
+        public string HomeImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HomeImage"), "");
+            }
+            set
+            {
+                SetValue("HomeImage", value);
+            }
+        }
 
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		public GenericPage()
-			: base(CLASS_NAME)
-		{
-		}
 
-		#endregion
-	}
+        /// <summary>
+        /// Text that appears on hover over the tile.
+        /// </summary>
+        [DatabaseField]
+        public string Description
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Description"), "");
+            }
+            set
+            {
+                SetValue("Description", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Copy.
+        /// </summary>
+        [DatabaseField]
+        public string Copy
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Copy"), "");
+            }
+            set
+            {
+                SetValue("Copy", value);
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
+        public DateTime PostedDate
+        {
+            get
+            {
+                return ValidationHelper.GetDateTime(GetValue("PostedDate"), DateTimeHelper.ZERO_TIME);
+            }
+            set
+            {
+                SetValue("PostedDate", value);
+            }
+        }
+
+        #endregion
+
+
+        #region "Constructors"
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public GenericPage()
+            : base(CLASS_NAME)
+        {
+        }
+
+        #endregion
+    }
 }

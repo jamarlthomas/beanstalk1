@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
@@ -22,6 +23,7 @@ namespace CMS.Mvc.Controllers.Afton
         }
 
         //[Route("Product/{alias}")]
+        [PageVisitActivity]
         public ActionResult Index(string name)
         {
             var product = _productProvider.GetProduct(name);
@@ -32,9 +34,11 @@ namespace CMS.Mvc.Controllers.Afton
 
             productModel.ContentCopyArea = MapData<Product, CMS.Mvc.ViewModels.Product.ProductViewModel>(product);
             productModel.RelatedProducts = GetRelatedProductsWidget(product);
-            productModel.InsightsAndResourcesSection.InsightsAndResourcesCards = new List<InsightsAndResourcesCard>();
+            
             return View("~/Views/Afton/Product/Index.cshtml", productModel);
         }
+
+    
 
         private RelatedProductsViewModel GetRelatedProductsWidget(Product product)
         {

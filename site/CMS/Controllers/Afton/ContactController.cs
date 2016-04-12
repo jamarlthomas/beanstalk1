@@ -1,10 +1,15 @@
-﻿using CMS.DocumentEngine.Types;
+﻿using CMS.Globalization;
+using CMS.Mvc.Infrastructure.Models;
+using CMS.OnlineMarketing;
+using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Contact;
 using CMS.Mvc.ViewModels.Shared;
 using System.Linq;
 using System.Web.Mvc;
+using System;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -16,6 +21,7 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly ISalesOfficeProvider _salesOfficeProvider;
         private readonly ITreeNodesProvider _treeNodesProvider;
         private readonly IGenericPageProvider _genericPageProvider;
+        private readonly IContactProvider _contactProvider;
         
         public ContactController()
         {
@@ -24,7 +30,8 @@ namespace CMS.Mvc.Controllers.Afton
             _countryProvider = new CountryProvider();
             _salesOfficeProvider = new SalesOfficeProvider();
             _treeNodesProvider = new TreeNodesProvider();
-            _genericPageProvider = new GenericPageProvider();;
+            _genericPageProvider = new GenericPageProvider();
+            _contactProvider = new ContactProvider();
         }
 
         public ContactController(IContactPageProvider contactPageProvider,
@@ -32,7 +39,8 @@ namespace CMS.Mvc.Controllers.Afton
             ICountryProvider countryProvider,
             ISalesOfficeProvider salesOfficeProvider,
             ITreeNodesProvider treeNodesProvider,
-            IGenericPageProvider genericPageProvider)
+            IGenericPageProvider genericPageProvider,
+            IContactProvider contactProvider)
         {
             _contactPageProvider = contactPageProvider;
             _regionProvider = regionProvider;
@@ -40,9 +48,12 @@ namespace CMS.Mvc.Controllers.Afton
             _salesOfficeProvider = salesOfficeProvider;
             _treeNodesProvider = treeNodesProvider;
             _genericPageProvider = genericPageProvider;
+            _contactProvider = contactProvider;
         }
 
-        public ActionResult Index()
+        [HttpGet]
+	[PageVisitActivity]
+        public ActionResult Index(bool showSubmitSuccesied = false)
         {
             var page = _contactPageProvider.GetContactPage();
             var viewModel = MapData<ContactPage, ContactPageViewModel>(page);
@@ -50,22 +61,29 @@ namespace CMS.Mvc.Controllers.Afton
             var privacyStatement = _genericPageProvider.GetChildGenericPages(page.NodeAlias).First();
             viewModel.NewsletterPrivacyLabel = privacyStatement.Title;
             viewModel.NewsletterPrivacyLink = privacyStatement.DocumentNamePath;
-
+            OnlineMarketingContext.GetCurrentContact();
             viewModel.EmergencyResponse = MapData<ContactPage, EmergencyResponseViewModel>(page);
-            viewModel.Countries = MapData<Country, ContactCountryViewModel>(_countryProvider.GetCountries());
+            viewModel.Countries = MapData<CountryInfo, ContactCountryViewModel>(_countryProvider.GetCountries());
 
             viewModel.Regions = _regionProvider.GetRegions().Select(region =>
             {
                 var primarySalesOffice = _salesOfficeProvider.GetPrimarySalesOffice(region.NodeAlias);
                 var regionViewModel = MapData<SalesOffice, ContactRegionViewModel>(primarySalesOffice);
-                var officeCountry = _treeNodesProvider.GetTreeNodes(primarySalesOffice.Country).First();
-                regionViewModel.CountryName = officeCountry.GetStringValue("Name", officeCountry.NodeName);
+                var officeCountry = _countryProvider.GetCountryByGuid(Guid.Parse(primarySalesOffice.Country));
+                regionViewModel.CountryName = officeCountry.CountryDisplayName;
                 regionViewModel.Title = region.Title;
                 regionViewModel.DocumentNamePath = region.DocumentNamePath;
                 regionViewModel.MapImage = region.MapImage;
                 return regionViewModel;
             }).ToList();
             return View("~/Views/Afton/Contact/Index.cshtml", viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Index(UpdateContactRequest request)
+        {
+            _contactProvider.UpdateCurrentContact(request);
+            return Index(true);
         }
     }
 }

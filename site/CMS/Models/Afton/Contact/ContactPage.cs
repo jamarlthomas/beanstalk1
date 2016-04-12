@@ -73,23 +73,6 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Form Introducion Text.
-        /// </summary>
-        [DatabaseField]
-        public string FormIntroducionText
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("FormIntroducionText"), "");
-            }
-            set
-            {
-                SetValue("FormIntroducionText", value);
-            }
-        }
-
-
-        /// <summary>
         /// First Name Placeholder.
         /// </summary>
         [DatabaseField]

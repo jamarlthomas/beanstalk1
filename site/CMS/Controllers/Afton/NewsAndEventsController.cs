@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.Interfaces;
@@ -30,10 +31,10 @@ namespace CMS.Mvc.Controllers.Afton
             _newsAndEventsPageProvier = newsAndEventsPageProvier;
             _treeNodesProvider = treeNodesProvider;
         }
-
+	[PageVisitActivity]
         public ActionResult Index(NewsAndEventsRequest request)
         {
-            var page = _newsAndEventsPageProvier.GetNewsAndEventsPages().First();
+            var page = _newsAndEventsPageProvier.GetNewsAndEventsPage();
             var model = MapData<NewsAndEventsPage, NewsAndEventsPageViewModel>(page);
 
             model.Types = new List<string>

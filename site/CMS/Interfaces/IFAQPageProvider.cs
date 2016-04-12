@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using CMS.DocumentEngine.Types;
-using CMS.Mvc.ViewModels.Shared;
+﻿using CMS.DocumentEngine.Types;
 
 namespace CMS.Mvc.Interfaces
 {
     public interface IFAQPageProvider
     {
-        List<FAQPage> GetFAQPages();
+        FAQPage GetFAQPage();
     }
 }

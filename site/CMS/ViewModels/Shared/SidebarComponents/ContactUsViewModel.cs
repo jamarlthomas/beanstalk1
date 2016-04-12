@@ -2,6 +2,7 @@
 using System.Linq;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
+using CMS.Globalization;
 
 namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
 {
@@ -12,9 +13,10 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
         public ContactUsViewModel(TreeNode item) : base(item)
         {}
 
-        public ContactUsViewModel(TreeNode item, IEnumerable<Country> countries): base(item)
+        public ContactUsViewModel(TreeNode item, IEnumerable<CountryInfo> countries)
+            : base(item)
         {
-            Countries = countries.Select(country => new CountryViewModel() { CountryName = country.NodeName }).ToList();
+            Countries = countries.Select(country => new CountryViewModel() { CountryName = country.CountryDisplayName }).ToList();
         }
 
         public List<RegionViewModel> Regions { get; set; }

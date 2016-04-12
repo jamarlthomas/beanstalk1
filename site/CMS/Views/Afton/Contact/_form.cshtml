@@ -1,28 +1,31 @@
 ﻿<div id="contactC">
     <h1>@Model.Title</h1><br>
-    <form>
-        @Model.FormIntroducionText
-        <input placeholder="@Model.FirstNamePlaceholder" required>
-        <input placeholder="@Model.LastNamePlaceholder" required>
-        <input placeholder="@Model.CompanyNamePlaceholder" required>
-        <input placeholder="@Model.EmailPlaceholder" required>
-        <input placeholder="@Model.PhonePlaceholder" required>
-        <div class="customSelectC standard">
-            <div class="orgSelect">
-                <select name="newsletter-lang" required>
-                    <option value="">@Model.SelectCountryPlaceholder</option>
-                    @foreach (var country in Model.Countries)
-                    {
-                        <option value="@country.DocumentGUID">@country.Name</option>
-                    }
-                </select>
+    @using (Html.BeginForm("Index", "Contact", FormMethod.Post))
+    {
+        <form>
+            @Model.PromptLabel
+            <input placeholder="@Model.FirstNamePlaceholder" required name="FirstName">
+            <input placeholder="@Model.LastNamePlaceholder" required name="LastName">
+            <input placeholder="@Model.CompanyNamePlaceholder" required name="CompanyName">
+            <input placeholder="@Model.EmailPlaceholder" required name="Email">
+            <input placeholder="@Model.PhonePlaceholder" required name="Phone">
+            <div class="customSelectC standard">
+                <div class="orgSelect">
+                    <select name="CountryId" required>
+                        <option value="">@Model.SelectCountryPlaceholder</option>
+                        @foreach (var country in Model.Countries)
+                        {
+                            <option value="@country.CountryID">@country.CountryDisplayName</option>
+                        }
+                    </select>
+                </div>
             </div>
-        </div>
-        <textarea placeholder="@Model.MessagePlaceholder" required></textarea>
-        <strong>@Model.NewsletterTitle</strong><br><br>
-        <label>
-            <input type="checkbox"><span class="checkboxDisplay"></span><span class="txt">@Html.Raw(@Model.NewsletterCheckboxLabel)</span><a href="@Model.NewsletterPrivacyLink">@Model.NewsletterPrivacyLabel</a>
-        </label><br><br>
-        <input type="submit" value="@Model.SubmitLabel" class="subscribe">
-    </form>
+            <textarea placeholder="@Model.MessagePlaceholder" required name="Note"></textarea>
+            <strong>@Model.NewsletterTitle</strong><br><br>
+            <label>
+                <input type="checkbox" name="IsSubscribed"><span class="checkboxDisplay"></span><span class="txt">@Html.Raw(@Model.NewsletterCheckboxLabel)</span><a href="@Model.NewsletterPrivacyLink">@Model.NewsletterPrivacyLabel</a>
+            </label><br><br>
+            <input type="submit" value="@Model.SubmitLabel" class="subscribe">
+        </form>
+    }
 </div>

@@ -17,21 +17,21 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(Country.CLASS_NAME, typeof(Country))]
+[assembly: RegisterDocumentType(PersonalizationSettings.CLASS_NAME, typeof(PersonalizationSettings))]
 
 namespace CMS.DocumentEngine.Types
 {
     /// <summary>
     /// Sample item class.
     /// </summary>
-    public partial class Country : TreeNode
+    public partial class PersonalizationSettings : TreeNode
     {
         #region "Constants"
 
         /// <summary>
         /// Class name of the item.
         /// </summary>
-        public const string CLASS_NAME = "custom.Country";
+        public const string CLASS_NAME = "custom.PersonalizationSettings";
 
         #endregion
 
@@ -39,35 +39,35 @@ namespace CMS.DocumentEngine.Types
         #region "Properties"
 
         /// <summary>
-        /// CountryID.
+        /// PersonalizationSettingsID.
         /// </summary>
         [DatabaseField]
-        public int CountryID
+        public int PersonalizationSettingsID
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("CountryID"), 0);
+                return ValidationHelper.GetInteger(GetValue("PersonalizationSettingsID"), 0);
             }
             set
             {
-                SetValue("CountryID", value);
+                SetValue("PersonalizationSettingsID", value);
             }
         }
 
 
         /// <summary>
-        /// Country Code.
+        /// Personalization Section Title.
         /// </summary>
         [DatabaseField]
-        public string CountryCode
+        public string PersonalizationSectionTitle
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("CountryCode"), "");
+                return ValidationHelper.GetString(GetValue("PersonalizationSectionTitle"), "");
             }
             set
             {
-                SetValue("CountryCode", value);
+                SetValue("PersonalizationSectionTitle", value);
             }
         }
 
@@ -79,7 +79,7 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Constructor.
         /// </summary>
-        public Country()
+        public PersonalizationSettings()
             : base(CLASS_NAME)
         {
         }

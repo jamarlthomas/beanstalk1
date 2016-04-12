@@ -2,7 +2,7 @@
 @model InsightsAndResourcesViewModel
 @{
     ViewBag.Title = @Model.Title;
-    Layout = "~/Views/Afton/Shared/Master.cshtml";
+    Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
 }
 
 <div id="sbuLandingHdrC">
@@ -22,5 +22,5 @@
         <h1 class="txtPaddingTop">@Model.Title</h1>
         @Html.Partial("~/Views/Afton/InsightsAndResources/_insightsListing.cshtml", Model.InsightsListing)
     </div>
-    @Html.Partial("~/Views/Afton/InsightsAndResources/_resourcesTiles.cshtml", Model.Tiles)
 </div>
+@Html.Partial("~/Views/Afton/InsightsAndResources/_resourcesTiles.cshtml", Model.Tiles)
