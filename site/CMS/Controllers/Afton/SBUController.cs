@@ -1,4 +1,5 @@
 ﻿using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.SBU;
@@ -37,8 +38,9 @@ namespace CMS.Mvc.Controllers.Afton
             _documentTypeProvider = documentTypeProvider;
             _solutionProvider = solutionProvider;
         }
-
+        [PageVisitActivity]
         public ActionResult Index(string SBUName)
+
         {
             var model = MapData<SolutionBusinessUnit, SBUViewModel>(_solutionBusinessUnitProvider.GetSolutionBusinessUnit(SBUName));
             model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItems(SBUName, 4));

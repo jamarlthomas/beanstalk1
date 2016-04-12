@@ -40,4 +40,5 @@
             @{Html.RenderPartial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar);}
         </div>
     </div>
+    @{ Html.RenderAction("GetPeronalizedCards", "Personalization"); }
 </div>

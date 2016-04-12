@@ -92,6 +92,7 @@ namespace CMS.Mvc
         {
             routes.MapRoute("SidebarPage", "SidebarPage/{action}", new { controller = "SidebarPage", action = "Index" });
             routes.MapRoute("Master", "Master/{action}/{title}", new {controller = "Master", action = "Index", title = UrlParameter.Optional});
+            routes.MapRoute("Personalization", "Personalization/GetPeronalizedCards", new { controller = "Personalization", action = "GetPeronalizedCards" });
         }
 
         private static void SetUpRoutesFromKentico(RouteCollection routes)

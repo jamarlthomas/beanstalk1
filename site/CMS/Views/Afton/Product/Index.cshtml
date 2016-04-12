@@ -2,22 +2,18 @@
 
 @{
     ViewBag.Title = "Product";
-    Layout = "~/Views/Afton/Shared/Master.cshtml";
+    Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
 }
 
-<div id="printArea"></div>
-<div id="contentAreaC">
-    <div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
-        <div id="rtCol-contentArea">
-            @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", @Model.BreadCrumb)
-            @Html.Partial("~/Views/Afton/Product/_downloadWidget.cshtml", @Model.DownloadWidget)
-            @Html.Partial("~/Views/Afton/Product/_productMainContent.cshtml", @Model.ContentCopyArea)
-        </div>
-        <div id="lftCol-sidebar">
-            @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar)
-
-        </div>
+<div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
+    <div id="rtCol-contentArea">
+        @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", @Model.BreadCrumb)
+        @Html.Partial("~/Views/Afton/Product/_downloadWidget.cshtml", @Model.DownloadWidget)
+        @Html.Partial("~/Views/Afton/Product/_productMainContent.cshtml", @Model.ContentCopyArea)
     </div>
-    @Html.Partial("~/Views/Afton/Product/_relatedProducts.cshtml", @Model.RelatedProducts)
-    @Html.Partial("~/Views/Afton/Product/_insightsAndResourcesSection.cshtml", @Model.InsightsAndResourcesSection)
+    <div id="lftCol-sidebar">
+        @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar)
+
+    </div>
 </div>
+@Html.Partial("~/Views/Afton/Product/_relatedProducts.cshtml", @Model.RelatedProducts)

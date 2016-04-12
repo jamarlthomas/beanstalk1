@@ -2,6 +2,7 @@
 using CMS.Mvc.Infrastructure.Models;
 using CMS.OnlineMarketing;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Contact;
@@ -21,7 +22,7 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly ITreeNodesProvider _treeNodesProvider;
         private readonly IGenericPageProvider _genericPageProvider;
         private readonly IContactProvider _contactProvider;
-        
+
         public ContactController()
         {
             _contactPageProvider = new ContactPageProvider();
@@ -51,6 +52,7 @@ namespace CMS.Mvc.Controllers.Afton
         }
 
         [HttpGet]
+        [PageVisitActivity]
         public ActionResult Index(bool showSubmitSuccesied = false)
         {
             var page = _contactPageProvider.GetContactPage();

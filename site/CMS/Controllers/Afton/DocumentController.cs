@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.DocumentsViewModel;
@@ -37,7 +38,7 @@ namespace CMS.Mvc.Controllers.Afton
             _documentConstantProvider = documentConstantProvider;
             _treeNodesProvider = treeNodesProvider;
         }
-
+        [PageVisitActivity]
         public ActionResult Index(string DocumentName)
         {
             var document = _documentProvider.GetDocument(DocumentName);
@@ -56,7 +57,7 @@ namespace CMS.Mvc.Controllers.Afton
             return View("~/Views/Afton/Document/Index.cshtml", new DocumentPageViewModel()
             {
                 Document = documentViewModel,
-                MenuItemTitle = _insightsAndResourcesPageProvider.GetInsightsResources().First().Title,
+                MenuItemTitle = _insightsAndResourcesPageProvider.GetInsightsResourcesPage().Title,
                 BreadCrumb = new BreadCrumbViewModel
                 {
                     BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(document.DocumentGUID)

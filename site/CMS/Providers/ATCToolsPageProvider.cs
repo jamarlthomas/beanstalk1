@@ -9,7 +9,7 @@ namespace CMS.Mvc.Providers
     {
         public ATCToolsPage GetATCToolsPage()
         {
-            return ContentHelper.GetDocs<ATCToolsPage>(ATCToolsPage.CLASS_NAME).First();
+            return ContentHelper.GetDoc<ATCToolsPage>(ATCToolsPage.CLASS_NAME);
         }
     }
 }

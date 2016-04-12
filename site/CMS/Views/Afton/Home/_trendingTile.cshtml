@@ -1,0 +1,67 @@
+﻿@model CMS.Mvc.ViewModels.Shared.Personalization.PersonalizationCardViewModel
+@if (!string.IsNullOrWhiteSpace(Model.Reference))
+{
+    <a href="@Url.Content(@Model.Reference)" class="trending">
+        <div class="cardBtnIndicator">
+            <img src="~/images/card-btn-indicator.png" />
+        </div>
+        <div class="trendIndicator">Trending Topic</div>
+        <div class="overlayC">
+            <div class="overlay">
+                <div class="cardTitle">@Model.TileTitle</div>
+                <div class="cardHdr">@Html.Raw(Model.Title)</div>
+            </div>
+            <div class="cardDate">@Model.Date.ToString("MMMM dd, yyyy")</div>
+        </div>
+        <div style="opacity: 0.0;" class="hoverOverlayC">
+            <div class="hoverOverlay">
+                <div class="hoverOverlayTxt">@Model.Description</div>
+            </div>
+            <div class="cardLearnMore">
+                Read More
+                <span class="icon-arrow"></span>
+            </div>
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Model.HomeImage))
+        {
+            <img src="@Url.Content(@Model.HomeImage)" alt="" />
+        }
+        else
+        {
+            <img alt="" />
+        }
+    </a>
+}
+else
+{
+    <a class="trending">
+        <div class="cardBtnIndicator">
+            <img src="~/images/card-btn-indicator.png" />
+        </div>
+        <div class="trendIndicator">Trending Topic</div>
+        <div class="overlayC">
+            <div class="overlay">
+                <div class="cardTitle">@Model.TileTitle</div>
+                <div class="cardHdr">@Html.Raw(@Model.Title)</div>
+            </div>
+            <div class="cardDate">@Model.Date.ToString("MMMM dd, yyyy")</div>
+        </div>
+        <div style="opacity: 0.0;" class="hoverOverlayC">
+            <div class="hoverOverlay">
+                <div class="hoverOverlayTxt">@Model.Description</div>
+            </div>
+            <div class="cardLearnMore">
+                Read More
+                <span class="icon-arrow"></span>
+            </div>
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Model.HomeImage))
+        {
+            <img src="@Url.Content(@Model.HomeImage)" alt="" />
+        }
+        else
+        {
+            <img alt="" />
+        }
+    </a>
+}

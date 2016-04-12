@@ -5,6 +5,6 @@ namespace CMS.Mvc.Interfaces
 {
     public interface IBlogsPageProvider
     {
-        IList<BlogsPage> GetBlogsPages();
+        BlogsPage GetBlogsPage();
     }
 }

@@ -56,6 +56,23 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Tile Title.
+        /// </summary>
+        [DatabaseField]
+        public string TileTitle
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("TileTitle"), "");
+            }
+            set
+            {
+                SetValue("TileTitle", value);
+            }
+        }
+
+
+        /// <summary>
         /// Title.
         /// </summary>
         [DatabaseField]
@@ -73,7 +90,24 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Description.
+        /// Image displayed on a tile.
+        /// </summary>
+        [DatabaseField]
+        public string HomeImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HomeImage"), "");
+            }
+            set
+            {
+                SetValue("HomeImage", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Text that appears on hover over the tile.
         /// </summary>
         [DatabaseField]
         public string Description
@@ -85,6 +119,40 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("Description", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Filter By Label.
+        /// </summary>
+        [DatabaseField]
+        public string FilterByLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("FilterByLabel"), "");
+            }
+            set
+            {
+                SetValue("FilterByLabel", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Sort By Label.
+        /// </summary>
+        [DatabaseField]
+        public string SortByLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("SortByLabel"), "");
+            }
+            set
+            {
+                SetValue("SortByLabel", value);
             }
         }
 
@@ -158,6 +226,57 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Tiles Label.
+        /// </summary>
+        [DatabaseField]
+        public string TilesLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("TilesLabel"), "");
+            }
+            set
+            {
+                SetValue("TilesLabel", value);
+            }
+        }
+
+
+        /// <summary>
+        /// View All Label.
+        /// </summary>
+        [DatabaseField]
+        public string ViewAllLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("ViewAllLabel"), "");
+            }
+            set
+            {
+                SetValue("ViewAllLabel", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Posted Label.
+        /// </summary>
+        [DatabaseField]
+        public string PostedLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("PostedLabel"), "");
+            }
+            set
+            {
+                SetValue("PostedLabel", value);
+            }
+        }
+
+
+        /// <summary>
         /// Read More Label.
         /// </summary>
         [DatabaseField]
@@ -221,89 +340,6 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("EventsSelectorValue", value);
-            }
-        }
-
-
-        /// <summary>
-        /// TilesLabel.
-        /// </summary>
-        [DatabaseField]
-        public string TilesLabel
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("TilesLabel"), "");
-            }
-            set
-            {
-                SetValue("TilesLabel", value);
-            }
-        }
-
-
-        /// <summary>
-        /// ViewAllLabel.
-        /// </summary>
-        [DatabaseField]
-        public string ViewAllLabel
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("ViewAllLabel"), "");
-            }
-            set
-            {
-                SetValue("ViewAllLabel", value);
-            }
-        }
-
-        /// <summary>
-        /// Posted Label.
-        /// </summary>
-        [DatabaseField]
-        public string PostedLabel
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("PostedLabel"), "");
-            }
-            set
-            {
-                SetValue("PostedLabel", value);
-            }
-        }
-
-        /// <summary>
-        /// Filter By Label.
-        /// </summary>
-        [DatabaseField]
-        public string FilterByLabel
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("FilterByLabel"), "");
-            }
-            set
-            {
-                SetValue("FilterByLabel", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Sort By Label.
-        /// </summary>
-        [DatabaseField]
-        public string SortByLabel
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("SortByLabel"), "");
-            }
-            set
-            {
-                SetValue("SortByLabel", value);
             }
         }
 
