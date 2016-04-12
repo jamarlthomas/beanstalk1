@@ -21,205 +21,239 @@ using CMS.DocumentEngine;
 
 namespace CMS.DocumentEngine.Types
 {
-	/// <summary>
-	/// Sample item class.
-	/// </summary>
-	public partial class SolutionBusinessUnit : TreeNode
-	{
-		#region "Constants"
+    /// <summary>
+    /// Sample item class.
+    /// </summary>
+    public partial class SolutionBusinessUnit : TreeNode
+    {
+        #region "Constants"
 
-		/// <summary>
-		/// Class name of the item.
-		/// </summary>
-		public const string CLASS_NAME = "custom.SolutionBusinessUnit";
+        /// <summary>
+        /// Class name of the item.
+        /// </summary>
+        public const string CLASS_NAME = "custom.SolutionBusinessUnit";
 
-		#endregion
-
-
-		#region "Properties"
-
-		/// <summary>
-		/// SolutionBusinessUnitID.
-		/// </summary>
-		[DatabaseField]
-		public int SolutionBusinessUnitID
-		{
-			get
-			{
-				return ValidationHelper.GetInteger(GetValue("SolutionBusinessUnitID"), 0);
-			}
-			set
-			{
-				SetValue("SolutionBusinessUnitID", value);
-			}
-		}
+        #endregion
 
 
-		/// <summary>
-		/// 
-		/// </summary>
-		[DatabaseField]
-		public string Title
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Title"), "");
-			}
-			set
-			{
-				SetValue("Title", value);
-			}
-		}
+        #region "Properties"
+
+        /// <summary>
+        /// SolutionBusinessUnitID.
+        /// </summary>
+        [DatabaseField]
+        public int SolutionBusinessUnitID
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("SolutionBusinessUnitID"), 0);
+            }
+            set
+            {
+                SetValue("SolutionBusinessUnitID", value);
+            }
+        }
 
 
-		/// <summary>
-		/// HeroImage.
-		/// </summary>
-		[DatabaseField]
-		public string HeroImage
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("HeroImage"), "");
-			}
-			set
-			{
-				SetValue("HeroImage", value);
-			}
-		}
+        /// <summary>
+        /// Tile Title.
+        /// </summary>
+        [DatabaseField]
+        public string TileTitle
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("TileTitle"), "");
+            }
+            set
+            {
+                SetValue("TileTitle", value);
+            }
+        }
 
 
-		/// <summary>
-		/// HeroImageTitle.
-		/// </summary>
-		[DatabaseField]
-		public string HeroImageTitle
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("HeroImageTitle"), "");
-			}
-			set
-			{
-				SetValue("HeroImageTitle", value);
-			}
-		}
+        /// <summary>
+        /// Title.
+        /// </summary>
+        [DatabaseField]
+        public string Title
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Title"), "");
+            }
+            set
+            {
+                SetValue("Title", value);
+            }
+        }
 
 
-		/// <summary>
-		/// HeroImageSubtitle.
-		/// </summary>
-		[DatabaseField]
-		public string HeroImageSubtitle
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("HeroImageSubtitle"), "");
-			}
-			set
-			{
-				SetValue("HeroImageSubtitle", value);
-			}
-		}
+        /// <summary>
+        /// Image displayed on a tile.
+        /// </summary>
+        [DatabaseField]
+        public string HomeImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HomeImage"), "");
+            }
+            set
+            {
+                SetValue("HomeImage", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Description.
-		/// </summary>
-		[DatabaseField]
-		public string Description
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Description"), "");
-			}
-			set
-			{
-				SetValue("Description", value);
-			}
-		}
+        /// <summary>
+        /// HeroImage.
+        /// </summary>
+        [DatabaseField]
+        public string HeroImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HeroImage"), "");
+            }
+            set
+            {
+                SetValue("HeroImage", value);
+            }
+        }
 
 
-		/// <summary>
-		/// DocumentsDescription.
-		/// </summary>
-		[DatabaseField]
-		public string DocumentsDescription
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("DocumentsDescription"), "");
-			}
-			set
-			{
-				SetValue("DocumentsDescription", value);
-			}
-		}
+        /// <summary>
+        /// HeroImageTitle.
+        /// </summary>
+        [DatabaseField]
+        public string HeroImageTitle
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HeroImageTitle"), "");
+            }
+            set
+            {
+                SetValue("HeroImageTitle", value);
+            }
+        }
 
 
-		/// <summary>
-		/// FAQDescription.
-		/// </summary>
-		[DatabaseField]
-		public string FAQDescription
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("FAQDescription"), "");
-			}
-			set
-			{
-				SetValue("FAQDescription", value);
-			}
-		}
+        /// <summary>
+        /// HeroImageSubtitle.
+        /// </summary>
+        [DatabaseField]
+        public string HeroImageSubtitle
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HeroImageSubtitle"), "");
+            }
+            set
+            {
+                SetValue("HeroImageSubtitle", value);
+            }
+        }
 
 
-		/// <summary>
-		/// FAQList.
-		/// </summary>
-		[DatabaseField]
-		public string FAQList
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("FAQList"), "");
-			}
-			set
-			{
-				SetValue("FAQList", value);
-			}
-		}
+        /// <summary>
+        /// Text that appears on hover over the tile.
+        /// </summary>
+        [DatabaseField]
+        public string Description
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Description"), "");
+            }
+            set
+            {
+                SetValue("Description", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Theme.
-		/// </summary>
-		[DatabaseField]
-		public string Theme
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("Theme"), "");
-			}
-			set
-			{
-				SetValue("Theme", value);
-			}
-		}
-
-		#endregion
+        /// <summary>
+        /// DocumentsDescription.
+        /// </summary>
+        [DatabaseField]
+        public string DocumentsDescription
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("DocumentsDescription"), "");
+            }
+            set
+            {
+                SetValue("DocumentsDescription", value);
+            }
+        }
 
 
-		#region "Constructors"
+        /// <summary>
+        /// FAQDescription.
+        /// </summary>
+        [DatabaseField]
+        public string FAQDescription
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("FAQDescription"), "");
+            }
+            set
+            {
+                SetValue("FAQDescription", value);
+            }
+        }
 
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		public SolutionBusinessUnit()
-			: base(CLASS_NAME)
-		{
-		}
 
-		#endregion
-	}
+        /// <summary>
+        /// FAQList.
+        /// </summary>
+        [DatabaseField]
+        public string FAQList
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("FAQList"), "");
+            }
+            set
+            {
+                SetValue("FAQList", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Theme.
+        /// </summary>
+        [DatabaseField]
+        public string Theme
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Theme"), "");
+            }
+            set
+            {
+                SetValue("Theme", value);
+            }
+        }
+
+        #endregion
+
+
+        #region "Constructors"
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public SolutionBusinessUnit()
+            : base(CLASS_NAME)
+        {
+        }
+
+        #endregion
+    }
 }

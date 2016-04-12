@@ -1,24 +1,41 @@
 ﻿@using CMS.Mvc.ViewModels.Home
+@using CMS.Mvc.ViewModels.Shared.Personalization
 @model HomeViewModel
 @{
-	ViewBag.Title = "Index";
-	Layout = "~/Views/Afton/Shared/Master.cshtml";
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
 
 <div id="contentAreaC">
-	@Html.Partial("~/Views/Afton/Home/_heroContent.cshtml", Model.HeroContentList)
-	<div class="cardsC bgPattern">
-		@Html.Partial("~/Views/Afton/Shared/_tile.cshtml", Model.PrimaryTiles)
-	</div>
-	<div id="learnMoreC">
-		<div id="learnMore">
-			<div id="learnTxtC">
-				<div id="learnHdr">Learn more about our solutions.</div>
-				<div id="learnTxt">Talk with one of our sales representatives.</div>
-			</div>
-			<div id="leanMoreBtnC"><a href="#">Contact Us<span class="icon-arrow"></span></a></div>
-		</div>
-	</div>
+    @Html.Partial("~/Views/Afton/Home/_heroContent.cshtml", Model.HeroContentList)
+    <div class="cardsC bgPattern">
+        @*@Html.Partial("~/Views/Afton/Shared/_tile.cshtml", Model.PrimaryTiles)*@
+        <div class="cards">
+            @foreach (PersonalizationCardViewModel card in @Model.PrimaryTiles)
+            {
+                @Html.Partial("~/Views/Afton/Shared/Personalization/_personalizationCard.cshtml", card)
+            }
+
+            @foreach (PersonalizationCardViewModel card in @Model.PersonalizedTiles)
+            {
+                @Html.Partial("~/Views/Afton/Shared/Personalization/_personalizationCard.cshtml", card)
+            }
+
+            @foreach (PersonalizationCardViewModel card in @Model.TrendingTiles)
+            {
+                @Html.Partial("~/Views/Afton/Home/_trendingTile.cshtml", card)
+            }
+        </div>
+    </div>
+    <div id="learnMoreC">
+        <div id="learnMore">
+            <div id="learnTxtC">
+                <div id="learnHdr">Learn more about our solutions.</div>
+                <div id="learnTxt">Talk with one of our sales representatives.</div>
+            </div>
+            <div id="leanMoreBtnC"><a href="#">Contact Us<span class="icon-arrow"></span></a></div>
+        </div>
+    </div>
 </div>
 
 

@@ -1,4 +1,5 @@
 ﻿using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
@@ -39,7 +40,7 @@ namespace CMS.Mvc.Controllers.Afton
             var model = new TermsListViewModel
             {
                 itemsPerPage = int.Parse(ConfigurationManager.AppSettings["TermsAndAcronymsRecordOnPageCount"]),
-                results = _termProvider.GetTerms(_termsAndAcronymsPageProvider.GetTermsAndAcronymsPages().First().NodeAlias).Select(
+                results = _termProvider.GetTerms(_termsAndAcronymsPageProvider.GetTermsAndAcronymsPage().NodeAlias).Select(
                 term => new TermViewModel
                 {
                     name = term.TermAcronym,
@@ -48,10 +49,10 @@ namespace CMS.Mvc.Controllers.Afton
             };
             return Json(model, JsonRequestBehavior.AllowGet);
         }
-
+        [PageVisitActivity]
         public ActionResult Index()
         {
-            var page = _termsAndAcronymsPageProvider.GetTermsAndAcronymsPages().First();
+            var page = _termsAndAcronymsPageProvider.GetTermsAndAcronymsPage();
             var model = MapData<TermsAndAcronymsPage, TermsAndAcronymsPageViewModel>(page);
             model.ParentTitle = (page.Parent as InsightsResources).Title;
             model.BreadCrumb = new BreadCrumbViewModel

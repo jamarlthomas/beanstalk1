@@ -2,6 +2,7 @@
 @model BlogsPageViewModel
 @{
     ViewBag.Title = string.Empty;
+    ViewBag.PersonalizationSectionTitle = "Insights & Resources";
     Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
 
@@ -13,3 +14,4 @@
     @{ Html.RenderPartial("~/Views/Afton/Blogs/_dataList.cshtml", Model); }
 </div>
 @{ Html.RenderPartial("~/Views/Afton/Shared/NewsEventsAndBlog/_tiles.cshtml", Model); }
+@{ Html.RenderAction("GetPeronalizedCards", "Personalization"); }

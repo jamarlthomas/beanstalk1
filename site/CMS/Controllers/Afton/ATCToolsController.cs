@@ -1,4 +1,5 @@
 ﻿using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
@@ -27,6 +28,7 @@ namespace CMS.Mvc.Controllers.Afton
             _treeNodesProvider = treeNodesProvider;
         }
 
+        [PageVisitActivity]
         public ActionResult Index()
         {
             var page = _atcToolsPageProvider.GetATCToolsPage();

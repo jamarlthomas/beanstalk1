@@ -56,6 +56,23 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Tile Title.
+        /// </summary>
+        [DatabaseField]
+        public string TileTitle
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("TileTitle"), "");
+            }
+            set
+            {
+                SetValue("TileTitle", value);
+            }
+        }
+
+
+        /// <summary>
         /// Title.
         /// </summary>
         [DatabaseField]
@@ -73,7 +90,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Description.
+        /// Text that appears on hover over the tile.
         /// </summary>
         [DatabaseField]
         public string Description
@@ -85,6 +102,23 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("Description", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Image displayed on a tile.
+        /// </summary>
+        [DatabaseField]
+        public string HomeImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HomeImage"), "");
+            }
+            set
+            {
+                SetValue("HomeImage", value);
             }
         }
 
@@ -119,23 +153,6 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("Copy", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Home Image.
-        /// </summary>
-        [DatabaseField]
-        public string HomeImage
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("HomeImage"), "");
-            }
-            set
-            {
-                SetValue("HomeImage", value);
             }
         }
 
@@ -206,4 +223,3 @@ namespace CMS.DocumentEngine.Types
         #endregion
     }
 }
-

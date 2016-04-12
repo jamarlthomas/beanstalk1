@@ -17,6 +17,8 @@ namespace CMS.Mvc.Controllers.Afton
 {
     public class SelectionFilterController : BaseController
     {
+        private readonly IProductProvider _productProvider;
+        private readonly ILookupProvider _lookupProvider;
         private readonly ISelectionFilterPageProvider _selectionFilterPageProvider;
         private readonly IDocumentTypeProvider _documentTypeProvider;
         private readonly ISolutionBusinessUnitProvider _solutionBusinessUnitProvider;

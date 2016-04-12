@@ -13,7 +13,7 @@ namespace CMS.Mvc.Providers
         public SelectionFilterPage GetSelectionFilterPage(string name)
         {
             return string.IsNullOrEmpty(name) ?
-                ContentHelper.GetDocs<SelectionFilterPage>(SelectionFilterPage.CLASS_NAME).First(f => !(f.Parent is Solution) && !(f.Parent is SolutionBusinessUnit)) : 
+                ContentHelper.GetDoc<SelectionFilterPage>(SelectionFilterPage.CLASS_NAME, f => !(f.Parent is Solution) && !(f.Parent is SolutionBusinessUnit)) : 
                 ContentHelper.GetDocByName<SelectionFilterPage>(SelectionFilterPage.CLASS_NAME, name);
         }
 

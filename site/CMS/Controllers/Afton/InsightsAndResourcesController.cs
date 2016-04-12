@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using System.Linq;
 using System.Web.Mvc;
@@ -50,10 +51,10 @@ namespace CMS.Mvc.Controllers.Afton
             _selectionFilterPageProvider = selectionFilterPageProvider;
             _solutionProvider = solutionProvider;
         }
-
+        [PageVisitActivity]
         public ActionResult Index()
         {
-            var page = _insightsAndResourcesPageProvider.GetInsightsResources().First();
+            var page = _insightsAndResourcesPageProvider.GetInsightsResourcesPage();
             var model = MapData<InsightsResources, InsightsAndResourcesViewModel>(page);
             model.InsightsListing = new List<InsightsListingItemViewModel>
             {
@@ -94,7 +95,7 @@ namespace CMS.Mvc.Controllers.Afton
                 {
                     Title = page.StayInformedTileTitle,
                     Description = page.StayInformedTileDescription,
-                    DocumentNamePath = "/StayInformed"
+                    Reference = "/StayInformed"
                 }
             };
             model.Tiles.AddRange(_resourceTileProvider.GetTiles(page.FeaturedContentList)

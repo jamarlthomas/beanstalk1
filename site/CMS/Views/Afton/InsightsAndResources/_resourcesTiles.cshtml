@@ -1,17 +1,22 @@
-﻿<div class="cards4C bgGray padTop padBtm">
-    <div class="cards4">
+﻿@model List<CMS.Mvc.ViewModels.Shared.TileViewModel>
+<div class="cardsSM_C bgGray padTop padBtm">
+    <div class="cardsSM fourCol">
         @foreach (var tile in Model)
         {
-            <a href="@tile.DocumentNamePath" class="cardC">
-                <div class="cardHdrC">
-                    <div class="cardHdr">@tile.Title</div>
-                </div>
-                <div class="cardTxtC">
-                    <div class="cardTxt">@Html.Raw(tile.Description)</div>
-                </div>
+            <a href="@tile.Reference">
                 <div class="cardBtnIndicator">
                     <img src="@Url.Content("~/images/card-btn-indicator.png")">
                 </div>
+                <div class="cardHdrC">
+                    <div class="cardHdr">@tile.Title</div>
+                </div>
+                <div class="cardTextAreaC">
+                    <div class="cardTextArea">
+                        <div class="cardTxt">@Html.Raw(tile.Description)
+                        </div>
+                    </div>
+                </div>
+                
             </a>
         }
     </div>

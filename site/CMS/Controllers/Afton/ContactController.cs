@@ -1,6 +1,7 @@
 ﻿using CMS.DocumentEngine.Types;
 using CMS.Globalization;
 using CMS.Mvc.Infrastructure.Models;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Contact;
@@ -58,6 +59,7 @@ namespace CMS.Mvc.Controllers.Afton
         }
 
         [HttpGet]
+	[PageVisitActivity]
         public ActionResult Index(bool showSubmitSuccesied = false)
         {
             var page = _contactPageProvider.GetContactPage();
