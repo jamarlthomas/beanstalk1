@@ -56,6 +56,23 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Tile Title.
+        /// </summary>
+        [DatabaseField]
+        public string TileTitle
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("TileTitle"), "");
+            }
+            set
+            {
+                SetValue("TileTitle", value);
+            }
+        }
+
+
+        /// <summary>
         /// Date.
         /// </summary>
         [DatabaseField]
@@ -73,7 +90,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// 
+        /// Image displayed on a tile.
         /// </summary>
         [DatabaseField]
         public string HomeImage
@@ -90,7 +107,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// 
+        /// Title.
         /// </summary>
         [DatabaseField]
         public string Title
@@ -107,7 +124,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Description.
+        /// Text that appears on hover over the tile.
         /// </summary>
         [DatabaseField]
         public string Description

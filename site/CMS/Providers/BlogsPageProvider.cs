@@ -7,9 +7,9 @@ namespace CMS.Mvc.Providers
 {
     public class BlogsPageProvider : IBlogsPageProvider
     {
-        public IList<BlogsPage> GetBlogsPages()
+        public BlogsPage GetBlogsPage()
         {
-            return ContentHelper.GetDocs<BlogsPage>(BlogsPage.CLASS_NAME);
+            return ContentHelper.GetDoc<BlogsPage>(BlogsPage.CLASS_NAME);
         }
     }
 }

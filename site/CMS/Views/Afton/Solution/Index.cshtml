@@ -1,8 +1,8 @@
 ﻿@using CMS.Mvc.ViewModels.Shared
 @model SolutionViewModel
 @{
-	ViewBag.Title = @Model.ParentName;
-	Layout = "~/Views/Afton/Shared/Master.cshtml";
+    ViewBag.Title = @Model.ParentName;
+    Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
 }
 <div id="contentAreaC">
 	@Html.Partial("~/Views/Afton/Solution/_heroImage.cshtml", Model.HeroImage)

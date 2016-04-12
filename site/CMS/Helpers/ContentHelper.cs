@@ -1,4 +1,6 @@
-﻿using CMS.Globalization;
+﻿﻿using System.Web;
+using CMS.Base;
+using CMS.Globalization;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Helpers;
@@ -26,8 +28,12 @@ namespace CMS.Mvc.Helpers
                 : int.Parse(WebConfigurationManager.AppSettings.Get("CacheContentMinutes"));
 
         private static readonly string CurrentCulture = LocalizationContext.CurrentCulture.CultureCode;
-
+        private static HttpContext context = HttpContext.Current;
         private static readonly TreeProvider _treeProvider = new TreeProvider();
+        private static string _allContentKey = "";
+        public const string NodeIdKey = "PageViewNodeId";
+        public const string NodeAliasPathKey = "PageViewDocumentPath";
+        public const string ObjectNameKey = "ObjectName";
 
         public static List<TreeNode> GetAllNodes()
         {
@@ -48,7 +54,7 @@ namespace CMS.Mvc.Helpers
 
         public static T GetDocByName<T>(string className, string docName) where T : TreeNode, new()
         {
-            docName = docName.Replace(' ', '-').Replace('.', '-');
+            docName = docName.Replace(' ', '-');
             return HandleData<T>(
                 a => a.NodeAlias.Equals(docName, StringComparison.InvariantCultureIgnoreCase),
                 className,
@@ -116,7 +122,7 @@ namespace CMS.Mvc.Helpers
         public static T GetDocByGuid<T>(Guid guid, string siteName = null) where T : class
         {
             return CacheHelper.Cache(cs =>
-                GetDocByDocId<T>(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T,
+                _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T,
                 new CacheSettings(CachingTime, string.Format("doc_guid_{0}", guid)));
         }
 
@@ -167,7 +173,8 @@ namespace CMS.Mvc.Helpers
                 ClassNames = request.ClassNames,
             };
 
-            var condition = new SearchCondition(request.AdditiveQuery, SearchModeEnum.AllWords, SearchOptionsEnum.FullSearch, docCondition);
+            var condition = new SearchCondition(request.AdditiveQuery, SearchModeEnum.AllWords,
+                SearchOptionsEnum.FullSearch, docCondition);
             var searchText = SearchSyntaxHelper.CombineSearchCondition(request.Query, condition);
 
             var parameters = new Search.SearchParameters
@@ -188,10 +195,11 @@ namespace CMS.Mvc.Helpers
                 AttachmentOrderBy = null,
                 DisplayResults = request.RecordsOnPage,
                 NumberOfProcessedResults = Int32.MaxValue,
-                StartingPosition = request.PageNumber.HasValue ? (request.PageNumber.Value - 1) * request.RecordsOnPage : 0,
+                StartingPosition =
+                    request.PageNumber.HasValue ? (request.PageNumber.Value - 1) * request.RecordsOnPage : 0,
             };
 
-            var results = SearchHelper.Search(parameters);
+            var results = Search.SearchHelper.Search(parameters);
             if (results == null) return new SearchResult();
             return new SearchResult
             {
@@ -244,24 +252,24 @@ namespace CMS.Mvc.Helpers
         private static T HandleData<T>(Expression<Func<TreeNode, bool>> predicate, string className, string cacheKey,
             string cacheDependencyKey, string cachedependenciesFormat = "") where T : TreeNode, new()
         {
-
+            T node;
             switch (PortalContext.ViewMode)
             {
                 case ViewModeEnum.Preview:
                     {
-                        var doc = DocumentHelper.GetDocuments(className).Published(false)
+                        node = (T)DocumentHelper.GetDocuments(className).Published(false)
                             .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                             .FirstOrDefault(predicate);
-                        return (T)doc;
+                        break;
                     }
                 case ViewModeEnum.LiveSite:
                     {
                         if (!string.IsNullOrWhiteSpace(cacheKey))
                         {
-                            return CacheHelper.Cache(cs =>
+                            node = CacheHelper.Cache(cs =>
                             {
                                 TreeProvider tree = new TreeProvider();
-                                var doc = tree.SelectNodes(className).Published()
+                                var doc = tree.SelectNodes(className) //.Published()
                                     .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                                     .FirstOrDefault(predicate);
                                 if (string.IsNullOrWhiteSpace(cacheDependencyKey))
@@ -276,19 +284,35 @@ namespace CMS.Mvc.Helpers
                         else
                         {
                             TreeProvider tree = new TreeProvider();
-                            var doc = tree.SelectNodes(className).Published()
+                            node = (T)tree.SelectNodes(className).Published()
                                 .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                                 .FirstOrDefault(predicate);
-                            return (T)doc;
+                            //return (T)doc;
                         }
+                        break;
                     }
                 default:
                     {
-                        var doc = DocumentHelper.GetDocuments(className)
+                        node = (T)DocumentHelper.GetDocuments(className)
                             .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                             .FirstOrDefault(predicate);
-                        return (T)doc;
+                        break;
+                        //return (T) doc;
                     }
+            }
+
+            if (node != null)
+                SaveNode(node);
+            return node;
+        }
+
+        private static void SaveNode(TreeNode node)
+        {
+            if (context.Items[ContentHelper.NodeIdKey] == null)
+            {
+                context.Items[ContentHelper.NodeIdKey] = node.NodeID;
+                context.Items[ContentHelper.NodeAliasPathKey] = node.NodeAliasPath;
+                context.Items[ContentHelper.ObjectNameKey] = node.NodeAlias;
             }
         }
 
@@ -347,5 +371,46 @@ namespace CMS.Mvc.Helpers
                     .ToList();
         }
 
+        public static List<T> GetPersonalizedContent<T>(string className) where T : new()
+        {
+
+            return new List<T>() { new T() };
+        }
+
+        internal static List<PersonalizedTile> GetDocsOfTypes(List<string> typeList)
+        {
+            return CacheHelper.Cache(coll =>
+            {
+                var prv = new TreeProvider();
+                var persTiles = new List<PersonalizedTile>();
+                foreach (var type in typeList)
+                {
+                    string type1 = type;
+                    var docs = CacheHelper.Cache(cs => prv.SelectNodes(type1), new CacheSettings(CachingTime, type1));
+                    docs.ToList().ForEach(item =>
+                    {
+                        var tile = new PersonalizedTile();
+                        tile.Load(item);
+                        persTiles.Add(tile);
+                    });
+                }
+                return persTiles;
+            }, new CacheSettings(CachingTime, String.Join("", typeList)));
+        }
+
+        public static T GetDoc<T>(string className) where T : TreeNode, new()
+        {
+            return GetDoc<T>(className, arg => true);
+        }
+
+        public static T GetDoc<T>(string className, Func<T, bool> condition) where T : TreeNode, new()
+        {
+            var doc = GetDocs<T>(className).FirstOrDefault(condition);
+            if (doc != null)
+            {
+                SaveNode(doc);
+            }
+            return doc;
+        }
     }
 }

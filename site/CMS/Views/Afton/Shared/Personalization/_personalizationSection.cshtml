@@ -1,0 +1,19 @@
+﻿@using CMS.Mvc.ViewModels.Shared.Personalization
+@model PersonalizationSectionViewModel
+<div class="borders bgPattern padTopBtm">
+    <div class="fullWidth">
+        @if (!string.IsNullOrWhiteSpace(Model.Title))
+        {
+            <h2>@Model.Title</h2>
+        }
+    </div>
+    <div class="cardsC">
+        <div class="cards">
+            @foreach (PersonalizationCardViewModel card in @Model.Cards.Take(3))
+            {
+                @Html.Partial("~/Views/Afton/Shared/Personalization/_personalizationCard.cshtml", card)
+            }
+         
+        </div>
+    </div>
+</div>

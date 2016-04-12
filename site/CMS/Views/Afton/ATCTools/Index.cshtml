@@ -2,29 +2,28 @@
 @model ATCToolsPageViewModel
 @{
     ViewBag.Title = Model.ParentTitle;
-    Layout = "~/Views/Afton/Shared/Master.cshtml";
+    Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
 }
 
-<div id="contentAreaC">
-    <div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
-        <div id="rtCol-contentArea">
-            @{ Html.RenderPartial("~/Views/Afton/Shared/_breadCrumb.cshtml", Model.BreadCrumb); }
-            <div id="contentC">
-                <div id="mainContentC">
-                    <h1>@Model.Title</h1>
-                    <hr>
-                    <h2>@Model.GATCTitle</h2>
-                    @Html.Raw(Model.GATCContent)
-                    <hr>
-                    <h2>@Model.NATCTitle</h2>
-                    @Html.Raw(Model.NATCContent)
-                    <hr>
-                    @Html.Raw(Model.BottomContent)
-                </div>
+
+<div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
+    <div id="rtCol-contentArea">
+        @{ Html.RenderPartial("~/Views/Afton/Shared/_breadCrumb.cshtml", Model.BreadCrumb); }
+        <div id="contentC">
+            <div id="mainContentC">
+                <h1>@Model.Title</h1>
+                <hr>
+                <h2>@Model.GATCTitle</h2>
+                @Html.Raw(Model.GATCContent)
+                <hr>
+                <h2>@Model.NATCTitle</h2>
+                @Html.Raw(Model.NATCContent)
+                <hr>
+                @Html.Raw(Model.BottomContent)
             </div>
         </div>
-        <div id="lftCol-sidebar">
-            @{ Html.RenderPartial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar); }
-        </div>
+    </div>
+    <div id="lftCol-sidebar">
+        @{ Html.RenderPartial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar); }
     </div>
 </div>

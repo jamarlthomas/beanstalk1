@@ -1,0 +1,10 @@
+﻿@{
+    Layout = "~/Views/Afton/Shared/Master.cshtml";
+}
+<div id="printArea"></div>
+<div id="contentAreaC">
+    @RenderBody()
+    @{ Html.RenderAction("GetPeronalizedCards", "Personalization"); }
+    
+</div>
+

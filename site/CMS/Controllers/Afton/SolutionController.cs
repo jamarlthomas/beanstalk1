@@ -1,6 +1,7 @@
 ﻿using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 using System.Linq;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
@@ -39,7 +40,7 @@ namespace CMS.Mvc.Controllers.Afton
             _treeNodesProvider = treeNodesProvider;
             _solutionConstantsProvider = solutionConstantsProvider;
         }
-
+        [PageVisitActivity]
         public ActionResult Index(string name, string parentName)
         {
             var solution = _solutionProvider.GetSolutionItems(parentName).First(f => f.NodeName == name);

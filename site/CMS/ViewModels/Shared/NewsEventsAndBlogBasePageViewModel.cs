@@ -1,12 +1,13 @@
 ﻿using CMS.DocumentEngine;
 using System.Collections.Generic;
+using CMS.Mvc.ViewModels.Shared.Personalization;
 
 namespace CMS.Mvc.ViewModels.Shared
 {
-    public abstract class NewsEventsAndBlogBasePageViewModel
+    public abstract class NewsEventsAndBlogBasePageViewModel : PersonalizationCardViewModel
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
+        //public string Title { get; set; }
+        //public string Description { get; set; }
         public string SortNewestLabel { get; set; }
         public string SortOldestLabel { get; set; }
         public string ReadMoreLabel { get; set; }

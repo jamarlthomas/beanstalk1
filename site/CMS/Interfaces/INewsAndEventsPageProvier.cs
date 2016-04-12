@@ -1,10 +1,9 @@
 ﻿using CMS.DocumentEngine.Types;
-using System.Collections.Generic;
 
 namespace CMS.Mvc.Interfaces
 {
     public interface INewsAndEventsPageProvier
     {
-        IList<NewsAndEventsPage> GetNewsAndEventsPages();
+        NewsAndEventsPage GetNewsAndEventsPage();
     }
 }
