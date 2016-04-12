@@ -23,10 +23,11 @@ namespace CMS.Mvc.Controllers.Afton
         }
 
         //[Route("Product/{alias}")]
+
         [PageVisitActivity]
-        public ActionResult Index(string name)
+        public ActionResult Index(string ProductName)
         {
-            var product = _productProvider.GetProduct(name);
+            var product = _productProvider.GetProduct(ProductName);
             ProductPageViewModel productModel = new ProductPageViewModel();
             productModel.SideBar.Items = MapSidebar(_sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(product.SidebarItems)), product);
             productModel.BreadCrumb.BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(product.DocumentGUID);

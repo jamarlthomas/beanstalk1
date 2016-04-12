@@ -16,12 +16,9 @@ namespace CMS.Mvc.Controllers.Afton
         [Route("Auxiliary")]
         public ActionResult Index()
         {
-            //var gen = new GeneratePdf();
-            //gen.Execute();
-            //HitLogProvider.LogPageView();
             return View("~/Views/Afton/Auxiliary/Index.cshtml");
         }
-
+        [Route("Auxiliary/ClearCache")]
         public ActionResult ClearCache()
         {
             CacheHelper.ClearCache();

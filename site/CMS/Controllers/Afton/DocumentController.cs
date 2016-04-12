@@ -39,9 +39,9 @@ namespace CMS.Mvc.Controllers.Afton
             _treeNodesProvider = treeNodesProvider;
         }
         [PageVisitActivity]
-        public ActionResult Index(string name)
+        public ActionResult Index(string DocumentName)
         {
-            var document = _documentProvider.GetDocument(name);
+            var document = _documentProvider.GetDocument(DocumentName);
             if (document == null) return null;
 
             var documentViewModel = MapData<Document, DocumentViewModel>(document);

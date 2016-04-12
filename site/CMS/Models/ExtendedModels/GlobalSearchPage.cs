@@ -1,4 +1,6 @@
-﻿namespace CMS.DocumentEngine.Types
+﻿using CMS.Mvc.Helpers;
+
+namespace CMS.DocumentEngine.Types
 {
     public partial class GlobalSearchPage
     {
@@ -6,7 +8,8 @@
         {
             get
             {
-                return string.Format("/GlobalSearch/Index");
+                var rt = RouteHelper.GetRoute("GlobalSearch");
+                return (rt != null) ? rt.Route : string.Format("/GlobalSearch/Index");
             }
         }
     }

@@ -22,7 +22,7 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly ITreeNodesProvider _treeNodesProvider;
         private readonly IGenericPageProvider _genericPageProvider;
         private readonly IContactProvider _contactProvider;
-        
+
         public ContactController()
         {
             _contactPageProvider = new ContactPageProvider();
@@ -52,7 +52,7 @@ namespace CMS.Mvc.Controllers.Afton
         }
 
         [HttpGet]
-	[PageVisitActivity]
+        [PageVisitActivity]
         public ActionResult Index(bool showSubmitSuccesied = false)
         {
             var page = _contactPageProvider.GetContactPage();

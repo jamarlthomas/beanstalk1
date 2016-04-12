@@ -41,13 +41,13 @@ namespace CMS.Mvc.Controllers.Afton
             _solutionConstantsProvider = solutionConstantsProvider;
         }
         [PageVisitActivity]
-        public ActionResult Index(string name, string parentName)
+        public ActionResult Index(string SolutionName, string SBUName)
         {
-            var solution = _solutionProvider.GetSolutionItems(parentName).First(f => f.NodeName == name);
+            var solution = _solutionProvider.GetSolutionItems(SBUName).First(f => f.NodeName == SolutionName);
             var solutionViewModel = MapData<Solution, SolutionViewModel>(solution);
             var featuredProductListGuids = UtilsHelper.ParseGuids(solution.FeaturedProductList).Take(4).ToList();
             solutionViewModel.Products = MapData<Product, ProductViewModel>(_productProvider.GetProductItems(featuredProductListGuids, solution.Site.DisplayName));
-            solutionViewModel.ParentName = parentName;
+            solutionViewModel.ParentName = SBUName;
             solutionViewModel.SideBar = new SidebarViewModel
             {
                 Items = MapSidebar(_sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(solution.SidebarItems)), solution)

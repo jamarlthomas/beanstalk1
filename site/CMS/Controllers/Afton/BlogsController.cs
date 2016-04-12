@@ -44,7 +44,7 @@ namespace CMS.Mvc.Controllers.Afton
             _blogCategoryProvider = blogCategoryProvider;
             _blogPostProvider = blogPostProvider;
         }
-	[PageVisitActivity]
+        [PageVisitActivity]
         public ActionResult Index(BlogsRequest request)
         {
             var page = _blogsPageProvider.GetBlogsPage();
@@ -74,7 +74,7 @@ namespace CMS.Mvc.Controllers.Afton
             model.Categories = model.Categories.OrderBy(a => a.Title != request.Category).ToList();
 
             IEnumerable<BlogPost> blogPosts = _blogPostProvider.GetBlogPosts();
-            
+
             if (!string.IsNullOrEmpty(request.Category) && request.Category != page.AllCategoriesSelectOption)
             {
                 blogPosts = blogPosts.Where(w => w.Category == request.Category);

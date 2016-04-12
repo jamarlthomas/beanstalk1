@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Dynamic;
 using System.Web.Mvc;
 using System.Web.Routing;
+using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Infrastructure;
 using CMS.Mvc.Infrastructure.Localization;
@@ -22,16 +25,20 @@ namespace CMS.Mvc
         /// <param name="routes">The routes collection</param>
         public static void RegisterRoutes(RouteCollection routes)
         {
-
+            SetUpRoutesFromKentico(routes);
+            SetUpConstantRoutes(routes);
+            //routes.MapRoute("Master", "Master/{action}/{title}",
+            //    new { controller = "Master", action = "Index", title = UrlParameter.Optional });
+            
             routes.MapMvcAttributeRoutes();
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
+            /*
             routes.MapRoute(
                 "Default",
                 "",
                 new { controller = "Home", action = "Index", name = "" }
                 );
-
+            
             var controllersTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => String.Equals(t.Namespace, "CMS.Mvc.Controllers.Afton", StringComparison.Ordinal))
                 .Select(s => s.Name).ToList();
             foreach (var controllerType in controllersTypes)
@@ -42,10 +49,17 @@ namespace CMS.Mvc
                     routes.MapRoute(
                         controllerName,
                         controllerName + "/{action}/{name}/{parentName}",
-						new { controller = controllerName, action = "Index", name = "", parentName = "" }
+                        new { controller = controllerName, action = "Index", name = "", parentName = "" }
                     );
                 }
             }
+
+            
+
+
+*/
+
+
             //if (ConfigurationManager.AppSettings["EnableUrlLocalization"].Equals("true",
             //    StringComparison.InvariantCultureIgnoreCase))
             //{
@@ -71,6 +85,24 @@ namespace CMS.Mvc
             //        true
             //        );
             //}
+
         }
+
+        private static void SetUpConstantRoutes(RouteCollection routes)
+        {
+            routes.MapRoute("SidebarPage", "SidebarPage/{action}", new { controller = "SidebarPage", action = "Index" });
+            routes.MapRoute("Master", "Master/{action}/{title}", new {controller = "Master", action = "Index", title = UrlParameter.Optional});
+            routes.MapRoute("Personalization", "Personalization/GetPeronalizedCards", new { controller = "Personalization", action = "GetPeronalizedCards" });
+        }
+
+        private static void SetUpRoutesFromKentico(RouteCollection routes)
+        {
+            var kenticoRoutes = ContentHelper.GetDocChildrenByName<AftonRoute>(AftonRoute.CLASS_NAME, "Routes");
+            var localizedRoutes = new List<AftonRoute>();
+            kenticoRoutes.ForEach(r=>localizedRoutes.AddRange(r.CultureVersions.Select(it=>(AftonRoute)it).ToList()));    
+            localizedRoutes.ForEach(lr=>routes.MapRoute(lr.DocumentName, lr.Route, new {controller = lr.Controller, action = lr.Action}));
+            
+        }
+
     }
 }
