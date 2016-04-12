@@ -21,7 +21,8 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly IGenericPageProvider _genericPageProvider;
         private readonly IContactProvider _contactProvider;
         private readonly IRegionConstantsProvider _regionConstantsProvider;
-        
+        private readonly IEmailProvider _emailProvider;
+
         public ContactController()
         {
             _contactPageProvider = new ContactPageProvider();
@@ -32,6 +33,7 @@ namespace CMS.Mvc.Controllers.Afton
             _genericPageProvider = new GenericPageProvider();
             _contactProvider = new ContactProvider();
             _regionConstantsProvider = new RegionConstantsProvider();
+            _emailProvider = new EmailProvider();
         }
 
         public ContactController(IContactPageProvider contactPageProvider,
@@ -41,7 +43,8 @@ namespace CMS.Mvc.Controllers.Afton
             ITreeNodesProvider treeNodesProvider,
             IGenericPageProvider genericPageProvider,
             IContactProvider contactProvider,
-            IRegionConstantsProvider regionConstantsProvider)
+            IRegionConstantsProvider regionConstantsProvider,
+            IEmailProvider emailProvider)
         {
             _contactPageProvider = contactPageProvider;
             _regionProvider = regionProvider;
@@ -51,6 +54,7 @@ namespace CMS.Mvc.Controllers.Afton
             _genericPageProvider = genericPageProvider;
             _contactProvider = contactProvider;
             _regionConstantsProvider = regionConstantsProvider;
+            _emailProvider = emailProvider;
         }
 
         [HttpGet]
@@ -83,7 +87,30 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index(UpdateContactRequest request)
         {
             _contactProvider.UpdateCurrentContact(request);
+            SendEmail(request);
+
             return Index(true);
+        }
+
+        private void SendEmail(UpdateContactRequest request)
+        {
+            var country = _countryProvider.GetCountryById(request.CountryId);
+            var countryGuid = country.CountryGUID;
+            var salesOffice = _salesOfficeProvider.GetSalesOfficeByCountryGuid(countryGuid);
+            string email;
+
+            if (salesOffice != null)
+            {
+                email = (salesOffice.Parent as Region).Email;
+            }
+            else
+            {
+                var defaultEmailRegion = _treeNodesProvider.GetTreeNodes(_regionConstantsProvider.GetRegionConstants().DefaultEmailRegion).First() as Region;
+                email = defaultEmailRegion.Email;
+            }
+
+            request.CountryName = country.CountryDisplayName;
+            _emailProvider.NotifyContactChanged(request, email);
         }
     }
 }

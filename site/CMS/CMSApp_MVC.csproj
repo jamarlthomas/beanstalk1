@@ -56,9 +56,17 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="CMS.EmailEngine, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.EmailEngine.dll</HintPath>
+    </Reference>
     <Reference Include="CMS.Globalization, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.Globalization.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.MacroEngine, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.MacroEngine.dll</HintPath>
     </Reference>
     <Reference Include="CMS.MediaLibrary, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -67,6 +75,10 @@
     <Reference Include="CMS.Membership, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CMS.Membership.dll</HintPath>
+    </Reference>
+    <Reference Include="CMS.Newsletters, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CMS.Newsletters.dll</HintPath>
     </Reference>
     <Reference Include="CMS.OnlineMarketing, Version=8.0.0.0, Culture=neutral, PublicKeyToken=834b12a258f213f9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -221,6 +233,7 @@
     <Compile Include="Infrastructure\Models\GlobalSearchRequest.cs" />
     <Compile Include="Interfaces\IBlogPostProvider.cs" />
     <Compile Include="Interfaces\IBlogCategoryProvider.cs" />
+    <Compile Include="Interfaces\IEmailProvider.cs" />
     <Compile Include="Interfaces\ISelectionFilterConstantsProvider.cs" />
     <Compile Include="Interfaces\IRegionConstantsProvider.cs" />
     <Compile Include="Interfaces\IContactProvider.cs" />
@@ -297,6 +310,7 @@
     </Compile>
     <Compile Include="Providers\BlogPostProvider.cs" />
     <Compile Include="Providers\ATCToolsPageProvider.cs" />
+    <Compile Include="Providers\EmailProvider.cs" />
     <Compile Include="Providers\ContactProvider.cs" />
     <Compile Include="Providers\SelectionFilterConstantsProvider.cs" />
     <Compile Include="Providers\GlobalSearchPageProvider.cs" />

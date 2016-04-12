@@ -139,6 +139,23 @@ namespace CMS.DocumentEngine.Types
             }
         }
 
+
+        /// <summary>
+        /// Default Emails Region.
+        /// </summary>
+        [DatabaseField]
+        public string DefaultEmailRegion
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("DefaultEmailRegion"), "");
+            }
+            set
+            {
+                SetValue("DefaultEmailRegion", value);
+            }
+        }
+
         #endregion
 
 

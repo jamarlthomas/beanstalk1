@@ -21,6 +21,11 @@ namespace CMS.Mvc.Providers
             return ContentHelper.GetCountryByGuid(guid);
         }
 
+        public CountryInfo GetCountryById(int id)
+        {
+            return ContentHelper.GetCountryById(id);
+        }
+
         public IEnumerable<CountryInfo> GetCountries(List<Guid> guids)
         {
             return guids.Select(GetCountryByGuid).Where(w => w != null);

@@ -228,7 +228,15 @@ namespace CMS.Mvc.Helpers
             return CacheHelper.Cache(cs =>
             {
                 return (CountryInfo)CountryInfoProvider.GetInfoByGuid(CountryInfo.OBJECT_TYPE, guid);
-            }, new CacheSettings(CachingTime, string.Format("get_country_{0}", guid))); ;
+            }, new CacheSettings(CachingTime, string.Format("country_guid_{0}", guid)));
+        }
+
+        public static CountryInfo GetCountryById(int id)
+        {
+            return CacheHelper.Cache(cs =>
+            {
+                return (CountryInfo)CountryInfoProvider.GetInfoById(CountryInfo.OBJECT_TYPE, id);
+            }, new CacheSettings(CachingTime, string.Format("country_id_{0}", id)));
         }
 
         internal static List<T> GetSiblings<T>(T node) where T : TreeNode, new()
