@@ -1,0 +1,84 @@
+html, body { margin: 0px; padding: 0px; height: 100%; }
+
+div, p, li, h1 { font: 14px/22px HelveticaNeueLTStd-Roman, Helvetica, Arial, Sans-Serif; color: #595959; }
+
+
+#sghC { position: relative; width: 100%; height: 100%;
+    
+    #sgh-lftC { width: 100%; height: 100%; float: left;
+        
+        #sgh-mainC { width: 438px; padding-top: 110px; margin: 0px auto;
+        
+            #sgh-hdr { padding-bottom: 85px; font-size: 26px; color: #4c9d2f; }
+            
+            #sgh-prodName { padding-bottom: 10px; font-size: 28px; color: #0c419a; }
+            
+            #sgh-prodDesc { padding-bottom: 20px; font-size: 16px; color: #4c9d2f; }
+            
+            #sgh-prodApplication { padding-top: 10px; padding-bottom: 210px; font-size: 14px; color: #595959; }
+        }
+                    
+        #sgh-lftLogo { position: absolute; bottom: 0px; left: 0px; }
+            
+        #sgh-rtLogo { position: absolute; bottom: 20px; right: 40px; }
+        
+
+        
+    }
+    
+    #sgh-rt { position: absolute; right: 0px; height: 100%; width: 14px; background: #a0a0b2; }
+    
+}
+
+
+
+
+#sg-headerC { overflow: auto; background: #0c419a url(/images/header-gradient.jpg) top right repeat-y; 
+    img { float: left; display: inline-block; }
+    #hdr-Text {  float: right; padding: 20px 25px 0px 0px; font-size: 28px; color: #FFF;
+        
+        #main { padding-right: 20px; text-transform: uppercase; font-weight: bold; }
+        
+        #sub  {padding-left: 20px;  }
+        
+    }
+}
+
+
+#sg-mainC { padding: 25px;
+    
+    #sg-prodHdrC { border-bottom: 1px solid #c4c4c4;
+
+        #sg-prodName { padding-bottom: 5px; font-size: 25px; color: #0c419a;
+            #sg-prodDesc { padding-left: 15px; font-size: 16px; color: #4c9d2f; }
+        }
+        #sg-prodApplication { padding-bottom: 20px; font-size: 15px; color: #595959; }
+        
+    }
+    
+    h1 { color: #0c419a; font-weight: bold; }
+    
+    .fullImg { width: 100%; }
+    
+    .halfImg { width: 50%; }
+    
+    .sg-lftContent { padding-top: 20px; float: left; width: 45%; }
+    
+    .sg-rtContent { padding-top: 20px; float: right; width: 45%; }
+    
+    .sg-fullContent { clear: both; padding-top: 20px; }
+    
+    
+    #sg-footerC { clear: both; overflow: auto; padding-top: 25px; 
+        
+        hr { border-top: 3px solid #c4c4c4; margin-bottom: 25px; }
+        
+        #sg-footerTxt { font-size: 10px; line-height: 14px; float: left; width: 75%; }
+        
+        #sg-footerLogo { float: right; }
+        
+    }
+    
+}
+
+
