@@ -1,4 +1,6 @@
-﻿namespace CMS.DocumentEngine.Types
+﻿using CMS.Mvc.Helpers;
+
+namespace CMS.DocumentEngine.Types
 {
     public partial class Home
     {
@@ -6,7 +8,8 @@
         {
             get
             {
-                return string.Empty;
+                var rt = RouteHelper.GetRoute("Home");
+                return (rt != null) ? rt.Route : string.Empty;
             }
         }
     }

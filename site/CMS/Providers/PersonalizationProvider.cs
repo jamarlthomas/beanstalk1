@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
@@ -168,12 +169,28 @@ namespace CMS.Mvc.Providers
 
         private void GetNumberOfViewsOfAllTheContent()
         {
-            ContentList.ForEach(item => item.ViewsCount = HitsInfoProvider.GetObjectHitCount(SiteContext.CurrentSiteID, item.Item.NodeID, HitsIntervalEnum.Year, HitLogProvider.PAGE_VIEWS, new DateTime(1753, 1, 1), new DateTime(9999, 1, 1)));
+            //ContentList.ForEach(item => item.ViewsCount = HitsInfoProvider.GetObjectHitCount(SiteContext.CurrentSiteID, item.Item.NodeID, HitsIntervalEnum.Hour, HitLogProvider.PAGE_VIEWS, new DateTime(1753, 1, 1), DateTime.Now));
+            DataSet info = HitsInfoProvider.GetAllHitsInfo(SiteContext.CurrentSiteID, HitsIntervalEnum.Year,
+                HitLogProvider.PAGE_VIEWS,
+                DateTime.Now);
+
+            ContentList.ForEach(item =>
+            {
+                int count = 0;
+                foreach (DataRow row in info.Tables[0].Rows)
+                {
+                    if ((int)row["StatisticsObjectID"] == item.Item.Item.NodeID)
+                    {
+                        count += (int)row["HitsCount"];
+                    }
+                }
+                item.ViewsCount = count;
+            });
         }
 
         private void GetPostedDateOfAllTheContent()
         {
-            ContentList.ForEach(item => item.PostedDate = (DateTime) item.Item.Item.GetValue("DocumentModifiedWhen"));
+            ContentList.ForEach(item => item.PostedDate = (DateTime)item.Item.Item.GetValue("DocumentModifiedWhen"));
         }
 
         private void GetPersona()
@@ -193,8 +210,8 @@ namespace CMS.Mvc.Providers
 
         public List<PersonalizedTile> GetTrendingTiles()
         {
-            var tt = GetPersonalizedItems();
-            return tt;
+            var trendingContent = ContentList.OrderByDescending(item => item.ViewsCount);
+            return  trendingContent.Select(tile => tile.Item).ToList();
         }
     }
 }

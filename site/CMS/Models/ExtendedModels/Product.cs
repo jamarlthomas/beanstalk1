@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using CMS.Mvc.Helpers;
 
 namespace CMS.DocumentEngine.Types
 {
@@ -8,7 +9,12 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return string.Format("/Product/Index/{0}", this.NodeAlias);
+                var rt = RouteHelper.GetRoute("Product");
+                return (rt != null)
+                    ? rt.Route.Replace("{ProductName}", NodeAlias)
+                        .Replace("{SolutionName}", Parent.NodeAlias)
+                        .Replace("{SBUName}", Parent.Parent.NodeAlias)
+                    : string.Format("/Product/Index/{0}", this.NodeAlias);
             }
         }
 

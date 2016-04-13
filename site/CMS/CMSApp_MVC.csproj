@@ -309,6 +309,8 @@
     <Compile Include="Models\Afton\NewsAndEvents\NewsAndEventsPage.cs" />
     <Compile Include="Models\Afton\Shared\Document.cs" />
     <Compile Include="Models\Afton\Shared\DocumentConstant.cs" />
+    <Compile Include="Models\Afton\Shared\Routing\AftonRoute.cs" />
+    <Compile Include="Models\Afton\Shared\Routing\RouteFolder.cs" />
     <Compile Include="Models\Afton\Shared\Personalization\PersonalizedContentModel.cs" />
     <Compile Include="Models\Afton\Shared\Personalization\PersonalizationCategoryPointsModel.cs" />
     <Compile Include="Models\Afton\Shared\SideBarComponents\ContactUs.cs" />

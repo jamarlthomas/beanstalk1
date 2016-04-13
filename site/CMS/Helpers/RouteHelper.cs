@@ -1,4 +1,5 @@
-﻿using CMS.DocumentEngine;
+﻿using System.Linq;
+using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.Infrastructure.Models;
 using System.Text;
@@ -24,6 +25,11 @@ namespace CMS.Mvc.Helpers
             sb.AppendFormat("/page/{0}", searchRequest.PageNumber ?? 1);
             sb.AppendFormat("/search/{0}", searchRequest.Query ?? string.Empty);
             return sb.ToString();
+        }
+
+        internal static AftonRoute GetRoute(string routeName)
+        {
+            return ContentHelper.GetDocChildrenByName<AftonRoute>(AftonRoute.CLASS_NAME, "Routes").FirstOrDefault(r => r.DocumentName.Equals(routeName));
         }
     }
 }

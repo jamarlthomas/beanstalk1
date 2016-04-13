@@ -102,6 +102,7 @@ namespace CMS.Mvc.Controllers.Afton
             };
             result.AddRange(MapData<BlogCategory, SelectorItemViewModel>(_blogCategoryProvider.GetBlogCategories(page.NodeAlias)));
             return result.OrderBy(a => a.Title != request.Category).ToList();
+
         }
 
         private BlogPostViewModel MapPostToBlogPostViewModel(BlogPost post, List<UserInfo> users)

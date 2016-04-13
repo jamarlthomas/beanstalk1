@@ -36,15 +36,15 @@ namespace CMS.Mvc.Controllers.Afton
         }
 
         [PageVisitActivity]
-        public ActionResult Index(string name)
+        public ActionResult Index(string SolutionName, string SBUName)
         {
-            var solution = _solutionProvider.GetSolution(name);
+            var solution = _solutionProvider.GetSolution(SolutionName);
 
             var solutionViewModel = MapData<Solution, SolutionViewModel>(solution);
 
             solutionViewModel.Products = GetProductViewModels(solution);
 
-            solutionViewModel.ParentName = (solution.Parent as SolutionBusinessUnit).Title;
+            solutionViewModel.ParentName = SBUName;
 
             solutionViewModel.SideBar = new SidebarViewModel
             {

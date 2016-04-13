@@ -148,10 +148,10 @@ namespace CMS.Mvc.Infrastructure.Localization
 
         private void SetCulture(HttpContextBase context, CultureInfo culture)
         {
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
-            context.Response.Cookies.Add(new HttpCookie("CMSPreferredCulture", culture.Name));
-            context.Response.Cookies.Add(new HttpCookie("lang", culture.Name));
+            //Thread.CurrentThread.CurrentCulture = culture;
+            //Thread.CurrentThread.CurrentUICulture = culture;
+            ////context.Response.Cookies.Add(new HttpCookie("CMSPreferredCulture", culture.Name));
+            //context.Response.Cookies.Add(new HttpCookie("lang", culture.Name));
         }
 
 

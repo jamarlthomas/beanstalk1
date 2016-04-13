@@ -40,9 +40,9 @@ namespace CMS.Mvc.Controllers.Afton
         }
 
         [PageVisitActivity]
-        public ActionResult Index(string name)
+        public ActionResult Index(string DocumentName)
         {
-            var document = _documentProvider.GetDocument(name);
+            var document = _documentProvider.GetDocument(DocumentName);
 
             var documentViewModel = MapData<Document, DocumentViewModel>(document);
 
