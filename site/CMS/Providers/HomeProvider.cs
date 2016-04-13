@@ -7,9 +7,9 @@ namespace CMS.Mvc.Providers
 {
     public class HomeProvider : IHomeProvider
     {
-        public List<Home> GetHomeItems()
+        public Home GetHomePage()
         {
-            return ContentHelper.GetDocs<Home>(Home.CLASS_NAME);
+            return ContentHelper.GetDoc<Home>(Home.CLASS_NAME);
         }
     }
 }

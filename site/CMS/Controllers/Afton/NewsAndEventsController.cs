@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using CMS.DocumentEngine.Types;
 using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
-using CMS.DocumentEngine.Types;
+using CMS.Mvc.Infrastructure.Models;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.NewsAndEvents;
 using CMS.Mvc.ViewModels.Shared;
+using System;
+using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
-using CMS.Mvc.Infrastructure.Models;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -38,51 +37,41 @@ namespace CMS.Mvc.Controllers.Afton
             var page = _newsAndEventsPageProvier.GetNewsAndEventsPage();
             var model = MapData<NewsAndEventsPage, NewsAndEventsPageViewModel>(page);
 
-            model.Types = new List<string>
-            {
-                page.AllNewsEventsSelectorValue,
-                page.NewsSelectorValue,
-                page.EventsSelectorValue,
-            };
-            if (!string.IsNullOrEmpty(request.Category))
-            {
-                model.Types = model.Types.OrderBy(s => !s.StartsWith(request.Category)).ToList();
-            }
+            model.Types = _newsAndEventsPageProvier.GetDocumentTypes(page, request.Category);
 
             var recordsOnPage = Int32.Parse(ConfigurationManager.AppSettings["NewsEventsBlogsRecordOnPageCount"]);
 
-            var contentList = _treeNodesProvider
-                .GetTreeNodes(page.NewsAndEvents)
-                .Where(w => String.Equals(request.Category, page.NewsSelectorValue, StringComparison.OrdinalIgnoreCase) ? w is CustomNews :
-                    !String.Equals(request.Category, page.EventsSelectorValue, StringComparison.OrdinalIgnoreCase) || w is Event).ToList();
+            var contentList = _newsAndEventsPageProvier.GetContentList(page, request).ToList();
             model.NewsAndEventsList = contentList
                 .Skip((request.Page - 1) * recordsOnPage ?? 0)
                 .Take(recordsOnPage)
-                .Select(s => AutoMapper.Mapper.Map<NewsAndEventViewModel>(s)).ToList();
-
-            model.NewsAndEventsList = model.NewsAndEventsList.OrderBy(f => f.Date).ToList();
+                .Select(AutoMapper.Mapper.Map<NewsAndEventViewModel>).ToList();
+            foreach (var item in model.NewsAndEventsList)
+            {
+                item.Date = UtilsHelper.ConvertToCST(item.Date);
+            }
             if (!String.Equals(request.SortOrder, "DESC", StringComparison.OrdinalIgnoreCase))
             {
                 model.NewsAndEventsList.Reverse();
             }
 
-            foreach (var item in model.NewsAndEventsList)
-            {
-                item.Date = UtilsHelper.ConvertToCST(item.Date);
-            }
-
-            model.Pagination = new PaginationViewModel
-            {
-                TotalPages = (int)Math.Ceiling((double)contentList.Count / recordsOnPage),
-                CurrentPage = request.Page ?? 1,
-                BaseUrl = UtilsHelper.GetBaseUrlWithoutIntParam(Request.Url.PathAndQuery, "page"),
-                PageArgName = "page"
-            };
+            model.Pagination = GetPagination((int)Math.Ceiling((double)contentList.Count / recordsOnPage), request.Page);
             model.SelectedSortOrder = request.SortOrder;
 
             model.Tiles = _treeNodesProvider
                 .GetTreeNodes(page.ContentManagedTiles).Take(4).Select(tile => AutoMapper.Mapper.Map<TileViewModel>(tile)).ToList();
             return View("~/Views/Afton/NewsAndEvents/Index.cshtml", model);
+        }
+
+        private PaginationViewModel GetPagination(int totalPages, int? page)
+        {
+            return new PaginationViewModel
+            {
+                TotalPages = totalPages,
+                CurrentPage = page ?? 1,
+                BaseUrl = UtilsHelper.GetBaseUrlWithoutIntParam(Request.Url.PathAndQuery, "page"),
+                PageArgName = "page"
+            };
         }
     }
 }

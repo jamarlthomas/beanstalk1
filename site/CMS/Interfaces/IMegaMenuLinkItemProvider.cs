@@ -5,6 +5,6 @@ namespace CMS.Mvc.Interfaces
 {
     public interface IMegaMenuLinkItemProvider
     {
-        List<MegaMenuLinkItem> GetMegaMenuLinkItems(string parentAlias);
+        MegaMenuLinkItem GetMegaMenuLinkItem(string parentAlias);
     }
 }

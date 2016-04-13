@@ -1,12 +1,13 @@
-﻿using CMS.Mvc.Infrastructure.Models;
-using System.Globalization;
-using CMS.DocumentEngine.Types;
+﻿using CMS.DocumentEngine.Types;
+using CMS.Mvc.Helpers;
+using CMS.Mvc.Infrastructure.Models;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
-using CMS.Mvc.Helpers;
 using CMS.Mvc.ViewModels.Master;
-using System.Web.Mvc;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Web.Mvc;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -48,33 +49,49 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Footer()
         {
             var footer = new FooterViewModel();
-            footer.FooterNavCategories = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems());
-            foreach (var category in footer.FooterNavCategories)
+
+            footer.FooterNavCategories = _pagesMenuItemProvider.GetPagesMenuItems().Select(category =>
             {
-                category.FooterNavItems = MapData<FooterNavItem, FooterNavItemViewModel>(_footerNavItemProvider.GetFooterNavItems(category.Title));
-            }
+                var categoryViewModel = MapData<PagesMenuItem, PagesMenuItemViewModel>(category);
+                categoryViewModel.FooterNavItems = MapData<FooterNavItem, FooterNavItemViewModel>(_footerNavItemProvider.GetFooterNavItems(category.NodeAlias));
+                return categoryViewModel;
+            }).ToList();
+
             return PartialView("~/Views/Afton/Master/_footer.cshtml", footer);
         }
 
         [ChildActionOnly]
-        public ActionResult Index(MasterHeaderRequest request)
+        public ActionResult Header(MasterHeaderRequest request)
         {
-            var mainNavList = MapData<ContentMenuItem, ContentMenuItemViewModel>(_contentMenuItemProvider.GetContentMenuItems());
-            foreach (var contentMenuItem in mainNavList)
-            {
-                contentMenuItem.ThumbnailedMenuItems = MapData<MegaMenuThumbnailedItem, MegaMenuThumbnailedItemViewModel>(_megaMenuThumbnailedItemProvider.GetMegaMenuThumbnailedItems(contentMenuItem.Title));
-                var solutionLink = _megaMenuLinkItemProvider.GetMegaMenuLinkItems(contentMenuItem.Title).FirstOrDefault();
-                if (solutionLink != null)
-                {
-                    contentMenuItem.SolutionsLink = MapData<MegaMenuLinkItem, MegaMenuLinkItemViewModel>(solutionLink);
-                    contentMenuItem.SolutionsLink.Solutions = MapData<SolutionBusinessUnit, MegaMenuSolutionBusinessUnitViewModel>(_solutionBusinessUnitProvider.GetSolutionBusinessUnits(contentMenuItem.SolutionsLink.Title));
-                }
-            }
             var model = MapData<MasterHeaderRequest, MasterViewModel>(request);
             model.SelectedCulture = UtilsHelper.GetCultureDisplayName(CultureInfo.CurrentCulture);
-            model.MainNavList = mainNavList;
+
+            model.MainNavList = GetMainNavList();
+
             model.UtilityNavList = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems());
+
             return PartialView("~/Views/Afton/Master/_header.cshtml", model);
+        }
+
+        private List<ContentMenuItemViewModel> GetMainNavList()
+        {
+            return _contentMenuItemProvider.GetContentMenuItems().Select(contentMenuItem =>
+            {
+                var itemViewModel = MapData<ContentMenuItem, ContentMenuItemViewModel>(contentMenuItem);
+
+                var thumbnailedMenuItems = _megaMenuThumbnailedItemProvider.GetMegaMenuThumbnailedItems(contentMenuItem.NodeAlias);
+                itemViewModel.ThumbnailedMenuItems = MapData<MegaMenuThumbnailedItem, MegaMenuThumbnailedItemViewModel>(thumbnailedMenuItems);
+
+                var solutionLink = _megaMenuLinkItemProvider.GetMegaMenuLinkItem(contentMenuItem.NodeAlias);
+                if (solutionLink != null)
+                {
+                    itemViewModel.SolutionsLink = MapData<MegaMenuLinkItem, MegaMenuLinkItemViewModel>(solutionLink);
+                    var solutions = _solutionBusinessUnitProvider.GetSolutionBusinessUnits(solutionLink.NodeAlias);
+                    itemViewModel.SolutionsLink.Solutions = MapData<SolutionBusinessUnit, MegaMenuSolutionBusinessUnitViewModel>(solutions);
+                }
+
+                return itemViewModel;
+            }).ToList();
         }
     }
 }

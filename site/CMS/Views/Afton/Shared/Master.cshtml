@@ -42,7 +42,7 @@
 
 </head>
 <body>
-	@{ Html.RenderAction("Index", "Master", new MasterHeaderRequest { Title = ViewBag.Title, GlobalSearchQuery = ViewBag.GlobalSearchQuery }); }
+	@{ Html.RenderAction("Header", "Master", new MasterHeaderRequest { Title = ViewBag.Title, GlobalSearchQuery = ViewBag.GlobalSearchQuery }); }
 	<main>
 		@RenderBody()
 	</main>

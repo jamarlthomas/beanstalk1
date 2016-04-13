@@ -5,6 +5,6 @@ namespace CMS.Mvc.Interfaces
 {
     public interface IHomeProvider
     {
-        List<Home> GetHomeItems();
+        Home GetHomePage();
     }
 }

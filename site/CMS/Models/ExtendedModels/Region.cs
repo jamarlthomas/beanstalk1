@@ -1,4 +1,6 @@
-﻿namespace CMS.DocumentEngine.Types
+﻿using CMS.Mvc.Helpers;
+
+namespace CMS.DocumentEngine.Types
 {
     public partial class Region
     {
@@ -6,7 +8,10 @@
         {
             get
             {
-                return string.Format("/SalesOffices/Index/{0}", this.NodeAlias);
+                var rt = RouteHelper.GetRoute("SalesOffice");
+                return (rt != null)
+                    ? rt.Route.Replace("{RegionName}", NodeAlias)
+                    : string.Format("/SalesOffices/Index/{0}", NodeAlias);
             }
         }
     }

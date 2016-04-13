@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using CMS.Mvc.ActionFilters;
 using CMS.DocumentEngine.Types;
 using CMS.Globalization;
 using CMS.Mvc.Helpers;
@@ -38,27 +38,22 @@ namespace CMS.Mvc.Controllers.Afton
             _regionConstantsProvider = regionConstantsProvider;
         }
 
-        public ActionResult Index(string name)
+        [PageVisitActivity]
+        public ActionResult Index(string RegionName)
         {
-            var sw = new Stopwatch();
-            sw.Start();
-            var region = _regionProvider.GetRegion(name);
+            var region = _regionProvider.GetRegion(RegionName);
             var model = MapData<Region, ViewModels.SalesOffices.RegionViewModel>(region);
             var regionConstants = _regionConstantsProvider.GetRegionConstants();
             model.EmergencyResponse = MapData<RegionConstants, EmergencyResponseViewModel>(regionConstants);
-            model.Offices = _salesOfficeProvider.GetSalesOffices(name).Select(office => {
+            model.Offices = _salesOfficeProvider.GetSalesOffices(RegionName).Select(office => {
                 var officeViewModel = MapData<SalesOffice, SalesOfficeViewModel>(office);
                 officeViewModel.CountryName = _countryProvider.GetCountryByGuid(Guid.Parse(office.Country)).CountryDisplayName;
                 officeViewModel.PhoneLabel = regionConstants.PhoneLabel;
                 officeViewModel.ServingCountriesLabel = regionConstants.ServingCountriesLabel;
-                officeViewModel.ServingCountriesList = MapData<CountryInfo, CountryViewModel>(_countryProvider.GetCountries(UtilsHelper.ParseGuids(office.ServingCountries)));
+                officeViewModel.ServingCountriesList = MapData<CountryInfo, CountryViewModel>(_countryProvider.GetCountries(office.ServingCountries));
                 return officeViewModel;
             }).ToList();
-            var dataTime = sw.ElapsedMilliseconds;
-            sw.Restart();
-            var view = View("~/Views/Afton/SalesOffices/Index.cshtml", model);
-            var viewTime = sw.ElapsedMilliseconds;
-            return view;
+            return View("~/Views/Afton/SalesOffices/Index.cshtml", model);
         }
     }
 }

@@ -4,11 +4,10 @@ using CMS.Mvc.Infrastructure.Models;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.GlobalSearch;
-using System;
+using CMS.Mvc.ViewModels.Shared;
 using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
-using CMS.Mvc.ViewModels.Shared;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -54,20 +53,7 @@ namespace CMS.Mvc.Controllers.Afton
             viewModel.SearchTerm = request.Query;
             if (searchResults.Items != null)
             {
-                viewModel.Results = searchResults.Items.Select(searchResult =>
-                {
-                    var nodeId = TreePathUtils.GetNodeIdByAliasPath(ConfigurationManager.AppSettings["SiteName"], searchResult.Title);
-                    var node = _treeNodesProvider.GetTreeNodeByNodeId(nodeId);
-                    var pageTypeDisplayValue = _pageTypeDisplayValueProvider.GetDisplayValue(node.ClassName);
-                    return new ResultItemViewModel
-                    {
-                        Title = searchResult.Date ?? node.GetStringValue("Title", string.Empty), //due kentico limitation date field used for title
-                        DocumentNamePath = node.DocumentNamePath,
-                        Content = searchResult.Content,
-                        Image = searchResult.Image,
-                        Type = pageTypeDisplayValue != null ? pageTypeDisplayValue.DisplayValue : string.Empty
-                    };
-                }).ToList();
+                viewModel.Results = searchResults.Items.Select(MapSearchResult).ToList();
             }
             viewModel.Pagination = new PaginationViewModel
             {
@@ -77,6 +63,21 @@ namespace CMS.Mvc.Controllers.Afton
                 PageArgName = "PageNumber"
             };
             return viewModel;
+        }
+
+        private ResultItemViewModel MapSearchResult(SearchResultItem searchResult)
+        {
+            var nodeId = TreePathUtils.GetNodeIdByAliasPath(ConfigurationManager.AppSettings["SiteName"], searchResult.Title);
+            var node = _treeNodesProvider.GetTreeNodeByNodeId(nodeId);
+            var pageTypeDisplayValue = _pageTypeDisplayValueProvider.GetDisplayValue(node.ClassName);
+            return new ResultItemViewModel
+            {
+                Title = searchResult.Date ?? node.GetStringValue("Title", string.Empty), //due kentico limitation date field used for title
+                DocumentNamePath = node.DocumentNamePath,
+                Content = searchResult.Content,
+                Image = searchResult.Image,
+                Type = pageTypeDisplayValue != null ? pageTypeDisplayValue.DisplayValue : string.Empty
+            };
         }
     }
 }

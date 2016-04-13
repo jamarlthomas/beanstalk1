@@ -12,7 +12,7 @@ namespace CMS.Mvc.Helpers
 
         public static string GetSelectionFilterUrl(SelectionFilterSearchRequest searchRequest, string name = null)
         {
-            StringBuilder sb = new StringBuilder("/SelectionFilter/Index");
+            StringBuilder sb = new StringBuilder(GetRoute("SelectionFilterPage").Route);
             if (!string.IsNullOrEmpty(name))
             {
                 sb.AppendFormat("/{0}", name);
@@ -25,6 +25,11 @@ namespace CMS.Mvc.Helpers
             sb.AppendFormat("/page/{0}", searchRequest.PageNumber ?? 1);
             sb.AppendFormat("/search/{0}", searchRequest.Query ?? string.Empty);
             return sb.ToString();
+        }
+
+        public static string GetSelectionFilterViewAllUrl(string documentTypesIds)
+        {
+            return GetSelectionFilterUrl(new SelectionFilterSearchRequest { DocumentTypesIds = documentTypesIds });
         }
 
         internal static AftonRoute GetRoute(string routeName)
