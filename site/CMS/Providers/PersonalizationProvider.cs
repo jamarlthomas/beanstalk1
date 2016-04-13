@@ -143,6 +143,8 @@ namespace CMS.Mvc.Providers
 
         private void GetLastDateTheVisitorViewedEachPieceOfContent()
         {
+            if (CurrentContact == null)
+                return;
             ContentList.ForEach(ci =>
             {
                 ci.LastViewDate =
@@ -196,7 +198,8 @@ namespace CMS.Mvc.Providers
         private void GetPersona()
         {
             CurrentContact = OnlineMarketingContext.GetCurrentContact();
-            CurrentPersona = (new PersonaService()).GetPersonaForContact(CurrentContact);
+            if (CurrentContact != null)
+                CurrentPersona = (new PersonaService()).GetPersonaForContact(CurrentContact);
         }
 
 
@@ -211,7 +214,7 @@ namespace CMS.Mvc.Providers
         public List<PersonalizedTile> GetTrendingTiles()
         {
             var trendingContent = ContentList.OrderByDescending(item => item.ViewsCount);
-            return  trendingContent.Select(tile => tile.Item).ToList();
+            return trendingContent.Select(tile => tile.Item).ToList();
         }
     }
 }
