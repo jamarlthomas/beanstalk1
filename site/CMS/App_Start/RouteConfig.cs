@@ -27,9 +27,7 @@ namespace CMS.Mvc
         {
             SetUpRoutesFromKentico(routes);
             SetUpConstantRoutes(routes);
-            //routes.MapRoute("Master", "Master/{action}/{title}",
-            //    new { controller = "Master", action = "Index", title = UrlParameter.Optional });
-            
+           
             routes.MapMvcAttributeRoutes();
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             /*
@@ -90,19 +88,21 @@ namespace CMS.Mvc
 
         private static void SetUpConstantRoutes(RouteCollection routes)
         {
-            routes.MapRoute("SidebarPage", "SidebarPage/{action}", new { controller = "SidebarPage", action = "Index" });
-            routes.MapRoute("Master", "Master/{action}/{title}", new {controller = "Master", action = "Index", title = UrlParameter.Optional});
-            routes.MapRoute("Personalization", "Personalization/GetPeronalizedCards", new { controller = "Personalization", action = "GetPeronalizedCards" });
+            RouteHelper.MapRouteWithName(routes, "SidebarPage", "SidebarPage/{action}", new { controller = "SidebarPage", action = "Index" });
+            RouteHelper.MapRouteWithName(routes, "Master", "Master/{action}/{title}", new { controller = "Master", action = "Index", title = UrlParameter.Optional });
+            RouteHelper.MapRouteWithName(routes, "Personalization", "Personalization/GetPeronalizedCards", new { controller = "Personalization", action = "GetPeronalizedCards" });
         }
 
-        private static void SetUpRoutesFromKentico(RouteCollection routes)
+        internal static void SetUpRoutesFromKentico(RouteCollection routes)
         {
             var kenticoRoutes = ContentHelper.GetDocChildrenByName<AftonRoute>(AftonRoute.CLASS_NAME, "Routes");
             var localizedRoutes = new List<AftonRoute>();
-            kenticoRoutes.ForEach(r=>localizedRoutes.AddRange(r.CultureVersions.Select(it=>(AftonRoute)it).ToList()));    
-            localizedRoutes.ForEach(lr=>routes.MapRoute(lr.DocumentName, lr.Route, new {controller = lr.Controller, action = lr.Action}));
+            kenticoRoutes.ForEach(r=>localizedRoutes.AddRange(r.CultureVersions.Select(it=>(AftonRoute)it).ToList()));
+            localizedRoutes.ForEach(lr => RouteHelper.UpdateAftonRoute(routes, lr));
             
         }
+     
+  
 
     }
 }
