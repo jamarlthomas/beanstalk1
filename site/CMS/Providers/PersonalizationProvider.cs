@@ -170,7 +170,7 @@ namespace CMS.Mvc.Providers
         private void GetNumberOfViewsOfAllTheContent()
         {
             //ContentList.ForEach(item => item.ViewsCount = HitsInfoProvider.GetObjectHitCount(SiteContext.CurrentSiteID, item.Item.NodeID, HitsIntervalEnum.Hour, HitLogProvider.PAGE_VIEWS, new DateTime(1753, 1, 1), DateTime.Now));
-            DataSet info = HitsInfoProvider.GetAllHitsInfo(SiteContext.CurrentSiteID, HitsIntervalEnum.Year,
+            DataSet info = HitsInfoProvider.GetAllHitsInfo(SiteContext.CurrentSiteID, HitsIntervalEnum.Week,
                 HitLogProvider.PAGE_VIEWS,
                 DateTime.Now);
 
