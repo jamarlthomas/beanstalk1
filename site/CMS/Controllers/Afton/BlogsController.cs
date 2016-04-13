@@ -53,11 +53,11 @@ namespace CMS.Mvc.Controllers.Afton
             var model = MapData<BlogsPage, BlogsPageViewModel>(page);
             var users = _usersProvider.GetUsers();
             
-            //model.Authors = GetAuthorsViewModel(request, page, users);
+            model.Authors = GetAuthorsViewModel(request, page, users);
 
             model.Categories = GetCategoriesViewModel(request, page);
 
-            var blogPostsList = _blogPostProvider.GetFilteredBlogPosts(request, page);
+            var blogPostsList = _blogPostProvider.GetFilteredBlogPosts(request, page, users);
 
             model.BlogPosts = blogPostsList.Skip((request.Page - 1) * _recordsOnPage ?? 0).Take(_recordsOnPage).Select(post => MapPostToBlogPostViewModel(post, users)).ToList();
 

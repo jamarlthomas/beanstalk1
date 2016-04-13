@@ -1,11 +1,12 @@
 ﻿using CMS.DocumentEngine.Types;
+using CMS.Membership;
 using CMS.Mvc.Helpers;
-using CMS.Mvc.Interfaces;
-using System.Collections.Generic;
 using CMS.Mvc.Infrastructure.Models;
-using System.Linq;
+using CMS.Mvc.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 
 namespace CMS.Mvc.Providers
 {
@@ -16,7 +17,7 @@ namespace CMS.Mvc.Providers
             return ContentHelper.GetDocs<BlogPost>(BlogPost.CLASS_NAME);
         }
 
-        public List<BlogPost> GetFilteredBlogPosts(BlogsRequest request, BlogsPage page)
+        public List<BlogPost> GetFilteredBlogPosts(BlogsRequest request, BlogsPage page, List<UserInfo> users)
         {
             IEnumerable<BlogPost> blogPosts = GetBlogPosts();
 
@@ -24,10 +25,10 @@ namespace CMS.Mvc.Providers
             {
                 blogPosts = blogPosts.Where(w => w.Category == request.Category);
             }
-            //if (!string.IsNullOrEmpty(request.Author) && request.Author != page.AllAuthorsSelectOption)
-            //{
-            //    blogPosts = blogPosts.Where(w => users.First(f => f.UserID == w.DocumentCreatedByUserID).FullName == request.Author);
-            //}
+            if (!string.IsNullOrEmpty(request.Author) && request.Author != page.AllAuthorsSelectOption)
+            {
+                blogPosts = blogPosts.Where(w => users.First(f => f.UserID == w.DocumentCreatedByUserID).FullName == request.Author);
+            }
 
             blogPosts = blogPosts.OrderBy(f => f.BlogPostDate);
             if (!String.Equals(request.SortOrder, "ASC", StringComparison.OrdinalIgnoreCase))
