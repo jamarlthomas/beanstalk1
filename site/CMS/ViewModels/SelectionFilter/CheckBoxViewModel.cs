@@ -7,8 +7,9 @@ using CMS.Mvc.ViewModels.Shared;
 
 namespace CMS.Mvc.ViewModels.SelectionFilter
 {
-	public class CheckBoxViewModel
-	{
-		public string Title { get; set; }
-	}
+    public class CheckBoxViewModel
+    {
+        public string Title { get; set; }
+        public string Value { get; set; }
+    }
 }

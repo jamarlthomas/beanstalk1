@@ -7,9 +7,9 @@ using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Contact;
 using CMS.Mvc.ViewModels.Shared;
+using System;
 using System.Linq;
 using System.Web.Mvc;
-using System;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -22,7 +22,10 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly ITreeNodesProvider _treeNodesProvider;
         private readonly IGenericPageProvider _genericPageProvider;
         private readonly IContactProvider _contactProvider;
+        private readonly IRegionConstantsProvider _regionConstantsProvider;
+        private readonly IEmailProvider _emailProvider;
 
+        
         public ContactController()
         {
             _contactPageProvider = new ContactPageProvider();
@@ -32,6 +35,8 @@ namespace CMS.Mvc.Controllers.Afton
             _treeNodesProvider = new TreeNodesProvider();
             _genericPageProvider = new GenericPageProvider();
             _contactProvider = new ContactProvider();
+            _regionConstantsProvider = new RegionConstantsProvider();
+            _emailProvider = new EmailProvider();
         }
 
         public ContactController(IContactPageProvider contactPageProvider,
@@ -40,7 +45,9 @@ namespace CMS.Mvc.Controllers.Afton
             ISalesOfficeProvider salesOfficeProvider,
             ITreeNodesProvider treeNodesProvider,
             IGenericPageProvider genericPageProvider,
-            IContactProvider contactProvider)
+            IContactProvider contactProvider,
+            IRegionConstantsProvider regionConstantsProvider,
+            IEmailProvider emailProvider)
         {
             _contactPageProvider = contactPageProvider;
             _regionProvider = regionProvider;
@@ -49,6 +56,8 @@ namespace CMS.Mvc.Controllers.Afton
             _treeNodesProvider = treeNodesProvider;
             _genericPageProvider = genericPageProvider;
             _contactProvider = contactProvider;
+            _regionConstantsProvider = regionConstantsProvider;
+            _emailProvider = emailProvider;
         }
 
         [HttpGet]
@@ -62,7 +71,7 @@ namespace CMS.Mvc.Controllers.Afton
             viewModel.NewsletterPrivacyLabel = privacyStatement.Title;
             viewModel.NewsletterPrivacyLink = privacyStatement.DocumentNamePath;
             OnlineMarketingContext.GetCurrentContact();
-            viewModel.EmergencyResponse = MapData<ContactPage, EmergencyResponseViewModel>(page);
+	    viewModel.EmergencyResponse = MapData<RegionConstants, EmergencyResponseViewModel>(_regionConstantsProvider.GetRegionConstants());
             viewModel.Countries = MapData<CountryInfo, ContactCountryViewModel>(_countryProvider.GetCountries());
 
             viewModel.Regions = _regionProvider.GetRegions().Select(region =>
@@ -83,7 +92,30 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index(UpdateContactRequest request)
         {
             _contactProvider.UpdateCurrentContact(request);
+            SendEmail(request);
+
             return Index(true);
+        }
+
+        private void SendEmail(UpdateContactRequest request)
+        {
+            var country = _countryProvider.GetCountryById(request.CountryId);
+            var countryGuid = country.CountryGUID;
+            var salesOffice = _salesOfficeProvider.GetSalesOfficeByCountryGuid(countryGuid);
+            string email;
+
+            if (salesOffice != null)
+            {
+                email = (salesOffice.Parent as Region).Email;
+            }
+            else
+            {
+                var defaultEmailRegion = _treeNodesProvider.GetTreeNodes(_regionConstantsProvider.GetRegionConstants().DefaultEmailRegion).First() as Region;
+                email = defaultEmailRegion.Email;
+            }
+
+            request.CountryName = country.CountryDisplayName;
+            _emailProvider.NotifyContactChanged(request, email);
         }
     }
 }

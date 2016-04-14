@@ -22,6 +22,7 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly IResourceTileProvider _resourceTileProvider;
         private readonly ISolutionBusinessUnitProvider _solutionBusinessUnitProvider;
         private readonly ISelectionFilterPageProvider _selectionFilterPageProvider;
+        private readonly ISolutionProvider _solutionProvider;
 
         public InsightsAndResourcesController()
         {
@@ -31,6 +32,7 @@ namespace CMS.Mvc.Controllers.Afton
             _documentProvider = new DocumentProvider();
             _resourceTileProvider = new ResourceTileProvider();
             _selectionFilterPageProvider = new SelectionFilterPageProvider();
+            _solutionProvider = new SolutionProvider();
         }
 
         public InsightsAndResourcesController(ISolutionBusinessUnitProvider solutionBusinessUnitProvider,
@@ -38,7 +40,8 @@ namespace CMS.Mvc.Controllers.Afton
             IDocumentTypeProvider documentTypeProvider,
             IDocumentProvider documentProvider,
             IResourceTileProvider resourceTileProvider,
-            ISelectionFilterPageProvider selectionFilterPageProvider)
+            ISelectionFilterPageProvider selectionFilterPageProvider,
+            ISolutionProvider solutionProvider)
         {
             _solutionBusinessUnitProvider = solutionBusinessUnitProvider;
             _insightsAndResourcesPageProvider = insightsAndResourcesPageProvider;
@@ -46,6 +49,7 @@ namespace CMS.Mvc.Controllers.Afton
             _documentProvider = documentProvider;
             _resourceTileProvider = resourceTileProvider;
             _selectionFilterPageProvider = selectionFilterPageProvider;
+            _solutionProvider = solutionProvider;
         }
         [PageVisitActivity]
         public ActionResult Index()
@@ -65,8 +69,11 @@ namespace CMS.Mvc.Controllers.Afton
                         return new LinkViewModel
                         {
                             Title = s.Title,
-                            Reference = RouteHelper.GetSelectionFilterUrl(
-                                new SelectionFilterSearchRequest { SBUId = s.NodeID.ToString() }, childSelectionFilterPage != null ? childSelectionFilterPage.NodeAlias : null)
+                            Reference = RouteHelper.GetSelectionFilterUrl(new SelectionFilterSearchRequest 
+                                {
+                                    SolutionsIds = string.Join(",", _solutionProvider.GetSolutionItems(s.NodeAlias).Select(solution => solution.NodeID)) 
+                                }, 
+                                childSelectionFilterPage != null ? childSelectionFilterPage.NodeAlias : null)
                         };
                     }).ToList()
                 }

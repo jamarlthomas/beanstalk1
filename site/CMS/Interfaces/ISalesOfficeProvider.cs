@@ -1,6 +1,7 @@
 ﻿using CMS.DocumentEngine.Types;
 using CMS.Mvc.ViewModels.Shared;
 using System.Collections.Generic;
+using System;
 
 namespace CMS.Mvc.Interfaces
 {
@@ -8,5 +9,6 @@ namespace CMS.Mvc.Interfaces
     {
         List<SalesOffice> GetSalesOffices(string parentName);
         SalesOffice GetPrimarySalesOffice(string parentName);
+        SalesOffice GetSalesOfficeByCountryGuid(Guid countryGuid);
     }
 }

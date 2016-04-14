@@ -7,9 +7,10 @@ using CMS.Mvc.ViewModels.Shared;
 
 namespace CMS.Mvc.ViewModels.SelectionFilter
 {
-	public class SelectionFilterSearchViewModel
-	{
-		public int pagecount { get; set; }
-		public List<SelectionFilterSearchItemViewModel> results { get; set; }
-	}
+    public class SelectionFilterSearchViewModel
+    {
+        public int pagecount { get; set; }
+        public int itemsPerpage { get; set; }
+        public List<SelectionFilterSearchItemViewModel> results { get; set; }
+    }
 }

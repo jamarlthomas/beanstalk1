@@ -17,19 +17,14 @@ namespace CMS.Mvc.Providers
                 ContentHelper.GetDocByName<SelectionFilterPage>(SelectionFilterPage.CLASS_NAME, name);
         }
 
+        public SelectionFilterPage GetDefaultSelectionFilterPage()
+        {
+            return GetSelectionFilterPage(null);
+        }
+
         public SelectionFilterPage GetChildSelectionFilterPage(string parentName)
         {
             return ContentHelper.GetDocChildrenByName<SelectionFilterPage>(SelectionFilterPage.CLASS_NAME, parentName).FirstOrDefault();
         }
-
-		public TreeNode GetSelectionFilterPageParent(string name)
-		{
-			return ContentHelper.GetDocByName<SelectionFilterPage>(SelectionFilterPage.CLASS_NAME, name).Parent;
-		}
-
-		public List<BreadCrumbLinkItemViewModel> GetBreadcrumb(string name)
-		{
-			return ContentHelper.GetBreadcrumb<SelectionFilterPage>(SelectionFilterPage.CLASS_NAME, name);
-		}
     }
 }

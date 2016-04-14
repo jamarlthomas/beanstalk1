@@ -8,6 +8,7 @@
         public string Email { get; set; }
         public string Phone { get; set; }
         public int CountryId { get; set; }
+        public string CountryName { get; set; }
         public string Note { get; set; }
         public string IsSubscribed { get; set; }
     }

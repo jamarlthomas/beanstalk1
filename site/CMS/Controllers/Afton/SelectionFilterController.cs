@@ -2,7 +2,6 @@
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
-using CMS.Mvc.Infrastructure.Enums;
 using CMS.Mvc.Infrastructure.Models;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
@@ -18,8 +17,6 @@ namespace CMS.Mvc.Controllers.Afton
 {
     public class SelectionFilterController : BaseController
     {
-        private readonly IProductProvider _productProvider;
-        private readonly ILookupProvider _lookupProvider;
         private readonly ISelectionFilterPageProvider _selectionFilterPageProvider;
         private readonly IDocumentTypeProvider _documentTypeProvider;
         private readonly ISolutionBusinessUnitProvider _solutionBusinessUnitProvider;
@@ -27,7 +24,9 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly ISelectionFilterSearchProvider _selectionFilterSearchProvider;
         private readonly ITreeNodesProvider _treeNodesProvider;
         private readonly IPageTypeDisplayValueProvider _pageTypeDisplayValueProvider;
-        
+        private readonly IRegionProvider _regionProvider;
+        private readonly ISelectionFilterConstantsProvider _selectionFilterConstantsProvider;
+
 
         public SelectionFilterController()
         {
@@ -38,6 +37,8 @@ namespace CMS.Mvc.Controllers.Afton
             _selectionFilterSearchProvider = new SelectionFilterSearchProvider();
             _treeNodesProvider = new TreeNodesProvider();
             _pageTypeDisplayValueProvider = new PageTypeDisplayValueProvider();
+            _regionProvider = new RegionProvider();
+            _selectionFilterConstantsProvider = new SelectionFilterConstantsProvider();
         }
 
         public SelectionFilterController(ISelectionFilterPageProvider selectionFilterPageProvider,
@@ -46,7 +47,9 @@ namespace CMS.Mvc.Controllers.Afton
             ISolutionProvider solutionProvider,
             ISelectionFilterSearchProvider selectionFilterSearchProvider,
             ITreeNodesProvider treeNodesProvider,
-            IPageTypeDisplayValueProvider pageTypeDisplayValueProvider)
+            IPageTypeDisplayValueProvider pageTypeDisplayValueProvider,
+            IRegionProvider regionProvider,
+            ISelectionFilterConstantsProvider selectionFilterConstantsProvider)
         {
             _selectionFilterPageProvider = selectionFilterPageProvider;
             _documentTypeProvider = documentTypeProvider;
@@ -55,9 +58,11 @@ namespace CMS.Mvc.Controllers.Afton
             _selectionFilterSearchProvider = selectionFilterSearchProvider;
             _treeNodesProvider = treeNodesProvider;
             _pageTypeDisplayValueProvider = pageTypeDisplayValueProvider;
+            _regionProvider = regionProvider;
+            _selectionFilterConstantsProvider = selectionFilterConstantsProvider;
         }
 
-        [Route("filter/regions/{Regions}/documents/{DocumentTypesIds}/SBU/{SBUId}/solutions/{SolutionsIds}")]
+        [Route("filter/regions/{Regions}/documents/{DocumentTypesIds}/SBU/{SBUId}/solutions/{SolutionsIds}/sort/{SortOrder}/page/{PageNumber}/search/{Query?}")]
         public JsonResult SearchAction(SelectionFilterSearchRequest request)
         {
             return Json(Search(request), JsonRequestBehavior.AllowGet);
@@ -66,42 +71,32 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index(string name, SelectionFilterSearchRequest searchRequest)
         {
             var page = _selectionFilterPageProvider.GetSelectionFilterPage(name);
-            var model = new SelectionFilterViewModel
+            var pageConstants = _selectionFilterConstantsProvider.GetSelectionFilterConstants();
+            var model = MapData<SelectionFilterConstants, SelectionFilterViewModel>(pageConstants);
+
+            var defaultPage = _selectionFilterPageProvider.GetDefaultSelectionFilterPage();
+            model.Header = new HeaderViewModel
             {
-                Header = new HeaderViewModel
+                Title = pageConstants.Title,
+                ViewInsightsResourcesLink = defaultPage.DocumentNamePath != page.DocumentNamePath ? defaultPage.DocumentNamePath : null,
+                ViewInsightsResourcesLabel = pageConstants.ViewInsightsResourcesLabel,
+                BreadCrumb = new BreadCrumbViewModel
                 {
-                    Title = page.Title,
-                    BreadCrumb = new BreadCrumbViewModel()
+                    BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(page.DocumentGUID)
                 }
             };
-            model.Header.BreadCrumb.BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(page.DocumentGUID);
-            model.DocumentTypesList = MapData<DocumentType, CheckBoxViewModel>(_documentTypeProvider.GetDocumentTypes());
-            model.SBUList = MapData<SolutionBusinessUnit, SBUFilterViewModel>(_solutionBusinessUnitProvider.GetSolutionBusinessUnits()).Where(w => !string.IsNullOrEmpty(w.Title)).ToList();
+
+            model.SBUList = MapData<SolutionBusinessUnit, SBUFilterViewModel>(_solutionBusinessUnitProvider.GetParentOrDefaultSBUs(page));
             foreach (var sbu in model.SBUList)
             {
-                sbu.SolutionsList = MapData<Solution, CheckBoxViewModel>(_solutionProvider.GetSolutionItems(sbu.Title));
+                sbu.SolutionsList = _solutionProvider.GetSolutionItems(sbu.Title)
+                    .Select(solution => new CheckBoxViewModel { Title = solution.Title, Value = solution.NodeID.ToString() }).ToList();
             }
-            var parent = _selectionFilterPageProvider.GetSelectionFilterPageParent(page.NodeAlias);
-            model.State = parent is SolutionBusinessUnit ?
-                SelectionFilterPageStateEnum.SBU :
-                parent is Solution ? SelectionFilterPageStateEnum.Solution : SelectionFilterPageStateEnum.Base;
-            model.RegionsList = UtilsHelper.GetRegions().Select(s => new CheckBoxViewModel { Title = s }).ToList();
+            model.SBUList = model.SBUList.Where(w => w.SolutionsList != null && w.SolutionsList.Any()).ToList();
 
-            if (searchRequest.SolutionsIds == null)
-            {
-                searchRequest.SBUId = RouteHelper.NULL_VALUE_PLACEHOLDER;
-                searchRequest.SolutionsIds = RouteHelper.NULL_VALUE_PLACEHOLDER;
-                switch (model.State)
-                {
-                    case SelectionFilterPageStateEnum.SBU:
-                        searchRequest.SBUId = parent.NodeID.ToString();
-                        break;
-                    case SelectionFilterPageStateEnum.Solution:
-                        searchRequest.SolutionsIds = parent.NodeID.ToString();
-                        break;
-                }
-            }
-            model.SearchResults = Search(searchRequest);
+            model.RegionsList = _regionProvider.GetRegions().Select(region => new CheckBoxViewModel { Title = region.Title, Value = region.RegionID.ToString() }).ToList();
+            model.DocumentTypesList = _documentTypeProvider.GetDocumentTypes()
+                .Select(documentType => new CheckBoxViewModel { Title = documentType.Title, Value = documentType.NodeID.ToString() }).ToList();
 
             return View("~/Views/Afton/SelectionFilter/Index.cshtml", model);
         }
@@ -111,19 +106,19 @@ namespace CMS.Mvc.Controllers.Afton
             request.Regions = request.Regions == RouteHelper.NULL_VALUE_PLACEHOLDER ? null : request.Regions;
             if (request.DocumentTypesIds == RouteHelper.NULL_VALUE_PLACEHOLDER)
             {
-                request.DocumentTypesIds = MapTreeNodeToIdStr(_documentTypeProvider.GetDocumentTypes());
+                request.DocumentTypesIds = MapTreeNodesToIdStr(_documentTypeProvider.GetDocumentTypes());
             }
 
             if (request.SolutionsIds == RouteHelper.NULL_VALUE_PLACEHOLDER)
             {
                 if (request.SBUId != RouteHelper.NULL_VALUE_PLACEHOLDER)
                 {
-                    request.SolutionsIds = MapTreeNodeToIdStr(_solutionProvider.GetSolutionItems(
+                    request.SolutionsIds = MapTreeNodesToIdStr(_solutionProvider.GetSolutionItems(
                         TreePathUtils.GetAlias(TreePathUtils.GetAliasPathByNodeId(int.Parse(request.SBUId)))));
                 }
                 else
                 {
-                    request.SolutionsIds = MapTreeNodeToIdStr(_solutionProvider.GetSolutionItems());
+                    request.SolutionsIds = MapTreeNodesToIdStr(_solutionProvider.GetSolutionItems());
                 }
             }
 
@@ -135,7 +130,8 @@ namespace CMS.Mvc.Controllers.Afton
             };
             return new SelectionFilterSearchViewModel
             {
-                pagecount = searchResult.PageCount,
+                pagecount = searchResult.ResultsCount, //number of results instead of pages requires by frontend
+                itemsPerpage = int.Parse(ConfigurationManager.AppSettings["SelectionFilterRecordOnPageCount"]),
                 results = searchResult.Items.Select(MapSearchResult).ToList()
             };
         }
@@ -150,15 +146,15 @@ namespace CMS.Mvc.Controllers.Afton
                 Title = searchResultItem.Date ?? node.GetStringValue("Title", string.Empty), //due kentico limitation date field used for title
                 Link = node.DocumentNamePath,
                 Description = searchResultItem.Content,
-                Image = searchResultItem.Image,
+                Image = !string.IsNullOrEmpty(searchResultItem.Image) ? Url.Content(searchResultItem.Image) : null,
                 Type = pageTypeDisplayValue != null ? pageTypeDisplayValue.DisplayValue : string.Empty,
                 PostedDate = (DateTime)node.GetValue("DocumentCreatedWhen"),
-                SBU = node is Product ? MapData<SolutionBusinessUnit, CMS.Mvc.ViewModels.Shared.SBUViewModel>(node.Parent.Parent as SolutionBusinessUnit) : null,
-                Solution = node is Product ? MapData<Solution, SolutionViewModel>(node.Parent as Solution) : null
+                SBU = node.Parent.Parent is SolutionBusinessUnit ? (node.Parent.Parent as SolutionBusinessUnit).Title : null,
+                Solution = node.Parent is Solution ? (node.Parent as Solution).Title : null
             };
         }
 
-        private string MapTreeNodeToIdStr<T>(List<T> treeNodes) where T : TreeNode
+        private string MapTreeNodesToIdStr<T>(List<T> treeNodes) where T : TreeNode
         {
             return string.Join(",", treeNodes.Select(s => s.NodeID));
         }

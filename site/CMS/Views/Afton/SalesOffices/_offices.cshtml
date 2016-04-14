@@ -1,0 +1,16 @@
+﻿@using System.Collections.Generic
+@model List<CMS.Mvc.ViewModels.SalesOffices.SalesOfficeViewModel>
+
+<div id="contactResults">
+    @foreach (var office in Model)
+    {
+        <div class="contactResultItem">
+            <div class="officeName">@office.Title<br></div><br>
+            @Html.Raw(office.Address)<br>
+            @office.CountryName<br><br>
+            <a href="tel:@office.Phone">T: @office.Phone</a><br><br>
+            <strong>Serving the following countries:</strong><br>
+            @string.Join(" | ", office.ServingCountriesList)<br><br>
+        </div>
+    }
+</div>

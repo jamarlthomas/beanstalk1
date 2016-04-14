@@ -1,12 +1,41 @@
-﻿﻿Total pages count: @Model.pagecount <br /> <br />
+﻿@model CMS.Mvc.ViewModels.SelectionFilter.SelectionFilterViewModel
 
-@foreach (var item in Model.results)
-{
-    <p>
-        @item.Title <br />
-        @item.Description <br />
-        @item.Type <br />
-        @item.Link <br />
-    </p>
-}
-<hr />
+<div id="filterHdr">
+    <div id="filterNum">{{ (total_count) }} @Model.ResultsLabel</div>
+    <div id="filterList">
+        @Model.CurrentSelectionLabel:  <span class="hdr">@Model.RegionHeader: </span>{{regionSelected}}
+        / <span class="hdr">@Model.DocumentTypeHeader: </span>{{docTypeSelected}}
+        /  <span class="hdr">@Model.SolutionHeader: </span>{{solutionSelected}}
+    </div>
+    <div id="filterSort">
+        <div class="customSelectC standard">
+            <div class="orgSelect">
+                <select name="sort" ng-model="sortItems">
+                    <option value="Newest">@Model.NewestLabel</option>
+                    <option value="Oldest">@Model.OldestLabel</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="cardsSM_C">
+    <div class="cardsSM threeCol">
+        <a href="{{item.Link}}" ng-cloak dir-paginate="item in prodfilterResults | itemsPerPage: itemsPerpage" total-items="total_count" class="cardC">
+            <div class="cardBtnIndicator"><img src="@Url.Content("~/images/card-btn-indicator.png")"></div>
+            <div style="background-image: url({{item.Image}});" class="cardHdrC">
+                <div ng-hide="item.Image != ''" class="cardHdrTxt">{{item.Title}}</div>
+            </div>
+            <div class="cardTextAreaC">
+                <div class="cardTextArea">
+                    <div ng-hide="item.SBU != ''" class="cardType">{{item.SBU}}</div>
+                    <div ng-show="item.Image != ''" class="cardHdrText">{{item.Title}}</div>
+                    <div ng-hide="item.Solution != ''" class="cardSubHdr">{{item.Solution}}</div>
+                    <div class="cardTxt" ng-bind-html-unsafe="item.Description">{{item.Description}}</div>
+                </div>
+                <div ng-show="item.Date != ''" class="cardDate">{{item.Date}}</div>
+            </div>
+        </a><div ng-hide="dataLoaded()">@Model.LoadingLabel</div>
+        <div ng-show="checkForResults()">@Model.NoItemsLabel</div>
+    </div>
+</div>
+<dir-pagination-controls max-size="7" boundary-links="false" ng-show="dataLoaded()" template-url="@Url.Content("~/Content/Templates/dirPagination.tpl.html")" on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
