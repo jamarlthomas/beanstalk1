@@ -20,7 +20,8 @@ namespace CMS.Mvc.Providers
             contact.ContactEmail = request.Email;
             contact.ContactMobilePhone = request.Phone;
             contact.ContactCountryID = request.CountryId;
-            contact.ContactNotes = string.Format("{0}; {1}, Subscribe {2}", contact.ContactNotes, request.Note, request.IsSubscribed ?? "off");
+            contact.ContactNotes = string.Format("{0}; {1}", contact.ContactNotes, request.Note);
+            contact.SetValue("ContactIsSubscribed", request.IsSubscribed == "on");
             contact.Update();
         }
     }
