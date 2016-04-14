@@ -1,8 +1,11 @@
 ﻿using CMS.Globalization;
 using CMS.Mvc.Infrastructure.Models;
+<<<<<<< Temporary merge branch 1
+=======
 using CMS.OnlineMarketing;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.ActionFilters;
+>>>>>>> Temporary merge branch 2
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Contact;
@@ -24,8 +27,9 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly IContactProvider _contactProvider;
         private readonly IRegionConstantsProvider _regionConstantsProvider;
         private readonly IEmailProvider _emailProvider;
+=======
+>>>>>>> Temporary merge branch 2
 
-        
         public ContactController()
         {
             _contactPageProvider = new ContactPageProvider();
@@ -65,26 +69,18 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index(bool showSubmitSuccesied = false)
         {
             var page = _contactPageProvider.GetContactPage();
+
             var viewModel = MapData<ContactPage, ContactPageViewModel>(page);
 
-            var privacyStatement = _genericPageProvider.GetChildGenericPages(page.NodeAlias).First();
+            var privacyStatement = _genericPageProvider.GetFirstChildGenericPage(page.NodeAlias);
             viewModel.NewsletterPrivacyLabel = privacyStatement.Title;
             viewModel.NewsletterPrivacyLink = privacyStatement.DocumentNamePath;
             OnlineMarketingContext.GetCurrentContact();
 	    viewModel.EmergencyResponse = MapData<RegionConstants, EmergencyResponseViewModel>(_regionConstantsProvider.GetRegionConstants());
             viewModel.Countries = MapData<CountryInfo, ContactCountryViewModel>(_countryProvider.GetCountries());
 
-            viewModel.Regions = _regionProvider.GetRegions().Select(region =>
-            {
-                var primarySalesOffice = _salesOfficeProvider.GetPrimarySalesOffice(region.NodeAlias);
-                var regionViewModel = MapData<SalesOffice, ContactRegionViewModel>(primarySalesOffice);
-                var officeCountry = _countryProvider.GetCountryByGuid(Guid.Parse(primarySalesOffice.Country));
-                regionViewModel.CountryName = officeCountry.CountryDisplayName;
-                regionViewModel.Title = region.Title;
-                regionViewModel.DocumentNamePath = region.DocumentNamePath;
-                regionViewModel.MapImage = region.MapImage;
-                return regionViewModel;
-            }).ToList();
+            viewModel.Regions = _regionProvider.GetRegions().Select(MapRegionToRegionViewModel).ToList();
+
             return View("~/Views/Afton/Contact/Index.cshtml", viewModel);
         }
 
@@ -92,6 +88,7 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index(UpdateContactRequest request)
         {
             _contactProvider.UpdateCurrentContact(request);
+
             SendEmail(request);
 
             return Index(true);
@@ -116,6 +113,18 @@ namespace CMS.Mvc.Controllers.Afton
 
             request.CountryName = country.CountryDisplayName;
             _emailProvider.NotifyContactChanged(request, email);
+        }
+
+        private ContactRegionViewModel MapRegionToRegionViewModel(Region region)
+        {
+            var primarySalesOffice = _salesOfficeProvider.GetPrimarySalesOffice(region.NodeAlias);
+            var regionViewModel = MapData<SalesOffice, ContactRegionViewModel>(primarySalesOffice);
+            var officeCountry = _countryProvider.GetCountryByGuid(Guid.Parse(primarySalesOffice.Country));
+            regionViewModel.CountryName = officeCountry.CountryDisplayName;
+            regionViewModel.Title = region.Title;
+            regionViewModel.DocumentNamePath = region.DocumentNamePath;
+            regionViewModel.MapImage = region.MapImage;
+            return regionViewModel;
         }
     }
 }

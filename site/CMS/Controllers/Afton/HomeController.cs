@@ -35,6 +35,7 @@ namespace CMS.Mvc.Controllers.Afton
             _treeNodesProvider = treeNodesProvider;
             _personalisationProvider = personalisationProvider;
         }
+
         [PageVisitActivity]
         public ActionResult Index()
         {
@@ -44,7 +45,7 @@ namespace CMS.Mvc.Controllers.Afton
                 PrimaryTiles = new List<PersonalizationCardViewModel>()
                 
             };
-            var home = _homeProvider.GetHomeItems().First();
+            var home = _homeProvider.GetHomePage();
             var primaryTilesNodes = _treeNodesProvider.GetTreeNodes(home.ManagedBlocks).Take(3).AsQueryable();
             var primaryTilesModels = new List<PersonalizedTile>();
             primaryTilesNodes.ForEach(item =>

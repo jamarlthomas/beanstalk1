@@ -42,7 +42,7 @@ namespace CMS.Mvc.Controllers.Afton
             return Json(answers.Select(s => new PollSurveySubmitViewModel
             {
                 Title = s.Title,
-                VotesPercentage = 100d*s.Vote/totalVotes
+                VotesPercentage = 100d * s.Vote / totalVotes
             }));
         }
 
@@ -58,57 +58,62 @@ namespace CMS.Mvc.Controllers.Afton
             switch (item.ClassName)
             {
                 case ContactUs.CLASS_NAME:
-                {
-                    return new ContactUsViewModel(item, _countryProvider.GetCountries());
-                }
-                case StayInformed.CLASS_NAME:
-                {
-                    return new StayInformedViewModel(item);
-                }
-                case InsightsAndResourcesWidget.CLASS_NAME:
-                {
-                    return new InsightsAndResourcesWidgetViewModel(item);
-                }
-                case GenericSidebarBlock.CLASS_NAME:
-                {
-                    return new GenericSidebarBlockViewModel(item);
-                }
-                case DocumentSidebarComponent.CLASS_NAME:
-                {
-                    return new DocumentsWidgetViewModel(item);
-                }
-                case PollSurvey.CLASS_NAME:
-                {
-                    var pollSurvey = MapData<PollSurvey, PollSurveyViewModel>((PollSurvey) item);
-                    var answers = _pollSurveyAnswerProvider.GetPollSurveyAnswers(item.NodeAlias);
-                    pollSurvey.Answers = MapData<PollSurveyAnswer, PollSurveyAnswerViewModel>(answers);
-                    pollSurvey.TotalVotes = answers.Sum(s => s.Vote);
-                    return pollSurvey;
-                }
-                case LeftNavigation.CLASS_NAME:
-                {
-                    return new LeftNavigationViewModel
                     {
-                        ClassName = item.ClassName,
-                        Title = baseNode.GetStringValue("Title", baseNode.NodeAlias),
-                        NavItems = _leftNavigationProvider.GetNavItems(baseNode.NodeAliasPath)
-                            .Select(node => new LeftNavigationItemViewModel
-                            {
-                                Title = node.GetStringValue("Title", node.NodeAlias),
-                                Link = node.NodeAliasPath,
-                                SubMenu = node.Children.Select(subNode => new LeftNavigationItemViewModel
+                        return new ContactUsViewModel(item, _countryProvider.GetCountries());
+                    }
+                case StayInformed.CLASS_NAME:
+                    {
+                        return new StayInformedViewModel(item);
+                    }
+                case InsightsAndResourcesWidget.CLASS_NAME:
+                    {
+                        return new InsightsAndResourcesWidgetViewModel(item);
+                    }
+                case GenericSidebarBlock.CLASS_NAME:
+                    {
+                        return new GenericSidebarBlockViewModel(item);
+                    }
+                case DocumentSidebarComponent.CLASS_NAME:
+                    {
+                        return new DocumentsWidgetViewModel(item);
+                    }
+                case PollSurvey.CLASS_NAME:
+                    {
+                        var pollSurvey = MapData<PollSurvey, PollSurveyViewModel>((PollSurvey)item);
+                        var answers = _pollSurveyAnswerProvider.GetPollSurveyAnswers(item.NodeAlias);
+                        pollSurvey.Answers = MapData<PollSurveyAnswer, PollSurveyAnswerViewModel>(answers);
+                        pollSurvey.TotalVotes = answers.Sum(s => s.Vote);
+                        return pollSurvey;
+                    }
+                case LeftNavigation.CLASS_NAME:
+                    {
+                        return new LeftNavigationViewModel
+                        {
+                            ClassName = item.ClassName,
+                            Title = baseNode.GetStringValue("Title", baseNode.NodeName),
+                            NavItems = _leftNavigationProvider.GetNavItems(baseNode.NodeAliasPath)
+                                .Select(node =>
                                 {
-                                    Title = subNode.GetStringValue("Title", node.NodeAlias),
-                                    Link = subNode.NodeAliasPath
+                                    var model = GetLeftNavItemViewModel(node);
+                                    model.SubMenu = node.Children.Select(GetLeftNavItemViewModel);
+                                    return model;
                                 })
-                            })
-                    };
-                }
+                        };
+                    }
                 default:
-                {
-                    return null;
-                }
+                    {
+                        return null;
+                    }
             }
+        }
+
+        private LeftNavigationItemViewModel GetLeftNavItemViewModel(TreeNode node)
+        {
+            return new LeftNavigationItemViewModel
+            {
+                Title = node.GetStringValue("Title", node.NodeName),
+                Link = node.DocumentNamePath
+            };
         }
     }
 }

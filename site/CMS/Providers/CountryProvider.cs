@@ -30,5 +30,10 @@ namespace CMS.Mvc.Providers
         {
             return guids.Select(GetCountryByGuid).Where(w => w != null);
         }
+
+        public IEnumerable<CountryInfo> GetCountries(string guids)
+        {
+            return GetCountries(UtilsHelper.ParseGuids(guids));
+        }
     }
 }

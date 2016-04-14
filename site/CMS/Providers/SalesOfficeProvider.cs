@@ -17,7 +17,7 @@ namespace CMS.Mvc.Providers
 
         public SalesOffice GetPrimarySalesOffice(string parentName)
         {
-            return GetSalesOffices(parentName).First();
+            return GetSalesOffices(parentName).FirstOrDefault();
         }
 
         public SalesOffice GetSalesOfficeByCountryGuid(Guid countryGuid)

@@ -12,6 +12,11 @@ namespace CMS.Mvc.Providers
             return ContentHelper.GetDoc<InsightsResources>(InsightsResources.CLASS_NAME);
         }
 
+        public string GetInsightsResourcesPageTitle()
+        {
+            return GetInsightsResourcesPage().Title;
+        }
+
         public InsightsResources GetInsightsResourcesByName(string name)
         {
             return ContentHelper.GetDocByName<InsightsResources>(InsightsResources.CLASS_NAME, name);

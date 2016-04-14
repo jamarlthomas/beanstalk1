@@ -3,7 +3,12 @@
     @foreach (var item in Model.NewsAndEventsList)
     {
         <div class="newsItem">
-            <div class="newsImgC"><img src="@Url.Content(item.Image)"></div>
+            <div class="newsImgC">
+                @if (!string.IsNullOrEmpty(item.Image))
+                {
+                    <img src="@Url.Content(item.Image)">
+                }
+            </div>
             <div class="newsContentC">
                 <h2>@item.Title</h2>
                 <div class="newsInfo">@Model.PostedLabel @item.Date.ToString("M/d/yy | h:mm tt CST")</div>

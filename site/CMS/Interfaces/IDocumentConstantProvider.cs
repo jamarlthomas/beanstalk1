@@ -5,6 +5,6 @@ namespace CMS.Mvc.Interfaces
 {
     public interface IDocumentConstantProvider
     {
-        List<DocumentConstant> GetDocumentConstants();
+        DocumentConstant GetDocumentConstants();
     }
 }

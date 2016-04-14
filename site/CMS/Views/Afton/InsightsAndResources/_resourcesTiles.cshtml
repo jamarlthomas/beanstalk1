@@ -8,15 +8,13 @@
                     <img src="@Url.Content("~/images/card-btn-indicator.png")">
                 </div>
                 <div class="cardHdrC">
-                    <div class="cardHdr">@tile.Title</div>
+                    <div class="cardHdrTxt">@tile.Title</div>
                 </div>
                 <div class="cardTextAreaC">
                     <div class="cardTextArea">
-                        <div class="cardTxt">@Html.Raw(tile.Description)
-                        </div>
+                        <div class="cardTxt">@Html.Raw(tile.Description)</div>
                     </div>
                 </div>
-                
             </a>
         }
     </div>

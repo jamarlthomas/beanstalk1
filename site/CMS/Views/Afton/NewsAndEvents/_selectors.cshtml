@@ -7,7 +7,7 @@
                 <select name="categories">
                     @foreach (var type in Model.Types)
                     {
-                        <option value="@type">@type</option>
+                        <option value="@type.Split('&')[0]">@type</option>
                     }
                 </select>
             </div>

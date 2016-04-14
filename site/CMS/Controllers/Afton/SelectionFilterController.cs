@@ -65,75 +65,47 @@ namespace CMS.Mvc.Controllers.Afton
         [Route("filter/regions/{Regions}/documents/{DocumentTypesIds}/SBU/{SBUId}/solutions/{SolutionsIds}/sort/{SortOrder}/page/{PageNumber}/search/{Query?}")]
         public JsonResult SearchAction(SelectionFilterSearchRequest request)
         {
-            return Json(Search(request), JsonRequestBehavior.AllowGet);
+            request = FillRequestWithDefaultValues(request);
+
+            var searchResult = _selectionFilterSearchProvider.PerformSearch(request);
+
+            SelectionFilterSearchViewModel result;
+            if (searchResult.PageCount == 0)
+            {
+                result = new SelectionFilterSearchViewModel();
+            }
+            else
+            {
+                result = new SelectionFilterSearchViewModel
+                {
+                    pagecount = searchResult.ResultsCount, //number of results instead of pages requires by frontend
+                    itemsPerpage = int.Parse(ConfigurationManager.AppSettings["SelectionFilterRecordOnPageCount"]),
+                    results = searchResult.Items.Select(MapSearchResult).ToList()
+                };
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Index(string name, SelectionFilterSearchRequest searchRequest)
+        public ActionResult Index(string name)
         {
             var page = _selectionFilterPageProvider.GetSelectionFilterPage(name);
             var pageConstants = _selectionFilterConstantsProvider.GetSelectionFilterConstants();
             var model = MapData<SelectionFilterConstants, SelectionFilterViewModel>(pageConstants);
 
-            var defaultPage = _selectionFilterPageProvider.GetDefaultSelectionFilterPage();
-            model.Header = new HeaderViewModel
-            {
-                Title = pageConstants.Title,
-                ViewInsightsResourcesLink = defaultPage.DocumentNamePath != page.DocumentNamePath ? defaultPage.DocumentNamePath : null,
-                ViewInsightsResourcesLabel = pageConstants.ViewInsightsResourcesLabel,
-                BreadCrumb = new BreadCrumbViewModel
-                {
-                    BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(page.DocumentGUID)
-                }
-            };
+            model.Header = GetHeaderViewModel(pageConstants, page);
 
             model.SBUList = MapData<SolutionBusinessUnit, SBUFilterViewModel>(_solutionBusinessUnitProvider.GetParentOrDefaultSBUs(page));
             foreach (var sbu in model.SBUList)
             {
-                sbu.SolutionsList = _solutionProvider.GetSolutionItems(sbu.Title)
-                    .Select(solution => new CheckBoxViewModel { Title = solution.Title, Value = solution.NodeID.ToString() }).ToList();
+                sbu.SolutionsList = _solutionProvider.GetSolutions(sbu.Title).Select(MapTreeNodeToCheckBox).ToList();
             }
             model.SBUList = model.SBUList.Where(w => w.SolutionsList != null && w.SolutionsList.Any()).ToList();
 
             model.RegionsList = _regionProvider.GetRegions().Select(region => new CheckBoxViewModel { Title = region.Title, Value = region.RegionID.ToString() }).ToList();
-            model.DocumentTypesList = _documentTypeProvider.GetDocumentTypes()
-                .Select(documentType => new CheckBoxViewModel { Title = documentType.Title, Value = documentType.NodeID.ToString() }).ToList();
+            model.DocumentTypesList = _documentTypeProvider.GetDocumentTypes().Select(MapTreeNodeToCheckBox).ToList();
 
             return View("~/Views/Afton/SelectionFilter/Index.cshtml", model);
-        }
-
-        private SelectionFilterSearchViewModel Search(SelectionFilterSearchRequest request)
-        {
-            request.Regions = request.Regions == RouteHelper.NULL_VALUE_PLACEHOLDER ? null : request.Regions;
-            if (request.DocumentTypesIds == RouteHelper.NULL_VALUE_PLACEHOLDER)
-            {
-                request.DocumentTypesIds = MapTreeNodesToIdStr(_documentTypeProvider.GetDocumentTypes());
-            }
-
-            if (request.SolutionsIds == RouteHelper.NULL_VALUE_PLACEHOLDER)
-            {
-                if (request.SBUId != RouteHelper.NULL_VALUE_PLACEHOLDER)
-                {
-                    request.SolutionsIds = MapTreeNodesToIdStr(_solutionProvider.GetSolutionItems(
-                        TreePathUtils.GetAlias(TreePathUtils.GetAliasPathByNodeId(int.Parse(request.SBUId)))));
-                }
-                else
-                {
-                    request.SolutionsIds = MapTreeNodesToIdStr(_solutionProvider.GetSolutionItems());
-                }
-            }
-
-            var searchResult = _selectionFilterSearchProvider.PerformSearch(request);
-
-            if (searchResult.PageCount == 0) return new SelectionFilterSearchViewModel
-            {
-                results = new List<SelectionFilterSearchItemViewModel>()
-            };
-            return new SelectionFilterSearchViewModel
-            {
-                pagecount = searchResult.ResultsCount, //number of results instead of pages requires by frontend
-                itemsPerpage = int.Parse(ConfigurationManager.AppSettings["SelectionFilterRecordOnPageCount"]),
-                results = searchResult.Items.Select(MapSearchResult).ToList()
-            };
         }
 
         private SelectionFilterSearchItemViewModel MapSearchResult(SearchResultItem searchResultItem)
@@ -157,6 +129,49 @@ namespace CMS.Mvc.Controllers.Afton
         private string MapTreeNodesToIdStr<T>(List<T> treeNodes) where T : TreeNode
         {
             return string.Join(",", treeNodes.Select(s => s.NodeID));
+        }
+
+        private HeaderViewModel GetHeaderViewModel(SelectionFilterConstants pageConstants, SelectionFilterPage page)
+        {
+            var defaultPage = _selectionFilterPageProvider.GetDefaultSelectionFilterPage();
+            return new HeaderViewModel
+            {
+                Title = pageConstants.Title,
+                ViewInsightsResourcesLink = defaultPage.DocumentNamePath != page.DocumentNamePath ? defaultPage.DocumentNamePath : null,
+                ViewInsightsResourcesLabel = pageConstants.ViewInsightsResourcesLabel,
+                BreadCrumb = new BreadCrumbViewModel
+                {
+                    BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(page.DocumentGUID)
+                }
+            };
+        }
+
+        private CheckBoxViewModel MapTreeNodeToCheckBox(TreeNode node)
+        {
+            return new CheckBoxViewModel { Title = node.GetStringValue("Title", node.NodeAlias), Value = node.NodeID.ToString() };
+        }
+
+        private SelectionFilterSearchRequest FillRequestWithDefaultValues(SelectionFilterSearchRequest request)
+        {
+            request.Regions = request.Regions != RouteHelper.NULL_VALUE_PLACEHOLDER ? request.Regions : null;
+            if (request.DocumentTypesIds == RouteHelper.NULL_VALUE_PLACEHOLDER)
+            {
+                request.DocumentTypesIds = MapTreeNodesToIdStr(_documentTypeProvider.GetDocumentTypes());
+            }
+
+            if (request.SolutionsIds == RouteHelper.NULL_VALUE_PLACEHOLDER)
+            {
+                if (request.SBUId != RouteHelper.NULL_VALUE_PLACEHOLDER)
+                {
+                    request.SolutionsIds = MapTreeNodesToIdStr(_solutionProvider.GetSolutions(
+                        TreePathUtils.GetAlias(TreePathUtils.GetAliasPathByNodeId(int.Parse(request.SBUId)))));
+                }
+                else
+                {
+                    request.SolutionsIds = MapTreeNodesToIdStr(_solutionProvider.GetSolutions());
+                }
+            }
+            return request;
         }
     }
 }

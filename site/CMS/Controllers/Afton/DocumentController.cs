@@ -38,26 +38,20 @@ namespace CMS.Mvc.Controllers.Afton
             _documentConstantProvider = documentConstantProvider;
             _treeNodesProvider = treeNodesProvider;
         }
+
         [PageVisitActivity]
         public ActionResult Index(string DocumentName)
         {
             var document = _documentProvider.GetDocument(DocumentName);
-            if (document == null) return null;
 
             var documentViewModel = MapData<Document, DocumentViewModel>(document);
 
-            if (documentViewModel.DocumentPublishFrom == default(DateTime))
-            {
-                documentViewModel.DocumentPublishFrom = (DateTime)document.GetValue("DocumentCreatedWhen");
-            }
-
-            documentViewModel.DocumentPublishFrom = UtilsHelper.ConvertToCST(documentViewModel.DocumentPublishFrom);
-            documentViewModel.Constant = MapData<DocumentConstant, DocumentConstantViewModel>(_documentConstantProvider.GetDocumentConstants().First());
+            documentViewModel.Constant = MapData<DocumentConstant, DocumentConstantViewModel>(_documentConstantProvider.GetDocumentConstants());
             
             return View("~/Views/Afton/Document/Index.cshtml", new DocumentPageViewModel()
             {
                 Document = documentViewModel,
-                MenuItemTitle = _insightsAndResourcesPageProvider.GetInsightsResourcesPage().Title,
+                MenuItemTitle = _insightsAndResourcesPageProvider.GetInsightsResourcesPageTitle(),
                 BreadCrumb = new BreadCrumbViewModel
                 {
                     BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(document.DocumentGUID)
