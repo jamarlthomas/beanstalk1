@@ -1,11 +1,9 @@
 ﻿using CMS.Globalization;
 using CMS.Mvc.Infrastructure.Models;
-<<<<<<< Temporary merge branch 1
-=======
+
 using CMS.OnlineMarketing;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.ActionFilters;
->>>>>>> Temporary merge branch 2
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Contact;
@@ -27,8 +25,7 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly IContactProvider _contactProvider;
         private readonly IRegionConstantsProvider _regionConstantsProvider;
         private readonly IEmailProvider _emailProvider;
-=======
->>>>>>> Temporary merge branch 2
+
 
         public ContactController()
         {
