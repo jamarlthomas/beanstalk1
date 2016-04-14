@@ -1,4 +1,4 @@
-﻿using CMS.Mvc.ViewModels.DocumentsViewModel;
+﻿using CMS.Mvc.ViewModels.DocumentBase;
 using System;
 
 namespace CMS.Mvc.ViewModels.Shared

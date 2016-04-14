@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -106,10 +106,6 @@
     </Reference>
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
-    </Reference>
-    <Reference Include="CMSApp_MVC, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Bin\CMSApp_MVC.dll</HintPath>
     </Reference>
     <Reference Include="EmitMapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EmitMapper.1.0.0\lib\EmitMapper.dll</HintPath>
@@ -231,13 +227,17 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
     <Compile Include="Controllers\Afton\ContactController.cs" />
+    <Compile Include="Controllers\Afton\DocumentBaseController.cs" />
+    <Compile Include="Controllers\Afton\BlogPostController.cs" />
+    <Compile Include="Controllers\Afton\NewsController.cs" />
     <Compile Include="Controllers\Afton\FAQController.cs" />
     <Compile Include="Controllers\Afton\PersonalizationController.cs" />
+    <Compile Include="Interfaces\INewsProvider.cs" />
     <Compile Include="Interfaces\IPersonalizationProvider.cs" />
     <Compile Include="Models\Afton\Shared\NewsAndEventsPage.cs" />
-    
     <Compile Include="Models\Afton\Shared\Personalization\PersonalizationSettings.cs" />
     <Compile Include="Models\Afton\Shared\Personalization\PersonalizedTile.cs" />
     <Compile Include="Models\ExtendedModels\Event.cs" />
@@ -344,6 +344,7 @@
     </Compile>
     <Compile Include="Providers\BlogPostProvider.cs" />
     <Compile Include="Providers\ATCToolsPageProvider.cs" />
+    <Compile Include="Providers\NewsProvider.cs" />
     <Compile Include="Providers\EmailProvider.cs" />
     <Compile Include="Providers\ContactProvider.cs" />
     <Compile Include="Providers\SelectionFilterConstantsProvider.cs" />
@@ -454,7 +455,8 @@
     <Compile Include="ViewModels\Contact\ContactPageViewModel.cs" />
     <Compile Include="ViewModels\Contact\CountryViewModel.cs" />
     <Compile Include="ViewModels\Contact\ContactRegionViewModel.cs" />
-    <Compile Include="ViewModels\Document\DocumentConstantViewModel.cs" />
+    <Compile Include="ViewModels\DocumentBase\DocumentBaseViewModel.cs" />
+    <Compile Include="ViewModels\DocumentBase\DocumentConstantViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQPageViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQTopicViewModel.cs" />
     <Compile Include="ViewModels\GlobalSearch\ResultItemViewModel.cs" />
@@ -484,7 +486,7 @@
     <Compile Include="ViewModels\Shared\SidebarComponents\LeftNavigationViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\PollSurveyViewModel.cs" />
     <Compile Include="ViewModels\SBU\AnchorMenuItemViewModel.cs" />
-    <Compile Include="ViewModels\Document\DocumentPageViewModel.cs" />
+    <Compile Include="ViewModels\DocumentBase\DocumentBasePageViewModel.cs" />
     <Compile Include="ViewModels\InsightsAndResources\InsightsListingItemViewModel.cs" />
     <Compile Include="ViewModels\InsightsAndResources\InsightsAndResourcesViewModel.cs" />
     <Compile Include="ViewModels\Shared\LinkViewModel.cs" />
@@ -679,8 +681,8 @@
     <Content Include="Views\Afton\SelectionFilter\_SBUCheckBoxes.cshtml" />
     <Content Include="css\maps\print.min.css.map" />
     <Content Include="Views\Afton\Shared\Sidebar\_sideBar.cshtml" />
-    <Content Include="Views\Afton\Document\Index.cshtml" />
-    <Content Include="Views\Afton\Document\_header.cshtml" />
+    <Content Include="Views\Afton\DocumentBase\Index.cshtml" />
+    <Content Include="Views\Afton\DocumentBase\_header.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_documentWidget.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_pollSurvey.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_leftNavigation.cshtml" />
@@ -728,8 +730,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Infrastructure\Enums\" />
-    <Folder Include="Infrastructure\Extentions\" />
     <Folder Include="Pdf\Temp\" />
     <Folder Include="Views\Personalization\" />
   </ItemGroup>
