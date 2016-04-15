@@ -1,6 +1,10 @@
-﻿using CMS.Mvc.Infrastructure.Models;
+﻿using CMS.DataEngine;
+using CMS.Mvc.Infrastructure.Models;
 using CMS.Mvc.Interfaces;
 using CMS.OnlineMarketing;
+using System;
+using System.Data;
+using System.Linq;
 
 namespace CMS.Mvc.Providers
 {
@@ -9,6 +13,13 @@ namespace CMS.Mvc.Providers
         public ContactInfo GetCurrentContact()
         {
             return OnlineMarketingContext.GetCurrentContact();
+        }
+
+        public string GetContactNameByGuid(Guid guid)
+        {
+            var dataSet = ModuleCommands.OnlineMarketingGetContacts(string.Format("ContactGUID = '{0}'", guid), string.Empty, 1, "ContactFirstName, ContactLastName");
+            var contact = dataSet.Tables[0].AsEnumerable().FirstOrDefault();
+            return string.Format("{0} {1}", contact.Field<string>("ContactFirstName"), contact.Field<string>("ContactLastName"));
         }
 
         public void UpdateCurrentContact(UpdateContactRequest request)

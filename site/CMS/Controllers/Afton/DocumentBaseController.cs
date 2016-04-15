@@ -43,7 +43,8 @@ namespace CMS.Mvc.Controllers.Afton
                 SideBar = new SidebarViewModel
                 {
                     Items = MapSidebar(_sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(node.GetStringValue("SidebarItems", string.Empty))), node)
-                }
+                },
+                DocumentGuid = node.DocumentGUID
             });
         }
     }

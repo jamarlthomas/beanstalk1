@@ -1,4 +1,5 @@
-﻿using CMS.Mvc.ViewModels.Shared;
+﻿using System;
+using CMS.Mvc.ViewModels.Shared;
 using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 
 namespace CMS.Mvc.ViewModels.DocumentBase
@@ -9,5 +10,6 @@ namespace CMS.Mvc.ViewModels.DocumentBase
         public string MenuItemTitle { get; set; }
         public BreadCrumbViewModel BreadCrumb { get; set; }
         public SidebarViewModel SideBar { get; set; }
+        public Guid DocumentGuid { get; set; }
     }
 }
