@@ -63,7 +63,7 @@ namespace CMS.Mvc.ActionFilters
         }
         private void AddActivity(string activityType, string activityTitleTemplate)
         {
-            if (NodeId != 0 || !string.IsNullOrWhiteSpace(Path))
+            if (CurrentContact != null && (NodeId != 0 || !string.IsNullOrWhiteSpace(Path)))
             {
 
                 var activity = new ActivityInfo()
