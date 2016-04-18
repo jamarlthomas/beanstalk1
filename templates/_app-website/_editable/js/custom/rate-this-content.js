@@ -9,6 +9,8 @@ $( document ).ready(function() {
             
         var helpfulValue = $(this).val();
         
+        var guidValue = $(this).closest("form").attr("data-guid");
+        
         //open popup
         $("#ratePopup").fadeIn(500, function(){
         
@@ -21,7 +23,7 @@ $( document ).ready(function() {
         var url = "http://localhost:22062/rate-this-content"
         
         
-        $.getJSON( url, { init: helpfulValue } )
+        $.getJSON( url, { init: helpfulValue, guid: guidValue } )
           .done(function( data ) {
             storeRateID = data.Rating[0].id;            
           })
