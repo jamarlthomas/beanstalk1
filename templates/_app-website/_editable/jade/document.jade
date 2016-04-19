@@ -40,30 +40,30 @@ html(lang='en')
                         br
 
                         div(id="downloadDocsC" class="noPrintDisplay")
-                            a(href="#" class="downloadBtn") Download Product Data Sheet 
+                            a(href="#" class="downloadBtn" target="_blank") Download Product Data Sheet 
                                 span(class="icon-download")
 
-                            div(id="translate-doc") Translation Available: 
-                                a(href="#" id="selDocLang") Select Language 
+                            div(id="translate-doc") Select Language: 
+                                a(href="#" id="selDocLang") 
                                     span(class="icon-arrow")
 
                                 ul(id="langDocDropDown" style="display: none;")
                                     li(id="langEnglish")
-                                        a(href="#") English
+                                        a(href="#" data-download="http://google.com") English
                                     li(id="langChinese")
-                                        a(href="#") 简体中文                                
-                                    li(id="langGerman")
-                                        a(href="#") German
+                                        a(href="#" data-download="http://yahoo.com") 简体中文                                
+                                    li(id="langGerman" class="selected")
+                                        a(href="#" data-download="http://aol.com") German
                                     li(id="langJapanese")
-                                        a(href="#") 日本語
+                                        a(href="#" data-download="http://facebook.com") 日本語
                                     li(id="langRussian")
-                                        a(href="#") Russian
+                                        a(href="#" data-download="http://bing.com") Russian
                                     li(id="langSpanish")
-                                        a(href="#") Español
+                                        a(href="#" data-download="http://msn.com") Español
                                     li(id="langPortugues")
-                                        a(href="#") Português
+                                        a(href="#" data-download="http://stackoverflow.com") Português
                                     li(id="langFrench")
-                                        a(href="#") French
+                                        a(href="#" data-download="http://gmail.com") French
                                         
                         div(id="socialC2" class="noPrintDisplay")
                             a(class="addthis_button_compact"): span(class="icon-share")
