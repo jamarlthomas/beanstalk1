@@ -17,7 +17,7 @@ namespace CMS.Mvc.Controllers.Afton
             AuxiliryViewModel model= new AuxiliryViewModel();
             model.Home = new AuxiliaryHyperlink("Home", "");
             model.SBUs = ContentHelper.GetDocs<SolutionBusinessUnit>(SolutionBusinessUnit.CLASS_NAME)
-                .Where(sbu=>sbu.Parent.NodeAlias == "SBUs" || sbu.Parent.NodeAlias == "")
+                .Where(sbu=>sbu.Parent.NodeAlias == "Home")
                 .Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentNamePath)).ToList();
             model.Solutions = ContentHelper.GetDocs<Solution>(Solution.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentNamePath)).ToList();
             model.Products = ContentHelper.GetDocs<Product>(Product.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentNamePath)).ToList();
