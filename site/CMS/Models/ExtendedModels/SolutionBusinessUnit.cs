@@ -8,7 +8,7 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                var rt = RouteHelper.GetRoute("Solution");
+                var rt = RouteHelper.GetRoute("SBU");
                 return (rt != null)
                     ? rt.Route.Replace("{SBUName}", NodeAlias)
                     :string.Format("/SBU/Index/{0}", this.NodeAlias);
