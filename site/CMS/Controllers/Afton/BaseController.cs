@@ -25,5 +25,9 @@ namespace CMS.Mvc.Controllers.Afton
         {
             return mapSourceCollection.Select(item => _objectMapper.Map<TSourceType, TDestinationType>(item)).ToList();
         }
+        internal string GetCurrentCulture()
+        {
+            return Localization.LocalizationContext.CurrentCulture.CultureCode;
+        }
     }
 }
