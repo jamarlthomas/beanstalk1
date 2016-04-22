@@ -2,6 +2,7 @@
 using System.Web;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.ViewModels.Product;
+using CMS.Mvc.ViewModels.Shared;
 using CMS.Mvc.ViewModels.Shared.Personalization;
 using Infrastructure.Mapper;
 using ProductViewModel = CMS.Mvc.ViewModels.Product.ProductViewModel;
@@ -14,6 +15,8 @@ namespace CMS.Mvc.Infrastructure
 
         protected override void Objects()
         {
+            CreateMap<GenericPage, DocumentViewModel>();
+
             CreateMap<Product, ProductViewModel>()
                 .ForMember(s=>new HtmlString(s.Content), d=>d.DefaultContent);
             CreateMap<Product, DownloadWidgetViewModel>();

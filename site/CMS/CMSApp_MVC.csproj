@@ -231,6 +231,10 @@
     <Compile Include="Controllers\Afton\BaseController.cs" />
     <Compile Include="Controllers\Afton\ContactController.cs" />
     <Compile Include="Controllers\Afton\FAQController.cs" />
+    <Compile Include="Controllers\Afton\GenericController.cs" />
+    <Compile Include="Controllers\Afton\LogisticsAndSupplyController.cs" />
+    <Compile Include="ViewModels\Generic\GenericPageViewModel.cs" />
+    <Compile Include="Providers\GenericProvider.cs" />
     <Compile Include="Controllers\Afton\PersonalizationController.cs" />
     <Compile Include="Interfaces\IPersonalizationProvider.cs" />
     <Compile Include="Models\Afton\Shared\NewsAndEventsPage.cs" />
@@ -342,6 +346,7 @@
     <Compile Include="Providers\ATCToolsPageProvider.cs" />
     <Compile Include="Providers\EmailProvider.cs" />
     <Compile Include="Providers\ContactProvider.cs" />
+    <Compile Include="Providers\IGenericProvider.cs" />
     <Compile Include="Providers\SelectionFilterConstantsProvider.cs" />
     <Compile Include="Providers\GlobalSearchPageProvider.cs" />
     <Compile Include="Providers\GenericPageProvider.cs" />
@@ -716,6 +721,8 @@
     <Content Include="Views\Afton\Shared\NewsEventsAndBlog\_sortSelector.cshtml" />
     <Content Include="Views\Afton\SalesOffices\Index.cshtml" />
     <Content Include="Views\Afton\SalesOffices\_offices.cshtml" />
+    <Content Include="Views\Afton\Generic\Index.cshtml" />
+    <Content Include="Views\Afton\Generic\_header.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -725,6 +732,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pdf\Temp\" />
+    <Folder Include="Views\Generic\" />
+    <Folder Include="Views\LogisticsAndSupply\" />
     <Folder Include="Views\Personalization\" />
   </ItemGroup>
   <ItemGroup>
