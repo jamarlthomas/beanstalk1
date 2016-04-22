@@ -1,4 +1,7 @@
-﻿@foreach (var region in Model.Regions)
+﻿@using CMS.Mvc.ViewModels.Contact
+@model ContactPageViewModel
+
+@foreach (var region in Model.Regions)
 {
     <div class="salesOfficesC">
         <a href="@region.DocumentNamePath">

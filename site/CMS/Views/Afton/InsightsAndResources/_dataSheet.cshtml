@@ -1,4 +1,6 @@
-﻿<h2 class="txtPaddingTop">@Model.Title</h2>
+﻿@using CMS.Mvc.ViewModels.InsightsAndResources
+@model InsightsListingItemViewModel
+<h2 class="txtPaddingTop">@Model.Title</h2>
 <ul>
     @foreach (var link in Model.Links)
     {

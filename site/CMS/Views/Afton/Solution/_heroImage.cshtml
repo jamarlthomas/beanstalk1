@@ -1,4 +1,6 @@
-﻿@if (!string.IsNullOrWhiteSpace(Model))
+﻿@model string
+
+@if (!string.IsNullOrWhiteSpace(Model))
 {
     <div style="background-image: url(@Url.Content(Model))" class="headerImgC"></div>
 }
