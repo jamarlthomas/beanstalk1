@@ -56,6 +56,7 @@ namespace CMS.Mvc.Controllers.Afton
         {
             return new DownloadWidgetViewModel()
             {
+                CurrentLanguageId = base.GetCurrentCulture(),
                 Title = product.Title,
                 //TileImage = product.TileImage,
                 Description = product.Description,
