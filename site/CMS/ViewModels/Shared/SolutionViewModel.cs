@@ -17,6 +17,7 @@ namespace CMS.Mvc.ViewModels.Shared
         public string Description { get; set; }
         public string HomeImage { get; set; }
         public string ParentName { get; set; }
+        public Guid DocumentGUID { get; set; }
         public List<ProductViewModel> Products { get; set; }
         public BreadCrumbViewModel BreadCrumb { get; set; }
         public SidebarViewModel SideBar { get; set; }

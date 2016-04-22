@@ -18,7 +18,7 @@ namespace CMS.Mvc.Providers
             var rateContent = new RateContent
             {
                 Title = "Rate this content",
-                RatedDocument = request.documentGuid,
+                RatedDocument = request.guid,
                 RatedContact = OnlineMarketingContext.GetCurrentContact().ContactGUID,
                 IsHelpful = string.Compare(request.init, yesLabel, StringComparison.CurrentCultureIgnoreCase) == 0
             };

@@ -8,6 +8,6 @@ namespace CMS.Mvc.Infrastructure.Models
     public class RateContentRequest
     {
         public string init { get; set; }
-        public Guid documentGuid { get; set; }
+        public Guid guid { get; set; }
     }
 }

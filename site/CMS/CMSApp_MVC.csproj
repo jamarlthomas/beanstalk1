@@ -228,6 +228,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
+    <Compile Include="ViewModels\Auxiliary\AuxiliaryHyperlink.cs" />
+    <Compile Include="ViewModels\Auxiliary\AuxiliryViewModel.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
     <Compile Include="Controllers\Afton\ContactController.cs" />
     <Compile Include="Controllers\Afton\DocumentBaseController.cs" />
@@ -741,6 +743,8 @@
     <Content Include="Views\Afton\RateContent\_widget.cshtml" />
     <Content Include="Views\Afton\Auxiliary\Index.cshtml" />
     <Content Include="Views\Afton\RateContent\Index.cshtml" />
+    <Content Include="Views\Afton\Auxiliary\_linksList.cshtml" />
+    <Content Include="Views\Afton\Auxiliary\_link.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -750,7 +754,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pdf\Temp\" />
-    <Folder Include="Views\Personalization\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CorporateSite\News\Detail.cshtml" />

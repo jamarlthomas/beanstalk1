@@ -2,7 +2,7 @@
 @model RateContentWidgetViewModel
 
 <div id="rateContentC" class="padBtm">
-    <form id="rateContent">
+    <form id="rateContent" data-guid="@Model.DocumentGuid">
         @Model.Question
         <div id="answers">
             <input type="button" value="@Model.YesLabel" class="rateBtn">

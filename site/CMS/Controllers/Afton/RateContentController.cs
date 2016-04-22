@@ -89,7 +89,11 @@ namespace CMS.Mvc.Controllers.Afton
         {
             var yesLabel = _rateContentConstantsProvider.GetRateContentConstants().YesLabel;
             var id = _rateContentProvider.SaveRateContent(Request, _rateContentFolderProvider.GetRateContentFolder(), yesLabel);
-            return Json(new { id = id }, JsonRequestBehavior.AllowGet);
+            var result = new
+            {
+				Rating = new[] { new { id } }
+	        };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

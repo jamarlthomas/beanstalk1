@@ -1,7 +1,16 @@
 $( document ).ready(function() {
     
-    var langStatus = "closed"
+    //on load upate selected language label 
+    var findSelectedLang = $("#langDocDropDown").find(".selected a").text()
+    findSelectedLang = findSelectedLang + "<span class='icon-arrow'></span>"
+    $("#selDocLang").html(findSelectedLang)
     
+    //on load upate selected language & download link
+    var findSelectedLangLink = $("#langDocDropDown").find(".selected a").attr("data-download")
+    $("#downloadDocsC .downloadBtn").attr("href", findSelectedLangLink)
+    
+    
+    var langStatus = "closed"
     
     //function to open language
     function openLang() {
@@ -12,7 +21,7 @@ $( document ).ready(function() {
     }
     
     
-    //function to open language
+    //function to close language
     function closeLang() {
         
         $("#langDocDropDown").stop().fadeOut(500)
@@ -27,7 +36,6 @@ $( document ).ready(function() {
         //Not Mobile
         if(!isMobile.any()) {
             openLang();
-        console.log("hit")
         }
     }, function() {
         closeLang(); 
@@ -48,6 +56,26 @@ $( document ).ready(function() {
         }else {
             closeLang();             
         }
+        
+    });
+    
+    
+    
+    //Click on language document
+    $( "#translate-doc #langDocDropDown a").click(function(e) {
+        e.preventDefault();
+        
+        //get the URL from document language selected
+        var getURL = $(this).attr("data-download")
+        
+        //update download language label
+        var findSelectedLang = $(this).text();
+        findSelectedLang = findSelectedLang + "<span class='icon-arrow'></span>"
+        $("#selDocLang").html(findSelectedLang);
+        
+        //update download document link
+        $("#downloadDocsC .downloadBtn").attr("href", getURL)
+        
         
     });
     
