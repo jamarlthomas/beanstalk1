@@ -232,12 +232,26 @@
     <Compile Include="ViewModels\Auxiliary\AuxiliryViewModel.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
     <Compile Include="Controllers\Afton\ContactController.cs" />
+    <Compile Include="Controllers\Afton\DocumentBaseController.cs" />
+    <Compile Include="Controllers\Afton\BlogPostController.cs" />
+    <Compile Include="Controllers\Afton\RateContentController.cs" />
+    <Compile Include="Controllers\Afton\NewsController.cs" />
     <Compile Include="Controllers\Afton\FAQController.cs" />
     <Compile Include="Controllers\Afton\PersonalizationController.cs" />
+    <Compile Include="Infrastructure\Models\RateContentCommentRequest.cs" />
+    <Compile Include="Infrastructure\Models\RateContentRequest.cs" />
+    <Compile Include="Interfaces\INewsProvider.cs" />
     <Compile Include="Interfaces\IPersonalizationProvider.cs" />
+    <Compile Include="Interfaces\IRateContentFolderProvider.cs" />
+    <Compile Include="Interfaces\IRateContentProvider.cs" />
+    <Compile Include="Interfaces\IRateContentConstantsProvider.cs" />
+    <Compile Include="Models\Afton\RateContent\RateContent.cs" />
+    <Compile Include="Models\Afton\RateContent\RateContentConstants.cs" />
+    <Compile Include="Models\Afton\RateContent\RateThisContentFolder.cs" />
     <Compile Include="Models\Afton\Shared\NewsAndEventsPage.cs" />
     <Compile Include="Models\Afton\Shared\Personalization\PersonalizationSettings.cs" />
     <Compile Include="Models\Afton\Shared\Personalization\PersonalizedTile.cs" />
+    <Compile Include="Models\ExtendedModels\RateContent.cs" />
     <Compile Include="Models\ExtendedModels\Event.cs" />
     <Compile Include="Models\ExtendedModels\GenericPage.cs" />
     <Compile Include="Models\ExtendedModels\PersonalizedTile.cs" />
@@ -342,6 +356,10 @@
     </Compile>
     <Compile Include="Providers\BlogPostProvider.cs" />
     <Compile Include="Providers\ATCToolsPageProvider.cs" />
+    <Compile Include="Providers\RateContentFolderProvider.cs" />
+    <Compile Include="Providers\RateContentProvider.cs" />
+    <Compile Include="Providers\RateContentConstantsProvider.cs" />
+    <Compile Include="Providers\NewsProvider.cs" />
     <Compile Include="Providers\EmailProvider.cs" />
     <Compile Include="Providers\ContactProvider.cs" />
     <Compile Include="Providers\SelectionFilterConstantsProvider.cs" />
@@ -452,7 +470,8 @@
     <Compile Include="ViewModels\Contact\ContactPageViewModel.cs" />
     <Compile Include="ViewModels\Contact\CountryViewModel.cs" />
     <Compile Include="ViewModels\Contact\ContactRegionViewModel.cs" />
-    <Compile Include="ViewModels\Document\DocumentConstantViewModel.cs" />
+    <Compile Include="ViewModels\DocumentBase\DocumentBaseViewModel.cs" />
+    <Compile Include="ViewModels\DocumentBase\DocumentConstantViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQPageViewModel.cs" />
     <Compile Include="ViewModels\FAQ\FAQTopicViewModel.cs" />
     <Compile Include="ViewModels\GlobalSearch\ResultItemViewModel.cs" />
@@ -460,6 +479,9 @@
     <Compile Include="ViewModels\NewsAndEvents\NewsAndEventsPageViewModel.cs" />
     <Compile Include="ViewModels\NewsAndEvents\NewsAndEventViewModel.cs" />
     <Compile Include="ViewModels\Product\LeftSideBlockViewModel.cs" />
+    <Compile Include="ViewModels\RateContent\RateContentResultItemViewModel.cs" />
+    <Compile Include="ViewModels\RateContent\RateContentResultsViewModel.cs" />
+    <Compile Include="ViewModels\RateContent\RateContentWidgetViewModel.cs" />
     <Compile Include="ViewModels\SalesOffices\RegionViewModel.cs" />
     <Compile Include="ViewModels\SalesOffices\CountryViewModel.cs" />
     <Compile Include="ViewModels\SalesOffices\SalesOfficeViewModel.cs" />
@@ -482,7 +504,7 @@
     <Compile Include="ViewModels\Shared\SidebarComponents\LeftNavigationViewModel.cs" />
     <Compile Include="ViewModels\Shared\SidebarComponents\PollSurveyViewModel.cs" />
     <Compile Include="ViewModels\SBU\AnchorMenuItemViewModel.cs" />
-    <Compile Include="ViewModels\Document\DocumentPageViewModel.cs" />
+    <Compile Include="ViewModels\DocumentBase\DocumentBasePageViewModel.cs" />
     <Compile Include="ViewModels\InsightsAndResources\InsightsListingItemViewModel.cs" />
     <Compile Include="ViewModels\InsightsAndResources\InsightsAndResourcesViewModel.cs" />
     <Compile Include="ViewModels\Shared\LinkViewModel.cs" />
@@ -677,8 +699,8 @@
     <Content Include="Views\Afton\SelectionFilter\_SBUCheckBoxes.cshtml" />
     <Content Include="css\maps\print.min.css.map" />
     <Content Include="Views\Afton\Shared\Sidebar\_sideBar.cshtml" />
-    <Content Include="Views\Afton\Document\Index.cshtml" />
-    <Content Include="Views\Afton\Document\_header.cshtml" />
+    <Content Include="Views\Afton\DocumentBase\Index.cshtml" />
+    <Content Include="Views\Afton\DocumentBase\_header.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_documentWidget.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_pollSurvey.cshtml" />
     <Content Include="Views\Afton\Shared\Sidebar\_leftNavigation.cshtml" />
@@ -718,7 +740,9 @@
     <Content Include="Views\Afton\Shared\NewsEventsAndBlog\_sortSelector.cshtml" />
     <Content Include="Views\Afton\SalesOffices\Index.cshtml" />
     <Content Include="Views\Afton\SalesOffices\_offices.cshtml" />
+    <Content Include="Views\Afton\RateContent\_widget.cshtml" />
     <Content Include="Views\Afton\Auxiliary\Index.cshtml" />
+    <Content Include="Views\Afton\RateContent\Index.cshtml" />
     <Content Include="Views\Afton\Auxiliary\_linksList.cshtml" />
     <Content Include="Views\Afton\Auxiliary\_link.cshtml" />
     <None Include="web.Debug.config">

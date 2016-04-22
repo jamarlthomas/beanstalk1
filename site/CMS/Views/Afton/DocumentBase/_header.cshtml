@@ -1,4 +1,7 @@
-﻿<div id="document">
+﻿@using CMS.Mvc.ViewModels.DocumentBase
+@model DocumentBaseViewModel
+
+<div id="document">
     <h1>@Model.Title</h1>
     <div class="subTxt">@Model.Constant.PostedTimeLabel @Model.DocumentPublishFrom.ToString("M/d/yy | h:mm tt CST")</div><br>
     <div id="downloadDocsC" class="noPrintDisplay">

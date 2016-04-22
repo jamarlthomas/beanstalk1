@@ -1,0 +1,17 @@
+﻿@using CMS.Mvc.ViewModels.RateContent
+@model RateContentWidgetViewModel
+
+<div id="rateContentC" class="padBtm">
+    <form id="rateContent" data-guid="@Model.DocumentGuid">
+        @Model.Question
+        <div id="answers">
+            <input type="button" value="@Model.YesLabel" class="rateBtn">
+            <input type="button" value="@Model.NoLabel" class="rateBtn">
+        </div>
+    </form>
+    <form id="ratePopup" style="display: none;">
+        <a href="#" id="closeSubmit">X</a><strong>@Model.PopupTitle</strong> @Model.PopupDescription<br>
+        <textarea maxlength="140" placeholder="@Model.PopupTextareaPlaceholder" id="rateComment"></textarea>
+        <input type="submit" value="@Model.PopupSubmitLabel" id="rateSubmit">
+    </form>
+</div>

@@ -258,6 +258,23 @@ namespace CMS.DocumentEngine.Types
             }
         }
 
+
+        /// <summary>
+        /// Sidebar Items.
+        /// </summary>
+        [DatabaseField]
+        public string SidebarItems
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
+            }
+            set
+            {
+                SetValue("SidebarItems", value);
+            }
+        }
+
         #endregion
 
 

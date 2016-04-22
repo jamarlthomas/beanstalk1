@@ -17,21 +17,21 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(CustomNews.CLASS_NAME, typeof(CustomNews))]
+[assembly: RegisterDocumentType(RateContentConstants.CLASS_NAME, typeof(RateContentConstants))]
 
 namespace CMS.DocumentEngine.Types
 {
     /// <summary>
     /// Sample item class.
     /// </summary>
-    public partial class CustomNews : TreeNode
+    public partial class RateContentConstants : TreeNode
     {
         #region "Constants"
 
         /// <summary>
         /// Class name of the item.
         /// </summary>
-        public const string CLASS_NAME = "custom.CustomNews";
+        public const string CLASS_NAME = "custom.RateContentConstants";
 
         #endregion
 
@@ -39,52 +39,18 @@ namespace CMS.DocumentEngine.Types
         #region "Properties"
 
         /// <summary>
-        /// CustomNewsID.
+        /// RateContentConstantsID.
         /// </summary>
         [DatabaseField]
-        public int CustomNewsID
+        public int RateContentConstantsID
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("CustomNewsID"), 0);
+                return ValidationHelper.GetInteger(GetValue("RateContentConstantsID"), 0);
             }
             set
             {
-                SetValue("CustomNewsID", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Tile Title.
-        /// </summary>
-        [DatabaseField]
-        public string TileTitle
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("TileTitle"), "");
-            }
-            set
-            {
-                SetValue("TileTitle", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Image displayed on a tile.
-        /// </summary>
-        [DatabaseField]
-        public string HomeImage
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("HomeImage"), "");
-            }
-            set
-            {
-                SetValue("HomeImage", value);
+                SetValue("RateContentConstantsID", value);
             }
         }
 
@@ -107,69 +73,120 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Text that appears on hover over the tile.
+        /// Question.
         /// </summary>
         [DatabaseField]
-        public string Description
+        public string Question
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Description"), "");
+                return ValidationHelper.GetString(GetValue("Question"), "");
             }
             set
             {
-                SetValue("Description", value);
+                SetValue("Question", value);
             }
         }
 
 
         /// <summary>
-        /// 
+        /// Yes Label.
         /// </summary>
         [DatabaseField]
-        public DateTime Date
+        public string YesLabel
         {
             get
             {
-                return ValidationHelper.GetDateTime(GetValue("Date"), DateTimeHelper.ZERO_TIME);
+                return ValidationHelper.GetString(GetValue("YesLabel"), "");
             }
             set
             {
-                SetValue("Date", value);
+                SetValue("YesLabel", value);
             }
         }
 
 
         /// <summary>
-        /// 
+        /// No Label.
         /// </summary>
         [DatabaseField]
-        public string Image
+        public string NoLabel
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Image"), "");
+                return ValidationHelper.GetString(GetValue("NoLabel"), "");
             }
             set
             {
-                SetValue("Image", value);
+                SetValue("NoLabel", value);
             }
         }
 
 
         /// <summary>
-        /// Sidebar Items.
+        /// Popup Title.
         /// </summary>
         [DatabaseField]
-        public string SidebarItems
+        public string PopupTitle
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
+                return ValidationHelper.GetString(GetValue("PopupTitle"), "");
             }
             set
             {
-                SetValue("SidebarItems", value);
+                SetValue("PopupTitle", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Popup Description.
+        /// </summary>
+        [DatabaseField]
+        public string PopupDescription
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("PopupDescription"), "");
+            }
+            set
+            {
+                SetValue("PopupDescription", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Popup Textarea Placeholder.
+        /// </summary>
+        [DatabaseField]
+        public string PopupTextareaPlaceholder
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("PopupTextareaPlaceholder"), "");
+            }
+            set
+            {
+                SetValue("PopupTextareaPlaceholder", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Popup Submit Button Label.
+        /// </summary>
+        [DatabaseField]
+        public string PopupSubmitLabel
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("PopupSubmitLabel"), "");
+            }
+            set
+            {
+                SetValue("PopupSubmitLabel", value);
             }
         }
 
@@ -181,7 +198,7 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Constructor.
         /// </summary>
-        public CustomNews()
+        public RateContentConstants()
             : base(CLASS_NAME)
         {
         }

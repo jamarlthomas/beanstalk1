@@ -17,21 +17,21 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(CustomNews.CLASS_NAME, typeof(CustomNews))]
+[assembly: RegisterDocumentType(RateContent.CLASS_NAME, typeof(RateContent))]
 
 namespace CMS.DocumentEngine.Types
 {
     /// <summary>
     /// Sample item class.
     /// </summary>
-    public partial class CustomNews : TreeNode
+    public partial class RateContent : TreeNode
     {
         #region "Constants"
 
         /// <summary>
         /// Class name of the item.
         /// </summary>
-        public const string CLASS_NAME = "custom.CustomNews";
+        public const string CLASS_NAME = "custom.RateContent";
 
         #endregion
 
@@ -39,52 +39,18 @@ namespace CMS.DocumentEngine.Types
         #region "Properties"
 
         /// <summary>
-        /// CustomNewsID.
+        /// RateContentID.
         /// </summary>
         [DatabaseField]
-        public int CustomNewsID
+        public int RateContentID
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("CustomNewsID"), 0);
+                return ValidationHelper.GetInteger(GetValue("RateContentID"), 0);
             }
             set
             {
-                SetValue("CustomNewsID", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Tile Title.
-        /// </summary>
-        [DatabaseField]
-        public string TileTitle
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("TileTitle"), "");
-            }
-            set
-            {
-                SetValue("TileTitle", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Image displayed on a tile.
-        /// </summary>
-        [DatabaseField]
-        public string HomeImage
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("HomeImage"), "");
-            }
-            set
-            {
-                SetValue("HomeImage", value);
+                SetValue("RateContentID", value);
             }
         }
 
@@ -107,69 +73,69 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Text that appears on hover over the tile.
+        /// Rated Document.
         /// </summary>
         [DatabaseField]
-        public string Description
+        public Guid RatedDocument
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Description"), "");
+                return ValidationHelper.GetGuid(GetValue("RatedDocument"), Guid.Empty);
             }
             set
             {
-                SetValue("Description", value);
+                SetValue("RatedDocument", value);
             }
         }
 
 
         /// <summary>
-        /// 
+        /// Rated Contact.
         /// </summary>
         [DatabaseField]
-        public DateTime Date
+        public Guid RatedContact
         {
             get
             {
-                return ValidationHelper.GetDateTime(GetValue("Date"), DateTimeHelper.ZERO_TIME);
+                return ValidationHelper.GetGuid(GetValue("RatedContact"), Guid.Empty);
             }
             set
             {
-                SetValue("Date", value);
+                SetValue("RatedContact", value);
             }
         }
 
 
         /// <summary>
-        /// 
+        /// Is Helpful.
         /// </summary>
         [DatabaseField]
-        public string Image
+        public bool IsHelpful
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Image"), "");
+                return ValidationHelper.GetBoolean(GetValue("IsHelpful"), false);
             }
             set
             {
-                SetValue("Image", value);
+                SetValue("IsHelpful", value);
             }
         }
 
 
         /// <summary>
-        /// Sidebar Items.
+        /// Message.
         /// </summary>
         [DatabaseField]
-        public string SidebarItems
+        public string Message
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
+                return ValidationHelper.GetString(GetValue("Message"), "");
             }
             set
             {
-                SetValue("SidebarItems", value);
+                SetValue("Message", value);
             }
         }
 
@@ -181,7 +147,7 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Constructor.
         /// </summary>
-        public CustomNews()
+        public RateContent()
             : base(CLASS_NAME)
         {
         }

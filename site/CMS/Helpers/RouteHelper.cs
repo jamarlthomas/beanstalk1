@@ -35,6 +35,11 @@ namespace CMS.Mvc.Helpers
             return GetSelectionFilterUrl(new SelectionFilterSearchRequest { DocumentTypesIds = documentTypesIds });
         }
 
+        public static string GetRateContentResultsLink(string nodeAlias)
+        {
+            return string.Format("RateContent/Results/{0}", nodeAlias); 
+        }
+
         internal static AftonRoute GetRoute(string routeName)
         {
             return ContentHelper.GetDocChildrenByName<AftonRoute>(AftonRoute.CLASS_NAME, "Routes").FirstOrDefault(r => r.DocumentName.Equals(routeName));
