@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using CMS.DocumentEngine.Types;
 
 namespace CMS.Mvc.Providers
 {
-    public interface IGenericProvider
+    public interface IGenericProvider<T> where T: new ()
     {
-        List<GenericPage> GetDocuments(string parentTitle);
-        GenericPage GetDocument(string alias);
+        List<T> GetDocuments(string parentTitle);
+        T GetDocument(string alias);
     }
 }

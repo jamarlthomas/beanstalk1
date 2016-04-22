@@ -1,14 +1,12 @@
 ﻿using System.Web.Mvc;
+using CMS.DocumentEngine.Types;
 
 namespace CMS.Mvc.Controllers.Afton
 {
-    public class LogisticsAndSupplyController : GenericController
+    public class LogisticsAndSupplyController : GenericBaseController<LogisticsAndSupply>
     {
-        public ActionResult Landing(string childPageName)
+        public override ActionResult Index(string childPageName)
         {
-            if (string.IsNullOrWhiteSpace(childPageName))
-                childPageName = "Logistics and Supply";
-
             return base.Index(childPageName);
         }
     }

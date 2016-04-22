@@ -1,0 +1,7 @@
+﻿@model IEnumerable<CMS.Mvc.ViewModels.Auxiliary.AuxiliaryHyperlink>
+@foreach (var item in Model)
+{
+    <a href="@item.Reference">@item.Text</a>
+    <br/>
+}
+

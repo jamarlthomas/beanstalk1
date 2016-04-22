@@ -228,10 +228,18 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
+    <Compile Include="Controllers\Afton\GenericController.cs" />
+    <Compile Include="Controllers\Afton\LogisticsAndSupplyFolderController.cs" />
+    <Compile Include="Models\Afton\LogisticsAndSupply\LogisticsAndSupply.cs" />
+    <Compile Include="Models\Afton\LogisticsAndSupply\LogisticsAndSupplyFolder.cs" />
+    <Compile Include="Models\ExtendedModels\LogisticsAndSupply.cs" />
+    <Compile Include="Models\ExtendedModels\LogisticsAndSupplyFolder.cs" />
+    <Compile Include="ViewModels\Auxiliary\AuxiliaryHyperlink.cs" />
+    <Compile Include="ViewModels\Auxiliary\AuxiliryViewModel.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
     <Compile Include="Controllers\Afton\ContactController.cs" />
     <Compile Include="Controllers\Afton\FAQController.cs" />
-    <Compile Include="Controllers\Afton\GenericController.cs" />
+    <Compile Include="Controllers\Afton\GenericBaseController.cs" />
     <Compile Include="Controllers\Afton\LogisticsAndSupplyController.cs" />
     <Compile Include="ViewModels\Generic\GenericPageViewModel.cs" />
     <Compile Include="Providers\GenericProvider.cs" />
@@ -723,6 +731,9 @@
     <Content Include="Views\Afton\SalesOffices\_offices.cshtml" />
     <Content Include="Views\Afton\Generic\Index.cshtml" />
     <Content Include="Views\Afton\Generic\_header.cshtml" />
+    <Content Include="Views\Afton\Auxiliary\Index.cshtml" />
+    <Content Include="Views\Afton\Auxiliary\_linksList.cshtml" />
+    <Content Include="Views\Afton\Auxiliary\_link.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -733,6 +744,7 @@
   <ItemGroup>
     <Folder Include="Pdf\Temp\" />
     <Folder Include="Views\Generic\" />
+    <Folder Include="Views\LogisticsAndSupplyFolder\" />
     <Folder Include="Views\LogisticsAndSupply\" />
     <Folder Include="Views\Personalization\" />
   </ItemGroup>

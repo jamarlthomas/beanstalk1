@@ -15,8 +15,6 @@ namespace CMS.Mvc.Infrastructure
 
         protected override void Objects()
         {
-            CreateMap<GenericPage, DocumentViewModel>();
-
             CreateMap<Product, ProductViewModel>()
                 .ForMember(s=>new HtmlString(s.Content), d=>d.DefaultContent);
             CreateMap<Product, DownloadWidgetViewModel>();
