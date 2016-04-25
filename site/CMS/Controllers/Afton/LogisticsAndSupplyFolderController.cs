@@ -1,5 +1,4 @@
-﻿using System.Web.Mvc;
-using CMS.DocumentEngine.Types;
+﻿using CMS.DocumentEngine.Types;
 
 namespace CMS.Mvc.Controllers.Afton
 {

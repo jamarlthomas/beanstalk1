@@ -41,8 +41,9 @@ namespace CMS.Mvc.Controllers.Afton
         [PageVisitActivity]
         public ActionResult Index(string SBUName)
         {
-            var model = MapData<SolutionBusinessUnit, CMS.Mvc.ViewModels.Shared.SBUViewModel>(_solutionBusinessUnitProvider.GetSolutionBusinessUnit(SBUName));
-            model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItems(SBUName, 4));
+            var sbu = _solutionBusinessUnitProvider.GetSolutionBusinessUnit(SBUName);
+            var model = MapData<SolutionBusinessUnit, CMS.Mvc.ViewModels.Shared.SBUViewModel>(sbu);
+            model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItems(sbu.FAQList));
             model.DocumentTypes = MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes(SBUName, 12));
             foreach (var item in model.DocumentTypes)
             {
