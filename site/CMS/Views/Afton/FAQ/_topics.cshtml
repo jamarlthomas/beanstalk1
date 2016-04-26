@@ -1,4 +1,7 @@
-﻿@foreach (var topic in Model.Topics)
+﻿@using CMS.Mvc.ViewModels.FAQ
+@model FAQPageViewModel
+
+@foreach (var topic in Model.Topics)
 {
     <div id="@topic.Id-FAQs" class="faqGroup">
         <h2>@topic.Name @Model.Title </h2>

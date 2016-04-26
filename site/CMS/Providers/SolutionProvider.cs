@@ -24,14 +24,5 @@ namespace CMS.Mvc.Providers
         {
             return ContentHelper.GetDocByName<Solution>(Solution.CLASS_NAME, alias);
         }
-        public List<Solution> GetSolutionItems(string alias)
-        {
-            return ContentHelper.GetDocChildrenByName<Solution>(Solution.CLASS_NAME, alias);
-        }
-
-        public List<Solution> GetSolutionItems()
-        {
-            return ContentHelper.GetDocs<Solution>(Solution.CLASS_NAME);
-        }
     }
 }

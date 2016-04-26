@@ -9,5 +9,6 @@ namespace CMS.Mvc.Interfaces
     {
         List<BlogPost> GetBlogPosts();
         List<BlogPost> GetFilteredBlogPosts(BlogsRequest request, BlogsPage page, List<UserInfo> users);
+        BlogPost GetBlogPost(string alias);
     }
 }

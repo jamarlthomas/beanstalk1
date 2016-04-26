@@ -122,7 +122,7 @@ namespace CMS.Mvc.Helpers
         public static T GetDocByGuid<T>(Guid guid, string siteName = null) where T : class
         {
             return CacheHelper.Cache(cs =>
-                _treeProvider.SelectSingleDocument(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T,
+                GetDocByDocId<T>(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T,
                 new CacheSettings(CachingTime, string.Format("doc_guid_{0}", guid)));
         }
 

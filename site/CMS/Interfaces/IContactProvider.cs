@@ -1,5 +1,6 @@
 ﻿using CMS.Mvc.Infrastructure.Models;
 using CMS.OnlineMarketing;
+using System;
 
 namespace CMS.Mvc.Interfaces
 {
@@ -7,5 +8,6 @@ namespace CMS.Mvc.Interfaces
     {
         ContactInfo GetCurrentContact();
         void UpdateCurrentContact(UpdateContactRequest request);
+        string GetContactNameByGuid(Guid guid);
     }
 }

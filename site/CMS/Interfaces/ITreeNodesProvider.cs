@@ -10,6 +10,7 @@ namespace CMS.Mvc.Interfaces
         List<TreeNode> GetTreeNodes(List<Guid> guids, int limit = Int32.MaxValue);
         List<TreeNode> GetTreeNodes(string guids, int limit = Int32.MaxValue);
         TreeNode GetTreeNodeByNodeId(int id);
+        TreeNode GetTreeNodeByNodeGuid(Guid guid);
         List<BreadCrumbLinkItemViewModel> GetBreadcrumb(Guid guid);
     }
 }

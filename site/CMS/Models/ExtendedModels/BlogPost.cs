@@ -10,8 +10,8 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                var rt= RouteHelper.GetRoute("Document");
-                return (rt != null) ? rt.Route.Replace("{DocumentName}", this.NodeAlias) : string.Format("/Document/Index/{0}", this.NodeAlias);
+                var rt = RouteHelper.GetRoute("BlogPost");
+                return (rt != null) ? rt.Route.Replace("{BlogPostName}", this.NodeAlias) : string.Format("/BlogPost/Index/{0}", this.NodeAlias);
             }
         }
 

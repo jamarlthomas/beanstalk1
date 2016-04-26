@@ -1,8 +1,5 @@
-﻿using CMS.Mvc.ViewModels.Shared;
-using CMS.Mvc.ViewModels.Shared.SidebarComponents;
-using System.Collections.Generic;
-
-namespace CMS.Mvc.ViewModels.DocumentsViewModel
+﻿
+namespace CMS.Mvc.ViewModels.DocumentBase
 {
     public class DocumentConstantViewModel
     {

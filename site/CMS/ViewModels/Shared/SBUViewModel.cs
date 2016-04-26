@@ -1,4 +1,5 @@
-﻿using CMS.Mvc.ViewModels.Shared;
+﻿using System;
+using CMS.Mvc.ViewModels.Shared;
 using System.Collections.Generic;
 using CMS.Mvc.ViewModels.Shared.Personalization;
 using CMS.Mvc.ViewModels.SBU;
@@ -16,6 +17,7 @@ namespace CMS.Mvc.ViewModels.Shared
     public string FAQDescription { get; set; }
     public string FAQList { get; set; }
     public string Theme { get; set; }
+    public Guid DocumentGUID { get; set; }
     public List<FAQItemViewModel> FAQs { get; set; }
     public List<DocumentTypeViewModel> DocumentTypes { get; set; }
     public List<TileViewModel> Solutions { get; set; }
