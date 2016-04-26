@@ -6,7 +6,7 @@ using CMS.DocumentEngine.Types;
 using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
-using CMS.Mvc.ViewModels.DocumentsViewModel;
+using CMS.Mvc.ViewModels.DocumentBase;
 using CMS.Mvc.ViewModels.Generic;
 using CMS.Mvc.ViewModels.Shared;
 using CMS.Mvc.Helpers;
