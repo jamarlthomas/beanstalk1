@@ -8,5 +8,6 @@ namespace CMS.Mvc.ViewModels.DocumentBase
         public string Abstract { get; set; }
         public DateTime DocumentPublishFrom { get; set; }
         public DocumentConstantViewModel Constant { get; set; }
+        public string Copy { get; set; }
     }
 }
