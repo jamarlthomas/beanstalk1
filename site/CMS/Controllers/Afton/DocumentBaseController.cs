@@ -5,6 +5,7 @@ using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.DocumentBase;
 using CMS.Mvc.ViewModels.Shared;
+using CMS.Mvc.ViewModels.Shared.DownloadWidget;
 using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 using System.Web.Mvc;
 
@@ -12,7 +13,7 @@ namespace CMS.Mvc.Controllers.Afton
 {
     public class DocumentBaseController : SidebarPageController
     {
-        private readonly IDocumentConstantProvider _documentConstantProvider;
+        protected readonly IDocumentConstantProvider _documentConstantProvider;
         private readonly ITreeNodesProvider _treeNodesProvider;
 
         public DocumentBaseController()
@@ -30,7 +31,9 @@ namespace CMS.Mvc.Controllers.Afton
 
         public ActionResult GetBaseLayout(DocumentBaseViewModel documentViewModel, TreeNode node)
         {
-            documentViewModel.Constant = MapData<DocumentConstant, DocumentConstantViewModel>(_documentConstantProvider.GetDocumentConstants());
+            //documentViewModel.Constant = MapData<DocumentConstant, DocumentConstantViewModel>(_documentConstantProvider.GetDocumentConstants());
+
+
             var parent = node.Parent;
             return View("~/Views/Afton/DocumentBase/Index.cshtml", new DocumentBasePageViewModel()
             {
@@ -46,6 +49,17 @@ namespace CMS.Mvc.Controllers.Afton
                 },
                 DocumentGuid = node.DocumentGUID
             });
+        }
+
+        protected void FillDownLoadButtonSection(DocumentBaseViewModel documentViewModel, TreeNode node)
+        {
+            documentViewModel.DownloadButtonSection = new DownloadButtonSectionViewModel();
+            documentViewModel.DownloadButtonSection.DownloadLabel = documentViewModel.Constant.DownloadLabel;
+            documentViewModel.DownloadButtonSection.TranslationAvailableLabel = documentViewModel.Constant.TranslationAvailableLabel;
+            documentViewModel.DownloadButtonSection.SelectLanguageLabel = documentViewModel.Constant.SelectLanguageLabel;
+            documentViewModel.DownloadButtonSection.CurrentLanguageId = GetCurrentCulture();
+            documentViewModel.DownloadButtonSection.TranslationAvailable =_treeNodesProvider.GetAvailableTranslations(node);
+
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CMS.DocumentEngine;
+using CMS.Mvc.ViewModels.Product;
 using CMS.Mvc.ViewModels.Shared;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,6 @@ namespace CMS.Mvc.Interfaces
         TreeNode GetTreeNodeByNodeId(int id);
         TreeNode GetTreeNodeByNodeGuid(Guid guid);
         List<BreadCrumbLinkItemViewModel> GetBreadcrumb(Guid guid);
+        List<DownloadLanguageLinkItemViewModel> GetAvailableTranslations(TreeNode product);
     }
 }

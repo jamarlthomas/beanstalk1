@@ -29,7 +29,8 @@ namespace CMS.Mvc.Controllers.Afton
 
             var newsViewModel = MapData<CustomNews, DocumentBaseViewModel>(news);
             newsViewModel.Abstract = news.Description;
-
+            newsViewModel.Constant = MapData<DocumentConstant, DocumentConstantViewModel>(_documentConstantProvider.GetDocumentConstants());
+            FillDownLoadButtonSection(newsViewModel, news);
             return GetBaseLayout(newsViewModel, news);
         }
     }

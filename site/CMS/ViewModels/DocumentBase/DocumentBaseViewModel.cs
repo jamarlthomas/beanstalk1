@@ -1,4 +1,5 @@
 ﻿using System;
+using CMS.Mvc.ViewModels.Shared.DownloadWidget;
 
 namespace CMS.Mvc.ViewModels.DocumentBase
 {
@@ -9,5 +10,8 @@ namespace CMS.Mvc.ViewModels.DocumentBase
         public DateTime DocumentPublishFrom { get; set; }
         public DocumentConstantViewModel Constant { get; set; }
         public string Copy { get; set; }
+        public DownloadButtonSectionViewModel DownloadButtonSection { get; set; }
     }
+
+    
 }

@@ -90,23 +90,6 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Image displayed on a tile.
-        /// </summary>
-        [DatabaseField]
-        public string HomeImage
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("HomeImage"), "");
-            }
-            set
-            {
-                SetValue("HomeImage", value);
-            }
-        }
-
-
-        /// <summary>
         /// Text that appears on hover over the tile.
         /// </summary>
         [DatabaseField]
@@ -124,6 +107,40 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Image displayed on a tile.
+        /// </summary>
+        [DatabaseField]
+        public string HomeImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HomeImage"), "");
+            }
+            set
+            {
+                SetValue("HomeImage", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Abstract.
+        /// </summary>
+        [DatabaseField]
+        public string Abstract
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Abstract"), "");
+            }
+            set
+            {
+                SetValue("Abstract", value);
+            }
+        }
+
+
+        /// <summary>
         /// Copy.
         /// </summary>
         [DatabaseField]
@@ -136,23 +153,6 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("Copy", value);
-            }
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [DatabaseField]
-        public DateTime PostedDate
-        {
-            get
-            {
-                return ValidationHelper.GetDateTime(GetValue("PostedDate"), DateTimeHelper.ZERO_TIME);
-            }
-            set
-            {
-                SetValue("PostedDate", value);
             }
         }
 
@@ -187,6 +187,23 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("SidebarItems", value);
+            }
+        }
+
+
+        /// <summary>
+        /// PdfReference.
+        /// </summary>
+        [DatabaseField]
+        public string PdfReference
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("PdfReference"), "");
+            }
+            set
+            {
+                SetValue("PdfReference", value);
             }
         }
 

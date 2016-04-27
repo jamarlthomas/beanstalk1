@@ -1,6 +1,9 @@
-﻿using CMS.DocumentEngine;
+﻿using System.Globalization;
+using CMS.Base;
+using CMS.DocumentEngine;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
+using CMS.Mvc.ViewModels.Product;
 using CMS.Mvc.ViewModels.Shared;
 using System;
 using System.Collections.Generic;
@@ -33,6 +36,20 @@ namespace CMS.Mvc.Providers
         public List<BreadCrumbLinkItemViewModel> GetBreadcrumb(Guid guid)
         {
             return ContentHelper.GetBreadcrumb<TreeNode>(guid);
+        }
+
+        public List<DownloadLanguageLinkItemViewModel> GetAvailableTranslations(TreeNode product)
+        {
+            return product.CultureVersions.Select(
+                item => new DownloadLanguageLinkItemViewModel()
+                {
+                    LanguageId = item.DocumentCulture,
+                    Reference = item.GetValue("PdfReference", ""),
+                    Title =
+                        (((new CultureInfo(item.DocumentCulture)).NativeName).IndexOf("(", StringComparison.Ordinal) > 0)
+                            ? (new CultureInfo(item.DocumentCulture)).NativeName.Substring(0, ((new CultureInfo(item.DocumentCulture)).NativeName).IndexOf("(", StringComparison.Ordinal)).TrimEnd()
+                            : (new CultureInfo(item.DocumentCulture)).NativeName.TrimEnd()
+                }).ToList();
         }
     }
 }

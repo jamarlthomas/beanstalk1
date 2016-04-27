@@ -28,7 +28,8 @@ namespace CMS.Mvc.Controllers.Afton
             var document = _documentProvider.GetDocument(DocumentName);
 
             var documentViewModel = MapData<Document, DocumentBaseViewModel>(document);
-
+            documentViewModel.Constant = MapData<DocumentConstant, DocumentConstantViewModel>(_documentConstantProvider.GetDocumentConstants());
+            FillDownLoadButtonSection(documentViewModel, document);
             return GetBaseLayout(documentViewModel, document);
         }
     }
