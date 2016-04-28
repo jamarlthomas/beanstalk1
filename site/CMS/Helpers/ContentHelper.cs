@@ -148,21 +148,39 @@ namespace CMS.Mvc.Helpers
         public static List<TreeNode> GetDocsByPath(string aliasPath, int maxRelativeLevel = 1, string classNames = "*")
         {
             var cacheDependencyKey = "nodes|afton|all";
-            return CacheHelper.Cache(cs =>
+            switch (PortalContext.ViewMode)
             {
-                if (!string.IsNullOrWhiteSpace(cacheDependencyKey))
-                    cs.CacheDependency = CacheHelper.GetCacheDependency(cacheDependencyKey);
-                return (new TreeProvider().SelectNodes(new NodeSelectionParameters
+                case (ViewModeEnum.LiveSite):
                 {
-                    ClassNames = classNames,
-                    SiteName = ConfigurationManager.AppSettings["SiteName"],
-                    SelectAllData = true,
-                    AliasPath = aliasPath + "/%",
-                    MaxRelativeLevel = maxRelativeLevel,
-                }) ?? new TreeNodeDataSet()).Where(i => i != null).ToList();
-            },
+                    return CacheHelper.Cache(cs =>
+                    {
+                        if (!string.IsNullOrWhiteSpace(cacheDependencyKey))
+                            cs.CacheDependency = CacheHelper.GetCacheDependency(cacheDependencyKey);
+                        return (new TreeProvider().SelectNodes(new NodeSelectionParameters
+                        {
+                            ClassNames = classNames,
+                            SiteName = ConfigurationManager.AppSettings["SiteName"],
+                            SelectAllData = true,
+                            AliasPath = aliasPath + "/%",
+                            MaxRelativeLevel = maxRelativeLevel,
+                        }) ?? new TreeNodeDataSet()).Where(i => i != null).ToList();
+                    },
                 new CacheSettings(CachingTime,
                     string.Format("pth_{0}_mrl_{1}_cn_{2}", aliasPath, maxRelativeLevel, classNames)));
+                }
+                default:
+                {
+                    return (new TreeProvider().SelectNodes(new NodeSelectionParameters
+                    {
+                        ClassNames = classNames,
+                        SiteName = ConfigurationManager.AppSettings["SiteName"],
+                        SelectAllData = true,
+                        AliasPath = aliasPath + "/%",
+                        MaxRelativeLevel = maxRelativeLevel,
+                    }) ?? new TreeNodeDataSet()).Where(i => i != null).ToList();
+                }
+            }
+          
         }
 
         public static SearchResult PerformSearch(BaseSearchRequest request)
