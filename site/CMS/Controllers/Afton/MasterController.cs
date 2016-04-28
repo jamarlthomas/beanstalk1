@@ -1,38 +1,42 @@
-﻿using CMS.DocumentEngine.Types;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Web.Mvc;
+using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Infrastructure.Models;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Master;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web.Mvc;
 
 namespace CMS.Mvc.Controllers.Afton
 {
     public class MasterController : BaseController
     {
         private readonly IContentMenuItemProvider _contentMenuItemProvider;
-        private readonly IPagesMenuItemProvider _pagesMenuItemProvider;
-        private readonly IMegaMenuThumbnailedItemProvider _megaMenuThumbnailedItemProvider;
-        private readonly IMegaMenuLinkItemProvider _megaMenuLinkItemProvider;
-        private readonly ISolutionBusinessUnitProvider _solutionBusinessUnitProvider;
         private readonly IFooterNavItemProvider _footerNavItemProvider;
+        private readonly IMegaMenuLinkItemProvider _megaMenuLinkItemProvider;
+        private readonly IMegaMenuSubLinkItemProvider _megaMenuSubLinkItemProvider;
+        private readonly IMegaMenuThumbnailedItemProvider _megaMenuThumbnailedItemProvider;
+        private readonly IPagesMenuItemProvider _pagesMenuItemProvider;
+        private readonly ITreeNodesProvider _treeNodesProvider;
 
         public MasterController(IContentMenuItemProvider contentMenuItemProvider,
             IPagesMenuItemProvider pagesMenuItemProvider,
             IMegaMenuThumbnailedItemProvider megaMenuThumbnailedItemProvider,
             IMegaMenuLinkItemProvider megaMenuLinkItemProvider,
-            ISolutionBusinessUnitProvider solutionBusinessUnitProvider,
-            IFooterNavItemProvider footerNavItemProvider)
+            IFooterNavItemProvider footerNavItemProvider,
+            IMegaMenuSubLinkItemProvider megaMenuSubLinkItemProvider,
+            ITreeNodesProvider treeNodesProvider)
         {
             _contentMenuItemProvider = contentMenuItemProvider;
             _pagesMenuItemProvider = pagesMenuItemProvider;
             _megaMenuThumbnailedItemProvider = megaMenuThumbnailedItemProvider;
             _megaMenuLinkItemProvider = megaMenuLinkItemProvider;
-            _solutionBusinessUnitProvider = solutionBusinessUnitProvider;
             _footerNavItemProvider = footerNavItemProvider;
+            _megaMenuSubLinkItemProvider = megaMenuSubLinkItemProvider;
+            _treeNodesProvider = treeNodesProvider;
         }
 
         public MasterController()
@@ -41,8 +45,9 @@ namespace CMS.Mvc.Controllers.Afton
             _pagesMenuItemProvider = new PagesMenuItemProvider();
             _megaMenuThumbnailedItemProvider = new MegaMenuThumbnailedItemProvider();
             _megaMenuLinkItemProvider = new MegaMenuLinkItemProvider();
-            _solutionBusinessUnitProvider = new SolutionBusinessUnitProvider();
             _footerNavItemProvider = new FooterNavItemProvider();
+            _megaMenuSubLinkItemProvider = new MegaMenuSubLinkItemProvider();
+            _treeNodesProvider = new TreeNodesProvider();
         }
 
         [ChildActionOnly]
@@ -53,7 +58,15 @@ namespace CMS.Mvc.Controllers.Afton
             footer.FooterNavCategories = _pagesMenuItemProvider.GetPagesMenuItems().Select(category =>
             {
                 var categoryViewModel = MapData<PagesMenuItem, PagesMenuItemViewModel>(category);
-                categoryViewModel.FooterNavItems = MapData<FooterNavItem, FooterNavItemViewModel>(_footerNavItemProvider.GetFooterNavItems(category.NodeAlias));
+                categoryViewModel.Reference = GetLinkByGuid(UtilsHelper.ParseGuids(category.Reference).Last());
+
+                categoryViewModel.FooterNavItems = _footerNavItemProvider.GetFooterNavItems(category.NodeAlias).Select(s =>
+                {
+                    var result = MapData<FooterNavItem, FooterNavItemViewModel>(s);
+                    result.Reference = GetLinkByGuid(UtilsHelper.ParseGuids(s.Reference).Last());
+                    return result;
+                }).ToList();
+
                 return categoryViewModel;
             }).ToList();
 
@@ -68,7 +81,12 @@ namespace CMS.Mvc.Controllers.Afton
 
             model.MainNavList = GetMainNavList();
 
-            model.UtilityNavList = MapData<PagesMenuItem, PagesMenuItemViewModel>(_pagesMenuItemProvider.GetPagesMenuItems());
+            model.UtilityNavList = _pagesMenuItemProvider.GetPagesMenuItems().Select(s =>
+            {
+                var result = MapData<PagesMenuItem, PagesMenuItemViewModel>(s);
+                result.Reference = GetLinkByGuid(UtilsHelper.ParseGuids(s.Reference).Last());
+                return result;
+            }).ToList();
 
             return PartialView("~/Views/Afton/Master/_header.cshtml", model);
         }
@@ -78,20 +96,39 @@ namespace CMS.Mvc.Controllers.Afton
             return _contentMenuItemProvider.GetContentMenuItems().Select(contentMenuItem =>
             {
                 var itemViewModel = MapData<ContentMenuItem, ContentMenuItemViewModel>(contentMenuItem);
+                itemViewModel.Reference = GetLinkByGuid(UtilsHelper.ParseGuids(contentMenuItem.Reference).Last());
 
-                var thumbnailedMenuItems = _megaMenuThumbnailedItemProvider.GetMegaMenuThumbnailedItems(contentMenuItem.NodeAlias);
-                itemViewModel.ThumbnailedMenuItems = MapData<MegaMenuThumbnailedItem, MegaMenuThumbnailedItemViewModel>(thumbnailedMenuItems);
+                itemViewModel.ThumbnailedMenuItems = _megaMenuThumbnailedItemProvider.GetMegaMenuThumbnailedItems(contentMenuItem.NodeAlias).Select(thumbnailedMenuItem =>
+                {
+                    var result = MapData<MegaMenuThumbnailedItem, MegaMenuThumbnailedItemViewModel>(thumbnailedMenuItem);
+                    result.Reference = GetLinkByGuid(UtilsHelper.ParseGuids(thumbnailedMenuItem.Reference).Last());
+                    return result;
+                }).ToList();
 
                 var solutionLink = _megaMenuLinkItemProvider.GetMegaMenuLinkItem(contentMenuItem.NodeAlias);
                 if (solutionLink != null)
                 {
                     itemViewModel.SolutionsLink = MapData<MegaMenuLinkItem, MegaMenuLinkItemViewModel>(solutionLink);
-                    var solutions = _solutionBusinessUnitProvider.GetSolutionBusinessUnits(solutionLink.NodeAlias);
-                    itemViewModel.SolutionsLink.Solutions = MapData<SolutionBusinessUnit, MegaMenuSolutionBusinessUnitViewModel>(solutions);
+
+                    itemViewModel.SolutionsLink.Reference = GetLinkByGuid(UtilsHelper.ParseGuids(solutionLink.Reference).Last());
+
+                    itemViewModel.SolutionsLink.Solutions = _megaMenuSubLinkItemProvider.GetMegaMenuSubLinkItems(solutionLink.NodeAlias).Select(subItem =>
+                    {
+                        var result = MapData<MegaMenuSubLinkItem, MegaMenuSubLinkItemViewModel>(subItem);
+
+                        result.Reference = GetLinkByGuid(subItem.Reference);
+                        return result;
+                    }).ToList();
                 }
 
                 return itemViewModel;
             }).ToList();
+        }
+
+        private string GetLinkByGuid(Guid guid)
+        {
+            var treeNode = _treeNodesProvider.GetTreeNodeByNodeGuid(guid);
+            return treeNode != null ? treeNode.DocumentNamePath : "#";
         }
     }
 }

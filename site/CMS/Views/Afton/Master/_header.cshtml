@@ -11,17 +11,17 @@
 				@foreach (var item in Model.MainNavList)
 				{
 					<li>
-						<a href="@Url.Content("~/" + @item.Reference)">@item.Title</a>
+						<a href="@item.Reference">@item.Title</a>
 						<ul>
 							@foreach (var thumbnailedItem in item.ThumbnailedMenuItems)
 							{
-								<li><a href="#">@thumbnailedItem.Title</a></li>
+								<li><a href="@thumbnailedItem.Reference">@thumbnailedItem.Title</a></li>
 							}
 							@if (item.SolutionsLink != null)
 							{
 								foreach (var solution in item.SolutionsLink.Solutions)
 								{
-									<li><a href="#">@solution.Title</a></li>
+									<li><a href="@solution.Reference">@solution.Title</a></li>
 								}
 							}
 						</ul>
@@ -74,7 +74,7 @@
 				<ul>
 					@foreach (var item in Model.UtilityNavList)
 					{
-						<li><a href="@Url.Content("~/" + @item.Reference)">@item.Title</a></li>
+						<li><a href="@item.Reference">@item.Title</a></li>
 					}
 					<li><a href="#"><span class="icon-search"></span></a></li>
 				</ul>
@@ -85,11 +85,11 @@
 					{
 						if (item.SolutionsLink != null)
 						{
-							<li><a href="@Url.Content("~/" + @item.Reference)" data-mm="@item.Title.Replace(" ", string.Empty)" class="@(item.Title.Equals(Model.Title) ? "active" : "")">@item.Title</a></li>
+							<li><a href="@item.Reference" data-mm="@item.Title.Replace(" ", string.Empty)" class="@(item.Title.Equals(Model.Title) ? "active" : "")">@item.Title</a></li>
 						}
 						else
 						{
-							<li><a href="@Url.Content("~/" + @item.Reference)" class="@(item.Title.Equals(Model.Title) ? "active" : "")">@item.Title</a></li>
+							<li><a href="@item.Reference" class="@(item.Title.Equals(Model.Title) ? "active" : "")">@item.Title</a></li>
 						}
 					}
 				</ul>
@@ -104,7 +104,7 @@
 				<div class="lftCol">
 					@foreach (var thumbnailedItem in item.ThumbnailedMenuItems)
 					{
-						<a href="#" class="photoLink">
+						<a href="@thumbnailedItem.Reference" class="photoLink">
 							<img src="@Url.Content(thumbnailedItem.Image ?? "")">
 							<div class="photoLinkRt">
 								<div class="mHeader">Learn About @thumbnailedItem.Title</div>
@@ -118,7 +118,7 @@
 					<div class="rtColLinksC">
 						@foreach (var solution in item.SolutionsLink.Solutions)
 						{
-							<a href="#" class="rtColLinks">
+							<a href="@solution.Reference" class="rtColLinks">
 								<div class="txtC">
 									<div class="linkHdr">@solution.Title</div>
 									<div class="linkTxt">@solution.Description</div>

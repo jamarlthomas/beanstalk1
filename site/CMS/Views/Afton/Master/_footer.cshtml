@@ -7,11 +7,11 @@
 			@foreach (var item in Model.FooterNavCategories)
 			{
 				<div class="btmNavCol">
-					<a href="@Url.Content("~/" + @item.Reference)">@item.Title</a>
+					<a href="@item.Reference">@item.Title</a>
 					<ul>
 						@foreach (var footerNavItems in item.FooterNavItems)
 						{
-							<li><a href="@Url.Content("~/" + @footerNavItems.Reference)">@footerNavItems.Title</a></li>
+							<li><a href="@footerNavItems.Reference">@footerNavItems.Title</a></li>
 						}
 					</ul>
 				</div>
