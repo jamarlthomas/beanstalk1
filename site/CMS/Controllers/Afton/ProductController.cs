@@ -58,7 +58,7 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 CurrentLanguageId = base.GetCurrentCulture(),
                 Title = product.Title,
-                //TileImage = product.TileImage,
+                TileImage = product.HomeImage,
                 Description = product.Description,
                 DownloadLink = _productProvider.GetDownloadLink(product),
                 AvailableIn = _productProvider.GetAvailableRegions(product).Select(item => new LinkViewModel() {Title = item}).ToList(),
