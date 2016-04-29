@@ -1,4 +1,5 @@
-﻿@using CMS.Mvc.ViewModels.Master
+﻿@using CMS.DocumentEngine.Types
+@using CMS.Mvc.ViewModels.Master
 @model FooterViewModel
 <div id="footerC">
 	<footer>
@@ -17,7 +18,7 @@
 				</div>
 			}
 		</div>
-		<div id="btmContactBtn" style="display:none;"><a href="#">Contact</a></div>
+		<div id="btmContactBtn" style="display:none;"><a href="@Url.Content("~/"+ ContactPage.DocumentNamePath)">Contact</a></div>
 		<div id="disclaimer">&copy;<span id="dateYear"></span> Afton Chemical <span class="divider">|</span><a href="#">Legal Notice</a><span class="divider">|</span><a href="#">Privacy & Terms</a><span class="divider">|</span><a href="#">Site Map</a></div>
 	</footer>
 </div>

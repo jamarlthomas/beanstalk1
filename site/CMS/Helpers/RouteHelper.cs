@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -12,6 +13,7 @@ namespace CMS.Mvc.Helpers
     public static class RouteHelper
     {
         public const string NULL_VALUE_PLACEHOLDER = "-1";
+        private const string RouteCollectionKey = "AftonRoutes";
 
         public static string GetSelectionFilterUrl(SelectionFilterSearchRequest searchRequest, string name = null)
         {
@@ -37,12 +39,18 @@ namespace CMS.Mvc.Helpers
 
         public static string GetRateContentResultsLink(string nodeAlias)
         {
-            return string.Format("RateContent/Results/{0}", nodeAlias); 
+            return string.Format("RateContent/Results/{0}", nodeAlias);
         }
 
         internal static AftonRoute GetRoute(string routeName)
         {
-            return ContentHelper.GetDocChildrenByName<AftonRoute>(AftonRoute.CLASS_NAME, "Routes").FirstOrDefault(r => r.DocumentName.Equals(routeName));
+            var routeCollection = HttpContext.Current.Items[RouteCollectionKey];
+            if (routeCollection == null)
+            {
+                routeCollection = ContentHelper.GetDocChildrenByName<AftonRoute>(AftonRoute.CLASS_NAME, "Routes");
+                HttpContext.Current.Items[RouteCollectionKey] = routeCollection;
+            }
+            return ((List<AftonRoute>)routeCollection).FirstOrDefault(r => r.DocumentName.Equals(routeName));
         }
 
         public static void UpdateAftonRoute(RouteCollection routes, AftonRoute route)
