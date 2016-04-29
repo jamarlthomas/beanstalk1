@@ -3,6 +3,7 @@
     @if (!string.IsNullOrWhiteSpace(Model.TileImage))
     {
         <img id="pLft" src="@Url.Content(Model.TileImage)" />
+        
     }
     <div id="pRt">
         <h1>@Html.Raw(Model.Title)</h1>
