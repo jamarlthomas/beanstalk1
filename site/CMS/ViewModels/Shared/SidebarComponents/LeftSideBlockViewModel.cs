@@ -7,7 +7,8 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
     {
         public LeftSideBlockViewModel(TreeNode item) : base(item)
         {
-            Reference = item.GetStringValue("Reference", "");
+            //Reference = item.GetStringValue("Reference", "");
+            Reference = item.DocumentNamePath;
             ImageUrl = item.GetStringValue("ImageUrl", "");
             Summary = new HtmlString(item.GetStringValue("Summary", ""));
         }
