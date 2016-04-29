@@ -493,7 +493,6 @@
     <Compile Include="ViewModels\GlobalSearch\GlobalSearchPageViewModel.cs" />
     <Compile Include="ViewModels\NewsAndEvents\NewsAndEventsPageViewModel.cs" />
     <Compile Include="ViewModels\NewsAndEvents\NewsAndEventViewModel.cs" />
-    <Compile Include="ViewModels\Product\LeftSideBlockViewModel.cs" />
     <Compile Include="ViewModels\RateContent\RateContentResultItemViewModel.cs" />
     <Compile Include="ViewModels\RateContent\RateContentResultsViewModel.cs" />
     <Compile Include="ViewModels\RateContent\RateContentWidgetViewModel.cs" />
@@ -695,14 +694,7 @@
     <Content Include="Views\Afton\Shared\_breadCrumb.cshtml" />
     <Content Include="Views\Afton\Product\_downloadWidget.cshtml" />
     <Content Include="Views\Afton\Product\_productMainContent.cshtml" />
-    <Content Include="Views\Afton\Product\_contactUs.cshtml" />
-    <Content Include="Views\Afton\Product\_insightsAndResoursesWidget.cshtml" />
-    <Content Include="Views\Afton\Product\_stayInformed.cshtml" />
-    <Content Include="Views\Afton\Product\_passion.cshtml" />
     <Content Include="Views\Afton\Product\_relatedProducts.cshtml" />
-    <Content Include="Views\Afton\Product\_insightsAndResourcesSection.cshtml" />
-    <Content Include="Views\Afton\Product\_insightsAndResourcesCard.cshtml" />
-    <Content Include="Views\Afton\Product\_leftSideBlock.cshtml" />
     <Content Include="Views\Afton\Shared\Personalization\_personalizationSection.cshtml" />
     <Content Include="Views\Afton\Shared\Personalization\_personalizationCard.cshtml" />
     <Content Include="Views\Afton\Product\_relatedProductCard.cshtml" />

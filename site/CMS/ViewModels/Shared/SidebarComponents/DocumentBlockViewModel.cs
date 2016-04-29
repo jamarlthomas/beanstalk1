@@ -7,7 +7,7 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
             : base(item)
         {
             Title = item.Title;
-            Summary = new HtmlString(item.Abstract);
+            
             ImageUrl = item.HomeImage;
         }
     }
