@@ -4,7 +4,9 @@
 <div id="document">
     <h1>@Model.Title</h1>
     <div class="subTxt">@Model.Constant.PostedTimeLabel @Model.DocumentPublishFrom.ToString("M/d/yy | h:mm tt CST")</div><br>
-    <div id="downloadDocsC" class="noPrintDisplay">
+    
+    @Html.Partial("~/Views/Afton/Shared/DownloadWidget/_downloadButtonSection.cshtml", Model.DownloadButtonSection)
+    @*<div id="downloadDocsC" class="noPrintDisplay">
         <a href="#" class="downloadBtn">@Model.Constant.DownloadLabel @Model.Title <span class="icon-download"></span></a>
         <div id="translate-doc">
             @Model.Constant.TranslationAvailableLabel <a href="#" id="selDocLang">@Model.Constant.SelectLanguageLabel <span class="icon-arrow"></span></a>
@@ -19,7 +21,9 @@
                 <li id="langFrench"><a href="#">French</a></li>
             </ul>
         </div>
-    </div>
+    </div>*@
+    
+
     <div id="socialC2" class="noPrintDisplay">
         <a class="addthis_button_compact">
             <span class="icon-share"></span>

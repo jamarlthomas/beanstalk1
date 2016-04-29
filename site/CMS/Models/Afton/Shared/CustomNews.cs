@@ -173,6 +173,23 @@ namespace CMS.DocumentEngine.Types
             }
         }
 
+
+        /// <summary>
+        /// PdfReference.
+        /// </summary>
+        [DatabaseField]
+        public string PdfReference
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("PdfReference"), "");
+            }
+            set
+            {
+                SetValue("PdfReference", value);
+            }
+        }
+
         #endregion
 
 

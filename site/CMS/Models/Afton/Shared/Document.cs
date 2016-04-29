@@ -175,23 +175,6 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Is Highlighted On Insights Page.
-        /// </summary>
-        [DatabaseField]
-        public bool IsHighlightedOnInsightsPage
-        {
-            get
-            {
-                return ValidationHelper.GetBoolean(GetValue("IsHighlightedOnInsightsPage"), false);
-            }
-            set
-            {
-                SetValue("IsHighlightedOnInsightsPage", value);
-            }
-        }
-
-
-        /// <summary>
         /// Sidebar Items.
         /// </summary>
         [DatabaseField]
@@ -204,6 +187,40 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("SidebarItems", value);
+            }
+        }
+
+
+        /// <summary>
+        /// PdfReference.
+        /// </summary>
+        [DatabaseField]
+        public string PdfReference
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("PdfReference"), "");
+            }
+            set
+            {
+                SetValue("PdfReference", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Is Highlighted On Insights Page.
+        /// </summary>
+        [DatabaseField]
+        public bool IsHighlightedOnInsightsPage
+        {
+            get
+            {
+                return ValidationHelper.GetBoolean(GetValue("IsHighlightedOnInsightsPage"), false);
+            }
+            set
+            {
+                SetValue("IsHighlightedOnInsightsPage", value);
             }
         }
 

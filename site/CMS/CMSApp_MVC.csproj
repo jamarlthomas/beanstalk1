@@ -245,6 +245,7 @@
     <Compile Include="Controllers\Afton\FAQController.cs" />
     <Compile Include="Controllers\Afton\GenericBaseController.cs" />
     <Compile Include="Controllers\Afton\LogisticsAndSupplyController.cs" />
+    <Compile Include="ViewModels\Shared\DownloadWidget\DownloadButtonSectionViewModel.cs" />
     <Compile Include="ViewModels\Generic\GenericPageViewModel.cs" />
     <Compile Include="Providers\GenericProvider.cs" />
     <Compile Include="Controllers\Afton\PersonalizationController.cs" />
@@ -756,6 +757,7 @@
     <Content Include="Views\Afton\RateContent\Index.cshtml" />
     <Content Include="Views\Afton\Auxiliary\_linksList.cshtml" />
     <Content Include="Views\Afton\Auxiliary\_link.cshtml" />
+    <Content Include="Views\Afton\Shared\DownloadWidget\_downloadButtonSection.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -765,10 +767,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pdf\Temp\" />
-    <Folder Include="Views\Generic\" />
-    <Folder Include="Views\LogisticsAndSupplyFolder\" />
-    <Folder Include="Views\LogisticsAndSupply\" />
-    <Folder Include="Views\Personalization\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CorporateSite\News\Detail.cshtml" />

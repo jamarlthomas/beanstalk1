@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CMS.Mvc.ViewModels.Shared;
+using CMS.Mvc.ViewModels.Shared.DownloadWidget;
 
 namespace CMS.Mvc.ViewModels.Product
 {
@@ -13,5 +14,7 @@ namespace CMS.Mvc.ViewModels.Product
         public List<DownloadLanguageLinkItemViewModel> TranslationAvailable { get; set; }
         public string DownloadLink { get; set; }
         public string CurrentLanguageId { get; set; }
+
+        public DownloadButtonSectionViewModel DownloadButtonSection { get; set; }
     }
 }

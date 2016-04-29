@@ -21,7 +21,7 @@ namespace CMS.Mvc.Controllers.Afton
                 .Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentNamePath)).ToList();
             model.Solutions = ContentHelper.GetDocs<Solution>(Solution.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentNamePath)).ToList();
             model.Products = ContentHelper.GetDocs<Product>(Product.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentNamePath)).ToList();
-            model.Documents = ContentHelper.GetDocs<Product>(Product.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentNamePath)).ToList();
+            model.Documents = ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentNamePath)).ToList();
             model.News = ContentHelper.GetDocs<CustomNews>(CustomNews.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentNamePath)).ToList();
             model.BlogPosts = ContentHelper.GetDocs<BlogPost>(BlogPost.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.BlogPostTitle, item.DocumentNamePath)).ToList();
             model.Offices = ContentHelper.GetDocs<Region>(Region.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title + " office", item.DocumentNamePath)).ToList();
