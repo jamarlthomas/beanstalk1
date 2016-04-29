@@ -16,5 +16,11 @@ namespace CMS.Mvc.Providers
         {
             return ContentHelper.GetDocs<FAQItem>(FAQItem.CLASS_NAME);
         }
+
+
+        public List<FAQItem> GetFAQItems(string faqs)
+        {
+            return ContentHelper.GetDocsByGuids<FAQItem>(UtilsHelper.ParseGuids(faqs));
+        }
     }
 }
