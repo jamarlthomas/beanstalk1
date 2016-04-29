@@ -27,7 +27,12 @@ namespace CMS.Mvc.Helpers
             {
                 return new List<Guid>();
             }
-            return input.Split(';').Select(s => Guid.Parse(s)).ToList();
+            return input.Split(';').Select(s =>
+            {
+                Guid result;
+                Guid.TryParse(s, out result);
+                return result;
+            }).ToList();
         }
 
         public static string[] SeparateText(string text)

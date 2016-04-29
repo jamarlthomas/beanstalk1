@@ -230,10 +230,13 @@
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\GenericController.cs" />
     <Compile Include="Controllers\Afton\LogisticsAndSupplyFolderController.cs" />
+    <Compile Include="Interfaces\IMegaMenuSubLinkItemProvider.cs" />
     <Compile Include="Models\Afton\LogisticsAndSupply\LogisticsAndSupply.cs" />
     <Compile Include="Models\Afton\LogisticsAndSupply\LogisticsAndSupplyFolder.cs" />
+    <Compile Include="Models\Afton\Master\MegaMenuSubLinkItem.cs" />
     <Compile Include="Models\ExtendedModels\LogisticsAndSupply.cs" />
     <Compile Include="Models\ExtendedModels\LogisticsAndSupplyFolder.cs" />
+    <Compile Include="Providers\MegaMenuSubLinkItemProvider.cs" />
     <Compile Include="ViewModels\Auxiliary\AuxiliaryHyperlink.cs" />
     <Compile Include="ViewModels\Auxiliary\AuxiliryViewModel.cs" />
     <Compile Include="Controllers\Afton\BaseController.cs" />
@@ -543,7 +546,7 @@
     <Compile Include="ViewModels\Shared\BreadCrumbLinkItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\Personalization\PersonalizationCardViewModel.cs" />
     <Compile Include="ViewModels\Product\RelatedProductCardViewModel.cs" />
-    <Compile Include="ViewModels\Master\MegaMenuSolutionBusinessUnitViewModel.cs" />
+    <Compile Include="ViewModels\Master\MegaMenuSubLinkItemViewModel.cs" />
     <Compile Include="ViewModels\Master\MegaMenuLinkItemViewModel.cs" />
     <Compile Include="ViewModels\Master\MegaMenuThumbnailedItemViewModel.cs" />
     <Compile Include="ViewModels\Master\MasterViewModel.cs" />

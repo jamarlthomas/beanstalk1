@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace CMS.Mvc.ViewModels.Master
+﻿namespace CMS.Mvc.ViewModels.Master
 {
     public class MegaMenuThumbnailedItemViewModel
     {

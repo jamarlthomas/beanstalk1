@@ -17,21 +17,21 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(ContentMenuItem.CLASS_NAME, typeof(ContentMenuItem))]
+[assembly: RegisterDocumentType(MegaMenuSubLinkItem.CLASS_NAME, typeof(MegaMenuSubLinkItem))]
 
 namespace CMS.DocumentEngine.Types
 {
     /// <summary>
     /// Sample item class.
     /// </summary>
-    public partial class ContentMenuItem : TreeNode
+    public partial class MegaMenuSubLinkItem : TreeNode
     {
         #region "Constants"
 
         /// <summary>
         /// Class name of the item.
         /// </summary>
-        public const string CLASS_NAME = "custom.ContentMenuItem";
+        public const string CLASS_NAME = "custom.MegaMenuSubLinkItem";
 
         #endregion
 
@@ -39,18 +39,18 @@ namespace CMS.DocumentEngine.Types
         #region "Properties"
 
         /// <summary>
-        /// ContentMenuItemID.
+        /// MegaMenuSubLinkItemID.
         /// </summary>
         [DatabaseField]
-        public int ContentMenuItemID
+        public int MegaMenuSubLinkItemID
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("ContentMenuItemID"), 0);
+                return ValidationHelper.GetInteger(GetValue("MegaMenuSubLinkItemID"), 0);
             }
             set
             {
-                SetValue("ContentMenuItemID", value);
+                SetValue("MegaMenuSubLinkItemID", value);
             }
         }
 
@@ -76,15 +76,32 @@ namespace CMS.DocumentEngine.Types
         /// Reference.
         /// </summary>
         [DatabaseField]
-        public string Reference
+        public Guid Reference
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Reference"), "");
+                return ValidationHelper.GetGuid(GetValue("Reference"), Guid.Empty);
             }
             set
             {
                 SetValue("Reference", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Description.
+        /// </summary>
+        [DatabaseField]
+        public string Description
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Description"), "");
+            }
+            set
+            {
+                SetValue("Description", value);
             }
         }
 
@@ -96,7 +113,7 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Constructor.
         /// </summary>
-        public ContentMenuItem()
+        public MegaMenuSubLinkItem()
             : base(CLASS_NAME)
         {
         }
