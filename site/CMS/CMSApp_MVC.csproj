@@ -686,7 +686,6 @@
     <Content Include="Views\Afton\SBU\_documents.cshtml" />
     <Content Include="Views\Afton\Solution\_description.cshtml" />
     <Content Include="Views\Afton\Solution\_heroImage.cshtml" />
-    <Content Include="Views\Afton\SBU\_solutions.cshtml" />
     <Content Include="Views\Afton\Home\_heroContent.cshtml" />
     <Content Include="Views\Afton\Product\Index.cshtml" />
     <Content Include="Views\Afton\InsightsAndResources\Index.cshtml" />
