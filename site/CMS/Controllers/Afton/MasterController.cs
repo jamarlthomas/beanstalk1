@@ -101,7 +101,10 @@ namespace CMS.Mvc.Controllers.Afton
                 itemViewModel.ThumbnailedMenuItems = _megaMenuThumbnailedItemProvider.GetMegaMenuThumbnailedItems(contentMenuItem.NodeAlias).Select(thumbnailedMenuItem =>
                 {
                     var result = MapData<MegaMenuThumbnailedItem, MegaMenuThumbnailedItemViewModel>(thumbnailedMenuItem);
-                    result.Reference = GetLinkByGuid(UtilsHelper.ParseGuids(thumbnailedMenuItem.Reference).Last());
+                    if (!string.IsNullOrEmpty(thumbnailedMenuItem.Reference))
+                    {
+                        result.Reference = GetLinkByGuid(UtilsHelper.ParseGuids(thumbnailedMenuItem.Reference).Last());
+                    }
                     return result;
                 }).ToList();
 
