@@ -15,6 +15,7 @@ namespace CMS.Mvc.ViewModels.Shared
         public string HeroImage { get; set; }
         public string NavigationIcon { get; set; }
         public string Description { get; set; }
+        public string Copy { get; set; }
         public string HomeImage { get; set; }
         public string ParentName { get; set; }
         public Guid DocumentGUID { get; set; }

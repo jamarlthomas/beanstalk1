@@ -15,7 +15,7 @@
                     <div class="subTxt">@Model.Subtitle</div>
                     <div id="socialC"><a class="addthis_button_compact"><span class="icon-share"></span></a></div>
                 </h1>
-                @Html.Partial("~/Views/Afton/Solution/_description.cshtml", Model.Description)
+                @Html.Partial("~/Views/Afton/Solution/_description.cshtml", Model.Copy)
 				@{ Html.RenderAction("Widget", "RateContent", new { Request = Model.DocumentGUID }); }
             </div>
 		</div>
