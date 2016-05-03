@@ -454,6 +454,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\Default.aspx" />
+    <Content Include="afton-marker.svg" />
     <Content Include="App_Data\CMSModules\Chat\UI\Grids\Chat_User\default.xml" />
     <Content Include="App_Data\CMSModules\Cms\UI\Grids\CMS_FormUserControl\usage.xml">
       <SubType>Designer</SubType>
@@ -4923,6 +4924,9 @@
     <Content Include="IntranetPortal\media\Media\Trees for Bugs\Trees-for-bugs-5.jpg" />
     <Content Include="IntranetPortal\media\Microsoft_Office_Upgrade\Microsoft Office graphics\msoffice.jpg" />
     <Content Include="IntranetPortal\media\Microsoft_Office_Upgrade\Microsoft Office graphics\msoffice_col.jpg" />
+    <Content Include="map.html" />
+    <Content Include="map.js" />
+    <Content Include="markerclusterer.js" />
     <Content Include="ObjectTranslationRESTService.svc" />
     <Content Include="DocumentRESTService.svc" />
     <Content Include="Default.aspx" />
@@ -4931,6 +4935,7 @@
     <Content Include="App_Data\CMSModules\SmartSearch\_Synonyms\en.zip" />
     <Content Include="CMSModules\StrandsRecommender\CMSPages\StrandsCatalogFeed.ashx" />
     <Content Include="CMSModules\StrandsRecommender\Web.config" />
+    <Content Include="orangeburg.jpg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -4951,6 +4956,7 @@
     <Content Include="DancingGoat\Fonts\SourceSansPro-Light.woff" />
     <Content Include="DancingGoat\Fonts\SourceSansPro-Regular.woff" />
     <Content Include="packages.config" />
+    <Content Include="data.json" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
   </ItemGroup>
   <ItemGroup>

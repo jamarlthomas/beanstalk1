@@ -1,0 +1,38 @@
+﻿[
+    {
+        "id":  100,
+        "title": "Richmond, Virginia",
+        "latitude": 37.50972584,
+        "longitude": -77.4206543,
+        "image": "/orangeburg.jpg",
+        "content": "<ul><li>ISO 9001:2008 Certified</li><li>QP&G Certified</li<li>CSSA (Canadian Sanitation Supply Association)</li><li>BPCIA ( Bedford Park/ Clearing Industrial Association)</li><li>Produces components and finished packages for the industrial and metalworking markets</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+    },{
+        "id":  101,
+        "title": "Charlotte, North Carolina",
+        "latitude": 35.49645606,
+        "longitude": -80.18920898,
+        "image": "/orangeburg.jpg",
+        "content": "<ul><li>ISO 9001:2008 Certified</li><li>QP&G Certified</li<li>CSSA (Canadian Sanitation Supply Association)</li><li>BPCIA ( Bedford Park/ Clearing Industrial Association)</li><li>Produces components and finished packages for the industrial and metalworking markets</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+    },{
+        "id":  102,
+        "title": "Henrico, Virginia",
+        "latitude": 37.75334401,
+        "longitude": -77.7722168,
+        "image": "/orangeburg.jpg",
+        "content": "<ul><li>ISO 9001:2008 Certified</li><li>QP&G Certified</li<li>CSSA (Canadian Sanitation Supply Association)</li><li>BPCIA ( Bedford Park/ Clearing Industrial Association)</li><li>Produces components and finished packages for the industrial and metalworking markets</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+    },{
+        "id":  103,
+        "title": "Fresno, California",
+        "latitude": 36.87962061,
+        "longitude": -120.27832031,
+        "image": "/orangeburg.jpg",
+        "content": "<ul><li>ISO 9001:2008 Certified</li><li>QP&G Certified</li<li>CSSA (Canadian Sanitation Supply Association)</li><li>BPCIA ( Bedford Park/ Clearing Industrial Association)</li><li>Produces components and finished packages for the industrial and metalworking markets</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+    },{
+        "id":  103,
+        "title": "Singapore",
+        "latitude": 1.05462794,
+        "longitude": 102.83203125,
+        "image": "/orangeburg.jpg",
+        "content": "<ul><li>ISO 9001:2008 Certified</li><li>QP&G Certified</li<li>CSSA (Canadian Sanitation Supply Association)</li><li>BPCIA ( Bedford Park/ Clearing Industrial Association)</li><li>Produces components and finished packages for the industrial and metalworking markets</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+    }
+]
