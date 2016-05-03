@@ -125,10 +125,12 @@
                 <div class="lftCol">
                     @foreach (var thumbnailedItem in item.ThumbnailedMenuItems)
                     {
-                        <a href="@Url.Content("~/" + thumbnailedItem.Reference)" class="photoLink">
-                            <img src="@Url.Content(thumbnailedItem.Image ?? "")">
+                        <a href="@Url.Content("~/" + thumbnailedItem.Reference ?? "")" class="photoLink">
+                            @if (!string.IsNullOrEmpty(thumbnailedItem.Image)) { 
+                                <img src="@Url.Content(thumbnailedItem.Image ?? "")">
+                            }
                             <div class="photoLinkRt">
-                                <div class="mHeader">Learn About @thumbnailedItem.Title</div>
+                                <div class="mHeader">@thumbnailedItem.Title</div>
                                 <div class="mTxt">@thumbnailedItem.Description</div>
                             </div>
                         </a>
