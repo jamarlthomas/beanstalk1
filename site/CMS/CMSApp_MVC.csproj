@@ -570,6 +570,7 @@
   <ItemGroup>
     <Content Include="Content\Templates\dirPagination.tpl.html" />
     <Content Include="css\normalize.min.css" />
+    <Content Include="css\style-guide.min.css" />
     <Content Include="css\styles.min.css" />
     <Content Include="fonts\fonts.css" />
     <Content Include="fonts\HelveticaNeueLT-Bold\2F7DEF_2_0.eot" />
@@ -753,6 +754,7 @@
     <Content Include="Views\Afton\Auxiliary\_linksList.cshtml" />
     <Content Include="Views\Afton\Auxiliary\_link.cshtml" />
     <Content Include="Views\Afton\Shared\DownloadWidget\_downloadButtonSection.cshtml" />
+    <Content Include="Views\Afton\Auxiliary\Infrastructure.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

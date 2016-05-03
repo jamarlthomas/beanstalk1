@@ -38,11 +38,17 @@ namespace CMS.Mvc.Controllers.Afton
             
             return View("~/Views/Afton/Auxiliary/Index.cshtml", model);
         }
+
+        [Route("Auxiliary/Infrastructure")]
+        public ActionResult Infrastructure()
+        {
+            return View("~/Views/Afton/Auxiliary/Infrastructure.cshtml");
+        }
         [Route("Auxiliary/ClearCache")]
         public ActionResult ClearCache()
         {
             CacheHelper.ClearCache();
-            return RedirectToAction("Index");
+            return RedirectToAction("Infrastructure");
         }
         [Route("Auxiliary/ReloadRoutes")]
         public ActionResult ReloadRoutes()
