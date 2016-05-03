@@ -1,23 +1,29 @@
-﻿@using CMS.Mvc.ViewModels.Master
+﻿@using CMS.DocumentEngine.Types
+@using CMS.Mvc.ViewModels.Master
 @model FooterViewModel
 <div id="footerC">
-	<footer>
-		<div id="btmC">
-			<div id="btmLogoC"><img src="@Url.Content("~/images/btm-logo.png")"></div>
-			@foreach (var item in Model.FooterNavCategories)
-			{
-				<div class="btmNavCol">
-					<a href="@item.Reference">@item.Title</a>
-					<ul>
-						@foreach (var footerNavItems in item.FooterNavItems)
-						{
-							<li><a href="@footerNavItems.Reference">@footerNavItems.Title</a></li>
-						}
-					</ul>
-				</div>
-			}
-		</div>
-		<div id="btmContactBtn" style="display:none;"><a href="#">Contact</a></div>
-		<div id="disclaimer">&copy;<span id="dateYear"></span> Afton Chemical <span class="divider">|</span><a href="#">Legal Notice</a><span class="divider">|</span><a href="#">Privacy & Terms</a><span class="divider">|</span><a href="#">Site Map</a></div>
-	</footer>
+
+    <footer>
+        <div id="btmC">
+            <div id="btmLogoC"><img src="@Url.Content("~/images/btm-logo.png")" /></div>
+            @foreach (var item in Model.FooterNavCategories)
+            {
+                <div class="btmNavCol">
+                    <a href="@Url.Content("~/"+item.Reference)">@item.Title</a>
+                    <ul>
+                        @foreach (var footerNavItems in item.FooterNavItems)
+                        {
+                            <li><a href="@Url.Content("~/"+footerNavItems.Reference)">@footerNavItems.Title</a></li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+        <div id="btmContactBtn" style="display:none;">
+            <a href="@Url.Content("~/"+ ContactPage.DocumentNamePath)">Contact</a>
+        </div>
+        <div id="disclaimer">
+            &copy;<span id="dateYear"></span> Afton Chemical <span class="divider">|</span><a href="#">Legal Notice</a><span class="divider">|</span><a href="#">Privacy & Terms</a><span class="divider">|</span><a href="#">Site Map</a>
+        </div>
+    </footer>
 </div>
