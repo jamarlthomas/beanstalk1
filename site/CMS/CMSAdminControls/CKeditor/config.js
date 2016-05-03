@@ -164,4 +164,5 @@ CKEDITOR.editorConfig = function (config) {
     config.toolbar = config.toolbar_Standard;
 
     config.scayt_customerid = '1:vhwPv1-GjUlu4-PiZbR3-lgyTz1-uLT5t-9hGBg2-rs6zY-qWz4Z3-ujfLE3-lheru4-Zzxzv-kq4';
+    config.contentsCss = [CKEDITOR.getUrl('contents.css'), CKEDITOR.getUrl('style-guide.min.css')];
 };

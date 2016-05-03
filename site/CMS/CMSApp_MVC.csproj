@@ -570,7 +570,6 @@
   <ItemGroup>
     <Content Include="Content\Templates\dirPagination.tpl.html" />
     <Content Include="css\normalize.min.css" />
-    <Content Include="css\style-guide.min.css" />
     <Content Include="css\styles.min.css" />
     <Content Include="fonts\fonts.css" />
     <Content Include="fonts\HelveticaNeueLT-Bold\2F7DEF_2_0.eot" />
