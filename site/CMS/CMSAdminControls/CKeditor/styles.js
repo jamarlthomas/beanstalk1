@@ -19,7 +19,9 @@ CKEDITOR.stylesSet.add( 'default', [
 	// These styles are already available in the "Format" combo ("format" plugin),
 	// so they are not needed here by default. You may enable them to avoid
 	// placing the "Format" combo in the toolbar, maintaining the same features.
-
+    { name: 'Left Column', element: 'div', attributes: { 'class': 'sg-lftContent' } },
+    { name: 'Right Column', element: 'div', attributes: { 'class': 'sg-rtContent' } },
+    { name: 'Full Width', element: 'div', attributes: { 'class': 'sg-fullContent' } },
 	{ name: 'Paragraph',		element: 'p' },
 	{ name: 'Heading 1',		element: 'h1' },
 	{ name: 'Heading 2',		element: 'h2' },

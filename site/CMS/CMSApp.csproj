@@ -1915,6 +1915,7 @@
     <Content Include="CMSAdminControls\CKeditor\skins\moono\images\lock-open.png" />
     <Content Include="CMSAdminControls\CKeditor\skins\moono\images\lock.png" />
     <Content Include="CMSAdminControls\CKeditor\skins\moono\images\refresh.png" />
+    <Content Include="CMSAdminControls\CKeditor\style-guide.min.css" />
     <Content Include="CMSAdminControls\CKeditor\styles.js" />
     <Content Include="CMSAdminControls\CodeMirror\dialogs\InsertMacro\Tab_InsertMacroTree.aspx" />
     <Content Include="CMSAdminControls\CodeMirror\img\insertMacro.png" />
