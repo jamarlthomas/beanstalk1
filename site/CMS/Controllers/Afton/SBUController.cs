@@ -43,7 +43,7 @@ namespace CMS.Mvc.Controllers.Afton
         {
             var sbu = _solutionBusinessUnitProvider.GetSolutionBusinessUnit(SBUName);
             var model = MapData<SolutionBusinessUnit, CMS.Mvc.ViewModels.Shared.SBUViewModel>(sbu);
-            model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItems(sbu.FAQList));
+            model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItemsBySBU(sbu.DocumentGUID.ToString()));
             model.DocumentTypes = MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes(SBUName, 12));
             foreach (var item in model.DocumentTypes)
             {

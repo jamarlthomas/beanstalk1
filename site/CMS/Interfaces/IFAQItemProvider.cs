@@ -9,5 +9,6 @@ namespace CMS.Mvc.Interfaces
         List<FAQItem> GetFAQItems();
 
         List<FAQItem> GetFAQItems(string faqs);
+        List<FAQItem> GetFAQItemsBySBU(string guid);
     }
 }

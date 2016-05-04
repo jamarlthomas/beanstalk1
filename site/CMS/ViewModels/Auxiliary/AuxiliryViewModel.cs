@@ -24,5 +24,6 @@ namespace CMS.Mvc.ViewModels.Auxiliary
         public AuxiliaryHyperlink GlobalSearch { get; set; }
         public AuxiliaryHyperlink TermsAndAcronyms { get; set; }
         public List<AuxiliaryHyperlink> Offices { get; set; }
+        public List<AuxiliaryHyperlink> Generic { get; set; }
     }
 }

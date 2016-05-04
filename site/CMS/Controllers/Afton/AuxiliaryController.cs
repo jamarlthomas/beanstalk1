@@ -35,7 +35,7 @@ namespace CMS.Mvc.Controllers.Afton
             model.Insights = new AuxiliaryHyperlink(RouteHelper.GetRoute("Insights And Resources").Page, RouteHelper.GetRoute("Insights And Resources").Route);
             model.GlobalSearch = new AuxiliaryHyperlink(RouteHelper.GetRoute("GlobalSearch").Page, RouteHelper.GetRoute("GlobalSearch").Route);
             model.TermsAndAcronyms = new AuxiliaryHyperlink(RouteHelper.GetRoute("TermsAndAcronyms").Page, RouteHelper.GetRoute("TermsAndAcronyms").Route);
-            
+            model.Generic = ContentHelper.GetDocs<GenericPage>(GenericPage.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentNamePath)).ToList();
             return View("~/Views/Afton/Auxiliary/Index.cshtml", model);
         }
 

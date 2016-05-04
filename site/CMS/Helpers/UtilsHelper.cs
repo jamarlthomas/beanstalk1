@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace CMS.Mvc.Helpers
 {
@@ -62,6 +63,10 @@ namespace CMS.Mvc.Helpers
         {
             var url = new Regex(string.Format(@"&*{0}=\d+", paramName)).Replace(baseUrl, string.Empty);
             return url.Contains('?') ? url : string.Format("{0}?", url);
+        }
+        public static HtmlString ToHtmlString(string text)
+        {
+            return new HtmlString(text);
         }
     }
 }

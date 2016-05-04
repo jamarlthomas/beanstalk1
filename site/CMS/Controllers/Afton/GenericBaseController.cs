@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.ActionFilters;
@@ -36,7 +37,6 @@ namespace CMS.Mvc.Controllers.Afton
             var document = _genericProvider.GetDocument(DocumentName);
 
             var genericViewModel = MapData<T, DocumentViewModel>(document);
-
             genericViewModel.Constant = MapData<DocumentConstant, DocumentConstantViewModel>(_documentConstantProvider.GetDocumentConstants());
 
             return View("~/Views/Afton/Generic/Index.cshtml", new GenericPageViewModel()
