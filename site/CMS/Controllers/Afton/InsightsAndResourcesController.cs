@@ -102,7 +102,7 @@ namespace CMS.Mvc.Controllers.Afton
                 {
                     Title = document.Title,
                     Reference = document.DocumentNamePath
-                }).ToList()
+                }).Take(3).ToList()
             }));
 
             return result;
