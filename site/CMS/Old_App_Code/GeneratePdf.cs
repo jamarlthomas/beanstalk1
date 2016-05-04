@@ -6,6 +6,7 @@ using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Old_App_Code;
+using CMS.PortalEngine;
 using iTextSharp.text.pdf;
 using Document = iTextSharp.text.Document;
 
@@ -34,7 +35,7 @@ namespace CMS.Mvc.Old_App_Code
                     catch (Exception exception)
                     {
                         // if running outside the custom action context (for development purposes)
-                        _tNode = ContentHelper.GetDocByName<Product>(Product.CLASS_NAME, "Gear-Oil-Additive-(2)");
+                        _tNode = ContentHelper.GetDoc<Product>(Product.CLASS_NAME);
                     }
                 }
                 return _tNode;
@@ -91,21 +92,35 @@ namespace CMS.Mvc.Old_App_Code
                 return _fileName;
             }
         }
-    
+        public string Pds { get; set; }
 
         public override void Execute()
         {
             string css = GetCss();
 
-            string html = GetHtml();
+            string template = GetHtml();
 
-            CreatePdf(html, css);
+            FillTheTemplateWithValues();
+            
+
+
+            CreatePdf(Pds, css);
 
             //SaveFileToMediaLbrary();
 
             UpdatePdfReference();
 
         }
+
+        private void FillTheTemplateWithValues()
+        {
+            var product = (Product) TNode;
+            var pr = new TemplateTreeNode<Product>(TNode, Template);
+            pr.FillTemplate(p => p.Description)
+                .FillTemplate(p => p.Title);
+        }
+
+   
 
         private void UpdatePdfReference()
         {
@@ -133,14 +148,15 @@ namespace CMS.Mvc.Old_App_Code
 
         private string GetHtml()
         {
-            return string.Format(File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"Pdf\Template.html"), TNode.GetStringValue("Content", ""));
+            Template = string.Format(File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"Pdf\Template.html"), TNode.GetStringValue("Content", ""));
+            return Template;
         }
 
         private string GetCss()
         {
-            return ".pdfcheck{color: rgb(12, 65, 154);}";
-            //var baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            //return File.ReadAllText(baseDir + @"css\print.min.css");
+            //return ".pdfcheck{color: rgb(12, 65, 154);}";
+            var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            return File.ReadAllText(baseDir + @"CMSAdminControls\CKEditor\style-guide.min.css");
         }
 
         private void CreatePdf(string html, string css)
@@ -181,5 +197,7 @@ namespace CMS.Mvc.Old_App_Code
                 //TODO log errror
             }
         }
+
+        public string Template { get; set; }
     }
 }

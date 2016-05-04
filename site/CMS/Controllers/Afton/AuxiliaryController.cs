@@ -4,6 +4,7 @@ using System.Web.Routing;
 using CMS.DocumentEngine.Types;
 using CMS.Helpers;
 using CMS.Mvc.Helpers;
+using CMS.Mvc.Old_App_Code;
 using CMS.Mvc.ViewModels.Auxiliary;
 
 
@@ -60,7 +61,12 @@ namespace CMS.Mvc.Controllers.Afton
             return RedirectToAction("Index");
         }
 
-
-
+        [Route("Auxiliary/Pdf")]
+        public ActionResult Pdf()
+        {
+            var gpdf = new GeneratePdf();
+            gpdf.Execute();
+            return RedirectToAction("Infrastructure");
+        }
     }
 }

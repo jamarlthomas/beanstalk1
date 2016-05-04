@@ -237,6 +237,7 @@
     <Compile Include="Models\ExtendedModels\ContactPage.cs" />
     <Compile Include="Models\ExtendedModels\LogisticsAndSupply.cs" />
     <Compile Include="Models\ExtendedModels\LogisticsAndSupplyFolder.cs" />
+    <Compile Include="Old_App_Code\TemplateTreeNode.cs" />
     <Compile Include="Providers\MegaMenuSubLinkItemProvider.cs" />
     <Compile Include="ViewModels\Auxiliary\AuxiliaryHyperlink.cs" />
     <Compile Include="ViewModels\Auxiliary\AuxiliryViewModel.cs" />

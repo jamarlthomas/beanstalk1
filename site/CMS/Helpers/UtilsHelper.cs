@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using CMS.DocumentEngine.Types;
 
 namespace CMS.Mvc.Helpers
 {
@@ -68,5 +69,7 @@ namespace CMS.Mvc.Helpers
         {
             return new HtmlString(text);
         }
+
+    
     }
 }
