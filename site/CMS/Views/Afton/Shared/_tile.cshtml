@@ -1,34 +1,30 @@
 ﻿@using CMS.Mvc.ViewModels.Shared
 @model List<TileViewModel>
-    <div class="cards">
-        @foreach (var item in Model)
-        {
-            <a href="@Url.Content("~/" + item.Reference)">
-                <div class="cardBtnIndicator">
-                    <img src="@Url.Content("~/images/card-btn-indicator.png")" />
+<div class="cards">
+    @foreach (var item in Model.Where(item => !string.IsNullOrWhiteSpace(item.HomeImage) && !string.IsNullOrWhiteSpace(item.Reference)))
+    {
+        <a href="@Url.Content("~/" + item.Reference)">
+            <div class="cardBtnIndicator">
+                <img src="@Url.Content("~/images/card-btn-indicator.png")" />
+            </div>
+            <div class="overlayC">
+                <div class="overlay">
+                    <div class="cardTitle">@item.TileTitle</div>
+                    <div class="cardHdr">@item.Title</div>
+                    @if (@item.Description != null)
+                    {
+                        <div class="cardTxt">@item.Description</div>
+                    }
                 </div>
-                <div class="overlayC">
-                    <div class="overlay">
-                        <div class="cardTitle">@item.TileTitle</div>
-                        <div class="cardHdr">@item.Title</div>
-                        @if (@item.Description != null)
-                        {
-                            <div class="cardTxt">@item.Description</div>
-                        }
-                    </div>
-                    <div class="cardDate">@item.Date.ToString("MMMM dd, yyyy")</div>
+                <div class="cardDate">@item.Date.ToString("MMMM dd, yyyy")</div>
+            </div>
+            <div style="opacity: 0.0;" class="hoverOverlayC">
+                <div class="hoverOverlay">
+                    <div class="hoverOverlayTxt">@item.Description</div>
                 </div>
-                <div style="opacity: 0.0;" class="hoverOverlayC">
-                    <div class="hoverOverlay">
-                        <div class="hoverOverlayTxt">@(item.Description ?? "Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late...")</div>
-                    </div>
-                    <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-                </div>
-                @if (!string.IsNullOrWhiteSpace(item.HomeImage))
-                {
-                    <img src="@Url.Content(item.HomeImage)" />
-                }
-
-            </a>
-        }
-    </div>
+                <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
+            </div>
+            <img src="@Url.Content(item.HomeImage)" />
+        </a>
+    }
+</div>
