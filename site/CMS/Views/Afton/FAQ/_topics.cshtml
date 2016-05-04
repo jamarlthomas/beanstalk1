@@ -9,7 +9,7 @@
             @foreach (var faqItem in topic.Items)
             {
                 <li>
-                    <a href="#">
+                    <a>
                         <div class="icon"></div> @faqItem.Question
                     </a>
                     <div style="display: none;" class="reveal">@Html.Raw(faqItem.Answer)</div>

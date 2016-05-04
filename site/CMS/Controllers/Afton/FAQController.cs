@@ -35,7 +35,7 @@ namespace CMS.Mvc.Controllers.Afton
                 {
                     Items = MapSidebar(_sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(page.SidebarItems)), page)
                 },
-                Topics = _faqTopicProvider.GetFaqTopics().Select(topic => MapTopic(topic, faqItems)).ToList(),
+                Topics = _faqTopicProvider.GetFaqTopics().Select(GetTopicItems).ToList(),
                 BreadCrumb = new BreadCrumbViewModel
                 {
                     BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(page.DocumentGUID)
@@ -44,6 +44,15 @@ namespace CMS.Mvc.Controllers.Afton
             return View("~/Views/Afton/FAQ/Index.cshtml", model);
         }
 
+        private FAQTopicViewModel GetTopicItems(FAQTopic topic)
+        {
+            return new FAQTopicViewModel
+            {
+                Name = topic.Name,
+                Id = topic.Name.Replace(' ', '-'),
+               Items = MapData<FAQItem, FAQItemViewModel>(_faqItemProvider.GetFAQItems(topic.NodeAlias, int.MaxValue))
+            };
+        }
         private FAQTopicViewModel MapTopic(FAQTopic topic, List<FAQItem> faqItems)
         {
             return new FAQTopicViewModel

@@ -5,22 +5,47 @@
 <div id="sidebarNavC">
     <ul>
         @foreach (var navItem in Model.NavItems)
+        {
+            if (navItem.SubMenu != null && navItem.SubMenu.Count() > 0)
             {
-                if (navItem.SubMenu != null && navItem.SubMenu.Count() > 0)
-                {
                 <li>
-                    <a href="@navItem.Link" class="open active"> @Html.Raw(navItem.Title)</a>
+                    @if (navItem.Link != null)
+                    {
+                        <a href="@Url.Content("~/" + navItem.Link)" class="open active"> @Html.Raw(navItem.Title)</a>
+                    }
+                    else
+                    {
+                        <a class="open active"> @Html.Raw(navItem.Title)</a>
+                    }
                     <ul>
                         @foreach (var subNavItem in navItem.SubMenu)
                         {
-                            <li><a href="@subNavItem.Link">@Html.Raw(subNavItem.Title)</a></li>
+                            <li>
+                                @if (subNavItem.Link != null)
+                                {
+                                    <a href="@Url.Content("~/" + subNavItem.Link)">@Html.Raw(subNavItem.Title)</a>
+                                }
+                                else
+                                {
+                                    <a>@Html.Raw(subNavItem.Title)</a>
+                                }
+                            </li>
                         }
                     </ul>
                 </li>
             }
             else
             {
-                <li><a href="@navItem.Link">@Html.Raw(navItem.Title)</a></li>
+                <li>
+                    @if (navItem.Link != null)
+                    {
+                        <a href="@Url.Content("~/" + navItem.Link)">@Html.Raw(navItem.Title)</a>
+                    }
+                    else
+                    {
+                        <a>@Html.Raw(navItem.Title)</a>
+                    }
+                </li>
             }
         }
     </ul>
