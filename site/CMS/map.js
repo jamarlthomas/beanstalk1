@@ -12,7 +12,7 @@ function initMap() {
         center: { lat: 0, lng: 0 },
         zoom: 3,
         maxZoom: 5,
-        minZoom: 2,
+        minZoom: 0,
         disableDoubleClickZoom: true,
         streetViewControl: false,
         mapTypeControl: false
@@ -137,6 +137,6 @@ function getLocations(url) {
             }]
         });
 
-        //map.fitBounds(bounds);
+        map.fitBounds(bounds);
     });
 };

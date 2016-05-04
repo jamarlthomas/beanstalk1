@@ -1538,6 +1538,7 @@
     <Content Include="App_Themes\Wireframes\Icons\webcam.png" />
     <Content Include="App_Themes\Wireframes\Icons\window.png" />
     <Content Include="App_Themes\Wireframes\Images\Default.png" />
+    <Content Include="bedford.jpg" />
     <Content Include="CMSAdminControls\Basic\DisabledModuleInfo.ascx" />
     <Content Include="CMSAdminControls\CKeditor\adapters\jquery.js" />
     <Content Include="CMSAdminControls\CKeditor\ckeditor.js" />
@@ -4873,6 +4874,9 @@
     <Content Include="EcommerceSite\metafiles\f1\f1152ad0-d1f4-4de0-a83e-7c991a9be654.jpg" />
     <Content Include="EcommerceSite\metafiles\f6\f6b263c4-0cd7-43ef-a728-f398b3d7db4d.jpg" />
     <Content Include="EcommerceSite\Scripts\jquery-1.7.2.min.js" />
+    <Content Include="feluy.jpg" />
+    <Content Include="houston.jpg" />
+    <Content Include="hyderabad.jpg" />
     <Content Include="IntranetPortal\files\01\0141d2c7-26b1-4195-a1f4-9485bf29e07a.jpg" />
     <Content Include="IntranetPortal\files\06\06b12861-e1a4-4611-ba1c-45682fa29fae.png" />
     <Content Include="IntranetPortal\files\07\074f288e-b329-4cb6-8f8b-9035fbe1d83d.jpg" />
@@ -4924,6 +4928,7 @@
     <Content Include="IntranetPortal\media\Media\Trees for Bugs\Trees-for-bugs-5.jpg" />
     <Content Include="IntranetPortal\media\Microsoft_Office_Upgrade\Microsoft Office graphics\msoffice.jpg" />
     <Content Include="IntranetPortal\media\Microsoft_Office_Upgrade\Microsoft Office graphics\msoffice_col.jpg" />
+    <Content Include="manchester.jpg" />
     <Content Include="map.html" />
     <Content Include="map.js" />
     <Content Include="markerclusterer.js" />
@@ -4936,6 +4941,12 @@
     <Content Include="CMSModules\StrandsRecommender\CMSPages\StrandsCatalogFeed.ashx" />
     <Content Include="CMSModules\StrandsRecommender\Web.config" />
     <Content Include="orangeburg.jpg" />
+    <Content Include="parthur.jpg" />
+    <Content Include="rio.jpg" />
+    <Content Include="sarnia.jpg" />
+    <Content Include="sauget.jpg" />
+    <Content Include="singapore.jpg" />
+    <Content Include="suzhou.jpg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
