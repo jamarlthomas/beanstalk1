@@ -1,4 +1,5 @@
-﻿namespace CMS.DocumentEngine.Types
+﻿using CMS.Mvc.Helpers;
+namespace CMS.DocumentEngine.Types
 {
     public partial class NewsAndEventsPage
     {
@@ -6,7 +7,8 @@
         {
             get
             {
-                return string.Format("/NewsAndEvents/Index/{0}", this.NodeAlias);
+                var rt = RouteHelper.GetRoute("NewsAndEvents");
+                return (rt != null) ? rt.Route : "/NewsAndEvents";
             }
         }
     }

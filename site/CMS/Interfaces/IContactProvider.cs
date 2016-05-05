@@ -9,5 +9,6 @@ namespace CMS.Mvc.Interfaces
         ContactInfo GetCurrentContact();
         void UpdateCurrentContact(UpdateContactRequest request);
         string GetContactNameByGuid(Guid guid);
+        bool Subscribe(string subscriber);
     }
 }

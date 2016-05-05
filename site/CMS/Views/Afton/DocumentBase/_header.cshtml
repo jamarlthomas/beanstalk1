@@ -4,8 +4,9 @@
 <div id="document">
     <h1>@Model.Title</h1>
     <div class="subTxt">@Model.Constant.PostedTimeLabel @Model.DocumentPublishFrom.ToString("M/d/yy | h:mm tt CST")</div><br>
-    
-    @Html.Partial("~/Views/Afton/Shared/DownloadWidget/_downloadButtonSection.cshtml", Model.DownloadButtonSection)
+    @if(@Model.DownloadButtonSection != null) {
+        @Html.Partial("~/Views/Afton/Shared/DownloadWidget/_downloadButtonSection.cshtml", Model.DownloadButtonSection)
+    }
     @*<div id="downloadDocsC" class="noPrintDisplay">
         <a href="#" class="downloadBtn">@Model.Constant.DownloadLabel @Model.Title <span class="icon-download"></span></a>
         <div id="translate-doc">

@@ -1,9 +1,10 @@
 ﻿@model CMS.Mvc.ViewModels.Shared.DownloadWidget.DownloadButtonSectionViewModel
 
 <div id="downloadDocsC" class="noPrintDisplay">
-    <a href="#" target="_blank" class="downloadBtn">@Model.DownloadLabel <span class="icon-download"></span></a>
+    
     @if (Model.TranslationAvailable.Any(translation => !string.IsNullOrWhiteSpace(translation.Reference)))
     {
+        <a href="#" target="_blank" class="downloadBtn">@Model.DownloadLabel <span class="icon-download"></span></a>
         <div id="translate-doc">
             @Model.TranslationAvailableLabel
             <a id="selDocLang">
@@ -32,6 +33,6 @@
     }
     else
     {
-        <div id="translate-doc">Translation not available</div>
+        <!--<div id="translate-doc">Translation not available</div>-->
     }
 </div>
