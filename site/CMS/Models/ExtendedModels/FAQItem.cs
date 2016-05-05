@@ -2,12 +2,6 @@
 {
     public partial class FAQItem
     {
-        public override string DocumentNamePath
-        {
-            get
-            {
-                return null;
-            }
-        }
+
     }
 }
