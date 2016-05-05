@@ -121,7 +121,21 @@ namespace CMS.DocumentEngine.Types
                 SetValue("Description", value);
             }
         }
-
+        /// <summary>
+        /// Content.
+        /// </summary>
+        [DatabaseField]
+        public string Copy
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Copy"), "");
+            }
+            set
+            {
+                SetValue("Copy", value);
+            }
+        }
 
         /// <summary>
         /// 
