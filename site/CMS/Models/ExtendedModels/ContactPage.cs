@@ -1,8 +1,9 @@
 ﻿using CMS.Mvc.Helpers;
+using CMS.Mvc.Interfaces;
 
 namespace CMS.DocumentEngine.Types
 {
-    public partial class ContactPage
+    public partial class ContactPage : IRoutedModel
     {
         public static string RoutePath
         {
@@ -13,7 +14,7 @@ namespace CMS.DocumentEngine.Types
             }
         }
 
-        public override string DocumentNamePath
+        public string DocumentRoutePath
         {
             get
             {

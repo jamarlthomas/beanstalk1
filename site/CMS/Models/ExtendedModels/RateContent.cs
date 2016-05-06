@@ -1,17 +1,24 @@
-﻿using System.Linq;
-using System;
+﻿using System;
 using CMS.Mvc.Helpers;
-using iTextSharp.text;
+using CMS.Mvc.Interfaces;
 
 namespace CMS.DocumentEngine.Types
 {
-    public partial class RateContent
+    public partial class RateContent : IRoutedModel
     {
         public DateTime Date
         {
             get
             {
                 return UtilsHelper.ConvertToCST(GetDateTimeValue("DocumentCreatedWhen", default(DateTime)));
+            }
+        }
+
+        public string DocumentRoutePath
+        {
+            get
+            {
+                return DocumentNamePath;
             }
         }
     }

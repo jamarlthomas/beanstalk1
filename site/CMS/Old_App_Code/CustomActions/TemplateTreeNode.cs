@@ -1,26 +1,24 @@
 ﻿using System;
-using CMS.DocumentEngine;
 using System.Linq.Expressions;
+using CMS.DocumentEngine;
 
-namespace CMS.Mvc.Old_App_Code
+namespace CMS.Mvc.Old_App_Code.CustomActions
 {
-    public class TemplateTreeNode<T> where T: TreeNode
+    public class TemplateTreeNode<T> where T : TreeNode
     {
-        private TreeNode TNode;
-        private string Template;
-        public string Pds;
-    
-        public TemplateTreeNode(TreeNode TNode, string Template)
+        private GeneratePdf _pdfGenerator;
+
+        public TemplateTreeNode(GeneratePdf pdfGenerator)
         {
-            this.TNode = TNode;
-            this.Template = Template;
-            this.Pds = Template;
+            _pdfGenerator = pdfGenerator;
+            _pdfGenerator.Pds = _pdfGenerator.Template;
         }
         public TemplateTreeNode<T> FillTemplate(Expression<Func<T, string>> func)
         {
             var propertyName = GetPropertyName(func);
-            var propertyValue = func.Compile().Invoke((T) TNode);
-            Pds = Pds.Replace(propertyName, propertyValue);
+            var propertyValue = func.Compile().Invoke((T)_pdfGenerator.TNode);
+            _pdfGenerator.Pds = _pdfGenerator.Pds.Replace(string.Format("{{{{{0}}}}}", propertyName), propertyValue);
+
             return this;
         }
 

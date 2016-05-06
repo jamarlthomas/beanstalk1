@@ -1,5 +1,6 @@
 ﻿using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.Interfaces;
 using CMS.Mvc.ViewModels.NewsAndEvents;
 using CMS.Mvc.ViewModels.Shared;
 using System;
@@ -22,7 +23,7 @@ namespace CMS.Mvc.App_Start
             var cmsTypes = Assembly.GetExecutingAssembly().GetTypes()
                 .Where(t => String.Equals(t.Namespace, "CMS.DocumentEngine.Types", StringComparison.Ordinal))
                 .Select(type => AutoMapper.Mapper.CreateMap(type, typeof (TileViewModel))
-                    .ForMember("Reference", opts => opts.MapFrom(src => (src as TreeNode).DocumentNamePath))
+                    .ForMember("Reference", opts => opts.MapFrom(src => (src as IRoutedModel).DocumentRoutePath))
                     .ForMember("Date",
                         opts =>
                             opts.MapFrom<DateTime>(src => (DateTime) (src as TreeNode).GetValue("DocumentCreatedWhen"))))

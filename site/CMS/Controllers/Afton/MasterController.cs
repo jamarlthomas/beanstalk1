@@ -131,7 +131,7 @@ namespace CMS.Mvc.Controllers.Afton
         private string GetLinkByGuid(Guid guid)
         {
             var treeNode = _treeNodesProvider.GetTreeNodeByNodeGuid(guid);
-            return treeNode != null ? treeNode.DocumentNamePath : "#";
+            return (treeNode != null && ((treeNode as IRoutedModel) != null)) ? (treeNode as IRoutedModel).DocumentRoutePath : "#";
         }
     }
 }

@@ -7,7 +7,8 @@ using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.Mvc.Infrastructure.Models;
-using CMS.Mvc.ViewModels.Shared;
+﻿using CMS.Mvc.Interfaces;
+﻿using CMS.Mvc.ViewModels.Shared;
 using CMS.PortalEngine;
 using CMS.Search;
 using System;
@@ -86,7 +87,7 @@ namespace CMS.Mvc.Helpers
                     breadcrumbList.Insert(0, new BreadCrumbLinkItemViewModel
                        {
                            Title = node.DocumentName,
-                           Reference = node.DocumentNamePath
+                           Reference = ((node as IRoutedModel) != null) ? (node as IRoutedModel).DocumentRoutePath : node.DocumentNamePath
                        });
                 }
                 node = node.Parent;

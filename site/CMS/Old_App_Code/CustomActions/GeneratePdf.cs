@@ -4,14 +4,15 @@ using System.Linq;
 using CMS;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
+using CMS.Membership;
 using CMS.Mvc.Helpers;
-using CMS.Mvc.Old_App_Code;
-using CMS.PortalEngine;
+using CMS.Mvc.Old_App_Code.CustomActions;
 using iTextSharp.text.pdf;
 using Document = iTextSharp.text.Document;
 
 [assembly: RegisterCustomClass("GeneratePdf", typeof(GeneratePdf))]
-namespace CMS.Mvc.Old_App_Code
+
+namespace CMS.Mvc.Old_App_Code.CustomActions
 {
 
     public class GeneratePdf : DocumentWorkflowAction
@@ -93,18 +94,27 @@ namespace CMS.Mvc.Old_App_Code
             }
         }
         public string Pds { get; set; }
+        public string Pdf { get; set; }
+        public string Template
+        {
+            get
+            {
+                return this.TNode.GetValue("Template", "");
+            }
+            
+        }
 
         public override void Execute()
         {
             string css = GetCss();
 
-            string template = GetHtml();
+            FillProductTemplateWithValues();
 
-            FillTheTemplateWithValues();
-            
+            SaveContentInNode();
 
+            WrapUpContent();
 
-            CreatePdf(Pds, css);
+            CreatePdf(Pdf, css);
 
             //SaveFileToMediaLbrary();
 
@@ -112,20 +122,34 @@ namespace CMS.Mvc.Old_App_Code
 
         }
 
-        private void FillTheTemplateWithValues()
+        
+
+        private void WrapUpContent()
         {
-            var product = (Product) TNode;
-            var pr = new TemplateTreeNode<Product>(TNode, Template);
-            pr.FillTemplate(p => p.Description)
-                .FillTemplate(p => p.Title);
+            Pdf = string.Format(File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"Pdf\Template.html"), Pds);
         }
 
-   
+        private void SaveContentInNode()
+        {
+            TNode.SetValue("Content", Pds);
+            DocumentHelper.UpdateDocument(TNode, new TreeProvider(MembershipContext.AuthenticatedUser));
+        }
 
+        private void FillProductTemplateWithValues()
+        {
+            var pr = new TemplateTreeNode<Product>(this);
+            pr
+                .FillTemplate(p => p.Title)
+                .FillTemplate(p => p.Description)
+                .FillTemplate(p=>p.HomeImage)
+                .FillTemplate(p=>p.DocumentName);
+        }
+
+ 
         private void UpdatePdfReference()
         {
             TNode.SetValue("PdfReference", MediaFileReference);
-            DocumentHelper.UpdateDocument(TNode, new TreeProvider());
+            DocumentHelper.UpdateDocument(TNode, new TreeProvider(MembershipContext.AuthenticatedUser));
         }
 
         //private void SaveFileToMediaLbrary()
@@ -144,17 +168,8 @@ namespace CMS.Mvc.Old_App_Code
         //    }
         //}
         
-
-
-        private string GetHtml()
-        {
-            Template = string.Format(File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"Pdf\Template.html"), TNode.GetStringValue("Content", ""));
-            return Template;
-        }
-
         private string GetCss()
         {
-            //return ".pdfcheck{color: rgb(12, 65, 154);}";
             var baseDir = AppDomain.CurrentDomain.BaseDirectory;
             return File.ReadAllText(baseDir + @"CMSAdminControls\CKEditor\style-guide.min.css");
         }
@@ -197,7 +212,5 @@ namespace CMS.Mvc.Old_App_Code
                 //TODO log errror
             }
         }
-
-        public string Template { get; set; }
     }
 }

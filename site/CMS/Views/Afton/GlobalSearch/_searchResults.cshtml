@@ -1,11 +1,10 @@
 ﻿@using System;
 @using CMS.Mvc.ViewModels.GlobalSearch
-@using System.Collections.Generic
 @model List<ResultItemViewModel>
 
 @foreach (var searchResult in Model)
 {
-    <a href="@searchResult.DocumentNamePath" class="searchResultItem">
+    <a href="@searchResult.DocumentRoutePath" class="searchResultItem">
         @if (!string.IsNullOrEmpty(searchResult.Image))
         {
             <div class="searchImgC"><img src="@Url.Content(searchResult.Image)"></div>

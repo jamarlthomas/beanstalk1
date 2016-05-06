@@ -1,18 +1,17 @@
-﻿using System.Linq;
-using System;
+﻿using System;
 using CMS.Mvc.Helpers;
+using CMS.Mvc.Interfaces;
 
 namespace CMS.DocumentEngine.Types
 {
-    public partial class Document
+    public partial class Document : IRoutedModel
     {
-        public override string DocumentNamePath
+        public string DocumentRoutePath
         {
             get
             {
                 var rt = RouteHelper.GetRoute("Document");
                 return (rt != null) ? rt.Route.Replace("{DocumentName}", this.NodeAlias) : string.Format("/Document/Index/{0}", this.NodeAlias);
-                //return string.Format("/Document/Index/{0}", this.NodeAlias);
             }
         }
 

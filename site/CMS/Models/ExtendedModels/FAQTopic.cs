@@ -1,8 +1,10 @@
-﻿namespace CMS.DocumentEngine.Types
+﻿using CMS.Mvc.Interfaces;
+
+namespace CMS.DocumentEngine.Types
 {
-    public partial class FAQTopic
+    public partial class FAQTopic: IRoutedModel
     {
-        public override string DocumentNamePath
+        public string DocumentRoutePath
         {
             get
             {

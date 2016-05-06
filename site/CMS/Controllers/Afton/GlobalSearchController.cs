@@ -57,7 +57,7 @@ namespace CMS.Mvc.Controllers.Afton
             }
             viewModel.Pagination = new PaginationViewModel
             {
-                BaseUrl = string.Format("{0}?Query={1}", page.DocumentNamePath, request.Query),
+                BaseUrl = string.Format("{0}?Query={1}", page.DocumentRoutePath, request.Query),
                 TotalPages = searchResults.PageCount,
                 CurrentPage = request.PageNumber ?? 1,
                 PageArgName = "PageNumber"
@@ -73,7 +73,7 @@ namespace CMS.Mvc.Controllers.Afton
             return new ResultItemViewModel
             {
                 Title = searchResult.Date ?? node.GetStringValue("Title", string.Empty), //due kentico limitation date field used for title
-                DocumentNamePath = node.DocumentNamePath,
+                DocumentRoutePath = ((node as IRoutedModel)!= null)? (node as IRoutedModel).DocumentRoutePath :"",
                 Content = searchResult.Content,
                 Image = searchResult.Image,
                 Type = pageTypeDisplayValue != null ? pageTypeDisplayValue.DisplayValue : string.Empty

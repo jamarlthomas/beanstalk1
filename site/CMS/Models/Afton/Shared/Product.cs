@@ -107,23 +107,6 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Sidebar Component Items.
-        /// </summary>
-        [DatabaseField]
-        public string SidebarItems
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
-            }
-            set
-            {
-                SetValue("SidebarItems", value);
-            }
-        }
-
-
-        /// <summary>
         /// Text that appears on hover over the tile.
         /// </summary>
         [DatabaseField]
@@ -141,6 +124,23 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Template.
+        /// </summary>
+        [DatabaseField]
+        public string Template
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Template"), "");
+            }
+            set
+            {
+                SetValue("Template", value);
+            }
+        }
+
+
+        /// <summary>
         /// Content.
         /// </summary>
         [DatabaseField]
@@ -153,6 +153,23 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("Content", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Sidebar Items.
+        /// </summary>
+        [DatabaseField]
+        public string SidebarItems
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
+            }
+            set
+            {
+                SetValue("SidebarItems", value);
             }
         }
 

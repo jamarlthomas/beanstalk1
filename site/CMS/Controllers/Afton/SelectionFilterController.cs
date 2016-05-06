@@ -116,7 +116,7 @@ namespace CMS.Mvc.Controllers.Afton
             return new SelectionFilterSearchItemViewModel
             {
                 Title = searchResultItem.Date ?? node.GetStringValue("Title", string.Empty), //due kentico limitation date field used for title
-                Link = node.DocumentNamePath,
+                Link = ((node as IRoutedModel) != null) ? (node as IRoutedModel).DocumentRoutePath : node.DocumentNamePath,
                 Description = searchResultItem.Content,
                 Image = !string.IsNullOrEmpty(searchResultItem.Image) ? Url.Content(searchResultItem.Image) : null,
                 Type = pageTypeDisplayValue != null ? pageTypeDisplayValue.DisplayValue : string.Empty,
@@ -137,7 +137,7 @@ namespace CMS.Mvc.Controllers.Afton
             return new HeaderViewModel
             {
                 Title = pageConstants.Title,
-                ViewInsightsResourcesLink = defaultPage.DocumentNamePath != page.DocumentNamePath ? defaultPage.DocumentNamePath : null,
+                ViewInsightsResourcesLink = defaultPage.DocumentRoutePath != page.DocumentRoutePath ? defaultPage.DocumentRoutePath : null,
                 ViewInsightsResourcesLabel = pageConstants.ViewInsightsResourcesLabel,
                 BreadCrumb = new BreadCrumbViewModel
                 {

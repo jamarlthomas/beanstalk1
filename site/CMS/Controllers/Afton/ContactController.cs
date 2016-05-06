@@ -71,7 +71,7 @@ namespace CMS.Mvc.Controllers.Afton
 
             var privacyStatement = _genericPageProvider.GetFirstChildGenericPage(page.NodeAlias);
             viewModel.NewsletterPrivacyLabel = privacyStatement.Title;
-            viewModel.NewsletterPrivacyLink = privacyStatement.DocumentNamePath;
+            viewModel.NewsletterPrivacyLink = privacyStatement.DocumentRoutePath;
             OnlineMarketingContext.GetCurrentContact();
 	    viewModel.EmergencyResponse = MapData<RegionConstants, EmergencyResponseViewModel>(_regionConstantsProvider.GetRegionConstants());
             viewModel.Countries = MapData<CountryInfo, ContactCountryViewModel>(_countryProvider.GetCountries());
@@ -119,7 +119,7 @@ namespace CMS.Mvc.Controllers.Afton
             var officeCountry = _countryProvider.GetCountryByGuid(Guid.Parse(primarySalesOffice.Country));
             regionViewModel.CountryName = officeCountry.CountryDisplayName;
             regionViewModel.Title = region.Title;
-            regionViewModel.DocumentNamePath = region.DocumentNamePath;
+            regionViewModel.DocumentRoutePath = region.DocumentRoutePath;
             regionViewModel.MapImage = region.MapImage;
             return regionViewModel;
         }

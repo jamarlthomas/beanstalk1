@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace CMS.Mvc.ViewModels.Contact
+﻿namespace CMS.Mvc.ViewModels.Contact
 {
     public class ContactRegionViewModel
     {
@@ -12,6 +7,6 @@ namespace CMS.Mvc.ViewModels.Contact
         public string CountryName { get; set; }
         public string Phone { get; set; }
         public string MapImage { get; set; }
-        public string DocumentNamePath { get; set; }
+        public string DocumentRoutePath { get; set; }
     }
 }

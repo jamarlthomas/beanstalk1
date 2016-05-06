@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Linq;
 using CMS.Mvc.Helpers;
-using iTextSharp.text;
+using CMS.Mvc.Interfaces;
 
 namespace CMS.DocumentEngine.Types
 {
-    public partial class CustomNews
+    public partial class CustomNews : IRoutedModel
     {
-        public override string DocumentNamePath
+        public string DocumentRoutePath
         {
             get
             {
                 var rt = RouteHelper.GetRoute("News");
                 return (rt != null) ? rt.Route.Replace("{NewsName}", this.NodeAlias) : string.Format("/News/Index/{0}", this.NodeAlias);
-                //return string.Format("/Document/Index/{0}", this.NodeAlias);
             }
         }
 
