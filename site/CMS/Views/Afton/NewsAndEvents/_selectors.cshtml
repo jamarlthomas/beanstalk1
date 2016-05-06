@@ -13,6 +13,18 @@
             </div>
         </div>
     </div>
+    <div id="MonthDD">
+        <div class="customSelectC standard">
+            <div class="orgSelect">
+                <select name="categories">
+                    @foreach (var date in Model.Dates)
+                    {
+                        <option value="@date">@date</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
     <div id="sortDD">
         @{ Html.RenderPartial("~/Views/Afton/Shared/NewsEventsAndBlog/_sortSelector.cshtml", Model); }
     </div>
