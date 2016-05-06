@@ -68,7 +68,7 @@ namespace CMS.Mvc.Controllers.Afton
 
         private List<TileViewModel> GetTiles(InsightsResources page)
         {
-            var result = new List<TileViewModel>
+            /*var result = new List<TileViewModel>
             {
                 new TileViewModel 
                 {
@@ -76,8 +76,8 @@ namespace CMS.Mvc.Controllers.Afton
                     Description = page.StayInformedTileDescription,
                     Reference = "/StayInformed"
                 }
-            };
-            result.AddRange(_resourceTileProvider.GetTiles(page.FeaturedContentList).Select(s => Mapper.Map<TileViewModel>(s)).ToList());
+            };*/
+            var result = _resourceTileProvider.GetTiles(page.FeaturedContentList).Select(s => Mapper.Map<TileViewModel>(s)).ToList();
             return result;
         }
 
@@ -102,7 +102,7 @@ namespace CMS.Mvc.Controllers.Afton
                 {
                     Title = document.Title,
                     Reference = document.DocumentNamePath
-                }).ToList()
+                }).Take(3).ToList()
             }));
 
             return result;

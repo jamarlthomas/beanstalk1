@@ -39,5 +39,10 @@ namespace CMS.Mvc.Providers
 
             return blogPosts.ToList();
         }
+
+        public BlogPost GetBlogPost(string alias)
+        {
+            return ContentHelper.GetDocByName<BlogPost>(BlogPost.CLASS_NAME, alias);
+        }
     }
 }

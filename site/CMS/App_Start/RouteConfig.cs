@@ -89,8 +89,11 @@ namespace CMS.Mvc
         private static void SetUpConstantRoutes(RouteCollection routes)
         {
             RouteHelper.MapRouteWithName(routes, "SidebarPage", "SidebarPage/{action}", new { controller = "SidebarPage", action = "Index" });
+            RouteHelper.MapRouteWithName(routes, "SidebarPageEmail", "SidebarPage/SubmitEmail", new { controller = "SidebarPage", action = "SubmitEmail" });
             RouteHelper.MapRouteWithName(routes, "Master", "Master/{action}/{title}", new { controller = "Master", action = "Index", title = UrlParameter.Optional });
+            RouteHelper.MapRouteWithName(routes, "RateContentWidget", "RateContent/{action}/{Request}", new { controller = "RateContent", action = "Widget", Request = UrlParameter.Optional });
             RouteHelper.MapRouteWithName(routes, "Personalization", "Personalization/GetPeronalizedCards", new { controller = "Personalization", action = "GetPeronalizedCards" });
+            RouteHelper.MapRouteWithName(routes, "TermsAndAcryonyms", "TermsAndAcronyms/Data", new{ controller = "TermsAndAcronyms", action = "Data", Request = UrlParameter.Optional });
         }
 
         internal static void SetUpRoutesFromKentico(RouteCollection routes)

@@ -156,6 +156,40 @@ namespace CMS.DocumentEngine.Types
             }
         }
 
+
+        /// <summary>
+        /// Location.
+        /// </summary>
+        [DatabaseField]
+        public string Location
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Location"), "");
+            }
+            set
+            {
+                SetValue("Location", value);
+            }
+        }
+
+
+        /// <summary>
+        /// URL.
+        /// </summary>
+        [DatabaseField]
+        public string URL
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("URL"), "");
+            }
+            set
+            {
+                SetValue("URL", value);
+            }
+        }
+
         #endregion
 
 

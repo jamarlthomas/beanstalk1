@@ -1,0 +1,38 @@
+﻿@model CMS.Mvc.ViewModels.Shared.DownloadWidget.DownloadButtonSectionViewModel
+
+<div id="downloadDocsC" class="noPrintDisplay">
+    
+    @if (Model.TranslationAvailable.Any(translation => !string.IsNullOrWhiteSpace(translation.Reference)))
+    {
+        <a href="#" target="_blank" class="downloadBtn">@Model.DownloadLabel <span class="icon-download"></span></a>
+        <div id="translate-doc">
+            @Model.TranslationAvailableLabel
+            <a id="selDocLang">
+                @Model.SelectLanguageLabel
+                <span class="icon-arrow"></span>
+            </a>
+            <ul id="langDocDropDown" style="display: none;">
+                @foreach (var translation in Model.TranslationAvailable.Where(translation => !string.IsNullOrWhiteSpace(translation.Reference)))
+                {
+                    if (translation.LanguageId.Equals(Model.CurrentLanguageId, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        <li id="@translation.LanguageId" class="selected">
+                            <a data-download="@Url.Content(translation.Reference)">@translation.Title</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li id="@translation.LanguageId">
+                            <a href="#" data-download="@Url.Content(translation.Reference)">@translation.Title</a>
+                        </li>
+                    }
+                }
+            </ul>
+
+        </div>
+    }
+    else
+    {
+        <!--<div id="translate-doc">Translation not available</div>-->
+    }
+</div>

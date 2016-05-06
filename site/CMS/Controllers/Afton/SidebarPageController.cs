@@ -7,6 +7,7 @@ using CMS.DocumentEngine.Types;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Shared.SidebarComponents;
+using CMS.Mvc.ViewModels.Solution;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -16,6 +17,7 @@ namespace CMS.Mvc.Controllers.Afton
         protected readonly IPollSurveyAnswerProvider _pollSurveyAnswerProvider;
         protected readonly ISidebarProvider _sidebarProvider;
         protected readonly ICountryProvider _countryProvider;
+        protected readonly IContactProvider _contactProvider;
 
         public SidebarPageController()
         {
@@ -23,12 +25,13 @@ namespace CMS.Mvc.Controllers.Afton
             _pollSurveyAnswerProvider = new PollSurveyAnswerProvider();
             _leftNavigationProvider = new LeftNavigationProvider();
             _countryProvider = new CountryProvider();
+            _contactProvider = new ContactProvider();
         }
 
         public JsonResult SubmitEmail(string email)
         {
-            //todo save emails
-            return new JsonResult();
+            bool result = _contactProvider.Subscribe(email);
+            return Json(result);
         }
 
         [HttpPost]
@@ -87,11 +90,27 @@ namespace CMS.Mvc.Controllers.Afton
                     }
                 case LeftNavigation.CLASS_NAME:
                     {
+                        string aliasPath = null;
+                        string aliasTitle = null;
+                        if (baseNode.NodeClassName == Solution.CLASS_NAME && baseNode.NodeLevel < 4)
+                        {
+                            aliasPath = baseNode.Parent.NodeAliasPath;
+                            aliasTitle = baseNode.GetStringValue("Title", baseNode.Parent.NodeName);
+                        }
+                        else if (baseNode.NodeClassName == Product.CLASS_NAME || (baseNode.NodeClassName == Solution.CLASS_NAME && baseNode.NodeLevel >=4))
+                        {
+                            aliasPath = baseNode.Parent.Parent.NodeAliasPath;
+                            aliasTitle = baseNode.GetStringValue("Title", baseNode.Parent.Parent.NodeName);
+                        }
+                        else {
+                            aliasPath = baseNode.NodeAliasPath;
+                            aliasTitle = baseNode.GetStringValue("Title", baseNode.NodeName);
+                        }
                         return new LeftNavigationViewModel
                         {
                             ClassName = item.ClassName,
-                            Title = baseNode.GetStringValue("Title", baseNode.NodeName),
-                            NavItems = _leftNavigationProvider.GetNavItems(baseNode.NodeAliasPath)
+                            Title = aliasTitle,
+                            NavItems = _leftNavigationProvider.GetNavItems(aliasPath)
                                 .Select(node =>
                                 {
                                     var model = GetLeftNavItemViewModel(node);
@@ -115,5 +134,7 @@ namespace CMS.Mvc.Controllers.Afton
                 Link = node.DocumentNamePath
             };
         }
+
+      
     }
 }

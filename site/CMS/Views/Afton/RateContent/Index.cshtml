@@ -1,0 +1,32 @@
+﻿@using CMS.Mvc.ViewModels.RateContent
+@model RateContentResultsViewModel
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    td {
+        padding: 7px;
+    }
+</style>
+<table>
+    <tr>
+        <td>Submitted at</td>
+        <td>Document</td>
+        <td>Contact Name</td>
+        <td>Is Helpful</td>
+        <td>Comment</td>
+        <td></td>
+    </tr>
+    @foreach (var result in Model.Items)
+    {
+        <tr>
+            <td>@result.Date.ToString("M/d/yy | h:mm tt CST")</td>
+            <td><a href="~/@result.DocumentLink">@result.DocumentTitle</a> </td>
+            <td>@result.ContactTitle</td>
+            <td>@(result.IsHelpful ? "Yes" : "No")</td>
+            <td>@result.Message</td>
+            <td><a href="~/@result.DocumentRateResultsLink">All results for this document</a> </td>
+        </tr>
+    }
+</table>

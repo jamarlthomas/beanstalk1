@@ -105,6 +105,21 @@ namespace CMS.DocumentEngine.Types
             }
         }
 
+        /// <summary>
+        /// Copy.
+        /// </summary>
+        [DatabaseField]
+        public string Copy
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Copy"), "");
+            }
+            set
+            {
+                SetValue("Copy", value);
+            }
+        }
 
         /// <summary>
         /// HeroImage.

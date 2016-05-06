@@ -7,5 +7,8 @@ namespace CMS.Mvc.Interfaces
     {
         List<FAQItem> GetFAQItems(string alias, int limit);
         List<FAQItem> GetFAQItems();
+
+        List<FAQItem> GetFAQItems(string faqs);
+        List<FAQItem> GetFAQItemsBySBU(string guid);
     }
 }

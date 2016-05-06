@@ -1,43 +1,49 @@
 ﻿@using CMS.Mvc.ViewModels.Master
 @model MasterViewModel
 <div id="mobileNavC1">
-	<div id="mobileNavC">
-		<div id="menuHdrC">
-			<div id="menuHdr">Menu</div>
-			<div id="mobileNavStatus" style="display: none;"></div><a href="#" id="menuclose"><img src="@Url.Content("~/images/menuClose.gif")"></a>
-		</div>
-		<div id="mainNavC">
-			<ul>
-				@foreach (var item in Model.MainNavList)
-				{
-					<li>
-						<a href="@Url.Content("~/" + @item.Reference)">@item.Title</a>
-						<ul>
-							@foreach (var thumbnailedItem in item.ThumbnailedMenuItems)
-							{
-								<li><a href="#">@thumbnailedItem.Title</a></li>
-							}
-							@if (item.SolutionsLink != null)
-							{
-								foreach (var solution in item.SolutionsLink.Solutions)
-								{
-									<li><a href="#">@solution.Title</a></li>
-								}
-							}
-						</ul>
-					</li>
-				}
-			</ul>
-		</div>
-		<div id="utilC">
-			<ul>
-				@foreach (var item in Model.UtilityNavList)
-				{
-					<li><a href="@Url.Content("~/" + @item.Reference)">@item.Title</a></li>
-				}
-			</ul>
-		</div>
-	</div>
+    <div id="mobileNavC">
+        <div id="menuHdrC">
+            <div id="menuHdr">Menu</div>
+            <div id="mobileNavStatus" style="display: none;"></div><a href="#" id="menuclose">
+                <img src="@Url.Content("~/images/menuClose.gif")" />
+            </a>
+        </div>
+        <div id="mainNavC">
+            <ul>
+                @foreach (var item in Model.MainNavList)
+                {
+                    <li>
+                        <a href="@Url.Content("~/" + item.Reference)">@item.Title</a>
+                        <ul>
+                            @foreach (var thumbnailedItem in item.ThumbnailedMenuItems)
+                            {
+                                <li>
+                                    <a href="@Url.Content("~/" + thumbnailedItem.Reference)">@thumbnailedItem.Title</a>
+                                </li>
+                            }
+                            @if (item.SolutionsLink != null)
+                            {
+                                foreach (var solution in item.SolutionsLink.Solutions)
+                                {
+                                    <li>
+                                        <a href="@Url.Content("~/" + solution.Reference)">@solution.Title</a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div id="utilC">
+            <ul>
+                @foreach (var item in Model.UtilityNavList)
+                {
+                    <li><a href="@Url.Content("~/" + @item.Reference)">@item.Title</a></li>
+                }
+            </ul>
+        </div>
+    </div>
 </div>
 <div id="topHeaderC">
     <div id="searchC">
@@ -46,93 +52,110 @@
             {
                 <input type="text" placeholder="Search Term..." value="@(Model.GlobalSearchQuery ?? string.Empty)" name="query">
                 <div id="searchDir">Press Enter to Search</div>
-                <div id="closeSearch"><a href="#"><img src="@Url.Content("~/images/searchClose.png")"></a></div>
+                <div id="closeSearch">
+                    <a href="#">
+                        <img src="@Url.Content("~/images/searchClose.png")" alt="" />
+                    </a>
+                </div>
             }
         </div>
     </div>
-	<div id="topHeader">
-		<header>
-			<a href="#"><img src="@Url.Content("~/images/logo.gif")" id="dLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions"><img src="@Url.Content("~/images/logo-mobile.gif")" id="mLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions" style="display: none;"></a><a href="#" id="mobileBtn" style="display: none;"><img src="@Url.Content("~/images/mobileBtn.gif")"></a><a href="#" id="mobileSearch" style="display: none;"><span class="icon-search"></span></a>
-			<div id="languageC">
-				<ul>
-					<li>
-						<a href="#" id="selLang" data-lang="@Model.SelectedCulture">@Model.SelectedCulture</a><span class="icon-language"></span>
-						<ul id="langDropDown" style="display: none;">
-							<li id="English"><a href="#">English</a></li>
-							<li id="简体中文"><a href="#">简体中文</a></li>
-							<li id="German"><a href="#">German</a></li>
-							<li id="日本語"><a href="#">日本語</a></li>
-							<li id="Русский"><a href="#">Русский</a></li>
-							<li id="Español"><a href="#">Español</a></li>
-							<li id="Português"><a href="#">Português</a></li>
-							<li id="French"><a href="#">French</a></li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-			<div id="utilityNavC">
-				<ul>
-					@foreach (var item in Model.UtilityNavList)
-					{
-						<li><a href="@Url.Content("~/" + @item.Reference)">@item.Title</a></li>
-					}
-					<li><a href="#"><span class="icon-search"></span></a></li>
-				</ul>
-			</div>
-			<div id="mainNavC">
-				<ul>
-					@foreach (var item in Model.MainNavList)
-					{
-						if (item.SolutionsLink != null)
-						{
-							<li><a href="@Url.Content("~/" + @item.Reference)" data-mm="@item.Title.Replace(" ", string.Empty)" class="@(item.Title.Equals(Model.Title) ? "active" : "")">@item.Title</a></li>
-						}
-						else
-						{
-							<li><a href="@Url.Content("~/" + @item.Reference)" class="@(item.Title.Equals(Model.Title) ? "active" : "")">@item.Title</a></li>
-						}
-					}
-				</ul>
-			</div>
-		</header>
-	</div>
-	<div id="stickySBU-navC" style="display: none;"></div>
-	<div id="megaMenuC" style="opacity: 0;">
-		@foreach (var item in Model.MainNavList.Where(w => w.SolutionsLink != null))
-		{
-			<div id="@item.Title.Replace(" ", string.Empty)" class="megaMenu">
-				<div class="lftCol">
-					@foreach (var thumbnailedItem in item.ThumbnailedMenuItems)
-					{
-						<a href="#" class="photoLink">
-							<img src="@Url.Content(thumbnailedItem.Image ?? "")">
-							<div class="photoLinkRt">
-								<div class="mHeader">Learn About @thumbnailedItem.Title</div>
-								<div class="mTxt">@thumbnailedItem.Description</div>
-							</div>
-						</a>
-					}
-				</div>
-				<div class="rtCol">
-					<div class="rtColHdr">@item.SolutionsLink.Title</div>
-					<div class="rtColLinksC">
-						@foreach (var solution in item.SolutionsLink.Solutions)
-						{
-							<a href="#" class="rtColLinks">
-								<div class="txtC">
-									<div class="linkHdr">@solution.Title</div>
-									<div class="linkTxt">@solution.Description</div>
-								</div>
-							</a>
-						}
-					</div>
-				</div>
-			</div>
-		}
-	</div>
+    <div id="topHeader">
+        <header>
+            <a href="/">
+                <img src="@Url.Content("~/images/logo.gif")" id="dLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions" />
+                <img src="@Url.Content("~/images/logo-mobile.gif")" id="mLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions" style="display: none;" />
+            </a>
+            <a href="#" id="mobileBtn" style="display: none;">
+                <img src="@Url.Content("~/images/mobileBtn.gif")" />
+            </a>
+            <a href="#" id="mobileSearch" style="display: none;">
+                <span class="icon-search"></span>
+            </a>
+            <div id="languageC">
+                <ul>
+                    <li>
+                        <a href="#" id="selLang" data-lang="@Model.SelectedCulture">@Model.SelectedCulture</a><span class="icon-language"></span>
+                        <ul id="langDropDown" style="display: none;">
+                            <li id="English"><a href="#">English</a></li>
+                            <li id="简体中文"><a href="#">简体中文</a></li>
+                            <li id="German"><a href="#">German</a></li>
+                            <li id="日本語"><a href="#">日本語</a></li>
+                            <li id="Русский"><a href="#">Русский</a></li>
+                            <li id="Español"><a href="#">Español</a></li>
+                            <li id="Português"><a href="#">Português</a></li>
+                            <li id="French"><a href="#">French</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="utilityNavC">
+                <ul>
+                    @foreach (var item in Model.UtilityNavList)
+                    {
+                        <li><a href="@Url.Content("~/" + item.Reference)">@item.Title</a></li>
+                    }
+                    <li><a href="#"><span class="icon-search"></span></a></li>
+                </ul>
+            </div>
+            <div id="mainNavC">
+                <ul>
+                    @foreach (var item in Model.MainNavList)
+                    {
+                        if (item.SolutionsLink != null)
+                        {
+                            <li>
+                                <a href="@Url.Content("~/" + item.Reference)" data-mm="@item.Title.Replace(" ", string.Empty)" class="@(item.Title.Equals(Model.Title) ? "active" : "")">@item.Title</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li><a href="@Url.Content("~/" + item.Reference)" class="@(item.Title.Equals(Model.Title) ? "active" : "")">@item.Title</a></li>
+                        }
+                    }
+                </ul>
+            </div>
+        </header>
+    </div>
+    <div id="stickySBU-navC" style="display: none;"></div>
+    <div id="megaMenuC" style="opacity: 0;">
+        @foreach (var item in Model.MainNavList.Where(w => w.SolutionsLink != null))
+        {
+            <div id="@item.Title.Replace(" ", string.Empty)" class="megaMenu">
+                <div class="lftCol">
+                    @foreach (var thumbnailedItem in item.ThumbnailedMenuItems)
+                    {
+                        <a href="@Url.Content("~/" + thumbnailedItem.Reference ?? "")" class="photoLink">
+                            @if (!string.IsNullOrEmpty(thumbnailedItem.Image)) { 
+                                <img src="@Url.Content(thumbnailedItem.Image ?? "")">
+                            }
+                            <div class="photoLinkRt">
+                                <div class="mHeader">@thumbnailedItem.Title</div>
+                                <div class="mTxt">@thumbnailedItem.Description</div>
+                            </div>
+                        </a>
+                    }
+                </div>
+                <div class="rtCol">
+                    <div class="rtColHdr">@item.SolutionsLink.Title</div>
+                    <div class="rtColLinksC">
+                        @foreach (var solution in item.SolutionsLink.Solutions)
+                        {
+                            <a href="@Url.Content("~/" + solution.Reference)" class="rtColLinks">
+                                <div class="txtC">
+                                    <div class="linkHdr">@solution.Title</div>
+                                    <div class="linkTxt">@solution.Description</div>
+                                </div>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
 <div id="stickyFooterC">
-	<div id="stickyFooter">
-		<div id="stickyFoot"><a href="#">Contact</a></div>
-	</div>
+    <div id="stickyFooter">
+        <div id="stickyFoot"><a href="@Url.Content("~/"+ CMS.DocumentEngine.Types.ContactPage.RoutePath)">Contact</a></div>
+    </div>
 </div>

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.ActionFilters;
@@ -8,7 +7,6 @@ using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Product;
 using CMS.Mvc.ViewModels.Shared;
-using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -56,8 +54,9 @@ namespace CMS.Mvc.Controllers.Afton
         {
             return new DownloadWidgetViewModel()
             {
+                CurrentLanguageId = base.GetCurrentCulture(),
                 Title = product.Title,
-                //TileImage = product.TileImage,
+                TileImage = product.HomeImage,
                 Description = product.Description,
                 DownloadLink = _productProvider.GetDownloadLink(product),
                 AvailableIn = _productProvider.GetAvailableRegions(product).Select(item => new LinkViewModel() {Title = item}).ToList(),

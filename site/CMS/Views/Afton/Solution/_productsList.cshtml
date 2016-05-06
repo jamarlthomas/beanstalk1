@@ -1,4 +1,7 @@
-﻿<div class="bgGray padTopBtm">
+﻿@using CMS.Mvc.ViewModels.Shared
+@model SolutionViewModel
+
+<div class="bgGray padTopBtm">
     <div class="fullWidth">
         <h2>@Model.Title @Model.Constants.ProductsLabel</h2>
     </div>
@@ -6,7 +9,7 @@
         <div class="cardsSM fourCol">
             @foreach (var product in Model.Products)
             {
-                <a href="@product.DocumentNamePath">
+                <a href="@Url.Content("~/" + product.DocumentNamePath)">
                     <div class="cardBtnIndicator"><img src="@Url.Content("~/images/card-btn-indicator.png")"></div>
                     <div style="background-image: url(@(!string.IsNullOrEmpty(product.HomeImage) ? Url.Content(product.HomeImage) : string.Empty));" class="cardHdrC"></div>
                     <div class="cardTextAreaC">

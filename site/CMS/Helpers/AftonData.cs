@@ -40,5 +40,13 @@ namespace CMS.Mvc.Helpers
             }
             
         }
+
+        public class Pages
+        {
+            public static string LogisticsAndSupplyLanding
+            {
+                get { return "Logistics and Supply"; }
+            }
+        }
     }
 }

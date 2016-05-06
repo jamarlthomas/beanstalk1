@@ -189,7 +189,21 @@ namespace CMS.DocumentEngine.Types
                 SetValue("DocumentsDescription", value);
             }
         }
-
+        /// <summary>
+        /// Content.
+        /// </summary>
+        [DatabaseField]
+        public string Content
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Content"), "");
+            }
+            set
+            {
+                SetValue("Content", value);
+            }
+        }
 
         /// <summary>
         /// FAQDescription.

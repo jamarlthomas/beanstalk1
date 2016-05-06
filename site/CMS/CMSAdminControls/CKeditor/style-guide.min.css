@@ -1,0 +1,46 @@
+#sghC, #sghC #sgh-lftC {
+    width: 100%;
+    height: 100%;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+div, h1, li, p {
+    font: 14px/22px HelveticaNeueLTStd-Roman,Helvetica,Arial,Sans-Serif;
+    color: #595959;
+}
+
+
+h1 {
+        color: #0c419a;
+        font-weight: 700;
+    }
+
+.sg-lftContent {
+        padding-top: 20px;
+        float: left;
+        width: 45%;
+    }
+
+.sg-rtContent {
+        padding-top: 20px;
+        float: right;
+        width: 45%;
+    }
+
+.sg-fullContent {
+        clear: both;
+        padding-top: 20px;
+    }
+.sg-rtContent img, .sg-lftContent img {
+    width:50%;
+}
+.sg-fullContent img{
+    width:100%;
+}
+
+/*# sourceMappingURL=maps/style-guide.min.css.map */

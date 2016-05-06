@@ -1,12 +1,15 @@
-﻿@foreach (var topic in Model.Topics)
+﻿@using CMS.Mvc.ViewModels.FAQ
+@model FAQPageViewModel
+
+@foreach (var topic in Model.Topics)
 {
     <div id="@topic.Id-FAQs" class="faqGroup">
-        <h2>@topic.Name @Model.Title </h2>
+        <h2>@topic.Name</h2>
         <ul class="accordC txtPaddingTop">
             @foreach (var faqItem in topic.Items)
             {
                 <li>
-                    <a href="#">
+                    <a>
                         <div class="icon"></div> @faqItem.Question
                     </a>
                     <div style="display: none;" class="reveal">@Html.Raw(faqItem.Answer)</div>

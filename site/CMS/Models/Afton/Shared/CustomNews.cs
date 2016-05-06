@@ -121,7 +121,21 @@ namespace CMS.DocumentEngine.Types
                 SetValue("Description", value);
             }
         }
-
+        /// <summary>
+        /// Content.
+        /// </summary>
+        [DatabaseField]
+        public string Copy
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Copy"), "");
+            }
+            set
+            {
+                SetValue("Copy", value);
+            }
+        }
 
         /// <summary>
         /// 
@@ -153,6 +167,40 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("Image", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Sidebar Items.
+        /// </summary>
+        [DatabaseField]
+        public string SidebarItems
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
+            }
+            set
+            {
+                SetValue("SidebarItems", value);
+            }
+        }
+
+
+        /// <summary>
+        /// PdfReference.
+        /// </summary>
+        [DatabaseField]
+        public string PdfReference
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("PdfReference"), "");
+            }
+            set
+            {
+                SetValue("PdfReference", value);
             }
         }
 

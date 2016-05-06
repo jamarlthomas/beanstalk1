@@ -90,6 +90,23 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Text that appears on hover over the tile.
+        /// </summary>
+        [DatabaseField]
+        public string Description
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Description"), "");
+            }
+            set
+            {
+                SetValue("Description", value);
+            }
+        }
+
+
+        /// <summary>
         /// Image displayed on a tile.
         /// </summary>
         [DatabaseField]
@@ -107,18 +124,18 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Text that appears on hover over the tile.
+        /// Abstract.
         /// </summary>
         [DatabaseField]
-        public string Description
+        public string Abstract
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Description"), "");
+                return ValidationHelper.GetString(GetValue("Abstract"), "");
             }
             set
             {
-                SetValue("Description", value);
+                SetValue("Abstract", value);
             }
         }
 
@@ -141,18 +158,52 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// 
+        /// Hero Image.
         /// </summary>
         [DatabaseField]
-        public DateTime PostedDate
+        public string HeroImage
         {
             get
             {
-                return ValidationHelper.GetDateTime(GetValue("PostedDate"), DateTimeHelper.ZERO_TIME);
+                return ValidationHelper.GetString(GetValue("HeroImage"), "");
             }
             set
             {
-                SetValue("PostedDate", value);
+                SetValue("HeroImage", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Sidebar Items.
+        /// </summary>
+        [DatabaseField]
+        public string SidebarItems
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
+            }
+            set
+            {
+                SetValue("SidebarItems", value);
+            }
+        }
+
+
+        /// <summary>
+        /// PdfReference.
+        /// </summary>
+        [DatabaseField]
+        public string PdfReference
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("PdfReference"), "");
+            }
+            set
+            {
+                SetValue("PdfReference", value);
             }
         }
 

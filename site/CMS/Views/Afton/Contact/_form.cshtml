@@ -1,4 +1,7 @@
-﻿<div id="contactC">
+﻿@using CMS.Mvc.ViewModels.Contact
+@model ContactPageViewModel
+
+<div id="contactC">
     <h1>@Model.Title</h1><br>
     @using (Html.BeginForm("Index", "Contact", FormMethod.Post))
     {

@@ -122,6 +122,23 @@ namespace CMS.DocumentEngine.Types
             }
         }
 
+
+        /// <summary>
+        /// Default Parameter.
+        /// </summary>
+        [DatabaseField]
+        public string DefaultParameter
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("DefaultParameter"), "");
+            }
+            set
+            {
+                SetValue("DefaultParameter", value);
+            }
+        }
+
         #endregion
 
 

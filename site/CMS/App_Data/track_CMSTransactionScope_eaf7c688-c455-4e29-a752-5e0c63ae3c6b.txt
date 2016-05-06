@@ -1,0 +1,34 @@
+
+----------------------------------------
+Track origin
+----------------------------------------
+Thread ID: 12
+Track started: 4/15/2016 15:06:36
+Reason: Transaction (Process ID 77) was deadlocked on lock resources with another process and has been chosen as the deadlock victim. Rerun the transaction.
+Stack trace: 
+
+TrackedSection.TrackOpenSections
+Trackable`1.TrackAllOpen
+DataConnection.HandleDbError
+AbstractDataConnection.HandleError
+AbstractDataConnection.ExecuteQuery
+AbstractDataConnection.CMS.DataEngine.IDataConnection.ExecuteQuery
+DataQueryBase`1.GetDataFromDB
+DataQueryBase`1.GetData
+DataQueryBase`1.Execute
+SimpleDataClass.Insert (2)
+AbstractInfo`1.InsertData
+GeneralizedInfoWrapper.InsertData
+AbstractInfoProvider`2.SetInfo
+DocumentCultureDataInfoProvider.SetDocumentCultureInfoInternal
+DocumentCultureDataInfoProvider.SetDocumentCultureInfo
+DocumentCultureDataInfo.SetObject
+BaseInfo.Insert
+TreeNode.InsertCultureData
+TreeNode.InsertInternal
+TreeNode.Insert
+DocumentHelper.InsertDocument
+TreeNode.Insert
+RateContentProvider.SaveRateContent
+RateContentController.Submit
+RateContentController.Widget

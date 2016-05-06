@@ -1,8 +1,13 @@
-﻿<ul class="accordC txtPaddingTop">
+﻿@using CMS.Mvc.ViewModels.Shared
+@using System.Collections.Generic
+@model List<FAQItemViewModel>
+<ul class="accordC txtPaddingTop">
 	@foreach (var item in Model)
 	{
-		<li>
-			<div class="icon"></div><a href="#">@item.Question</a>
+	    <li>
+            <a href="#">
+                <div class="icon"></div>@item.Question
+            </a>
 			<div style="display: none;" class="reveal">@item.Answer</div>
 		</li>
 	}

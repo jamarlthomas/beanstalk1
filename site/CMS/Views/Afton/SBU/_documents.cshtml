@@ -1,4 +1,6 @@
-﻿<h3>@Model.Title</h3>
+﻿@using CMS.Mvc.ViewModels.SBU
+@model DocumentTypeViewModel
+<h3>@Model.Title</h3>
 <ul>
 	@foreach (var document in Model.Documents)
 	{

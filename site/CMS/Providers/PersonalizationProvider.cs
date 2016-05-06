@@ -26,7 +26,7 @@ namespace CMS.Mvc.Providers
         public List<PersonalizedTile> GetPersonalizedItems()
         {
             GetPersona();
-            GetAllContent();
+            ContentList = new List<PersonalizedContent<PersonalizedTile>>();   
 
             if (CurrentPersona == null)
             {
@@ -35,7 +35,7 @@ namespace CMS.Mvc.Providers
                     .Select(item => item.Item)
                     .ToList();
             }
-
+            GetAllContent();
             GetLastDateTheVisitorViewedEachPieceOfContent();
             GetPostedDateOfAllTheContent();
             GetPointsAssignedForThePersonaForAllTheContent();
@@ -44,7 +44,7 @@ namespace CMS.Mvc.Providers
             ExcludeViewedRecentlyContent(48);
             SortContentFromNewToOld();
             SortContentWeightedHigherForPersona();
-            SortPopularContentBeforeStagnant();
+            //SortPopularContentBeforeStagnant();
 
             if (ContentList.Count < 3)
             {
@@ -213,6 +213,7 @@ namespace CMS.Mvc.Providers
 
         public List<PersonalizedTile> GetTrendingTiles()
         {
+            GetAllContent();
             var trendingContent = ContentList.OrderByDescending(item => item.ViewsCount);
             return trendingContent.Select(tile => tile.Item).ToList();
         }

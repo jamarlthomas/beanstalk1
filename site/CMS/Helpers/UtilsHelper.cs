@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace CMS.Mvc.Helpers
 {
@@ -27,7 +28,12 @@ namespace CMS.Mvc.Helpers
             {
                 return new List<Guid>();
             }
-            return input.Split(';').Select(s => Guid.Parse(s)).ToList();
+            return input.Split(';').Select(s =>
+            {
+                Guid result;
+                Guid.TryParse(s, out result);
+                return result;
+            }).ToList();
         }
 
         public static string[] SeparateText(string text)
@@ -57,6 +63,10 @@ namespace CMS.Mvc.Helpers
         {
             var url = new Regex(string.Format(@"&*{0}=\d+", paramName)).Replace(baseUrl, string.Empty);
             return url.Contains('?') ? url : string.Format("{0}?", url);
+        }
+        public static HtmlString ToHtmlString(string text)
+        {
+            return new HtmlString(text);
         }
     }
 }

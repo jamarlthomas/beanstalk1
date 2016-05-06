@@ -7,6 +7,7 @@ using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.NewsAndEvents;
 using CMS.Mvc.ViewModels.Shared;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
@@ -40,21 +41,23 @@ namespace CMS.Mvc.Controllers.Afton
             model.Types = _newsAndEventsPageProvier.GetDocumentTypes(page, request.Category);
 
             var recordsOnPage = Int32.Parse(ConfigurationManager.AppSettings["NewsEventsBlogsRecordOnPageCount"]);
-
+            
             var contentList = _newsAndEventsPageProvier.GetContentList(page, request).ToList();
+            List<DateTime> Dates = contentList.Select(x => Convert.ToDateTime(x.GetStringValue("Date", ""))).ToList();
+            List<string> MonthDate = Dates.Select(y => y.ToString("MMM yyyy")).Distinct().ToList();
             model.NewsAndEventsList = contentList
                 .Skip((request.Page - 1) * recordsOnPage ?? 0)
                 .Take(recordsOnPage)
                 .Select(AutoMapper.Mapper.Map<NewsAndEventViewModel>).ToList();
             foreach (var item in model.NewsAndEventsList)
             {
-                item.Date = UtilsHelper.ConvertToCST(item.Date);
+                //item.Date = UtilsHelper.ConvertToCST(item.Date);
             }
             if (!String.Equals(request.SortOrder, "DESC", StringComparison.OrdinalIgnoreCase))
             {
                 model.NewsAndEventsList.Reverse();
             }
-
+            model.Dates = MonthDate;
             model.Pagination = GetPagination((int)Math.Ceiling((double)contentList.Count / recordsOnPage), request.Page);
             model.SelectedSortOrder = request.SortOrder;
 

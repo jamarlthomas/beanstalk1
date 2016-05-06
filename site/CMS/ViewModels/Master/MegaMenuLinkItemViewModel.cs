@@ -5,6 +5,7 @@ namespace CMS.Mvc.ViewModels.Master
 {
     public class MegaMenuLinkItemViewModel : LinkViewModel
     {
-        public List<MegaMenuSolutionBusinessUnitViewModel> Solutions { get; set; }
+        public List<MegaMenuSubLinkItemViewModel> Solutions { get; set; }
+        public string Title { get; set; }
     }
 }

@@ -6,7 +6,7 @@
         {
             get
             {
-                return string.Format("/Event/Index/{0}", this.NodeAlias);
+                return this.GetStringValue("URL","");
             }
         }
     }

@@ -2,6 +2,7 @@
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CMS.Mvc.Providers
 {
@@ -15,6 +16,16 @@ namespace CMS.Mvc.Providers
         public List<FAQItem> GetFAQItems()
         {
             return ContentHelper.GetDocs<FAQItem>(FAQItem.CLASS_NAME);
+        }
+
+
+        public List<FAQItem> GetFAQItems(string faqs)
+        {
+            return ContentHelper.GetDocsByGuids<FAQItem>(UtilsHelper.ParseGuids(faqs));
+        }
+        public List<FAQItem> GetFAQItemsBySBU(string guid)
+        {
+            return ContentHelper.GetDocs<FAQItem>(FAQItem.CLASS_NAME).Where(x => x.RelatedSBU == guid).ToList();
         }
     }
 }

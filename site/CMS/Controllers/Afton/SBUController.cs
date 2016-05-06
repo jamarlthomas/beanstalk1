@@ -41,14 +41,15 @@ namespace CMS.Mvc.Controllers.Afton
         [PageVisitActivity]
         public ActionResult Index(string SBUName)
         {
-            var model = MapData<SolutionBusinessUnit, CMS.Mvc.ViewModels.Shared.SBUViewModel>(_solutionBusinessUnitProvider.GetSolutionBusinessUnit(SBUName));
-            model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItems(SBUName, 4));
+            var sbu = _solutionBusinessUnitProvider.GetSolutionBusinessUnit(SBUName);
+            var model = MapData<SolutionBusinessUnit, CMS.Mvc.ViewModels.Shared.SBUViewModel>(sbu);
+            model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItemsBySBU(sbu.DocumentGUID.ToString()));
             model.DocumentTypes = MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes(SBUName, 12));
             foreach (var item in model.DocumentTypes)
             {
                 item.Documents = MapData<Document, DocumentViewModel>(_documentProvider.GetDocuments(item.Title));
             }
-            model.Solutions = MapData<Solution, TileViewModel>(_solutionProvider.GetSolutionItems(SBUName)).Where(w => !string.IsNullOrEmpty(w.HomeImage)).ToList();
+            model.Solutions = MapData<Solution, TileViewModel>(_solutionProvider.GetSolutions(SBUName)).Where(w => !string.IsNullOrEmpty(w.HomeImage)).ToList();
             return View("~/Views/Afton/SBU/Index.cshtml", model);
         }
     }

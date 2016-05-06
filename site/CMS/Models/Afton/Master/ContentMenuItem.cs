@@ -73,7 +73,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// 
+        /// Reference.
         /// </summary>
         [DatabaseField]
         public string Reference

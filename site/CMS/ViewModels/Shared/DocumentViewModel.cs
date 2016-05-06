@@ -1,4 +1,4 @@
-﻿using CMS.Mvc.ViewModels.DocumentsViewModel;
+﻿using CMS.Mvc.ViewModels.DocumentBase;
 using System;
 
 namespace CMS.Mvc.ViewModels.Shared
@@ -12,5 +12,6 @@ namespace CMS.Mvc.ViewModels.Shared
         public string HeroImage { get; set; }
         public DateTime DocumentPublishFrom { get; set; }
         public DocumentConstantViewModel Constant { get; set; }
+        public bool map { get; set; }
     }
 }

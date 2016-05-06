@@ -30,7 +30,7 @@
 </div>
 <a id="overview-pos" class="anchorTag"></a>
 <div class="twoColumnC padTop leadIn">
-    @Html.Raw(Model.Description)
+    @Html.Raw(Model.Content)
 </div>
 <a id="solutions-pos" class="anchorTag"></a>
 <div class="padTopBtm">
@@ -57,7 +57,8 @@
         <hr>
         <h2 class="txtPaddingTop">Product Data Sheets</h2>
         @Html.Partial("~/Views/Afton/SBU/_documentColumns.cshtml", Model.DocumentTypes)
-        <a href="#" class="viewAllBtn">View All @Model.Title Documents</a>
+	    <a href="#" class="viewAllBtn">View All @Model.Title Documents</a>
+		@{ Html.RenderAction("Widget", "RateContent", new { Request = Model.DocumentGUID }); }
     </div>
 </div>
 <a id="resources-pos" class="anchorTag"></a>

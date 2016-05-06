@@ -2,6 +2,7 @@
 using System.Web;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.ViewModels.Product;
+using CMS.Mvc.ViewModels.Shared;
 using CMS.Mvc.ViewModels.Shared.Personalization;
 using Infrastructure.Mapper;
 using ProductViewModel = CMS.Mvc.ViewModels.Product.ProductViewModel;
@@ -30,11 +31,14 @@ namespace CMS.Mvc.Infrastructure
                 .ForMember(s => s.Title, d => d.Title)
                 .ForMember(s => (DateTime)s.Item.GetValue("DocumentModifiedWhen"), d => d.Date)
                 .ForMember(s => s.Description, d => d.Description);
+            CreateMap<Solution, TileViewModel>()
+                .ForMember(s => s.DocumentNamePath, d => d.Reference);
         }
         protected override void Collections()
         {
             CreateListMap<Product, RelatedProductCardViewModel>();
             CreateListMap<PersonalizedTile, PersonalizationCardViewModel>();
+            CreateListMap<Solution, TileViewModel>();
         }
 
     }
