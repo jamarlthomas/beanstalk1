@@ -1,0 +1,88 @@
+﻿[
+    {
+        "id":  100,
+        "title": "Houston, Texas",
+        "latitude": 29.7604267,
+        "longitude": -95.3698028,
+        "image": "/map/houston.jpg",
+        "content": "<ul><li>Average 5-yr OSHA Recordable Rate = 0.56 % (Pasadena area industries: 1.05)</li><li>Recognized by Texas Chemical Council</li><li>\"Excellence in Caring for Texas\" awarded 1st in Texas in 2002 our plant size category</li><li>\"Distinguished Service Award\" for exceptional safety performance past 5 years</li><li>Responsible Care Gold Performance Award</li><li>ISO 9001-2008 Certified</li><li>99+% First Time Right</li><li>98+% On Time Shipments</li><li>Produces components as well as finshed packages for the lubricant and fuels markets</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+    },{
+        "id":  101,
+        "title": "Port Arthur, Texas",
+        "latitude": 29.8849504,
+        "longitude": -93.939947,
+        "image": "/map/parthur.jpg",
+        "content": "<ul><li>RCMS:2008 by ULDQS Mgmt Systems Solutions</li><li>ISO 9001:2008</li><li>Produces components for the lubricants market</li><li>100% on time shipment performance</li><li>99.69% right first time performance</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+      },{
+        "id":  102,
+        "title": "Orangeburg, South Carolina",
+        "latitude": 33.4918203,
+        "longitude": -80.8556476,
+        "image": "/map/orangeburg.jpg",
+        "content": "<ul><li>ISO 9002 Certified</li><li>RC14001 Certified</li><li>Produces packages for the fuels industry</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+        },{
+        "id":  103,
+        "title": "Sauget, Ilinois",
+        "latitude": 38.5964402,
+        "longitude": -90.1848331,
+        "image": "/map/sauget.jpg",
+        "content": "<ul><li>RC-14001:2008</li><li>ISO 14001:2004 by DNV Certification, Inc.</li><li>ISO 9001 certified</li><li>OSHA VPP Star site</li><li>98.78% right first time performance</li><li>98.9% performance for on time shipments</li><li>Produces components as well as finished packages for the lubricant industry</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+},{
+        "id":  104,
+        "title": "Bedford Park, Illinois",
+        "latitude": 41.7641723,
+        "longitude": -87.7812524,
+        "image": "/map/bedford.jpg",
+    "content": "<ul><li>ISO 9001:2008 Certified</li><li>QP&G Certified</li><li>CSSA (Canadian Sanitation Supply Association)</li><li>BPCIA ( Bedford Park/ Clearing Industrial Association)</li><li>Produces components and finished packages for the industrial and metalworking markets</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+
+  },{
+        "id":  105,
+        "title": "Sarnia, Ontario, Canada",
+        "latitude": 42.974536,
+        "longitude": -82.4065901,
+        "image": "/map/sarnia.jpg",
+    "content": "<ul><li>16 years no recordable injurty as of Feb. 2011</li><li>Produces fuel and lubricant additive packages</li><li>ISO9001:2008</li><li>2010 CCPA Award for Excellence in Safety (13 consecutive annual award)</li><li>UQA 4000444</li><li>100% on time shipment performance</li><li>99.67% right first time performance</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+  },{
+        "id":  106,
+        "title": "Rio de Janeiro, Brazil",
+        "latitude": -22.8965592,
+        "longitude": -43.2950058,
+        "image": "/map/rio.jpg",
+    "content": "<ul><li>ISO 9001:2008</li><li>Key regional blending and distribution location for lubricants and fuels components and packages</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+  },{
+        "id":  107,
+        "title": "Manchester, United Kingdom",
+        "latitude": 53.4807593,
+        "longitude": -2.2426305,
+        "image": "/map/manchester.jpg",
+    "content": "<ul><li>ISO 9001 certified since 1992 (Quality Management standard</li><li>ISO 14001 certified since 2004 (Environmental Management System standard)</li><li>IPPC registered (Integrated Pollution Prevention and Control) control of immissions arrising from industrial activities</li><li>CRC registered, UK Energy Efficiancy Scheme to reduce CO2 immisions.</li><li>Produces components and finished packages for the industrial and metalworking markets</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+  },{
+        "id":  108,
+        "title": "Feluy, Belgium",
+        "latitude": 50.562207,
+        "longitude": 4.250265,
+        "image": "/map/feluy.jpg",
+    "content": "<ul><li>Products</li><li>Components</li><li>Crankcase Blending</li><li>Specialty Blending</li><li>ISO9001 certificate</li><li>ISO14001 certificate</li><li>New operating permit for 20 years(2009-2029)</li><li>Authorized Economic Operator (AEO) similar to C-Tpad certificate</li><li>Behaviour Based Safety program :SAFETON</li><li>Waste Prevention and Management plan</li><li>98+% First Time Right</li><li>97+% On Time shipments</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+  },{
+        "id":  109,
+        "title": "Hyderabad, India",
+        "latitude": 17.385044,
+        "longitude": 78.486671,
+        "image": "/map/hyderabad.jpg",
+    "content": "<ul><li>ISO 9001 certified since 2006</li><li>ETP - Effluent treatment program that recovers water from manufacturing process to be used gardens for growing plants and fruit trees.</li><li>APPCB registered (Andhra Pradesh Pollution Control Board - India) environmental control and emmisions.</li><li>Produces components and finished packages for the industrial and metalworking markets</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+  },{
+        "id":  110,
+        "title": "Singapore",
+        "latitude": 1.3553794,
+        "longitude": 103.8677444,
+        "image": "/map/singapore.jpg",
+    "content": "<ul><li>New facility</li><li>Opening in 2011</li><li>Bringing local solutions to the Asia Pacific region</li><li>ISO 9001 registration completion targeted for July, 2011</li><li>Production of components and finished packages for the lubricants market</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+  },{
+        "id":  111,
+        "title": "Suzhou, China",
+        "latitude": 31.298979,
+        "longitude": 120.58529,
+        "image": "/map/suzhou.jpg",
+    "content": "<ul><li>ISO9001:2008</li><li>OHS18001:2007</li><li>ISO14001:2004</li><li>ISO9001:2000</li><li>No injuries or recordable accidents since opening in June 2008</li><li>Produces components and finished packages for the industrial and metalworking markets</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+  }
+]

@@ -7,6 +7,7 @@ namespace CMS.Mvc.Controllers.Afton
     {
         public override ActionResult Index(string childPageName)
         {
+
             return base.Index(childPageName);
         }
     }

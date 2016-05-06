@@ -12,5 +12,6 @@ namespace CMS.Mvc.ViewModels.Shared
         public string HeroImage { get; set; }
         public DateTime DocumentPublishFrom { get; set; }
         public DocumentConstantViewModel Constant { get; set; }
+        public bool map { get; set; }
     }
 }

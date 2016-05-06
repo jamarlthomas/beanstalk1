@@ -38,7 +38,13 @@ namespace CMS.Mvc.Controllers.Afton
 
             var genericViewModel = MapData<T, DocumentViewModel>(document);
             genericViewModel.Constant = MapData<DocumentConstant, DocumentConstantViewModel>(_documentConstantProvider.GetDocumentConstants());
-
+            if (document.NodeClassName == LogisticsAndSupplyFolder.CLASS_NAME)
+            {
+                genericViewModel.map = true;
+            }
+            else {
+                genericViewModel.map = false; 
+            }
             return View("~/Views/Afton/Generic/Index.cshtml", new GenericPageViewModel()
             {
                 Document = genericViewModel,

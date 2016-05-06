@@ -600,6 +600,22 @@
     <Content Include="fonts\HelveticaNeueLTStd-Roman\2F7DEF_0_0.woff2" />
     <Content Include="css\maps\normalize.min.css.map" />
     <Content Include="css\maps\styles.min.css.map" />
+    <Content Include="map\afton-marker.svg" />
+    <Content Include="map\bedford.jpg" />
+    <Content Include="map\feluy.jpg" />
+    <Content Include="map\houston.jpg" />
+    <Content Include="map\hyderabad.jpg" />
+    <Content Include="map\manchester.jpg" />
+    <Content Include="map\map.html" />
+    <Content Include="map\map.js" />
+    <Content Include="map\markerclusterer.js" />
+    <Content Include="map\orangeburg.jpg" />
+    <Content Include="map\parthur.jpg" />
+    <Content Include="map\rio.jpg" />
+    <Content Include="map\sarnia.jpg" />
+    <Content Include="map\sauget.jpg" />
+    <Content Include="map\singapore.jpg" />
+    <Content Include="map\suzhou.jpg" />
     <Content Include="Pdf\Template.html" />
     <Content Include="Pdf\fake.html" />
     <Content Include="images\accordMinus.png" />
@@ -756,7 +772,11 @@
     <Content Include="Views\Afton\Auxiliary\_link.cshtml" />
     <Content Include="Views\Afton\Shared\DownloadWidget\_downloadButtonSection.cshtml" />
     <Content Include="Views\Afton\Auxiliary\Infrastructure.cshtml" />
+    <Content Include="map\data.json" />
+    <None Include="Properties\PublishProfiles\Afton-test %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\Afton-test.pubxml" />
+    <Content Include="Views\LogisticsAndSupply\Index.cshtml" />
+    <Content Include="Views\Afton\Shared\_map.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
