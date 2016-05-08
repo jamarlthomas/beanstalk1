@@ -52,9 +52,10 @@ namespace CMS.Mvc.Controllers.Afton
                 var parseGuid = Guid.Parse(item.RelatedDocument);
                 var nodeId = CMS.DocumentEngine.TreePathUtils.GetNodeIdByNodeGUID(parseGuid, SiteProvider.SiteContext.CurrentSiteName);
                 var getDoc = new CMS.DocumentEngine.TreeProvider().SelectSingleNode(nodeId);
-                //var getDoc = ContentHelper.GetDocByGuid<TreeNode>(parseGuid,SiteProvider.SiteContext.CurrentSiteName);
-                item.RelatedDocument = getDoc.DocumentNamePath;
+
+                item.RelatedDocument = getDoc.GetType().GetProperty("DocumentRoutePath").GetValue(getDoc).ToString();
             }
+            
             var home = _homeProvider.GetHomePage();
             var primaryTilesNodes = _treeNodesProvider.GetTreeNodes(home.ManagedBlocks).Take(3).AsQueryable();
             var primaryTilesModels = new List<PersonalizedTile>();
