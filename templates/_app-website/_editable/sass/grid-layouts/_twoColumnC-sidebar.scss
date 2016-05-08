@@ -13,7 +13,7 @@
         //*** Breakpoints ***
         @include breakpoint($bp2) { @include span(full); }
         
-    }
+    } 
     
     #rtCol-contentArea { @include span(8 of 12 last);
         
@@ -27,6 +27,25 @@
             }//h1
             
             @include breakpoint($bp2) { width: calc(100% - 40px); margin: 0px 20px 0px 20px;  }
+            
+            
+            .inner-2ColumnImgTxt { overflow: hidden; padding: 40px 0px 30px 0px; background: url(/images/dotted-border.gif) repeat-x;
+                
+                
+                img { width: 100%; @include span(2 of 8);
+                    
+                    //*** Breakpoints ***
+                    @include breakpoint($bp3) { @include span(full); }
+                }
+                
+                
+                .innerRt { @include span(6 of 8 last);
+                
+                    //*** Breakpoints ***
+                    @include breakpoint($bp3) { @include span(full); }
+                }
+                
+            }//inner-2ColumnImgTxt
             
         }//contentC
         
