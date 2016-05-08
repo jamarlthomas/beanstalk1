@@ -131,7 +131,7 @@ namespace CMS.Mvc.Controllers.Afton
             return new LeftNavigationItemViewModel
             {
                 Title = node.GetStringValue("Title", node.NodeName),
-                Link = node.DocumentNamePath
+                Link =  ((node as IRoutedModel) != null) ? (node as IRoutedModel).DocumentRoutePath : node.DocumentNamePath
             };
         }
 

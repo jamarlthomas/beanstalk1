@@ -12,7 +12,7 @@ namespace CMS.Mvc.ViewModels.Shared
         public string HomeImage { get; set; }
 
         public string Copy { get; set; }
-        public string DocumentNamePath { get; set; }
+        public string DocumentRoutePath { get; set; }
         public string HoverContent { get; set; }
         public string TypeName { get; set; }
         public bool? IsTrending { get; set; }

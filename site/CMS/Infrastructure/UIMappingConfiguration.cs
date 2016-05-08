@@ -22,7 +22,7 @@ namespace CMS.Mvc.Infrastructure
                 .ForMember(s => s.Title, d => d.Header)
                 .ForMember(s => s.HomeImage, d => d.ImageUrl)
                 .ForMember(s => s.Description, d => d.Text)
-                .ForMember(s=> s.DocumentNamePath, d=>d.Reference)
+                .ForMember(s=> s.DocumentRoutePath, d=>d.Reference)
                 .ForMember(s=>((SolutionBusinessUnit)s.Parent.Parent).Title, d=>d.Title)
                 .ForMember(s=>((Solution)s.Parent).Title, d=>d.SubHeader);
 
@@ -32,7 +32,7 @@ namespace CMS.Mvc.Infrastructure
                 .ForMember(s => (DateTime)s.Item.GetValue("DocumentModifiedWhen"), d => d.Date)
                 .ForMember(s => s.Description, d => d.Description);
             CreateMap<Solution, TileViewModel>()
-                .ForMember(s => s.DocumentNamePath, d => d.Reference);
+                .ForMember(s => s.DocumentRoutePath, d => d.Reference);
         }
         protected override void Collections()
         {

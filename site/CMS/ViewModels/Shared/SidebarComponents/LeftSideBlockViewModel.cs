@@ -3,6 +3,7 @@ using CMS.DocumentEngine;
 using CMS.Mvc.Helpers;
 using System;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.Interfaces;
 
 
 namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
@@ -15,12 +16,12 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
             if (item.NodeClassName == GenericSidebarBlock.CLASS_NAME)
             {
                 var NodeReference = ContentHelper.GetDocByGuid<TreeNode>(Guid.Parse(item.GetStringValue("SidebarItem", "")));
-                Reference = NodeReference.DocumentNamePath;
+                Reference = ((NodeReference as IRoutedModel) != null) ? (NodeReference as IRoutedModel).DocumentRoutePath : NodeReference.DocumentNamePath;
                 Description = new HtmlString(NodeReference.GetStringValue("Description", ""));
             }
             else
             {
-                Reference = item.DocumentNamePath;
+                Reference = ((item as IRoutedModel) != null) ? (item as IRoutedModel).DocumentRoutePath : item.DocumentNamePath;
                 Description = new HtmlString(item.GetStringValue("Description", ""));
             }
             

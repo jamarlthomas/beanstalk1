@@ -1,10 +1,11 @@
 ﻿using CMS.Mvc.Helpers;
+using CMS.Mvc.Interfaces;
 
 namespace CMS.DocumentEngine.Types
 {
-    public partial class Region
+    public partial class Region : IRoutedModel
     {
-        public override string DocumentNamePath
+        public string DocumentRoutePath
         {
             get
             {

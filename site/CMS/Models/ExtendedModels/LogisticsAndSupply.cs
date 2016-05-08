@@ -1,10 +1,11 @@
 ﻿using CMS.Mvc.Helpers;
+using CMS.Mvc.Interfaces;
 
 namespace CMS.DocumentEngine.Types
 {
-    public partial class LogisticsAndSupply
+    public partial class LogisticsAndSupply : IRoutedModel
     {
-        public override string DocumentNamePath
+        public string DocumentRoutePath
         {
             get
             {

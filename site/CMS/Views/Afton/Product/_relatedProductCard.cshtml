@@ -1,7 +1,7 @@
 ﻿@model CMS.Mvc.ViewModels.Product.RelatedProductCardViewModel
 @if (!string.IsNullOrWhiteSpace(Model.Reference))
 {
-    <a href="@Url.Content(Model.Reference)">
+    <a href="@Url.Content("~/" + Model.Reference)">
         <div class="cardBtnIndicator">
             <img src="~/images/card-btn-indicator.png" />
         </div>
@@ -12,13 +12,13 @@
         }
         <div class="cardTextAreaC">
             <div class="cardTextArea">
-                <div class="cardType">@Model.Title</div>
+                <div class="cardType">@Html.Raw(Model.Title)</div>
                 <div class="cardHdrText">@Model.Header</div>
                 <div class="cardSubHdr">@Model.SubHeader</div>
-                @*<div class="cardTxt">@Model.Text</div>*@
-                <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                <div class="cardTxt">@Model.Text</div>
+                
             </div>
-            <div class="cardDate">May 1, 2016</div>
+            <div class="cardDate">@Model.Date.ToString("MMMM dd, yyyy")</div>
         </div>
     </a>
 }
@@ -35,13 +35,13 @@ else
         }
         <div class="cardTextAreaC">
             <div class="cardTextArea">
-                <div class="cardType">@Model.Title</div>
+                <div class="cardType">@Html.Raw(Model.Title)</div>
                 <div class="cardHdrText">@Model.Header</div>
                 <div class="cardSubHdr">@Model.SubHeader</div>
                 <div class="cardTxt">@Model.Text</div>
-                <div class="cardTxt">The only commercial vehicle SF MTF designed to be compatible with all synchroniser materials.</div>
+                
             </div>
-            <div class="cardDate">May 1, 2016</div>
+            <div class="cardDate">@Model.Date.ToString("MMMM dd, yyyy")</div>
         </div>
     </a>
 }

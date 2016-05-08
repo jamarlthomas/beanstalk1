@@ -18,13 +18,13 @@ namespace CMS.Mvc.Controllers.Afton
     {
         private readonly IHeroContentProvider _heroContentProvider;
         private readonly IHomeProvider _homeProvider;
-        private readonly IPersonalizationProvider _personalisationProvider;
+        private readonly IPersonalizationProvider _personalizationProvider;
         private readonly ITreeNodesProvider _treeNodesProvider;
         public HomeController()
         {
             _heroContentProvider = new HeroContentProvider();
             _homeProvider = new HomeProvider();
-            _personalisationProvider = new PersonalizationProvider();
+            _personalizationProvider = new PersonalizationProvider();
             _treeNodesProvider = new TreeNodesProvider();
         }
 
@@ -36,7 +36,7 @@ namespace CMS.Mvc.Controllers.Afton
             _heroContentProvider = heroContentProvider;
             _homeProvider = homeProvider;
             _treeNodesProvider = treeNodesProvider;
-            _personalisationProvider = personalisationProvider;
+            _personalizationProvider = personalisationProvider;
         }
 
         [PageVisitActivity]
@@ -68,7 +68,7 @@ namespace CMS.Mvc.Controllers.Afton
 
             //avoid duplicates here
             model.PrimaryTiles = MapData<PersonalizedTile, PersonalizationCardViewModel>(primaryTilesModels);
-            var filteredPersTiles = _personalisationProvider.GetPersonalizedItems()
+            var filteredPersTiles = _personalizationProvider.GetPersonalizedItems()
                 .Where(item => !primaryTilesNodes.Select(pt => pt.NodeID).Contains(item.Item.NodeID))
                 .Take(3)
                 .ToList();
@@ -76,7 +76,7 @@ namespace CMS.Mvc.Controllers.Afton
 
 
             //exclude duplicates from first two lines
-            var filteredTrendingTiles = _personalisationProvider
+            var filteredTrendingTiles = _personalizationProvider
                 .GetTrendingTiles()
                 .Where(item => !primaryTilesNodes.Select(pt => pt.NodeID).Contains(item.Item.NodeID) && !filteredPersTiles.Select(pt => pt.NodeID).Contains(item.Item.NodeID))
                 .Take(3)

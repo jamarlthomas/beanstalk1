@@ -8,7 +8,7 @@
         <div class="cardsSM fourCol">
             @foreach (var tile in Model.Tiles)
             {
-                <a href="@tile.DocumentNamePath">
+                <a href="@tile.DocumentRoutePath">
                     <div class="cardBtnIndicator"><img src="~/images/card-btn-indicator.png"></div>
                     <div style="background-image: url(@(string.IsNullOrEmpty(tile.HomeImage) ? string.Empty : Url.Content(tile.HomeImage))" class="cardHdrC"></div>
                     <div class="cardTextAreaC">

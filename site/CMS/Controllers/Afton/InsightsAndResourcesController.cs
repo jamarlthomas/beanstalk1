@@ -101,7 +101,7 @@ namespace CMS.Mvc.Controllers.Afton
                 Links = _documentProvider.GetHighlightedDocuments(s.Title).Select(document => new LinkViewModel
                 {
                     Title = document.Title,
-                    Reference = document.DocumentNamePath
+                    Reference = document.DocumentRoutePath
                 }).Take(3).ToList()
             }));
 

@@ -1,9 +1,11 @@
 ﻿using CMS.Mvc.Helpers;
+using CMS.Mvc.Interfaces;
+
 namespace CMS.DocumentEngine.Types
 {
-    public partial class NewsAndEventsPage
+    public partial class NewsAndEventsPage: IRoutedModel
     {
-        public override string DocumentNamePath
+        public string DocumentRoutePath
         {
             get
             {
