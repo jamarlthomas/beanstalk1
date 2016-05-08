@@ -44,7 +44,7 @@ namespace CMS.Mvc.Controllers.Afton
             
             var contentList = _newsAndEventsPageProvier.GetContentList(page, request).ToList();
             List<DateTime> Dates = contentList.Select(x => Convert.ToDateTime(x.GetStringValue("Date", ""))).ToList();
-            List<string> MonthDate = Dates.Select(y => y.ToString("MMM yyyy")).Distinct().ToList();
+            List<string> MonthDate = Dates.Select(y => y.ToString("MMM yy")).Distinct().ToList();
             model.NewsAndEventsList = contentList
                 .Skip((request.Page - 1) * recordsOnPage ?? 0)
                 .Take(recordsOnPage)

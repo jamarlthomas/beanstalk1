@@ -1,4 +1,5 @@
-﻿using CMS.DocumentEngine.Types;
+﻿using CMS.DocumentEngine;
+using CMS.DocumentEngine.Types;
 using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
@@ -8,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using WebGrease.Css.Extensions;
+using CMS.Mvc.Helpers;
+using System;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -45,6 +48,13 @@ namespace CMS.Mvc.Controllers.Afton
                 PrimaryTiles = new List<PersonalizationCardViewModel>()
                 
             };
+            foreach(var item in model.HeroContentList) {
+                var parseGuid = Guid.Parse(item.RelatedDocument);
+                var nodeId = CMS.DocumentEngine.TreePathUtils.GetNodeIdByNodeGUID(parseGuid, SiteProvider.SiteContext.CurrentSiteName);
+                var getDoc = new CMS.DocumentEngine.TreeProvider().SelectSingleNode(nodeId);
+                //var getDoc = ContentHelper.GetDocByGuid<TreeNode>(parseGuid,SiteProvider.SiteContext.CurrentSiteName);
+                item.RelatedDocument = getDoc.DocumentNamePath;
+            }
             var home = _homeProvider.GetHomePage();
             var primaryTilesNodes = _treeNodesProvider.GetTreeNodes(home.ManagedBlocks).Take(3).AsQueryable();
             var primaryTilesModels = new List<PersonalizedTile>();
