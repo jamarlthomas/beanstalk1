@@ -7,5 +7,6 @@ namespace CMS.Mvc.Interfaces
     {
         List<GenericPage> GetChildGenericPages(string alias);
         GenericPage GetFirstChildGenericPage(string alias);
+        List<GenericPage> GetHighlightedGenericPage(string parentTitle);
     }
 }

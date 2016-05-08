@@ -23,6 +23,7 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly ISolutionBusinessUnitProvider _solutionBusinessUnitProvider;
         private readonly ISelectionFilterPageProvider _selectionFilterPageProvider;
         private readonly ISolutionProvider _solutionProvider;
+        private readonly IGenericPageProvider _genericPageProvider;
 
         public InsightsAndResourcesController()
         {
@@ -33,6 +34,7 @@ namespace CMS.Mvc.Controllers.Afton
             _resourceTileProvider = new ResourceTileProvider();
             _selectionFilterPageProvider = new SelectionFilterPageProvider();
             _solutionProvider = new SolutionProvider();
+            _genericPageProvider = new GenericPageProvider();
         }
 
         public InsightsAndResourcesController(ISolutionBusinessUnitProvider solutionBusinessUnitProvider,
@@ -41,7 +43,7 @@ namespace CMS.Mvc.Controllers.Afton
             IDocumentProvider documentProvider,
             IResourceTileProvider resourceTileProvider,
             ISelectionFilterPageProvider selectionFilterPageProvider,
-            ISolutionProvider solutionProvider)
+            ISolutionProvider solutionProvider,IGenericPageProvider genericPageProvider)
         {
             _solutionBusinessUnitProvider = solutionBusinessUnitProvider;
             _insightsAndResourcesPageProvider = insightsAndResourcesPageProvider;
@@ -50,6 +52,7 @@ namespace CMS.Mvc.Controllers.Afton
             _resourceTileProvider = resourceTileProvider;
             _selectionFilterPageProvider = selectionFilterPageProvider;
             _solutionProvider = solutionProvider;
+            _genericPageProvider = genericPageProvider;
         }
 
         [PageVisitActivity]
@@ -102,9 +105,14 @@ namespace CMS.Mvc.Controllers.Afton
                 {
                     Title = document.Title,
                     Reference = document.DocumentRoutePath
-                }).Take(3).ToList()
+                }).ToList()
             }));
-
+            result.ForEach(x => x.Links.AddRange(_genericPageProvider.GetHighlightedGenericPage(x.Title).Select(document => new LinkViewModel
+                {
+                    Title = document.Title,
+                    Reference = document.DocumentRoutePath
+                }).ToList()));
+            result.ForEach(x => x.Links = x.Links.Take(3).ToList());
             return result;
         }
 
