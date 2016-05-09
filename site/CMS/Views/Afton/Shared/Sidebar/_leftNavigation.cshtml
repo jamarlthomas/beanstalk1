@@ -1,6 +1,10 @@
-﻿@model CMS.Mvc.ViewModels.Shared.SidebarComponents.LeftNavigationViewModel
-<div id="sidebarHdrC" class="altSidbarstyles">
-    <h2>@Html.Raw(Model.Title)</h2>
+﻿@using CMS.Helpers
+@model CMS.Mvc.ViewModels.Shared.SidebarComponents.LeftNavigationViewModel
+<div id="sidebarHdrC" class="
+     @if(!Model.HasHero) {
+         @Html.Raw("altSidbarstyles");
+         }
+         "> <h2>@Html.Raw(Model.Title)</h2>
 </div>
 <div id="sidebarNavC">
     <ul>
@@ -15,7 +19,7 @@
                     }
                     else
                     {
-                        <a class="open active"> @Html.Raw(navItem.Title)</a>
+                        <a> @Html.Raw(navItem.Title)</a>
                     }
                     <ul>
                         @foreach (var subNavItem in navItem.SubMenu)
@@ -23,7 +27,13 @@
                             <li>
                                 @if (subNavItem.Link != null)
                                 {
-                                    <a href="@Url.Content("~/" + subNavItem.Link)">@Html.Raw(subNavItem.Title)</a>
+                                    if (subNavItem.Link == CMS.Helpers.RequestContext.CurrentURL.Substring(1)) { 
+                                        <a class="active" href="@Url.Content("~/" + subNavItem.Link)">@Html.Raw(subNavItem.Title)</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Content("~/" + subNavItem.Link)">@Html.Raw(subNavItem.Title)</a>
+                                    }
                                 }
                                 else
                                 {
@@ -39,7 +49,14 @@
                 <li>
                     @if (navItem.Link != null)
                     {
-                        <a href="@Url.Content("~/" + navItem.Link)">@Html.Raw(navItem.Title)</a>
+                        if (navItem.Link == CMS.Helpers.RequestContext.CurrentURL.Substring(1))
+                        {
+                            <a class="open active" href="@Url.Content("~/" + navItem.Link)">@Html.Raw(navItem.Title)</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Content("~/" + navItem.Link)">@Html.Raw(navItem.Title)</a>
+                        }
                     }
                     else
                     {

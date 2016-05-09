@@ -192,7 +192,7 @@ namespace CMS.Mvc.Helpers
                 ClassNames = request.ClassNames,
             };
 
-            var condition = new SearchCondition(request.AdditiveQuery, SearchModeEnum.AllWords,
+            var condition = new SearchCondition(request.AdditiveQuery, SearchModeEnum.AnyWord,
                 SearchOptionsEnum.FullSearch, docCondition);
             var searchText = SearchSyntaxHelper.CombineSearchCondition(request.Query, condition);
 
@@ -200,7 +200,7 @@ namespace CMS.Mvc.Helpers
             {
                 SearchFor = searchText,
                 SearchSort = request.SortOrder,
-                Path = "/%",
+                Path = "/Home/InsightsResources/%",
                 ClassNames = null,
                 CurrentCulture = LocalizationContext.CurrentCulture.CultureCode,
                 DefaultCulture = null,

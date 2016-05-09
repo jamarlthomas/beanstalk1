@@ -32,6 +32,7 @@ namespace CMS.Mvc.Controllers.Afton
             productModel.DownloadWidget = GetDownloadwidget(product);
 
             productModel.ContentCopyArea = MapData<Product, CMS.Mvc.ViewModels.Product.ProductViewModel>(product);
+            productModel.ContentCopyArea.DefaultContent = UtilsHelper.ToHtmlString(productModel.ContentCopyArea.DefaultContent.ToString().Replace("~/", "/"));
             productModel.RelatedProducts = GetRelatedProductsWidget(product);
             
             return View("~/Views/Afton/Product/Index.cshtml", productModel);

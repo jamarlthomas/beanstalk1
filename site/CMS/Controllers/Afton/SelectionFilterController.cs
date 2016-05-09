@@ -166,8 +166,11 @@ namespace CMS.Mvc.Controllers.Afton
                     request.SolutionsIds = MapTreeNodesToIdStr(_solutionProvider.GetSolutions(
                         TreePathUtils.GetAlias(TreePathUtils.GetAliasPathByNodeId(int.Parse(request.SBUId)))));
                 }
-                else
+                else if (request.SBUId == RouteHelper.NULL_VALUE_PLACEHOLDER && request.DocumentTypesIds != RouteHelper.NULL_VALUE_PLACEHOLDER)
                 {
+                    request.SolutionsIds = null;
+                }
+                else {
                     request.SolutionsIds = MapTreeNodesToIdStr(_solutionProvider.GetSolutions());
                 }
             }
