@@ -16,6 +16,7 @@ namespace CMS.Mvc.ViewModels.Shared
         public string DocumentsDescription { get; set; }
         public string FAQDescription { get; set; }
         public string FAQList { get; set; }
+        public string ViewAllDocumentsLink { get; set; }
         public string Theme { get; set; }
         public Guid DocumentGUID { get; set; }
         public List<FAQItemViewModel> FAQs { get; set; }

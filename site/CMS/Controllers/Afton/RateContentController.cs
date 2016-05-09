@@ -72,7 +72,7 @@ namespace CMS.Mvc.Controllers.Afton
             rateContentViewModel.ContactTitle = _contactProvider.GetContactNameByGuid(rateContent.RatedContact);
             var ratedDocument = _treeNodesProvider.GetTreeNodeByNodeGuid(rateContent.RatedDocument);
             rateContentViewModel.DocumentTitle = ratedDocument.GetStringValue("Title", ratedDocument.NodeAlias);
-            rateContentViewModel.DocumentLink = ratedDocument.DocumentNamePath;
+            rateContentViewModel.DocumentLink = ((ratedDocument as IRoutedModel) != null) ? (ratedDocument as IRoutedModel).DocumentRoutePath : "#";
             rateContentViewModel.DocumentRateResultsLink = RouteHelper.GetRateContentResultsLink(ratedDocument.NodeAlias);
             return rateContentViewModel;
         }

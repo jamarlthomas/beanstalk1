@@ -17,5 +17,9 @@ namespace CMS.Mvc.Providers
         {
             return GetChildGenericPages(alias).FirstOrDefault();
         }
+        public List<GenericPage> GetHighlightedGenericPage(string parentTitle)
+        {
+            return GetChildGenericPages(parentTitle).Where(w => w.IsHighlightedOnInsightsPage).ToList();
+        }
     }
 }

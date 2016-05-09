@@ -1,4 +1,5 @@
-﻿using CMS.Mvc.ViewModels.Shared;
+﻿using System;
+using CMS.Mvc.ViewModels.Shared;
 
 namespace CMS.Mvc.ViewModels.Product
 {
@@ -11,6 +12,7 @@ namespace CMS.Mvc.ViewModels.Product
         public string SubHeader { get; set; }
         public string Reference { get; set; }
         public string Title { get; set; }
+        public DateTime Date { get; set; }
 
         protected override void Load()
         { }

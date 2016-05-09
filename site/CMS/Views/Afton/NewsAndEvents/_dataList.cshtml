@@ -6,14 +6,15 @@
             <div class="newsImgC">
                 @if (!string.IsNullOrEmpty(item.Image))
                 {
-                    <img src="@Url.Content(item.Image)">
+                    <img src="@Url.Content(item.Image)"/>
                 }
             </div>
             <div class="newsContentC">
                 <h2>@item.Title</h2>
                 <div class="newsInfo">@item.Date.ToString("M/d/yy")</div>
                 <div class="newsTxt">@Html.Raw(item.Description)</div>
-                <a href="@(item.DocumentNamePath ?? "#")" class="newsMore">@Model.ReadMoreLabel</a>
+                <a href="@Url.Content("~/" + item.DocumentRoutePath)" class="newsMore">@Model.ReadMoreLabel</a>
+
             </div>
         </div>
     }

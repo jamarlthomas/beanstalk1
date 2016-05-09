@@ -1,4 +1,5 @@
-﻿using CMS.DocumentEngine.Types;
+﻿using CMS.DocumentEngine;
+using CMS.DocumentEngine.Types;
 using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
@@ -8,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using WebGrease.Css.Extensions;
+using CMS.Mvc.Helpers;
+using System;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -15,13 +18,13 @@ namespace CMS.Mvc.Controllers.Afton
     {
         private readonly IHeroContentProvider _heroContentProvider;
         private readonly IHomeProvider _homeProvider;
-        private readonly IPersonalizationProvider _personalisationProvider;
+        private readonly IPersonalizationProvider _personalizationProvider;
         private readonly ITreeNodesProvider _treeNodesProvider;
         public HomeController()
         {
             _heroContentProvider = new HeroContentProvider();
             _homeProvider = new HomeProvider();
-            _personalisationProvider = new PersonalizationProvider();
+            _personalizationProvider = new PersonalizationProvider();
             _treeNodesProvider = new TreeNodesProvider();
         }
 
@@ -33,7 +36,7 @@ namespace CMS.Mvc.Controllers.Afton
             _heroContentProvider = heroContentProvider;
             _homeProvider = homeProvider;
             _treeNodesProvider = treeNodesProvider;
-            _personalisationProvider = personalisationProvider;
+            _personalizationProvider = personalisationProvider;
         }
 
         [PageVisitActivity]
@@ -45,6 +48,14 @@ namespace CMS.Mvc.Controllers.Afton
                 PrimaryTiles = new List<PersonalizationCardViewModel>()
                 
             };
+            foreach(var item in model.HeroContentList) {
+                var parseGuid = Guid.Parse(item.RelatedDocument);
+                var nodeId = CMS.DocumentEngine.TreePathUtils.GetNodeIdByNodeGUID(parseGuid, SiteProvider.SiteContext.CurrentSiteName);
+                var getDoc = new CMS.DocumentEngine.TreeProvider().SelectSingleNode(nodeId);
+
+                item.RelatedDocument = getDoc.GetType().GetProperty("DocumentRoutePath").GetValue(getDoc).ToString();
+            }
+            
             var home = _homeProvider.GetHomePage();
             var primaryTilesNodes = _treeNodesProvider.GetTreeNodes(home.ManagedBlocks).Take(3).AsQueryable();
             var primaryTilesModels = new List<PersonalizedTile>();
@@ -58,7 +69,7 @@ namespace CMS.Mvc.Controllers.Afton
 
             //avoid duplicates here
             model.PrimaryTiles = MapData<PersonalizedTile, PersonalizationCardViewModel>(primaryTilesModels);
-            var filteredPersTiles = _personalisationProvider.GetPersonalizedItems()
+            var filteredPersTiles = _personalizationProvider.GetPersonalizedItems()
                 .Where(item => !primaryTilesNodes.Select(pt => pt.NodeID).Contains(item.Item.NodeID))
                 .Take(3)
                 .ToList();
@@ -66,7 +77,7 @@ namespace CMS.Mvc.Controllers.Afton
 
 
             //exclude duplicates from first two lines
-            var filteredTrendingTiles = _personalisationProvider
+            var filteredTrendingTiles = _personalizationProvider
                 .GetTrendingTiles()
                 .Where(item => !primaryTilesNodes.Select(pt => pt.NodeID).Contains(item.Item.NodeID) && !filteredPersTiles.Select(pt => pt.NodeID).Contains(item.Item.NodeID))
                 .Take(3)

@@ -4,6 +4,8 @@ using System.Web.Routing;
 using CMS.DocumentEngine.Types;
 using CMS.Helpers;
 using CMS.Mvc.Helpers;
+using CMS.Mvc.Old_App_Code;
+using CMS.Mvc.Old_App_Code.CustomActions;
 using CMS.Mvc.ViewModels.Auxiliary;
 
 
@@ -18,13 +20,13 @@ namespace CMS.Mvc.Controllers.Afton
             model.Home = new AuxiliaryHyperlink("Home", "");
             model.SBUs = ContentHelper.GetDocs<SolutionBusinessUnit>(SolutionBusinessUnit.CLASS_NAME)
                 .Where(sbu=>sbu.Parent.NodeAlias == "Home")
-                .Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentNamePath)).ToList();
-            model.Solutions = ContentHelper.GetDocs<Solution>(Solution.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentNamePath)).ToList();
-            model.Products = ContentHelper.GetDocs<Product>(Product.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentNamePath)).ToList();
-            model.Documents = ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentNamePath)).ToList();
-            model.News = ContentHelper.GetDocs<CustomNews>(CustomNews.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentNamePath)).ToList();
-            model.BlogPosts = ContentHelper.GetDocs<BlogPost>(BlogPost.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.BlogPostTitle, item.DocumentNamePath)).ToList();
-            model.Offices = ContentHelper.GetDocs<Region>(Region.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title + " office", item.DocumentNamePath)).ToList();
+                .Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentRoutePath)).ToList();
+            model.Solutions = ContentHelper.GetDocs<Solution>(Solution.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentRoutePath)).ToList();
+            model.Products = ContentHelper.GetDocs<Product>(Product.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentRoutePath)).ToList();
+            model.Documents = ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentRoutePath)).ToList();
+            model.News = ContentHelper.GetDocs<CustomNews>(CustomNews.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentRoutePath)).ToList();
+            model.BlogPosts = ContentHelper.GetDocs<BlogPost>(BlogPost.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.BlogPostTitle, item.DocumentRoutePath)).ToList();
+            model.Offices = ContentHelper.GetDocs<Region>(Region.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title + " office", item.DocumentRoutePath)).ToList();
             model.NewsAndEvents = new AuxiliaryHyperlink(RouteHelper.GetRoute("NewsAndEvents").Page , RouteHelper.GetRoute("NewsAndEvents").Route);
             model.FAQ = new AuxiliaryHyperlink(RouteHelper.GetRoute("FAQ").Page, RouteHelper.GetRoute("FAQ").Route);
             model.GATC = new AuxiliaryHyperlink(RouteHelper.GetRoute("ATCTools").Page, RouteHelper.GetRoute("ATCTools").Route);
@@ -35,7 +37,7 @@ namespace CMS.Mvc.Controllers.Afton
             model.Insights = new AuxiliaryHyperlink(RouteHelper.GetRoute("Insights And Resources").Page, RouteHelper.GetRoute("Insights And Resources").Route);
             model.GlobalSearch = new AuxiliaryHyperlink(RouteHelper.GetRoute("GlobalSearch").Page, RouteHelper.GetRoute("GlobalSearch").Route);
             model.TermsAndAcronyms = new AuxiliaryHyperlink(RouteHelper.GetRoute("TermsAndAcronyms").Page, RouteHelper.GetRoute("TermsAndAcronyms").Route);
-            model.Generic = ContentHelper.GetDocs<GenericPage>(GenericPage.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentNamePath)).ToList();
+            model.Generic = ContentHelper.GetDocs<GenericPage>(GenericPage.CLASS_NAME).Select(item => new AuxiliaryHyperlink(item.Title, item.DocumentRoutePath)).ToList();
             return View("~/Views/Afton/Auxiliary/Index.cshtml", model);
         }
 
@@ -60,7 +62,12 @@ namespace CMS.Mvc.Controllers.Afton
             return RedirectToAction("Index");
         }
 
-
-
+        [Route("Auxiliary/Pdf")]
+        public ActionResult Pdf()
+        {
+            var gpdf = new GeneratePdf();
+            gpdf.Execute();
+            return RedirectToAction("Infrastructure");
+        }
     }
 }

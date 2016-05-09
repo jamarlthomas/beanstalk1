@@ -1,5 +1,6 @@
 ﻿@using CMS.Mvc.ViewModels.Home
 @using CMS.Mvc.ViewModels.Shared.Personalization
+@using CMS.DocumentEngine.Types
 @model HomeViewModel
 @{
     ViewBag.Title = "Index";
@@ -33,7 +34,7 @@
                 <div id="learnHdr">Learn more about our solutions.</div>
                 <div id="learnTxt">Talk with one of our sales representatives.</div>
             </div>
-            <div id="leanMoreBtnC"><a href="#">Contact Us<span class="icon-arrow"></span></a></div>
+            <div id="leanMoreBtnC"><a href="@Url.Content("~/"+ ContactPage.RoutePath)">Contact Us<span class="icon-arrow"></span></a></div>
         </div>
     </div>
 </div>

@@ -1,6 +1,7 @@
-﻿@model CMS.Mvc.ViewModels.Blogs.BlogsPageViewModel
+﻿@using CMS.Mvc.ViewModels.Blogs
+@model BlogsPageViewModel
 <div id="newsListC">
-    @foreach (var item in Model.BlogPosts)
+    @foreach (BlogPostViewModel item in Model.BlogPosts)
     {
         <div class="newsItem">
             <div class="newsImgC"><img src="@string.Format("CMSPages/GetFile.aspx?guid={0}", item.BlogPostTeaser)"></div>
@@ -8,7 +9,7 @@
                 <h2>@item.BlogPostTitle</h2>
                 <div class="newsInfo">@item.Category | @Model.PostedLabel @item.AuthorName: @item.BlogPostDate.ToString("M/d/yy | h:mm tt CST")</div>
                 <div class="newsTxt">@Html.Raw(item.BlogPostBody)</div>
-                <a href="@item.DocumentNamePath" class="newsMore">@Model.ReadMoreLabel</a>
+                <a href="@item.DocumentRoutePath" class="newsMore">@Model.ReadMoreLabel</a>
             </div>
         </div>
     }

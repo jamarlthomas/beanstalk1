@@ -1,8 +1,10 @@
-﻿namespace CMS.DocumentEngine.Types
+﻿using CMS.Mvc.Interfaces;
+
+namespace CMS.DocumentEngine.Types
 {
-    public partial class Event
+    public partial class Event : IRoutedModel
     {
-        public override string DocumentNamePath
+        public string DocumentRoutePath
         {
             get
             {

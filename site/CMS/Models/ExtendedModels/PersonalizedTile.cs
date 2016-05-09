@@ -1,4 +1,5 @@
-﻿namespace CMS.DocumentEngine.Types
+﻿using CMS.Mvc.Interfaces;
+namespace CMS.DocumentEngine.Types
 {
     public partial class PersonalizedTile
     {
@@ -11,7 +12,7 @@
             TileTitle = (string)item.GetValue("TileTitle");
             Title = (string)item.GetValue("Title");
             Description = (string)item.GetValue("Description");
-            Reference = item.DocumentNamePath;
+            Reference = ((item as IRoutedModel) != null) ? ((IRoutedModel) item).DocumentRoutePath : item.DocumentNamePath;
         }
 
     }

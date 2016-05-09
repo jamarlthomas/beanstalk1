@@ -4,10 +4,10 @@
 @foreach (var region in Model.Regions)
 {
     <div class="salesOfficesC">
-        <a href="@region.DocumentNamePath">
+        <a href="@region.DocumentRoutePath">
             @if (!string.IsNullOrEmpty(region.MapImage))
             {
-                <img src="@Url.Content(region.MapImage)">
+                <img src="@Url.Content(region.MapImage)"/>
             }
         </a>
         <div class="sales-address">
@@ -15,7 +15,7 @@
             @Html.Raw(region.Address)<br>
             <strong>@region.CountryName<br></strong>
             T: @region.Phone<br>
-            <a href="@region.DocumentNamePath" class="viewOffices">@Model.ViewSalesOfficesLabel</a>
+            <a href="@region.DocumentRoutePath" class="viewOffices">@Model.ViewSalesOfficesLabel</a>
         </div>
     </div>
 }

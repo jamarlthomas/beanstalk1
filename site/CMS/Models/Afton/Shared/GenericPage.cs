@@ -207,8 +207,23 @@ namespace CMS.DocumentEngine.Types
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Is Highlighted On Insights Page.
+        /// </summary>
+        [DatabaseField]
+        public bool IsHighlightedOnInsightsPage
+        {
+            get
+            {
+                return ValidationHelper.GetBoolean(GetValue("IsHighlightedOnInsightsPage"), false);
+            }
+            set
+            {
+                SetValue("IsHighlightedOnInsightsPage", value);
+            }
+        }
 
+        #endregion
 
         #region "Constructors"
 

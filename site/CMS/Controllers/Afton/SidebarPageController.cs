@@ -92,15 +92,22 @@ namespace CMS.Mvc.Controllers.Afton
                     {
                         string aliasPath = null;
                         string aliasTitle = null;
-                        if (baseNode.NodeClassName == Solution.CLASS_NAME && baseNode.NodeLevel < 4)
+                        if (baseNode.NodeClassName == Solution.CLASS_NAME && baseNode.NodeLevel < 4||
+                            (baseNode.NodeClassName == GenericPage.CLASS_NAME && baseNode.NodeLevel == 3))
                         {
                             aliasPath = baseNode.Parent.NodeAliasPath;
-                            aliasTitle = baseNode.GetStringValue("Title", baseNode.Parent.NodeName);
+                            aliasTitle = baseNode.Parent.GetStringValue("Title", baseNode.Parent.NodeName);
                         }
-                        else if (baseNode.NodeClassName == Product.CLASS_NAME || (baseNode.NodeClassName == Solution.CLASS_NAME && baseNode.NodeLevel >=4))
+                        else if (baseNode.NodeClassName == Product.CLASS_NAME || (baseNode.NodeClassName == Solution.CLASS_NAME && baseNode.NodeLevel >= 4) ||
+                            (baseNode.NodeClassName == GenericPage.CLASS_NAME && baseNode.NodeLevel == 4))
                         {
                             aliasPath = baseNode.Parent.Parent.NodeAliasPath;
-                            aliasTitle = baseNode.GetStringValue("Title", baseNode.Parent.Parent.NodeName);
+                            aliasTitle = baseNode.Parent.Parent.GetStringValue("Title", baseNode.Parent.Parent.NodeName);
+                        }
+                        else if ((baseNode.NodeClassName == GenericPage.CLASS_NAME && baseNode.NodeLevel == 5))
+                        {
+                            aliasPath = baseNode.Parent.Parent.Parent.NodeAliasPath;
+                            aliasTitle = baseNode.Parent.Parent.Parent.GetStringValue("Title", baseNode.Parent.Parent.NodeName);
                         }
                         else {
                             aliasPath = baseNode.NodeAliasPath;
@@ -114,9 +121,13 @@ namespace CMS.Mvc.Controllers.Afton
                                 .Select(node =>
                                 {
                                     var model = GetLeftNavItemViewModel(node);
-                                    model.SubMenu = node.Children.Select(GetLeftNavItemViewModel);
+                                    if (baseNode.Parent.NodeAliasPath==node.NodeAliasPath||(node.Children.Where(x=>(x.NodeClassName==Solution.CLASS_NAME||x.NodeClassName==GenericPage.CLASS_NAME)).Count()>0 && baseNode.NodeAliasPath==node.NodeAliasPath))
+                                    {
+                                        model.SubMenu = node.Children.Select(GetLeftNavItemViewModel);
+                                    }
                                     return model;
-                                })
+                                }),
+                            HasHero = !string.IsNullOrEmpty(baseNode.GetStringValue("HeroImage",""))
                         };
                     }
                 default:
@@ -131,7 +142,7 @@ namespace CMS.Mvc.Controllers.Afton
             return new LeftNavigationItemViewModel
             {
                 Title = node.GetStringValue("Title", node.NodeName),
-                Link = node.DocumentNamePath
+                Link =  ((node as IRoutedModel) != null) ? (node as IRoutedModel).DocumentRoutePath : node.DocumentNamePath
             };
         }
 

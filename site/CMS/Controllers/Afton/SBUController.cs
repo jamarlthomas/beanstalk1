@@ -1,5 +1,7 @@
 ﻿using CMS.DocumentEngine.Types;
 using CMS.Mvc.ActionFilters;
+using CMS.Mvc.Helpers;
+using CMS.Mvc.Infrastructure.Models;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.SBU;
@@ -45,6 +47,11 @@ namespace CMS.Mvc.Controllers.Afton
             var model = MapData<SolutionBusinessUnit, CMS.Mvc.ViewModels.Shared.SBUViewModel>(sbu);
             model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItemsBySBU(sbu.DocumentGUID.ToString()));
             model.DocumentTypes = MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes(SBUName, 12));
+            model.ViewAllDocumentsLink = RouteHelper.GetSelectionFilterUrl(new SelectionFilterSearchRequest()
+            {
+                SolutionsIds = string.Join(",", _solutionProvider.GetSolutions(SBUName).Select(item => item.NodeID))
+            });
+                
             foreach (var item in model.DocumentTypes)
             {
                 item.Documents = MapData<Document, DocumentViewModel>(_documentProvider.GetDocuments(item.Title));

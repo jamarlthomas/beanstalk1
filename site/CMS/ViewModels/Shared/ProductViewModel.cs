@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace CMS.Mvc.ViewModels.Shared
 {
@@ -20,7 +17,7 @@ namespace CMS.Mvc.ViewModels.Shared
         public string Approvals { get; set; }
         public string HandlingInformation { get; set; }
         public string Comparison { get; set; }
-        public string DocumentNamePath { get; set; }
+        public string DocumentRoutePath { get; set; }
         public DateTime DocumentCreatedWhen { get; set; }
     }
 }

@@ -7,7 +7,8 @@ using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
 using CMS.Mvc.Infrastructure.Models;
-using CMS.Mvc.ViewModels.Shared;
+﻿using CMS.Mvc.Interfaces;
+﻿using CMS.Mvc.ViewModels.Shared;
 using CMS.PortalEngine;
 using CMS.Search;
 using System;
@@ -86,7 +87,7 @@ namespace CMS.Mvc.Helpers
                     breadcrumbList.Insert(0, new BreadCrumbLinkItemViewModel
                        {
                            Title = node.DocumentName,
-                           Reference = node.DocumentNamePath
+                           Reference = ((node as IRoutedModel) != null) ? (node as IRoutedModel).DocumentRoutePath : node.DocumentNamePath
                        });
                 }
                 node = node.Parent;
@@ -191,7 +192,7 @@ namespace CMS.Mvc.Helpers
                 ClassNames = request.ClassNames,
             };
 
-            var condition = new SearchCondition(request.AdditiveQuery, SearchModeEnum.AllWords,
+            var condition = new SearchCondition(request.AdditiveQuery, SearchModeEnum.AnyWord,
                 SearchOptionsEnum.FullSearch, docCondition);
             var searchText = SearchSyntaxHelper.CombineSearchCondition(request.Query, condition);
 
@@ -199,7 +200,7 @@ namespace CMS.Mvc.Helpers
             {
                 SearchFor = searchText,
                 SearchSort = request.SortOrder,
-                Path = "/%",
+                Path = "/Home/InsightsResources/%",
                 ClassNames = null,
                 CurrentCulture = LocalizationContext.CurrentCulture.CultureCode,
                 DefaultCulture = null,

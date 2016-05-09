@@ -1,10 +1,11 @@
 ﻿using CMS.Mvc.Helpers;
+using CMS.Mvc.Interfaces;
 
 namespace CMS.DocumentEngine.Types
 {
-    public partial class SolutionBusinessUnit
+    public partial class SolutionBusinessUnit : IRoutedModel
     {
-        public override string DocumentNamePath
+        public string DocumentRoutePath
         {
             get
             {
