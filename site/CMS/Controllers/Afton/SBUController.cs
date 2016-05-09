@@ -56,15 +56,15 @@ namespace CMS.Mvc.Controllers.Afton
                 SolutionsIds = string.Join(",", _solutionProvider.GetSolutions(SBUName).Select(item => item.NodeID))
             });
                 
-            /*foreach (var item in model.DocumentTypes)
-            {
-                item.Documents = MapData<Document, DocumentViewModel>(_documentProvider.GetDocuments(item.Title));
-            }*/
-            model.DocumentTypes.Add(_documentTypeProvider.GetDocumentTypes)
             foreach (var item in model.DocumentTypes)
             {
-                item.Documents = item.Documents = MapData<Product, ProductViewModel>(_productProvider.GetDocuments(item.Title));
+                item.Documents = MapData<Document, DocumentViewModel>(_documentProvider.GetDocuments(item.Title));
             }
+            //model.DocumentTypes.Add(_documentTypeProvider.GetDocumentTypes);
+            /*foreach (var item in model.DocumentTypes)
+            {
+                item.Documents = item.Documents = MapData<Product, ProductViewModel>(_productProvider.GetDocuments(item.Title));
+            }*/
             model.Solutions = MapData<Solution, TileViewModel>(_solutionProvider.GetSolutions(SBUName)).Where(w => !string.IsNullOrEmpty(w.HomeImage)).ToList();
             return View("~/Views/Afton/SBU/Index.cshtml", model);
         }

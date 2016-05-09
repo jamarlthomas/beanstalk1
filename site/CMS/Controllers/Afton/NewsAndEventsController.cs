@@ -49,7 +49,9 @@ namespace CMS.Mvc.Controllers.Afton
             }
             List<DateTime> Dates = contentList.Select(x => Convert.ToDateTime(x.GetStringValue("Date", ""))).ToList();
             List<string> MonthDate = Dates.Select(y => y.ToString("MMM yy")).Distinct().ToList();
-
+            if (!MonthDate.Contains(request.DateFilter)&&!string.IsNullOrEmpty(request.DateFilter)) {
+                request.DateFilter = MonthDate.First();
+            }
             model.NewsAndEventsList = contentList
                 .Where(x=>!string.IsNullOrEmpty(request.DateFilter) ?
                     (Convert.ToDateTime(x.GetStringValue("Date","")).ToString("MMM yy")==request.DateFilter):1==1)
