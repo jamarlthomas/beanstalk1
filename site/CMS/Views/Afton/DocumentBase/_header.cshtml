@@ -3,7 +3,7 @@
 
 <div id="document">
     <h1>@Model.Title</h1>
-    <div class="subTxt">@Model.Constant.PostedTimeLabel @Model.DocumentPublishFrom.ToString("M/d/yy | h:mm tt CST")</div><br>
+    <div class="subTxt">@Model.Constant.PostedTimeLabel @Model.DocumentPublishFrom.ToString("M/d/yy")</div><br>
     @if(@Model.DownloadButtonSection != null) {
         @Html.Partial("~/Views/Afton/Shared/DownloadWidget/_downloadButtonSection.cshtml", Model.DownloadButtonSection)
     }

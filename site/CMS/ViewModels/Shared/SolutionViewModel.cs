@@ -23,5 +23,7 @@ namespace CMS.Mvc.ViewModels.Shared
         public BreadCrumbViewModel BreadCrumb { get; set; }
         public SidebarViewModel SideBar { get; set; }
         public SolutionConstantsViewModel Constants { get; set; }
+        public DateTime DatePublishedFrom { get; set; }
+
     }
 }
