@@ -19,12 +19,18 @@ $(document).ready(function() {
     
     
     //function that handles redirecting
-    loadPage = function(cat, sortOrder, author) {
+    loadPage = function(cat, sortOrder, selDate, author) {
         
         if(typeof cat === 'undefined'){
             
             //get the default category value
             cat = $("#categoriesDD .orgSelect select").val();
+
+        }
+        
+        if(typeof selDate === 'undefined'){
+            //get the default category value
+            selDate = $("#monthDD .orgSelect select").val();
 
         }
         
@@ -34,7 +40,7 @@ $(document).ready(function() {
 
         }
         
-        window.location = "?sortorder=" + sortOrder + "&Category=" + cat + "&Author=" + author + "&page=1";
+        window.location = "?sortorder=" + sortOrder + "&Category=" + cat + "&Author=" + author + "&DateFilter=" + selDate + "&page=1";
         
     }
     
@@ -45,9 +51,11 @@ $(document).ready(function() {
         
         var getCat = $(this).attr("value");
         
+        var getDate = getUrlParameter('DateFilter');
+        
         var getAuthor = getUrlParameter('Author');
         
-        loadPage(getCat, "DESC", getAuthor);
+        loadPage(getCat, "DESC", getDate, getAuthor);
         
     });    
     
@@ -56,21 +64,52 @@ $(document).ready(function() {
         
         var getCat = $(this).val();
         
+        var getDate = getUrlParameter('DateFilter');
+        
         var getAuthor = getUrlParameter('Author');
         
-        loadPage(getCat, "DESC", getAuthor);
+        loadPage(getCat, "DESC", getDate, getAuthor);
         
     });
     
-
+    
+    //For date list item click for desktop
+    $('#monthDD .dropDownItemsC').on("click", "li", function(e) {
+        
+        var getDate = $(this).attr("value");
+        
+        var getAuthor = getUrlParameter('Author');
+        
+        var getCat = getUrlParameter('Category');
+        
+        loadPage(getCat, "DESC", getDate, getAuthor);
+        
+    });
+    
+    //For date list mobile drop down
+    $('#monthDD .orgSelect select').change(function(){
+        
+        var getDate = $(this).val();
+        
+        var getAuthor = getUrlParameter('Author');
+        
+        var getCat = getUrlParameter('Category');
+        
+        loadPage(getCat, "DESC", getDate, getAuthor);
+        
+    });
+    
+    
     //For author list item click for desktop
     $('#authorsDD .dropDownItemsC').on("click", "li", function(e) {
         
         var getAuthor = $(this).attr("value");
         
+        var getDate = getUrlParameter('DateFilter');
+        
         var getCat = getUrlParameter('Category');
         
-        loadPage(getCat, "DESC", getAuthor);
+        loadPage(getCat, "DESC", getDate, getAuthor);
         
     });    
     
@@ -79,9 +118,11 @@ $(document).ready(function() {
         
         var getAuthor = $(this).val();
         
+        var getDate = getUrlParameter('DateFilter');
+        
         var getCat = getUrlParameter('Category');
         
-        loadPage(getCat, "DESC", getAuthor);
+        loadPage(getCat, "DESC", getDate, getAuthor);
         
     });
     
@@ -94,9 +135,11 @@ $(document).ready(function() {
         
         var getCat = getUrlParameter('Category');
         
+        var getDate = getUrlParameter('DateFilter');
+        
         var getAuthor = getUrlParameter('Author');
         
-        loadPage(getCat, selectedSort, getAuthor);
+        loadPage(getCat, selectedSort, getDate, getAuthor);
         
      });    
     
@@ -107,9 +150,11 @@ $(document).ready(function() {
         
         var getCat = getUrlParameter('Category');
         
+        var getDate = getUrlParameter('DateFilter');
+        
         var getAuthor = getUrlParameter('Author');
 
-        loadPage(getCat, selectedSort, getAuthor);
+        loadPage(getCat, selectedSort, getDate, getAuthor);
 
     });
     
@@ -128,6 +173,20 @@ $(document).ready(function() {
         
         //mobile update selected
         $("#categoriesDD .orgSelect select option[value='" + findCat + "']").attr('selected', true);
+    }
+    
+    //Updating date Drop Down for both desktop and mobile
+    var findDate = getUrlParameter('DateFilter');
+    if(typeof findDate != 'undefined'){
+        
+        //find element drop down with catagory found in the URL and get the text
+        var textOfSelectedDD = $("#monthDD .orgSelect select option[value='" + findDate + "']").text();
+        
+        //desktop update text label
+        $('#monthDD .customSelectC .currentItem').text(textOfSelectedDD);
+        
+        //mobile update selected
+        $("#monthDD .orgSelect select option[value='" + findDate + "']").attr('selected', true);
     }
     
     //Updating author Drop Down for both desktop and mobile
