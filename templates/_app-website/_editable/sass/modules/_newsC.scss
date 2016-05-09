@@ -18,7 +18,22 @@
                 
             }//categoriesDD
             
-            #authorsDD { float: left; padding-left: 40px;
+            #monthDD { float: left; padding-left: 10px;
+                
+                .customSelectC { width: 120px;
+                
+                    //*** Breakpoints ***
+                    @include breakpoint($bp2) { width: 100%; }
+                    
+                }
+                
+                
+                //*** Breakpoints ***
+                @include breakpoint($bp2) { float: none; padding-left: 0px; }
+                
+            }//monthDD
+            
+            #authorsDD { float: left; padding-left: 10px;
                 
                 .customSelectC { width: 200px;
                 
