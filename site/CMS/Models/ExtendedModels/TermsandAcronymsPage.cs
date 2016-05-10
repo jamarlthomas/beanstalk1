@@ -5,7 +5,7 @@ using CMS.Mvc.Interfaces;
 
 namespace CMS.DocumentEngine.Types
 {
-    public class TermsandAcronymsPage : IRoutedModel
+    public partial class TermsAndAcronymsPage : IRoutedModel
     {
         public string DocumentRoutePath
         {

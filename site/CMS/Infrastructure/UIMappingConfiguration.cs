@@ -35,7 +35,7 @@ namespace CMS.Mvc.Infrastructure
                 .ForMember(s => s.DocumentRoutePath, d => d.Reference);
             CreateMap<FAQPage, TileViewModel>()
                 .ForMember(s => s.DocumentRoutePath, d => d.Reference);
-            CreateMap<TermsandAcronymsPage, TileViewModel>()
+            CreateMap<TermsAndAcronymsPage, TileViewModel>()
                 .ForMember(s=>s.DocumentRoutePath, d=>d.Reference);
         }
         protected override void Collections()
