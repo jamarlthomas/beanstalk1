@@ -4,7 +4,7 @@
 <ul>
 	@foreach (var document in Model.Products)
 	{
-		<li><a href="@document.DocumentRoutePath">@Html.Raw(document.Title)</a></li>
+		<li><a href="@Url.Content("~/"+document.DocumentRoutePath)">@Html.Raw(document.Title)</a></li>
 	}
 </ul>
 <!--<a href="#">View More ></a>-->

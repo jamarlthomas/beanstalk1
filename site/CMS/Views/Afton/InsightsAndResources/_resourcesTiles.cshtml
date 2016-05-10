@@ -3,11 +3,11 @@
     <div class="cardsSM fourCol">
         @foreach (var tile in Model)
         {
-            <a href="@tile.Reference">
+            <a href="@Url.Content("~/" + tile.DocumentRoutePath)    ">
                 <div class="cardBtnIndicator">
                     <img src="@Url.Content("~/images/card-btn-indicator.png")">
                 </div>
-                <div class="cardHdrC">
+                <div class="cardHdrC" >
                     <div class="cardHdrTxt">@tile.Title</div>
                 </div>
                 <div class="cardTextAreaC">

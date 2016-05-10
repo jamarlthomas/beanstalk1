@@ -48,6 +48,7 @@ namespace CMS.Mvc.Providers
                 sb.SubscriberEmail = subscriber.Trim();
                 sb.SubscriberFirstName = string.Empty;
                 sb.SubscriberLastName = string.Empty;
+                sb.SubscriberSiteID = SiteProvider.SiteContext.CurrentSiteID;
                 SubscriberInfoProvider.SetSubscriberInfo(sb);
             }
             else

@@ -1,4 +1,5 @@
-﻿@model CMS.Mvc.ViewModels.Shared.SidebarComponents.SidebarComponentWithDefaultImageViewModel
+﻿@using CMS.Mvc.Helpers
+@model CMS.Mvc.ViewModels.Shared.SidebarComponents.SidebarComponentWithDefaultImageViewModel
 @if (!string.IsNullOrWhiteSpace(Model.Reference))
 {
     <a href="@Url.Content("~/" + Model.Reference)">
@@ -11,8 +12,8 @@
             <img src="@Url.Content(Model.DefaultImage)" alt="@Model.Title" />
         }
         <div class="txtCol">
-            <div class="sTxt">@Model.Title</div>
-            <um>@Model.Description</um>
+            @*<div class="sTxt">@Model.Title</div>*@
+            <um>@UtilsHelper.Ellipsis(Model.Description.ToString(),120)</um>
         </div>
     </a>
 }
@@ -28,7 +29,7 @@ else
             <img src="@Url.Content(Model.DefaultImage)" alt="@Model.Title" />
         }
         <div class="txtCol">
-            <um>@Model.Description</um>
+            <um>@UtilsHelper.Ellipsis(Model.Description.ToString(), 120)</um>
         </div>
     </a>
 }
