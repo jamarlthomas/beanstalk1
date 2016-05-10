@@ -9,6 +9,7 @@ namespace CMS.Mvc.Interfaces
     public interface IProductProvider 
     {
         Product GetProduct(string alias);
+        List<Product> GetProductsBySBU(string SBUName);
         List<BreadCrumbLinkItemViewModel> GetBreadcrumb(string name);
         List<string> GetAvailableRegions(Product product);
         List<DownloadLanguageLinkItemViewModel> GetAvailableTranslations(Product product);

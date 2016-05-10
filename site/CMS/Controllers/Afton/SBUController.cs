@@ -55,10 +55,10 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 SolutionsIds = string.Join(",", _solutionProvider.GetSolutions(SBUName).Select(item => item.NodeID))
             });
-                
+            model.DocumentTypes.Add(MapData<DocumentType,DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes()).First());
             foreach (var item in model.DocumentTypes)
             {
-                item.Documents = MapData<Document, DocumentViewModel>(_documentProvider.GetDocuments(item.Title));
+                item.Products = MapData<Product, ProductViewModel>(_productProvider.GetProductsBySBU(sbu.NodeAlias));
             }
             //model.DocumentTypes.Add(_documentTypeProvider.GetDocumentTypes);
             /*foreach (var item in model.DocumentTypes)

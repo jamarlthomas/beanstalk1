@@ -17,6 +17,16 @@ namespace CMS.Mvc.Providers
         {
             return ContentHelper.GetDocsByGuids<Product>(guids, siteName);
         }
+        public List<Product> GetProductsBySBU(string SBUName)
+        {
+            var productList = new List<Product>();
+            var solutionList = ContentHelper.GetDocChildrenByName<Solution>(Solution.CLASS_NAME, SBUName);
+            foreach (var solution in solutionList)
+            {
+                productList.AddRange(ContentHelper.GetDocChildrenByName<Product>(Product.CLASS_NAME, solution.NodeAlias));
+            }
+            return productList;
+        }
 
         public Product GetProduct(string alias)
         {
@@ -63,6 +73,7 @@ namespace CMS.Mvc.Providers
 
             return ContentHelper.GetSiblings<Product>(product);
         }
+
     }
 }
 
