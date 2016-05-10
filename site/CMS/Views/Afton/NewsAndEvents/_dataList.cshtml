@@ -11,7 +11,7 @@
             </div>
             <div class="newsContentC">
                 <h2>@item.Title</h2>
-                <div class="newsInfo">@item.Date.ToString("M/d/yy")</div>
+                @*<div class="newsInfo">@item.Date.ToString("M/d/yy")</div>*@
                 <div class="newsTxt">@Html.Raw(item.Description)</div>
                 <a href="@Url.Content("~/" + item.DocumentRoutePath)" class="newsMore">@Model.ReadMoreLabel</a>
 
