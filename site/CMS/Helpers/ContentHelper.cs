@@ -200,7 +200,7 @@ namespace CMS.Mvc.Helpers
             {
                 SearchFor = searchText,
                 SearchSort = request.SortOrder,
-                Path = "/Home/InsightsResources/%",
+                Path = "/Home/%",
                 ClassNames = null,
                 CurrentCulture = LocalizationContext.CurrentCulture.CultureCode,
                 DefaultCulture = null,
