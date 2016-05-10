@@ -782,6 +782,7 @@
     <None Include="Properties\PublishProfiles\Afton-test.pubxml" />
     <Content Include="Views\LogisticsAndSupply\Index.cshtml" />
     <Content Include="Views\Afton\Shared\_map.cshtml" />
+    <Content Include="Views\Afton\ATCTools\GATCNATCScript.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
