@@ -18,6 +18,7 @@ namespace CMS.Mvc.App_Start
             AutoMapper.Mapper.CreateMap<Event, NewsAndEventViewModel>();
             AutoMapper.Mapper.CreateMap<FAQPage, TileViewModel>();
             AutoMapper.Mapper.CreateMap<TermsAndAcronymsPage, TileViewModel>();
+            AutoMapper.Mapper.CreateMap<ATCToolsPage, TileViewModel>();
         }
 
         private static void AnyCMSModelToTileViewModelMapping()
@@ -34,6 +35,7 @@ namespace CMS.Mvc.App_Start
             AutoMapper.Mapper.CreateMap<Event, NewsAndEventViewModel>();
             AutoMapper.Mapper.CreateMap<FAQPage, TileViewModel>();
             AutoMapper.Mapper.CreateMap<TermsAndAcronymsPage, TileViewModel>();
+            AutoMapper.Mapper.CreateMap<ATCToolsPage, TileViewModel>();
 
         }
     }

@@ -234,6 +234,7 @@
     <Compile Include="Models\Afton\LogisticsAndSupply\LogisticsAndSupply.cs" />
     <Compile Include="Models\Afton\LogisticsAndSupply\LogisticsAndSupplyFolder.cs" />
     <Compile Include="Models\Afton\Master\MegaMenuSubLinkItem.cs" />
+    <Compile Include="Models\ExtendedModels\ATCToolsPage.cs" />
     <Compile Include="Models\ExtendedModels\ContactPage.cs" />
     <Compile Include="Models\ExtendedModels\FAQItem.cs" />
     <Compile Include="Models\ExtendedModels\FAQPage.cs" />
