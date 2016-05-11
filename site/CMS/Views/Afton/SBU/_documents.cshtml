@@ -1,10 +1,10 @@
 ﻿@using CMS.Mvc.ViewModels.SBU
 @model DocumentTypeViewModel
-<!--<h3>@Model.Title</h3>-->
+<h3>@Model.Title</h3>
 <ul>
-	@foreach (var document in Model.Products)
+	@foreach (var document in Model.Documents)
 	{
-		<li><a href="@Url.Content("~/"+document.DocumentRoutePath)">@Html.Raw(document.Title)</a></li>
+		<li><a href="@Url.Content("~/"+document.Reference)">@Html.Raw(document.Title)</a></li>
 	}
 </ul>
 <!--<a href="#">View More ></a>-->

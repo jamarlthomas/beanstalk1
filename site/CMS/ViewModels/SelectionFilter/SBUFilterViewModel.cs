@@ -11,5 +11,6 @@ namespace CMS.Mvc.ViewModels.SelectionFilter
 	{
 		public string Title { get; set; }
 		public List<CheckBoxViewModel> SolutionsList { get; set; }
+        public string NodeAlias { get; set; }
 	}
 }

@@ -14,7 +14,15 @@ namespace CMS.Mvc.Providers
 		{
 			request.IndexName = "SelectionFilterSearch";
             request.RecordsOnPage = int.Parse(ConfigurationManager.AppSettings["SelectionFilterRecordOnPageCount"]);
-			request.ClassNames = "custom.Product;custom.Document;custom.GenericPage;";
+            if (request.DocumentTypesIds == "1690")
+            {
+                request.ClassNames = "custom.Product;";
+            }
+            else
+            {
+                request.ClassNames = "custom.Product;custom.Document;custom.GenericPage;";
+            }
+			
             request.SortOrder = string.Format("documentcreatedwhen {0}", !string.IsNullOrEmpty(request.SortOrder) && request.SortOrder.ToUpper().Equals("NEWEST") ? "DESC" : "ASC");
 			request.AdditiveQuery = AdditiveQueryBuilder(request.DocumentTypesIds, request.SolutionsIds, request.Regions);
 			return ContentHelper.PerformSearch(request);
@@ -25,9 +33,13 @@ namespace CMS.Mvc.Providers
 			var query = new StringBuilder(string.Empty);
 			if (!string.IsNullOrEmpty(documentTypesIds) || !string.IsNullOrEmpty(solutionsIds))
 			{
-                if (string.IsNullOrEmpty(solutionsIds) && !string.IsNullOrEmpty(documentTypesIds))
+                if (string.IsNullOrEmpty(solutionsIds) && documentTypesIds.Contains(ConfigurationManager.AppSettings["DocumentDataSheetDocumentTypeId"]))
                 {
-
+                    var solutions = ContentHelper.GetDocs<Solution>(Solution.CLASS_NAME);
+                    foreach (var sol in solutions)
+                    {
+                        solutionsIds += sol.NodeID+",";
+                    }
                 }
 				query.Append("+NodeParentID:(");
                 var idsArray = string.Format("{0},{1}", documentTypesIds, solutionsIds).Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);

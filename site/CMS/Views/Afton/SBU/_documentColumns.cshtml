@@ -6,20 +6,28 @@
 		<div class="threeColGrid-lft dataSheets">
 			@for (int i = 0; i < Model.Count; i += 3)
 			{
+                if (Model.ElementAt(i).Documents != null) { 
 				@Html.Partial("~/Views/Afton/SBU/_documents.cshtml", Model.ElementAt(i))
+            }
 			}
 		</div>
 		<div class="threeColGrid-mid dataSheets">
 			@for (int i = 1; i < Model.Count; i += 3)
-			{
-				@Html.Partial("~/Views/Afton/SBU/_documents.cshtml", Model.ElementAt(i))
-			}
+            {
+                if (Model.ElementAt(i).Documents != null)
+                {
+                    @Html.Partial("~/Views/Afton/SBU/_documents.cshtml", Model.ElementAt(i))
+                }
+            }
 		</div>
 	</div>
 	<div class="threeColGrid-rt dataSheets">
 		@for (int i = 2; i < Model.Count; i += 3)
-		{
-			@Html.Partial("~/Views/Afton/SBU/_documents.cshtml", Model.ElementAt(i))
-		}
+        {
+            if (Model.ElementAt(i).Documents != null)
+            {
+                @Html.Partial("~/Views/Afton/SBU/_documents.cshtml", Model.ElementAt(i))
+            }
+        }
 	</div>
 </div>

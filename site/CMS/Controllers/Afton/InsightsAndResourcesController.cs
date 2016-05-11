@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using System.Linq;
@@ -96,7 +97,7 @@ namespace CMS.Mvc.Controllers.Afton
                     Links = _solutionBusinessUnitProvider.GetSolutionBusinessUnits().Select(MapSBUToLinkViewModel).ToList()
                 }
             };
-            result.AddRange(_documentTypeProvider.GetDocumentTypes().Select(s => new InsightsListingItemViewModel
+            result.AddRange(_documentTypeProvider.GetDocumentTypes().Where(x => x.NodeID != Int32.Parse(ConfigurationManager.AppSettings["DocumentDataSheetDocumentTypeId"])).Select(s => new InsightsListingItemViewModel
             {
                 Title = s.Title,
                 ViewAllLabel = page.ViewAllLabel,
@@ -112,7 +113,11 @@ namespace CMS.Mvc.Controllers.Afton
                     Title = document.Title,
                     Reference = document.DocumentRoutePath
                 }).ToList()));
-            result.ForEach(x => x.Links = x.Links.Take(3).ToList());
+            foreach (var x in result)
+            {
+                if (x.Title != page.ProductDataSheetsTitle)
+                    x.Links = x.Links.Take(3).ToList();
+            }
             return result;
         }
 
@@ -121,7 +126,8 @@ namespace CMS.Mvc.Controllers.Afton
             var childSelectionFilterPage = _selectionFilterPageProvider.GetChildSelectionFilterPage(sbu.NodeAlias);
             var searchRequest = new SelectionFilterSearchRequest
             {
-                SolutionsIds = string.Join(",", _solutionProvider.GetSolutions(sbu.NodeAlias).Select(solution => solution.NodeID))
+                SolutionsIds = string.Join(",", _solutionProvider.GetSolutions(sbu.NodeAlias).Select(solution => solution.NodeID)),
+                DocumentTypesIds = ConfigurationManager.AppSettings["DocumentDataSheetDocumentTypeId"]
             };
             return new LinkViewModel
             {

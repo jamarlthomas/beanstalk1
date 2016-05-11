@@ -13,5 +13,6 @@ namespace CMS.Mvc.ViewModels.Shared
         public DateTime DocumentPublishFrom { get; set; }
         public DocumentConstantViewModel Constant { get; set; }
         public bool map { get; set; }
+        public string DocumentRoutePath { get; set; }
     }
 }

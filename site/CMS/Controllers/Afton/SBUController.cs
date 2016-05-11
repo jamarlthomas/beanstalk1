@@ -19,6 +19,7 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly IDocumentTypeProvider _documentTypeProvider;
         private readonly ISolutionProvider _solutionProvider;
         private readonly IProductProvider _productProvider;
+        private readonly IGenericPageProvider _genericPageProvider;
 
         public SBUController()
         {
@@ -28,6 +29,7 @@ namespace CMS.Mvc.Controllers.Afton
             _documentTypeProvider = new DocumentTypeProvider();
             _solutionProvider = new SolutionProvider();
             _productProvider = new ProductProvider();
+            _genericPageProvider = new GenericPageProvider();
 
         }
 
@@ -35,7 +37,9 @@ namespace CMS.Mvc.Controllers.Afton
             IDocumentProvider documentProvider,
             IFAQItemProvider FAQItemProvider,
             IDocumentTypeProvider documentTypeProvider,
-            ISolutionProvider solutionProvider, IProductProvider productProvider)
+            ISolutionProvider solutionProvider,
+            IProductProvider productProvider,
+            IGenericPageProvider genericPageProvider)
         {
             _solutionBusinessUnitProvider = solutionBusinessUnitProvider;
             _documentProvider = documentProvider;
@@ -50,17 +54,100 @@ namespace CMS.Mvc.Controllers.Afton
             var sbu = _solutionBusinessUnitProvider.GetSolutionBusinessUnit(SBUName);
             var model = MapData<SolutionBusinessUnit, CMS.Mvc.ViewModels.Shared.SBUViewModel>(sbu);
             model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItemsBySBU(sbu.DocumentGUID.ToString()));
-            model.DocumentTypes = MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes(SBUName, 12));
+            model.DocumentTypes = new System.Collections.Generic.List<DocumentTypeViewModel>();
             model.ViewAllDocumentsLink = RouteHelper.GetSelectionFilterUrl(new SelectionFilterSearchRequest()
             {
                 SolutionsIds = string.Join(",", _solutionProvider.GetSolutions(SBUName).Select(item => item.NodeID))
             });
-            model.DocumentTypes.Add(MapData<DocumentType,DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes()).First());
+           // model.DocumentTypes.Add(MapData<DocumentType,DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes()).First());
+            /*    var PDS = MapData<DocumentType, DocumentTypeViewModel>(new DocumentType
+            {
+                DocumentTypeID = -100,
+                Title = "Product Data Sheets"
+            });
+            model.DocumentTypes.Add(PDS);*/
+            //model.DocumentTypes.First().Products = MapData<Product, ProductViewModel>(_productProvider.GetProductsBySBU(sbu.NodeAlias));
+            //model.DocumentTypes.AddRange(MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes(SBUName, 12)));
+            model.DocumentTypes.AddRange(MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes()));
             foreach (var item in model.DocumentTypes)
             {
-                item.Products = MapData<Product, ProductViewModel>(_productProvider.GetProductsBySBU(sbu.NodeAlias));
+                switch (item.Title) {
+                    case "Product Data Sheets":
+                        item.Documents = _productProvider.GetProductsBySBU(sbu.NodeAlias).Select(document => new LinkViewModel
+                        {
+                            Title = document.Title,
+                            Reference = document.DocumentRoutePath
+                        }).ToList();
+                        break;
+                    case "Brochures":
+                        item.Documents = _documentProvider.GetDocuments(item.Title).Select(document => new LinkViewModel {
+                        Title= document.Title,
+                        Reference= document.DocumentRoutePath
+                        }).ToList();
+                        item.Documents.AddRange(_genericPageProvider.GetChildGenericPages(item.Title).Select(document => new LinkViewModel
+                        {
+                            Title = document.Title,
+                            Reference = document.DocumentRoutePath
+                        }).ToList());
+                        break;
+                    case "Product Stewardship Summaries":
+                        switch (sbu.Title)
+                        {
+                            case "Engine Oil Additives":
+                                item.Documents = (ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x=>x.NodeID==1655).Select(document => new LinkViewModel
+                                {
+                                    Title = document.Title,
+                                    Reference = document.DocumentRoutePath
+                                }).ToList());
+                                item.Documents.AddRange(ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1650).Select(document => new LinkViewModel
+                                {
+                                    Title = document.Title,
+                                    Reference = document.DocumentRoutePath
+                                }).ToList());
+                                break;
+                            case "Fuel Additives" :
+                                item.Documents = (ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x=>x.NodeID==1646).Select(document => new LinkViewModel
+                                {
+                                    Title = document.Title,
+                                    Reference = document.DocumentRoutePath
+                                }).ToList());
+                                item.Documents.AddRange(ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1648).Select(document => new LinkViewModel
+                                {
+                                    Title = document.Title,
+                                    Reference = document.DocumentRoutePath
+                                }).ToList());
+                                break;
+                            case "Driveline Additives" :
+                                item.Documents = (ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x=>x.NodeID==1654).Select(document => new LinkViewModel
+                                {
+                                    Title = document.Title,
+                                    Reference = document.DocumentRoutePath
+                                }).ToList());
+                                item.Documents.AddRange(ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1645).Select(document => new LinkViewModel
+                                {
+                                    Title = document.Title,
+                                    Reference = document.DocumentRoutePath
+                                }).ToList());
+                                break;
+                            case "Industrial Additives":
+                                item.Documents = (ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1647).Select(document => new LinkViewModel
+                                {
+                                    Title = document.Title,
+                                    Reference = document.DocumentRoutePath
+                                }).ToList());
+                                item.Documents.AddRange(ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1649 || x.NodeID == 1652 || x.NodeID == 1653).Select(document => new LinkViewModel
+                                {
+                                    Title = document.Title,
+                                    Reference = document.DocumentRoutePath
+                                }).ToList());
+                                break;
+
+                        }
+                        break;
+                }
+
             }
-            //model.DocumentTypes.Add(_documentTypeProvider.GetDocumentTypes);
+            
             /*foreach (var item in model.DocumentTypes)
             {
                 item.Documents = item.Documents = MapData<Product, ProductViewModel>(_productProvider.GetDocuments(item.Title));
