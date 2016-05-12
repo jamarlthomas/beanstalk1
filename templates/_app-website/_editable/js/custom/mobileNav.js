@@ -13,6 +13,26 @@ $( document ).ready(function() {
 
         //remove scrollbar from page
         $('html').css('overflow','hidden');
+        
+        //reset navigation position
+        $("#mobileNavC #mainNavC > ul").css({"left": "0px"});
+        
+        //reset navigation display styles by removing styles
+        $("#mobileNavC #mainNavC .hasChildren ul").removeAttr("style");
+        
+        //reset util
+        $("#mobileNavC #utilC").removeAttr("style");
+        
+        //reset status level
+        navLevel = 0;
+        
+        //reset distance pos
+        getNavPos = 0;
+        
+        //remove back button
+        $("#mainNavC .backBtn").parent().remove();
+        
+        
     });
     
     
@@ -24,7 +44,7 @@ $( document ).ready(function() {
 
         //Animate out the navigation
         $("#mobileNavC1").removeClass("navToggleOpen");
-
+        
         //Delay closing mobile nav overlay
         setTimeout(function(){
             $("#mobileNavC1").css({"z-index":"0","width":"0px"})
@@ -47,10 +67,11 @@ $( document ).ready(function() {
     );
     
     //close from grayed out section
-    $('#mobileNavC1').click(function(e) { e.preventDefault(); 
+    $('#mobileNavC1').click(function(e) { 
                                          
         //Check for hover event over mobile nav
         if(!$("#mobileNavC").hasClass("hover")){
+            e.preventDefault(); 
             closeMobileNav(); 
         }
     }); 
@@ -80,8 +101,8 @@ $( document ).ready(function() {
     
     
     //next nav activation
-    $(".hasChildren a").click(function(e) {
-        
+    $(".hasChildren > a").click(function(e) {
+        console.log("hit")
         e.preventDefault();
         
         //fade out utilty for any inner navs
@@ -96,10 +117,10 @@ $( document ).ready(function() {
         var viewBtnName = $(this).text();
         
         //Get the link
-        var viewBtnLink = $(this).attr("href")
+        //var viewBtnLink = $(this).attr("href")
         
         //Create View Button
-        addBtns = addBtns + '<li><a href="' + viewBtnLink + '" class="viewBtn">' + viewBtnName + '</a></li>'
+        //addBtns = addBtns + '<li><a href="' + viewBtnLink + '" class="viewBtn">' + viewBtnName + '</a></li>'
         
         //Add Buttons
         $(this).parent().find("ul:first").prepend(addBtns)
@@ -110,7 +131,7 @@ $( document ).ready(function() {
         //update menu status
         $("#mobileNavStatus").html(viewBtnName);
         
-        //slide to nav and reset height
+        //reveal status
         $("#mobileNavStatus").fadeIn(500);
         
         //calculate new nav position
@@ -119,7 +140,7 @@ $( document ).ready(function() {
         //prep new nav into position
         $(this).parent().children().eq(1).css({"width":getNavWidth,"left": getNavWidth,"display":"block"})
         
-        //slide to nav and reset height
+        //slide to nav
         $("#mobileNavC #mainNavC > ul").delay(150).animate({
             left: -1 * getNavPos,
         }, 500);
@@ -154,7 +175,8 @@ $( document ).ready(function() {
             $(thisBackBtn).parent().parent().css({"display":"none"})
             
             //remove extra nav that was added
-            $(thisBackBtn).parent().parent().find('li:lt(2)').remove();
+            //$(thisBackBtn).parent().parent().find('li:lt(2)').remove();
+            $(thisBackBtn).parent().parent().find('li:lt(1)').remove();
 
         });
         
