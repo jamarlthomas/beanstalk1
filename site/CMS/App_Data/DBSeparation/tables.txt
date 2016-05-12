@@ -18,5 +18,5 @@ OM_Membership
 OM_IP
 Newsletter_OpenedEmail
 Newsletter_Link
-Newsletter_SubscriberLink
+Newsletter_ClickedLink
 Personas_Persona

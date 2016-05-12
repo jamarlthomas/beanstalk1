@@ -1,5 +1,5 @@
 <%@ Master Language="C#" AutoEventWireup="true" Inherits="CMSMasterPages_UI_Dialogs_ModalSimplePage"
-    Codebehind="ModalSimplePage.master.cs" %>
+     Codebehind="ModalSimplePage.master.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" TagPrefix="cms"
     TagName="HeaderActions" %>
@@ -34,7 +34,7 @@
                 <asp:Panel runat="server" ID="pnlSeparator" CssClass="HeaderSeparator" Visible="false">
                     &nbsp;</asp:Panel>
             </asp:Panel>
-            <asp:Panel ID="pnlSiteSelector" runat="server" CssClass="header-panel"
+            <asp:Panel ID="pnlSiteSelector" runat="server" CssClass="header-panel header-actions-site-selector-block"
                 Visible="false">
                 <asp:ContentPlaceHolder runat="server" ID="plcSiteSelector" />
             </asp:Panel>

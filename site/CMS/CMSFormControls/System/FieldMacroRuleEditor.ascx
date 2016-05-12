@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="FieldMacroRuleEditor.ascx.cs" Inherits="CMSFormControls_System_FieldMacroRuleEditor" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="FieldMacroRuleEditor.ascx.cs" Inherits="CMSFormControls_System_FieldMacroRuleEditor" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"
     TagPrefix="cms" %>

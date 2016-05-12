@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="User_Edit_Membership.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="User_Edit_Membership.aspx.cs"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Inherits="CMSModules_Membership_Pages_Users_User_Edit_Membership" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"

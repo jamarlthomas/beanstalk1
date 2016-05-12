@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="TextFilter.ascx.cs" Inherits="CMSFormControls_Filters_TextFilter" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="TextFilter.ascx.cs" Inherits="CMSFormControls_Filters_TextFilter" %>
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">
     <ContentTemplate>
         <div class="form-condition-cell-generated">

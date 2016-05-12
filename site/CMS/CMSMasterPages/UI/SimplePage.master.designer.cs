@@ -237,6 +237,24 @@ public partial class CMSMasterPages_UI_SimplePage {
     protected global::CMSAdminControls_UI_Development_DevTools devElem;
     
     /// <summary>
+    /// pnlContentAfterForm control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlContentAfterForm;
+    
+    /// <summary>
+    /// cpAfterForm control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.ContentPlaceHolder cpAfterForm;
+    
+    /// <summary>
     /// plcAfterForm control.
     /// </summary>
     /// <remarks>

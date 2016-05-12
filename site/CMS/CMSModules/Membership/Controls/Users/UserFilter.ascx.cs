@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -140,10 +140,6 @@ public partial class CMSModules_Membership_Controls_Users_UserFilter : CMSAbstra
     {
         get
         {
-            if (!UIContextHelper.IsInGlobalApplicationScope(UIContext.UIElement))
-            {
-                return (siteSelector.SiteID = SiteContext.CurrentSiteID);
-            }
             return (siteSelector.Visible ? siteSelector.SiteID : 0);
         }
     }
@@ -231,7 +227,7 @@ public partial class CMSModules_Membership_Controls_Users_UserFilter : CMSAbstra
     {
         get
         {
-            return CurrentUser.IsAuthorizedPerUIElement("CMS.OnlineMarketing", "Scoring")
+            return CurrentUser.IsAuthorizedPerUIElement("CMS.Scoring", "Scoring")
                 && ResourceSiteInfoProvider.IsResourceOnSite("CMS.Scoring", SiteContext.CurrentSiteName)
                 && LicenseHelper.CheckFeature(RequestContext.CurrentDomain, FeatureEnum.LeadScoring)
                 && MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("CMS.Scoring", "Read")
@@ -279,7 +275,10 @@ public partial class CMSModules_Membership_Controls_Users_UserFilter : CMSAbstra
     /// </summary>
     protected override void OnInit(EventArgs e)
     {
-        SiteID = QueryHelper.GetInteger("siteid", 0);
+        int querySiteID = QueryHelper.GetInteger("siteid", 0);
+
+        // Do not allow other than current site ID out of global scope.
+        SiteID = UIContextHelper.IsInGlobalApplicationScope(UIContext.UIElement) ? querySiteID : SiteContext.CurrentSiteID;
 
         if (File.Exists(HttpContext.Current.Request.MapPath(ResolveUrl(pathToGroupselector))))
         {

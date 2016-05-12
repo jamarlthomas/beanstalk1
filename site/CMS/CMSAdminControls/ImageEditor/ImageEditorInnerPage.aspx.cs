@@ -9,7 +9,7 @@ public partial class CMSAdminControls_ImageEditor_ImageEditorInnerPage : LivePag
     {
         if (!QueryHelper.ValidateHash("hash"))
         {
-            URLHelper.Redirect(ResolveUrl("~/CMSMessages/Error.aspx?title=" + ResHelper.GetString("imageeditor.badhashtitle") + "&text=" + ResHelper.GetString("imageeditor.badhashtext")));
+            URLHelper.Redirect(UIHelper.GetErrorPageUrl("imageeditor.badhashtitle", "imageeditor.badhashtext"));
         }
         else
         {
@@ -20,18 +20,18 @@ public partial class CMSAdminControls_ImageEditor_ImageEditorInnerPage : LivePag
             string imgUrl = QueryHelper.GetString("imgurl", null);
             if (String.IsNullOrEmpty(imgUrl))
             {
-                string url = URLHelper.ResolveUrl("~/CMSAdminControls/ImageEditor/GetImageVersion.aspx" + RequestContext.CurrentQueryString);
+                string query = RequestContext.CurrentQueryString;
 
-                url = URLHelper.RemoveParameterFromUrl(url, "hash");
+                query = URLHelper.RemoveParameterFromUrl(query, "hash");
 
                 var settings = new HashSettings
                 {
-                    HashSalt = HashValidationSalts.GETIMAGEVERSION_PAGE
+                    HashSalt = HashValidationSalts.GET_IMAGE_VERSION
                 };
 
-                url = URLHelper.AddParameterToUrl(url, "hash", ValidationHelper.GetHashString(url, settings));
+                query = URLHelper.AddParameterToUrl(query, "hash", ValidationHelper.GetHashString(query, settings));
 
-                imgContent.ImageUrl = url;
+                imgContent.ImageUrl = URLHelper.ResolveUrl("~/CMSPages/GetImageVersion.aspx" + query);
 
                 int imgwidth = QueryHelper.GetInteger("imgwidth", 0);
                 int imgheight = QueryHelper.GetInteger("imgheight", 0);

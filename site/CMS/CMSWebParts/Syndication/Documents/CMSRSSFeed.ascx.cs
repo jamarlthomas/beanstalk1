@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.Localization;
@@ -467,24 +467,6 @@ public partial class CMSWebParts_Syndication_Documents_CMSRSSFeed : CMSAbstractW
         {
             SetValue("FilterName", value);
             srcDocuments.FilterName = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Gets or sets the value that indicates whether documents datasource supports selected item.
-    /// </summary>
-    [Obsolete("No longer used in code.")]
-    public bool EnableSelectedItem
-    {
-        get
-        {
-            return ValidationHelper.GetBoolean(GetValue("EnableSelectedItem"), srcDocuments.LoadCurrentPageOnly);
-        }
-        set
-        {
-            SetValue("EnableSelectedItem", value);
-            srcDocuments.LoadCurrentPageOnly = value;
         }
     }
 

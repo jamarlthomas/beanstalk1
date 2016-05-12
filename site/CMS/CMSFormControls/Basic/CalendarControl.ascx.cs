@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Base;
 using CMS.ExtendedControls;
@@ -72,14 +72,13 @@ public partial class CMSFormControls_Basic_CalendarControl : FormEngineUserContr
                 return value;
             }
 
-            if (timePicker.SelectedDateTime == DateTimeHelper.ZERO_TIME)
+            var selectedDateTime = timePicker.SelectedDateTime;
+            if (selectedDateTime == DateTimeHelper.ZERO_TIME)
             {
                 return null;
             }
-            else
-            {
-                return timePicker.SelectedDateTime;
-            }
+
+            return selectedDateTime;
         }
         set
         {
@@ -143,9 +142,13 @@ public partial class CMSFormControls_Basic_CalendarControl : FormEngineUserContr
         }
         timePicker.DisplayNow = ValidationHelper.GetBoolean(GetValue("displaynow"), true);
         timePicker.EditTime = ValidationHelper.GetBoolean(GetValue("edittime"), EditTime);
-        timePicker.SupportFolder = "~/CMSAdminControls/Calendar";
         timePicker.DateTimeTextBox.AddCssClass("EditingFormCalendarTextBox");
         timePicker.IsLiveSite = IsLiveSite;
+        if (HasDependingFields)
+        {
+            timePicker.DateTimeTextBox.AutoPostBack = true;
+            timePicker.DateTimeTextBox.TextChanged += (o, args) => RaiseOnChanged();
+        }
 
         if (!String.IsNullOrEmpty(CssClass))
         {
@@ -175,16 +178,13 @@ public partial class CMSFormControls_Basic_CalendarControl : FormEngineUserContr
         if (required && String.IsNullOrEmpty(strValue) && checkEmptiness)
         {
             // Empty error
-            if (ErrorMessage != null)
+            if ((ErrorMessage != null) && !ErrorMessage.EqualsCSafe(ResHelper.GetString("BasicForm.InvalidInput"), true))
             {
-                if (ErrorMessage != ResHelper.GetString("BasicForm.InvalidInput"))
-                {
-                    ValidationError = ErrorMessage;
-                }
-                else
-                {
-                    ValidationError += ResHelper.GetString("BasicForm.ErrorEmptyValue");
-                }
+                ValidationError = ErrorMessage;
+            }
+            else
+            {
+                ValidationError += ResHelper.GetString("BasicForm.ErrorEmptyValue");
             }
             return false;
         }

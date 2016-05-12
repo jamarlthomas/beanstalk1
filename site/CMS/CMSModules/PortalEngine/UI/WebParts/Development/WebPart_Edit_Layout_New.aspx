@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_Development_WebPart_Edit_Layout_New"
-    Theme="Default" Codebehind="WebPart_Edit_Layout_New.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_Development_WebPart_Edit_Layout_New"
+    Theme="Default"  Codebehind="WebPart_Edit_Layout_New.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
     EnableEventValidation="false" %>
 
 <%@ Register TagPrefix="cms" Src="~/CMSModules/AdminControls/Controls/Preview/PreviewHierarchy.ascx"

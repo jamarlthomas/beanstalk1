@@ -12,155 +12,101 @@
 public partial class CMSModules_WebAnalytics_Pages_Tools_Campaign_Tab_Reports {
     
     /// <summary>
-    /// reportHeaderActions control.
+    /// lblInfoName control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSModules_WebAnalytics_Controls_ReportHeader reportHeaderActions;
+    protected global::CMS.ExtendedControls.LocalizedLabel lblInfoName;
     
     /// <summary>
-    /// ucGraphPreLoader control.
+    /// lblInfoNameValue control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSModules_WebAnalytics_Controls_GraphPreLoader ucGraphPreLoader;
+    protected global::System.Web.UI.WebControls.Label lblInfoNameValue;
     
     /// <summary>
-    /// ucGraphType control.
+    /// lblInfoFrom control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSModules_WebAnalytics_Controls_SelectGraphTypeAndPeriod ucGraphType;
+    protected global::CMS.ExtendedControls.LocalizedLabel lblInfoFrom;
     
     /// <summary>
-    /// pnlRadios control.
+    /// lblInfoFromValue control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlRadios;
+    protected global::System.Web.UI.WebControls.Label lblInfoFromValue;
     
     /// <summary>
-    /// rbViews control.
+    /// lblInfoTo control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSRadioButton rbViews;
+    protected global::CMS.ExtendedControls.LocalizedLabel lblInfoTo;
     
     /// <summary>
-    /// rbCount control.
+    /// lblInfoToValue control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSRadioButton rbCount;
+    protected global::System.Web.UI.WebControls.Label lblInfoToValue;
     
     /// <summary>
-    /// rbValue control.
+    /// lblInfoDescription control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSRadioButton rbValue;
+    protected global::CMS.ExtendedControls.LocalizedLabel lblInfoDescription;
     
     /// <summary>
-    /// rbDetail control.
+    /// lblInfoDescriptionValue control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSRadioButton rbDetail;
+    protected global::System.Web.UI.WebControls.Label lblInfoDescriptionValue;
     
     /// <summary>
-    /// rbGoalView control.
+    /// lblNoData control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSRadioButton rbGoalView;
+    protected global::CMS.ExtendedControls.LocalizedLabel lblNoData;
     
     /// <summary>
-    /// rbGoalCount control.
+    /// pnlCampaignColumnChart control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSRadioButton rbGoalCount;
+    protected global::System.Web.UI.WebControls.Panel pnlCampaignColumnChart;
     
     /// <summary>
-    /// rbGoalValue control.
+    /// gridChannels control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSRadioButton rbGoalValue;
-    
-    /// <summary>
-    /// rbValuePerVisitor control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSRadioButton rbValuePerVisitor;
-    
-    /// <summary>
-    /// lblInfo control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblInfo;
-    
-    /// <summary>
-    /// pnlConversions control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.PlaceHolder pnlConversions;
-    
-    /// <summary>
-    /// lblConversions control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblConversions;
-    
-    /// <summary>
-    /// ucConversions control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMSModules_WebAnalytics_FormControls_SelectConversion ucConversions;
-    
-    /// <summary>
-    /// pnlContent control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlContent;
+    protected global::System.Web.UI.WebControls.GridView gridChannels;
 }

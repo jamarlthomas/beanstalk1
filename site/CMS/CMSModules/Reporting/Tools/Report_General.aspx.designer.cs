@@ -12,15 +12,6 @@
 public partial class CMSModules_Reporting_Tools_Report_General {
     
     /// <summary>
-    /// ltlScript control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Literal ltlScript;
-    
-    /// <summary>
     /// pnlMenu control.
     /// </summary>
     /// <remarks>

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Web.UI;
 
+using CMS;
 using CMS.Base;
 using CMS.DataEngine;
 using CMS.ExtendedControls;
@@ -10,7 +11,6 @@ using CMS.FormControls;
 using CMS.FormEngine;
 using CMS.Helpers;
 using CMS.Membership;
-using CMS.SiteProvider;
 using CMS.UIControls;
 
 public partial class CMSModules_AdminControls_Controls_Class_FormBuilder_FormBuilder : BaseFieldEditor, ICallbackEventHandler
@@ -153,14 +153,14 @@ public partial class CMSModules_AdminControls_Controls_Class_FormBuilder_FormBui
         }
 
         // Reload selected field if required
-        if (mReloadField && !string.IsNullOrEmpty(FieldName))
+        if (mReloadField && !mReloadForm && !String.IsNullOrEmpty(FieldName))
         {
             Form.ReloadData();
             if (Form.FieldUpdatePanels.ContainsKey(FieldName))
             {
                 Form.FieldUpdatePanels[FieldName].Update();
 
-                string script = String.Format("if (window.RecalculateFormWidth) {{RecalculateFormWidth('{0}');}}", formElem.ClientID);
+                string script = String.Format("if (window.RecalculateFormWidth) {{RecalculateFormWidth('{0}');}}; FormBuilder.showSavedInfo();", formElem.ClientID);
                 ScriptHelper.RegisterStartupScript(Page, pnlUpdateForm.GetType(), "recalculateFormWidth" + ClientID, ScriptHelper.GetScript(script));
             }
             else
@@ -179,7 +179,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FormBuilder_FormBui
             formElem.ReloadData();
             pnlUpdateForm.Update();
 
-            ScriptHelper.RegisterStartupScript(pnlUpdateForm, pnlUpdateForm.GetType(), "FormBuilderAddComponent", "FormBuilder.init(); FormBuilder.selectField('" + FieldName + "')", true);
+            ScriptHelper.RegisterStartupScript(pnlUpdateForm, pnlUpdateForm.GetType(), "FormBuilderAddComponent", "FormBuilder.init(); FormBuilder.selectField('" + FieldName + "'); FormBuilder.showSavedInfo();", true);
         }
 
         // Display placeholder with message if form has no visible components and hide OK button
@@ -191,6 +191,15 @@ public partial class CMSModules_AdminControls_Controls_Class_FormBuilder_FormBui
 
         // Set settings panel visibility
         pnlSettings.SetSettingsVisibility(!string.IsNullOrEmpty(FieldName));
+
+        // Localized messages for JavaScript
+        string infoScript = String.Format(@"
+var msgSaving = {0};
+var msgSaved = {1};",
+                              ScriptHelper.GetLocalizedString("formbuilder.saving"),
+                              ScriptHelper.GetLocalizedString("formbuilder.saved"));
+
+        ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "FormBuilderLocalizedStrings", infoScript, true);
     }
 
     #endregion
@@ -206,6 +215,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FormBuilder_FormBui
 
             if (!string.IsNullOrEmpty(eventArgument))
             {
+                string errorMessage;
                 string[] data = eventArgument.Split(':');
 
                 switch (data[0])
@@ -221,7 +231,13 @@ public partial class CMSModules_AdminControls_Controls_Class_FormBuilder_FormBui
                         {
                             // Hide selected field from form
                             FieldName = string.Empty;
-                            HideField(data[2]);
+                            errorMessage = HideField(data[2]);
+                            if (!String.IsNullOrEmpty(errorMessage))
+                            {
+                                ShowError(errorMessage);
+                                return;
+                            }
+
                             mReloadForm = true;
                             pnlSettings.Update();
                         }
@@ -240,7 +256,13 @@ public partial class CMSModules_AdminControls_Controls_Class_FormBuilder_FormBui
                             FormFieldInfo originalFieldInfo = (FormFieldInfo)ffi.Clone();
                             pnlSettings.SaveSettings(ffi);
                             
-                            SaveFormDefinition(originalFieldInfo, ffi);
+                            errorMessage = SaveFormDefinition(originalFieldInfo, ffi);
+                            if (!String.IsNullOrEmpty(errorMessage))
+                            {
+                                ShowError(errorMessage);
+                                return;
+                            }
+
                             mReloadField = true;
                         }
                         break;
@@ -250,7 +272,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FormBuilder_FormBui
                             FormFieldInfo ffi = PrepareNewField(data[1]);
                             FieldName = ffi.Name;
 
-                            var errorMessage = AddField(ffi, data[2], ValidationHelper.GetInteger(data[3], -1));
+                            errorMessage = AddField(ffi, data[2], ValidationHelper.GetInteger(data[3], -1));
                             if (!String.IsNullOrEmpty(errorMessage))
                             {
                                 ShowError(errorMessage);
@@ -325,27 +347,33 @@ public partial class CMSModules_AdminControls_Controls_Class_FormBuilder_FormBui
         {
             RaiseBeforeDefinitionUpdate();
 
-            // Update database column of the changed field
-            if (IsDatabaseChangeRequired(oldFieldInfo, updatedFieldInfo))
+            // Raise event for field change
+            using (var h = DataDefinitionItemEvents.ChangeItem.StartEvent(dci, oldFieldInfo, updatedFieldInfo))
             {
-                // Ensure the transaction
-                using (var tr = new CMSLateBoundTransaction())
+                // Update database column of the changed field
+                if (IsDatabaseChangeRequired(oldFieldInfo, updatedFieldInfo))
                 {
-                    TableManager tm = new TableManager(dci.ClassConnectionString);
-                    tr.BeginTransaction();
+                    // Ensure the transaction
+                    using (var tr = new CMSLateBoundTransaction())
+                    {
+                        TableManager tm = new TableManager(dci.ClassConnectionString);
+                        tr.BeginTransaction();
 
-                    UpdateDatabaseColumn(oldFieldInfo, updatedFieldInfo, tm, dci.ClassTableName);
-                    
-                    // Commit the transaction
-                    tr.Commit();
+                        UpdateDatabaseColumn(dci, oldFieldInfo, updatedFieldInfo, tm, dci.ClassTableName);
+
+                        // Commit the transaction
+                        tr.Commit();
+                    }
                 }
+
+                // Update form definition   
+                dci.ClassFormDefinition = FormInfo.GetXmlDefinition();
+
+                // Save the class data
+                DataClassInfoProvider.SetDataClassInfo(dci);
+
+                h.FinishEvent();
             }
-
-            // Update form definition   
-            dci.ClassFormDefinition = FormInfo.GetXmlDefinition();
-
-            // Save the class data
-            DataClassInfoProvider.SetDataClassInfo(dci);
 
             ClearHashtables();
 
@@ -458,43 +486,47 @@ public partial class CMSModules_AdminControls_Controls_Class_FormBuilder_FormBui
             // Ensure the transaction
             using (var tr = new CMSLateBoundTransaction())
             {
-                string columnType = DataTypeManager.GetSqlType(ffi.DataType, ffi.Size, ffi.Precision);
-
-                TableManager tm = new TableManager(dci.ClassConnectionString);
-                tr.BeginTransaction();
-
-                // Add new column
-                tm.AddTableColumn(dci.ClassTableName, ffi.Name, columnType, true, null);
-
-                // Add field to form  
-                FormInfo.AddFormItem(ffi);
-                if (!String.IsNullOrEmpty(category) || position >= 0)
+                // Raise event for field addition
+                using (var h = DataDefinitionItemEvents.AddItem.StartEvent(dci, ffi))
                 {
-                    FormInfo.MoveFormFieldToPositionInCategory(ffi.Name, category, position);
+                    string columnType = DataTypeManager.GetSqlType(ffi.DataType, ffi.Size, ffi.Precision);
+
+                    TableManager tm = new TableManager(dci.ClassConnectionString);
+                    tr.BeginTransaction();
+
+                    // Add new column
+                    tm.AddTableColumn(dci.ClassTableName, ffi.Name, columnType, true, null);
+
+                    // Add field to form  
+                    FormInfo.AddFormItem(ffi);
+                    if (!String.IsNullOrEmpty(category) || position >= 0)
+                    {
+                        FormInfo.MoveFormFieldToPositionInCategory(ffi.Name, category, position);
+                    }
+
+                    // Update form definition
+                    dci.ClassFormDefinition = FormInfo.GetXmlDefinition();
+
+                    // Update class schema
+                    dci.ClassXmlSchema = tm.GetXmlSchema(dci.ClassTableName);
+
+                    try
+                    {
+                        // Save the class data
+                        DataClassInfoProvider.SetDataClassInfo(dci);
+                    }
+                    catch (Exception)
+                    {
+                        return GetString("FormBuilder.ErrorSavingForm");
+                    }
+
+                    h.FinishEvent();
                 }
 
-                // Update form definition
-                dci.ClassFormDefinition = FormInfo.GetXmlDefinition();
-
-                // Update class schema
-                dci.ClassXmlSchema = tm.GetXmlSchema(dci.ClassTableName);
-
-                try
-                {
-                    // Save the class data
-                    DataClassInfoProvider.SetDataClassInfo(dci);
-                }
-                catch (Exception)
-                {
-                    return GetString("FormBuilder.ErrorSavingForm");
-                }
-
-                // Generate default view
-                SqlGenerator.GenerateDefaultView(dci, SiteContext.CurrentSiteName);
                 QueryInfoProvider.ClearDefaultQueries(dci, true, true);
 
                 // Hide field for alternative forms that require it
-                HideFieldInAlternativeForms(ffi, dci);
+                FormHelper.HideFieldInAlternativeForms(ffi, dci);
 
                 // Commit the transaction
                 tr.Commit();

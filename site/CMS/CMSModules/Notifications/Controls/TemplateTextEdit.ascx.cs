@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Threading;
 
 using CMS.Helpers;
@@ -64,7 +64,7 @@ public partial class CMSModules_Notifications_Controls_TemplateTextEdit : Templa
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        // If ID´s not specified return 
+        // If IDï¿½s not specified return 
         if ((TemplateID == 0) || (GatewayID == 0))
         {
             return;

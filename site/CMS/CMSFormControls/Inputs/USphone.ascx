@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_Inputs_USphone" Codebehind="USphone.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_Inputs_USphone"  Codebehind="USphone.ascx.cs" %>
 <span class="form-control-text">(</span><cms:CMSTextBox runat="server" ID="txt1st" MaxLength="3" 
     CssClass="input-width-15" /><span class="form-control-text">)</span><cms:CMSTextBox
     runat="server" ID="txt2nd" MaxLength="3" CssClass="input-width-15" /><span class="form-control-text">-</span><cms:CMSTextBox 

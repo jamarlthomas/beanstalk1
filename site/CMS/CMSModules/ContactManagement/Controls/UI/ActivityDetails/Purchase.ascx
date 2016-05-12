@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Purchase.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_ActivityDetails_Purchase" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Purchase.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_ActivityDetails_Purchase" %>
 
 <div class="form-horizontal">
     <div class="form-group">

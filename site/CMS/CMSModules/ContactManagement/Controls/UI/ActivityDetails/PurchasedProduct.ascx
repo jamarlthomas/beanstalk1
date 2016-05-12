@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="PurchasedProduct.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="PurchasedProduct.ascx.cs"
     Inherits="CMSModules_ContactManagement_Controls_UI_ActivityDetails_PurchasedProduct" %>
 
 <%@ Register Src="~/CMSModules/ContactManagement/Controls/UI/ActivityDetails/DetailsList.ascx" TagName="DetailsList" TagPrefix="cms" %>

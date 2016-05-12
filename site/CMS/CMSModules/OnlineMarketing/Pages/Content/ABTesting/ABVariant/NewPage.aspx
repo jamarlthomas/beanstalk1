@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="NewPage.aspx.cs" Inherits="CMSModules_OnlineMarketing_Pages_Content_ABTesting_ABVariant_NewPage"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="NewPage.aspx.cs" Inherits="CMSModules_OnlineMarketing_Pages_Content_ABTesting_ABVariant_NewPage"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" %>
 
 <%@ Register Src="~/CMSModules/OnlineMarketing/Controls/UI/ABVariant/NewPage.ascx"
@@ -8,7 +8,7 @@
 <%@ Register Src="~/CMSModules/Content/Controls/EditMenu.ascx" TagName="editmenu"
     TagPrefix="cms" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="plcContent" runat="server">
-    <asp:Panel runat="server" ID="pnlDisabled" CssClass="header-panel">
+    <asp:Panel runat="server" ID="pnlDisabled">
         <cms:DisabledModule runat="server" ID="ucDisabledModule" />
     </asp:Panel>
     <cms:NewPage runat="server" ID="ucNewPage" />

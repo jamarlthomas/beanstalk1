@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="True" Codebehind="List.ascx.cs" Inherits="CMSModules_OnlineMarketing_Controls_UI_ContentPersonalizationVariant_List" %>
+﻿<%@ Control Language="C#" AutoEventWireup="True"  Codebehind="List.ascx.cs" Inherits="CMSModules_OnlineMarketing_Controls_UI_ContentPersonalizationVariant_List" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 <%@ Register Src="~/CMSModules/ContactManagement/Controls/UI/Account/Filter.ascx"

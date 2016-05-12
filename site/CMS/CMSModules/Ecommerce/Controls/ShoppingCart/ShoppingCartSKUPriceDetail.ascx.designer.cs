@@ -39,15 +39,6 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartSKUP
     protected global::System.Web.UI.WebControls.Label lblPriceWithoutTaxValue;
     
     /// <summary>
-    /// OptionsUniView control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.Controls.BasicUniView OptionsUniView;
-    
-    /// <summary>
     /// gridDiscounts control.
     /// </summary>
     /// <remarks>
@@ -120,24 +111,6 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartSKUP
     protected global::System.Web.UI.WebControls.Label lblPriceAfterDiscountValue;
     
     /// <summary>
-    /// gridTaxes control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.UIGridView gridTaxes;
-    
-    /// <summary>
-    /// plcTaxes control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.PlaceHolder plcTaxes;
-    
-    /// <summary>
     /// lblTaxes control.
     /// </summary>
     /// <remarks>
@@ -199,6 +172,15 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartSKUP
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Label lblPriceWithTaxValue;
+    
+    /// <summary>
+    /// OptionsUniView control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.Controls.BasicUniView OptionsUniView;
     
     /// <summary>
     /// lblTotal control.

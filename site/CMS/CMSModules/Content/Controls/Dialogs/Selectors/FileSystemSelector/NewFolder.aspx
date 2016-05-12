@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    AutoEventWireup="True" Codebehind="NewFolder.aspx.cs" Inherits="CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSelector_NewFolder"
+    AutoEventWireup="True"  Codebehind="NewFolder.aspx.cs" Inherits="CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSelector_NewFolder"
     Theme="Default" %>
 
 <asp:Content ID="cntContent" ContentPlaceHolderID="plcContent" runat="server">

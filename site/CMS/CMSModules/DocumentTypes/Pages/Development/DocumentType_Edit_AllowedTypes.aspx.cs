@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.DocumentEngine;
@@ -9,7 +9,7 @@ public partial class CMSModules_DocumentTypes_Pages_Development_DocumentType_Edi
 {
     #region "Variables"
 
-    protected static int classId = 0;
+    protected int classId = 0;
 
     private string currentValues = "";
     private string parentValues = "";
@@ -22,6 +22,7 @@ public partial class CMSModules_DocumentTypes_Pages_Development_DocumentType_Edi
     protected void Page_Load(object sender, EventArgs e)
     {
         classId = QueryHelper.GetInteger("objectid", 0);
+
         if (classId > 0)
         {
             SetupControls();

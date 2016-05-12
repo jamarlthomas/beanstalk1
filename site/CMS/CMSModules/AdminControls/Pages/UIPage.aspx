@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="UIPage.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/UIPage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="UIPage.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/UIPage.master"
     EnableEventValidation="false" Inherits="CMSModules_AdminControls_Pages_UIPage" Theme="Default" %>
 <%@ Register Src="~/CMSModules/AdminControls/Controls/UIControls/DialogFooter.ascx" TagName="DialogFooter" TagPrefix="cms" %>
 

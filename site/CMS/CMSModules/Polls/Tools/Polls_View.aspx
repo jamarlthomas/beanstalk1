@@ -1,7 +1,7 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_Polls_Tools_Polls_View"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Polls - View poll" 
-    Theme="Default" Codebehind="Polls_View.aspx.cs" %>
+    Theme="Default"  Codebehind="Polls_View.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Polls/Controls/View/PollView.ascx" TagName="PollView" TagPrefix="cms" %>
 

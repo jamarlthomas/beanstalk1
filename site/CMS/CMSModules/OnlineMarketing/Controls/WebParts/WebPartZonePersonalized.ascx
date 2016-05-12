@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="WebPartZonePersonalized.ascx.cs" Inherits="CMSModules_OnlineMarketing_Controls_WebParts_WebPartZonePersonalized" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="WebPartZonePersonalized.ascx.cs" Inherits="CMSModules_OnlineMarketing_Controls_WebParts_WebPartZonePersonalized" %>
 <%@ Register Src="~/CMSModules/OnlineMarketing/Controls/UI/ContentPersonalizationVariant/Edit.ascx"
     TagName="ContentPersonalizationVariantEdit" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/OnlineMarketing/Controls/UI/MVTVariant/Edit.ascx"

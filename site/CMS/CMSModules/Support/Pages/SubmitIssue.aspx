@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Support_Pages_SubmitIssue"
     Theme="Default" ValidateRequest="false" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Title="Support - Submit issue" Codebehind="SubmitIssue.aspx.cs" %>
+    Title="Support - Submit issue"  Codebehind="SubmitIssue.aspx.cs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="plcContent" runat="server">
     <asp:Panel runat="server" ID="pnlContent">
@@ -48,6 +48,7 @@
                     <cms:CMSRadioButton ID="radPortal" runat="server" GroupName="TemplateGroup" ResourceString="Support.SubmiIssue.Portal" />
                     <cms:CMSRadioButton ID="radAspx" runat="server" GroupName="TemplateGroup" ResourceString="Support.SubmiIssue.Aspx" />
                     <cms:CMSRadioButton ID="radMix" runat="server" GroupName="TemplateGroup" ResourceString="Support.SubmiIssue.Mix" />
+                    <cms:CMSRadioButton ID="radMvc" runat="server" GroupName="TemplateGroup" ResourceString="Support.SubmiIssue.Mvc" />
                 </div>
             </div>
             <div class="form-group">

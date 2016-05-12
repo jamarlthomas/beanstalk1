@@ -1,4 +1,6 @@
-﻿using CMS;
+﻿using System.Linq;
+
+using CMS;
 using CMS.Base;
 using CMS.EmailEngine;
 using CMS.ExtendedControls;
@@ -12,6 +14,9 @@ using CMS.UIControls;
 /// </summary>
 public class EmailTemplateListExtender : ControlExtender<UniGrid>
 {
+    private readonly EmailTemplateTypeRegister mEmailTemplateTypeRegister = EmailTemplateTypeRegister.Current;
+
+
     public override void OnInit()
     {
         Control.OnExternalDataBound += OnExternalDataBound;
@@ -29,10 +34,12 @@ public class EmailTemplateListExtender : ControlExtender<UniGrid>
                 string type = ValidationHelper.GetString(parameter, string.Empty);
                 if (string.IsNullOrEmpty(type))
                 {
-                    type = EmailTemplateTypeEnum.General.ToStringRepresentation();
+                    type = EmailModule.GENERAL_EMAIL_TEMPLATE_TYPE_NAME;
                 }
 
-                return HTMLHelper.HTMLEncode(ResHelper.GetString("emailtemplate.type." + type));
+                var item = mEmailTemplateTypeRegister.GetTemplateType(type);
+
+                return HTMLHelper.HTMLEncode(item != null ? ResHelper.GetString(item.DisplayNameResourceString) : type);
         }
 
         return parameter;

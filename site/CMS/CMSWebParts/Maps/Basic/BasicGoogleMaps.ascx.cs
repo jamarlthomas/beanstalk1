@@ -1,9 +1,8 @@
-using System;
-using System.Web;
+﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using CMS.Controls;
-using CMS.DataEngine;
 using CMS.Helpers;
 using CMS.PortalControls;
 using CMS.PortalEngine;
@@ -14,16 +13,16 @@ public partial class CMSWebParts_Maps_Basic_BasicGoogleMaps : CMSAbstractWebPart
     #region "Private variables"
 
     // Base datasource instance
-    private CMSBaseDataSource mDataSourceControl = null;
+    private CMSBaseDataSource mDataSourceControl;
 
     // Indicates whether control was binded
-    private bool binded = false;
+    private bool binded;
 
     // BasicGoogleMaps instance
     private BasicGoogleMaps BasicGoogleMaps = new BasicGoogleMaps();
 
     // Indicates whether current control was added to the filter collection
-    private bool mFilterControlAdded = false;
+    private bool mFilterControlAdded;
 
     #endregion
 
@@ -480,26 +479,6 @@ public partial class CMSWebParts_Maps_Basic_BasicGoogleMaps : CMSAbstractWebPart
 
 
     /// <summary>
-    /// The Navigation control may appear in one of the following style options:
-    /// Default picks an appropriate navigation control based on the map's size and the device on which the map is running.
-    /// Small displays a mini-zoom control, consisting of only + and - buttons. This style is appropriate for small maps.
-    /// Large displays the standard zoom slider control.
-    /// </summary>
-    [Obsolete("This property is obsolete. Please use ZoomControlType instead.")]
-    public int NavigationControlType
-    {
-        get
-        {
-            return ValidationHelper.GetInteger(GetValue("NavigationControlType"), 0);
-        }
-        set
-        {
-            SetValue("NavigationControlType", value);
-        }
-    }
-
-
-    /// <summary>
     /// The Zoom control may appear in one of the following style options:
     /// Default picks an appropriate navigation control based on the map's size and the device on which the map is running.
     /// Small displays a mini-zoom control, consisting of only + and - buttons. This style is appropriate for small maps.
@@ -615,16 +594,7 @@ public partial class CMSWebParts_Maps_Basic_BasicGoogleMaps : CMSAbstractWebPart
             if (DataSourceControl != null && EnableServerProcessing)
             {
                 BasicGoogleMaps.CacheItemName = DataSourceControl.CacheItemName;
-
-                if (DataSourceControl.CacheMinutes <= 0)
-                {
-                    // If zero or less, get from the site settings
-                    BasicGoogleMaps.CacheMinutes = SettingsKeyInfoProvider.GetIntValue(CurrentSiteName + ".CMSCacheMinutes");
-                }
-                else
-                {
-                    BasicGoogleMaps.CacheMinutes = DataSourceControl.CacheMinutes;
-                }
+                BasicGoogleMaps.CacheMinutes = DataSourceControl.CacheMinutes;
 
                 // Cache depends only on data source and properties of data source web part
                 string cacheDependencies = CacheHelper.GetCacheDependencies(DataSourceControl.CacheDependencies, DataSourceControl.GetDefaultCacheDependencies());

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Controls;
@@ -193,7 +193,7 @@ public partial class CMSModules_DocumentTypes_Controls_HierarchicalTransformatio
         // Add save button
         if (Visible)
         {
-            HeaderActions.AddAction(new SaveAction(Page));
+            HeaderActions.AddAction(new SaveAction());
             HeaderActions.ActionPerformed += btnOK_Click;
         }
     }

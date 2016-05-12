@@ -21,6 +21,24 @@ public partial class CMSModules_OnlineMarketing_Pages_Content_MVTest_MVTestRepor
     protected global::CMSModules_WebAnalytics_Controls_ReportHeader reportHeader;
     
     /// <summary>
+    /// pnlDisabled control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlDisabled;
+    
+    /// <summary>
+    /// ucDisabledModule control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMSAdminControls_Basic_DisabledModuleInfo ucDisabledModule;
+    
+    /// <summary>
     /// ucGraphPreLoader control.
     /// </summary>
     /// <remarks>
@@ -82,24 +100,6 @@ public partial class CMSModules_OnlineMarketing_Pages_Content_MVTest_MVTestRepor
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.CMSRadioButton rbCombinations;
-    
-    /// <summary>
-    /// pnlWarning control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlWarning;
-    
-    /// <summary>
-    /// ucDisabledModule control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMSAdminControls_Basic_DisabledModuleInfo ucDisabledModule;
     
     /// <summary>
     /// lblConversions control.

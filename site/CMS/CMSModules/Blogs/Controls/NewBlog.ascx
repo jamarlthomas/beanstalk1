@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Blogs_Controls_NewBlog" Codebehind="NewBlog.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Blogs_Controls_NewBlog"  Codebehind="NewBlog.ascx.cs" %>
 <div class="new-blog">
     <asp:Label ID="lblInfo" runat="server" CssClass="InfoLabel" EnableViewState="false"
         Visible="false" />

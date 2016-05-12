@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI;
 
@@ -11,14 +11,38 @@ using CMS.SiteProvider;
 using CMS.UIControls;
 using CMS.Controls;
 
-using TreeNode = CMS.DocumentEngine.TreeNode;
-
 [UIElement("CMS", "Administration")]
 public partial class Admin_CMSAdministration : CMSDeskPage
 {
     #region "Variables"
 
     protected string infoMessageUrl = String.Empty;
+
+    #endregion
+
+
+    #region "Properties"
+
+    /// <summary>
+    /// Default URL for live site button.
+    /// </summary>
+    protected string DefaultLiveSiteUrl
+    {
+        get
+        {
+            var url = SystemContext.ApplicationPath.TrimEnd('/') + "/";
+
+            var site = SiteContext.CurrentSite;
+            if ((site != null) && !string.IsNullOrEmpty(site.SitePresentationURL))
+            {
+                url = site.SitePresentationURL;
+            }
+
+            url = URLHelper.AddParameterToUrl(url, "viewmode", ((int)ViewModeEnum.LiveSite).ToString());
+
+            return url;
+        }
+    }
 
     #endregion
 
@@ -55,7 +79,7 @@ public partial class Admin_CMSAdministration : CMSDeskPage
             // Remove appId parameter
             string url = URLHelper.RemoveParameterFromUrl(RequestContext.CurrentURL, "appId");
             // Get required application id
-            
+
             Guid requiredApplicationId = QueryHelper.GetGuid("appId", Guid.Empty);
             if (requiredApplicationId != Guid.Empty)
             {
@@ -94,7 +118,7 @@ public partial class Admin_CMSAdministration : CMSDeskPage
             launchAppWithQuery = String.IsNullOrEmpty(URLHelper.GetQuery(RequestContext.CurrentURL)) ? "" : URLHelper.UrlEncodeQueryString(URLHelper.GetQuery(RequestContext.CurrentURL)).Substring(1),
             screenLockInterval = SecurityHelper.GetSecondsToShowScreenLockAction(SiteContext.CurrentSiteName)
         });
-        
+
         ScriptHelper.RegisterModule(Page, "CMS/GlobalEventsHandler");
 
         // Register CSS for jQuery scroller
@@ -149,17 +173,17 @@ public partial class Admin_CMSAdministration : CMSDeskPage
         // Set URL to node from which CMSDesk was opened
         if ((nodeId > 0) && !String.IsNullOrEmpty(culture))
         {
-            TreeProvider treeProvider = new TreeProvider(MembershipContext.AuthenticatedUser);
-            TreeNode node = treeProvider.SelectSingleNode(nodeId, culture, false, false);
+            var treeProvider = new TreeProvider(MembershipContext.AuthenticatedUser);
+            var node = treeProvider.SelectSingleNode(nodeId, culture, false, false);
             if (node != null)
             {
-                liveSiteUrl = DocumentURLProvider.GetUrl(node.NodeAliasPath, node.DocumentUrlPath);
+                liveSiteUrl = DocumentURLProvider.GetPresentationUrl(node, RequestContext.URL.Host);
             }
         }
 
         // Resolve URL and add live site view mode
         liveSiteUrl = ResolveUrl(liveSiteUrl);
-        liveSiteUrl = URLHelper.AddParameterToUrl(liveSiteUrl, "viewmode", "livesite");
+        liveSiteUrl = URLHelper.AddParameterToUrl(liveSiteUrl, "viewmode", ((int)ViewModeEnum.LiveSite).ToString());
         liveSiteUrl = EnsureViewModeParam(liveSiteUrl, "viewmode");
 
         lnkLiveSite.NavigateUrl = liveSiteUrl;
@@ -179,7 +203,7 @@ public partial class Admin_CMSAdministration : CMSDeskPage
         if (QueryHelper.Contains("returnviewmode"))
         {
             // Set the viewmode according to the "returnviewmode" parameter if set
-            url = URLHelper.AddParameterToUrl(url, paramName, QueryHelper.GetString("returnviewmode", "livesite"));
+            url = URLHelper.AddParameterToUrl(url, paramName, QueryHelper.GetString("returnviewmode", ((int)ViewModeEnum.LiveSite).ToString()));
         }
 
         return url;

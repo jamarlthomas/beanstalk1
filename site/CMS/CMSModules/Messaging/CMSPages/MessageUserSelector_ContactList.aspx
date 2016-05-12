@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_Messaging_CMSPages_MessageUserSelector_ContactList" MasterPageFile="~/CMSMasterPages/LiveSite/EmptyPage.master"
-    Theme="Default" EnableEventValidation="false" Codebehind="MessageUserSelector_ContactList.aspx.cs" %>
+    Theme="Default" EnableEventValidation="false"  Codebehind="MessageUserSelector_ContactList.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Messaging/Controls/SelectFromContactList.ascx" TagName="SelectFromContactList"
     TagPrefix="cms" %>

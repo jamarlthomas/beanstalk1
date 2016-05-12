@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="HitsClicksControl.ascx.cs" Inherits="CMSModules_BannerManagement_FormControls_HitsClicksControl" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="HitsClicksControl.ascx.cs" Inherits="CMSModules_BannerManagement_FormControls_HitsClicksControl" %>
 
 <cms:CMSUpdatePanel runat="server" ID="updatePanel" UpdateMode="Conditional">
     <ContentTemplate>

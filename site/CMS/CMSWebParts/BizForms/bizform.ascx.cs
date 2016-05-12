@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.Localization;
@@ -174,7 +174,7 @@ public partial class CMSWebParts_BizForms_bizform : CMSAbstractWebPart
             viewBiz.SiteName = SiteName;
             viewBiz.UseColonBehindLabel = UseColonBehindLabel;
             viewBiz.AlternativeFormFullName = AlternativeFormName;
-            viewBiz.ValidationErrorMessage = ValidationErrorMessage;            
+            viewBiz.ValidationErrorMessage = ValidationErrorMessage;
 
             // Set the live site context
             if (viewBiz != null)
@@ -191,7 +191,7 @@ public partial class CMSWebParts_BizForms_bizform : CMSAbstractWebPart
         {
             string siteName = SiteContext.CurrentSiteName;
 
-            if (AnalyticsHelper.AnalyticsEnabled(siteName) && AnalyticsHelper.TrackConversionsEnabled(siteName) && !AnalyticsHelper.IsIPExcluded(siteName, RequestContext.UserHostAddress))
+            if (AnalyticsHelper.AnalyticsEnabled(siteName) && !AnalyticsHelper.IsIPExcluded(siteName, RequestContext.UserHostAddress))
             {
                 HitLogProvider.LogConversions(SiteContext.CurrentSiteName, LocalizationContext.PreferredCultureCode, TrackConversionName, 0, ConversionValue);
             }

@@ -691,13 +691,13 @@ public partial class CMSModules_Content_Controls_UserContributions_EditForm : CM
                                     string className = null;
                                     // Check if the user has 'Create' permission per Content
                                     bool isAuthorizedToCreateInContent = userInfo.IsAuthorizedPerResource("CMS.Content", "Create");
-                                    bool hasNodeAllowCreate = (userInfo.IsAuthorizedPerTreeNode(parentNode, NodePermissionsEnum.Create) != AuthorizationResultEnum.Allowed);
+                                    bool hasNodeAllowCreate = (userInfo.IsAuthorizedPerTreeNode(parentNode, NodePermissionsEnum.Create) == AuthorizationResultEnum.Allowed);
                                     foreach (DataRow dr in ds.Tables[0].Rows)
                                     {
-                                        className = ValidationHelper.GetString(DataHelper.GetDataRowValue(dr, "ClassName"), String.Empty).ToLowerCSafe();
+                                        className = DataHelper.GetStringValue(dr, "ClassName", String.Empty).ToLowerCSafe();
                                         // Document type is not allowed or user hasn't got permission, remove it from the data set
                                         if ((!string.IsNullOrEmpty(allowed) && (!allowed.Contains(";" + className + ";"))) ||
-                                            (CheckPermissions && CheckDocPermissionsForInsert && !isAuthorizedToCreateInContent && !userInfo.IsAuthorizedPerClassName(className, "Create") && (!userInfo.IsAuthorizedPerClassName(className, "CreateSpecific") || !hasNodeAllowCreate)))
+                                            (CheckPermissions && CheckDocPermissionsForInsert && !(isAuthorizedToCreateInContent || userInfo.IsAuthorizedPerClassName(className, "Create") || (userInfo.IsAuthorizedPerClassName(className, "CreateSpecific") && hasNodeAllowCreate))))
                                         {
                                             deleteRows.Add(dr);
                                         }
@@ -729,7 +729,7 @@ public partial class CMSModules_Content_Controls_UserContributions_EditForm : CM
                                     // else show form of the only class
                                     else
                                     {
-                                        ClassID = ValidationHelper.GetInteger(DataHelper.GetDataRowValue(ds.Tables[0].Rows[0], "ClassID"), 0);
+                                        ClassID = DataHelper.GetIntValue(ds.Tables[0].Rows[0], "ClassID");
                                         ReloadData(true);
                                         return;
                                     }
@@ -922,7 +922,7 @@ public partial class CMSModules_Content_Controls_UserContributions_EditForm : CM
                     var img = new Literal();
                     var className = Convert.ToString(row["ClassName"]);
                     var doc = DataClassInfoProvider.GetDataClassInfo(className);
-                    var iconClass = ValidationHelper.GetString(doc.GetValue("ClassIconClass"), String.Empty);
+                    var iconClass = doc.GetValue("ClassIconClass", String.Empty);
                     img.Text = UIHelper.GetDocumentTypeIcon(Page, className, iconClass);
 
                     var lbl = new Label();
@@ -1103,7 +1103,7 @@ public partial class CMSModules_Content_Controls_UserContributions_EditForm : CM
                 VersionManager.EnsureVersion(Node, Node.IsPublished);
 
                 // Move to edit step
-                WorkflowManager.MoveToFirstStep(Node, null);
+                WorkflowManager.MoveToFirstStep(Node);
 
                 // Reload form
                 ReloadForm();
@@ -1175,30 +1175,25 @@ public partial class CMSModules_Content_Controls_UserContributions_EditForm : CM
         if (!DataHelper.DataSourceIsEmpty(ds))
         {
             // Get node alias
-            string nodeAlias = ValidationHelper.GetString(DataHelper.GetDataRowValue(ds.Tables[0].Rows[0], "NodeAlias"), string.Empty);
+            var nodeAlias = DataHelper.GetStringValue(ds.Tables[0].Rows[0], "NodeAlias", string.Empty);
             // Get parent alias path
-            string parentAliasPath = TreePathUtils.GetParentPath(ValidationHelper.GetString(DataHelper.GetDataRowValue(ds.Tables[0].Rows[0], "NodeAliasPath"), string.Empty));
 
-            string aliasPath = null;
-            string culture = null;
-            string className = null;
-            bool hasUserDeletePermission = false;
-            TreeNode treeNode = null;
+            var parentAliasPath = TreePathUtils.GetParentPath(DataHelper.GetStringValue(ds.Tables[0].Rows[0], "NodeAliasPath", string.Empty));
 
             // Delete the documents
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                aliasPath = ValidationHelper.GetString(dr["NodeAliasPath"], string.Empty);
-                culture = ValidationHelper.GetString(dr["DocumentCulture"], string.Empty);
-                className = ValidationHelper.GetString(dr["ClassName"], string.Empty);
+                var aliasPath = ValidationHelper.GetString(dr["NodeAliasPath"], string.Empty);
+                var culture = ValidationHelper.GetString(dr["DocumentCulture"], string.Empty);
+                var className = ValidationHelper.GetString(dr["ClassName"], string.Empty);
 
                 // Get the node
-                treeNode = TreeProvider.SelectSingleNode(SiteName, aliasPath, culture, false, className, false);
+                var treeNode = TreeProvider.SelectSingleNode(SiteName, aliasPath, culture, false, className, false);
 
                 if (treeNode != null)
                 {
                     // Check delete permissions
-                    hasUserDeletePermission = !CheckPermissions || IsUserAuthorizedToDeleteDocument(treeNode, chkDestroy.Checked);
+                    var hasUserDeletePermission = !CheckPermissions || IsUserAuthorizedToDeleteDocument(treeNode, chkDestroy.Checked);
 
                     if (hasUserDeletePermission)
                     {
@@ -1206,7 +1201,7 @@ public partial class CMSModules_Content_Controls_UserContributions_EditForm : CM
                         try
                         {
                             LogDeleteActivity(treeNode);
-                            DocumentHelper.DeleteDocument(treeNode, TreeProvider, chkAllCultures.Checked, chkDestroy.Checked, true);
+                            DocumentHelper.DeleteDocument(treeNode, TreeProvider, chkAllCultures.Checked, chkDestroy.Checked);
                         }
                         catch (Exception ex)
                         {
@@ -1231,7 +1226,7 @@ public partial class CMSModules_Content_Controls_UserContributions_EditForm : CM
 
             RaiseOnAfterDelete();
 
-            string rawUrl = RequestContext.RawURL.TrimEnd(new char[] { '/' });
+            string rawUrl = RequestContext.RawURL.TrimEnd(new[] { '/' });
             if ((!string.IsNullOrEmpty(nodeAlias)) && (rawUrl.Substring(rawUrl.LastIndexOfCSafe('/')).Contains(nodeAlias)))
             {
                 // Redirect to the parent url when current url belongs to deleted document
@@ -1246,7 +1241,6 @@ public partial class CMSModules_Content_Controls_UserContributions_EditForm : CM
         else
         {
             AddAlert(GetString("DeleteDocument.CultureNotExists"));
-            return;
         }
     }
 
@@ -1337,7 +1331,7 @@ public partial class CMSModules_Content_Controls_UserContributions_EditForm : CM
         var currentUser = MembershipContext.AuthenticatedUser;
 
         // Check delete permission
-        if (currentUser.IsAuthorizedPerDocument(treeNode, new NodePermissionsEnum[] { NodePermissionsEnum.Delete, NodePermissionsEnum.Read }) == AuthorizationResultEnum.Allowed)
+        if (currentUser.IsAuthorizedPerDocument(treeNode, new[] { NodePermissionsEnum.Delete, NodePermissionsEnum.Read }) == AuthorizationResultEnum.Allowed)
         {
             if (deleteDocHistory)
             {
@@ -1368,6 +1362,7 @@ public partial class CMSModules_Content_Controls_UserContributions_EditForm : CM
             AddAlert(GetString("General.BannedIP"));
             return true;
         }
+
         return false;
     }
 
@@ -1387,10 +1382,8 @@ public partial class CMSModules_Content_Controls_UserContributions_EditForm : CM
             }
             return className + "." + AlternativeFormName;
         }
-        else
-        {
-            return AlternativeFormName;
-        }
+
+        return AlternativeFormName;
     }
 
 

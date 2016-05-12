@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Contact.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_DataCom_Contact" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Contact.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_DataCom_Contact" %>
 
 <%@ Register Src="~/CMSModules/ContactManagement/Controls/UI/DataCom/ErrorSummary.ascx" TagName="ErrorSummary" TagPrefix="cms" %>
 

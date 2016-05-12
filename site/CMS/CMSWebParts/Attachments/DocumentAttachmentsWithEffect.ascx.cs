@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 
 using CMS.Controls;
 using CMS.Helpers;
+using CMS.MacroEngine;
 using CMS.PortalControls;
 using CMS.Base;
 using CMS.DocumentEngine;
@@ -896,13 +897,7 @@ public partial class CMSWebParts_Attachments_DocumentAttachmentsWithEffect : CMS
                 ucDataSource.CultureCode = CultureCode;
             }
 
-            if (string.IsNullOrEmpty(Path))
-            {
-                Path = DocumentContext.CurrentAliasPath;
-            }
-
-            Path = TreePathUtils.EnsureSingleNodePath(Path);
-            ucDataSource.Path = Path;
+            ucDataSource.Path = TreePathUtils.EnsureSingleNodePath(MacroResolver.ResolveCurrentPath(Path));
             ucDataSource.SiteName = SiteName;
             ucDataSource.TopN = TopN;
 

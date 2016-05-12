@@ -30,6 +30,15 @@ public partial class CMSModules_OnlineMarketing_Pages_Content_ABTesting_ABTest_L
     protected global::CMSAdminControls_Basic_DisabledModuleInfo ucDisabledModule;
     
     /// <summary>
+    /// smrtpHowToListing control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMSAdminControls_UI_SmartTip smrtpHowToListing;
+    
+    /// <summary>
     /// listElem control.
     /// </summary>
     /// <remarks>

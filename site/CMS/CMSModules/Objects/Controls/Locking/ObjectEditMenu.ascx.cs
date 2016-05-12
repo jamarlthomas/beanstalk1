@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web.UI;
 
@@ -354,7 +354,7 @@ public partial class CMSModules_Objects_Controls_Locking_ObjectEditMenu : Object
                 // Handle save action
                 if (ShowSave)
                 {
-                    save = new SaveAction(Page)
+                    save = new SaveAction
                     {
                         Tooltip = ResHelper.GetString("EditMenu.Save", ResourceCulture),
                         Enabled = AllowSave,
@@ -482,7 +482,7 @@ public partial class CMSModules_Objects_Controls_Locking_ObjectEditMenu : Object
 
         AddAction(action);
 
-        CommentAction comment = new CommentAction(Page, name)
+        CommentAction comment = new CommentAction(name)
         {
             Text = ResHelper.GetString("ObjectEditMenu.Comment" + name, ResourceCulture),
             OnClientClick = string.Format("AddComment_{0}('{1}','{2}',{3},'{0}');", ClientID, name, InfoObject.TypeInfo.ObjectType, InfoObject.Generalized.ObjectID),

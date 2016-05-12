@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Base;
@@ -36,8 +36,8 @@ public partial class CMSFormControls_Dialogs_DialogStartConfiguration : FormEngi
 {
     #region "Variables"
 
-    protected bool communityLoaded = false;
-    protected bool mediaLoaded = false;
+    protected bool communityLoaded;
+    protected bool mediaLoaded;
 
     #endregion
 
@@ -52,7 +52,10 @@ public partial class CMSFormControls_Dialogs_DialogStartConfiguration : FormEngi
         }
         set
         {
-            // Do nothing
+            EnsureChildControls();
+
+            // Load values from other fields
+            LoadValues();
         }
     }
 
@@ -74,7 +77,7 @@ public partial class CMSFormControls_Dialogs_DialogStartConfiguration : FormEngi
 
 
     /// <summary>
-    /// Indicates if the E-mal tab settings should be available.
+    /// Indicates if the E-mail tab settings should be available.
     /// </summary>
     public bool DisplayEmailTabSettings
     {
@@ -120,22 +123,35 @@ public partial class CMSFormControls_Dialogs_DialogStartConfiguration : FormEngi
         }
     }
 
+
+    /// <summary>
+    /// Indicates if the configuration dialog should be displayed.
+    /// </summary>
+    private bool ShowConfiguration
+    {
+        get
+        {
+            return ValidationHelper.GetBoolean(ViewState["ShowConfiguration"], false);
+        }
+        set
+        {
+            ViewState["ShowConfiguration"] = value;
+        }
+    }
+
     #endregion
 
 
     #region "Page events"
 
-    protected override void OnInit(EventArgs e)
+    protected override void CreateChildControls()
     {
-        base.OnInit(e);
+        base.CreateChildControls();
 
         lnkAdvacedFieldSettings.Click += lnkAdvacedFieldSettings_Click;
 
         communityLoaded = ModuleEntryManager.IsModuleLoaded(ModuleName.COMMUNITY);
         mediaLoaded = ModuleEntryManager.IsModuleLoaded(ModuleName.MEDIALIBRARY);
-
-        plcMedia.Visible = mediaLoaded;
-        plcGroups.Visible = communityLoaded;
 
         if (communityLoaded)
         {
@@ -149,31 +165,24 @@ public partial class CMSFormControls_Dialogs_DialogStartConfiguration : FormEngi
     }
 
 
-    protected void Page_Load(object sender, EventArgs e)
-    {
-        if ((Form != null) && (Form.Data != null))
-        {
-            // Set Auto resize control properties
-            elemAutoResize.Form = Form;
-            if (ContainsColumn("autoresize"))
-            {
-                elemAutoResize.Value = ValidationHelper.GetString(Form.Data.GetValue("autoresize"), null);
-            }
-        }
-    }
-
-
     protected override void OnPreRender(EventArgs e)
     {
-        // Display configuration settings in read-only mode
+        base.OnPreRender(e);
+
         if (!lnkAdvacedFieldSettings.IsEnabled)
         {
+            // Display configuration settings in read-only mode
             plcAdvancedFieldSettings.Visible = true;
             lnkAdvacedFieldSettings.Visible = false;
             elemAutoResize.Enabled = false;
         }
+        else
+        {
+            plcAdvancedFieldSettings.Visible = ShowConfiguration;
+        }
 
-        base.OnPreRender(e);
+        plcMedia.Visible = mediaLoaded;
+        plcGroups.Visible = communityLoaded;
     }
 
 
@@ -182,11 +191,7 @@ public partial class CMSFormControls_Dialogs_DialogStartConfiguration : FormEngi
     /// </summary>
     protected void lnkAdvacedFieldSettings_Click(object sender, EventArgs e)
     {
-        plcAdvancedFieldSettings.Visible = !plcAdvancedFieldSettings.Visible;
-        if (plcAdvancedFieldSettings.Visible)
-        {
-            LoadValues();
-        }
+        ShowConfiguration = !ShowConfiguration;
     }
 
 
@@ -403,6 +408,7 @@ public partial class CMSFormControls_Dialogs_DialogStartConfiguration : FormEngi
 
         if (ContainsColumn("autoresize"))
         {
+            elemAutoResize.Form = Form;
             elemAutoResize.Value = ValidationHelper.GetString(data.GetValue("autoresize"), null);
         }
 
@@ -552,7 +558,6 @@ public partial class CMSFormControls_Dialogs_DialogStartConfiguration : FormEngi
         }
 
         values[20, 1] = chkUseRelativeUrl.Checked;
-
 
         if ((string)selectPathElem.Value != "")
         {

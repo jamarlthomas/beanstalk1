@@ -1,2 +1,2 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SubLevelPlaceHolder.ascx.cs" Inherits="CMSInlineControls_SubLevelPlaceHolder" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SubLevelPlaceHolder.ascx.cs" Inherits="CMSInlineControls_SubLevelPlaceHolder" %>
 <cms:SubLevelPlaceHolder runat="server" ID="plcSubLevel" />

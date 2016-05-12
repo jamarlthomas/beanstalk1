@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Layouts_Flat_Forums" Codebehind="Forums.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Layouts_Flat_Forums"  Codebehind="Forums.ascx.cs" %>
 <%@ Register Namespace="CMS.Forums" Assembly="CMS.Forums" TagPrefix="cms" %>
 <div class="Forum">
     <div class="ForumGroup">

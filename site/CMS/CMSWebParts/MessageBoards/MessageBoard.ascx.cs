@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.DocumentEngine;
 using CMS.Helpers;
@@ -14,8 +14,8 @@ public partial class CMSWebParts_MessageBoards_MessageBoard : CMSAbstractWebPart
     #region "Private fields"
 
     private string mWebPartName = "";
-    private BoardInfo mBoardObj = null;
-    private UserInfo mCurrentUser = null;
+    private BoardInfo mBoardObj;
+    private UserInfo mCurrentUser;
 
     #endregion
 
@@ -227,11 +227,11 @@ public partial class CMSWebParts_MessageBoards_MessageBoard : CMSAbstractWebPart
     {
         get
         {
-            return ValidationHelper.GetBoolean(this.GetValue("ShowNameField"), true);
+            return ValidationHelper.GetBoolean(GetValue("ShowNameField"), true);
         }
         set
         {
-            this.SetValue("ShowNameField", value);
+            SetValue("ShowNameField", value);
         }
     }
 
@@ -243,11 +243,11 @@ public partial class CMSWebParts_MessageBoards_MessageBoard : CMSAbstractWebPart
     {
         get
         {
-            return ValidationHelper.GetBoolean(this.GetValue("ShowURLField"), true);
+            return ValidationHelper.GetBoolean(GetValue("ShowURLField"), true);
         }
         set
         {
-            this.SetValue("ShowURLField", value);
+            SetValue("ShowURLField", value);
         }
     }
 
@@ -259,11 +259,11 @@ public partial class CMSWebParts_MessageBoards_MessageBoard : CMSAbstractWebPart
     {
         get
         {
-            return ValidationHelper.GetBoolean(this.GetValue("ShowEmailField"), true);
+            return ValidationHelper.GetBoolean(GetValue("ShowEmailField"), true);
         }
         set
         {
-            this.SetValue("ShowEmailField", value);
+            SetValue("ShowEmailField", value);
         }
     } 
 
@@ -555,11 +555,11 @@ public partial class CMSWebParts_MessageBoards_MessageBoard : CMSAbstractWebPart
     {
         get
         {
-            return ValidationHelper.GetBoolean(this.GetValue("AllowEmptyRating"), true);
+            return ValidationHelper.GetBoolean(GetValue("AllowEmptyRating"), true);
         }
         set
         {
-            this.SetValue("AllowEmptyRating", value);
+            SetValue("AllowEmptyRating", value);
         }
     }
 
@@ -571,11 +571,11 @@ public partial class CMSWebParts_MessageBoards_MessageBoard : CMSAbstractWebPart
     {
         get
         {
-            return ValidationHelper.GetBoolean(this.GetValue("CheckIfUserRated"), false);
+            return ValidationHelper.GetBoolean(GetValue("CheckIfUserRated"), false);
         }
         set
         {
-            this.SetValue("CheckIfUserRated", value);
+            SetValue("CheckIfUserRated", value);
         }
     }
 
@@ -729,6 +729,7 @@ public partial class CMSWebParts_MessageBoards_MessageBoard : CMSAbstractWebPart
             msgBoard.BoardProperties.ShowRejectButton = ShowReject;
 
             // Set fields
+            msgBoard.FormResourcePrefix = ResourcePrefix;
             msgBoard.BoardProperties.ShowNameField = ShowNameField;
             msgBoard.BoardProperties.ShowEmailField = ShowEmailField;
             msgBoard.BoardProperties.ShowURLField = ShowURLField;
@@ -787,7 +788,7 @@ public partial class CMSWebParts_MessageBoards_MessageBoard : CMSAbstractWebPart
                     msgBoard.BoardProperties.BoardOwner = BoardOwner;
                     msgBoard.BoardProperties.BoardName = GetBoardName(WebPartName, BoardOwner);
 
-                    string boardDisplayName = null;
+                    string boardDisplayName;
                     if (!String.IsNullOrEmpty(BoardDisplayName))
                     {
                         boardDisplayName = BoardDisplayName;

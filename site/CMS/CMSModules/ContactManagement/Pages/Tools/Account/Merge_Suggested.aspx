@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Merge_Suggested.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Merge_Suggested.aspx.cs"
     Inherits="CMSModules_ContactManagement_Pages_Tools_Account_Merge_Suggested"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Merge suggested accounts"
     Theme="Default" %>

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Debug_CacheLog"
-    Codebehind="CacheLog.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Debug_CacheLog"
+     Codebehind="CacheLog.ascx.cs" %>
 <cms:UIGridView runat="server" ID="gridCache" ShowFooter="true" AutoGenerateColumns="false">
     <columns>
         <asp:TemplateField>

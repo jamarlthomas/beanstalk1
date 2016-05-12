@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_PortalEngine_Controls_Layout_PageTemplateFlatSelector" Codebehind="PageTemplateFlatSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_PortalEngine_Controls_Layout_PageTemplateFlatSelector"  Codebehind="PageTemplateFlatSelector.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniFlatSelector.ascx" TagName="UniFlatSelector"
     TagPrefix="cms" %>
 

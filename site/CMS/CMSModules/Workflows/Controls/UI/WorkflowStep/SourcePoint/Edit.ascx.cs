@@ -171,6 +171,13 @@ public partial class CMSModules_Workflows_Controls_UI_WorkflowStep_SourcePoint_E
             {
                 WorkflowInfo wi = WorkflowInfoProvider.GetWorkflowInfo(CurrentStepInfo.StepWorkflowID);
                 cbCondition.ResolverName = WorkflowHelper.GetResolverName(wi);
+                
+                // In marketing automation the context is not available,
+                // so the context dependent rules should remain hidden
+                if (wi.IsAutomation)
+                {
+                    cbCondition.DisplayRuleType = 1;
+                }
             }
         }
     }

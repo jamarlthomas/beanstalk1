@@ -164,13 +164,8 @@ public partial class CMSModules_ContactManagement_Pages_Tools_SalesForce_Authori
                 {
                     // The current user is a global administrator, so it is safe to proceed. 
                     // Without this check there is a security vulnerability as any CMS Desk user could choose a site and authorize access to his or her Sales Cloud organization.
-                    string name = "CMSSalesForceCredentials";
-                    if (!String.IsNullOrEmpty(SourceSiteName))
-                    {
-                        name = String.Format("{0}.{1}", SourceSiteName, name);
-                    }
                     CloseDialog(GetString("sf.authorization.partialsuccess"));
-                    SettingsKeyInfoProvider.SetValue(name, CredentialsHiddenField.Value);
+                    SettingsKeyInfoProvider.SetValue("CMSSalesForceCredentials", SourceSiteName, CredentialsHiddenField.Value);
                     CredentialsHiddenField.Value = String.Empty;
                 }
             }

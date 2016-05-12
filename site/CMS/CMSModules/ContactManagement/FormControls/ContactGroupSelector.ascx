@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="ContactGroupSelector.ascx.cs" Inherits="CMSModules_ContactManagement_FormControls_ContactGroupSelector" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="ContactGroupSelector.ascx.cs" Inherits="CMSModules_ContactManagement_FormControls_ContactGroupSelector" %>
 <%@ Register src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" tagname="UniSelector" tagprefix="cms" %>
 
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">

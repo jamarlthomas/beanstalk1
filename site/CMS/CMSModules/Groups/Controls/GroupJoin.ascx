@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Groups_Controls_GroupJoin"
-    Codebehind="GroupJoin.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Groups_Controls_GroupJoin"
+     Codebehind="GroupJoin.ascx.cs" %>
 <table class="JoinTable">
     <tr>
         <td colspan="2" class="InfoArea">

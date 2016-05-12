@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="BadWordsFilter.ascx.cs" Inherits="CMSModules_BadWords_Controls_BadWordsFilter" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="BadWordsFilter.ascx.cs" Inherits="CMSModules_BadWords_Controls_BadWordsFilter" %>
 <%@ Register Src="~/CMSModules/BadWords/FormControls/SelectBadWordAction.ascx" TagPrefix="cms"
     TagName="SelectBadWordAction" %>
 <asp:Panel runat="server" ID="pnlFilter" DefaultButton="btnShow">

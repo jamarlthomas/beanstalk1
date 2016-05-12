@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Edit metadata" Language="C#" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master"
-    AutoEventWireup="true" Codebehind="MetaDataEditor.aspx.cs" Inherits="CMSModules_MediaLibrary_CMSPages_MetaDataEditor"
+    AutoEventWireup="true"  Codebehind="MetaDataEditor.aspx.cs" Inherits="CMSModules_MediaLibrary_CMSPages_MetaDataEditor"
     Theme="Default" %>
 
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/MediaLibrary/MediaFileMetaDataEditor.ascx"

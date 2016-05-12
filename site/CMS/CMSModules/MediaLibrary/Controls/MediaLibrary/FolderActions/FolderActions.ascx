@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions_FolderActions" Codebehind="FolderActions.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions_FolderActions"  Codebehind="FolderActions.ascx.cs" %>
 <cms:CMSUpdatePanel ID="pnlUpdateSelectors" runat="server" UpdateMode="Conditional">
     <ContentTemplate>
         <div class="tree-actions-panel">

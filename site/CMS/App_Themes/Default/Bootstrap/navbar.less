@@ -43,7 +43,7 @@
     -webkit-overflow-scrolling: touch;
 
     &.in {
-        overflow-y: auto;
+        overflow-y: auto; 
     }
 
     @media screen and (min-width: @grid-float-breakpoint) {
@@ -148,7 +148,8 @@
     > li > a {
         padding-top: 10px;
         padding-bottom: 10px;
-        line-height: @line-height-100;
+        line-height: @line-height-300;
+        height: @line-height-300;
     }
 
     @media screen and (max-width: @screen-xs-max) {
@@ -202,6 +203,18 @@
 
 .navbar-right {
     .pull-right();
+}
+
+
+// Navbar text shortening
+//
+// Provides funcionality to shorten string and replace it's ending with ellipsis
+// when string is longer then set width of container.
+.navbar-menu-text-shortening {
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
 }
 
 
@@ -376,6 +389,22 @@
     }
 }
 
+
+// Width of text in menu title
+@cms-nav-menu-text-max-width: @base-unit * 10;
+
+
+// Text in navigation dropdown title
+.cms-nav-text {
+    color: @color-white;
+    text-decoration: none;
+    padding-right: @base-unit;
+    float: right;
+    max-width: @cms-nav-menu-text-max-width;
+    .navbar-menu-text-shortening;
+}
+
+
 // Main CMS navbar
 .cms-navbar {
     min-height: 0;
@@ -408,6 +437,52 @@
         }
     }
 
+    .dropdown-menu-item-label {
+        margin-bottom: @base-unit / 2;
+        font-weight: 600;
+    }
+    
+    .dropdown-menu-item-link {
+        text-decoration: underline;
+        padding: 0;
+        margin-top: @base-unit / 2;
+        font-weight: 400;
+        .navbar-menu-text-shortening;
+        &:hover {
+            background: none !important;
+        }
+    }
+
+    // Context menu item
+    .dropdown-menu-item {
+        color: @color-white;
+        clear: both;
+        width: @cms-nav-menu-text-max-width + 100;
+        background: transparent;
+        box-shadow: none;
+        display: block;
+        padding: @base-unit / 2 @base-unit;
+        box-sizing: border-box;
+        line-height: @line-height-100;
+    }
+
+
+    .dropdown-menu-item-message {
+        margin-top: @base-unit / 4;
+        margin-bottom: @base-unit / 2;
+    }
+    
+    .dropdown-menu-item-info-message {
+        .dropdown-menu-item-message;
+        color: @color-gray-100;
+    }
+    
+    
+    .dropdown-menu-item-error-message {
+        .dropdown-menu-item-message;
+        color: @color-red-100;
+    }
+    
     .navbar-inverse {
         > li > a.accordion-toggle {
             &:hover {
@@ -447,8 +522,6 @@
     color: @navbar-inverse-icon-color;
     padding: @base-unit * 0.75;
 }
-
-
 
 
 // Search in the main navigation

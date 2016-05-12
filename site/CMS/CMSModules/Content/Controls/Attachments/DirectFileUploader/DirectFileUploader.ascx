@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Attachments_DirectFileUploader_DirectFileUploader"
-    Codebehind="DirectFileUploader.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Attachments_DirectFileUploader_DirectFileUploader"
+     Codebehind="DirectFileUploader.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/MultiFileUploader/MultiFileUploader.ascx"
     TagPrefix="cms" TagName="MultiFileUploader" %>
 <div id="containerDiv" runat="server" class="direct-file-uploader">
@@ -20,4 +20,3 @@
         <i ID="imgLoading" class="icon-spinner cms-icon-80 spinning" EnableViewState="false" aria-hidden="true" runat="server"></i><asp:Label ID="lblProgress" runat="server" EnableViewState="false" />
     </asp:Panel>
 </div>
-<asp:Literal ID="ltlScript" runat="server" EnableViewState="false" />

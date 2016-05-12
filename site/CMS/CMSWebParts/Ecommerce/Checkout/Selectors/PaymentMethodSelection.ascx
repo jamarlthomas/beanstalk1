@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Ecommerce_Checkout_Selectors_PaymentMethodSelection" Codebehind="~/CMSWebParts/Ecommerce/Checkout/Selectors/PaymentMethodSelection.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Ecommerce_Checkout_Selectors_PaymentMethodSelection"  Codebehind="~/CMSWebParts/Ecommerce/Checkout/Selectors/PaymentMethodSelection.ascx.cs" %>
 <%@ Register Src="~/CMSModules/ECommerce/FormControls/PaymentSelector.ascx" TagName="PaymentSelector" TagPrefix="cms" %>
   
 <asp:Panel ID="pnlPayment" runat="server" CssClass="PanelPayment">    

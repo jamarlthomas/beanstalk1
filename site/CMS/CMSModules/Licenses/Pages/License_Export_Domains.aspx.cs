@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 
@@ -126,40 +126,13 @@ public partial class CMSModules_Licenses_Pages_License_Export_Domains : GlobalAd
                 }
 
                 // Output
-                string downloadPath = ImportExportHelper.GetSiteUtilsFolderRelativePath();
-                string location = null;
-
-                // Path is relative path
-                if (downloadPath != null)
-                {
-                    string externalUrl = null;
-                    string fullPath = downloadPath + "Export/" + fileName;
-
-                    // Handle external storage URL
-                    if (StorageHelper.IsExternalStorage(fullPath))
-                    {
-                        externalUrl = File.GetFileUrl(fullPath, SiteContext.CurrentSiteName);
-                    }
-
-                    // Handle default URL
-                    if (string.IsNullOrEmpty(externalUrl))
-                    {
-                        location = URLHelper.ResolveUrl(downloadPath + "Export/" + fileName);
-                    }
-                    else
-                    {
-                        location = externalUrl;
-                    }
-
-                    location = String.Format("<a href=\"{0}\" target=\"_blank\">{0}</a>", location);
-                }
-                else
-                {
-                    location = "<b>" + path + "</b>";
-                }
+                string url = ImportExportHelper.GetExportPackageUrl(fileName, SiteContext.CurrentSiteName);
+                string downloadLink = (url != null) ? String.Format("<a href=\"{0}\" target=\"_blank\">{1}</a>", url, GetString("Export.ClickToDownload")) : "";
+                string storageName = (StorageHelper.IsExternalStorage(path)) ? GetString("Export.StorageProviderName." + StorageHelper.GetStorageProvider(path).Name) : "";
+                string relativePath = ImportExportHelper.GetSiteUtilsFolderRelativePath() + "Export/" + txtFileName.Text;
 
                 ShowConfirmation(GetString("license.export.exported"));
-                ShowInformation(String.Format(GetString("license.export.download"), location));
+                ShowInformation(String.Format(GetString("license.export.download"), storageName, relativePath, downloadLink));
 
                 plcTextBox.Visible = false;
             }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
@@ -58,7 +58,7 @@ public partial class CMSMasterPages_LiveSite_Dialogs_ModalDialogPage : CMSLiveMa
     {
         get
         {
-            return pnlContent;
+            return divContent;
         }
     }
 
@@ -197,7 +197,7 @@ function ResizeWorkingArea()
    {
        var headerHeight = $cmsj('.CMSFixPanel').height();
        var footerHeight = (footerElem != null) ? footerElem.offsetHeight : 0;
-       var height = (document.body.offsetHeight - headerHeight - footerHeight);
+       var height = ($cmsj(window).height() - headerHeight - footerHeight);
        if (height > 0)
        {
            var h = (height > 0 ? height : '0') + 'px';

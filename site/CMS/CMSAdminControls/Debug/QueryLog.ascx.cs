@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -29,8 +29,8 @@ public partial class CMSAdminControls_Debug_QueryLog : QueryLog
                 MaxSize = paramSize;
             }
 
-            gridQueries.DataSource = dt;
-            gridQueries.DataBind();
+            // Bind the data
+            BindGrid(gridQueries, dt);
         }
     }
 }

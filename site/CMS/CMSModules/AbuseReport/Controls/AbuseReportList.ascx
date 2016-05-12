@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSModules/AbuseReport/Controls/AbuseReportList.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSModules/AbuseReport/Controls/AbuseReportList.ascx.cs"
     Inherits="CMSModules_AbuseReport_Controls_AbuseReportList" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <cms:UniGrid runat="server" ID="ucAbuseReportGrid" GridName="~/CMSModules/AbuseReport/Controls/AbuseReport_List.xml"

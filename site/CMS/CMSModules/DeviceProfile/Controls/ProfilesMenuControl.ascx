@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="ProfilesMenuControl.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="ProfilesMenuControl.ascx.cs"
     Inherits="CMSModules_DeviceProfile_Controls_ProfilesMenuControl" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniMenu/UniMenuButtons.ascx" TagName="UniMenuButtons"
     TagPrefix="cms" %>

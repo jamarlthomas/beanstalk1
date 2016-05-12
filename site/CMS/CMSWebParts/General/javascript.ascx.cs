@@ -1,10 +1,10 @@
+﻿using System;
 using System.Web.UI;
-using System;
 
+using CMS.Base;
 using CMS.Helpers;
 using CMS.PortalControls;
 using CMS.PortalEngine;
-using CMS.Base;
 
 public partial class CMSWebParts_General_javascript : CMSAbstractWebPart
 {
@@ -158,78 +158,37 @@ public partial class CMSWebParts_General_javascript : CMSAbstractWebPart
     /// </summary>
     private void RegisterLinkedFiles()
     {
-        // Create linked JS file
-        if (LinkedFile.Trim() != string.Empty)
+        string linkedFile = LinkedFile;
+
+        if (String.IsNullOrWhiteSpace(linkedFile))
         {
-            string linkedFile = String.Empty;
+            return;
+        }
 
-            // Register some script files manually, to prevent multiple registration
-            switch (LinkedFile.Trim().ToLowerCSafe())
-            {
-                case "jquery":
-                    if (ScriptHelper.RequestScriptRegistration(ScriptHelper.JQUERY_KEY))
-                    {
-                        linkedFile = ScriptHelper.JQUERY_FILENAME;
-                    }
-                    break;
+        string scriptTag = ScriptHelper.GetScriptTag(linkedFile);
+        if (String.IsNullOrEmpty(scriptTag))
+        {
+            return;
+        }
 
-                case "prototype":
-                    if (ScriptHelper.RequestScriptRegistration(ScriptHelper.PROTOTYPE_KEY))
-                    {
-                        linkedFile = ScriptHelper.PROTOTYPE_FILENAME;
-                    }
-                    break;
+        switch (LinkedFilePageLocation.ToLowerCSafe())
+        {
+            case "beginning":
+                ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), ClientID + "script", scriptTag);
+                break;
 
-                case "mootools":
-                    if (ScriptHelper.RequestScriptRegistration(ScriptHelper.MOOTOOLS_KEY))
-                    {
-                        linkedFile = ScriptHelper.MOOTOOLS_FILENAME;
-                    }
-                    break;
+            case "startup":
+                ScriptHelper.RegisterStartupScript(Page, typeof(string), ClientID + "script", scriptTag);
+                break;
 
-                case "silverlight":
-                    if (ScriptHelper.RequestScriptRegistration(ScriptHelper.SILVERLIGHT_KEY))
-                    {
-                        linkedFile = ScriptHelper.SILVERLIGHT_FILENAME;
-                    }
-                    break;
-
-                default:
-                    {
-                        // File URL
-                        string file = LinkedFile;
-
-                        string key = ScriptHelper.SCRIPTFILE_PREFIX_KEY + file;
-                        if (ScriptHelper.RequestScriptRegistration(key))
-                        {
-                            linkedFile = ScriptHelper.GetScriptUrl(file, false);
-                            linkedFile = ResolveUrl(linkedFile);
-                        }
-                    }
-                    break;
-            }
-
-            if (!String.IsNullOrEmpty(linkedFile))
-            {
-                string script = ScriptHelper.GetIncludeScript(linkedFile);
-
-                // Switch for script position on the page
-                switch (LinkedFilePageLocation.ToLowerCSafe())
-                {
-                    case "beginning":
-                        ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), ClientID + "script", script);
-                        break;
-
-                    case "startup":
-                        ScriptHelper.RegisterStartupScript(Page, typeof(string), ClientID + "script", script);
-                        break;
-
-                    case "header":
-                    default:
-                        Page.Header.Controls.Add(new LiteralControl(script));
-                        break;
+            default:
+                // Default location is page header
+                string key = ScriptHelper.SCRIPTFILE_PREFIX_KEY + linkedFile;
+                if (ScriptHelper.RequestScriptRegistration(key))
+                { 
+                    Page.Header.Controls.Add(new LiteralControl(scriptTag));
                 }
-            }
+                break;
         }
     }
     

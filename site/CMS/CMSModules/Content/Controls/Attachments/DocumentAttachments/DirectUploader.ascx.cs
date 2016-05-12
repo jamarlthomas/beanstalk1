@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -18,13 +18,15 @@ public partial class CMSModules_Content_Controls_Attachments_DocumentAttachments
 {
     #region "Variables"
 
+    private const string CONTENT_FOLDER = "~/CMSModules/Content/";
+
     private string mInnerDivClass = "NewAttachment";
 
     private Guid attachmentGuid = Guid.Empty;
     private AttachmentInfo innerAttachment;
 
     private bool createTempAttachment;
-
+    
     #endregion
 
 
@@ -45,7 +47,7 @@ public partial class CMSModules_Content_Controls_Attachments_DocumentAttachments
         }
     }
 
-
+   
     /// <summary>
     /// Last performed action.
     /// </summary>
@@ -472,6 +474,9 @@ public partial class CMSModules_Content_Controls_Attachments_DocumentAttachments
                 newAttachmentElem.Visible = !HideActions && (attachmentGuid == Guid.Empty);
             }
 
+            // Check if full refresh should be performed after upload
+            newAttachmentElem.FullRefresh = FullRefresh;
+
             // Ensure correct layout
             bool gridHasData = !DataHelper.DataSourceIsEmpty(gridAttachments.DataSource);
             Visible = gridHasData || !HideActions;
@@ -487,9 +492,10 @@ public partial class CMSModules_Content_Controls_Attachments_DocumentAttachments
             sb.AppendLine("if (formGUID != '') { form = '&formguid=' + formGUID + '&parentid=' + parentId; }");
             sb.AppendLine((((Node != null) && (Node.DocumentID > 0)) ? "else{form = '&siteid=' + " + Node.NodeSiteID + ";}" : ""));
             sb.AppendLine("if (image) {");
-            sb.AppendLine("modalDialog('" + ResolveUrl((IsLiveSite ? "~/CMSFormControls/LiveSelectors/ImageEditor.aspx" : "~/CMSModules/Content/CMSDesk/Edit/ImageEditor.aspx") + "?attachmentGUID=' + attachmentGUID + '&refresh=1&versionHistoryID=' + versionHistoryID + form + '&clientid=" + ClientID + "&hash=' + hash") + ", 'editorDialog', 905, 670); }");
+
+            sb.AppendLine("modalDialog('" + ResolveUrl((IsLiveSite ? "~/CMSFormControls/LiveSelectors/ImageEditor.aspx" : CONTENT_FOLDER + "CMSDesk/Edit/ImageEditor.aspx") + "?attachmentGUID=' + attachmentGUID + '&refresh=1&versionHistoryID=' + versionHistoryID + form + '&clientid=" + ClientID + "&hash=' + hash") + ", 'editorDialog', 905, 670); }");
             sb.AppendLine("else {");
-            sb.AppendLine("modalDialog('" + AuthenticationHelper.ResolveDialogUrl((IsLiveSite ? "~/CMSModules/Content/Attachments/CMSPages/MetaDataEditor.aspx" : "~/CMSModules/Content/Attachments/Dialogs/MetaDataEditor.aspx") + "?attachmentGUID=' + attachmentGUID + '&refresh=1&versionHistoryID=' + versionHistoryID + form + '&clientid=" + ClientID + "&hash=' + hash") + ", 'editorDialog', 700, 400); }");
+            sb.AppendLine("modalDialog('" + AuthenticationHelper.ResolveDialogUrl((IsLiveSite ? CONTENT_FOLDER + "Attachments/CMSPages/MetaDataEditor.aspx" : CONTENT_FOLDER + "Attachments/Dialogs/MetaDataEditor.aspx") + "?attachmentGUID=' + attachmentGUID + '&refresh=1&versionHistoryID=' + versionHistoryID + form + '&clientid=" + ClientID + "&hash=' + hash") + ", 'editorDialog', 700, 400); }");
             sb.AppendLine("return false; }");
 
             // Register script for editing attachment
@@ -610,8 +616,7 @@ public partial class CMSModules_Content_Controls_Attachments_DocumentAttachments
             gridAttachments.ReloadData();
         }
     }
-
-
+    
     /// <summary>
     /// UniGrid action buttons event handler.
     /// </summary>
@@ -769,7 +774,7 @@ public partial class CMSModules_Content_Controls_Attachments_DocumentAttachments
 
                     // Add update control
                     // Dynamically load uploader control
-                    DirectFileUploader dfuElem = Page.LoadUserControl("~/CMSModules/Content/Controls/Attachments/DirectFileUploader/DirectFileUploader.ascx") as DirectFileUploader;
+                    DirectFileUploader dfuElem = Page.LoadUserControl(CONTENT_FOLDER + "Controls/Attachments/DirectFileUploader/DirectFileUploader.ascx") as DirectFileUploader;
 
                     // Set uploader's properties
                     if (dfuElem != null)
@@ -1004,6 +1009,7 @@ public partial class CMSModules_Content_Controls_Attachments_DocumentAttachments
         dfuElem.CheckPermissions = CheckPermissions;
         dfuElem.NodeSiteName = SiteName;
         dfuElem.IsLiveSite = IsLiveSite;
+        dfuElem.FullRefresh = FullRefresh;
 
         // Setting of the direct single mode
         dfuElem.UploadMode = MultifileUploaderModeEnum.DirectSingle;

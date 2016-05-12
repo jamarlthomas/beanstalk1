@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Controls_VariantSlider"
-    Codebehind="VariantSlider.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Controls_VariantSlider"
+     Codebehind="VariantSlider.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Newsletters/Controls/VariantDialog.ascx" TagPrefix="cms"
     TagName="VariantDialog" %>
 <cms:CMSUpdatePanel ID="pnlu" runat="server" EnableViewState="false">

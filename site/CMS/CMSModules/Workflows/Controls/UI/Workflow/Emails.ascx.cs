@@ -1,21 +1,12 @@
-using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+﻿using System;
 using System.Linq;
 
-using CMS.ExtendedControls;
-using CMS.FormControls;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.SiteProvider;
 using CMS.UIControls;
 using CMS.WorkflowEngine;
-using CMS.Base;
-using CMS.EmailEngine;
-using CMS.DataEngine;
+
 
 public partial class CMSModules_Workflows_Controls_UI_Workflow_Emails : CMSUserControl
 {
@@ -124,12 +115,12 @@ public partial class CMSModules_Workflows_Controls_UI_Workflow_Emails : CMSUserC
         usUsers.ObjectType = UserInfo.OBJECT_TYPE;
         usUsers.WhereCondition = "(UserIsHidden = 0 OR UserIsHidden IS NULL)";
 
-        ucApprove.TemplateType = EmailTemplateTypeEnum.WorkflowEmail;
-        ucReadyApproval.TemplateType = EmailTemplateTypeEnum.WorkflowEmail;
-        ucReject.TemplateType = EmailTemplateTypeEnum.WorkflowEmail;
-        ucPublish.TemplateType = EmailTemplateTypeEnum.WorkflowEmail;
-        ucArchive.TemplateType = EmailTemplateTypeEnum.WorkflowEmail;
-        ucNotif.TemplateType = EmailTemplateTypeEnum.WorkflowEmail;
+        ucApprove.TemplateType = WorkflowModule.WORKFLOW_EMAIL_TEMPLATE_TYPE_NAME;
+        ucReadyApproval.TemplateType = WorkflowModule.WORKFLOW_EMAIL_TEMPLATE_TYPE_NAME;
+        ucReject.TemplateType = WorkflowModule.WORKFLOW_EMAIL_TEMPLATE_TYPE_NAME;
+        ucPublish.TemplateType = WorkflowModule.WORKFLOW_EMAIL_TEMPLATE_TYPE_NAME;
+        ucArchive.TemplateType = WorkflowModule.WORKFLOW_EMAIL_TEMPLATE_TYPE_NAME;
+        ucNotif.TemplateType = WorkflowModule.WORKFLOW_EMAIL_TEMPLATE_TYPE_NAME;
 
         // Get the active users for this site
         var users = WorkflowUserInfoProvider.GetWorkflowUsers("WorkflowID = " + WorkflowID, null, 0, "UserID").Select<WorkflowUserInfo, string>(u => u.UserID.ToString());

@@ -1,14 +1,12 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Data;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using CMS.Base;
-using CMS.DataEngine;
 using CMS.ExtendedControls;
 using CMS.FormControls;
 using CMS.FormEngine;
@@ -35,24 +33,11 @@ public partial class CMSModules_Reporting_Controls_DisplayReport : AbstractRepor
     private string mReportHTML = String.Empty;
     private ArrayList mReportControls;
     private ReportInfo mReportInfo;
-    private static Regex mInlineImageRegex;
 
     #endregion
 
 
     #region "Properties"
-
-    /// <summary>
-    /// Regex object for search inline images in report.
-    /// </summary>
-    private static Regex InlineImageRegex
-    {
-        get
-        {
-            return mInlineImageRegex ?? (mInlineImageRegex = RegexHelper.GetRegex("<img\\s*src=\"\\S*fileguid=(\\S*)\" />"));
-        }
-    }
-
 
     /// <summary>
     /// Gets or sets the value that indicates whether progress indicator should be used.
@@ -444,44 +429,31 @@ public partial class CMSModules_Reporting_Controls_DisplayReport : AbstractRepor
         ClearResolver();
 
         // Build report HTML
-        mReportHTML = ReportInfo.ReportLayout;
-        mReportHTML = ResolveMacros(mReportHTML);
-        mReportHTML = HTMLHelper.ResolveUrls(mReportHTML, null);
+        var html = ReportInfo.ReportLayout;
+
+        html = ResolveMacros(html);
+        html = HTMLHelper.ResolveUrls(html, null);
 
         // For emails - resolve metafile images as inline attachments
         if (EmailMode)
         {
-            // Find all inline images
-            MatchCollection coll = InlineImageRegex.Matches(mReportHTML);
-            foreach (Match m in coll)
-            {
-                Guid guid = ValidationHelper.GetGuid(m.Groups[1], Guid.Empty);
-                if (guid != Guid.Empty)
-                {
-                    // For all found images, find according metafile
-                    MetaFileInfo mfi = MetaFileInfoProvider.GetMetaFileInfo(guid, null, true);
-                    if (mfi != null)
-                    {
-                        // If metafile found add binary representation to inline attachments
-                        ReportSubscriptionSender.AddToRequest(ReportName, "g" + guid, mfi.MetaFileBinary);
-                        mReportHTML = mReportHTML.Replace(m.Value, "##InlineImage##" + guid + "##InlineImage##");
-                    }
-                }
-            }
+            html = ReportSubscriptionSender.ResolveMetaFiles(ReportName, html);
         }
 
         // Add the content
         pnlContent.Controls.Clear();
-        pnlContent.Controls.Add(new LiteralControl(mReportHTML));
+        pnlContent.Controls.Add(new LiteralControl(html));
 
         ControlsHelper.ResolveDynamicControls(pnlContent);
 
         // Null GraphImageWidh if no graph present to enable load alone tables,values,etc 
-        bool containsGraph = mReportHTML.Contains("%%control:ReportGraph?");
+        bool containsGraph = html.Contains("%%control:ReportGraph?");
         if (!containsGraph)
         {
             GraphImageWidth = 0;
         }
+
+        mReportHTML = html;
 
         // Indicates if any item in the report is visible
         bool itemVisible = false;

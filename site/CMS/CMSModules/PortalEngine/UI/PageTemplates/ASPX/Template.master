@@ -1,4 +1,4 @@
-<%@ Master Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_PageTemplates_ASPX_Template_Master" Codebehind="Template.master.cs" %>
+<%@ Master Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_PageTemplates_ASPX_Template_Master"  Codebehind="Template.master.cs" %>
 <%--REGISTER--%>
 
 <%=DocType%>

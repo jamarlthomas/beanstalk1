@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 
 using CMS.Base;
@@ -60,19 +60,11 @@ public partial class CMSModules_PortalEngine_UI_WebParts_WebPartProperties_neste
 
         base.OnInit(e);
 
-        // Check permissions for web part properties UI
-        if (PortalContext.ViewMode.IsWireframe())
+        // Check design mode permissions
+        var currentUser = MembershipContext.AuthenticatedUser;
+        if (!currentUser.IsAuthorizedPerUIElement("CMS.Design", "WebPartProperties.General"))
         {
-            // Check wireframes permissions
-        }
-        else
-        {
-            // Check design mode permissions
-            var currentUser = MembershipContext.AuthenticatedUser;
-            if (!currentUser.IsAuthorizedPerUIElement("CMS.Design", "WebPartProperties.General"))
-            {
-                RedirectToUIElementAccessDenied("CMS.Design", "WebPartProperties.General");
-            }
+            RedirectToUIElementAccessDenied("CMS.Design", "WebPartProperties.General");
         }
 
         NestedKey = QueryHelper.GetString("nestedkey", "");

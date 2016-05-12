@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSPages_Ecommerce_GetProduct" Codebehind="GetProduct.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSPages_Ecommerce_GetProduct"  Codebehind="GetProduct.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

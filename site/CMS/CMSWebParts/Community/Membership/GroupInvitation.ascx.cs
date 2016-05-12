@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.UI;
 using CMS.Community;
@@ -163,7 +163,7 @@ public partial class CMSWebParts_Community_Membership_GroupInvitation : CMSAbstr
                 if (MembershipContext.AuthenticatedUser.IsPublic())
                 {
                     // Get logon URL
-                    string logonUrl = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSSecuredAreasLogonPage");
+                    string logonUrl = AuthenticationHelper.GetSecuredAreasLogonPage(SiteContext.CurrentSiteName);
                     logonUrl = DataHelper.GetNotEmpty(LoginURL, logonUrl);
 
                     // Create redirect URL

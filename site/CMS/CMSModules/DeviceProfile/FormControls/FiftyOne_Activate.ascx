@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="FiftyOne_Activate.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="FiftyOne_Activate.ascx.cs"
     Inherits="CMSModules_DeviceProfile_FormControls_FiftyOne_Activate" %>
 <%@ Register Assembly="FiftyOne.Foundation" Namespace="FiftyOne.Foundation.UI.Web"
     TagPrefix="fiftyOne" %>

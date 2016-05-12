@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Web.UI;
@@ -134,7 +134,7 @@ public partial class CMSModules_Settings_Pages_Keys : GlobalAdminPage, IPostBack
     {
         List<HeaderAction> actions = new List<HeaderAction>();
 
-        actions.Add(new SaveAction(this)
+        actions.Add(new SaveAction
         {
             Text = GetString("Header.Settings.SaveChanged"),
             CommandName = "lnkSaveChanges_Click",

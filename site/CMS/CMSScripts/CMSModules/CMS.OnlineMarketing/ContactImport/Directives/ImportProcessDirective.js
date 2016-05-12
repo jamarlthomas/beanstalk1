@@ -1,56 +1,60 @@
 cmsdefine(['Underscore', 'CMS.OnlineMarketing/ContactImport/CSVParser', 'CMS/Messages/MessageHub'], function (_, CSVParser, MessageHub) {
 
-    var Controller = function($scope, $timeout, $q, cmsContactResource, messageHub, resolveFilter) {
-            var that = this;
+    var Controller = function ($scope, $timeout, $q, cmsContactResource, cmsContactGroupResource, messageHub, resolveFilter) {
+        var that = this;
 
-            this.messageHub = new MessageHub();
-            this.$scope = $scope;
-            this.$timeout = $timeout;
-            this.$q = $q;
-            this.parser = CSVParser;
-            this.messageHub = messageHub;
-            this.getString = resolveFilter;
+        this.messageHub = new MessageHub();
+        this.$scope = $scope;
+        this.$timeout = $timeout;
+        this.$q = $q;
+        this.parser = CSVParser;
+        this.messageHub = messageHub;
+        this.getString = resolveFilter;
 
-            this.$scope.result = {
-                imported: 0,
-                duplicities: 0,
-                failures: 0,
-                processed: 0,
-            };
+        if (!$scope.contactFieldsMapping || !$scope.contactGroup || !$scope.fileStream) {
+            return;
+        }
 
-            this.$scope.isImporting = false;
-            this.$scope.numberOfAllRecords = 0;
-            this.$scope.finished = false;
-            this.contactResource = cmsContactResource;
+        this.$scope.result = {
+            imported: 0,
+            duplicities: 0,
+            failures: 0,
+            processed: 0,
+            csvData: false,
+        };
 
-            this.$scope.importedTotalCount = 0;
+        this.$scope.isImporting = false;
+        this.$scope.numberOfAllRecords = 0;
+        this.$scope.finished = false;
+        this.contactResource = cmsContactResource;
+        this.contactGroupResource = cmsContactGroupResource;
 
-            // If contact mapping has changed, run the importing process.
-            this.$scope.$watch('contactFieldsMapping', function(contactFieldsMapping) {
-                if (contactFieldsMapping) {
-                    that.$scope.$emit('importStarted');
-                    that.$scope.isImporting = true;
-                    that.$scope.unfinishedRequests = 0;
-                    that.importContacts(contactFieldsMapping, that.$scope.fileStream);
-                }
-            });
+        this.$scope.importedTotalCount = 0;
 
-            messageHub.subscribeToError(function() {
-                that._importFinished();
-            });
-        },
-        directive = function() {
+        // If contact mapping is defined, run the importing process.
+        if ($scope.contactFieldsMapping) {
+            this.$scope.$emit('importStarted');
+            this.$scope.isImporting = true;
+            this.$scope.unfinishedRequests = 0;
+
+            if (this.$scope.contactGroup.name) {
+                this.createContactGroup(this.$scope.contactGroup.name, function (contactGroupGuid) {
+                    that.importContacts(that.$scope.contactFieldsMapping, contactGroupGuid, that.$scope.fileStream);
+                });
+            } else {
+                this.importContacts(this.$scope.contactFieldsMapping, this.$scope.contactGroup.guid, this.$scope.fileStream);
+            }
+        }
+
+        messageHub.subscribeToError(function () {
+            that._importFinished();
+        });
+    },
+        directive = function () {
             return {
                 restrict: 'A',
-                scope: {
-                    // Inputs
-                    contactFieldsMapping: '=',
-                    fileStream: '=',
-                    contactGroup: '=',
-                    siteGuid: '='
-                },
-                controller: ['$scope', '$timeout', '$q', 'cmsContactResource', 'messageHub', 'resolveFilter', Controller],
-                templateUrl: 'importProcessTemplate.html'
+                controller: ['$scope', '$timeout', '$q', 'cmsContactResource', 'cmsContactGroupResource', 'messageHub', 'resolveFilter', Controller],
+                templateUrl: 'importProcessDirectiveTemplate.html'
             };
         };
 
@@ -58,9 +62,10 @@ cmsdefine(['Underscore', 'CMS.OnlineMarketing/ContactImport/CSVParser', 'CMS/Mes
     /**
      * Parse contacts according to the given mappings and send them to the server.
      * @param  contactFieldsMapping  object[]      collection of contact fields mapping set by the user
+     * @param  contactGroupGuid      string        contact group guid
      * @param  fileStream            FileStreamer  instance of FileStreamer
      */
-    Controller.prototype.importContacts = function (contactFieldsMapping, fileStream) {
+    Controller.prototype.importContacts = function (contactFieldsMapping, contactGroupGuid, fileStream) {
         var that = this,
             names = contactFieldsMapping.map(function (elem) { return elem.name; }),
             selectedIndexes = contactFieldsMapping.map(function (elem) { return elem.mappedIndex; }),
@@ -68,10 +73,12 @@ cmsdefine(['Underscore', 'CMS.OnlineMarketing/ContactImport/CSVParser', 'CMS/Mes
             columnsCount = 0;
 
         fileStream.read(function (buffer, handle) {
+            var result,
+                filtered;
+
             that.handle = handle;
             try {
-                var result = that.parser.findValidCSVInBuffer(buffer, handle.finished),
-                    filtered;
+                result = that.parser.findValidCSVInBuffer(buffer, handle.finished);
 
                 handle.move(-result.remainder);
 
@@ -85,7 +92,7 @@ cmsdefine(['Underscore', 'CMS.OnlineMarketing/ContactImport/CSVParser', 'CMS/Mes
                 that.parser.fixLineColumnsCount(result.rows, columnsCount);
                 filtered = that.filterColumns(result.rows, selectedIndexes);
 
-                that.sendBulkToServer(names, filtered);
+                that.sendBulkToServer(names, contactGroupGuid, filtered);
                 that.$scope.numberOfAllRecords += filtered.length;
             }
             catch (e) {
@@ -95,6 +102,27 @@ cmsdefine(['Underscore', 'CMS.OnlineMarketing/ContactImport/CSVParser', 'CMS/Mes
             }
         });
     };
+
+
+    /**
+     * Creates contact group by calling remote call.
+     * @param name      string                              Contact group name
+     * @param callback  function(string contactGroupGuid)   Callback to invoke if contact group was successfully created 
+     */
+    Controller.prototype.createContactGroup = function (name, callback) {
+        var promise = this.contactGroupResource.create({
+            contactGroupName: name,
+            siteGuid: this.$scope.siteGuid,
+        }, {}).$promise;
+
+        promise.then(function (data) {
+            if (!data) {
+                return;
+            }
+            callback(data.ContactGroupGuid);
+        });
+    };
+
 
     /**
      * Filters out all columns from the given input which index is not present in the given included columns array.
@@ -134,12 +162,13 @@ cmsdefine(['Underscore', 'CMS.OnlineMarketing/ContactImport/CSVParser', 'CMS/Mes
 
     /**
      * Performs sending of the contacts to the server.
-     * @param  fieldNames    string[]         array of field names obtained from the CSV header
-     * @param  contactLines  array[string[]]  array of arrays containing the data itself
+     * @param  fieldNames       string[]         array of field names obtained from the CSV header
+     * @param  contactGroupGuid string           contact group guid
+     * @param  contactLines     array[string[]]  array of arrays containing the data itself
      */
-    Controller.prototype.sendBulkToServer = function (fieldNames, contactLines) {
+    Controller.prototype.sendBulkToServer = function (fieldNames, contactGroupGuid, contactLines) {
         var that = this,
-            importPromise = this.getImportPromise(fieldNames, contactLines);
+            importPromise = this.getImportPromise(fieldNames, contactGroupGuid, contactLines);
 
         importPromise.then(function (data) {
             that.onImportBulkSuccess(data, contactLines.length);
@@ -149,13 +178,14 @@ cmsdefine(['Underscore', 'CMS.OnlineMarketing/ContactImport/CSVParser', 'CMS/Mes
 
     /**
      * Creates new import request to the server and returns the resource promise.
-     * @param  fieldNames    string[]         array of field names obtained from the CSV header
-     * @param  contactLines  array[string[]]  array of arrays containing the data itself
-     * @return                                promise of the import request
+     * @param  fieldNames        string[]        array of field names obtained from the CSV header
+     * @param  contactGroupGuid  string          contact group guid
+     * @param  contactLines      array[string[]] array of arrays containing the data itself
+     * @return                                   promise of the import request
      */
-    Controller.prototype.getImportPromise = function (fieldNames, contactLines) {
+    Controller.prototype.getImportPromise = function (fieldNames, contactGroupGuid, contactLines) {
         return this.contactResource.import({
-            contactGroupGuid: this.$scope.contactGroup,
+            contactGroupGuid: contactGroupGuid,
             siteGuid: this.$scope.siteGuid,
         }, {
             fieldsOrder: fieldNames,
@@ -170,15 +200,52 @@ cmsdefine(['Underscore', 'CMS.OnlineMarketing/ContactImport/CSVParser', 'CMS/Mes
      */
     Controller.prototype.onImportBulkSuccess = function (data, processed) {
         var that = this;
-        if (data) {
-            this.$timeout(function () {
-                that.$scope.result.processed += processed;
-                that.$scope.result.imported += data.imported;
-                that.$scope.result.duplicities += data.duplicities;
-                that.$scope.result.failures += data.failures;
-                that.onRequestFinished();
-            });
+
+        if (!data) {
+            return;
         }
+
+        this.$timeout(function () {
+            var notImported,
+                includeHeader,
+                rows;
+
+            that.$scope.result.processed += processed;
+            that.$scope.result.imported += data.imported;
+            that.$scope.result.duplicities += data.duplicities;
+            that.$scope.result.failures += data.failures;
+
+            notImported = data.notImportedContacts;
+
+            if (notImported && notImported.messages && notImported.messages.length > 0) {
+                includeHeader = !that.$scope.result.csvData;
+                that.$scope.result.csvData = that.$scope.result.csvData || '';
+
+                // Append message to each row (contact)
+                rows = _.map(notImported.fieldValues, function (row, i) { return row.concat([notImported.messages[i]]); });
+
+                // Prepend header
+                if (includeHeader) {
+                    rows = [notImported.fieldsOrder.concat(['Explanation'])].concat(rows);
+                }
+
+                that.$scope.result.csvData += (includeHeader ? '' : '\r\n') + that._createCsv(rows);
+            }
+
+            that.onRequestFinished();
+        });
+    };
+
+
+    Controller.prototype._createCsv = function (rows) {
+        var escape = function (value) { return '"' + value.replace(/"/g, '""') + '"'; },
+            result = [],
+            i;
+
+        for (i = 0; i < rows.length; i += 1) {
+            result.push(_.map(rows[i], escape).join(','));
+        }
+        return result.join('\r\n');
     };
 
     return [directive];

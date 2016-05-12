@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_ImportExport_Pages_RestoreObject"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_ImportExport_Pages_RestoreObject"
     Theme="Default" ValidateRequest="false" EnableEventValidation="false" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Title="Export single object" Codebehind="RestoreObject.aspx.cs" %>
+    Title="Export single object"  Codebehind="RestoreObject.aspx.cs" %>
 
 
 <%@ Register Src="~/CMSAdminControls/UI/System/ActivityBar.ascx" TagName="ActivityBar"
@@ -43,7 +43,7 @@
                 <cms:CMSListBox runat="server" ID="lstImports" CssClass="ContentListBoxLow" Enabled="false" Rows="7" />
             </div>
             <div class="form-group">
-                <asp:Panel runat="server" ID="pnlLeftActions" CssClass="PageHeaderItemLeft">
+                <asp:Panel runat="server" ID="pnlLeftActions">
                     <cms:LocalizedLinkButton runat="server" ID="btnDelete" ResourceString="importconfiguration.deletepackage" OnClick="btnDelete_Click" />
                 </asp:Panel>
             </div>
@@ -61,7 +61,6 @@
         <asp:Label ID="lblResult" runat="server" CssClass="ContentLabel" EnableViewState="false" />
     </asp:Panel>
     <cms:AsyncControl ID="ucAsyncControl" runat="server" />
-    <asp:Literal ID="ltlScript" runat="Server" EnableViewState="false" />
 </asp:Content>
 <asp:Content ID="cntFooter" ContentPlaceHolderID="plcFooter" runat="server">
     <div class="FloatRight">

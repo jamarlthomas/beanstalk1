@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="DateIntervalSelector.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="DateIntervalSelector.ascx.cs"
     Inherits="CMSFormControls_Selectors_DateIntervalSelector" %>
 <div class="radio-list-vertical date-interval-selector">
     <cms:CMSRadioButton runat="server" ID="radToday" GroupName="rads" ResourceString="dateintervalsel.today" Checked="true" />

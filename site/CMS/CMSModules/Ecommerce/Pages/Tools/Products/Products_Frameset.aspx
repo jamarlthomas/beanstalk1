@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Products_Frameset.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Products_Frameset.aspx.cs"
     Inherits="CMSModules_Ecommerce_Pages_Tools_Products_Products_Frameset" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
     Title="E-commerce - Products" Theme="Default" %>
 <asp:Content runat="server" ID="cntContent" ContentPlaceHolderID="plcContent">

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Forums_Controls_Layouts_Flat_SearchResults" Codebehind="SearchResults.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Forums_Controls_Layouts_Flat_SearchResults"  Codebehind="SearchResults.ascx.cs" %>
 <%@ Import Namespace="CMS.Globalization" %>
 <%@ Import Namespace="CMS.SiteProvider" %>
 <%@ Register Namespace="CMS.Forums" Assembly="CMS.Forums" TagPrefix="cms" %>

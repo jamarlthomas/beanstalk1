@@ -1,6 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true" Codebehind="Benchmark.aspx.cs" Inherits="CMSModules_System_Macros_Benchmark" Theme="Default" %>
-
-<%@ Register Src="~/CMSAdminControls/UI/Macros/MacroEditor.ascx" TagName="MacroEditor" TagPrefix="cms" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"  Codebehind="Benchmark.aspx.cs" Inherits="CMSModules_System_Macros_Benchmark" Theme="Default" %>
 
 <asp:Content ID="cnt" ContentPlaceHolderID="plcContent" runat="server">
     <div class="form-horizontal">

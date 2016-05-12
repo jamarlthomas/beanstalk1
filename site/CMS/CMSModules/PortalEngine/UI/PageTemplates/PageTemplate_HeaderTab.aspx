@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_PageTemplates_PageTemplate_HeaderTab"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_PageTemplates_PageTemplate_HeaderTab"
     Theme="Default" ValidateRequest="false" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Title="Page Template Edit - Header" Codebehind="PageTemplate_HeaderTab.aspx.cs" EnableEventValidation="false" %>
+    Title="Page Template Edit - Header"  Codebehind="PageTemplate_HeaderTab.aspx.cs" EnableEventValidation="false" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <cms:ObjectLockingPanel runat="server" ID="pnlObjectLocking">

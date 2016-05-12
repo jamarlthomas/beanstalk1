@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SmartSearch_Controls_SearchDialog"
-    Codebehind="SearchDialog.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SmartSearch_Controls_SearchDialog"
+     Codebehind="SearchDialog.ascx.cs" %>
 
 <asp:Panel ID="pnlDialog" runat="server" DefaultButton="btnSearch" CssClass="search-dialog">
     <div class="form-horizontal">

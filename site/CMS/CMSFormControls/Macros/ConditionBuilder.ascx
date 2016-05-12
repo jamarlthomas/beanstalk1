@@ -1,10 +1,8 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_Macros_ConditionBuilder"
-    Codebehind="ConditionBuilder.ascx.cs" %>
-<%@ Register Src="~/CMSAdminControls/UI/Macros/MacroEditor.ascx" TagName="MacroEditor"
-    TagPrefix="cms" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_Macros_ConditionBuilder"
+     Codebehind="ConditionBuilder.ascx.cs" %>
 <cms:CMSUpdatePanel runat="server" ID="pnlUpdate" UpdateMode="Conditional">
     <ContentTemplate>
-        <div class="control-group-inline condition-builder">
+        <div class="control-group-inline control-group-inline-wrap condition-builder">
             <cms:CMSPanel ID="pnlConditionBuilder" ShortID="pC" runat="server" CssClass="editing-form-control-nested-control keep-white-space-fixed">
                 <cms:MacroEditor runat="server" ID="txtMacro" SingleLineMode="<%# SingleLineMode %>" />
                 <asp:Panel runat="server" ID="pnlRule" Visible="false" CssClass="ConditionBuilderRule form-control">

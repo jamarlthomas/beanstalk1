@@ -5,6 +5,7 @@ using System.Linq;
 
 using CMS.Helpers;
 using CMS.Newsletters;
+using CMS.Scheduler;
 using CMS.UIControls;
 using CMS.SiteProvider;
 using CMS.DataEngine;
@@ -40,8 +41,8 @@ public partial class CMSModules_Newsletters_Controls_SendVariantIssue : CMSAdmin
 
     #region "Private variables"
 
-    private IssueInfo parentIssue = null;
-    private ABTestInfo abTest = null;
+    private IssueInfo parentIssue;
+    private ABTestInfo abTest;
 
     #endregion
 
@@ -327,6 +328,7 @@ public partial class CMSModules_Newsletters_Controls_SendVariantIssue : CMSAdmin
     /// <param name="currState">Current state</param>
     /// <param name="issue">Issue</param>
     /// <param name="winnerOption">Winner option</param>
+    /// <param name="plannedMailoutTime">Planned mailout time</param>
     private string GetInfoMessage(int currState, IssueInfo issue, ABTestWinnerSelectionEnum winnerOption, DateTime plannedMailoutTime)
     {
         if (issue == null)
@@ -341,38 +343,64 @@ public partial class CMSModules_Newsletters_Controls_SendVariantIssue : CMSAdmin
             case STATE_WAITING_TO_SEND_PAGE:
                 return GetString("Newsletter_Issue_Header.NotSentYet");
             case STATE_TEST_WAITING_TO_SEL_WINNER:
+
+                // Get current planned winner selection task 
+                var taskToSelectWinner = TaskInfoProvider.GetTaskInfo(abTest.TestWinnerScheduledTaskID);
+                var plannedWinnerSelectionTime = (taskToSelectWinner == null) ? DateTimeHelper.ZERO_TIME : taskToSelectWinner.TaskNextRunTime;
+
                 switch (winnerOption)
                 {
                     case ABTestWinnerSelectionEnum.Manual:
                         if (issue.IssueMailoutTime > DateTime.Now)
                         {
-                            return String.Format(GetString("newsletterinfo.issuesentwaitingtosentwinner"), issue.IssueMailoutTime, (abTest != null ? abTest.TestWinnerSelected.ToString() : GetString("general.na")));
+                            return String.Format(GetString("newsletterinfo.issuesentwaitingtosentwinner"), GetTimeOrNA(issue.IssueMailoutTime), GetWinnerSelectionTime());
                         }
-                        else
-                        {
-                            return String.Format(GetString("newsletterinfo.issuesentwaitingtoselwinnermanually"), issue.IssueMailoutTime);
-                        }
+                        return String.Format(GetString("newsletterinfo.issuesentwaitingtoselwinnermanually"), GetTimeOrNA(issue.IssueMailoutTime));
                     case ABTestWinnerSelectionEnum.OpenRate:
-                        return String.Format(GetString("newsletterinfo.issuesentwaitingtoselwinneropen"), issue.IssueMailoutTime, plannedMailoutTime);
+                        return String.Format(GetString("newsletterinfo.issuesentwaitingtoselwinneropen"), GetTimeOrNA(issue.IssueMailoutTime), GetTimeOrNA(plannedWinnerSelectionTime));
                     case ABTestWinnerSelectionEnum.TotalUniqueClicks:
-                        return String.Format(GetString("newsletterinfo.issuesentwaitingtoselwinnerclicks"), issue.IssueMailoutTime, plannedMailoutTime);
+                        return String.Format(GetString("newsletterinfo.issuesentwaitingtoselwinnerclicks"), GetTimeOrNA(issue.IssueMailoutTime), GetTimeOrNA(plannedWinnerSelectionTime));
                 }
                 break;
             case STATE_TEST_READY_FOR_SENDING:
-                return String.Format(GetString("newsletter_issue_header.issuesending"), plannedMailoutTime);
+                return String.Format(GetString("newsletter_issue_header.issuesending"), GetTimeOrNA(plannedMailoutTime));
             case STATE_TEST_FINISHED:
                 switch (winnerOption)
                 {
                     case ABTestWinnerSelectionEnum.Manual:
-                        return String.Format(GetString("newsletterinfo.issuesentwinnerselmanually"), issue.IssueMailoutTime, (abTest != null ? abTest.TestWinnerSelected.ToString() : GetString("general.na")));
+                        return String.Format(GetString("newsletterinfo.issuesentwinnerselmanually"), GetTimeOrNA(issue.IssueMailoutTime), GetWinnerSelectionTime());
                     case ABTestWinnerSelectionEnum.OpenRate:
-                        return String.Format(GetString("newsletterinfo.issuesentwinnerselopen"), (abTest != null ? abTest.TestWinnerSelected.ToString() : GetString("general.na")));
+                        return String.Format(GetString("newsletterinfo.issuesentwinnerselopen"), GetWinnerSelectionTime());
                     case ABTestWinnerSelectionEnum.TotalUniqueClicks:
-                        return String.Format(GetString("newsletterinfo.issuesentwinnerselclicks"), (abTest != null ? abTest.TestWinnerSelected.ToString() : GetString("general.na")));
+                        return String.Format(GetString("newsletterinfo.issuesentwinnerselclicks"), GetWinnerSelectionTime());
                 }
                 break;
         }
         return null;
+    }
+
+
+    /// <summary>
+    /// Get time of winner selection converted to string.
+    /// </summary>
+    /// <returns>Returns time of winner selection or N/A when time is not known or abtest does not exist</returns>
+    private string GetWinnerSelectionTime()
+    {
+        if (abTest != null && (abTest.TestWinnerSelected > DateTimeHelper.ZERO_TIME))
+        {
+            return abTest.TestWinnerSelected.ToString();
+        }
+
+        return GetString("general.na");
+    }
+
+
+    /// <summary>
+    /// Converts time to string. Returns N/A when time is not known or incorrect.
+    /// </summary>
+    private string GetTimeOrNA(DateTime dateTime)
+    {
+        return dateTime > DateTimeHelper.ZERO_TIME ? dateTime.ToString() : GetString("general.na");
     }
 
 

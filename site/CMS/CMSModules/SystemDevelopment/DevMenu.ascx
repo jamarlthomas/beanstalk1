@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SystemDevelopment_DevMenu" Codebehind="DevMenu.ascx.cs" EnableViewState="false" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SystemDevelopment_DevMenu"  Codebehind="DevMenu.ascx.cs" EnableViewState="false" %>
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" TagName="HeaderActions"
     TagPrefix="cms" %>
 <div class="cms-edit-menu">

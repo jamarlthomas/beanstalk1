@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    EnableEventValidation="false" Theme="Default" Codebehind="Add_Contact_Dialog.aspx.cs"
+    EnableEventValidation="false" Theme="Default"  Codebehind="Add_Contact_Dialog.aspx.cs"
     Inherits="CMSModules_ContactManagement_Pages_Tools_Account_Add_Contact_Dialog" %>
 
 <%@ Register Src="~/CMSModules/ContactManagement/FormControls/ContactRoleSelector.ascx"

@@ -15,10 +15,10 @@ public partial class CMSModules_Blogs_Controls_SubscriptionApproval : CMSUserCon
 {
     #region "Private variables"
 
-    private string mSubscriptionHash = null;
-    private string mRequestTime = null;
-    private BlogPostSubscriptionInfo mSubscriptionObject = null;
-    private TreeNode mSubscriptionSubject = null;
+    private string mSubscriptionHash;
+    private string mRequestTime;
+    private BlogPostSubscriptionInfo mSubscriptionObject;
+    private TreeNode mSubscriptionSubject;
 
     #endregion
 
@@ -86,13 +86,13 @@ public partial class CMSModules_Blogs_Controls_SubscriptionApproval : CMSUserCon
 
 
     /// <summary>
-    /// Get message board subscription object
+    /// Get blog post subscription object
     /// </summary>
     private BlogPostSubscriptionInfo SubscriptionObject
     {
         get
         {
-            if (mSubscriptionObject == null)
+            if ((mSubscriptionObject == null) && !String.IsNullOrEmpty(mSubscriptionHash))
             {
                 mSubscriptionObject = BlogPostSubscriptionInfoProvider.GetBlogPostSubscriptionInfo(mSubscriptionHash);
             }
@@ -125,6 +125,14 @@ public partial class CMSModules_Blogs_Controls_SubscriptionApproval : CMSUserCon
 
     #region "Methods"
 
+    protected void Page_Init(object sender, EventArgs e)
+    {
+        // Get data from query string
+        mSubscriptionHash = QueryHelper.GetString("blogsubscriptionhash", string.Empty);
+        mRequestTime = QueryHelper.GetString("datetime", string.Empty);
+    }
+
+
     protected void Page_Load(object sender, EventArgs e)
     {
         // If StopProcessing flag is set, do nothing
@@ -142,13 +150,9 @@ public partial class CMSModules_Blogs_Controls_SubscriptionApproval : CMSUserCon
 
         if (!QueryHelper.ValidateHash("hash", "aliaspath", settings))
         {
-            URLHelper.Redirect(ResolveUrl("~/CMSMessages/Error.aspx?title=" + ResHelper.GetString("dialogs.badhashtitle") + "&text=" + ResHelper.GetString("dialogs.badhashtext")));
+            URLHelper.Redirect(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext"));
         }
-
-        // Get data from query string
-        mSubscriptionHash = QueryHelper.GetString("blogsubscriptionhash", string.Empty);
-        mRequestTime = QueryHelper.GetString("datetime", string.Empty);
-            
+        
         bool controlPb = false;
 
         if (RequestHelper.IsPostBack())

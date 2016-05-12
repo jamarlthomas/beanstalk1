@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 
+using CMS.Core;
 using CMS.Helpers;
 using CMS.Newsletters;
 using CMS.SiteProvider;
@@ -8,14 +9,6 @@ using CMS.WebAnalytics;
 
 public partial class CMSModules_Newsletters_Controls_SubscriptionApproval : CMSUserControl
 {
-    #region "Variables"
-
-    private string mSuccessfulApprovalText = null;
-    private string mUnsuccessfulApprovalText = null;
-
-    #endregion
-
-
     #region "Public properties"
 
     /// <summary>
@@ -23,14 +16,8 @@ public partial class CMSModules_Newsletters_Controls_SubscriptionApproval : CMSU
     /// </summary>
     public string SuccessfulApprovalText
     {
-        get
-        {
-            return mSuccessfulApprovalText;
-        }
-        set
-        {
-            mSuccessfulApprovalText = value;
-        }
+        get;
+        set;
     }
 
 
@@ -39,14 +26,8 @@ public partial class CMSModules_Newsletters_Controls_SubscriptionApproval : CMSU
     /// </summary>
     public string UnsuccessfulApprovalText
     {
-        get
-        {
-            return mUnsuccessfulApprovalText;
-        }
-        set
-        {
-            mUnsuccessfulApprovalText = value;
-        }
+        get;
+        set;
     }
 
     #endregion
@@ -65,7 +46,6 @@ public partial class CMSModules_Newsletters_Controls_SubscriptionApproval : CMSU
 
         string subscriptionHash = QueryHelper.GetString("subscriptionhash", string.Empty);
         string requestTime = QueryHelper.GetString("datetime", string.Empty);
-
         DateTime datetime = DateTimeHelper.ZERO_TIME;
 
         // Get date and time
@@ -88,91 +68,67 @@ public partial class CMSModules_Newsletters_Controls_SubscriptionApproval : CMSU
             return;
         }
 
-        // Try to approve subscription
-        SubscriberInfoProvider.ApprovalResult result = SubscriberInfoProvider.ApproveSubscription(subscriptionHash, false, SiteContext.CurrentSiteName, datetime);
+        var approvalService = Service<ISubscriptionApprovalService>.Entry();
+        var result = approvalService.ApproveSubscription(subscriptionHash, false, SiteContext.CurrentSiteName, datetime);
 
         switch (result)
         {
-            // Approving subscription was successful
-            case SubscriberInfoProvider.ApprovalResult.Success:
-                if (!String.IsNullOrEmpty(SuccessfulApprovalText))
+            case ApprovalResult.Success:
+                lblInfo.Text = !String.IsNullOrEmpty(SuccessfulApprovalText) ? SuccessfulApprovalText : ResHelper.GetString("newsletter.successful_approval");
+
+                var subscription = SubscriberNewsletterInfoProvider.GetSubscriberNewsletterInfo(subscriptionHash);
+                if (subscription == null)
                 {
-                    lblInfo.Text = SuccessfulApprovalText;
-                }
-                else
-                {
-                    lblInfo.Text = ResHelper.GetString("newsletter.successful_approval");
+                    return;
                 }
 
-                // Log newsletter subscription activity
-                SubscriberNewsletterInfo sni = SubscriberNewsletterInfoProvider.GetSubscriberNewsletterInfo(subscriptionHash);
-                if ((sni != null) && sni.SubscriptionEnabled)
+                var newsletter = NewsletterInfoProvider.GetNewsletterInfo(subscription.NewsletterID);
+                var subscriber = SubscriberInfoProvider.GetSubscriberInfo(subscription.SubscriberID);
+
+                if ((newsletter == null) || (subscriber == null))
                 {
-                    NewsletterInfo news = NewsletterInfoProvider.GetNewsletterInfo(sni.NewsletterID);
-                    SubscriberInfo sb = SubscriberInfoProvider.GetSubscriberInfo(sni.SubscriberID);
-                    if (sb != null)
-                    {
-                        // Under what contacs this subscriber belogs to?
-                        int contactId = ActivityTrackingHelper.GetContactID(sb);
-                        if (contactId > 0)
-                        {
-                            Activity activity = new ActivityNewsletterSubscribing(sb, news, AnalyticsContext.ActivityEnvironmentVariables);
-                            if (activity.Data != null)
-                            {
-                                activity.Data.ContactID = contactId;
-                                activity.Log();
-                            }
-                        }
-                    }
+                    return;
                 }
+
+                LogNewsletterSubscriptionActivity(subscriber, newsletter);
                 break;
 
-            case SubscriberInfoProvider.ApprovalResult.Failed:
-                if (!String.IsNullOrEmpty(UnsuccessfulApprovalText))
-                {
-                    lblInfo.Text = UnsuccessfulApprovalText;
-                }
-                else
-                {
-                    lblInfo.Text = ResHelper.GetString("newsletter.approval_failed");
-                }
+            case ApprovalResult.Failed:
+                lblInfo.Text = !String.IsNullOrEmpty(UnsuccessfulApprovalText) ? UnsuccessfulApprovalText : ResHelper.GetString("newsletter.approval_failed");
                 break;
 
-            case SubscriberInfoProvider.ApprovalResult.TimeExceeded:
-                if (!String.IsNullOrEmpty(UnsuccessfulApprovalText))
-                {
-                    lblInfo.Text = UnsuccessfulApprovalText;
-                }
-                else
-                {
-                    lblInfo.Text = ResHelper.GetString("newsletter.approval_timeexceeded");
-                }
+            case ApprovalResult.TimeExceeded:
+                lblInfo.Text = !String.IsNullOrEmpty(UnsuccessfulApprovalText) ? UnsuccessfulApprovalText : ResHelper.GetString("newsletter.approval_timeexceeded");
                 break;
 
-            case SubscriberInfoProvider.ApprovalResult.AlreadyApproved:
-                if (!String.IsNullOrEmpty(SuccessfulApprovalText))
-                {
-                    lblInfo.Text = SuccessfulApprovalText;
-                }
-                else
-                {
-                    lblInfo.Text = ResHelper.GetString("newsletter.successful_approval");
-                }
+            case ApprovalResult.AlreadyApproved:
+                lblInfo.Text = !String.IsNullOrEmpty(SuccessfulApprovalText) ? SuccessfulApprovalText : ResHelper.GetString("newsletter.successful_approval");
                 break;
 
             // Subscription not found
             default:
-            case SubscriberInfoProvider.ApprovalResult.NotFound:
-                if (!String.IsNullOrEmpty(UnsuccessfulApprovalText))
-                {
-                    lblInfo.Text = UnsuccessfulApprovalText;
-                }
-                else
-                {
-                    lblInfo.Text = ResHelper.GetString("newsletter.approval_invalid");
-                }
+                lblInfo.Text = !String.IsNullOrEmpty(UnsuccessfulApprovalText) ? UnsuccessfulApprovalText : ResHelper.GetString("newsletter.approval_invalid");
                 break;
         }
+    }
+
+
+    private static void LogNewsletterSubscriptionActivity(SubscriberInfo subscriber, NewsletterInfo newsletter)
+    {
+        // Under what contacts this subscriber belogs to?
+        int contactId = ActivityTrackingHelper.GetContactID(subscriber);
+        if (contactId <= 0)
+        {
+            return;
+        }
+
+        // Activity object is created for contact taken from ActivityContext.
+        // Set ID of contact opening this email into this context otherwise new contact could be created.
+        var activityContext = AnalyticsContext.ActivityEnvironmentVariables;
+        activityContext.ContactID = contactId;
+
+        var activity = new ActivityNewsletterSubscribing(subscriber, newsletter, activityContext);
+        activity.Log();
     }
 
     #endregion

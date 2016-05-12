@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Helpers;
@@ -45,8 +45,8 @@ public partial class CMSModules_Content_CMSDesk_View_ViewFile : CMSContentPage
                     lblFileNameText.Text = atInfo.AttachmentName;
 
                     // Get attachment URL
-                    string attUrl = null;
-                    if (Node.NodeClassName.ToLowerCSafe() == "cms.file")
+                    string attUrl;
+                    if (Node.IsFile())
                     {
                         attUrl = "~/CMSPages/GetFile.aspx?nodeguid=" + Node.NodeGUID;
                     }

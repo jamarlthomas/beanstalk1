@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Collections;
 using System.Linq;
 using System.Net;
 using System.Security.Principal;
@@ -11,6 +10,7 @@ using System.Threading;
 using System.Web;
 using System.Web.UI.WebControls;
 
+using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.IO;
@@ -24,6 +24,19 @@ using CMS.DocumentEngine;
 
 public partial class CMSAdminControls_Validation_CssValidator : DocumentValidator
 {
+    #region "Data class"
+
+    [Serializable]
+    private class ValidationData
+    {
+        public DataSet DataSource;
+
+        public bool PostProcessingRequired;
+    }
+
+    #endregion
+
+
     #region "Constants"
 
     private const string DEFAULT_VALIDATOR_URL = "http://jigsaw.w3.org/css-validator/validator";
@@ -43,16 +56,12 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
     private Regex mLinkedStylesRegex;
     private CurrentUserInfo mCurrentUser;
     private string currentCulture = CultureHelper.DefaultUICultureCode;
-    private static DataSet mDataSource;
-    private static readonly Hashtable mPostProcessingRequired = new Hashtable();
-    private static readonly Hashtable mDataSources = new Hashtable();
-    private static readonly Hashtable mErrors = new Hashtable();
 
     #endregion
 
 
     #region "Properties"
-
+    
     /// <summary>
     /// URL to which validator requests will be sent
     /// </summary>
@@ -65,18 +74,6 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
         set
         {
             mValidatorURL = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Current log context
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
         }
     }
 
@@ -115,19 +112,23 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
     {
         get
         {
-            if (mDataSource == null)
+            var s = Data;
+            if (s.DataSource == null)
             {
-                mDataSource = base.DataSource ?? mDataSources[ctlAsyncLog.ProcessGUID] as DataSet;
+                s.DataSource = base.DataSource;
             }
-            base.DataSource = mDataSource;
 
-            return mDataSource;
+            base.DataSource = s.DataSource;
+
+            return s.DataSource;
         }
         set
         {
-            mDataSource = value;
-            mDataSources[ctlAsyncLog.ProcessGUID] = mDataSource;
-            base.DataSource = mDataSource;
+            var s = Data;
+
+            s.DataSource = value;
+
+            base.DataSource = s.DataSource;
         }
     }
 
@@ -139,11 +140,11 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
     {
         get
         {
-            return ValidationHelper.GetString(mErrors["LinkChecker_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mErrors["LinkChecker_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -155,11 +156,7 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
     {
         get
         {
-            if (mInlineStylesRegex == null)
-            {
-                mInlineStylesRegex = RegexHelper.GetRegex("<style[^>]*>(?<comment><!--)?(?<css>[^<]*)(?(comment)-->)</style>", RegexOptions.Singleline);
-            }
-            return mInlineStylesRegex;
+            return mInlineStylesRegex ?? (mInlineStylesRegex = RegexHelper.GetRegex("<style[^>]*>(?<comment><!--)?(?<css>[^<]*)(?(comment)-->)</style>", RegexOptions.Singleline));
         }
     }
 
@@ -171,11 +168,7 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
     {
         get
         {
-            if (mLinkedStylesRegex == null)
-            {
-                mLinkedStylesRegex = RegexHelper.GetRegex("(?<link><link)?(?(link)[^>]*(?<type>type\\s*=\\s*(?<qc1>[\"']?)text/css(?(qc1)\\k<qc1>))?[^>]*href\\s*=\\s*(?<qc2>[\"'])|@import\\s*url\\s*(?<bracket>\\()?(?<qc3>[\"'])?(?=([^<])*</style))(?<url>(?(link)[^\"'>\\s]*|[^\"']*))(?(link)(?(qc2)\\k<qc2>)[^>]*(?(type)|(\\s*type\\s*=\\s*(?<qc1>[\"']?)text/css(?(qc1)\\k<qc1>))))", RegexOptions.Singleline);
-            }
-            return mLinkedStylesRegex;
+            return mLinkedStylesRegex ?? (mLinkedStylesRegex = RegexHelper.GetRegex("(?<link><link)?(?(link)[^>]*(?<type>type\\s*=\\s*(?<qc1>[\"']?)text/css(?(qc1)\\k<qc1>))?[^>]*href\\s*=\\s*(?<qc2>[\"'])|@import\\s*url\\s*(?<bracket>\\()?(?<qc3>[\"'])?(?=([^<])*</style))(?<url>(?(link)[^\"'>\\s]*|[^\"']*))(?(link)(?(qc2)\\k<qc2>)[^>]*(?(type)|(\\s*type\\s*=\\s*(?<qc1>[\"']?)text/css(?(qc1)\\k<qc1>))))", RegexOptions.Singleline));
         }
     }
 
@@ -209,17 +202,20 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
 
 
     /// <summary>
-    /// Indicates if data post processing required
+    /// Validation data
     /// </summary>
-    private bool DataPostProcessing
+    private ValidationData Data
     {
         get
         {
-            return ValidationHelper.GetBoolean(mPostProcessingRequired[ctlAsyncLog.ProcessGUID], false);
-        }
-        set
-        {
-            mPostProcessingRequired[ctlAsyncLog.ProcessGUID] = value;
+            var data = ctlAsyncLog.ProcessData.Data as ValidationData;
+            if (data == null)
+            {
+                data = new ValidationData();
+                ctlAsyncLog.ProcessData.Data = data;
+            }
+
+            return data;
         }
     }
 
@@ -295,7 +291,6 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
         // Initialize events
         ctlAsyncLog.OnFinished += ctlAsync_OnFinished;
         ctlAsyncLog.OnError += ctlAsync_OnError;
-        ctlAsyncLog.OnRequestLog += ctlAsync_OnRequestLog;
         ctlAsyncLog.OnCancel += ctlAsync_OnCancel;
         ctlAsyncLog.PostbackOnError = true;
 
@@ -372,10 +367,10 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
         DataSet ds = null;
         if (!DataHelper.DataSourceIsEmpty(DataSource))
         {
-            if (DataPostProcessing)
+            if (Data.PostProcessingRequired)
             {
                 ds = DocumentValidationHelper.PostProcessValidationData(DataSource, DocumentValidationEnum.CSS, null);
-                DataPostProcessing = false;
+                Data.PostProcessingRequired = false;
             }
             else
             {
@@ -396,11 +391,10 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
         DataSource = null;
         pnlGrid.Visible = false;
 
-        CurrentLog.Close();
         CurrentError = string.Empty;
-        EnsureLog();
-
+        
         // Get the full domain
+        ctlAsyncLog.EnsureLog();
         ctlAsyncLog.Parameter = RequestContext.FullDomain + ";" + URLHelper.GetFullApplicationUrl() + ";" + URLHelper.RemoveProtocolAndDomain(Url);
         ctlAsyncLog.RunAsync(CheckCss, WindowsIdentity.GetCurrent());
     }
@@ -531,7 +525,7 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
     /// <param name="validationData">Validator parameters</param>
     /// <param name="parameter">Parameter</param>
     /// <returns>DataSet containing validator response</returns>
-    private DataSet GetValidationResults(Dictionary<string, string> validationData, string parameter)
+    private void GetValidationResults(Dictionary<string, string> validationData, string parameter)
     {
         DataSet dsResponse = null;
         List<string> validatedUrls = validationData.Keys.ToList();
@@ -653,8 +647,6 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
                 }
             }
         }
-
-        return dsResult;
     }
 
 
@@ -761,7 +753,7 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
             if (requests != null)
             {
                 GetValidationResults(requests, ValidationHelper.GetString(parameter, null));
-                DataPostProcessing = true;
+                Data.PostProcessingRequired = true;
             }
             else
             {
@@ -771,8 +763,7 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state == CMSThread.ABORT_REASON_STOP)
+            if (CMSThread.Stopped(ex))
             {
                 // When canceled
                 AddLog(ResHelper.GetString("validation.css.abort", currentCulture));
@@ -801,24 +792,19 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
     {
         ctlAsyncLog.Parameter = null;
         AddError(ResHelper.GetString("validation.validationcanceled"));
+        
         ScriptHelper.RegisterStartupScript(this, typeof(string), "CancelLog", ScriptHelper.GetScript("var __pendingCallbacks = new Array();"));
+        
         const string SEPARATOR = "<br />";
         int error = CurrentError.IndexOf(SEPARATOR);
+        
         mInfoText = CurrentError.Substring(0, error);
         mErrorText = CurrentError.Substring(error + SEPARATOR.Length);
+        
         pnlLog.Visible = false;
         pnlGrid.Visible = true;
-        CurrentLog.Close();
-        DataPostProcessing = true;
-    }
-
-
-    /// <summary>
-    /// On request log event
-    /// </summary>
-    private void ctlAsync_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
+        
+        Data.PostProcessingRequired = true;
     }
 
 
@@ -831,14 +817,16 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
         {
             ctlAsyncLog.Stop();
         }
+
         ctlAsyncLog.Parameter = null;
+
         if (!string.IsNullOrEmpty(CurrentError))
         {
             mErrorText = CurrentError;
         }
+
         pnlLog.Visible = false;
         pnlGrid.Visible = true;
-        CurrentLog.Close();
     }
 
 
@@ -851,19 +839,9 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
         {
             mErrorText = CurrentError;
         }
-        CurrentLog.Close();
+
         pnlLog.Visible = false;
         pnlGrid.Visible = true;
-    }
-
-
-    /// <summary>
-    /// Ensures the logging context
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext log = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-        return log;
     }
 
 
@@ -873,8 +851,7 @@ public partial class CMSAdminControls_Validation_CssValidator : DocumentValidato
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
 

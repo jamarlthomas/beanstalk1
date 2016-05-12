@@ -108,7 +108,7 @@ public class EditUserTabsExtender : UITabsExtender
                     if (SiteContext.CurrentSiteName != null)
                     {
                         // Check if E-commerce module is installed
-                        ecommerceOnSite = ModuleEntryManager.IsModuleLoaded(ModuleName.ECOMMERCE) && ResourceSiteInfoProvider.IsResourceOnSite("CMS.Ecommerce", SiteContext.CurrentSiteName);
+                        ecommerceOnSite = ModuleEntryManager.IsModuleLoaded(ModuleName.ECOMMERCE) && ResourceSiteInfoProvider.IsResourceOnSite(ModuleName.ECOMMERCE, SiteContext.CurrentSiteName);
                     }
 
                     if (!ecommerceOnSite)

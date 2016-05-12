@@ -1,7 +1,7 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSFormControls_Selectors_AlternativeFormSelection" ValidateRequest="false"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Title="Alternative form selection" Codebehind="AlternativeFormSelection.aspx.cs" %>
+    Title="Alternative form selection"  Codebehind="AlternativeFormSelection.aspx.cs" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <asp:Panel runat="server" ID="pnlContent">

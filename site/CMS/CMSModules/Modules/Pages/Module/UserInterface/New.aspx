@@ -1,5 +1,5 @@
-<%@ Page Title="Module edit - User interface - New" Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    AutoEventWireup="true" Theme="Default" Inherits="CMSModules_Modules_Pages_Module_UserInterface_New" Codebehind="New.aspx.cs" %>
+﻿<%@ Page Title="Module edit - User interface - New" Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+    AutoEventWireup="true" Theme="Default" Inherits="CMSModules_Modules_Pages_Module_UserInterface_New"  Codebehind="New.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UIProfiles/UIElementEdit.ascx" TagName="UIElementEdit"
     TagPrefix="cms" %>

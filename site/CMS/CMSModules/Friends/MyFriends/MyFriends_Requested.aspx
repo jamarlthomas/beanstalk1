@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Theme="default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Inherits="CMSModules_Friends_MyFriends_MyFriends_Requested" Codebehind="MyFriends_Requested.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Theme="default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Inherits="CMSModules_Friends_MyFriends_MyFriends_Requested"  Codebehind="MyFriends_Requested.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Friends/Controls/FriendsRequestedList.ascx" TagName="FriendsListRequested"
     TagPrefix="cms" %>

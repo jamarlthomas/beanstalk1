@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Web;
@@ -272,7 +272,7 @@ public partial class CMSWebParts_Search_cmscompletesearchdialog : CMSAbstractWeb
         }
         set
         {
-            SetValue("SelctOnlyPublished", value);
+            SetValue("SelectOnlyPublished", value);
             srchResults.SelectOnlyPublished = value;
         }
     }

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSInstall_Controls_WizardSteps_SiteCreationDialog" Codebehind="SiteCreationDialog.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSInstall_Controls_WizardSteps_SiteCreationDialog"  Codebehind="SiteCreationDialog.ascx.cs" %>
 <asp:HiddenField ID="hdnName" runat="server" />
 <asp:HiddenField ID="hdnLastSelected" runat="server" />
 <asp:Literal ID="ltlScript" EnableViewState="false" runat="server" />

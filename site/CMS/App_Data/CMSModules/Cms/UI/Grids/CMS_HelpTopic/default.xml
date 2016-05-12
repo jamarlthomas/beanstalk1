@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <grid>
   <actions parameters="HelpTopicID">
+    <action name="#move" caption="$general.dragmove$" fonticonclass="icon-dots-vertical" externalsourcename="move_modify" />
     <action name="edit" caption="$general.edit$" fonticonclass="icon-edit" fonticonstyle="allow" />
     <action name="#delete" caption="$general.delete$" fonticonclass="icon-bin" fonticonstyle="critical" confirmation="$general.confirmdelete$" externalsourcename="delete_modify" />
-    <action name="#moveup" caption="$Unigrid.Groups.Actions.up$" fonticonclass="icon-chevron-up" externalsourcename="moveup_modify" />
-    <action name="#movedown" caption="$Unigrid.Groups.Actions.down$" fonticonclass="icon-chevron-down" externalsourcename="movedown_modify" />
   </actions>
   <columns>
     <column source="HelpTopicName" caption="$general.name$" wrap="false" allowsorting="false" localize="true">

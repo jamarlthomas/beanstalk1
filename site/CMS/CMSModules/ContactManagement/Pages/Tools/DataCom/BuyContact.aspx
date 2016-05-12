@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" EnableEventValidation="false" Theme="Default" Codebehind="BuyContact.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_DataCom_BuyContact" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" EnableEventValidation="false" Theme="Default"  Codebehind="BuyContact.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_DataCom_BuyContact" %>
 
 <%@ Register Src="~/CMSModules/ContactManagement/Controls/UI/DataCom/ErrorSummary.ascx" TagName="ErrorSummary" TagPrefix="cms" %>
 <asp:Content ID="MainContent" ContentPlaceHolderID="plcContent" runat="Server">

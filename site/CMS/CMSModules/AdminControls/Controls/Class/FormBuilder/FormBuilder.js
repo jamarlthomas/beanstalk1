@@ -2,6 +2,11 @@
 
     var postbackInProgress = false;
     var isFormEmpty = false;
+    var saveLabel;
+    var savingDelayer;
+    var savedDelayer;
+    var savedMsgDelayer;
+    var allowSavedMsg = false;
 
     function init() {
         $cmsj(".editing-form-category-fields").sortable({
@@ -64,13 +69,15 @@
                     // Send position to server
                     doFieldAction(data);
                 }
+
+                showSavingInfo();
             },
         });
 
 
         // We need 'change' event before 'mousedown' event and
         // setTimeout with 1 ms is workaround that helps 
-        // achieve this behaviour.
+        // achieve this behavior.
         $cmsj('.editing-form-category-fields > div').on('mousedown', function () {
             var context = this;
             setTimeout(function () {
@@ -79,7 +86,7 @@
         });
 
 
-        // Deselecting field after clicking outside form
+        // De-selecting field after clicking outside form
         $cmsj('.form-builder-form').on('click', deselectFieldAndHidePanel);
         
         var pageRequestManager = Sys.WebForms.PageRequestManager.getInstance();
@@ -99,6 +106,9 @@
         $cmsj('.form-builder-form').on('scroll', function () {
             FormBuilder.scrollPosition = this.scrollTop;
         });
+
+
+        saveLabel = document.getElementById('lblSaveInfo');
     }
 
 
@@ -211,6 +221,8 @@
         if ($cmsj(this).is(':radio') || this.previousValue !== value) {
             doPostBack('saveSettings');
             this.previousValue = value;
+
+            showSavingInfo();
         }
     }
 
@@ -219,7 +231,7 @@
         clearTimeout(this.delayer);
 
         // context must be set as variable, because setTimeout function 
-        // is always runned under global context, so in this case we 
+        // is always run under global context, so in this case we 
         // use variable "context" as pointer to our original context.
         var context = this;
         this.delayer = setTimeout(function () {
@@ -229,8 +241,6 @@
 
 
     function receiveServerData(arg, context) {
-        //console.log(arg);
-
         var data = arg.split(":");
 
         switch (data[0]) {
@@ -242,6 +252,9 @@
                 errorLabel.addClass("form-builder-error");
                 errorLabel.text(data[1].replace("##COLON##", ":"));
                 errorLabel.append(closeElem);
+                break;
+            default:
+                showSavedInfo();
                 break;
         }
     }
@@ -268,6 +281,35 @@
     }
 
 
+    function showSavingInfo() {
+        clearTimeout(savingDelayer);
+        clearTimeout(savedDelayer);
+        clearTimeout(savedMsgDelayer);
+        allowSavedMsg = false;
+
+        saveLabel.textContent = (typeof msgSaving != 'undefined') ? msgSaving : 'Saving...';
+        saveLabel.style.display = '';
+        
+        // Hide info in case of a long delay (possible error)
+        savingDelayer = setTimeout(function () { saveLabel.style.display = 'none'; }, 5000);
+
+        // Make sure the saving message is not overwritten immediately with the saved message
+        savedMsgDelayer = setTimeout(function() { allowSavedMsg = true; }, 700);
+    }
+
+
+    function showSavedInfo() {
+        if (allowSavedMsg) {
+            clearTimeout(savingDelayer);
+
+            saveLabel.textContent = (typeof msgSaved != 'undefined') ? msgSaved : 'All changes saved';
+            saveLabel.style.display = '';
+        } else {
+            savedDelayer = setTimeout(function() { showSavedInfo(); }, 200);
+        }
+    }
+
+
     return {
         receiveServerData: receiveServerData,
         setSaveSettingsTimeout: setSaveSettingsTimeout,
@@ -277,7 +319,9 @@
         doPostBack: doPostBack,
         showEmptyFormPlaceholder: showEmptyFormPlaceholder,
         setFocusToInput: setFocusToInput,
-        addNewField: addNewField
+        addNewField: addNewField,
+        showSavingInfo: showSavingInfo,
+        showSavedInfo: showSavedInfo
     };
 }());
 

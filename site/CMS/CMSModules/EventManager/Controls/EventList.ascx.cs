@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 using System.Data;
 
@@ -246,7 +246,7 @@ public partial class CMSModules_EventManager_Controls_EventList : CMSAdminContro
             // If not show all
             if (siteName != TreeProvider.ALL_SITES)
             {
-                gridElem.WhereCondition = "(NodeLinkedNodeID IS NULL AND SiteName LIKE '" + siteName + "')";
+                gridElem.WhereCondition = "(NodeLinkedNodeID IS NULL AND NodeSiteID = " + SiteInfoProvider.GetSiteID(siteName) + ")";
             }
             else
             {
@@ -254,22 +254,18 @@ public partial class CMSModules_EventManager_Controls_EventList : CMSAdminContro
             }
 
             // Filter time interval
-            if (EventScope != "all")
+            if (EventScope == "all")
             {
-                if (EventScope == "upcoming")
-                {
-                    gridElem.WhereCondition = SqlHelper.AddWhereCondition(gridElem.WhereCondition, "EventDate >= @Date");
-                }
-                else
-                {
-                    gridElem.WhereCondition = SqlHelper.AddWhereCondition(gridElem.WhereCondition, "EventDate <= @Date");
-                }
-
-                QueryDataParameters parameters = new QueryDataParameters();
-                parameters.Add("@Date", DateTime.Now);
-
-                gridElem.QueryParameters = parameters;
+                return;
             }
+
+            string conditionOperator = (EventScope == "upcoming") ? ">=" : "<=";
+            gridElem.WhereCondition = SqlHelper.AddWhereCondition(gridElem.WhereCondition, String.Format("EventDate {0} @Date", conditionOperator));
+
+            QueryDataParameters parameters = new QueryDataParameters();
+            parameters.Add("@Date", DateTime.Now);
+
+            gridElem.QueryParameters = parameters;
         }
         else
         {
@@ -323,12 +319,11 @@ public partial class CMSModules_EventManager_Controls_EventList : CMSAdminContro
             case "documentname":
                 {
                     data = (DataRowView)parameter;
-                    string siteName = ValidationHelper.GetString(data["SiteName"], String.Empty);
                     string documentName = ValidationHelper.GetString(data["DocumentName"], String.Empty);
                     string culture = ValidationHelper.GetString(data["DocumentCulture"], String.Empty);
                     int nodeID = ValidationHelper.GetInteger(data["NodeID"], 0);
 
-                    SiteInfo si = SiteInfoProvider.GetSiteInfo(siteName);
+                    SiteInfo si = SiteInfoProvider.GetSiteInfo(data["NodeSiteID"].ToInteger(0));
                     if (si != null)
                     {
                         return "<a class=\"js-unigrid-action js-edit\" " +

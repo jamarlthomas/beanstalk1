@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SocialMarketing_FormControls_FacebookPageAccessToken" Codebehind="FacebookPageAccessToken.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SocialMarketing_FormControls_FacebookPageAccessToken"  Codebehind="FacebookPageAccessToken.ascx.cs" %>
 
 <script type="text/javascript">
     function fbShowMessage(labelId, msg, isError) {

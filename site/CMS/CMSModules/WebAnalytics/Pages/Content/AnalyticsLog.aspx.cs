@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 using CMS.DocumentEngine;
 using CMS.Helpers;
@@ -61,7 +58,7 @@ public partial class CMSModules_WebAnalytics_Pages_Content_AnalyticsLog : CMSPag
                     switch (values[3])
                     {
                         case "0":
-                            name = "Uknown OS";
+                            name = "Unknown OS";
                             break;
 
                         case "1":
@@ -107,7 +104,7 @@ public partial class CMSModules_WebAnalytics_Pages_Content_AnalyticsLog : CMSPag
                     bool hasJava = (values[5].ToLowerCSafe() != "false");
                     string value = hasJava ? "hj" : "nj";
                     HitLogProvider.LogHit(HitLogProvider.JAVA, siteName, cultureCode, value, 0);
-                    CMSDataContext.Current.BrowserHelper.IsSilverlightInstalled = hasJava;
+                    CMSDataContext.Current.BrowserHelper.IsJavaInstalled = hasJava;
                 }
 
                 // Flash                
@@ -116,7 +113,7 @@ public partial class CMSModules_WebAnalytics_Pages_Content_AnalyticsLog : CMSPag
                     bool hasFlash = (values[6] != "0");
                     string value = hasFlash ? "hf" : "nf";
                     HitLogProvider.LogHit(HitLogProvider.FLASH, siteName, cultureCode, value, 0);
-                    CMSDataContext.Current.BrowserHelper.IsSilverlightInstalled = hasFlash;
+                    CMSDataContext.Current.BrowserHelper.IsFlashInstalled = hasFlash;
                 }
             }
         }

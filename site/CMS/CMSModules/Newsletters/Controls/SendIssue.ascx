@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SendIssue.ascx.cs" Inherits="CMSModules_Newsletters_Controls_SendIssue" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SendIssue.ascx.cs" Inherits="CMSModules_Newsletters_Controls_SendIssue" %>
 
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server" ChildrenAsTriggers="true">
     <ContentTemplate>
@@ -18,7 +18,7 @@
                                 DisplayColon="true" AssociatedControlID="calendarControl" />
                         </div>
                         <div class="editing-form-value-cell">
-                            <cms:DateTimePicker ID="calendarControl" runat="server" Enabled="false" SupportFolder="~/CMSAdminControls/Calendar" />
+                            <cms:DateTimePicker ID="calendarControl" runat="server" Enabled="false" />
                         </div>
                     </div>
                 </div>

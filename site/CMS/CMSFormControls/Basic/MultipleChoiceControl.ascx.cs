@@ -1,59 +1,65 @@
 ﻿using System;
-using System.Text;
+using System.Linq;
 using System.Web.UI.WebControls;
 
 using CMS.ExtendedControls;
-using CMS.FormControls;
 using CMS.FormEngine;
 using CMS.Helpers;
+using CMS.UIControls;
 
-
-public partial class CMSFormControls_Basic_MultipleChoiceControl : FormEngineUserControl
+public partial class CMSFormControls_Basic_MultipleChoiceControl : ListFormControl
 {
     #region "Variables"
 
-    private string[] mSelectedValues = null;
     private RepeatDirection mRepeatDirection = RepeatDirection.Vertical;
     private RepeatLayout mRepeatLayout = RepeatLayout.Flow;
+    private int mRepeatColumns = -1;
+    private const string DEFAULT_CSS_CLASS = "CheckBoxListField";
 
     #endregion
 
 
-    #region "Properties"
+    #region "Protected properties"
 
-    /// <summary>
-    /// Gets or sets the enabled state of the control.
-    /// </summary>
-    public override bool Enabled
+    protected override ListControl ListControl
     {
         get
         {
-            return list.Enabled;
-        }
-        set
-        {
-            list.Enabled = value;
+            return list;
         }
     }
 
 
-    /// <summary>
-    /// Gets or sets form control value.
-    /// </summary>
-    public override object Value
+    protected override ListSelectionMode SelectionMode
     {
         get
         {
-            return FormHelper.GetSelectedValuesFromListItemCollection(list.Items);
-        }
-        set
-        {
-            mSelectedValues = ValidationHelper.GetString(value, String.Empty).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-
-            LoadAndSelectList();
+            return ListSelectionMode.Multiple;
         }
     }
 
+
+    protected override string FormControlName
+    {
+        get
+        {
+            return FormFieldControlTypeCode.MULTIPLECHOICE;
+        }
+    }
+
+
+    protected override string DefaultCssClass
+    {
+        get
+        {
+            return DEFAULT_CSS_CLASS;
+        }
+    }
+
+    #endregion
+
+
+    #region "Public properties"
 
     /// <summary>
     /// Returns selected value display names separated with comma.
@@ -62,21 +68,7 @@ public partial class CMSFormControls_Basic_MultipleChoiceControl : FormEngineUse
     {
         get
         {
-            StringBuilder text = new StringBuilder();
-            bool first = true;
-            foreach (ListItem item in list.Items)
-            {
-                if (item.Selected)
-                {
-                    if (!first)
-                    {
-                        text.Append(", ");
-                    }
-                    text.Append(item.Text);
-                    first = false;
-                }
-            }
-            return text.ToString();
+            return String.Join(", ", list.GetSelectedItems().Select(i => i.Text));
         }
     }
 
@@ -89,7 +81,7 @@ public partial class CMSFormControls_Basic_MultipleChoiceControl : FormEngineUse
         get
         {
             string direction = ValidationHelper.GetString(GetValue("repeatdirection"), String.Empty);
-            if (!Enum.TryParse<RepeatDirection>(direction, true, out mRepeatDirection))
+            if (!Enum.TryParse(direction, true, out mRepeatDirection))
             {
                 mRepeatDirection = RepeatDirection.Vertical;
             }
@@ -111,7 +103,7 @@ public partial class CMSFormControls_Basic_MultipleChoiceControl : FormEngineUse
         get
         {
             string layout = ValidationHelper.GetString(GetValue("RepeatLayout"), String.Empty);
-            if (!Enum.TryParse<RepeatLayout>(layout, true, out mRepeatLayout))
+            if (!Enum.TryParse(layout, true, out mRepeatLayout))
             {
                 mRepeatLayout = RepeatLayout.Flow;
             }
@@ -124,77 +116,39 @@ public partial class CMSFormControls_Basic_MultipleChoiceControl : FormEngineUse
         }
     }
 
+
+    /// <summary>
+    /// Specifies the number of columns to display in the list control. The default is 0, which indicates that this property is not set.
+    /// </summary>
+    public int RepeatColumns
+    {
+        get
+        {
+            if (mRepeatColumns < 0)
+            {
+                mRepeatColumns = ValidationHelper.GetInteger(GetValue("RepeatColumns"), 0);
+            }
+            return mRepeatColumns;
+        }
+        set
+        {
+            mRepeatColumns = value;
+        }
+    }
+
     #endregion
 
 
     #region "Methods"
 
-    protected void Page_Load(object sender, EventArgs e)
+    protected override void OnLoad(EventArgs e)
     {
-        LoadAndSelectList(true);
+        base.OnLoad(e);
 
-        // Set control styles
-        if (!String.IsNullOrEmpty(CssClass))
-        {
-            list.AddCssClass(CssClass);
-            CssClass = null;
-        }
-        else if (String.IsNullOrEmpty(list.CssClass))
-        {
-            list.AddCssClass("CheckBoxListField");
-        }
-        if (!String.IsNullOrEmpty(ControlStyle))
-        {
-            list.Attributes.Add("style", ControlStyle);
-            ControlStyle = null;
-        }
-
-        CheckRegularExpression = true;
-        CheckFieldEmptiness = true;
-    }
-
-
-    /// <summary>
-    /// Loads and selects control.
-    /// </summary>
-    private void LoadAndSelectList(bool forceLoad = false)
-    {
-        if ((list.Items.Count == 0) && ((mSelectedValues.Length > 0) || forceLoad))
-        {
-            // Set control direction
-            list.RepeatDirection = RepeatDirection;
-
-            // Set control layout
-            list.RepeatLayout = RepeatLayout;
-
-            string options = GetResolvedValue<string>("options", null);
-            string query = ValidationHelper.GetString(GetValue("query"), null);
-
-            try
-            {
-                FormHelper.LoadItemsIntoList(options, query, list.Items, FieldInfo, ContextResolver);
-            }
-            catch (Exception ex)
-            {
-                DisplayException(ex);
-            }
-
-            FormHelper.SelectMultipleValues(mSelectedValues, list.Items, ListSelectionMode.Multiple);
-        }
-    }
-
-
-    /// <summary>
-    /// Displays exception control with current error.
-    /// </summary>
-    /// <param name="ex">Thrown exception</param>
-    private void DisplayException(Exception ex)
-    {
-        FormControlError ctrlError = new FormControlError();
-        ctrlError.FormControlName = FormFieldControlTypeCode.MULTIPLECHOICE;
-        ctrlError.InnerException = ex;
-        Controls.Add(ctrlError);
-        list.Visible = false;
+        // Set control direction, layout and columns
+        list.RepeatDirection = RepeatDirection;
+        list.RepeatLayout = RepeatLayout;
+        list.RepeatColumns = RepeatColumns;
     }
 
     #endregion

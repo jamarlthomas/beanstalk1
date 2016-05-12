@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Forums_Search_ForumExtendedSearchDialog" Codebehind="~/CMSWebParts/Forums/Search/ForumExtendedSearchDialog.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Forums_Search_ForumExtendedSearchDialog"  Codebehind="~/CMSWebParts/Forums/Search/ForumExtendedSearchDialog.ascx.cs" %>
 <asp:Panel ID="pnlForumExtendedSearch" runat="server" DefaultButton="btnSearch">
     <cms:LocalizedLabel ID="lblInfo" EnableViewState="false" runat="server" Visible="false" />
     <table class="ForumExtendedSearch">

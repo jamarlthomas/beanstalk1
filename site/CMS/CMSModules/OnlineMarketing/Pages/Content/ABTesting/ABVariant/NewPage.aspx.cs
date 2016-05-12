@@ -31,12 +31,12 @@ public partial class CMSModules_OnlineMarketing_Pages_Content_ABTesting_ABVarian
         }
 
         // Header actions
-        CurrentMaster.HeaderActions.AddAction(new SaveAction(Page)
+        CurrentMaster.HeaderActions.AddAction(new SaveAction
         {
             ResourceName = "CMS.ABTest",
             Permission = "Manage"
         });
-        CurrentMaster.HeaderActions.AddAction(new SaveAction(Page)
+        CurrentMaster.HeaderActions.AddAction(new SaveAction
         {
             ResourceName = "CMS.ABTest",
             Permission = "Manage",

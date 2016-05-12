@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Security.Principal;
 using System.Collections.Generic;
 
@@ -165,7 +165,7 @@ public partial class CMSModules_ImportExport_Pages_RestoreObject : CMSModalPage
             if (!RequestHelper.IsPostBack())
             {
                 lblIntro.Visible = true;
-               
+
                 // Load the available backups
                 if (lstImports.Items.Count == 0)
                 {
@@ -237,15 +237,13 @@ public partial class CMSModules_ImportExport_Pages_RestoreObject : CMSModalPage
     {
         if (!String.IsNullOrEmpty(lstImports.SelectedValue))
         {
-            // Init the Mimetype helper (required for the export)
-            MimeTypeHelper.LoadMimeTypes();
-
             siteObject = (exportObj.ObjectSiteID > 0);
 
             // Prepare the settings
             ImportSettings = new SiteImportSettings(MembershipContext.AuthenticatedUser);
 
             ImportSettings.UseAutomaticSiteForTranslation = true;
+            ImportSettings.LogSynchronization = true;
             ImportSettings.WebsitePath = Server.MapPath("~/");
             ImportSettings.SourceFilePath = GetSelectedFilePath();
 
@@ -265,7 +263,7 @@ public partial class CMSModules_ImportExport_Pages_RestoreObject : CMSModalPage
             try
             {
                 // Export the data
-                ltlScript.Text = ScriptHelper.GetScript("StartTimer();");
+                ScriptHelper.RegisterStartupScript(this, typeof(string), "StartTimer", "StartTimer();", true);
                 ucAsyncControl.RunAsync(RestoreSingleObject, WindowsIdentity.GetCurrent());
             }
             catch (Exception ex)
@@ -314,7 +312,7 @@ public partial class CMSModules_ImportExport_Pages_RestoreObject : CMSModalPage
 
     private void ucAsyncControl_OnError(object sender, EventArgs e)
     {
-        ltlScript.Text += ScriptHelper.GetScript("StopTimer();");
+        ScriptHelper.RegisterStartupScript(this, typeof(string), "StopTimer", "StopTimer();", true);
         Exception ex = ((AsyncControl)sender).Worker.LastException;
 
         DisplayError(ex);
@@ -323,13 +321,22 @@ public partial class CMSModules_ImportExport_Pages_RestoreObject : CMSModalPage
 
     private void ucAsyncControl_OnFinished(object sender, EventArgs e)
     {
-        ltlScript.Text += ScriptHelper.GetScript(@"
-StopTimer();
-if ((wopener != null) && wopener.UG_Reload)
-{
-    wopener.UG_Reload();
+        ScriptHelper.RegisterStartupScript(this, typeof(string), "StopTimer", "StopTimer();", true);
+
+        // Reload unigrid
+        var unigridID = QueryHelper.GetText("ug", String.Empty);
+        if (!String.IsNullOrEmpty(unigridID))
+        {
+            var reloadScript = @"
+if(wopener && wopener.CMS) {
+    var ug = wopener.CMS." + unigridID + @";
+    if(ug && ug.reload) {
+        ug.reload();
+    }
 }
-");
+";
+            ScriptHelper.RegisterStartupScript(this, typeof(string), "ReloadUnigrid", reloadScript, true);
+        }
 
         pnlProgress.Visible = false;
         btnRestore.Visible = false;

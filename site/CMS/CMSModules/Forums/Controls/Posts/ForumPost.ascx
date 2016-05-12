@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Posts_ForumPost" Codebehind="ForumPost.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Posts_ForumPost"  Codebehind="ForumPost.ascx.cs" %>
 <div class="ForumPost">
     <table cellpadding="0" cellspacing="0" border="0" class="PostImage" style="width: 100%;
         border: none;">

@@ -1,12 +1,14 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_System_Debug_System_DebugObjects" Theme="Default"
-    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="System - SQL" Codebehind="System_DebugObjects.aspx.cs" %>
+    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="System - SQL"  Codebehind="System_DebugObjects.aspx.cs" %>
+
+<asp:Content ContentPlaceHolderID="plcActions" runat="server">
+    <div class="header-actions-container">
+        <cms:CMSButton runat="server" ID="btnClear" OnClick="btnClear_Click" ButtonStyle="Default" EnableViewState="false" />
+    </div>
+</asp:Content>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
-    <div class="AlignRight" style="padding-bottom: 10px">
-        <cms:CMSButton runat="server" ID="btnClear" OnClick="btnClear_Click" ButtonStyle="Default"
-            EnableViewState="false" />
-    </div>
     <cms:UIGridView runat="server" ID="gridHashtables" ShowFooter="true" AutoGenerateColumns="false">
         <Columns>
             <asp:TemplateField>
@@ -46,3 +48,4 @@
         </Columns>
     </cms:UIGridView>
 </asp:Content>
+

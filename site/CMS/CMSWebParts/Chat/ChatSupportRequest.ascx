@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/Chat/ChatSupportRequest.ascx.cs" Inherits="CMSWebParts_Chat_ChatSupportRequest" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/Chat/ChatSupportRequest.ascx.cs" Inherits="CMSWebParts_Chat_ChatSupportRequest" %>
 
 <asp:Panel ID="pnlSupportChatRequest" runat="server" CssClass="ChatWebpartContainer ChatWebpartContainerSupportRequest" />
 <%-- Informatino panel --%>

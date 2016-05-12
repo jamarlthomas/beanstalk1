@@ -1,6 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="TransformationCode.ascx.cs" Inherits="CMSFormControls_Layouts_TransformationCode" %>
-
-<%@ Register Src="~/CMSAdminControls/UI/Macros/MacroEditor.ascx" TagName="MacroEditor" TagPrefix="cms" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="TransformationCode.ascx.cs" Inherits="CMSFormControls_Layouts_TransformationCode" %>
 
 <script type="text/javascript" language="javascript">
     function AddCssHandlerScript() {
@@ -27,7 +25,7 @@
             <asp:Label runat="server" ID="lblDirectives" EnableViewState="false" />
         </asp:Panel>
         <cms:CMSHtmlEditor runat="server" ID="tbWysiwyg" Width="99%" Height="300" Visible="false" />
-        <cms:MacroEditor runat="server" ID="txtCode" ShortID="e" Visible="false" />
+        <cms:MacroEditor runat="server" ID="txtCode" ShortID="e" Visible="false" Width="100%" />
     </div>
     <div class="form-group">
         <asp:PlaceHolder runat="server" ID="plcCssLink">

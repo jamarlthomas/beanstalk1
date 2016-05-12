@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_Development_WebPart_Design"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_Development_WebPart_Design"
     ValidateRequest="false" MaintainScrollPositionOnPostback="true" EnableEventValidation="false"
-    Codebehind="WebPart_Design.aspx.cs" %>
+     Codebehind="WebPart_Design.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" TagName="HeaderActions"
     TagPrefix="cms" %>
@@ -37,7 +37,7 @@
             <div class="WebPartDefaultContent">
                 <cms:CMSPagePlaceholder ID="plc" runat="server" Root="true" DisplayHeader="false">
                     <LayoutTemplate>
-                        <cms:CMSWebPartZone runat="server" ZoneId="zone" DisplayHeader="false" AllowModifyWebPartCollection="false" SimpleRender="True" />
+                        <cms:CMSWebPartZone runat="server" ZoneId="zone" DisplayHeader="false" AllowModifyWebPartCollection="false" />
                     </LayoutTemplate>
                 </cms:CMSPagePlaceholder>
             </div>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web;
 using System.Text;
@@ -15,7 +15,6 @@ using CMS.SiteProvider;
 using CMS.Membership;
 using CMS.UIControls;
 using CMS.DataEngine;
-using CMS.MacroEngine;
 using CMS.PortalEngine;
 using CMS.MembershipProvider;
 
@@ -439,7 +438,7 @@ function UpdateLabel_", ClientID, @"(content, context) {
         // Return url is not specified or is relative path or hash is valid
         if (!string.IsNullOrEmpty(returnUrl) && !returnUrl.StartsWithCSafe("~") && !returnUrl.StartsWithCSafe("/") && !QueryHelper.ValidateHash("hash"))
         {
-            URLHelper.Redirect(ResolveUrl("~/CMSMessages/Error.aspx?title=" + ResHelper.GetString("general.badhashtitle") + "&text=" + ResHelper.GetString("general.badhashtext")));
+            URLHelper.Redirect(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext"));
         }
     }
 
@@ -722,7 +721,7 @@ function UpdateLabel_", ClientID, @"(content, context) {
             switch (UserAccountLockCode.ToEnum(ui.UserAccountLockReason))
             {
                 case UserAccountLockEnum.MaximumInvalidLogonAttemptsReached:
-                    result = AuthenticationHelper.SendUnlockAccountRequest(ui, siteName, "USERLOGON", SettingsKeyInfoProvider.GetValue(siteName + ".CMSSendPasswordEmailsFrom"), MacroContext.CurrentResolver, returnUrl);
+                    result = AuthenticationHelper.SendUnlockAccountRequest(ui, siteName, "USERLOGON", SettingsKeyInfoProvider.GetValue(siteName + ".CMSSendPasswordEmailsFrom"), null, returnUrl);
                     break;
 
                 case UserAccountLockEnum.PasswordExpired:

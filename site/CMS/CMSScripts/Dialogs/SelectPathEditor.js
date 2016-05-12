@@ -10,9 +10,10 @@ function InsertSelectedItem(obj) {
                 else {
                     editor.value = obj.doc_nodealiaspath;
                 }
-                if (editor.onchange != null) {
-                    editor.onchange(window.event);
-                }
+
+                var evt = document.createEvent("HTMLEvents");
+                evt.initEvent("change", true, true);
+                editor.dispatchEvent(evt);
             }
         }
     }

@@ -1,4 +1,4 @@
-using CMS.Helpers;
+﻿using CMS.Helpers;
 using CMS.PortalControls;
 
 public partial class CMSWebParts_Membership_Users_UsersFilter : CMSAbstractWebPart

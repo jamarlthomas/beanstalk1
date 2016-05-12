@@ -1,11 +1,12 @@
-using System;
+﻿using System;
+using System.Linq;
 using System.Security.Principal;
 using System.Threading;
-using System.Web;
 using System.Web.UI;
 using System.Collections;
-using System.Data;
+using System.Collections.Generic;
 
+using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.Helpers;
 using CMS.IO;
@@ -19,10 +20,7 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions
 {
     #region "Variables"
 
-    private static readonly Hashtable mInfos = new Hashtable();
     private Hashtable mParameters;
-
-    private static string refreshScript;
 
     private MediaLibraryInfo mLibraryInfo;
     private SiteInfo mLibrarySiteInfo;
@@ -110,6 +108,22 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions
     /// <summary>
     /// Path where the item(s) should be copied/moved.
     /// </summary>
+    private string AsyncNewPath
+    {
+        get
+        {
+            return ctlAsyncLog.ProcessData.Data as string ?? "";
+        }
+        set
+        {
+            ctlAsyncLog.ProcessData.Data = value;
+        }
+    }
+
+
+    /// <summary>
+    /// Path where the item(s) should be copied/moved.
+    /// </summary>
     private string NewPath
     {
         get;
@@ -150,11 +164,11 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions
     {
         get
         {
-            return ValidationHelper.GetString(mInfos["ProcessingError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mInfos["ProcessingError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -166,11 +180,11 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions
     {
         get
         {
-            return ValidationHelper.GetString(mInfos["ProcessingInfo_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Information;
         }
         set
         {
-            mInfos["ProcessingInfo_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Information = value;
         }
     }
 
@@ -183,17 +197,6 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions
         get
         {
             return ValidationHelper.GetBoolean(Parameters["load"], false);
-        }
-    }
-
-    /// <summary>
-    /// Current log context.
-    /// </summary>
-    private LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
         }
     }
 
@@ -311,7 +314,6 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions
         // Initialize events
         ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
         ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-        ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
         ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
 
         // Get the source node
@@ -388,6 +390,8 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions
 
     #endregion
 
+
+    #region "Methods"
 
     /// <summary>
     /// Moves document.
@@ -501,17 +505,7 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions
             }
 
             NewPath = newPath;
-            refreshScript = @"
-var topWin = GetTop();
-if (topWin) {
-    if ((topWin.opener) && (typeof(topWin.opener.RefreshLibrary) != 'undefined')) {
-        topWin.opener.RefreshLibrary(" + ScriptHelper.GetString(NewPath.Replace('\\', '|')) + @");
-    } 
-    else if ((topWin.wopener) && (typeof(topWin.wopener.RefreshLibrary) != 'undefined')) { 
-        topWin.wopener.RefreshLibrary(" + ScriptHelper.GetString(NewPath.Replace('\\', '|')) + @"); 
-    } 
-    CloseDialog();
-}";
+            AsyncNewPath = newPath;
 
             // If mFiles is empty handle directory copy/move
             if (String.IsNullOrEmpty(Files) && !mAllFiles)
@@ -537,8 +531,7 @@ if (topWin) {
                 }
                 catch (ThreadAbortException ex)
                 {
-                    string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-                    if (state == CMSThread.ABORT_REASON_STOP)
+                    if (CMSThread.Stopped(ex))
                     {
                         // When canceled
                         CurrentInfo = GetString("general.actioncanceled");
@@ -585,8 +578,7 @@ if (topWin) {
                     }
                     catch (ThreadAbortException ex)
                     {
-                        string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-                        if (state == CMSThread.ABORT_REASON_STOP)
+                        if (CMSThread.Stopped(ex))
                         {
                             // When canceled
                             CurrentInfo = GetString("general.actioncanceled");
@@ -609,63 +601,53 @@ if (topWin) {
                 }
                 else
                 {
-                    HttpContext context = (parameter as HttpContext);
-                    if (context != null)
+                    var fileNames = GetFileNames().ToList();
+                    if (!fileNames.Any())
                     {
-                        HttpContext.Current = context;
+                        return;
+                    }
 
-                        DataSet files = GetFileSystemDataSource();
-                        if (!DataHelper.IsEmpty(files))
+                    foreach (string fileName in fileNames)
+                    {
+                        AddLog(fileName);
+
+                        origDBFilePath = (string.IsNullOrEmpty(origDBPath)) ? fileName : origDBPath + "/" + fileName;
+                        newDBFilePath = (string.IsNullOrEmpty(newDBPath)) ? fileName : newDBPath + "/" + fileName;
+
+                        try
                         {
-                            foreach (DataRow file in files.Tables[0].Rows)
+                            CopyMove(origDBFilePath, newDBFilePath);
+                        }
+                        catch (UnauthorizedAccessException ex)
+                        {
+                            CurrentError = GetString("general.erroroccurred") + " " + ResHelper.GetString("media.security.accessdenied");
+                            EventLogProvider.LogException("MediaFile", CopyMoveAction, ex);
+                            AddLog(CurrentError);
+                            return;
+                        }
+                        catch (ThreadAbortException ex)
+                        {
+                            if (CMSThread.Stopped(ex))
                             {
-                                string fileName = ValidationHelper.GetString(file["FileName"], "");
-
-                                AddLog(fileName);
-
-                                origDBFilePath = (string.IsNullOrEmpty(origDBPath)) ? fileName : origDBPath + "/" + fileName;
-                                newDBFilePath = (string.IsNullOrEmpty(newDBPath)) ? fileName : newDBPath + "/" + fileName;
-
-                                // Clear current httpcontext for CopyMove action in threat
-                                HttpContext.Current = null;
-
-                                try
-                                {
-                                    CopyMove(origDBFilePath, newDBFilePath);
-                                }
-                                catch (UnauthorizedAccessException ex)
-                                {
-                                    CurrentError = GetString("general.erroroccurred") + " " + ResHelper.GetString("media.security.accessdenied");
-                                    EventLogProvider.LogException("MediaFile", CopyMoveAction, ex);
-                                    AddLog(CurrentError);
-                                    return;
-                                }
-                                catch (ThreadAbortException ex)
-                                {
-                                    string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-                                    if (state == CMSThread.ABORT_REASON_STOP)
-                                    {
-                                        // When canceled
-                                        CurrentInfo = GetString("general.actioncanceled");
-                                        AddLog(CurrentInfo);
-                                    }
-                                    else
-                                    {
-                                        // Log error
-                                        CurrentError = GetString("general.erroroccurred") + " " + ex.Message;
-                                        EventLogProvider.LogException("MediaFile", CopyMoveAction, ex);
-                                        AddLog(CurrentError);
-                                        return;
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    CurrentError = GetString("general.erroroccurred") + " " + ex.Message;
-                                    EventLogProvider.LogException("MediaFile", CopyMoveAction, ex);
-                                    AddLog(CurrentError);
-                                    return;
-                                }
+                                // When canceled
+                                CurrentInfo = GetString("general.actioncanceled");
+                                AddLog(CurrentInfo);
                             }
+                            else
+                            {
+                                // Log error
+                                CurrentError = GetString("general.erroroccurred") + " " + ex.Message;
+                                EventLogProvider.LogException("MediaFile", CopyMoveAction, ex);
+                                AddLog(CurrentError);
+                                return;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            CurrentError = GetString("general.erroroccurred") + " " + ex.Message;
+                            EventLogProvider.LogException("MediaFile", CopyMoveAction, ex);
+                            AddLog(CurrentError);
+                            return;
                         }
                     }
                 }
@@ -725,28 +707,40 @@ if (topWin) {
         }
     }
 
-
-    /// <summary>
-    /// Returns set of files in the file system.
-    /// </summary>
-    private DataSet GetFileSystemDataSource()
-    {
-        fileSystemDataSource.Path = LibraryPath + "/" + Path.EnsureSlashes(FolderPath) + "/";
-        fileSystemDataSource.Path = Path.EnsureBackslashes(fileSystemDataSource.Path).Replace("|", "\\");
-
-        return (DataSet)fileSystemDataSource.DataSource;
-    }
+    #endregion
 
 
     #region "Help methods"
 
     /// <summary>
-    /// Ensures the logging context.
+    /// Returns list of filenames in the file system.
     /// </summary>
-    protected LogContext EnsureLog()
+    private IEnumerable<string> GetFileNames()
     {
-        LogContext currentLog = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-        return currentLog;
+        var path = LibraryPath + "/" + Path.EnsureSlashes(FolderPath) + "/";
+        path = Path.EnsureBackslashes(path).Replace("|", "\\");
+
+        IEnumerable<FileInfo> files = GetFileInfos(path, "*.*");
+        var filenames = new List<string>();
+
+        if (files != null)
+        {
+            filenames = files.Where(f => f.Exists)
+                .OrderBy(f => f.FullName)
+                .Select(x => x.Name)
+                .ToList();
+        }
+
+        return filenames;
+    }
+
+
+    private static IEnumerable<FileInfo> GetFileInfos(string path, string filter)
+    {
+        DirectoryInfo di = DirectoryInfo.New(path);
+
+        FileInfo[] files = di.GetFiles(filter, SearchOption.TopDirectoryOnly);
+        return files;
     }
 
 
@@ -828,13 +822,6 @@ if (topWin) {
 
         ShowConfirmation(CurrentInfo);
         HandlePossibleErrors();
-        CurrentLog.Close();
-    }
-
-
-    private void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
     }
 
 
@@ -850,8 +837,27 @@ if (topWin) {
 
     private void ctlAsyncLog_OnFinished(object sender, EventArgs e)
     {
+        Refresh();
+    }
+
+
+    private void Refresh()
+    {
+        var newPath = AsyncNewPath;
+
+        var refreshScript = @"
+var topWin = GetTop();
+if (topWin) {
+    if ((topWin.opener) && (typeof(topWin.opener.RefreshLibrary) != 'undefined')) {
+        topWin.opener.RefreshLibrary(" + ScriptHelper.GetString(newPath.Replace('\\', '|')) + @");
+    } 
+    else if ((topWin.wopener) && (typeof(topWin.wopener.RefreshLibrary) != 'undefined')) { 
+        topWin.wopener.RefreshLibrary(" + ScriptHelper.GetString(newPath.Replace('\\', '|')) + @"); 
+    } 
+    CloseDialog();
+}";
+
         AddScript(!HandlePossibleErrors() ? refreshScript : "DestroyLog();");
-        CurrentLog.Close();
     }
 
 
@@ -861,8 +867,7 @@ if (topWin) {
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
 
@@ -875,7 +880,6 @@ if (topWin) {
         pnlLog.Visible = true;
         pnlInfo.Visible = false;
 
-        CurrentLog.Close();
         CurrentError = string.Empty;
         CurrentInfo = string.Empty;
 
@@ -883,7 +887,7 @@ if (topWin) {
 
         // Ensure current user
         SessionHelper.SetValue("CurrentUser", CurrentUser);
-        ctlAsyncLog.Parameter = HttpContext.Current;
+
         ctlAsyncLog.RunAsync(action, WindowsIdentity.GetCurrent());
     }
 
@@ -897,12 +901,14 @@ if (topWin) {
         if (!string.IsNullOrEmpty(CurrentError))
         {
             ShowError(CurrentError);
-            ctlAsyncLog.LogContext = CurrentLog;
             AddScript("var __pendingCallbacks = new Array();DestroyLog();");
+
             pnlLog.Visible = false;
             pnlInfo.Visible = true;
+
             return true;
         }
+
         return false;
     }
 

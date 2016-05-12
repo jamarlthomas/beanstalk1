@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_MediaLibraryTree"
-    Codebehind="MediaLibraryTree.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_MediaLibraryTree"
+     Codebehind="MediaLibraryTree.ascx.cs" %>
 <asp:Literal ID="ltlScript" runat="server" EnableViewState="false"></asp:Literal>
 <asp:Label runat="server" ID="lblError" ForeColor="Red" EnableViewState="false" />
 <div id="<%=ClientID%>" class="ContentTree MediaLibraryTree">

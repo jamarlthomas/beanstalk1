@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.Membership;
@@ -60,6 +60,10 @@ public partial class CMSModules_BizForms_Tools_BizForm_Edit_EditRecord : CMSBizF
             formElem.FormRedirectToUrl = String.Empty;
             formElem.FormDisplayText = String.Empty;
             formElem.FormClearAfterSave = false;
+            // Submit image button is based on ImageButton which does not have implemented automatic registration of Save header action in UI. 
+            // Hide image button in UI even if path to image is configured
+            formElem.ShowImageButton = false;
+
             formElem.OnBeforeSave += formElem_OnBeforeSave;
         }
     }

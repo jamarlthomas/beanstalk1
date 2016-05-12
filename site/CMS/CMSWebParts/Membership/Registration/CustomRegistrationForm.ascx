@@ -1,15 +1,14 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Membership_Registration_CustomRegistrationForm" Codebehind="~/CMSWebParts/Membership/Registration/CustomRegistrationForm.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Membership_Registration_CustomRegistrationForm" CodeBehind="~/CMSWebParts/Membership/Registration/CustomRegistrationForm.ascx.cs" %>
 <%@ Register Src="~/CMSFormControls/Captcha/SecurityCode.ascx" TagName="SecurityCode" TagPrefix="uc1" %>
-<asp:Label ID="lblError" runat="server" EnableViewState="false" Visible="false" />
-<asp:Label ID="lblInfo" runat="server" EnableViewState="false" Visible="false" />
+<cms:MessagesPlaceHolder ID="plcMess" runat="server" />
 <asp:Panel ID="pnlRegForm" runat="server" DefaultButton="btnRegister">
-    <cms:DataForm ID="formUser" runat="server" IsLiveSite="true" DefaultFormLayout="SingleTable" />
+    <cms:BasicForm ID="formUser" runat="server" IsLiveSite="true" />
     <asp:PlaceHolder runat="server" ID="plcCaptcha">
         <div class="form-horizontal">
             <div class="form-group">
                 <div class="editing-form-label-cell">
-                    <cms:LocalizedLabel CssClass="control-label" runat="server" ID="lblCaptcha" ResourceString="webparts_membership_registrationform.captcha" />
+                    <cms:LocalizedLabel CssClass="control-label" runat="server" ID="lblCaptcha" />
                 </div>
                 <div class="editing-form-value-cell">
                     <uc1:SecurityCode ID="captchaElem" runat="server" />

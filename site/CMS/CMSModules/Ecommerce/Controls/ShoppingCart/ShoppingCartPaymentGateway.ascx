@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartPaymentGateway" Codebehind="ShoppingCartPaymentGateway.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartPaymentGateway"  Codebehind="ShoppingCartPaymentGateway.ascx.cs" %>
 <asp:Label ID="lblError" runat="server" EnableViewState="false" CssClass="ErrorLabel" Visible="false" />
 <asp:Label ID="lblInfo" runat="server" EnableViewState="false" CssClass="InfoLabel" Visible="false" />
 

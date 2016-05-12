@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -20,9 +20,9 @@ public partial class CMSAdminControls_UI_Macros_MacroRuleDesigner : FormEngineUs
 {
     #region "Variables"
 
-    private DragAndDropExtender extDragDrop = null;
-    private int counter = 0;
-    private static StringSafeDictionary<string> mRulesTooltips = null;
+    private DragAndDropExtender extDragDrop;
+    private int counter;
+    private static StringSafeDictionary<string> mRulesTooltips;
 
     #endregion
 
@@ -37,11 +37,7 @@ public partial class CMSAdminControls_UI_Macros_MacroRuleDesigner : FormEngineUs
     {
         get
         {
-            if (mRulesTooltips == null)
-            {
-                mRulesTooltips = new StringSafeDictionary<string>();
-            }
-            return mRulesTooltips;
+            return mRulesTooltips ?? (mRulesTooltips = new StringSafeDictionary<string>());
         }
     }
 
@@ -113,10 +109,10 @@ public partial class CMSAdminControls_UI_Macros_MacroRuleDesigner : FormEngineUs
     {
         get
         {
-            string error = this.RuleTree.ValidateParameters();
+            string error = RuleTree.ValidateParameters();
             if (!string.IsNullOrEmpty(error))
             {
-                pnlMessagePlaceholder.ShowError(GetString("macros.macrorule.requiredparamsmissing"), null, null);
+                pnlMessagePlaceholder.ShowError(GetString("macros.macrorule.requiredparamsmissing"));
                 throw new Exception(error);
             }
 
@@ -138,10 +134,6 @@ public partial class CMSAdminControls_UI_Macros_MacroRuleDesigner : FormEngineUs
         get
         {
             return ValidationHelper.GetBoolean(hdnParamEditShown.Value, false);
-        }
-        set
-        {
-            hdnParamEditShown.Value = (value ? "1" : "0");
         }
     }
 
@@ -184,7 +176,7 @@ public partial class CMSAdminControls_UI_Macros_MacroRuleDesigner : FormEngineUs
         btnAutoIndent.OnClientClick = "if (!confirm(" + ScriptHelper.GetString(GetString("macros.macrorule.deleteautoindent")) + ")) { return false; }";
         btnClearAll.OnClientClick = "if (!confirm(" + ScriptHelper.GetString(GetString("macros.macrorule.clearall.confirmation")) + ")) { return false; }";
 
-        lstRules.Attributes.Add("ondblclick", ControlsHelper.GetPostBackEventReference(btnAddClause, null));
+        lstRules.Attributes.Add("ondblclick", ControlsHelper.GetPostBackEventReference(btnAddClause));
 
         pnlViewCode.Visible = false;
 
@@ -220,84 +212,22 @@ public partial class CMSAdminControls_UI_Macros_MacroRuleDesigner : FormEngineUs
         {
             if (ShowGlobalRules || !string.IsNullOrEmpty(RuleCategoryNames))
             {
-                string where = (ShowGlobalRules ? "MacroRuleResourceName IS NULL OR MacroRuleResourceName = ''" : "");
+                var where = GetRulesWhereCondition();
 
-                // Append rules module name condition
-                if (!string.IsNullOrEmpty(RuleCategoryNames))
-                {
-                    bool appendComma = false;
-                    StringBuilder sb = new StringBuilder();
-                    string[] names = RuleCategoryNames.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (string n in names)
-                    {
-                        string name = "'" + SqlHelper.GetSafeQueryString(n.Trim(), false) + "'";
-                        if (appendComma)
-                        {
-                            sb.Append(",");
-                        }
-                        sb.Append(name);
-                        appendComma = true;
-                    }
-                    where = SqlHelper.AddWhereCondition(where, "MacroRuleResourceName IN (" + sb.ToString() + ")", "OR");
-                }
-
-                // Append require context condition
-                switch (DisplayRuleType)
-                {
-                    case 1:
-                        where = SqlHelper.AddWhereCondition(where, "MacroRuleRequiresContext = 0", "AND");
-                        break;
-
-                    case 2:
-                        where = SqlHelper.AddWhereCondition(where, "MacroRuleRequiresContext = 1", "AND");
-                        break;
-                }
-
-                // Select only enabled rules
-                where = SqlHelper.AddWhereCondition(where, "MacroRuleEnabled = 1");
-
-                DataSet ds = MacroRuleInfoProvider.GetMacroRules(where, "MacroRuleDisplayName", 0, "MacroRuleID, MacroRuleDisplayName, MacroRuleDescription, MacroRuleRequiredData");
+                var ds = MacroRuleInfoProvider.GetMacroRules(where, "MacroRuleDisplayName", 0, "MacroRuleID, MacroRuleDisplayName, MacroRuleDescription, MacroRuleRequiredData");
                 if (!DataHelper.DataSourceIsEmpty(ds))
                 {
-                    MacroResolver resolver = MacroResolverStorage.GetRegisteredResolver(ResolverName);
-                    foreach (DataRow dr in ds.Tables[0].Rows)
-                    {
-                        bool add = true;
-                        if (resolver != null)
-                        {
-                            // Check the required data, all specified data have to be present in the resolver
-                            string requiredData = ValidationHelper.GetString(dr["MacroRuleRequiredData"], "");
-                            if (!string.IsNullOrEmpty(requiredData))
-                            {
-                                string[] required = requiredData.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                                foreach (var req in required)
-                                {
-                                    if (!resolver.IsDataItemAvailable(req))
-                                    {
-                                        add = false;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-
-                        if (add)
-                        {
-                            var ruleId = dr["MacroRuleID"].ToString();
-                            ListItem item = new ListItem(dr["MacroRuleDisplayName"].ToString(), ruleId);
-                            lstRules.Items.Add(item);
-
-                            // Save the tooltip
-                            RulesTooltips[ruleId] = ResHelper.LocalizeString(ValidationHelper.GetString(dr["MacroRuleDescription"], ""));
-                        }
-                    }
+                    AddRules(ds);
                 }
+
                 if (lstRules.Items.Count > 0)
                 {
                     lstRules.SelectedIndex = 0;
                 }
             }
         }
+
+        AddTooltips();
 
         // Make sure that one user click somewhere else than to any rule, selection will disappear
         pnlCondtion.Attributes["onclick"] = "if (!doNotDeselect && !isCTRL) { $cmsj('.RuleSelected').removeClass('RuleSelected'); document.getElementById('" + hdnSelected.ClientID + "').value = ';'; }; doNotDeselect = false;";
@@ -318,9 +248,52 @@ public partial class CMSAdminControls_UI_Macros_MacroRuleDesigner : FormEngineUs
         if (!string.IsNullOrEmpty(hdnScroll.Value))
         {
             // Preserve scroll position
-            ScriptHelper.RegisterStartupScript(this.Page, typeof(string), "MacroRulesScroll", "setTimeout('setScrollPosition()', 100);", true);
+            ScriptHelper.RegisterStartupScript(Page, typeof(string), "MacroRulesScroll", "setTimeout('setScrollPosition()', 100);", true);
         }
+    }
 
+
+    private void AddRules(InfoDataSet<MacroRuleInfo> ds)
+    {
+        var resolver = MacroResolverStorage.GetRegisteredResolver(ResolverName);
+
+        foreach (DataRow dr in ds.Tables[0].Rows)
+        {
+            bool add = true;
+            if (resolver != null)
+            {
+                // Check the required data, all specified data have to be present in the resolver
+                string requiredData = ValidationHelper.GetString(dr["MacroRuleRequiredData"], "");
+                if (!string.IsNullOrEmpty(requiredData))
+                {
+                    var required = requiredData.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (var req in required)
+                    {
+                        if (!resolver.IsDataItemAvailable(req))
+                        {
+                            add = false;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (add)
+            {
+                var ruleId = dr["MacroRuleID"].ToString();
+                ListItem item = new ListItem(dr["MacroRuleDisplayName"].ToString(), ruleId);
+                lstRules.Items.Add(item);
+
+                // Save the tooltip
+                RulesTooltips[ruleId] = ResHelper.LocalizeString(ValidationHelper.GetString(dr["MacroRuleDescription"], ""));
+            }
+        }
+    }
+
+
+    private void AddTooltips()
+    {
         // Add tooltips to the rules in the list
         foreach (ListItem item in lstRules.Items)
         {
@@ -332,15 +305,62 @@ public partial class CMSAdminControls_UI_Macros_MacroRuleDesigner : FormEngineUs
     }
 
 
+    private string GetRulesWhereCondition()
+    {
+        string where = (ShowGlobalRules ? "MacroRuleResourceName IS NULL OR MacroRuleResourceName = ''" : "");
+
+        // Append rules module name condition
+        if (!string.IsNullOrEmpty(RuleCategoryNames))
+        {
+            bool appendComma = false;
+            StringBuilder sb = new StringBuilder();
+            string[] names = RuleCategoryNames.Split(new[]
+            {
+                ';'
+            }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string n in names)
+            {
+                string name = "'" + SqlHelper.GetSafeQueryString(n.Trim(), false) + "'";
+                if (appendComma)
+                {
+                    sb.Append(",");
+                }
+                sb.Append(name);
+                appendComma = true;
+            }
+
+            where = SqlHelper.AddWhereCondition(where, "MacroRuleResourceName IN (" + sb + ")", "OR");
+        }
+
+        // Append require context condition
+        switch (DisplayRuleType)
+        {
+            case 1:
+                where = SqlHelper.AddWhereCondition(where, "MacroRuleRequiresContext = 0", "AND");
+                break;
+
+            case 2:
+                where = SqlHelper.AddWhereCondition(where, "MacroRuleRequiresContext = 1", "AND");
+                break;
+        }
+
+        // Select only enabled rules
+        where = SqlHelper.AddWhereCondition(where, "MacroRuleEnabled = 1");
+
+        return where;
+    }
+
+
     protected override void OnPreRender(EventArgs e)
     {
         base.OnPreRender(e);
 
         RegisterScriptMethods();
 
-        if (this.RuleTree.Children.Count > 0)
+        if (RuleTree.Children.Count > 0)
         {
-            ltlText.Text = GetResultHTML(this.RuleTree);
+            ltlText.Text = GetRuleHTML(RuleTree);
         }
         else
         {
@@ -435,7 +455,7 @@ function OnDropRule(source, target) {{
         hidden.value = item.id + ';' + targetPosition[targetPos];
         {1}; 
     }}
-}}", hdnParam.ClientID, ControlsHelper.GetPostBackEventReference(btnMove, null)));
+}}", hdnParam.ClientID, ControlsHelper.GetPostBackEventReference(btnMove)));
 
         sb.Append(
 @"
@@ -467,14 +487,14 @@ function DeactivateBorder(elementId, className) {
 @"function ChangeOperator(path, operator) {
     document.getElementById('", hdnOpSelected.ClientID, @"').value = path;
     document.getElementById('", hdnParam.ClientID, @"').value = operator;
-    ", ControlsHelper.GetPostBackEventReference(btnChangeOperator, null), @"
+    ", ControlsHelper.GetPostBackEventReference(btnChangeOperator), @"
 }");
 
         sb.Append(
 @"function ChangeParamValue(path, parameter) {
     document.getElementById('", hdnParamSelected.ClientID, @"').value = path;
     document.getElementById('", hdnParam.ClientID, @"').value = parameter;
-    ", ControlsHelper.GetPostBackEventReference(btnChangeParameter, null), @"
+    ", ControlsHelper.GetPostBackEventReference(btnChangeParameter), @"
 }");
 
         sb.Append(
@@ -498,8 +518,8 @@ $cmsj(document).ready(InitDesignerAreaSize);
 @"$cmsj('#scrollDiv').scroll(function() {
   document.getElementById('" + hdnScroll.ClientID + @"').value = document.getElementById('scrollDiv').scrollTop;
 });");
-        ScriptHelper.RegisterJQuery(this.Page);
-        ScriptHelper.RegisterClientScriptBlock(this.Page, typeof(string), "MacroRuleDesigner", ScriptHelper.GetScript(sb.ToString()));
+        ScriptHelper.RegisterJQuery(Page);
+        ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "MacroRuleDesigner", ScriptHelper.GetScript(sb.ToString()));
     }
 
     #endregion
@@ -511,7 +531,7 @@ $cmsj(document).ready(InitDesignerAreaSize);
     /// Renders complete rule.
     /// </summary>
     /// <param name="rule">Rule to render</param>
-    private string GetResultHTML(MacroRuleTree rule)
+    private string GetRuleHTML(MacroRuleTree rule)
     {
         StringBuilder sb = new StringBuilder();
 
@@ -534,7 +554,6 @@ $cmsj(document).ready(InitDesignerAreaSize);
             string text = handleParams.Replace("##ID##", "0") + HTMLHelper.HTMLEncode(rule.RuleText) + "</span>";
             if (rule.Parameters != null)
             {
-                int i = 1;
                 foreach (string key in rule.Parameters.Keys)
                 {
                     MacroRuleParameter p = rule.Parameters[key];
@@ -545,7 +564,6 @@ $cmsj(document).ready(InitDesignerAreaSize);
                     var parameterText = "</span><span class=\"MacroRuleParameter\" onclick=\"ChangeParamValue('" + rule.IDPath + "', " + ScriptHelper.GetString(key) + ");\">" + paramText + "</span>" + handleParams;
 
                     text = Regex.Replace(text, "\\{" + key + "\\}", TextHelper.EncodeRegexSubstitutes(parameterText), CMSRegex.IgnoreCase);
-                    i++;
                 }
             }
             bool isSelected = hdnSelected.Value.Contains(";" + rule.IDPath + ";");
@@ -557,7 +575,7 @@ $cmsj(document).ready(InitDesignerAreaSize);
         {
             foreach (MacroRuleTree child in rule.Children)
             {
-                sb.Append(GetResultHTML(child));
+                sb.Append(GetRuleHTML(child));
             }
         }
 
@@ -581,18 +599,18 @@ $cmsj(document).ready(InitDesignerAreaSize);
 
     protected void btnClearAll_Click(object sender, EventArgs e)
     {
-        this.RuleTree = new MacroRuleTree();
+        RuleTree = new MacroRuleTree();
         hdnSelected.Value = "";
     }
 
 
     protected void btnViewCode_Click(object sender, EventArgs e)
     {
-        this.viewCodeElem.Text = this.RuleTree.GetCondition();
-        this.titleElem.TitleText = GetString("macros.macrorule.viewcodeheader");
-        this.pnlViewCode.Visible = true;
-        this.mdlDialog.Visible = true;
-        this.mdlDialog.Show();
+        viewCodeElem.Text = RuleTree.GetCondition();
+        titleElem.TitleText = GetString("macros.macrorule.viewcodeheader");
+        pnlViewCode.Visible = true;
+        mdlDialog.Visible = true;
+        mdlDialog.Show();
     }
 
 
@@ -601,17 +619,14 @@ $cmsj(document).ready(InitDesignerAreaSize);
         string[] parts = hdnParam.Value.Split(';');
         if (parts.Length == 3)
         {
-            int plusOne = parts[0].CompareToCSafe((string.IsNullOrEmpty(parts[1]) ? "" : parts[1] + ".") + parts[2]);
+            var sourcePath = parts[0];
+
+            int plusOne = sourcePath.CompareToCSafe((string.IsNullOrEmpty(parts[1]) ? "" : parts[1] + ".") + parts[2]);
             plusOne = (plusOne < 0 ? 1 : 0);
 
-            if (parts[1] == pnlCondtion.ClientID)
-            {
-                this.RuleTree.MoveNode(parts[0], "", ValidationHelper.GetInteger(parts[2], 0) + plusOne);
-            }
-            else
-            {
-                this.RuleTree.MoveNode(parts[0], parts[1], ValidationHelper.GetInteger(parts[2], 0) + plusOne);
-            }
+            var targetPath = (parts[1] == pnlCondtion.ClientID) ? "" : parts[1];
+            
+            RuleTree.MoveNode(sourcePath, targetPath, ValidationHelper.GetInteger(parts[2], 0) + plusOne);
 
             // Clear selection
             hdnSelected.Value = ";";
@@ -625,13 +640,9 @@ $cmsj(document).ready(InitDesignerAreaSize);
 
         hdnLastSelected.Value = hdnParamSelected.Value;
         hdnLastParam.Value = hdnParam.Value;
-        hdnParamEditShown.Value = "1";
+        titleElem.TitleText = GetString("macros.macrorule.changeparameter");
 
-        this.titleElem.TitleText = GetString("macros.macrorule.changeparameter");
-        this.pnlModalProperty.Visible = true;
-        this.pnlFooter.Visible = true;
-        this.mdlDialog.Visible = true;
-        this.mdlDialog.Show();
+        ShowParameterDialog();
     }
 
 
@@ -677,10 +688,7 @@ $cmsj(document).ready(InitDesignerAreaSize);
                 }
                 else
                 {
-                    pnlModalProperty.Visible = true;
-                    pnlFooter.Visible = true;
-                    mdlDialog.Visible = true;
-                    mdlDialog.Show();
+                    ShowParameterDialog();
                 }
             }
         }
@@ -750,8 +758,8 @@ $cmsj(document).ready(InitDesignerAreaSize);
 
     protected void btnAutoIndent_Click(object sender, EventArgs e)
     {
-        MacroRuleTree.RemoveBrackets(this.RuleTree);
-        this.RuleTree.AutoIndent();
+        MacroRuleTree.RemoveBrackets(RuleTree);
+        RuleTree.AutoIndent();
     }
 
 
@@ -781,23 +789,27 @@ $cmsj(document).ready(InitDesignerAreaSize);
             }
 
             // Add the rule at the root level, when no selected item
-            this.RuleTree.AddRule(rule, this.RuleTree.Children.Count);
+            RuleTree.AddRule(rule, RuleTree.Children.Count);
         }
+    }
+
+
+    /// <summary>
+    /// Shows the parameter select dialog.
+    /// </summary>
+    private void ShowParameterDialog()
+    {
+        hdnParamEditShown.Value = "1";
+        pnlModalProperty.Visible = true;
+        pnlFooter.Visible = true;
+        mdlDialog.Visible = true;
+        mdlDialog.Show();
     }
 
     #endregion
 
 
     #region "General methods"
-
-    /// <summary>
-    /// Returns true if at least one rule is selected.
-    /// </summary>
-    private bool IsAnyRuleSelected()
-    {
-        return this.hdnSelected.Value.Trim(';') != "";
-    }
-
 
     /// <summary>
     /// Gets the object from its IDPath.
@@ -807,9 +819,9 @@ $cmsj(document).ready(InitDesignerAreaSize);
     {
         if (!string.IsNullOrEmpty(idPath))
         {
-            string[] parts = idPath.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] parts = idPath.Split(new [] { '.' }, StringSplitOptions.RemoveEmptyEntries);
 
-            MacroRuleTree srcGroup = this.RuleTree;
+            MacroRuleTree srcGroup = RuleTree;
             foreach (string posStr in parts)
             {
                 int pos = ValidationHelper.GetInteger(posStr, 0);
@@ -833,7 +845,7 @@ $cmsj(document).ready(InitDesignerAreaSize);
         List<MacroRuleTree> selected = new List<MacroRuleTree>();
         if (!string.IsNullOrEmpty(hdnSelected.Value))
         {
-            string[] ids = hdnSelected.Value.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] ids = hdnSelected.Value.Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
             // We need to sort the items, so as the items upper go sooner than items more down
             Array.Sort(ids);
@@ -911,7 +923,7 @@ $cmsj(document).ready(InitDesignerAreaSize);
     /// </summary>
     public string GetCondition()
     {
-        return this.RuleTree.GetCondition();
+        return RuleTree.GetCondition();
     }
 
 
@@ -920,7 +932,7 @@ $cmsj(document).ready(InitDesignerAreaSize);
     /// </summary>
     public string GetXML()
     {
-        return this.RuleTree.GetXML();
+        return RuleTree.GetXML();
     }
 
 
@@ -936,12 +948,14 @@ $cmsj(document).ready(InitDesignerAreaSize);
             ruleTree.LoadFromXml(xml);
             ViewState["RuleTree"] = ruleTree;
         }
-        catch { }
+        catch
+        {
+        }
     }
 
 
     /// <summary>
-    /// Extracs the condition from Rule method.
+    /// Extracts the condition from Rule method.
     /// </summary>
     public string ConditionFromExpression(string expression)
     {
@@ -950,19 +964,18 @@ $cmsj(document).ready(InitDesignerAreaSize);
         {
             xml = MacroExpression.ExtractParameter(expression, "rule", 1);
         }
-        catch { }
+        catch
+        {
+        }
 
-
-        string user = null;
+        string user;
         if (xml == null)
         {
             return MacroSecurityProcessor.RemoveMacroSecurityParams(expression, out user);
         }
-        else
-        {
-            // Returns first parameter of the expression
-            return MacroSecurityProcessor.RemoveMacroSecurityParams(ValidationHelper.GetString(xml.Value, ""), out user);
-        }
+
+        // Returns first parameter of the expression
+        return MacroSecurityProcessor.RemoveMacroSecurityParams(ValidationHelper.GetString(xml.Value, ""), out user);
     }
 
 

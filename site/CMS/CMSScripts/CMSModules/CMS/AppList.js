@@ -1,4 +1,4 @@
-﻿cmsdefine(['CMS/Filter', 'CMS/EventHub', 'CMS/NavigationBlocker', 'jQuery', 'Underscore', 'jQueryJScrollPane', 'CMS/Loader'], function (Filter, EventHub, NavigationBlocker, $, _) {
+﻿cmsdefine(['CMS/Filter', 'CMS/EventHub', 'CMS/NavigationBlocker', 'jQuery', 'Underscore', 'CMS/UrlHelper', 'jQueryJScrollPane', 'CMS/Loader'], function (Filter, EventHub, NavigationBlocker, $, _, UrlHelper) {
     'use strict';
 
     var AppList,
@@ -106,11 +106,11 @@
 
 
         // Concatenates strings and ignores undefined and null values
-        concatenateStrings = function() {
+        concatenateStrings = function () {
             var args = _.toArray(arguments),
                 result = '';
 
-            _.each(args, function(argument) {
+            _.each(args, function (argument) {
                 if (argument === undefined || argument === null) {
                     argument = '';
                 }
@@ -122,7 +122,7 @@
         },
 
         // Shows application panel and disable user interface
-        show = function() {
+        show = function () {
             var $currentlySelected;
 
             if (appLoading) {
@@ -153,7 +153,7 @@
             $documentBody.animate({ left: $appListPanel.width() }, {
                 duration: data.duration,
                 queue: false,
-                complete: function() {
+                complete: function () {
                     // Run tasks on first show
                     if (!wasShown) {
                         initScroller();
@@ -169,16 +169,18 @@
 
 
         // Hides application panel and enable user interface
-        hide = function() {
+        hide = function () {
             EventHub.publish({
                 name: 'ApplicationListHidden',
                 onlySubscribed: true
             });
 
             $appListOverLayer.animate({
-                opacity: '0.0' }, { duration: data.duration, queue: false
+                opacity: '0.0'
+            }, {
+                duration: data.duration, queue: false
             });
-            $documentBody.animate({ left: '0px' }, data.duration, function() {
+            $documentBody.animate({ left: '0px' }, data.duration, function () {
                 $appListOverLayer.hide();
                 runOnAppHideCallbacks();
             });
@@ -187,11 +189,11 @@
         },
 
 
-        expandFirstCategory = function() {
+        expandFirstCategory = function () {
             expandCurrentCategory($appListContent.find('.js-filter-item').first());
         },
 
-        expandCurrentCategory = function($currentlySelected) {
+        expandCurrentCategory = function ($currentlySelected) {
             var $parent = $($currentlySelected.closest('.panel.panel-default')[0]),
                 $toggleBtn = $parent.find('.accordion-toggle'),
                 $dataWrapper = $parent.find('.panel-collapse');
@@ -202,12 +204,12 @@
 
             // Make sure that the rendering engine finishes before
             // returning 'no-transition' class back on
-            setTimeout(function() {
+            setTimeout(function () {
                 $dataWrapper.removeClass('no-transition');
             }, 0);
         },
 
-        onScrollerArrowChange = function(event, isAtTop, isAtBottom) {
+        onScrollerArrowChange = function (event, isAtTop, isAtBottom) {
             if (isAtTop) {
                 $scrollShadowTopElement.hide();
             } else {
@@ -221,7 +223,7 @@
             }
         },
 
-        onScrollerInitialized = function(event, isScrollable) {
+        onScrollerInitialized = function (event, isScrollable) {
             if (!isScrollable) {
                 $scrollShadowTopElement.hide();
                 $scrollShadowBottomElement.hide();
@@ -234,7 +236,7 @@
             }
         },
 
-        initScroller = function() {
+        initScroller = function () {
             var appListOffset = $scrollableElem.offset();
 
             $scrollableElem.css({
@@ -259,7 +261,7 @@
 
 
         // Show or hide application list with dependence on current status
-        toggleAppList = function() {
+        toggleAppList = function () {
             if (isUsed) {
                 hide();
             } else {
@@ -267,29 +269,47 @@
             }
         },
 
-        relaunchApplication = function(p) {
+        relaunchApplication = function (p) {
             if (!p.received) {
                 p.received = true;
 
                 if (currentAppId) {
-                    launchApplication(currentAppId);
+                    launchApplication({ appId: appId });
                 }
             }
         },
 
+
         // Load application into inner frame
-        launchApplication = function(appId) {
-            currentAppId = appId;
-            var appName = getApplicationName(appId);
-            var additionalQuery = '';
+        launchApplication = function (appParams) {
+            currentAppId = appParams.appId;
+            var appName = getApplicationName(appParams.appId),
+                // hash parameters and element guid are set only when the application directly opens specified single object
+                redirectToSingleObject = !!appParams.hashParameters && !!appParams.hashParameters.elementguid,
+                additionalQuery = '',
+                additionalQueryObject = appParams.hashParameters || {};
+
+            additionalQueryObject.displaytitle = 'false';
+
+            // Single object can either need specific UI element or can work with the application ID as well.
+            // In the former case the element GUID was already defined while parsing hash query, in the latter current application ID has to be used.
+            additionalQueryObject.elementguid = additionalQueryObject.elementguid || currentAppId;
+
+            additionalQuery = UrlHelper.buildQueryString(additionalQueryObject);
+
+            if (redirectToSingleObject) {
+                // This property has to be set in order to avoid unwanted redirection caused by locationHashChanged() method
+                // as soon as the hash changes.
+                ignoreHash = true;
+            }
 
             // Propagate additional query parameters
             if (data.launchAppWithQuery.length > 0) {
-                additionalQuery = '&' + data.launchAppWithQuery;
+                additionalQuery += '&' + data.launchAppWithQuery;
             }
 
             // Load application into the inner content
-            setWindowLocation(targetFrame, 'href', data.applicationListBaseUrl + '?displaytitle=false&elementguid=' + appId + additionalQuery, function() {
+            setWindowLocation(targetFrame, 'href', data.applicationListBaseUrl + additionalQuery, function () {
                 //  Show loading status
                 if (window.Loader) {
                     window.Loader.show();
@@ -297,15 +317,24 @@
                 appLoading = true;
 
                 // Notify onLaunchApplication listeners
-                notifyLaunchAppListeners(appId, appName);
+                notifyLaunchAppListeners(currentAppId, appName);
+
+                // When single object is loaded, change hash value so it points to object listing in parent application
+                // Call event so breadcrumbs could receive required data
+                if (redirectToSingleObject) {
+                    EventHub.publish("NavigatingToSingleObject", appParams);
+                    window.location.hash = currentAppId;
+                } else {
+                    EventHub.publish("NavigationToApplication");
+                }
             });
         },
 
 
         // Sets the window location attributes based on the newLocation
             // object, but only if there are no unsaved changes in the UI
-        setWindowLocation = function(w, newLocationKey, newLocationValue, successCallback) {
-            if(navigationBlocker.canNavigate()) {
+        setWindowLocation = function (w, newLocationKey, newLocationValue, successCallback) {
+            if (navigationBlocker.canNavigate()) {
                 w.location[newLocationKey] = newLocationValue;
 
                 // Call success callback if defined
@@ -317,13 +346,13 @@
 
 
         // Launch application handler
-        onLaunchApplication = function(callBack) {
+        onLaunchApplication = function (callBack) {
             onLaunchAppListeners.push(callBack);
         },
 
 
         // Notify onLaunchApplication listeners
-        notifyLaunchAppListeners = function(appId, appName) {
+        notifyLaunchAppListeners = function (appId, appName) {
             for (var i = 0; i < onLaunchAppListeners.length; i++) {
                 onLaunchAppListeners[i](appId, appName);
             }
@@ -331,7 +360,7 @@
 
 
         // Handle application select by GUID in URL
-        handleApplicationSelection = function() {
+        handleApplicationSelection = function () {
             var href = location.href;
             var appId = null;
 
@@ -348,31 +377,33 @@
 
 
         // Opens the given application in the content frame. If no application is specified, default application is chosen
-        openApplication = function (appId) {
+        openApplication = function (appQuery) {
 
             if (SetLiveSiteURL) {
                 // Reset live site URL 
                 SetLiveSiteURL();
             }
 
+            var appParams = getApplicationParams(appQuery);
+
             // Launch application if is defined
-            if (checkApplicationIdValidity(appId)) {
-                launchApplication(appId);
+            if (checkApplicationIdValidity(appParams.appId)) {
+                launchApplication(appParams);
             }
             else { // Display the default application when no specific application or page is requested
-                appId = null;
+                appParams.appId = null;
 
                 // Try get requested application from special handling e.g. logon page
                 if (typeof (Storage) !== "undefined") {
-                    appId = sessionStorage.cmsLatestApp;
+                    appParams = getApplicationParams(sessionStorage.cmsLatestApp);
                     sessionStorage.cmsLatestApp = null;
                 }
 
-                if ((appId !== null) && checkApplicationIdValidity(appId)) {
+                if ((appParams.appId !== null) && checkApplicationIdValidity(appParams.appId)) {
                     // Do not refresh launched app after hash join
                     ignoreHash = true;
-                    setWindowLocation(window, 'hash', '#' + appId);
-                    launchApplication(appId);
+                    setWindowLocation(window, 'hash', '#' + appParams.appId);
+                    launchApplication(appParams);
                 }
                 else {
                     setWindowLocation(targetFrame, 'href', data.defaultAppUrl);
@@ -384,14 +415,41 @@
         },
 
 
+        // Parses hash query to application guid and additional hash queries
+        getApplicationParams = function (url) {
+            if (url && url.indexOf("#") !== -1) {
+                url = url.split("#")[1];
+            }
+
+            var appParams = {};
+
+            if (url) {
+                var appProperties = url.split("&");
+                appParams.appId = appProperties[0];
+
+                var restProperties = _.rest(appProperties);
+                if (restProperties && restProperties.length) {
+                    appParams.hashParameters = {};
+
+                    restProperties.forEach(function (parameter) {
+                        var splittedParameter = parameter.split("=");
+                        appParams.hashParameters[splittedParameter[0]] = splittedParameter[1];
+                    });
+                }
+            }
+
+            return appParams;
+        },
+
+
         // Checks whether application available
-        checkApplicationIdValidity = function(appId) {
+        checkApplicationIdValidity = function (appId) {
             return ((appId != null) && (appId.length > 0) && applicationExists(appId));
         },
 
 
         // Handle key press function
-        keyPressed = function(e) {
+        keyPressed = function (e) {
             // Show/Hide for F2 key(113), or hide for Esc(27)
             if ((e.key == 27) && isUsed || (e.key == 113)) {
                 toggleAppList();
@@ -406,40 +464,40 @@
         },
 
         // Run onAppShow callbacks
-        runOnAppShowCallbacks = function() {
+        runOnAppShowCallbacks = function () {
             for (var i = 0; i < onAppShowCallbacks.length; i++) {
                 onAppShowCallbacks[i]();
             }
         },
 
         // Run onAppHide callbacks
-        runOnAppHideCallbacks = function() {
+        runOnAppHideCallbacks = function () {
             for (var i = 0; i < onAppHideCallbacks.length; i++) {
                 onAppHideCallbacks[i]();
             }
         },
 
-        launchApplicationHandler = function(e) {
+        launchApplicationHandler = function (e) {
             // Check changes
             var appId = $(this).data('appguid'),
                 currentAppReload = (currentAppId === appId),
                         unsavedChanges = false,
                         origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
-            
+
             // Try to remove the query string from window.location without actually reloading the page
             // It is possible through HTML5 history api, which is not availible in IE9,
             // so the url won't be changed there
-                    if (window.history && window.history.pushState) {
-                        window.history.pushState({}, '', origin + window.location.pathname + window.location.hash);
+            if (window.history && window.history.pushState) {
+                window.history.pushState({}, '', origin + window.location.pathname + window.location.hash);
             }
 
             // Ignore click raised by middle button
             if (e.which !== 2) {
                 // Process click action if should be used
                 if ((!hashTagsUsed || currentAppReload)) {
-                    launchApplication(appId);
+                    launchApplication({ appId: appId });
                 } else {
-                    if(!navigationBlocker.canNavigate()) {
+                    if (!navigationBlocker.canNavigate()) {
                         unsavedChanges = true;
                         hide();
                     };
@@ -455,13 +513,13 @@
         },
 
         // Collect applications
-        collectApplications = function() {
+        collectApplications = function () {
             $('#cms-applist [data-appguid]')
-                .each(function() {
+                .each(function () {
                     var $el = $(this),
                         appId = $el.attr('data-appguid'),
                         appName = '',
-                        textNode = $el.contents().filter(function() {
+                        textNode = $el.contents().filter(function () {
                             return this.nodeType === 3;
                         });
 
@@ -477,7 +535,7 @@
 
 
         // Indicates whether application is defined
-        applicationExists = function(appId) {
+        applicationExists = function (appId) {
             if (getApplicationName(appId) !== undefined) {
                 return true;
             }
@@ -486,19 +544,23 @@
 
 
         // Gets specific application item
-        getApplicationName = function(appId) {
+        getApplicationName = function (appId) {
             return applications[appId];
         },
 
 
         // Set application item
-        setApplicationItem = function(appId, appName) {
+        setApplicationItem = function (appId, appName) {
             applications[appId] = appName;
         },
 
 
         // Launch application after hash change
-        locationHashChanged = function() {
+        locationHashChanged = function (e) {
+            var hashParameters = getApplicationParams(e.oldURL).hashParameters;
+
+            // If previous url had ignore hash parameter, do not open application
+            ignoreHash = ((hashParameters && hashParameters.ignorehash) || ignoreHash);
             if (!ignoreHash) {
                 var appId = location.hash.substring(1);
                 openApplication(appId);
@@ -508,19 +570,19 @@
         },
 
         // Set up filtering
-        setupFilter = (function() {
-            var onStartOnEachParentCallback = function($parent) {
-                    $parent.removeClass('panel');
-                    $parent.children('.panel-collapse')
-                           .removeClass('collapse')
-                           .addClass('in')
-                           .css('height', 'auto');
+        setupFilter = (function () {
+            var onStartOnEachParentCallback = function ($parent) {
+                $parent.removeClass('panel');
+                $parent.children('.panel-collapse')
+                       .removeClass('collapse')
+                       .addClass('in')
+                       .css('height', 'auto');
 
-                    // Disable collapsing on this element
-                    $parent.find('.accordion-toggle').attr('data-toggle', '');
-                },
+                // Disable collapsing on this element
+                $parent.find('.accordion-toggle').attr('data-toggle', '');
+            },
 
-                onEndOnEachParentCallback = function($parent) {
+                onEndOnEachParentCallback = function ($parent) {
                     $parent.addClass('panel');
                     $parent.children('.panel-collapse')
                             .removeClass('in')
@@ -530,30 +592,30 @@
                     $parent.find('.accordion-toggle').attr('data-toggle', 'collapse');
                 };
 
-            return function($appListWrapper, $searchInput) {
+            return function ($appListWrapper, $searchInput) {
                 var f = new Filter($appListWrapper, $searchInput, {
-                    onStartCb: function() {
+                    onStartCb: function () {
                         f.eachParent(onStartOnEachParentCallback);
                     },
-                    onReset: function() {
+                    onReset: function () {
                         f.eachParent(onEndOnEachParentCallback);
                     },
-                    onParentEmptyCb: function($parent) {
+                    onParentEmptyCb: function ($parent) {
                         $parent.hide();
                     },
-                    onParentNonemptyCb: function($parent) {
+                    onParentNonemptyCb: function ($parent) {
                         $parent.show();
                     },
                     onBeforeItemChange: function ($item) {
                         // Remove the tooltip from the child item
                         $($item.children()[0]).tooltip('hide');
                     },
-                    onChange: function() {
+                    onChange: function () {
                         if (scrollerInstance) {
                             scrollerInstance.reinitialise();
                         }
                     },
-                    onItemActivated: function(event, selectedItem) {
+                    onItemActivated: function (event, selectedItem) {
                         var newLocation = selectedItem.$link.attr('href');
                         if (event.ctrlKey) {
                             // Open that in new tab
@@ -569,7 +631,7 @@
                         event.preventDefault();
                         return false;
                     },
-                    onItemSelected: function($item) {
+                    onItemSelected: function ($item) {
                         // Do manual scrolling on up/down arrow keys
                         var itemTopPosition = $item.position().top,
                             itemHeight = $item.height(),
@@ -595,7 +657,7 @@
         // Event called on every category show/hide
         // When one shows, the previously shown will hide defaultly
         // make sure that the event will fire only once.
-        onCategoryToggle = _.debounce(function() {
+        onCategoryToggle = _.debounce(function () {
             if (scrollerInstance) {
                 scrollerInstance.reinitialise();
             }
@@ -607,17 +669,21 @@
          *
          * @param e Mouse click event
          */
-        pinOrUnpinDashboardApplication = function(e) {
+        pinOrUnpinDashboardApplication = function (e) {
             e.preventDefault();
 
             var $this = $(this);
-            
+            if ($this.attr("data-pending")) {
+                return;
+            }
+
             if ($this.hasClass(APPLICATION_IS_ON_DASHBOARD_CSSCLASS)) {
                 EventHub.publish({
                     name: 'cms.applicationdashboard.ApplicationRemoved',
                     onlySubscribed: true
                 }, e.data.guid);
             } else {
+                $this.attr("data-pending", true);
                 EventHub.publish({
                     name: 'cms.applicationdashboard.ApplicationAdded',
                     onlySubscribed: true
@@ -628,15 +694,22 @@
 
         /**
          * Subscribes to changes of applications within the dashboard. If application is removed, removes the pin icon and vice versa. 
+         * If dashboard has been loaded, re-enables clicking on the pin.
          */
-        subscribeToDashboardAppChanges = function() {
-            EventHub.subscribe('cms.applicationdashboard.ApplicationRemoved', function(appGuid) {
+        subscribeToDashboardAppChanges = function () {
+            EventHub.subscribe('cms.applicationdashboard.ApplicationRemoved', function (appGuid) {
                 handleDashboardAppToggle(false, appGuid);
             });
 
             EventHub.subscribe('cms.applicationdashboard.ApplicationAdded', function (appGuid) {
                 handleDashboardAppToggle(true, appGuid);
             });
+            
+            EventHub.subscribe('cms.applicationdashboard.DashboardItemLoaded', function (appGuid) {
+                var $app = _.find(applications, function (app) { return app.attr('data-appguid') === appGuid; });
+                $app.removeAttr("data-pending");
+            });
+
         },
 
 
@@ -646,9 +719,14 @@
          * @param pinned boolean   If true, pin is added; otherwise, false
          * @param appGuid guid     Guid of the application
          */
-        handleDashboardAppToggle = function(pinned, appGuid) {
-            var $app = _.find(applications, function(app) { return app.attr('data-appguid') === appGuid; }),
-                $pin = $app.find('.dashboard-pin');
+        handleDashboardAppToggle = function (pinned, appGuid) {
+            var $app = _.find(applications, function (app) { return app.attr('data-appguid') === appGuid; });
+            
+            if (!$app) {
+                return;
+            }
+
+            var $pin = $app.find('.dashboard-pin');
 
             if (pinned) {
                 $app.addClass(APPLICATION_IS_ON_DASHBOARD_CSSCLASS);
@@ -664,16 +742,16 @@
             }
         },
 
-        handleDashboardModeChange = function(isEditable, checkedApplicationsGuids) {
+        handleDashboardModeChange = function (isEditable, checkedApplicationsGuids) {
             subscribeToDashboardAppChanges();
             isInEditableMode = isEditable;
 
             if (isInEditableMode) {
                 $appListContent.addClass(DASHBOARD_EDIT_MODE_CSSCLASS);
 
-                _.each(applications, function($app) {
+                _.each(applications, function ($app) {
                     var appGuid = $app.attr('data-appguid');
-                        
+
                     // Disable current click handler
                     $app.off('click');
 
@@ -681,10 +759,10 @@
                     $app.on('click', {
                         guid: appGuid
                     }, pinOrUnpinDashboardApplication);
-                    
+
                     $app.append($('<i aria-hidden="true" class="icon-pin cms-icon-80 dashboard-pin"></i>'));
                     $app.tooltip('disable');
-                    
+
                     // Add checked class if appGuid is contained within checkedApplicationsGuids
                     handleDashboardAppToggle(_(checkedApplicationsGuids).contains(appGuid), appGuid);
                 });
@@ -696,13 +774,13 @@
 
                 $appListContent.removeClass(DASHBOARD_EDIT_MODE_CSSCLASS);
 
-                _.each(applications, function($app) {
+                _.each(applications, function ($app) {
                     $app.off('click');
                     $app.on('click', launchApplicationHandler);
 
                     $app.children('i.dashboard-pin').remove();
-                    $app.tooltip('enable');             
-            });
+                    $app.tooltip('enable');
+                });
             }
         };
 
@@ -761,8 +839,27 @@
         // Handle hash change => change application
         var docmode = document.documentMode;
         if ('onhashchange' in window && (docmode === undefined || docmode > 7)) {
-            window.onhashchange = locationHashChanged;
             hashTagsUsed = true;
+
+            // IE and Trident (Edge) do not support oldURL property in onhashchange event so do the check for the changed hash every 100ms and call the function
+            if (navigator.userAgent.match(/msie|trident/i)) {
+                var prevHash = window.location.hash;
+                var prevURL = window.location.href;
+                setInterval(function () {
+                    var nextHash = window.location.hash;
+                    var nextURL = window.location.href;
+                    if (prevHash === nextHash) return;
+                    locationHashChanged.call(window, {
+                        type: 'hashchange',
+                        newURL: nextURL,
+                        oldURL: prevURL
+                    });
+                    prevHash = nextHash;
+                    prevURL = nextURL;
+                }, 100);
+            } else {
+                window.onhashchange = locationHashChanged;
+            }
         }
 
         // Initialize loading
@@ -851,6 +948,15 @@
 
         // Back in tabs
         EventHub.subscribe('Tabs_Back_0', relaunchApplication);
+
+        // Application breadcrumb click when single object navigation was used
+        EventHub.subscribe("SingleObjectNavigationAppBreadcrumbClick", function (appParams) {
+            var query = '';
+            if (appParams.tabName) {
+                query = '&tabname=' + appParams.tabName;
+            }
+            openApplication(appParams.appId + query);
+        });
     };
 
     AppList.prototype.onShow = function (cb) {

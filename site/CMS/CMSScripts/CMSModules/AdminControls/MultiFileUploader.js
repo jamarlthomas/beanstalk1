@@ -181,11 +181,14 @@
                         } else {
                             // All files uploaded, do after upload actions
                             if (onAfterUpload) {
-                                new Function(onAfterUpload)();
+                                new Function('files', onAfterUpload)(files);
                             }
                             if (onUploadCompleted) {
                                 executeFunctionByName(onUploadCompleted, window, containerId);
                             }
+
+                            // Clear selected files
+                            clearFileUploader();
                         }
                     }
                 };
@@ -279,6 +282,24 @@
             }
 
             return theString;
+        };
+
+        // Clears selected file in FileUploader.
+        // Uploader HTML element is replaced with new one which has the same attributes as original.
+        var clearFileUploader = function () {
+            var newUploader = document.createElement('input');
+
+            // Copy all attributes
+            for (var i = 0; i < uploader.attributes.length; i++) {
+                var attrName = uploader.attributes[i].name;
+                var attrValue = uploader.attributes[i].value;
+
+                if (attrName != 'value') {
+                    newUploader[attrName] = attrValue;
+                }
+
+            }
+            uploader.parentNode.replaceChild(newUploader, uploader);
         };
     };
 

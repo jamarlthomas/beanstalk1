@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -329,7 +329,7 @@ public partial class CMSModules_Ecommerce_FormControls_AddressSelector : FormEng
         DropDownSingleSelect.AutoPostBack = true;
 
         // Show New and Edit buttons if user has permission
-        if (ECommerceContext.IsUserAuthorizedForPermission("ModifyCustomers"))
+        if (ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.CUSTOMERS_MODIFY))
         {
             string dialogUrl = ResolveUrl("~/CMSModules/Ecommerce/FormControls/AddressSelectorDialog.aspx?typeId=" + NewTypeId + "&customerId=" + CustomerID);
             uniSelector.NewItemPageUrl = dialogUrl;

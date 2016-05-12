@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_Selectors_FontSelectorDialog"
+﻿<%@ Page Language="C#" AutoEventWireup="false" Inherits="CMSFormControls_Selectors_FontSelectorDialog"
     Theme="default" Title="Font Selector" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Codebehind="~/CMSFormControls/Selectors/FontSelectorDialog.aspx.cs" %>
+     Codebehind="FontSelectorDialog.aspx.cs" %>
 
 <asp:Content ID="cntContent" ContentPlaceHolderID="plcContent" runat="Server">
     <div class="font-selector">
@@ -26,27 +26,27 @@
                     <cms:CMSTextBox ID="txtFontStyle" runat="server" ReadOnly="true" />
                 </td>
                 <td>
-                    <cms:CMSTextBox ID="txtFontSize" runat="server" />
+                    <cms:CMSTextBox ID="txtFontSize" runat="server" onChange="sizeManualUpdate();" />
                 </td>
             </tr>
             <tr>
                 <td>
-                    <cms:CMSListBox ID="lstFontType" CssClass="FontSelectorTypeListBox" runat="server" Rows="7" />
+                    <cms:CMSListBox ID="lstFontType" CssClass="FontSelectorTypeListBox" runat="server" Rows="7" onChange="fontTypeChange(this.options[this.selectedIndex].value);" />
                 </td>
                 <td>
-                    <cms:CMSListBox ID="lstFontStyle" CssClass="FontSelectorStyleListBox" runat="server" Rows="7" />
+                    <cms:CMSListBox ID="lstFontStyle" CssClass="FontSelectorStyleListBox" runat="server" Rows="7" onChange="fontStyleChange(this.selectedIndex,this.options[this.selectedIndex].text);" />
                 </td>
                 <td>
-                    <cms:CMSListBox CssClass="FontSelectorStyleListBox" ID="lstFontSize" runat="server" Rows="7" />
+                    <cms:CMSListBox ID="lstFontSize" CssClass="FontSelectorStyleListBox" runat="server" Rows="7" onChange="fontSizeChange(this.options[this.selectedIndex].value);" />
                 </td>
             </tr>
         </table>
         <div class="boxes">
-            <cms:CMSCheckBox ID="chkUnderline" runat="server" />
-            <cms:CMSCheckBox ID="chkStrike" runat="server" />
+            <cms:CMSCheckBox ID="chkUnderline" runat="server" ResourceString="fontselector.underline" onclick="fontDecorationChange();" />
+            <cms:CMSCheckBox ID="chkStrike" runat="server" ResourceString="fontselector.strikethrought" onclick="fontDecorationChange();" />
         </div>
         <asp:Panel ID="pnlSampleText" runat="server" class="FontSelectorTextSamplePanel">
-            <asp:Label runat="server" ID="lblSampleText" Text="AaBbZzYy" />
+            <asp:Label runat="server" ID="lblSampleText" Text="AaBbZzYy" EnableViewState="false" />
         </asp:Panel>
     </div>
 </asp:Content>

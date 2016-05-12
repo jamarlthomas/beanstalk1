@@ -87,11 +87,10 @@ public partial class CMSModules_OnlineMarketing_Controls_UI_ABVariant_NewPage : 
 
         // Get all language translations
         var documents = DocumentHelper.GetDocuments()
-                                           .PublishedVersion()
-                                           .All()
-                                           .OnCurrentSite()
-                                           .AllCultures()
-                                           .WhereEquals("NodeID", newDocument.NodeID);
+                                      .All()
+                                      .OnCurrentSite()
+                                      .AllCultures()
+                                      .WhereEquals("NodeID", newDocument.NodeID);
 
         // Limit length to 100 characters
         string documentName = TextHelper.LimitLength(txtDocumentName.Text.Trim(), 100, String.Empty);
@@ -171,7 +170,7 @@ public partial class CMSModules_OnlineMarketing_Controls_UI_ABVariant_NewPage : 
         }
         catch (InfoObjectException ex)
         {
-            newDocument.Delete(true, true, true);
+            newDocument.Delete(true, true);
             ShowError(ex.Message);
             return false;
         }
@@ -207,27 +206,29 @@ public partial class CMSModules_OnlineMarketing_Controls_UI_ABVariant_NewPage : 
     /// <param name="newNode">New node which will use new adhoc template</param>
     private void CloneTemplateAsAdHoc(TreeNode newNode)
     {
-        PageInfo originalPage = PageInfoProvider.GetPageInfo(mNode.DocumentGUID, mNode.NodeSiteID);
-        if (originalPage != null)
+        PageInfo originalPage = PageInfoProvider.GetPageInfo(mNode.NodeSiteName, mNode.NodeAliasPath, mNode.DocumentCulture, null, mNode.NodeID, false);
+        if (originalPage == null)
         {
-            PageTemplateInfo originalTemplate = originalPage.UsedPageTemplateInfo;
+            return;
+        }
 
-            // If template is not adhoc or is inherited, create adhoc from original node template
-            if ((originalTemplate != null) && (originalTemplate.IsReusable || mNode.NodeInheritPageTemplate))
+        PageTemplateInfo originalTemplate = originalPage.UsedPageTemplateInfo;
+
+        // If template is not adhoc or is inherited, create adhoc from original node template
+        if ((originalTemplate != null) && (originalTemplate.IsReusable || mNode.NodeInheritPageTemplate))
+        {
+            var newDisplayName = string.Format("Ad-hoc: {0} ({1})", txtDocumentName.Text.Trim(), GetString("abtesting.abvarianttemplate"));
+            var adHocTemplate = PageTemplateInfoProvider.CloneTemplateAsAdHoc(originalTemplate, newDisplayName, SiteContext.CurrentSiteID, Guid.Empty);
+
+            if (newNode.NodeTemplateForAllCultures)
             {
-                var newDisplayName = string.Format("Ad-hoc: {0} ({1})", txtDocumentName.Text.Trim(), GetString("abtesting.abvarianttemplate"));
-                var adHocTemplate = PageTemplateInfoProvider.CloneTemplateAsAdHoc(originalTemplate, newDisplayName, SiteContext.CurrentSiteID, Guid.Empty);
-
-                if (newNode.NodeTemplateForAllCultures)
-                {
-                    newNode.NodeTemplateID = adHocTemplate.PageTemplateId;
-                }
-                else
-                {
-                    newNode.DocumentPageTemplateID = adHocTemplate.PageTemplateId;
-                }
-                newNode.NodeInheritPageTemplate = false;
+                newNode.NodeTemplateID = adHocTemplate.PageTemplateId;
             }
+            else
+            {
+                newNode.DocumentPageTemplateID = adHocTemplate.PageTemplateId;
+            }
+            newNode.NodeInheritPageTemplate = false;
         }
     }
 

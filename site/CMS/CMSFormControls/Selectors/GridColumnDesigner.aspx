@@ -1,6 +1,6 @@
-<%@ Page Language="C#" ValidateRequest="false" AutoEventWireup="true"
+﻿<%@ Page Language="C#" ValidateRequest="false" AutoEventWireup="true"
     Inherits="CMSFormControls_Selectors_GridColumnDesigner" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Theme="Default" Title="Grid column designer" Codebehind="GridColumnDesigner.aspx.cs" %>
+    Theme="Default" Title="Grid column designer"  Codebehind="GridColumnDesigner.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/Selectors/ItemSelection.ascx" TagName="ItemSelection"
     TagPrefix="cms" %>
@@ -14,23 +14,23 @@
             <tr>
                 <td>
                     <cms:CMSRadioButton ID="radGenerate" runat="server" Checked="True" GroupName="GenerateSelect"
-                        AutoPostBack="True" />
+                        AutoPostBack="True" ResourceString="GridColumnDesigner.Generate" />
                 </td>
             </tr>
             <tr>
                 <td>
-                    <cms:CMSRadioButton ID="radSelect" runat="server" GroupName="GenerateSelect" AutoPostBack="True" />
+                    <cms:CMSRadioButton ID="radSelect" runat="server" GroupName="GenerateSelect" AutoPostBack="True" ResourceString="GridColumnDesigner.Select" />
                 </td>
             </tr>
         </table>
         <cms:ItemSelection ID="ItemSelection1" runat="server" Visible="false" />
         <asp:Panel ID="pnlProperties" runat="server" Visible="false">
             <br />
-            <asp:Label ID="lblProperties" runat="server" Font-Bold="true" />
+            <cms:LocalizedLabel ID="lblProperties" runat="server" Font-Bold="true" ResourceString="GridColumnDesigner.Properties" EnableViewState="false" />
             <div class="form-horizontal">
                 <div class="form-group">
                     <div class="editing-form-label-cell">
-                        <asp:Label CssClass="control-label" ID="lblHeaderText" runat="server" AssociatedControlID="txtHeaderText" />
+                        <cms:LocalizedLabel CssClass="control-label" ID="lblHeaderText" runat="server" AssociatedControlID="txtHeaderText" ResourceString="GridColumnDesigner.Headertext" EnableViewState="false" />
                     </div>
                     <div class="editing-form-value-cell">
                         <cms:CMSTextBox ID="txtHeaderText" runat="server" />
@@ -38,7 +38,7 @@
                 </div>
                 <div class="form-group">
                     <div class="editing-form-label-cell">
-                        <asp:Label CssClass="control-label" ID="lblDisplayAsLink" runat="server" AssociatedControlID="chkDisplayAsLink" />
+                        <cms:LocalizedLabel CssClass="control-label" ID="lblDisplayAsLink" runat="server" AssociatedControlID="chkDisplayAsLink" ResourceString="GridColumnDesigner.DisplayAsLink" EnableViewState="false" />
                     </div>
                     <div class="editing-form-value-cell">
                         <cms:CMSCheckBox ID="chkDisplayAsLink" runat="server" />
@@ -46,7 +46,7 @@
                 </div>
                 <div class="form-group">
                     <div class="editing-form-value-cell editing-form-value-cell-offset">
-                        <cms:CMSButton ID="btnOk" runat="server" Text="OK" ButtonStyle="Primary" OnClick="btnOK_Click" />
+                        <cms:LocalizedButton ID="btnOk" runat="server" Text="OK" ButtonStyle="Primary" OnClick="btnOK_Click" ResourceString="general.ok" EnableViewState="false" />
                     </div>
                 </div>
             </div>
@@ -55,9 +55,7 @@
 </asp:Content>
 <asp:Content ID="plcFooter" ContentPlaceHolderID="plcFooter" runat="server">
     <div class="FloatRight">
-        <cms:CMSButton ID="btnClose" runat="server" ButtonStyle="Primary"
-            OnClick="btnClose_Click" />
-        <asp:Literal ID="ltlOk" runat="server" EnableViewState="false" />
-        <asp:Literal ID="ltlLoad" runat="server" EnableViewState="false" />
+        <cms:LocalizedButton ID="btnClose" runat="server" ButtonStyle="Primary"
+            OnClick="btnClose_Click" ResourceString="general.saveandclose" EnableViewState="false" />
     </div>
 </asp:Content>

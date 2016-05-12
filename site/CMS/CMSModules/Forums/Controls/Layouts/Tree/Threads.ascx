@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Layouts_Tree_Threads"
-    Codebehind="Threads.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Layouts_Tree_Threads"
+     Codebehind="Threads.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Forums/Controls/PostTree.ascx" TagName="PostTree"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/AbuseReport/Controls/InlineAbuseReport.ascx" TagName="AbuseReport"
@@ -40,7 +40,7 @@
                                     <asp:PlaceHolder runat="server" ID="plcActionSeparator"><span>| </span></asp:PlaceHolder>
                                     <%=GetLink(null, ResHelper.GetString("Forums.Forum.SubscribeForum"), "ActionLink", ForumActionType.SubscribeToForum)%>
                                     <asp:PlaceHolder runat="server" ID="plcAddToFavoritesSeparator"><span>| </span></asp:PlaceHolder>
-                                    <%=GetLink(ForumContext.CurrentForum.Generalized.DataClass, ResHelper.GetString("Forums.Forum.AddForumToFavorites"), "ActionLink", ForumActionType.AddForumToFavorites)%>
+                                    <%=GetLink(ForumContext.CurrentForum, ResHelper.GetString("Forums.Forum.AddForumToFavorites"), "ActionLink", ForumActionType.AddForumToFavorites)%>
                                     <asp:PlaceHolder runat="server" ID="plcBreadcrumbsSeparator"><span>| </span></asp:PlaceHolder>
                                     <span class="ForumBreadCrumbs">
                                         <cms:ForumBreadcrumbs ID="ForumBreadcrumbs1" runat="server" DisplayThread="false" />

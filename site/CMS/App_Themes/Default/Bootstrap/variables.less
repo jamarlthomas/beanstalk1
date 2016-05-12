@@ -19,6 +19,7 @@
 @color-gray-130:          #bdbbbb; 
 @color-gray-140:          #d6d9d6;  
 @color-gray-150:          #e5e5e5;
+@color-gray-155:          #eeeeee;
 @color-gray-160:          #f7f7f7;
 
 @color-green-70:          #355e00;
@@ -43,6 +44,7 @@
 @color-purple-100:        #784B84;
 
 @color-white:             #ffffff;
+@color-black:             #000000;
 
 @color-app-facebook:      #3b5998;
 @color-app-twitter:       #55acee;
@@ -55,6 +57,7 @@
 @color-info:              @color-blue-100;
 @color-warning:           @color-orange-80;
 @color-error:             @color-red-100;
+@color-smarttip:          @color-blue-100;
 
 @body-bg:                 @color-white;
 @text-color:              @color-gray-50;
@@ -84,6 +87,7 @@
 @line-height-100:         @base-unit * 1.25; // ~20px
 @line-height-150:         @base-unit * 1.5;
 @line-height-200:         @base-unit * 2; // ~32
+@line-height-300:         @base-unit * 3; // ~48
 
 @headings-font-family:    @font-family-base;
 @headings-font-weight:    bold;
@@ -298,11 +302,8 @@
 
 @zindex-btn-group-active:     2;
 @zindex-pagination:           50;
-@zindex-codemirror:           @zindex-codemirror-fullsreen - 10;
-@zindex-codemirror-fullsreen: 500;
-@z-index-codemirror-toolbar:  19993;
-@zindex-alert:                10500;  // Was 20000
-@zindex-alert-info:           10501;  // Was 20001
+@zindex-codemirror:           500;
+@zindex-alert:                9950;
 @zindex-navbar-placeholder:   10980;
 @zindex-navbar-help:          10990;
 @zindex-navbar:               11000;
@@ -311,7 +312,10 @@
 @zindex-navbar-fixed:         11030;
 @zindex-modal-background:     11040;
 @zindex-modal:                11050;
+@zindex-codemirror-toolbar:   19993;
+@zindex-toolbar:              20000; // z-index is also added by JS
 @zindex-anchordropup:         20001;
+@zindex-codemirror-fullscreen:20050;
 @zindex-async-dialog-bg:      20100;
 @zindex-async-dialog:         20200;
 @zindex-applist:              42000;
@@ -321,7 +325,7 @@
 @zindex-screen-lock:          42200;
 @zindex-smart-dropdown:       100001;
 @zindex-tooltip:              100001;
-
+@zindex-alert-success:        100500;  
 
 //== Media queries breakpoints
 //
@@ -536,9 +540,9 @@
 @state-warning-bg:               @color-orange-100;
 @state-warning-border:           @color-orange-100;
 
-@state-error-text:              @color-red-70;
-@state-error-bg:                @color-red-130;
-@state-error-border:            @color-red-130;
+@state-error-text:               @color-red-70;
+@state-error-bg:                 @color-red-130;
+@state-error-border:             @color-red-130;
 
 @state-success-text:             @color-green-70;
 @state-success-bg:               @color-green-130;
@@ -579,24 +583,29 @@
 @alert-link-font-weight:          bold;
 
 @alert-success-bg:                @state-success-bg;
+@alert-success-border:            @state-success-border;
 @alert-success-text:              @state-success-text;
 @alert-success-icon-color:        @color-success;
 @alert-success-icon-close-color:  @color-success;
 
 @alert-info-bg:                   @state-info-bg;
+@alert-info-border:               @state-info-border;
 @alert-info-text:                 @state-info-text;
 @alert-info-icon-color:           @color-info;
 @alert-info-icon-close-color:     @color-info;
 
 @alert-warning-bg:                @state-warning-bg;
+@alert-warning-border:            @state-warning-border;
 @alert-warning-text:              @state-warning-text;
 @alert-warning-icon-color:        @color-warning;
 @alert-warning-icon-close-color:  @color-warning;
 
 @alert-error-bg:                  @state-error-bg;
+@alert-error-border:              @state-error-border;
 @alert-error-text:                @state-error-text;
 @alert-error-icon-color:          @color-error;
 @alert-error-icon-close-color:    @color-error;
+
 
 // Progress bars
 // -------------------------

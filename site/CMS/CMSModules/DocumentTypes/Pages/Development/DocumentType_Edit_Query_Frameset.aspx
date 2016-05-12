@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="DocumentType_Edit_Query_Frameset.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="DocumentType_Edit_Query_Frameset.aspx.cs"
     Inherits="CMSModules_DocumentTypes_Pages_Development_DocumentType_Edit_Query_Frameset" Theme="Default" %>
 
 <!DOCTYPE html>

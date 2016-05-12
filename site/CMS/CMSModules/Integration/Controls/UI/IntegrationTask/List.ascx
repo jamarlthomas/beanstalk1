@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Integration_Controls_UI_IntegrationTask_List" Codebehind="List.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Integration_Controls_UI_IntegrationTask_List"  Codebehind="List.ascx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
@@ -8,7 +8,7 @@
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">
     <ContentTemplate>
         <asp:Panel runat="server" ID="pnlLog" Visible="false">
-            <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+            <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="Integration" />
         </asp:Panel>
         <asp:Panel ID="pnlContent" runat="server">
             <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
@@ -27,7 +27,7 @@
                     </ug:Column>
                     <ug:Column Source="TaskTime" Caption="$integration.tasktime$" Wrap="false" />
                     <ug:Column Source="SynchronizationConnectorID" Caption="$integration.connectorname$" Wrap="false"
-                        ExternalSourceName="#transform: integration.connector : ConnectorDisplayName" />
+                        ExternalSourceName="#transform: integration.connector.ConnectorDisplayName" Name="SynchronizationConnectorID" />
                     <ug:Column Source="##ALL##" Caption="$general.result$" ExternalSourceName="result" Wrap="false">
                         <Tooltip Source="SynchronizationErrorMessage" Encode="true" />
                     </ug:Column>

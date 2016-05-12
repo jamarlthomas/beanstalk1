@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_MediaLibrary_MediaGallery" Codebehind="~/CMSWebParts/MediaLibrary/MediaGallery.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_MediaLibrary_MediaGallery"  Codebehind="~/CMSWebParts/MediaLibrary/MediaGallery.ascx.cs" %>
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/LiveControls/MediaGallery.ascx"
     TagName="MediaGallery" TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/System/PermissionMessage.ascx" TagName="PermissionMessage"

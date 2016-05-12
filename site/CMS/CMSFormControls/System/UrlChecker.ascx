@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="UrlChecker.ascx.cs" Inherits="CMSFormControls_System_UrlChecker" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="UrlChecker.ascx.cs" Inherits="CMSFormControls_System_UrlChecker" %>
 
 <div class="url-checker">
     <div class="control-group-inline">

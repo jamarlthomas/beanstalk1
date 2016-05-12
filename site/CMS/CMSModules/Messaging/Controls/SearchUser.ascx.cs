@@ -1,11 +1,9 @@
-using System;
+﻿using System;
 using System.Data;
-using System.Web.UI.WebControls;
 
 using CMS.DataEngine;
 using CMS.Helpers;
 using CMS.Messaging;
-using CMS.Base;
 using CMS.UIControls;
 using CMS.SiteProvider;
 using CMS.Membership;
@@ -13,6 +11,15 @@ using CMS.ExtendedControls;
 
 public partial class CMSModules_Messaging_Controls_SearchUser : CMSUserControl
 {
+    #region "Constants"
+
+    private const string CONTACT_ACTION = "contact";
+    private const string IGNORE_ACTION = "ignore";
+    private const string FORMATTED_NAME = "formattedusername";
+
+    #endregion
+
+
     #region "Public properties"
 
     /// <summary>
@@ -88,7 +95,7 @@ public partial class CMSModules_Messaging_Controls_SearchUser : CMSUserControl
     {
         switch (sourceName)
         {
-            case "formattedusername":
+            case FORMATTED_NAME:
                 DataRowView drv = parameter as DataRowView;
                 int userId = ValidationHelper.GetInteger(drv["UserID"], 0);
                 return GetItemText(userId, drv["UserName"], drv["FullName"], drv["UserNickName"]);
@@ -111,8 +118,8 @@ public partial class CMSModules_Messaging_Controls_SearchUser : CMSUserControl
 
         string where = "UserName NOT LIKE N'public'";
 
-        // If user is not global administrator and control is in LiveSite mode
-        if (IsLiveSite && !MembershipContext.AuthenticatedUser.IsGlobalAdministrator)
+        // If user is not global administrator
+        if (!MembershipContext.AuthenticatedUser.IsGlobalAdministrator)
         {
             // Do not select hidden users
             where = SqlHelper.AddWhereCondition(where, "((UserIsHidden IS NULL) OR (UserIsHidden=0))");
@@ -155,19 +162,6 @@ public partial class CMSModules_Messaging_Controls_SearchUser : CMSUserControl
     #endregion
 
 
-    #region "Button handling"
-
-    /// <summary>
-    /// Searches for specified phrase.
-    /// </summary>
-    protected void btnSearch_Click(object sender, EventArgs e)
-    {
-        // Initiates reload
-    }
-
-    #endregion
-
-
     #region "Other methods"
 
     protected void PerformAction(string actionName, object actionArgument)
@@ -175,13 +169,13 @@ public partial class CMSModules_Messaging_Controls_SearchUser : CMSUserControl
         int currentid = ValidationHelper.GetInteger(actionArgument, 0);
         switch (actionName)
         {
-            case "contact":
+            case CONTACT_ACTION:
                 // Add user to contact list
                 ContactListInfoProvider.AddToContactList(MembershipContext.AuthenticatedUser.UserID, currentid);
                 ShowConfirmation(GetString("messaging.search.addedsuccessfulytocontactlist"));
                 break;
 
-            case "ignore":
+            case IGNORE_ACTION:
                 // Add user to ignore list
                 IgnoreListInfoProvider.AddToIgnoreList(MembershipContext.AuthenticatedUser.UserID, currentid);
                 ShowConfirmation(GetString("messaging.search.addedsuccessfulytoignorelist"));

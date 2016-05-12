@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Theme="Default"
-    Inherits="CMSFormControls_Selectors_InsertImageOrMedia_Tabs_Anchor" EnableEventValidation="false" Codebehind="Tabs_Anchor.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Theme="Default"
+    Inherits="CMSFormControls_Selectors_InsertImageOrMedia_Tabs_Anchor" EnableEventValidation="false"  Codebehind="Tabs_Anchor.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/Properties/HTMLAnchorProperties.ascx"
     TagName="AnchorProperties" TagPrefix="cms" %>

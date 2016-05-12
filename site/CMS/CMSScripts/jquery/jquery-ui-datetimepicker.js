@@ -1266,7 +1266,7 @@
             inst.currentSecond = seconds;
         },
 
-        _saveAndClose: function(id) {
+        _saveAndClose: function (id) {
             var target = $(id);
             var inst = this._getInst(target[0]);
             this._selectDate(id, this._formatDate(inst, inst.selectedDay, inst.selectedMonth, inst.selectedYear));
@@ -1508,8 +1508,13 @@
 
             var date = new Date(year, month - 1, day, hour, minute, second, 0);
 
-            if (date.getFullYear() != year || date.getMonth() + 1 != month || date.getDate() != day)
-                date = new Date();
+            if (date.getFullYear() != year || date.getMonth() + 1 != month || date.getDate() != day) {
+                if (settings.throwOnParseError) {
+                    throw "Invalid date format";
+                } else {
+                    date = new Date();
+                }
+            }
             return date;
         },
 

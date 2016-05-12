@@ -1,6 +1,6 @@
-<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
+﻿<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
     Inherits="CMSModules_Modules_Pages_Class_Fields"
-    Title="Class- Edit- Fields" Theme="Default" Codebehind="Fields.aspx.cs" %>
+    Title="Class- Edit- Fields" Theme="Default"  Codebehind="Fields.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/AdminControls/Controls/Class/FieldEditor/FieldEditor.ascx"
     TagName="FieldEditor" TagPrefix="cms" %>

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Messaging_Dialogs_MessageUserSelector_Frameset"
-    EnableEventValidation="false" Codebehind="MessageUserSelector_Frameset.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Messaging_Dialogs_MessageUserSelector_Frameset"
+    EnableEventValidation="false"  Codebehind="MessageUserSelector_Frameset.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

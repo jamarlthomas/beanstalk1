@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Attachments_DocumentAttachments_DocumentAttachmentsList"
-    Codebehind="DocumentAttachmentsList.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Attachments_DocumentAttachments_DocumentAttachmentsList"
+     Codebehind="DocumentAttachmentsList.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Content/Controls/Attachments/DirectFileUploader/DirectFileUploader.ascx"
     TagName="DirectFileUploader" TagPrefix="cms" %>
@@ -19,7 +19,7 @@
                     </asp:PlaceHolder>
                 </div>
                 <asp:Panel ID="pnlFilter" runat="server" DefaultButton="btnFilter" Visible="false">
-                    <div class="form-horizontal form-filter attachment-filter">
+                    <div class="form-horizontal form-filter attachment-filter dont-check-changes">
                         <div class="form-group">
                             <div class="filter-form-value-cell-wide form-search-container">
                                 <cms:CMSTextBox ID="txtFilter" runat="server" />

@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 
-using CMS.Controls.Configuration;
 using CMS.ExtendedControls;
 using CMS.FormControls;
 using CMS.Helpers;
@@ -176,6 +175,8 @@ public partial class CMSAdminControls_UI_Macros_MacroDesigner : FormEngineUserCo
 
         btnShowCode.Click += btnShowCode_Click;
         btnShowRuleEditor.Click += btnShowRuleEditor_Click;
+
+        editorElem.Editor.FullScreenParentElementID = pnlEditor.ClientID;        
 
         // Init tabs
         tabsElem.UrlTarget = "_self";

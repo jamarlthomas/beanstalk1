@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Versions.ascx.cs" Inherits="CMSModules_Content_Controls_Versions" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Versions.ascx.cs" Inherits="CMSModules_Content_Controls_Versions" %>
 <%@ Register Src="~/CMSModules/Content/Controls/VersionList.ascx" TagName="VersionList"
     TagPrefix="cms" %>
 <asp:Panel runat="server" ID="pnlVersions">

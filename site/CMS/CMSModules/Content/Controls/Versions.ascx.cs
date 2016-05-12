@@ -7,9 +7,9 @@ using CMS.SiteProvider;
 using CMS.Membership;
 using CMS.UIControls;
 using CMS.WorkflowEngine;
+using CMS.EventLog;
 
 using TreeNode = CMS.DocumentEngine.TreeNode;
-using CMS.EventLog;
 
 public partial class CMSModules_Content_Controls_Versions : CMSUserControl
 {
@@ -168,6 +168,8 @@ public partial class CMSModules_Content_Controls_Versions : CMSUserControl
         base.OnPreRender(e);
 
         DocumentManager.DocumentInfo = DocumentManager.GetDocumentInfo(true);
+
+        ScriptHelper.RegisterEditScript(Page, false);
     }
 
     #endregion
@@ -256,14 +258,12 @@ public partial class CMSModules_Content_Controls_Versions : CMSUserControl
                 {
                     btnCheckin.Visible = true;
                     btnUndoCheckout.Visible = true;
-                    headCheckOut.ResourceString ="VersionsProperties.CheckIn";
                 }
                 else
                 {
                     // Else checked out by somebody else
                     btnCheckin.Visible = true;
                     btnCheckout.Visible = false;
-                    headCheckOut.ResourceString ="VersionsProperties.CheckIn";
 
                     btnUndoCheckout.Visible = versionsElem.CanCheckIn;
                     btnUndoCheckout.Enabled = versionsElem.CanCheckIn;
@@ -271,6 +271,8 @@ public partial class CMSModules_Content_Controls_Versions : CMSUserControl
                     txtComment.Enabled = versionsElem.CanCheckIn;
                     txtVersion.Enabled = versionsElem.CanCheckIn;
                 }
+
+                headCheckOut.ResourceString = "VersionsProperties.CheckIn";
             }
 
             if (!WorkflowManager.CheckStepPermissions(Node, WorkflowActionEnum.Approve))
@@ -339,7 +341,7 @@ public partial class CMSModules_Content_Controls_Versions : CMSUserControl
             VersionManager.CheckOut(Node);
 
             // Refresh tree if icon checked out should be displayed
-            if (DocumentHelper.IsIconUsed(IconType.CheckedOut, SiteContext.CurrentSiteName))
+            if (DocumentUIHelper.IsIconUsed(IconType.CheckedOut, SiteContext.CurrentSiteName))
             {
                 AddAfterActionScript();
             }
@@ -391,7 +393,7 @@ public partial class CMSModules_Content_Controls_Versions : CMSUserControl
             DocumentManager.ClearContentChanged();
 
             // Refresh tree if icon checked out was displayed
-            if (DocumentHelper.IsIconUsed(IconType.CheckedOut, SiteContext.CurrentSiteName))
+            if (DocumentUIHelper.IsIconUsed(IconType.CheckedOut, SiteContext.CurrentSiteName))
             {
                 AddAfterActionScript();
             }
@@ -432,7 +434,7 @@ public partial class CMSModules_Content_Controls_Versions : CMSUserControl
             DocumentManager.ClearContentChanged();
 
             // Refresh tree if icon checked out was displayed
-            if (DocumentHelper.IsIconUsed(IconType.CheckedOut, SiteContext.CurrentSiteName))
+            if (DocumentUIHelper.IsIconUsed(IconType.CheckedOut, SiteContext.CurrentSiteName))
             {
                 AddAfterActionScript();
             }

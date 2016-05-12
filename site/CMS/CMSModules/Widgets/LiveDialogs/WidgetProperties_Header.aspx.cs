@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Collections;
@@ -69,15 +69,7 @@ public partial class CMSModules_Widgets_LiveDialogs_WidgetProperties_Header : CM
             WidgetInfo wi = null;
 
             // Get page info
-            PageInfo pi = null;
-            try
-            {
-                pi = CMSWebPartPropertiesPage.GetPageInfo(aliasPath, templateId, culture);
-            }
-            catch (PageNotFoundException)
-            {
-                // Do not throw exception if page info not found (e.g. bad alias path)
-            }
+            PageInfo pi = CMSWebPartPropertiesPage.GetPageInfo(aliasPath, templateId, culture);
 
             if (pi == null)
             {

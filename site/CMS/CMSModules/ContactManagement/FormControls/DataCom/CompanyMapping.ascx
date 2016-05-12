@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="CompanyMapping.ascx.cs" Inherits="CMSModules_ContactManagement_FormControls_DataCom_CompanyMapping" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="CompanyMapping.ascx.cs" Inherits="CMSModules_ContactManagement_FormControls_DataCom_CompanyMapping" %>
 
 <%@ Register Src="~/CMSModules/ContactManagement/Controls/UI/DataCom/CompanyMapping.ascx" TagName="CompanyMapping" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/ContactManagement/Controls/UI/DataCom/ErrorSummary.ascx" TagName="ErrorSummary" TagPrefix="cms" %>

@@ -1,11 +1,13 @@
 <%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_BizForms_Tools_BizForm_Edit_NotificationEmail"
-    Theme="Default" ValidateRequest="false" Codebehind="BizForm_Edit_NotificationEmail.aspx.cs"
+    Theme="Default" ValidateRequest="false"  Codebehind="BizForm_Edit_NotificationEmail.aspx.cs"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" TagName="HeaderActions"
     TagPrefix="cms" %>
 <asp:Content ID="aS" runat="server" ContentPlaceHolderID="plcActions">
-    <cms:HeaderActions ID="menu" ShortID="m" runat="server" IsLiveSite="false" />
+    <div class="control-group-inline header-actions-container">
+        <cms:HeaderActions ID="menu" ShortID="m" runat="server" IsLiveSite="false" />
+    </div>
 </asp:Content>
 <asp:Content ID="plcContent" runat="server" ContentPlaceHolderID="plcContent">
     <div class="form-horizontal">
@@ -57,7 +59,7 @@
                 </div>
                 <div class="control-group-inline">
                     <div class="editor">
-                        <cms:CMSHtmlEditor ID="htmlEditor" runat="server" Width="650px" Height="300px" />
+                        <cms:CMSHtmlEditor FullPage="True" ID="htmlEditor" runat="server" Width="650px" Height="300px" />
                     </div>
                     <div class="fields">
                         <cms:LocalizedLabel ID="lblAvailableFields" runat="server" EnableViewState="false"

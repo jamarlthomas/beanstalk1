@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_GetWebPartProperties" Codebehind="GetWebPartProperties.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_GetWebPartProperties"  Codebehind="GetWebPartProperties.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

@@ -12,15 +12,6 @@
 public partial class CMSModules_System_Debug_Log {
     
     /// <summary>
-    /// chkCompleteContext control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSCheckBox chkCompleteContext;
-    
-    /// <summary>
     /// btnClearCache control.
     /// </summary>
     /// <remarks>
@@ -37,6 +28,15 @@ public partial class CMSModules_System_Debug_Log {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.LocalizedButton btnClear;
+    
+    /// <summary>
+    /// chkCompleteContext control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSCheckBox chkCompleteContext;
     
     /// <summary>
     /// lblInfo control.

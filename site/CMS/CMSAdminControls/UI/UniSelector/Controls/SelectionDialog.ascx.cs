@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -20,11 +20,11 @@ public partial class CMSAdminControls_UI_UniSelector_Controls_SelectionDialog : 
     #region "Variables"
 
     private SelectionModeEnum selectionMode = SelectionModeEnum.SingleButton;
-    private string resourcePrefix = "general";
+
     private string objectType;
     private string returnColumnName;
     private string displayNameFormat;
-    private string valuesSeparator = ";";
+    private char valuesSeparator = ';';
 
     private string filterControl;
 
@@ -65,11 +65,70 @@ public partial class CMSAdminControls_UI_UniSelector_Controls_SelectionDialog : 
     private readonly Dictionary<string, string> hashItems = new Dictionary<string, string>();
 
     private string mSearchColumns = String.Empty;
+    private string mZeroRowsText = String.Empty;
+    private string mFilteredZeroRowsText = String.Empty;
 
     #endregion
 
 
     #region "Properties"
+
+    /// <summary>
+    /// Gets the trimmed search text.
+    /// </summary>
+    private string TrimmedSearchText
+    {
+        get
+        {
+            return txtSearch.Text.Trim();
+        }
+    }
+
+
+    /// <summary>
+    /// Indicates whether localized filtering is allowed.
+    /// </summary>
+    private bool AllowLocalizedFiltering 
+    { 
+        get;
+        set; 
+    }
+
+
+    /// <summary>
+    /// Indicates whether display name column was selected as search column.
+    /// </summary>
+    private bool DisplayNameSelectedAsSearchColumn
+    {
+        get
+        {
+            return ValidationHelper.GetBoolean(ViewState["DisplayNameSelected"], false);
+        }
+        set
+        {
+            ViewState["DisplayNameSelected"] = value;
+        }
+    }
+
+
+    /// <summary>
+    /// Indicates whether localized filtering can be used for current selection dialog and is enabled.
+    /// </summary>
+    private bool UseLocalizedFiltering 
+    { 
+        get
+        {
+            return ValidationHelper.GetBoolean(ViewState["UseLocalizedFiltering"], false) 
+                && DisplayNameSelectedAsSearchColumn
+                && AllowLocalizedFiltering 
+                && !String.IsNullOrEmpty(TrimmedSearchText);
+        }
+        set
+        {
+            ViewState["UseLocalizedFiltering"] = value;
+        }
+    }
+
 
     /// <summary>
     /// Indicates whether to remove multiple commas (can happen when DisplayNameFormat is like {%column1%}, {%column2%}, {column3} and column2 is empty.
@@ -180,7 +239,7 @@ public partial class CMSAdminControls_UI_UniSelector_Controls_SelectionDialog : 
 
 
     /// <summary>
-    /// Item prefix.
+    /// Contains current where condition used for filtering.
     /// </summary>
     public string FilterWhere
     {
@@ -231,11 +290,9 @@ public partial class CMSAdminControls_UI_UniSelector_Controls_SelectionDialog : 
     {
         base.OnInit(e);
 
-        // Load parameters
         LoadParameters();
 
-        // Load custom filter
-        LoadFilter();
+        LoadCustomFilter();
     }
 
 
@@ -264,8 +321,9 @@ public partial class CMSAdminControls_UI_UniSelector_Controls_SelectionDialog : 
         parentClientId = QueryHelper.GetString("clientId", string.Empty);
         hashId = QueryHelper.GetString("hashElem", string.Empty);
 
-        string scriptValuesSeparator = ScriptHelper.GetString(valuesSeparator);
-        string regexEscapedValuesSeparator = ScriptHelper.GetString(Regex.Escape(valuesSeparator), false);
+        string stringValuesSeparator = valuesSeparator.ToString();
+        string scriptValuesSeparator = ScriptHelper.GetString(stringValuesSeparator);
+        string regexEscapedValuesSeparator = ScriptHelper.GetString(Regex.Escape(stringValuesSeparator), false);
 
         // Buttons scripts
         string buttonsScript = "function US_Cancel(){ Cancel(); return false; }";
@@ -323,22 +381,15 @@ public partial class CMSAdminControls_UI_UniSelector_Controls_SelectionDialog : 
                     // Register javascript code
                     script = @"
 function SelectItems(items, names, hiddenFieldId, txtClientId, hashClientId, hash) {
-    if(items.length > 0) {
-        wopener.US_SetItems(items, names, hiddenFieldId, txtClientId, null, hashClientId, hash);
-    } else {
-        wopener.US_SetItems('','', hiddenFieldId, txtClientId);
-    }" +
+    wopener.US_SetItems(items, names, hiddenFieldId, txtClientId, null, hashClientId, hash);" +
 (fireOnChanged ? "wopener.US_SelectionChanged_" + parentClientId + "();" : "")
 + @"
     return CloseDialog(); 
 }
 
 function SelectItemsReload(items, names, hiddenFieldId, txtClientId, hidValue, hashClientId, hash) {
-    if (items.length > 0) {
-        wopener.US_SetItems(items, names, hiddenFieldId, txtClientId, hidValue, hashClientId, hash);
-    } else {
-        wopener.US_SetItems('','', hiddenFieldId, txtClientId);
-    }
+    wopener.US_SetItems(items, names, hiddenFieldId, txtClientId, hidValue, hashClientId, hash);
+
     wopener.US_ReloadPage_" + parentClientId + @"();
     return CloseDialog();
 }";
@@ -404,18 +455,22 @@ function Cancel() { CloseDialog(); }
 function SelectAllItems(checkbox, hash) {
     var itemsElem = ItemsElem();
     itemsElem.value = '';
-    SetHash('');
+    SetHash('", ValidationHelper.GetHashString(""), @"');
     var checkboxes = document.getElementsByTagName('input');
+    var checked = checkbox.checked;
     for(var i = 0; i < checkboxes.length; i++) {
         var chkbox = checkboxes[i];
         if (chkbox.className == 'chckbox') {
-            if(checkbox.checked) { chkbox.checked = true; }
-            else { chkbox.checked = false; }
+            chkbox.checked = checked;
 
-            ProcessItem(chkbox, null, false, false);
+            if (checked) {
+                ProcessItem(chkbox, null, false, false);
+            }
         }
     }
-    ProcessItem(null, hash, false, true);
+    if (checked) {
+        ProcessItem(null, hash, false, true);
+    }
 }");
 
         ltlScript.Text = ScriptHelper.GetScript(script + sb + buttonsScript);
@@ -452,14 +507,14 @@ function SelectAllItems(checkbox, hash) {
                         };
 
                         // Prepare string for hash
-                        string values = String.Join(valuesSeparator, hashItems.Keys);
+                        string values = String.Join(valuesSeparator.ToString(), hashItems.Keys);
                         chkAll.Attributes.Add("onclick", String.Format("SelectAllItems(this,'{0}')", ValidationHelper.GetHashString(values)));
 
                         uniGrid.GridView.HeaderRow.Cells[0].Controls.Clear();
                         uniGrid.GridView.HeaderRow.Cells[0].Controls.Add(chkAll);
                         uniGrid.GridView.Columns[0].ItemStyle.CssClass = "unigrid-selection";
 
-                        uniGrid.GridView.HeaderRow.Cells[1].Text = GetString(resourcePrefix + ".itemname|general.itemname");
+                        uniGrid.GridView.HeaderRow.Cells[1].Text = GetString("general.itemname");
                     }
                     break;
 
@@ -467,7 +522,7 @@ function SelectAllItems(checkbox, hash) {
                 default:
                     {
                         uniGrid.GridView.Columns[0].Visible = false;
-                        uniGrid.GridView.HeaderRow.Cells[1].Text = GetString(resourcePrefix + ".itemname|general.itemname");
+                        uniGrid.GridView.HeaderRow.Cells[1].Text = GetString("general.itemname");
                     }
                     break;
             }
@@ -495,14 +550,14 @@ function SelectAllItems(checkbox, hash) {
                 {
                     var ti = iObjectType.TypeInfo;
 
-                    DataRowView drv = (parameter as DataRowView);
+                    DataRowView drv = (DataRowView)parameter;
 
                     // Get item ID
                     string itemID = drv[returnColumnName].ToString();
                     string hashKey = itemID;
 
                     // Add global object name prefix if required
-                    if (AddGlobalObjectNamePrefix && !String.IsNullOrEmpty(ti.SiteIDColumn) && (ValidationHelper.GetInteger(DataHelper.GetDataRowValue(drv.Row, ti.SiteIDColumn), 0) == 0))
+                    if (AddGlobalObjectNamePrefix && !String.IsNullOrEmpty(ti.SiteIDColumn) && (DataHelper.GetIntValue(drv.Row, ti.SiteIDColumn) == 0))
                     {
                         itemID = "." + itemID;
                     }
@@ -540,7 +595,7 @@ function SelectAllItems(checkbox, hash) {
 
             case "itemname":
                 {
-                    DataRowView drv = (parameter as DataRowView);
+                    DataRowView drv = (DataRowView)parameter;
 
                     // Get item ID
                     string itemID = drv[returnColumnName].ToString();
@@ -552,8 +607,8 @@ function SelectAllItems(checkbox, hash) {
                     // Special formatted user name
                     if (displayNameFormat == UniSelector.USER_DISPLAY_FORMAT)
                     {
-                        string userName = ValidationHelper.GetString(DataHelper.GetDataRowValue(drv.Row, "UserName"), String.Empty);
-                        string fullName = ValidationHelper.GetString(DataHelper.GetDataRowValue(drv.Row, "FullName"), String.Empty);
+                        string userName = DataHelper.GetStringValue(drv.Row, "UserName");
+                        string fullName = DataHelper.GetStringValue(drv.Row, "FullName");
 
                         itemName = Functions.GetFormattedUserName(userName, fullName, IsLiveSite);
                     }
@@ -583,7 +638,7 @@ function SelectAllItems(checkbox, hash) {
                     var ti = iObjectType.TypeInfo;
 
                     // Add global object name prefix if required
-                    if (AddGlobalObjectNamePrefix && !String.IsNullOrEmpty(ti.SiteIDColumn) && (ValidationHelper.GetInteger(DataHelper.GetDataRowValue(drv.Row, ti.SiteIDColumn), 0) == 0))
+                    if (AddGlobalObjectNamePrefix && !String.IsNullOrEmpty(ti.SiteIDColumn) && (DataHelper.GetIntValue(drv.Row, ti.SiteIDColumn) == 0))
                     {
                         itemID = "." + itemID;
                     }
@@ -597,7 +652,7 @@ function SelectAllItems(checkbox, hash) {
                     {
                         if ((iObjectType != null) && !string.IsNullOrEmpty(ti.SiteIDColumn))
                         {
-                            itemName += (ValidationHelper.GetInteger(DataHelper.GetDataRowValue(drv.Row, ti.SiteIDColumn), 0) > 0 ? string.Empty : " " + GlobalObjectSuffix);
+                            itemName += (DataHelper.GetIntValue(drv.Row, ti.SiteIDColumn) > 0 ? string.Empty : " " + GlobalObjectSuffix);
                         }
                     }
 
@@ -814,7 +869,7 @@ function SelectAllItems(checkbox, hash) {
     /// <summary>
     /// Loads dynamically custom filter if is defined.
     /// </summary>
-    private void LoadFilter()
+    private void LoadCustomFilter()
     {
         // Use user filter
         if (!String.IsNullOrEmpty(filterControl))
@@ -828,7 +883,7 @@ function SelectAllItems(checkbox, hash) {
                 searchControl.FilteredControl = this;
                 searchControl.OnFilterChanged += searchControl_OnFilterChanged;
                 searchControl.ID = "filterElem";
-                searchControl.SelectedValue = hidItem.Value.Replace(valuesSeparator, string.Empty);
+                searchControl.SelectedValue = hidItem.Value.Replace(valuesSeparator.ToString(), string.Empty);
                 searchControl.FilterMode = filterMode;
 
                 pnlFilter.Controls.Add(searchControl);
@@ -857,12 +912,13 @@ function SelectAllItems(checkbox, hash) {
         parameters = (Hashtable)WindowHelper.GetItem(identifier);
         if (parameters != null)
         {
+            ResourcePrefix = ValidationHelper.GetString(parameters["ResourcePrefix"], null);
+
             // Load values from session
             selectionMode = (SelectionModeEnum)parameters["SelectionMode"];
-            resourcePrefix = ValidationHelper.GetString(parameters["ResourcePrefix"], "general");
             objectType = ValidationHelper.GetString(parameters["ObjectType"], null);
             returnColumnName = ValidationHelper.GetString(parameters["ReturnColumnName"], null);
-            valuesSeparator = ValidationHelper.GetString(parameters["ValuesSeparator"], ";");
+            valuesSeparator = ValidationHelper.GetValue(parameters["ValuesSeparator"], ';');
             filterControl = ValidationHelper.GetString(parameters["FilterControl"], null);
             useDefaultNameFilter = ValidationHelper.GetBoolean(parameters["UseDefaultNameFilter"], true);
             whereCondition = ValidationHelper.GetString(parameters["WhereCondition"], null);
@@ -884,6 +940,9 @@ function SelectAllItems(checkbox, hash) {
             additionalSearchColumns = ValidationHelper.GetString(parameters["AdditionalSearchColumns"], String.Empty);
             siteWhereCondition = ValidationHelper.GetString(parameters["SiteWhereCondition"], null);
             UseTypeCondition = ValidationHelper.GetBoolean(parameters["UseTypeCondition"], true);
+            AllowLocalizedFiltering = ValidationHelper.GetBoolean(parameters["AllowLocalizedFiltering"], true);
+            mZeroRowsText = ValidationHelper.GetString(parameters["ZeroRowsText"], string.Empty);
+            mFilteredZeroRowsText = ValidationHelper.GetString(parameters["FilteredZeroRowsText"], string.Empty);
 
             // Set item prefix if it was passed by UniSelector's AdditionalUrlParameters
             var itemPrefix = QueryHelper.GetString("ItemPrefix", null);
@@ -931,7 +990,7 @@ function SelectAllItems(checkbox, hash) {
         // Display default name filter only if search columns are specified
         if (useDefaultNameFilter && (!String.IsNullOrEmpty(mSearchColumns) || !String.IsNullOrEmpty(additionalSearchColumns) || (displayNameFormat == UniSelector.USER_DISPLAY_FORMAT)))
         {
-            lblSearch.ResourceString = resourcePrefix + ".entersearch|general.entersearch";
+            lblSearch.ResourceString = "general.entersearch";
             btnSearch.ResourceString = "general.search";
 
             pnlSearch.Visible = true;
@@ -999,7 +1058,7 @@ function SelectAllItems(checkbox, hash) {
                 }
                 else if (displayNameFormat != null)
                 {
-                    columns = DataHelper.GetNotEmpty(MacroProcessor.GetMacros(displayNameFormat), iObjectType.DisplayNameColumn).Replace(";", ", ");
+                    columns = DataHelper.GetNotEmpty(MacroProcessor.GetMacros(displayNameFormat, true), iObjectType.DisplayNameColumn).Replace(";", ", ");
                 }
                 else
                 {
@@ -1012,6 +1071,12 @@ function SelectAllItems(checkbox, hash) {
 
             // Add additional columns
             columns = SqlHelper.MergeColumns(columns, additionalColumns);
+
+            // Ensure display name column for query within localized filtering (SelectAll/DeselectAll calls the query with ID column only)
+            if (UseLocalizedFiltering)
+            {
+                columns = SqlHelper.MergeColumns(columns, iObjectType.TypeInfo.DisplayNameColumn);
+            }
 
             var ti = iObjectType.TypeInfo;
 
@@ -1058,12 +1123,34 @@ function SelectAllItems(checkbox, hash) {
                 );
 
                 q.IncludeBinaryData = false;
-                q.Offset = offset;
-                q.MaxRecords = maxRecords;
 
-                // Get the data
-                ds = q.Result;
-                totalRecords = q.TotalRecords;
+                if (UseLocalizedFiltering)
+                {
+                    if (!DataHelper.DataSourceIsEmpty(q.Result))
+                    {
+                        var displayNameColumn = iObjectType.DisplayNameColumn;
+
+                        ds = q.Result;
+                        LocalizeAndFilterDataSet(ds, displayNameColumn, TrimmedSearchText);
+                        SortDataSetTable(ds, displayNameColumn);
+                        
+                        totalRecords = ds.Tables[0].Rows.Count;
+                        return ds;
+                    }
+                    else
+                    {
+                        totalRecords = 0;
+                        return null;
+                    }
+                }
+                else
+                {
+                    q.Offset = offset;
+                    q.MaxRecords = maxRecords;
+
+                    ds = q.Result;
+                    totalRecords = q.TotalRecords;
+                }
             }
             catch (Exception ex)
             {
@@ -1083,6 +1170,41 @@ function SelectAllItems(checkbox, hash) {
 
 
     /// <summary>
+    /// Sorts the dataset table values
+    /// </summary>
+    private void SortDataSetTable(DataSet ds, string sortColumnName)
+    {
+        ds.Tables[0].DefaultView.Sort = sortColumnName;
+        var sortedTable = ds.Tables[0].DefaultView.ToTable();
+        ds.Tables.Clear();
+        ds.Tables.Add(sortedTable);
+    }
+
+
+    /// <summary>
+    /// Localizes the specified column in a dataset table and removes rows that does not contain the required filter value
+    /// </summary>
+    private void LocalizeAndFilterDataSet(DataSet ds, string filterColum, string filterValue)
+    {
+        var rows = ds.Tables[0].Rows;
+        for (int i = rows.Count - 1; i >= 0; i--)
+        {
+            var localizedColumnValue = ResHelper.LocalizeString(Convert.ToString(rows[i][filterColum]));
+            if (localizedColumnValue.IndexOf(filterValue, StringComparison.InvariantCultureIgnoreCase) == -1)
+            {
+                rows[i].Delete();
+            }
+            else
+            {
+                rows[i][filterColum] = localizedColumnValue;
+            }
+        }
+
+        ds.AcceptChanges();
+    }
+
+
+    /// <summary>
     /// Changes ViewState with search condition for UniGrid.
     /// </summary>
     private void ChangeSearchCondition()
@@ -1092,12 +1214,11 @@ function SelectAllItems(checkbox, hash) {
             string where = null;
 
             // Get default filter where
-            if ((useDefaultNameFilter) && (txtSearch.Text != String.Empty))
+            if ((useDefaultNameFilter) && (!String.IsNullOrEmpty(TrimmedSearchText)))
             {
-                // Trim entered text
-                string searchText = txtSearch.Text.Trim();
                 // Avoid SQL injection
-                searchText = SqlHelper.EscapeQuotes(searchText);
+                string searchText = SqlHelper.EscapeQuotes(TrimmedSearchText);
+                
                 // Escape like patterns
                 searchText = SqlHelper.EscapeLikeText(searchText);
                 
@@ -1107,7 +1228,12 @@ function SelectAllItems(checkbox, hash) {
                     where = String.Format("UserName LIKE N'%{0}%' OR FullName LIKE N'%{0}%'", searchText);
                 }
 
-                if (!String.IsNullOrEmpty(mSearchColumns))
+                // Try enabled localized search
+                if (AllowLocalizedFiltering & DisplayNameSelectedAsSearchColumn)
+                {
+                    UseLocalizedFiltering = true;
+                }
+                else if (!String.IsNullOrEmpty(mSearchColumns))
                 {
                     // Combine main search columns with additional 
                     additionalSearchColumns = additionalSearchColumns.TrimEnd(';') + ";" + mSearchColumns;
@@ -1124,7 +1250,7 @@ function SelectAllItems(checkbox, hash) {
                 }
             }
 
-            // Get search filter where
+            // Add custom search filter where
             if (searchControl != null)
             {
                 where = SqlHelper.AddWhereCondition(where, searchControl.WhereCondition);
@@ -1145,6 +1271,8 @@ function SelectAllItems(checkbox, hash) {
 
         if ((ti.DisplayNameColumn != ObjectTypeInfo.COLUMN_NAME_UNKNOWN))
         {
+            DisplayNameSelectedAsSearchColumn = true;
+            
             // Get column for display name 
             return ti.DisplayNameColumn;
         }
@@ -1180,7 +1308,15 @@ function SelectAllItems(checkbox, hash) {
             uniGrid.PagerForceNumberOfResults = totalRecords;
         }
 
-        uniGrid.ZeroRowsText = !string.IsNullOrEmpty(FilterWhere) ? GetString(resourcePrefix + ".noitemsfound|general.noitemsfound") : GetString(resourcePrefix + ".nodatafound|general.nodatafound");
+        if (string.IsNullOrEmpty(FilterWhere))
+        {
+            uniGrid.ZeroRowsText = string.IsNullOrEmpty(mZeroRowsText) ? GetString("general.nodatafound") : mZeroRowsText;
+        }
+        else
+        {
+            uniGrid.ZeroRowsText = string.IsNullOrEmpty(mFilteredZeroRowsText) ? GetString("general.noitemsfound") : mFilteredZeroRowsText;
+        }
+
         uniGrid.ReloadData();
     }
 
@@ -1191,6 +1327,11 @@ function SelectAllItems(checkbox, hash) {
     /// <param name="param">Parameter</param>    
     private string GetSafe(string param)
     {
+        if (String.IsNullOrEmpty(param))
+        {
+            return param;
+        }
+
         // Replace + char for %20 to make it compatible with client side decodeURIComponent
         return ScriptHelper.GetString(Server.UrlEncode(param).Replace("+", "%20"));
     }
@@ -1207,11 +1348,11 @@ function SelectAllItems(checkbox, hash) {
         if (!string.IsNullOrEmpty(callbackValues))
         {
             // All selected items | newly added item(s) # hash of the new item(s)
-            var paramFormat = new Regex(String.Format(@"^(?<items>{0}(.*{0})?)\|(?<values>({0}.*{0})|([^{0}]*))#(?<hash>.*)$", Regex.Escape(valuesSeparator)));
+            var paramFormat = new Regex(String.Format(@"^(?<items>{0}(.*{0})?)\|(?<values>({0}.*{0})|([^{0}]*))#(?<hash>.*)$", Regex.Escape(valuesSeparator.ToString())));
             var paramMatch = paramFormat.Match(callbackValues);
             if (paramMatch.Success)
             {
-                string value = paramMatch.Groups["values"].Value.Trim(valuesSeparator.ToCharArray());
+                string value = paramMatch.Groups["values"].Value.Trim(valuesSeparator);
                 string hash = paramMatch.Groups["hash"].Value;
 
                 if (ValidationHelper.ValidateHash(value, hash, new HashSettings { Redirect = false }))

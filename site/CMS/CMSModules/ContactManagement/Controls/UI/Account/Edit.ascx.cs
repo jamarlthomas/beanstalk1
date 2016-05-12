@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
@@ -403,15 +403,12 @@ public partial class CMSModules_ContactManagement_Controls_UI_Account_Edit : CMS
         // UniSelector
         SetControl("accountsubsidiaryofid", ctrl =>
             {
+                int accountID = ValidationHelper.GetInteger(EditForm.EditedObject.GetValue("AccountID"), 0);
                 ctrl.SetValue("siteid", SiteID);
-                if (SiteID > 0)
-                {
-                    ctrl.SetValue("wherecondition", "(AccountID NOT IN (SELECT * FROM Func_OM_Account_GetSubsidiaries(" + ValidationHelper.GetInteger(EditForm.EditedObject.GetValue("AccountID"), 0) + ", 1)) AND AccountSiteID = " + SiteID + ")");
-                }
-                else
-                {
-                    ctrl.SetValue("wherecondition", "(AccountID NOT IN (SELECT * FROM Func_OM_Account_GetSubsidiaries(" + ValidationHelper.GetInteger(EditForm.EditedObject.GetValue("AccountID"), 0) + ", 1)) AND AccountSiteID IS NULL)");
-                }
+                ctrl.SetValue("wherecondition", "(" + " AccountSiteID " + (SiteID > 0 ? ("= " + SiteID) : " IS NULL") + 
+                                                      " AND AccountID NOT IN (" + "SELECT * FROM Func_OM_Account_GetSubsidiaries(" + accountID + ", 1))" +
+                                                      " AND AccountID NOT IN (" + "SELECT * FROM Func_OM_Account_GetChildren(" + accountID + ", 1))" +
+                                                ")");
             });
         // UserSelector
         SetControl("accountowneruserid", ctrl =>

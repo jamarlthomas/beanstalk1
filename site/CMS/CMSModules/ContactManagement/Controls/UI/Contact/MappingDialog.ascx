@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="MappingDialog.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_Contact_MappingDialog" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="MappingDialog.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_Contact_MappingDialog" %>
 
 <%@ Register Src="~/CMSModules/AdminControls/Controls/Class/ClassFields.ascx" TagName="ClassFields" TagPrefix="uc" %>
 

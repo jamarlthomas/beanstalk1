@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Controls_MyProfile" Codebehind="MyProfile.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Controls_MyProfile"  Codebehind="MyProfile.ascx.cs" %>
 
 <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
 

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_PageElements_FrameResizer"
-    Codebehind="FrameResizer.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_PageElements_FrameResizer"
+     Codebehind="FrameResizer.ascx.cs" %>
 <asp:PlaceHolder runat="server" ID="plcStandard" EnableViewState="false">
     <asp:Panel runat="server" ID="pnlResizer" EnableViewState="False">
         <img src="<%=minimizeUrl%>" alt="" id="imgMinimize" onclick="Minimize();" onmouseover="document.body.style.cursor='pointer';"

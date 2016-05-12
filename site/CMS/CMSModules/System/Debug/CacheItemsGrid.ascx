@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_Debug_CacheItemsGrid"
-    Codebehind="CacheItemsGrid.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_Debug_CacheItemsGrid"
+     Codebehind="CacheItemsGrid.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/Pager/UIPager.ascx" TagName="UIPager"
     TagPrefix="cms" %>
 <asp:HiddenField runat="server" ID="hdnKey" EnableViewState="false" />

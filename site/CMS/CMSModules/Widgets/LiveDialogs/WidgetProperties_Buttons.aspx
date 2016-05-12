@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Widgets_LiveDialogs_WidgetProperties_Buttons"
-    Theme="default" Codebehind="WidgetProperties_Buttons.aspx.cs" MasterPageFile="~/CMSMasterPages/LiveSite/EmptyPage.master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Widgets_LiveDialogs_WidgetProperties_Buttons"
+    Theme="default"  Codebehind="WidgetProperties_Buttons.aspx.cs" MasterPageFile="~/CMSMasterPages/LiveSite/EmptyPage.master" %>
 
 <asp:Content ID="pnlContent" ContentPlaceHolderID="plcContent" runat="server">
     <div class="LiveSiteDialog">

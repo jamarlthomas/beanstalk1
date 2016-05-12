@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Media library - Security"
-    Inherits="CMSModules_Groups_Tools_MediaLibrary_Library_Edit_Security" Theme="Default" Codebehind="Library_Edit_Security.aspx.cs" %>
+    Inherits="CMSModules_Groups_Tools_MediaLibrary_Library_Edit_Security" Theme="Default"  Codebehind="Library_Edit_Security.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/UI/MediaLibrarySecurity.ascx" TagName="MediaLibrarySecurity"
     TagPrefix="cms" %>

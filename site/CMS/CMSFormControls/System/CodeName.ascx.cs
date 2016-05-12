@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 
 using CMS.DataEngine;
@@ -23,6 +23,22 @@ public partial class CMSFormControls_System_CodeName : FormEngineUserControl
         set
         {
             textbox.ReadOnly = value;
+        }
+    }
+
+
+    /// <summary>
+    /// If set the code name has to be in identifier format (without dots, spaces and special characters).
+    /// </summary>
+    public bool RequireIdentifier
+    {
+        get
+        {
+            return ValidationHelper.GetBoolean(GetValue("RequireIdentifier"), false);
+        }
+        set
+        {
+            SetValue("RequireIdentifier", value);
         }
     }
 
@@ -68,7 +84,7 @@ public partial class CMSFormControls_System_CodeName : FormEngineUserControl
         set
         {
             string stringValue = ValidationHelper.GetString(value, "");
-
+            
             textbox.Text = stringValue;
         }
     }
@@ -155,7 +171,7 @@ public partial class CMSFormControls_System_CodeName : FormEngineUserControl
 
         spanScreenReader.Text = toolTip;
         iconHelp.ToolTip = toolTip;
-        
+
         // Apply CSS style
         if (!String.IsNullOrEmpty(CssClass))
         {
@@ -190,10 +206,19 @@ public partial class CMSFormControls_System_CodeName : FormEngineUserControl
         }
 
         var stringValue = (string)Value;
-        if ((stringValue != InfoHelper.CODENAME_AUTOMATIC) && !String.IsNullOrEmpty(stringValue) && !ValidationHelper.IsCodeName(stringValue))
+        if ((stringValue != InfoHelper.CODENAME_AUTOMATIC) && !String.IsNullOrEmpty(stringValue))
         {
-            ValidationError = ResHelper.GetStringFormat("general.codenamenotvalid", HTMLHelper.HTMLEncode(stringValue));
-            return false;
+            if (!RequireIdentifier && !ValidationHelper.IsCodeName(stringValue))
+            {
+                ValidationError = ResHelper.GetStringFormat("general.codenamenotvalid", HTMLHelper.HTMLEncode(stringValue));
+                return false;
+            }
+
+            if (RequireIdentifier && !ValidationHelper.IsIdentifier(stringValue))
+            {
+                ValidationError = ResHelper.GetStringFormat("general.erroridentifierformat", HTMLHelper.HTMLEncode(stringValue));
+                return false;
+            }
         }
 
         return base.IsValid();

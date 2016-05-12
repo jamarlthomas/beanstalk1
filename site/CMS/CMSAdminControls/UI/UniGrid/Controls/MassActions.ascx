@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="MassActions.ascx.cs" Inherits="CMSAdminControls_UI_UniGrid_Controls_MassActions" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="MassActions.ascx.cs" Inherits="CMSAdminControls_UI_UniGrid_Controls_MassActions" %>
 
 <div class="form-horizontal mass-action">
     <div class="form-group hidden" runat="server" id="divMessages">

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -145,15 +145,15 @@ public partial class CMSModules_ContactManagement_Controls_UI_ContactGroup_Conta
     /// <summary>
     /// Dialog control identifier.
     /// </summary>
-    private string Identifier
+    private Guid Identifier
     {
         get
         {
-            string identifier = hdnIdentifier.Value;
-            if (string.IsNullOrEmpty(identifier))
+            Guid identifier;
+            if (!Guid.TryParse(hdnIdentifier.Value, out identifier))
             {
-                identifier = Guid.NewGuid().ToString();
-                hdnIdentifier.Value = identifier;
+                identifier = Guid.NewGuid();
+                hdnIdentifier.Value = identifier.ToString();
             }
 
             return identifier;
@@ -781,7 +781,7 @@ function PerformAction(selectionFunction, selectionField, actionId, actionLabel,
 
             mParameters["siteid"] = cgi.ContactGroupSiteID;
 
-            WindowHelper.Add(Identifier, mParameters);
+            WindowHelper.Add(Identifier.ToString(), mParameters);
 
             queryString = "?params=" + Identifier;
             queryString = URLHelper.AddParameterToUrl(queryString, "hash", QueryHelper.GetHash(queryString));

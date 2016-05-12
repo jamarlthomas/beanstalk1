@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SocialMarketing_FormControls_LinkedInCompanyAccessToken" Codebehind="LinkedInCompanyAccessToken.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SocialMarketing_FormControls_LinkedInCompanyAccessToken"  Codebehind="LinkedInCompanyAccessToken.ascx.cs" %>
 <%@ Import Namespace="CMS.SocialMarketing" %>
 
 <asp:Panel ID="pnlToken" runat="server">

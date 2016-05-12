@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 
+using CMS.Core;
 using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.SiteProvider;
@@ -320,7 +321,7 @@ public partial class CMSModules_Ecommerce_FormControls_DepartmentSelector : Site
         where = base.AppendExclusiveWhere(where);
 
         // Get only departments of the given user if he is not authorized for all departments
-        if (!ShowAllSites && (UserID > 0) && !UserInfoProvider.IsAuthorizedPerResource("CMS.Ecommerce", "AccessAllDepartments", SiteContext.CurrentSiteName, UserInfoProvider.GetUserInfo(UserID)))
+        if (!ShowAllSites && (UserID > 0) && !UserInfoProvider.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.PRODUCTS_ACCESSALLDEPARTMENTS, SiteContext.CurrentSiteName, UserInfoProvider.GetUserInfo(UserID)))
         {
             where = SqlHelper.AddWhereCondition(where, "DepartmentID IN (SELECT DepartmentID FROM COM_UserDepartment WHERE UserID = " + UserID + ")");
         }
@@ -347,7 +348,7 @@ public partial class CMSModules_Ecommerce_FormControls_DepartmentSelector : Site
 
     private void TryInitByForm()
     {
-        if ((Form == null) || !Form.AdditionalData.ContainsKey("DataClassID"))
+        if ((Value != null) || (Form == null) || !Form.AdditionalData.ContainsKey("DataClassID"))
         {
             return;
         }

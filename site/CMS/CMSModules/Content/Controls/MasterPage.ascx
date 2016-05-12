@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="MasterPage.ascx.cs" Inherits="CMSModules_Content_Controls_MasterPage" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="MasterPage.ascx.cs" Inherits="CMSModules_Content_Controls_MasterPage" %>
 <%@ Register Src="~/CMSFormControls/Inputs/LargeTextArea.ascx" TagName="LargeTextArea"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" TagName="HeaderActions"

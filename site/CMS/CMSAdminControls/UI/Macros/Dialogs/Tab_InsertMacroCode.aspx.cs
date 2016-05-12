@@ -38,7 +38,7 @@ $cmsj.event.add(window, 'load', resizeEditor);
 $cmsj.event.add(window, 'resize', resizeEditor);
 
 function resizeEditor() {
-    $cmsj('.js-code-mirror-scroll').height($cmsj(window).height() - 125);
+    $cmsj('.js-code-mirror-scroll').height($cmsj(window).height() - 130);
 };";
         ScriptHelper.RegisterJQuery(Page);
         ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "insertItem", script, true);

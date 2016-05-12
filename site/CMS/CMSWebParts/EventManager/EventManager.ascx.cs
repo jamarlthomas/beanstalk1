@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Base;
 using CMS.DocumentEngine;
@@ -35,6 +35,21 @@ public partial class CMSWebParts_EventManager_EventManager : CMSAbstractWebPart
         }
     }
 
+
+    /// <summary>
+    /// Checks whether the registration is opened
+    /// </summary>
+    private bool IsRegistrationOpened
+    {
+        get
+        {
+            var now = DateTime.Now;
+
+            return (openFrom == DateTimeHelper.ZERO_TIME || openFrom < now)
+                && (openTo == DateTimeHelper.ZERO_TIME || now <= openTo)
+                && (eventDate == DateTimeHelper.ZERO_TIME || now <= eventDate);
+        }
+    }
 
     #region "Public properties"
 
@@ -119,7 +134,6 @@ public partial class CMSWebParts_EventManager_EventManager : CMSAbstractWebPart
 
     #endregion
 
-
     /// <summary>
     /// Content loaded event handler.
     /// </summary>
@@ -179,14 +193,15 @@ public partial class CMSWebParts_EventManager_EventManager : CMSAbstractWebPart
         }
 
         var userInfo = MembershipContext.AuthenticatedUser;
+
         // Display registration form to anonymous user only if this is allowed
         if ((AllowAnonymousRegistration || (userInfo != null && AuthenticationHelper.IsAuthenticated())) && EventNode != null)
         {
-            DateTime now = DateTime.Now;
             // Display registration form if opened
-            if ((openFrom == DateTimeHelper.ZERO_TIME || openFrom < now) && (openTo == DateTimeHelper.ZERO_TIME || now <= openTo) && (now <= eventDate))
+            if (IsRegistrationOpened)
             {
-                int actualCount = EventAttendeeInfoProvider.GetEventAttendeesCount(EventNode.OriginalNodeID);
+                int actualCount = EventAttendeeInfoProvider.GetEventAttendees(EventNode.OriginalNodeID).Count;
+
                 // Display registration form if capacity is not full
                 if (allowRegistrationOverCapacity || (actualCount < capacity))
                 {
@@ -240,7 +255,7 @@ public partial class CMSWebParts_EventManager_EventManager : CMSAbstractWebPart
     protected void btnRegister_Click(object sender, EventArgs e)
     {
         string currentSiteName = SiteContext.CurrentSiteName;
-        // Check banned ip
+        // Check banned IPs
         if (!BannedIPInfoProvider.IsAllowed(currentSiteName, BanControlEnum.AllNonComplete))
         {
             lblError.Visible = true;
@@ -275,9 +290,8 @@ public partial class CMSWebParts_EventManager_EventManager : CMSAbstractWebPart
 
         if (string.IsNullOrEmpty(result))
         {
-            DateTime now = DateTime.Now;
             // Allow registration if opened
-            if ((openFrom == DateTimeHelper.ZERO_TIME || openFrom < now) && (openTo == DateTimeHelper.ZERO_TIME || now <= openTo) && (now <= eventDate))
+            if (IsRegistrationOpened)
             {
                 if (EventNode != null)
                 {
@@ -293,7 +307,7 @@ public partial class CMSWebParts_EventManager_EventManager : CMSAbstractWebPart
                             activity.Log();
 
                             // Send invitation e-mail
-                            TimeZoneInfo tzi = null;
+                            TimeZoneInfo tzi;
                             TimeZoneMethods.GetDateTimeForControl(this, DateTime.Now, out tzi);
                             EventProvider.SendInvitation(currentSiteName, EventNode, eai, tzi);
 

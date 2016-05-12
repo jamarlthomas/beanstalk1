@@ -27,6 +27,8 @@ public partial class CMSAdminControls_CodeMirror_dialogs_InsertMacro_Tab_InsertM
 
         PageTitle.TitleText = GetString("insertmacro.dialogtitle");
 
+        SetSaveResourceString("dialogs.actions.insert");
+
         Save += OnSave;
     }
 

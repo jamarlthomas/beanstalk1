@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Debug_MacroLog"
-    Codebehind="MacroLog.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Debug_MacroLog"
+     Codebehind="MacroLog.ascx.cs" %>
 <cms:UIGridView runat="server" ID="gridMacros" ShowFooter="true" AutoGenerateColumns="false" CssClass="wrap-normal">
     <Columns>
         <asp:TemplateField>

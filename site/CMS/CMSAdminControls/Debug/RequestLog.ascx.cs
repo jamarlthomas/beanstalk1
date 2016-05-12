@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Data;
 
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -41,8 +42,7 @@ public partial class CMSAdminControls_Debug_RequestLog : RequestProcessLog
                 HeaderText = GetString("RequestLog.Info");
 
                 // Bind the data
-                gridCache.DataSource = dt;
-                gridCache.DataBind();
+                BindGrid(gridCache, dt);
             }
         }
     }

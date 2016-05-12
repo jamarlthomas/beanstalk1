@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Codebehind="New.aspx.cs" 
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="New.aspx.cs" 
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Custom activity properties" 
     Inherits="CMSModules_ContactManagement_Pages_Tools_Activities_Activity_New" Theme="Default" %>
     

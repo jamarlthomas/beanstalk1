@@ -12,6 +12,7 @@ using CMS.SiteProvider;
 using CMS.Membership;
 using CMS.UIControls;
 using CMS.DataEngine;
+using CMS.Synchronization;
 
 
 public partial class CMSAdminControls_UI_Header : CMSUserControl, ICallbackEventHandler
@@ -29,6 +30,12 @@ public partial class CMSAdminControls_UI_Header : CMSUserControl, ICallbackEvent
     protected void Page_Load(object sender, EventArgs e)
     {
         ScriptHelper.RegisterModule(this, "CMS/Mole");
+
+        ScriptHelper.RegisterModule(this, "CMS/BreadcrumbsPin", new
+        {
+            pinId = "js-single-object-dashboard-pin"
+        });
+
         ScriptHelper.RegisterModule(this, "CMS/Header", new
         {
             selectorId = siteSelector.DropDownSingleSelect.ClientID,
@@ -115,6 +122,7 @@ function CheckChanges() {
         });
 
         EnsureSupportChat();
+        EnsureStagingTaskGroupMenu();
 
         lnkDashboard.Attributes.Add("href", "#");
     }
@@ -172,7 +180,7 @@ function CheckChanges() {
                 }
             }
         }
-        // Check the license key for trial version
+        // Check the license key for trial or free version
         else if (DataHelper.GetNotEmpty(RequestContext.CurrentDomain, string.Empty) != string.Empty)
         {
             LicenseKeyInfo lki = LicenseKeyInfoProvider.GetLicenseKeyInfo(RequestContext.CurrentDomain);
@@ -188,6 +196,10 @@ function CheckChanges() {
                 {
                     info = string.Format(GetString("Trial.ExpiresIn"), GetExpirationString(expiration.Days));
                 }
+            }
+            else if ((lki != null) && (lki.Edition == ProductEditionEnum.Free))
+            {
+                info = GetString("header.freeedition");
             }
         }
 
@@ -232,6 +244,24 @@ function CheckChanges() {
                 plcSupportChat.Visible = true;
             }
         }
+    }
+
+
+    /// <summary>
+    /// Ensures that StagingTaskGroupMenu control is inserted correctly into the header.
+    /// </summary>
+    private void EnsureStagingTaskGroupMenu()
+    {
+       if (StagingTaskInfoProvider.LoggingOfStagingTasksEnabled(SiteContext.CurrentSiteName))
+       {
+           CMSUserControl stagingTaskGroupMenu = Page.LoadUserControl("~/CMSAdminControls/UI/StagingTaskGroupMenu.ascx") as CMSUserControl;
+           if (stagingTaskGroupMenu != null)
+           {
+               plcStagingTaskGroupContainer.Visible = true;
+               plcStagingTaskGroup.Controls.Add(stagingTaskGroupMenu);
+               plcStagingTaskGroup.Visible = true;
+           }
+       }
     }
 
 

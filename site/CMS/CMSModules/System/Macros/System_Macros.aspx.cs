@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -16,21 +16,8 @@ public partial class CMSModules_System_Macros_System_Macros : GlobalAdminPage
 {
     private const string EVENTLOG_SOURCE_REFRESHSECURITYPARAMS = "Macros - Refresh security parameters";
 
-    private NameValueCollection processedObjects = new NameValueCollection();
-
-
-    /// <summary>
-    /// Gets the log context for the async control.
-    /// </summary>
-    public LogContext AsyncLogContext
-    {
-        get
-        {
-            return EnsureAsyncLogContext();
-        }
-    }
-
-
+    private readonly NameValueCollection processedObjects = new NameValueCollection();
+    
     protected override void OnLoad(EventArgs e)
     {
         base.OnLoad(e);
@@ -41,49 +28,36 @@ public partial class CMSModules_System_Macros_System_Macros : GlobalAdminPage
     
 
     #region "Async log"
-
-    /// <summary>
-    /// Ensures and returns the log context for the async control.
-    /// </summary>
-    private LogContext EnsureAsyncLogContext()
-    {
-        var log = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-
-        return log;
-    }
-
-
+    
     /// <summary>
     /// Inits the async dialog.
     /// </summary>
     private void InitAsyncDialog()
     {
         ctlAsyncLog.TitleText = GetString("macros.refreshsecurityparams.title");
+        
+        ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
+        ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
+    }
 
-        ctlAsyncLog.OnRequestLog += (sender, args) =>
-        {
-            ctlAsyncLog.LogContext = AsyncLogContext;
-        };
 
-        ctlAsyncLog.OnCancel += (sender, args) =>
-        {
-            EventLogProvider.LogEvent(EventType.INFORMATION, (string)ctlAsyncLog.Parameter, "CANCELLED");
+    private void ctlAsyncLog_OnCancel(object sender, EventArgs args)
+    {
+        EventLogProvider.LogEvent(EventType.INFORMATION, (string)ctlAsyncLog.Parameter, "CANCELLED");
 
-            pnlAsyncLog.Visible = false;
-            AsyncLogContext.Close();
+        pnlAsyncLog.Visible = false;
 
-            ShowConfirmation(GetString("general.actioncanceled"));
-        };
+        ShowConfirmation(GetString("general.actioncanceled"));
+    }
 
-        ctlAsyncLog.OnFinished += (sender, args) =>
-        {
-            EventLogProvider.LogEvent(EventType.INFORMATION, (string)ctlAsyncLog.Parameter, "FINISHED");
 
-            pnlAsyncLog.Visible = false;
-            AsyncLogContext.Close();
+    private void ctlAsyncLog_OnFinished(object sender, EventArgs args)
+    {
+        EventLogProvider.LogEvent(EventType.INFORMATION, (string)ctlAsyncLog.Parameter, "FINISHED");
 
-            ShowConfirmation(GetString("general.actionfinished"));
-        };
+        pnlAsyncLog.Visible = false;
+
+        ShowConfirmation(GetString("general.actionfinished"));
     }
 
 
@@ -96,9 +70,7 @@ public partial class CMSModules_System_Macros_System_Macros : GlobalAdminPage
     {
         // Set action name as process parameter
         ctlAsyncLog.Parameter = actionName;
-
-        EnsureAsyncLogContext();
-
+        
         // Log async action start
         EventLogProvider.LogEvent(EventType.INFORMATION, actionName, "STARTED");
 
@@ -142,28 +114,17 @@ public partial class CMSModules_System_Macros_System_Macros : GlobalAdminPage
             txtNewSalt.Enabled = false;
 
             var customSalt = SettingsHelper.AppSettings[ValidationHelper.APP_SETTINGS_HASH_STRING_SALT];
-            if (string.IsNullOrEmpty(customSalt))
-            {
-                txtNewSalt.Text = GetString("macros.refreshsecurityparams.currentsaltisconnectionstring");
-            }
-            else
-            {
-                txtNewSalt.Text = GetString("macros.refreshsecurityparams.currentsaltiscustomvalue");
-            }
+
+            var resString = string.IsNullOrEmpty(customSalt) ? "macros.refreshsecurityparams.currentsaltisconnectionstring" : "macros.refreshsecurityparams.currentsaltiscustomvalue";
+
+            txtNewSalt.Text = GetString(resString);
         }
         else
         {
             txtNewSalt.Enabled = true;
         }
 
-        chkUseCurrentSalt.CheckedChanged += (sender, args) =>
-        {
-            // Clear the textbox after enabling it
-            if (!chkUseCurrentSalt.Checked)
-            {
-                txtNewSalt.Text = null;
-            }
-        };
+        chkUseCurrentSalt.CheckedChanged += chkUseCurrentSalt_CheckedChanged;
 
         // Init submit button
         btnRefreshSecurityParams.Text = GetString("macros.refreshsecurityparams");
@@ -192,6 +153,22 @@ public partial class CMSModules_System_Macros_System_Macros : GlobalAdminPage
     }
 
 
+    private void chkUseCurrentSalt_CheckedChanged(object sender, EventArgs args)
+    {
+        // Clear the textbox after enabling it
+        if (!chkUseCurrentSalt.Checked)
+        {
+            txtNewSalt.Text = null;
+        }
+    }
+
+
+    private void AddLog(string logText)
+    {
+        ctlAsyncLog.AddLog(logText);
+    }
+
+
     /// <summary>
     /// Refreshes the security parameters in macros for all the objects of the specified object types.
     /// Signs all the macros with the current user if the old salt is not specified.
@@ -206,42 +183,32 @@ public partial class CMSModules_System_Macros_System_Macros : GlobalAdminPage
 
         processedObjects.Clear();
         
-        using (CMSActionContext context = new CMSActionContext())
+        using (var context = new CMSActionContext())
         {
             context.LogEvents = false;
             context.LogSynchronization = false;
 
             foreach (var objectType in objectTypes)
             {
-                var objectTypeResourceKey = TypeHelper.GetObjectTypeResourceKey(objectType);
-                var niceObjectType = GetString(objectTypeResourceKey);
-                if (niceObjectType == objectTypeResourceKey)
-                {
-                    if (objectType.StartsWithCSafe("bizformitem.bizform.", true))
-                    {
-                        DataClassInfo dci = DataClassInfoProvider.GetDataClassInfo(objectType.Substring("bizformitem.".Length));
-                        if (dci != null)
-                        {
-                            niceObjectType = "on-line form " + dci.ClassDisplayName;
-                        }
-                    }
-                    else
-                    {
-                        niceObjectType = objectType;
-                    }
-                }
+                var niceObjectType = GetNiceObjectTypeName(objectType);
 
-                LogContext.AppendLine(string.Format(GetString("macros.refreshsecurityparams.processing"), niceObjectType));
+                AddLog(string.Format(GetString("macros.refreshsecurityparams.processing"), niceObjectType));
 
                 try
                 {
                     var infos = new InfoObjectCollection(objectType);
 
+                    // Skip object types derived from general data class object type to avoid duplicities
+                    if ((infos.TypeInfo.OriginalObjectType == DataClassInfo.OBJECT_TYPE) && (infos.TypeInfo.ObjectType != DataClassInfo.OBJECT_TYPE))
+                    {
+                        continue;
+                    }
+
                     foreach (var info in infos)
                     {
                         try
                         {
-                            bool refreshed = false;
+                            bool refreshed;
                             if (oldSaltSpecified)
                             {
                                 refreshed = MacroSecurityProcessor.RefreshSecurityParameters(info, oldSalt, newSaltSpecified ? newSalt : ValidationHelper.HashStringSalt, true);
@@ -275,13 +242,37 @@ public partial class CMSModules_System_Macros_System_Macros : GlobalAdminPage
                 }
                 catch (Exception e)
                 {
-                    LogContext.AppendLine(e.Message);
+                    AddLog(e.Message);
                     EventLogProvider.LogException(EVENTLOG_SOURCE_REFRESHSECURITYPARAMS, "ERROR", e);
                 }
             }
         }
 
         EventLogProvider.LogEvent(EventType.INFORMATION, EVENTLOG_SOURCE_REFRESHSECURITYPARAMS, "PROCESSEDOBJECTS", GetProcessedObjectsForEventLog());
+    }
+
+
+    private static string GetNiceObjectTypeName(string objectType)
+    {
+        var objectTypeResourceKey = TypeHelper.GetObjectTypeResourceKey(objectType);
+
+        var niceObjectType = GetString(objectTypeResourceKey);
+        if (niceObjectType == objectTypeResourceKey)
+        {
+            if (objectType.StartsWithCSafe("bizformitem.bizform.", true))
+            {
+                DataClassInfo dci = DataClassInfoProvider.GetDataClassInfo(objectType.Substring("bizformitem.".Length));
+                if (dci != null)
+                {
+                    niceObjectType = "on-line form " + ResHelper.LocalizeString(dci.ClassDisplayName);
+                }
+            }
+            else
+            {
+                niceObjectType = objectType;
+            }
+        }
+        return niceObjectType;
     }
 
 

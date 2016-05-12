@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Text;
 using System.Web.UI;
@@ -239,6 +239,12 @@ public partial class CMSModules_Reporting_Controls_ReportTable : AbstractReportC
 
         mErrorOccurred = false;
         DataSet ds = null;
+
+        // Ensure report item name for caching
+        if (String.IsNullOrEmpty(ReportItemName))
+        {
+            ReportItemName = String.Format("{0};{1}", mReportInfo.ReportName, TableInfo.TableName);
+        }
 
         try
         {

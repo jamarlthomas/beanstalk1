@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Controls;
 using CMS.DataEngine;
@@ -617,10 +617,6 @@ public partial class CMSWebParts_CustomTables_customtablerepeater : CMSAbstractW
 
                 // Query
                 repItems.QueryName = dci.ClassName + ".selectall";
-                
-                // Data binding
-                repItems.DataBindByDefault = true;
-                repItems.ReloadData(false);
             }
         }
     }

@@ -242,7 +242,7 @@ public partial class CMSWebParts_Ecommerce_Checkout_Forms_PaymentForm : CMSAbstr
 
         if (ShoppingCart.PaymentOption != null)
         {
-            lblPaymentValue.Text = GetString(ShoppingCart.PaymentOption.PaymentOptionDisplayName);
+            lblPaymentValue.Text = ResHelper.LocalizeString(ShoppingCart.PaymentOption.PaymentOptionDisplayName, null, true);
         }
 
         // Payment form is visible only if payment method is selected

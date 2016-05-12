@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Edit.ascx.cs" Inherits="CMSModules_Scoring_Controls_UI_Rule_Edit" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Edit.ascx.cs" Inherits="CMSModules_Scoring_Controls_UI_Rule_Edit" %>
 
 <%@ Register TagPrefix="cms" TagName="SelectValidity" Src="~/CMSAdminControls/UI/Selectors/SelectValidity.ascx" %>
 

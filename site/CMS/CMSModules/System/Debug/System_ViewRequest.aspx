@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_System_Debug_System_ViewRequest" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Theme="Default" Title="Request details" Codebehind="System_ViewRequest.aspx.cs" %>
+    Theme="Default" Title="Request details"  Codebehind="System_ViewRequest.aspx.cs" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <asp:Panel runat="server" ID="pnlBody">

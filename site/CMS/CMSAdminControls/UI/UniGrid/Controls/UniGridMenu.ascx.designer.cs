@@ -21,110 +21,74 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_UniGridMenu {
     protected global::System.Web.UI.WebControls.Panel pnlUniGridMenu;
     
     /// <summary>
-    /// pnlExcel control.
+    /// plcExport control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlExcel;
+    protected global::System.Web.UI.WebControls.PlaceHolder plcExport;
     
     /// <summary>
-    /// pnlExcelPadding control.
+    /// iExcel control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlExcelPadding;
+    protected global::CMS.ExtendedControls.ContextMenuItem iExcel;
     
     /// <summary>
-    /// lblExcel control.
+    /// iCSV control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblExcel;
+    protected global::CMS.ExtendedControls.ContextMenuItem iCSV;
     
     /// <summary>
-    /// pnlCSV control.
+    /// iXML control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlCSV;
+    protected global::CMS.ExtendedControls.ContextMenuItem iXML;
     
     /// <summary>
-    /// pnlCSVPadding control.
+    /// iAdvanced control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlCSVPadding;
+    protected global::CMS.ExtendedControls.ContextMenuItem iAdvanced;
     
     /// <summary>
-    /// lblCSV control.
+    /// sm1 control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblCSV;
+    protected global::CMS.ExtendedControls.ContextMenuSeparator sm1;
     
     /// <summary>
-    /// pnlXML control.
+    /// iFilter control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlXML;
+    protected global::CMS.ExtendedControls.ContextMenuItem iFilter;
     
     /// <summary>
-    /// pnlXMLPadding control.
+    /// iReset control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlXMLPadding;
-    
-    /// <summary>
-    /// lblXML control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblXML;
-    
-    /// <summary>
-    /// pnlAdvancedExport control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlAdvancedExport;
-    
-    /// <summary>
-    /// pnlAdvancedExportPadding control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlAdvancedExportPadding;
-    
-    /// <summary>
-    /// lblAdvancedExport control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblAdvancedExport;
+    protected global::CMS.ExtendedControls.ContextMenuItem iReset;
 }

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSFormControls_Images_IconSelector" Codebehind="IconSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSFormControls_Images_IconSelector"  Codebehind="IconSelector.ascx.cs" %>
 <cms:CMSUpdatePanel ID="pnlUpdateContent" runat="server" UpdateMode="Conditional">
     <ContentTemplate>
         <div class="iconSelector">

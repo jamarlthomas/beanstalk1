@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Sites_Pages_Site_Edit_OfflineMode"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Sites_Pages_Site_Edit_OfflineMode"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Site Edit - Offline mode"
-    Codebehind="Site_Edit_OfflineMode.aspx.cs" %>
+     Codebehind="Site_Edit_OfflineMode.aspx.cs" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <div class="form-horizontal">

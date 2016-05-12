@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -98,22 +98,6 @@ public partial class CMSModules_PortalEngine_FormControls_PageTemplates_PageTemp
 
 
     /// <summary>
-    /// Gets or sets a value indicating whether the control is used for a classic page template or a wireframe template.
-    /// </summary>
-    public bool IsWireframeTemplate
-    {
-        get
-        {
-            return ValidationHelper.GetBoolean(GetValue("IsWireframeTemplate"), false);
-        }
-        set
-        {
-            SetValue("IsWireframeTemplate", value);
-        }
-    }
-
-
-    /// <summary>
     /// Gets or sets the node.
     /// </summary>
     public TreeNode Node
@@ -154,7 +138,7 @@ public partial class CMSModules_PortalEngine_FormControls_PageTemplates_PageTemp
             DataSet ds = DocumentManager.Tree.SelectNodes(SiteContext.CurrentSiteName, "/%", Node.DocumentCulture, false, null, "NodeLinkedNodeID IS NOT NULL AND (N'" + SqlHelper.EscapeQuotes(Node.NodeAliasPath) + "' LIKE NodeAliasPath + '%')", null, -1, false, 1, "Count(*) AS NumOfDocs");
 
             // If node is not link or none of parent documents is not linked document use document name path
-            if (!Node.IsLink && ValidationHelper.GetInteger(DataHelper.GetDataRowValue(ds.Tables[0].Rows[0], "NumOfDocs"), 0) == 0)
+            if (!Node.IsLink && DataHelper.GetIntValue(ds.Tables[0].Rows[0], "NumOfDocs") == 0)
             {
                 TreePath = TreePathUtils.GetParentPath("/" + Node.DocumentNamePath);
             }
@@ -165,8 +149,7 @@ public partial class CMSModules_PortalEngine_FormControls_PageTemplates_PageTemp
             }
 
             radInheritAll.Text = GetString("InheritLevels.UseTemplateSettigns");
-            bool isWireframe = IsWireframeTemplate || Node.IsWireframe();
-            PageTemplateInfo template = PageTemplateInfoProvider.GetPageTemplateInfo(isWireframe ? Node.NodeWireframeTemplateID : Node.DocumentPageTemplateID);
+            PageTemplateInfo template = PageTemplateInfoProvider.GetPageTemplateInfo(Node.DocumentPageTemplateID);
             if (template != null)
             {
                 string resString = String.Empty;

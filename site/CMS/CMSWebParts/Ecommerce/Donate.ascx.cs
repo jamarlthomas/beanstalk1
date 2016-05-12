@@ -424,8 +424,7 @@ public partial class CMSWebParts_Ecommerce_Donate : CMSAbstractWebPart
         }
 
         shoppingCartItemSelector.AddToCartTooltip = ControlTooltip;
-        shoppingCartItemSelector.SKUEnabled = true;
-        shoppingCartItemSelector.OnAddToShoppingCart += new CancelEventHandler(shoppingCartItemSelector_OnAddToShoppingCart);
+        shoppingCartItemSelector.OnAddToShoppingCart += shoppingCartItemSelector_OnAddToShoppingCart;
     }
 
 

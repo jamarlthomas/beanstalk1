@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SmartSearch_Controls_SearchResults"
-    Codebehind="SearchResults.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SmartSearch_Controls_SearchResults"
+     Codebehind="SearchResults.ascx.cs" %>
 <asp:Panel runat="server" ID="pnlSearchResults">
     <asp:PlaceHolder runat="server" ID="plcBasicRepeater"></asp:PlaceHolder>
     <cms:UniPager runat="server" ID="pgrSearch" PageControl="repSearchResults" />

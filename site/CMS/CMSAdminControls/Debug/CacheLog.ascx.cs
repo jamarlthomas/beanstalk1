@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls;
 using CMS.UIControls;
@@ -21,8 +21,8 @@ public partial class CMSAdminControls_Debug_CacheLog : CacheLog
 
             HeaderText = GetString("CacheLog.Info");
 
-            gridCache.DataSource = dt;
-            gridCache.DataBind();
+            // Bind the data
+            BindGrid(gridCache, dt);
         }
     }
 }

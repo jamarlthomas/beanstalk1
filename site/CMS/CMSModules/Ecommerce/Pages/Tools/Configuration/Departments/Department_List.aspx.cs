@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.Ecommerce;
@@ -65,7 +65,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_Departments_
         if (actionName == "edit")
         {
             var editElementName = IsMultiStoreConfiguration ? "Edit.Ecommerce.GlobalDepartments.Properties" : "Edit.DepartmentsProperties";
-            URLHelper.Redirect(UIContextHelper.GetElementUrl("CMS.Ecommerce", editElementName, false, actionArgument.ToInteger(0)));
+            URLHelper.Redirect(UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, editElementName, false, actionArgument.ToInteger(0)));
         }
         else if (actionName == "delete")
         {
@@ -103,7 +103,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_Departments_
     /// <param name="uiElementName">Name of ui element to redirect to.</param>
     private string GetRedirectURL(string uiElementName)
     {
-        string url = UIContextHelper.GetElementUrl("cms.ecommerce", uiElementName, false);
+        string url = UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, uiElementName, false);
         // Only global object can be created from site manager       
         if (IsMultiStoreConfiguration)
         {

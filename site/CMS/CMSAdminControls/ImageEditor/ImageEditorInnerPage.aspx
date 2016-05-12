@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="ImageEditorInnerPage.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="ImageEditorInnerPage.aspx.cs"
     Inherits="CMSAdminControls_ImageEditor_ImageEditorInnerPage" %>
 
 <!DOCTYPE html>

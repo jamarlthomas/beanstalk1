@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Layouts_Flat_ThreadEdit"
-    Codebehind="ThreadEdit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Layouts_Flat_ThreadEdit"
+     Codebehind="ThreadEdit.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Forums/Controls/NewPost.ascx" TagName="ForumPostEdit"
     TagPrefix="cms" %>
 <%@ Register Namespace="CMS.Forums" Assembly="CMS.Forums" TagPrefix="cms" %>

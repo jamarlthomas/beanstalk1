@@ -15,10 +15,10 @@ public partial class CMSModules_Blogs_Controls_Unsubscription : CMSUserControl
     #region "Private variables"
 
     private Guid mSubGuid = Guid.Empty;
-    string mSubscriptionHash = null;
-    string mRequestTime = null;
-    private BlogPostSubscriptionInfo mSubscriptionObject = null;
-    private TreeNode mSubscriptionSubject = null;
+    string mSubscriptionHash;
+    string mRequestTime;
+    private BlogPostSubscriptionInfo mSubscriptionObject;
+    private TreeNode mSubscriptionSubject;
 
     #endregion
 
@@ -153,26 +153,24 @@ public partial class CMSModules_Blogs_Controls_Unsubscription : CMSUserControl
             Visible = false;
             return;
         }
-        else
+
+        bool controlPb = false;
+
+        if (RequestHelper.IsPostBack())
         {
-            bool controlPb = false;
-
-            if (RequestHelper.IsPostBack())
+            Control pbCtrl = ControlsHelper.GetPostBackControl(Page);
+            if (pbCtrl == btnConfirm)
             {
-                Control pbCtrl = ControlsHelper.GetPostBackControl(Page);
-                if (pbCtrl == btnConfirm)
-                {
-                    controlPb = true;
-                }
+                controlPb = true;
             }
+        }
 
-            // Setup controls
-            SetupControls(!controlPb);
+        // Setup controls
+        SetupControls(!controlPb);
 
-            if (!controlPb)
-            {
-                CheckAndUnsubscribe(mSubGuid, mSubscriptionHash, mRequestTime, true);
-            }
+        if (!controlPb)
+        {
+            CheckAndUnsubscribe(mSubGuid, mSubscriptionHash, mRequestTime, true);
         }
     }
 
@@ -216,7 +214,7 @@ public partial class CMSModules_Blogs_Controls_Unsubscription : CMSUserControl
 
         // Get date and time
         DateTime datetime = DateTimeHelper.ZERO_TIME;
-        if (!string.IsNullOrEmpty(requestTime))
+        if (!String.IsNullOrEmpty(requestTime))
         {
             try
             {
@@ -229,29 +227,34 @@ public partial class CMSModules_Blogs_Controls_Unsubscription : CMSUserControl
             }
         }
 
-        if (subGuid != Guid.Empty)
+        if (SubscriptionObject != null)
         {
-            if (SubscriptionObject != null)
+            if (subGuid != Guid.Empty)
             {
                 if (!checkOnly)
                 {
                     BlogPostSubscriptionInfoProvider.DeleteBlogPostSubscriptionInfo(SubscriptionObject);
                     result = OptInApprovalResultEnum.Success;
                 }
+                else
+                {
+                    // Subscription exists but do nothing automatically, wait to user action
+                    return;
+                }
             }
-        }
-        // Check if subscription approval hash is supplied
-        else if (!string.IsNullOrEmpty(subscriptionHash))
-        {
-            if (checkOnly)
+            // Check if subscription approval hash is supplied
+            else if (!string.IsNullOrEmpty(subscriptionHash))
             {
-                // Validate hash 
-                result = BlogPostSubscriptionInfoProvider.ValidateHash(SubscriptionObject, subscriptionHash, SiteContext.CurrentSiteName, datetime);
-            }
-            else
-            {
-                // Check if hash is valid
-                result = BlogPostSubscriptionInfoProvider.Unsubscribe(subscriptionHash, true, SiteContext.CurrentSiteName, datetime);
+                if (checkOnly)
+                {
+                    // Check if hash is valid
+                    result = BlogPostSubscriptionInfoProvider.ValidateHash(SubscriptionObject, subscriptionHash, SiteContext.CurrentSiteName, datetime);
+                }
+                else
+                {
+                    // Unsubscribe
+                    result = BlogPostSubscriptionInfoProvider.Unsubscribe(subscriptionHash, true, SiteContext.CurrentSiteName, datetime);
+                }
             }
         }
 

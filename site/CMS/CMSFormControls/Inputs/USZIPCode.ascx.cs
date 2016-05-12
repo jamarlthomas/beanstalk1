@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.FormControls;
 using CMS.Helpers;
@@ -35,14 +35,6 @@ public partial class CMSFormControls_Inputs_USZIPCode : FormEngineUserControl
         {
             txtZIPCode.Text = (string)value;
         }
-    }
-
-
-    /// <summary>
-    /// Page load.
-    /// </summary>
-    protected void Page_Load(object sender, EventArgs e)
-    {
     }
 
 

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_New_NewPage"
-    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" Title="Content - New page" Codebehind="NewPage.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_New_NewPage"
+    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" Title="Content - New page"  Codebehind="NewPage.aspx.cs" %>
 
 <%@ Register Src="TemplateSelection.ascx" TagName="TemplateSelection" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Content/Controls/EditMenu.ascx" TagName="editmenu"

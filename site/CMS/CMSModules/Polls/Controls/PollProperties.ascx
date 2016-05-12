@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Polls_Controls_PollProperties"
-    Codebehind="PollProperties.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Polls_Controls_PollProperties"
+     Codebehind="PollProperties.ascx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/System/LocalizableTextBox.ascx" TagName="LocalizableTextBox"
     TagPrefix="cms" %>
@@ -80,8 +80,7 @@
                         DisplayColon="true" />
                 </div>
                 <div class="editing-form-value-cell">
-                    <cms:DateTimePicker ID="dtPickerOpenFrom" runat="server" SupportFolder="~/CMSAdminControls/Calendar">
-                    </cms:DateTimePicker>
+                    <cms:DateTimePicker ID="dtPickerOpenFrom" runat="server" />
                 </div>
             </div>
             <div class="form-group">
@@ -90,8 +89,7 @@
                         DisplayColon="true" />
                 </div>
                 <div class="editing-form-value-cell">
-                    <cms:DateTimePicker ID="dtPickerOpenTo" runat="server" SupportFolder="~/CMSAdminControls/Calendar">
-                    </cms:DateTimePicker>
+                    <cms:DateTimePicker ID="dtPickerOpenTo" runat="server" />
                 </div>
             </div>
             <div class="form-group">

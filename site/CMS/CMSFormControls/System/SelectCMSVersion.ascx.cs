@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.FormControls;
@@ -48,19 +48,11 @@ public partial class CMSFormControls_System_SelectCMSVersion : FormEngineUserCon
         {
             // Fill the combo with versions
             drpVersion.Items.Add(new ListItem("(none)", ""));
-            drpVersion.Items.Add(new ListItem("CMS 3.0", "3.0"));
-            drpVersion.Items.Add(new ListItem("CMS 3.1", "3.1"));
-            drpVersion.Items.Add(new ListItem("CMS 3.1a", "3.1a"));
-            drpVersion.Items.Add(new ListItem("CMS 4.0", "4.0"));
-            drpVersion.Items.Add(new ListItem("CMS 4.1", "4.1"));
-            drpVersion.Items.Add(new ListItem("CMS 5.0", "5.0"));
-            drpVersion.Items.Add(new ListItem("CMS 5.5", "5.5"));
-            drpVersion.Items.Add(new ListItem("CMS 5.5R2", "5.5R2"));
-            drpVersion.Items.Add(new ListItem("CMS 6.0", "6.0"));
-            drpVersion.Items.Add(new ListItem("CMS 7.0", "7.0"));
-            drpVersion.Items.Add(new ListItem("CMS 8.0", "8.0"));
-            drpVersion.Items.Add(new ListItem("CMS 8.1", "8.1"));
-            drpVersion.Items.Add(new ListItem("CMS 8.2", "8.2"));
+
+            foreach (string version in new [] { "3.0", "3.1", "3.1a", "4.0", "4.1", "5.0", "5.5", "5.5R2", "6.0", "7.0", "8.0", "8.1", "8.2", "9.0" })
+            {
+                drpVersion.Items.Add(new ListItem(String.Format("CMS {0}", version), version));
+            }
         }
     }
 

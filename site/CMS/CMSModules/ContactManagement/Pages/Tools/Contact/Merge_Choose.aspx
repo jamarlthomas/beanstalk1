@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Merge_Choose.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_Contact_Merge_Choose"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Merge_Choose.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_Contact_Merge_Choose"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Choose contacts to merge" EnableEventValidation="false"
     Theme="Default" %>
 

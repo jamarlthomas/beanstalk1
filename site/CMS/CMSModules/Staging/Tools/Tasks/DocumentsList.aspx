@@ -1,6 +1,6 @@
-<%@ Page Title="Synchronization - Pages list" Language="C#" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Title="Synchronization - Pages list" Language="C#" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     AutoEventWireup="true" Inherits="CMSModules_Staging_Tools_Tasks_DocumentsList"
-    MaintainScrollPositionOnPostback="true" Codebehind="DocumentsList.aspx.cs" %>
+    MaintainScrollPositionOnPostback="true"  Codebehind="DocumentsList.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 

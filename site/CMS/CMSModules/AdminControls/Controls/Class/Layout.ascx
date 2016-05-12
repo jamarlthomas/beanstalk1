@@ -1,8 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_AdminControls_Controls_Class_Layout"
-    Codebehind="Layout.ascx.cs" %>
-<%@ Register Src="~/CMSAdminControls/UI/Macros/MacroEditor.ascx" TagName="MacroEditor"
-    TagPrefix="cms" %>
-
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_AdminControls_Controls_Class_Layout"
+     Codebehind="Layout.ascx.cs" %>
 <cms:ObjectLockingPanel runat="server" ID="pnlObjectLocking">
     <asp:Panel ID="pnlContent" runat="server" CssClass="PageContent">
         <cms:MessagesPlaceHolder ID="plcMess" runat="server" />

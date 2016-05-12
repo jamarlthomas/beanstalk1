@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="JoinPrerequisites.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="JoinPrerequisites.ascx.cs"
     Inherits="CMSInstall_Controls_WizardSteps_JoinPrerequisites" %>
 <div class="install-content">
     <table class="install-wizard" border="0" cellpadding="0" cellspacing="0">

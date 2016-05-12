@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -453,6 +453,23 @@ public partial class CMSWebParts_Viewers_Effects_ContentSlider : CMSAbstractWebP
         }
     }
 
+
+    /// <summary>
+    /// Indicates if page numbers should be visible.
+    /// </summary>
+    public bool DisplayPageNumbers
+    {
+        get
+        {
+            return ValidationHelper.GetBoolean(GetValue("DisplayPageNumbers"), true);
+        }
+        set
+        {
+            SetValue("DisplayPageNumbers", value);
+        }
+    }
+
+
     #endregion
 
 
@@ -777,7 +794,7 @@ public partial class CMSWebParts_Viewers_Effects_ContentSlider : CMSAbstractWebP
                 ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "sliderScript" + ClientID, ScriptHelper.GetScript(jScript));
 
                 string bottomDiv = "</div>";
-                if (index > 0)
+                if (DisplayPageNumbers && (index > 0))
                 {
                     // DIV with links to pages
                     bottomDiv += "<div id=\"" + ClientID + "_pager\" class=\"Pager\" style=\"width:" + DivWidth + "px;\">";

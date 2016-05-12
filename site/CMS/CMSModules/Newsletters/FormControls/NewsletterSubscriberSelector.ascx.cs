@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.DataEngine;
@@ -126,7 +126,7 @@ public partial class CMSModules_Newsletters_FormControls_NewsletterSubscriberSel
     /// <summary>
     /// Gets or sets the resource prefix of uni selector. If not set default values are used.
     /// </summary>
-    public string ResourcePrefix
+    public override string ResourcePrefix
     {
         get
         {

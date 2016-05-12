@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Web.UI;
@@ -168,7 +168,7 @@ public partial class CMSModules_MediaLibrary_Controls_UI_MediaLibrarySecurity : 
             {
                 // Retrieve permission matrix data
                 QueryDataParameters parameters = new QueryDataParameters();
-                parameters.Add("@ID", ResLibrary.ResourceId);
+                parameters.Add("@ID", ResLibrary.ResourceID);
                 parameters.Add("@LibraryID", MediaLibraryID);
                 parameters.Add("@SiteID", LibraryInfo.LibrarySiteID);
 
@@ -222,7 +222,7 @@ public partial class CMSModules_MediaLibrary_Controls_UI_MediaLibrarySecurity : 
         if ((ResLibrary != null) && (LibraryInfo != null))
         {
             // Get permissions for the current library resource                       
-            DataSet permissions = PermissionNameInfoProvider.GetResourcePermissions(ResLibrary.ResourceId);
+            DataSet permissions = PermissionNameInfoProvider.GetResourcePermissions(ResLibrary.ResourceID);
             if (DataHelper.DataSourceIsEmpty(permissions))
             {
                 lblInfo.ResourceString = "general.emptymatrix";

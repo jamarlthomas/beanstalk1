@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
     Inherits="CMSModules_PortalEngine_UI_WebContainers_Container_Edit_General" Theme="Default"
-    EnableEventValidation="false" Title="Edit container" Codebehind="Container_Edit_General.aspx.cs" %>
+    EnableEventValidation="false" Title="Edit container"  Codebehind="Container_Edit_General.aspx.cs" %>
 
 <%@ Register TagPrefix="cms" Src="~/CMSModules/AdminControls/Controls/Preview/PreviewHierarchy.ascx"
     TagName="PreviewHierarchy" %>

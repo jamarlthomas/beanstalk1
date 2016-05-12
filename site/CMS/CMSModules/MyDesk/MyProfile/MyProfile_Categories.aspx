@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="MyProfile_Categories.aspx.cs" EnableEventValidation="false"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="MyProfile_Categories.aspx.cs" EnableEventValidation="false"
     Inherits="CMSModules_MyDesk_MyProfile_MyProfile_Categories" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
     Theme="Default" %>
 

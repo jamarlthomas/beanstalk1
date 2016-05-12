@@ -1,6 +1,6 @@
-<%@ Page Title="Module edit - User interface - Roles" Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Title="Module edit - User interface - Roles" Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     AutoEventWireup="true" Inherits="CMSModules_Modules_Pages_Module_UserInterface_Roles"
-    Theme="Default" Codebehind="Roles.aspx.cs" %>
+    Theme="Default"  Codebehind="Roles.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector"
     TagPrefix="cms" %>
@@ -55,7 +55,7 @@
                 <cms:UniMatrix ID="gridMatrix" CssClass="permission-matrix" runat="server" QueryName="CMS.UIElement.getpermissionmatrix"
                     RowItemIDColumn="RoleID" ColumnItemIDColumn="ElementID" RowItemDisplayNameColumn="RoleDisplayName"
                     ColumnItemDisplayNameColumn="ElementDisplayName" RowTooltipColumn="RowDisplayName" FirstColumnClass="first-column"
-                    ColumnTooltipColumn="PermissionDescription" ItemTooltipColumn="PermissionDescription" AddFillingColumn="true" />
+                    ColumnTooltipColumn="PermissionDescription" ItemTooltipColumn="PermissionDescription" AddFillingColumn="true" MaxFilterLength="100" />
             </asp:PlaceHolder>
         </ContentTemplate>
     </cms:CMSUpdatePanel>

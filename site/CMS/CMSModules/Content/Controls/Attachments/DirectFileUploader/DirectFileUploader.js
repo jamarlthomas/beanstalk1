@@ -26,31 +26,53 @@ DFU = {
                 divLoaded = false;
             }
         });
-        if (divLoaded) {
-            var uplWidth = innerDiv.actual('outerWidth', {
-                clone: true
-            }), uplHeight = innerDiv.actual('outerHeight', {
-                clone: true
-            });
-            if ((uplWidth > 0) && (uplHeight > 0)) {
-                uploaderDiv.width(uplWidth).height(uplHeight);
-                container.find('iframe').width(uplWidth).height(uplHeight).trigger('resize');
-                container.find('object').width(uplWidth).height(uplHeight);
-                container.width(uplWidth).height(uplHeight).mouseenter(function () {
-                    $cmsj(this).addClass('MouseOver');
-                }).mouseleave(function () {
-                    $cmsj(this).removeClass('MouseOver');
-                });
-                // Initialize loading div after postback
-                DFU.toogleLoading(containerId, false);
 
-                // Ensure display for inner div (IE bug after async postback)
-                innerDiv.css('display', 'block');
+        var tabs = container.closest('.JqueryUITabs');
+        if (tabs.length > 0) {
+
+            // When Upload button in media library is not displayed at the first page load. 
+            // It is displayed after the user manually changes to the Thumbnail tab.
+            // Following code ensures that the upload button is displayed with correct
+            // width and height after the user changes to the Thumbnail tab.
+            tabs.on('tabsactivate', function () {
+                if (innerDiv.is(':visible') && (uploaderDiv.width() == 0 || uploaderDiv.height() == 0)) {
+                    DFU.setWidthAndHeight(containerId, innerDiv, uploaderDiv, container);
+                }
+            });
+
+            // When Upload button is displayed at the first page load we have to wait to complete load of the tab
+            // and set dimensions after it
+            if (innerDiv.closest('.ui-tabs-panel').length <= 0) {
+                divLoaded = false;
             }
+        }
+
+        if (divLoaded) {
+            DFU.setWidthAndHeight(containerId, innerDiv, uploaderDiv, container);
         } else {
             setTimeout(function () {
                 DFU.initializeDesign(containerId);
             }, 100);
+        }
+    },
+    setWidthAndHeight: function (containerId, innerDiv, uploaderDiv, container) {
+        var uplWidth = innerDiv.outerWidth(),
+                        uplHeight = innerDiv.outerHeight();
+
+        if ((uplWidth > 0) && (uplHeight > 0)) {
+            uploaderDiv.width(uplWidth).height(uplHeight);
+
+            container.find('iframe').width(uplWidth).height(uplHeight).trigger('resize');
+            container.width(uplWidth).height(uplHeight).mouseenter(function () {
+                $cmsj(this).addClass('MouseOver');
+            }).mouseleave(function () {
+                $cmsj(this).removeClass('MouseOver');
+            });
+            // Initialize loading div after postback
+            DFU.toogleLoading(containerId, false);
+
+            // Ensure display for inner div (IE bug after async postback)
+            innerDiv.css('display', 'block');
         }
     },
     toogleLoading: function (containerId, show) {
@@ -97,7 +119,7 @@ DFU = {
             // Ensure cancel icon
             if (cancelSpan.length === 0) {
 
-                // Create cancel immage
+                // Create cancel image
                 cancelSpan = $cmsj('<span></span>');
                 cancelSpan.html('<i class="icon-bin cms-icon-80" aria-hidden="true"></i>');
                 cancelSpan.addClass('UploadCancel');
@@ -118,7 +140,7 @@ DFU = {
             // Ensure cancel icon
             if (cancelSpan.length === 0) {
 
-                // Create cancel immage
+                // Create cancel image
                 cancelSpan = $cmsj('<span></span>');
                 cancelSpan.html('&nbsp;');
                 cancelSpan.addClass('UploadCancel');
@@ -136,52 +158,3 @@ DFU = {
         }
     }
 };
-
-if (typeof ($cmsj) !== 'undefined') {
-    (function ($) {
-        $.fn.extend({
-            actual: function (method, options) {
-                var $hidden, $target, configs, css, tmp, actual, fix, restore;
-                if (!this[method])
-                    throw '$.actual => The jQuery method "' + method + '" you called does not exist';
-                configs = $.extend({
-                    absolute: false,
-                    clone: false
-                }, options);
-                $target = this;
-                fix = configs.clone === true ? function () {
-                    $target = $target.filter(':first').clone().css({
-                        position: 'absolute',
-                        top: -1000
-                    }).appendTo('body');
-                } : function () {
-                    $hidden = $target.parents().andSelf().filter(':hidden');
-                    css = configs.absolute === true ? { position: 'absolute', visibility: 'hidden', display: 'block' } : { visibility: 'hidden', display: 'block' };
-                    tmp = [];
-                    $hidden.each(function () {
-                        var _tmp = {}, name;
-                        for (name in css) {
-                            _tmp[name] = this.style[name];
-                            this.style[name] = css[name];
-                        }
-                        tmp.push(_tmp);
-                    });
-                };
-                restore = configs.clone === true ? function () {
-                    $target.remove();
-                } : function () {
-                    $hidden.each(function (i) {
-                        var _tmp = tmp[i], name;
-                        for (name in css) {
-                            this.style[name] = _tmp[name];
-                        }
-                    });
-                };
-                fix();
-                actual = $target[method]();
-                restore();
-                return actual;
-            }
-        });
-    }($cmsj));
-}

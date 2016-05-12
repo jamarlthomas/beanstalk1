@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.Caching;
 using System.Web.UI.WebControls;
@@ -81,7 +81,7 @@ public partial class CMSModules_System_Debug_System_ViewObject : CMSDebugPage
                             // Get the inner value
                             obj = CacheHelper.GetInnerValue(obj);
 
-                            ltlKey.Text = mKey;
+                            ltlKey.Text = HTMLHelper.HTMLEncode(mKey);
                             ltlPriority.Text = container.Priority.ToString();
                             if (container.AbsoluteExpiration != Cache.NoAbsoluteExpiration)
                             {

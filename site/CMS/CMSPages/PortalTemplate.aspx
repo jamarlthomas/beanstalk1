@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSPages_PortalTemplate"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSPages_PortalTemplate"
     ValidateRequest="false" MaintainScrollPositionOnPostback="true" EnableEventValidation="false"
-    Codebehind="PortalTemplate.aspx.cs" %>
+     Codebehind="PortalTemplate.aspx.cs" %>
 
 <%=DocType%>
 <html <%=XHtmlNameSpace%> <%=XmlNamespace%>>

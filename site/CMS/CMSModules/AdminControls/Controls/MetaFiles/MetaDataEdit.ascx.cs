@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -524,10 +524,10 @@ public partial class CMSModules_AdminControls_Controls_MetaFiles_MetaDataEdit : 
             if (VersionHistoryID != 0)
             {
                 // Get the versioned attachment with binary data
-                AttachmentHistoryInfo attachmentHistory = VersionManager.GetAttachmentVersion(VersionHistoryID, ObjectGuid, false);
+                var attachmentHistory = VersionManager.GetAttachmentVersion(VersionHistoryID, ObjectGuid, false);
 
                 // Create new attachment object
-                attachmentInfo = (attachmentHistory != null) ? new AttachmentInfo(attachmentHistory.Generalized.DataClass) : null;
+                attachmentInfo = (attachmentHistory != null) ? AttachmentInfo.New(attachmentHistory) : null;
                 if (attachmentInfo != null)
                 {
                     // Save attachment history identifier for unique test

@@ -10,14 +10,12 @@ using CMS.EventLog;
 using CMS.Helpers;
 using CMS.OnlineMarketing;
 using CMS.SiteProvider;
-using CMS.UIControls;
 
 public partial class CMSModules_ContactManagement_Pages_Tools_Activities_Activity_Delete : CMSContactManagementActivitiesPage
 {
     #region "Variables"
 
     private Hashtable mParameters;
-    private static readonly Hashtable mErrors = new Hashtable();
     private string mReturnScript;
     private int mSiteID;
     private int mContactID;
@@ -45,29 +43,17 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Activities_Activit
 
 
     /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
-
-    /// <summary>
     /// Current Error.
     /// </summary>
     private string CurrentError
     {
         get
         {
-            return ValidationHelper.GetString(mErrors["DeleteError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mErrors["DeleteError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -175,7 +161,6 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Activities_Activit
             // Initialize events
             ctlAsyncLog.OnFinished += ctlAsync_OnFinished;
             ctlAsyncLog.OnError += ctlAsync_OnError;
-            ctlAsyncLog.OnRequestLog += ctlAsync_OnRequestLog;
             ctlAsyncLog.OnCancel += ctlAsync_OnCancel;
 
             ctlAsyncLog.MaxLogLines = 1000;
@@ -229,13 +214,6 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Activities_Activit
             ShowError(CurrentError);
         }
         ShowConfirmation(canceled);
-        CurrentLog.Close();
-    }
-
-
-    private void ctlAsync_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
     }
 
 
@@ -250,14 +228,11 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Activities_Activit
         {
             ShowError(CurrentError);
         }
-        CurrentLog.Close();
     }
 
 
     private void ctlAsync_OnFinished(object sender, EventArgs e)
     {
-        CurrentLog.Close();
-
         if (!string.IsNullOrEmpty(CurrentError))
         {
             ctlAsyncLog.Parameter = null;
@@ -284,6 +259,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Activities_Activit
     /// </summary>
     private void RunAsyncDelete()
     {
+        ctlAsyncLog.EnsureLog();
         ctlAsyncLog.Parameter = ReturnScript;
         ctlAsyncLog.RunAsync(Delete, WindowsIdentity.GetCurrent());
     }
@@ -302,8 +278,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Activities_Activit
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state != CMSThread.ABORT_REASON_STOP)
+            if (!CMSThread.Stopped(ex))
             {
                 LogExceptionToEventLog(ex);
             }
@@ -351,7 +326,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Activities_Activit
                                                      .Where(whereCondition);
         foreach (var activity in activitiesToDelete)
         {
-            LogContext.AppendLine(string.Format("{0} - {1}", activity.ActivityTitle, activity.ActivityType));
+            AddLog(string.Format("{0} - {1}", activity.ActivityTitle, activity.ActivityType));
             ActivityInfoProvider.DeleteActivityInfo(activity);
         }
     }
@@ -389,8 +364,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Activities_Activit
     /// <param name="newLog">New log information</param>
     private void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
 
@@ -403,8 +377,6 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Activities_Activit
         pnlContent.Visible = false;
 
         CurrentError = string.Empty;
-        CurrentLog.Close();
-        EnsureLog();
     }
 
 

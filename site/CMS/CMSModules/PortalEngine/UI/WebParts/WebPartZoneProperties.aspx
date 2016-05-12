@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_WebPartZoneProperties"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_WebPartZoneProperties"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Title="Web part zone - Properties" Codebehind="WebPartZoneProperties.aspx.cs" %>
+    Title="Web part zone - Properties"  Codebehind="WebPartZoneProperties.aspx.cs" %>
 
 <%@ Register TagPrefix="cms" Namespace="CMS.UIControls" Assembly="CMS.UIControls" %>
 <%@ Register Src="~/CMSModules/PortalEngine/Controls/WebParts/WebPartZoneProperties.ascx" TagPrefix="cms" TagName="WebPartZoneProperties" %>

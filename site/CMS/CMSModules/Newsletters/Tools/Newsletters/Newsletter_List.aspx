@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_Newsletters_Tools_Newsletters_Newsletter_List" Theme="Default"
-    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Tools - Newsletters" Codebehind="Newsletter_List.aspx.cs" %>
+    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Tools - Newsletters"  Codebehind="Newsletter_List.aspx.cs" %>
     
 <%@ Register src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" tagname="UniGrid" tagprefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
@@ -8,7 +8,7 @@
 <asp:Content ContentPlaceHolderID="plcContent" ID="content" runat="server">
     <cms:UniGrid runat="server" ID="UniGrid" ShortID="g" OrderBy="NewsletterDisplayName" IsLiveSite="false"
         ObjectType="newsletter.newsletter" RememberStateByParam=""
-        Columns="NewsletterID, NewsletterDisplayName, (SELECT COUNT(NewsletterID) FROM Newsletter_SubscriberNewsletter WHERE NewsletterID = Newsletter_Newsletter.NewsletterID AND (SubscriptionApproved = 1 OR SubscriptionApproved IS NULL) AND (SubscriptionEnabled=1 OR SubscriptionEnabled IS NULL)) AS Subscribers, (SELECT MAX(IssueMailoutTime) FROM Newsletter_NewsletterIssue WHERE IssueNewsletterID = Newsletter_Newsletter.NewsletterID ) AS LastIssue">
+        Columns="NewsletterID, NewsletterDisplayName, (SELECT COUNT(NewsletterID) FROM Newsletter_SubscriberNewsletter WHERE NewsletterID = Newsletter_Newsletter.NewsletterID AND (SubscriptionApproved = 1 OR SubscriptionApproved IS NULL)) AS Subscribers, (SELECT MAX(IssueMailoutTime) FROM Newsletter_NewsletterIssue WHERE IssueNewsletterID = Newsletter_Newsletter.NewsletterID ) AS LastIssue">
         <GridActions>
             <ug:Action Name="edit" Caption="$General.Edit$" FontIconClass="icon-edit" FontIconStyle="Allow" />
             <ug:Action Name="delete" Caption="$General.Delete$" FontIconClass="icon-bin" FontIconStyle="Critical" Confirmation="$General.ConfirmDelete$" />

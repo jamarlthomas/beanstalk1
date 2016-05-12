@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_MediaLibrary" Codebehind="MediaLibrary.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_MediaLibrary"  Codebehind="MediaLibrary.ascx.cs" %>
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/MediaLibrary/MediaLibraryTree.ascx"
     TagName="LibraryTree" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/MediaLibrary/FolderActions/FolderActions.ascx"
@@ -71,7 +71,7 @@
                             <ContentTemplate>
                                 <cms:CMSUpdatePanel ID="pnlMessages" runat="server">
                                     <ContentTemplate>
-                                        <cms:MessagesPlaceHolder ID="plcMess" runat="server" WrapperControlID="divDialogView" OffsetX="16" OffsetY="16" />
+                                        <cms:MessagesPlaceHolder ID="plcMess" runat="server" WrapperControlID="divDialogView" />
                                     </ContentTemplate>
                                 </cms:CMSUpdatePanel>
                                 <cms:MediaView ID="mediaView" ShortID="v" runat="server" DisplayMode="Simple" />

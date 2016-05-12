@@ -1,11 +1,11 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Newsletters_Controls_Newsletter_Preview" Codebehind="Newsletter_Preview.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Newsletters_Controls_Newsletter_Preview"  Codebehind="Newsletter_Preview.ascx.cs" %>
 
 <div id="topPanel" class="header-panel header-container">
     <div class="form-horizontal">
         <div class="form-group">
             <div class="editing-form-label-cell">
-                <cms:LocalizedLabel CssClass="control-label" ID="lblSubscriber" runat="server" EnableViewState="false" ResourceString="selectsubscriber.itemname" DisplayColon="true" />
+                <cms:LocalizedLabel CssClass="control-label" ID="lblSubscriber" runat="server" EnableViewState="false" ResourceString="selectsubscriber.general.itemname" DisplayColon="true" />
             </div>
             <div class="editing-form-value-cell">
                 <div class="control-group-inline">

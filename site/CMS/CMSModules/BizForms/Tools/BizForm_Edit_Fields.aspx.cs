@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.FormControls;
 using CMS.FormEngine;
@@ -72,6 +72,9 @@ public partial class CMSModules_BizForms_Tools_BizForm_Edit_Fields : CMSBizFormP
             // Enforce Form property reload next time the data are needed
             FormInfo.ResetFormInfo();
             BizFormInfoProvider.SetBizFormInfo(FormInfo);
+
+            // State of unigrids may contain where/order by clauses no longer valid after definition update
+            UniGrid.ResetStates(BizFormItemProvider.GetObjectType(FieldEditor.ClassName));
         }
     }
 

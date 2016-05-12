@@ -1,5 +1,5 @@
-<%@ Page Language="C#" Inherits="CMSInstall_install" Theme="Default" EnableEventValidation="false"
-    ValidateRequest="false" Codebehind="install.aspx.cs" %>
+﻿<%@ Page Language="C#" Inherits="CMSInstall_install" Theme="Default" EnableEventValidation="false"
+    ValidateRequest="false"  Codebehind="install.aspx.cs" %>
 
 <%@ Register Src="~/CMSInstall/Controls/WizardSteps/LicenseDialog.ascx" TagName="LicenseDialog"
     TagPrefix="cms" %>
@@ -18,52 +18,12 @@
 <%@ Register Src="Controls/WizardSteps/UserServer.ascx" TagName="UserServer" TagPrefix="cms" %>
 <%@ Register Src="Controls/WizardSteps/DatabaseDialog.ascx" TagName="DatabaseDialog"
     TagPrefix="cms" %>
-<%@ Register Src="Controls/WizardSteps/DBProgress.ascx" TagName="DBProgress" TagPrefix="cms" %>
-<%@ Register Src="Controls/WizardSteps/SiteProgress.ascx" TagName="SiteProgress"
-    TagPrefix="cms" %>
 <!DOCTYPE html>
 <html>
 <head id="Head1" runat="server">
     <title>
         <%=ResHelper.GetFileString("General.ProductName")%>
         Database Setup </title>
-    <script type="text/javascript">
-        //<![CDATA[
-        var installTimerId = 0;
-
-        // Start timer function
-        function StartInstallStateTimer(type) {
-            var act = document.getElementById('activity');
-            if (act != null) {
-                act.style.display = 'inline';
-            }
-            installTimerId = setInterval("GetInstallState('false;" + type + "')", 500);
-        }
-
-        // End timer function
-        function StopInstallStateTimer() {
-            if (installTimerId) {
-                clearInterval(installTimerId);
-                installTimerId = 0;
-
-                if (window.HideActivity) {
-                    window.HideActivity();
-                }
-
-                var act = document.getElementById('activity');
-                if (act != null) {
-                    act.style.display = 'none';
-                }
-            }
-        }
-
-        // Cancel install
-        function CancelImport(type) {
-            GetInstallState('true;' + type);
-            return false;
-        }
-        //]]>
-    </script>
 </head>
 <body class="install-body-database <%=BodyClass%>">
     <form id="Form1" method="post" runat="server">
@@ -72,7 +32,7 @@
         <asp:Panel runat="server" ID="pnlBody" CssClass="install-block">
             <asp:Panel ID="layPanel" runat="server" CssClass="install-panel">
                 <cms:LocalizedHeading Level="3" ID="lblHeader" CssClass="install-header" runat="server" EnableViewState="false" />
-                <asp:Panel runat="server" ID="pnlHeaderImages" CssClass="header-steps" EnableViewState="false"/>
+                <asp:Panel runat="server" ID="pnlHeaderImages" CssClass="header-steps" EnableViewState="false" />
                 <asp:Panel runat="server" ID="pnlWizard">
                     <asp:Button ID="btnHiddenNext" runat="server" CssClass="HiddenButton" OnClick="btnHiddenNext_onClick" />
                     <asp:Button ID="btnHiddenBack" runat="server" CssClass="HiddenButton" OnClick="btnHiddenBack_onClick" />
@@ -108,7 +68,24 @@
                                 </asp:Panel>
                             </asp:WizardStep>
                             <asp:WizardStep ID="stpDBProgress" runat="server" AllowReturn="false" StepType="Step">
-                                <cms:DBProgress ID="dbProgress" runat="server" />
+                                <div class="install-progress-label">
+                                    <asp:Label ID="lblDBProgress" runat="server" EnableViewState="false" />
+                                </div>
+                                <asp:Panel ID="pnlDBProgress" runat="server">
+                                    <div class="install-progress">
+                                        <table class="install-wizard" border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td align="left" style="vertical-align: top">
+                                                    <div class="install-progress-database">
+                                                        <div style="margin: 5px 0px 5px 5px;">
+                                                            <cms:AsyncControl ID="ctlAsyncDB" runat="server" PostbackOnError="false" UseFileStrings="True" ProvideLogContext="True" LogContextNames="Install" ContinueOnAnyServer="false" />
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </asp:Panel>
                             </asp:WizardStep>
                             <asp:WizardStep ID="stpLicenseSetting" runat="server" AllowReturn="false" StepType="Start">
                                 <div class="install-content">
@@ -137,7 +114,21 @@
                                 </asp:Panel>
                             </asp:WizardStep>
                             <asp:WizardStep ID="stpProgress" runat="server" AllowReturn="false" StepType="Step">
-                                <cms:SiteProgress ID="siteProgress" runat="server" />
+                                <asp:Panel ID="pnlProgress" runat="server">
+                                    <div class="install-progress">
+                                        <table class="install-wizard" border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td align="left" style="vertical-align: top">
+                                                    <div class="install-progress-site">
+                                                        <div style="margin: 5px 0px 0px 5px;">
+                                                            <cms:AsyncControl ID="ctlAsyncImport" runat="server" PostbackOnError="false" LogContextNames="Import" ProvideLogContext="True" ContinueOnAnyServer="false" />
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </asp:Panel>
                             </asp:WizardStep>
                             <asp:WizardStep ID="stpFinish" runat="server" StepType="Complete">
                                 <div class="install-content">
@@ -223,16 +214,14 @@
                 </asp:Panel>
             </asp:Panel>
             <cms:VersionPanel ID="versionPanel" runat="server" DisplaySupportLabel="True" />
-            <cms:ErrorPanel ID="errorPanel" runat="server" />
+            <cms:ErrorPanel ID="pnlError" runat="server" />
             <cms:LogPanel ID="logPanel" runat="server" />
-            <cms:WarningPanel ID="warningPanel" runat="server" />
+            <cms:WarningPanel ID="pnlWarning" runat="server" />
         </asp:Panel>
         <asp:HiddenField ID="hdnState" runat="server" />
         <asp:HiddenField ID="hdnAdvanced" runat="server" />
         <asp:Literal ID="ltlInstallScript" runat="server" EnableViewState="false" />
         <asp:Literal ID="ltlAdvanced" runat="server" EnableViewState="false" />
-        <cms:AsyncControl ID="ucAsyncControl" runat="server" PostbackOnError="false" />
-        <cms:AsyncControl ID="ucDBAsyncControl" runat="server" PostbackOnError="false" UseFileStrings="True" />
     </form>
 </body>
 </html>

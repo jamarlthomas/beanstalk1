@@ -1,5 +1,5 @@
-<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true" Inherits="CMSModules_Modules_Pages_Class_New"
-    Title="Untitled Page" Theme="Default" Codebehind="New.aspx.cs" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true" Inherits="CMSModules_Modules_Pages_Class_New"
+    Title="Untitled Page" Theme="Default"  Codebehind="New.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/AdminControls/Controls/Class/NewClassWizard.ascx" TagName="NewDocWizard" TagPrefix="cms" %>
     

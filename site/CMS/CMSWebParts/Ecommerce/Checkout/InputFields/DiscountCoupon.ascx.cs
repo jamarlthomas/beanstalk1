@@ -3,7 +3,6 @@ using System.Linq;
 
 using CMS.ExtendedControls;
 using CMS.Helpers;
-using CMS.Base;
 
 
 /// <summary>
@@ -81,6 +80,9 @@ public partial class CMSWebParts_Ecommerce_Checkout_InputFields_DiscountCoupon :
         base.ValidateStepData(sender, e);
 
         bool valid = ApplyDiscountCoupon();
+
+        // Applying discount coupon changes ShoppingCartCouponCode property which invalidates and recalculates shopping cart -> other web parts must be informed
+        ComponentEvents.RequestEvents.RaiseEvent(sender, e, SHOPPING_CART_CHANGED);
 
         if (!valid)
         {

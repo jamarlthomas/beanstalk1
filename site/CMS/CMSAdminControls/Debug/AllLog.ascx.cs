@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -23,8 +23,8 @@ public partial class CMSAdminControls_Debug_AllLog : AllLog
                 // Setup header texts
                 gridDebug.SetHeaders("", "AllLog.DebugType", "AllLog.Information", "AllLog.Result", "General.Context", "AllLog.TotalDuration", "AllLog.Duration");
 
-                gridDebug.DataSource = dt;
-                gridDebug.DataBind();
+                // Bind the data
+                BindGrid(gridDebug, dt);
             }
         }
     }

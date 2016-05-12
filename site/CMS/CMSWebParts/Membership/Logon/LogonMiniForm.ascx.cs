@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text;
+using System.Threading;
 
 using CMS.DocumentEngine;
 using CMS.ExtendedControls;
@@ -30,8 +31,8 @@ public partial class CMSWebParts_Membership_Logon_LogonMiniForm : CMSAbstractWeb
     private ImageButton loginImg = null;
     private RequiredFieldValidator rfv = null;
     private Panel container = null;
-    private string mDefaultTargetUrl = string.Empty;
-    private string mUserNameText = String.Empty;
+    private string mDefaultTargetUrl = "";
+    private string mUserNameText = "";
     private bool mShowUserNameLabel = false;
     private bool mShowPasswordLabel = false;
 
@@ -138,7 +139,7 @@ public partial class CMSWebParts_Membership_Logon_LogonMiniForm : CMSAbstractWeb
     {
         get
         {
-            return ValidationHelper.GetString(GetValue("FailureText"), string.Empty);
+            return ValidationHelper.GetString(GetValue("FailureText"), "");
         }
         set
         {
@@ -151,7 +152,7 @@ public partial class CMSWebParts_Membership_Logon_LogonMiniForm : CMSAbstractWeb
 
 
     /// <summary>
-    /// Gets or sets the default target url (rediredction when the user is logged in).
+    /// Gets or sets the default target url (redirection when the user is logged in).
     /// </summary>
     public string DefaultTargetUrl
     {
@@ -178,7 +179,7 @@ public partial class CMSWebParts_Membership_Logon_LogonMiniForm : CMSAbstractWeb
         }
         set
         {
-            if (value.Trim() != string.Empty)
+            if (value.Trim() != "")
             {
                 SetValue("UserNameText", value);
                 mUserNameText = value;
@@ -268,12 +269,12 @@ public partial class CMSWebParts_Membership_Logon_LogonMiniForm : CMSAbstractWeb
     #endregion
 
 
-    #region "SetupControl and SetSkinID"
+    #region "Private methods"
 
     /// <summary>
     /// Initializes the control properties.
     /// </summary>
-    protected void SetupControl()
+    private void SetupControl()
     {
         if (StopProcessing)
         {
@@ -373,7 +374,7 @@ public partial class CMSWebParts_Membership_Logon_LogonMiniForm : CMSAbstractWeb
             if (!RequestHelper.IsPostBack())
             {
                 // Set SkinID properties
-                if (!StandAlone && (PageCycle < PageCycleEnum.Initialized) && (ValidationHelper.GetString(Page.StyleSheetTheme, string.Empty) == string.Empty))
+                if (!StandAlone && (PageCycle < PageCycleEnum.Initialized) && (ValidationHelper.GetString(Page.StyleSheetTheme, "") == ""))
                 {
                     SetSkinID(SkinID);
                 }
@@ -434,7 +435,7 @@ function UpdateLabel_", ClientID, @"(content, context) {
     /// </summary>
     private void SetSkinID(string skinId)
     {
-        if (skinId != string.Empty)
+        if (skinId != "")
         {
             loginElem.SkinID = skinId;
 
@@ -530,30 +531,35 @@ function UpdateLabel_", ClientID, @"(content, context) {
             activityLogin.Log();
         }
 
-        // Redirect user to the return url, or if is not defined redirect to the default target url
-        string url = QueryHelper.GetString("ReturnURL", string.Empty);
-        if (!string.IsNullOrEmpty(url))
+        // Redirect user to the return URL, or if is not defined redirect to the default target URL
+        var redirectUrl = RequestContext.CurrentURL;
+        string url = ResolveUrl(QueryHelper.GetString("ReturnURL", String.Empty));
+        string hash = QueryHelper.GetString("hash", String.Empty);
+
+        if (!String.IsNullOrEmpty(url))
         {
-            if (url.StartsWithCSafe("~") || url.StartsWithCSafe("/") || QueryHelper.ValidateHash("hash"))
+            if (URLHelper.IsLocalUrl(url, RequestContext.CurrentDomain))
             {
-                URLHelper.Redirect(ResolveUrl(QueryHelper.GetString("ReturnURL", string.Empty)));
+                redirectUrl = url;
             }
-            else
+            else if (!String.IsNullOrEmpty(hash))
             {
-                URLHelper.Redirect(ResolveUrl("~/CMSMessages/Error.aspx?title=" + ResHelper.GetString("general.badhashtitle") + "&text=" + ResHelper.GetString("general.badhashtext")));
+                if (QueryHelper.ValidateHash("hash", "aliaspath"))
+                {
+                    redirectUrl = url;
+                }
+                else
+                {
+                    redirectUrl = UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext");
+                }
             }
         }
-        else
+        else if (!String.IsNullOrEmpty(DefaultTargetUrl))
         {
-            if (DefaultTargetUrl != "")
-            {
-                URLHelper.Redirect(ResolveUrl(DefaultTargetUrl));
-            }
-            else
-            {
-                URLHelper.Redirect(RequestContext.CurrentURL);
-            }
+            redirectUrl = ResolveUrl(DefaultTargetUrl);
         }
+
+        URLHelper.Redirect(redirectUrl);
     }
 
 
@@ -594,7 +600,7 @@ function UpdateLabel_", ClientID, @"(content, context) {
 
             // Handle passcode
             string passcode = txtPasscode.Text;
-            txtPasscode.Text = string.Empty;
+            txtPasscode.Text = "";
 
             var provider = new CMSMembershipProvider();
 
@@ -734,7 +740,7 @@ function UpdateLabel_", ClientID, @"(content, context) {
         {
             return "<a href=\"#\" onclick=\"" + Page.ClientScript.GetCallbackEventReference(this, "null", "UpdateLabel_" + ClientID, "'" + failureLit.ClientID + "'") + ";\">" + GetString("general.clickhere") + "</a>";
         }
-        return string.Empty;
+        return "";
     }
 
     #endregion
@@ -745,7 +751,6 @@ function UpdateLabel_", ClientID, @"(content, context) {
     public string GetCallbackResult()
     {
         string result = "";
-        bool outParam = true;
         UserInfo ui = UserInfoProvider.GetUserInfo(loginElem.UserName);
         if (ui != null)
         {
@@ -761,10 +766,11 @@ function UpdateLabel_", ClientID, @"(content, context) {
             switch (UserAccountLockCode.ToEnum(ui.UserAccountLockReason))
             {
                 case UserAccountLockEnum.MaximumInvalidLogonAttemptsReached:
-                    result = AuthenticationHelper.SendUnlockAccountRequest(ui, siteName, "USERLOGON", SettingsKeyInfoProvider.GetValue(siteName + ".CMSSendPasswordEmailsFrom"), MacroContext.CurrentResolver, returnUrl);
+                    result = AuthenticationHelper.SendUnlockAccountRequest(ui, siteName, "USERLOGON", SettingsKeyInfoProvider.GetValue(siteName + ".CMSSendPasswordEmailsFrom"), null, returnUrl);
                     break;
 
                 case UserAccountLockEnum.PasswordExpired:
+                    bool outParam;
                     result = AuthenticationHelper.SendPasswordRequest(ui, siteName, "USERLOGON", SettingsKeyInfoProvider.GetValue(siteName + ".CMSSendPasswordEmailsFrom"), "Membership.PasswordExpired", null, AuthenticationHelper.GetResetPasswordUrl(siteName), out outParam, returnUrl);
                     break;
             }
@@ -776,7 +782,6 @@ function UpdateLabel_", ClientID, @"(content, context) {
 
     public void RaiseCallbackEvent(string eventArgument)
     {
-        return;
     }
 
     #endregion

@@ -65,25 +65,16 @@ select[size] {
 
 // Warning
 .has-warning {
-    .form-control-validation(@state-warning-text;
-    @state-warning-text;
-    @state-warning-bg
-    );
+    .form-control-validation(@state-warning-text; @state-warning-text; @state-warning-bg );
 }
 // Error
 .has-error {
-    .form-control-validation(@state-error-text;
-    @state-error-text;
-    @state-error-bg
-    );
+    .form-control-validation(@state-error-text; @state-error-text; @state-error-bg );
 }
 
 // Success
 .has-success {
-    .form-control-validation(@state-success-text;
-    @state-success-text;
-    @state-success-bg
-    );
+    .form-control-validation(@state-success-text; @state-success-text; @state-success-bg );
 }
 
 // Inline validation mostly in form
@@ -106,6 +97,22 @@ select[size] {
         display: inline-block !important;
     }
 }
+
+.form-control-loading {
+    font-size: @font-size-base;
+    color: @color-blue-100;
+    display: inline-block; // important
+    margin-top: @base-unit * 0.375;
+    margin-right: @base-unit * 0.5;
+    
+    // :before pseudo-selector cannot be used, because it cannot be animated in some browsers
+    // icon spinner has to be added manually into the element
+    i {
+      margin-right: @base-unit * 0.125 !important;
+      margin-left: -@base-unit * 0.25;
+    }
+}
+
 // obsolete version
 .CMSValidator {
     span {
@@ -176,9 +183,9 @@ select[size] {
             margin-right: 0;
         }
 
-            .radio:first-child {
-                margin-top: 0;
-            }
+        .radio:first-child {
+            margin-top: 0;
+        }
 
         & + .control-group-inline {
             margin-top: @base-unit * 0.5;
@@ -190,9 +197,9 @@ select[size] {
             margin-right: 0;
         }
 
-            .checkbox:first-child {
-                margin-top: 0;
-            }
+        .checkbox:first-child {
+            margin-top: 0;
+        }
     }
     // Left margin for selector subitems
     .selector-subitem {
@@ -214,7 +221,6 @@ select[size] {
         float: left;
         padding-right: @grid-gutter-width-half;
     }
-
     // Category nested in category
     h5.editing-form-category-caption {
         padding: @base-unit * 0.5; // ~8px
@@ -234,29 +240,23 @@ select[size] {
 }
 // Submit buttons row
 .form-group-submit {
-    .make-column-offset(@screen-tablet;
-    4);
-    .make-column-offset(@screen-desktop;
-    2);
+    .make-column-offset(@screen-tablet; 4);
+    .make-column-offset(@screen-desktop; 2);
 }
 
 
 // Cell for field label
 .editing-form-label-cell {
     font-size: @font-size-base;
-    .make-column(@screen-tablet;
-    4);
-    .make-column(@screen-desktop;
-    2);
+    .make-column(@screen-tablet; 4);
+    .make-column(@screen-desktop; 2);
     padding-right: @grid-gutter-width;
 }
 
 // Cell for form control + button + error message
 .editing-form-value-cell {
-    .make-column(@screen-tablet;
-    8);
-    .make-column(@screen-desktop;
-    10);
+    .make-column(@screen-tablet; 8);
+    .make-column(@screen-desktop; 10);
     .fix-white-space();
 
     .form-control, .cms-input-group, .cms-form-group-btn, .cms-form-group-text {
@@ -335,24 +335,47 @@ select[size] {
     }
 }
 
+// Cell for field label in narrow form
+.editing-form-label-cell-narrow {
+    .editing-form-label-cell;
+    .make-column(@screen-desktop; 4);
+}
+
+// Cell for form control + button + error message in narrow form
+.editing-form-value-cell-narrow {
+    .editing-form-value-cell;
+    .make-column(@screen-desktop; 8);
+}
+
 // Cell with offset
 .editing-form-value-cell-offset {
-    .make-column-offset(@screen-tablet;
-    4);
-    .make-column-offset(@screen-desktop;
-    2);
+    .make-column-offset(@screen-tablet; 4);
+    .make-column-offset(@screen-desktop; 2);
 }
 
 .settings-group-inline {
     display: block;
     .fix-white-space();
 
-    div,
+    .control-group-inline,
     input,
     button,
     p,
     .country-selector span {
         display: inline;
+    }
+
+    > .editing-form-control-nested-control,
+    > .settings-info-group {
+        display: inline-block;
+
+        & + .settings-info-group {
+            vertical-align: top;
+        }
+    }
+
+    .form-control {
+        width: @input-max-width;
     }
 
     .alert {
@@ -382,21 +405,17 @@ select[size] {
         margin-left: 0;
         margin-right: @padding-small-horizontal;
     }
-    // Change of width for code mirror so that the textarea can be in one line with the help icon
-    .CM {
-        width: calc(~"100% - "(@base-unit * 2));
-    }
 }
 
 .editing-form-control-nested-control {
     display: inline;
 }
 
-    .editing-form-control-nested-control:not(:first-child) {
-        :first-child {
-            margin-top: @base-unit * 0.25;
-        }
+.editing-form-control-nested-control:not(:first-child) {
+    :first-child {
+        margin-top: @base-unit * 0.25;
     }
+}
 
 // Mass actions
 .mass-action {
@@ -404,8 +423,7 @@ select[size] {
     margin-top: @base-unit;
 
     .mass-action-label-cell {
-        .make-column(@screen-tablet;
-        3);
+        .make-column(@screen-tablet; 3);
         padding-right: @grid-gutter-width;
         font-size: @font-size-base;
     }
@@ -476,7 +494,6 @@ span {
 .form-table {
     display: block;
     float: left; // IE fix
-
     tbody {
         display: block;
         float: left; // IE fix
@@ -491,20 +508,16 @@ span {
     }
 
     .form-table-label-cell {
-        .make-column(@screen-tablet;
-        4);
-        .make-column(@screen-desktop;
-        2);
+        .make-column(@screen-tablet; 4);
+        .make-column(@screen-desktop; 2);
         display: block;
         padding-right: @grid-gutter-width;
         vertical-align: top;
     }
 
     .form-table-value-cell {
-        .make-column(@screen-tablet;
-        6);
-        .make-column(@screen-desktop;
-        8);
+        .make-column(@screen-tablet; 6);
+        .make-column(@screen-desktop; 8);
         .fix-white-space();
         display: block;
         // All controls
@@ -520,10 +533,8 @@ span {
     }
 
     .form-table-validation-cell {
-        .make-column(@screen-tablet;
-        2);
-        .make-column(@screen-desktop;
-        2);
+        .make-column(@screen-tablet; 2);
+        .make-column(@screen-desktop; 2);
         display: block;
     }
 }
@@ -597,10 +608,6 @@ select.form-control {
 &.IE select.form-control {
     padding-top: @base-unit * 0.1875;
 }
-// Fix IE DDL width
-&.IE .form-control.DropDownField {
-    width: 100%;
-}
 
 // Placeholder
 //
@@ -653,23 +660,11 @@ select.form-control {
 
 // Bootstrap sizing - obsolete
 .input-sm {
-    .input-size(@input-height-small;
-    @padding-small-vertical;
-    @padding-small-horizontal;
-    @font-size-small;
-    @line-height-80;
-    @border-radius-small
-    );
+    .input-size(@input-height-small; @padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-80; @border-radius-small );
 }
 
 .input-lg {
-    .input-size(@input-height-large;
-    @padding-large-vertical;
-    @padding-large-horizontal;
-    @font-size-large;
-    @line-height-200;
-    @border-radius-large
-    );
+    .input-size(@input-height-large; @padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-200; @border-radius-large );
 }
 
 // Form types
@@ -819,14 +814,25 @@ select.form-control {
             content: @icon-cb-check-sign;
         }
     }
+
+    &:not(.checkbox-no-label) {
+        label {
+            margin-right: @base-unit * 0.5;
+        }
+    }
 }
+
+
 
 // Vertical radio and checkbox lists
 .radio-list-vertical,
 .checkbox-list-vertical {
     margin-top: (@base-unit * 0.25 + @input-border-width);
+    margin-right: @base-unit * 0.5;
 
     label:not(:first-of-type),
+    // When disabled, radio list item gets wrapped with a span
+    span:not(:first-of-type) label,
     .radio + .radio,
     .checkbox + .checkbox {
         margin-top: @base-unit * 0.25;
@@ -863,7 +869,7 @@ select.form-control {
 }
 
 .form-field-full-column-width {
-	.form-control {
+    .form-control {
         max-width: 100%;
     }
 }
@@ -883,6 +889,11 @@ select.form-control {
     display: block;
     margin-top: @form-explanation-text-margin-top;
     max-width: @explanation-text-max-width;
+}
+
+.explanation-text-settings {
+    .explanation-text;
+    max-width: @explanation-text-max-width*1.75;
 }
 
 // Required mark (*)
@@ -952,14 +963,12 @@ input:invalid {
             margin-bottom: 0;
             vertical-align: middle;
         }
-
         // In navbar-form, allow folks to *not* use `.form-group`
         .form-control {
             display: inline-block;
             width: auto;
             min-width: 60px;
         }
-
         // Remove default margin on radios/checkboxes that were used for stacking, and
         // then undo the floating of radios and checkboxes to match (which also avoids
         // a bug in WebKit: https://github.com/twbs/bootstrap/issues/1969).
@@ -971,11 +980,11 @@ input:invalid {
             padding-left: 0;
         }
 
-            .radio input[type="radio"],
-            .checkbox input[type="checkbox"] {
-                float: none;
-                margin-left: 0;
-            }
+        .radio input[type="radio"],
+        .checkbox input[type="checkbox"] {
+            float: none;
+            margin-left: 0;
+        }
     }
 }
 
@@ -1132,9 +1141,9 @@ input:invalid {
         width: @base-unit * 2;
     }
 
-        .merge-country-conflict-icons i:not(:first-child) {
-            margin-top: @base-unit * 1.25;
-        }
+    .merge-country-conflict-icons i:not(:first-child) {
+        margin-top: @base-unit * 1.25;
+    }
 
     .merge-gender-selector {
         div {

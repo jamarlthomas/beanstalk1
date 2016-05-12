@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="View.aspx.cs" Inherits="CMSModules_Chat_Pages_Tools_ChatRoom_View" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"  %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="View.aspx.cs" Inherits="CMSModules_Chat_Pages_Tools_ChatRoom_View" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"  %>
 
 <%@ Register src="~/CMSWebParts/Chat/ChatRoomUsers.ascx" tagname="ChatRoomUsers" tagprefix="cms" %>
 <%@ Register src="~/CMSWebParts/Chat/ChatRoomMessages.ascx" tagname="ChatRoomMessages" tagprefix="cms" %>

@@ -327,6 +327,24 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard {
     protected global::CMSFormControls_Classes_SelectClass selInherits;
     
     /// <summary>
+    /// lblContentOnly control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblContentOnly;
+    
+    /// <summary>
+    /// chbContentOnly control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSCheckBox chbContentOnly;
+    
+    /// <summary>
     /// plcMNClassOptions control.
     /// </summary>
     /// <remarks>
@@ -352,6 +370,42 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.CMSCheckBox chbIsMNTable;
+    
+    /// <summary>
+    /// lblClassGuid control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblClassGuid;
+    
+    /// <summary>
+    /// chkClassGuid control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSCheckBox chkClassGuid;
+    
+    /// <summary>
+    /// lblClassLastModified control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblClassLastModified;
+    
+    /// <summary>
+    /// chkClassLastModified control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSCheckBox chkClassLastModified;
     
     /// <summary>
     /// plcCustomTablesOptions control.
@@ -660,15 +714,6 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard {
     protected global::System.Web.UI.WebControls.Label lblTableCreated;
     
     /// <summary>
-    /// lblEditingFormCreated control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblEditingFormCreated;
-    
-    /// <summary>
     /// lblChildTypesAdded control.
     /// </summary>
     /// <remarks>
@@ -685,24 +730,6 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Label lblSitesSelected;
-    
-    /// <summary>
-    /// lblQueryCreated control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblQueryCreated;
-    
-    /// <summary>
-    /// lblTransformationCreated control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblTransformationCreated;
     
     /// <summary>
     /// lblPermissionNameCreated control.

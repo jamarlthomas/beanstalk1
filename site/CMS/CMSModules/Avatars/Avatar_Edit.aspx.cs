@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 
 using CMS.Core;
@@ -95,7 +95,7 @@ public partial class CMSModules_Avatars_Avatar_Edit : GlobalAdminPage, IPostBack
                 }
 
                 imgAvatar.Visible = true;
-                imgAvatar.ImageUrl = ResolveUrl("~/CMSModules/Avatars/CMSPages/GetAvatar.aspx?maxsidesize=250&avatarguid=" + ai.AvatarGUID);
+                imgAvatar.ImageUrl = ResolveUrl("~/CMSPages/GetAvatar.aspx?maxsidesize=250&avatarguid=" + ai.AvatarGUID);
 
                 // Display default avatar options, only for global avatars
                 if (!ai.AvatarIsCustom)
@@ -225,7 +225,7 @@ public partial class CMSModules_Avatars_Avatar_Edit : GlobalAdminPage, IPostBack
                 ai.AvatarName = newAvatarName;
 
                 imgAvatar.Visible = true;
-                imgAvatar.ImageUrl = ResolveUrl("~/CMSModules/Avatars/CMSPages/GetAvatar.aspx?maxsidesize=250&avatarguid=" + ai.AvatarGUID);
+                imgAvatar.ImageUrl = ResolveUrl("~/CMSPages/GetAvatar.aspx?maxsidesize=250&avatarguid=" + ai.AvatarGUID);
 
                 // Set new type
                 ai.AvatarType = drpAvatarType.SelectedValue;

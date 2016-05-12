@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Base;
 using CMS.Core;
@@ -45,11 +45,12 @@ public partial class CMSModules_Modules_Pages_Class_Fields : GlobalAdminPage
 
                 ResourceInfo resource = ResourceInfoProvider.GetResourceInfo(QueryHelper.GetInteger("moduleid", 0));
                 bool devMode = SystemContext.DevelopmentMode;
-                bool isEditable = ((resource != null) && resource.IsEditable) || dci.ClassShowAsSystemTable || devMode;
+                bool resourceIsEditable = (resource != null) && resource.IsEditable;
+                bool classIsEditable = resourceIsEditable || dci.ClassShowAsSystemTable || devMode;
 
                 // Allow development mode only for non-system tables
-                fieldEditor.DevelopmentMode = !dci.ClassShowAsSystemTable || devMode;
-                fieldEditor.Enabled = isEditable;
+                fieldEditor.DevelopmentMode = resourceIsEditable;
+                fieldEditor.Enabled = classIsEditable;
                 fieldEditor.Mode = dci.ClassShowAsSystemTable ? FieldEditorModeEnum.SystemTable : FieldEditorModeEnum.ClassFormDefinition;
 
                 if (devMode)
@@ -61,8 +62,7 @@ public partial class CMSModules_Modules_Pages_Class_Fields : GlobalAdminPage
                         Tooltip = GetString("EditTemplateFields.GenerateFormDefinition"),
                         OnClientClick = "if (!confirm('" + GetString("EditTemplateFields.GenerateFormDefConfirmation") + "')) {{ return false; }}",
                         Visible = !dci.ClassIsDocumentType,
-                        CommandName = "gendefinition",
-                        Enabled = isEditable
+                        CommandName = "gendefinition"
                     });
 
                     fieldEditor.HeaderActions.ActionPerformed += (s, ea) => { if (ea.CommandName == "gendefinition") GenerateDefinition(); };
@@ -78,17 +78,32 @@ public partial class CMSModules_Modules_Pages_Class_Fields : GlobalAdminPage
     private void GenerateDefinition()
     {
         // Get info on the class
-        DataClassInfo dci = DataClassInfoProvider.GetDataClassInfo(QueryHelper.GetInteger("classid", 0));
-        if (dci != null)
+        var classInfo = DataClassInfoProvider.GetDataClassInfo(QueryHelper.GetInteger("classid", 0));
+        if (classInfo == null)
         {
-            TableManager tm = new TableManager(dci.ClassConnectionString);
-
-            // Get the XML schema
-            dci.ClassXmlSchema = tm.GetXmlSchema(dci.ClassTableName);
-            dci.ClassFormDefinition = FormHelper.GetXmlFormDefinitionFromXmlSchema(dci.ClassXmlSchema, true);
-            DataClassInfoProvider.SetDataClassInfo(dci);
-
-            URLHelper.Redirect(URLHelper.AddParameterToUrl(RequestContext.CurrentURL, "gen", "1"));
+            return;
         }
+
+        var manager = new TableManager(classInfo.ClassConnectionString);
+
+        // Update schema and definition for existing class
+        classInfo.ClassXmlSchema = manager.GetXmlSchema(classInfo.ClassTableName);
+
+        var fi = new FormInfo();
+        try
+        {
+            fi.LoadFromDataStructure(classInfo.ClassTableName, manager, true);
+        }
+        catch (Exception ex)
+        {
+            // Show error message if something caused unhandled exception
+            LogAndShowError("ClassFields", "GenerateDefinition", ex);
+            return;
+        }
+
+        classInfo.ClassFormDefinition = fi.GetXmlDefinition();
+        DataClassInfoProvider.SetDataClassInfo(classInfo);
+
+        URLHelper.Redirect(URLHelper.AddParameterToUrl(RequestContext.CurrentURL, "gen", "1"));
     }
 }

@@ -4,16 +4,17 @@ using System.Linq;
 using System.Web.UI;
 
 using CMS.Base;
+using CMS.CMSImportExport;
 using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.ExtendedControls;
+using CMS.FormEngine;
 using CMS.Helpers;
-using CMS.Modules;
-using CMS.UIControls.UniGridConfig;
-using CMS.UIControls;
-using CMS.Modules.NuGetPackages;
-using CMS.CMSImportExport;
 using CMS.IO;
+using CMS.Modules;
+using CMS.Modules.NuGetPackages;
+using CMS.UIControls;
+using CMS.UIControls.UniGridConfig;
 
 public partial class CMSModules_Modules_Controls_NuGetPackages_ExportModule : ExportModuleControl
 {
@@ -31,7 +32,7 @@ public partial class CMSModules_Modules_Controls_NuGetPackages_ExportModule : Ex
         {
             return mResource ?? (mResource = ResourceInfoProvider.GetResourceInfo(ResourceID));
         }
-        }
+    }
 
 
     /// <summary>
@@ -68,7 +69,9 @@ public partial class CMSModules_Modules_Controls_NuGetPackages_ExportModule : Ex
         dataForm.SubmitButton.Visible = false;
 
         ModulePackageMetadata metadata = mPackageBuilder.GetModuleMetadata();
-        FillFormWithData(metadata);
+
+        var formInfo = CreateFormInfo();
+        FillFormWithData(formInfo, metadata);
 
         SetUpFooterButton(metadata);
     }
@@ -149,7 +152,7 @@ public partial class CMSModules_Modules_Controls_NuGetPackages_ExportModule : Ex
         string unmappedFilePath = URLHelper.UnMapPath(fullFilePath);
         if (!unmappedFilePath.EqualsCSafe(fullFilePath))
         {
-            linkString = String.Format("<a href=\"{0}\">{1}</a>", HTMLHelper.EncodeForHtmlAttribute(URLHelper.ResolveUrl(unmappedFilePath)), HTMLHelper.HTMLEncode(fullFilePath));   
+            linkString = String.Format("<a href=\"{0}\">{1}</a>", HTMLHelper.EncodeForHtmlAttribute(URLHelper.ResolveUrl(unmappedFilePath)), HTMLHelper.HTMLEncode(fullFilePath));
         }
         ltlExportResult.Text = String.Format(GetString("cms.modules.installpackage.result"), linkString ?? fullFilePath);
     }
@@ -187,14 +190,20 @@ public partial class CMSModules_Modules_Controls_NuGetPackages_ExportModule : Ex
     /// <summary>
     /// Populates the form with data to be displayed
     /// </summary>
+    /// <param name="formInfo">FormInfo that will be used in the form</param>
     /// <param name="metadata">Metadata of the package</param>
-    private void FillFormWithData(ModulePackageMetadata metadata)
+    private void FillFormWithData(FormInfo formInfo, ModulePackageMetadata metadata)
     {
-        ffModuleDisplayName.EditingControl.Value = HTMLHelper.HTMLEncode(metadata.Title);
-        ffModuleName.EditingControl.Value = HTMLHelper.HTMLEncode(metadata.Id);
-        ffModuleDescription.EditingControl.Value = HTMLHelper.HTMLEncode(metadata.Description);
-        ffModuleAuthor.EditingControl.Value = HTMLHelper.HTMLEncode(metadata.Authors);
-        ffModuleVersion.EditingControl.Value = HTMLHelper.HTMLEncode(metadata.Version);
+        DataRow row = formInfo.GetDataRow();
+        row["moduleDisplayName"] = HTMLHelper.HTMLEncode(metadata.Title);
+        row["moduleName"] = HTMLHelper.HTMLEncode(metadata.Id);
+        row["moduleDescription"] = HTMLHelper.HTMLEncode(metadata.Description);
+        row["moduleVersion"] = HTMLHelper.HTMLEncode(metadata.Version);
+        row["moduleAuthor"] = HTMLHelper.HTMLEncode(metadata.Authors);
+
+        dataForm.DataRow = row;
+        dataForm.FormInformation = formInfo;
+        dataForm.ReloadData();
     }
 
 
@@ -302,5 +311,42 @@ public partial class CMSModules_Modules_Controls_NuGetPackages_ExportModule : Ex
     {
         ((CMSButton)FooterControl).Enabled = false;
         base.ShowError(GetString(text), description, tooltipText, persistent);
+    }
+
+
+    /// <summary>
+    /// Adds new field to the FormInfo.
+    /// </summary>
+    /// <param name="formInfo">FormInfo to which the field will be added</param>
+    /// <param name="fieldName">Name of the field</param>
+    /// <param name="resourceString">Resource string used for field label</param>
+    private void AddField(FormInfo formInfo, string fieldName, string resourceString)
+    {
+        var field = new FormFieldInfo()
+        {
+            Name = fieldName,
+            DataType = FieldDataType.Text,
+            Caption = String.Format("{{${0}$}}", resourceString),
+            FieldType = FormFieldControlTypeEnum.CustomUserControl
+        };
+        field.Settings["controlname"] = "labelcontrol";
+
+        formInfo.AddFormItem(field);
+    }
+
+
+    /// <summary>
+    /// Returns FormInfo with module information fields.
+    /// </summary>
+    private FormInfo CreateFormInfo()
+    {
+        var formInfo = new FormInfo();
+        AddField(formInfo, "moduleDisplayName", "cms.modules.installpackage.title");
+        AddField(formInfo, "moduleName", "cms.modules.installpackage.id");
+        AddField(formInfo, "moduleDescription", "cms.modules.installpackage.description");
+        AddField(formInfo, "moduleVersion", "cms.modules.installpackage.version");
+        AddField(formInfo, "moduleAuthor", "cms.modules.installpackage.authors");
+
+        return formInfo;
     }
 }

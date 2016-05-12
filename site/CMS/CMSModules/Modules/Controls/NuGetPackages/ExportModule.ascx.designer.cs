@@ -36,52 +36,7 @@ public partial class CMSModules_Modules_Controls_NuGetPackages_ExportModule {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.FormControls.UIForm dataForm;
-    
-    /// <summary>
-    /// ffModuleDisplayName control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.FormControls.FormField ffModuleDisplayName;
-    
-    /// <summary>
-    /// ffModuleName control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.FormControls.FormField ffModuleName;
-    
-    /// <summary>
-    /// ffModuleDescription control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.FormControls.FormField ffModuleDescription;
-    
-    /// <summary>
-    /// ffModuleVersion control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.FormControls.FormField ffModuleVersion;
-    
-    /// <summary>
-    /// ffModuleAuthor control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.FormControls.FormField ffModuleAuthor;
+    protected global::CMS.FormControls.BasicForm dataForm;
     
     /// <summary>
     /// lblFilesTitle control.

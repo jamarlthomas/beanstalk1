@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="false" Codebehind="ControlSettings.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="false"  Codebehind="ControlSettings.ascx.cs"
     Inherits="CMSModules_AdminControls_Controls_Class_FieldEditor_ControlSettings" %>
 <cms:LocalizedHeading runat="server" Level="4" ResourceString="templatedesigner.section.settings"></cms:LocalizedHeading>
 <asp:Panel runat="server" ID="pnlSwitch" Visible="false" CssClass="form-group">

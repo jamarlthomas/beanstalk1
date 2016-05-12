@@ -246,24 +246,6 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_AdvancedExport {
     protected global::System.Web.UI.WebControls.PlaceHolder plcWhere;
     
     /// <summary>
-    /// lblUseGridFilter control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblUseGridFilter;
-    
-    /// <summary>
-    /// chkUseGridFilter control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSCheckBox chkUseGridFilter;
-    
-    /// <summary>
     /// lblWhereCondition control.
     /// </summary>
     /// <remarks>

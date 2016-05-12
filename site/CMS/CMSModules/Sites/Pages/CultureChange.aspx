@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Sites_Pages_CultureChange"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Sites_Pages_CultureChange"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Title="Site - Change culture" Codebehind="CultureChange.aspx.cs" %>
+    Title="Site - Change culture"  Codebehind="CultureChange.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/Cultures/SiteCultureSelector.ascx" TagName="SiteCultureSelector"
     TagPrefix="cms" %>

@@ -277,23 +277,24 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_BBMediaPrope
         string url = txtUrl.Text;
         if (!string.IsNullOrEmpty(url))
         {
-            int dotIndex = url.LastIndexOfCSafe('.');
-            string ext = null;
-            if (dotIndex > 0)
+            bool isImage = false;
+            MediaSource source = CMSDialogHelper.GetMediaData(url, null);
+            if (source != null)
             {
-                ext = url.Substring(dotIndex);
+                isImage = ImageHelper.IsImage(source.Extension);
             }
-            // Only for non-image extensions add chset to url
-            if (!ImageHelper.IsImage(ext))
+
+            // Only for image extensions add chset to url
+            if (isImage)
             {
                 url = URLHelper.UpdateParameterInUrl(url, "chset", Guid.NewGuid().ToString());
 
-                // Add latest version requirement for live site
-                if (IsLiveSite)
+                int versionHistoryId = HistoryID;
+                if (IsLiveSite && (versionHistoryId > 0))
                 {
                     // Add requirement for latest version of files for current document
-                    string newparams = "latestforhistoryid=" + HistoryID;
-                    newparams += "&hash=" + ValidationHelper.GetHashString("h" + HistoryID);
+                    string newparams = "latestforhistoryid=" + versionHistoryId;
+                    newparams += "&hash=" + ValidationHelper.GetHashString("h" + versionHistoryId);
 
                     url += "&" + newparams;
                 }

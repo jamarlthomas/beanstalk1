@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.CMSImportExport;
@@ -151,7 +151,7 @@ public partial class CMSModules_ImportExport_Controls_ImportPanel : CMSUserContr
             {
                 if (SelectedNodeValue != CMS.DocumentEngine.TreeNode.OBJECT_TYPE)
                 {
-                    DataSet ds = ImportProvider.LoadObjects(Settings, SelectedNodeValue, SiteNode, selectionOnly: true);
+                    DataSet ds = ImportProvider.LoadObjects(Settings, SelectedNodeValue, SiteNode, true);
 
                     // Bind grid view
                     gvObjects.Visible = true;
@@ -207,10 +207,9 @@ public partial class CMSModules_ImportExport_Controls_ImportPanel : CMSUserContr
 
                 if (!string.IsNullOrEmpty(SelectedNodeValue))
                 {
-                    string virtualPath = "~/CMSModules/ImportExport/Controls/Import/" + (SiteNode ? "Site/" : "") + ImportExportHelper.GetSafeObjectTypeName(SelectedNodeValue) + ".ascx";
-                    string filePath = Server.MapPath(virtualPath);
+                    string virtualPath = SiteNode ? ImportSettingsControlsRegister.GetSiteSettingsControl(SelectedNodeValue) : ImportSettingsControlsRegister.GetSettingsControl(SelectedNodeValue);
 
-                    if (File.Exists(filePath))
+                    if (virtualPath != null)
                     {
                         // Load control
                         settingsControl = (ImportExportControl)Page.LoadUserControl(virtualPath);
@@ -366,7 +365,7 @@ public partial class CMSModules_ImportExport_Controls_ImportPanel : CMSUserContr
                 siteId = 1;
             }
 
-            objectTree.RootNode = ImportExportHelper.ObjectTree;
+            objectTree.RootNode = ImportExportHelper.ImportObjectTree;
             objectTree.SiteID = siteId;
             objectTree.ReloadData();
         }

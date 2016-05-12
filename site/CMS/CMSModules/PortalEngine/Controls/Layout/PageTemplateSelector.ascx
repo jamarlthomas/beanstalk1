@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_Controls_Layout_PageTemplateSelector"
-    Codebehind="PageTemplateSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_Controls_Layout_PageTemplateSelector"
+     Codebehind="PageTemplateSelector.ascx.cs" %>
 <%@ Register Src="~/CMSModules/PortalEngine/Controls/Layout/PageTemplateFlatSelector.ascx"
     TagName="PageTemplateFlatSelector" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/PortalEngine/Controls/Layout/PageTemplateTree.ascx"

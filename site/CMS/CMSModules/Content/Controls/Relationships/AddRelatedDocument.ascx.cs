@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 
 using CMS.ExtendedControls;
@@ -7,10 +7,10 @@ using CMS.SiteProvider;
 using CMS.Membership;
 using CMS.DocumentEngine;
 using CMS.UIControls;
-
-using TreeNode = CMS.DocumentEngine.TreeNode;
 using CMS.DataEngine;
 using CMS.Relationships;
+
+using TreeNode = CMS.DocumentEngine.TreeNode;
 
 public partial class CMSModules_Content_Controls_Relationships_AddRelatedDocument : CMSUserControl
 {
@@ -161,7 +161,7 @@ public partial class CMSModules_Content_Controls_Relationships_AddRelatedDocumen
 
 
     /// <summary>
-    /// Url to redirect after succesful save.
+    /// Url to redirect after successful save.
     /// </summary>
     public string RedirectAfterSaveUrl
     {

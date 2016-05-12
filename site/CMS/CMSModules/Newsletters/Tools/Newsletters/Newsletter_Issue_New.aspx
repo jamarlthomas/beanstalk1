@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Newsletter_Issue_New.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Newsletter_Issue_New.aspx.cs"
     Inherits="CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_New" Theme="Default"
     EnableEventValidation="false" ValidateRequest="false" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Title="Newsletter - New issue" %>

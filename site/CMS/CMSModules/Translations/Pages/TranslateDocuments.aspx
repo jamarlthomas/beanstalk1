@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Translations_Pages_TranslateDocuments"
-    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Codebehind="TranslateDocuments.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Translations_Pages_TranslateDocuments"
+    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"  Codebehind="TranslateDocuments.aspx.cs"
     Title="Content - Translate" %>
 
 <%@ Register Src="~/CMSModules/Content/FormControls/Documents/SelectPath.ascx" TagName="SelectPath"
@@ -11,7 +11,7 @@
 
 <asp:Content ContentPlaceHolderID="plcBeforeBody" runat="server" ID="cntBeforeBody">
     <asp:Panel runat="server" ID="pnlLog" Visible="false">
-        <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+        <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="Documents" />
     </asp:Panel>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="plcContent" ID="content" runat="server">

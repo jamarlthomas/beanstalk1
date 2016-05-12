@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_AdminControls_Pages_ObjectRelationships" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" Codebehind="ObjectRelationships.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_AdminControls_Pages_ObjectRelationships" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"  Codebehind="ObjectRelationships.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/AdminControls/Controls/ObjectRelationships/ObjectRelationships.ascx" TagName="ObjectRelationships"
     TagPrefix="cms" %>

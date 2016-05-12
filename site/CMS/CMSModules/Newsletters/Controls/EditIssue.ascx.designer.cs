@@ -21,6 +21,15 @@ public partial class CMSModules_Newsletters_Controls_EditIssue {
     protected global::CMS.ExtendedControls.CMSUpdatePanel pnlUpdate;
     
     /// <summary>
+    /// pnlIssueSubject control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlIssueSubject;
+    
+    /// <summary>
     /// lblSubject control.
     /// </summary>
     /// <remarks>
@@ -39,6 +48,24 @@ public partial class CMSModules_Newsletters_Controls_EditIssue {
     protected global::CMS.ExtendedControls.CMSTextBox txtSubject;
     
     /// <summary>
+    /// imgToggleAdvanced control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Image imgToggleAdvanced;
+    
+    /// <summary>
+    /// lnkToggleAdvanced control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.LinkButton lnkToggleAdvanced;
+    
+    /// <summary>
     /// plcAdvanced control.
     /// </summary>
     /// <remarks>
@@ -46,6 +73,15 @@ public partial class CMSModules_Newsletters_Controls_EditIssue {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.PlaceHolder plcAdvanced;
+    
+    /// <summary>
+    /// pnlIssueSenderName control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlIssueSenderName;
     
     /// <summary>
     /// lblSenderName control.
@@ -66,6 +102,15 @@ public partial class CMSModules_Newsletters_Controls_EditIssue {
     protected global::CMS.ExtendedControls.CMSTextBox txtSenderName;
     
     /// <summary>
+    /// pnlIssueSenderEmail control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlIssueSenderEmail;
+    
+    /// <summary>
     /// lblSenderEmail control.
     /// </summary>
     /// <remarks>
@@ -82,6 +127,15 @@ public partial class CMSModules_Newsletters_Controls_EditIssue {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.CMSTextBox txtSenderEmail;
+    
+    /// <summary>
+    /// pnlIssueTemplate control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlIssueTemplate;
     
     /// <summary>
     /// lblTemplate control.
@@ -102,6 +156,15 @@ public partial class CMSModules_Newsletters_Controls_EditIssue {
     protected global::CMSModules_Newsletters_FormControls_NewsletterTemplateSelector issueTemplate;
     
     /// <summary>
+    /// pnlIssueArchive control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlIssueArchive;
+    
+    /// <summary>
     /// lblArchive control.
     /// </summary>
     /// <remarks>
@@ -120,22 +183,202 @@ public partial class CMSModules_Newsletters_Controls_EditIssue {
     protected global::CMS.ExtendedControls.CMSCheckBox chkShowInArchive;
     
     /// <summary>
-    /// imgToggleAdvanced control.
+    /// pnlIssueUseUTM control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Image imgToggleAdvanced;
+    protected global::System.Web.UI.WebControls.Panel pnlIssueUseUTM;
     
     /// <summary>
-    /// lnkToggleAdvanced control.
+    /// lblIssueUseUTM control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.LinkButton lnkToggleAdvanced;
+    protected global::CMS.ExtendedControls.LocalizedLabel lblIssueUseUTM;
+    
+    /// <summary>
+    /// chkIssueUseUTM control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSCheckBox chkIssueUseUTM;
+    
+    /// <summary>
+    /// lblScreenReaderIssueUseUTM control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblScreenReaderIssueUseUTM;
+    
+    /// <summary>
+    /// iconHelpIssueUseUTM control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSIcon iconHelpIssueUseUTM;
+    
+    /// <summary>
+    /// pnlUTMParameters control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlUTMParameters;
+    
+    /// <summary>
+    /// pnlIssueUTMSource control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlIssueUTMSource;
+    
+    /// <summary>
+    /// lblIssueUTMSource control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblIssueUTMSource;
+    
+    /// <summary>
+    /// txtIssueUTMSource control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSTextBox txtIssueUTMSource;
+    
+    /// <summary>
+    /// lblScreenReaderIssueUTMSource control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblScreenReaderIssueUTMSource;
+    
+    /// <summary>
+    /// iconHelpIssueUTMSource control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSIcon iconHelpIssueUTMSource;
+    
+    /// <summary>
+    /// pnlIssueUTMMedium control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlIssueUTMMedium;
+    
+    /// <summary>
+    /// lblIssueUTMMedium control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblIssueUTMMedium;
+    
+    /// <summary>
+    /// txtIssueUTMMedium control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSTextBox txtIssueUTMMedium;
+    
+    /// <summary>
+    /// lblScreenReaderIssueUTMMedium control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblScreenReaderIssueUTMMedium;
+    
+    /// <summary>
+    /// iconHelpIssueUTMMedium control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSIcon iconHelpIssueUTMMedium;
+    
+    /// <summary>
+    /// pnlIssueUTMCampaign control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlIssueUTMCampaign;
+    
+    /// <summary>
+    /// lblIssueUTMCampaign control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblIssueUTMCampaign;
+    
+    /// <summary>
+    /// radUTMCampaignExisting control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSRadioButton radUTMCampaignExisting;
+    
+    /// <summary>
+    /// selectorUTMCampaign control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMSAdminControls_UI_UniSelector_UniSelector selectorUTMCampaign;
+    
+    /// <summary>
+    /// radUTMCampaignNew control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSRadioButton radUTMCampaignNew;
+    
+    /// <summary>
+    /// txtIssueUTMCampaign control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSTextBox txtIssueUTMCampaign;
     
     /// <summary>
     /// hdnTemplateID control.

@@ -24,7 +24,7 @@ public partial class CMSModules_PortalEngine_UI_Layout_PageTemplateSelector : CM
 
 		string selectorid = QueryHelper.GetString("selectorid", "");
 		string selectedItem = QueryHelper.GetString("selectedPageTemplateId", "");
-
+	    
 		selectElem.DocumentID = QueryHelper.GetInteger("documentid", 0);
 		selectElem.NodeGUID = QueryHelper.GetGuid("nodeguid", Guid.Empty);
 		selectElem.ShowOnlySiteTemplates = ValidationHelper.GetBoolean(WindowHelper.GetItem("ShowOnlySiteTemplates"), selectElem.ShowOnlySiteTemplates);

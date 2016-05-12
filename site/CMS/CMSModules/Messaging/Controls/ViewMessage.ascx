@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Messaging_Controls_ViewMessage" Codebehind="ViewMessage.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Messaging_Controls_ViewMessage"  Codebehind="ViewMessage.ascx.cs" %>
 <%@ Reference Control="~/CMSModules/Messaging/Controls/MessageUserButtons.ascx" %>
 <%@ Reference Control="~/CMSAdminControls/UI/UserPicture.ascx" %>
 <cms:MessagesPlaceHolder ID="plcMess" runat="server" LiveSiteOnly="true" />

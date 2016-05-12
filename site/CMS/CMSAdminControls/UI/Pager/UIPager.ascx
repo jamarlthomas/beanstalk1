@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_Pager_UIPager"
-    Codebehind="UIPager.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_Pager_UIPager"
+     Codebehind="UIPager.ascx.cs" %>
 
 <div class="pagination">
     <cms:UniPager ID="pagerElem" ShortID="p" runat="server">

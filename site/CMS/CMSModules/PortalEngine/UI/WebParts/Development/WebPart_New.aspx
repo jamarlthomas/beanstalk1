@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_Development_WebPart_New"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_Development_WebPart_New"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Web parts - New"
-    Codebehind="WebPart_New.aspx.cs" %>
+     Codebehind="WebPart_New.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/System/LocalizableTextBox.ascx" TagName="LocalizableTextBox"
     TagPrefix="cms" %>
@@ -57,22 +57,54 @@
                                 </div>
                             </div>
                         </div>
-                        <asp:PlaceHolder ID="plcFileName" runat="server">
+
+                        <asp:PlaceHolder ID="plcCodeFiles" runat="server">
                             <div class="form-group">
                                 <div class="editing-form-label-cell">
-                                    <cms:LocalizedLabel CssClass="control-label" ID="lblWebPartFileName" runat="server" ResourceString="general.filepath"
-                                        DisplayColon="true" ShowRequiredMark="true" />
+                                    <cms:LocalizedLabel CssClass="control-label" ID="lblCodeFiles" runat="server" EnableViewState="False" ResourceString="webpart.codefiles"
+                                        DisplayColon="true" />
                                 </div>
                                 <div class="editing-form-value-cell">
-                                    <cms:FileSystemSelector ID="FileSystemSelector" runat="server" />
+                                    <div class="radio-list-vertical">
+                                        <cms:CMSRadioButton ID="radNewFile" runat="server" AutoPostBack="true" Checked="true"
+                                            GroupName="codeFile" ResourceString="webpart.generatefiles" OnCheckedChanged="radNewFile_CheckedChanged" />
+                                        <cms:CMSRadioButton ID="radExistingFile" runat="server" AutoPostBack="true"
+                                            GroupName="codeFile" ResourceString="webpart.useexistingfile" OnCheckedChanged="radNewFile_CheckedChanged" />
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="editing-form-value-cell editing-form-value-cell-offset">
-                                    <cms:CMSCheckBox runat="server" ID="chkGenerateFiles" ResourceString="webpart.generatefiles" Checked="true" />
+                            
+                            <asp:PlaceHolder ID="plcFileName" runat="server">
+                                <div class="form-group">
+                                    <div class="editing-form-label-cell">
+                                        <cms:LocalizedLabel CssClass="control-label" ID="lblFileName" runat="server" EnableViewState="False"
+                                            ResourceString="webpart.filename" DisplayColon="true" ShowRequiredMark="true" />
+                                    </div>
+                                    <div class="editing-form-value-cell">
+                                        <div class="control-group-inline">
+                                            <cms:CMSTextBox ID="txtCodeFileName" runat="server" MaxLength="95"  />
+                                            <cms:CMSRequiredFieldValidator ID="rfvCodeFileName" runat="server" EnableViewState="false"
+                                                ControlToValidate="txtCodeFileName" Display="dynamic"></cms:CMSRequiredFieldValidator>
+                                            <cms:LocalizedLabel ID="lblFileNameExplanation" runat="server" ResourceString="webpart.filenameexplanation" CssClass="explanation-text" />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </asp:PlaceHolder>
+
+                            <asp:PlaceHolder ID="plcSelectFile" runat="server" Visible="false">
+                                <div class="form-group">
+                                    <div class="editing-form-label-cell">
+                                        <cms:LocalizedLabel CssClass="control-label" ID="lblWebPartFileName" runat="server" ResourceString="general.filepath"
+                                            DisplayColon="true" ShowRequiredMark="true" />
+                                    </div>
+                                    <div class="editing-form-value-cell">
+                                        <cms:FileSystemSelector ID="FileSystemSelector" runat="server" />
+                                    </div>
+                                </div>
+                            </asp:PlaceHolder>
+
                         </asp:PlaceHolder>
+
                         <asp:PlaceHolder ID="plcWebparts" runat="server" Visible="false">
                             <div class="form-group">
                                 <div class="editing-form-label-cell">

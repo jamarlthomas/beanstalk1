@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web.UI;
 using System.Collections;
@@ -110,15 +110,15 @@ public partial class CMSModules_ContactManagement_Controls_UI_Account_MergeSplit
     /// <summary>
     /// Dialog control identifier.
     /// </summary>
-    private string Identifier
+    private Guid Identifier
     {
         get
         {
-            string identifier = hdnValue.Value;
-            if (string.IsNullOrEmpty(identifier))
+            Guid identifier;
+            if (!Guid.TryParse(hdnValue.Value, out identifier))
             {
-                identifier = Guid.NewGuid().ToString();
-                hdnValue.Value = identifier;
+                identifier = Guid.NewGuid();
+                hdnValue.Value = identifier.ToString();
             }
 
             return identifier;
@@ -195,16 +195,10 @@ public partial class CMSModules_ContactManagement_Controls_UI_Account_MergeSplit
             // Display only direct children ("first level")
             where = SqlHelper.AddWhereCondition(where, "AccountGlobalAccountID = " + Account.AccountID + " OR AccountMergedWithAccountID = " + Account.AccountID);
         }
-        else if (isGlobal)
-        {
-            // Get children for global contact
-            where = SqlHelper.AddWhereCondition(where, "AccountID IN (SELECT * FROM Func_OM_Account_GetChildren_Global(" + Account.AccountID + ", 0))");
-        }
-        else
-        {
-            // Get children for site contact
-            where = SqlHelper.AddWhereCondition(where, "AccountID IN (SELECT * FROM Func_OM_Account_GetChildren(" + Account.AccountID + ", 0))");
-        }
+
+        // Get children for account
+        where = SqlHelper.AddWhereCondition(where, "AccountID IN (SELECT * FROM Func_OM_Account_GetChildren(" + Account.AccountID + ", 0))");
+
         gridElem.WhereCondition = where;
         gridElem.ZeroRowsText = GetString("om.account.noaccountsfound");
         gridElem.OnExternalDataBound += gridElem_OnExternalDataBound;
@@ -303,7 +297,7 @@ var dialogParams_" + ClientID + @" = '';
             mParameters["accountcontactid"] = CallbackArgument;
             mParameters["allownone"] = "1";
 
-            WindowHelper.Add(Identifier, mParameters);
+            WindowHelper.Add(Identifier.ToString(), mParameters);
 
             queryString = "?params=" + Identifier;
             queryString = URLHelper.AddParameterToUrl(queryString, "hash", QueryHelper.GetHash(queryString));

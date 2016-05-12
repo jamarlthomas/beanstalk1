@@ -20,7 +20,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Categor
 
 
     /// <summary>
-    /// Gets or sets macroresolver name used in macro editor.
+    /// Gets or sets macro resolver name used in macro editor.
     /// </summary>
     public string ResolverName
     {
@@ -104,12 +104,20 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Categor
     {
         if (CategoryInfo != null)
         {
+            // Save LocalizableTextBox control
+            LocalizableFormEngineUserControl fieldCaptionControl = (LocalizableFormEngineUserControl)txtCategoryName.NestedControl;
+            if (fieldCaptionControl != null)
+            {
+                fieldCaptionControl.Save();
+            }
             CategoryInfo.SetPropertyValue(FormCategoryPropertyEnum.Caption, ValidationHelper.GetString(txtCategoryName.Value, String.Empty).Replace("'", string.Empty), txtCategoryName.IsMacro);
             CategoryInfo.SetPropertyValue(FormCategoryPropertyEnum.Collapsible, Convert.ToString(chkCollapsible.Value), chkCollapsible.IsMacro);
             CategoryInfo.SetPropertyValue(FormCategoryPropertyEnum.CollapsedByDefault, Convert.ToString(chkCollapsedByDefault.Value), chkCollapsedByDefault.IsMacro);
             CategoryInfo.SetPropertyValue(FormCategoryPropertyEnum.Visible, Convert.ToString(chkVisible.Value), chkVisible.IsMacro);
+
             return true;
         }
+
         return false;
     }
 

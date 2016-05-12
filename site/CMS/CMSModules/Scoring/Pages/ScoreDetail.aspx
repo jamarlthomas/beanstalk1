@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="ScoreDetail.aspx.cs" Inherits="CMSModules_Scoring_Pages_ScoreDetail"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="ScoreDetail.aspx.cs" Inherits="CMSModules_Scoring_Pages_ScoreDetail"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="Scoring - Score detail" %>
 

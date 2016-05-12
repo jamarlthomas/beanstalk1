@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_Edit"
-    ValidateRequest="false" EnableEventValidation="false" Theme="Default" Codebehind="Newsletter_Issue_Edit.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_Edit"
+    ValidateRequest="false" EnableEventValidation="false" Theme="Default" CodeBehind="Newsletter_Issue_Edit.aspx.cs"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 
 <%@ Register Src="~/CMSModules/Newsletters/Controls/EditIssue.ascx" TagPrefix="cms"

@@ -2,6 +2,7 @@
 using System.Data;
 using System.Text;
 
+using CMS.Core;
 using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.Helpers;
@@ -61,12 +62,12 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
         if (parentProductId <= 0)
         {
             // UIElement from option category list
-            CheckUIElementAccessHierarchical("CMS.Ecommerce", "ProductOptions.Products");
+            CheckUIElementAccessHierarchical(ModuleName.ECOMMERCE, "ProductOptions.Products");
         }
         else
         {
             // UIElement from product edit
-            CheckUIElementAccessHierarchical("CMS.Ecommerce", "Products.ProductOptions.Products");
+            CheckUIElementAccessHierarchical(ModuleName.ECOMMERCE, "Products.ProductOptions.Products");
         }
 
         categoryId = QueryHelper.GetInteger("categoryId", 0);
@@ -130,9 +131,9 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
         var cu = MembershipContext.AuthenticatedUser;
 
         // Check permissions
-        if ((cu == null) || (!cu.IsAuthorizedPerResource("CMS.Ecommerce", "EcommerceModify") && !cu.IsAuthorizedPerResource("CMS.Ecommerce", "ModifyProducts")))
+        if ((cu == null) || (!cu.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.ECOMMERCE_MODIFY) && !cu.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.PRODUCTS_MODIFY)))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyProducts");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyProducts");
         }
         else
         {
@@ -261,7 +262,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
     /// <param name="currentUser">Current user.</param>
     private string GetDepartmentWhereCondition(CurrentUserInfo currentUser)
     {
-        if (!currentUser.IsAuthorizedPerResource("CMS.Ecommerce", "AccessAllDepartments"))
+        if (!currentUser.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.PRODUCTS_ACCESSALLDEPARTMENTS))
         {
             return "(SKUDepartmentID IS NULL) OR SKUDepartmentID IN (SELECT DepartmentID FROM COM_UserDepartment WHERE UserID = " + currentUser.UserID + ")";
         }
@@ -279,7 +280,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
         string where = string.Empty;
 
         // Add site specific product records if site doesn't offer global products or user doesn't have Modify global permission
-        if (!offerGlobalProducts || categoryObj.CategorySiteID > 0 || (!currentUser.IsGlobalAdministrator && !currentUser.IsAuthorizedPerResource("CMS.Ecommerce", "EcommerceGlobalModify")))
+        if (!offerGlobalProducts || categoryObj.CategorySiteID > 0 || (!currentUser.IsGlobalAdministrator && !currentUser.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.ECOMMERCE_MODIFYGLOBAL)))
         {
             where = SqlHelper.AddWhereCondition(where, "SKUSiteID = " + SiteContext.CurrentSiteID);
         }

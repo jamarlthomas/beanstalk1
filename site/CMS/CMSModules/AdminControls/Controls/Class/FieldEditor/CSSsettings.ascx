@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="false" Codebehind="CSSsettings.ascx.cs" Inherits="CMSModules_AdminControls_Controls_Class_FieldEditor_CSSsettings" %>
+﻿<%@ Control Language="C#" AutoEventWireup="false"  Codebehind="CSSsettings.ascx.cs" Inherits="CMSModules_AdminControls_Controls_Class_FieldEditor_CSSsettings" %>
 <cms:LocalizedHeading runat="server" Level="4" ResourceString="templatedesigner.section.styles"></cms:LocalizedHeading>
 <asp:Panel ID="pnlCss" runat="server" CssClass="FieldPanel">
     <div class="form-horizontal">

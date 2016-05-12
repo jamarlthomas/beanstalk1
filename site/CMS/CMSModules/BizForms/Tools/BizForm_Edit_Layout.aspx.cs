@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.FormEngine;
 using CMS.Helpers;
@@ -57,6 +57,9 @@ public partial class CMSModules_BizForms_Tools_BizForm_Edit_Layout : CMSBizFormP
         layoutElem.IsLiveSite = false;
         layoutElem.OnBeforeSave += layoutElem_OnBeforeSave;
         layoutElem.OnAfterSave += layoutElem_OnAfterSave;
+        layoutElem.IsAuthorizedForAscxEditingFunction = () => { 
+            return MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("cms.globalpermissions", "editcode"); 
+        }; 
 
         // Load CSS style sheet to editor area
         if (SiteContext.CurrentSite != null)
@@ -67,7 +70,7 @@ public partial class CMSModules_BizForms_Tools_BizForm_Edit_Layout : CMSBizFormP
                 cssId = SiteContext.CurrentSite.SiteDefaultStylesheetID;
             }
             layoutElem.CssStyleSheetID = cssId;
-        }
+         }
 
     }
 

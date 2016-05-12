@@ -1,5 +1,5 @@
-<%@ Page Language="C#" Theme="Default" AutoEventWireup="true"
-    Inherits="CMSFormControls_Selectors_SelectFileOrFolder_Content" EnableEventValidation="false"  Codebehind="Content.aspx.cs" %>
+﻿<%@ Page Language="C#" Theme="Default" AutoEventWireup="true"
+    Inherits="CMSFormControls_Selectors_SelectFileOrFolder_Content" EnableEventValidation="false"   Codebehind="Content.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/Selectors/FileSystemSelector/FileSystemSelector.ascx"
     TagName="FileSystem" TagPrefix="uc1" %>

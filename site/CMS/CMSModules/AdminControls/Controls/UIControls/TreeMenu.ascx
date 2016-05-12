@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSModules/AdminControls/Controls/UIControls/TreeMenu.ascx.cs" Inherits="CMSModules_AdminControls_Controls_UIControls_TreeMenu" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSModules/AdminControls/Controls/UIControls/TreeMenu.ascx.cs" Inherits="CMSModules_AdminControls_Controls_UIControls_TreeMenu" %>
 <%@ Register Src="~/CMSAdminControls/UI/UIProfiles/UIMenu.ascx" TagName="UIMenu"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/PageTitle.ascx" TagName="PageTitle"

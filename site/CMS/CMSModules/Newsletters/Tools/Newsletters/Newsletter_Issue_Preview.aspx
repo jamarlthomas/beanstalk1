@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Inherits="CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_Preview" Codebehind="Newsletter_Issue_Preview.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
+    Inherits="CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_Preview"  Codebehind="Newsletter_Issue_Preview.aspx.cs"
      Title="Newsletter issue - Preview" Theme="Default" %>
 
 <%@ Register Src="~/CMSModules/Newsletters/Controls/Newsletter_Preview.ascx" TagName="Preview" TagPrefix="cms" %>

@@ -76,9 +76,9 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_TaxClasses_T
         }
 
         // Check permissions
-        if ((cu == null) || (!cu.IsAuthorizedPerResource("CMS.Ecommerce", "EcommerceModify") && !cu.IsAuthorizedPerResource("CMS.Ecommerce", "ModifyProducts")))
+        if ((cu == null) || (!cu.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.ECOMMERCE_MODIFY) && !cu.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.PRODUCTS_MODIFY)))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyProducts");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyProducts");
         }
 
         else
@@ -129,7 +129,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_TaxClasses_T
         string where = "SKUOptionCategoryID IS NULL";
 
         // Ordinary user can see only product from departments he can access
-        if (!cu.IsGlobalAdministrator && !cu.IsAuthorizedPerResource("CMS.Ecommerce", "AccessAllDepartments"))
+        if (!cu.IsGlobalAdministrator && !cu.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.PRODUCTS_ACCESSALLDEPARTMENTS))
         {
             where = SqlHelper.AddWhereCondition(where, "(SKUDepartmentID IS NULL) OR SKUDepartmentID IN (SELECT DepartmentID FROM COM_UserDepartment WHERE UserID = " + cu.UserID + ")");
         }
@@ -137,7 +137,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_TaxClasses_T
         if ((mTaxClassInfoObj != null))
         {
             // Add site specific product records
-            if ((mTaxClassInfoObj.TaxClassSiteID > 0) || (!offerGlobalProducts) || !cu.IsAuthorizedPerResource("CMS.Ecommerce", "EcommerceGlobalModify"))
+            if ((mTaxClassInfoObj.TaxClassSiteID > 0) || (!offerGlobalProducts) || !cu.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.ECOMMERCE_MODIFYGLOBAL))
             {
                 where = SqlHelper.AddWhereCondition(where, "SKUSiteID = " + mCurrentSiteId);
             }
@@ -163,7 +163,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_TaxClasses_T
                                       .WhereNull("SKUOptionCategoryID");
 
         // Ordinary user can see only product from departments he can access
-        if (!cu.IsGlobalAdministrator && !cu.IsAuthorizedPerResource("CMS.Ecommerce", "AccessAllDepartments"))
+        if (!cu.IsGlobalAdministrator && !cu.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.PRODUCTS_ACCESSALLDEPARTMENTS))
         {
             products.Where(new WhereCondition().WhereNull("SKUDepartmentID")
                                                .Or()
@@ -171,7 +171,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_TaxClasses_T
         }
 
         // Restrict site
-        var includeGlobal = offerGlobalProducts && (cu.IsGlobalAdministrator || cu.IsAuthorizedPerResource("CMS.Ecommerce", "EcommerceGlobalModify"));
+        var includeGlobal = offerGlobalProducts && (cu.IsGlobalAdministrator || cu.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.ECOMMERCE_MODIFYGLOBAL));
         products.OnSite(mCurrentSiteId, includeGlobal);
 
         if (!DataHelper.DataSourceIsEmpty(products))

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -145,18 +145,6 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_OrderStatus_
                     OrderStatusInfoProvider.DeleteOrderStatusInfo(status);
                 }
 
-                break;
-
-            case "moveup":
-                CheckConfigurationModification();
-
-                OrderStatusInfoProvider.MoveStatusUp(id);
-                break;
-
-            case "movedown":
-                CheckConfigurationModification();
-
-                OrderStatusInfoProvider.MoveStatusDown(id);
                 break;
         }
     }

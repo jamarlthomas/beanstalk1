@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="Variant properties" Inherits="CMSModules_OnlineMarketing_Dialogs_ContentPersonalizationVariantEdit"
-    Theme="Default" Codebehind="ContentPersonalizationVariantEdit.aspx.cs" %>
+    Theme="Default"  Codebehind="ContentPersonalizationVariantEdit.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/OnlineMarketing/Controls/UI/ContentPersonalizationVariant/Edit.ascx"
     TagName="VariantEdit" TagPrefix="cms" %>

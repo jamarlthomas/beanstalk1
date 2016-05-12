@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="DataTypeFilter.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="DataTypeFilter.ascx.cs"
     Inherits="CMSModules_FormControls_FormControls_DataTypeFilter" %>
 <%@ Register Src="~/CMSFormControls/System/UserControlTypeSelector.ascx" TagPrefix="cms"
     TagName="TypeSelector" %>

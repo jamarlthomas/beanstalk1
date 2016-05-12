@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="WinnerOptions.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="WinnerOptions.ascx.cs"
     Inherits="CMSModules_Newsletters_Controls_WinnerOptions" %>
 <cms:CMSUpdatePanel runat="server" ID="pnlU">
     <ContentTemplate>

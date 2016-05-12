@@ -31,7 +31,7 @@ namespace CMS.Mvc.Controllers.Afton
         public JsonResult SubmitEmail(string email)
         {
             bool result = _contactProvider.Subscribe(email);
-            return Json(result);
+            return Json(result,JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

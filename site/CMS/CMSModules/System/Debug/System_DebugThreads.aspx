@@ -1,13 +1,16 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_Debug_System_DebugThreads"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_Debug_System_DebugThreads"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="System - SQL"
-    Codebehind="System_DebugThreads.aspx.cs" %>
+     Codebehind="System_DebugThreads.aspx.cs" %>
+
+<asp:Content ContentPlaceHolderID="plcActions" runat="server">
+    <div class="header-actions-container">
+        <cms:CMSButton runat="server" ID="btnRunDummy" OnClick="btnRunDummy_Click" ButtonStyle="Default" />
+    </div>
+</asp:Content>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <asp:HiddenField runat="server" ID="hdnGuid" EnableViewState="false" />
     <asp:Button runat="server" ID="btnCancel" CssClass="HiddenButton" OnClick="btnCancel_Click" />
-    <div class="AlignRight">
-        <cms:CMSButton runat="server" ID="btnRunDummy" OnClick="btnRunDummy_Click" ButtonStyle="Default" />
-    </div>
     <cms:CMSUpdatePanel runat="server" ID="pnlUpdate">
         <ContentTemplate>
             <cms:LocalizedHeading runat="server" ID="headThreadsRunning" Level="4" CssClass="listing-title" EnableViewState="False" ResourceString="Debug.RunningThreads" DisplayColon="True" />

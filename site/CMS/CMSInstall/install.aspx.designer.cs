@@ -201,13 +201,31 @@ public partial class CMSInstall_install {
     protected global::System.Web.UI.WebControls.WizardStep stpDBProgress;
     
     /// <summary>
-    /// dbProgress control.
+    /// lblDBProgress control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSInstall_Controls_WizardSteps_DBProgress dbProgress;
+    protected global::System.Web.UI.WebControls.Label lblDBProgress;
+    
+    /// <summary>
+    /// pnlDBProgress control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlDBProgress;
+    
+    /// <summary>
+    /// ctlAsyncDB control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.UIControls.AsyncControl ctlAsyncDB;
     
     /// <summary>
     /// stpLicenseSetting control.
@@ -282,13 +300,22 @@ public partial class CMSInstall_install {
     protected global::System.Web.UI.WebControls.WizardStep stpProgress;
     
     /// <summary>
-    /// siteProgress control.
+    /// pnlProgress control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSInstall_Controls_WizardSteps_SiteProgress siteProgress;
+    protected global::System.Web.UI.WebControls.Panel pnlProgress;
+    
+    /// <summary>
+    /// ctlAsyncImport control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.UIControls.AsyncControl ctlAsyncImport;
     
     /// <summary>
     /// stpFinish control.
@@ -462,13 +489,13 @@ public partial class CMSInstall_install {
     protected global::CMSInstall_Controls_LayoutPanels_Version versionPanel;
     
     /// <summary>
-    /// errorPanel control.
+    /// pnlError control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSInstall_Controls_LayoutPanels_Error errorPanel;
+    protected global::CMSInstall_Controls_LayoutPanels_Error pnlError;
     
     /// <summary>
     /// logPanel control.
@@ -480,13 +507,13 @@ public partial class CMSInstall_install {
     protected global::CMSInstall_Controls_LayoutPanels_Log logPanel;
     
     /// <summary>
-    /// warningPanel control.
+    /// pnlWarning control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSInstall_Controls_LayoutPanels_Warning warningPanel;
+    protected global::CMSInstall_Controls_LayoutPanels_Warning pnlWarning;
     
     /// <summary>
     /// hdnState control.
@@ -523,22 +550,4 @@ public partial class CMSInstall_install {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Literal ltlAdvanced;
-    
-    /// <summary>
-    /// ucAsyncControl control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.UIControls.AsyncControl ucAsyncControl;
-    
-    /// <summary>
-    /// ucDBAsyncControl control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.UIControls.AsyncControl ucDBAsyncControl;
 }

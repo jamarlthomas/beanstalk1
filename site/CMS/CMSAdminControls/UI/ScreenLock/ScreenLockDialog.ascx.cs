@@ -319,10 +319,39 @@ public partial class CMSAdminControls_UI_ScreenLock_ScreenLockDialog : CMSUserCo
     private static string UnlockScreen()
     {
         CMSPage.IsScreenLocked = false;
-        SiteInfo currentSite = SiteContext.CurrentSite;
-        AuthenticationHelper.FinalizeAuthenticationProcess(MembershipContext.AuthenticatedUser, (currentSite != null) ? currentSite.SiteID : 0);
+        
+        // Reset invalid logon attempts for current user
+        ResetCurrentUserInvalidLogonAttempts();
+
         SecurityHelper.LogScreenLockAction();
         return "valok|" + SecurityHelper.GetSecondsToShowScreenLockAction(SiteContext.CurrentSiteName);
+    }
+
+
+    /// <summary>
+    /// Resets invalid logon attempts for current user.
+    /// </summary>
+    private static void ResetCurrentUserInvalidLogonAttempts()
+    {
+        // Get the current user
+        var currentUser = UserInfoProvider.GetUserInfo(MembershipContext.AuthenticatedUser.UserID);
+
+        if (currentUser != null)
+        {
+            // Disable logging
+            using (CMSActionContext context = new CMSActionContext())
+            {
+                context.LogSynchronization = false;
+                context.LogExport = false;
+                context.LogEvents = false;
+
+                // Reset invalid logon attempts
+                currentUser.UserInvalidLogOnAttempts = 0;
+
+                // Update current user
+                UserInfoProvider.SetUserInfo(currentUser);
+            }
+        }
     }
 
     #endregion

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 
 using CMS.Ecommerce;
@@ -92,10 +92,6 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartSKUP
         gridDiscounts.Columns[3].HeaderText = GetString("ProductPriceDetail.DiscountedUnits");
         gridDiscounts.Columns[4].HeaderText = GetString("ProductPriceDetail.Subtotal");
 
-        // Taxes table header
-        gridTaxes.Columns[0].HeaderText = GetString("ProductPriceDetail.Taxes");
-        gridTaxes.Columns[3].HeaderText = GetString("ProductPriceDetail.Subtotal");
-
         // Discounts
         gridDiscounts.DataSource = ShoppingCartItem.DiscountsTable;
         gridDiscounts.DataBind();
@@ -113,10 +109,6 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartSKUP
             // Compute product options prices which will be added to products total prices
             optionsTotalPrice += accessories.Sum(option => option.TotalPrice);
         }
-
-        // Taxes
-        gridTaxes.DataSource = ShoppingCartItem.TaxesTable;
-        gridTaxes.DataBind();
 
         // Subtotals and Totals
         if (ShoppingCartItem.IsPartialDiscountApplied)
@@ -162,10 +154,10 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartSKUP
 
         // Show subtotals
         plcTotalDiscount.Visible = (ShoppingCartItem.DiscountsTable.Rows.Count != 1);
-        plcTotalTax.Visible = (ShoppingCartItem.TaxesTable.Rows.Count != 1);
-
-        // Show alternate header
-        plcTaxes.Visible = (gridTaxes.Rows.Count == 0);
+        
+        // Show tax total
+        plcTotalTax.Visible = ShoppingCartItem.UnitTotalTax > 0;
+    
         plcDiscounts.Visible = (gridDiscounts.Rows.Count == 0);
 
         if (gridDiscounts.HeaderRow != null)
@@ -189,23 +181,6 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartSKUP
             }
 
             gridDiscounts.HeaderRow.Cells[2].Visible = false;
-        }
-
-        if (gridTaxes.HeaderRow != null)
-        {
-            if (ShoppingCartItem.IsPartialDiscountApplied)
-            {
-                // View with partial discount
-                gridTaxes.Columns[2].Visible = false;
-            }
-            else
-            {
-                // Standard view
-                gridTaxes.HeaderRow.Cells[1].ColumnSpan = 2;
-                gridTaxes.HeaderRow.Cells[1].Width = 160;
-                gridTaxes.HeaderRow.Cells[2].Visible = false;
-                gridTaxes.Columns[3].Visible = false;
-            }
         }
     }
 

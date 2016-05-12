@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_WebPartProperties_properties"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_WebPartProperties_properties"
     Theme="default" EnableEventValidation="false" ValidateRequest="false" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Codebehind="WebPartProperties_properties.aspx.cs" %>
+     Codebehind="WebPartProperties_properties.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/PortalEngine/Controls/WebParts/WebpartProperties.ascx"
     TagName="WebpartProperties" TagPrefix="cms" %>

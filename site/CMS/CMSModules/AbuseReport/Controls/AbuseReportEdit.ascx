@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_AbuseReport_Controls_AbuseReportEdit" Codebehind="AbuseReportEdit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_AbuseReport_Controls_AbuseReportEdit"  Codebehind="AbuseReportEdit.ascx.cs" %>
 
 <asp:Panel ID="pnlBody" runat="server" EnableViewState="false" CssClass="abuse-report">
     <div>

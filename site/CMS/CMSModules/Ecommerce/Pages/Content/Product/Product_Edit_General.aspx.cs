@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 
+using CMS.Core;
 using CMS.Base;
 using CMS.DocumentEngine;
 using CMS.Ecommerce;
@@ -8,7 +9,7 @@ using CMS.PortalEngine;
 using CMS.SiteProvider;
 using CMS.UIControls;
 
-[Security(Resource = "CMS.Ecommerce", ResourceSite = true)]
+[Security(Resource = ModuleName.ECOMMERCE, ResourceSite = true)]
 [UIElement("CMS.Content", "EditForm", ValidateDialogHash = false)]
 public partial class CMSModules_Ecommerce_Pages_Content_Product_Product_Edit_General : CMSEcommercePage
 {
@@ -38,9 +39,9 @@ public partial class CMSModules_Ecommerce_Pages_Content_Product_Product_Edit_Gen
         CMSContentPage.CheckSecurity();
 
         // Check module permissions
-        if (!ECommerceContext.IsUserAuthorizedForPermission("ReadProducts"))
+        if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.PRODUCTS_READ))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", "EcommerceRead OR ReadProducts");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceRead OR ReadProducts");
         }
 
         SKUInfo sku = null;

@@ -12,15 +12,6 @@
 public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartPaymentShipping {
     
     /// <summary>
-    /// lblError control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblError;
-    
-    /// <summary>
     /// headTitle control.
     /// </summary>
     /// <remarks>
@@ -28,6 +19,15 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartPaym
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.LocalizedHeading headTitle;
+    
+    /// <summary>
+    /// lblError control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblError;
     
     /// <summary>
     /// plcShipping control.

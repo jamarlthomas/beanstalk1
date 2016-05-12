@@ -176,7 +176,15 @@ namespace MultiFileUploader
                                 break;
                         }
 
-                        args.CleanTempFile();
+                        try
+                        {
+                            args.CleanTempFile();
+                        }
+                        catch (Exception ex)
+                        {
+                            // Log the exception
+                            EventLogProvider.LogException("Uploader", "ProcessRequest", ex, additionalMessage: "Cannot delete temporary file.");
+                        }
                     }
                 }
             }
@@ -186,8 +194,11 @@ namespace MultiFileUploader
                 EventLogProvider.LogException("Uploader", "ProcessRequest", ex);
 
                 // Send error message
-                context.Response.Write(String.Format(@"0|{0}", HTMLHelper.EnsureLineEnding(ex.Message, " ")));
-                context.Response.Flush();
+                if (context.Response.IsClientConnected)
+                {
+                    context.Response.Write(String.Format(@"0|{0}", HTMLHelper.EnsureLineEnding(ex.Message, " ")));
+                    context.Response.Flush();
+                }
             }
         }
 
@@ -214,10 +225,10 @@ namespace MultiFileUploader
                 }
 
                 // Check if class exists
-                DataClassInfo ci = DataClassInfoProvider.GetDataClassInfo("CMS.File");
+                DataClassInfo ci = DataClassInfoProvider.GetDataClassInfo(SystemDocumentTypes.File);
                 if (ci == null)
                 {
-                    throw new Exception(string.Format(ResHelper.GetString("dialogs.newfile.classnotfound"), "CMS.File"));
+                    throw new Exception(string.Format(ResHelper.GetString("dialogs.newfile.classnotfound"), SystemDocumentTypes.File));
                 }
 
                 if (args.FileArgs.IncludeExtension)
@@ -228,7 +239,7 @@ namespace MultiFileUploader
                 // Make sure the file name with extension respects maximum file name
                 name = TreePathUtils.EnsureMaxFileNameLength(name, ci.ClassName);
 
-                node = TreeNode.New("CMS.File", TreeProvider);
+                node = TreeNode.New(SystemDocumentTypes.File, TreeProvider);
                 node.DocumentCulture = args.FileArgs.Culture;
                 node.DocumentName = name;
                 if (args.FileArgs.NodeGroupID > 0)
@@ -277,7 +288,7 @@ namespace MultiFileUploader
                 // Delete the document if something failed
                 if (newDocumentCreated && (node != null) && (node.DocumentID > 0))
                 {
-                    DocumentHelper.DeleteDocument(node, TreeProvider, false, true, true);
+                    DocumentHelper.DeleteDocument(node, TreeProvider, false, true);
                 }
 
                 args.Message = ex.Message;
@@ -297,35 +308,44 @@ namespace MultiFileUploader
                 if (!string.IsNullOrEmpty(args.AfterSaveJavascript))
                 {
                     // Calling javascript function with parameters attachments url, name, width, height
-                    args.AfterScript += string.Format(@"
-                    if (window.{0} != null)
-                    {{
-                        window.{0}();
-                    }}
-                    else if((window.parent != null) && (window.parent.{0} != null))
-                    {{
-                        window.parent.{0}();
-                    }}", args.AfterSaveJavascript);
+                    args.AfterScript += string.Format(
+@"
+if (window.{0} != null) {{
+    window.{0}(files);
+}}
+else if((window.parent != null) && (window.parent.{0} != null))
+{{
+    window.parent.{0}(files);
+}}
+", 
+                        args.AfterSaveJavascript
+                    );
                 }
 
-                // Create after script and return it to the silverlight application, this script will be evaluated by the SL application in the end
-                args.AfterScript += string.Format(@"
-                if (window.InitRefresh_{0} != null)
-                {{
-                    window.InitRefresh_{0}('{1}', false, false, {2});
-                }}
-                else {{ 
-                    if ('{1}' != '') {{
-                        alert('{1}');
-                    }}
-                }}",
-                                                  args.ParentElementID,
-                                                  ScriptHelper.GetString(args.Message.Trim(), false),
-                                                  nodeInfo + (args.IsInsertMode ? "'insert'" : "'update'"));
+                // Create after script, this script will be evaluated after the upload has finished
+                args.AfterScript += string.Format(
+@"
+if (window.InitRefresh_{0} != null)
+{{
+    window.InitRefresh_{0}('{1}', false, false, {2});
+}}
+else {{ 
+    if ('{1}' != '') {{
+        alert('{1}');
+    }}
+}}",
+                    args.ParentElementID,
+                    ScriptHelper.GetString(args.Message.Trim(), false),
+                    nodeInfo + (args.IsInsertMode ? "'insert'" : "'update'")
+                );
 
                 args.AddEventTargetPostbackReference();
-                context.Response.Write(args.AfterScript);
-                context.Response.Flush();
+
+                if (context.Response.IsClientConnected)
+                {
+                    context.Response.Write(args.AfterScript);
+                    context.Response.Flush();
+                }
             }
         }
 
@@ -406,25 +426,33 @@ namespace MultiFileUploader
                 {
                     if (!string.IsNullOrEmpty(args.AfterSaveJavascript))
                     {
-                        args.AfterScript = String.Format(@"
-                        if (window.{0} != null) {{
-                            window.{0}()
-                        }} else if ((window.parent != null) && (window.parent.{0} != null)) {{
-                            window.parent.{0}() 
-                        }}", args.AfterSaveJavascript);
+                        args.AfterScript = String.Format(
+@"
+if (window.{0} != null) {{
+    window.{0}(files)
+}} else if ((window.parent != null) && (window.parent.{0} != null)) {{
+    window.parent.{0}(files) 
+}}", 
+                            args.AfterSaveJavascript
+                        );
                     }
                     else
                     {
-                        args.AfterScript = String.Format(@"
-                        if (window.InitRefresh_{0})
-                        {{
-                            window.InitRefresh_{0}('{1}', false, false, {2});
-                        }}
-                        else {{ 
-                            if ('{1}' != '') {{
-                                alert('{1}');
-                            }}
-                        }}", args.ParentElementID, ScriptHelper.GetString(args.Message.Trim(), false), mfi.MetaFileID);
+                        args.AfterScript = String.Format(
+@"
+if (window.InitRefresh_{0})
+{{
+    window.InitRefresh_{0}('{1}', false, false, {2});
+}}
+else {{ 
+    if ('{1}' != '') {{
+        alert('{1}');
+    }}
+}}", 
+                            args.ParentElementID, 
+                            ScriptHelper.GetString(args.Message.Trim(), false), 
+                            mfi.MetaFileID
+                        );
                     }
                 }
                 else
@@ -433,8 +461,12 @@ namespace MultiFileUploader
                 }
 
                 args.AddEventTargetPostbackReference();
-                context.Response.Write(args.AfterScript);
-                context.Response.Flush();
+                
+                if (context.Response.IsClientConnected)
+                {
+                    context.Response.Write(args.AfterScript);
+                    context.Response.Flush();
+                }
             }
         }
 
@@ -514,25 +546,33 @@ namespace MultiFileUploader
                 {
                     if (!string.IsNullOrEmpty(args.AfterSaveJavascript))
                     {
-                        args.AfterScript = String.Format(@"
-                        if (window.{0} != null) {{
-                            window.{0}()
-                        }} else if ((window.parent != null) && (window.parent.{0} != null)) {{
-                            window.parent.{0}() 
-                        }}", args.AfterSaveJavascript);
+                        args.AfterScript = String.Format(
+@"
+if (window.{0} != null) {{
+    window.{0}(files)
+}} else if ((window.parent != null) && (window.parent.{0} != null)) {{
+    window.parent.{0}(files) 
+}}
+", 
+                            args.AfterSaveJavascript
+                        );
                     }
                     else
                     {
-                        args.AfterScript = String.Format(@"
-                        if (window.InitRefresh_{0})
-                        {{
-                            window.InitRefresh_{0}('{1}', false, false);
-                        }}
-                        else {{ 
-                            if ('{1}' != '') {{
-                                alert('{1}');
-                            }}
-                        }}", args.ParentElementID, ScriptHelper.GetString(args.Message.Trim(), false));
+                        args.AfterScript = String.Format(
+@"
+if (window.InitRefresh_{0}) {{
+    window.InitRefresh_{0}('{1}', false, false);
+}}
+else {{ 
+    if ('{1}' != '') {{
+        alert('{1}');
+    }}
+}}
+", 
+                            args.ParentElementID, 
+                            ScriptHelper.GetString(args.Message.Trim(), false)
+                        );
                     }
                 }
                 else
@@ -541,8 +581,12 @@ namespace MultiFileUploader
                 }
 
                 args.AddEventTargetPostbackReference();
-                context.Response.Write(args.AfterScript);
-                context.Response.Flush();
+
+                if (context.Response.IsClientConnected)
+                {
+                    context.Response.Write(args.AfterScript);
+                    context.Response.Flush();
+                }
             }
         }
 
@@ -567,7 +611,7 @@ namespace MultiFileUploader
                     {
                         throw new Exception("Given document doesn't exist!");
                     }
-                    
+
                     // Check out the document when first attachment is uploaded
                     if (AutoCheck && args.IsFirstUpload)
                     {
@@ -614,14 +658,6 @@ namespace MultiFileUploader
                     if (AutoCheck && args.IsLastUpload)
                     {
                         VersionManager.CheckIn(node, null);
-
-                        // Get current step info
-                        WorkflowStepInfo si = WorkflowManager.GetStepInfo(node);
-                        if (si != null)
-                        {
-                            // Decide if full refresh is needed
-                            args.FullRefresh = si.StepIsPublished || si.StepIsArchived;
-                        }
                     }
                 }
                 else if (args.AttachmentArgs.FormGuid != Guid.Empty)
@@ -717,7 +753,7 @@ namespace MultiFileUploader
                 // Create attachment info string
                 string attachmentInfo = ((newAttachment != null) && (newAttachment.AttachmentGUID != Guid.Empty) && (args.IncludeNewItemInfo)) ? String.Format("'{0}', ", newAttachment.AttachmentGUID) : "";
 
-                // Create after script and return it to the silverlight application, this script will be evaluated by the SL application in the end
+                // Create after script, this script will be evaluated after the upload has finished
                 args.AfterScript += string.Format(@"
                 if (window.InitRefresh_{0})
                 {{
@@ -735,8 +771,12 @@ namespace MultiFileUploader
                     attachmentInfo + (args.IsInsertMode ? "'insert'" : "'update'"));
 
                 args.AddEventTargetPostbackReference();
-                context.Response.Write(args.AfterScript);
-                context.Response.Flush();
+
+                if (context.Response.IsClientConnected)
+                {
+                    context.Response.Write(args.AfterScript);
+                    context.Response.Flush();
+                }
             }
         }
 
@@ -796,16 +836,16 @@ namespace MultiFileUploader
             }
 
             // Check user permissions
-            if (!MembershipContext.AuthenticatedUser.IsAuthorizedToCreateNewDocument(args.FileArgs.NodeID, "CMS.File"))
+            if (!MembershipContext.AuthenticatedUser.IsAuthorizedToCreateNewDocument(args.FileArgs.NodeID, SystemDocumentTypes.File))
             {
-                throw new Exception(string.Format(ResHelper.GetString("dialogs.newfile.notallowed"), "CMS.File"));
+                throw new Exception(string.Format(ResHelper.GetString("dialogs.newfile.notallowed"), SystemDocumentTypes.File));
             }
 
             // Check if class exists
-            DataClassInfo ci = DataClassInfoProvider.GetDataClassInfo("CMS.File");
+            DataClassInfo ci = DataClassInfoProvider.GetDataClassInfo(SystemDocumentTypes.File);
             if (ci == null)
             {
-                throw new Exception(string.Format(ResHelper.GetString("dialogs.newfile.classnotfound"), "CMS.File"));
+                throw new Exception(string.Format(ResHelper.GetString("dialogs.newfile.classnotfound"), SystemDocumentTypes.File));
             }
 
             // Get the node
@@ -821,7 +861,7 @@ namespace MultiFileUploader
                 }
 
                 // Check user permissions
-                if (!MembershipContext.AuthenticatedUser.IsAuthorizedToCreateNewDocument(parentNode, "CMS.File"))
+                if (!MembershipContext.AuthenticatedUser.IsAuthorizedToCreateNewDocument(parentNode, SystemDocumentTypes.File))
                 {
                     throw new Exception(string.Format(ResHelper.GetString("dialogs.newfile.notallowed"), args.AttachmentArgs.NodeClassName));
                 }

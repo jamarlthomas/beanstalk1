@@ -20,7 +20,7 @@ public partial class CMSFormControls_Selectors_InsertImageOrMedia_Header : CMSMo
         {
             header.StopProcessing = true;
             header.Visible = false;
-            string url = ResolveUrl("~/CMSMessages/Error.aspx?title=" + GetString("dialogs.badhashtitle") + "&text=" + GetString("dialogs.badhashtext") + "&cancel=1");
+            string url = ResolveUrl(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
             ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "errorRedirect", ScriptHelper.GetScript("if (window.parent != null) { window.parent.location = '" + url + "' }"));
         }
     }

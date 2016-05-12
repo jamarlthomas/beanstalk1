@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Security.Principal;
 using System.Web.UI;
@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 
 using CMS.CMSImportExport;
 using CMS.Core;
+using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -19,11 +20,12 @@ using CMS.UIControls;
 
 using TreeNode = CMS.DocumentEngine.TreeNode;
 
-public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserControl, ICallbackEventHandler
+public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserControl
 {
     #region "Variables"
 
     private static readonly Hashtable mManagers = new Hashtable();
+
     private bool? mSiteIsRunning;
     private bool mImportCanceled;
     private SiteImportSettings mImportSettings;
@@ -53,7 +55,7 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
             string key = "imManagers_" + ProcessGUID;
             if (mManagers[key] == null)
             {
-                // On Azure, the restart cannot be detected via Instace GUIDs since with more instances, each instace has a different one.
+                // On Azure, the restart cannot be detected via Instance GUIDs since with more instances, each instance has a different one.
                 if (!StorageHelper.IsExternalStorage(null))
                 {
                     // Detect restart of the application
@@ -347,9 +349,11 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
             NextButton.Enabled = true;
 
             // Bind async controls events
-            ctrlAsync.OnFinished += ctrlAsync_OnFinished;
-            ctrlAsync.OnError += ctrlAsync_OnError;
-            ctrlImport.OnFinished += ctrlImport_OnFinished;
+            ctrlAsyncSelection.OnFinished += ctrlAsyncSelection_OnFinished;
+            ctrlAsyncSelection.OnError += ctrlAsyncSelection_OnError;
+
+            ctlAsyncImport.OnCancel += ctlAsyncImport_OnCancel;
+            ctlAsyncImport.OnFinished += ctlAsyncImport_OnFinished;
 
             if (wzdImport.ActiveStepIndex < 4)
             {
@@ -358,61 +362,52 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
             }
 
             // Javascript functions
-            string script =
-                "var nMessageText = '';\n" +
-                "var nErrorText = '';\n" +
-                "var nWarningText = '';\n" +
-                "var nMachineName = '" + SystemContext.MachineName.ToLowerCSafe() + "';\n" +
-                "var getBusy = false; \n" +
-                "function GetImportState(cancel) \n" +
-                "{ if(window.Activity){window.Activity();} if (getBusy && !cancel) return; getBusy = true; setTimeout(\"getBusy = false;\", 2000); var argument = cancel + ';' + nMessageText.length + ';' + nErrorText.length + ';' + nWarningText.length + ';' + nMachineName; return " + Page.ClientScript.GetCallbackEventReference(this, "argument", "SetImportStateMssg", "argument", true) + " } \n";
+            string script = String.Format(
+@"
+function Finished(sender) {{
+    var errorElement = document.getElementById('{2}');
 
-            script +=
-                "function SetImportStateMssg(rValue, context) \n" +
-                "{ \n" +
-                "   getBusy = false; \n" +
-                "   if(rValue!='') \n" +
-                "   { \n" +
-                "       var args = context.split(';');\n" +
-                "       var values = rValue.split('" + AbstractImportExportSettings.SEPARATOR + "');\n" +
-                "       var messageElement = document.getElementById('" + lblProgress.ClientID + "');\n" +
-                "       var errorElement = document.getElementById('" + lblError.ClientID + "');\n" +
-                "       var warningElement = document.getElementById('" + lblWarning.ClientID + "');\n" +
-                "       var messageText = nMessageText;\n" +
-                "       messageText = values[1] + messageText.substring(messageText.length - args[1]);\n" +
-                "       if(messageText.length > nMessageText.length){ nMessageText = messageElement.innerHTML = messageText; }\n" +
-                "       var errorText = nErrorText;\n" +
-                "       errorText = values[2] + errorText.substring(errorText.length - args[2]);\n" +
-                "       if(errorText.length > nErrorText.length){ nErrorText = errorElement.innerHTML = errorText; document.getElementById('" + pnlError.ClientID + "').style.removeProperty('display'); }\n" +
-                "       var warningText = nWarningText;\n" +
-                "       warningText = values[3] + warningText.substring(warningText.length - args[3]);\n" +
-                "       if(warningText.length > nWarningText.length){ nWarningText = warningElement.innerHTML = warningText; document.getElementById('" + pnlWarning.ClientID + "').style.removeProperty('display'); }\n" +
-                "       if((values=='') || (values[0]=='F')) \n" +
-                "       { \n" +
-                "           StopImportStateTimer(); \n" +
-                "           if (!document.importCancelled) { \n" +
-                "              if(values[2] == '') { \n" +
-                "                  BTN_Enable('" + NextButton.ClientID + "'); \n" +
-                "              } \n" +
-                "              else { \n" +
-                "                  BTN_Enable('" + PreviousButton.ClientID + "'); \n" +
-                "              } \n" +
-                "              BTN_Disable('" + CancelButton.ClientID + "'); \n" +
-                "           } \n" +
-                "       } \n" +
-                "   } \n" +
-                "} \n";
+    var errorText = sender.getErrors();
+    if (errorText != '') {{ 
+        errorElement.innerHTML = errorText;
+        document.getElementById('{4}').style.removeProperty('display');
+    }}
+
+    var warningElement = document.getElementById('{3}');
+    
+    var warningText = sender.getWarnings();
+    if (warningText != '') {{ 
+        warningElement.innerHTML = warningText;
+        document.getElementById('{5}').style.removeProperty('display');
+    }}    
+
+    var actDiv = document.getElementById('actDiv');
+    if (actDiv != null) {{ 
+        actDiv.style.display = 'none'; 
+    }}
+
+    BTN_Disable('{0}');
+    BTN_Enable('{1}');
+
+    if ((errorText == null) || (errorText == '')) {{ 
+        BTN_Enable('{6}');
+    }}
+}}
+",
+                CancelButton.ClientID,
+                FinishButton.ClientID,
+                lblError.LabelClientID,
+                lblWarning.LabelClientID,
+                pnlError.ClientID,
+                pnlWarning.ClientID,
+                NextButton.ClientID
+            );
 
             // Register the script to perform get flags for showing buttons retrieval callback
-            ScriptHelper.RegisterClientScriptBlock(this, GetType(), "GetSetImportState", ScriptHelper.GetScript(script));
+            ScriptHelper.RegisterClientScriptBlock(this, GetType(), "Finished", ScriptHelper.GetScript(script));
 
             // Add cancel button attribute
-            CancelButton.Attributes.Add("onclick",
-                                        "BTN_Disable('" + CancelButton.ClientID + "'); " +
-                                        "CancelImport();" +
-                                        ((wzdImport.ActiveStepIndex == 3) ? string.Empty : "BTN_Enable('" + PreviousButton.ClientID + "'); ") +
-                                        "document.importCancelled = true;return false;"
-                );
+            CancelButton.Attributes.Add("onclick", ctlAsyncImport.GetCancelScript(true) + "return false;");
 
             wzdImport.NextButtonClick += wzdImport_NextButtonClick;
             wzdImport.PreviousButtonClick += wzdImport_PreviousButtonClick;
@@ -421,11 +416,17 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
     }
 
 
+    private void ctlAsyncImport_OnCancel(object sender, EventArgs e)
+    {
+        wzdImport_FinishButtonClick(sender, null);
+    }
+
+
     protected override void OnPreRender(EventArgs e)
     {
         base.OnPreRender(e);
 
-        // Initilaize header
+        // Initialize header
         InitializeHeader();
 
         // Button click script
@@ -506,6 +507,8 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
 
     protected void wzdImport_NextButtonClick(object sender, WizardNavigationEventArgs e)
     {
+        var settings = ImportSettings;
+        ClearErrorLabel();
         switch (e.CurrentStepIndex)
         {
             // Import type
@@ -531,24 +534,24 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
                                 // Template from zip file
                                 path += "\\" + ZipStorageProvider.GetZipFileName("template.zip");
 
-                                ImportSettings.TemporaryFilesPath = path;
-                                ImportSettings.SourceFilePath = path;
-                                ImportSettings.TemporaryFilesCreated = true;
-                                ImportSettings.RefreshMacroSecurity = true;
+                                settings.TemporaryFilesPath = path;
+                                settings.SourceFilePath = path;
+                                settings.TemporaryFilesCreated = true;
+                                settings.RefreshMacroSecurity = true;
                             }
                             else
                             {
                                 // Init the settings
-                                ImportSettings.TemporaryFilesCreated = false;
-                                ImportSettings.SourceFilePath = Server.MapPath(wi.WebTemplateFileName);
-                                ImportSettings.RefreshMacroSecurity = true;
+                                settings.TemporaryFilesCreated = false;
+                                settings.SourceFilePath = Server.MapPath(wi.WebTemplateFileName);
+                                settings.RefreshMacroSecurity = true;
                             }
 
-                            if (!File.Exists(ImportSettings.SourceFilePath))
+                            if (!File.Exists(settings.SourceFilePath))
                             {
                                 try
                                 {
-                                    ImportProvider.CreateTemporaryFiles(ImportSettings);
+                                    ImportProvider.CreateTemporaryFiles(settings);
                                 }
                                 catch (Exception ex)
                                 {
@@ -558,18 +561,13 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
                                 }
                             }
 
-                            if (SiteInfoProvider.GetSitesCount() == 0)
-                            {
-                                // No site exists, overwrite all
-                                ImportSettings.ImportType = ImportTypeEnum.AllNonConflicting;
-                                ImportSettings.CopyFiles = false;
-                            }
-                            else
-                            {
-                                // Some site exists, only new objects
-                                ImportSettings.ImportType = ImportTypeEnum.New;
-                            }
+                            // Import all, but only add new data
+                            settings.ImportType = ImportTypeEnum.AllNonConflicting;
+                            settings.ImportOnlyNewObjects = true;
+                            settings.CopyFiles = false;
 
+                            // Allow bulk inserts for faster import, web templates must be consistent enough to allow this without collisions
+                            settings.AllowBulkInsert = true;
 
                             ltlScriptAfter.Text = ScriptHelper.GetScript(
                                 "var actDiv = document.getElementById('actDiv'); \n" +
@@ -580,8 +578,8 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
                                 );
 
                             // Preselect objects asynchronously
-                            ctrlAsync.Parameter = "N";
-                            ctrlAsync.RunAsync(SelectObjects, WindowsIdentity.GetCurrent());
+                            ctrlAsyncSelection.Parameter = "N";
+                            ctrlAsyncSelection.RunAsync(SelectObjects, WindowsIdentity.GetCurrent());
 
                             e.Cancel = true;
                         }
@@ -619,7 +617,7 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
                         throw new Exception("Web template not found.");
                     }
 
-                    ImportSettings.IsWebTemplate = true;
+                    settings.IsWebTemplate = true;
 
                     string path = Server.MapPath(wi.WebTemplateFileName);
                     if (File.Exists(path + "\\template.zip"))
@@ -627,20 +625,20 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
                         // Template from zip file
                         path += "\\" + ZipStorageProvider.GetZipFileName("template.zip");
 
-                        ImportSettings.TemporaryFilesPath = path;
-                        ImportSettings.SourceFilePath = path;
-                        ImportSettings.TemporaryFilesCreated = true;
-                        ImportSettings.RefreshMacroSecurity = true;
+                        settings.TemporaryFilesPath = path;
+                        settings.SourceFilePath = path;
+                        settings.TemporaryFilesCreated = true;
+                        settings.RefreshMacroSecurity = true;
                     }
                     else
                     {
                         // Template from folder
-                        ImportSettings.TemporaryFilesCreated = false;
-                        ImportSettings.SourceFilePath = path;
-                        ImportSettings.RefreshMacroSecurity = true;
+                        settings.TemporaryFilesCreated = false;
+                        settings.SourceFilePath = path;
+                        settings.RefreshMacroSecurity = true;
                         try
                         {
-                            ImportProvider.CreateTemporaryFiles(ImportSettings);
+                            ImportProvider.CreateTemporaryFiles(settings);
                         }
                         catch (Exception ex)
                         {
@@ -650,13 +648,13 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
                         }
                     }
 
-                    ImportSettings.ImportType = SiteInfoProvider.GetSitesCount() == 0 ? ImportTypeEnum.AllNonConflicting : ImportTypeEnum.New;
+                    // Import all, but only add new data
+                    settings.ImportType = ImportTypeEnum.AllNonConflicting;
+                    settings.ImportOnlyNewObjects = true;
+                    settings.CopyFiles = false;
 
-                    if (wi.WebTemplateName.ToLower() == "dancinggoat")
-                    {
-                        // Dancing Goat demo site contains some global objects which need to be always imported
-                        ImportSettings.ImportType = ImportTypeEnum.AllNonConflicting;
-                    }
+                    // Allow bulk inserts for faster import, web templates must be consistent enough to allow this without collisions
+                    settings.AllowBulkInsert = true;
 
                     ltlScriptAfter.Text = ScriptHelper.GetScript(
                         "var actDiv = document.getElementById('actDiv');\n" +
@@ -669,8 +667,8 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
                         );
 
                     // Preselect objects asynchronously
-                    ctrlAsync.Parameter = "T";
-                    ctrlAsync.RunAsync(SelectObjects, WindowsIdentity.GetCurrent());
+                    ctrlAsyncSelection.Parameter = "T";
+                    ctrlAsyncSelection.RunAsync(SelectObjects, WindowsIdentity.GetCurrent());
 
                     e.Cancel = true;
                 }
@@ -687,6 +685,11 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
                 // Update settings
                 ImportSettings = siteDetails.Settings;
 
+                if (!siteType.SelectTemplate && (ImportSettings.SiteName == InfoHelper.CODENAME_AUTOMATIC))
+                {
+                    ImportSettings.SiteName = ValidationHelper.GetCodeName(settings.SiteDisplayName);
+                }
+
                 Culture = siteDetails.Culture;
 
                 pnlImport.ReloadData(true);
@@ -701,8 +704,8 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
                     return;
                 }
 
-                // Check licences
-                string error = ImportExportControl.CheckLicenses(ImportSettings);
+                // Check licenses
+                string error = ImportExportControl.CheckLicenses(settings);
                 if (!string.IsNullOrEmpty(error))
                 {
                     SetErrorLabel(error);
@@ -716,22 +719,21 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
                 PreviousButton.Enabled = false;
                 NextButton.Enabled = false;
 
-                SiteName = ImportSettings.SiteName;
-                Domain = ImportSettings.SiteDomain;
+                SiteName = settings.SiteName;
+                Domain = settings.SiteDomain;
 
-                // Init the Mimetype helper (required for the Import)
-                MimeTypeHelper.LoadMimeTypes();
+                // Start asynchronous Import
+                settings.SetSettings(ImportExportHelper.SETTINGS_DELETE_TEMPORARY_FILES, false);
+                settings.DefaultProcessObjectType = ProcessObjectEnum.Selected;
+                
+                var manager = ImportManager;
 
-                // Start asynchronnous Import
-                ImportSettings.SetSettings(ImportExportHelper.SETTINGS_DELETE_TEMPORARY_FILES, false);
-                ImportSettings.DefaultProcessObjectType = ProcessObjectEnum.Selected;
-                ImportManager.Settings = ImportSettings;
+                settings.LogContext = ctlAsyncImport.CurrentLog;
+                manager.Settings = settings;
 
                 // Import site asynchronously
-                ctrlImport.RunAsync(ImportManager.Import, WindowsIdentity.GetCurrent());
-                ctrlImport.PostbackOnError = false;
-
-                ltlScript.Text = ScriptHelper.GetScript("StartImportStateTimer();");
+                ctlAsyncImport.RunAsync(ImportManager.Import, WindowsIdentity.GetCurrent());
+                
                 wzdImport.ActiveStepIndex++;
                 break;
 
@@ -758,7 +760,7 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
                             tree.ChangeSiteDefaultCulture(SiteName, Culture, "en-US");
 
                             // Change root GUID
-                            TreeNode root = DocumentHelper.GetDocument(SiteName, "/", Culture, false, "cms.root", null, null, 1, false, null, tree);
+                            TreeNode root = DocumentHelper.GetDocument(SiteName, "/", Culture, false, SystemDocumentTypes.Root, null, null, 1, false, null, tree);
                             if (root != null)
                             {
                                 root.NodeGUID = Guid.NewGuid();
@@ -805,7 +807,7 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
 
     #region "Async control events"
 
-    protected void ctrlAsync_OnError(object sender, EventArgs e)
+    protected void ctrlAsyncSelection_OnError(object sender, EventArgs e)
     {
         SetErrorLabel(((AsyncControl)sender).Worker.LastException.Message);
 
@@ -814,9 +816,9 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
     }
 
 
-    protected void ctrlAsync_OnFinished(object sender, EventArgs e)
+    protected void ctrlAsyncSelection_OnFinished(object sender, EventArgs e)
     {
-        string param = ValidationHelper.GetString(ctrlAsync.Parameter, "");
+        string param = ValidationHelper.GetString(ctrlAsyncSelection.Parameter, "");
         if (param == "N")
         {
             // Stop the timer
@@ -845,7 +847,7 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
     }
 
 
-    protected void ctrlImport_OnFinished(object sender, EventArgs e)
+    protected void ctlAsyncImport_OnFinished(object sender, EventArgs e)
     {
         try
         {
@@ -856,7 +858,7 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
                 tree.ChangeSiteDefaultCulture(SiteName, Culture, "en-US");
 
                 // Change root GUID
-                TreeNode root = DocumentHelper.GetDocument(SiteName, "/", Culture, false, "cms.root", null, null, 1, false, null, tree);
+                TreeNode root = DocumentHelper.GetDocument(SiteName, "/", Culture, false, SystemDocumentTypes.Root, null, null, 1, false, null, tree);
                 if (root != null)
                 {
                     root.NodeGUID = Guid.NewGuid();
@@ -874,7 +876,6 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
             {
                 NextButton.Enabled = CancelButton.Enabled = false;
                 mImportCanceled = true;
-                lblProgress.Text = "<strong>" + ResHelper.GetAPIString("ImportSite.ImportCanceled", "Import process has been cancelled.") + "</strong>";
             }
             else
             {
@@ -976,7 +977,10 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
     // Preselect objects
     private void SelectObjects(object parameter)
     {
-        ImportSettings.LoadDefaultSelection();
+        var settings = ImportSettings;
+
+        settings.LoadDefaultSelection();
+        settings.SavePersistent();
     }
 
 
@@ -1003,7 +1007,7 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
 
 
     /// <summary>
-    /// Iniliazes (hides) alert labels
+    /// Initializes (hides) alert labels
     /// </summary>
     private void InitAlertLabels()
     {
@@ -1022,70 +1026,13 @@ public partial class CMSModules_ImportExport_Controls_NewSiteWizard : CMSUserCon
         lblError.Text = text;
     }
 
-    #endregion
-
-
-    #region "Callback handling"
 
     /// <summary>
-    /// Callback event handler.
+    /// Clears error alert label
     /// </summary>
-    /// <param name="argument">Callback argument</param>
-    public void RaiseCallbackEvent(string argument)
+    private void ClearErrorLabel()
     {
-        // Get arguments
-        string[] args = argument.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-        bool cancel = ValidationHelper.GetBoolean(args[0], false);
-        int messageLength = 0;
-        int errorLength = 0;
-        int warningLength = 0;
-        string machineName = null;
-
-        if (args.Length == 5)
-        {
-            messageLength = ValidationHelper.GetInteger(args[1], 0);
-            errorLength = ValidationHelper.GetInteger(args[2], 0);
-            warningLength = ValidationHelper.GetInteger(args[3], 0);
-            machineName = ValidationHelper.GetString(args[4], null);
-        }
-
-        // Check if on same machine
-        if (machineName == SystemContext.MachineName.ToLowerCSafe())
-        {
-            try
-            {
-                // Cancel Import
-                if (cancel)
-                {
-                    ImportManager.Settings.Cancel();
-                }
-
-                hdnState.Value = ImportManager.Settings.GetLimitedProgressLog(messageLength, errorLength, warningLength);
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogException("NewSiteWizard", "IMPORT", ex);
-
-                hdnState.Value = ImportManager.Settings.GetLimitedProgressLog(messageLength, errorLength, warningLength);
-            }
-            finally
-            {
-                if (ImportManager.Settings.GetProgressState() != LogStatusEnum.Info)
-                {
-                    // Delete persistent data
-                    PersistentStorageHelper.RemoveValue(PersistentSettingsKey);
-                }
-            }
-        }
-    }
-
-
-    /// <summary>
-    /// Callback result retrieving handler.
-    /// </summary>
-    public string GetCallbackResult()
-    {
-        return hdnState.Value;
+        lblError.Text = "";
     }
 
     #endregion

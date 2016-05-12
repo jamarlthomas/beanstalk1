@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_Content_CMSDesk_Properties_Properties_Frameset"
-    Theme="Default" Codebehind="Properties_Frameset.aspx.cs" %>
+    Theme="Default"  Codebehind="Properties_Frameset.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

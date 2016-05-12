@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 
 using CMS.ExtendedControls;
@@ -53,17 +53,6 @@ public partial class CMSInlineControls_YouTubeControl : InlineUserControl
         {
             SetValue("AutoPlay", value);
         }
-    }
-
-
-    /// <summary>
-    /// Enable loop for youtube player.
-    /// </summary>
-    [Obsolete("'Loop' parameter is no longer supported.")]
-    public bool Loop
-    {
-        get;
-        set;
     }
 
 

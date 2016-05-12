@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCart" Codebehind="ShoppingCart.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCart"  Codebehind="ShoppingCart.ascx.cs" %>
 <asp:Panel ID="pnlShoppingCart" runat="server" DefaultButton="btnNext">
     <asp:Label ID="lblError" runat="server" EnableViewState="false" CssClass="ErrorLabel"
         Visible="false" />

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -15,6 +15,7 @@ using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.UIControls;
+using CMS.PortalEngine;
 
 using CultureInfo = System.Globalization.CultureInfo;
 using TreeNode = CMS.DocumentEngine.TreeNode;
@@ -193,7 +194,7 @@ public partial class CMSModules_Objects_Controls_ViewObjectDataSet : CMSUserCont
 
                     Table contentTable;
 
-                    if (!ForceRowDisplayFormat && (dt.Columns.Count >= 6) && !dt.TableName.EqualsCSafe("ObjectTranslation", true))
+                    if (!ForceRowDisplayFormat && (dt.Columns.Count >= 6) && !dt.TableName.EqualsCSafe(TranslationHelper.TRANSLATION_TABLE, true))
                     {
                         // Write all rows
                         foreach (DataRow dr in dt.Rows)

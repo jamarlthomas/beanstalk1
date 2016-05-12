@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Base;
 using CMS.DataEngine;
@@ -7,6 +7,24 @@ using CMS.UIControls;
 
 public partial class CMSMessages_Error : MessagePage
 {
+    /// <summary>
+    /// Gets the title displayed on the error page
+    /// </summary>
+    private string ErrorPageTitle
+    {
+        get;
+        set;
+    }
+
+    /// <summary>
+    /// Gets the text displayed on the error page
+    /// </summary>
+    private string ErrorPageText
+    {
+        get;
+        set;
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
         // Try skip IIS http errors
@@ -36,47 +54,14 @@ public partial class CMSMessages_Error : MessagePage
         }
         else
         {
-            // Get title from URL
-            string title = QueryHelper.GetText("title", "");
+            // Get the resource strings for error page content
+            GetTitleAndTextResourceStrings();
 
-            if (String.IsNullOrEmpty(title))
-            {
-                // Get title from current context
-                title = ValidationHelper.GetString(Context.Items["title"], String.Empty);
-            }
-
-            if (title != "")
-            {
-                // Display custom title
-                titleElem.TitleText = title;
-            }
-            else
-            {
-                // Display general title
-                titleElem.TitleText = GetString("Error.Header");
-            }
-
-            // Set message text
-            string pathError = QueryHelper.GetText("aspxerrorpath", "");
-            if (pathError != "")
-            {
-                // Display path error message
-                lblInfo.Text = String.Format(GetString("Error.Info"), pathError);
-            }
-            else
-            {
-                // Get message from URL
-                string text = QueryHelper.GetText("text", "");
-
-                if (String.IsNullOrEmpty(text))
-                {
-                    // Get message from current context
-                    text = ValidationHelper.GetString(Context.Items["text"], String.Empty);
-                }
-
-                // Display custom error message
-                lblInfo.Text = text;
-            }
+            // Display title
+            titleElem.TitleText = GetString(ErrorPageTitle);
+            
+            // Display custom error message
+            lblInfo.Text = GetString(ErrorPageText);
 
             // Set button
             bool cancel = QueryHelper.GetBoolean("cancel", false);
@@ -88,14 +73,54 @@ public partial class CMSMessages_Error : MessagePage
             }
             else
             {
-                if (QueryHelper.GetBoolean("backlink", true))
-                {
-                    // Display link to home page
-                    lnkBack.Visible = true;
-                    lnkBack.Text = GetString("Error.Back");
-                    lnkBack.NavigateUrl = "~/";
-                }
+                // Display link to home page
+                lnkBack.Visible = true;
+                lnkBack.Text = GetString("Error.Back");
+                lnkBack.NavigateUrl = "~/";
             }
+        }
+    }
+
+
+    /// <summary>
+    /// Checks if hash is valid (there are two parameters excluded from hash validation - backlink and cancel)
+    /// </summary>
+    /// <returns>True if hash is valid, otherwise false</returns>
+    private bool IsHashValid()
+    {
+        bool isValid = false;
+
+        var hashSettings = new HashSettings() { Redirect = false };
+
+        if (QueryHelper.ValidateHash("hash", "cancel", hashSettings))
+        {
+            isValid = true;
+        }
+
+        return isValid;
+    }
+
+
+    /// <summary>
+    /// Gets the title and text to be displayed on error page
+    /// </summary>
+    private void GetTitleAndTextResourceStrings()
+    {
+        // If hash is valid, get the values from the query string
+        if (IsHashValid())
+        {
+            // Get title from URL
+            ErrorPageTitle = QueryHelper.GetText("title", "");
+            // Get text from URL
+            ErrorPageText = QueryHelper.GetText("text", "");
+        }
+        else
+        {
+            // Get general title
+            ErrorPageTitle = GetString("Error.Header");
+            
+            // Get general error text or display information about invalid hash if hash was found in URL
+            ErrorPageText = QueryHelper.Contains("hash") ? GetString("page.notconsistentparameters") : GetString("error.info");
         }
     }
 }

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Polls_Tools_Polls_New"
-    Title="Polls - New" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Codebehind="Polls_New.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Polls_Tools_Polls_New"
+    Title="Polls - New" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default"  Codebehind="Polls_New.aspx.cs" %>
 <%@ Register Src="~/CMSModules/Polls/Controls/PollNew.ascx" TagName="PollNew"
     TagPrefix="cms" %>
     

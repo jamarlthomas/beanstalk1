@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Data;
 using System.Web;
@@ -72,7 +72,7 @@ public partial class CMSModules_ContactManagement_FormControls_ContactRoleDialog
             return;
         }
 
-        PageTitle.TitleText = GetString("om.contactrole.select");
+        PageTitle.TitleText = GetString("om.contactrole.selectitem");
         Page.Title = PageTitle.TitleText;
 
         // Check if the dialog was opened from mass actions

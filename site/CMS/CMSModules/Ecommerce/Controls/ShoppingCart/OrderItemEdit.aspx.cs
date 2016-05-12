@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.DataEngine;
@@ -178,21 +178,25 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_OrderItemEdit : 
         // Check if order item modification is allowed
         if (!Order.CheckPermissions(PermissionsEnum.Modify, CurrentSiteName, CurrentUser))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyOrders");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyOrders");
         }
         
         // Reset auto added units (already auto added units in the shopping cart will not removed)
         ShoppingCartItem.CartItemAutoAddedUnits = 0;
 
         // Get new price
-        double rate = (SKU.IsGlobal) ? ShoppingCart.ExchangeRateForGlobalItems : ShoppingCart.ExchangeRate;
-        double newPrice = ExchangeRateInfoProvider.ApplyExchangeRate(ValidationHelper.GetDouble(EditForm.FieldControls["CartItemUnitPrice"].Value, 0.0), 1 / rate);
+        var rate = (SKU.IsGlobal) ? ShoppingCart.ExchangeRateForGlobalItems : ShoppingCart.ExchangeRate;
+        var newPrice = (double)CurrencyConverter.ApplyExchangeRate(ValidationHelper.GetDecimal(EditForm.FieldControls["CartItemUnitPrice"].Value, 0m), (decimal)(1 / rate));
 
-        // Update price
-        if ((SKU.SKUProductType == SKUProductTypeEnum.Donation)
-            || (SKU.SKUProductType == SKUProductTypeEnum.Text))
+        // Update direct price (donation or product with attribute or text options)
+        if (!Double.IsNaN(ShoppingCartItem.CartItemPrice))
         {
-            // Donation product type stores value in CartItemPrice
+            if (ShoppingCartItem.ProductOptions.Count > 0)
+            {
+                // Set price without product options to SKU
+                ShoppingCartItem.SKU.SKUPrice += newPrice - ShoppingCartItem.CartItemPrice;
+            }
+
             ShoppingCartItem.CartItemPrice = newPrice;
         }
         else
@@ -213,7 +217,7 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_OrderItemEdit : 
         }
 
         // Update product text
-        if (SKU.IsProductOption && (SKU.SKUOptionCategory.CategoryType == OptionCategoryTypeEnum.Text))
+        if (SKU.IsTextAttribute)
         {
             var controlName = (SKU.SKUOptionCategory.CategorySelectionType == OptionCategorySelectionTypeEnum.TextArea) ? "CartItemTextArea" : "CartItemTextBox";
             ShoppingCartItem.CartItemText = ValidationHelper.GetString(EditForm.FieldControls[controlName].Value, String.Empty);
@@ -300,12 +304,6 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_OrderItemEdit : 
                         errorMessage = String.Format(GetString("com.orderitemedit.pricerangemax"), fMaxPrice);
                     }
                 }
-
-                if (!SKU.IsProductOption && (newPrice < 0))
-                {
-                    // New price is negative
-                    errorMessage = GetString("com.newproduct.skupricenotdouble");
-                }
             }
             else
             {
@@ -363,8 +361,8 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_OrderItemEdit : 
             // Disable UIForm if editing is disabled
             EditForm.Enabled = EditingEnabled;
 
-            // Product options and bundle items unit count depends on their parents
-            EditForm.FieldControls["SKUUnits"].Enabled = !(ShoppingCartItem.IsProductOption || ShoppingCartItem.IsBundleItem);
+            // Disable editing of unit count for product options
+            EditForm.FieldControls["SKUUnits"].Enabled = !ShoppingCartItem.IsAccessoryProduct;
 
             EditForm.FieldControls["CartItemName"].Value = sku.SKUName;
             EditForm.FieldControls["CartItemUnitPrice"].Value = CurrencyInfoProvider.GetFormattedValue(ShoppingCartItem.UnitPrice, ShoppingCart.Currency);
@@ -375,6 +373,13 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_OrderItemEdit : 
             {
                 var controlName = (sku.SKUOptionCategory.CategorySelectionType == OptionCategorySelectionTypeEnum.TextBox) ? "CartItemTextBox" : "CartItemTextArea";
                 EditForm.FieldControls[controlName].Value = itemText;
+            }
+
+            // Hide unit price and units count edit for text option (price is already displayed in parent product)
+            if (sku.IsTextAttribute)
+            {
+                EditForm.FieldsToHide.Add("CartItemUnitPrice");
+                EditForm.FieldsToHide.Add("SKUUnits");
             }
         }
     }

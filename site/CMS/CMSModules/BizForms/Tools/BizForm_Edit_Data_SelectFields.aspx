@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_BizForms_Tools_BizForm_Edit_Data_SelectFields" Theme="Default"
-    MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" Title="BizForm Edit Data - Select Fields" Codebehind="BizForm_Edit_Data_SelectFields.aspx.cs" %>
+    MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" Title="BizForm Edit Data - Select Fields"  Codebehind="BizForm_Edit_Data_SelectFields.aspx.cs" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <cms:CMSCheckBoxList ID="chkListFields" runat="server" />

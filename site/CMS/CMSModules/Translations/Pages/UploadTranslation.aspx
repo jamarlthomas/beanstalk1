@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Translations_Pages_UploadTranslation"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Translations_Pages_UploadTranslation"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Codebehind="UploadTranslation.aspx.cs" Title="Upload translation" %>
+     Codebehind="UploadTranslation.aspx.cs" Title="Upload translation" %>
 
 <%@ Register Src="~/CMSModules/Translations/Controls/UI/TranslationSubmission/UploadTranslation.ascx"
     TagName="UploadTranslation" TagPrefix="cms" %>

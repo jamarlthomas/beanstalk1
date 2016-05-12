@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Merge_Split.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_Account_Merge_Split"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Merge_Split.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_Account_Merge_Split"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Split merged accounts" EnableEventValidation="false"
     Theme="Default" %>
 

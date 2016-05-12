@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Media_LibrarySettings.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Media_LibrarySettings.ascx.cs"
     Inherits="CMSModules_MediaLibrary_FormControls_Cloning_Media_LibrarySettings" %>
 <div class="form-horizontal">
     <div class="form-group">

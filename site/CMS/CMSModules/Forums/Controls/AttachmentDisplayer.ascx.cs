@@ -1,18 +1,13 @@
-using System;
+﻿using System;
 using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 
 using CMS.Forums;
 using CMS.Helpers;
 
 public partial class CMSModules_Forums_Controls_AttachmentDisplayer : ForumViewer
 {
-    private int mPostID = 0;
-    private int mPostAttachmentCount = 0;
+    private int mPostID;
+    private int mPostAttachmentCount;
     protected string mAttachmentSeparator = "&emsp;";
 
 
@@ -88,8 +83,7 @@ public partial class CMSModules_Forums_Controls_AttachmentDisplayer : ForumViewe
     /// <summary>
     /// Returns HTML code with link to attachment.
     /// </summary>
-    /// <param name="attachmentName">Attachment file name</param>
-    /// <param name="attachmentGuid">Attachment GUID</param>    
+    /// <param name="data">DataRowView with attachment info data.</param>
     protected string GetAttachmentLink(object data)
     {
         // try retype data as datarow view
@@ -100,7 +94,7 @@ public partial class CMSModules_Forums_Controls_AttachmentDisplayer : ForumViewe
             string guid = ValidationHelper.GetString(drv.Row["AttachmentGUID"], "");
             string name = HTMLHelper.HTMLEncode(ValidationHelper.GetString(drv.Row["AttachmentFileName"], ""));
             string mime = ValidationHelper.GetString(drv.Row["AttachmentMimeType"], "");
-            string url = ResolveUrl("~/CMSModules/Forums/CMSPages/GetForumAttachment.aspx?fileguid=" + guid);
+            string url = ResolveUrl("~/CMSPages/GetForumAttachment.aspx?fileguid=" + guid);
 
             if (DisplayAttachmentImage && ImageHelper.IsMimeImage(mime))
             {

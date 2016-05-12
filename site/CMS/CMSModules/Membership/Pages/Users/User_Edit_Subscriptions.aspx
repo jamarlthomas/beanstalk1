@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Inherits="CMSModules_Membership_Pages_Users_User_Edit_Subscriptions" Theme="Default"
-    Codebehind="User_Edit_Subscriptions.aspx.cs" %>
+     Codebehind="User_Edit_Subscriptions.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Membership/Controls/Subscriptions.ascx" TagName="Subscriptions"
     TagPrefix="cms" %>

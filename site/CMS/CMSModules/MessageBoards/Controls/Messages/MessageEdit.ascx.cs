@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Web.UI;
 
 using CMS.DataEngine;
@@ -247,29 +248,31 @@ public partial class CMSModules_MessageBoards_Controls_Messages_MessageEdit : CM
             }
 
             // Setup message info
-            messageInfo.MessageEmail = txtEmail.Text.Trim();
+            messageInfo.MessageEmail = TextHelper.LimitLength(txtEmail.Text.Trim(), txtEmail.MaxLength);
             messageInfo.MessageText = txtMessage.Text.Trim();
 
             // Handle message URL
             string url = txtURL.Text.Trim();
-            if ((url != "http://") && (url != "https://") && (url != ""))
+            if (!String.IsNullOrEmpty(url))
             {
-                if ((!url.ToLowerCSafe().StartsWithCSafe("http://")) && (!url.ToLowerCSafe().StartsWithCSafe("https://")))
+                string protocol = URLHelper.GetProtocol(url);
+                if (String.IsNullOrEmpty(protocol))
                 {
                     url = "http://" + url;
                 }
             }
-            else
-            {
-                url = "";
-            }
-            messageInfo.MessageURL = url;
+
+            messageInfo.MessageURL = TextHelper.LimitLength(url, txtURL.MaxLength);
             messageInfo.MessageURL = messageInfo.MessageURL.ToLowerCSafe().Replace("javascript", "_javascript");
 
-            messageInfo.MessageUserName = txtUserName.Text.Trim();
+            messageInfo.MessageUserName = TextHelper.LimitLength(txtUserName.Text.Trim(), txtUserName.MaxLength);
             if ((messageInfo.MessageID <= 0) && (!currentUser.IsPublic()))
             {
                 messageInfo.MessageUserID = currentUser.UserID;
+                if (!plcUserName.Visible)
+                {
+                    messageInfo.MessageUserName = GetDefaultUserName();
+                }
             }
 
             messageInfo.MessageIsSpam = ValidationHelper.GetBoolean(chkSpam.Checked, false);
@@ -358,13 +361,14 @@ public partial class CMSModules_MessageBoards_Controls_Messages_MessageEdit : CM
                             collumns.Add("MessageUserName", 250);
 
                             // Perform bad words check 
+                            bool validateUserName = plcUserName.Visible;
                             errorMessage = BadWordsHelper.CheckBadWords(messageInfo, collumns, "MessageApproved", "MessageApprovedByUserID",
-                                                                        messageInfo.MessageText, currentUser.UserID, () => ValidateMessage(messageInfo));
+                                                                        messageInfo.MessageText, currentUser.UserID, () => ValidateMessage(messageInfo, validateUserName));
 
                             // Additionally check empty fields
                             if (errorMessage == string.Empty)
                             {
-                                if (!ValidateMessage(messageInfo))
+                                if (!ValidateMessage(messageInfo, validateUserName))
                                 {
                                     errorMessage = GetString("board.messageedit.emptybadword");
                                 }
@@ -524,11 +528,15 @@ public partial class CMSModules_MessageBoards_Controls_Messages_MessageEdit : CM
         lblMessage.Text = GetString("board.messageedit.message");
         lblURL.Text = GetString("board.messageedit.url");
         lblUserName.Text = GetString("board.messageedit.username");
+        lblAlreadyrated.Text = GetString("board.messageedit.alreadyrated");
+        lblSubscribe.Text = GetString("board.messageedit.subscribe");
 
         rfvMessage.ErrorMessage = GetString("board.messageedit.rfvmessage");
         rfvUserName.ErrorMessage = GetString("board.messageedit.rfvusername");
         revEmailValid.ErrorMessage = GetString("board.messageedit.revemail");
         rfvEmail.ErrorMessage = GetString("board.messageedit.rfvemail");
+
+        btnOk.Text = GetString("board.messageedit.addmessage");
 
         // Ensure unique validation group name in case of multiple controls in one page
         string valGroup = UniqueID;
@@ -653,14 +661,20 @@ public partial class CMSModules_MessageBoards_Controls_Messages_MessageEdit : CM
     }
 
 
-    private static bool ValidateMessage(BoardMessageInfo messageInfo)
+    /// <summary>
+    /// Validates board message. Optionally skips user name validation.
+    /// </summary>
+    /// <param name="messageInfo">Board message to be validated.</param>
+    /// <param name="validateUserName">Whether to validate user name.</param>
+    /// <returns>True if message is valid, false otherwise.</returns>
+    private static bool ValidateMessage(BoardMessageInfo messageInfo, bool validateUserName = true)
     {
-        if ((messageInfo.MessageText == null) || (messageInfo.MessageUserName == null))
+        if ((messageInfo.MessageText == null) || (validateUserName && (messageInfo.MessageUserName == null)))
         {
             return false;
         }
 
-        return ((messageInfo.MessageText.Trim() != "") && (messageInfo.MessageUserName.Trim() != ""));
+        return ((messageInfo.MessageText.Trim() != "") && (!validateUserName || (messageInfo.MessageUserName.Trim() != "")));
     }
 
 
@@ -777,13 +791,22 @@ public partial class CMSModules_MessageBoards_Controls_Messages_MessageEdit : CM
         txtUserName.Text = String.Empty;
         txtEmail.Text = String.Empty;
         txtMessage.Text = String.Empty;
-        txtURL.Text = "http://";
 
         if (!MembershipContext.AuthenticatedUser.IsPublic())
         {
-            txtUserName.Text = !DataHelper.IsEmpty(MembershipContext.AuthenticatedUser.UserNickName) ? MembershipContext.AuthenticatedUser.UserNickName : MembershipContext.AuthenticatedUser.FullName;
+            txtUserName.Text = GetDefaultUserName();
             txtEmail.Text = MembershipContext.AuthenticatedUser.Email;
         }
+    }
+
+
+    /// <summary>
+    /// Gets user name to be used as a default value.
+    /// </summary>
+    /// <returns>Default user name.</returns>
+    private string GetDefaultUserName()
+    {
+        return !DataHelper.IsEmpty(MembershipContext.AuthenticatedUser.UserNickName) ? MembershipContext.AuthenticatedUser.UserNickName : MembershipContext.AuthenticatedUser.FullName;
     }
 
 
@@ -820,7 +843,7 @@ public partial class CMSModules_MessageBoards_Controls_Messages_MessageEdit : CM
         TreeNode currentDoc = DocumentContext.CurrentDocument;
         if (currentDoc != null)
         {
-            string title = String.Format("{0} ({1})", value.ToString(), currentDoc.GetDocumentName());
+            string title = String.Format("{0} ({1})", value, currentDoc.GetDocumentName());
             Activity activity = new ActivityRating(title, value, currentDoc, AnalyticsContext.ActivityEnvironmentVariables);
             activity.Log();
         }

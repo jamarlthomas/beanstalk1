@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Core;
@@ -149,9 +149,9 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_StoreSetting
     private void ucCheckoutProcess_OnCheckoutProcessDefinitionUpdate(string action)
     {
         // Check 'EcommerceModify' permission
-        if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("CMS.Ecommerce", "ConfigurationModify"))
+        if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.CONFIGURATION_MODIFY))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", "ConfigurationModify");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, EcommercePermissions.CONFIGURATION_MODIFY);
         }
 
         switch (action.ToLowerCSafe())
@@ -187,14 +187,13 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_StoreSetting
 
     private void SaveProcess()
     {
+        string siteName = null;
         if (configuredSite != null)
         {
-            SettingsKeyInfoProvider.SetValue(configuredSite.SiteName + "." + ECommerceSettings.CHECKOUT_PROCESS, ucCheckoutProcess.Value.ToString());
+            siteName = configuredSite.SiteName;
         }
-        else
-        {
-            SettingsKeyInfoProvider.SetValue(ECommerceSettings.CHECKOUT_PROCESS, ucCheckoutProcess.Value.ToString());
-        }
+        SettingsKeyInfoProvider.SetValue(ECommerceSettings.CHECKOUT_PROCESS, siteName, ucCheckoutProcess.Value.ToString());
+
         ucCheckoutProcess.Information = GetString("General.ChangesSaved");
     }
 }

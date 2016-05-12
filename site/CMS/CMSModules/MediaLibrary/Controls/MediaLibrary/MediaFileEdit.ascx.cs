@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Web.UI;
 
@@ -271,7 +271,7 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileEdit
             else
             {
                 plcPrevDirPath.Visible = true;
-                lblPrevDirectLinkVal.Text = GetFileLinkHtml(GetPrevDirectPath());
+                lblPrevDirectLinkVal.Text = GetFileLinkHtml(GetPreviewDirectPath());
             }
         }
         else
@@ -307,14 +307,14 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileEdit
         }
 
         plcMessEdit.IsLiveSite = plcMessCustom.IsLiveSite = IsLiveSite;
-
+        
         // Initialize header actions on edit tab
         btnEdit.HeaderActions = headerActionsEdit;
         btnEdit.ComponentName = headerActionsEdit.ComponentName = "MediaFile_TabEdit";
-
+    
         // Register event handler to provide refresh file information
         ComponentEvents.RequestEvents.RegisterForComponentEvent(headerActionsEdit.ComponentName, "refresh", (s, args) => RefreshFileInformation());
-        
+
         // Initialize header actions on custom fields tab
         BasicForm customFields = formMediaFileCustomFields;
         if (customFields != null)
@@ -527,107 +527,242 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileEdit
     {
         if (FileInfo != null)
         {
-            // Fill edit form
-            txtEditName.Text = FileInfo.FileName;
-            txtEditDescription.Text = FileInfo.FileDescription;
-            txtEditTitle.Text = FileInfo.FileTitle;
-            UserInfo currentUserInfo = MembershipContext.AuthenticatedUser;
-            SiteInfo currentSiteInfo = SiteContext.CurrentSite;
-
-            // Created by
-            string userName;
-
-            UserInfo ui = UserInfoProvider.GetFullUserInfo(FileInfo.FileCreatedByUserID);
-            if (ui != null)
-            {
-                userName = ui.IsPublic() ? GetString("general.na") : ui.FullName;
-            }
-            else
-            {
-                userName = GetString("general.na");
-            }
-            lblCreatedByVal.Text = userName;
-
-            // Created when
-            DateTime dtCreated = ValidationHelper.GetDateTime(FileInfo.FileCreatedWhen, DateTimeHelper.ZERO_TIME);
-            lblCreatedWhenVal.Text = TimeZoneHelper.ConvertToUserTimeZone(dtCreated, true, currentUserInfo, currentSiteInfo);
-
-            // Modified when
-            DateTime dtModified = ValidationHelper.GetDateTime(FileInfo.FileModifiedWhen, DateTimeHelper.ZERO_TIME);
-            lblModifiedVal.Text = TimeZoneHelper.ConvertToUserTimeZone(dtModified, true, currentUserInfo, currentSiteInfo);
+            // Indicates if form is editable
+            bool formEnabled = true;
 
             // Get system file info
             string filePath = MediaFileInfoProvider.GetMediaFilePath(FileInfo.FileLibraryID, FileInfo.FilePath);
+
+            // Disable edit form if can't modify file
+            if (!DirectoryHelper.CheckPermissions(filePath, false, true, true, true))
+            {
+                DisableEditForm();
+                formEnabled = false;
+            }
+
+            UserInfo currentUserInfo = MembershipContext.AuthenticatedUser;
+            SiteInfo currentSiteInfo = SiteContext.CurrentSite;
+            
+            FillFieldsOnBasisOfFileInfo(currentUserInfo, currentSiteInfo);
+
             if (File.Exists(filePath))
             {
-                FileInfo sysFileInfo = CMS.IO.FileInfo.New(filePath);
+                // Fill size and modified when on file system
+                bool refreshVisible = FillFileSystemDetails(filePath, currentUserInfo, currentSiteInfo);
 
-                bool refreshVisible;
-
-                // File modified when
-                DateTime dtFileModified = ValidationHelper.GetDateTime(sysFileInfo.LastWriteTime, DateTimeHelper.ZERO_TIME);
-                // Display only if system time is 
-                if ((dtFileModified - dtModified).TotalSeconds > 5)
+                // If file has different size or modified date on disk than in database and form is editable
+                if (refreshVisible && formEnabled)
                 {
-                    lblFileModifiedVal.Text = TimeZoneHelper.ConvertToUserTimeZone(dtFileModified, true, currentUserInfo, currentSiteInfo);
-
-                    plcFileModified.Visible = true;
-                    refreshVisible = true;
+                    AddRefreshButton();
                 }
-                else
-                {
-                    plcFileModified.Visible = false;
-                    refreshVisible = false;
-                }
-
-                // File size
-                if (sysFileInfo.Length != FileInfo.FileSize)
-                {
-                    lblFileSizeVal.Text = DataHelper.GetSizeString(sysFileInfo.Length);
-                    plcFileSize.Visible = true;
-                    refreshVisible = true;
-                }
-                else
-                {
-                    plcFileSize.Visible = false;
-                }
-
-                if (refreshVisible)
-                {
-                    headerActionsEdit.AddAction(new HeaderAction
-                    {
-                        Text = GetString("general.refresh"),
-                        CommandName = "refresh",
-                        ButtonStyle = ButtonStyle.Default
-                    });
-                }
-            }
-
-
-
-            // Size
-            lblSizeVal.Text = DataHelper.GetSizeString(FileInfo.FileSize);
-
-            // Extension
-            lblExtensionVal.Text = FileInfo.FileExtension.TrimStart('.').ToLowerCSafe();
-
-            // Dimensions
-            if (ImageHelper.IsImage(FileInfo.FileExtension))
-            {
-                lblDimensionsVal.Text = FileInfo.FileImageWidth + " x " + FileInfo.FileImageHeight;
-                plcDimensions.Visible = true;
-            }
-            else
-            {
-                plcDimensions.Visible = false;
             }
         }
         else
         {
-            txtEditName.Text = "";
-            txtEditDescription.Text = "";
-            txtEditTitle.Text = "";
+            ClearBasicFields();
         }
+    }
+
+
+    /// <summary>
+    /// Method fills basic and other text fields.
+    /// </summary>
+    /// <remarks>
+    /// <see cref="FileInfo"/> is used as a source for: filename, title, description, created by, created when, modified when, size, file extension and file dimension.
+    /// </remarks>
+    private void FillFieldsOnBasisOfFileInfo(UserInfo currentUserInfo, SiteInfo currentSiteInfo)
+    {
+        // Fill filename, title and description
+        FillBasicFields();
+
+        FillCreatedByField();
+
+        FillCreatedWhenField(currentUserInfo, currentSiteInfo);
+
+        FillModifiedWhenField(currentUserInfo, currentSiteInfo);
+
+        FillSizeField();
+
+        FillExtensionsField();
+
+        FillDimensionsField();
+    }
+
+
+    private void DisableEditForm()
+    {
+        btnEdit.Enabled = false;
+        pnlTabEdit.Enabled = false;
+        plcMessEdit.ShowError(GetString("media.error.filesystempermissions"));
+    }
+
+
+    /// <summary>
+    /// Method fills textboxes from file properties (modified when and size). Uses information from file system.
+    /// </summary>
+    /// <returns><c>True</c> if <see cref="MediaFileInfo.FileSize"/> or <see cref="MediaFileInfo.FileModifiedWhen"/> are different.</returns>
+    private bool FillFileSystemDetails(string filePath, UserInfo currentUserInfo, SiteInfo currentSiteInfo)
+    {
+        FileInfo sysFileInfo = CMS.IO.FileInfo.New(filePath);
+
+        // File modified when
+        var hasChanged = FillFileSystemModifiedWhenField(currentUserInfo, currentSiteInfo, sysFileInfo);
+
+        // File size
+        hasChanged |= FillFileSizeField(sysFileInfo);
+
+        return hasChanged;
+    }
+
+
+    private void FillSizeField()
+    {
+        lblSizeVal.Text = DataHelper.GetSizeString(FileInfo.FileSize);
+    }
+
+
+    private void FillExtensionsField()
+    {
+        lblExtensionVal.Text = FileInfo.FileExtension.TrimStart('.').ToLowerCSafe();
+    }
+
+
+    /// <summary>
+    /// Fills dimensions textbox - uses format "width x height". Together with that hides textbox if file isn't image.
+    /// </summary>
+    private void FillDimensionsField()
+    {
+        if (ImageHelper.IsImage(FileInfo.FileExtension))
+        {
+            lblDimensionsVal.Text = FileInfo.FileImageWidth + " x " + FileInfo.FileImageHeight;
+            plcDimensions.Visible = true;
+        }
+        else
+        {
+            plcDimensions.Visible = false;
+        }
+    }
+
+
+    private void AddRefreshButton()
+    {
+        headerActionsEdit.AddAction(new HeaderAction
+        {
+            Text = GetString("general.refresh"),
+            CommandName = "refresh",
+            ButtonStyle = ButtonStyle.Default
+        });
+    }
+
+
+    /// <summary>
+    /// Fills file system modified when field when file on disk has different value (modified when) than value stored in database.
+    /// </summary>
+    /// <param name="modified">Value of modified date stored in database</param>
+    /// <returns><c>True</c> if values are different</returns>
+    private bool FillFileSystemModifiedWhenField(UserInfo currentUserInfo, SiteInfo currentSiteInfo, FileInfo sysFileInfo)
+    {
+        DateTime modified = ValidationHelper.GetDateTime(FileInfo.FileModifiedWhen, DateTimeHelper.ZERO_TIME);
+
+        bool hasModifiedDateChanged;
+
+        DateTime fileModified = ValidationHelper.GetDateTime(sysFileInfo.LastWriteTime, DateTimeHelper.ZERO_TIME);
+        // Display only if system time is 
+        if ((fileModified - modified).TotalSeconds > 5)
+        {
+            lblFileModifiedVal.Text = TimeZoneHelper.ConvertToUserTimeZone(fileModified, true, currentUserInfo, currentSiteInfo);
+
+            plcFileModified.Visible = true;
+            hasModifiedDateChanged = true;
+        }
+        else
+        {
+            plcFileModified.Visible = false;
+            hasModifiedDateChanged = false;
+        }
+
+        return hasModifiedDateChanged;
+    }
+
+
+    /// <summary>
+    /// Fill file size field if size on disk is different than value in database
+    /// </summary>
+    /// <returns><c>True</c> if sizes are different</returns>
+    private bool FillFileSizeField(FileInfo sysFileInfo)
+    {
+        bool hasModifiedFileSizeChanged;
+
+        if (sysFileInfo.Length != FileInfo.FileSize)
+        {
+            lblFileSizeVal.Text = DataHelper.GetSizeString(sysFileInfo.Length);
+            plcFileSize.Visible = true;
+            hasModifiedFileSizeChanged = true;
+        }
+        else
+        {
+            plcFileSize.Visible = false;
+            hasModifiedFileSizeChanged = false;
+        }
+
+        return hasModifiedFileSizeChanged;
+    }
+
+
+    private void FillModifiedWhenField(UserInfo currentUserInfo, SiteInfo currentSiteInfo)
+    {
+        lblModifiedVal.Text = ValidateAndConvertToUserTimeZone(FileInfo.FileModifiedWhen, currentUserInfo, currentSiteInfo);
+    }
+
+
+    private void FillCreatedWhenField(UserInfo currentUserInfo, SiteInfo currentSiteInfo)
+    {
+        lblCreatedWhenVal.Text = ValidateAndConvertToUserTimeZone(FileInfo.FileCreatedWhen, currentUserInfo, currentSiteInfo);
+    }
+
+
+    /// <summary>
+    /// Fills created by textbox with user <see cref="UserInfo.FullName"/>.
+    /// If <see cref="UserInfo.FullName"/> isn't available, general "not available" text from resources is showed instead. 
+    /// </summary>
+    private void FillCreatedByField()
+    {
+        string userName;
+
+        UserInfo userInfo = UserInfoProvider.GetFullUserInfo(FileInfo.FileCreatedByUserID);
+        if ((userInfo == null) || userInfo.IsPublic())
+        {
+            userName = GetString("general.na");
+        }
+        else
+        {
+            userName = HTMLHelper.HTMLEncode(userInfo.FullName);
+        }
+
+        lblCreatedByVal.Text = userName;
+    }
+
+
+    private void FillBasicFields()
+    {
+        txtEditName.Text = FileInfo.FileName;
+        txtEditDescription.Text = FileInfo.FileDescription;
+        txtEditTitle.Text = FileInfo.FileTitle;
+    }
+
+
+    private string ValidateAndConvertToUserTimeZone(DateTime date, UserInfo currentUserInfo, SiteInfo currentSiteInfo)
+    {
+        var validatedDate = ValidationHelper.GetDateTime(date, DateTimeHelper.ZERO_TIME);
+        return TimeZoneHelper.ConvertToUserTimeZone(validatedDate, true, currentUserInfo, currentSiteInfo);
+    }
+
+
+    private void ClearBasicFields()
+    {
+        txtEditName.Text = "";
+        txtEditDescription.Text = "";
+        txtEditTitle.Text = "";
     }
 
 
@@ -717,24 +852,28 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileEdit
     /// <summary>
     /// Gets direct path for preview image of currently edited media file.
     /// </summary>
-    private string GetPrevDirectPath()
+    private string GetPreviewDirectPath()
     {
         string prevUrl = "";
 
-        // Direct path
-        string previewPath;
-        string previewFolder;
+        string hiddenFolder = String.Empty;
+        if (!Path.GetDirectoryName(FileInfo.FilePath).EndsWithCSafe(MediaLibraryHelper.GetMediaFileHiddenFolder(SiteContext.CurrentSiteName)))
+        {
+            hiddenFolder = MediaLibraryHelper.GetMediaFileHiddenFolder(SiteContext.CurrentSiteName);
+        }
 
-        if (Path.GetDirectoryName(FileInfo.FilePath).EndsWithCSafe(MediaLibraryHelper.GetMediaFileHiddenFolder(SiteContext.CurrentSiteName)))
-        {
-            previewFolder = Path.GetDirectoryName(FileInfo.FilePath) + "\\" + MediaLibraryHelper.GetPreviewFileName(FileInfo.FileName, FileInfo.FileExtension, ".*", SiteContext.CurrentSiteName);
-            previewPath = MediaLibraryInfoProvider.GetMediaLibraryFolderPath(FileInfo.FileLibraryID) + "\\" + previewFolder;
-        }
-        else
-        {
-            previewFolder = Path.GetDirectoryName(FileInfo.FilePath) + "\\" + MediaLibraryHelper.GetMediaFileHiddenFolder(SiteContext.CurrentSiteName) + "\\" + MediaLibraryHelper.GetPreviewFileName(FileInfo.FileName, FileInfo.FileExtension, ".*", SiteContext.CurrentSiteName);
-            previewPath = MediaLibraryInfoProvider.GetMediaLibraryFolderPath(FileInfo.FileLibraryID) + "\\" + previewFolder;
-        }
+        // Get relative folder under media library when file is located
+        string dirName = Path.GetDirectoryName(FileInfo.FilePath);
+        // Get preview file searching pattern
+        string previewFilePattern = MediaLibraryHelper.GetPreviewFileName(FileInfo.FileName, FileInfo.FileExtension, ".*", SiteContext.CurrentSiteName);
+
+        // Create path for thumbnails searching
+        string previewFolder = String.Format("{0}{1}{2}", String.IsNullOrEmpty(dirName) ? String.Empty : dirName + "\\",
+                                                          String.IsNullOrEmpty(hiddenFolder) ? String.Empty : hiddenFolder + "\\", previewFilePattern);
+
+        // Get absolute path
+        string previewPath = MediaLibraryInfoProvider.GetMediaLibraryFolderPath(FileInfo.FileLibraryID) + "\\" + previewFolder;
+
         if (Directory.Exists(Path.GetDirectoryName(previewPath)))
         {
             string[] files = Directory.GetFiles(Path.GetDirectoryName(previewPath), Path.GetFileName(previewPath));

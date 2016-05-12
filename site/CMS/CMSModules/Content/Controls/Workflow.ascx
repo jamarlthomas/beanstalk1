@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Workflow.ascx.cs" Inherits="CMSModules_Content_Controls_Workflow" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Workflow.ascx.cs" Inherits="CMSModules_Content_Controls_Workflow" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Workflows/Controls/WorkflowDesigner.ascx" TagName="Designer"
     TagPrefix="cms" %>

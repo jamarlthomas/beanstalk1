@@ -165,7 +165,7 @@ public partial class CMSModules_Newsletters_FormControls_VariantFilter : FormEng
             WhereConditionFormat = "[{0}] {2} {1}";
         }
 
-        return string.Format(WhereConditionFormat, "IssueID", "(" + issueIds + ")", "IN");
+        return string.Format(WhereConditionFormat, "OpenedEmailIssueID", "(" + issueIds + ")", "IN");
     }
 
     #endregion

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.ExtendedControls;
@@ -280,7 +280,7 @@ public partial class CMSModules_AbuseReport_Controls_AbuseReportEdit : CMSAdminC
 
         // Check that text area is not empty or too long
         report = report.Trim();
-        report = TextHelper.LimitLength(report, 1000);
+        report = TextHelper.LimitLength(report, txtText.MaxLength);
 
         if (report.Length > 0)
         {

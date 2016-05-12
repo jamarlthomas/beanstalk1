@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="NodesGroup.ascx.cs" Inherits="CMSAdminControls_UI_UniMenu_UniGraphToolbar_NodesGroup" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="NodesGroup.ascx.cs" Inherits="CMSAdminControls_UI_UniMenu_UniGraphToolbar_NodesGroup" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniMenu/UniMenuButtons.ascx" TagName="UniMenuButtons" TagPrefix="cms" %>
 

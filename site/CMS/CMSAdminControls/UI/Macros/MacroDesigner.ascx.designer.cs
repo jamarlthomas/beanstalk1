@@ -63,7 +63,7 @@ public partial class CMSAdminControls_UI_Macros_MacroDesigner {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSAdminControls_UI_Macros_MacroEditor editorElem;
+    protected global::CMS.UIControls.MacroEditor editorElem;
     
     /// <summary>
     /// btnShowCode control.

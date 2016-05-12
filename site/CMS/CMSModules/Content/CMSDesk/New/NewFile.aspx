@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_New_NewFile"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_New_NewFile"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Content - New file"
-    Codebehind="NewFile.aspx.cs" %>
+     Codebehind="NewFile.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Attachments/DocumentAttachments/DirectUploader.ascx"
     TagName="DirectFileUploader" TagPrefix="cms" %>

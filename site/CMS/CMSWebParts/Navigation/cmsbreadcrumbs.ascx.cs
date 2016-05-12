@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.MacroEngine;
@@ -103,7 +103,7 @@ public partial class CMSWebParts_Navigation_cmsbreadcrumbs : CMSAbstractWebPart
         }
         set
         {
-            SetValue("SelctOnlyPublished", value);
+            SetValue("SelectOnlyPublished", value);
             bcElem.SelectOnlyPublished = value;
         }
     }

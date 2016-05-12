@@ -1,5 +1,5 @@
-<%@ Page Language="C#" MasterPageFile="Root.master" AutoEventWireup="true" Inherits="CMSTemplates_CorporateSite_HomeASPX"
-    ValidateRequest="false" Codebehind="HomeASPX.aspx.cs" EnableEventValidation="false" %>
+﻿<%@ Page Language="C#" MasterPageFile="Root.master" AutoEventWireup="true" Inherits="CMSTemplates_CorporateSite_HomeASPX"
+    ValidateRequest="false"  Codebehind="HomeASPX.aspx.cs" EnableEventValidation="false" %>
 
 <%@ Register Src="~/CMSWebParts/General/MobileDeviceRedirection.ascx" TagName="MobileDeviceRedirection"
     TagPrefix="cms" %>

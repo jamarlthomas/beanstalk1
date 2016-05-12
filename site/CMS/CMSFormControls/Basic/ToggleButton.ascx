@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="ToggleButton.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="ToggleButton.ascx.cs"
     Inherits="CMSFormControls_Basic_ToggleButton" %>
 <div class="toggle-button">
     <cms:CMSCheckBox ID="checkbox" runat="server" />

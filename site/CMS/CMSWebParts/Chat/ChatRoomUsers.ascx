@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/Chat/ChatRoomUsers.ascx.cs" Inherits="CMSWebParts_Chat_ChatRoomUsers" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/Chat/ChatRoomUsers.ascx.cs" Inherits="CMSWebParts_Chat_ChatRoomUsers" %>
 
 <%@ Register Src="~/CMSWebParts/Chat/ChatOnlineUsers.ascx" TagName="ChatOnlineUsers" TagPrefix="cms" %>
 <%@ Register Src="~/CMSWebParts/Chat/ChatSearchOnlineUsers.ascx" TagName="ChatSearchOnlineUsers" TagPrefix="cms" %>

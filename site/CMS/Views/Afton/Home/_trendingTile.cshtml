@@ -41,7 +41,7 @@ else
         <div class="trendIndicator">Trending Topic</div>
         <div class="overlayC">
             <div class="overlay">
-                <div class="cardTitle">@Model.TileTitle</div>
+                <div class="cardTitle">@Html.Raw(@Model.TileTitle)</div>
                 <div class="cardHdr">@Html.Raw(@Model.Title)</div>
             </div>
             <div class="cardDate">@Model.Date.ToString("MMMM dd, yyyy")</div>

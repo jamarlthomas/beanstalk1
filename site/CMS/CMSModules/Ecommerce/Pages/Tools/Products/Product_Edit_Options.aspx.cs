@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.Ecommerce;
@@ -64,7 +64,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Opti
                 // Add new category button in HeaderAction
                 CurrentMaster.HeaderActions.ActionsList.Add(new HeaderAction
                 {
-                    Text = GetString("com.productoptions.select"),
+                    Text = GetString("com.productoptions.general.select"),
                     OnClientClick = ucOptions.GetAddCategoryJavaScript(),
                     Enabled = ECommerceContext.IsUserAuthorizedToModifySKU(sku.IsGlobal)
                 });

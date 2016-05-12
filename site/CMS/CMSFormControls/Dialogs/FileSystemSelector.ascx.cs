@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Collections;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -16,11 +17,6 @@ public partial class CMSFormControls_Dialogs_FileSystemSelector : FormEngineUser
 
     private FileSystemDialogConfiguration mDialogConfig;
     private bool mEnabled = true;
-
-    /// <summary>
-    /// Hidden value field.
-    /// </summary>
-    protected HiddenField mHiddenUrl = null;
 
     #endregion
 
@@ -268,6 +264,22 @@ public partial class CMSFormControls_Dialogs_FileSystemSelector : FormEngineUser
 
 
     /// <summary>
+    /// Indicates whether the dialog allows selection from zip files as folders
+    /// </summary>
+    public bool AllowZipFolders
+    {
+        get
+        {
+            return ValidationHelper.GetBoolean(GetValue("AllowZipFolders"), false);
+        }
+        set
+        {
+            SetValue("AllowZipFolders", value);
+        }
+    }
+
+
+    /// <summary>
     /// Gets or sets width of the dialog.
     /// </summary>
     public int DialogWidth
@@ -419,28 +431,13 @@ public partial class CMSFormControls_Dialogs_FileSystemSelector : FormEngineUser
 
 
     /// <summary>
-    /// Ensure creation of controls.
-    /// </summary>
-    protected override void CreateChildControls()
-    {
-        base.CreateChildControls();
-
-        if (mHiddenUrl == null)
-        {
-            mHiddenUrl = new HiddenField();
-            mHiddenUrl.ID = "hidUrl";
-
-            Controls.Add(mHiddenUrl);
-        }
-    }
-
-
-    /// <summary>
     /// Setup all contained controls.
     /// </summary>
     private void SetupControls()
     {
         ScriptHelper.RegisterJQuery(Page);
+        ScriptHelper.RegisterDialogScript(Page);
+
         btnSelect.Text = ResHelper.GetString("General.select");
         btnClear.Text = ResHelper.GetString("General.clear");
 
@@ -448,88 +445,73 @@ public partial class CMSFormControls_Dialogs_FileSystemSelector : FormEngineUser
         {
             ApplyProperties();
 
+            var config = DialogConfig;
+            
             // Configure FileSystem dialog
-            string width = DialogConfig.DialogWidth.ToString();
-            string height = DialogConfig.DialogHeight.ToString();
+            string width = config.DialogWidth.ToString();
+            string height = config.DialogHeight.ToString();
 
-            if (DialogConfig.UseRelativeDimensions)
+            if (config.UseRelativeDimensions)
             {
                 width += "%";
                 height += "%";
             }
 
-            DialogConfig.EditorClientID = txtPath.ClientID;
-            DialogConfig.SelectedPath = txtPath.Text;
-
-            string url = GetDialogURL(DialogConfig, SelectedPathPrefix);
+            config.EditorClientID = txtPath.ClientID;
+            config.SelectedPath = txtPath.Text;
 
             // Register the dialog script
             ScriptHelper.RegisterDialogScript(Page);
 
             StringBuilder sb = new StringBuilder();
 
-            sb.Append(
+            sb.AppendFormat(
 @"
-function UpdateModalDialogURL_", ClientID, @"(newValue,context) {
-    var item = document.getElementById(context + '_hidUrl'); 
-    if ((item != null) && (item.value != null)) {
-        item.value = newValue;
-    }
-}
+function FSS_SelectionDialogReady_{0}(url, context) {{
+    modalDialog(url, 'SelectFile', '{1}', '{2}', null)
+}}
 
-function SetMediaValue_", ClientID, @"(selectorId) {
-    if (window.Changed) {
+function FSS_ValueUpdated_{0}() {{
+    if (window.Changed) {{
         Changed();
-    }
+    }}
 
-    var item = document.getElementById(selectorId + '_txtPath');
+    var item = document.getElementById('{4}');
     var newValue = item.value;
-    var prefix = '" + SelectedPathPrefix + @"';
-    if (prefix != '') {
-        if (newValue.indexOf(prefix) == 0) {
+    var prefix = '{3}';
+    if (prefix != '') {{
+        if (newValue.indexOf(prefix) == 0) {{
             item.value = newValue.substring(prefix.length); 
             // Trim start '/'
-            if (item.value[0] == '/') {
+            if (item.value[0] == '/') {{
                 item.value = item.value.substring(1);
-            }
-        }
-    }", Page.ClientScript.GetCallbackEventReference(this, "newValue", "UpdateModalDialogURL_" + ClientID, "selectorId"), @";
-}
+            }}
+        }}
+    }}
+}}
 
-function ClearSelection_", ClientID, @"(selectorId) { 
-    document.getElementById(selectorId + '_txtPath').value='';
-    SetMediaValue_", ClientID, @"(selectorId);
-}
-"
+function FSS_Clear_{0}(selectorId) {{ 
+    document.getElementById('{4}').value = '';
+    FSS_ValueUpdated_{0}();
+}}
+", 
+                ClientID,
+                width, 
+                height,
+                SelectedPathPrefix,
+                txtPath.ClientID
             );
+
+            txtPath.Attributes.Add("onchange", "FSS_ValueUpdated_" + ClientID + "();");
 
             // Register the Path related javascript functions
             ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "FileSystemSelector_" + ClientID, ScriptHelper.GetScript(sb.ToString()));
 
-            // Setup buttons
-            txtPath.Attributes.Add("onchange", "SetMediaValue_" + ClientID + "('" + ClientID + "');");
-
-            ScriptHelper.RegisterStartupScript(this, typeof(string), DialogConfig.EditorClientID + "script", ScriptHelper.GetScript(String.Format(
-@"
-var hidField_{0} = document.getElementById('{0}' + '_hidUrl'); 
-if (hidField_{0}) {{
-    hidField_{0}.value='{1}';
-}}
-",
-                ClientID,
-                url
-            )));
-
             // Setup the buttons
-            btnSelect.Attributes.Add("onclick", String.Format(
-                "var url_{0} = document.getElementById('{0}' + '_hidUrl').value; modalDialog(url_{0}, 'SelectFile', '{1}', '{2}', null); return false;",
-                ClientID,
-                width,
-                height
-            ));
-
+            btnSelect.Attributes.Add("onclick", Page.ClientScript.GetCallbackEventReference(this, "document.getElementById('" + txtPath.ClientID + "').value", "FSS_SelectionDialogReady_" + ClientID, null) + "; return false;");
+                
             btnClear.Attributes.Add("onclick", String.Format(
-                "ClearSelection_{0}('{0}'); return false;",
+                "FSS_Clear_{0}(); return false;",
                 ClientID
             ));
         }
@@ -539,7 +521,7 @@ if (hidField_{0}) {{
 
 
     #region "Helper methods"
-
+    
     /// <summary>
     /// Returns query string which will be passed to the CMS dialogs (Insert image or media/Insert link).
     /// </summary>
@@ -549,53 +531,53 @@ if (hidField_{0}) {{
     {
         StringBuilder builder = new StringBuilder();
 
-        // Set constraints
-        // Allowed files extensions            
+        var p = new Hashtable();
+
         if (!String.IsNullOrEmpty(config.AllowedExtensions))
         {
-            builder.Append("&allowed_extensions=" + Server.UrlEncode(config.AllowedExtensions));
+            p["allowed_extensions"] = config.AllowedExtensions;
         }
 
         // New text file extension
         if (!String.IsNullOrEmpty(config.NewTextFileExtension))
         {
-            builder.Append("&newfile_extension=" + Server.UrlEncode(config.NewTextFileExtension));
+            p["newfile_extension"] = config.NewTextFileExtension;
         }
 
         // Excluded extensions
         if (!String.IsNullOrEmpty(config.ExcludedExtensions))
         {
-            builder.Append("&excluded_extensions=" + Server.UrlEncode(config.ExcludedExtensions));
+            p["excluded_extensions"] = config.ExcludedExtensions;
         }
 
         // Allowed folders 
         if (!String.IsNullOrEmpty(config.AllowedFolders))
         {
-            builder.Append("&allowed_folders=" + Server.UrlEncode(config.AllowedFolders));
+            p["allowed_folders"] = config.AllowedFolders;
         }
 
         // Excluded folders
         if (!String.IsNullOrEmpty(config.ExcludedFolders))
         {
-            builder.Append("&excluded_folders=" + Server.UrlEncode(config.ExcludedFolders));
+            p["excluded_folders"] = config.ExcludedFolders;
         }
 
         // Default path-preselected path in filesystem tree
         if (!String.IsNullOrEmpty(config.DefaultPath))
         {
-            builder.Append("&default_path=" + Server.UrlEncode(config.DefaultPath));
+            p["default_path"] = config.DefaultPath;
         }
 
         // Deny non-application starting path
         if (!config.AllowNonApplicationPath)
         {
-            builder.Append("&allow_nonapp_path=0");
+            p["allow_nonapp_path"] = "0";
         }
 
         // Allow manage
         if (config.AllowManage)
         {
-            builder.Append("&allow_manage=1");
+            p["allow_manage"] = "1";
         }
 
         // SelectedPath - actual value of textbox
@@ -607,17 +589,18 @@ if (hidField_{0}) {{
             {
                 selectedPath = selectedPathPrefix.TrimEnd('/') + "/" + selectedPath.TrimStart('/');
             }
-            builder.Append("&selected_path=" + Server.UrlEncode(selectedPath));
+            p["selected_path"] = selectedPath;
         }
 
         // Starting path in filesystem
         if (!String.IsNullOrEmpty(config.StartingPath))
         {
-            builder.Append("&starting_path=" + Server.UrlEncode(config.StartingPath));
+            p["starting_path"] = config.StartingPath;
         }
 
         // Show only folders|files
-        builder.Append("&show_folders=" + Server.UrlEncode(config.ShowFolders.ToString()));
+        p["show_folders"] = config.ShowFolders.ToString();
+        p["allow_zip_folders"] = config.AllowZipFolders.ToString();
 
         // Editor client id
         if (!String.IsNullOrEmpty(config.EditorClientID))
@@ -625,7 +608,13 @@ if (hidField_{0}) {{
             builder.Append("&editor_clientid=" + Server.UrlEncode(config.EditorClientID));
         }
 
-        // Get hash for complete query string
+        // Register parameters within Window helper
+        var paramsGuid = Guid.NewGuid().ToString();
+        WindowHelper.Add(paramsGuid, p, true);
+
+        builder.Append("&params=", Server.UrlEncode(paramsGuid));
+
+        // Get the query
         string query = HttpUtility.UrlPathEncode("?" + builder.ToString().TrimStart('&'));
 
         // Get complete query string with attached hash
@@ -649,14 +638,13 @@ if (hidField_{0}) {{
         {
             return true;
         }
-        else
+
+        string extensions = ";" + DialogConfig.AllowedExtensions.ToLowerCSafe() + ";";
+        if (extensions.Contains(";" + extension.ToLowerCSafe().TrimStart('.') + ";"))
         {
-            string extensions = ";" + DialogConfig.AllowedExtensions.ToLowerCSafe() + ";";
-            if (extensions.Contains(";" + extension.ToLowerCSafe().TrimStart('.') + ";"))
-            {
-                return true;
-            }
+            return true;
         }
+
         return false;
     }
 
@@ -672,14 +660,13 @@ if (hidField_{0}) {{
         {
             return false;
         }
-        else
+
+        string extensions = ";" + DialogConfig.ExcludedExtensions.ToLowerCSafe() + ";";
+        if (extensions.Contains(";" + extension.ToLowerCSafe().TrimStart('.') + ";"))
         {
-            string extensions = ";" + DialogConfig.ExcludedExtensions.ToLowerCSafe() + ";";
-            if (extensions.Contains(";" + extension.ToLowerCSafe().TrimStart('.') + ";"))
-            {
-                return true;
-            }
+            return true;
         }
+
         return false;
     }
 
@@ -766,22 +753,22 @@ if (hidField_{0}) {{
 
     #region "Callback handling"
 
+    private string callbackResult;
+
     /// <summary>
     /// Raises the callback event.
     /// </summary>
     public void RaiseCallbackEvent(string eventArgument)
     {
-        //LoadDisplayValues(eventArgument);
-
         // Configure dialog
-        FileSystemDialogConfiguration config = DialogConfig;
+        var config = DialogConfig;
         config.SelectedPath = eventArgument;
 
         ApplyProperties();
 
         string url = GetDialogURL(config, SelectedPathPrefix);
 
-        mHiddenUrl.Value = url;
+        callbackResult = url;
     }
 
 
@@ -790,7 +777,7 @@ if (hidField_{0}) {{
     /// </summary>
     private void ApplyProperties()
     {
-        FileSystemDialogConfiguration config = DialogConfig;
+        var config = DialogConfig;
 
         // Apply selected path
         if (!String.IsNullOrEmpty(SelectedPath))
@@ -869,6 +856,12 @@ if (hidField_{0}) {{
         {
             config.ShowFolders = ShowFolders;
         }
+
+        // Apply show zip folders
+        if (GetValue("AllowZipFolders") != null)
+        {
+            config.AllowZipFolders = AllowZipFolders;
+        }
     }
 
 
@@ -877,7 +870,7 @@ if (hidField_{0}) {{
     /// </summary>
     public string GetCallbackResult()
     {
-        return mHiddenUrl.Value;
+        return callbackResult;
     }
 
     #endregion

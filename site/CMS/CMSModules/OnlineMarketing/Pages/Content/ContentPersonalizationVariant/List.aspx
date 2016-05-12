@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Title="Content personalization variant list"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Title="Content personalization variant list"
     Inherits="CMSModules_OnlineMarketing_Pages_Content_ContentPersonalizationVariant_List"
-    Theme="Default" Codebehind="List.aspx.cs" MaintainScrollPositionOnPostback="true"
+    Theme="Default"  Codebehind="List.aspx.cs" MaintainScrollPositionOnPostback="true"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 
 <%@ Register Src="~/CMSModules/OnlineMarketing/Controls/UI/ContentPersonalizationVariant/List.ascx"
@@ -15,7 +15,7 @@
     <cms:CMSDocumentPanel ID="pnlDocInfo" runat="server" />
 </asp:Content>
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
-    <asp:Panel runat="server" ID="pnlWarning" CssClass="header-panel">
+    <asp:Panel runat="server" ID="pnlWarning">
         <cms:DisabledModule runat="server" ID="ucDisabledModule" />
     </asp:Panel>
     <asp:Panel ID="pnlContainer" runat="server">

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using CMS.Helpers;
 using CMS.Scheduler;
@@ -58,7 +59,7 @@ public partial class CMSInstall_Controls_WizardSteps_JoinPrerequisites : CMSUser
     /// </summary>
     public bool IsValidForDBJoin()
     {
-        if (EnabledTasks())
+        if (SchedulingHelper.EnableScheduler || SchedulingHelper.IsAnyTaskRunning())
         {
             DisplaySeparationError(GetString("separationDB.stoptaskserrorjoin"));
             return false;
@@ -87,7 +88,7 @@ public partial class CMSInstall_Controls_WizardSteps_JoinPrerequisites : CMSUser
     /// </summary>
     private void DisplayTaskStatus()
     {
-        if (EnabledTasks())
+        if (SchedulingHelper.EnableScheduler || SchedulingHelper.IsAnyTaskRunning())
         {
             if (!btnStopTasks.Visible && TasksManuallyStopped && (hdnTurnedOff.Value != bool.TrueString))
             {
@@ -130,16 +131,6 @@ public partial class CMSInstall_Controls_WizardSteps_JoinPrerequisites : CMSUser
 
 
     /// <summary>
-    /// Checks if any tasks are enabled.
-    /// </summary>
-    private bool EnabledTasks()
-    {
-        InfoDataSet<TaskInfo> tasks = TaskInfoProvider.GetTasks("(TaskNextRunTime IS NULL) AND (TaskInterval NOT LIKE '" + SchedulingHelper.PERIOD_ONCE + "%') AND (TaskEnabled = 1)", null, -1, "TaskID");
-        return ((tasks != null) && (tasks.Items.Count > 0)) || SchedulingHelper.EnableScheduler;
-    }
-
-
-    /// <summary>
     /// Displays that tasks are being stopped.
     /// </summary>
     private void DisplayStoppingTasks()
@@ -174,7 +165,7 @@ public partial class CMSInstall_Controls_WizardSteps_JoinPrerequisites : CMSUser
         PersistentStorageHelper.SetValue("CMSSchedulerTasksEnabled", SettingsKeyInfoProvider.GetBoolValue("CMSSchedulerTasksEnabled"));
         if (SchedulingHelper.EnableScheduler)
         {
-            SettingsKeyInfoProvider.SetValue("CMSSchedulerTasksEnabled", false);
+            SettingsKeyInfoProvider.SetGlobalValue("CMSSchedulerTasksEnabled", false);
         }
 
         // Restart win service

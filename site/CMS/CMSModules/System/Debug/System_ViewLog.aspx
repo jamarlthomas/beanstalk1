@@ -1,12 +1,10 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_Debug_System_ViewLog"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_Debug_System_ViewLog"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    MaintainScrollPositionOnPostback="true" Codebehind="System_ViewLog.aspx.cs" %>
+    MaintainScrollPositionOnPostback="true"  Codebehind="System_ViewLog.aspx.cs" %>
 
-<asp:Content ID="cntHeader" runat="server" ContentPlaceHolderID="plcBeforeContent">
-    <asp:Panel runat="server" ID="pnlCancel" Visible="False" CssClass="header-container" EnableViewState="False">
-        <div class="cms-edit-menu">
-            <cms:CMSButton runat="server" ID="btnCancel" ButtonStyle="Primary" />
-        </div>
+<asp:Content ID="cntHeader" runat="server" ContentPlaceHolderID="plcActions">
+    <asp:Panel runat="server" ID="pnlCancel" Visible="False" CssClass="control-group-inline header-actions-container" EnableViewState="False">
+        <cms:CMSButton runat="server" ID="btnCancel" ButtonStyle="Primary" />
     </asp:Panel>
 </asp:Content>
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
@@ -21,4 +19,8 @@
             </asp:Panel>
         </ContentTemplate>
     </cms:CMSUpdatePanel>
+</asp:Content>
+<asp:Content ID="cntFooter" runat="server" ContentPlaceHolderID="plcFooter">
+    <cms:LocalizedButton ID="btnClose" runat="server" ButtonStyle="Primary" ResourceString="general.close" OnClientClick="return CloseDialog();"
+        EnableViewState="false" />
 </asp:Content>

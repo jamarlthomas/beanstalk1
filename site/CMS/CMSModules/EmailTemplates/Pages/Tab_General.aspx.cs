@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Controls;
 using CMS.DataEngine;
@@ -41,7 +41,7 @@ public partial class CMSModules_EmailTemplates_Pages_Tab_General : CMSEmailTempl
 
             if (!QueryHelper.ValidateHash("hash", "saved;name;templateid;selectorid;tabmode;siteid;selectedsiteid", settings, true))
             {
-                URLHelper.Redirect(ResolveUrl(String.Format("~/CMSMessages/Error.aspx?title={0}&text={1}", GetString("dialogs.badhashtitle"), GetString("dialogs.badhashtext"))));
+                URLHelper.Redirect(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext"));
             }
 
             string templateName = QueryHelper.GetString("name", String.Empty);

@@ -273,7 +273,7 @@ function keepDialogAccesible(popupid) {
                 isChanged = true;
             }
             if (winWidth < dialogWidth) {
-                popupObj.width($winWidth - 20 + 'px');
+                popupObj.width(winWidth - 20 + 'px');
                 popupObj.css('overflow', 'auto');
                 isChanged = true;
             }

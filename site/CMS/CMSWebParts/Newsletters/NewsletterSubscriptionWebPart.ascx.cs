@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -19,11 +19,11 @@ public partial class CMSWebParts_Newsletters_NewsletterSubscriptionWebPart : CMS
 {
     #region "Variables"
 
-    private bool chooseMode = false;
-    private bool mExternalUse = false;
+    private bool chooseMode;
     private bool visibleFirstName = true;
     private bool visibleLastName = true;
     private bool visibleEmail = true;
+    private readonly ISubscriptionService mSubscriptionService = Service<ISubscriptionService>.Entry();
 
     #endregion
 
@@ -53,7 +53,7 @@ public partial class CMSWebParts_Newsletters_NewsletterSubscriptionWebPart : CMS
     {
         get
         {
-            return DataHelper.GetNotEmpty(GetValue("FirstNameText"), ResHelper.LocalizeString("{$NewsletterSubscription.FirstName$}"));
+            return DataHelper.GetNotEmpty(GetValue("FirstNameText"), GetString("NewsletterSubscription.FirstName"));
         }
         set
         {
@@ -86,7 +86,7 @@ public partial class CMSWebParts_Newsletters_NewsletterSubscriptionWebPart : CMS
     {
         get
         {
-            return DataHelper.GetNotEmpty(GetValue("LastNameText"), ResHelper.LocalizeString("{$NewsletterSubscription.LastName$}"));
+            return DataHelper.GetNotEmpty(GetValue("LastNameText"), GetString("NewsletterSubscription.LastName"));
         }
         set
         {
@@ -119,7 +119,7 @@ public partial class CMSWebParts_Newsletters_NewsletterSubscriptionWebPart : CMS
     {
         get
         {
-            return DataHelper.GetNotEmpty(GetValue("EmailText"), ResHelper.LocalizeString("{$NewsletterSubscription.Email$}"));
+            return DataHelper.GetNotEmpty(GetValue("EmailText"), GetString("NewsletterSubscription.Email"));
         }
         set
         {
@@ -136,7 +136,7 @@ public partial class CMSWebParts_Newsletters_NewsletterSubscriptionWebPart : CMS
     {
         get
         {
-            return DataHelper.GetNotEmpty(GetValue("ButtonText"), ResHelper.LocalizeString("{$NewsletterSubscription.Submit$}"));
+            return DataHelper.GetNotEmpty(GetValue("ButtonText"), GetString("NewsletterSubscription.Submit"));
         }
         set
         {
@@ -203,14 +203,8 @@ public partial class CMSWebParts_Newsletters_NewsletterSubscriptionWebPart : CMS
     /// </summary>
     public bool ExternalUse
     {
-        get
-        {
-            return mExternalUse;
-        }
-        set
-        {
-            mExternalUse = value;
-        }
+        get;
+        set;
     }
 
 
@@ -455,7 +449,7 @@ public partial class CMSWebParts_Newsletters_NewsletterSubscriptionWebPart : CMS
                         // Fill checkbox list with newsletters
                         foreach (DataRow dr in ds.Tables[0].Rows)
                         {
-                            displayName = ResHelper.LocalizeString(ValidationHelper.GetString(dr["NewsletterDisplayName"], string.Empty));
+                            displayName = GetString(ValidationHelper.GetString(dr["NewsletterDisplayName"], string.Empty));
 
                             li = new ListItem(HTMLHelper.HTMLEncode(displayName), ValidationHelper.GetString(dr["NewsletterName"], string.Empty));
                             chklNewsletters.Items.Add(li);
@@ -776,30 +770,34 @@ public partial class CMSWebParts_Newsletters_NewsletterSubscriptionWebPart : CMS
     /// <summary>
     /// Saves the data.
     /// </summary>
-    private bool Save(string newsletterName, SubscriberInfo sb)
+    private bool Save(string newsletterName, SubscriberInfo subscriber)
     {
         bool toReturn = false;
         int siteId = SiteContext.CurrentSiteID;
 
-        // Check if sunscriber info object exists
-        if ((sb == null) || string.IsNullOrEmpty(newsletterName))
+        // Check if subscriber info object exists
+        if ((subscriber == null) || string.IsNullOrEmpty(newsletterName))
         {
             return false;
         }
 
-        // Get nesletter info
-        NewsletterInfo news = NewsletterInfoProvider.GetNewsletterInfo(newsletterName, siteId);
-        if (news != null)
+        // Get newsletter info
+        NewsletterInfo newsletter = NewsletterInfoProvider.GetNewsletterInfo(newsletterName, siteId);
+        if (newsletter != null)
         {
             try
             {
-                // Check if subscriber is not allready subscribed
-                if (!SubscriberInfoProvider.IsSubscribed(sb.SubscriberGUID, news.NewsletterGUID, siteId))
+                // Check if subscriber is not already subscribed
+                if (!mSubscriptionService.IsSubscribed(subscriber.SubscriberID, newsletter.NewsletterID))
                 {
                     toReturn = true;
 
-                    // Subscribe to the site
-                    SubscriberInfoProvider.Subscribe(sb.SubscriberID, news.NewsletterID, DateTime.Now, SendConfirmationEmail);
+                    mSubscriptionService.Subscribe(subscriber.SubscriberID, newsletter.NewsletterID, new SubscribeSettings()
+                    {
+                        SendConfirmationEmail = SendConfirmationEmail,
+                        RequireOptIn = true,
+                        RemoveAlsoUnsubscriptionFromAllNewsletters = true,
+                    });
 
                     // Info message
                     if (!chooseMode)
@@ -813,7 +811,7 @@ public partial class CMSWebParts_Newsletters_NewsletterSubscriptionWebPart : CMS
                     {
                         string siteName = SiteContext.CurrentSiteName;
 
-                        if (AnalyticsHelper.AnalyticsEnabled(siteName) && AnalyticsHelper.TrackConversionsEnabled(siteName) && !AnalyticsHelper.IsIPExcluded(siteName, RequestContext.UserHostAddress))
+                        if (AnalyticsHelper.AnalyticsEnabled(siteName) && !AnalyticsHelper.IsIPExcluded(siteName, RequestContext.UserHostAddress))
                         {
                             // Log conversion
                             HitLogProvider.LogConversions(siteName, LocalizationContext.PreferredCultureCode, TrackConversionName, 0, ConversionValue);
@@ -821,9 +819,9 @@ public partial class CMSWebParts_Newsletters_NewsletterSubscriptionWebPart : CMS
                     }
 
                     // Log newsletter subscription activity if double opt-in is not required
-                    if (!news.NewsletterEnableOptIn)
+                    if (!newsletter.NewsletterEnableOptIn)
                     {
-                        Activity activity = new ActivityNewsletterSubscribing(sb, news, AnalyticsContext.ActivityEnvironmentVariables);
+                        Activity activity = new ActivityNewsletterSubscribing(subscriber, newsletter, AnalyticsContext.ActivityEnvironmentVariables);
                         activity.Log();
                     }
                 }
@@ -838,7 +836,7 @@ public partial class CMSWebParts_Newsletters_NewsletterSubscriptionWebPart : CMS
                     else
                     {
                         lblInfo.Visible = true;
-                        lblInfo.Text += GetString("NewsletterSubscription.SubscriberIsAlreadySubscribedXY") + " " + HTMLHelper.HTMLEncode(ResHelper.LocalizeString(news.NewsletterDisplayName)) + ".<br />";
+                        lblInfo.Text += GetString("NewsletterSubscription.SubscriberIsAlreadySubscribedXY") + " " + HTMLHelper.HTMLEncode(GetString(newsletter.NewsletterDisplayName)) + ".<br />";
                     }
                 }
             }

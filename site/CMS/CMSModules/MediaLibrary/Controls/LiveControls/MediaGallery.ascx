@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_LiveControls_MediaGallery"
-    Codebehind="MediaGallery.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_LiveControls_MediaGallery"
+     Codebehind="MediaGallery.ascx.cs" %>
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/Filters/FolderTree.ascx" TagName="FolderTree"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/Filters/MediaLibrarySort.ascx"

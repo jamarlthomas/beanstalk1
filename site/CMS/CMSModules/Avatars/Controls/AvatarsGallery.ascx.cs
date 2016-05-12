@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 
 using CMS.DataEngine;
@@ -56,7 +56,7 @@ public partial class CMSModules_Avatars_Controls_AvatarsGallery : CMSAdminEditCo
         lblInfo.ResourceString = "avat.noavatarsfound";
 
         // Resolve avatar url
-        avatarUrl = ResolveUrl("~/CMSModules/Avatars/CMSPages/GetAvatar.aspx?maxsidesize=" + maxSideSize + "&avatarguid=");
+        avatarUrl = ResolveUrl("~/CMSPages/GetAvatar.aspx?maxsidesize=" + maxSideSize + "&avatarguid=");
         avatarUrl = HTMLHelper.EncodeForHtmlAttribute(avatarUrl);
         // Get avatar type from querystring
         string avatarType = QueryHelper.GetString("avatartype", "all");

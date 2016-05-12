@@ -1,14 +1,11 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Text;
 
 using CMS.CMSImportExport;
 using CMS.Helpers;
-using CMS.ImportExport;
 using CMS.LicenseProvider;
 using CMS.Base;
-using CMS.SiteProvider;
-using CMS.Membership;
 using CMS.UIControls;
 using CMS.DataEngine;
 
@@ -238,12 +235,12 @@ public partial class CMSInstall_Controls_WizardSteps_SiteCreationDialog : CMSUse
         string templateId = ValidationHelper.GetString(view["WebTemplateID"], "");
         string templateName = ValidationHelper.GetString(view["WebTemplateName"], "");
         string templateDisplayName = ValidationHelper.GetString(view["WebTemplateDisplayName"], "");
-        string templateDescription = ValidationHelper.GetString(view["WebTemplateDescription"], "");
+        string templateDescription = ValidationHelper.GetString(view["WebTemplateShortDescription"], "");
         string templateEditions = ValidationHelper.GetString(view["WebTemplateLicenses"], "");
         string templatePackages = ValidationHelper.GetString(view["WebTemplatePackages"], "");
         bool isAllowed = false;
 
-        // Check if the current license is suitable for webtemplate
+        // Check if the current license is suitable for web template
         isAllowed = IsTemplateAllowed(templateEditions, templatePackages);
 
         // Generate HTML code
@@ -296,7 +293,7 @@ public partial class CMSInstall_Controls_WizardSteps_SiteCreationDialog : CMSUse
     {
         if (CurrentEdition != null)
         {
-            // Check if the current license is suitable for webtemplate
+            // Check if the current license is suitable for web template
             if (templateEditions.Contains(CurrentEdition))
             {
                 return true;
@@ -309,7 +306,7 @@ public partial class CMSInstall_Controls_WizardSteps_SiteCreationDialog : CMSUse
         {
             string[] tempCurrentPackages = CurrentPackages.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             string[] tempTemplatePackages = templatePackages.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            // Check if the current license (package) is suitable for webtemplate
+            // Check if the current license (package) is suitable for web template
             foreach (string templateP in tempTemplatePackages)
             {
                 foreach (string currentP in tempCurrentPackages)

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Data;
 using System.Web.UI;
@@ -284,26 +284,28 @@ public partial class CMSModules_PortalEngine_Controls_WebParts_WebpartProperties
 
     public void LoadData()
     {
-        if (!StopProcessing)
+        if (StopProcessing)
         {
-            LoadForm();
-
-            // Hide ID editing in case the instance is default configuration of the web part
-            if ((webPartInstance != null) && (webPartInstance.InstanceGUID == WebPartInfo.DEFAULT_CONFIG_INSTANCEGUID))
-            {
-                form.FieldsToHide.Add("WebPartControlID");
-            }
-
-            // Setup info/error message placeholder
-            if (MessagesPlaceHolder != null)
-            {
-                MessagesPlaceHolder.UseRelativePlaceHolder = false;
-                form.EnsureMessagesPlaceholder(MessagesPlaceHolder);
-            }
-
-            ScriptHelper.RegisterEditScript(Page, false);
-            ScriptHelper.RegisterJQuery(Page);
+            return;
         }
+
+        LoadForm();
+
+        // Hide ID editing in case the instance is default configuration of the web part
+        if ((webPartInstance != null) && (webPartInstance.InstanceGUID == WebPartInfo.DEFAULT_CONFIG_INSTANCEGUID))
+        {
+            form.FieldsToHide.Add("WebPartControlID");
+        }
+
+        // Setup info/error message placeholder
+        if (MessagesPlaceHolder != null)
+        {
+            MessagesPlaceHolder.UseRelativePlaceHolder = false;
+            form.EnsureMessagesPlaceholder(MessagesPlaceHolder);
+        }
+
+        ScriptHelper.RegisterEditScript(Page, false);
+        ScriptHelper.RegisterJQuery(Page);
     }
 
 
@@ -368,114 +370,119 @@ public partial class CMSModules_PortalEngine_Controls_WebParts_WebpartProperties
         {
             // Get the page info
             pi = CMSWebPartPropertiesPage.GetPageInfo(AliasPath, PageTemplateID, CultureCode);
-            if (pi != null)
+
+            if (pi == null)
             {
-                // Get template
-                pti = pi.UsedPageTemplateInfo;
+                ShowError(GetString("general.pagenotfound"));
+                pnlExport.Visible = false;
+                return;
+            }
 
-                // Get template instance
-                templateInstance = pti.TemplateInstance;
+            // Get template
+            pti = pi.UsedPageTemplateInfo;
 
-                if (!IsNewWebPart)
+            // Get template instance
+            templateInstance = pti.TemplateInstance;
+
+            if (!IsNewWebPart)
+            {
+                // Standard zone
+                webPartInstance = templateInstance.GetWebPart(InstanceGUID, WebPartID);
+
+                // If the web part not found, try to find it among the MVT/CP variants
+                if (webPartInstance == null)
                 {
-                    // Standard zone
-                    webPartInstance = templateInstance.GetWebPart(InstanceGUID, WebPartID);
+                    // MVT/CP variant
+                    templateInstance.LoadVariants(false, VariantModeEnum.None);
+                    webPartInstance = templateInstance.GetWebPart(InstanceGUID, -1, 0);
 
-                    // If the web part not found, try to find it among the MVT/CP variants
-                    if (webPartInstance == null)
+                    // Set the VariantMode according to the selected web part/zone variant
+                    if ((webPartInstance != null) && (webPartInstance.ParentZone != null))
                     {
-                        // MVT/CP variant
-                        templateInstance.LoadVariants(false, VariantModeEnum.None);
-                        webPartInstance = templateInstance.GetWebPart(InstanceGUID, -1, 0);
-
-                        // Set the VariantMode according to the selected web part/zone variant
-                        if ((webPartInstance != null) && (webPartInstance.ParentZone != null))
-                        {
-                            VariantMode = (webPartInstance.VariantMode != VariantModeEnum.None) ? webPartInstance.VariantMode : webPartInstance.ParentZone.VariantMode;
-                        }
-                        else
-                        {
-                            VariantMode = VariantModeEnum.None;
-                        }
+                        VariantMode = (webPartInstance.VariantMode != VariantModeEnum.None) ? webPartInstance.VariantMode : webPartInstance.ParentZone.VariantMode;
                     }
                     else
                     {
-                        // Ensure that the ZoneVariantID is not set when the web part was found in a regular zone
-                        ZoneVariantID = 0;
+                        VariantMode = VariantModeEnum.None;
                     }
-
-                    if ((VariantID > 0) && (webPartInstance != null) && (webPartInstance.PartInstanceVariants != null))
-                    {
-                        // Check OnlineMarketing permissions.
-                        if (CheckPermissions("Read"))
-                        {
-                            webPartInstance = webPartInstance.FindVariant(VariantID);
-                        }
-                        else
-                        {
-                            // Not authorized for OnlineMarketing - Manage.
-                            RedirectToInformation(String.Format(GetString("general.permissionresource"), "Read", (VariantMode == VariantModeEnum.ContentPersonalization) ? "CMS.ContentPersonalization" : "CMS.MVTest"));
-                        }
-                    }
-
-                    if (webPartInstance == null)
-                    {
-                        UIContext.EditedObject = null;
-                        return;
-                    }
-                }
-
-                mainWebPartInstance = webPartInstance;
-
-                // Keep xml version
-                if (webPartInstance != null)
-                {
-                    xmlVersion = webPartInstance.XMLVersion;
-
-                    // If data source ID set, edit the data source
-                    if (NestedWebPartID > 0)
-                    {
-                        webPartInstance = webPartInstance.NestedWebParts[NestedWebPartKey] ?? new WebPartInstance() { InstanceGUID = Guid.NewGuid() };
-                    }
-                }
-
-                // Get the form info
-                FormInfo fi = GetWebPartFormInfo();
-
-                // Get the form definition
-                if (fi != null)
-                {
-                    fi.ContextResolver.Settings.RelatedObject = templateInstance;
-                    form.AllowMacroEditing = ((WebPartTypeEnum)wpi.WebPartType != WebPartTypeEnum.Wireframe);
-
-                    // Get data row with required columns
-                    DataRow dr = fi.GetDataRow();
-
-                    if (IsNewWebPart || (xmlVersion > 0))
-                    {
-                        fi.LoadDefaultValues(dr);
-                    }
-
-                    // Load values from existing web part
-                    LoadDataRowFromWebPart(dr, webPartInstance, fi);
-
-                    // Set a unique WebPartControlID for the new variant
-                    if (IsNewVariant || IsNewWebPart)
-                    {
-                        // Set control ID
-                        string webPartControlId = ValidationHelper.GetCodeName(wpi.WebPartDisplayName);
-                        dr["WebPartControlID"] = WebPartZoneInstance.GetUniqueWebPartId(webPartControlId, templateInstance);
-                    }
-
-                    // Init the form
-                    InitForm(form, dr, fi);
-
-                    AddExportLink();
                 }
                 else
                 {
-                    UIContext.EditedObject = null;
+                    // Ensure that the ZoneVariantID is not set when the web part was found in a regular zone
+                    ZoneVariantID = 0;
                 }
+
+                if ((VariantID > 0) && (webPartInstance != null) && (webPartInstance.PartInstanceVariants != null))
+                {
+                    // Check OnlineMarketing permissions.
+                    if (CheckPermissions("Read"))
+                    {
+                        webPartInstance = webPartInstance.FindVariant(VariantID);
+                    }
+                    else
+                    {
+                        // Not authorized for OnlineMarketing - Manage.
+                        RedirectToInformation(String.Format(GetString("general.permissionresource"), "Read", (VariantMode == VariantModeEnum.ContentPersonalization) ? "CMS.ContentPersonalization" : "CMS.MVTest"));
+                    }
+                }
+
+                if (webPartInstance == null)
+                {
+                    UIContext.EditedObject = null;
+                    return;
+                }
+            }
+
+            mainWebPartInstance = webPartInstance;
+
+            // Keep xml version
+            if (webPartInstance != null)
+            {
+                xmlVersion = webPartInstance.XMLVersion;
+
+                // If data source ID set, edit the data source
+                if (NestedWebPartID > 0)
+                {
+                    webPartInstance = webPartInstance.NestedWebParts[NestedWebPartKey] ?? new WebPartInstance() { InstanceGUID = Guid.NewGuid() };
+                }
+            }
+
+            // Get the form info
+            FormInfo fi = GetWebPartFormInfo();
+
+            // Get the form definition
+            if (fi != null)
+            {
+                fi.ContextResolver.Settings.RelatedObject = templateInstance;
+                form.AllowMacroEditing = true;
+
+                // Get data row with required columns
+                DataRow dr = fi.GetDataRow();
+
+                if (IsNewWebPart || (xmlVersion > 0))
+                {
+                    fi.LoadDefaultValues(dr);
+                }
+
+                // Load values from existing web part
+                LoadDataRowFromWebPart(dr, webPartInstance, fi);
+
+                // Set a unique WebPartControlID for the new variant
+                if (IsNewVariant || IsNewWebPart)
+                {
+                    // Set control ID
+                    string webPartControlId = ValidationHelper.GetCodeName(wpi.WebPartDisplayName);
+                    dr["WebPartControlID"] = WebPartZoneInstance.GetUniqueWebPartId(webPartControlId, templateInstance);
+                }
+
+                // Init the form
+                InitForm(form, dr, fi);
+
+                AddExportLink();
+            }
+            else
+            {
+                UIContext.EditedObject = null;
             }
         }
     }
@@ -745,6 +752,12 @@ public partial class CMSModules_PortalEngine_Controls_WebParts_WebpartProperties
                 (PortalContext.ContentPersonalizationEnabled && !templateInstance.ContentPersonalizationVariantsLoaded))
             {
                 templateInstance.LoadVariants(false, VariantModeEnum.None);
+            }
+
+            // Check control ID validity
+            if (!ValidationHelper.IsIdentifier(newControlId))
+            {
+                errorMessage = GetString("webpartproperties.controlid.allowedcharacters");
             }
 
             // New or changed web part control id

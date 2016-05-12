@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSModules/AdminControls/Controls/UIControls/GeneralTree.ascx.cs" Inherits="CMSModules_AdminControls_Controls_UIControls_GeneralTree" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSModules/AdminControls/Controls/UIControls/GeneralTree.ascx.cs" Inherits="CMSModules_AdminControls_Controls_UIControls_GeneralTree" %>
 <%@ Register Src="~/CMSAdminControls/UI/Trees/UniTree.ascx" TagName="UniTree" TagPrefix="cms" %>
 <script type="text/javascript" language="javascript">
     //<![CDATA[

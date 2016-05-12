@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 
 using CMS.DataEngine;
@@ -170,7 +170,7 @@ public partial class CMSModules_EventManager_Controls_EventAttendees_Edit : CMSA
                 txtPhone.Text = eai.AttendeePhone;
 
                 // Show warning if duplicity email was used
-                bool isDuplicit = EventAttendeeInfoProvider.GetEventAttendees().Where("AttendeeEventNodeID", QueryOperator.Equals, eai.AttendeeEventNodeID)
+                bool isDuplicit = EventAttendeeInfoProvider.GetEventAttendees(eai.AttendeeEventNodeID)
                     .And().Where("AttendeeEmail", QueryOperator.Equals, eai.AttendeeEmail)
                     .And().Where("AttendeeID", QueryOperator.NotEquals, eai.AttendeeID).TopN(1).Any();
                 if (isDuplicit)

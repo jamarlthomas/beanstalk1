@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Log.aspx.cs" Inherits="CMSModules_Integration_Pages_Administration_Log"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Log.aspx.cs" Inherits="CMSModules_Integration_Pages_Administration_Log"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="Integration - Synchronization log" %>
 

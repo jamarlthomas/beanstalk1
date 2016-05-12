@@ -16,8 +16,11 @@ public partial class CMSFormControls_LiveSelectors_InsertImageOrMedia_Tabs_WebLi
         bool checkUI = ValidationHelper.GetBoolean(SettingsHelper.AppSettings["CKEditor:PersonalizeToolbarOnLiveSite"], false);
         if (checkUI)
         {
+            string output = QueryHelper.GetString("output", "");
+            OutputFormatEnum outputFormat = CMSDialogHelper.GetOutputFormat(output, QueryHelper.GetBoolean("link", false));
+            
             // Check UIProfile
-            if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerUIElement("CMS.WYSIWYGEditor", "InsertLink"))
+            if ((outputFormat == OutputFormatEnum.HTMLLink) && !MembershipContext.AuthenticatedUser.IsAuthorizedPerUIElement("CMS.WYSIWYGEditor", "InsertLink"))
             {
                 RedirectToUIElementAccessDenied("CMS.WYSIWYGEditor", "InsertLink");
             }
@@ -36,7 +39,7 @@ public partial class CMSFormControls_LiveSelectors_InsertImageOrMedia_Tabs_WebLi
         {
             webLinkSelector.StopProcessing = true;
             webLinkSelector.Visible = false;
-            string url = ResolveUrl("~/CMSMessages/Error.aspx?title=" + GetString("dialogs.badhashtitle") + "&text=" + GetString("dialogs.badhashtext") + "&cancel=1");
+            string url = ResolveUrl(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
             ltlScript.Text = ScriptHelper.GetScript("if (window.parent != null) { window.parent.location = '" + url + "' }");
         }
     }

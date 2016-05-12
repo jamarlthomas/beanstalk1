@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="OrderByControl.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="OrderByControl.ascx.cs"
     Inherits="CMSAdminControls_Basic_OrderByControl" %>
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server" UpdateMode="Conditional">
     <ContentTemplate>

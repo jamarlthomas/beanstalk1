@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Friends_Controls_FriendsToApprovalList"
-    Codebehind="FriendsToApprovalList.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Friends_Controls_FriendsToApprovalList"
+     Codebehind="FriendsToApprovalList.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <asp:Panel ID="pnlBody" runat="server" CssClass="Panel" EnableViewState="true">
     <asp:PlaceHolder ID="plcNoData" runat="server">

@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="Mvtest properties" Inherits="CMSModules_OnlineMarketing_Dialogs_ContentPersonalizationVariantList"
-    Theme="Default" Codebehind="ContentPersonalizationVariantList.aspx.cs" %>
+    Theme="Default"  Codebehind="ContentPersonalizationVariantList.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/OnlineMarketing/Controls/UI/ContentPersonalizationVariant/List.ascx"
     TagName="VariantList" TagPrefix="cms" %>

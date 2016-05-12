@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="LiveCategorySelection.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="LiveCategorySelection.aspx.cs"
     Inherits="CMSModules_Categories_CMSPages_LiveCategorySelection" Title="Live Selection Dialog"
     ValidateRequest="false" Theme="default" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master" %>
 

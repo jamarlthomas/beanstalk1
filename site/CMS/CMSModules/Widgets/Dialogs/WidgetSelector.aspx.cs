@@ -213,21 +213,15 @@ function OnReceiveAddInlineWidgetScript(rvalue, context) {
 
                 WebPartInfo wpi = WebPartInfoProvider.GetWebPartInfo(wi.WidgetWebPartID);
 
-                // Get the properties xml according to the zone type
-                FormInfo zoneTypeDefinition = PortalFormHelper.GetPositionFormInfo(zoneType);
-
                 // Merge the parent web part properties definition with the widget properties definition
                 string widgetProperties = FormHelper.MergeFormDefinitions(wpi.WebPartProperties, wi.WidgetProperties);
 
                 // Create the FormInfo for the current widget properties definition
-                FormInfo fi = PortalFormHelper.GetWidgetFormInfo(wi.WidgetName, Enum.GetName(typeof(WidgetZoneTypeEnum), zoneType), widgetProperties, zoneTypeDefinition, true);
+                FormInfo fi = PortalFormHelper.GetWidgetFormInfo(wi.WidgetName, zoneType, widgetProperties, true);
                 DataRow dr = null;
 
                 if (fi != null)
                 {
-                    // Check if there are some editable properties
-                    List<FormFieldInfo> mFields = fi.GetFields(true, true);
-
                     // Get data rows with required columns
                     dr = PortalHelper.CombineWithDefaultValues(fi, wi);
 

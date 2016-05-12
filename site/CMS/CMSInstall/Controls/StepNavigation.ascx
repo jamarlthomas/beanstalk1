@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSInstall_Controls_StepNavigation"
-    Codebehind="StepNavigation.ascx.cs" %>
+     Codebehind="StepNavigation.ascx.cs" %>
 <%@ Register TagPrefix="cms" TagName="Help" Src="~/CMSAdminControls/UI/PageElements/Help.ascx" %>
 <%@ Register TagPrefix="cms" TagName="ActivityBar" Src="~/CMSAdminControls/UI/System/ActivityBar.ascx" %>
 <asp:Literal ID="ltlTableBefore" runat="server" Visible="False" />

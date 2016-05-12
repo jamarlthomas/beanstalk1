@@ -1,12 +1,16 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Web.UI;
+using System.Linq;
+using System.Text;
 using System.Web.UI.WebControls;
 
+using CMS.Core;
 using CMS.DataEngine;
 using CMS.Helpers;
 using CMS.Membership;
-using CMS.Base;
+using CMS.PortalEngine;
+using CMS.PortalEngine.Internal;
 using CMS.SiteProvider;
 using CMS.UIControls;
 using CMS.WebAnalytics;
@@ -16,31 +20,11 @@ using CMS.WebAnalytics;
 [UIElement("CMS.WebAnalytics", "Campaign.Reports")]
 public partial class CMSModules_WebAnalytics_Pages_Tools_Campaign_Tab_Reports : CMSCampaignPage
 {
-    #region "Variables"
-
-    private bool mIsSaved;
-    private bool mReportLoaded;
-    private string mCampaignName = String.Empty;
     private CampaignInfo mCampaignInfo;
 
-    private IDisplayReport mUcDisplayReport;
-
-    #endregion
-
-
-    #region "Methods"
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        reportHeaderActions.ActionPerformed += HeaderActions_ActionPerformed;
-        mUcDisplayReport = (IDisplayReport)LoadUserControl("~/CMSModules/Reporting/Controls/DisplayReport.ascx");
-        pnlContent.Controls.Add((Control)mUcDisplayReport);
-
-        CurrentMaster.PanelContent.CssClass = string.Empty;
-        UIHelper.AllowUpdateProgress = false;
-        ScriptHelper.RegisterDialogScript(Page);
-
-        // Campaign Info
         mCampaignInfo = EditedObject as CampaignInfo;
         if (mCampaignInfo == null)
         {
@@ -56,225 +40,184 @@ public partial class CMSModules_WebAnalytics_Pages_Tools_Campaign_Tab_Reports : 
             }
         }
 
-        mCampaignName = mCampaignInfo.CampaignName;
+        FillDataForBasicCampaignInfo();
+        InitializeControls();
+    }
 
-        ucGraphType.ProcessChartSelectors(false);
 
-        if (!RequestHelper.IsPostBack())
+    private void FillDataForBasicCampaignInfo()
+    {
+        lblInfoNameValue.Text = HTMLHelper.HTMLEncode(mCampaignInfo.CampaignDisplayName);
+        lblInfoFromValue.Text = (mCampaignInfo.CampaignOpenFrom == DateTime.MinValue) ? GetString("campaign.basicinfo.notset") : mCampaignInfo.CampaignOpenFrom.ToLongDateString();
+        lblInfoToValue.Text = (mCampaignInfo.CampaignOpenTo == DateTime.MinValue) ? GetString("campaign.basicinfo.notset") : mCampaignInfo.CampaignOpenTo.ToLongDateString();
+        if (!string.IsNullOrEmpty(mCampaignInfo.CampaignDescription))
         {
-            // Check the first radio button
-            rbViews.Checked = true;
+            lblInfoDescriptionValue.Text = HTMLHelper.HTMLEncode(mCampaignInfo.CampaignDescription);
+        }
+        else
+        {
+            lblInfoDescription.Visible = false;
+            lblInfoDescriptionValue.Visible = false;
         }
     }
 
 
     /// <summary>
-    /// Display report
+    /// Creates the channel conversions table and conversion funnel.
     /// </summary>
-    /// <param name="reload">If true, display report control is reloaded</param>
-    private void DisplayReport(bool reload)
+    private void InitializeControls()
     {
-        if (mReportLoaded)
+        // Get raw data from database
+        var conversionSources = ConversionCampaignSourceInfoProvider.GetConversionCampaignSources(mCampaignInfo.CampaignID).ToList();
+
+        if (!conversionSources.Any())
         {
+            pnlCampaignColumnChart.Visible = false;
+            gridChannels.Visible = false;
+            lblNoData.Visible = true;
             return;
         }
 
-        ucGraphType.ProcessChartSelectors(false);
+        // Process data into more suitable format
+        var conversionSourcesById = conversionSources
+                          .GroupBy(key => key.ConversionID, (key, group) =>
+                          {
+                              var groupList = group.ToList();
+                              return new
+                              {
+                                  Name = ConversionInfoProvider.GetConversionInfo(key).ConversionDisplayName,
+                                  Items = groupList,
+                                  Sum = groupList.Sum(x => x.ConversionHits)
+                              };
+                          })
+                          .OrderByDescending(x => x.Sum);
 
-        // Set reports name
-        const string VIEWS = "campaign.yearreport;campaign.monthreport;campaign.weekreport;campaign.dayreport;campaign.hourreport";
-        const string CONVERSION_COUNT = "campaignconversioncount.yearreport;campaignconversioncount.monthreport;campaignconversioncount.weekreport;campaignconversioncount.dayreport;campaignconversioncount.hourreport";
-        const string CONVERSION_VALUE = "campaignconversionvalue.yearreport;campaignconversionvalue.monthreport;campaignconversionvalue.weekreport;campaignconversionvalue.dayreport;campaignconversionvalue.hourreport";
-        const string DETAILS = "campaigns.singledetails";
-        const string VISITORS_GOAL = "goalsnumberofvisitors.yearreport;goalsnumberofvisitors.monthreport;goalsnumberofvisitors.weekreport;goalsnumberofvisitors.dayreport;goalsnumberofvisitors.hourreport";
-        const string VALUE_PER_VISITOR = "goalsvaluepervisit.yearreport;goalsvaluepervisit.monthreport;goalsvaluepervisit.weekreport;goalsvaluepervisit.dayreport;goalsvaluepervisit.hourreport";
-        const string VALUE_GOAL = "goalsvalueofconversions.yearreport;goalsvalueofconversions.monthreport;goalsvalueofconversions.weekreport;goalsvalueofconversions.dayreport;goalsvalueofconversions.hourreport";
-        const string COUNT_GOAL = "goalsnumberofconversions.yearreport;goalsnumberofconversions.monthreport;goalsnumberofconversions.weekreport;goalsnumberofconversions.dayreport;goalsnumberofconversions.hourreport";
-
-        String codeName = String.Empty;
-        pnlConversions.Visible = false;
-        ucGraphType.EnableDateTimePicker = true;
-
-        if (rbViews.Checked)
+        // Initialize chart
+        double onePercentOfFirstItemSum = conversionSourcesById.First().Sum / 100.0;
+        var chartData = conversionSourcesById.Select(x => new
         {
-            CheckWebAnalyticsUI("campaign.overview");
-            codeName = "campaign";
-            mUcDisplayReport.ReportName = ucGraphType.GetReportName(VIEWS);
+            title = x.Name,
+            value = x.Sum,
+            percent = onePercentOfFirstItemSum > 0 ? Decimal.Round(x.Sum / (decimal)onePercentOfFirstItemSum) : 0,
+            formattedValue = x.Sum.ToString("N0"),
+        });
+
+        ScriptHelper.RegisterModule(pnlCampaignColumnChart, "CMS.Charts/CampaignColumnChart", new
+        {
+            chartDiv = pnlCampaignColumnChart.ClientID,
+            legendDiv = "legend",
+            data = chartData,
+            maxValue = conversionSourcesById.First().Sum,
+        });
+
+        // Create data table
+        var table = new DataTable();
+        table.Columns.Add("Channel", typeof(string));
+        table.Columns.Add("EmailReports", typeof(string));
+
+        // Define first header column
+        AddColumnToGridView(gridChannels, "Channel", String.Empty);
+
+        // Define column for email report links
+        AddColumnToGridView(gridChannels, "EmailReports", GetString("campaign.report.emailreports"));
+
+        // Get channels
+        var channels = conversionSources.GroupBy(x => x.SourceName).OrderBy(x => x.Key);
+
+        // Create table header
+        foreach (var conversion in conversionSourcesById)
+        {
+            AddColumnToGridView(gridChannels, conversion.Name, conversion.Name);
+            table.Columns.Add(conversion.Name, typeof(string));
         }
 
-        if (rbCount.Checked)
+        // Create table rows
+        foreach (var channel in channels)
         {
-            CheckWebAnalyticsUI("CampaignConversionCount");
-            pnlConversions.Visible = true;
-            codeName = "campconversion";
-            mUcDisplayReport.ReportName = ucGraphType.GetReportName(CONVERSION_COUNT);
-        }
+            var dr = table.NewRow();
+            dr["Channel"] = channel.Key;
 
-        if (rbValue.Checked)
-        {
-            CheckWebAnalyticsUI("campaignsConversionValue");
-            pnlConversions.Visible = true;
-            codeName = "campconversion";
-            mUcDisplayReport.ReportName = ucGraphType.GetReportName(CONVERSION_VALUE);
-        }
-
-        if (rbDetail.Checked)
-        {
-            CheckWebAnalyticsUI("CampaignDetails");
-            mUcDisplayReport.ReportName = ucGraphType.GetReportName(DETAILS);
-            ucGraphType.EnableDateTimePicker = false;
-        }
-
-        if (rbGoalView.Checked)
-        {
-            CheckWebAnalyticsUI("goals.numberofvisitors");
-            mUcDisplayReport.ReportName = ucGraphType.GetReportName(VISITORS_GOAL);
-        }
-
-        if (rbGoalCount.Checked)
-        {
-            CheckWebAnalyticsUI("goals.numberofconversions");
-            mUcDisplayReport.ReportName = ucGraphType.GetReportName(COUNT_GOAL);
-        }
-
-        if (rbGoalValue.Checked)
-        {
-            CheckWebAnalyticsUI("goals.totalvalueofconversions");
-            mUcDisplayReport.ReportName = ucGraphType.GetReportName(VALUE_GOAL);
-        }
-
-        if (rbValuePerVisitor.Checked)
-        {
-            CheckWebAnalyticsUI("goals.valuepervisitor");
-            mUcDisplayReport.ReportName = ucGraphType.GetReportName(VALUE_PER_VISITOR);
-        }
-
-        // Load conversions fit to campaign
-        if ((pnlConversions.Visible) && (mCampaignInfo != null))
-        {
-            ucConversions.PostbackOnDropDownChange = true;
-            if (!mCampaignInfo.CampaignUseAllConversions)
+            if (ModuleEntryManager.IsModuleLoaded(ModuleName.NEWSLETTER))
             {
-                ucConversions.WhereCondition = "ConversionID  IN (SELECT ConversionID FROM Analytics_ConversionCampaign WHERE CampaignID =" + mCampaignInfo.CampaignID + ")";
+                var issues =
+                    new ObjectQuery(PredefinedObjectType.NEWSLETTERISSUE).WhereEquals("IssueUTMCampaign",
+                        mCampaignInfo.CampaignUTMCode).WhereEquals("IssueUTMSource", channel.Key);
+                dr["EmailReports"] = GetEmailReportLinks(issues.ToList()).Join("</br></br>");
             }
 
-            ucConversions.WhereCondition = SqlHelper.AddWhereCondition(ucConversions.WhereCondition, "ConversionSiteID =" + SiteContext.CurrentSiteID);
-            ucConversions.ReloadData(true);
+            // Create other cells with conversion values
+            foreach (var item in conversionSourcesById)
+            {
+                var conversion = item.Items.Where(x => x.SourceName == channel.Key).ToList();
+                dr[item.Name] = conversion.Any() ? conversion.First().ConversionHits.ToString("N0") : "0";
+            }
+
+            table.Rows.Add(dr);
         }
 
-        String conversion = ValidationHelper.GetString(ucConversions.Value, String.Empty);
-        if (conversion == ucConversions.AllRecordValue)
-        {
-            conversion = String.Empty;
-        }
-
-        // General report data
-        mUcDisplayReport.LoadFormParameters = false;
-        mUcDisplayReport.DisplayFilter = false;
-        mUcDisplayReport.GraphImageWidth = 100;
-        mUcDisplayReport.IgnoreWasInit = true;
-        mUcDisplayReport.TableFirstColumnWidth = Unit.Percentage(30);
-        mUcDisplayReport.UseExternalReload = true;
-        mUcDisplayReport.UseProgressIndicator = true;
-
-        // Resolve report macros 
-        DataTable reportParameters = new DataTable();
-        reportParameters.Columns.Add("FromDate", typeof(DateTime));
-        reportParameters.Columns.Add("ToDate", typeof(DateTime));
-        reportParameters.Columns.Add("CodeName", typeof(string));
-        reportParameters.Columns.Add("CampaignName", typeof(string));
-        reportParameters.Columns.Add("ConversionName", typeof(string));
-
-        object[] parameters = new object[5];
-        parameters[0] = ucGraphType.From;
-        parameters[1] = ucGraphType.To;
-        parameters[2] = codeName;
-        parameters[3] = mCampaignName;
-        parameters[4] = conversion;
-
-        reportParameters.Rows.Add(parameters);
-        reportParameters.AcceptChanges();
-        mUcDisplayReport.ReportParameters = reportParameters.Rows[0];
-
-        if (reload)
-        {
-            mUcDisplayReport.ReloadData(true);
-        }
-
-        mReportLoaded = true;
+        gridChannels.DataSource = table;
+        gridChannels.DataBind();
     }
 
 
     /// <summary>
-    /// Handles lnkSave click event.
+    /// Row data bound - gridChannels.
     /// </summary>
-    protected void lnkSave_Click(object sender, EventArgs e)
+    protected void gridChannels_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-        Save();
-    }
-
-
-    protected override void OnPreRender(EventArgs e)
-    {
-        DisplayReport(true);
-
-        reportHeaderActions.ReportName = mUcDisplayReport.ReportName;
-        reportHeaderActions.ReportParameters = mUcDisplayReport.ReportParameters;
-        reportHeaderActions.SelectedInterval = ucGraphType.SelectedInterval;
-        reportHeaderActions.ManageDataCodeName = "singlecampaign;" + mCampaignName;
-
-        base.OnPreRender(e);
-    }
-
-
-    /// <summary>
-    /// VerifyRenderingInServerForm.
-    /// </summary>
-    /// <param name="control">Control</param>
-    public override void VerifyRenderingInServerForm(Control control)
-    {
-        if (!mIsSaved)
+        if (e.Row.RowType == DataControlRowType.DataRow)
         {
-            base.VerifyRenderingInServerForm(control);
+            e.Row.Cells[0].Text = "<span class=\"control-label\">" + e.Row.Cells[0].Text + "</span>";
+            e.Row.Cells[1].Text = HTMLHelper.HTMLDecode(e.Row.Cells[1].Text);
         }
-    }
 
-
-    protected void HeaderActions_ActionPerformed(object sender, CommandEventArgs e)
-    {
-        switch (e.CommandName)
+        if (e.Row.RowType == DataControlRowType.Header)
         {
-            case ComponentEvents.SAVE:
-                Save();
-                break;
+            foreach (TableCell cell in e.Row.Cells)
+            {
+                cell.Text = "<span class=\"control-label\">" + cell.Text + "</span>";
+            }
         }
     }
 
 
     /// <summary>
-    /// Saves the graph report.
+    /// Gets email report links.
     /// </summary>
-    private void Save()
+    /// <param name="issues">Newsletter issues</param>
+    private IEnumerable<string> GetEmailReportLinks(IEnumerable<BaseInfo> issues)
     {
-        // Check web analytics save permission
-        if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("CMS.WebAnalytics", "SaveReports"))
+        var uiLinkProvider = Service.Entry<IUILinkProvider>();
+
+        foreach (var issue in issues)
         {
-            RedirectToAccessDenied("CMS.WebAnalytics", "SaveReports");
+            var url = URLHelper.GetAbsoluteUrl(uiLinkProvider.GetSingleObjectLink("CMS.Newsletter", "EditIssueProperties", new ObjectDetailLinkParameters
+            {
+                ObjectIdentifier = issue.Generalized.ObjectID,
+                AllowNavigationToListing = true,
+                TabName = "Newsletter.Issue.Reports.Overview"
+            }));
+
+            yield return "<a href=\"" + url + "\" target=\"_top\">" + HTMLHelper.HTMLEncode(issue.GetValue("IssueSubject").ToString()) + "</a>";
         }
-
-        DisplayReport(false);
-
-        // Saves the report        
-        mIsSaved = true;
-
-        if (mUcDisplayReport.SaveReport() > 0)
-        {
-            lblInfo.Visible = true;
-            lblInfo.Text = String.Format(GetString("Analytics_Report.ReportSavedTo"), mUcDisplayReport.ReportDisplayName + " - " + DateTime.Now.ToString());
-        }
-
-        mIsSaved = false;
     }
 
-    #endregion
+
+    /// <summary>
+    /// Adds new column to specified GridView control.
+    /// </summary>
+    /// <param name="gv">GridView control.</param>
+    /// <param name="dataField">Name of the data field.</param>
+    /// <param name="headerText">Header text.</param>
+    private void AddColumnToGridView(GridView gv, string dataField, string headerText)
+    {
+        // Define first header column
+        BoundField boundfield = new BoundField
+        {
+            DataField = dataField,
+            HeaderText = headerText
+        };
+
+        gv.Columns.Add(boundfield);
+    }
 }

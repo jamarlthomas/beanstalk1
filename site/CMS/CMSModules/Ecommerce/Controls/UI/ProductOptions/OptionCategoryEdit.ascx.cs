@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Text;
 
+using CMS.Core;
 using CMS.Base;
 using CMS.DataEngine;
 using CMS.Ecommerce;
@@ -295,11 +296,11 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductOptions_OptionCateg
             string query = QueryHelper.BuildQuery("saved", "1", "productid", ProductID.ToString(), "siteid", CategorySiteID.ToString());
             if (ParentProduct == null)
             {
-                URLHelper.Redirect(UIContextHelper.GetElementUrl("CMS.Ecommerce", "EditOptionCategory", false, EditedCategory.CategoryID, query));
+                URLHelper.Redirect(UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, "EditOptionCategory", false, EditedCategory.CategoryID, query));
             }
             else
             {
-                URLHelper.Redirect(UIContextHelper.GetElementDialogUrl("CMS.Ecommerce", "EditProductOptionCategory", EditedCategory.CategoryID, query));
+                URLHelper.Redirect(UIContextHelper.GetElementDialogUrl(ModuleName.ECOMMERCE, "EditProductOptionCategory", EditedCategory.CategoryID, query));
             }
         }
 

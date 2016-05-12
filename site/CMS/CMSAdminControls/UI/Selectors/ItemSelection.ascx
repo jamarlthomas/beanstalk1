@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSAdminControls_UI_Selectors_ItemSelection" Codebehind="ItemSelection.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSAdminControls_UI_Selectors_ItemSelection"  Codebehind="ItemSelection.ascx.cs" %>
 
 <div class="item-selection">
     <div class="list-column">

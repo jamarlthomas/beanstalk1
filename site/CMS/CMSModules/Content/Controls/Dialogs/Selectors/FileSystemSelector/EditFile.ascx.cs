@@ -90,7 +90,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
                         if (!File.Exists(filePath))
                         {
                             // Redirect to error page
-                            URLHelper.Redirect("~/CMSMessages/Error.aspx?text=" + GetString("general.filedoesntexist") + "&cancel=1");
+                            URLHelper.Redirect(UIHelper.GetErrorPageUrl("Error.Header", "general.filedoesntexist", true));
                         }
 
                         fileName = Path.GetFileNameWithoutExtension(filePath);
@@ -161,7 +161,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
     private void InitHeaderActions()
     {
         // Save action
-        SaveAction save = new SaveAction(Page);
+        SaveAction save = new SaveAction();
         headerActions.ActionsList.Add(save);
 
         // Preview
@@ -203,6 +203,12 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
             IsFolderName(txtName.Text, GetString("img.errors.filename")).
             Result;
 
+        if (!String.IsNullOrEmpty(errMsg))
+        {
+            ShowError(errMsg);
+            return;
+        }
+
         // Prepare the path
         string path = filePath;
 
@@ -224,59 +230,67 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
         if (!String.IsNullOrEmpty(errMsg))
         {
             ShowError(errMsg);
+            return;
         }
-        else
+
+        bool success = true;
+        bool fileNameChanged = false;
+        try
         {
-            bool sucess = true;
-            try
+            // Move the file to the new location
+            if (!newFile && !path.EqualsCSafe(filePath, true))
             {
-                // Move the file to the new location
-                if (!newFile && !path.EqualsCSafe(filePath, true))
-                {
-                    File.WriteAllText(filePath, txtContent.Text);
-                    File.Move(filePath, path);
-                }
-                // Create the file or write into it
-                else
-                {
-                    File.WriteAllText(path, txtContent.Text);
-                }
+                File.WriteAllText(filePath, txtContent.Text);
+                File.Move(filePath, path);
+                fileNameChanged = true;
             }
-            catch (Exception ex)
+            // Create the file or write into it
+            else
             {
-                sucess = false;
-                ShowError(GetString("general.saveerror"), ex.Message, null);
-                EventLogProvider.LogException("FileSystemSelector", "SAVEFILE", ex);
+                File.WriteAllText(path, txtContent.Text);
             }
+        }
+        catch (Exception ex)
+        {
+            success = false;
+            ShowError(GetString("general.saveerror"), ex.Message, null);
+            EventLogProvider.LogException("FileSystemSelector", "SAVEFILE", ex);
+        }
 
-            if (sucess)
+        if (success)
+        {
+            ShowChangesSaved();
+
+            // Redirect for new items
+            if (newFile && !saveAndClose)
             {
-                ShowChangesSaved();
+                string fileIdentifier = Guid.NewGuid().ToString("N") + path.GetHashCode();
+                Hashtable pp = new Hashtable();
+                pp.Add("filepath", URLHelper.UnMapPath(path));
+                pp.Add("newfileextension", String.Empty);
+                WindowHelper.Add(fileIdentifier, pp);
 
-                // Redirect for new items
-                if (newFile && !saveAndClose)
-                {
-                    string fileIdentifier = Guid.NewGuid().ToString("N") + path.GetHashCode();
-                    Hashtable pp = new Hashtable();
-                    pp.Add("filepath", URLHelper.UnMapPath(path));
-                    pp.Add("newfileextension", String.Empty);
-                    WindowHelper.Add(fileIdentifier, pp);
-
-                    string parameters = String.Format("?identifier={0}&saved=1", fileIdentifier);
-                    string validationHash = QueryHelper.GetHash(parameters);
-                    string url = URLHelper.ResolveUrl("~/CMSModules/Content/Controls/Dialogs/Selectors/FileSystemSelector/EditTextFile.aspx") + parameters + "&hash=" + validationHash;
-                    URLHelper.Redirect(url);
-                }
-
-                String script = "wopener.SetRefreshAction();";
-                if (saveAndClose)
-                {
-                    script += "CloseDialog()";
-                }
-                ScriptHelper.RegisterStartupScript(Page, typeof(String), "closescript", ScriptHelper.GetScript(script));
-
-                RegisterRefreshScript();
+                string parameters = String.Format("?identifier={0}&saved=1", fileIdentifier);
+                string validationHash = QueryHelper.GetHash(parameters);
+                string url = URLHelper.ResolveUrl("~/CMSModules/Content/Controls/Dialogs/Selectors/FileSystemSelector/EditTextFile.aspx") + parameters + "&hash=" + validationHash;
+                URLHelper.Redirect(url);
             }
+
+            // Update file name path stored in session in case of changing file name
+            if (fileNameChanged)
+            {
+                prop["filepath"] = URLHelper.UnMapPath(path);
+                WindowHelper.Add(identifier, prop);
+            }
+
+            String script = "wopener.SetRefreshAction();";
+            if (saveAndClose)
+            {
+                script += "CloseDialog()";
+            }
+            ScriptHelper.RegisterStartupScript(Page, typeof(String), "closescript", ScriptHelper.GetScript(script));
+
+            RegisterRefreshScript();
         }
     }
 

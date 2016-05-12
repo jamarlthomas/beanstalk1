@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_ChangeStylesheetLanguage" Codebehind="~/CMSFormControls/ChangeStylesheetLanguage.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_ChangeStylesheetLanguage"  Codebehind="~/CMSFormControls/ChangeStylesheetLanguage.ascx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniControls/UniButton.ascx" TagName="UniButton" TagPrefix="cms" %>
 

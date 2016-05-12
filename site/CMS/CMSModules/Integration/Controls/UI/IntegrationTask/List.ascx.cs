@@ -1,35 +1,29 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Security.Principal;
+using System.Text;
+using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Collections;
-using System.Threading;
-using System.Collections.Generic;
-using System.Text;
-using System.Security.Principal;
 
-using CMS.Helpers;
 using CMS.Base;
-using CMS.SiteProvider;
-using CMS.SynchronizationEngine;
-using CMS.UIControls;
 using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.ExtendedControls;
-using CMS.Synchronization;
+using CMS.Helpers;
 using CMS.Membership;
+using CMS.SiteProvider;
+using CMS.Synchronization;
+using CMS.SynchronizationEngine;
+using CMS.UIControls;
 
 public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : CMSAdminListControl
 {
     #region "Variables and enums"
 
-    /// <summary>
-    /// Message storage for async control
-    /// </summary>
-    protected static Hashtable mInfos = new Hashtable();
-
-    private string eventCode = null;
-    private string eventType = null;
+    private string eventCode;
+    private string eventType;
 
     protected int currentSiteId = 0;
     protected CurrentUserInfo currentUser = null;
@@ -142,23 +136,11 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
     {
         get
         {
-            return ValidationHelper.GetString(mInfos["SyncInfo_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Information;
         }
         set
         {
-            mInfos["SyncInfo_" + ctlAsyncLog.ProcessGUID] = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
+            ctlAsyncLog.ProcessData.Information = value;
         }
     }
 
@@ -170,11 +152,11 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
     {
         get
         {
-            return ValidationHelper.GetString(mInfos["SyncError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mInfos["SyncError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -186,11 +168,11 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
     {
         get
         {
-            return ValidationHelper.GetString(mInfos["SyncCancel_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.CancelledInfo;
         }
         set
         {
-            mInfos["SyncCancel_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.CancelledInfo = value;
         }
     }
 
@@ -223,7 +205,7 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
 
                 // Initialize buttons
                 btnOk.OnClientClick = "return PerformAction();";
-                btnOk.Click += new EventHandler(btnOk_Click);
+                btnOk.Click += btnOk_Click;
 
                 pnlContent.Visible = true;
                 pnlLog.Visible = false;
@@ -238,7 +220,6 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
 
             ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
             ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-            ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
             ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
         }
     }
@@ -275,29 +256,31 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
         if (ConnectorID > 0)
         {
             gridElem.WhereCondition = SqlHelper.AddWhereCondition(gridElem.WhereCondition, "SynchronizationConnectorID = " + ConnectorID);
-            gridElem.GridView.Columns[4].Visible = false;
+            gridElem.NamedColumns["SynchronizationConnectorID"].Visible = false;
         }
     }
 
 
     protected object gridElem_OnExternalDataBound(object sender, string sourceName, object parameter)
     {
-        DataRowView drv = null;
+        DataRowView drv;
+
         switch (sourceName.ToLowerCSafe())
         {
             case "result":
-                drv = parameter as DataRowView;
-                string errorMsg = ValidationHelper.GetString(drv["SynchronizationErrorMessage"], string.Empty);
+                {
+                    drv = parameter as DataRowView;
+                    if (drv != null)
+                    {
+                        string errorMsg = ValidationHelper.GetString(drv["SynchronizationErrorMessage"], string.Empty);
 
-                bool errorOccurred = !string.IsNullOrEmpty(errorMsg);
-                if (errorOccurred)
-                {
-                    int synchronizationId = ValidationHelper.GetInteger(drv["SynchronizationID"], 0);
-                    string logUrl = ResolveUrl("~/CMSModules/Integration/Pages/Administration/Log.aspx?synchronizationid=") + synchronizationId;
-                    return String.Format("<a target=\"_blank\" href=\"{0}\" onclick=\"modalDialog('{0}', 'tasklog', 1400, 1200); return false;\">{1}</a>", logUrl, GetString("Tasks.ResultFailed"));
-                }
-                else
-                {
+                        if (!string.IsNullOrEmpty(errorMsg))
+                        {
+                            int synchronizationId = ValidationHelper.GetInteger(drv["SynchronizationID"], 0);
+                            string logUrl = ResolveUrl("~/CMSModules/Integration/Pages/Administration/Log.aspx?synchronizationid=") + synchronizationId;
+                            return String.Format("<a target=\"_blank\" href=\"{0}\" onclick=\"modalDialog('{0}', 'tasklog', 1400, 1200); return false;\">{1}</a>", logUrl, GetString("Tasks.ResultFailed"));
+                        }
+                    }
                     return string.Empty;
                 }
 
@@ -320,7 +303,8 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
                     drv = UniGridFunctions.GetDataRowView(runButton.Parent as DataControlFieldCell);
 
                     int connectorId = ValidationHelper.GetInteger(drv["SynchronizationConnectorID"], 0);
-                    AbstractIntegrationConnector connector = IntegrationHelper.GetConnector(connectorId);
+                    var connector = IntegrationConnectorInfoProvider.GetIntegrationConnectorInfo(connectorId);
+
                     bool processingDisabled = TasksAreInbound ? !IntegrationHelper.IntegrationProcessExternal : !IntegrationHelper.IntegrationProcessInternal;
                     if (processingDisabled || (connector == null) || !connector.ConnectorEnabled)
                     {
@@ -331,14 +315,13 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
                         }
                         else
                         {
-                            string connectorDisplayName = ValidationHelper.GetString(drv["ConnectorDisplayName"], String.Empty);
                             if ((connector != null) && !connector.ConnectorEnabled)
                             {
-                                runButton.ToolTip = String.Format(GetString("integration.connectordisabled"), HTMLHelper.HTMLEncode(connectorDisplayName));
+                                runButton.ToolTip = String.Format(GetString("integration.connectordisabled"), HTMLHelper.HTMLEncode(connector.ConnectorDisplayName));
                             }
                             else
                             {
-                                runButton.ToolTip = String.Format(GetString("integration.connectorunavailable"), HTMLHelper.HTMLEncode(connectorDisplayName));
+                                runButton.ToolTip = GetString("integration.connectorunavailable");
                             }
                         }
 
@@ -441,8 +424,7 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state == CMSThread.ABORT_REASON_STOP)
+            if (CMSThread.Stopped(ex))
             {
                 // Canceled by user
                 CurrentInfo = CanceledString;
@@ -458,11 +440,6 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
         {
             CurrentError = GetString("Tasks.SynchronizationFailed") + ": " + ex.Message;
             AddErrorLog(CurrentError);
-        }
-        finally
-        {
-            // Finalize log context
-            FinalizeContext();
         }
     }
 
@@ -512,8 +489,7 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state == CMSThread.ABORT_REASON_STOP)
+            if (CMSThread.Stopped(ex))
             {
                 // Canceled by user
                 CurrentInfo = CanceledString;
@@ -529,11 +505,6 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
         {
             CurrentError = GetString("Tasks.SynchronizationFailed") + ": " + ex.Message;
             AddErrorLog(CurrentError);
-        }
-        finally
-        {
-            // Finalize log context
-            FinalizeContext();
         }
     }
 
@@ -575,13 +546,12 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
                 }
             }
 
-            CurrentInfo = GetString("Tasks.DeleteOK");
+            CurrentInfo = GetString("tasks.deletionok");
             AddLog(CurrentInfo);
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state == CMSThread.ABORT_REASON_STOP)
+            if (CMSThread.Stopped(ex))
             {
                 // Canceled by user
                 CurrentInfo = CanceledString;
@@ -597,11 +567,6 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
         {
             CurrentError = GetString("Tasks.DeletionFailed") + ": " + ex.Message;
             AddErrorLog(CurrentError);
-        }
-        finally
-        {
-            // Finalize log context
-            FinalizeContext();
         }
     }
 
@@ -633,13 +598,12 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
                 }
             }
 
-            CurrentInfo = GetString("Tasks.DeleteOK");
+            CurrentInfo = GetString("tasks.deletionok");
             AddLog(CurrentInfo);
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state == CMSThread.ABORT_REASON_STOP)
+            if (CMSThread.Stopped(ex))
             {
                 // Canceled by user
                 CurrentInfo = CanceledString;
@@ -655,11 +619,6 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
         {
             CurrentError = GetString("Tasks.DeletionFailed") + ": " + ex.Message;
             AddErrorLog(CurrentError);
-        }
-        finally
-        {
-            // Finalize log context
-            FinalizeContext();
         }
     }
 
@@ -681,8 +640,7 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
                 }
                 else if (gridElem.SelectedItems.Count > 0)
                 {
-                    ctlAsyncLog.Parameter = gridElem.SelectedItems;
-                    RunAsync(SynchronizeSelected);
+                    RunAsync(p => SynchronizeSelected(gridElem.SelectedItems));
                 }
                 break;
 
@@ -693,8 +651,7 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
                 }
                 else if (gridElem.SelectedItems.Count > 0)
                 {
-                    ctlAsyncLog.Parameter = gridElem.SelectedItems;
-                    RunAsync(DeleteSelected);
+                    RunAsync(p => DeleteSelected(gridElem.SelectedItems));
                 }
                 break;
 
@@ -708,14 +665,7 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
 
 
     #region "Async processing"
-
-    protected void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        // Set current log
-        ctlAsyncLog.LogContext = CurrentLog;
-    }
-
-
+    
     protected void ctlAsyncLog_OnError(object sender, EventArgs e)
     {
         // Handle error
@@ -729,7 +679,6 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
         {
             ShowConfirmation(CurrentInfo);
         }
-        FinalizeContext();
     }
 
 
@@ -745,7 +694,6 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
         {
             ShowConfirmation(CurrentInfo);
         }
-        FinalizeContext();
     }
 
 
@@ -772,8 +720,6 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
     protected void RunAsync(AsyncAction action)
     {
         pnlLog.Visible = true;
-        CurrentLog.Close();
-        EnsureLog();
         CurrentError = string.Empty;
         CurrentInfo = string.Empty;
         eventType = EventType.INFORMATION;
@@ -793,8 +739,7 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
         AddEventLog(newLog);
     }
 
@@ -816,7 +761,7 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
     /// <param name="errorMessage">Error message</param>
     protected void AddErrorLog(string newLog, string errorMessage)
     {
-        LogContext.AppendLine(newLog);
+        LogContext.AppendLine(newLog, "Integration");
 
         string logMessage = newLog;
         if (errorMessage != null)
@@ -841,27 +786,6 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
                             0, null, RequestContext.UserHostAddress, currentSiteId, SystemContext.MachineName, RequestContext.URLReferrer, RequestContext.UserAgent, DateTime.Now);
     }
 
-
-    /// <summary>
-    /// Closes log context and causes event log to save.
-    /// </summary>
-    protected void FinalizeContext()
-    {
-        // Close current log context
-        CurrentLog.Close();
-    }
-
-
-    /// <summary>
-    /// Ensures the logging context.
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext log = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-        log.LogSingleEvents = false;
-        return log;
-    }
-
     #endregion
 
 
@@ -872,32 +796,43 @@ public partial class CMSModules_Integration_Controls_UI_IntegrationTask_List : C
     /// </summary>
     private string PrepareScript()
     {
-        StringBuilder actionScript = new StringBuilder();
-        actionScript.Append("function PerformAction(){{");
-        actionScript.Append("   var action = document.getElementById(", ScriptHelper.GetString(drpAction.ClientID), ").value;");
-        actionScript.Append("   var whatDrp = document.getElementById(", ScriptHelper.GetString(drpWhat.ClientID), ").value;");
-        actionScript.Append("   var label = document.getElementById(", ScriptHelper.GetString(lblInfoBottom.ClientID), ");");
-        actionScript.Append("   var selection = !eval(", ScriptHelper.GetString(gridElem.GetCheckSelectionScript()), ");");
-        actionScript.Append("   if(!selection && (whatDrp!=", (int)What.AllTasks, ")){{");
-        actionScript.Append("       label.innerHTML = ", ScriptHelper.GetString(GetString("synchronization.selecttasks")), ";");
-        actionScript.Append("   }}");
-        actionScript.Append("   if(action==", (int)Action.Delete, "){{");
-        actionScript.Append("       if(whatDrp==", (int)What.AllTasks, "){{");
-        actionScript.Append("           return confirm(", ScriptHelper.GetString(GetString("Tasks.ConfirmDeleteAll")), ");");
-        actionScript.Append("       }} else if(selection){{");
-        actionScript.Append("           return confirm(", ScriptHelper.GetString(GetString("general.confirmdelete")), ");");
-        actionScript.Append("       }} else {{");
-        actionScript.Append("           return false;");
-        actionScript.Append("       }}");
-        actionScript.Append("   }} else if(action==", (int)Action.Synchronize, "){{");
-        actionScript.Append("       return ((whatDrp==", (int)What.AllTasks, ") || selection)");
-        actionScript.Append("   }} else {{");
-        actionScript.Append("       label.innerHTML = ", ScriptHelper.GetString(GetString("massaction.selectsomeaction")), ";");
-        actionScript.Append("       return false;");
-        actionScript.Append("   }}");
-        actionScript.Append("}}");
+        string script = String.Format(@"
+function PerformAction(){{
+    var action = document.getElementById({0}).value;
+    var whatDrp = document.getElementById({1}).value;
+    var label = document.getElementById({2});
+    var selection = !eval({3});
+    if(!selection && (whatDrp!={4})){{
+        label.innerHTML = {5};
+    }}
+    if(action=={6}){{
+        if(whatDrp=={4}){{
+            return confirm({7});
+        }} else if(selection){{
+            return confirm({8});
+        }} else {{
+            return false;
+        }}
+    }} else if(action=={9}){{
+        return ((whatDrp=={4}) || selection)
+    }} else {{
+        label.innerHTML = {10};
+        return false;
+    }}
+}}",
+            ScriptHelper.GetString(drpAction.ClientID),
+            ScriptHelper.GetString(drpWhat.ClientID),
+            ScriptHelper.GetString(lblInfoBottom.ClientID),
+            ScriptHelper.GetString(gridElem.GetCheckSelectionScript()),
+            (int)What.AllTasks,
+            ScriptHelper.GetString(GetString("synchronization.selecttasks")),
+            (int)Action.Delete,
+            ScriptHelper.GetString(GetString("Tasks.ConfirmDeleteAll")),
+            ScriptHelper.GetString(GetString("general.confirmdelete")),
+            (int)Action.Synchronize,
+            ScriptHelper.GetString(GetString("massaction.selectsomeaction")));
 
-        return actionScript.ToString();
+        return script;
     }
 
 

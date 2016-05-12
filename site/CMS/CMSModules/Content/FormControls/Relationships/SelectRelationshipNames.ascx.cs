@@ -1,9 +1,9 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
-using CMS.DataEngine;
+
 using CMS.FormControls;
 using CMS.Helpers;
-using CMS.Base;
+using CMS.Relationships;
 using CMS.SiteProvider;
 using CMS.UIControls;
 
@@ -11,10 +11,8 @@ public partial class CMSModules_Content_FormControls_Relationships_SelectRelatio
 {
     #region "Private variables"
 
-    private bool mAllowEmpty = false;
-
+    private bool mAllowEmpty;
     private string mReturnColumnName = "RelationshipName";
-
     private int mSiteId = SiteContext.CurrentSiteID;
 
     #endregion
@@ -39,6 +37,16 @@ public partial class CMSModules_Content_FormControls_Relationships_SelectRelatio
                 uniSelector.AllowEmpty = value;
             }
         }
+    }
+
+
+    /// <summary>
+    /// Indicates if ad-hoc relationship names should be hidden from the selection.
+    /// </summary>
+    public bool HideAdHocRelationshipNames
+    {
+        get;
+        set;
     }
 
 
@@ -198,22 +206,10 @@ public partial class CMSModules_Content_FormControls_Relationships_SelectRelatio
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        // Set where condition
-        if (!AllowedForObjects)
-        {
-            uniSelector.WhereCondition = SqlHelper.AddWhereCondition(uniSelector.WhereCondition, "RelationshipAllowedObjects NOT LIKE '%" + ObjectHelper.GROUP_OBJECTS + "%'");
-        }
-        if (!AllowedForDocuments)
-        {
-            uniSelector.WhereCondition = SqlHelper.AddWhereCondition(uniSelector.WhereCondition, "RelationshipAllowedObjects NOT LIKE '%" + ObjectHelper.GROUP_DOCUMENTS + "%'");
-        }
-
-        // If site specified, restrict to relationships assigned to the site
-        if (SiteId > 0)
-        {
-            uniSelector.WhereCondition = SqlHelper.AddWhereCondition(uniSelector.WhereCondition, "RelationshipNameID IN (SELECT RelationshipNameID FROM CMS_RelationshipNameSite WHERE SiteID = " + SiteId + ")");
-        }
-
+        var condition = RelationshipNameInfoProvider.GetRelationshipNamesWhereCondition(AllowedForObjects, AllowedForDocuments, SiteId, !HideAdHocRelationshipNames);
+        uniSelector.WhereCondition = condition.ToString(true);
+        
+        uniSelector.UseTypeCondition = HideAdHocRelationshipNames;
         uniSelector.AllowAll = ValidationHelper.GetBoolean(GetValue("AllowAll"), false);
         uniSelector.AllowEmpty = AllowEmpty;
         uniSelector.ReturnColumnName = ReturnColumnName;
@@ -225,11 +221,13 @@ public partial class CMSModules_Content_FormControls_Relationships_SelectRelatio
     protected void Page_PreRender(object sender, EventArgs e)
     {
         // Disable DDL if no relationships available
-        if (!uniSelector.HasData)
+        if (uniSelector.HasData)
         {
-            uniSelector.DropDownSingleSelect.Items.Add(new ListItem(ResHelper.GetString("General.NoneAvailable"), ""));
-            uniSelector.Enabled = false;
+            return;
         }
+
+        uniSelector.DropDownSingleSelect.Items.Add(new ListItem(ResHelper.GetString("General.NoneAvailable"), ""));
+        uniSelector.Enabled = false;
     }
 
     #endregion

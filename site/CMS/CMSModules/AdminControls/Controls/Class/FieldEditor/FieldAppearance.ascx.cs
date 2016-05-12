@@ -1,7 +1,6 @@
-using System;
+﻿using System;
 
 using CMS.Base;
-using CMS.DataEngine;
 using CMS.FormControls;
 using CMS.FormEngine;
 using CMS.Helpers;
@@ -140,11 +139,11 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldAp
     {
         get
         {
-            return ctrlVisibility.Value.ToEnum<FormFieldVisibilityTypeEnum>();
+            return ctrlVisibility.Value.ToString().ToEnum<FormFieldVisibilityTypeEnum>();
         }
         set
         {
-            ctrlVisibility.Value = value.ToStringRepresentation();
+            ctrlVisibility.Value = value;
         }
     }
 
@@ -273,7 +272,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldAp
 
 
     /// <summary>
-    /// Enables or disables to edit <see cref='CMS.FormEngine.FormFieldInfo.Inheritable'> settings.
+    /// Enables or disables to edit <see cref="CMS.FormEngine.FormFieldInfo.Inheritable"/> settings.
     /// </summary>
     public bool ShowInheritanceSettings
     {
@@ -293,7 +292,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldAp
 
 
     /// <summary>
-    /// Gets or sets macroresolver used in macro editor.
+    /// Gets or sets macro resolver used in macro editor.
     /// </summary>
     public string ResolverName
     {
@@ -401,14 +400,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldAp
                 drpVisibilityControl.DataSource = FormUserControlInfoProvider.GetFormUserControls("UserControlCodeName, UserControlDisplayName", "UserControlForVisibility = 1", "UserControlDisplayName");
                 drpVisibilityControl.DataBind();
 
-                try
-                {
-                    drpVisibilityControl.Items.FindByValue(FieldInfo.VisibilityControl);
-                    drpVisibilityControl.SelectedValue = FieldInfo.VisibilityControl;
-                }
-                catch
-                {
-                }
+                FormHelper.SelectSingleValue(FieldInfo.VisibilityControl, drpVisibilityControl, true);
             }
 
             plcVisibility.Visible = ShowFieldVisibility;
@@ -432,16 +424,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldAp
 
             FormUserControlInfo fi = FormUserControlInfoProvider.GetFormUserControlInfo(selectedItem);
 
-            if (fi != null)
-            {
-                // Preselect options for specific control
-                FieldType = selectedItem;
-            }
-            else
-            {
-                // Preselect default control for attribute type
-                FieldType = FormHelper.GetFormFieldDefaultControlType(AttributeType);
-            }
+            FieldType = fi != null ? selectedItem : FormHelper.GetFormFieldDefaultControlType(AttributeType);
 
             LoadFieldTypes(FieldInfo.PrimaryKey);
         }
@@ -452,9 +435,9 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldAp
             ctrlVisibility.Value = null;
             drpVisibilityControl.ClearSelection();
             chkChangeVisibility.Checked = false;
-            txtFieldCaption.SetValue(null, false);
-            txtDescription.SetValue(null, false);
-            txtExplanationText.SetValue(null, false);
+            txtFieldCaption.SetValue(null);
+            txtDescription.SetValue(null);
+            txtExplanationText.SetValue(null);
             drpControl.Reload(false);
             drpControl.Value = FormHelper.GetFormFieldDefaultControlType(AttributeType);
         }
@@ -471,15 +454,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldAp
 
         string filteredControlsWhere = FormHelper.GetWhereConditionForDataType(AttributeType, controls, isPrimary, FormUserControlTypeEnum.Unspecified);
         drpControl.WhereCondition = filteredControlsWhere;
-
-        // Exception for blogposts in document types
-        if ((controls != FieldEditorControlsEnum.DocumentTypes) || !ClassName.EqualsCSafe("cms.blogpost", true))
-        {
-            // Show trackbackpingedurls only when editing blogposts
-            drpControl.WhereCondition = SqlHelper.AddWhereCondition(drpControl.WhereCondition, FormUserControlInfo.TYPEINFO.CodeNameColumn + " <> 'trackbackspingedurls'");
-            drpControl.WhereCondition = SqlHelper.AddWhereCondition(drpControl.WhereCondition, FormUserControlInfo.TYPEINFO.CodeNameColumn + " <> 'trackbacksnotpingedurls'");
-        }
-
+        
         var originalValue = FieldType;
 
         drpControl.Reload(true);

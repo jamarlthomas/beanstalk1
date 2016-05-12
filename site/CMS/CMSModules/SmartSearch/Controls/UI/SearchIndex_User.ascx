@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_SmartSearch_Controls_UI_SearchIndex_User" Codebehind="SearchIndex_User.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_SmartSearch_Controls_UI_SearchIndex_User"  Codebehind="SearchIndex_User.ascx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/Inputs/LargeTextArea.ascx" TagName="LargeTextArea" TagPrefix="cms" %>
 <%@ Register src="~/CMSModules/Membership/FormControls/Roles/selectrole.ascx" tagname="SelectRole" tagprefix="cms" %>

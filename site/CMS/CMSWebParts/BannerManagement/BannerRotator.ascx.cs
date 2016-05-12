@@ -1,5 +1,6 @@
 ﻿using System;
 
+using CMS.Core;
 using CMS.PortalControls;
 using CMS.SiteProvider;
 using CMS.WebAnalytics;
@@ -8,6 +9,7 @@ using CMS.Helpers;
 using CMS.PortalEngine;
 using CMS.BannerManagement;
 using CMS.MacroEngine;
+
 
 public partial class CMSWebParts_BannerManagement_BannerRotator : CMSAbstractWebPart
 {
@@ -189,9 +191,7 @@ public partial class CMSWebParts_BannerManagement_BannerRotator : CMSAbstractWeb
             {
                 if (AnalyticsHelper.JavascriptLoggingEnabled(SiteContext.CurrentSiteName))
                 {
-                    ScriptHelper.RegisterWebServiceCallFunction(Page);
-                    string script = "WebServiceCall('" + URLHelper.GetAbsoluteUrl("~/CMSPages/WebAnalyticsService.asmx") + "','LogBannerHit', '{\"bannerID\":\"" + banner.BannerID + "\"}')";
-                    ScriptHelper.RegisterStartupScript(Page, typeof(string), "logBannerHit", script, true);
+                    WebAnalyticsServiceScriptsRenderer.RegisterLogBannerHitCall(Page, banner.BannerID);
                 }
                 else
                 {

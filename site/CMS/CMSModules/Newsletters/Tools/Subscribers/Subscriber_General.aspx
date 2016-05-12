@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Inherits="CMSModules_Newsletters_Tools_Subscribers_Subscriber_General"
-    Theme="Default" Title="Tools - Newsletter subscriber edit" Codebehind="Subscriber_General.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Inherits="CMSModules_Newsletters_Tools_Subscribers_Subscriber_General"
+    Theme="Default" Title="Tools - Newsletter subscriber edit"  Codebehind="Subscriber_General.aspx.cs" %>
 
 <asp:Content ContentPlaceHolderID="plcContent" ID="content" runat="server">
     <cms:UIForm ID="EditForm" runat="server" ClassName="newsletter.subscriber"

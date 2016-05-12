@@ -464,11 +464,21 @@ public partial class CMSFormControls_System_ObjectCategorySelector : FormEngineU
         base.OnLoad(e);
         if (!StopProcessing)
         {
-            SetupControl();
+            // Check if settings are correct
+            string errorMessage = ValidateSettings();
 
-            if (!String.IsNullOrEmpty(mSelectedValue))
+            if (string.IsNullOrEmpty(errorMessage))
             {
-                drpCategory.SelectedValue = mSelectedValue;
+                SetupControl();
+
+                if (!String.IsNullOrEmpty(mSelectedValue))
+                {
+                    drpCategory.SelectedValue = mSelectedValue;
+                }
+            }
+            else
+            {
+                ShowError(errorMessage);
             }
         }
     }
@@ -479,9 +489,6 @@ public partial class CMSFormControls_System_ObjectCategorySelector : FormEngineU
     /// </summary>
     private void SetupControl()
     {
-        // Check if settings are correct
-        ValidateSettings();
-
         int mRootParentId = 0;
 
         // Load current root parent ID if starting path is defined
@@ -510,29 +517,31 @@ public partial class CMSFormControls_System_ObjectCategorySelector : FormEngineU
     /// <summary>
     /// Validates control settings.
     /// </summary>
-    private void ValidateSettings()
+    private string ValidateSettings()
     {
         string unknownColumn = ObjectTypeInfo.COLUMN_NAME_UNKNOWN;
 
         if (String.IsNullOrEmpty(ObjectType) || (ObjectInfo == null))
         {
-            throw new Exception("[ObjectCategorySelector]: The object type '" + ObjectType + "' is invalid or empty.");
+            return "[ObjectCategorySelector]: The object type '" + ObjectType + "' is invalid or empty.";
         }
         
         if ((CategoryIDColumn == String.Empty) && ((ObjectInfo.Generalized.ObjectCategory == null) || (CategoryInfo.TypeInfo.CategoryIDColumn == unknownColumn)))
         {
-            throw new Exception("[ObjectCategorySelector]: The object type '" + ObjectType + "' has no hierarchical category object.");
+            return "[ObjectCategorySelector]: The object type '" + ObjectType + "' has no hierarchical category object.";
         }
         
         if (ShowObjects && ((ObjectInfo.Generalized.DisplayNameColumn == unknownColumn) || (ObjectInfo.TypeInfo.IDColumn == unknownColumn)))
         {
-            throw new Exception("[ObjectCategorySelector]: 'Show objects' setting cannot be applied for binding object type '" + ObjectType + "'.");
+            return "[ObjectCategorySelector]: 'Show objects' setting cannot be applied for binding object type '" + ObjectType + "'.";
         }
         
         if ((CategoryIDColumn == String.Empty) && DataHelper.DataSourceIsEmpty(GroupedCategories))
         {
-            throw new Exception("[ObjectCategorySelector]: No object categories were found for object type '" + ObjectType + "'.");
+            return "[ObjectCategorySelector]: No object categories were found for object type '" + ObjectType + "'.";
         }
+
+        return string.Empty;
     }
 
 

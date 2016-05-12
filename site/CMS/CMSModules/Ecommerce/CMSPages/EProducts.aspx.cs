@@ -49,11 +49,8 @@ public partial class CMSModules_Ecommerce_CMSPages_EProducts : CMSLiveModalPage
         }
         else
         {
-            string title = GetString("com.downloadsdialog.ordernotfoundtitle");
-            string text = GetString("com.downloadsdialog.ordernotfoundtext");
-
             // Redirect to error page
-            URLHelper.Redirect(String.Format("~/CMSMessages/Error.aspx?title={0}&text={1}", title, text));
+            URLHelper.Redirect(UIHelper.GetErrorPageUrl("com.downloadsdialog.ordernotfoundtitle", "com.downloadsdialog.ordernotfoundtext"));
         }
 
         // Initialize close button

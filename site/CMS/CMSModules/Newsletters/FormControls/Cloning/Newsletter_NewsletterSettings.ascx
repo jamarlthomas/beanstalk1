@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Newsletter_NewsletterSettings.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Newsletter_NewsletterSettings.ascx.cs"
     Inherits="CMSModules_Newsletters_FormControls_Cloning_Newsletter_NewsletterSettings" %>
 <div class="form-horizontal">
     <div class="form-group">

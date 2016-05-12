@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Properties.aspx.cs" Inherits="CMSModules_Modules_Pages_Module_UserInterface_Properties"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Properties.aspx.cs" Inherits="CMSModules_Modules_Pages_Module_UserInterface_Properties"
     EnableEventValidation="false" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Theme="Default" %>
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 using CMS.Blogs;
@@ -421,7 +421,6 @@ public partial class CMSModules_Blogs_Controls_BlogCommentEdit : CMSUserControl
                 {
                     bci.CommentUserID = currentUser.UserID;
                 }
-                bci.CommentIsTrackback = false;
             }
             // Get existing comment
             else
@@ -434,9 +433,10 @@ public partial class CMSModules_Blogs_Controls_BlogCommentEdit : CMSUserControl
             {
                 // Add http:// if needed
                 string url = txtUrl.Text.Trim();
-                if (url != "")
+                if (!String.IsNullOrEmpty(url))
                 {
-                    if ((!url.ToLowerCSafe().StartsWithCSafe("http://")) && (!url.ToLowerCSafe().StartsWithCSafe("https://")))
+                    string protocol = URLHelper.GetProtocol(url);
+                    if (String.IsNullOrEmpty(protocol))
                     {
                         url = "http://" + url;
                     }

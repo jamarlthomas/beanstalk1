@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSelector_MediaView" Codebehind="MediaView.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSelector_MediaView"  Codebehind="MediaView.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/Selectors/LinkMediaSelector/Search.ascx"
     TagName="DialogSearch" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/Selectors/LinkMediaSelector/InnerMediaView.ascx"

@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_DocumentTypes_Pages_Development_Scopes_List"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_DocumentTypes_Pages_Development_Scopes_List"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Page type scopes list"
-    Theme="Default" Codebehind="List.aspx.cs" %>
+    Theme="Default"  Codebehind="List.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector"
@@ -25,9 +25,9 @@
     </asp:Panel>
 </asp:Content>
 <asp:Content ID="cntActions" runat="server" ContentPlaceHolderID="plcActions">
-    <cms:CMSUpdatePanel ID="pnlActons" runat="server">
+    <cms:CMSUpdatePanel ID="pnlActions" runat="server">
         <ContentTemplate>
-            <div class="control-group-inline">
+            <div class="control-group-inline header-actions-container">
                 <cms:HeaderActions ID="headerActions" runat="server" IsLiveSite="false" />
                 <cms:LocalizedLabel ID="lblWarnNew" runat="server" ResourceString="scopes.choosesite"
                     EnableViewState="false" Visible="false" CssClass="button-explanation-text" />

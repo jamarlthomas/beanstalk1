@@ -18,18 +18,6 @@ public class FormUserControlEditExtender : ControlExtender<UIForm>
 {
     #region "Constants"
 
-    private const string FOR_TEXT = "text";
-    private const string FOR_LONG_TEXT = "ltext";
-    private const string FOR_INT = "int";
-    private const string FOR_LONG_INT = "lint";
-    private const string FOR_DECIMAL = "decimal";
-    private const string FOR_DATE = "datetime";
-    private const string FOR_BOOL = "bool";
-    private const string FOR_GUID = "guid";
-    private const string FOR_FILE = "file";
-    private const string FOR_ATTACH = "docatt";
-    private const string FOR_VISIBILITY = "vis";
-
     private const string SHOWIN_PAGETYPE = "pagetype";
     private const string SHOWIN_FORM = "form";
     private const string SHOWIN_CUSTOMTABLE = "customtable";
@@ -116,25 +104,24 @@ public class FormUserControlEditExtender : ControlExtender<UIForm>
                 // Set control's priority
                 formControl.UserControlPriority = ValidationHelper.GetBoolean(form.GetFieldValue(FIELD_PRIORITY), false) ? (int)ObjectPriorityEnum.High : (int)ObjectPriorityEnum.Low;
 
-                // Set which (data) types the control can be used for
-                List<string> values = GetFieldValues(form, FIELD_FOR);
-                formControl.UserControlForText = values.Contains(FOR_TEXT);
-                formControl.UserControlForLongText = values.Contains(FOR_LONG_TEXT);
-                formControl.UserControlForInteger = values.Contains(FOR_INT);
-                formControl.UserControlForLongInteger = values.Contains(FOR_LONG_INT);
-                formControl.UserControlForDecimal = values.Contains(FOR_DECIMAL);
-                formControl.UserControlForDateTime = values.Contains(FOR_DATE);
-                formControl.UserControlForBoolean = values.Contains(FOR_BOOL);
-                formControl.UserControlForGUID = values.Contains(FOR_GUID);
-                formControl.UserControlForFile = values.Contains(FOR_FILE);
-                formControl.UserControlForDocAttachments = values.Contains(FOR_ATTACH);
-                formControl.UserControlForVisibility = values.Contains(FOR_VISIBILITY);
+                // Set which (data) types the control can be used for. Individual values are field types
+                var values = GetFieldValues(form, FIELD_FOR);
+
+                foreach (var group in DataTypeManager.GetFieldGroups())
+                {
+                    var col = FormHelper.GetDataTypeColumnForGroup(group);
+
+                    formControl.SetValue(col, values.Contains(group));
+                }
 
                 // Set which resources the control can be shown in
                 values = GetFieldValues(form, FIELD_SHOWIN);
+
                 formControl.UserControlShowInDocumentTypes = values.Contains(SHOWIN_PAGETYPE);
                 formControl.UserControlShowInBizForms = values.Contains(SHOWIN_FORM);
+
                 values = GetFieldValues(form, FIELD_SHOWIN2);
+
                 formControl.UserControlShowInCustomTables = values.Contains(SHOWIN_CUSTOMTABLE);
                 formControl.UserControlShowInSystemTables = values.Contains(SHOWIN_SYSTEMTABLE);
                 formControl.UserControlShowInReports = values.Contains(SHOWIN_REPORT);
@@ -150,50 +137,17 @@ public class FormUserControlEditExtender : ControlExtender<UIForm>
 
     private static string GetControlForValue(FormUserControlInfo formControl)
     {
-        List<string> values = new List<string>();
-        if (formControl.UserControlForText)
+        var values = new List<string>();
+
+        // Build the list of enabled field types from the control properties
+        foreach (var group in DataTypeManager.GetFieldGroups())
         {
-            values.Add(FOR_TEXT);
-        }
-        if (formControl.UserControlForLongText)
-        {
-            values.Add(FOR_LONG_TEXT);
-        }
-        if (formControl.UserControlForInteger)
-        {
-            values.Add(FOR_INT);
-        }
-        if (formControl.UserControlForLongInteger)
-        {
-            values.Add(FOR_LONG_INT);
-        }
-        if (formControl.UserControlForDecimal)
-        {
-            values.Add(FOR_DECIMAL);
-        }
-        if (formControl.UserControlForDateTime)
-        {
-            values.Add(FOR_DATE);
-        }
-        if (formControl.UserControlForBoolean)
-        {
-            values.Add(FOR_BOOL);
-        }
-        if (formControl.UserControlForGUID)
-        {
-            values.Add(FOR_GUID);
-        }
-        if (formControl.UserControlForFile)
-        {
-            values.Add(FOR_FILE);
-        }
-        if (formControl.UserControlForDocAttachments)
-        {
-            values.Add(FOR_ATTACH);
-        }
-        if (formControl.UserControlForVisibility)
-        {
-            values.Add(FOR_VISIBILITY);
+            var col = FormHelper.GetDataTypeColumnForGroup(group);
+
+            if (ValidationHelper.GetBoolean(formControl.GetValue(col), false))
+            {
+                values.Add(group);
+            }
         }
 
         return String.Join("|", values);
@@ -202,7 +156,7 @@ public class FormUserControlEditExtender : ControlExtender<UIForm>
 
     private static string GetControlShowInValue(FormUserControlInfo formControl, bool firstSet)
     {
-        List<string> values = new List<string>();
+        var values = new List<string>();
         if (firstSet)
         {
             if (formControl.UserControlShowInDocumentTypes)
@@ -238,11 +192,17 @@ public class FormUserControlEditExtender : ControlExtender<UIForm>
     }
 
 
-    private List<string> GetFieldValues(UIForm form, string fieldName)
+    /// <summary>
+    /// Gets the list of values from the given field
+    /// </summary>
+    /// <param name="form">Editing form</param>
+    /// <param name="fieldName">Field name</param>
+    private HashSet<string> GetFieldValues(UIForm form, string fieldName)
     {
-        return ValidationHelper.GetString(form.GetFieldValue(fieldName), string.Empty)
-                               .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries)
-                               .ToList();
+        var values = ValidationHelper.GetString(form.GetFieldValue(fieldName), string.Empty);
+        var items = values.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+
+        return new HashSet<string>(items, StringComparer.InvariantCultureIgnoreCase);
     }
 
     #endregion

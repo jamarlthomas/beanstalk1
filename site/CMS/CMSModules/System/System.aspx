@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_System"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_System"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="System"
-    Codebehind="System.aspx.cs" %>
+     Codebehind="System.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/System/Controls/System.ascx" TagName="SystemInformation"
     TagPrefix="cms" %>

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Ecommerce_Checkout_Forms_CustomerAddress" Codebehind="~/CMSWebParts/Ecommerce/Checkout/Forms/CustomerAddress.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Ecommerce_Checkout_Forms_CustomerAddress"  Codebehind="~/CMSWebParts/Ecommerce/Checkout/Forms/CustomerAddress.ascx.cs" %>
 
 <asp:Panel runat="server" ID="pnlAddress">
     <asp:Label runat="server" ID="lblError" CssClass="ErrorLabel" Visible="false" EnableViewState="false" />

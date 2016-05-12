@@ -1,11 +1,11 @@
 ﻿using System;
 
-using CMS.Helpers;
-using CMS.SiteProvider;
-using CMS.Membership;
-using CMS.UIControls;
-using CMS.ExtendedControls;
 using CMS.DataEngine;
+using CMS.ExtendedControls;
+using CMS.Helpers;
+using CMS.Membership;
+using CMS.SiteProvider;
+using CMS.UIControls;
 
 public partial class CMSModules_Membership_Controls_ResetPassword : CMSUserControl
 {
@@ -21,13 +21,13 @@ public partial class CMSModules_Membership_Controls_ResetPassword : CMSUserContr
 
     #region "Variables"
 
-    private string siteName = string.Empty;
+    private string siteName;
+    private string hash;
+    private string time;
+    private string returnUrl;
     private double interval;
-    private string hash = string.Empty;
-    private string time = string.Empty;
     private int policyReq;
     private int pwdExp;
-    private string returnUrl;
 
     #endregion
 
@@ -120,18 +120,22 @@ public partial class CMSModules_Membership_Controls_ResetPassword : CMSUserContr
         time = QueryHelper.GetString("datetime", string.Empty);
         policyReq = QueryHelper.GetInteger("policyreq", 0);
         pwdExp = QueryHelper.GetInteger("exp", 0);
-        returnUrl = QueryHelper.GetString("returnurl", null);
 
-        btnReset.Text = GetString("general.reset");
+        // Prepare URL of logon page
+        string securedAreasLogonUrl = AuthenticationHelper.GetSecuredAreasLogonPage(SiteContext.CurrentSiteName);
+        securedAreasLogonUrl = URLHelper.ResolveUrl(securedAreasLogonUrl);
+
+        returnUrl = QueryHelper.GetString("returnurl", securedAreasLogonUrl);
+
         rfvConfirmPassword.Text = GetString("general.requiresvalue");
 
         siteName = SiteContext.CurrentSiteName;
 
         // Get interval from settings
-        interval = SettingsKeyInfoProvider.GetDoubleValue(siteName + ".CMSResetPasswordInterval");
-
+        interval = SettingsKeyInfoProvider.GetDoubleValue("CMSResetPasswordInterval", siteName);
+        
         // Prepare failed message
-        string invalidRequestMessage = DataHelper.GetNotEmpty(InvalidRequestText, String.Format(ResHelper.GetString("membership.passwresetfailed"), ResolveUrl("~/cmspages/logon.aspx?forgottenpassword=1")));
+        string invalidRequestMessage = DataHelper.GetNotEmpty(InvalidRequestText, String.Format(ResHelper.GetString("membership.passwresetfailed"), URLHelper.AddParameterToUrl(securedAreasLogonUrl, "forgottenpassword", "1")));
 
         // Reset password cancelation
         if (QueryHelper.GetBoolean("cancel", false))
@@ -166,19 +170,24 @@ public partial class CMSModules_Membership_Controls_ResetPassword : CMSUserContr
                 ShowInformation(GetString("passwordpolicy.policynotmet") + "<br />" + passStrength.GetPasswordPolicyHint());
             }
 
-            // Get user info
-            var uiData = UserInfoProvider.GetUsersDataWithSettings()
-                .WhereEquals("UserPasswordRequestHash", hash);
+            UserInfo ui;
 
+            // Get user info
             int userId = GetResetRequestID();
             if (userId > 0)
             {
-                uiData
-                    .Or()
-                    .WhereEquals("UserID", userId);
+                ui = UserInfoProvider.GetUserInfo(userId);
+                if (ui != null)
+                {
+                    // Invalidation forces user info to load user settings from DB and not use cached values.
+                    ui.Generalized.Invalidate(false);
+                }
             }
-
-            UserInfo ui = uiData.FirstObject;
+            else
+            {
+                ui = UserInfoProvider.GetUsersDataWithSettings()
+                    .WhereEquals("UserPasswordRequestHash", hash).FirstObject;
+            }
 
             // There is nobody to reset password for
             if (ui == null)
@@ -190,7 +199,6 @@ public partial class CMSModules_Membership_Controls_ResetPassword : CMSUserContr
             ResetPasswordResultEnum result = AuthenticationHelper.ValidateResetPassword(ui, hash, time, interval, "Reset password control");
 
             // Prepare messages
-            string timeExceededMessage = DataHelper.GetNotEmpty(ExceededIntervalText, String.Format(ResHelper.GetString("membership.passwreqinterval"), ResolveUrl("~/cmspages/logon.aspx?forgottenpassword=1")));
             string resultMessage = string.Empty;
 
             // Check result
@@ -207,7 +215,7 @@ public partial class CMSModules_Membership_Controls_ResetPassword : CMSUserContr
                     break;
 
                 case ResetPasswordResultEnum.TimeExceeded:
-                    resultMessage = timeExceededMessage;
+                    resultMessage = DataHelper.GetNotEmpty(ExceededIntervalText, String.Format(ResHelper.GetString("membership.passwreqinterval"), URLHelper.AddParameterToUrl(securedAreasLogonUrl, "forgottenpassword", "1")));
                     break;
 
                 default:
@@ -254,7 +262,7 @@ public partial class CMSModules_Membership_Controls_ResetPassword : CMSUserContr
                     }
 
                     // Get e-mail address of sender
-                    string emailFrom = DataHelper.GetNotEmpty(SendEmailFrom, SettingsKeyInfoProvider.GetValue(siteName + ".CMSSendPasswordEmailsFrom"));
+                    string emailFrom = DataHelper.GetNotEmpty(SendEmailFrom, SettingsKeyInfoProvider.GetValue("CMSSendPasswordEmailsFrom", siteName));
 
                     // Try to reset password and show result to user
                     bool success;
@@ -274,7 +282,7 @@ public partial class CMSModules_Membership_Controls_ResetPassword : CMSUserContr
                         // Get proper text
                         ShowConfirmation(DataHelper.GetNotEmpty(SuccessText, resultText));
                         pnlReset.Visible = false;
-                        lblLogonLink.Text = string.Format(GetString("memberhsip.logonlink"), returnUrl);
+                        lblLogonLink.Text = String.Format(GetString("memberhsip.logonlink"), HTMLHelper.EncodeForHtmlAttribute(returnUrl));
                     }
                     else
                     {

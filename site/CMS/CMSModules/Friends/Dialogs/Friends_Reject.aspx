@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Friends_Dialogs_Friends_Reject"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Friends_Dialogs_Friends_Reject"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalSimplePage.master"
-    Title="Reject friendship" Codebehind="Friends_Reject.aspx.cs" %>
+    Title="Reject friendship"  Codebehind="Friends_Reject.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Friends/Controls/Friends_Reject.ascx" TagName="FriendsReject"
     TagPrefix="cms" %>

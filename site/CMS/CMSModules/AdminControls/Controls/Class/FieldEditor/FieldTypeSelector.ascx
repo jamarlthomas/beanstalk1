@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="FieldTypeSelector.ascx.cs" Inherits="CMSModules_AdminControls_Controls_Class_FieldEditor_FieldTypeSelector" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="FieldTypeSelector.ascx.cs" Inherits="CMSModules_AdminControls_Controls_Class_FieldEditor_FieldTypeSelector" %>
 <asp:Panel ID="pnlTypeSelector" runat="server" CssClass="FieldPanel" Visible="false">
     <cms:LocalizedHeading ID="LocalizedHeading1" runat="server" Level="4" ResourceString="fieldeditor.fieldtype.fieldtype"></cms:LocalizedHeading>
     <div class="form-horizontal">

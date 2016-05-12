@@ -12,15 +12,6 @@
 public partial class CMSModules_RecycleBin_Pages_RecycleBin_Objects {
     
     /// <summary>
-    /// pnlBody control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlBody;
-    
-    /// <summary>
     /// pnlSiteSelector control.
     /// </summary>
     /// <remarks>

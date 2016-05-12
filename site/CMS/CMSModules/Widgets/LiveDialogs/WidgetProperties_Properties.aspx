@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_Widgets_LiveDialogs_WidgetProperties_Properties" Theme="default"
-    EnableEventValidation="false" ValidateRequest="false" Codebehind="WidgetProperties_Properties.aspx.cs"
+    EnableEventValidation="false" ValidateRequest="false"  Codebehind="WidgetProperties_Properties.aspx.cs"
     MasterPageFile="~/CMSMasterPages/LiveSite/EmptyPage.master" %>
 
 <%@ Register Src="~/CMSModules/Widgets/Controls/WidgetProperties.ascx" TagName="WidgetProperties"

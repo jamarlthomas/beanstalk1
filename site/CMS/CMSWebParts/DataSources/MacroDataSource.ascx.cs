@@ -1,4 +1,4 @@
-using CMS.Helpers;
+﻿using CMS.Helpers;
 using CMS.PortalControls;
 
 public partial class CMSWebParts_DataSources_MacroDataSource : CMSAbstractWebPart
@@ -6,17 +6,17 @@ public partial class CMSWebParts_DataSources_MacroDataSource : CMSAbstractWebPar
     #region "Properties"
 
     /// <summary>
-    /// Macro expression returning data to be provided by the data source..
+    /// Macro expression returning data to be provided by the data source.
     /// </summary>
     public string Expression
     {
         get
         {
-            return ValidationHelper.GetString(this.GetValue("Expression"), "");
+            return ValidationHelper.GetString(GetValue("Expression"), "");
         }
         set
         {
-            this.SetValue("Expression", value);
+            SetValue("Expression", value);
         }
     }
 
@@ -70,7 +70,7 @@ public partial class CMSWebParts_DataSources_MacroDataSource : CMSAbstractWebPar
             srcMacro.CacheMinutes = value;
         }
     }
-    
+
     #endregion
 
 
@@ -93,16 +93,17 @@ public partial class CMSWebParts_DataSources_MacroDataSource : CMSAbstractWebPar
     {
         if (StopProcessing)
         {
-            // Do nothing
+            return;
         }
-        else
-        {
-            srcMacro.FilterName = ValidationHelper.GetString(GetValue("WebPartControlID"), ID);
-            srcMacro.Expression = Expression;
-            srcMacro.CacheItemName = CacheItemName;
-            srcMacro.CacheDependencies = CacheDependencies;
-            srcMacro.CacheMinutes = CacheMinutes;
-        }
+
+        // Do not resolve Expression macro when getting value because macro will be resolved manually later
+        NotResolveProperties = "Expression";
+
+        srcMacro.FilterName = ValidationHelper.GetString(GetValue("WebPartControlID"), ID);
+        srcMacro.Expression = Expression;
+        srcMacro.CacheItemName = CacheItemName;
+        srcMacro.CacheDependencies = CacheDependencies;
+        srcMacro.CacheMinutes = CacheMinutes;
     }
 
 

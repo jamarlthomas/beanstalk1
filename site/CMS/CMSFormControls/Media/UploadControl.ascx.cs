@@ -1,7 +1,6 @@
-using System;
+﻿using System;
 
 using CMS.Base;
-using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.ExtendedControls;
 using CMS.FormControls;
@@ -57,6 +56,18 @@ public partial class CMSFormControls_Media_UploadControl : FormEngineUserControl
         }
     }
 
+
+    /// <summary>
+    /// Returns client ID of the inner upload control.
+    /// </summary>
+    public override string InputClientID
+    {
+        get
+        {
+            return uploader.UploadControl.ClientID;
+        }
+    }
+
     #endregion
 
 
@@ -98,7 +109,9 @@ public partial class CMSFormControls_Media_UploadControl : FormEngineUserControl
             int uploaderWidth;
             int uploaderHeight;
             int uploaderMaxSideSize;
+
             ImageHelper.GetAutoResizeDimensions(FieldInfo.Settings, SiteContext.CurrentSiteName, out uploaderWidth, out uploaderHeight, out uploaderMaxSideSize);
+
             uploader.ResizeToWidth = uploaderWidth;
             uploader.ResizeToHeight = uploaderHeight;
             uploader.ResizeToMaxSideSize = uploaderMaxSideSize;
@@ -172,7 +185,7 @@ public partial class CMSFormControls_Media_UploadControl : FormEngineUserControl
                     string script = "function " + jsFuncName + "(attachmentGuid, versionHistoryId, siteId, hash, clientid) {\n modalDialog('" + baseUrl + "?refresh=1&attachmentguid=' + attachmentGuid + (versionHistoryId > 0 ? '&versionhistoryid=' + versionHistoryId : '' ) + '&siteid=' + siteId + '&hash=' + hash + '&clientid=' + clientid, 'imageEditorDialog', " + width + ", " + height + ");\n return false;\n}";
 
                     // Dialog for attachment editing
-                    ScriptHelper.RegisterClientScriptBlock(this, typeof(string), jsFuncName,
+                    ScriptHelper.RegisterClientScriptBlock(this, typeof (string), jsFuncName,
                         ScriptHelper.GetScript(script));
 
                     if (Form.Mode != FormModeEnum.InsertNewCultureVersion)
@@ -196,7 +209,7 @@ public partial class CMSFormControls_Media_UploadControl : FormEngineUserControl
 
                         // Initialize refresh script
                         string refresh = string.Format("function InitRefresh_{0}() {{ {1}; if (RefreshTree != null) RefreshTree(); }}", ClientID, Page.ClientScript.GetPostBackEventReference(hdnPostback, "refresh"));
-                        ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "AttachmentScripts_" + ClientID, ScriptHelper.GetScript(refresh));
+                        ScriptHelper.RegisterClientScriptBlock(this, typeof (string), "AttachmentScripts_" + ClientID, ScriptHelper.GetScript(refresh));
                     }
                     else
                     {
@@ -208,20 +221,17 @@ public partial class CMSFormControls_Media_UploadControl : FormEngineUserControl
         else
         {
             uploader.CurrentFileName = (Form is BizForm) ? ((BizForm)Form).GetFileNameForUploader(mValue) : FormHelper.GetOriginalFileName(mValue);
-            uploader.CurrentFileUrl = "~/CMSModules/BizForms/CMSPages/GetBizFormFile.aspx?filename=" + FormHelper.GetGuidFileName(mValue) + "&sitename=" + Form.SiteName;
+            uploader.CurrentFileUrl = "~/CMSPages/GetBizFormFile.aspx?filename=" + FormHelper.GetGuidFileName(mValue) + "&sitename=" + Form.SiteName;
         }
 
-        if (Form != null)
+        // Register post back button for update panel
+        if (Form.ShowImageButton && Form.SubmitImageButton.Visible)
         {
-            // Register post back button for update panel
-            if (Form.ShowImageButton && Form.SubmitImageButton.Visible)
-            {
-                ControlsHelper.RegisterPostbackControl(Form.SubmitImageButton);
-            }
-            else if (Form.SubmitButton.Visible)
-            {
-                ControlsHelper.RegisterPostbackControl(Form.SubmitButton);
-            }
+            ControlsHelper.RegisterPostbackControl(Form.SubmitImageButton);
+        }
+        else if (Form.SubmitButton.Visible)
+        {
+            ControlsHelper.RegisterPostbackControl(Form.SubmitButton);
         }
     }
 
@@ -236,8 +246,15 @@ public partial class CMSFormControls_Media_UploadControl : FormEngineUserControl
         {
             if (String.IsNullOrEmpty(uploader.CurrentFileName) && (uploader.PostedFile == null))
             {
-                // Error empty
-                ValidationError += ResHelper.GetString("BasicForm.ErrorEmptyValue");
+                // Empty error
+                if ((ErrorMessage != null) && !ErrorMessage.EqualsCSafe(ResHelper.GetString("BasicForm.InvalidInput"), true))
+                {
+                    ValidationError = ErrorMessage;
+                }
+                else
+                {
+                    ValidationError += ResHelper.GetString("BasicForm.ErrorEmptyValue");
+                }
                 return false;
             }
         }

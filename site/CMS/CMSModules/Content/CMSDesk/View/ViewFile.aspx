@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_View_ViewFile"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_View_ViewFile"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Content - View file"
-    Codebehind="ViewFile.aspx.cs" %>
+     Codebehind="ViewFile.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/editmenu.ascx" TagName="editmenu"
     TagPrefix="cms" %>

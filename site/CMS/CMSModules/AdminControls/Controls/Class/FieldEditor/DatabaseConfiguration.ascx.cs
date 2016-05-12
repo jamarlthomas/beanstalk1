@@ -1,5 +1,4 @@
-using System;
-using System.Linq;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Base;
@@ -616,9 +615,9 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Databas
                 case FieldEditorModeEnum.AlternativeSystemTable:
                 case FieldEditorModeEnum.AlternativeBizFormDefinition:
                     if (FormHelper.HasFileUploadControl(FieldInfo))
-            {
+                    {
                         selectedType = FieldDataType.File;
-            }
+                    }
                     break;
             }
 
@@ -799,7 +798,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Databas
         {
             int attributeSize = ValidationHelper.GetInteger(AttributeSize, 0);
 
-            if (dataType.VariableSize && (fieldType != FieldDataType.DocAttachments))
+            if (dataType.VariableSize)
             {
                 // Attribute size is invalid -> error
                 if ((attributeSize <= 0) || (attributeSize > dataType.MaxSize))
@@ -851,7 +850,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Databas
         bool isMacro;
         string defaultValue = GetDefaultValue(out isMacro);
 
-        if (!ctrl.IsMacro)
+        if (!isMacro && !IsNowOrToday(defaultValue))
         {
             // Validate input value
             var checkType = new DataTypeIntegrity(defaultValue, AttributeType);
@@ -891,74 +890,42 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Databas
 
 
     /// <summary>
-    /// Gets the string default value
+    /// Gets the string default value.
     /// </summary>
     public string GetDefaultValue(out bool isMacro)
     {
-        string defaultValue = null;
-        isMacro = false;
+        var control = GetDefaultValueControl();
 
-        switch (AttributeType)
+        string defaultValue = ValidationHelper.GetString(control.Value, String.Empty).Trim();
+        isMacro = control.IsMacro;
+
+        if (AllowEmpty)
         {
-            case FieldDataType.DateTime:
-            case FieldDataType.Date:
+            if ((AttributeType == FieldDataType.Boolean) && !isMacro)
+            {
+                switch (defaultValue)
                 {
-                    defaultValue = ValidationHelper.GetString(datetimeDefaultValue.Value, string.Empty);
-                    isMacro = datetimeDefaultValue.IsMacro;
-                }
-                break;
-
-            case FieldDataType.Boolean:
-                if (AllowEmpty)
-                {
-                    isMacro = rbDefaultValue.IsMacro;
-                    if (isMacro)
-                    {
-                        defaultValue = ValidationHelper.GetString(rbDefaultValue.Value, string.Empty);
-                    }
-                    else
-                    {
+                    case "1":
                         // Positive choice checked - based on ThreeStateCheckBox.ascx
-                        if (rbDefaultValue.Value.Equals(1))
-                        {
-                            defaultValue = "true";
-                        }
+                        defaultValue = "true";
+                        break;
+
+                    case "0":
                         // Negative choice checked - based on ThreeStateCheckBox.ascx
-                        if (rbDefaultValue.Value.Equals(0))
-                        {
-                            defaultValue = "false";
-                        }
-                    }
-                }
-                else
-                {
-                    isMacro = chkDefaultValue.IsMacro;
-                    defaultValue = ValidationHelper.GetString(chkDefaultValue.Value, string.Empty);
-                }
-                break;
+                        defaultValue = "false";
+                        break;
 
-            case FieldDataType.LongText:
-                {
-                    defaultValue = ValidationHelper.GetString(txtLargeDefaultValue.Value, string.Empty).Trim();
-                    isMacro = txtLargeDefaultValue.IsMacro;
+                    default:
+                        // "Not set" choice checked - based on ThreeStateCheckBox.ascx
+                        defaultValue = null;
+                        break;
                 }
-                break;
+            }
 
-            case FormFieldControlTypeCode.DOCUMENT_ATTACHMENTS:
-                {
-                    string defValue = ValidationHelper.GetString(txtDefaultValue.Value, string.Empty).Trim();
-                    isMacro = txtDefaultValue.IsMacro;
-                    defaultValue = (string.IsNullOrEmpty(defValue)) ? null : defValue;
-                }
-                break;
-
-            default:
-                if (txtDefaultValue.Visible)
-                {
-                    defaultValue = ValidationHelper.GetString(txtDefaultValue.Value, string.Empty).Trim();
-                    isMacro = txtDefaultValue.IsMacro;
-                }
-                break;
+            if (defaultValue == String.Empty)
+            {
+                defaultValue = null;
+            }
         }
 
         return defaultValue;
@@ -1020,7 +987,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Databas
 
         // Check if data type has variable size
         var dataType = DataTypeManager.GetDataType(TypeEnum.Field, fieldType);
-        if ((dataType != null) && dataType.VariableSize && (fieldType != FieldDataType.DocAttachments))
+        if ((dataType != null) && dataType.VariableSize)
         {
             if (IsSystemFieldSelected)
             {
@@ -1030,8 +997,9 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Databas
             {
                 plcAttributeSize.Visible = true;
 
-                // Set default size
-                if (String.IsNullOrEmpty(txtAttributeSize.Text) && (dataType.DefaultSize > 0))
+                // Set default size for new field
+                if ((IsNewItemEdited || String.IsNullOrEmpty(txtAttributeSize.Text)) && 
+                    (dataType.DefaultSize > 0))
                 {
                     txtAttributeSize.Text = dataType.DefaultSize.ToString();
                 }
@@ -1053,8 +1021,9 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Databas
             {
                 plcAttributePrecision.Visible = true;
 
-                // Set default size
-                if (String.IsNullOrEmpty(txtAttributePrecision.Text) && (dataType.DefaultPrecision > 0))
+                // Set default precision for new field
+                if ((IsNewItemEdited || String.IsNullOrEmpty(txtAttributePrecision.Text)) && 
+                    (dataType.DefaultPrecision > 0))
                 {
                     txtAttributePrecision.Text = dataType.DefaultPrecision.ToString();
                 }
@@ -1118,80 +1087,56 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Databas
         plcDefaultValue.Visible = true;
         SetFieldForTranslations();
         SetReferenceToField();
-        HandleRequiredVisiblity();
 
-        switch (AttributeType)
+        var dataType = DataTypeManager.GetDataType(TypeEnum.Field, AttributeType);
+
+        HandleRequiredVisiblity(dataType);
+
+        // Hide all default value controls first
+        txtDefaultValue.Visible = false;
+        chkDefaultValue.Visible = false;
+        rbDefaultValue.Visible = false;
+        txtLargeDefaultValue.Visible = false;
+        datetimeDefaultValue.Visible = false;
+
+        if ((dataType != null) && dataType.HasConfigurableDefaultValue)
         {
-            case FieldDataType.DateTime:
-            case FieldDataType.Date:
-                {
-                    datetimeDefaultValue.Visible = true;
-                    chkDefaultValue.Visible = false;
-                    rbDefaultValue.Visible = false;
-                    txtLargeDefaultValue.Visible = false;
-                    txtDefaultValue.Visible = false;
+            var systemType = dataType.Type;
 
-                    var calendarControl = ((FormEngineUserControl)datetimeDefaultValue.NestedControl);
+            // Date and time types
+            if (systemType == typeof(DateTime))
+            {
+                // Use date time picker for date and time types
+                datetimeDefaultValue.Visible = true;
 
-                    lblDefaultValue.AssociatedControlClientID = EditingFormControl.GetInputClientID(calendarControl.Controls);
-                }
-                break;
+                var calendarControl = ((FormEngineUserControl)datetimeDefaultValue.NestedControl);
 
-            case FieldDataType.Boolean:
-                {
-                    chkDefaultValue.Visible = !AllowEmpty;
-                    rbDefaultValue.Visible = AllowEmpty;
-                    txtLargeDefaultValue.Visible = false;
-                    txtDefaultValue.Visible = false;
-                    datetimeDefaultValue.Visible = false;
-                    lblDefaultValue.AssociatedControlClientID = AllowEmpty ? EditingFormControl.GetInputClientID(rbDefaultValue.NestedControl.Controls) : EditingFormControl.GetInputClientID(chkDefaultValue.NestedControl.Controls);
-                }
-                break;
-
-            case FieldDataType.LongText:
-                {
-                    txtLargeDefaultValue.Visible = true;
-                    chkDefaultValue.Visible = false;
-                    rbDefaultValue.Visible = false;
-                    txtDefaultValue.Visible = false;
-                    datetimeDefaultValue.Visible = false;
-                    lblDefaultValue.AssociatedControlClientID = EditingFormControl.GetInputClientID(txtLargeDefaultValue.NestedControl.Controls);
-                }
-                break;
-
-            case FieldDataType.Binary:
-                plcDefaultValue.Visible = false;
-                break;
-
-            case FieldDataType.File:
-            case FieldDataType.DocAttachments:
-                // Hide default value for File and Document attachment fields within Document types
-                if ((Mode == FieldEditorModeEnum.ClassFormDefinition) || (Mode == FieldEditorModeEnum.AlternativeClassFormDefinition))
-                {
-                    plcDefaultValue.Visible = false;
-                }
-                // Display textbox otherwise
-                else
-                {
-                    txtDefaultValue.Visible = true;
-                    chkDefaultValue.Visible = false;
-                    rbDefaultValue.Visible = false;
-                    txtLargeDefaultValue.Visible = false;
-                    datetimeDefaultValue.Visible = false;
-                    lblDefaultValue.AssociatedControlClientID = EditingFormControl.GetInputClientID(txtDefaultValue.NestedControl.Controls);
-                }
-                break;
-
-            default:
-                {
-                    txtDefaultValue.Visible = true;
-                    chkDefaultValue.Visible = false;
-                    rbDefaultValue.Visible = false;
-                    txtLargeDefaultValue.Visible = false;
-                    datetimeDefaultValue.Visible = false;
-                    lblDefaultValue.AssociatedControlClientID = EditingFormControl.GetInputClientID(txtDefaultValue.NestedControl.Controls);
-                }
-                break;
+                lblDefaultValue.AssociatedControlClientID = EditingFormControl.GetInputClientID(calendarControl.Controls);
+            }
+            else if (systemType == typeof(bool))
+            {
+                // Use checkbox or radio button for boolean types
+                chkDefaultValue.Visible = !AllowEmpty;
+                rbDefaultValue.Visible = AllowEmpty;
+                lblDefaultValue.AssociatedControlClientID = AllowEmpty ? EditingFormControl.GetInputClientID(rbDefaultValue.NestedControl.Controls) : EditingFormControl.GetInputClientID(chkDefaultValue.NestedControl.Controls);
+            }
+            else if (AttributeType == FieldDataType.LongText)
+            {
+                // Special case for long text to provide rich editor
+                txtLargeDefaultValue.Visible = true;
+                lblDefaultValue.AssociatedControlClientID = EditingFormControl.GetInputClientID(txtLargeDefaultValue.NestedControl.Controls);
+            }
+            else
+            {
+                // Use textbox for other types
+                txtDefaultValue.Visible = true;
+                lblDefaultValue.AssociatedControlClientID = EditingFormControl.GetInputClientID(txtDefaultValue.NestedControl.Controls);
+            }
+        }
+        else
+        {
+            // Hide default value for types without default value
+            plcDefaultValue.Visible = false;
         }
     }
 
@@ -1205,8 +1150,17 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Databas
     /// </summary>
     /// <param name="selectedType">Type that will be selected after loading the list.</param>
     private void LoadAndSelectAttributeType(string selectedType = FieldDataType.Text)
+    {
+        var objectType = DataClassInfo.OBJECT_TYPE;
+
+        // Get object type based on class name
+        var dci = DataClassInfoProvider.GetDataClassInfo(ClassName);
+        if (dci != null)
         {
-        var types = FormHelper.GetFieldTypes(IsDocumentType, DevelopmentMode).ToHashSet();
+            objectType = dci.TypeInfo.ObjectType;
+        }
+
+        var types = DataTypeManager.GetFieldTypes(objectType).ToHashSet();
 
         // Remove file type for these objects 
         switch (Mode)
@@ -1281,16 +1235,33 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Databas
     /// </summary>
     private void SetReferenceToField()
     {
-        if (AttributeType.EqualsCSafe(FieldDataType.Integer, true) &&
-            !IsDummyField && !IsExtraField && !IsFieldPrimary &&
-            (Mode == FieldEditorModeEnum.ClassFormDefinition) && !IsDocumentType)
+        plcReference.Visible = (AttributeType.EqualsCSafe(FieldDataType.Integer, true) &&
+            !IsDummyField && !IsExtraField && (!IsFieldPrimary || !IsAttributeIdentity()) &&
+            (Mode == FieldEditorModeEnum.ClassFormDefinition) && !IsDocumentType);
+    }
+
+
+    /// <summary>
+    /// Returns true if selected attribute is identity column for current class' table.
+    /// </summary>
+    private bool IsAttributeIdentity()
+    {
+        var dci = DataClassInfoProvider.GetDataClassInfo(ClassName);
+        if (dci != null)
         {
-            plcReference.Visible = true;
+            const string queryText = @"SELECT COLUMNPROPERTY(OBJECT_ID(@tableName), @columnName, 'IsIdentity')";
+
+            var queryData = new QueryDataParameters
+            {
+                { "tableName", dci.ClassTableName },
+                { "columnName", GetAttributeName() }
+            };
+
+            var result = ConnectionHelper.ExecuteScalar(queryText, queryData, QueryTypeEnum.SQLQuery);
+            return ValidationHelper.GetBoolean(result, false);
         }
-        else
-        {
-            plcReference.Visible = false;
-        }
+
+        return false;
     }
 
 
@@ -1319,13 +1290,13 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Databas
     }
 
 
-    private void HandleRequiredVisiblity()
+    private void HandleRequiredVisiblity(DataType dataType)
     {
         // Can change required value only for new fields in system tables.
         plcRequired.Visible = (Mode != FieldEditorModeEnum.SystemTable) || (IsNewItemEdited && SystemContext.DevelopmentMode);
 
-        // Binary and document attachment fields can never be required.
-        if ((AttributeType == FieldDataType.Binary) || (AttributeType == FieldDataType.DocAttachments))
+        // Fields without default value cannot be required, hide the required controls in that case
+        if ((dataType != null) && !dataType.HasConfigurableDefaultValue)
         {
             plcRequired.Visible = false;
             chkRequired.Checked = false;
@@ -1371,6 +1342,25 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Databas
         }
 
         return false;
+    }
+
+
+    /// <summary>
+    /// Returns true if field's attribute type is "Date" or "DateTime" and default value is "##NOW##" or "##TODAY##".
+    /// </summary>
+    /// <param name="defaultValue">Default value string to check</param>
+    private bool IsNowOrToday(string defaultValue)
+    {
+        switch (AttributeType)
+        {
+            case FieldDataType.DateTime:
+            case FieldDataType.Date:
+                return DateTimeHelper.IsNowOrToday(defaultValue);
+
+            default:
+
+                return false;
+        }
     }
 
     #endregion

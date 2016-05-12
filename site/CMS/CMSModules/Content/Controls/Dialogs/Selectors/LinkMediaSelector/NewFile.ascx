@@ -1,10 +1,10 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="NewFile.ascx.cs" Inherits="CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSelector_NewFile" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="NewFile.ascx.cs" Inherits="CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSelector_NewFile" %>
 <%@ Register Src="~/CMSModules/Content/Controls/Attachments/DirectFileUploader/DirectFileUploader.ascx"
     TagName="DirectFileUploader" TagPrefix="cms" %>
 <asp:PlaceHolder ID="plcDirectFileUploader" runat="server">
     <cms:CMSUpdatePanel ID="pnlUpdate" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="false">
         <ContentTemplate>
-                <div class="LeftAlign DialogFileUploader">
+                <div class="LeftAlign">
                     <div id="dialogsUploaderDiv">
                         <cms:DirectFileUploader ID="fileUploader" runat="server" InsertMode="true" IncludeNewItemInfo="true"
                             CheckPermissions="false" ShowProgress="true" />

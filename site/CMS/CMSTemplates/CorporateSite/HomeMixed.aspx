@@ -1,5 +1,5 @@
-<%@ Page Language="C#" MasterPageFile="Root.master" AutoEventWireup="true" Inherits="CMSTemplates_CorporateSite_HomeMixed"
-    ValidateRequest="false" EnableEventValidation="false" Codebehind="HomeMixed.aspx.cs" %>
+﻿<%@ Page Language="C#" MasterPageFile="Root.master" AutoEventWireup="true" Inherits="CMSTemplates_CorporateSite_HomeMixed"
+    ValidateRequest="false" EnableEventValidation="false"  Codebehind="HomeMixed.aspx.cs" %>
 
 <%@ Register Src="~/CMSWebParts/Widgets/WidgetActions.ascx" TagName="WidgetActions"
     TagPrefix="cms" %>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.Helpers;
@@ -33,7 +33,7 @@ public partial class CMSModules_PortalEngine_UI_WebContainers_Container_Edit_Gen
         {
             if (!QueryHelper.ValidateHash("hash", "objectid"))
             {
-                URLHelper.Redirect(ResolveUrl(string.Format("~/CMSMessages/Error.aspx?title={0}&text={1}", ResHelper.GetString("dialogs.badhashtitle"), ResHelper.GetString("dialogs.badhashtext"))));
+                URLHelper.Redirect(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext"));
             }
         }
         else

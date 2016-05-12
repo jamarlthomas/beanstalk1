@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="ChangePermissions.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="ChangePermissions.aspx.cs"
     Inherits="CMSModules_Content_FormControls_Documents_ChangePermissions_ChangePermissions"
     MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" Theme="Default" %>
 

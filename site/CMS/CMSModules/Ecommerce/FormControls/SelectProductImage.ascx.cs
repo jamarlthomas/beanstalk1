@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web;
 
@@ -294,6 +294,7 @@ public partial class CMSModules_Ecommerce_FormControls_SelectProductImage : Form
     {
         imageSelectorElem.Visible = true;
         imageSelectorElem.Value = ValidationHelper.GetString(Value, null);
+        imageSelectorElem.DialogConfig.ContentUseRelativeUrl = true;
     }
 
     #endregion

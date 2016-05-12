@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSAdminControls_UI_Selectors_SelectDocumentGroup" Codebehind="SelectDocumentGroup.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSAdminControls_UI_Selectors_SelectDocumentGroup"  Codebehind="SelectDocumentGroup.ascx.cs" %>
 
 <div class="form-horizontal">
     <div class="form-group">

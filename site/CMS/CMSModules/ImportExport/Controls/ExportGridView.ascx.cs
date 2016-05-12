@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -20,8 +20,6 @@ public partial class CMSModules_ImportExport_Controls_ExportGridView : ImportExp
     protected string displayNameColumnName = "";
     protected int pagerForceNumberOfResults = -1;
 
-    private SiteExportSettings mSettings = null;
-
     #endregion
 
 
@@ -32,14 +30,8 @@ public partial class CMSModules_ImportExport_Controls_ExportGridView : ImportExp
     /// </summary>
     public SiteExportSettings Settings
     {
-        get
-        {
-            return mSettings;
-        }
-        set
-        {
-            mSettings = value;
-        }
+        get;
+        set;
     }
 
 
@@ -112,7 +104,17 @@ public partial class CMSModules_ImportExport_Controls_ExportGridView : ImportExp
         DateTime originalTS = Settings.TimeStamp;
 
         Settings.TimeStamp = DateTimeHelper.ZERO_TIME;
-        Settings.LoadDefaultSelection(ObjectType, SiteObject, ExportTypeEnum.All, true, false);
+        
+        var parameters = new DefaultSelectionParameters
+        {
+            ObjectType = ObjectType,
+            SiteObjects = SiteObject,
+            ExportType = ExportTypeEnum.All,
+            LoadTasks = false,
+            ClearProgressLog = true
+        };
+
+        Settings.LoadDefaultSelection(parameters);
         Settings.TimeStamp = originalTS;
 
         RaiseButtonPressed(sender, e);
@@ -122,7 +124,14 @@ public partial class CMSModules_ImportExport_Controls_ExportGridView : ImportExp
     protected void btnNone_Click(object sender, EventArgs e)
     {
         // Load none selection
-        Settings.LoadDefaultSelection(ObjectType, SiteObject, ExportTypeEnum.None, true, false);
+        var parameters = new DefaultSelectionParameters
+        {
+            ObjectType = ObjectType,
+            SiteObjects = SiteObject,
+            LoadTasks = false,
+            ClearProgressLog = true
+        };
+        Settings.LoadDefaultSelection(parameters);
 
         RaiseButtonPressed(sender, e);
     }
@@ -131,7 +140,15 @@ public partial class CMSModules_ImportExport_Controls_ExportGridView : ImportExp
     protected void btnDefault_Click(object sender, EventArgs e)
     {
         // Load default selection
-        Settings.LoadDefaultSelection(ObjectType, SiteObject, ExportTypeEnum.Default, true, false);
+        var parameters = new DefaultSelectionParameters
+        {
+            ObjectType = ObjectType,
+            SiteObjects = SiteObject,
+            ExportType = ExportTypeEnum.Default,
+            LoadTasks = false,
+            ClearProgressLog = true
+        };
+        Settings.LoadDefaultSelection(parameters);
 
         RaiseButtonPressed(sender, e);
     }
@@ -146,23 +163,21 @@ public partial class CMSModules_ImportExport_Controls_ExportGridView : ImportExp
             if (Settings != null)
             {
                 // Process the results of the available tasks
-                string[] available = hdnAvailableItems.Value.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                if (available != null)
-                {
-                    foreach (string codeName in available)
-                    {
-                        string name = Request.Form.AllKeys.FirstOrDefault(x => x.EndsWith(GetCheckBoxName(codeName))) ?? string.Empty;
+                string[] available = hdnAvailableItems.Value.Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
-                        if (Request.Form[name] == null)
-                        {
-                            // Unchecked
-                            Settings.Deselect(ObjectType, codeName, SiteObject);
-                        }
-                        else
-                        {
-                            // Checked
-                            Settings.Select(ObjectType, codeName, SiteObject);
-                        }
+                foreach (string codeName in available)
+                {
+                    string name = Request.Form.AllKeys.FirstOrDefault(x => x.EndsWith(GetCheckBoxName(codeName))) ?? string.Empty;
+
+                    if (Request.Form[name] == null)
+                    {
+                        // Unchecked
+                        Settings.Deselect(ObjectType, codeName, SiteObject);
+                    }
+                    else
+                    {
+                        // Checked
+                        Settings.Select(ObjectType, codeName, SiteObject);
                     }
                 }
             }
@@ -198,8 +213,8 @@ public partial class CMSModules_ImportExport_Controls_ExportGridView : ImportExp
                 displayNameColumnName = info.DisplayNameColumn;
 
                 // Get data source
-                string where = GenerateWhereCondition();
-                string orderBy = GetOrderByExpression(info);
+                var where = Settings.GetObjectWhereCondition(ObjectType, SiteObject);
+                var orderBy = GetOrderByExpression(info);
 
                 // Prepare the columns
                 string columns = null;
@@ -315,13 +330,6 @@ public partial class CMSModules_ImportExport_Controls_ExportGridView : ImportExp
             AddAvailableItem(codeName);
             e.Row.Cells[0].Controls.Add(GetCheckBox(codeName));
         }
-    }
-
-
-    // Genearate where condition
-    private string GenerateWhereCondition()
-    {
-        return Settings.GetObjectWhereCondition(ObjectType, SiteObject);
     }
 
 

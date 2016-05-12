@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web.UI.WebControls;
 using System.Web;
@@ -21,7 +21,7 @@ public partial class CMSWebParts_Membership_Registration_WindowsLiveID : CMSAbst
     #region "Constants"
 
     // Settings key name containing URL to logon page 
-    private static readonly string LOGON_PAGE_SETTINGS_KEY = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSSecuredAreasLogonPage");
+    private readonly string logonPage = AuthenticationHelper.GetSecuredAreasLogonPage(SiteContext.CurrentSiteName);
 
     private const string AUTHORIZATION_URL = "https://login.live.com/oauth20_authorize.srf";
     private const string LIVE_CONNECT_API_URL = "https://js.live.net/v5.0/wl.js";
@@ -481,7 +481,7 @@ public partial class CMSWebParts_Membership_Registration_WindowsLiveID : CMSAbst
                 break;
 
             case "clearcookieandredirect":
-                WindowsLiveLogin.ClearCookieAndRedirect(LOGON_PAGE_SETTINGS_KEY);
+                WindowsLiveLogin.ClearCookieAndRedirect(logonPage);
                 break;
         }
     }

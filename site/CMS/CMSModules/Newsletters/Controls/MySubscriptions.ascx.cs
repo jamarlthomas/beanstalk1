@@ -1,6 +1,8 @@
-using System;
+﻿using System;
 using System.Data;
+using System.Linq;
 
+using CMS.Core;
 using CMS.Helpers;
 using CMS.Newsletters;
 using CMS.Base;
@@ -15,16 +17,15 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
 {
     #region "Variables"
 
-    private SubscriberInfo sb = null;
-    private bool mExternalUse = false;
-    private int mCacheMinutes = 0;
+    private SubscriberInfo subscriber;
     private string subscriberEmail = string.Empty;
-    private bool userIsIdentified = false;
-    private int mUserId = 0;
-    private int mSiteId = 0;
+    private bool userIsIdentified;
     private string selectorValue = string.Empty;
     private string currentValues = string.Empty;
     private bool mSendConfirmationEmail = true;
+    private UserInfo userInfo;
+    private readonly ISubscriptionService mSubscriptionService = Service<ISubscriptionService>.Entry();
+    private readonly IUnsubscriptionProvider mUnsubscriptionProvider = Service<IUnsubscriptionProvider>.Entry();
 
     #endregion
 
@@ -81,14 +82,8 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
     /// </summary>
     public bool ExternalUse
     {
-        get
-        {
-            return mExternalUse;
-        }
-        set
-        {
-            mExternalUse = value;
-        }
+        get;
+        set;
     }
 
 
@@ -97,14 +92,8 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
     /// </summary>
     public int CacheMinutes
     {
-        get
-        {
-            return mCacheMinutes;
-        }
-        set
-        {
-            mCacheMinutes = value;
-        }
+        get;
+        set;
     }
 
 
@@ -113,14 +102,8 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
     /// </summary>
     public int SiteID
     {
-        get
-        {
-            return mSiteId;
-        }
-        set
-        {
-            mSiteId = value;
-        }
+        get;
+        set;
     }
 
 
@@ -129,14 +112,8 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
     /// </summary>
     public int UserID
     {
-        get
-        {
-            return mUserId;
-        }
-        set
-        {
-            mUserId = value;
-        }
+        get;
+        set;
     }
 
 
@@ -210,14 +187,13 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
             SetContext();
 
             // Get specified user if used instead of current user
-            UserInfo ui = null;
             if (UserID > 0)
             {
-                ui = UserInfoProvider.GetUserInfo(UserID);
+                userInfo = UserInfoProvider.GetUserInfo(UserID);
             }
             else
             {
-                ui = MembershipContext.AuthenticatedUser;
+                userInfo = MembershipContext.AuthenticatedUser;
             }
 
             // Get specified site ID instead of current site ID
@@ -235,26 +211,26 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
             usNewsletters.OnSelectionChanged += new EventHandler(usNewsletters_OnSelectionChanged);
             usNewsletters.IsLiveSite = IsLiveSite;
 
-            userIsIdentified = (ui != null) && (!ui.IsPublic()) && (ValidationHelper.IsEmail(ui.Email) || ValidationHelper.IsEmail(ui.UserName));
+            userIsIdentified = (userInfo != null) && (!userInfo.IsPublic()) && (ValidationHelper.IsEmail(userInfo.Email) || ValidationHelper.IsEmail(userInfo.UserName));
             if (userIsIdentified)
             {
                 usNewsletters.Visible = true;
 
                 // Try to get subscriber info with specified e-mail
-                sb = SubscriberInfoProvider.GetSubscriberInfo(ui.Email, siteId);
-                if (sb == null)
+                subscriber = SubscriberInfoProvider.GetSubscriberInfo(userInfo.Email, siteId);
+                if (subscriber == null)
                 {
                     // Try to get subscriber info according to user info
-                    sb = SubscriberInfoProvider.GetSubscriberInfo(UserInfo.OBJECT_TYPE, ui.UserID, siteId);
+                    subscriber = SubscriberInfoProvider.GetSubscriberInfo(UserInfo.OBJECT_TYPE, userInfo.UserID, siteId);
                 }
 
                 // Get user e-mail address
-                if (sb != null)
+                if (subscriber != null)
                 {
-                    subscriberEmail = sb.SubscriberEmail;
+                    subscriberEmail = subscriber.SubscriberEmail;
 
                     // Get selected newsletters
-                    DataSet ds = SubscriberNewsletterInfoProvider.GetEnabledSubscriberNewsletters().WhereEquals("SubscriberID", sb.SubscriberID).Column("NewsletterID");
+                    DataSet ds = SubscriberNewsletterInfoProvider.GetSubscriberNewsletters().WhereEquals("SubscriberID", subscriber.SubscriberID).Column("NewsletterID");
                     if (!DataHelper.DataSourceIsEmpty(ds))
                     {
                         currentValues = TextHelper.Join(";", DataHelper.GetStringValues(ds.Tables[0], "NewsletterID"));
@@ -270,13 +246,13 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
                 // Try to get email address from user data
                 if (string.IsNullOrEmpty(subscriberEmail))
                 {
-                    if (ValidationHelper.IsEmail(ui.Email))
+                    if (ValidationHelper.IsEmail(userInfo.Email))
                     {
-                        subscriberEmail = ui.Email;
+                        subscriberEmail = userInfo.Email;
                     }
-                    else if (ValidationHelper.IsEmail(ui.UserName))
+                    else if (ValidationHelper.IsEmail(userInfo.UserName))
                     {
-                        subscriberEmail = ui.UserName;
+                        subscriberEmail = userInfo.UserName;
                     }
                 }
             }
@@ -290,7 +266,15 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
                 }
                 else
                 {
-                    ShowInformation(GetString("MySubscriptions.CannotIdentifyUser"));
+                    if (!IsLiveSite)
+                    {
+                        // It's located in Admin/Users/Subscriptions
+                        lblText.ResourceString = "MySubscriptions.EmailCommunicationDisabled";
+                    }
+                    else
+                    {
+                        ShowInformation(GetString("MySubscriptions.CannotIdentifyUser"));
+                    }
                 }
             }
 
@@ -307,23 +291,23 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
     /// <param name="subscribe">Subscribing/unsubscribing flag</param>
     private void LogActivity(UserInfo ui, int newsletterId, bool subscribe)
     {
-        if ((sb == null) || (ui == null))
+        if ((subscriber == null) || (ui == null))
         {
             return;
         }
 
         // Log activity only if subscriber is User
-        if ((sb.SubscriberType != null) && sb.SubscriberType.Equals(UserInfo.OBJECT_TYPE, StringComparison.InvariantCultureIgnoreCase))
+        if ((subscriber.SubscriberType != null) && subscriber.SubscriberType.Equals(UserInfo.OBJECT_TYPE, StringComparison.InvariantCultureIgnoreCase))
         {
             NewsletterInfo news = NewsletterInfoProvider.GetNewsletterInfo(newsletterId);
             Activity activity;
             if (subscribe)
             {
-                activity = new ActivityNewsletterSubscribing(sb, news, AnalyticsContext.ActivityEnvironmentVariables);
+                activity = new ActivityNewsletterSubscribing(subscriber, news, AnalyticsContext.ActivityEnvironmentVariables);
             }
             else
             {
-                activity = new ActivityNewsletterUnsubscribing(sb, news, AnalyticsContext.ActivityEnvironmentVariables);
+                activity = new ActivityNewsletterUnsubscribing(news, AnalyticsContext.ActivityEnvironmentVariables);
             }
             activity.Log();
         }
@@ -340,17 +324,6 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
             }
         }
 
-        // Get specified user if used instead of current user
-        UserInfo ui = null;
-        if (UserID > 0)
-        {
-            ui = UserInfoProvider.GetUserInfo(UserID);
-        }
-        else
-        {
-            ui = MembershipContext.AuthenticatedUser;
-        }
-
         // Get specified site ID instead of current site ID
         int siteId = 0;
         if (SiteID > 0)
@@ -362,42 +335,42 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
             siteId = SiteContext.CurrentSiteID;
         }
 
-        if ((sb == null) && (ui != null))
+        if ((subscriber == null) && (userInfo != null))
         {
             // Create new subsciber (bind to existing user account)
-            if ((!ui.IsPublic()) && (ValidationHelper.IsEmail(ui.Email) || ValidationHelper.IsEmail(ui.UserName)))
+            if ((!userInfo.IsPublic()) && (ValidationHelper.IsEmail(userInfo.Email) || ValidationHelper.IsEmail(userInfo.UserName)))
             {
-                sb = new SubscriberInfo();
-                if (ui != null)
+                subscriber = new SubscriberInfo();
+                if (userInfo != null)
                 {
-                    if (!string.IsNullOrEmpty(ui.FirstName) && !string.IsNullOrEmpty(ui.LastName))
+                    if (!string.IsNullOrEmpty(userInfo.FirstName) && !string.IsNullOrEmpty(userInfo.LastName))
                     {
-                        sb.SubscriberFirstName = ui.FirstName;
-                        sb.SubscriberLastName = ui.LastName;
+                        subscriber.SubscriberFirstName = userInfo.FirstName;
+                        subscriber.SubscriberLastName = userInfo.LastName;
                     }
                     else
                     {
-                        sb.SubscriberFirstName = ui.FullName;
+                        subscriber.SubscriberFirstName = userInfo.FullName;
                     }
                     // Full name consists of "user " and user full name
-                    sb.SubscriberFullName = new SubscriberFullNameFormater().GetUserSubscriberName(ui.FullName);
+                    subscriber.SubscriberFullName = new SubscriberFullNameFormater().GetUserSubscriberName(userInfo.FullName);
                 }
 
-                sb.SubscriberSiteID = siteId;
-                sb.SubscriberType = UserInfo.OBJECT_TYPE;
-                sb.SubscriberRelatedID = ui.UserID;
+                subscriber.SubscriberSiteID = siteId;
+                subscriber.SubscriberType = UserInfo.OBJECT_TYPE;
+                subscriber.SubscriberRelatedID = userInfo.UserID;
                 // Save subscriber to DB
-                SubscriberInfoProvider.SetSubscriberInfo(sb);
+                SubscriberInfoProvider.SetSubscriberInfo(subscriber);
             }
         }
 
-        if (sb == null)
+        if (subscriber == null)
         {
             return;
         }
 
         // Create membership between current contact and subscriber
-        ModuleCommands.OnlineMarketingCreateRelation(sb.SubscriberID, MembershipType.NEWSLETTER_SUBSCRIBER, ModuleCommands.OnlineMarketingGetCurrentContactID());
+        ModuleCommands.OnlineMarketingCreateRelation(subscriber.SubscriberID, MembershipType.NEWSLETTER_SUBSCRIBER, ModuleCommands.OnlineMarketingGetCurrentContactID());
 
         // Remove old items
         int newsletterId = 0;
@@ -406,20 +379,17 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
         if (!String.IsNullOrEmpty(items))
         {
             string[] newItems = items.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            if (newItems != null)
-            {
-                foreach (string item in newItems)
-                {
-                    newsletterId = ValidationHelper.GetInteger(item, 0);
 
-                    // If subscriber is subscribed, unsubscribe him
-                    if (SubscriberInfoProvider.IsSubscribed(sb.SubscriberID, newsletterId))
-                    {
-                        SubscriberInfoProvider.Unsubscribe(sb.SubscriberID, newsletterId, SendConfirmationEmail);
-                        // Log activity
-                        LogActivity(ui, newsletterId, false);
-                    }
-                }
+            var ids = newItems.Select(item => ValidationHelper.GetInteger(item, 0)).ToArray();
+            var subscriptions = SubscriberNewsletterInfoProvider
+                .GetSubscriberNewsletters()
+                .WhereEquals("SubscriberID", subscriber.SubscriberID)
+                .WhereIn("NewsletterID", ids);
+                    
+            foreach (var subscription in subscriptions)
+            {
+                subscription.Delete();
+                LogActivity(userInfo, newsletterId, false);
             }
         }
 
@@ -434,18 +404,25 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
                 {
                     newsletterId = ValidationHelper.GetInteger(item, 0);
 
-                    // If subscriber is not subscribed, subscribe him
-                    if (!SubscriberInfoProvider.IsSubscribed(sb.SubscriberID, newsletterId))
+                    try
                     {
-                        try
+                        // If subscriber is not subscribed, subscribe him
+                        if (!mSubscriptionService.IsSubscribed(subscriber.SubscriberID, newsletterId))
                         {
-                            SubscriberInfoProvider.Subscribe(sb.SubscriberID, newsletterId, DateTime.Now, SendConfirmationEmail);
+                            mSubscriptionService.Subscribe(subscriber.SubscriberID, newsletterId, new SubscribeSettings()
+                            {
+                                SendConfirmationEmail = SendConfirmationEmail,
+                                RequireOptIn = true,
+                                RemoveAlsoUnsubscriptionFromAllNewsletters = true,
+                            });
                             // Log activity
-                            LogActivity(ui, newsletterId, true);
+                            LogActivity(userInfo, newsletterId, true);
                         }
-                        catch
-                        {
-                        }
+                    }
+                    catch
+                    {
+                        // Can occur e.g. when newsletter is deleted while the user is selecting it for subscription.
+                        // This is rare scenario, the main purpose of this catch is to avoid YSOD on the live site.
                     }
                 }
             }
@@ -456,21 +433,59 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions : CMSAdminC
     }
 
 
+    protected void btnUnsubscribeFromAll_Click(object sender, EventArgs e)
+    {
+        if (userIsIdentified && IsLiveSite)
+        {
+            string email = userInfo.Email;
+            var isUnsubscribed = mUnsubscriptionProvider.IsUnsubscribedFromAllNewsletters(email, SiteContext.CurrentSiteID);
+
+            if (!isUnsubscribed)
+            {
+                mSubscriptionService.UnsubscribeFromAllNewsletters(email, SiteContext.CurrentSiteID);
+            }
+            else
+            {
+                mUnsubscriptionProvider.RemoveUnsubscriptionsFromAllNewsletters(email, SiteContext.CurrentSiteID);
+            }
+        }
+    }
+
+
     protected override void OnPreRender(EventArgs e)
     {
         base.OnPreRender(e);
 
+        if (!IsLiveSite)
+        {
+            // It's located in Admin/Users/Subscriptions
+            headNewsletters.Visible = false;
+            lblUnsubscribeFromAll.Visible = false;
+            btnUsubscribeFromAll.Visible = false;
+        }
+
         // Display appropriate message
         if (userIsIdentified)
         {
-            // There are some newsletters to display
-            if (MembershipContext.AuthenticatedUser.UserID == UserID)
+            if (!IsLiveSite)
             {
-                lblText.Text = GetString("MySubscriptions.MainText").Replace("##EMAIL##", HTMLHelper.HTMLEncode(subscriberEmail));
+                lblText.ResourceString = "mysubscriptions.selectorheading.thirdperson";
             }
             else
             {
-                lblText.Text = GetString("MySubscriptions.MainTextUser").Replace("##EMAIL##", HTMLHelper.HTMLEncode(subscriberEmail));
+                string email = userInfo.Email;
+                bool isUnsubscribedFromAll = mUnsubscriptionProvider.IsUnsubscribedFromAllNewsletters(email, SiteContext.CurrentSiteID);
+
+                if (isUnsubscribedFromAll)
+                {
+                    lblUnsubscribeFromAll.Text = GetString("mysubscriptions.unsubscribed.description");
+                    btnUsubscribeFromAll.Text = GetString("mysubscriptions.unsubscribed.buttontext");
+                }
+                else
+                {
+                    lblUnsubscribeFromAll.Text = string.Format(GetString("mysubscriptions.notunsubscribed.description"), email);
+                    btnUsubscribeFromAll.Text = GetString("mysubscriptions.notunsubscribed.buttontext");
+                }
             }
         }
 

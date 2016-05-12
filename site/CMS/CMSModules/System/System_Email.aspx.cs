@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Net.Mail;
 
 using CMS.EmailEngine;
@@ -105,7 +105,7 @@ public partial class CMSModules_System_System_Email : GlobalAdminPage
                                         {
                                             ServerName = txtServer.Text,
                                             ServerUserName = txtUserName.Text,
-                                            ServerPassword = txtPassword.Text,
+                                            ServerPassword = EncryptionHelper.EncryptData(txtPassword.Text),
                                             ServerUseSSL = chkSSL.Checked
                                         };
 

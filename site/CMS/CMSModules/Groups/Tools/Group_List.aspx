@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Groups_Tools_Group_List"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Groups_Tools_Group_List"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Group list"
-    Codebehind="Group_List.aspx.cs" %>
+     Codebehind="Group_List.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Groups/Controls/GroupList.ascx" TagName="GroupList"
     TagPrefix="cms" %>

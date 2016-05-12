@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Accessibility.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Accessibility.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Inherits="CMSModules_Content_CMSDesk_Validation_Accessibility" Theme="Default" %>
 
 <%@ Register Src="~/CMSAdminControls/Validation/AccessibilityValidator.ascx" TagName="AccessibilityValidator"

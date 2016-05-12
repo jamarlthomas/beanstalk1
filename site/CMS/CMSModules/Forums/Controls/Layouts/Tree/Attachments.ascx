@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Layouts_Tree_Attachments"
-    Codebehind="Attachments.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Layouts_Tree_Attachments"
+     Codebehind="Attachments.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Forums/Controls/AttachmentList.ascx" TagName="AttachmentList"
     TagPrefix="cms" %>
 <%@ Register Namespace="CMS.Forums" Assembly="CMS.Forums" TagPrefix="cms" %>

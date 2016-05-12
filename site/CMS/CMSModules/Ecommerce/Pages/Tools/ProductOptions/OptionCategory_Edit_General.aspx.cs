@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 
+using CMS.Core;
 using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.Helpers;
@@ -17,7 +18,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
         // Get parent product from url
         var parentProductId = QueryHelper.GetInteger("productId", 0);
         // Check UI permissions
-        CheckUIElementAccessHierarchical("CMS.Ecommerce", (parentProductId <= 0) ? "ProductOptions.General" : "Products.ProductOptions.General");
+        CheckUIElementAccessHierarchical(ModuleName.ECOMMERCE, (parentProductId <= 0) ? "ProductOptions.General" : "Products.ProductOptions.General");
 
         var categoryObject = EditedObject as BaseInfo;
         if (categoryObject != null)
@@ -39,7 +40,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
         // Check module permissions
         if (!ECommerceContext.IsUserAuthorizedToModifyOptionCategory(global))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", global ? "EcommerceGlobalModify" : "EcommerceModify OR ModifyProducts");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, global ? EcommercePermissions.ECOMMERCE_MODIFYGLOBAL : "EcommerceModify OR ModifyProducts");
         }
     }
 

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Pages_Users_General_User_Online"
-    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Title="Users - online users" EnableEventValidation="false" Codebehind="User_Online.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Pages_Users_General_User_Online"
+    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Title="Users - online users" EnableEventValidation="false"  Codebehind="User_Online.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/Basic/DisabledModuleInfo.ascx" TagPrefix="cms"

@@ -168,7 +168,7 @@ public partial class CMSWebParts_Chat_AutoInitiatedChat : CMSAbstractWebPart
         // Script references insertion
         ScriptHelper.RegisterJQuery(Page);
         ScriptHelper.RegisterJQueryCookie(Page);
-        ScriptHelper.RegisterScriptFile(Page, "~/CMSModules/Chat/CMSPages/ChatSettings.ashx", false);
+        ScriptHelper.RegisterScriptFile(Page, "~/CMSModules/Chat/CMSPages/ChatSettings.ashx");
 
         ScriptHelper.RegisterJQueryTemplates(Page);
         ScriptHelper.RegisterScriptFile(Page, "~/CMSWebParts/Chat/AutoInitiatedChat_files/AutoInitiatedChat.js");

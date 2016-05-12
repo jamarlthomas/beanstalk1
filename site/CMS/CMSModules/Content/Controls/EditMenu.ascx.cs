@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -288,7 +288,7 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
         menu.PerformFullPostBack = !ControlsHelper.IsInUpdatePanel(this);
 
         // Set CSS class
-        pnlContainer.CssClass = IsLiveSite ? "" : "cms-edit-menu";
+        pnlContainer.CssClass = IsLiveSite ? "" : "cms-edit-menu header-container";
         menu.UseBasicStyles = IsLiveSite;
 
         // Register events
@@ -301,8 +301,6 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
         {
             DocumentManager.LocalDocumentPanel = pnlDoc;
         }
-
-        ComponentEvents.RequestEvents.RegisterForEvent("RemoveWireframe", RemoveWireframe);
     }
 
 
@@ -390,15 +388,48 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
 
         bool addComment = false;
         sb.Append("function CheckConsistency_", ClientID, "() { ", DocumentManager.GetJSFunction("CONS", null, null), "; } \n");
-        if ((save != null) && save.Enabled) { sb.Append("function SaveDocument_", ClientID, "(createAnother) { ", save.OnClientClick, DocumentManager.GetJSSaveFunction("createAnother"), "; } \n"); }
-        if (approve != null) { addComment = true; sb.Append("function Approve_", ClientID, "(stepId, comment) { ", approve.OnClientClick, DocumentManager.GetJSFunction(approve.EventName, "stepId", "comment"), "; } \n"); }
-        if (reject != null) { addComment = true; sb.Append("function Reject_", ClientID, "(historyId, comment) { ", reject.OnClientClick, DocumentManager.GetJSFunction(reject.EventName, "historyId", "comment"), "; } \n"); }
-        if (publish != null) { addComment = true; sb.Append("function Publish_", ClientID, "(comment) { ", publish.OnClientClick, DocumentManager.GetJSFunction(publish.EventName, null, "comment"), "; } \n"); }
-        if (archive != null) { addComment = true; sb.Append("function Archive_", ClientID, "(stepId, comment) { ", archive.OnClientClick, DocumentManager.GetJSFunction(archive.EventName, "stepId", "comment"), "; } \n"); }
-        if (checkout != null) { sb.Append("function CheckOut_", ClientID, "() { ", checkout.OnClientClick, DocumentManager.GetJSFunction(checkout.EventName, null, null), "; } \n"); }
-        if (checkin != null) { addComment = true; sb.Append("function CheckIn_", ClientID, "(comment) { ", checkin.OnClientClick, DocumentManager.GetJSFunction(checkin.EventName, null, "comment"), "; } \n"); }
-        if (undoCheckout != null) { sb.Append("function UndoCheckOut_", ClientID, "() { ", undoCheckout.OnClientClick, DocumentManager.GetJSFunction(undoCheckout.EventName, null, null), "; } \n"); }
-        if (addComment) { sb.Append("function AddComment_", ClientID, "(name, documentId, menuId) { ", DocumentManager.GetJSFunction(ComponentEvents.COMMENT, "name|documentId|menuId", null), "; } \n"); }
+        if ((save != null) && save.Enabled)
+        {
+            sb.Append("function SaveDocument_", ClientID, "(createAnother) { ", save.OnClientClick, DocumentManager.GetJSSaveFunction("createAnother"), "; } \n");
+        }
+        if (approve != null)
+        {
+            addComment = true;
+            sb.Append("function Approve_", ClientID, "(stepId, comment) { ", approve.OnClientClick, DocumentManager.GetJSFunction(approve.EventName, "stepId", "comment"), "; } \n");
+        }
+        if (reject != null)
+        {
+            addComment = true;
+            sb.Append("function Reject_", ClientID, "(historyId, comment) { ", reject.OnClientClick, DocumentManager.GetJSFunction(reject.EventName, "historyId", "comment"), "; } \n");
+        }
+        if (publish != null)
+        {
+            addComment = true;
+            sb.Append("function Publish_", ClientID, "(comment) { ", publish.OnClientClick, DocumentManager.GetJSFunction(publish.EventName, null, "comment"), "; } \n");
+        }
+        if (archive != null)
+        {
+            addComment = true;
+            sb.Append("function Archive_", ClientID, "(stepId, comment) { ", archive.OnClientClick, DocumentManager.GetJSFunction(archive.EventName, "stepId", "comment"), "; } \n");
+        }
+        if (checkout != null)
+        {
+            sb.Append("function CheckOut_", ClientID, "() { ", checkout.OnClientClick, DocumentManager.GetJSFunction(checkout.EventName, null, null), "; } \n");
+        }
+        if (checkin != null)
+        {
+            addComment = true;
+            sb.Append("function CheckIn_", ClientID, "(comment) { ", checkin.OnClientClick, DocumentManager.GetJSFunction(checkin.EventName, null, "comment"), "; } \n");
+        }
+        if (undoCheckout != null)
+        {
+            sb.Append("function UndoCheckOut_", ClientID, "() { ", undoCheckout.OnClientClick, DocumentManager.GetJSFunction(undoCheckout.EventName, null, null), "; } \n");
+        }
+
+        if (addComment)
+        {
+            sb.Append("function AddComment_", ClientID, "(name, documentId, menuId) { ", DocumentManager.GetJSFunction(ComponentEvents.COMMENT, "name|documentId|menuId", null), "; } \n");
+        }
 
         // Register the script
         if (sb.Length > 0)
@@ -500,7 +531,7 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
             // Handle save action
             if (ShowSave && !hideSave)
             {
-                save = new SaveAction(Page)
+                save = new SaveAction
                 {
                     OnClientClick = RaiseGetClientValidationScript(ComponentEvents.SAVE, DocumentManager.ConfirmChanges ? DocumentManager.GetAllowSubmitScript() : null),
                     Tooltip = ResHelper.GetString("EditMenu.Save", ResourceCulture)
@@ -539,32 +570,24 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
                         // Check-out action
                         if (ShowCheckOut && DocumentManager.IsActionAllowed(DocumentComponentEvents.CHECKOUT))
                         {
-                            checkout = new DocumentCheckOutAction(Page)
-                                {
-                                    Tooltip = ResHelper.GetString("EditMenu.CheckOut", ResourceCulture),
-                                    ButtonStyle = ButtonStyle.Default
-                                };
+                            checkout = new DocumentCheckOutAction();
                         }
 
                         // Undo check-out action
                         if (ShowUndoCheckOut && DocumentManager.IsActionAllowed(DocumentComponentEvents.UNDO_CHECKOUT))
                         {
-                            undoCheckout = new DocumentUndoCheckOutAction(Page)
+                            undoCheckout = new DocumentUndoCheckOutAction
                                 {
-                                    Tooltip = ResHelper.GetString("EditMenu.UndoCheckout", ResourceCulture),
                                     OnClientClick = RaiseGetClientValidationScript(DocumentComponentEvents.UNDO_CHECKOUT, "if(!confirm(" + ScriptHelper.GetString(ResHelper.GetString("EditMenu.UndoCheckOutConfirmation", ResourceCulture)) + ")) { return false; }"),
-                                    ButtonStyle = ButtonStyle.Default
                                 };
                         }
 
                         // Check-in action
                         if (ShowCheckIn && DocumentManager.IsActionAllowed(DocumentComponentEvents.CHECKIN))
                         {
-                            checkin = new DocumentCheckInAction(Page)
+                            checkin = new DocumentCheckInAction
                                 {
-                                    Tooltip = ResHelper.GetString("EditMenu.CheckIn", ResourceCulture),
                                     OnClientClick = RaiseGetClientValidationScript(DocumentComponentEvents.CHECKIN, submitScript),
-                                    ButtonStyle = ButtonStyle.Default
                                 };
 
                             // Add check-in comment
@@ -578,12 +601,11 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
                             {
                                 if (ShowSubmitToApproval)
                                 {
-                                    approve = new DocumentApproveAction(Page)
+                                    approve = new DocumentApproveAction
                                         {
                                             Text = ResHelper.GetString("EditMenu.IconSubmitToApproval", ResourceCulture),
                                             Tooltip = ResHelper.GetString("EditMenu.SubmitToApproval", ResourceCulture),
-                                            OnClientClick = RaiseGetClientValidationScript(DocumentComponentEvents.APPROVE, submitScript),
-                                            ButtonStyle = ButtonStyle.Default
+                                            OnClientClick = RaiseGetClientValidationScript(DocumentComponentEvents.APPROVE, submitScript)
                                         };
                                 }
                             }
@@ -591,11 +613,9 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
                             {
                                 if (ShowApprove)
                                 {
-                                    approve = new DocumentApproveAction(Page)
+                                    approve = new DocumentApproveAction
                                         {
-                                            Tooltip = ResHelper.GetString("EditMenu.Approve", ResourceCulture),
-                                            OnClientClick = RaiseGetClientValidationScript(DocumentComponentEvents.APPROVE, submitScript),
-                                            ButtonStyle = ButtonStyle.Default
+                                            OnClientClick = RaiseGetClientValidationScript(DocumentComponentEvents.APPROVE, submitScript)
                                         };
                                 }
                             }
@@ -609,11 +629,9 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
 
                             if (prevStepsCount > 0)
                             {
-                                reject = new DocumentRejectAction(Page)
+                                reject = new DocumentRejectAction
                                     {
-                                        Tooltip = ResHelper.GetString("EditMenu.Reject", ResourceCulture),
-                                        OnClientClick = RaiseGetClientValidationScript(DocumentComponentEvents.REJECT, submitScript),
-                                        ButtonStyle = ButtonStyle.Default
+                                        OnClientClick = RaiseGetClientValidationScript(DocumentComponentEvents.REJECT, submitScript)
                                     };
 
                                 // For workflow managers allow reject to specified step
@@ -623,10 +641,9 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
                                     {
                                         foreach (var s in prevSteps)
                                         {
-                                            reject.AlternativeActions.Add(new DocumentRejectAction(Page)
+                                            reject.AlternativeActions.Add(new DocumentRejectAction
                                                 {
                                                     Text = string.Format(ResHelper.GetString("EditMenu.RejectTo", ResourceCulture), HTMLHelper.HTMLEncode(ResHelper.LocalizeString(s.StepDisplayName, ResourceCulture))),
-                                                    Tooltip = ResHelper.GetString("EditMenu.Reject", ResourceCulture),
                                                     OnClientClick = RaiseGetClientValidationScript(DocumentComponentEvents.REJECT, submitScript),
                                                     CommandArgument = s.RelatedHistoryID.ToString()
                                                 });
@@ -643,6 +660,7 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
                         List<WorkflowStepInfo> steps = DocumentManager.NextSteps;
                         int stepsCount = steps.Count;
                         WorkflowInfo workflow = DocumentManager.Workflow;
+                        List<WorkflowTransitionInfo> transitions = null;
 
                         // Handle multiple next steps
                         if (approve != null)
@@ -652,13 +670,13 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
 
                             // Get next approval step info
                             var approveSteps = steps.FindAll(s => !s.StepIsArchived);
-                            int aprroveStepsCount = approveSteps.Count;
-                            if (aprroveStepsCount > 0)
+                            int approveStepsCount = approveSteps.Count;
+                            if (approveStepsCount > 0)
                             {
                                 var nextS = approveSteps[0];
 
                                 // Only one next step
-                                if (aprroveStepsCount == 1)
+                                if (approveStepsCount == 1)
                                 {
                                     if (nextS.StepIsPublished)
                                     {
@@ -694,7 +712,6 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
                                     }
 
                                     // Make action inactive
-                                    approve.OnClientClick = null;
                                     approve.Inactive = true;
 
                                     // Process action appearance
@@ -705,7 +722,7 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
 
                                     foreach (var s in approveSteps)
                                     {
-                                        DocumentApproveAction app = new DocumentApproveAction(Page)
+                                        DocumentApproveAction app = new DocumentApproveAction
                                             {
                                                 Text = string.Format(ResHelper.GetString(itemText, ResourceCulture), HTMLHelper.HTMLEncode(ResHelper.LocalizeString(s.StepDisplayName, ResourceCulture))),
                                                 Tooltip = ResHelper.GetString(itemDesc, ResourceCulture),
@@ -736,13 +753,12 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
                                     {
                                         // Make action inactive
                                         approve.Tooltip = ResHelper.GetString("EditMenu.ApproveMultiple", ResourceCulture);
-                                        approve.OnClientClick = null;
                                         approve.Inactive = true;
 
                                         // Add approve action
                                         string itemText = Step.StepIsEdit ? "EditMenu.SubmitTo" : "EditMenu.ApproveTo";
                                         string itemDesc = Step.StepIsEdit ? "EditMenu.SubmitToApproval" : "EditMenu.Approve";
-                                        DocumentApproveAction app = new DocumentApproveAction(Page)
+                                        DocumentApproveAction app = new DocumentApproveAction
                                             {
                                                 Text = string.Format(ResHelper.GetString(itemText, ResourceCulture), HTMLHelper.HTMLEncode(ResHelper.LocalizeString(nextS.StepDisplayName, ResourceCulture))),
                                                 Tooltip = ResHelper.GetString(itemDesc, ResourceCulture),
@@ -757,11 +773,9 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
                                     }
 
                                     // Add direct publish action
-                                    publish = new DocumentPublishAction(Page)
+                                    publish = new DocumentPublishAction
                                         {
-                                            Tooltip = ResHelper.GetString("EditMenu.ApprovePublish", ResourceCulture),
                                             OnClientClick = RaiseGetClientValidationScript(DocumentComponentEvents.PUBLISH, submitScript),
-                                            ButtonStyle = ButtonStyle.Default
                                         };
 
                                     // Process action appearance
@@ -779,7 +793,7 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
                                 if (!workflow.IsBasic && (Step != null) && !Step.StepAllowBranch)
                                 {
                                     // Transition exists, but condition doesn't match
-                                    var transitions = WorkflowManager.GetStepTransitions(Step, WorkflowTransitionTypeEnum.Manual);
+                                    transitions = WorkflowManager.GetStepTransitions(Step, WorkflowTransitionTypeEnum.Manual);
                                     if (transitions.Count > 0)
                                     {
                                         WorkflowStepInfo s = WorkflowStepInfoProvider.GetWorkflowStepInfo(transitions[0].TransitionEndStepID);
@@ -817,11 +831,9 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
                             var archiveSteps = steps.FindAll(s => s.StepIsArchived);
                             int archiveStepsCount = archiveSteps.Count;
 
-                            archive = new DocumentArchiveAction(Page)
+                            archive = new DocumentArchiveAction
                                 {
-                                    Tooltip = ResHelper.GetString("EditMenu.Archive", ResourceCulture),
                                     OnClientClick = RaiseGetClientValidationScript(DocumentComponentEvents.ARCHIVE, "if(!confirm(" + ScriptHelper.GetString(ResHelper.GetString("EditMenu.ArchiveConfirmation", ResourceCulture)) + ")) { return false; }" + submitScript),
-                                    ButtonStyle = ButtonStyle.Default
                                 };
 
                             // Multiple archive steps
@@ -837,7 +849,7 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
 
                                 foreach (var s in archiveSteps)
                                 {
-                                    DocumentArchiveAction arch = new DocumentArchiveAction(Page)
+                                    DocumentArchiveAction arch = new DocumentArchiveAction
                                         {
                                             Text = string.Format(ResHelper.GetString(itemText, ResourceCulture), HTMLHelper.HTMLEncode(ResHelper.LocalizeString(s.StepDisplayName, ResourceCulture))),
                                             Tooltip = ResHelper.GetString(itemDesc, ResourceCulture),
@@ -878,7 +890,11 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
                                 if (!workflow.IsBasic && !Step.StepAllowBranch)
                                 {
                                     // Transition exists, but condition doesn't match
-                                    var transitions = WorkflowManager.GetStepTransitions(Step, WorkflowTransitionTypeEnum.Manual);
+                                    if (transitions == null)
+                                    {
+                                        transitions = WorkflowManager.GetStepTransitions(Step, WorkflowTransitionTypeEnum.Manual);
+                                    }
+
                                     if (transitions.Count > 0)
                                     {
                                         WorkflowStepInfo s = WorkflowStepInfoProvider.GetWorkflowStepInfo(transitions[0].TransitionEndStepID);
@@ -927,11 +943,9 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
                     // Delete action
                     if (AllowSave && ShowDelete)
                     {
-                        delete = new DeleteAction(Page)
+                        delete = new DeleteAction
                         {
-                            OnClientClick = RaiseGetClientValidationScript(ComponentEvents.DELETE, "Delete_" + ClientID + "(" + NodeID + "); return false;"),
-                            Tooltip = ResHelper.GetString("EditMenu.Delete", ResourceCulture),
-                            ButtonStyle = ButtonStyle.Default
+                            OnClientClick = RaiseGetClientValidationScript(ComponentEvents.DELETE, "Delete_" + ClientID + "(" + NodeID + "); return false;")
                         };
                     }
 
@@ -946,18 +960,6 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
                             ButtonStyle = ButtonStyle.Default
                         };
                     }
-
-                    // Convert action
-                    if (Node.IsWireframe() && (PortalContext.ViewMode == ViewModeEnum.EditForm))
-                    {
-                        convert = new HeaderAction
-                        {
-                            Text = ResHelper.GetString("EditMenu.IconConvert", ResourceCulture),
-                            Tooltip = ResHelper.GetString("EditMenu.Convert|EditMenu.IconConvert", ResourceCulture),
-                            OnClientClick = "ConvertDocument(" + Node.NodeParentID + ", " + Node.DocumentID + "); return false;",
-                            ButtonStyle = ButtonStyle.Default
-                        };
-                    }
                 }
             }
             // Ensure create another action
@@ -966,7 +968,7 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
                 if (AllowSave && ShowCreateAnother)
                 {
                     string saveAnotherScript = DocumentManager.GetSaveAnotherScript();
-                    saveAnother = new SaveAction(Page)
+                    saveAnother = new SaveAction
                     {
                         RegisterShortcutScript = false,
                         Text = ResHelper.GetString("editmenu.iconsaveandanother", ResourceCulture),
@@ -993,7 +995,7 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
             if (AllowSave && ShowSaveAndClose)
             {
                 string saveAndCloseScript = DocumentManager.GetSaveAndCloseScript();
-                saveAndClose = new SaveAction(Page)
+                saveAndClose = new SaveAction
                 {
                     RegisterShortcutScript = false,
                     Text = ResHelper.GetString("editmenu.iconsaveandclose", ResourceCulture),
@@ -1044,36 +1046,6 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
         // Hide placeholder if there is no visible functional control
         plcControls.Visible = pnlRight.Controls.Cast<Control>().Any(c => (c.Visible && !(c is LiteralControl)));
 
-        // Add remove wireframe action
-        if (ShowRemoveWireframe)
-        {
-            AddAction(new HeaderAction
-            {
-                Text = ResHelper.GetString("Wireframe.Remove", ResourceCulture),
-                Tooltip = ResHelper.GetString("Wireframe.Remove", ResourceCulture),
-                CommandName = "RemoveWireframe",
-                OnClientClick = "return confirm(" + ScriptHelper.GetLocalizedString("Wireframe.ConfirmRemove") + ")",
-                ButtonStyle = ButtonStyle.Default
-            });
-        }
-
-        // Add create wireframe action
-        if (ShowCreateWireframe)
-        {
-            TreeNode node = DocumentManager.Node;
-            if ((node != null) && (node.NodeWireframeTemplateID <= 0))
-            {
-                // Add create wireframe action
-                AddAction(new HeaderAction
-                              {
-                                  Text = ResHelper.GetString("Wireframe.Create", ResourceCulture),
-                                  Tooltip = ResHelper.GetString("Wireframe.Create", ResourceCulture),
-                                  RedirectUrl = String.Format("~/CMSModules/Content/CMSDesk/Properties/CreateWireframe.aspx?nodeid={0}&culture={1}", node.NodeID, node.DocumentCulture),
-                                  ButtonStyle = ButtonStyle.Default
-                              });
-            }
-        }
-
         // Add extra actions
         if (mExtraActions != null)
         {
@@ -1100,29 +1072,13 @@ public partial class CMSModules_Content_Controls_EditMenu : EditMenu, IExtensibl
         // Check workflow count
         if (allowed)
         {
-            var workflows = WorkflowInfoProvider.GetWorkflows(string.Format("WorkflowEnabled <> 0 AND (WorkflowType <> {0} OR WorkflowType IS NULL)", (int)WorkflowTypeEnum.Automation), null, 1, "WorkflowID");
-            allowed = !DataHelper.DataSourceIsEmpty(workflows);
+            allowed = WorkflowInfoProvider.GetWorkflows()
+                                          .Where(new WhereCondition().WhereTrue("WorkflowEnabled").Or().WhereNull("WorkflowEnabled"))
+                                          .Where(new WhereCondition().WhereNotEquals("WorkflowType", (int)WorkflowTypeEnum.Automation).Or().WhereNull("WorkflowType"))
+                                          .Count > 0;
         }
 
         return allowed;
-    }
-
-
-    /// <summary>
-    /// Remove wireframe handler
-    /// </summary>
-    protected void RemoveWireframe(object sender, EventArgs e)
-    {
-        TreeNode node = DocumentManager.Node;
-
-        DocumentManager.RemoveWireframe();
-
-        PortalContext.ViewMode = ViewModeEnum.Design;
-
-        ScriptHelper.RegisterStartupScript(this, typeof(string), "Refresh", ScriptHelper.GetScript(String.Format(
-            "RefreshTree({0}, {0});SelectNode({0});",
-            node.NodeID
-        )));
     }
 
 
@@ -1296,7 +1252,7 @@ refTimerId_", ClientID, @" = setInterval('RfMenu_", ClientID, "()', 200);");
             resName += "Submit";
         }
 
-        CommentAction comment = new CommentAction(Page, resName)
+        CommentAction comment = new CommentAction(resName)
         {
             Enabled = action.Enabled,
             Tooltip = ResHelper.GetString("EditMenu.Comment" + resName, ResourceCulture),
@@ -1375,7 +1331,7 @@ refTimerId_", ClientID, @" = setInterval('RfMenu_", ClientID, "()', 200);");
                         allowRefresh |= (nextStep == null) || (nextStep.StepIsPublished || nextStep.StepIsEdit);
 
                         // Refresh content tree when step is 'Published' or scope has been removed and icons should be displayed
-                        refreshTree |= allowRefresh && DocumentHelper.IconsUsed(IconType.Published | IconType.VersionNotPublished | IconType.NotPublished);
+                        refreshTree |= allowRefresh && DocumentUIHelper.IconsUsed(IconType.Published | IconType.VersionNotPublished | IconType.NotPublished);
                     }
                     break;
 
@@ -1387,23 +1343,23 @@ refTimerId_", ClientID, @" = setInterval('RfMenu_", ClientID, "()', 200);");
 
 
                 case DocumentComponentEvents.ARCHIVE:
-                    refreshTree |= DocumentHelper.IconsUsed(IconType.Archived | IconType.Published | IconType.NotPublished);
+                    refreshTree |= DocumentUIHelper.IconsUsed(IconType.Archived | IconType.Published | IconType.NotPublished);
                     break;
 
 
                 case DocumentComponentEvents.REJECT:
-                    refreshTree |= DocumentHelper.IconsUsed(IconType.CheckedOut | IconType.NotPublished);
+                    refreshTree |= DocumentUIHelper.IconsUsed(IconType.CheckedOut | IconType.NotPublished);
                     break;
 
 
                 case DocumentComponentEvents.CHECKIN:
-                    refreshTree |= DocumentHelper.IconsUsed(IconType.CheckedOut);
+                    refreshTree |= DocumentUIHelper.IconsUsed(IconType.CheckedOut);
                     break;
 
 
                 case DocumentComponentEvents.CHECKOUT:
                 case DocumentComponentEvents.UNDO_CHECKOUT:
-                    refreshTree |= DocumentHelper.IconsUsed(IconType.CheckedOut);
+                    refreshTree |= DocumentUIHelper.IconsUsed(IconType.CheckedOut);
                     EnsureSplitModeScript();
                     break;
 
@@ -1454,7 +1410,6 @@ refTimerId_", ClientID, @" = setInterval('RfMenu_", ClientID, "()', 200);");
 
             case FormModeEnum.Insert:
             case FormModeEnum.InsertNewCultureVersion:
-            case FormModeEnum.Convert:
 
                 TreeNode node = Node;
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.UIControls;
@@ -7,8 +7,8 @@ public partial class CMSModules_Newsletters_Controls_Newsletter_ContentEditor : 
 {
     #region "Variables"
 
-    protected string frameSrc = string.Empty;
-    private bool loaded = false;
+    protected string mFrameSrc = string.Empty;
+    private bool mLoaded;
 
     #endregion
 
@@ -47,16 +47,6 @@ public partial class CMSModules_Newsletters_Controls_Newsletter_ContentEditor : 
 
 
     /// <summary>
-    /// Indicates that the control is used in new dialog.
-    /// </summary>
-    public bool IsDialogMode
-    {
-        get;
-        set;
-    }
-
-
-    /// <summary>
     /// Enable/disable control.
     /// </summary>
     public bool Enabled
@@ -83,15 +73,15 @@ public partial class CMSModules_Newsletters_Controls_Newsletter_ContentEditor : 
 
     public void ReloadData(bool forceReload)
     {
-        if (!loaded || forceReload)
+        if (!mLoaded || forceReload)
         {
-            frameSrc = URLHelper.ResolveUrl(String.Format("Newsletter_Iframe_Edit.aspx?parentobjectid={0}{1}{2}{3}",
+            mFrameSrc = URLHelper.ResolveUrl(String.Format("Newsletter_Iframe_Edit.aspx?parentobjectid={0}{1}{2}{3}",
                 NewsletterID,
                 (IssueID > 0 ? "&objectid=" + IssueID : string.Empty),
                 (TemplateID > 0 ? "&templateid=" + TemplateID : string.Empty),
                 (!Enabled? "&readonly=1" : string.Empty)));
 
-            loaded = true;
+            mLoaded = true;
         }
     }
 
@@ -150,15 +140,14 @@ function SetIFrameHeight() {{
         }}
         F.height = (C.offsetHeight - offset);
     }}
-}}", IsDialogMode ? "divContent" : master.Body.ClientID,
-  IsDialogMode ? "null" : "document.getElementById('" + master.PanelHeader.ClientID + "')");
+}}", master.Body.ClientID, "document.getElementById('" + master.PanelHeader.ClientID + "')");
 
         // Register script for content resizing
         ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "ResizeScript_" + ClientID, script, true);
 
         // Register startup script for content resizing
         ScriptHelper.RegisterStartupScript(Page, typeof(string), "StartupResizeScript_" + ClientID,
-            ScriptHelper.GetScript(string.Format("InitItems(); setTimeout(SetIFrameHeight,10); {0} = function () {{ SetIFrameHeight(); }};", IsDialogMode ? "window.afterResize" : "C.onresize")));
+            ScriptHelper.GetScript(string.Format("InitItems(); setTimeout(SetIFrameHeight,10); {0} = function () {{ SetIFrameHeight(); }};", "C.onresize")));
     }
 
     #endregion

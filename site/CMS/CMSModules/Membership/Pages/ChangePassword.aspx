@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="ChangePassword.aspx.cs" Inherits="CMSModules_Membership_Pages_ChangePassword"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="ChangePassword.aspx.cs" Inherits="CMSModules_Membership_Pages_ChangePassword"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="Change password" %>
 

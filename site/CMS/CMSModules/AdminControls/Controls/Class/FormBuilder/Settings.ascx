@@ -1,5 +1,5 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_AdminControls_Controls_Class_FormBuilder_Settings"
-    Codebehind="Settings.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="false" Inherits="CMSModules_AdminControls_Controls_Class_FormBuilder_Settings"
+     Codebehind="Settings.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/AdminControls/Controls/Class/FormBuilder/FieldProperties.ascx" TagName="FieldProperties"
     TagPrefix="cms" %>

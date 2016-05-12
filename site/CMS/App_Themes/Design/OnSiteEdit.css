@@ -18,6 +18,11 @@ html {
   background-color: #ffffff;
   box-shadow: 0 0 8px #262524;
 }
+.OnSiteToolbar table,
+.OnSiteSlider table {
+  border: none;
+  margin-bottom: 0px;
+}
 .OnSiteSlider,
 .RTL .LTR .OnSiteSlider {
   display: none;
@@ -322,15 +327,14 @@ html {
 .UniMenuContextMenu .ActionIcon,
 .UniMenuContextMenu .IconRight {
   display: table-cell;
+  min-width: 32px;
+  line-height: 32px;
 }
 .UniMenuContextMenu .ActionIcon i,
 .UniMenuContextMenu .IconRight i {
   padding: 8px;
 }
-.UniMenuContextMenu .Icon {
-  text-align: center;
-  color: #ffffff;
-}
+.UniMenuContextMenu .Icon,
 .UniMenuContextMenu .ActionIcon {
   color: #ffffff;
 }

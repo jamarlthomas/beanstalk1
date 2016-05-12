@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_Controls_Layout_PlaceholderMenu"
-    Codebehind="PlaceholderMenu.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_Controls_Layout_PlaceholderMenu"
+     Codebehind="PlaceholderMenu.ascx.cs" %>
 <%@ Register TagPrefix="cms" Namespace="CMS.UIControls" Assembly="CMS.UIControls" %>
 <cms:ContextMenu runat="server" ID="menuLayout" MenuID="layoutMenu" VerticalPosition="Bottom"
     HorizontalPosition="Left" OffsetX="25" ActiveItemCssClass="ItemSelected" MouseButton="Right"
@@ -41,10 +41,6 @@
     </cms:UIPlaceHolder>
     <cms:UIPlaceHolder ID="pnlUISaveAsNew" runat="server" ModuleName="CMS.Design" ElementName="Design.SaveAsNewTemplate">
         <cms:ContextMenuItem runat="server" ID="iSaveAsNew" />
-    </cms:UIPlaceHolder>
-    <cms:UIPlaceHolder ID="plcUIWireframe" runat="server" ModuleName="CMS.Design" PermissionName="Wireframing">
-        <cms:ContextMenuSeparator runat="server" ID="iSepWireframe" Visible="false" />
-        <cms:ContextMenuItem runat="server" ID="iWireframe" />
     </cms:UIPlaceHolder>
     <cms:ContextMenuSeparator runat="server" ID="iSepRefresh" />
     <cms:ContextMenuItem runat="server" ID="iRefresh" />

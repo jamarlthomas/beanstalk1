@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_Membership_Pages_Users_User_ManageRoles" Theme="Default"
-    MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" Title="Manage user roles" Codebehind="User_ManageRoles.aspx.cs" %>
+    MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" Title="Manage user roles"  Codebehind="User_ManageRoles.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/Selectors/ItemSelection.ascx" TagName="ItemSelection"
     TagPrefix="cms" %>

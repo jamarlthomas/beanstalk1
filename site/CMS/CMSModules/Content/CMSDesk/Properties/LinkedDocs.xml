@@ -7,7 +7,7 @@
     <column source="##ALL##" externalsourcename="documentname" caption="$general.documentname$" wrap="false" cssclass="main-column-100" >
       <tooltip source="##ALL##" externalsourcename="documentnametooltip" width="0" encode="false" />
     </column>
-    <column source="SiteName" externalsourcename="sitename" caption="$general.site$" wrap="false" />
+    <column source="NodeSiteID" externalsourcename="#sitename" caption="$general.site$" wrap="false" allowsorting="false" />
   </columns>
   <pager>
     <key name="ShowFirstLastButtons" value="false" />

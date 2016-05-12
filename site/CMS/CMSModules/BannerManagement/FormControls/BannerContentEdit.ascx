@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="BannerContentEdit.ascx.cs" Inherits="CMSModules_BannerManagement_FormControls_BannerContentEdit" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="BannerContentEdit.ascx.cs" Inherits="CMSModules_BannerManagement_FormControls_BannerContentEdit" %>
 
 <%@ Register Src="~/CMSFormControls/Macros/MacroEditor.ascx" TagName="MacroEditor" TagPrefix="cms" %>
 <asp:PlaceHolder ID="plcHtml" runat="server" Visible="false">

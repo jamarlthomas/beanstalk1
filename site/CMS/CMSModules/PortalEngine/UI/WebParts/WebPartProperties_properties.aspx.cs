@@ -1,8 +1,7 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.Membership;
-using CMS.PortalEngine;
 using CMS.UIControls;
 
 public partial class CMSModules_PortalEngine_UI_WebParts_WebPartProperties_properties : CMSWebPartPropertiesPage
@@ -27,19 +26,11 @@ public partial class CMSModules_PortalEngine_UI_WebParts_WebPartProperties_prope
     {
         base.OnInit(e);
 
-        // Check permissions for web part properties UI
-        if (PortalContext.ViewMode.IsWireframe())
+        // Check design mode permissions
+        var currentUser = MembershipContext.AuthenticatedUser;
+        if (!currentUser.IsAuthorizedPerUIElement("CMS.Design", "WebPartProperties.General"))
         {
-            // Check wireframes permissions
-        }
-        else
-        {
-            // Check design mode permissions
-            var currentUser = MembershipContext.AuthenticatedUser;
-            if (!currentUser.IsAuthorizedPerUIElement("CMS.Design", "WebPartProperties.General"))
-            {
-                RedirectToUIElementAccessDenied("CMS.Design", "WebPartProperties.General");
-            }
+            RedirectToUIElementAccessDenied("CMS.Design", "WebPartProperties.General");
         }
 
         // Initialize the control

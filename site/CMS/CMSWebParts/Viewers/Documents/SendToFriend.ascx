@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Viewers_Documents_SendToFriend"
-    Codebehind="~/CMSWebParts/Viewers/Documents/SendToFriend.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Viewers_Documents_SendToFriend"
+     Codebehind="~/CMSWebParts/Viewers/Documents/SendToFriend.ascx.cs" %>
 <cms:CMSRepeater ID="repItems" runat="server" EnableViewState="false" StopProcessing="true" />
 <asp:Label ID="lblHeader" runat="server" CssClass="sendToFriendHeader" EnableViewState="false" />
 <asp:Panel ID="pnlSendToFriend" runat="server" DefaultButton="btnSend" CssClass="sendToFriendPanel">

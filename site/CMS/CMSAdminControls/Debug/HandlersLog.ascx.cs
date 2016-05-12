@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls;
 using CMS.UIControls;
@@ -21,8 +21,8 @@ public partial class CMSAdminControls_Debug_HandlersLog : HandlersLog
 
             HeaderText = GetString("HandlersLog.Info");
 
-            gridStates.DataSource = dt;
-            gridStates.DataBind();
+            // Bind the data
+            BindGrid(gridStates, dt);
         }
     }
 }

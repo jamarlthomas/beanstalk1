@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -27,6 +27,8 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_List : CM
     private bool forceReloadData;
 
     private const string NO_DATA_CELL_VALUE = "<div style=\"text-align:center;\">-</div>";
+
+    private const string CONTENT_CMSDESK_FOLDER = "~/CMSModules/Content/CMSDesk/";
 
     #endregion
 
@@ -82,16 +84,18 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_List : CM
             docList.NodeID = NodeID;
             docList.Grid.GridName = "~/CMSModules/Ecommerce/Pages/Tools/Products/Product_List_Documents.xml";
             docList.AdditionalColumns = "SKUID, DocumentSKUName, NodeParentID, NodeID, NodeSKUID, SKUName, SKUNumber, SKUPrice, SKUAvailableItems, SKUEnabled, SKUSiteID, SKUPublicStatusID, SKUInternalStatusID, SKUReorderAt, SKUTrackInventory";
-            docList.WhereCodition = GetDocumentWhereCondition().ToString(true);
+            docList.WhereCondition = GetDocumentWhereCondition();
             docList.OrderBy = ShowSections ? "CASE WHEN NodeSKUID IS NULL THEN 0 ELSE 1 END, DocumentName" : "DocumentName";
             docList.OnExternalAdditionalDataBound += gridData_OnExternalDataBound;
             docList.OnDocumentFlagsCreating += docList_OnDocumentFlagsCreating;
             docList.Grid.OnAction += gridData_OnAction;
             docList.Grid.RememberStateByParam = "";
             docList.SelectLanguageJSFunction = "EditProductInCulture";
-            docList.DeleteReturnUrl = "~/CMSModules/Content/CMSDesk/Delete.aspx?multiple=true";
-            docList.PublishReturnUrl = "~/CMSModules/Content/CMSDesk/PublishArchive.aspx?multiple=true";
-            docList.ArchiveReturnUrl = "~/CMSModules/Content/CMSDesk/PublishArchive.aspx?multiple=true";
+
+            docList.DeleteReturnUrl = CONTENT_CMSDESK_FOLDER + "Delete.aspx?multiple=true";
+            docList.PublishReturnUrl = CONTENT_CMSDESK_FOLDER + "PublishArchive.aspx?multiple=true";
+            docList.ArchiveReturnUrl = CONTENT_CMSDESK_FOLDER + "PublishArchive.aspx?multiple=true";
+
             docList.TranslateReturnUrl = "~/CMSModules/Translations/Pages/TranslateDocuments.aspx";
 
             if (!string.IsNullOrEmpty(ProductsStartingPath))
@@ -145,7 +149,7 @@ function EditProductInCulture(nodeId, culture, translated, url) {{
         }
 
         // Show warning when exchange rate from global main currency is missing
-        if (AllowGlobalObjects && ExchangeTableInfoProvider.IsExchangeRateFromGlobalMainCurrencyMissing(SiteContext.CurrentSiteID))
+        if (AllowGlobalObjects && ECommerceContext.IsExchangeRateFromGlobalMainCurrencyMissing)
         {
             ShowWarning(GetString("com.NeedExchangeRateFromGlobal"));
         }
@@ -158,7 +162,7 @@ function EditProductInCulture(nodeId, culture, translated, url) {{
 
         // Register listing scripts
         ScriptHelper.RegisterStartupScript(this, typeof(String), "ListingContentAppHash", "cmsListingContentApp = '" + UIContextHelper.GetApplicationHash("cms.content", "content") + "';", true);
-        ScriptHelper.RegisterScriptFile(this, @"~/CMSModules/Content/CMSDesk/View/Listing.js");
+        ScriptHelper.RegisterScriptFile(this, CONTENT_CMSDESK_FOLDER + "View/Listing.js");
 
         // Register tooltip scripts
         RegisterTooltipScript();
@@ -516,7 +520,8 @@ function EditProductInCulture(nodeId, culture, translated, url) {{
             case "delete":
                 if (DocumentListingDisplayed)
                 {
-                    URLHelper.Redirect("Product_Section.aspx?action=delete&nodeId=" + argument);
+                    var url = "Product_Section.aspx?action=delete&nodeId=" + argument;
+                    URLHelper.Redirect(URLHelper.AddParameterToUrl(url, "hash", QueryHelper.GetHash(url)));
                 }
                 else
                 {
@@ -613,19 +618,22 @@ function EditProductInCulture(nodeId, culture, translated, url) {{
         // Select only products without documents
         if ((NodeID <= 0) && DisplayTreeInProducts)
         {
-            where.WhereNotIn("SKUID", SKUInfoProvider.GetSKUs().Column("SKUID").From("View_CMS_Tree_Joined").WhereNotNull("NodeSKUID").And().WhereEquals("NodeSiteID", SiteContext.CurrentSiteID));
+            where.WhereNotIn("SKUID", SKUInfoProvider.GetSKUs()
+                                                     .Column("NodeSKUID")
+                                                     .From(SystemViewNames.View_CMS_Tree_Joined)
+                                                     .WhereNotNull("NodeSKUID").And().WhereEquals("NodeSiteID", SiteContext.CurrentSiteID));
         }
 
         // Ordinary user can see only product from departments he can access
         var cui = MembershipContext.AuthenticatedUser;
-        if (!cui.IsGlobalAdministrator && !cui.IsAuthorizedPerResource("CMS.Ecommerce", "AccessAllDepartments"))
+        if (!cui.IsGlobalAdministrator && !cui.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.PRODUCTS_ACCESSALLDEPARTMENTS))
         {
-            where.Where(w => w.WhereNull("SKUDepartmentID").Or().WhereIn("SKUDepartmentID", new IDQuery<UserDepartmentInfo>("DepartmentID").WhereEquals("UserID", cui.UserID))); 
+            where.Where(w => w.WhereNull("SKUDepartmentID").Or().WhereIn("SKUDepartmentID", new IDQuery<UserDepartmentInfo>("DepartmentID").WhereEquals("UserID", cui.UserID)));
         }
 
         // Reflect "Allow global products" setting
         var siteWhere = InitSiteWhereCondition("SKUSiteID");
-        
+
         return where.Where(siteWhere);
     }
 
@@ -667,7 +675,7 @@ function EditProductInCulture(nodeId, culture, translated, url) {{
         // Check module permissions
         if (!ECommerceContext.IsUserAuthorizedToModifySKU(skuObj))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", skuObj.IsGlobal ? "EcommerceGlobalModify" : "EcommerceModify OR ModifyProducts");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, skuObj.IsGlobal ? EcommercePermissions.ECOMMERCE_MODIFYGLOBAL : "EcommerceModify OR ModifyProducts");
         }
     }
 

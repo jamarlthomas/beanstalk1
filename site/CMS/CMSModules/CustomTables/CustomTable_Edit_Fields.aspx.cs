@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.Core;
@@ -8,11 +8,10 @@ using CMS.EventLog;
 using CMS.FormEngine;
 using CMS.Helpers;
 using CMS.Base;
-using CMS.SiteProvider;
 using CMS.Membership;
 using CMS.UIControls;
 using CMS.ExtendedControls.ActionsConfig;
-using CMS.URLRewritingEngine;
+
 
 [UIElement(ModuleName.CUSTOMTABLES, "CustomTable.Fields")]
 public partial class CMSModules_CustomTables_CustomTable_Edit_Fields : CMSCustomTablesPage
@@ -21,7 +20,7 @@ public partial class CMSModules_CustomTables_CustomTable_Edit_Fields : CMSCustom
 
     protected DataClassInfo dci = null;
     protected string className = null;
-    private FormInfo mFormInfo = null;
+    private FormInfo mFormInfo;
     private HeaderAction btnGenerateGuid;
 
     #endregion
@@ -55,7 +54,7 @@ public partial class CMSModules_CustomTables_CustomTable_Edit_Fields : CMSCustom
         EditedObject = dci;
         CurrentMaster.BodyClass += " FieldEditorBody";
 
-        btnGenerateGuid = new HeaderAction()
+        btnGenerateGuid = new HeaderAction
         {
             Tooltip = GetString("customtable.GenerateGUID"),
             Text = GetString("customtable.GenerateGUIDField"),
@@ -76,6 +75,7 @@ public partial class CMSModules_CustomTables_CustomTable_Edit_Fields : CMSCustom
                 FieldEditor.ClassName = className;
                 FieldEditor.Mode = FieldEditorModeEnum.CustomTable;
                 FieldEditor.OnFieldNameChanged += FieldEditor_OnFieldNameChanged;
+                FieldEditor.OnAfterDefinitionUpdate += FieldEditor_OnAfterDefinitionUpdate;
             }
             else
             {
@@ -122,6 +122,16 @@ public partial class CMSModules_CustomTables_CustomTable_Edit_Fields : CMSCustom
     }
 
 
+    private void FieldEditor_OnAfterDefinitionUpdate(object sender, EventArgs e)
+    {
+        if (dci != null)
+        {
+            // State of unigrids may contain where/order by clauses no longer valid after definition update
+            UniGrid.ResetStates(CustomTableItemProvider.GetObjectType(dci.ClassName));
+        }
+    }
+
+
     /// <summary>
     /// Adds GUID field to form definition.
     /// </summary>
@@ -155,26 +165,19 @@ public partial class CMSModules_CustomTables_CustomTable_Edit_Fields : CMSCustom
 
             FormInfo.AddFormItem(ffiGuid);
 
-            // Update table structure - columns could be added
-            bool old = TableManager.UpdateSystemFields;
-            TableManager.UpdateSystemFields = true;
-            string schema = FormInfo.GetXmlDefinition();
+            // Update definition
+            dci.ClassFormDefinition = FormInfo.GetXmlDefinition();
 
-            TableManager tm = new TableManager(null);
-            tm.UpdateTableByDefinition(dci.ClassTableName, schema);
+            // Update database structure
+            DataClassInfoProvider.EnsureDatabaseStructure(dci, true);
 
-            TableManager.UpdateSystemFields = old;
+            using (CMSActionContext context = new CMSActionContext())
+            {
+                // Disable logging into event log
+                context.LogEvents = false;
 
-            // Update xml schema and form definition
-            dci.ClassFormDefinition = schema;
-            dci.ClassXmlSchema = tm.GetXmlSchema(dci.ClassTableName);
-
-            dci.Generalized.LogEvents = false;
-
-            // Save the data
-            DataClassInfoProvider.SetDataClassInfo(dci);
-
-            dci.Generalized.LogEvents = true;
+                DataClassInfoProvider.SetDataClassInfo(dci);
+            }
 
             // Clear the default queries
             QueryInfoProvider.ClearDefaultQueries(dci, true, false);
@@ -215,7 +218,7 @@ public partial class CMSModules_CustomTables_CustomTable_Edit_Fields : CMSCustom
         {
             success = false;
 
-            FieldEditor.ShowError(GetString("customtable.ErrorGUID") + ex.Message);
+            FieldEditor.ShowError(GetString("customtable.ErrorGUID"));
 
             // Log event
             EventLogProvider.LogException("Custom table", "GENERATEGUID", ex);

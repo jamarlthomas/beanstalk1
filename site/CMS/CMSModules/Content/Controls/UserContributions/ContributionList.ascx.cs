@@ -15,11 +15,11 @@ using CMS.UIControls;
 using CMS.WebAnalytics;
 using CMS.WorkflowEngine;
 using CMS.ExtendedControls;
-
-using TimeZoneInfo = CMS.Globalization.TimeZoneInfo;
 using CMS.Globalization;
 using CMS.Protection;
 using CMS.DataEngine;
+
+using TimeZoneInfo = CMS.Globalization.TimeZoneInfo;
 
 public partial class CMSModules_Content_Controls_UserContributions_ContributionList : CMSUserControl
 {
@@ -36,14 +36,10 @@ public partial class CMSModules_Content_Controls_UserContributions_ContributionL
     private bool mAllowEdit = true;
     private string mNewItemPageTemplate = String.Empty;
     private string mAllowedChildClasses = String.Empty;
-    private string mAlternativeFormName = null;
-    private string mValidationErrorMessage = null;
-    private bool mCheckPermissions = false;
-    private bool mCheckGroupPermissions = false;
     private bool mCheckDocPermissionsForInsert = true;
-    private bool mLogActivity = false;
+    private bool mLogActivity;
     private UserContributionAllowUserEnum mAllowUsers = UserContributionAllowUserEnum.DocumentOwner;
-    private TreeNode mParentNode = null;
+    private TreeNode mParentNode;
 
     /// <summary>
     /// Data properties variable.
@@ -397,14 +393,8 @@ public partial class CMSModules_Content_Controls_UserContributions_ContributionL
     /// </summary>
     public string AlternativeFormName
     {
-        get
-        {
-            return mAlternativeFormName;
-        }
-        set
-        {
-            mAlternativeFormName = value;
-        }
+        get;
+        set;
     }
 
 
@@ -413,14 +403,8 @@ public partial class CMSModules_Content_Controls_UserContributions_ContributionL
     /// </summary>
     public string ValidationErrorMessage
     {
-        get
-        {
-            return mValidationErrorMessage;
-        }
-        set
-        {
-            mValidationErrorMessage = value;
-        }
+        get;
+        set;
     }
 
 
@@ -429,14 +413,8 @@ public partial class CMSModules_Content_Controls_UserContributions_ContributionL
     /// </summary>
     public bool CheckPermissions
     {
-        get
-        {
-            return mCheckPermissions;
-        }
-        set
-        {
-            mCheckPermissions = value;
-        }
+        get;
+        set;
     }
 
 
@@ -445,14 +423,8 @@ public partial class CMSModules_Content_Controls_UserContributions_ContributionL
     /// </summary>
     public bool CheckGroupPermissions
     {
-        get
-        {
-            return mCheckGroupPermissions;
-        }
-        set
-        {
-            mCheckGroupPermissions = value;
-        }
+        get;
+        set;
     }
 
 
@@ -617,15 +589,17 @@ public partial class CMSModules_Content_Controls_UserContributions_ContributionL
     private string EnsureColumns()
     {
         string currentColumns = Columns;
-        string requiredColumns = "DocumentName,Published,DocumentModifiedWhen,DocumentWorkflowStepID";
+        string requiredColumns = SqlHelper.MergeColumns("DocumentName, DocumentModifiedWhen, DocumentWorkflowStepID", DocumentColumnLists.GETDOCUMENTS_REQUIRED_COLUMNS);
+
         if (CheckPermissions)
         {
-            requiredColumns += ",SiteName,ClassName,NodeACLID,NodeSiteID,NodeOwner";
+            requiredColumns = SqlHelper.MergeColumns(requiredColumns, "ClassName, NodeACLID, NodeSiteID, NodeOwner");
         }
 
         if (!String.IsNullOrEmpty(currentColumns))
         {
             currentColumns = "," + currentColumns.Replace(" ", String.Empty) + ",";
+
             if (currentColumns.Length > 2)
             {
                 StringBuilder required = new StringBuilder();
@@ -700,11 +674,23 @@ public partial class CMSModules_Content_Controls_UserContributions_ContributionL
                     string columns = EnsureColumns();
 
                     // Get the documents
-                    DataSet ds = DocumentHelper.GetDocuments(SiteName, MacroResolver.ResolveCurrentPath(Path), CultureCode, CombineWithDefaultCulture, null, condition.ToString(true), OrderBy, MaxRelativeLevel, SelectOnlyPublished, 0, columns, tree);
-                    if (CheckPermissions)
-                    {
-                        ds = TreeSecurityProvider.FilterDataSetByPermissions(ds, NodePermissionsEnum.Read, MembershipContext.AuthenticatedUser);
-                    }
+                    var query =
+                        DocumentHelper.GetDocuments()
+                            .OnSite(SiteName)
+                            .Path(MacroResolver.ResolveCurrentPath(Path))
+                            .Where(condition)
+                            .OrderBy(OrderBy)
+                            .Published(SelectOnlyPublished)
+                            .Columns(columns)
+                            .NestingLevel(MaxRelativeLevel)
+                            .CheckPermissions(CheckPermissions);
+
+                    TreeProvider.SetQueryCultures(query, CultureCode, CombineWithDefaultCulture);
+
+                    // Do not apply published from / to columns to make sure the published information is correctly evaluated
+                    query.Properties.ExcludedVersionedColumns = new[] { "DocumentPublishFrom", "DocumentPublishTo" };
+
+                    var ds = query.Result;
 
                     if (!DataHelper.DataSourceIsEmpty(ds))
                     {
@@ -862,7 +848,7 @@ public partial class CMSModules_Content_Controls_UserContributions_ContributionL
 
                     if (hasUserDeletePermission)
                     {
-                        DocumentHelper.DeleteDocument(node, tree, false, false, true);
+                        DocumentHelper.DeleteDocument(node, tree);
                         if (LogActivity)
                         {
                             Activity activity = new ActivityUserContributionDelete(node, node.GetDocumentName(), AnalyticsContext.ActivityEnvironmentVariables);
@@ -878,7 +864,6 @@ public partial class CMSModules_Content_Controls_UserContributions_ContributionL
                     else
                     {
                         AddAlert(String.Format(GetString("cmsdesk.notauthorizedtodeletedocument"), node.NodeAliasPath));
-                        return;
                     }
                 }
                 break;
@@ -908,15 +893,10 @@ public partial class CMSModules_Content_Controls_UserContributions_ContributionL
                 }
                 break;
 
-            // Column 'Published'
-            case "published":
-                bool published = ValidationHelper.GetBoolean(parameter, true);
-                return (published ? GetString("General.Yes") : GetString("General.No"));
-
             case "documentmodifiedwhen":
             case "documentmodifiedwhentooltip":
 
-                TimeZoneInfo tzi = null;
+                TimeZoneInfo tzi;
 
                 // Get current time for user contribution list on live site
                 string result = TimeZoneMethods.GetDateTimeForControl(this, ValidationHelper.GetDateTime(parameter, DateTimeHelper.ZERO_TIME), out tzi).ToString();
@@ -957,7 +937,7 @@ public partial class CMSModules_Content_Controls_UserContributions_ContributionL
     protected bool IsUserAuthorizedToDeleteDocument(TreeNode node)
     {
         // Check delete permission
-        bool isAuthorized = MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(node, new NodePermissionsEnum[] { NodePermissionsEnum.Delete, NodePermissionsEnum.Read }) == AuthorizationResultEnum.Allowed;
+        bool isAuthorized = MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(node, new [] { NodePermissionsEnum.Delete, NodePermissionsEnum.Read }) == AuthorizationResultEnum.Allowed;
 
         return isAuthorized;
     }

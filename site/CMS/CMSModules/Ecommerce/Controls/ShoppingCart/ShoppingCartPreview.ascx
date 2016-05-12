@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartPreview"
-    Codebehind="ShoppingCartPreview.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartPreview"
+     Codebehind="ShoppingCartPreview.ascx.cs" %>
 
 <cms:LocalizedHeading runat="server" ID="headTitle" Level="3" ResourceString="ShoppingCartPreview.Title" EnableViewState="false" />
 <div class="BlockContent">

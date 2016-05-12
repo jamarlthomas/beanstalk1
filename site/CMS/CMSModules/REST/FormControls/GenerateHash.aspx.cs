@@ -20,7 +20,8 @@ public partial class CMSModules_REST_FormControls_GenerateHash : GlobalAdminPage
     protected void btnAuthenticate_Click(object sender, EventArgs e)
     {
         string[] urls = txtUrls.Text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-        txtUrls.Text = "";
+
+        StringBuilder newUrls = new StringBuilder();
 
         foreach (string url in urls)
         {
@@ -28,13 +29,11 @@ public partial class CMSModules_REST_FormControls_GenerateHash : GlobalAdminPage
             string newUrl = HttpUtility.UrlDecode(urlWithoutHash);
             string query = URLHelper.GetQuery(newUrl).TrimStart('?');
 
-            int index = newUrl.IndexOfCSafe("/rest");
+            int index = newUrl.IndexOfCSafe("/rest", true);
             if (index >= 0)
             {
-                // Extract the domain
                 string domain = URLHelper.GetDomain(newUrl);
 
-                // Separate the query
                 newUrl = URLHelper.RemoveQuery(newUrl.Substring(index));
 
                 // Rewrite the URL to physical URL
@@ -42,12 +41,14 @@ public partial class CMSModules_REST_FormControls_GenerateHash : GlobalAdminPage
                 newUrl = rewritten[0].TrimStart('~') + "?" + rewritten[1];
 
                 // Get the hash from real URL
-                txtUrls.Text += URLHelper.AddParameterToUrl(urlWithoutHash, "hash", RESTService.GetHashForURL(newUrl, domain)) + Environment.NewLine;
+                newUrls.AppendLine(URLHelper.AddParameterToUrl(urlWithoutHash, "hash", RESTService.GetHashForURL(newUrl, domain)));
             }
             else
             {
-                txtUrls.Text += url + Environment.NewLine;
+                newUrls.AppendLine(url);
             }
         }
+
+        txtUrls.Text = newUrls.ToString();
     }
 }

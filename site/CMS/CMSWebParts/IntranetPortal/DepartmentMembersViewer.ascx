@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_IntranetPortal_DepartmentMembersViewer" Codebehind="~/CMSWebParts/IntranetPortal/DepartmentMembersViewer.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_IntranetPortal_DepartmentMembersViewer"  Codebehind="~/CMSWebParts/IntranetPortal/DepartmentMembersViewer.ascx.cs" %>
 <%@ Register Src="~/CMSWebparts/Membership/Users/UsersFilter_files/UsersFilterControl.ascx"
     TagName="UsersFilterControl" TagPrefix="uc1" %>
 <uc1:UsersFilterControl ID="filterUsers" runat="server" />

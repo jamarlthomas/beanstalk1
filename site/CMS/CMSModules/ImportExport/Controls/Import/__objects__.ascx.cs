@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.CMSImportExport;
 using CMS.Helpers;
@@ -40,9 +40,6 @@ public partial class CMSModules_ImportExport_Controls_Import___objects__ : Impor
             {
                 if (CheckVersion())
                 {
-                    // Show only if package is older than custom query export exception
-                    plcOverwriteQueries.Visible = ImportSettings.IsQuerySpecialCaseRequired;
-
                     pnlWarning.Visible = true;
                     lblWarning.Text = GetString("ImportObjects.WarningVersion");
                 }
@@ -81,7 +78,6 @@ public partial class CMSModules_ImportExport_Controls_Import___objects__ : Impor
 
             chkCopyFiles.Attributes.Add("onclick", "CheckChange();");
 
-            chkOverwriteSystemQueries.Text = GetString("ImportObjects.OverwriteQueries");
             chkSkipOrfans.Text = GetString("ImportObjects.SkipOrfans");
             chkImportTasks.Text = GetString("ImportObjects.ImportTasks");
             chkLogSync.Text = GetString("ImportObjects.LogSynchronization");
@@ -99,7 +95,6 @@ public partial class CMSModules_ImportExport_Controls_Import___objects__ : Impor
         ImportSettings.SetSettings(ImportExportHelper.SETTINGS_ADD_SITE_BINDINGS, chkBindings.Checked);
         ImportSettings.SetSettings(ImportExportHelper.SETTINGS_RUN_SITE, chkRunSite.Checked);
         ImportSettings.SetSettings(ImportExportHelper.SETTINGS_UPDATE_SITE_DEFINITION, chkUpdateSite.Checked);
-        ImportSettings.SetSettings(ImportExportHelper.SETTINGS_OVERWRITE_SYSTEM_QUERIES, chkOverwriteSystemQueries.Checked);
         ImportSettings.SetSettings(ImportExportHelper.SETTINGS_SKIP_OBJECT_ON_TRANSLATION_ERROR, chkSkipOrfans.Checked);
         ImportSettings.SetSettings(ImportExportHelper.SETTINGS_TASKS, chkImportTasks.Checked);
 
@@ -147,7 +142,6 @@ public partial class CMSModules_ImportExport_Controls_Import___objects__ : Impor
             chkDeleteSite.Checked = ValidationHelper.GetBoolean(ImportSettings.GetSettings(ImportExportHelper.SETTINGS_DELETE_SITE), false);
             chkRunSite.Checked = ValidationHelper.GetBoolean(ImportSettings.GetSettings(ImportExportHelper.SETTINGS_RUN_SITE), !singleObject);
             chkUpdateSite.Checked = ValidationHelper.GetBoolean(ImportSettings.GetSettings(ImportExportHelper.SETTINGS_UPDATE_SITE_DEFINITION), !singleObject);
-            chkOverwriteSystemQueries.Checked = ValidationHelper.GetBoolean(ImportSettings.GetSettings(ImportExportHelper.SETTINGS_OVERWRITE_SYSTEM_QUERIES), false);
             chkSkipOrfans.Checked = ValidationHelper.GetBoolean(ImportSettings.GetSettings(ImportExportHelper.SETTINGS_SKIP_OBJECT_ON_TRANSLATION_ERROR), false);
             chkImportTasks.Checked = ValidationHelper.GetBoolean(ImportSettings.GetSettings(ImportExportHelper.SETTINGS_TASKS), true);
             chkLogSync.Checked = ImportSettings.LogSynchronization;
@@ -188,7 +182,7 @@ public partial class CMSModules_ImportExport_Controls_Import___objects__ : Impor
     {
         ImportTypeEnum importType = ImportSettings.ImportType;
 
-        ImportSettings.ImportType = ImportTypeEnum.All;
+        ImportSettings.ImportType = ImportTypeEnum.AllForced;
         ImportSettings.LoadDefaultSelection(false);
 
         SaveSettings();

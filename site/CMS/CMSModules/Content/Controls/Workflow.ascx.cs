@@ -30,6 +30,9 @@ public partial class CMSModules_Content_Controls_Workflow : CMSUserControl
     private UserInfo currentUserInfo;
     private SiteInfo currentSiteInfo;
 
+    private const string CONTENT_FOLDER = "~/CMSModules/Content/";
+    private const string CONTENT_PROPERTIES_FOLDER = CONTENT_FOLDER + "CMSDesk/Properties/";
+
     #endregion
 
 
@@ -125,8 +128,8 @@ public partial class CMSModules_Content_Controls_Workflow : CMSUserControl
     {
         base.OnInit(e);
 
-        gridHistory.GridName = "~/CMSModules/Content/CMSDesk/Properties/WorkflowHistory.xml";
-        gridSteps.GridName = "~/CMSModules/Content/CMSDesk/Properties/WorkflowSteps.xml";
+        gridHistory.GridName = CONTENT_PROPERTIES_FOLDER + "WorkflowHistory.xml";
+        gridSteps.GridName = CONTENT_PROPERTIES_FOLDER + "WorkflowSteps.xml";
 
         gridSteps.WhereCondition = "StepWorkflowID = @StepWorkflowID";
     }
@@ -138,7 +141,7 @@ public partial class CMSModules_Content_Controls_Workflow : CMSUserControl
         gridSteps.GridView.AllowSorting = false;
         ReloadData();
 
-        string viewVersionUrl = IsLiveSite ? AuthenticationHelper.ResolveDialogUrl("~/CMSModules/Content/CMSPages/Versions/ViewVersion.aspx") : ResolveUrl("~/CMSModules/Content/CMSDesk/Properties/ViewVersion.aspx");
+        string viewVersionUrl = IsLiveSite ? AuthenticationHelper.ResolveDialogUrl(CONTENT_FOLDER + "CMSPages/Versions/ViewVersion.aspx") : ResolveUrl(CONTENT_PROPERTIES_FOLDER + "ViewVersion.aspx");
 
         string viewVersionScript = ScriptHelper.GetScript("function ViewVersion(versionHistoryId) {window.open('" + viewVersionUrl + "?versionHistoryId=' + versionHistoryId)}");
         ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "viewVersionScript", viewVersionScript);

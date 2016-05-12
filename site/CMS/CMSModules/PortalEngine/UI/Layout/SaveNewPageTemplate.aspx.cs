@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 
+using CMS.DocumentEngine;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.PortalEngine;
@@ -22,13 +23,6 @@ public partial class CMSModules_PortalEngine_UI_Layout_SaveNewPageTemplate : CMS
 
         categorySelector.StartingPath = QueryHelper.GetString("startingpath", String.Empty);
 
-        bool keep = QueryHelper.GetBoolean("assign", true);
-        if (!keep)
-        {
-            chkKeep.Enabled = false;
-            chkKeep.Checked = false;
-        }
-
         // Check the authorization per UI element
         var currentUser = MembershipContext.AuthenticatedUser;
         if (!currentUser.IsAuthorizedPerUIElement("CMS.Content", new[] { "Properties", "Properties.Template", "Template.SaveAsNew" }, SiteContext.CurrentSiteName))
@@ -37,17 +31,11 @@ public partial class CMSModules_PortalEngine_UI_Layout_SaveNewPageTemplate : CMS
         }
 
         PageTitle.TitleText = GetString("PortalEngine.SaveNewPageTemplate.PageTitle");
-        // Preset category
-        if (!RequestHelper.IsPostBack())
+
+        // Set category selector
+        if (!RequestHelper.IsPostBack() && (pt != null))
         {
-            if (pt != null)
-            {
-                categorySelector.Value = pt.CategoryID.ToString();
-                if (pt.IsReusable)
-                {
-                    plcKeep.Visible = false;
-                }
-            }
+            categorySelector.Value = pt.CategoryID.ToString();
         }
     }
 
@@ -75,8 +63,11 @@ public partial class CMSModules_PortalEngine_UI_Layout_SaveNewPageTemplate : CMS
                 }
 
                 bool templateCloned = false;
+                var reusableOrInherited = pt.IsReusable || QueryHelper.GetBoolean("inherits", false);
 
-                if (pt.IsReusable || !chkKeep.Checked)
+                // Clone template when page template is reusable or inherited from the parent page or template shouldn't be assigned to the current page
+                // Do not clone template when page template is ad-hoc and new template should be assigned to the current page
+                if (reusableOrInherited || !chkKeep.Checked)
                 {
                     // Clone template with clear
                     pt = pt.Clone(true);
@@ -128,19 +119,15 @@ public partial class CMSModules_PortalEngine_UI_Layout_SaveNewPageTemplate : CMS
                     }
                     else
                     {
-                        string script;
-
-                        bool refresh = QueryHelper.GetBoolean("refresh", false);
-                        if (refresh)
+                        var documentId = QueryHelper.GetInteger("documentId", 0);
+                        if (reusableOrInherited && (documentId > 0))
                         {
-                            script = "wopener.location.replace(wopener.location); CloseDialog();";
-                        }
-                        else
-                        {
-                            String selId = QueryHelper.GetString("selectorID", String.Empty);
-                            script = "SelectTemplate(" + pt.PageTemplateId + "," + ScriptHelper.GetString(selId) + ");";
+                            // Assign the new page template to the current document
+                            AssignNewTemplateToDocument(documentId, pt.PageTemplateId);
                         }
 
+                        string script = "SelectTemplate(" + pt.PageTemplateId + ");";
+                        
                         ltlScript.Text = ScriptHelper.GetScript(script);
                     }
                 }
@@ -154,5 +141,32 @@ public partial class CMSModules_PortalEngine_UI_Layout_SaveNewPageTemplate : CMS
                 ShowError(result);
             }
         }
+    }
+
+
+    /// <summary>
+    /// Assignes newly created page template to the current document.
+    /// </summary>
+    /// <param name="documentId">Document ID</param>
+    /// <param name="templateId">Template ID</param>
+    private void AssignNewTemplateToDocument(int documentId, int templateId)
+    {
+        var node = DocumentHelper.GetDocument(documentId, new TreeProvider());
+        if (node == null)
+        {
+            return;
+        }
+
+        if (node.NodeInheritPageTemplate)
+        {
+            // If node inherited page template switch to using shared template for all culture
+            node.NodeInheritPageTemplate = false;
+            node.NodeTemplateForAllCultures = true;
+        }
+
+        node.NodeTemplateID = node.NodeTemplateForAllCultures ? templateId : 0;
+        node.DocumentPageTemplateID = templateId;
+
+        node.Update();
     }
 }

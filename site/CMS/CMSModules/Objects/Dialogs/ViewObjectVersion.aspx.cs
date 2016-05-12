@@ -47,7 +47,7 @@ public partial class CMSModules_Objects_Dialogs_ViewObjectVersion : CMSObjectVer
 
             // Exclude site binding table data
             GeneralizedInfo infoObj = ModuleManager.GetReadOnlyObject(objectType);
-            viewVersion.ExcludedTableNames = DataClassInfoProvider.GetTableName(infoObj.TypeInfo.SiteBindingObject);
+            viewVersion.ExcludedTableNames = ObjectHelper.GetSerializationTableName(infoObj.TypeInfo.SiteBindingObject);
         }
 
         // Set what data should be displayed

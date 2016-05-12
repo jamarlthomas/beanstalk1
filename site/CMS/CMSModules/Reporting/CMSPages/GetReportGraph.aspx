@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_CMSPages_GetReportGraph"
-    Codebehind="GetReportGraph.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_CMSPages_GetReportGraph"
+     Codebehind="GetReportGraph.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

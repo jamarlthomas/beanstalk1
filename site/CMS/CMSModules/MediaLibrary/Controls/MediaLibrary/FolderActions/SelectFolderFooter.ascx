@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions_SelectFolderFooter" Codebehind="SelectFolderFooter.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions_SelectFolderFooter"  Codebehind="SelectFolderFooter.ascx.cs" %>
 
 <div class="PageFooterLine">
     <div class="FloatRight">

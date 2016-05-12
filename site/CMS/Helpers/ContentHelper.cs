@@ -164,7 +164,7 @@ namespace CMS.Mvc.Helpers
                             SelectAllData = true,
                             AliasPath = aliasPath + "/%",
                             MaxRelativeLevel = maxRelativeLevel,
-                        }) ?? new TreeNodeDataSet()).Where(i => i != null).ToList();
+                        }) ?? new CMS.DataEngine.InfoDataSet<TreeNode>()).Where(i => i != null).ToList();
                     },
                 new CacheSettings(CachingTime,
                     string.Format("pth_{0}_mrl_{1}_cn_{2}", aliasPath, maxRelativeLevel, classNames)));
@@ -178,7 +178,7 @@ namespace CMS.Mvc.Helpers
                         SelectAllData = true,
                         AliasPath = aliasPath + "/%",
                         MaxRelativeLevel = maxRelativeLevel,
-                    }) ?? new TreeNodeDataSet()).Where(i => i != null).ToList();
+                    }) ?? new CMS.DataEngine.InfoDataSet<TreeNode>()).Where(i => i != null).ToList();
                 }
             }
           
@@ -200,7 +200,7 @@ namespace CMS.Mvc.Helpers
             {
                 SearchFor = searchText,
                 SearchSort = request.SortOrder,
-                Path = "/Home/InsightsResources/%",
+                Path = "/Home/%",
                 ClassNames = null,
                 CurrentCulture = LocalizationContext.CurrentCulture.CultureCode,
                 DefaultCulture = null,

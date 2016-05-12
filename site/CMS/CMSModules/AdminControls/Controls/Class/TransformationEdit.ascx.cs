@@ -1,17 +1,14 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI;
 
-using CMS.Base;
 using CMS.DataEngine;
 using CMS.ExtendedControls;
 using CMS.ExtendedControls.ActionsConfig;
 using CMS.Helpers;
 using CMS.Membership;
-using CMS.Modules;
 using CMS.PortalEngine;
 using CMS.SiteProvider;
-using CMS.Synchronization;
 using CMS.UIControls;
 
 public partial class CMSModules_AdminControls_Controls_Class_TransformationEdit : CMSPreviewControl
@@ -116,26 +113,7 @@ public partial class CMSModules_AdminControls_Controls_Class_TransformationEdit 
         {
             ScriptHelper.RegisterClientScriptBlock(Page, typeof(String), "PreviewHierarchyPerformAction", ScriptHelper.GetScript("function actionPerformed(action) { if (action == 'saveandclose') { document.getElementById('" + hdnClose.ClientID + "').value = '1'; }; " + editMenuElem.ObjectManager.GetJSFunction(ComponentEvents.SAVE, null, null) + "; }"));
         }
-
-        ResourceInfo resource = ResourceInfoProvider.GetResourceInfo(QueryHelper.GetInteger("moduleid", 0));
-        bool moduleInDevelopment = (resource != null) && resource.ResourceIsInDevelopment;
-        bool isClass = (ClassInfo != null) && !ClassInfo.ClassIsCustomTable && !ClassInfo.ClassIsDocumentType;
-
-        // Show customization information only for installed transformations
-        if (!SystemContext.DevelopmentMode && !moduleInDevelopment && !TransformationInfo.TransformationIsCustom && isClass)
-        {
-            pnlCustomization.ObjectEditMenu = editMenuElem.ObjectEditMenu;
-            pnlCustomization.MessagesPlaceHolder = MessagesPlaceHolder;
-            pnlCustomization.Columns = new[] { "TransformationCode", "TransformationCss", "TransformationType" };
-
-            // Disable editing transformation name for system transformations
-            fDisplayName.EditingControl.Enabled = false;
-        }
-        else
-        {
-            pnlCustomization.StopProcessing = true;
-        }
-
+        
         // For HTML type edit save as full postback (CKEditor issues on partial postback)
         if (ucTransfCode.TransformationType == TransformationTypeEnum.Html)
         {
@@ -176,7 +154,6 @@ public partial class CMSModules_AdminControls_Controls_Class_TransformationEdit 
                 Text = GetString("DocumentType_Edit_Transformation_Edit.ButtonDefault"),
                 Tooltip = GetString("transformationtypecode.generatetooltip"),
                 OnClientClick = "GenerateDefaultCode('default'); return false;",
-                Enabled = pnlCustomization.Enabled,
                 GenerateSeparatorBeforeAction = true
             };
 

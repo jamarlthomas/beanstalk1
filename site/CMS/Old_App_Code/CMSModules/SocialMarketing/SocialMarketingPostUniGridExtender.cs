@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Linq;
 
@@ -130,7 +130,7 @@ public class SocialMarketingPostUniGridExtender : ControlExtender<UniGrid>
             return false;
         }
 
-        document = new ObjectQuery<TreeNode>().WithGuid(documentGuid).OnSite(siteId).FirstOrDefault();
+        document = new ObjectQuery<TreeNode>().WithGuid(documentGuid).OnSite(siteId).WhereNull("NodeLinkedNodeID").FirstOrDefault();
         return true;
     }
 

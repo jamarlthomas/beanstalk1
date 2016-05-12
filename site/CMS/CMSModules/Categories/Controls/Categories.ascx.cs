@@ -1,15 +1,15 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
+using CMS.Base;
+using CMS.DataEngine;
 using CMS.ExtendedControls;
 using CMS.Helpers;
-using CMS.Base;
-using CMS.SiteProvider;
 using CMS.Membership;
-using CMS.UIControls;
+using CMS.SiteProvider;
 using CMS.Taxonomy;
-using CMS.DataEngine;
+using CMS.UIControls;
 
 public partial class CMSModules_Categories_Controls_Categories : CMSAdminEditControl
 {
@@ -27,6 +27,7 @@ public partial class CMSModules_Categories_Controls_Categories : CMSAdminEditCon
     private bool canModifySite;
     private bool canModifyGlobal;
     private bool? mAllowGlobalCategories;
+    private string mDocumentGridBaseWhere;
 
     #endregion
 
@@ -385,8 +386,6 @@ public partial class CMSModules_Categories_Controls_Categories : CMSAdminEditCon
         gridSubCategories.OnBeforeDataReload += gridSubCategories_OnBeforeDataReload;
         gridSubCategories.OnExternalDataBound += gridSubCategories_OnExternalDataBound;
         gridSubCategories.OnAction += gridSubCategories_OnAction;
-        gridSubCategories.OnBeforeSorting += (sender, ea) => gridSubCategories.ReloadData();
-        gridSubCategories.DelayedReload = true;
 
         gridDocuments.IsLiveSite = IsLiveSite;
         gridSubCategories.IsLiveSite = IsLiveSite;
@@ -434,17 +433,13 @@ public partial class CMSModules_Categories_Controls_Categories : CMSAdminEditCon
             catEdit.UserID = catNew.Category.CategoryUserID;
             catEdit.CategoryID = catNew.Category.CategoryID;
 
-            SwitchToEdit();
+            SwitchToEdit(true);
         }
 
         PreselectCategory(catNew.Category, false);
 
         // Open general tab after the new category is created
         pnlTabs.SelectedTab = tabGeneral;
-
-        // Reload data
-        gridDocuments.UniGrid.ReloadData();
-        gridSubCategories.ReloadData();
 
         pnlUpdateTree.Update();
     }
@@ -456,8 +451,6 @@ public partial class CMSModules_Categories_Controls_Categories : CMSAdminEditCon
 
         // Refresh selected category info after update
         SelectedCategory = null;
-
-        gridSubCategories.ReloadData();
 
         pnlUpdateTree.Update();
     }
@@ -507,16 +500,9 @@ public partial class CMSModules_Categories_Controls_Categories : CMSAdminEditCon
             }
 
             // Use images according to culture
-            if (CultureHelper.IsUICultureRTL())
-            {
-                treeElemG.LineImagesFolder = GetImageUrl("RTL/Design/Controls/Tree", false, false);
-                treeElemP.LineImagesFolder = GetImageUrl("RTL/Design/Controls/Tree", false, false);
-            }
-            else
-            {
-                treeElemG.LineImagesFolder = GetImageUrl("Design/Controls/Tree", false, false);
-                treeElemP.LineImagesFolder = GetImageUrl("Design/Controls/Tree", false, false);
-            }
+            var imageUrl = (CultureHelper.IsUICultureRTL()) ? GetImageUrl("RTL/Design/Controls/Tree") : GetImageUrl("Design/Controls/Tree");
+            treeElemG.LineImagesFolder = imageUrl;
+            treeElemP.LineImagesFolder = imageUrl;
 
             treeElemG.StopProcessing = !DisplaySiteCategories;
             treeElemP.StopProcessing = !DisplayPersonalCategories;
@@ -658,7 +644,6 @@ function NodeSelected(elementId, parentId, isEdit) {
                 btnDelete.Enabled = false;
                 btnUp.Enabled = false;
                 btnDown.Enabled = false;
-
             }
 
             pnlUpdateActions.Update();
@@ -714,9 +699,9 @@ function NodeSelected(elementId, parentId, isEdit) {
             }
 
             // Set caption
-            defaultNode.Text = defaultNode.Text.Replace("##NODECUSTOMNAME##", caption);
-            defaultNode.Text = defaultNode.Text.Replace("##NODECODENAME##", HTMLHelper.HTMLEncode(catName));
-            defaultNode.Text = defaultNode.Text.Replace("##PARENTID##", catParentId.ToString());
+            defaultNode.Text = defaultNode.Text.Replace("##NODECUSTOMNAME##", caption)
+                                          .Replace("##NODECODENAME##", HTMLHelper.HTMLEncode(catName))
+                                          .Replace("##PARENTID##", catParentId.ToString());
 
             return defaultNode;
         }
@@ -755,7 +740,7 @@ function NodeSelected(elementId, parentId, isEdit) {
             }
             else
             {
-                SwitchToEdit();
+                SwitchToEdit(true);
             }
         }
         else
@@ -776,8 +761,24 @@ function NodeSelected(elementId, parentId, isEdit) {
     protected void UniGrid_OnBeforeDataReload()
     {
         string where = "(DocumentID IN (SELECT CMS_DocumentCategory.DocumentID FROM CMS_DocumentCategory WHERE CategoryID = " + SelectedCategoryID + "))";
-        where = SqlHelper.AddWhereCondition(where, filterDocuments.WhereCondition);
-        gridDocuments.UniGrid.WhereCondition = SqlHelper.AddWhereCondition(gridDocuments.UniGrid.WhereCondition, where);
+
+        var documentGrid = gridDocuments.UniGrid;
+        if (!String.IsNullOrEmpty(mDocumentGridBaseWhere))
+        {
+            // Replace part of the where condition from the first load
+            documentGrid.WhereCondition = documentGrid.WhereCondition.Replace(mDocumentGridBaseWhere, where);
+        }
+        else
+        {
+            // Add new part to the where condition
+            documentGrid.WhereCondition = SqlHelper.AddWhereCondition(documentGrid.WhereCondition, where);
+        }
+
+        // Store current where condition for possible reload after a postback action (e.g. delete)
+        mDocumentGridBaseWhere = where;
+
+        // Add where condition from filter
+        documentGrid.WhereCondition = SqlHelper.AddWhereCondition(documentGrid.WhereCondition, filterDocuments.WhereCondition);
     }
 
 
@@ -799,9 +800,9 @@ function NodeSelected(elementId, parentId, isEdit) {
         {
             case "edit":
             case "delete":
-                if (sender is CMSGridActionButton)
+                var button = sender as CMSGridActionButton;
+                if (button != null)
                 {
-                    CMSGridActionButton button = (CMSGridActionButton)sender;
                     DataRowView data = UniGridFunctions.GetDataRowView(button.Parent as DataControlFieldCell);
 
                     int userId = ValidationHelper.GetInteger(data["CategoryUserID"], 0);
@@ -904,7 +905,7 @@ function NodeSelected(elementId, parentId, isEdit) {
     /// <param name="e">Arguments</param>
     protected void btnDeleteElem_Click(object sender, EventArgs e)
     {
-        DeleteCategory(SelectedCategory);
+        DeleteCategory(SelectedCategory, true);
     }
 
 
@@ -920,8 +921,6 @@ function NodeSelected(elementId, parentId, isEdit) {
         {
             CategoryInfoProvider.MoveCategoryUp(catId);
         }
-
-        gridSubCategories.ReloadData();
 
         pnlUpdateTree.Update();
     }
@@ -939,8 +938,6 @@ function NodeSelected(elementId, parentId, isEdit) {
         {
             CategoryInfoProvider.MoveCategoryDown(catId);
         }
-
-        gridSubCategories.ReloadData();
 
         pnlUpdateTree.Update();
     }
@@ -1007,18 +1004,20 @@ function NodeSelected(elementId, parentId, isEdit) {
     private UniTreeProvider CreateTreeProvider(int siteId, int userId)
     {
         // Create and set category provider
-        UniTreeProvider provider = new UniTreeProvider();
-        provider.UseCustomRoots = true;
-        provider.RootLevelOffset = -1;
-        provider.ObjectType = "cms.category";
-        provider.DisplayNameColumn = "CategoryDisplayName";
-        provider.IDColumn = "CategoryID";
-        provider.LevelColumn = "CategoryLevel";
-        provider.OrderColumn = "CategoryOrder";
-        provider.ParentIDColumn = "CategoryParentID";
-        provider.PathColumn = "CategoryIDPath";
-        provider.ValueColumn = "CategoryID";
-        provider.ChildCountColumn = "CategoryChildCount";
+        UniTreeProvider provider = new UniTreeProvider
+        {
+            UseCustomRoots = true,
+            RootLevelOffset = -1,
+            ObjectType = "cms.category",
+            DisplayNameColumn = "CategoryDisplayName",
+            IDColumn = "CategoryID",
+            LevelColumn = "CategoryLevel",
+            OrderColumn = "CategoryOrder",
+            ParentIDColumn = "CategoryParentID",
+            PathColumn = "CategoryIDPath",
+            ValueColumn = "CategoryID",
+            ChildCountColumn = "CategoryChildCount"
+        };
 
         // Prepare the parameters
         provider.Parameters = new QueryDataParameters();
@@ -1042,7 +1041,8 @@ function NodeSelected(elementId, parentId, isEdit) {
     /// <summary>
     /// Switches control to editing mode.
     /// </summary>
-    private void SwitchToEdit()
+    /// <param name="reloadGrids">Indicates if grids on Categories and Pages tabs should be reloaded</param>
+    private void SwitchToEdit(bool reloadGrids = false)
     {
         IsEditing = true;
         IsCreating = false;
@@ -1061,7 +1061,12 @@ function NodeSelected(elementId, parentId, isEdit) {
         gridSubCategories.StopProcessing = false;
         gridSubCategories.FilterForm.StopProcessing = false;
         gridSubCategories.Visible = true;
-        gridSubCategories.ReloadData();
+
+        if (reloadGrids)
+        {
+            gridDocuments.UniGrid.ReloadData();
+            gridSubCategories.ReloadData();
+        }
 
         pnlUpdateContent.Update();
     }
@@ -1289,37 +1294,35 @@ function NodeSelected(elementId, parentId, isEdit) {
     }
 
 
-    private void DeleteCategory(CategoryInfo categoryObj)
+    private void DeleteCategory(CategoryInfo categoryObj, bool reload = false)
     {
         // Check if category
         if ((categoryObj != null) && CanModifyCategory(categoryObj.CategoryIsPersonal, categoryObj.CategoryIsGlobal))
         {
-            CategoryInfo parentCategory = CategoryInfoProvider.GetCategoryInfo(categoryObj.CategoryParentID);
+            var parentCategory = CategoryInfoProvider.GetCategoryInfo(categoryObj.CategoryParentID);
+            var isPersonal = categoryObj.CategoryIsPersonal;
+
+            // Delete category
+            CategoryInfoProvider.DeleteCategoryInfo(categoryObj);
 
             // Check if deleted category has parent
             if (parentCategory != null)
             {
+                SelectedCategoryID = parentCategory.CategoryID;
+
                 // Switch to editing of parent category
                 catEdit.UserID = parentCategory.CategoryUserID;
                 catEdit.Category = parentCategory;
 
-                SwitchToEdit();
-
-                SelectedCategoryID = parentCategory.CategoryID;
+                SwitchToEdit(reload);
                 PreselectCategory(parentCategory, false);
             }
             else
             {
                 SelectedCategoryID = 0;
-                SelectedCategoryParentID = categoryObj.CategoryIsPersonal ? PERSONAL_CATEGORIES_ROOT_PARENT_ID : CATEGORIES_ROOT_PARENT_ID;
+                SelectedCategoryParentID = isPersonal ? PERSONAL_CATEGORIES_ROOT_PARENT_ID : CATEGORIES_ROOT_PARENT_ID;
                 SwitchToInfo();
             }
-
-            // Delete category
-            CategoryInfoProvider.DeleteCategoryInfo(categoryObj);
-
-            // Reload subcategories
-            gridSubCategories.ReloadData();
 
             pnlUpdateTree.Update();
             pnlUpdateContent.Update();

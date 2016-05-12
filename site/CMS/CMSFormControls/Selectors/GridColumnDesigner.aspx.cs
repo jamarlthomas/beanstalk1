@@ -1,14 +1,15 @@
-using System;
-using System.Data;
+﻿using System;
 using System.Collections;
-using System.Text;
+using System.Collections.Generic;
+using System.Data;
 using System.Web.UI.WebControls;
 using System.Xml;
 
+using CMS.Base;
 using CMS.DataEngine;
+using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.UIControls;
-using CMS.ExtendedControls;
 
 public partial class CMSFormControls_Selectors_GridColumnDesigner : DesignerPage
 {
@@ -73,25 +74,10 @@ public partial class CMSFormControls_Selectors_GridColumnDesigner : DesignerPage
 
             // Initialize resource strings
             PageTitle.TitleText = GetString("GridColumnDesigner.Title");
-            radGenerate.Text = GetString("GridColumnDesigner.Generate");
-            radSelect.Text = GetString("GridColumnDesigner.Select");
-            lblProperties.Text = GetString("GridColumnDesigner.Properties");
-            lblHeaderText.Text = GetString("GridColumnDesigner.Headertext");
-            lblDisplayAsLink.Text = GetString("GridColumnDesigner.DisplayAsLink");
-            btnOk.Text = GetString("general.ok");
-            btnClose.Text = GetString("general.saveandclose");
             ItemSelection1.LeftColumnLabel.Text = GetString("ItemSelection.Avaliable");
             ItemSelection1.RightColumnLabel.Text = GetString("ItemSelection.Displayed");
-            mSelColId = DataHelper.GetNotEmpty(Request.QueryString["SelColId"], "");
-            mColId = DataHelper.GetNotEmpty(Request.QueryString["ColId"], "");
-
-            StringBuilder script = new StringBuilder();
-
-            script.AppendLine("document.getElementById('" + hdnClassNames.ClientID + "').value = wopener.GetClassNames('" + ScriptHelper.GetString(mColId, false) + "'); ");
-            script.AppendLine("document.getElementById('" + hdnSelectedColumns.ClientID + "').value = wopener.GetSelectedColumns('" + ScriptHelper.GetString(mSelColId, false) + "'); ");
-
-            // Javascripts
-            ltlLoad.Text = ScriptHelper.GetScript(script.ToString());
+            mSelColId = QueryHelper.GetString("SelColId", "");
+            mColId = QueryHelper.GetString("ColId", "");
 
             // Set-up ColumnListBox
             ItemSelection1.RightColumListBox.SelectionMode = ListSelectionMode.Single;
@@ -132,14 +118,7 @@ public partial class CMSFormControls_Selectors_GridColumnDesigner : DesignerPage
 
                 // Read XML
                 ReadXML(hdnSelectedColumns.Value);
-
-                // Reload page to get data from parent in javascript
-                script = new StringBuilder();
-                script.AppendLine("document.getElementById('" + hdnClassNames.ClientID + "').value = wopener.GetClassNames('" + ScriptHelper.GetString(mColId, false) + "'); ");
-                script.AppendLine("document.getElementById('" + hdnSelectedColumns.ClientID + "').value = wopener.GetSelectedColumns('" + ScriptHelper.GetString(mSelColId, false) + "');");
-                script.AppendLine("document.body.onload = function () {" + ControlsHelper.GetPostBackEventReference(ItemSelection1.RightColumListBox, "") + "}");
-                ltlLoad.Text = ScriptHelper.GetScript(script.ToString());
-
+                
                 if (!string.IsNullOrEmpty(ViewColumns))
                 {
                     radSelect.Checked = true;
@@ -158,29 +137,30 @@ public partial class CMSFormControls_Selectors_GridColumnDesigner : DesignerPage
                         }
                     }
                 }
+
+                // Reload page to get data from parent in javascript
+                string script = String.Format(@"
+document.getElementById('{0}').value = wopener.GetClassNames('{1}');
+document.getElementById('{2}').value = wopener.GetSelectedColumns('{3}');
+document.body.onload = function () {{ {4} }};
+", hdnClassNames.ClientID, ScriptHelper.GetString(mColId, false), hdnSelectedColumns.ClientID, ScriptHelper.GetString(mSelColId, false), ControlsHelper.GetPostBackEventReference(ItemSelection1.RightColumListBox, ""));
+
+                ScriptHelper.RegisterStartupScript(this, typeof(string), "LoadScript", script, true);
             }
 
             // Show or hide dialog
-            if (radGenerate.Checked)
-            {
-                ItemSelection1.Visible = false;
-                pnlProperties.Visible = false;
-            }
-            else
-            {
-                ItemSelection1.Visible = true;
-                pnlProperties.Visible = true;
-            }
+            ItemSelection1.Visible = !radGenerate.Checked;
+            pnlProperties.Visible = !radGenerate.Checked;
         }
         else
         {
-            URLHelper.Redirect(ResolveUrl("~/CMSMessages/Error.aspx?title=" + ResHelper.GetString("general.badhashtitle") + "&text=" + ResHelper.GetString("general.badhashtext")));
+            URLHelper.Redirect(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext"));
         }
     }
 
 
     /// <summary>
-    /// On clik OK button save changes.
+    /// On click OK button save changes.
     /// </summary>
     protected void btnOK_Click(object sender, EventArgs e)
     {
@@ -216,12 +196,15 @@ public partial class CMSFormControls_Selectors_GridColumnDesigner : DesignerPage
         }
 
         hdnTextClassNames.Value = ConvertXML(hdnSelectedColumns.Value);
-        StringBuilder script = new StringBuilder();
-        script.AppendLine("var columnsElem = document.getElementById('" + hdnSelectedColumns.ClientID + "');");
-        script.AppendLine("var classNamesElem = document.getElementById('" + hdnTextClassNames.ClientID + "');");
-        script.AppendLine("wopener.SetValue(columnsElem.value, classNamesElem.value,'" + ScriptHelper.GetString(mSelColId, false) + "','" + ScriptHelper.GetString(mColId, false) + "'); ");
-        script.AppendLine("CloseDialog();");
-        ltlOk.Text = ScriptHelper.GetScript(script.ToString());
+
+        string script = String.Format(@"
+var columnsElem = document.getElementById('{0}'),
+    classNamesElem = document.getElementById('{1}');
+wopener.SetValue(columnsElem.value, classNamesElem.value,'{2}','{3}');
+CloseDialog();
+", hdnSelectedColumns.ClientID, hdnTextClassNames.ClientID, ScriptHelper.GetString(mSelColId, false), ScriptHelper.GetString(mColId, false));
+
+        ScriptHelper.RegisterStartupScript(this, typeof (string), "CloseScript", script, true);
     }
 
     #endregion
@@ -250,7 +233,7 @@ public partial class CMSFormControls_Selectors_GridColumnDesigner : DesignerPage
         {
             try
             {
-                if (className != "")
+                if (!String.IsNullOrEmpty(className))
                 {
                     IDataClass dc = DataClassFactory.NewDataClass(className);
                     DataClassInfo dci = DataClassInfoProvider.GetDataClassInfo(className);
@@ -273,8 +256,8 @@ public partial class CMSFormControls_Selectors_GridColumnDesigner : DesignerPage
         int index = 0;
         foreach (string columnName in columnList)
         {
-            columns[index, 1] = columnName;
             columns[index, 0] = index.ToString();
+            columns[index, 1] = columnName;
             index += 1;
         }
 
@@ -488,54 +471,42 @@ public partial class CMSFormControls_Selectors_GridColumnDesigner : DesignerPage
     {
         string[,] mChanged = null;
 
-        if (ItemSelection1.RightColumListBox.Items != null)
+        XmlDocument xmldoc = new XmlDocument();
+        XmlNode xmlRoot = xmldoc.CreateElement("columns");
+        xmldoc.AppendChild(xmlRoot);
+
+        for (int i = 0; i < ItemSelection1.RightColumListBox.Items.Count; i++)
         {
-            XmlDocument xmldoc = new XmlDocument();
-            XmlNode xmlRoot = xmldoc.CreateElement("", "columns", "");
-            xmldoc.AppendChild(xmlRoot);
+            bool mIsChanged = false;
 
-            for (int i = 0; i < ItemSelection1.RightColumListBox.Items.Count; i++)
+            if (SearchInSelected(Convert.ToInt32(ItemSelection1.RightColumListBox.Items[i].Value)) >= 0)
             {
-                bool mIsChanged = false;
+                mIsChanged = true;
 
-                if (SearchInSelected(Convert.ToInt32(ItemSelection1.RightColumListBox.Items[i].Value)) >= 0)
+                mChanged = SearchInChangedColumnsById(Convert.ToInt32(ItemSelection1.RightColumListBox.Items[i].Value));
+
+                if (mChanged == null)
                 {
-                    mIsChanged = true;
-
-                    mChanged = SearchInChangedColumnsById(Convert.ToInt32(ItemSelection1.RightColumListBox.Items[i].Value));
-
-                    if (mChanged == null)
-                    {
-                        mIsChanged = false;
-                    }
+                    mIsChanged = false;
                 }
-
-                XmlElement xmlColumn = xmldoc.CreateElement("column");
-                xmlColumn.SetAttribute("name", ItemSelection1.RightColumListBox.Items[i].Text);
-
-                if (mIsChanged)
-                {
-                    xmlColumn.SetAttribute("header", mChanged[0, 2]);
-                }
-                else
-                {
-                    xmlColumn.SetAttribute("header", String.Empty);
-                }
-
-                if ((mIsChanged) && (mChanged[0, 3] != null && mChanged[0, 3] == "link"))
-                {
-                    xmlColumn.SetAttribute("type", "link");
-                }
-                else
-                {
-                    xmlColumn.SetAttribute("type", "bound");
-                }
-
-                xmlRoot.AppendChild(xmlColumn);
             }
 
-            hdnSelectedColumns.Value = xmldoc.InnerXml;
+            XmlElement xmlColumn = xmldoc.CreateElement("column");
+
+            // Prepare attributes for "column" node
+            var attributes = new Dictionary<string, string>
+            {
+                { "name", ItemSelection1.RightColumListBox.Items[i].Text },
+                { "header", (mIsChanged ? mChanged[0, 2] : String.Empty) },
+                { "type", ((mIsChanged) && (mChanged[0, 3] != null && mChanged[0, 3].EqualsCSafe("link", true)) ? "link" : "bound") }
+            };
+
+            xmlColumn.AddAttributes(attributes);
+
+            xmlRoot.AppendChild(xmlColumn);
         }
+
+        hdnSelectedColumns.Value = xmldoc.ToFormattedXmlString(true);
     }
 
 

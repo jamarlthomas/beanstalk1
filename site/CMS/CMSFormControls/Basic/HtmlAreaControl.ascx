@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="HtmlAreaControl.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="HtmlAreaControl.ascx.cs"
     Inherits="CMSFormControls_Basic_HtmlAreaControl" %>
 
 <div class="control-group-inline">

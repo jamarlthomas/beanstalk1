@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Tools_EmailQueue_NewsletterEmailQueue"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Tools_EmailQueue_NewsletterEmailQueue"
     Theme="Default" MaintainScrollPositionOnPostback="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Title="Newsletter - E-mail queue" Codebehind="NewsletterEmailQueue.aspx.cs" %>
+    Title="Newsletter - E-mail queue"  Codebehind="NewsletterEmailQueue.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>

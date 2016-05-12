@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Membership_LinkedIn_LinkedInUsersRequiredData" Codebehind="~/CMSWebParts/Membership/LinkedIn/LinkedInUsersRequiredData.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Membership_LinkedIn_LinkedInUsersRequiredData"  Codebehind="~/CMSWebParts/Membership/LinkedIn/LinkedInUsersRequiredData.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/Membership/FormControls/Passwords/PasswordStrength.ascx" TagName="PasswordStrength"
     TagPrefix="cms" %>

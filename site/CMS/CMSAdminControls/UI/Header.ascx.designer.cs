@@ -48,6 +48,24 @@ public partial class CMSAdminControls_UI_Header {
     protected global::CMSFormControls_Sites_SiteSelector siteSelector;
     
     /// <summary>
+    /// plcStagingTaskGroupContainer control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.PlaceHolder plcStagingTaskGroupContainer;
+    
+    /// <summary>
+    /// plcStagingTaskGroup control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.PlaceHolder plcStagingTaskGroup;
+    
+    /// <summary>
     /// plcSupportChat control.
     /// </summary>
     /// <remarks>

@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="PageTitle.ascx.cs" Inherits="CMSAdminControls_UI_PageElements_PageTitle" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="PageTitle.ascx.cs" Inherits="CMSAdminControls_UI_PageElements_PageTitle" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/Help.ascx" TagName="Help" TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/BreadCrumbs.ascx" TagName="Breadcrumbs" TagPrefix="cms" %>

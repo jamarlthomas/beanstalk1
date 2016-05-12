@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Notifications_Controls_NotificationSubscription_EmailNotificationForm" Codebehind="EmailNotificationForm.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Notifications_Controls_NotificationSubscription_EmailNotificationForm"  Codebehind="EmailNotificationForm.ascx.cs" %>
 
 <div class="form-group">
     <div class="editing-form-label-cell">

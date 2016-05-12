@@ -28,9 +28,11 @@
 
                     // Add a 'nocache' random num query string to stylesheet's url for disabling the caching.
                     var cssURL = $(this).attr('href');
-                    cssURL += (cssURL.indexOf('?') != -1) ? '&' : '?';
-                    cssURL += 'nocache=' + (Math.random());
-                    $(this).attr('href', cssURL);
+                    if (cssURL) {
+                        cssURL += (cssURL.indexOf('?') != -1) ? '&' : '?';
+                        cssURL += 'nocache=' + (Math.random());
+                        $(this).attr('href', cssURL);
+                    }
                 });
             }
         });
@@ -68,7 +70,33 @@
     }((function ($) {
 
         var scopedjQuery = function (selector) {
-            return $(selector, '.cms-bootstrap, .cms-bootstrap-js');
+            var $elem = $(selector),
+                $emptyElement = $(),
+                $elemClosestBootstrapParent;
+
+            if ($elem.length === 0) {
+                // jQuery element object itself was not found in the document,
+                // we need to return the empty $element to follow the jQuery-way
+                // of handling non-found elements
+                return $emptyElement;
+            }
+
+            if ($elem.parent().length === 0) {
+                // $element could be Document or Window, or it is not in the DOM at all (
+                // it lives only in memory as jQuery object)
+                // in this case it doesn't have to have '.cms-bootstrap' as its parent
+                return $elem;
+            }
+
+            $elemClosestBootstrapParent = $elem.closest('.cms-bootstrap, .cms-bootstrap-js');
+            if ($elemClosestBootstrapParent && ($elemClosestBootstrapParent.length > 0)) {
+                // All other elements need to have '.cms-bootstrap' as their parent element
+                return $elem;
+            }
+
+            // Otherwise we need to return the empty $element to follow the jQuery-way
+            // of handling non-found elements
+            return $emptyElement;
         };
 
         // Copy all jQuery properties into

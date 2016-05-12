@@ -1,10 +1,12 @@
-using System;
+﻿using System;
 
 using CMS.FormControls;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.UIControls;
 using CMS.Chat;
+using CMS.DataEngine;
+using CMS.SiteProvider;
 
 public partial class CMSModules_Chat_Controls_UI_ChatSupportCannedResponse_Edit : CMSAdminEditControl
 {
@@ -53,9 +55,13 @@ public partial class CMSModules_Chat_Controls_UI_ChatSupportCannedResponse_Edit 
 
 
     /// <summary>
-    /// Indicates if canned response is personal.
+    /// Indicates whether canned response is personal.
     /// </summary>
-    public bool Personal { get; set; }
+    public bool Personal
+    {
+        get;
+        set;
+    }
 
     #endregion
 
@@ -64,45 +70,19 @@ public partial class CMSModules_Chat_Controls_UI_ChatSupportCannedResponse_Edit 
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        CheckPermissions(PermissionsEnum.Read);
         EditForm.OnBeforeSave += UIFormControl_OnBeforeSave;
         EditForm.OnCheckPermissions += UIFormControl_OnCheckPermissions;
-
-
     }
 
 
-    void UIFormControl_OnCheckPermissions(object sender, EventArgs e)
+    private void UIFormControl_OnCheckPermissions(object sender, EventArgs e)
     {
-        if (Personal)
-        {
-            var currentUser = MembershipContext.AuthenticatedUser;
-
-            if (currentUser == null || !currentUser.IsAuthorizedPerResource("CMS.Chat", "EnterSupport"))
-            {
-                RedirectToAccessDenied("CMS.Chat", "EnterSupport");
-            }
-
-            // This should be always false, but prevents exceptions
-            if (TypedEditedObject != null)
-            {
-                // The chat user ID is inserted after permission check in OnBeforeSave. If the ID has no value, there is no point in checking it because it will be filled in aftewards
-                if (TypedEditedObject.ChatSupportCannedResponseChatUserID.HasValue && TypedEditedObject.ChatSupportCannedResponseChatUserID.Value != ChatUserHelper.GetChatUserFromCMSUser().ChatUserID)
-                {
-                    RedirectToAccessDenied(GetString("chat.error.cannedresponsenotyours"));
-                }
-            }
-        }
-        else
-        {
-            // Editing existing canned response or create a new one
-            int? siteIDToCheck = ((TypedEditedObject != null) && (TypedEditedObject.ChatSupportCannedResponseID > 0)) ? TypedEditedObject.ChatSupportCannedResponseSiteID : SiteID;
-
-            ((CMSChatPage)Page).CheckModifyPermission(siteIDToCheck);
-        }
+        CheckPermissions(PermissionsEnum.Modify);
     }
 
 
-    void UIFormControl_OnBeforeSave(object sender, EventArgs e)
+    private void UIFormControl_OnBeforeSave(object sender, EventArgs e)
     {
         // If creating a new canned response
         if (TypedEditedObject == null || TypedEditedObject.ChatSupportCannedResponseID <= 0)
@@ -116,6 +96,65 @@ public partial class CMSModules_Chat_Controls_UI_ChatSupportCannedResponse_Edit 
             {
                 EditForm.Data["ChatSupportCannedResponseChatUserID"] = ChatUserHelper.GetChatUserFromCMSUser().ChatUserID;
                 EditForm.Data["ChatSupportCannedResponseSiteID"] = null;
+            }
+        }
+    }
+
+    #endregion
+
+
+    #region "Helper methods"
+
+    private void CheckPermissions(PermissionsEnum permission)
+    {
+        if (TypedEditedObject == null || TypedEditedObject.ChatSupportCannedResponseID <= 0)
+        {
+            // Creating new
+            CheckPermissionsForNewResponse();
+            return;
+        }
+
+        if (!TypedEditedObject.CheckPermissions(permission, SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser, false))
+        {
+            if (TypedEditedObject.ChatSupportCannedResponseChatUserID.HasValue)
+            {
+                RedirectToAccessDenied(GetString("chat.error.cannedresponsenotyours"));
+            }
+            else
+            {
+                RedirectToAccessDenied(TypedEditedObject.TypeInfo.ModuleName, (SiteID == null ? "Global" : "") + permission.ToStringRepresentation());
+            }
+        }
+    }
+
+
+    private void CheckPermissionsForNewResponse()
+    {
+        UserInfo user = MembershipContext.AuthenticatedUser;
+        string moduleName = TypedEditedObject.TypeInfo.ModuleName;
+
+        if (Personal)
+        {
+            // Personal canned response
+            if (!user.IsAuthorizedPerResource(moduleName, "EnterSupport"))
+            {
+                RedirectToAccessDenied(moduleName, "EnterSupport");
+            }
+        }
+        else if (SiteID != null)
+        {
+            // Site canned response
+            if (!user.IsAuthorizedPerResource(moduleName, "Modify"))
+            {
+                RedirectToAccessDenied(moduleName, "Modify");
+            }
+        }
+        else
+        {
+            // Global canned response
+            if (!user.IsAuthorizedPerResource(moduleName, "GlobalModify"))
+            {
+                RedirectToAccessDenied(moduleName, "GlobalModify");
             }
         }
     }

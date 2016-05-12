@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 using System.Web;
 using System.Data;
@@ -26,8 +26,8 @@ public partial class CMSPages_LiveIDLogin : CMSPage
 {
     #region "Private fields"
 
-    private static string defaultPage = URLHelper.ResolveUrl("~/Default.aspx");
-    private static string loginPage = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSSecuredAreasLogonPage");
+    private readonly string defaultPage = URLHelper.ResolveUrl("~/Default.aspx");
+    private readonly string loginPage = AuthenticationHelper.GetSecuredAreasLogonPage(SiteContext.CurrentSiteName);
 
     private String siteName = String.Empty;
     private String relativeURL = String.Empty;

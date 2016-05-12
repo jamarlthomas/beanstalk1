@@ -78,13 +78,15 @@ public partial class CMSModules_Content_Controls_SplitView_Documents_DocumentSpl
         bool hasNodeIdAndCulture = ((NodeID > 0) && (Culture != null));
         if (hasNodeIdAndCulture)
         {
+            const string SPLIT_VIEW_FOLDER = "~/CMSModules/Content/CMSDesk/SplitView/";
+
             // Toolbar URL
-            string toolbarUrl = "~/CMSModules/Content/CMSDesk/SplitView/Toolbar.aspx";
+            string toolbarUrl = SPLIT_VIEW_FOLDER + "Toolbar.aspx";
             toolbarUrl = URLHelper.AddParameterToUrl(toolbarUrl, "nodeid", NodeID.ToString());
             toolbarUrl = URLHelper.AddParameterToUrl(toolbarUrl, "culture", Culture);
 
             // Separator URL 
-            splitView.SeparatorUrl = "~/CMSModules/Content/CMSDesk/SplitView/Separator.aspx";
+            splitView.SeparatorUrl = SPLIT_VIEW_FOLDER + "Separator.aspx";
             splitView.ToolbarUrl = toolbarUrl;
             splitView.ToolbarHeight = 51;
         }

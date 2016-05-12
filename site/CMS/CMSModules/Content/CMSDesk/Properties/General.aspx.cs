@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -14,7 +14,6 @@ using CMS.SiteProvider;
 using CMS.DocumentEngine;
 using CMS.PortalEngine;
 using CMS.UIControls;
-using CMS.PortalControls;
 using CMS.Globalization;
 using CMS.Membership;
 using CMS.FormEngine;
@@ -61,13 +60,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_General : CMSProperti
             RedirectToUIElementAccessDenied("CMS.Content", "Properties.General");
         }
 
-        // Redirect to information page when no UI elements displayed
-        if (pnlUIAdvanced.IsHidden && pnlUICache.IsHidden && pnlUIDesign.IsHidden &&
-            pnlUIOther.IsHidden && pnlUIOwner.IsHidden)
-        {
-            RedirectToUINotAvailable();
-        }
-
         // Init document manager events
         DocumentManager.OnSaveData += DocumentManager_OnSaveData;
         DocumentManager.OnAfterAction += DocumentManager_OnAfterAction;
@@ -95,14 +87,14 @@ public partial class CMSModules_Content_CMSDesk_Properties_General : CMSProperti
         ScriptHelper.RegisterLoader(Page);
         ScriptHelper.RegisterTooltip(Page);
         ScriptHelper.RegisterDialogScript(this);
-        
+
         btnEditableContent.OnClientClick = "ShowEditableContent(); return false;";
         btnMessageBoards.OnClientClick = "ShowMessageBoards(); return false;";
         btnForums.OnClientClick = "ShowForums(); return false;";
 
         // Get strings for radio buttons
         lblCacheMinutes.Text = GetString("GeneralProperties.cacheMinutes");
-        
+
         // Get strings for labels
         lblNameTitle.Text = GetString("GeneralProperties.Name");
         lblNamePathTitle.Text = GetString("GeneralProperties.NamePath");
@@ -126,8 +118,16 @@ public partial class CMSModules_Content_CMSDesk_Properties_General : CMSProperti
         // Set default item value
         ctrlSiteSelectStyleSheet.AddDefaultRecord = false;
         ctrlSiteSelectStyleSheet.CurrentSelector.SpecialFields.AllowDuplicates = true;
-        ctrlSiteSelectStyleSheet.CurrentSelector.SpecialFields.Add(new SpecialField { Text = GetString("general.defaultchoice"), Value = GetDefaultStylesheet() });
 
+        if (PortalContext.CurrentSiteStylesheet != null)
+        {
+            ctrlSiteSelectStyleSheet.CurrentSelector.SpecialFields.Add(new SpecialField { Text = GetString("general.defaultchoice"), Value = GetDefaultStylesheet() });
+        }
+        else
+        {
+            ctrlSiteSelectStyleSheet.CurrentSelector.AllowEmpty = true;
+        }
+        
         ctrlSiteSelectStyleSheet.ReturnColumnName = "StyleSheetID";
         ctrlSiteSelectStyleSheet.SiteId = SiteContext.CurrentSiteID;
 
@@ -143,6 +143,15 @@ public partial class CMSModules_Content_CMSDesk_Properties_General : CMSProperti
         TreeNode node = Node;
         if (node != null)
         {
+            // Redirect to information page when no UI elements displayed
+            if (((pnlUIAdvanced.IsHidden && pnlUICache.IsHidden && pnlUIDesign.IsHidden) || ShowContentOnlyProperties) && pnlUIOther.IsHidden && pnlUIOwner.IsHidden)
+            {
+                RedirectToUINotAvailable();
+            }
+
+            // Get strings for headings
+            headOtherProperties.Text = ShowContentOnlyProperties ? GetString("content.ui.properties") : GetString("GeneralProperties.OtherGroup");
+
             if (PortalContext.CurrentSiteStylesheet != null)
             {
                 script.Append(@"
@@ -168,23 +177,6 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
 "
                 );
             }
-
-            // Create wireframe option
-            if (node.NodeWireframeTemplateID <= 0)
-            {
-                btnWireframe.ResourceString = "Wireframe.Create";
-
-                string createUrl = URLHelper.ResolveUrl(String.Format("~/CMSModules/Content/CMSDesk/Properties/CreateWireframe.aspx?nodeid={0}&culture={1}", node.NodeID, node.DocumentCulture));
-                btnWireframe.OnClientClick = "parent.location.replace('" + createUrl + "'); return false;";
-            }
-            else
-            {
-                btnWireframe.ResourceString = "Wireframe.Remove";
-                btnWireframe.OnClientClick = "return confirm(" + ScriptHelper.GetLocalizedString("Wireframe.ConfirmRemove") + ")";
-                btnWireframe.Click += lnkWireframe_Click;
-            }
-
-            plcWireframe.Visible = PortalHelper.IsWireframingEnabled(SiteContext.CurrentSiteName);
 
             documentId = node.DocumentID;
             canEditOwner = (MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(Node, NodePermissionsEnum.ModifyPermissions) == AuthorizationResultEnum.Allowed);
@@ -227,20 +219,6 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
     }
 
 
-    protected void lnkWireframe_Click(object sender, EventArgs e)
-    {
-        // Remove the wireframe
-        TreeNode node = DocumentManager.Node;
-
-        DocumentManager.RemoveWireframe();
-
-        ScriptHelper.RegisterStartupScript(this, typeof(string), "Refresh", ScriptHelper.GetScript(String.Format(
-            "parent.RefreshTree({0}, {0}); parent.SelectNode({0});",
-            node.NodeID
-        )));
-    }
-
-
     /// <summary>
     /// PreRender event handler
     /// </summary>
@@ -252,6 +230,7 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
         {
             ReloadData();
         }
+
         chkPageVisitInherit.Visible = (Node != null) && (Node.NodeParentID > 0);
     }
 
@@ -278,6 +257,16 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
     {
         if (Node != null)
         {
+            // Hide parts which are not relevant to content only nodes
+            if (ShowContentOnlyProperties)
+            {
+                pnlUIAdvanced.Visible = false;
+                pnlUICache.Visible = false;
+                pnlUIDesign.Visible = false;
+                plcPermanent.Visible = false;
+                pnlUIOnlineMarketing.Visible = false;
+            }
+
             // Log activities checkboxes
             if (!RequestHelper.IsPostBack())
             {
@@ -356,6 +345,7 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
             // Load the data
             lblName.Text = HttpUtility.HtmlEncode(Node.GetDocumentName());
             lblNamePath.Text = HttpUtility.HtmlEncode(Convert.ToString(Node.GetValue("DocumentNamePath")));
+
             lblAliasPath.Text = Convert.ToString(Node.NodeAliasPath);
             string typeName = DataClassInfoProvider.GetDataClassInfo(Node.NodeClassName).ClassDisplayName;
             lblType.Text = HttpUtility.HtmlEncode(ResHelper.LocalizeString(typeName));
@@ -382,19 +372,24 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
             lblCreated.Text = TimeZoneHelper.GetCurrentTimeZoneDateTimeString(createdWhen, MembershipContext.AuthenticatedUser, SiteContext.CurrentSite, out usedTimeZone);
             ScriptHelper.AppendTooltip(lblCreated, TimeZoneHelper.GetUTCLongStringOffset(usedTimeZone), "help");
 
-
             // URL
-            string liveUrl = Node.IsLink ? DocumentURLProvider.GetUrl(Node.NodeAliasPath) : DocumentURLProvider.GetUrl(Node.NodeAliasPath, Node.DocumentUrlPath);
-            lnkLiveURL.Text = URLHelper.ResolveUrl(liveUrl);
-            lnkLiveURL.NavigateUrl = URLHelper.ResolveUrl(liveUrl);
+            if (plcPermanent.Visible)
+            {
+                string permanentUrl = DocumentURLProvider.GetPermanentDocUrl(Node.NodeGUID, Node.NodeAlias, Node.NodeSiteName, extension: ".aspx");
+                permanentUrl = URLHelper.ResolveUrl(permanentUrl);
 
-            string permanentUrl = DocumentURLProvider.GetPermanentDocUrl(Node.NodeGUID, Node.NodeAlias, Node.NodeSiteName, PageInfoProvider.PREFIX_CMS_GETDOC, ".aspx");
-            lnkPermanentUrl.Text = URLHelper.ResolveUrl(permanentUrl);
-            lnkPermanentUrl.NavigateUrl = URLHelper.ResolveUrl(permanentUrl);
+                lnkPermanentURL.HRef = permanentUrl;
+                lnkPermanentURL.InnerText = permanentUrl;
+            }
 
-            bool isRoot = (Node.NodeClassName.ToLowerCSafe() == "cms.root");
+            string liveUrl = DocumentURLProvider.GetPresentationUrl(Node, RequestContext.URL.Host);
 
-            // Preview URL
+            lnkLiveURL.HRef = liveUrl;
+            lnkLiveURL.InnerText = liveUrl;
+
+            bool isRoot = Node.IsRoot();
+
+            // Hide preview URL for root node
             if (!isRoot)
             {
                 plcPreview.Visible = true;
@@ -416,7 +411,7 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
             lblPublished.Text = (Node.IsPublished ? "<span class=\"DocumentPublishedYes\">" + GetString("General.Yes") + "</span>" : "<span class=\"DocumentPublishedNo\">" + GetString("General.No") + "</span>");
 
             // Load page info for inherited cache settings
-            currentPage = PageInfoProvider.GetPageInfo(Node.DocumentGUID, Node.NodeSiteID);
+            currentPage = PageInfoProvider.GetPageInfo(Node.NodeSiteName, Node.NodeAliasPath, Node.DocumentCulture, null, Node.NodeID, false);
 
             if (!RequestHelper.IsPostBack())
             {
@@ -438,7 +433,7 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
 
                 switch (Node.NodeCacheMinutes)
                 {
-                    case -1:
+                    case null:
                         // Cache setting is inherited
                         {
                             radNo.Checked = true;
@@ -476,11 +471,11 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
                 // Set secured radio buttons
                 switch (Node.NodeAllowCacheInFileSystem)
                 {
-                    case 0:
+                    case false:
                         radFSNo.Checked = true;
                         break;
 
-                    case 1:
+                    case true:
                         radFSYes.Checked = true;
                         break;
 
@@ -503,28 +498,21 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
                     txtCacheMinutes.Enabled = false;
                 }
 
-                if (Node.GetValue("DocumentStylesheetID") == null)
+                var defaultStylesheet = GetDefaultStylesheet();
+
+                if (Node.DocumentInheritsStylesheet && !isRoot)
                 {
-                    ctrlSiteSelectStyleSheet.Value = GetDefaultStylesheet();
+                    chkCssStyle.Checked = true;
+
+                    // Get stylesheet from the parent node
+                    string value = GetStylesheetParentValue();
+                    ctrlSiteSelectStyleSheet.Value = String.IsNullOrEmpty(value) ? defaultStylesheet : value;
                 }
                 else
                 {
-                    // If stylesheet is inherited from parent document
-                    if (ValidationHelper.GetInteger(Node.GetValue("DocumentStylesheetID"), 0) == -1)
-                    {
-                        if (!isRoot)
-                        {
-                            chkCssStyle.Checked = true;
-
-                            // Get parent stylesheet
-                            string value = GetParentProperty();
-                            ctrlSiteSelectStyleSheet.Value = String.IsNullOrEmpty(value) ? GetDefaultStylesheet() : value;
-                        }
-                    }
-                    else
-                    {
-                        ctrlSiteSelectStyleSheet.Value = Node.GetValue("DocumentStylesheetID");
-                    }
+                    // Get stylesheet from the current node
+                    var stylesheetId = Node.DocumentStylesheetID;
+                    ctrlSiteSelectStyleSheet.Value = (stylesheetId == 0) ? defaultStylesheet : stylesheetId.ToString();
                 }
             }
 
@@ -648,25 +636,21 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
         // DESIGN group is displayed by UI profile
         if (!pnlUIDesign.IsHidden)
         {
-            node.SetValue("DocumentStylesheetID", -1);
             if (!chkCssStyle.Checked)
             {
                 // Set style sheet
                 int selectedCssId = ValidationHelper.GetInteger(ctrlSiteSelectStyleSheet.Value, 0);
-                if (selectedCssId < 1)
-                {
-                    node.SetValue("DocumentStylesheetID", null);
-                }
-                else
-                {
-                    node.SetValue("DocumentStylesheetID", selectedCssId);
-                }
+                node.DocumentStylesheetID = (selectedCssId > 0) ? selectedCssId : 0;
+                node.DocumentInheritsStylesheet = false;
 
                 ctrlSiteSelectStyleSheet.Enabled = true;
             }
             else
             {
                 ctrlSiteSelectStyleSheet.Enabled = false;
+
+                node.DocumentInheritsStylesheet = true;
+                node.DocumentStylesheetID = 0;
             }
         }
 
@@ -674,7 +658,7 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
         if (!pnlUICache.IsHidden)
         {
             // Cache minutes
-            int cacheMinutes = 0;
+            int? cacheMinutes = 0;
             if (radNo.Checked)
             {
                 cacheMinutes = 0;
@@ -690,7 +674,10 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
             }
             else if (radInherit.Checked)
             {
-                cacheMinutes = currentPage.NodeCacheMinutes = -1;
+                // Get parent value
+                currentPage.NodeCacheMinutes = -1;
+
+                cacheMinutes = null;
                 if ((currentPage != null) && (currentPage.NodeCacheMinutes > 0))
                 {
                     txtCacheMinutes.Text = currentPage.NodeCacheMinutes.ToString();
@@ -705,19 +692,19 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
             }
 
             // Allow file system cache
-            int allowFs = Node.NodeAllowCacheInFileSystem;
+            bool? allowFs = Node.NodeAllowCacheInFileSystem;
 
             if (radFSYes.Checked)
             {
-                allowFs = 1;
+                allowFs = true;
             }
             else if (radFSNo.Checked)
             {
-                allowFs = 0;
+                allowFs = false;
             }
-            else if (radInherit.Checked)
+            else if (radFSInherit.Checked)
             {
-                allowFs = -1;
+                allowFs = null;
             }
 
             Node.NodeAllowCacheInFileSystem = allowFs;
@@ -824,7 +811,7 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
             ctrlSiteSelectStyleSheet.Enabled = false;
             ctrlSiteSelectStyleSheet.ButtonNewEnabled = false;
 
-            string value = GetParentProperty(); 
+            string value = GetStylesheetParentValue();
             if (String.IsNullOrEmpty(value))
             {
                 ctrlSiteSelectStyleSheet.Value = GetDefaultStylesheet();
@@ -903,9 +890,8 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
         {
             lnkPreviewURL.Visible = true;
             lblNoPreviewGuid.Visible = false;
-            lnkPreviewURL.Text = ResHelper.GetString("GeneralProperties.ShowPreview");
-            bool isFile = CMSString.Equals(Node.NodeClassName, "cms.file", true);
-            lnkPreviewURL.NavigateUrl = Node.GetPreviewLink(CurrentUser.UserName, isFile);
+            bool isFile = CMSString.Equals(Node.NodeClassName, SystemDocumentTypes.File, true);
+            lnkPreviewURL.Attributes.Add("href", Node.GetPreviewLink(CurrentUser.UserName, isFile));
         }
         else
         {
@@ -921,9 +907,9 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
     /// </summary>
     private string GetDefaultStylesheet()
     {
-        string value = "-1";
+        string value = null;
 
-        // If default site not exist edit is set to -1 - disabled
+        // If default stylesheet exists
         if (PortalContext.CurrentSiteStylesheet != null)
         {
             value = "default";
@@ -934,14 +920,11 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
 
 
     /// <summary>
-    /// Gets value from parent node
+    /// Gets stylesheet identifier value from parent node
     /// </summary>
-    private string GetParentProperty()
+    private string GetStylesheetParentValue()
     {
-        var where = new WhereCondition()
-            .WhereNotEquals("DocumentStylesheetID", -1)
-            .Or()
-            .WhereNull("DocumentStylesheetID");
+        var where = new WhereCondition().WhereNotEquals("DocumentInheritsStylesheet", true);
 
         return PageInfoProvider.GetParentProperty<string>(Node.NodeSiteID, Node.NodeAliasPath, "DocumentStylesheetID", Node.DocumentCulture, where);
     }

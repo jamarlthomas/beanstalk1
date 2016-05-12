@@ -1,6 +1,6 @@
-<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
+﻿<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
     Inherits="CMSModules_SystemTables_Pages_Development_Views_ViewEdit_Preview" Title="View - Preview"
-    Theme="Default" Codebehind="ViewEdit_Preview.aspx.cs" %>
+    Theme="Default"  Codebehind="ViewEdit_Preview.aspx.cs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="plcContent" runat="Server">
     <div class="form-horizontal form-filter">

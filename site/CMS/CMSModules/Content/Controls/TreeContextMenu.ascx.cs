@@ -1,7 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Collections;
 using System.Web.UI.WebControls;
 
 using CMS.Core;
@@ -15,6 +14,7 @@ using CMS.DocumentEngine;
 using CMS.LicenseProvider;
 using CMS.PortalEngine;
 using CMS.Modules;
+using CMS.UIControls;
 
 using TreeNode = CMS.DocumentEngine.TreeNode;
 
@@ -139,7 +139,7 @@ public partial class CMSModules_Content_Controls_TreeContextMenu : CMSContextMen
 
         menuNew.OnReloadData += menuNew_OnReloadData;
         repNew.ItemDataBound += repNew_ItemDataBound;
-        
+
         // Main menu
         iNew.Attributes.Add("onclick", "NewItem(GetContextMenuParameter('nodeMenu'), true);");
 
@@ -203,13 +203,11 @@ public partial class CMSModules_Content_Controls_TreeContextMenu : CMSContextMen
         int nodeId = ValidationHelper.GetInteger(ContextMenu.Parameter, 0);
 
         // Get the node
-        TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-        TreeNode node = tree.SelectSingleNode(nodeId);
+        var tree = new TreeProvider(MembershipContext.AuthenticatedUser);
+        var node = tree.SelectSingleNode(nodeId);
 
         if (node != null)
         {
-            // Hide Properties for wireframe
-            plcProperties.Visible &= !node.IsWireframe();
             if (plcProperties.Visible)
             {
                 // Properties menu
@@ -219,24 +217,23 @@ public partial class CMSModules_Content_Controls_TreeContextMenu : CMSContextMen
                     var index = 0;
                     UserInfo user = MembershipContext.AuthenticatedUser;
 
-                    foreach (var elem in elements)
+                    foreach (var element in elements)
                     {
-                        // If UI element is available and user has permission to show it then add it
-                        if (UIContextHelper.CheckElementAvailabilityInUI(elem) && user.IsAuthorizedPerUIElement(elem.ElementResourceID, elem.ElementName))
+                        // Skip elements not relevant for given node
+                        if (DocumentUIHelper.IsElementHiddenForNode(element, node))
                         {
-                            var elementName = elem.ElementName;
+                            continue;
+                        }
 
-                            switch (elementName.ToLower())
+                        var elementName = element.ElementName.ToLowerCSafe();
+
+                        // If UI element is available and user has permission to show it then add it
+                        if (UIContextHelper.CheckElementAvailabilityInUI(element) && user.IsAuthorizedPerUIElement(element.ElementResourceID, elementName))
+                        {
+                            switch (elementName)
                             {
                                 case "properties.languages":
                                     if (!CultureSiteInfoProvider.IsSiteMultilingual(SiteContext.CurrentSiteName) || !CultureSiteInfoProvider.LicenseVersionCheck())
-                                    {
-                                        continue;
-                                    }
-                                    break;
-
-                                case "properties.wireframe":
-                                    if (node.NodeWireframeTemplateID <= 0)
                                     {
                                         continue;
                                     }
@@ -261,11 +258,12 @@ public partial class CMSModules_Content_Controls_TreeContextMenu : CMSContextMen
                                     break;
                             }
 
-
                             var item = new ContextMenuItem();
                             item.ID = "p" + index;
                             item.Attributes.Add("onclick", String.Format("Properties(GetContextMenuParameter('nodeMenu'), '{0}');", elementName));
-                            item.Text = ResHelper.LocalizeString(elem.ElementDisplayName);
+
+                            // UI elements could have a different display name if content only document is selected
+                            item.Text = DocumentUIHelper.GetUIElementDisplayName(element, node);
 
                             pnlPropertiesMenu.Controls.Add(item);
 
@@ -317,7 +315,7 @@ public partial class CMSModules_Content_Controls_TreeContextMenu : CMSContextMen
                     && ResourceSiteInfoProvider.IsResourceOnSite("CMS.ABTest", SiteContext.CurrentSiteName)
                     && LicenseHelper.CheckFeature(RequestContext.CurrentDomain, FeatureEnum.ABTesting)
                     && (node.NodeAliasPath != "/")
-                    && (node.NodeClassName != "CMS.Folder")
+                    && !node.IsFolder()
                     && ((scope == null) || scope.ScopeAllowABVariant)
                     && CurrentUser.IsAuthorizedToCreateNewDocument(node, node.ClassName))
                 {
@@ -345,7 +343,7 @@ public partial class CMSModules_Content_Controls_TreeContextMenu : CMSContextMen
                     .Where(where)
                     .OrderBy(DocumentTypeOrderBy)
                     .TopN(50)
-                    .Columns("ClassID", "ClassName", "ClassDisplayName", "(CASE WHEN (ClassName = 'CMS.MenuItem' OR ClassName = 'CMS.Wireframe')  THEN 0 ELSE 1 END) AS MenuItemOrder");
+                    .Columns("ClassID", "ClassName", "ClassDisplayName", string.Format("(CASE WHEN (ClassName = '{0}') THEN 0 ELSE 1 END) AS MenuItemOrder", SystemDocumentTypes.MenuItem));
 
                 var rows = new List<DataRow>();
 
@@ -360,14 +358,10 @@ public partial class CMSModules_Content_Controls_TreeContextMenu : CMSContextMen
                     for (int i = 0; i < resultTable.Rows.Count; ++i)
                     {
                         DataRow dr = resultTable.Rows[i];
-                        string doc = ValidationHelper.GetString(DataHelper.GetDataRowValue(dr, "ClassName"), "");
+                        string doc = DataHelper.GetStringValue(dr, "ClassName");
 
                         // Document type is not allowed, remove it from the data set
                         if (!isAuthorizedToCreateInContent && !CurrentUser.IsAuthorizedPerClassName(doc, "Create") && (!CurrentUser.IsAuthorizedPerClassName(doc, "CreateSpecific") || !hasNodeAllowCreate))
-                        {
-                            rows.Add(dr);
-                        }
-                        else if (doc.EqualsCSafe("cms.wireframe", true) && !CurrentUser.IsAuthorizedPerResource("CMS.Design", "Wireframing"))
                         {
                             rows.Add(dr);
                         }

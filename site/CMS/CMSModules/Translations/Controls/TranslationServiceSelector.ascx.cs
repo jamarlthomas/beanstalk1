@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
@@ -23,6 +24,7 @@ public partial class CMSModules_Translations_Controls_TranslationServiceSelector
     private bool mAnyServiceAvailable;
     private bool mDisplayMachineServices = true;
     private string mMachineServiceSuffix;
+    private TreeProvider mTreeProvider;
 
     #endregion
 
@@ -34,8 +36,14 @@ public partial class CMSModules_Translations_Controls_TranslationServiceSelector
     /// </summary>
     public TreeProvider TreeProvider
     {
-        get;
-        set;
+        get
+        {
+            return mTreeProvider ?? (mTreeProvider = new TreeProvider());
+        }
+        set
+        {
+            mTreeProvider = value;
+        }
     }
 
 
@@ -166,7 +174,7 @@ public partial class CMSModules_Translations_Controls_TranslationServiceSelector
     /// <summary>
     /// Gets target languages of translation.
     /// </summary>
-    public CMSList<string> TargetLanguages
+    public HashSet<string> TargetLanguages
     {
         get
         {
@@ -179,12 +187,10 @@ public partial class CMSModules_Translations_Controls_TranslationServiceSelector
             else
             {
                 // Use target language from settings or current culture if target not set
-                targetCulture = TranslationSettings.TargetLanguages.Count > 0 ? TranslationSettings.TargetLanguages[0] : currentCulture;
+                targetCulture = TranslationSettings.TargetLanguages.FirstOrDefault() ?? currentCulture;
             }
 
-            var cultures = new CMSList<string>(targetCulture, ';', StringSplitOptions.RemoveEmptyEntries, false, true);
-            cultures.Remove(FromLanguage);
-            return cultures;
+            return new HashSet<string>(targetCulture.Split(';').Where(s => !String.IsNullOrEmpty(s) && !s.EqualsCSafe(FromLanguage)), StringComparer.OrdinalIgnoreCase);
         }
     }
 
@@ -324,30 +330,30 @@ public partial class CMSModules_Translations_Controls_TranslationServiceSelector
             return;
         }
 
+        if (!URLHelper.IsPostback())
+        {
+            // Preselect default values
+            dtDeadline.SelectedDateTime = DateTime.Now.AddDays(7);
+            drpPriority.Value = 1;
+
+            HandlePreselectedCultures();
+        }
+
         // Set visibility of the target language selector
         plcTargetLang.Visible = DisplayTargetlanguage;
         if (DisplayTargetlanguage)
         {
+            selectTargetCultureElem.UniSelector.OnSelectionChanged += TargetLanguageSelector_OnSelectionChanged;
+
             SetupTargetLanguageDropDownWhereCondition();
         }
 
         if (TranslationSettings != null)
         {
-            var condition = new WhereCondition();
-
-            var targetCultures = TranslationSettings.TargetLanguages;
-            if (targetCultures.Count > 0)
-            {
-                condition.WhereNotIn("CultureCode", targetCultures);
-            }
-
-            if (NodeID > 0)
-            {
-                condition.WhereIn("CultureCode", new IDQuery("cms.document", "DocumentCulture").WhereEquals("DocumentNodeID", NodeID));
-            }
-
-            selectCultureElem.AdditionalWhereCondition = condition.ToString(true);
+            SetupSourceLanguageDropDownWhereCondition(TranslationSettings.TargetLanguages);
         }
+
+        SetupDisplayNameFormat();
 
         if (RequestHelper.IsCallback())
         {
@@ -360,42 +366,124 @@ function SelectService(serviceName, displaySeparateSubmission, supportsInstructi
     var nameElem = document.getElementById('", hdnSelectedName.ClientID, @"');
     if (nameElem != null) {
         nameElem.value = serviceName;
-    }
-  
-    document.getElementById('pnlSeparateSubmissions').style.display = (displaySeparateSubmission ? '' : 'none');
-    document.getElementById('pnlInstructions').style.display = (supportsInstructions ? '' : 'none');
-    document.getElementById('pnlPriority').style.display = (supportsPriority ? '' : 'none');
-    document.getElementById('pnlDeadline').style.display = (supportsDeadline ? '' : 'none');
-    document.getElementById('pnlProcessBinary').style.display = (supportsAttachments ? '' : 'none');
-    var selectButton = document.getElementById('rad' + serviceName);
-    if (selectButton != null) {
-        selectButton.checked = 'checked';
+ 
+        document.getElementById('pnlSeparateSubmissions').style.display = (displaySeparateSubmission ? '' : 'none');
+        document.getElementById('pnlInstructions').style.display = (supportsInstructions ? '' : 'none');
+        document.getElementById('pnlPriority').style.display = (supportsPriority ? '' : 'none');
+        document.getElementById('pnlDeadline').style.display = (supportsDeadline ? '' : 'none');
+        document.getElementById('pnlProcessBinary').style.display = (supportsAttachments ? '' : 'none');
+
+        var selectButton = document.getElementById('rad' + serviceName);
+        if (selectButton != null) {
+            selectButton.checked = 'checked';
+        }
     }
 }");
 
         ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "TranslationServiceSelector", sb.ToString(), true);
 
-        string format = "{% CultureName %}{% if (CultureCode == \"" + defaultCulture + "\") { \" \" +\"" + GetString("general.defaultchoice") + "\" } %}";
-        selectCultureElem.DropDownCultures.AutoPostBack = DisplayTargetlanguage;
-        selectCultureElem.UniSelector.DisplayNameFormat = format;
-        selectTargetCultureElem.UniSelector.DisplayNameFormat = format;
-
-        // Preselect 'Normal' priority
-        if (!URLHelper.IsPostback())
-        {
-            drpPriority.Value = 1;
-        }
-
         ReloadData();
     }
 
 
+    private void SetupDisplayNameFormat()
+    {
+        string format = "{% CultureName %}{% if (CultureCode == \"" + defaultCulture + "\") { \" \" +\"" + GetString("general.defaultchoice") + "\" } %}";
+        selectCultureElem.DropDownCultures.AutoPostBack = DisplayTargetlanguage;
+        selectCultureElem.UniSelector.DisplayNameFormat = format;
+        selectTargetCultureElem.UniSelector.DisplayNameFormat = format;
+    }
+
+
+    private void HandlePreselectedCultures()
+    {
+        // Preselect current culture if different from default one, otherwise preselect default one
+        if (UseCurrentCultureAsDefaultTarget)
+        {
+            if (!currentCulture.EqualsCSafe(defaultCulture, true))
+            {
+                // Preselect cultures
+                selectTargetCultureElem.Value = currentCulture;
+                selectCultureElem.Value = defaultCulture;
+
+                TranslationSettings.TargetLanguages.Add(currentCulture);
+            }
+            else
+            {
+                selectCultureElem.Value = defaultCulture;
+            }
+
+            selectTargetCultureElem.Reload(true);
+        }
+        else
+        {
+            selectCultureElem.Value = defaultCulture;
+        }
+    }
+
+
     /// <summary>
-    /// Setups target language drop down list control.
+    /// Setups source language drop down list control.
+    /// </summary>
+    /// <param name="targetCultures">List of target cultures which should not be in te source selector</param>
+    private void SetupSourceLanguageDropDownWhereCondition(HashSet<string> targetCultures)
+    {
+        var condition = new WhereCondition();
+        if (targetCultures.Count > 0)
+        {
+            condition.WhereNotIn("CultureCode", targetCultures.ToList());
+        }
+
+        if (NodeID > 0)
+        {
+            // Get source culture list from original node if current node is linked
+            var node = TreeProvider.SelectSingleNode(NodeID, TreeProvider.ALL_CULTURES, true, false);
+            var sourceNodeID = node.OriginalNodeID;
+
+            condition.WhereIn("CultureCode", new IDQuery("cms.document", "DocumentCulture").WhereEquals("DocumentNodeID", sourceNodeID));
+        }
+
+        selectCultureElem.AdditionalWhereCondition = condition.ToString(true);
+    }
+
+
+    private void TargetLanguageSelector_OnSelectionChanged(object sender, EventArgs e)
+    {
+        // Update where condition
+        SetupSourceLanguageDropDownWhereCondition(TargetLanguages);
+
+        selectCultureElem.ReloadData();
+        selectCultureElem.Reload(true);
+    }
+
+
+    /// <summary>
+    /// Setups target language selector control.
     /// </summary>
     private void SetupTargetLanguageDropDownWhereCondition()
     {
-        WhereCondition condition = new WhereCondition().WhereNotEquals("CultureCode", DataHelper.GetNotEmpty(selectCultureElem.DropDownCultures.SelectedValue, defaultCulture));
+        WhereCondition condition = new WhereCondition();
+
+        var culturesAreEqual = currentCulture.EqualsCSafe(defaultCulture, true);
+        var selectedSourceCulture = selectCultureElem.DropDownCultures.SelectedValue;
+
+        string notTargetLanguage = null;
+
+        if (!String.IsNullOrEmpty(selectedSourceCulture))
+        {
+            // Use source language if selected
+            notTargetLanguage = selectedSourceCulture;
+        }
+        else if (!culturesAreEqual || !UseCurrentCultureAsDefaultTarget)
+        {
+            // Use default culture if source and target languages are equal
+            notTargetLanguage = defaultCulture;
+        }
+
+        if (!String.IsNullOrEmpty(selectedSourceCulture))
+        {
+            condition.WhereNotEquals("CultureCode", notTargetLanguage);
+        }
 
         if (!CurrentUser.IsGlobalAdministrator && CurrentUser.UserHasAllowedCultures)
         {
@@ -403,39 +491,6 @@ function SelectService(serviceName, displaySeparateSubmission, supportsInstructi
         }
 
         selectTargetCultureElem.AdditionalWhereCondition = condition.ToString(true);
-    }
-
-
-    protected override void OnPreRender(EventArgs e)
-    {
-        base.OnPreRender(e);
-
-        if (StopProcessing)
-        {
-            return;
-        }
-
-        if (URLHelper.IsPostback())
-        {
-            // Reload selector to remove selected target languages
-            selectCultureElem.Reload(true);
-            // Reload selector to remove selected source language
-            selectTargetCultureElem.Reload(true);
-        }
-        else
-        {
-            // Preselect default values
-            dtDeadline.SelectedDateTime = DateTime.Now.AddDays(7);
-
-            // Preselect current culture if different from default one, otherwise preselect default one
-            if (UseCurrentCultureAsDefaultTarget)
-            {
-                selectTargetCultureElem.Value = !currentCulture.EqualsCSafe(defaultCulture, true) ? currentCulture : defaultCulture;
-                selectTargetCultureElem.Reload(true);
-            }
-
-            selectCultureElem.Value = defaultCulture;
-        }
     }
 
 
@@ -556,7 +611,7 @@ function SelectService(serviceName, displaySeparateSubmission, supportsInstructi
             return string.Format(GetString("translationservice.instructionstoolong"), maximumLength, instructionsLength);
         }
 
-        if ((TargetLanguages.Count == 0) || String.IsNullOrEmpty(TargetLanguages[0]))
+        if ((TargetLanguages.Count == 0) || String.IsNullOrEmpty(TargetLanguages.FirstOrDefault()))
         {
             return GetString("translationservice.invalidtargetlanguage");
         }
@@ -591,8 +646,7 @@ function SelectService(serviceName, displaySeparateSubmission, supportsInstructi
         settings.TranslationDeadline = Deadline;
         settings.TranslationServiceName = SelectedService;
 
-        var tree = TreeProvider ?? new TreeProvider();
-        var node = DocumentHelper.GetDocument(NodeID, settings.SourceLanguage, true, tree);
+        var node = TreeProvider.GetOriginalNode(DocumentHelper.GetDocument(NodeID, settings.SourceLanguage, true, TreeProvider));
 
         TranslationSubmissionInfo submissionInfo;
         return TranslationServiceHelper.SubmitToTranslation(settings, node, out submissionInfo);

@@ -456,7 +456,9 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
         //reset display
         $scope.dataLoaded = function(){return false};
         $scope.prodfilterResults = "";
-
+        $scope.renderHtml = function (html_code) {
+            return $sce.trustAsHtml(html_code);
+        };
         //Sample Angular Feed Test
         //$scope.ajaxRequest = "page-assets/filter.json"
 

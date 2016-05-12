@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Inherits="CMSModules_Newsletters_Tools_Customers_Customer_Edit_Newsletters" Theme="Default"
-    Title="Customer newsletters" Codebehind="Customer_Edit_Newsletters.aspx.cs" %>
+    Title="Customer newsletters"  Codebehind="Customer_Edit_Newsletters.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"
     TagPrefix="cms" %>

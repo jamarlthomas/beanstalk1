@@ -25,6 +25,14 @@
     }
 }
 
+.DialogPropertiesFullSize {
+    .small-preview {
+        .media-properties-tab {
+            overflow: auto;
+        }
+    }
+}
+
 .DialogWebProperties {
     height: 483px !important;
 }
@@ -40,6 +48,7 @@
 
 .media-properties {
     width: inherit;
+    margin-bottom: 0px;
 
     .properties {
         float: left;
@@ -50,8 +59,7 @@
         float: right;
         width: 65%;
     }
-
-
+    
     .editing-form-label-cell {
         width: 30%;
     }
@@ -96,7 +104,12 @@
 
 .media-file-edit {
     overflow: auto;
-    max-height: @base-unit * 12;
+    max-height: @base-unit * 13;
+}
+
+.media-file-versions {
+    overflow: auto;
+    max-height: @base-unit * 16.5;
 }
 
 .youtube-box {

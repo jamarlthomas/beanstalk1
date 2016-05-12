@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Groups_Tools_MessageBoards_Messages_Message_List"
-    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" EnableEventValidation="false" Codebehind="Message_List.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Groups_Tools_MessageBoards_Messages_Message_List"
+    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" EnableEventValidation="false"  Codebehind="Message_List.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/MessageBoards/Controls/Messages/MessageList.ascx" TagName="MessageList" TagPrefix="cms" %>
 

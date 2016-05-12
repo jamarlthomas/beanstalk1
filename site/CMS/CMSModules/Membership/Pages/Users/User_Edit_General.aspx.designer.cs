@@ -219,24 +219,6 @@ public partial class CMSModules_Membership_Pages_Users_User_Edit_General {
     protected global::CMS.ExtendedControls.CMSCheckBox chkIsHidden;
     
     /// <summary>
-    /// lblIsRequiredMF control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblIsRequiredMF;
-    
-    /// <summary>
-    /// chkIsMFRequired control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSCheckBox chkIsMFRequired;
-    
-    /// <summary>
     /// lblCulture control.
     /// </summary>
     /// <remarks>
@@ -289,6 +271,42 @@ public partial class CMSModules_Membership_Pages_Users_User_Edit_General {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Label lblCreatedInfo;
+    
+    /// <summary>
+    /// lblIsRequiredMF control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblIsRequiredMF;
+    
+    /// <summary>
+    /// chkIsMFRequired control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSCheckBox chkIsMFRequired;
+    
+    /// <summary>
+    /// lblResetToken control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblResetToken;
+    
+    /// <summary>
+    /// btnResetToken control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedButton btnResetToken;
     
     /// <summary>
     /// lblLastLogon control.
@@ -379,24 +397,6 @@ public partial class CMSModules_Membership_Pages_Users_User_Edit_General {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.LocalizedButton btnExtendValidity;
-    
-    /// <summary>
-    /// lblResetToken control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblResetToken;
-    
-    /// <summary>
-    /// btnResetToken control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedButton btnResetToken;
     
     /// <summary>
     /// lblUserStartingPath control.

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_AbuseReport_CMSPages_ReportAbuse"
-    Title="Report abuse" Theme="default" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master" Codebehind="ReportAbuse.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_AbuseReport_CMSPages_ReportAbuse"
+    Title="Report abuse" Theme="default" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master"  Codebehind="ReportAbuse.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/AbuseReport/Controls/AbuseReportEdit.ascx" TagName="AbuseReportEdit"
     TagPrefix="cms" %>

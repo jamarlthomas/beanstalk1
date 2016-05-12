@@ -13,6 +13,7 @@ using System.Linq;
 using System.Web.Mvc;
 using CMS.Mvc.ViewModels.SBU;
 
+
 namespace CMS.Mvc.Controllers.Afton
 {
     public class SelectionFilterController : BaseController
@@ -98,7 +99,8 @@ namespace CMS.Mvc.Controllers.Afton
             model.SBUList = MapData<SolutionBusinessUnit, SBUFilterViewModel>(_solutionBusinessUnitProvider.GetParentOrDefaultSBUs(page));
             foreach (var sbu in model.SBUList)
             {
-                sbu.SolutionsList = _solutionProvider.GetSolutions(sbu.Title).Select(MapTreeNodeToCheckBox).ToList();
+                var solutions = _solutionProvider.GetSolutions(sbu.NodeAlias);
+                sbu.SolutionsList = solutions.Select(MapTreeNodeToCheckBox).ToList();
             }
             model.SBUList = model.SBUList.Where(w => w.SolutionsList != null && w.SolutionsList.Any()).ToList();
 
@@ -158,7 +160,7 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 request.DocumentTypesIds = MapTreeNodesToIdStr(_documentTypeProvider.GetDocumentTypes());
             }
-
+            
             if (request.SolutionsIds == RouteHelper.NULL_VALUE_PLACEHOLDER)
             {
                 if (request.SBUId != RouteHelper.NULL_VALUE_PLACEHOLDER)

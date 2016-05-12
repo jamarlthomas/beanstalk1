@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web.UI.WebControls;
 using System.Linq;
@@ -327,10 +327,10 @@ public partial class CMSModules_ContactManagement_Controls_UI_ContactGroup_Accou
         {
             // All items
             case What.All:
-                var accountIds = AccountInfoProvider.GetAccounts()
-                   .Where(gridElem.WhereCondition)
-                   .Where(gridElem.WhereClause)
-                   .AsIDQuery();
+                var accountIds = new ObjectQuery("om.contactgroupaccountlist")
+                    .Column("AccountID")
+                    .Where(gridElem.WhereCondition)
+                    .Where(gridElem.WhereClause);
 
                 where.WhereIn("ContactGroupMemberRelatedID", accountIds);
                 break;
@@ -379,58 +379,66 @@ public partial class CMSModules_ContactManagement_Controls_UI_ContactGroup_Accou
     /// </summary>
     private string GetWhereCondition()
     {
-        string where = "(ContactGroupMemberContactGroupID = " + cgi.ContactGroupID + ")";
-        where = SqlHelper.AddWhereCondition(where, "((AccountSiteID IS NULL AND AccountGlobalAccountID IS NULL) OR (AccountSiteID > 0 AND AccountMergedWithAccountID IS NULL))");
+        if (siteID < 0)
+        {
+            return new WhereCondition().NoResults().ToString();
+        }
+
+        var whereContactGroup = new WhereCondition().WhereEquals("ContactGroupMemberContactGroupID", cgi.ContactGroupID);
+        var whereSiteIDNull = new WhereCondition().WhereNull("AccountSiteID");
+        var whereSiteIDAndGlobalIDIsNull = new WhereCondition(whereSiteIDNull).WhereNull("AccountGlobalAccountID");
+        var whereSiteIDGreater0AndMergedIDIsNull = new WhereCondition().WhereGreaterThan("AccountSiteID", 0).WhereNull("AccountMergedWithAccountID");
+        var whereMainOr = new WhereCondition(whereSiteIDAndGlobalIDIsNull).Or().Where(whereSiteIDGreater0AndMergedIDIsNull);
+        var where = new WhereCondition(whereContactGroup).Where(whereMainOr);
 
         // Filter site objects
         if (siteID > 0)
         {
-            if (readSiteAccounts)
-            {
-                where = SqlHelper.AddWhereCondition(where, "(AccountSiteID = " + siteID + ")");
-                accountSelector.SiteID = siteID;
-            }
-            else
+            if (!readSiteAccounts)
             {
                 CMSPage.RedirectToAccessDenied(ModuleName.CONTACTMANAGEMENT, "ReadAccounts");
+                return new WhereCondition().NoResults().ToString();
             }
+
+            @where.Where(new WhereCondition().WhereEquals("AccountSiteID", siteID));
+            accountSelector.SiteID = siteID;
+            return @where.ToString(true);
         }
+
         // Current group is global object
-        else if (siteID == 0)
+        // In CMS Desk display current site and global objects
+        if (CurrentUser.IsGlobalAdministrator)
         {
-            // In CMS Desk display current site and global objects
-            if (!ContactHelper.IsSiteManager)
+            // No WHERE condition required = displaying all data
+            // Set contact selector only
+            accountSelector.SiteID = UniSelector.US_ALL_RECORDS;
+        }
+        else
+        {
+            var whereSiteIDEqualsCurrentID = new WhereCondition().WhereEquals("AccountSiteID", SiteContext.CurrentSiteID);
+            if (readSiteAccounts && readGlobalAccounts)
             {
-                if (readSiteAccounts && readGlobalAccounts)
-                {
-                    where = SqlHelper.AddWhereCondition(where, "(AccountSiteID IS NULL) OR (AccountSiteID = " + SiteContext.CurrentSiteID + ")");
-                    accountSelector.SiteID = UniSelector.US_GLOBAL_AND_SITE_RECORD;
-                }
-                else if (readGlobalAccounts)
-                {
-                    where = SqlHelper.AddWhereCondition(where, "(AccountSiteID IS NULL)");
-                    accountSelector.SiteID = UniSelector.US_GLOBAL_RECORD;
-                }
-                else if (readSiteAccounts)
-                {
-                    where = SqlHelper.AddWhereCondition(where, "AccountSiteID = " + SiteContext.CurrentSiteID);
-                    accountSelector.SiteID = SiteContext.CurrentSiteID;
-                }
-                else
-                {
-                    CMSPage.RedirectToAccessDenied(ModuleName.CONTACTMANAGEMENT, "ReadGlobalAccounts|ReadAccounts");
-                }
+                @where.Where(new WhereCondition(whereSiteIDNull).Or().Where(whereSiteIDEqualsCurrentID));
+                accountSelector.SiteID = UniSelector.US_GLOBAL_AND_SITE_RECORD;
             }
-            // In Site manager display for global contact group all site and global contacts
+            else if (readGlobalAccounts)
+            {
+                @where.Where(whereSiteIDNull);
+                accountSelector.SiteID = UniSelector.US_GLOBAL_RECORD;
+            }
+            else if (readSiteAccounts)
+            {
+                @where.Where(whereSiteIDEqualsCurrentID);
+                accountSelector.SiteID = SiteContext.CurrentSiteID;
+            }
             else
             {
-                // No WHERE condition required = displaying all data
-
-                // Set contact selector only
-                accountSelector.SiteID = UniSelector.US_ALL_RECORDS;
+                CMSPage.RedirectToAccessDenied(ModuleName.CONTACTMANAGEMENT, "ReadGlobalAccounts|ReadAccounts");
+                return new WhereCondition().NoResults().ToString();
             }
         }
-        return where;
+
+        return @where.ToString(true);
     }
 
 

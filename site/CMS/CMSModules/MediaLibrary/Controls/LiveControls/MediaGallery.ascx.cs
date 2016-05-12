@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Controls;
@@ -637,14 +637,14 @@ public partial class CMSModules_MediaLibrary_Controls_LiveControls_MediaGallery 
             hidden = true;
             Visible = false;
             StopProcessing = true;
+            StopProcessingInnerControls();
             return;
         }
 
         if (StopProcessing)
         {
-            folderTree.StopProcessing = true;
-            fileDataSource.StopProcessing = true;
             UniPagerControl.PageControl = null;
+            StopProcessingInnerControls();
         }
         else
         {
@@ -652,6 +652,7 @@ public partial class CMSModules_MediaLibrary_Controls_LiveControls_MediaGallery 
             if (!MediaLibraryInfoProvider.IsUserAuthorizedPerLibrary(MediaLibrary, "Read") && !MediaLibraryInfoProvider.IsUserAuthorizedPerLibrary(MediaLibrary, "libraryaccess"))
             {
                 RaiseOnNotAllowed("libraryaccess");
+                StopProcessingInnerControls();
                 return;
             }
 
@@ -794,11 +795,17 @@ public partial class CMSModules_MediaLibrary_Controls_LiveControls_MediaGallery 
             mediaLibrarySort.FilterMethod = FilterMethod;
 
             // File upload properties
+            string currentFolder = folderTree.SelectedPath;
+            if (!String.IsNullOrEmpty(MediaLibraryPath))
+            {
+                currentFolder = String.Join("\\", MediaLibraryPath, currentFolder);
+            }
+
             fileUploader.Visible = AllowUpload;
             fileUploader.EnableUploadPreview = AllowUploadPreview;
             fileUploader.PreviewSuffix = PreviewSuffix;
             fileUploader.LibraryID = MediaLibrary.LibraryID;
-            fileUploader.DestinationPath = folderTree.SelectedPath;
+            fileUploader.DestinationPath = currentFolder;
             fileUploader.OnNotAllowed += fileUploader_OnNotAllowed;
             fileUploader.OnAfterFileUpload += fileUploader_OnAfterFileUpload;
 
@@ -928,6 +935,15 @@ public partial class CMSModules_MediaLibrary_Controls_LiveControls_MediaGallery 
         {
             UniPagerControl.LayoutTemplate = CMSAbstractDataProperties.LoadTransformation(UniPagerControl, LayoutTemplate);
         }
+    }
+
+
+    private void StopProcessingInnerControls()
+    {
+        folderTree.StopProcessing = true;
+        fileDataSource.StopProcessing = true;
+        mediaLibrarySort.StopProcessing = true;
+        fileUploader.StopProcessing = true;
     }
 
 

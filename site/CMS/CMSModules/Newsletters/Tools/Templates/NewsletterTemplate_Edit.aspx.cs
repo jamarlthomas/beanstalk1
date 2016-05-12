@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 using System.Web.UI.WebControls;
 
@@ -157,7 +157,7 @@ function InsertEditableRegion() {{
         bool isAuthorized = CurrentUser.IsAuthorizedPerResource("CMS.Newsletter", "ManageTemplates") && (EditedObject != null);
 
         // Init save button
-        CurrentMaster.HeaderActions.ActionsList.Add(new SaveAction(this)
+        CurrentMaster.HeaderActions.ActionsList.Add(new SaveAction
         {
             Enabled = isAuthorized
         });

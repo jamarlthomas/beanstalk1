@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="OptionCategoryNameFilter.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="OptionCategoryNameFilter.ascx.cs"
     Inherits="CMSModules_Ecommerce_Controls_Filters_OptionCategoryNameFilter" %>
 
 <asp:Panel runat="server" ID="pnlFilter">

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Data;
 using System.Linq;
@@ -12,32 +12,12 @@ using CMS.Helpers;
 using CMS.IO;
 using CMS.Localization;
 using CMS.Membership;
-using CMS.PortalEngine;
 using CMS.SiteProvider;
 using CMS.UIControls;
 using CMS.WorkflowEngine;
 
-public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSelector_LinkMediaSelector : LinkMediaSelector
+public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSelector_LinkMediaSelector : ContentLinkMediaSelector
 {
-    #region "Constants"
-
-    private const string NODE_COLUMNS = "ClassDisplayName, AttachmentName, AttachmentTitle, AttachmentDescription, AttachmentExtension, AttachmentImageWidth, AttachmentImageHeight, NodeSiteID, SiteName, NodeGUID, DocumentUrlPath, NodeAlias, NodeAliasPath, AttachmentGUID, AttachmentID, DocumentName, AttachmentSize, NodeClassID, DocumentModifiedWhen, NodeACLID, NodeHasChildren, DocumentCheckedOutVersionHistoryID, NodeOwner, DocumentExtensions, ClassName, DocumentLastVersionName, DocumentType, DocumentLastVersionType, NodeID";
-
-
-    /// <summary>
-    /// Short link to help page regarding media link insertion.
-    /// </summary>
-    private const string HELP_TOPIC_INSERT_MEDIA_LINK = "media_content_through_editor";
-
-
-    /// <summary>
-    /// Short link to help page regarding link insertion.
-    /// </summary>
-    private const string HELP_TOPIC_INSERT_LINK_LINK = "links_anchors";
-
-    #endregion
-
-
     #region "Private variables"
 
     // Content variables
@@ -131,34 +111,11 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
     /// <summary>
     /// Returns current properties (according to OutputFormat).
     /// </summary>
-    protected override ItemProperties Properties
+    protected override ItemProperties ItemProperties
     {
         get
         {
-            switch (Config.OutputFormat)
-            {
-                case OutputFormatEnum.HTMLMedia:
-                    return htmlMediaProp;
-
-                case OutputFormatEnum.HTMLLink:
-                    return htmlLinkProp;
-
-                case OutputFormatEnum.BBMedia:
-                    return bbMediaProp;
-
-                case OutputFormatEnum.BBLink:
-                    return bbLinkProp;
-
-                case OutputFormatEnum.NodeGUID:
-                    return nodeGuidProp;
-
-                default:
-                    if ((Config.CustomFormatCode == "copy") || (Config.CustomFormatCode == "move") || (Config.CustomFormatCode == "link") || (Config.CustomFormatCode == "linkdoc"))
-                    {
-                        return docCopyMoveProp;
-                    }
-                    return urlProp;
-            }
+            return GetItemProperties();
         }
     }
 
@@ -238,18 +195,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
 
 
     /// <summary>
-    /// Indicates whether the attachments are temporary.
-    /// </summary>
-    private bool AttachmentsAreTemporary
-    {
-        get
-        {
-            return ((Config.AttachmentFormGUID != Guid.Empty) && (Config.AttachmentDocumentID == 0));
-        }
-    }
-
-
-    /// <summary>
     /// Gets the node attachments are related to.
     /// </summary>
     private TreeNode TreeNodeObj
@@ -258,25 +203,9 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
         {
             if (mTreeNodeObj == null)
             {
-                // Content tab
-                if (SourceType == MediaSourceEnum.Content)
-                {
-                    if (NodeID > 0)
-                    {
-                        TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser)
-                                                {
-                                                    CombineWithDefaultCulture = true
-                                                };
-                        mTreeNodeObj = DocumentHelper.GetDocument(NodeID, TreeProvider.ALL_CULTURES, true, tree);
-                    }
-                }
-                // Attachments tab
-                else if (!AttachmentsAreTemporary)
-                {
-                    TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-                    mTreeNodeObj = DocumentHelper.GetDocument(Config.AttachmentDocumentID, tree);
-                }
+                var node = GetDocument(NodeID);
 
+                mTreeNodeObj = node;
                 mediaView.TreeNodeObj = mTreeNodeObj;
             }
             return mTreeNodeObj;
@@ -285,55 +214,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
         {
             mTreeNodeObj = value;
         }
-    }
-
-
-    /// <summary>
-    /// Gets or sets GUID of the recently selected attachment.
-    /// </summary>
-    private Guid LastAttachmentGuid
-    {
-        get
-        {
-            return ValidationHelper.GetGuid(ViewState["LastAttachmentGuid"], Guid.Empty);
-        }
-        set
-        {
-            ViewState["LastAttachmentGuid"] = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Currently selected item.
-    /// </summary>
-    private AttachmentInfo CurrentAttachmentInfo
-    {
-        get;
-        set;
-    }
-
-
-    /// <summary>
-    /// Indicates whether the asynchronous postback occurs on the page.
-    /// </summary>
-    private bool IsInAsyncPostBack
-    {
-        get
-        {
-            var scriptManager = ScriptManager.GetCurrent(Page);
-            return scriptManager != null && scriptManager.IsInAsyncPostBack;
-        }
-    }
-
-
-    /// <summary>
-    /// Indicates whether the post back is result of some hidden action.
-    /// </summary>
-    private bool IsAction
-    {
-        get;
-        set;
     }
 
 
@@ -352,94 +232,42 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
         }
     }
 
-
-    /// <summary>
-    /// Gets or sets selected item to colorize.
-    /// </summary>
-    private Guid ItemToColorize
-    {
-        get
-        {
-            return ValidationHelper.GetGuid(ViewState["ItemToColorize"], Guid.Empty);
-        }
-        set
-        {
-            ViewState["ItemToColorize"] = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Gets or sets ID of the node reflecting new root specified by starting path.
-    /// </summary>
-    private int StartingPathNodeID
-    {
-        get
-        {
-            return ValidationHelper.GetInteger(ViewState["StartingPathNodeID"], 0);
-        }
-        set
-        {
-            ViewState["StartingPathNodeID"] = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Indicates if properties are displayed in full height mode.
-    /// </summary>
-    private bool IsFullDisplay
-    {
-        get
-        {
-            return ValidationHelper.GetBoolean(ViewState["IsFullDisplay"], false);
-        }
-        set
-        {
-            ViewState["IsFullDisplay"] = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Indicates whether the control is displayed as part of the copy/move dialog.
-    /// </summary>
-    private bool IsCopyMoveLinkDialog
-    {
-        get
-        {
-            switch (Config.CustomFormatCode)
-            {
-                case "copy":
-                case "move":
-                case "link":
-                case "linkdoc":
-                case "selectpath":
-                case "relationship":
-                    return true;
-
-                default:
-                    return false;
-            }
-        }
-    }
-
-
-    /// <summary>
-    /// Indicates whether the control output is link.
-    /// </summary>
-    private bool IsLinkOutput
-    {
-        get
-        {
-            return ((Config.OutputFormat == OutputFormatEnum.HTMLLink) || (Config.OutputFormat == OutputFormatEnum.BBLink) || (Config.OutputFormat == OutputFormatEnum.URL));
-        }
-    }
-
     #endregion
 
 
     #region "Page events"
+
+    /// <summary>
+    /// Gets the item properties control
+    /// </summary>
+    private ItemProperties GetItemProperties()
+    {
+        switch (Config.OutputFormat)
+        {
+            case OutputFormatEnum.HTMLMedia:
+                return htmlMediaProp;
+
+            case OutputFormatEnum.HTMLLink:
+                return htmlLinkProp;
+
+            case OutputFormatEnum.BBMedia:
+                return bbMediaProp;
+
+            case OutputFormatEnum.BBLink:
+                return bbLinkProp;
+
+            case OutputFormatEnum.NodeGUID:
+                return nodeGuidProp;
+
+            default:
+                if ((Config.CustomFormatCode == "copy") || (Config.CustomFormatCode == "move") || (Config.CustomFormatCode == "link") || (Config.CustomFormatCode == "linkdoc"))
+                {
+                    return docCopyMoveProp;
+                }
+                return urlProp;
+        }
+    }
+
 
     protected override void OnInit(EventArgs e)
     {
@@ -457,40 +285,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
 
         // Prepare help
         SetHelp();
-    }
-
-
-    /// <summary>
-    /// Sets context help in dialog depending on current Config.
-    /// </summary>
-    private void SetHelp()
-    {
-        if (IsLiveSite)
-        {
-            return;
-        }
-
-        string helpTopic = String.Empty;
-        if ((Config.OutputFormat == OutputFormatEnum.URL) || (Config.OutputFormat == OutputFormatEnum.HTMLLink) || (Config.OutputFormat == OutputFormatEnum.BBLink))
-        {
-            helpTopic = HELP_TOPIC_INSERT_LINK_LINK;
-        }
-        else if ((Config.OutputFormat == OutputFormatEnum.BBMedia) || (Config.OutputFormat == OutputFormatEnum.HTMLMedia))
-        {
-            helpTopic = HELP_TOPIC_INSERT_MEDIA_LINK;
-        }
-
-        if (!String.IsNullOrEmpty(helpTopic))
-        {
-            helpTopic = DocumentationHelper.GetDocumentationTopicUrl(helpTopic);
-        }
-
-        object options = new
-        {
-            helpName = "lnkMediaSelectorHelp",
-            helpUrl = helpTopic
-        };
-        ScriptHelper.RegisterModule(this, "CMS/DialogContextHelpChange", options);
     }
 
 
@@ -518,11 +312,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
         // Display info on listing more content
         if (!IsCopyMoveLinkDialog && IsFullListingMode && (TreeNodeObj != null))
         {
-            string closeLink = String.Format("<span class=\"ListingClose\" style=\"cursor: pointer;\" onclick=\"SetAction('closelisting', ''); RaiseHiddenPostBack(); return false;\">{0}</span>", GetString("general.close"));
-            string docNamePath = String.Format("<span class=\"ListingPath\">{0}</span>", HTMLHelper.HTMLEncode(TreeNodeObj.DocumentNamePath));
-
-            string listingMsg = string.Format(GetString("dialogs.content.listingInfo"), docNamePath, closeLink);
-            mediaView.DisplayListingInfo(listingMsg);
+            DisplayFullListingInfo();
         }
 
         if (IsCopyMoveLinkDialog)
@@ -532,11 +322,25 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
     }
 
 
+    /// <summary>
+    /// Displays the information about the full listing mode
+    /// </summary>
+    private void DisplayFullListingInfo()
+    {
+        string closeLink = String.Format("<span class=\"ListingClose\" style=\"cursor: pointer;\" onclick=\"SetAction('closelisting', ''); RaiseHiddenPostBack(); return false;\">{0}</span>", GetString("general.close"));
+        string docNamePath = String.Format("<span class=\"ListingPath\">{0}</span>", HTMLHelper.HTMLEncode(TreeNodeObj.DocumentNamePath));
+
+        string listingMsg = string.Format(GetString("dialogs.content.listingInfo"), docNamePath, closeLink);
+
+        mediaView.DisplayListingInfo(listingMsg);
+    }
+
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!StopProcessing)
         {
-            CheckPermissions();
+            CheckPermissions(TreeNodeObj);
 
             SetupProperties();
 
@@ -544,6 +348,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
 
             SetupControls();
 
+            // Needed for pager in thumbnails mode to work properly
             mediaView.Reload();
 
             EnsureLoadedData();
@@ -563,38 +368,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
     #region "Inherited methods"
 
     /// <summary>
-    /// Initializes its properties according to the URL parameters.
-    /// </summary>
-    public void InitFromQueryString()
-    {
-        switch (Config.OutputFormat)
-        {
-            case OutputFormatEnum.HTMLMedia:
-                SelectableContent = SelectableContentEnum.OnlyMedia;
-                break;
-
-            case OutputFormatEnum.HTMLLink:
-                SelectableContent = SelectableContentEnum.AllContent;
-                break;
-
-            case OutputFormatEnum.BBMedia:
-                SelectableContent = SelectableContentEnum.OnlyImages;
-                break;
-
-            case OutputFormatEnum.BBLink:
-                SelectableContent = SelectableContentEnum.AllContent;
-                break;
-
-            case OutputFormatEnum.URL:
-            case OutputFormatEnum.NodeGUID:
-                string content = QueryHelper.GetString("content", "");
-                SelectableContent = CMSDialogHelper.GetSelectableContent(content);
-                break;
-        }
-    }
-
-
-    /// <summary>
     /// Returns selected item parameters as name-value collection.
     /// </summary>
     public void GetSelectedItem()
@@ -602,13 +375,14 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
         // Clear unused information from session
         ClearSelectedItemInfo();
         ClearActionElems();
-        if (Properties.Validate())
+
+        if (ItemProperties.Validate())
         {
             // Store tab information in the user's dialogs configuration
             StoreDialogsConfiguration();
 
             // Get selected item information
-            Hashtable props = Properties.GetItemProperties();
+            Hashtable props = ItemProperties.GetItemProperties();
 
             // Get JavaScript for inserting the item
             string script = GetInsertItem(props);
@@ -616,6 +390,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
             {
                 ScriptHelper.RegisterStartupScript(Page, typeof(Page), "insertItemScript", ScriptHelper.GetScript(script));
             }
+
             if ((Config.CustomFormatCode.ToLowerCSafe() == "copy") || (Config.CustomFormatCode.ToLowerCSafe() == "move") || (Config.CustomFormatCode.ToLowerCSafe() == "link") || (Config.CustomFormatCode.ToLowerCSafe() == "linkdoc"))
             {
                 // Reload the iframe
@@ -642,22 +417,27 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
         UserInfo ui = UserInfoProvider.GetUserInfo(MembershipContext.AuthenticatedUser.UserID);
         if (ui != null)
         {
+            var userSettings = ui.UserSettings;
+
             // Store configuration based on the current tab
             switch (SourceType)
             {
                 case MediaSourceEnum.Content:
                     // Actualize configuration
-                    ui.UserSettings.UserDialogsConfiguration["content.sitename"] = SiteName;
-                    ui.UserSettings.UserDialogsConfiguration["content.path"] = GetContentPath(NodeID);
-                    ui.UserSettings.UserDialogsConfiguration["content.viewmode"] = CMSDialogHelper.GetDialogViewMode(menuElem.SelectedViewMode);
+                    {
+                        userSettings.UserDialogsConfiguration["content.sitename"] = SiteName;
+                        userSettings.UserDialogsConfiguration["content.path"] = GetContentPath(NodeID);
+                        userSettings.UserDialogsConfiguration["content.viewmode"] = CMSDialogHelper.GetDialogViewMode(menuElem.SelectedViewMode);
+                    }
                     break;
 
                 case MediaSourceEnum.DocumentAttachments:
                     // Actualize configuration
-                    ui.UserSettings.UserDialogsConfiguration["attachments.viewmode"] = CMSDialogHelper.GetDialogViewMode(menuElem.SelectedViewMode);
+                    userSettings.UserDialogsConfiguration["attachments.viewmode"] = CMSDialogHelper.GetDialogViewMode(menuElem.SelectedViewMode);
                     break;
             }
-            ui.UserSettings.UserDialogsConfiguration["selectedtab"] = CMSDialogHelper.GetMediaSource(SourceType);
+
+            userSettings.UserDialogsConfiguration["selectedtab"] = CMSDialogHelper.GetMediaSource(SourceType);
 
             UserInfoProvider.SetUserInfo(ui);
         }
@@ -693,45 +473,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
     {
         if (SourceType == MediaSourceEnum.Content)
         {
-            // Initialize site selector
-            siteSelector.StopProcessing = false;
-            string siteWhereCondition = GetSiteWhere();
-            siteSelector.UniSelector.WhereCondition = siteWhereCondition;
-            contentTree.Culture = Config.Culture;
-
-            if (!string.IsNullOrEmpty(Config.ContentSelectedSite))
-            {
-                contentTree.SiteName = Config.ContentSelectedSite;
-                siteSelector.SiteName = Config.ContentSelectedSite;
-            }
-            else
-            {
-                // Select default site
-                string siteName = SiteContext.CurrentSiteName;
-                // Try select current site
-                if (!string.IsNullOrEmpty(siteName))
-                {
-                    contentTree.SiteName = siteName;
-                    siteSelector.SiteName = siteName;
-                }
-                else
-                {
-                    // Select first site from users sites
-                    DataSet ds = SiteInfoProvider.GetSites()
-                        .Where(siteWhereCondition)
-                        .OrderBy("SiteDisplayName");
-
-                    if (!DataHelper.DataSourceIsEmpty(ds))
-                    {
-                        siteName = ValidationHelper.GetString(ds.Tables[0].Rows[0]["SiteName"], String.Empty);
-                        if (!String.IsNullOrEmpty(siteName))
-                        {
-                            contentTree.SiteName = siteName;
-                            siteSelector.SiteName = siteName;
-                        }
-                    }
-                }
-            }
+            LoadSite();
 
             pnlUpdateSelectors.Update();
         }
@@ -739,36 +481,88 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
 
 
     /// <summary>
-    /// Gets WHERE condition for available sites according field configuration.
+    /// Configures the site selector and preselects the site based on configuration
     /// </summary>
-    private string GetSiteWhere()
+    private void LoadSite()
     {
-        // First check configuration
-        WhereCondition condition = new WhereCondition();
+        var siteWhereCondition = InitSiteSelector();
+        var config = Config;
 
-        if (!IsCopyMoveLinkDialog)
+        contentTree.Culture = config.Culture;
+
+        if (!LoadSiteFromConfig(config))
         {
-            condition.WhereEquals("SiteStatus", "RUNNING");
+            LoadDefaultSite(siteWhereCondition);
+        }
+    }
+
+
+    /// <summary>
+    /// Loads the default site from available sites
+    /// </summary>
+    /// <param name="siteWhereCondition">Site where condition</param>
+    private void LoadDefaultSite(string siteWhereCondition)
+    {
+        // Select default site
+        string siteName = SiteContext.CurrentSiteName;
+
+        // Try select current site
+        if (!string.IsNullOrEmpty(siteName))
+        {
+            contentTree.SiteName = siteName;
+            siteSelector.SiteName = siteName;
+        }
+        else
+        {
+            // Select first site from users sites
+            DataSet ds = SiteInfoProvider.GetSites()
+                                         .Where(siteWhereCondition)
+                                         .OrderBy("SiteDisplayName");
+
+            if (!DataHelper.DataSourceIsEmpty(ds))
+            {
+                siteName = ValidationHelper.GetString(ds.Tables[0].Rows[0]["SiteName"], String.Empty);
+                if (!String.IsNullOrEmpty(siteName))
+                {
+                    contentTree.SiteName = siteName;
+                    siteSelector.SiteName = siteName;
+                }
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// Initializes the site selector
+    /// </summary>
+    /// <returns>Returns site where condition which limits the available sites</returns>
+    private string InitSiteSelector()
+    {
+        // Initialize site selector
+        string siteWhereCondition = GetSiteWhere();
+
+        siteSelector.StopProcessing = false;
+        siteSelector.UniSelector.WhereCondition = siteWhereCondition;
+
+        return siteWhereCondition;
+    }
+
+
+    /// <summary>
+    /// Loads the site selection from the given configuration. Returns true if the site was loaded from configuration
+    /// </summary>
+    /// <param name="config">Dialog configuration</param>
+    private bool LoadSiteFromConfig(DialogConfiguration config)
+    {
+        if (!string.IsNullOrEmpty(config.ContentSelectedSite))
+        {
+            contentTree.SiteName = config.ContentSelectedSite;
+            siteSelector.SiteName = config.ContentSelectedSite;
+
+            return true;
         }
 
-        switch (Config.ContentSites)
-        {
-            case AvailableSitesEnum.OnlySingleSite:
-                condition.WhereEquals("SiteName", Config.ContentSelectedSite);
-                break;
-
-            case AvailableSitesEnum.OnlyCurrentSite:
-                condition.WhereEquals("SiteName", SiteContext.CurrentSiteName);
-                break;
-        }
-
-        // Get only current user's sites
-        if (!MembershipContext.AuthenticatedUser.IsGlobalAdministrator)
-        {
-            condition.WhereIn("SiteID", new IDQuery<UserSiteInfo>(UserSiteInfo.TYPEINFO.SiteIDColumn)
-                                                    .WhereEquals("UserID", MembershipContext.AuthenticatedUser.UserID));
-        }
-        return condition.ToString(true);
+        return false;
     }
 
 
@@ -811,9 +605,8 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
 
             htmlMediaProp.HistoryID = MediaSource.HistoryID;
 
-
             // Load properties
-            Properties.LoadItemProperties(Parameters);
+            ItemProperties.LoadItemProperties(Parameters);
             pnlUpdateProperties.Update();
 
             // Remember item to colorize
@@ -821,8 +614,8 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
             {
                 case MediaSourceEnum.MetaFile:
                     LastAttachmentGuid = MediaSource.MetaFileGuid;
-                    ColorizeRow(MediaSource.MetaFileID.ToString());
                     break;
+
                 default:
                     ItemToColorize = (SourceType == MediaSourceEnum.Content) ? MediaSource.NodeGuid : MediaSource.AttachmentGuid;
                     LastAttachmentGuid = ItemToColorize;
@@ -839,11 +632,14 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
     /// </summary>
     private void LoadUserConfiguration()
     {
+        var config = Config;
         var currentUser = MembershipContext.AuthenticatedUser;
-        if ((currentUser.UserSettings.UserDialogsConfiguration != null) &&
-            (currentUser.UserSettings.UserDialogsConfiguration.ColumnNames != null))
+        var userSettings = currentUser.UserSettings;
+
+        if ((userSettings.UserDialogsConfiguration != null) &&
+            (userSettings.UserDialogsConfiguration.ColumnNames != null))
         {
-            XmlData dialogConfig = currentUser.UserSettings.UserDialogsConfiguration;
+            XmlData dialogConfig = userSettings.UserDialogsConfiguration;
 
             string siteName = "";
             string aliasPath = "";
@@ -853,9 +649,11 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
             switch (SourceType)
             {
                 case MediaSourceEnum.Content:
-                    siteName = (dialogConfig.ContainsColumn("content.sitename") ? (string)dialogConfig["content.sitename"] : "");
-                    aliasPath = (dialogConfig.ContainsColumn("content.path") ? (string)dialogConfig["content.path"] : "");
-                    viewMode = (dialogConfig.ContainsColumn("content.viewmode") ? (string)dialogConfig["content.viewmode"] : "");
+                    {
+                        siteName = (dialogConfig.ContainsColumn("content.sitename") ? (string)dialogConfig["content.sitename"] : "");
+                        aliasPath = (dialogConfig.ContainsColumn("content.path") ? (string)dialogConfig["content.path"] : "");
+                        viewMode = (dialogConfig.ContainsColumn("content.viewmode") ? (string)dialogConfig["content.viewmode"] : "");
+                    }
                     break;
 
                 case MediaSourceEnum.DocumentAttachments:
@@ -864,7 +662,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
             }
 
             // Update dialog configuration (only if ContentSelectedSite is not set)
-            if (!string.IsNullOrEmpty(siteName) && string.IsNullOrEmpty(Config.ContentSelectedSite))
+            if (!string.IsNullOrEmpty(siteName) && string.IsNullOrEmpty(config.ContentSelectedSite))
             {
                 // Check if site from user settings exists and is running
                 SiteInfo si = SiteInfoProvider.GetSiteInfo(siteName);
@@ -879,12 +677,15 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
 
             if (!string.IsNullOrEmpty(aliasPath))
             {
-                NodeID = (aliasPath.StartsWithCSafe(Config.ContentStartingPath.ToLowerCSafe()) ? GetContentNodeId(aliasPath) : GetContentNodeId(Config.ContentStartingPath));
+                var isOnStartingPath = aliasPath.StartsWithCSafe(config.ContentStartingPath, true);
+                var path = (isOnStartingPath ? aliasPath : config.ContentStartingPath);
+
+                NodeID = GetContentNodeId(SiteName, path);
 
                 // Initialize root node
                 if (NodeID == 0)
                 {
-                    NodeID = GetContentNodeId("/");
+                    NodeID = GetContentNodeId(SiteName, "/");
                     menuElem.ShowParentButton = false;
                 }
 
@@ -905,14 +706,15 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
         else
         {
             // Initialize site selector
-            if (!string.IsNullOrEmpty(Config.ContentSelectedSite))
+            if (!string.IsNullOrEmpty(config.ContentSelectedSite))
             {
-                siteSelector.SiteName = Config.ContentSelectedSite;
+                siteSelector.SiteName = config.ContentSelectedSite;
             }
             else
             {
                 siteSelector.SiteID = SiteContext.CurrentSiteID;
             }
+
             SelectRootNode();
         }
     }
@@ -921,25 +723,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
 
 
     #region "Private methods"
-
-    /// <summary>
-    /// Performs necessary permissions check.
-    /// </summary>
-    private void CheckPermissions()
-    {
-        // Check 'READ' permission for the specific document if attachments are being created
-        if ((SourceType == MediaSourceEnum.DocumentAttachments) && (!AttachmentsAreTemporary))
-        {
-            if (MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(TreeNodeObj, NodePermissionsEnum.Read) != AuthorizationResultEnum.Allowed)
-            {
-                string errMsg = string.Format(GetString("cmsdesk.notauthorizedtoreaddocument"), TreeNodeObj.GetDocumentName());
-
-                // Redirect to access denied page
-                AccessDenied(errMsg);
-            }
-        }
-    }
-
 
     /// <summary>
     /// Ensures that required data are displayed.
@@ -958,13 +741,13 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
 
             NodeID = 0;
             contentTree.SelectedNodeID = NodeID;
-            Properties.ClearProperties(true);
+            ItemProperties.ClearProperties(true);
         }
 
         // Clear properties if link dialog is opened and no link is edited
         if (!URLHelper.IsPostback() && isLink && !IsItemLoaded)
         {
-            Properties.ClearProperties(true);
+            ItemProperties.ClearProperties(true);
         }
 
         // If no action takes place
@@ -1019,7 +802,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
 
                 // Get site root by default
                 TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-                TreeNodeObj = tree.SelectSingleNode(SiteName, "/", null, false, "cms.root", null, null, 1, true, TreeProvider.SELECTNODES_REQUIRED_COLUMNS);
+                TreeNodeObj = tree.SelectSingleNode(SiteName, "/", null, false, SystemDocumentTypes.Root, null, null, 1, true, DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS);
                 NodeID = TreeNodeObj.NodeID;
 
                 InitializeContentTree();
@@ -1063,7 +846,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
         urlProp.Visible = false;
         docCopyMoveProp.Visible = false;
 
-        Properties.Visible = true;
+        ItemProperties.Visible = true;
 
         htmlLinkProp.StopProcessing = !htmlLinkProp.Visible;
         htmlMediaProp.StopProcessing = !htmlMediaProp.Visible;
@@ -1073,7 +856,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
         nodeGuidProp.StopProcessing = !nodeGuidProp.Visible;
         docCopyMoveProp.StopProcessing = !docCopyMoveProp.Visible;
 
-        Properties.Config = Config;
+        ItemProperties.Config = Config;
     }
 
 
@@ -1092,52 +875,28 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
             // Filter sites only for users without global administrator privilege
             var currentUser = MembershipContext.AuthenticatedUser;
             siteSelector.UserId = currentUser.IsGlobalAdministrator ? 0 : MembershipContext.AuthenticatedUser.UserID;
-            
+
             // Select current site and disable change
             siteSelector.SiteID = SiteID = SiteContext.CurrentSiteID;
             siteSelector.Enabled = false;
         }
 
-        if (SourceType != MediaSourceEnum.DocumentAttachments)
-        {
-            siteSelector.DropDownSingleSelect.AutoPostBack = true;
-            siteSelector.UniSelector.OnSelectionChanged += UniSelector_OnSelectionChanged;
-            siteSelector.AdditionalDropDownCSSClass = "DialogSiteDropdown";
-        }
-        else
-        {
-            siteSelector.StopProcessing = true;
-            pnlUpdateSelectors.Visible = false;
-        }
-
-        mediaView.UsePermanentUrls = UsePermanentUrls;
-        // Set editor client id for properties
-        Properties.EditorClientID = Config.EditorClientID;
+        SetupSiteSelector();
+        SetupPropertiesControl();
 
         InitializeMenuElement();
         InitializeDesignScripts();
 
-        mediaView.IsLiveSite = IsLiveSite;
-        mediaView.SelectableContent = SelectableContent;
-        mediaView.SourceType = SourceType;
-        mediaView.ViewMode = menuElem.SelectedViewMode;
-        mediaView.ResizeToHeight = Config.ResizeToHeight;
-        mediaView.ResizeToMaxSideSize = Config.ResizeToMaxSideSize;
-        mediaView.ResizeToWidth = Config.ResizeToWidth;
-        mediaView.AttachmentNodeParentID = Config.AttachmentParentID;
-        mediaView.ListReloadRequired += mediaView_ListReloadRequired;
-        mediaView.ListViewControl.OnBeforeSorting += ListViewControl_OnBeforeSorting;
-
-        Properties.IsLiveSite = IsLiveSite;
-        Properties.SourceType = SourceType;
+        SetupMediaView();
 
         if (!IsInAsyncPostBack)
         {
             // Initialize scripts
             InitializeControlScripts();
+
             if (URLHelper.IsPostback() && (SourceType != MediaSourceEnum.DocumentAttachments))
             {
-                UniSelector_OnSelectionChanged(this, null);
+                siteSelector_OnSelectionChanged(this, null);
             }
         }
 
@@ -1161,35 +920,76 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
             HideContentControls();
         }
 
-        // If folder was changed reset current page index for control displaying content
-        switch (CurrentAction)
+        ResetPageIndex();
+    }
+
+
+    /// <summary>
+    /// Sets up the properties control
+    /// </summary>
+    private void SetupPropertiesControl()
+    {
+        // Set editor client id for properties
+        var properties = ItemProperties;
+
+        properties.EditorClientID = Config.EditorClientID;
+        properties.IsLiveSite = IsLiveSite;
+        properties.SourceType = SourceType;
+    }
+
+
+    /// <summary>
+    /// Sets up the site selector control
+    /// </summary>
+    private void SetupSiteSelector()
+    {
+        if (SourceType != MediaSourceEnum.DocumentAttachments)
         {
-            case "morecontentselect":
-            case "contentselect":
-            case "parentselect":
-                ResetPageIndex();
-                break;
+            siteSelector.DropDownSingleSelect.AutoPostBack = true;
+            siteSelector.UniSelector.OnSelectionChanged += siteSelector_OnSelectionChanged;
+            siteSelector.AdditionalDropDownCSSClass = "DialogSiteDropdown";
+        }
+        else
+        {
+            siteSelector.StopProcessing = true;
+            pnlUpdateSelectors.Visible = false;
         }
     }
+
+
+    /// <summary>
+    /// Sets up the media view control
+    /// </summary>
+    private void SetupMediaView()
+    {
+        mediaView.UsePermanentUrls = UsePermanentUrls;
+        mediaView.IsLiveSite = IsLiveSite;
+        mediaView.SelectableContent = SelectableContent;
+        mediaView.SelectablePageTypes = SelectablePageTypes;
+        mediaView.SourceType = SourceType;
+        mediaView.ViewMode = menuElem.SelectedViewMode;
+        mediaView.ResizeToHeight = Config.ResizeToHeight;
+        mediaView.ResizeToMaxSideSize = Config.ResizeToMaxSideSize;
+        mediaView.ResizeToWidth = Config.ResizeToWidth;
+        mediaView.AttachmentNodeParentID = Config.AttachmentParentID;
+        mediaView.ListReloadRequired += mediaView_ListReloadRequired;
+        mediaView.ListViewControl.OnBeforeSorting += ListViewControl_OnBeforeSorting;
+        mediaView.InnerMediaControl.PageSizeDropDownList.SelectedIndexChanged += PageSizeDropDownList_SelectedIndexChanged;
+    }
+
+
+    protected void PageSizeDropDownList_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        mediaView.ResetPageIndex();
+        mediaView_ListReloadRequired();
+    }
+
 
     protected void ListViewControl_OnBeforeSorting(object sender, EventArgs e)
     {
         // Reload data for new sorting
         LoadDataSource();
         mediaView.Reload();
-    }
-
-
-    /// <summary>
-    /// Initialize design jQuery scripts.
-    /// </summary>
-    private void InitializeDesignScripts()
-    {
-        ScriptHelper.RegisterStartupScript(Page, typeof(Page), "designScript", ScriptHelper.GetScript(@"
-setTimeout('InitializeDesign();',200);
-$cmsj(window).unbind('resize').resize(function() { 
-    InitializeDesign(); 
-});"));
     }
 
 
@@ -1229,11 +1029,12 @@ $cmsj(window).unbind('resize').resize(function() {
     /// <summary>
     /// Initializes all the script required for communication between controls.
     /// </summary>
-    private void InitializeControlScripts()
+    protected void InitializeControlScripts()
     {
         // Prepare for upload
         string refreshType = CMSDialogHelper.GetMediaSource(SourceType);
         string cmdName;
+
         switch (SourceType)
         {
             case MediaSourceEnum.DocumentAttachments:
@@ -1260,6 +1061,7 @@ function SetAction(action, argument) {{
         }}
     }}
 }}
+
 function InitRefresh_{2}(message, fullRefresh, refreshTree, itemInfo, action) {{
     if((message != null) && (message != ''))
     {{
@@ -1282,18 +1084,27 @@ function InitRefresh_{2}(message, fullRefresh, refreshTree, itemInfo, action) {{
         RaiseHiddenPostBack();
     }}
 }}
+
 function imageEdit_AttachmentRefresh(arg){{
     SetAction('attachmentedit', arg);
     RaiseHiddenPostBack();
 }}
+
 function imageEdit_ContentRefresh(arg){{
     SetAction('contentedit', arg);
     RaiseHiddenPostBack();
 }}
+
 function RaiseHiddenPostBack(){{
     {4};
 }}
-", hdnAction.ClientID, hdnArgument.ClientID, refreshType, cmdName, ControlsHelper.GetPostBackEventReference(hdnButton, "")));
+",
+            hdnAction.ClientID,
+            hdnArgument.ClientID,
+            refreshType,
+            cmdName,
+            ControlsHelper.GetPostBackEventReference(hdnButton, ""))
+        );
     }
 
 
@@ -1336,7 +1147,7 @@ function RaiseHiddenPostBack(){{
             return;
         }
 
-        Hashtable argTable = CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSelector_MediaView.GetArgumentsTable(argument);
+        Hashtable argTable = ContentMediaView.GetArgumentsTable(argument);
         if (argTable.Count < 2)
         {
             return;
@@ -1385,26 +1196,28 @@ function RaiseHiddenPostBack(){{
         switch (SourceType)
         {
             case MediaSourceEnum.DocumentAttachments:
-                attGuid = ValidationHelper.GetGuid(argTable["attachmentguid"], Guid.Empty);
+                {
+                    attGuid = ValidationHelper.GetGuid(argTable["attachmentguid"], Guid.Empty);
 
-                avoidPropUpdate = (LastAttachmentGuid == attGuid);
+                    avoidPropUpdate = (LastAttachmentGuid == attGuid);
 
-                LastAttachmentGuid = attGuid;
-                ItemToColorize = LastAttachmentGuid;
+                    LastAttachmentGuid = attGuid;
+                    ItemToColorize = LastAttachmentGuid;
+                }
                 break;
+
             case MediaSourceEnum.MetaFile:
                 LastAttachmentGuid = ValidationHelper.GetGuid(argTable["metafileguid"], Guid.Empty);
                 break;
+
             default:
-                aliasPath = argTable["nodealiaspath"].ToString();
-                attGuid = ValidationHelper.GetGuid(argTable["attachmentguid"], Guid.Empty);
-                Properties.SiteDomainName = mediaView.SiteObj.DomainName;
-
-                avoidPropUpdate = (ItemToColorize == attGuid);
-
-                ItemToColorize = attGuid;
-                if (ItemToColorize == Guid.Empty)
                 {
+                    aliasPath = argTable["nodealiaspath"].ToString();
+                    attGuid = ValidationHelper.GetGuid(argTable["attachmentguid"], Guid.Empty);
+                    ItemProperties.SiteDomainName = mediaView.SiteObj.DomainName;
+
+                    avoidPropUpdate = (ItemToColorize == attGuid);
+
                     ItemToColorize = ValidationHelper.GetGuid(argTable["nodeguid"], Guid.Empty);
                 }
                 break;
@@ -1459,7 +1272,8 @@ function RaiseHiddenPostBack(){{
     private void SelectRootNode()
     {
         // Reset selected node to root node
-        NodeID = GetContentNodeId("/");
+        var rootPath = String.IsNullOrEmpty(CurrentUser.UserStartingAliasPath) ? "/" : CurrentUser.UserStartingAliasPath;
+        NodeID = GetContentNodeId(SiteName, rootPath);
         contentTree.SelectedNodeID = NodeID;
         contentTree.ExpandNodeID = NodeID;
         menuElem.ShowParentButton = false;
@@ -1477,7 +1291,7 @@ function RaiseHiddenPostBack(){{
 
 
     /// <summary>
-    /// Displays properties in full size.
+    /// Displays properties in full size, not showing the listing
     /// </summary>
     private void DisplayFull()
     {
@@ -1537,11 +1351,19 @@ function RaiseHiddenPostBack(){{
 
 
     /// <summary>
-    /// Ensures first page is displayed in the control displaying the content.
+    /// Ensures first page is displayed in the control displaying the content if necessary
     /// </summary>
     private void ResetPageIndex()
     {
-        mediaView.ResetPageIndex();
+        // If folder was changed reset current page index for control displaying content
+        switch (CurrentAction)
+        {
+            case "morecontentselect":
+            case "contentselect":
+            case "parentselect":
+                mediaView.ResetPageIndex();
+                break;
+        }
     }
 
     #endregion
@@ -1595,62 +1417,18 @@ function RaiseHiddenPostBack(){{
     /// </summary>
     private int GetStartNodeId()
     {
-        if (!string.IsNullOrEmpty(Config.ContentStartingPath))
+        var config = Config;
+
+        if (!string.IsNullOrEmpty(config.ContentStartingPath))
         {
-            contentTree.Path = Config.ContentStartingPath;
+            contentTree.Path = config.ContentStartingPath;
         }
         else if (!string.IsNullOrEmpty(MembershipContext.AuthenticatedUser.UserStartingAliasPath))
         {
             contentTree.Path = MembershipContext.AuthenticatedUser.UserStartingAliasPath;
         }
-        return GetContentNodeId(contentTree.Path);
-    }
 
-
-    /// <summary>
-    /// Returns path of the node specified by its ID.
-    /// </summary>
-    /// <param name="nodeId">ID of the node</param>
-    private static string GetContentPath(int nodeId)
-    {
-        if (nodeId > 0)
-        {
-            TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-
-            // Get node and return its alias path
-            using (TreeNode node = tree.SelectSingleNode(nodeId))
-            {
-                if (node != null)
-                {
-                    return (!node.NodeHasChildren ? TreePathUtils.GetParentPath(node.NodeAliasPath) : node.NodeAliasPath).ToLowerCSafe();
-                }
-            }
-        }
-
-        return string.Empty;
-    }
-
-
-    /// <summary>
-    /// Returns ID of the content node specified by its alias path.
-    /// </summary>
-    /// <param name="aliasPath">Alias path of the node</param>
-    private int GetContentNodeId(string aliasPath)
-    {
-        if (!string.IsNullOrEmpty(aliasPath))
-        {
-            TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-            using (TreeNode node = tree.SelectSingleNode(SiteName, aliasPath, Config.Culture))
-            {
-                if (node != null)
-                {
-                    // Return node's ID
-                    return node.NodeID;
-                }
-            }
-        }
-
-        return 0;
+        return GetContentNodeId(SiteName, contentTree.Path);
     }
 
 
@@ -1679,49 +1457,59 @@ function RaiseHiddenPostBack(){{
     /// <param name="parentAliasPath">Alias path of the parent</param>
     /// <param name="siteName">Name of the related site</param>
     /// <param name="totalRecords">Total records</param>
-    private DataSet GetNodes(string searchText, string parentAliasPath, string siteName, ref int totalRecords)
+    private DataSet GetNodes(string searchText, string parentAliasPath, string siteName, out int totalRecords)
     {
         // Create WHERE condition
-        string where = "(NodeAliasPath <> '/')";
+        var where = new WhereCondition()
+            .WhereNotEquals("NodeAliasPath", "/");
 
         bool searchEnabled = !string.IsNullOrEmpty(searchText);
         if (searchEnabled)
         {
-            string searchTextSafe = SqlHelper.EscapeLikeText(SqlHelper.EscapeQuotes(searchText));
-            where = SqlHelper.AddWhereCondition(where, String.Format("((AttachmentName LIKE N'%{0}%') OR (DocumentName LIKE N'%{0}%'))", searchTextSafe));
+            var searchWhere = new WhereCondition().WhereContains("DocumentName", searchText)
+                .Or().WhereContains("DocumentType", searchText);
+
+            where = where.Where(searchWhere);
         }
 
         // If not all content is selectable and no additional content being displayed
         if ((SelectableContent != SelectableContentEnum.AllContent) && !IsFullListingMode)
         {
-            where = SqlHelper.AddWhereCondition(where, "(ClassName = 'CMS.File')");
+            where = where.WhereEquals("ClassName", SystemDocumentTypes.File);
         }
-        
-        // Get files
+
+        var childClassNames = DocumentHelper.GetDocuments()
+                                            .Path(parentAliasPath, PathTypeEnum.Children)
+                                            .Column("ClassName")
+                                            .OnSite(siteName)
+                                            .NestingLevel(1)
+                                            .Distinct();
+
+        var classNames = String.Join(";", childClassNames.Select(name => name.ClassName));
+
+        // Get nodes with coupled data to be able to recover presentation URL in case coupled data macro is used in URL pattern
         var query = DocumentHelper.GetDocuments()
-                                    .Published(IsLiveSite)
-                                    .PublishedVersion(IsLiveSite)
-                                    .OnSite(siteName)
-                                    .Path(parentAliasPath, PathTypeEnum.Children)
-                                    .Culture(Config.Culture)
-                                    .CombineWithDefaultCulture()
-                                    .Where(where)
-                                    .OrderBy(mediaView.ListViewControl.SortDirect)
-                                    .NestingLevel(1)
-                                    .Columns(SqlHelper.ParseColumnList(NODE_COLUMNS))
-                                    .CheckPermissions();
+                                  .Published(IsLiveSite)
+                                  .WithCoupledColumns()
+                                  .Types(classNames)
+                                  .PublishedVersion(IsLiveSite)
+                                  .OnSite(siteName)
+                                  .Path(parentAliasPath, PathTypeEnum.Children)
+                                  .Culture(Config.Culture)
+                                  .CombineWithDefaultCulture()
+                                  .Where(where)
+                                  .OrderBy(mediaView.ListViewControl.SortDirect)
+                                  .NestingLevel(1)
+                                  .CheckPermissions();
 
         if (!searchEnabled)
         {
             // Don't use paged query for searching (works only for first page)
             query.Page(mediaView.CurrentPage - 1, mediaView.CurrentPageSize);
         }
-        
-        query.QueryName = IsLiveSite ? "selectattachments" : "selectattachmentsversions";
 
         DataSet nodes = query.Result;
         totalRecords = query.TotalRecords;
-
         return nodes;
     }
 
@@ -1740,24 +1528,27 @@ function RaiseHiddenPostBack(){{
         {
             // Get selected node            
             TreeNode node = TreeNodeObj;
-            if ((TreeNodeObj != null) && !(Config.OutputFormat == OutputFormatEnum.NodeGUID && node.NodeSiteID != SiteContext.CurrentSiteID))
+            if ((TreeNodeObj != null) &&
+                !((Config.OutputFormat == OutputFormatEnum.NodeGUID) && (node.NodeSiteID != SiteContext.CurrentSiteID)))
             {
                 // Get selected node site info
-                SiteInfo si = SiteInfoProvider.GetSiteInfo(node.NodeSiteID);
+                var si = SiteInfoProvider.GetSiteInfo(node.NodeSiteID);
                 if (si != null)
                 {
                     // Ensure culture prefix
                     if (URLHelper.UseLangPrefixForUrls(si.SiteName))
                     {
-                        CultureInfo ci = CultureInfoProvider.GetCultureInfo(node.DocumentCulture);
+                        var ci = CultureInfoProvider.GetCultureInfo(node.DocumentCulture);
                         if (ci != null)
                         {
                             RequestContext.CurrentURLLangPrefix = (String.IsNullOrEmpty(ci.CultureAlias) ? ci.CultureCode : ci.CultureAlias);
                         }
                     }
 
-                    // List view
-                    if (node.NodeClassName.ToLowerCSafe() != "cms.file")
+                    bool fullDisplay = false;
+
+                    // Display list view in case the dialog does not care whether the document is file or not or if the selected document is not CMS.File
+                    if (IsCopyMoveLinkDialog || !node.IsFile())
                     {
                         if (node.TreeProvider.CheckDocumentUIPermissions(si.SiteName) && (MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(node, NodePermissionsEnum.Read) != AuthorizationResultEnum.Allowed))
                         {
@@ -1767,113 +1558,40 @@ function RaiseHiddenPostBack(){{
                         // Check permissions
                         if (MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(node, NodePermissionsEnum.ExploreTree) == AuthorizationResultEnum.Allowed)
                         {
-                            nodes = GetNodes(searchText, node.NodeAliasPath, si.SiteName, ref totalRecords);
-
-                            LoadNodes(nodes);
-
-                            // If all content selectable
-                            bool selectableAll = SelectableContent == SelectableContentEnum.AllContent;
-                            if (selectableAll && !IsFullListingMode && (IsAction || !URLHelper.IsPostback()))
-                            {
-                                if ((ItemToColorize == Guid.Empty) || (ItemToColorize == node.NodeGUID))
-                                {
-                                    string fileExtension = TreePathUtils.GetUrlExtension();
-                                    if (String.IsNullOrEmpty(fileExtension))
-                                    {
-                                        fileExtension = node.DocumentExtensions;
-                                    }
-                                    string url = mediaView.GetContentItemUrl(node.NodeGUID, node.DocumentUrlPath, node.NodeAlias,
-                                                                             node.NodeAliasPath, node.IsLink, 0, 0, 0, true, fileExtension);
-
-                                    ItemToColorize = node.NodeGUID;
-
-                                    SelectMediaItem(node.DocumentName, url, node.NodeAliasPath);
-                                }
-                            }
-
-                            // Display full-size properties if detailed view required
-                            if (!IsCopyMoveLinkDialog && !IsFullListingMode && selectableAll && !node.NodeHasChildren && !IsLinkOutput)
-                            {
-                                DisplayFull();
-                            }
-                            else
-                            {
-                                DisplayNormal();
-                            }
+                            fullDisplay = LoadDocument(node);
                         }
                         else
                         {
                             mediaView.InfoText = GetString("dialogs.document.NotAuthorizedToExpolore");
                         }
                     }
+                    // Otherwise file in a dialog which cares about file attachment
                     else
                     {
                         // Check permissions
-                        if ((MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(node, NodePermissionsEnum.Read) == AuthorizationResultEnum.Allowed))
+                        if (MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(node, NodePermissionsEnum.Read) == AuthorizationResultEnum.Allowed)
                         {
-                            // Get attachment info and initialize displayed attachment properties
-                            Guid attachmentGUID = ValidationHelper.GetGuid(node.GetValue("FileAttachment"), Guid.Empty);
-                            if (attachmentGUID != Guid.Empty)
-                            {
-                                // Get the attachment
-                                TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser) { UseCache = false };
-                                AttachmentInfo atInfo = DocumentHelper.GetAttachment(node, attachmentGUID, tree, false);
-                                if (atInfo != null)
-                                {
-                                    // Get the data
-                                    string extension = atInfo.AttachmentExtension;
-                                    bool isContentFile = (node.NodeClassName.ToLowerCSafe() == "cms.file");
-
-                                    if (CMSDialogHelper.IsItemSelectable(SelectableContent, extension, isContentFile))
-                                    {
-                                        string fileExtension = (isContentFile ? TreePathUtils.GetFilesUrlExtension(SiteName) : TreePathUtils.GetUrlExtension(SiteName));
-                                        if (String.IsNullOrEmpty(fileExtension))
-                                        {
-                                            fileExtension = node.DocumentExtensions;
-                                        }
-                                        // Set 'get file path'
-                                        atInfo.AttachmentUrl = mediaView.GetContentItemUrl(node.NodeGUID, node.DocumentUrlPath, node.NodeAlias, node.NodeAliasPath, node.IsLink, 0, 0, 0, false, fileExtension);
-
-                                        CurrentAttachmentInfo = atInfo;
-
-                                        // Display full-sized properties only when media dialog is opened not in listing mode, node has no children, node is image and selectable are only images or output is not a link
-                                        if (!IsCopyMoveLinkDialog && !IsFullListingMode && !node.NodeHasChildren && (!IsLinkOutput || ImageHelper.IsImage(extension) && (SelectableContent == SelectableContentEnum.OnlyImages)))
-                                        {
-                                            // Display properties in full size
-                                            DisplayFull();
-                                        }
-                                        else
-                                        {
-                                            if (node.NodeHasChildren)
-                                            {
-                                                // Load child nodes                                            
-                                                nodes = GetNodes(searchText, node.NodeAliasPath, si.SiteName, ref totalRecords);
-
-                                                LoadNodes(nodes);
-                                            }
-
-                                            DisplayNormal();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        mediaView.InfoText = GetString("dialogs.item.notselectable");
-
-                                        DisplayNormal();
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                DisplayNormal();
-                            }
+                            fullDisplay = LoadAttachment(node);
                         }
                         else
                         {
-                            DisplayNormal();
-
                             mediaView.InfoText = GetString("dialogs.document.NotAuthorizedToViewNode");
                         }
+                    }
+
+                    if (fullDisplay)
+                    {
+                        // Display the properties in full mode, not showing the listing
+                        DisplayFull();
+                    }
+                    else
+                    {
+                        // In normal mode, load the documents into the listing
+                        nodes = GetNodes(searchText, node.NodeAliasPath, si.SiteName, out totalRecords);
+
+                        LoadNodes(nodes);
+
+                        DisplayNormal();
                     }
                 }
             }
@@ -1881,6 +1599,98 @@ function RaiseHiddenPostBack(){{
 
         mediaView.DataSource = nodes;
         mediaView.TotalRecords = totalRecords;
+    }
+
+
+    /// <summary>
+    /// Loads attachment from the given document node as the selected item
+    /// </summary>
+    /// <param name="node">Document</param>
+    /// <returns>Returns true if only the attachment properties should be displayed in full mode.</returns>
+    private bool LoadAttachment(TreeNode node)
+    {
+        bool fullDisplay = false;
+
+        // Get attachment info and initialize displayed attachment properties
+        Guid attachmentGUID = ValidationHelper.GetGuid(node.GetValue("FileAttachment"), Guid.Empty);
+        if (attachmentGUID != Guid.Empty)
+        {
+            // Get the attachment
+            var tree = new TreeProvider(MembershipContext.AuthenticatedUser)
+            {
+                UseCache = false
+            };
+            var atInfo = DocumentHelper.GetAttachment(node, attachmentGUID, tree, false);
+            if (atInfo != null)
+            {
+                // Get the data
+                string extension = atInfo.AttachmentExtension;
+                bool isContentFile = node.IsFile();
+
+                if (CMSDialogHelper.IsItemSelectable(SelectableContent, extension, isContentFile))
+                {
+                    // Set 'get file path'
+                    atInfo.AttachmentUrl = GetNodeUrl(node);
+
+                    CurrentAttachmentInfo = atInfo;
+
+                    // Display full-sized properties only when media dialog is opened not in listing mode, node has no children, node is image and selectable are only images or output is not a link
+                    if (!IsFullListingMode &&
+                        !node.NodeHasChildren &&
+                        (!IsLinkOutput || (ImageHelper.IsImage(extension) && (SelectableContent == SelectableContentEnum.OnlyImages))))
+                    {
+                        // Display properties in full size
+                        fullDisplay = true;
+                    }
+                }
+                else
+                {
+                    mediaView.InfoText = GetString("dialogs.item.notselectable");
+                }
+            }
+        }
+
+        return fullDisplay;
+    }
+
+
+    private string GetNodeUrl(TreeNode node)
+    {
+        return mediaView.GetContentItemUrl(node);
+    }
+
+
+    /// <summary>
+    /// Loads the given document node as the selected item
+    /// </summary>
+    /// <param name="node">Document</param>
+    /// <returns>Returns true if only the document properties should be displayed in full mode</returns>
+    private bool LoadDocument(TreeNode node)
+    {
+        // Check if the current content is selectable
+        bool isSelectable =
+            (SelectableContent == SelectableContentEnum.AllContent) &&
+            mediaView.InnerMediaControl.IsPageTypeSelectable(node);
+
+        if (isSelectable && !IsFullListingMode && (IsAction || !URLHelper.IsPostback()))
+        {
+            if ((ItemToColorize == Guid.Empty) || (ItemToColorize == node.NodeGUID))
+            {
+                string url = GetNodeUrl(node);
+
+                ItemToColorize = node.NodeGUID;
+
+                SelectMediaItem(node.DocumentName, url, node.NodeAliasPath);
+            }
+        }
+
+        // Display full-size properties if detailed view required
+        return
+            !IsCopyMoveLinkDialog &&
+            !IsFullListingMode &&
+            isSelectable &&
+            !node.NodeHasChildren &&
+            !IsLinkOutput;
     }
 
 
@@ -1917,22 +1727,10 @@ function RaiseHiddenPostBack(){{
         LoadDataSource();
 
         // Load selected item
-        if (CurrentAttachmentInfo != null)
+        var attachment = CurrentAttachmentInfo;
+        if (attachment != null)
         {
-            string fileName = Path.GetFileNameWithoutExtension(CurrentAttachmentInfo.AttachmentName);
-
-            if (callSelection)
-            {
-                SelectMediaItem(fileName, CurrentAttachmentInfo.AttachmentExtension, CurrentAttachmentInfo.AttachmentImageWidth,
-                                CurrentAttachmentInfo.AttachmentImageHeight, CurrentAttachmentInfo.AttachmentSize, CurrentAttachmentInfo.AttachmentUrl);
-            }
-
-            ItemToColorize = CurrentAttachmentInfo.AttachmentGUID;
-            ColorizeRow(ItemToColorize.ToString());
-        }
-        else
-        {
-            ColorizeLastSelectedRow();
+            SelectAttachment(callSelection, attachment);
         }
 
         // Get parent node ID info
@@ -1958,30 +1756,39 @@ function RaiseHiddenPostBack(){{
 
 
     /// <summary>
-    /// Returns path of the node specified by its ID.
+    /// Selects the given attachment as current item
     /// </summary>
-    /// <param name="nodeId">ID of the node</param>
-    private static int GetParentNodeID(int nodeId)
+    /// <param name="callSelection">If true, the action to select media item should be raised</param>
+    /// <param name="attachment"></param>
+    protected void SelectAttachment(bool callSelection, AttachmentInfo attachment)
     {
-        if (nodeId > 0)
+        string fileName = Path.GetFileNameWithoutExtension(attachment.AttachmentName);
+
+        if (callSelection)
         {
-            TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-            // Get node and return its alias path
-            using (TreeNode node = tree.SelectSingleNode(nodeId))
-            {
-                if (node != null)
-                {
-                    return node.NodeParentID;
-                }
-            }
+            SelectMediaItem(
+                fileName,
+                attachment.AttachmentExtension,
+                attachment.AttachmentImageWidth,
+                attachment.AttachmentImageHeight,
+                attachment.AttachmentSize,
+                attachment.AttachmentUrl
+                );
         }
 
-        return 0;
+        if (SourceType == MediaSourceEnum.DocumentAttachments)
+        {
+            ItemToColorize = attachment.AttachmentGUID;
+        }
+        else if (attachment.AttachmentDocumentID == TreeNodeObj.DocumentID)
+        {
+            ItemToColorize = TreeNodeObj.NodeGUID;
+        }
     }
 
 
     /// <summary>
-    /// Handles actions occurring when new content (CMS.File) document was created.
+    /// Handles actions occurring when new content file document was created.
     /// </summary>
     /// <param name="argument">Argument holding information on new document node ID</param>
     private void HandleContentFileCreatedAction(string argument)
@@ -2004,7 +1811,7 @@ function RaiseHiddenPostBack(){{
 
         if (!string.IsNullOrEmpty(argument))
         {
-            Hashtable argTable = CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSelector_MediaView.GetArgumentsTable(argument);
+            Hashtable argTable = ContentMediaView.GetArgumentsTable(argument);
 
             Guid attachmentGuid = ValidationHelper.GetGuid(argTable["attachmentguid"], Guid.Empty);
 
@@ -2015,7 +1822,7 @@ function RaiseHiddenPostBack(){{
                 nodeId = ValidationHelper.GetInteger(argTable["nodeid"], 0);
             }
 
-            AttachmentInfo ai = AttachmentInfoProvider.GetAttachmentInfo(attachmentGuid, SiteName);
+            var ai = AttachmentInfoProvider.GetAttachmentInfo(attachmentGuid, SiteName);
             if (ai != null)
             {
                 // Get attachment node by ID
@@ -2028,14 +1835,8 @@ function RaiseHiddenPostBack(){{
                         mediaView.SiteObj = SiteInfoProvider.GetSiteInfo(node.NodeSiteID);
                     }
 
-                    string fileExt = TreePathUtils.GetFilesUrlExtension();
-                    if (String.IsNullOrEmpty(fileExt))
-                    {
-                        fileExt = node.DocumentExtensions;
-                    }
-
                     // Get node URL
-                    string url = mediaView.GetContentItemUrl(node.NodeGUID, node.DocumentUrlPath, node.NodeAlias, node.NodeAliasPath, node.IsLink, 0, 0, 0, false, fileExt);
+                    string url = GetNodeUrl(node);
 
                     // Update properties if node is currently selected
                     if (attachmentGuid == ItemToColorize)
@@ -2052,27 +1853,6 @@ function RaiseHiddenPostBack(){{
         }
 
         ClearActionElems();
-    }
-
-
-    /// <summary>
-    /// Ensures content tree is refreshed when new folder is created in Copy/Move dialog.
-    /// </summary>
-    private void RefreshContentTree()
-    {
-        ScriptHelper.RegisterWOpenerScript(Page);
-        // Refresh content tree
-        ScriptHelper.RegisterStartupScript(Page, typeof(Page), "RefreshContentTree", ScriptHelper.GetScript(@"
-if (wopener == null) {
-    wopener = opener;
-}              
-if (wopener.parent != null) {
-    if (wopener.parent != null) {
-        if (wopener.parent.RefreshTree != null) {
-            wopener.parent.RefreshTree();
-        }
-    }
-}"));
     }
 
     #endregion
@@ -2109,7 +1889,11 @@ if (wopener.parent != null) {
                     if ((wi != null) && (versionHistoryId > 0))
                     {
                         // Get attachments for given version
-                        var query = TreeNodeObj.VersionManager.GetVersionAttachments(versionHistoryId, where, mediaView.ListViewControl.SortDirect, false, -1, null).Page(mediaView.CurrentPage - 1, mediaView.CurrentPageSize);
+                        var query = TreeNodeObj.VersionManager.GetVersionAttachments(versionHistoryId)
+                                                                .Where(where)
+                                                                .OrderBy(mediaView.ListViewControl.SortDirect)
+                                                                .BinaryData(false)
+                                                                .Page(mediaView.CurrentPage - 1, mediaView.CurrentPageSize);
                         attachments = query.Result;
                         totalRecords = query.TotalRecords;
                     }
@@ -2146,54 +1930,6 @@ if (wopener.parent != null) {
 
         mediaView.DataSource = attachments;
         mediaView.TotalRecords = totalRecords;
-    }
-
-
-    /// <summary>
-    /// Checks attachment permissions.
-    /// </summary>
-    private string CheckAttachmentPermissions()
-    {
-        string message = "";
-
-        // For new document
-        if (Config.AttachmentFormGUID != Guid.Empty)
-        {
-            if (Config.AttachmentParentID == 0)
-            {
-                message = "Node parent node ID has to be set.";
-            }
-
-            if (!RaiseOnCheckPermissions("Create", this))
-            {
-                if (!MembershipContext.AuthenticatedUser.IsAuthorizedToCreateNewDocument(Config.AttachmentParentID, "CMS.File"))
-                {
-                    message = GetString("attach.actiondenied");
-                }
-            }
-        }
-        // For existing document
-        else if (Config.AttachmentDocumentID > 0)
-        {
-            TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-            // Get document node
-            using (TreeNode node = DocumentHelper.GetDocument(Config.AttachmentDocumentID, tree))
-            {
-                if (node == null)
-                {
-                    message = "Given page doesn't exist!";
-                }
-                if (!RaiseOnCheckPermissions("Modify", this))
-                {
-                    if (MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(node, NodePermissionsEnum.Modify) != AuthorizationResultEnum.Allowed)
-                    {
-                        message = GetString("attach.actiondenied");
-                    }
-                }
-            }
-        }
-
-        return message;
     }
 
 
@@ -2237,7 +1973,7 @@ if (wopener.parent != null) {
 
             Guid attachmentGuid = ValidationHelper.GetGuid(argArr[1], Guid.Empty);
 
-            AttachmentInfo ai = null;
+            AttachmentInfo ai;
 
             int versionHistoryId = 0;
             if (TreeNodeObj != null)
@@ -2251,19 +1987,8 @@ if (wopener.parent != null) {
             }
             else
             {
-                VersionManager vm = VersionManager.GetInstance(TreeNodeObj.TreeProvider);
-                if (vm != null)
-                {
-                    // Get the attachment version data
-                    AttachmentHistoryInfo attachmentVersion = vm.GetAttachmentVersion(versionHistoryId, attachmentGuid, false);
-
-                    // Create the attachment info from given data
-                    ai = (attachmentVersion != null) ? new AttachmentInfo(attachmentVersion.Generalized.DataClass) : null;
-                    if (ai != null)
-                    {
-                        ai.AttachmentLastHistoryID = versionHistoryId;
-                    }
-                }
+                // Get the attachment version data
+                ai = DocumentHelper.GetAttachment(attachmentGuid, versionHistoryId, null, false);
             }
 
             if (ai != null)
@@ -2341,21 +2066,18 @@ if (wopener.parent != null) {
                             VersionManager vm = VersionManager.GetInstance(TreeNodeObj.TreeProvider);
                             versionHistoryId = vm.EnsureVersion(TreeNodeObj, TreeNodeObj.IsPublished);
                         }
+
+                        ItemToColorize = (SourceType == MediaSourceEnum.DocumentAttachments) ? attachmentGuid : TreeNodeObj.NodeGUID;
                     }
 
                     MediaItem item = InitializeMediaItem(ai.AttachmentName, ai.AttachmentExtension, ai.AttachmentImageWidth, ai.AttachmentImageHeight, ai.AttachmentSize, url, null, versionHistoryId, 0, "");
 
                     SelectMediaItem(item);
-
-                    ItemToColorize = attachmentGuid;
-
-                    ColorizeRow(ItemToColorize.ToString());
                 }
                 else
                 {
                     // Unselect old attachment and clear properties
-                    ColorizeRow("");
-                    Properties.ClearProperties(true);
+                    ItemProperties.ClearProperties(true);
                     pnlUpdateProperties.Update();
                 }
 
@@ -2387,13 +2109,16 @@ if (wopener.parent != null) {
                 // Move temporary attachment
                 if (!AttachmentsAreTemporary)
                 {
+                    var workflow = TreeNodeObj.GetWorkflow();
+                    var useAutomaticCheckInOut = (workflow != null) && !workflow.UseCheckInCheckOut(TreeNodeObj.NodeSiteName);
+
                     if (action == "attachmentmoveup")
                     {
-                        DocumentHelper.MoveAttachmentUp(attachmentGuid, TreeNodeObj);
+                        PerformAttachmentAction(TreeNodeObj, useAutomaticCheckInOut, () => DocumentHelper.MoveAttachmentUp(attachmentGuid, TreeNodeObj));
                     }
                     else
                     {
-                        DocumentHelper.MoveAttachmentDown(attachmentGuid, TreeNodeObj);
+                        PerformAttachmentAction(TreeNodeObj, useAutomaticCheckInOut, () => DocumentHelper.MoveAttachmentDown(attachmentGuid, TreeNodeObj));
                     }
                 }
                 else
@@ -2422,8 +2147,6 @@ if (wopener.parent != null) {
 
         ClearActionElems();
 
-        ColorizeLastSelectedRow();
-
         pnlUpdateView.Update();
     }
 
@@ -2441,17 +2164,7 @@ if (wopener.parent != null) {
             Guid attachmentGuid = ValidationHelper.GetGuid(argument, Guid.Empty);
             if (attachmentGuid != Guid.Empty)
             {
-                if (!AttachmentsAreTemporary)
-                {
-                    TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-
-                    DocumentHelper.DeleteAttachment(TreeNodeObj, attachmentGuid, tree);
-                }
-                else
-                {
-                    // Delete temporary attachment
-                    AttachmentInfoProvider.DeleteTemporaryAttachment(attachmentGuid, SiteContext.CurrentSiteName);
-                }
+                DeleteAttachment(TreeNodeObj, attachmentGuid);
 
                 // Reload data
                 LoadDataSource();
@@ -2461,12 +2174,8 @@ if (wopener.parent != null) {
                 if (LastAttachmentGuid == attachmentGuid)
                 {
                     // Reset properties
-                    Properties.ClearProperties();
+                    ItemProperties.ClearProperties();
                     pnlUpdateProperties.Update();
-                }
-                else
-                {
-                    ColorizeLastSelectedRow();
                 }
             }
         }
@@ -2494,6 +2203,7 @@ if (wopener.parent != null) {
 
         int totalRecords = -1;
         const string columns = "MetaFileID,MetaFileObjectType,MetaFileObjectID,MetaFileGroupName,MetaFileName,MetaFileExtension,MetaFileSize,MetaFileMimeType,MetaFileImageWidth,MetaFileImageHeight,MetaFileGUID,MetaFileLastModified,MetaFileSiteID,MetaFileTitle,MetaFileDescription";
+
         // Get metafiles
         mediaView.DataSource = MetaFileInfoProvider.GetMetaFiles(Config.MetaFileObjectID, Config.MetaFileObjectType, Config.MetaFileCategory, where, mediaView.ListViewControl.SortDirect, columns, -1, mediaView.CurrentOffset, mediaView.CurrentPageSize, ref totalRecords);
         mediaView.TotalRecords = totalRecords;
@@ -2549,12 +2259,8 @@ if (wopener.parent != null) {
                 if (LastAttachmentGuid == mfGuid)
                 {
                     // Reset properties
-                    Properties.ClearProperties();
+                    ItemProperties.ClearProperties();
                     pnlUpdateProperties.Update();
-                }
-                else
-                {
-                    ColorizeLastSelectedRow();
                 }
             }
             catch (Exception ex)
@@ -2603,8 +2309,6 @@ if (wopener.parent != null) {
                     SelectMediaItem(mf.MetaFileName, mf.MetaFileExtension, mf.MetaFileImageWidth, mf.MetaFileImageHeight, mf.MetaFileSize, url);
                 }
 
-                ColorizeLastSelectedRow();
-
                 pnlUpdateView.Update();
             }
         }
@@ -2643,7 +2347,6 @@ if (wopener.parent != null) {
                 SelectMediaItem(mf.MetaFileName, mf.MetaFileExtension, mf.MetaFileImageWidth, mf.MetaFileImageHeight, mf.MetaFileSize, url);
             }
 
-            ColorizeLastSelectedRow();
             pnlUpdateView.Update();
         }
 
@@ -2670,8 +2373,7 @@ if (wopener.parent != null) {
         mediaView.Reload();
         pnlUpdateView.Update();
 
-        // Keep focus in search text box
-        ScriptHelper.RegisterStartupScript(Page, typeof(string), "SetSearchFocus", ScriptHelper.GetScript("setTimeout('SetSearchFocus();', 200);"));
+        SetSearchFocus();
     }
 
 
@@ -2694,51 +2396,39 @@ if (wopener.parent != null) {
     /// </summary>
     private void HandleDialogSelect()
     {
-        if (TreeNodeObj != null)
+        var node = TreeNodeObj;
+        if (node != null)
         {
-            string columns = SqlHelper.MergeColumns((IsLiveSite ? TreeProvider.SELECTNODES_REQUIRED_COLUMNS : DocumentHelper.GETDOCUMENTS_REQUIRED_COLUMNS), NODE_COLUMNS);
-
-            // Get files
-            TreeNodeObj.TreeProvider.SelectQueryName = "selectattachments";
-
-            DataSet nodeDetails;
-            if (IsLiveSite)
-            {
-                // Get published files
-                nodeDetails = TreeNodeObj.TreeProvider.SelectNodes(SiteName, TreeNodeObj.NodeAliasPath, Config.Culture, true, null, null, "DocumentName", 1, true, 1, columns);
-            }
-            else
-            {
-                // Get latest files
-                nodeDetails = DocumentHelper.GetDocuments(SiteName, TreeNodeObj.NodeAliasPath, TreeProvider.ALL_CULTURES, true, null, null, "DocumentName", 1, false, 1, columns, TreeNodeObj.TreeProvider);
-            }
+            var nodeDetails = GetNodeDetails(node, SiteName);
 
             // If node details exists
-            if (!DataHelper.IsEmpty(nodeDetails))
+            if (nodeDetails != null)
             {
-                IDataContainer data = new DataRowContainer(nodeDetails.Tables[0].Rows[0]);
+                // Only select if the page type is selectable
+                if (mediaView.InnerMediaControl.IsPageTypeSelectable(nodeDetails))
+                {
+                    string argument = mediaView.GetArgumentSet(nodeDetails);
 
-                string argument = mediaView.GetArgumentSet(data);
-                bool notAttachment = (SourceType == MediaSourceEnum.Content) && !((data.GetValue("ClassName").ToString().ToLowerCSafe() == "cms.file") && (ValidationHelper.GetGuid(data.GetValue("AttachmentGUID"), Guid.Empty) != Guid.Empty));
-                string url = mediaView.GetItemUrl(argument, 0, 0, 0, notAttachment);
+                    SelectMediaItem(String.Format("{0}|URL|{1}", argument, GetNodeUrl(nodeDetails)));
 
-                SelectMediaItem(String.Format("{0}|URL|{1}", argument, url));
+                    ItemToColorize = node.NodeGUID;
+                }
             }
-
-            ItemToColorize = TreeNodeObj.NodeGUID;
         }
         else
         {
             // Remove selected item
             ItemToColorize = Guid.Empty;
         }
-        ClearColorizedRow();
 
         // Forget recent action
         ClearActionElems();
     }
 
 
+    /// <summary>
+    /// Handles the unavailability of the site
+    /// </summary>
     private void HandleSiteEmpty()
     {
         if ((SourceType != MediaSourceEnum.DocumentAttachments) && (SourceType != MediaSourceEnum.MetaFile) && String.IsNullOrEmpty(SiteName))
@@ -2757,7 +2447,7 @@ if (wopener.parent != null) {
 
     #region "Event handlers"
 
-    protected void UniSelector_OnSelectionChanged(object sender, EventArgs e)
+    protected void siteSelector_OnSelectionChanged(object sender, EventArgs e)
     {
         IsAction = true;
 
@@ -2772,7 +2462,7 @@ if (wopener.parent != null) {
         NodeID = StartingPathNodeID = GetStartNodeId();
         if (NodeID == 0)
         {
-            NodeID = GetContentNodeId("/");
+            NodeID = GetContentNodeId(SiteName, "/");
             menuElem.ShowParentButton = false;
         }
 
@@ -2790,7 +2480,7 @@ if (wopener.parent != null) {
         ItemToColorize = Guid.Empty;
 
         // Clear properties from session to set new one later
-        Properties.ClearProperties();
+        ItemProperties.ClearProperties();
 
         // Reload media view for new site
         LoadDataSource();
@@ -2805,10 +2495,17 @@ if (wopener.parent != null) {
         pnlUpdateTree.Update();
 
         // Load selected item
-        if (CurrentAttachmentInfo != null)
+        var attachment = CurrentAttachmentInfo;
+        if (attachment != null)
         {
-            SelectMediaItem(CurrentAttachmentInfo.AttachmentName, CurrentAttachmentInfo.AttachmentExtension,
-                            CurrentAttachmentInfo.AttachmentImageWidth, CurrentAttachmentInfo.AttachmentImageHeight, CurrentAttachmentInfo.AttachmentSize, CurrentAttachmentInfo.AttachmentUrl);
+            SelectMediaItem(
+                attachment.AttachmentName,
+                attachment.AttachmentExtension,
+                attachment.AttachmentImageWidth,
+                attachment.AttachmentImageHeight,
+                attachment.AttachmentSize,
+                attachment.AttachmentUrl
+            );
         }
 
         // Setup media view
@@ -2953,7 +2650,6 @@ if (wopener.parent != null) {
                 break;
 
             default:
-                ColorizeLastSelectedRow();
                 pnlUpdateView.Update();
                 break;
         }

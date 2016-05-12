@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Controls;
 using CMS.Helpers;
@@ -47,24 +47,6 @@ public partial class CMSWebParts_Community_Friends_FriendsViewer : CMSAbstractWe
         {
             SetValue("OrderBy", value);
             srcFriends.OrderBy = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Gets or sets UserID.
-    /// </summary>
-    [Obsolete("Use UserName instead")]
-    public int UserID
-    {
-        get
-        {
-            return CurrentUser.UserID;
-        }
-        set
-        {
-            SetValue("UserID", value);
-            srcFriends.UserID = value;
         }
     }
 

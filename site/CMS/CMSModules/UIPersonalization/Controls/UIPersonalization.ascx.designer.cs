@@ -183,15 +183,6 @@ public partial class CMSModules_UIPersonalization_Controls_UIPersonalization {
     protected global::CMSAdminControls_Basic_DisabledModuleInfo ucDisabledModule;
     
     /// <summary>
-    /// lblInfo control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblInfo;
-    
-    /// <summary>
     /// treeElem control.
     /// </summary>
     /// <remarks>

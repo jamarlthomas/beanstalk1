@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Linq;
@@ -166,7 +166,15 @@ public partial class CMSModules_ImportExport_Controls_ImportGridTasks : ImportEx
     protected void btnAll_Click(object sender, EventArgs e)
     {
         // Load all selection
-        Settings.LoadDefaultSelection(ObjectType, SiteObject, ImportTypeEnum.AllNonConflicting, false, true);
+        DefaultSelectionParameters parameters = new DefaultSelectionParameters()
+        {
+            ObjectType = base.ObjectType,
+            SiteObjects = base.SiteObject,
+            ImportType = ImportTypeEnum.AllNonConflicting,
+            LoadObjects = false,
+            ClearProgressLog = true
+        };
+        Settings.LoadDefaultSelection(parameters);
 
         RaiseButtonPressed(sender, e);
     }
@@ -175,7 +183,14 @@ public partial class CMSModules_ImportExport_Controls_ImportGridTasks : ImportEx
     protected void btnNone_Click(object sender, EventArgs e)
     {
         // Load none selection
-        Settings.LoadDefaultSelection(ObjectType, SiteObject, ImportTypeEnum.None, false, true);
+        DefaultSelectionParameters parameters = new DefaultSelectionParameters()
+        {
+            ObjectType = base.ObjectType,
+            SiteObjects = base.SiteObject,
+            LoadObjects = false,
+            ClearProgressLog = true
+        };
+        Settings.LoadDefaultSelection(parameters);
 
         RaiseButtonPressed(sender, e);
     }

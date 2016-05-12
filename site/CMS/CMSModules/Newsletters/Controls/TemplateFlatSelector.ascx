@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="TemplateFlatSelector.ascx.cs" Inherits="CMSModules_Newsletters_Controls_TemplateFlatSelector" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="TemplateFlatSelector.ascx.cs" Inherits="CMSModules_Newsletters_Controls_TemplateFlatSelector" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniFlatSelector.ascx" TagName="UniFlatSelector"
     TagPrefix="cms" %>
 

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Settings_Pages_Default"
-    Codebehind="Default.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Settings_Pages_Default"
+     Codebehind="Default.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

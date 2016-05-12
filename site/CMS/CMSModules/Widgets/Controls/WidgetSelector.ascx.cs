@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.Localization;
@@ -281,15 +281,7 @@ public partial class CMSModules_Widgets_Controls_WidgetSelector : CMSAdminContro
         else if (!String.IsNullOrEmpty(ZoneId))
         {
             // Get pageinfo
-            PageInfo pi = null;
-            try
-            {
-                pi = CMSWebPartPropertiesPage.GetPageInfo(AliasPath, PageTemplateId, CultureCode);
-            }
-            catch (PageNotFoundException)
-            {
-                // Do not throw exception if page info not found (e.g. bad alias path)
-            }
+            PageInfo pi = CMSWebPartPropertiesPage.GetPageInfo(AliasPath, PageTemplateId, CultureCode);
 
             PageTemplateInstance templateInstance = CMSPortalManager.GetTemplateInstanceForEditing(pi);
             if (templateInstance != null)

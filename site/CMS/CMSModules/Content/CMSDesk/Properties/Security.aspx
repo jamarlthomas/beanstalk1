@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_Security"
-    Theme="Default" Codebehind="Security.aspx.cs" MaintainScrollPositionOnPostback="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_Security"
+    Theme="Default"  Codebehind="Security.aspx.cs" MaintainScrollPositionOnPostback="true"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Security.ascx" TagName="Security"
@@ -15,7 +15,7 @@
     <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">
         <ContentTemplate>
             <asp:Panel runat="server" ID="pnlLog" Visible="false">
-                <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+                <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="Documents" />
             </asp:Panel>
             <asp:Panel ID="pnlPageContent" runat="server">
                 <cms:UIPlaceHolder ID="pnlUIPermissionsPart" runat="server" ModuleName="CMS.Content"

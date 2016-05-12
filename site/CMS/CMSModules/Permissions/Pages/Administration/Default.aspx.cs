@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Core;
@@ -14,13 +14,6 @@ public partial class CMSModules_Permissions_Pages_Administration_Default : CMSAd
 
     protected override void OnPreInit(EventArgs e)
     {
-        ((Panel)CurrentMaster.PanelBody.FindControl("pnlContent")).CssClass = String.Empty;
-
-        SiteID = CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.GlobalAdmin) ? 0 : SiteContext.CurrentSiteID;
-
-        // Set site id for the control
-        prmhdrHeader.SiteID = SiteID;
-
         var uiElement = new UIElementAttribute(ModuleName.PERMISSIONS, "Permissions");
         uiElement.Check(this);
 
@@ -34,6 +27,11 @@ public partial class CMSModules_Permissions_Pages_Administration_Default : CMSAd
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);
+
+        SiteID = CurrentUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.GlobalAdmin) ? 0 : SiteContext.CurrentSiteID;
+
+        // Set site id for the control
+        prmhdrHeader.SiteID = SiteID;
 
         CurrentUserInfo user = MembershipContext.AuthenticatedUser;
         if (user != null)

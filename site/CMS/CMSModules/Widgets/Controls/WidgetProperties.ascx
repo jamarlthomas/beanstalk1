@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Widgets_Controls_WidgetProperties"
-    Codebehind="WidgetProperties.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Widgets_Controls_WidgetProperties"
+     Codebehind="WidgetProperties.ascx.cs" %>
 <asp:PlaceHolder ID="plcToolbar" runat="server" Visible="false" EnableViewState="false">
     <div id="CMSHeaderDiv">
         <div id="CKToolbar" class="CKToolbar">

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_EventLog_GetEventDetail" Codebehind="GetEventDetail.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_EventLog_GetEventDetail"  Codebehind="GetEventDetail.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

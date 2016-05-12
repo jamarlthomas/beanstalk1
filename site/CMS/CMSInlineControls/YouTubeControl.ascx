@@ -1,1 +1,1 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSInlineControls_YouTubeControl" Codebehind="YouTubeControl.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSInlineControls_YouTubeControl"  Codebehind="YouTubeControl.ascx.cs" %>

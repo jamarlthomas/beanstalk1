@@ -27,7 +27,7 @@ public partial class CMSFormControls_System_OptionsSelector {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSAdminControls_UI_Macros_MacroEditor txtValue;
+    protected global::CMS.UIControls.MacroEditor txtValue;
     
     /// <summary>
     /// spanScreenReader control.

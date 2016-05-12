@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_MessageBoards_Controls_LiveControls_Subscriptions" Codebehind="Subscriptions.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_MessageBoards_Controls_LiveControls_Subscriptions"  Codebehind="Subscriptions.ascx.cs" %>
 <%@ Register src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" tagname="HeaderActions" tagprefix="cms" %>
 <%@ Register Src="~/CMSModules/MessageBoards/Controls/Boards/BoardSubscription.ascx" TagName="BoardSubscriptionEdit" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/MessageBoards/Controls/Boards/BoardSubscriptions.ascx" TagName="BoardSubscriptionList" TagPrefix="cms" %>

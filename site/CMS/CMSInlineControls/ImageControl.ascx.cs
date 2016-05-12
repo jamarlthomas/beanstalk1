@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -300,6 +300,7 @@ public partial class CMSInlineControls_ImageControl : InlineUserControl
     /// <summary>
     /// Width of the thumbnail image which is displayed when mouse is moved over the image.
     /// </summary>
+    [Obsolete("The built in functionality for displaying larger image on mouse hover is no longer supported.")]
     public int MouseOverWidth
     {
         get
@@ -316,6 +317,7 @@ public partial class CMSInlineControls_ImageControl : InlineUserControl
     /// <summary>
     /// Height of the thumbnail image which is displayed when mouse is moved over the image.
     /// </summary>
+    [Obsolete("The built in functionality for displaying larger image on mouse hover is no longer supported.")]
     public int MouseOverHeight
     {
         get
@@ -351,72 +353,6 @@ public partial class CMSInlineControls_ImageControl : InlineUserControl
 
     protected void Page_PreRender(object sender, EventArgs e)
     {
-        if (Behavior == "hover")
-        {
-            StringBuilder sb = new StringBuilder();
-            // If jQuery not loaded
-            sb.AppendFormat(@"
-if (typeof $cmsj == 'undefined') {{ 
-    var jQueryCore=document.createElement('script');
-    jQueryCore.setAttribute('type','text/javascript'); 
-    jQueryCore.setAttribute('src', '{0}');
-    setTimeout('document.body.appendChild(jQueryCore)',100); 
-    setTimeout('loadTooltip()',200);
-}}", ScriptHelper.GetScriptUrl("~/CMSScripts/jquery/jquery-core.js"));
-
-            // If jQuery tooltip plugin not loaded
-            sb.AppendFormat(@"
-var jQueryTooltips=document.createElement('script'); 
-function loadTooltip() {{ 
-    if (typeof $cmsj == 'undefined') {{ setTimeout('loadTooltip()',200); return;}} 
-    if (typeof $cmsj.fn.tooltip == 'undefined') {{ 
-        jQueryTooltips.setAttribute('type','text/javascript'); 
-        jQueryTooltips.setAttribute('src', '{0}'); 
-        setTimeout('document.body.appendChild(jQueryTooltips)',100); 
-    }}
-}}", ScriptHelper.GetScriptUrl("~/CMSScripts/jquery/jquery-tooltips.js"));
-
-
-            string rtlDefinition = null;
-            if (((IsLiveSite) && (CultureHelper.IsPreferredCultureRTL())) || (CultureHelper.IsUICultureRTL()))
-            {
-                rtlDefinition = "positionLeft: true,left: -15,";
-            }
-
-            sb.AppendFormat(@"
-function hover(imgID, width, height, sizeInUrl) {{ 
-    if ((typeof $cmsj == 'undefined')||(typeof $cmsj.fn.tooltip == 'undefined')) {{
-        var imgIDForTimeOut = imgID.replace(/\\/gi,""\\\\"").replace(/'/gi,""\\'"");
-        setTimeout(""loadTooltip();hover('"" + imgIDForTimeOut + ""',"" + width + "",""  +height + "","" + sizeInUrl + "")"",100); return;
-    }}
-    $cmsj('img[id=' + imgID + ']').tooltip({{
-        delay: 0,
-        track: true,
-        showBody: "" - "",
-        showBody: "" - "", 
-        extraClass: ""ImageExtraClass"",
-        showURL: false, 
-        {0}
-        bodyHandler: function() {{
-            // Apply additional style to main hover div if needed
-            $cmsj('#tooltip').css({{'position' : 'absolute','z-index' : 5000}});
-            var hidden = $cmsj(""#"" + imgID + ""_src"");
-            var source = this.src;
-            if (hidden[0] != null) {{
-                source = hidden[0].value;
-            }}
-            var hoverDiv = $cmsj(""<div/>"");
-            var hoverImg = $cmsj(""<img/>"").attr(""class"", ""ImageTooltip"").attr(""src"", source);
-            hoverImg.css({{'width' : width, 'height' : height}});
-            hoverDiv.append(hoverImg);
-            return hoverDiv;
-        }}
-    }});
-}}", rtlDefinition);
-
-            ScriptHelper.RegisterStartupScript(Page, typeof(Page), "JQueryImagePreview", ScriptHelper.GetScript(sb.ToString()));
-        }
-
         ImageParameters imgParams = new ImageParameters();
         if (!String.IsNullOrEmpty(URL))
         {
@@ -433,8 +369,6 @@ function hover(imgID, width, height, sizeInUrl) {{
         imgParams.HSpace = HSpace;
         imgParams.Id = (String.IsNullOrEmpty(ImageID) ? Guid.NewGuid().ToString() : ImageID);
         imgParams.Link = Link;
-        imgParams.MouseOverHeight = MouseOverHeight;
-        imgParams.MouseOverWidth = MouseOverWidth;
         imgParams.SizeToURL = SizeToURL;
         imgParams.Style = Style;
         imgParams.Target = Target;
@@ -443,28 +377,6 @@ function hover(imgID, width, height, sizeInUrl) {{
         imgParams.Width = Width;
 
         ltlImage.Text = MediaHelper.GetImage(imgParams);
-
-        // Dynamic JQuery hover effect
-        if (Behavior == "hover")
-        {
-            string imgId = HTMLHelper.HTMLEncode(HttpUtility.UrlDecode(imgParams.Id));
-            string url = HttpUtility.HtmlDecode(URL);
-            if (SizeToURL)
-            {
-                if (MouseOverWidth > 0)
-                {
-                    url = URLHelper.UpdateParameterInUrl(url, "width", MouseOverWidth.ToString());
-                }
-                if (MouseOverHeight > 0)
-                {
-                    url = URLHelper.UpdateParameterInUrl(url, "height", MouseOverHeight.ToString());
-                }
-                url = URLHelper.RemoveParameterFromUrl(url, "maxsidesize");
-            }
-            ltlImage.Text += "<input type=\"hidden\" id=\"" + imgId + "_src\" value=\"" + ResolveUrl(url) + "\" />";
-
-            ScriptHelper.RegisterStartupScript(Page, typeof(Page), "ImageHover_" + imgId, ScriptHelper.GetScript("hover(" + ScriptHelper.GetString(imgId) + ", " + MouseOverWidth + ", " + MouseOverHeight + ", " + (SizeToURL ? "true" : "false") + ");"));
-        }
     }
 
     #endregion

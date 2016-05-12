@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+
 using CMS.Chat;
 using CMS.ExtendedControls;
 using CMS.ExtendedControls.ActionsConfig;
@@ -29,13 +30,9 @@ public partial class CMSModules_Chat_Pages_Tools_ChatSupportCannedResponse_EditF
 
         string url = URLHelper.AddParameterToUrl("~/CMSModules/Chat/Pages/ChatSupportSettings.aspx", "siteid", "{?siteid?}");
         url = URLHelper.AddParameterToUrl(url, "responseid", "{%EditedObject.ID%}");
-        editElem.EditForm.RedirectUrlAfterCreate = URLHelper.AddParameterToUrl(url, "saved", "1");
-        Save += (s, ea) => { if (editElem.EditForm.SaveData(null)) { URLHelper.Redirect(url); } };
-    }
-
-
-    protected void Page_Load(object sender, EventArgs e)
-    {
+        url = URLHelper.AddParameterToUrl(url, "saved", "1");
+        editElem.EditForm.RedirectUrlAfterSave = url;
+        Save += (s, ea) => { editElem.EditForm.SaveData(null); };
     }
 
 

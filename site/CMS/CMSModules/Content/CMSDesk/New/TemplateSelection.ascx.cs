@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.DataEngine;
 using CMS.DocumentEngine;
@@ -8,6 +8,7 @@ using CMS.Membership;
 using CMS.PortalEngine;
 using CMS.SiteProvider;
 using CMS.UIControls;
+using CMS.FormControls;
 
 public partial class CMSModules_Content_CMSDesk_New_TemplateSelection : CMSUserControl
 {
@@ -166,16 +167,6 @@ public partial class CMSModules_Content_CMSDesk_New_TemplateSelection : CMSUserC
 
 
     /// <summary>
-    /// If true, the control offers only options valid for wireframe
-    /// </summary>
-    public bool IsWireframe
-    {
-        get;
-        set;
-    }
-
-
-    /// <summary>
     /// If true, the control offers only options valid for product sections.
     /// </summary>
     public bool IsProductSection
@@ -245,12 +236,6 @@ public partial class CMSModules_Content_CMSDesk_New_TemplateSelection : CMSUserC
             {
                 RedirectToAccessDenied("CMS.Design", "Design");
             }
-        }
-
-        if (IsWireframe)
-        {
-            radCreateBlank.Visible = false;
-            radInherit.Visible = false;
         }
 
         if (IsProductSection)
@@ -511,7 +496,7 @@ if (UniFlat_GetSelectedValue) {
                 templateInfo = PageTemplateInfoProvider.GetPageTemplateInfo(templateId);
                 if (templateInfo != null)
                 {
-                    cloneAsAdHoc = templateInfo.PageTemplateCloneAsAdHoc || IsWireframe;
+                    cloneAsAdHoc = templateInfo.PageTemplateCloneAsAdHoc;
                 }
             }
             else
@@ -564,7 +549,7 @@ if (UniFlat_GetSelectedValue) {
             {
                 // Empty template
                 templateInfo.LayoutID = 0;
-                templateInfo.PageTemplateLayout = "<cms:CMSWebPartZone ZoneID=\"zoneA\" runat=\"server\" " + (IsWireframe ? " Wireframe=\"true\" " : String.Empty) + " />";
+                templateInfo.PageTemplateLayout = "<cms:CMSWebPartZone ZoneID=\"zoneA\" runat=\"server\" />";
 
                 templateInfo.PageTemplateLayoutType = LayoutTypeEnum.Ascx;
             }
@@ -583,7 +568,7 @@ if (UniFlat_GetSelectedValue) {
 
             // Create ad-hoc template
             templateInfo = PageTemplateInfoProvider.CloneTemplateAsAdHoc(templateInfo, displayName, SiteContext.CurrentSiteID, nodeGuid);
-
+            
             // Set inherit only master 
             if (masterOnly)
             {
@@ -596,6 +581,8 @@ if (UniFlat_GetSelectedValue) {
             {
                 PageTemplateInfoProvider.AddPageTemplateToSite(templateInfo.PageTemplateId, SiteContext.CurrentSiteID);
             }
+
+            CheckOutTemplate(templateInfo);
         }
 
         // Assign owner node GUID
@@ -614,5 +601,19 @@ if (UniFlat_GetSelectedValue) {
         }
 
         return templateInfo;
+    }
+
+
+    /// <summary>
+    /// Checks out the page template
+    /// </summary>
+    /// <param name="pageTemplateInfo">Page template to check out</param>
+    private void CheckOutTemplate(PageTemplateInfo pageTemplateInfo)
+    {
+        var objectManager = CMSObjectManager.GetCurrent(this) ?? new CMSObjectManager();
+        if (CMSObjectManager.KeepNewObjectsCheckedOut)
+        {
+            objectManager.CheckOutObject(pageTemplateInfo);
+        }
     }
 }

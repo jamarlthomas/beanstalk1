@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Membership_Registration_LiveIDUsersRequiredData"
-    Codebehind="~/CMSWebParts/Membership/Registration/LiveIDUsersRequiredData.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Membership_Registration_LiveIDUsersRequiredData"
+     Codebehind="~/CMSWebParts/Membership/Registration/LiveIDUsersRequiredData.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Membership/FormControls/Passwords/PasswordStrength.ascx"
     TagName="PasswordStrength" TagPrefix="cms" %>
 <asp:Label runat="server" Visible="false" ID="lblInfo" EnableViewState="false" CssClass="InfoLabel" />

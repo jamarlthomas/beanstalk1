@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Polls_Controls_View_PollView" Codebehind="PollView.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Polls_Controls_View_PollView"  Codebehind="PollView.ascx.cs" %>
 
 <asp:Panel runat="server" ID="pnlControl" CssClass="PollControl" DefaultButton="btnVote" EnableViewState="false">
     <cms:LocalizedLabel runat="server" CssClass="PollTitle" ID="lblTitle" EnableViewState="false" />

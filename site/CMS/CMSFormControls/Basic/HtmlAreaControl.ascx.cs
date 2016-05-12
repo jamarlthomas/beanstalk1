@@ -1,19 +1,18 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web.UI.WebControls;
-using System.Collections.Generic;
 
+using CMS.Base;
 using CMS.CKEditor;
 using CMS.Controls;
+using CMS.DataEngine;
 using CMS.ExtendedControls;
 using CMS.FormControls;
 using CMS.Helpers;
-using CMS.Membership;
-using CMS.Base;
-using CMS.PortalEngine;
-using CMS.DataEngine;
 using CMS.MacroEngine;
+using CMS.PortalEngine;
 using CMS.SiteProvider;
 
 public partial class CMSFormControls_Basic_HtmlAreaControl : FormEngineUserControl
@@ -59,12 +58,14 @@ public partial class CMSFormControls_Basic_HtmlAreaControl : FormEngineUserContr
     {
         get
         {
-            string plainText = editor.ResolvedValue;
-            plainText = Regex.Replace(plainText, @"(>)(\r|\n)*(<)", "><");
-            plainText = Regex.Replace(plainText, "(<[^>]*>)([^<]*)", "$2");
-            // Just substitute spec.chars with one letter
-            plainText = Regex.Replace(plainText, "(&#x?[0-9]{2,4};|&quot;|&amp;|&nbsp;|&lt;|&gt;|&euro;|&copy;|&reg;|&permil;|&Dagger;|&dagger;|&lsaquo;|&rsaquo;|&bdquo;|&rdquo;|&ldquo;|&sbquo;|&rsquo;|&lsquo;|&mdash;|&ndash;|&rlm;|&lrm;|&zwj;|&zwnj;|&thinsp;|&emsp;|&ensp;|&tilde;|&circ;|&Yuml;|&scaron;|&Scaron;)", "@");
-
+            var plainText = editor.ResolvedValue;
+            if (!String.IsNullOrEmpty(plainText))
+            {
+                plainText = Regex.Replace(plainText, @"(>)(\r|\n)*(<)", "><");
+                plainText = Regex.Replace(plainText, "(<[^>]*>)([^<]*)", "$2");
+                // Just substitute spec.chars with one letter
+                plainText = Regex.Replace(plainText, "(&#x?[0-9]{2,4};|&quot;|&amp;|&nbsp;|&lt;|&gt;|&euro;|&copy;|&reg;|&permil;|&Dagger;|&dagger;|&lsaquo;|&rsaquo;|&bdquo;|&rdquo;|&ldquo;|&sbquo;|&rsquo;|&lsquo;|&mdash;|&ndash;|&rlm;|&lrm;|&zwj;|&zwnj;|&thinsp;|&emsp;|&ensp;|&tilde;|&circ;|&Yuml;|&scaron;|&Scaron;)", "@");
+            }
             return plainText;
         }
     }
@@ -121,9 +122,7 @@ public partial class CMSFormControls_Basic_HtmlAreaControl : FormEngineUserContr
     {
         get
         {
-            bool userIsSiteManager = (QueryHelper.GetBoolean("issitemanager", false)) && (MembershipContext.AuthenticatedUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.GlobalAdmin));
-
-            string stamp = SettingsKeyInfoProvider.GetValue(userIsSiteManager ? "CMSCMStamp" : (SiteContext.CurrentSiteName + ".CMSCMStamp"));
+            string stamp = SettingsKeyInfoProvider.GetValue("CMSCMStamp", SiteContext.CurrentSiteName);
             string addStampValue = MacroResolver.Resolve(stamp).Replace("'", @"\'");
 
             return "<div>" + addStampValue + "</div>";
@@ -133,7 +132,7 @@ public partial class CMSFormControls_Basic_HtmlAreaControl : FormEngineUserContr
 
     /// <summary>
     /// List of plugins that must not be loaded.
-    /// This is a tool setting which makes it easier to avoid loading plugins definied in the CKEDITOR.config.plugins setting, 
+    /// This is a tool setting which makes it easier to avoid loading plugins defined in the CKEDITOR.config.plugins setting, 
     /// without having to touch it and potentially breaking it.
     /// </summary>
     public ICollection<string> RemovePlugins
@@ -176,11 +175,9 @@ public partial class CMSFormControls_Basic_HtmlAreaControl : FormEngineUserContr
             {
                 return editor.Height;
             }
-            else
-            {
-                UnitType heightUnitType = GetUnitType(GetValue("heightunittype"));
-                return new Unit(ValidationHelper.GetInteger(height, 300), heightUnitType);
-            }
+
+            UnitType heightUnitType = GetUnitType(GetValue("heightunittype"));
+            return new Unit(ValidationHelper.GetInteger(height, 300), heightUnitType);
         }
         set
         {
@@ -201,11 +198,9 @@ public partial class CMSFormControls_Basic_HtmlAreaControl : FormEngineUserContr
             {
                 return editor.Width;
             }
-            else
-            {
-                UnitType widthUnitType = GetUnitType(GetValue("widthunittype"));
-                return new Unit(ValidationHelper.GetInteger(width, 700), widthUnitType);
-            }
+            
+            UnitType widthUnitType = GetUnitType(GetValue("widthunittype"));
+            return new Unit(ValidationHelper.GetInteger(width, 700), widthUnitType);
         }
         set
         {
@@ -229,9 +224,8 @@ public partial class CMSFormControls_Basic_HtmlAreaControl : FormEngineUserContr
             editor.DialogParameters = Form.DialogParameters;
         }
 
-        // Get editor area toolbar 
-        string toolbarSet = DataHelper.GetNotEmpty(GetValue("toolbarset"), (Form != null) ? Form.HtmlAreaToolbar : String.Empty);
-        editor.ToolbarSet = toolbarSet;
+        // Get editor area toolbar
+        editor.ToolbarSet = DataHelper.GetNotEmpty(GetValue("toolbarset"), (Form != null) ? Form.HtmlAreaToolbar : String.Empty);
         editor.ToolbarLocation = DataHelper.GetNotEmpty(GetValue("toolbarlocation"), (Form != null) ? Form.HtmlAreaToolbarLocation : String.Empty);
 
         // Set form dimensions
@@ -250,11 +244,6 @@ public partial class CMSFormControls_Basic_HtmlAreaControl : FormEngineUserContr
         if (!String.IsNullOrEmpty(cssStylesheet))
         {
             editor.EditorAreaCSS = CSSHelper.GetStylesheetUrl(cssStylesheet);
-        }
-        else if (toolbarSet.EqualsCSafe("Wireframe", true))
-        {
-            // Special case for wireframe editor
-            editor.EditorAreaCSS = "~/CMSAdminControls/CKeditor/skins/kentico/wireframe.css";
         }
         else if (SiteContext.CurrentSite != null)
         {
@@ -295,7 +284,6 @@ public partial class CMSFormControls_Basic_HtmlAreaControl : FormEngineUserContr
         if (!String.IsNullOrEmpty(CssClass))
         {
             editor.CssClass = CssClass;
-            CssClass = null;
         }
 
         CheckRegularExpression = true;
@@ -335,7 +323,7 @@ public partial class CMSFormControls_Basic_HtmlAreaControl : FormEngineUserContr
 
 
     /// <summary>
-    /// Returns the arraylist of the field IDs (Client IDs of the inner controls) that should be spell checked.
+    /// Returns the list of the field IDs (Client IDs of the inner controls) that should be spell checked.
     /// </summary>
     public override List<string> GetSpellCheckFields()
     {

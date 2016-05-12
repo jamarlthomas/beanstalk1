@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.UI.WebControls;
 
 using CMS;
+using CMS.Core;
 using CMS.Base;
 using CMS.DataEngine;
 using CMS.Ecommerce;
@@ -337,7 +338,7 @@ public class MultiBuyDiscountEditExtender : ControlExtender<UIForm>
     /// <returns></returns>
     private string GenerateRedirectionUrl(string elementName, int objectId, bool saved)
     {
-        string url = UIContextHelper.GetElementUrl("cms.ecommerce", elementName, false);
+        string url = UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, elementName, false);
 
         url = URLHelper.AddParameterToUrl(url, "objectid", objectId.ToString());
         if (RedirectionEnabled)

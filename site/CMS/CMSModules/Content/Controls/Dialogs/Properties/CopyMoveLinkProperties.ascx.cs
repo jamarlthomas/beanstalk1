@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -30,7 +30,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLink
     private bool multiple;
     private bool sameSite = true;
 
-    private static readonly Hashtable mErrors = new Hashtable();
     private readonly List<int> nodeIds = new List<int>();
     private DataSet documentsToProcess;
     private Hashtable mParameters;
@@ -88,40 +87,17 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLink
 
 
     /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
-
-    /// <summary>
-    /// Ensures the logging context.
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext currentLog = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-
-        return currentLog;
-    }
-
-
-    /// <summary>
     /// Current Error.
     /// </summary>
     private string CurrentError
     {
         get
         {
-            return ValidationHelper.GetString(mErrors["ProcessingError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mErrors["ProcessingError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -204,6 +180,11 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLink
             return;
         }
 
+        // Initialize events
+        ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
+        ctlAsyncLog.OnError += ctlAsyncLog_OnError;
+        ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
+
         // Check if hashtable containing dialog parameters is not empty
         if ((Parameters == null) || (Parameters.Count == 0))
         {
@@ -216,12 +197,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLink
         IsDialogAction = true;
         // Setup tree provider
         TreeProvider.AllowAsyncActions = false;
-
-        // Initialize events
-        ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
-        ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-        ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
-        ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
 
         if (!RequestHelper.IsCallback())
         {
@@ -538,7 +513,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLink
             {
                 // Create where condition
                 string where = new WhereCondition().WhereIn("NodeID", nodeIds).ToString(true);
-                string columns = SqlHelper.MergeColumns(TreeProvider.SELECTNODES_REQUIRED_COLUMNS, "NodeParentID, DocumentName, NodeAliasPath, NodeLinkedNodeID");
+                string columns = SqlHelper.MergeColumns(DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS, "NodeParentID, DocumentName, NodeAliasPath, NodeLinkedNodeID");
                 documentsToProcess = TreeProvider.SelectNodes(siteName, "/%", TreeProvider.ALL_CULTURES, true, null, where, AllLevels ? "NodeLevel DESC, NodeAliasPath" : null, TreeProvider.ALL_LEVELS, false, 0, columns);
             }
 
@@ -571,8 +546,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLink
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state != CMSThread.ABORT_REASON_STOP)
+            if (!CMSThread.Stopped(ex))
             {
                 // Try to get ID of site
                 int siteId = (node != null) ? node.NodeSiteID : SiteContext.CurrentSiteID;
@@ -662,7 +636,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLink
             {
                 // Create where condition
                 string where = new WhereCondition().WhereIn("NodeID", nodeIds).ToString(true);
-                string columns = SqlHelper.MergeColumns(TreeProvider.SELECTNODES_REQUIRED_COLUMNS, "NodeAliasPath, ClassName, DocumentCulture");
+                string columns = SqlHelper.MergeColumns(DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS, "NodeAliasPath, ClassName, DocumentCulture");
 
                 documentsToProcess = TreeProvider.SelectNodes(siteName, "/%", TreeProvider.ALL_CULTURES, true, null, where, null, TreeProvider.ALL_LEVELS, false, 0, columns);
             }
@@ -698,8 +672,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLink
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state != CMSThread.ABORT_REASON_STOP)
+            if (!CMSThread.Stopped(ex))
             {
                 // Try to get ID of site
                 int siteId = (node != null) ? node.NodeSiteID : SiteContext.CurrentSiteID;
@@ -845,7 +818,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLink
             {
                 // Create where condition
                 string where = new WhereCondition().WhereIn("NodeID", sourceNodes).ToString(true);
-                string columns = SqlHelper.MergeColumns(TreeProvider.SELECTNODES_REQUIRED_COLUMNS, "NodeParentID, DocumentName, NodeAliasPath, NodeLinkedNodeID");
+                string columns = SqlHelper.MergeColumns(DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS, "NodeParentID, DocumentName, NodeAliasPath, NodeLinkedNodeID");
 
                 documentsToProcess = TreeProvider.SelectNodes(siteName, "/%", TreeProvider.ALL_CULTURES, true, null, where, null, TreeProvider.ALL_LEVELS, false, 0, columns);
             }
@@ -882,8 +855,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLink
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state != CMSThread.ABORT_REASON_STOP)
+            if (!CMSThread.Stopped(ex))
             {
                 // Try to get ID of site
                 int siteId = (node != null) ? node.NodeSiteID : SiteContext.CurrentSiteID;
@@ -1016,13 +988,10 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLink
     {
         if (!string.IsNullOrEmpty(parentAlias))
         {
-            string where = "ClassName <> 'CMS.Root'";
-            if (!string.IsNullOrEmpty(whereCondition))
-            {
-                where = SqlHelper.AddWhereCondition(where, whereCondition);
-            }
-            string columns = SqlHelper.MergeColumns(TreeProvider.SELECTNODES_REQUIRED_COLUMNS, "NodeParentID, DocumentName, NodeAliasPath, NodeLinkedNodeID");
-            documentsToProcess = TreeProvider.SelectNodes(siteName, parentAlias.TrimEnd('/') + "/%", TreeProvider.ALL_CULTURES, true, DataClassInfoProvider.GetClassName(ClassID), where, AllLevels ? "NodeLevel DESC, NodeAliasPath" : null, AllLevels ? -1 : 1, false, 0, columns);
+            var where = new WhereCondition(whereCondition)
+                .WhereNotEquals("ClassName", SystemDocumentTypes.Root);
+            string columns = SqlHelper.MergeColumns(DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS, "NodeParentID, DocumentName, NodeAliasPath, NodeLinkedNodeID");
+            documentsToProcess = TreeProvider.SelectNodes(siteName, parentAlias.TrimEnd('/') + "/%", TreeProvider.ALL_CULTURES, true, DataClassInfoProvider.GetClassName(ClassID), where.ToString(true), AllLevels ? "NodeLevel DESC, NodeAliasPath" : null, AllLevels ? -1 : 1, false, 0, columns);
             nodeIds.Clear();
             if (!DataHelper.DataSourceIsEmpty(documentsToProcess))
             {
@@ -1048,25 +1017,29 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLink
         pnlLog.Visible = true;
         pnlGeneralTab.Visible = false;
 
-        CurrentLog.Close();
         CurrentError = string.Empty;
 
         bool copyPerm = CopyPermissions && sameSite;
 
         AddScript("InitializeLog();");
+
         switch (CurrentAction)
         {
             case Action.Copy:
                 ctlAsyncLog.Parameter = String.Format("{0};{1}", ValidationHelper.GetBoolean(WindowHelper.GetItem(Action.Copy + underlying), false), copyPerm);
                 break;
+
             case Action.Link:
             case Action.LinkDoc:
                 ctlAsyncLog.Parameter = String.Format("{0};{1}", ValidationHelper.GetBoolean(WindowHelper.GetItem(Action.Link + underlying), false), copyPerm);
                 break;
+
             case Action.Move:
-                ctlAsyncLog.Parameter = copyPerm;
+                ctlAsyncLog.Parameter = copyPerm.ToString();
                 break;
         }
+
+        ctlAsyncLog.EnsureLog();
         ctlAsyncLog.RunAsync(action, WindowsIdentity.GetCurrent());
     }
 
@@ -1077,8 +1050,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLink
     /// <param name="newLog">New log information</param>
     protected override void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
 
@@ -1110,18 +1082,13 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLink
             {
                 AddAlert(CurrentError);
             }
-            ctlAsyncLog.LogContext = CurrentLog;
+
             return true;
         }
+
         return false;
     }
-
-
-    private void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
-    }
-
+    
 
     private void ctlAsyncLog_OnCancel(object sender, EventArgs e)
     {
@@ -1140,7 +1107,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLink
         AddLog(canceledString);
         ShowConfirmation(canceledString);
         HandlePossibleErrors();
-        CurrentLog.Close();
     }
 
 
@@ -1180,8 +1146,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_CopyMoveLink
             }
             CloseDialog();
         }
-        // Finalize log context
-        CurrentLog.Close();
     }
 
     #endregion

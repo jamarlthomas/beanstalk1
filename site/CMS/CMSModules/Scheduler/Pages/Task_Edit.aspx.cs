@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Base;
 using CMS.DataEngine;
@@ -95,7 +95,7 @@ public partial class CMSModules_Scheduler_Pages_Task_Edit : CMSScheduledTasksPag
 
         plcDevelopment.Visible = developmentMode;
 
-        // Show 'Allow run in external service' checkbox in development mode
+        // Show 'Allow run in external service' check-box in development mode
         plcAllowExternalService.Visible = developmentMode;
 
         string currentTask = GetString("Task_Edit.NewItemCaption");
@@ -227,7 +227,8 @@ public partial class CMSModules_Scheduler_Pages_Task_Edit : CMSScheduledTasksPag
             errorMessage = GetString("Task_Edit.AtLeastOneDayError");
         }
 
-        if ((errorMessage == String.Empty) && !assemblyElem.IsValid())
+        // Validate assembly, but only if task is enabled (so tasks for not-installed modules can be disabled)
+        if ((errorMessage == String.Empty) && chkTaskEnabled.Checked && !assemblyElem.IsValid())
         {
             errorMessage = assemblyElem.ErrorMessage;
         }
@@ -297,7 +298,7 @@ public partial class CMSModules_Scheduler_Pages_Task_Edit : CMSScheduledTasksPag
                 TaskInfo.TaskUseExternalService = chkTaskUseExternalService.Checked;
             }
 
-            TaskInfo.TaskNextRunTime = SchedulingHelper.GetNextTime(TaskInfo.TaskInterval, new DateTime(), new DateTime());
+            TaskInfo.TaskNextRunTime = SchedulingHelper.GetFirstRunTime(SchedulingHelper.DecodeInterval(TaskInfo.TaskInterval));
 
             if (drpModule.Visible)
             {

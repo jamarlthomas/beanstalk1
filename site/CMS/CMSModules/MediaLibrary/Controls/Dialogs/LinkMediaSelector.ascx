@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector" Codebehind="LinkMediaSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector"  Codebehind="LinkMediaSelector.ascx.cs" %>
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/MediaLibrary/MediaLibraryTree.ascx"
     TagName="MediaLibraryTree" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/MediaLibrary/MediaView.ascx" TagName="MediaView"

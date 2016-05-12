@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_Debug_System_DebugLoad"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_Debug_System_DebugLoad"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Group list"
-    MaintainScrollPositionOnPostback="true" Codebehind="System_DebugLoad.aspx.cs" %>
+    MaintainScrollPositionOnPostback="true"  Codebehind="System_DebugLoad.aspx.cs" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <cms:CMSUpdatePanel runat="server" ID="pnlInfo">

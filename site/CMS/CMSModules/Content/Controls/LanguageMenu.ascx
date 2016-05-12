@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_LanguageMenu"
-    Codebehind="LanguageMenu.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_LanguageMenu"
+     Codebehind="LanguageMenu.ascx.cs" %>
 
     <div class="btn-dropdown language-menu">
         <div class="btn btn-default dropdown-toggle icon-only" data-toggle="dropdown" id="drpLanguages">

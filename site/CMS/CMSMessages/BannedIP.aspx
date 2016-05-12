@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true"
-    Inherits="CMSMessages_BannedIP" Theme="Default" Codebehind="BannedIP.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"
+    Inherits="CMSMessages_BannedIP" Theme="Default"  Codebehind="BannedIP.aspx.cs" %>
 <%@ Register src="~/CMSAdminControls/UI/PageElements/PageTitle.ascx" tagname="PageTitle" tagprefix="cms" %>
 
 

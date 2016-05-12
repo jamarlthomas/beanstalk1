@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_ImportExport_Controls_Import_Site_cms_document" Codebehind="cms_document.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_ImportExport_Controls_Import_Site_cms_document"  Codebehind="cms_document.ascx.cs" %>
 
 <script type="text/javascript">
     //<![CDATA[

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Groups_Tools_Forums_Posts_ForumPost_LeftBorder" Codebehind="ForumPost_LeftBorder.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Groups_Tools_Forums_Posts_ForumPost_LeftBorder"  Codebehind="ForumPost_LeftBorder.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

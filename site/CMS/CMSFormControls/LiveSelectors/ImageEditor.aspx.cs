@@ -1,10 +1,8 @@
-using System;
+﻿using System;
 
 using CMS.DataEngine;
 using CMS.ExtendedControls;
 using CMS.Helpers;
-using CMS.SiteProvider;
-using CMS.Membership;
 using CMS.UIControls;
 
 public partial class CMSFormControls_LiveSelectors_ImageEditor : CMSLiveModalPage
@@ -49,7 +47,7 @@ public partial class CMSFormControls_LiveSelectors_ImageEditor : CMSLiveModalPag
             btnSave.Visible = false;
             btnClose.Visible = false;
 
-            string url = ResolveUrl(String.Format("~/CMSMessages/Error.aspx?title={0}&text={1}&cancel=1", GetString("dialogs.badhashtitle"), GetString("dialogs.badhashtext")));
+            string url = ResolveUrl(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
             ltlScript.Text = ScriptHelper.GetScript(String.Format("window.location = '{0}';", url));
         }
     }
@@ -119,27 +117,28 @@ public partial class CMSFormControls_LiveSelectors_ImageEditor : CMSLiveModalPag
 
     private static string GetRefresh()
     {
-        if (QueryHelper.GetBoolean("refresh", false))
+        if (!QueryHelper.GetBoolean("refresh", false))
         {
-            string attachmentGuid = QueryHelper.GetString("attachmentguid", "");
-            string filepath = QueryHelper.GetString("filepath", "");
-            int nodeId = QueryHelper.GetInteger("nodeId", 0);
-
-            if (!String.IsNullOrEmpty(filepath))
-            {
-                return String.Format("if (wopener.imageEdit_FileSystemRefresh) {{ wopener.imageEdit_FileSystemRefresh({0}); }}", ScriptHelper.GetString(String.Format("filepath|{0}", filepath)));
-            }
-            else if (nodeId > 0)
-            {
-                return String.Format("if (wopener.imageEdit_ContentRefresh) {{ wopener.imageEdit_ContentRefresh({0}); }}", ScriptHelper.GetString(String.Format("attachmentguid|{0}|nodeId|{1}", attachmentGuid, nodeId)));
-            }
-            else
-            {
-                return String.Format("if (wopener.imageEdit_AttachmentRefresh) {{ wopener.imageEdit_AttachmentRefresh('attachmentguid|{0}'); }}", ScriptHelper.GetString(attachmentGuid, false));
-            }
+            return String.Empty;
         }
 
-        return String.Empty;
+        string attachmentGuid = QueryHelper.GetString("attachmentguid", "");
+        string filepath = QueryHelper.GetString("filepath", "");
+        int nodeId = QueryHelper.GetInteger("nodeId", 0);
+        int versionHistoryId = QueryHelper.GetInteger("versionHistoryId", 0);
+        var externalControlID = QueryHelper.GetString("clientid", null);
+
+        if (!String.IsNullOrEmpty(filepath))
+        {
+            return String.Format("if (wopener.imageEdit_FileSystemRefresh) {{ wopener.imageEdit_FileSystemRefresh({0}); }}", ScriptHelper.GetString(String.Format("filepath|{0}", filepath)));
+        }
+        
+        if (nodeId > 0)
+        {
+            return String.Format("if (wopener.imageEdit_ContentRefresh) {{ wopener.imageEdit_ContentRefresh({0}); }}", ScriptHelper.GetString(String.Format("attachmentguid|{0}|nodeId|{1}", attachmentGuid, nodeId)));
+        }
+
+        return String.Format("if (wopener.imageEdit_AttachmentRefresh) {{ wopener.imageEdit_AttachmentRefresh('attachmentguid|{0}'); }} else {{ InitRefresh({1}, false, false, '{0}', 'refresh') }}", ScriptHelper.GetString(attachmentGuid, false), ScriptHelper.GetString(externalControlID));
     }
 
     #endregion

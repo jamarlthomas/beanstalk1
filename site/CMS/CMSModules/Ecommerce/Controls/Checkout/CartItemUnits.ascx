@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_Checkout_CartItemUnits" Codebehind="CartItemUnits.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_Checkout_CartItemUnits"  Codebehind="CartItemUnits.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniControls/UniButton.ascx" TagName="UniButton" TagPrefix="cms" %>
 
 <asp:Panel runat="server" ID="pnlCartItemUnits" Visible="true" DefaultButton="btnHiddenButton">

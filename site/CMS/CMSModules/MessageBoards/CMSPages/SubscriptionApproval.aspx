@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="SubscriptionApproval.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="SubscriptionApproval.aspx.cs"
     Inherits="CMSModules_MessageBoards_CMSPages_SubscriptionApproval" Theme="Default"
     MasterPageFile="~/CMSMasterPages/LiveSite/SimplePage.master" %>
 

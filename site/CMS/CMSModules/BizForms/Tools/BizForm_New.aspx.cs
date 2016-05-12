@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 
 using CMS.DataEngine;
@@ -17,7 +17,7 @@ using CMS.UIControls;
 public partial class CMSModules_BizForms_Tools_BizForm_New : CMSBizFormPage
 {
     private const string bizFormNamespace = "BizForm";
-    private string mFormTablePrefix = null;
+    private string mFormTablePrefix;
 
 
     /// <summary>
@@ -60,13 +60,13 @@ public partial class CMSModules_BizForms_Tools_BizForm_New : CMSBizFormPage
         btnOk.Text = GetString("General.OK");
 
         // Page title control initialization
-        PageBreadcrumbs.Items.Add(new BreadcrumbItem()
+        PageBreadcrumbs.Items.Add(new BreadcrumbItem
         {
             Text = GetString("BizForm_Edit.ItemListLink"),
             RedirectUrl = "~/CMSModules/BizForms/Tools/BizForm_List.aspx"
         });
 
-        PageBreadcrumbs.Items.Add(new BreadcrumbItem()
+        PageBreadcrumbs.Items.Add(new BreadcrumbItem
         {
             Text = GetString("BizForm_Edit.NewItemCaption")
         });
@@ -84,177 +84,162 @@ public partial class CMSModules_BizForms_Tools_BizForm_New : CMSBizFormPage
             return;
         }
 
-        DataClassInfo dci = null;
-        BizFormInfo bizFormObj = null;
+        string formDisplayName = txtFormDisplayName.Text.Trim();
+        string formName = txtFormName.Text.Trim();
+        string tableName = txtTableName.Text.Trim();
 
-        string errorMessage = new Validator().NotEmpty(txtFormDisplayName.Text, rfvFormDisplayName.ErrorMessage).
-            NotEmpty(txtFormName.Text, rfvFormName.ErrorMessage).
-            NotEmpty(txtTableName.Text, rfvTableName.ErrorMessage).
-            IsIdentifier(txtFormName.Text, GetString("bizform_edit.errorformnameinidentifierformat")).
-            IsIdentifier(txtTableName.Text, GetString("BizForm_Edit.ErrorFormTableNameInIdentifierFormat")).Result;
+        string errorMessage = new Validator().NotEmpty(formDisplayName, rfvFormDisplayName.ErrorMessage).
+                                              NotEmpty(formName, rfvFormName.ErrorMessage).
+                                              NotEmpty(tableName, rfvTableName.ErrorMessage).
+                                              IsIdentifier(formName, GetString("bizform_edit.errorformnameinidentifierformat")).
+                                              IsIdentifier(tableName, GetString("BizForm_Edit.ErrorFormTableNameInIdentifierFormat")).Result;
 
-        if (String.IsNullOrEmpty(errorMessage))
-        {
-            using (var tr = new CMSTransactionScope())
-            {
-                // Prepare the values
-                string formDisplayName = txtFormDisplayName.Text.Trim();
-
-                bizFormObj = new BizFormInfo();
-                bizFormObj.FormDisplayName = formDisplayName;
-                bizFormObj.FormName = txtFormName.Text.Trim();
-                bizFormObj.FormSiteID = SiteContext.CurrentSiteID;
-                bizFormObj.FormEmailAttachUploadedDocs = true;
-                bizFormObj.FormItems = 0;
-                bizFormObj.FormClearAfterSave = false;
-                bizFormObj.FormLogActivity = true;
-
-                // Ensure the code name
-                bizFormObj.Generalized.EnsureCodeName();
-
-                // Table name is combined from prefix ('BizForm_<sitename>_') and custom table name
-                string safeFormName = ValidationHelper.GetIdentifier(bizFormObj.FormName);
-                bizFormObj.FormName = safeFormName;
-
-                string className = bizFormNamespace + "." + safeFormName;
-
-                // Generate the table name
-                string tableName = txtTableName.Text.Trim();
-                if (String.IsNullOrEmpty(tableName) || (tableName == InfoHelper.CODENAME_AUTOMATIC))
-                {
-                    tableName = safeFormName;
-                }
-                tableName = FormTablePrefix + tableName;
-
-                TableManager tm = new TableManager(null);
-
-                // TableName wont be longer than 60 letters and will be unique
-                if (tableName.Length > 60)
-                {
-                    int x = 1;
-
-                    while (tm.TableExists(tableName.Substring(0, 59) + x.ToString()))
-                    {
-                        x++;
-                    }
-
-                    tableName = tableName.Substring(0, 59) + x.ToString();
-                }
-
-                // If first letter of safeFormName is digit, add "PK" to beginning
-                string primaryKey = BizFormInfoProvider.GenerateFormPrimaryKeyName(bizFormObj.FormName);
-
-                try
-                {
-                    // Create new table in DB
-                    tm.CreateTable(tableName, primaryKey);
-                }
-                catch (Exception ex)
-                {
-                    errorMessage = ex.Message;
-
-                    // Table with the same name already exists
-                    ShowError(string.Format(GetString("bizform_edit.errortableexists"), tableName));
-                    return;
-                }
-
-                // Change table owner
-                try
-                {
-                    string owner = SqlHelper.GetDBSchema(SiteContext.CurrentSiteName);
-                    if ((!String.IsNullOrEmpty(owner)) && (owner.ToLowerCSafe() != "dbo"))
-                    {
-                        tm.ChangeDBObjectOwner(tableName, owner);
-                        tableName = owner + "." + tableName;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    EventLogProvider.LogException("BIZFORM_NEW", "E", ex);
-                }
-
-                // Convert default datetime to string in english format
-                string defaultDateTime = DateTime.Now.ToString(CultureHelper.EnglishCulture.DateTimeFormat);
-
-                try
-                {
-                    // Add FormInserted and FormUpdated columns to the table
-                    tm.AddTableColumn(tableName, "FormInserted", "datetime", false, defaultDateTime);
-                    tm.AddTableColumn(tableName, "FormUpdated", "datetime", false, defaultDateTime);
-                }
-                catch (Exception ex)
-                {
-                    errorMessage = ex.Message;
-
-                    // Column wasn't added successfully
-                    ShowError(errorMessage);
-
-                    return;
-                }
-
-                // Create the BizForm class
-                dci = BizFormInfoProvider.CreateBizFormDataClass(className, formDisplayName, tableName, primaryKey);
-
-                try
-                {
-                    // Create new bizform dataclass
-                    using (CMSActionContext context = new CMSActionContext())
-                    {
-                        // Disable logging of tasks
-                        context.DisableLogging();
-
-                        // Set default search settings
-                        dci.ClassSearchEnabled = true;
-
-                        DataClassInfoProvider.SetDataClassInfo(dci);
-
-                        // Create default search settings
-                        dci.ClassSearchSettings = SearchHelper.GetDefaultSearchSettings(dci);
-                        dci.ClassSearchCreationDateColumn = "FormInserted";
-                        DataClassInfoProvider.SetDataClassInfo(dci);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    errorMessage = ex.Message;
-
-                    // Class with the same name already exists
-                    ShowError(errorMessage);
-
-                    return;
-                }
-
-                // Create new bizform
-                bizFormObj.FormClassID = dci.ClassID;
-
-                try
-                {
-                    // Create new bizform
-                    BizFormInfoProvider.SetBizFormInfo(bizFormObj);
-                }
-                catch (Exception ex)
-                {
-                    errorMessage = ex.Message;
-
-                    ShowError(errorMessage);
-
-                    return;
-                }
-
-                tr.Commit();
-
-                if (String.IsNullOrEmpty(errorMessage))
-                {
-                    // Redirect to Form builder tab
-                    string url = UIContextHelper.GetElementUrl("CMS.Form", "Forms.Properties", false, bizFormObj.FormID);
-                    url = URLHelper.AddParameterToUrl(url, "tabname", "Forms.FormBuldier");
-                    URLHelper.Redirect(url);
-                }
-            }
-        }
-        else
+        if (!String.IsNullOrEmpty(errorMessage))
         {
             ShowError(errorMessage);
+            return;
+        }
+
+        var bizFormObj = new BizFormInfo
+        {
+            FormDisplayName = formDisplayName,
+            FormName = formName,
+            FormSiteID = SiteContext.CurrentSiteID,
+            FormEmailAttachUploadedDocs = true,
+            FormItems = 0,
+            FormClearAfterSave = false,
+            FormLogActivity = true
+        };
+
+        // Ensure the code name
+        bizFormObj.Generalized.EnsureCodeName();
+
+        // Table name is combined from prefix ('BizForm_<sitename>_') and custom table name
+        string safeFormName = ValidationHelper.GetIdentifier(bizFormObj.FormName);
+        bizFormObj.FormName = safeFormName;
+
+        string className = bizFormNamespace + "." + safeFormName;
+
+        // Generate the table name
+        if (String.IsNullOrEmpty(tableName) || (tableName == InfoHelper.CODENAME_AUTOMATIC))
+        {
+            tableName = safeFormName;
+        }
+        tableName = FormTablePrefix + tableName;
+
+        TableManager tm = new TableManager(null);
+
+        // TableName wont be longer than 60 letters and will be unique
+        if (tableName.Length > 60)
+        {
+            string tmpTableName = tableName.Substring(0, 59);
+            int x = 1;
+            do
+            {
+                tableName = tmpTableName + x;
+                x++;
+            } while (tm.TableExists(tableName));
+        }
+
+        // If first letter of safeFormName is digit, add "PK" to beginning
+        string primaryKey = BizFormInfoProvider.GenerateFormPrimaryKeyName(bizFormObj.FormName);
+        try
+        {
+            // Create new table in DB
+            tm.CreateTable(tableName, primaryKey);
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("BIZFORM_NEW", EventType.ERROR, ex);
+            // Table with the same name already exists
+            ShowError(string.Format(GetString("bizform_edit.errortableexists"), tableName));
+            return;
+        }
+
+        // Change table owner
+        try
+        {
+            string owner = SqlHelper.GetDBSchema(SiteContext.CurrentSiteName);
+            if (!String.IsNullOrEmpty(owner) && (owner.ToLowerCSafe() != "dbo"))
+            {
+                tm.ChangeDBObjectOwner(tableName, owner);
+                tableName = owner + "." + tableName;
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("BIZFORM_NEW", EventType.ERROR, ex);
+        }
+
+        // Create the BizForm class
+        DataClassInfo dci = BizFormInfoProvider.CreateBizFormDataClass(className, formDisplayName, tableName, primaryKey);
+
+        // Creates database structure based on class form definition
+        DataClassInfoProvider.EnsureDatabaseStructure(dci, true);
+
+        try
+        {
+            // Create new bizform dataclass
+            using (CMSActionContext context = new CMSActionContext())
+            {
+                // Disable logging of tasks
+                context.DisableLogging();
+
+                // Set default search settings
+                dci.ClassSearchEnabled = true;
+
+                DataClassInfoProvider.SetDataClassInfo(dci);
+
+                // Create default search settings
+                dci.ClassSearchSettings = SearchHelper.GetDefaultSearchSettings(dci);
+                dci.ClassSearchCreationDateColumn = "FormInserted";
+                DataClassInfoProvider.SetDataClassInfo(dci);
+            }
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("BIZFORM_NEW", EventType.ERROR, ex);
+            ShowError(ex.Message);
+
+            CleanUpOnError(tableName, tm, dci);
+            return;
+        }
+
+        // Create new bizform
+        bizFormObj.FormClassID = dci.ClassID;
+        try
+        {
+            BizFormInfoProvider.SetBizFormInfo(bizFormObj);
+        }
+        catch (Exception ex)
+        {
+            EventLogProvider.LogException("BIZFORM_NEW", EventType.ERROR, ex);
+            ShowError(ex.Message);
+
+            CleanUpOnError(tableName, tm, dci, bizFormObj);
+            return;
+        }
+
+        // Redirect to Form builder tab
+        string url = UIContextHelper.GetElementUrl("CMS.Form", "Forms.Properties", false, bizFormObj.FormID);
+        url = URLHelper.AddParameterToUrl(url, "tabname", "Forms.FormBuldier");
+        URLHelper.Redirect(url);
+    }
+
+
+    private void CleanUpOnError(string tableName, TableManager tm, DataClassInfo dci = null, BizFormInfo bizForm = null)
+    {
+        if (tm.TableExists(tableName))
+        {
+            tm.DropTable(tableName);
+        }
+        if ((bizForm != null) && (bizForm.FormID > 0))
+        {
+            BizFormInfoProvider.DeleteBizFormInfo(bizForm);
+        }
+        if ((dci != null) && (dci.ClassID > 0))
+        {
+            DataClassInfoProvider.DeleteDataClassInfo(dci);
         }
     }
 }

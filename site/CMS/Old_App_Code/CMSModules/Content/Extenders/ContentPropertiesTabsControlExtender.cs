@@ -6,6 +6,7 @@ using CMS;
 using CMS.Base;
 using CMS.Core;
 using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.LicenseProvider;
@@ -64,6 +65,12 @@ public class ContentPropertiesTabsControlExtender : UITabsExtender
 
         string elementName = element.ElementName.ToLowerCSafe();
 
+        if (DocumentUIHelper.IsElementHiddenForNode(element, node))
+        {
+            e.Tab = null;
+            return;
+        }
+
         switch (elementName)
         {
             case "properties.languages":
@@ -79,19 +86,6 @@ public class ContentPropertiesTabsControlExtender : UITabsExtender
             case "properties.relateddocs":
             case "properties.linkeddocs":
                 splitViewSupported = false;
-                break;
-
-            case "properties.wireframe":
-                {
-                    // Hide wireframe tab if wireframe is not present
-                    if ((node == null) || (node.NodeWireframeTemplateID <= 0))
-                    {
-                        e.Tab = null;
-                        return;
-                    }
-
-                    splitViewSupported = false;
-                }
                 break;
 
             case "properties.variants":
@@ -124,6 +118,9 @@ public class ContentPropertiesTabsControlExtender : UITabsExtender
                 tab.RedirectUrl = URLHelper.AddParameterToUrl(tab.RedirectUrl, "objectid", manager.NodeID.ToString(CultureInfo.InvariantCulture));
                 break;
         }
+
+        // UI elements could have a different display name if content only document is selected
+        tab.Text = DocumentUIHelper.GetUIElementDisplayName(element, node);
 
         // Ensure split view mode
         if (splitViewSupported && UIContext.DisplaySplitMode)

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 
 using CMS.Base;
@@ -93,7 +93,7 @@ public partial class CMSModules_BannerManagement_FormControls_BannerContentEdit 
                         return "";
                     }
 
-                    BannerImageAttributes bannerImage = new BannerImageAttributes()
+                    BannerImageAttributes bannerImage = new BannerImageAttributes
                     {
                         Src = URLHelper.UnResolveUrl(imsImage.Value, SystemContext.ApplicationPath),
                         Title = txtImgTitle.Text,

@@ -8,7 +8,7 @@
  * Publish example usage:
  * EventHub.publish('click');
  */
-cmsdefine(['Underscore'], function () {
+cmsdefine(['Underscore', 'CMS/Application'], function (underscore, cmsapp) {
 //    'use strict';
 
     var top = window.top,
@@ -175,9 +175,9 @@ cmsdefine(['Underscore'], function () {
                                 i--;
                             }
                         } catch (e) {
-                            if (console && console.log) {
-                                console.error('Event "' + key + '" fired an error:\n' + e + '\n' + e.stack);
-                            }
+                        	if (console && console.log && (!cmsapp || cmsapp.getData('isDebuggingEnabled'))) {
+		                        console.error('Event "' + key + '" fired an error:\n' + e + '\n' + e.stack);
+	                        }
                             i--;
                         }
                     }
@@ -240,6 +240,9 @@ cmsdefine(['Underscore'], function () {
                 getWindowPositionIdentifier = function (w, nonInitializedWindowIdentifiers, runnedRecursively) {
                     // Ensure CMS namespace is initialized in this window and its parent
                     w.CMS = w.CMS || {};
+                    if (w.parent == null) {
+                        w.parent = w.self;
+                    }
                     w.parent.CMS = w.parent.CMS || {};
 
                     var windowId,

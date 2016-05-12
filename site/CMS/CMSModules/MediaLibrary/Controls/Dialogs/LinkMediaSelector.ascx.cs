@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -84,7 +84,7 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector 
     /// <summary>
     /// Returns current properties (according to OutputFormat).
     /// </summary>
-    protected override ItemProperties Properties
+    protected override ItemProperties ItemProperties
     {
         get
         {
@@ -152,22 +152,6 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector 
         set
         {
             hdnLastSelectedPath.Value = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Gets or sets selected item to colorize.
-    /// </summary>
-    private Guid ItemToColorize
-    {
-        get
-        {
-            return ValidationHelper.GetGuid(ViewState["ItemToColorize"], Guid.Empty);
-        }
-        set
-        {
-            ViewState["ItemToColorize"] = value;
         }
     }
 
@@ -441,7 +425,7 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector 
                 bool isLink = (Config.OutputFormat == OutputFormatEnum.BBLink || Config.OutputFormat == OutputFormatEnum.HTMLLink);
                 if (isLink && !IsItemLoaded)
                 {
-                    Properties.ClearProperties(true);
+                    ItemProperties.ClearProperties(true);
                 }
             }
             else
@@ -475,39 +459,7 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector 
 
         HideMediaElements();
     }
-
-
-    /// <summary>
-    /// Initializes its properties according to the URL parameters.
-    /// </summary>
-    public void InitFromQueryString()
-    {
-        switch (Config.OutputFormat)
-        {
-            case OutputFormatEnum.HTMLMedia:
-                SelectableContent = SelectableContentEnum.OnlyMedia;
-                break;
-
-            case OutputFormatEnum.HTMLLink:
-                SelectableContent = SelectableContentEnum.AllContent;
-                break;
-
-            case OutputFormatEnum.BBMedia:
-                SelectableContent = SelectableContentEnum.OnlyImages;
-                break;
-
-            case OutputFormatEnum.BBLink:
-                SelectableContent = SelectableContentEnum.AllContent;
-                break;
-
-            case OutputFormatEnum.URL:
-            case OutputFormatEnum.NodeGUID:
-                string content = QueryHelper.GetString("content", string.Empty);
-                SelectableContent = CMSDialogHelper.GetSelectableContent(content);
-                break;
-        }
-    }
-
+    
 
     /// <summary>
     /// Returns selected item parameters as name-value collection.
@@ -517,12 +469,12 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector 
         // Clear unused information from the session
         ClearSelectedItemInfo();
 
-        if (Properties.Validate())
+        if (ItemProperties.Validate())
         {
             // Store tab information in the user's dialogs configuration
             StoreDialogsConfiguration();
 
-            Hashtable props = Properties.GetItemProperties();
+            Hashtable props = ItemProperties.GetItemProperties();
 
             // Get JavaScript for inserting the item
             string insertItemScript = GetInsertItem(props);
@@ -562,10 +514,10 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector 
         bbMediaProp.Visible = false;
         urlProp.Visible = false;
 
-        if (Properties != null)
+        if (ItemProperties != null)
         {
-            Properties.Visible = true;
-            Properties.Config = Config;
+            ItemProperties.Visible = true;
+            ItemProperties.Config = Config;
         }
 
         htmlLinkProp.StopProcessing = !htmlLinkProp.Visible;
@@ -587,9 +539,9 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector 
         urlProp.SourceType = MediaSourceEnum.MediaLibraries;
 
         // Set editor client ID for the properties
-        Properties.EditorClientID = Config.EditorClientID;
-        Properties.IsLiveSite = IsLiveSite;
-        Properties.SourceType = MediaSourceEnum.MediaLibraries;
+        ItemProperties.EditorClientID = Config.EditorClientID;
+        ItemProperties.IsLiveSite = IsLiveSite;
+        ItemProperties.SourceType = MediaSourceEnum.MediaLibraries;
 
         // Setup library selector
         InitializeLibrarySelector();
@@ -639,7 +591,7 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector 
                     filePermanentUrl = URLHelper.ResolveUrl(filePermanentUrl);
                 }
 
-                Properties.SiteDomainName = LibrarySiteInfo.DomainName;
+                ItemProperties.SiteDomainName = LibrarySiteInfo.DomainName;
 
                 if (!avoidPropUpdate)
                 {
@@ -758,8 +710,8 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector 
         pnlUpdateView.Update();
 
         // Properties
-        Properties.StopProcessing = !isDisplayed;
-        Properties.Visible = isDisplayed;
+        ItemProperties.StopProcessing = !isDisplayed;
+        ItemProperties.Visible = isDisplayed;
         pnlUpdateProperties.Update();
 
         lblEmpty.Text = CMSDialogHelper.GetSelectItemMessage(Config, MediaSourceEnum.MediaLibraries);
@@ -1028,31 +980,34 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector 
     /// </summary>
     public void LoadSelectedItem()
     {
-        if (MediaSource != null)
+        var mediaSource = MediaSource;
+        if (mediaSource != null)
         {
             IsItemLoaded = true;
 
-            // Try to pre-select media library
-            if ((MediaSource.MediaFileLibraryID > 0) && (LibraryInfo != null))
-            {
-                librarySelector.SelectedLibraryID = MediaSource.MediaFileLibraryID;
+            var library = LibraryInfo;
 
-                if (MediaSource.MediaFileLibraryGroupID > 0)
+            // Try to pre-select media library
+            if ((mediaSource.MediaFileLibraryID > 0) && (library != null))
+            {
+                librarySelector.SelectedLibraryID = mediaSource.MediaFileLibraryID;
+
+                if (mediaSource.MediaFileLibraryGroupID > 0)
                 {
-                    librarySelector.SelectedGroupID = MediaSource.MediaFileLibraryGroupID;
-                    librarySelector.GroupLibraryName = LibraryInfo.LibraryName;
+                    librarySelector.SelectedGroupID = mediaSource.MediaFileLibraryGroupID;
+                    librarySelector.GroupLibraryName = library.LibraryName;
                 }
                 else
                 {
-                    librarySelector.GlobalLibraryName = LibraryInfo.LibraryName;
+                    librarySelector.GlobalLibraryName = library.LibraryName;
                 }
             }
 
             // Try to pre-select path
-            if (!string.IsNullOrEmpty(MediaSource.MediaFilePath))
+            if (!string.IsNullOrEmpty(mediaSource.MediaFilePath))
             {
                 // Without library root
-                FolderPath = GetFolderPath(MediaSource.MediaFilePath);
+                FolderPath = GetFolderPath(mediaSource.MediaFilePath);
 
                 if (StartingPath == string.Empty)
                 {
@@ -1069,14 +1024,14 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector 
                 }
 
                 // Save value to request
-                RequestStockHelper.Add(LINK_MEDIA_SELECTOR_STORAGE_KEY, "FolderPath", FolderPath);
+                RequestStockHelper.AddToStorage(LINK_MEDIA_SELECTOR_STORAGE_KEY, "FolderPath", FolderPath);
             }
 
             // Reload HTML properties
             if (Config.OutputFormat == OutputFormatEnum.HTMLMedia)
             {
                 // Force media properties control to load selected item
-                htmlMediaProp.ViewMode = MediaSource.MediaType;
+                htmlMediaProp.ViewMode = mediaSource.MediaType;
             }
 
             // Ensure inserted media file URL
@@ -1085,7 +1040,7 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector 
             {
                 url = ValidationHelper.GetString(Parameters[DialogParameters.URL_URL], string.Empty);
             }
-            else if (ImageHelper.IsImage(MediaSource.Extension))
+            else if (ImageHelper.IsImage(mediaSource.Extension))
             {
                 url = ValidationHelper.GetString(Parameters[DialogParameters.IMG_URL], string.Empty);
             }
@@ -1096,23 +1051,33 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector 
             // Get permanent URL for media file
             if (url != string.Empty)
             {
-                bool isDifferentSite = (MediaSource.SiteID != SiteContext.CurrentSiteID);
+                bool isDifferentSite = (mediaSource.SiteID != SiteContext.CurrentSiteID);
                 string siteName = LibrarySiteInfo.SiteName;
-                string fileName = UsePermanentUrls ? AttachmentHelper.GetFullFileName(MediaSource.FileName, MediaSource.Extension) : MediaSource.FileName;
+                string fileName = UsePermanentUrls ? AttachmentHelper.GetFullFileName(mediaSource.FileName, mediaSource.Extension) : mediaSource.FileName;
 
-                string filePermanentUrl = isDifferentSite ? MediaFileInfoProvider.GetMediaFileAbsoluteUrl(siteName, MediaSource.MediaFileGuid, fileName) : MediaFileInfoProvider.GetMediaFileUrl(MediaSource.MediaFileGuid, fileName);
-                string fileDirectUrl = isDifferentSite ? MediaFileInfoProvider.GetMediaFileAbsoluteUrl(siteName, LibraryInfo.LibraryFolder, MediaSource.MediaFilePath) : MediaFileInfoProvider.GetMediaFileUrl(siteName, LibraryInfo.LibraryFolder, MediaSource.MediaFilePath);
+                string filePermanentUrl = 
+                    isDifferentSite ? 
+                    MediaFileInfoProvider.GetMediaFileAbsoluteUrl(siteName, mediaSource.MediaFileGuid, fileName) : 
+                    MediaFileInfoProvider.GetMediaFileUrl(mediaSource.MediaFileGuid, fileName);
 
-                Parameters[DialogParameters.URL_PERMANENT] = URLHelper.ResolveUrl(filePermanentUrl);
-                Parameters[DialogParameters.URL_DIRECT] = URLHelper.ResolveUrl(fileDirectUrl);
+                if (library != null)
+                {
+                    string fileDirectUrl = 
+                        isDifferentSite ? 
+                            MediaFileInfoProvider.GetMediaFileAbsoluteUrl(siteName, library.LibraryFolder, mediaSource.MediaFilePath) : 
+                            MediaFileInfoProvider.GetMediaFileUrl(siteName, library.LibraryFolder, mediaSource.MediaFilePath);
+
+                    Parameters[DialogParameters.URL_PERMANENT] = URLHelper.ResolveUrl(filePermanentUrl);
+                    Parameters[DialogParameters.URL_DIRECT] = URLHelper.ResolveUrl(fileDirectUrl);
+                }
             }
 
             // Load properties
-            Properties.LoadItemProperties(Parameters);
+            ItemProperties.LoadItemProperties(Parameters);
             pnlUpdateProperties.Update();
 
             // Remember item being edited for later high-lighting
-            ItemToColorize = MediaSource.MediaFileGuid;
+            ItemToColorize = mediaSource.MediaFileGuid;
         }
 
         HandleMediaElements(true);
@@ -1184,7 +1149,7 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector 
                     folderTree.PathToSelect = path;
 
                     // Save value to request
-                    RequestStockHelper.Add(LINK_MEDIA_SELECTOR_STORAGE_KEY, "FolderPath", FolderPath);
+                    RequestStockHelper.AddToStorage(LINK_MEDIA_SELECTOR_STORAGE_KEY, "FolderPath", FolderPath);
                 }
             }
         }
@@ -1364,18 +1329,6 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_LinkMediaSelector 
         menuElem.LibraryID = LibraryID;
 
         menuElem.UpdateViewMenu();
-    }
-
-
-    /// <summary>
-    /// Initialize design jQuery scripts.
-    /// </summary>
-    private void InitializeDesignScripts()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.Append("setTimeout('InitializeDesign();',200);");
-        sb.Append("$cmsj(window).unbind('resize').resize(function() { InitializeDesign(); });");
-        ScriptHelper.RegisterStartupScript(Page, typeof(Page), "designScript", ScriptHelper.GetScript(sb.ToString()));
     }
 
 
@@ -1833,8 +1786,6 @@ function imageEdit_Refresh(guid){{
                                     fileInfo.FileImageHeight, fileInfo.FileSize, fileUrl, permUrl);
 
                     ItemToColorize = fileInfo.FileGUID;
-
-                    ColorizeRow(fileInfo.FileGUID.ToString());
                 }
             }
 
@@ -1948,7 +1899,6 @@ function imageEdit_Refresh(guid){{
                 break;
 
             default:
-                ColorizeLastSelectedRow();
                 pnlUpdateView.Update();
                 break;
         }
@@ -1997,13 +1947,7 @@ function imageEdit_Refresh(guid){{
             // Clear properties if library changed
             if (URLHelper.IsPostback())
             {
-                // High-light item being edited
-                if (ItemToColorize != Guid.Empty)
-                {
-                    ColorizeRow(ItemToColorize.ToString());
-                }
-
-                Properties.ClearProperties(true);
+                ItemProperties.ClearProperties(true);
             }
 
         }

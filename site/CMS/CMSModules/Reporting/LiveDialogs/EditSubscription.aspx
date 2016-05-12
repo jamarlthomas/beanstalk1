@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="EditSubscription.aspx.cs" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="EditSubscription.aspx.cs" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master"
     Theme="Default" Inherits="CMSModules_Reporting_LiveDialogs_EditSubscription" %>
 
 <%@ Register Src="~/CMSModules/Reporting/Controls/SubscriptionEdit.ascx" TagName="SubscriptionEdit"

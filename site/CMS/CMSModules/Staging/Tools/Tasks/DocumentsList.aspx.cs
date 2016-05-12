@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -63,18 +63,34 @@ public partial class CMSModules_Staging_Tools_Tasks_DocumentsList : CMSStagingPa
             if (node != null)
             {
                 string closeLink = "<a href=\"#\"><span class=\"ListingClose\" style=\"cursor: pointer;\" " +
-                                   "onclick=\"parent.frames['tasksHeader'].selectDocuments = false; window.location.href='" +
+                                   "onclick=\"parent.frames['tasksContent'].selectDocuments = false; window.location.href='" +
                                    ResolveUrl("~/CMSModules/Staging/Tools/Tasks/Tasks.aspx?serverid=") + serverId +
                                    "&stagingnodeid=" + nodeId + "';" +
-                                   "var completeObj = parent.frames['tasksHeader'].document.getElementById('pnlComplete');" +
+                                   "var completeObj = parent.frames['tasksContent'].document.getElementById('pnlComplete');" +
                                    "if (completeObj != null){ completeObj.style.display = 'block'; }" +
                                    "return false;\">" + GetString("general.close") +
                                    "</span></a>";
-                string docNamePath = "<span class=\"ListingPath\">" + node.DocumentNamePath + "</span>";
+                string docNamePath = "<span class=\"ListingPath\">" + HTMLHelper.HTMLEncode(node.DocumentNamePath) + "</span>";
 
                 lblListingInfo.Text = String.Format(GetString("synchronization.listinginfo"), docNamePath, closeLink);
             }
         }
+
+
+        var script = @" var currentNodeId = 0,
+currentServerId = 0,
+selectDocuments = false;
+
+function SelectNode(serverId, nodeId) {
+  document.location = 'Tasks.aspx?serverId=' + serverId + '&stagingnodeid=' + nodeId;
+}
+
+function SelectDocNode(serverId, nodeId) {
+  currentNodeId = nodeId;
+  document.location = 'DocumentsList.aspx?serverId=' + serverId + '&stagingnodeid=' + nodeId;
+}";
+
+        ScriptHelper.RegisterClientScriptBlock(Page, typeof (string), ClientID + "HandlingDocumentList", ScriptHelper.GetScript(script));
     }
 
     #endregion
@@ -89,7 +105,7 @@ public partial class CMSModules_Staging_Tools_Tasks_DocumentsList : CMSStagingPa
         {
             case "select":
                 CMSGridActionButton btnImg = (CMSGridActionButton)sender;
-                btnImg.OnClientClick = "parent.frames['tasksHeader'].selectDocuments = false;parent.frames['tasksTree'].SelectTree(" + btnImg.CommandArgument + ");window.location.href='" + ResolveUrl("~/CMSModules/Staging/Tools/Tasks/Tasks.aspx?serverid=") + serverId + "&stagingnodeid=" + btnImg.CommandArgument + "'; return false;";
+                btnImg.OnClientClick = "parent.frames['tasksContent'].selectDocuments = false;parent.frames['tasksTree'].SelectTree(" + btnImg.CommandArgument + ");window.location.href='" + ResolveUrl("~/CMSModules/Staging/Tools/Tasks/Tasks.aspx?serverid=") + serverId + "&stagingnodeid=" + btnImg.CommandArgument + "'; return false;";
                 return btnImg;
 
             case "showsubdocuments":

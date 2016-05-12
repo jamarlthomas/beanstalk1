@@ -1,9 +1,8 @@
-using System;
+﻿using System;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.ExtendedControls;
 using CMS.PortalEngine;
-using CMS.Base;
 using CMS.SiteProvider;
 
 public partial class CMSInlineControls_DocumentAttachments : InlineUserControl

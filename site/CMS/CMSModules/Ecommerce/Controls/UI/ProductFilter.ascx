@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="ProductFilter.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="ProductFilter.ascx.cs"
     Inherits="CMSModules_Ecommerce_Controls_UI_ProductFilter" %>
 <%@ Register Src="~/CMSModules/Ecommerce/FormControls/PublicStatusSelector.ascx"
     TagName="PublicStatusSelector" TagPrefix="cms" %>

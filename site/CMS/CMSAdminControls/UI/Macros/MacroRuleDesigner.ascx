@@ -1,8 +1,6 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_Macros_MacroRuleDesigner"
-    Codebehind="MacroRuleDesigner.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_Macros_MacroRuleDesigner"
+     Codebehind="MacroRuleDesigner.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/PageTitle.ascx" TagName="PageTitle"
-    TagPrefix="cms" %>
-<%@ Register Src="~/CMSAdminControls/UI/Macros/MacroEditor.ascx" TagName="MacroEditor"
     TagPrefix="cms" %>
 <asp:Panel runat="server" ID="pnlMain" DefaultButton="btnFilter">
     <cms:CMSUpdatePanel ID="pnlUpdate" runat="server" UpdateMode="Always">

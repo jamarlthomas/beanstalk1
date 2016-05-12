@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections;
 
+using CMS.DocumentEngine;
 using CMS.FormControls;
 using CMS.FormEngine;
 using CMS.Helpers;
@@ -83,7 +84,7 @@ public partial class CMSModules_Objects_FormControls_Cloning_CMS_DocumentTypeSet
             string smallIcon = iconPath + fileName;
             string largeIcon = iconPath + "48x48\\" + fileName;
 
-            result[DataClassInfo.OBJECT_TYPE_DOCUMENTTYPE + ".icons"] = smallIcon + ".png;" + smallIcon + ".gif;" + largeIcon + ".png;" + largeIcon + ".gif";
+            result[DocumentTypeInfo.OBJECT_TYPE_DOCUMENTTYPE + ".icons"] = smallIcon + ".png;" + smallIcon + ".gif;" + largeIcon + ".png;" + largeIcon + ".gif";
         }
         return result;
     }

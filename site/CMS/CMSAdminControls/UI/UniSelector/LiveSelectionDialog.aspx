@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSAdminControls_UI_UniSelector_LiveSelectionDialog" Title="Live Selection Dialog"
-    ValidateRequest="false" Theme="default" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master" Codebehind="LiveSelectionDialog.aspx.cs" %>
+    ValidateRequest="false" Theme="default" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master"  Codebehind="LiveSelectionDialog.aspx.cs" %>
 
 <%@ Register Src="Controls/SelectionDialog.ascx" TagName="SelectionDialog" TagPrefix="cms" %>
 <asp:Content ID="cntContent" ContentPlaceHolderID="plcContent" runat="Server">

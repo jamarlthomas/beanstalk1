@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Linq;
 using System.Web.UI.WebControls;
 
 using CMS.Controls;
@@ -79,7 +80,7 @@ public partial class CMSModules_EmailTemplates_Filters_EmailTemplateTypeFilter :
         if (drpEmailType.Items.Count == 0)
         {
             drpEmailType.Items.Add(new ListItem(ResHelper.GetString("general.selectall"), string.Empty));
-            ControlsHelper.FillListControlWithEnum<EmailTemplateTypeEnum>(drpEmailType, "emailtemplate.type", true, true);
+            drpEmailType.Items.AddRange(EmailTemplateTypeRegister.Current.GetTemplateTypes().Select(it => new ListItem(ResHelper.GetString(it.DisplayNameResourceString), it.Name)).OrderBy(it => it.Text).ToArray());
         }
     }
 

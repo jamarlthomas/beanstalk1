@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Security.Principal;
 using System.Text;
+using System.Web;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
@@ -306,7 +307,7 @@ public partial class CMSInstall_SeparateDB : GlobalAdminPage
             {
                 EnableTasks();
                 TakeSitesOnline();
-                WebFarmHelper.CreateTask(SystemTaskType.RestartApplication, "RestartApplication", "", null);
+                WebFarmHelper.CreateTask(SystemTaskType.RestartApplication, "RestartApplication");
                 ScriptHelper.RegisterStartupScript(this, typeof(string), "Close dialog", ScriptHelper.GetScript("RefreshParent(); CloseDialog();"));
             }
         }
@@ -528,11 +529,12 @@ public partial class CMSInstall_SeparateDB : GlobalAdminPage
     private void SetConnectionString()
     {
         string connectionStringName = DatabaseSeparationHelper.ConnStringSeparateName;
+        string encodedPassword = HttpUtility.HtmlEncode(HttpUtility.HtmlEncode(databaseDialog.Password));
         if (!SystemContext.IsRunningOnAzure)
         {
             if (!SettingsHelper.SetConnectionString(connectionStringName, databaseDialog.ConnectionString))
             {
-                string connStringDisplay = ConnectionHelper.GetConnectionString(databaseDialog.AuthenticationType, databaseDialog.ServerName, databaseDialog.Database, databaseDialog.Username, databaseDialog.Password, 240, true);
+                string connStringDisplay = ConnectionHelper.BuildConnectionString(databaseDialog.AuthenticationType, databaseDialog.ServerName, databaseDialog.Database, databaseDialog.Username, encodedPassword, 240);
                 string resultStringDisplay = "&lt;add name=\"" + connectionStringName + "\" connectionString=\"" + connStringDisplay + "\"/&gt;";
 
                 separationFinished.ErrorLabel.Visible = true;
@@ -541,7 +543,7 @@ public partial class CMSInstall_SeparateDB : GlobalAdminPage
         }
         else
         {
-            string connStringValue = ConnectionHelper.GetConnectionString(databaseDialog.AuthenticationType, databaseDialog.ServerName, databaseDialog.Database, databaseDialog.Username, databaseDialog.Password, 240, true, "English", true);
+            string connStringValue = ConnectionHelper.BuildConnectionString(databaseDialog.AuthenticationType, databaseDialog.ServerName, databaseDialog.Database, databaseDialog.Username, encodedPassword, 240, isForAzure: true);
             string connString = "&lt;add name=\"" + connectionStringName + "\" connectionString=\"" + connStringValue + "\"/&gt;";
             string appSetting = "&lt;Setting name=\"" + connectionStringName + "\" value=\"" + connStringValue + "\"/&gt;";
 
@@ -603,7 +605,7 @@ public partial class CMSInstall_SeparateDB : GlobalAdminPage
     {
         if (ValidationHelper.GetBoolean(PersistentStorageHelper.GetValue("CMSSchedulerTasksEnabled"), false))
         {
-            SettingsKeyInfoProvider.SetValue("CMSSchedulerTasksEnabled", true);
+            SettingsKeyInfoProvider.SetGlobalValue("CMSSchedulerTasksEnabled", true);
 
             // Restart win service
             WinServiceItem def = WinServiceHelper.GetServiceDefinition(WinServiceHelper.HM_SERVICE_BASENAME);

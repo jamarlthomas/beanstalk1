@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_PaymentGateways_AuthorizeNetForm"
-    Codebehind="AuthorizeNetForm.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_PaymentGateways_AuthorizeNetForm"
+     Codebehind="AuthorizeNetForm.ascx.cs" %>
 
 <div class="h4"><%= GetString("AuthorizeNetForm.Title") %></div>
 <asp:Label ID="lblError" runat="server" EnableViewState="false" CssClass="ErrorLabel"

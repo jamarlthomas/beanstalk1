@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Data;
 
 using CMS.Ecommerce;
 using CMS.Helpers;
-using CMS.MacroEngine;
 using CMS.Search;
 using CMS.SiteProvider;
 
@@ -20,7 +17,7 @@ namespace CMS.Controls
     {
         #region "Variables"
 
-        SKUInfo mSKU = null;
+        SKUInfo mSKU;
 
         #endregion
 
@@ -452,7 +449,7 @@ namespace CMS.Controls
         /// </summary>        
         public string GetSKUUrl()
         {
-            return EcommerceTransformationFunctions.GetProductUrl(SKU.SKUGUID, ResHelper.LocalizeString(SKU.SKUName));
+            return EcommerceTransformationFunctions.GetProductUrlByID(SKU.SKUID, ResHelper.LocalizeString(SKU.SKUName));
         }
 
 
@@ -480,7 +477,7 @@ namespace CMS.Controls
 
 
         /// <summary>
-        /// Returns URL of the specified product.
+        /// Returns permanent URL of the specified product. Does not uses hash tables.
         /// </summary>
         /// <param name="skuGUID">SKU Guid</param>
         /// <param name="skuName">SKU name</param>
@@ -488,6 +485,18 @@ namespace CMS.Controls
         public string GetProductUrl(object skuGUID, object skuName, object siteName)
         {
             return EcommerceTransformationFunctions.GetProductUrl(skuGUID, skuName, siteName);
+        }
+
+
+        /// <summary>
+        /// Returns permanent URL of the specified product. Uses hash tables.
+        /// </summary>
+        /// <param name="skuID">SKU ID</param>
+        /// <param name="skuName">SKU name</param>
+        /// <param name="siteName">Site name</param>
+        public string GetProductUrlByID(object skuID, object skuName, object siteName)
+        {
+            return EcommerceTransformationFunctions.GetProductUrlByID(skuID, skuName, siteName);
         }
 
 

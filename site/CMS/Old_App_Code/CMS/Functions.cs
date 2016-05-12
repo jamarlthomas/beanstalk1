@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -423,7 +423,7 @@ public static class Functions
             {
                 try
                 {
-                    var typeInfo = ObjectTypeManager.GetRegisteredTypeInfo(t);
+                    var typeInfo = ObjectTypeManager.GetTypeInfo(t);
 
                     return (!typeInfo.Inherited && typeInfo.ContainsMacros);
                 }

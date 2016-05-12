@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -449,9 +449,9 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartCont
         if (ShoppingCartControl.CheckoutProcessType == CheckoutProcessEnum.CMSDeskOrderItems)
         {
             // Check 'ModifyOrders' permission
-            if (!ECommerceContext.IsUserAuthorizedForPermission("ModifyOrders"))
+            if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.ORDERS_MODIFY))
             {
-                CMSEcommercePage.RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyOrders");
+                CMSEcommercePage.RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyOrders");
             }
         }
 
@@ -1047,6 +1047,14 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartCont
 
         if (itemGuid != Guid.Empty)
         {
+            var item = ShoppingCart.GetShoppingCartItem(itemGuid);
+
+            // Hide edit link for attribute product option
+            if (item.IsAttributeOption)
+            {
+                return null;
+            }
+
             var query = "itemguid=" + itemGuid + GetCMSDeskShoppingCartSessionNameQuery();
             var editItemUrl = UIContextHelper.GetElementDialogUrl(ModuleName.ECOMMERCE, "order.OrderItemProperties", 0, query);
 
@@ -1089,7 +1097,7 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartCont
             query = URLHelper.AddParameterToUrl(query, "tabName", tabParam);
             query = URLHelper.AddParameterToUrl(query, "siteid", skuSiteId.ToString());
             query = URLHelper.AddParameterToUrl(query, "dialog", "1");
-            var url = UIContextHelper.GetElementDialogUrl("CMS.ECommerce", "Products.Properties", additionalQuery: query);
+            var url = UIContextHelper.GetElementDialogUrl(ModuleName.ECOMMERCE, "Products.Properties", additionalQuery: query);
 
             // Different tooltip for product than for product variant
             string tooltip = (parentSkuId == 0) ? GetString("shoppingcart.editproduct") : GetString("shoppingcart.editproductvariant");

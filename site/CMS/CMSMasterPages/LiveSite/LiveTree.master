@@ -1,4 +1,4 @@
-<%@ Master Language="C#" AutoEventWireup="true" Inherits="CMSMasterPages_LiveSite_LiveTree" Codebehind="LiveTree.master.cs" %>
+<%@ Master Language="C#" AutoEventWireup="true" Inherits="CMSMasterPages_LiveSite_LiveTree"  Codebehind="LiveTree.master.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/Trees/TreeBorder.ascx" TagName="TreeBorder" TagPrefix="cms" %>
 

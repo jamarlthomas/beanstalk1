@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Modules_Pages_Module_Sites"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Modules_Pages_Module_Sites"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Module Edit - Sites"
-    Codebehind="Sites.aspx.cs" %>
+     Codebehind="Sites.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"
     TagPrefix="cms" %>

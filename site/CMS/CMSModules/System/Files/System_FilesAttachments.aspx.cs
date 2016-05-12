@@ -1,12 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Collections;
 using System.Security.Principal;
 using System.Web.UI.WebControls;
 using System.Linq;
 
-using CMS.Base;
 using CMS.EventLog;
 using CMS.ExtendedControls;
 using CMS.ExtendedControls.ActionsConfig;
@@ -26,24 +24,10 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
 
     protected string siteWhere = null;
 
-    private static readonly Hashtable mErrors = new Hashtable();
-
     #endregion
 
 
     #region "Properties"
-    
-    /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
 
     /// <summary>
     /// Current Error.
@@ -52,11 +36,11 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
     {
         get
         {
-            return ValidationHelper.GetString(mErrors["DeleteError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mErrors["DeleteError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -72,17 +56,17 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
         // Initialize events
         ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
         ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-        ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
         ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
 
         ctlAsyncLog.Buttons.CssClass = "cms-edit-menu";
 
-        HeaderActions.AddAction(new HeaderAction()
+        HeaderActions.AddAction(new HeaderAction
         {
             Text = GetString("srch.clearattachmentcache"),
             Tooltip = GetString("srch.clearattachmentcache.tooltip"),
             CommandName = "clearcache"
         });
+
         HeaderActions.ActionPerformed += HeaderActions_ActionPerformed;
 
         if (RequestHelper.IsCallback())
@@ -97,8 +81,8 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
 
 
         // Setup the controls
-        gridFiles.OnExternalDataBound += new OnExternalDataBoundEventHandler(gridFiles_OnExternalDataBound);
-        gridFiles.OnAction += new OnActionEventHandler(gridFiles_OnAction);
+        gridFiles.OnExternalDataBound += gridFiles_OnExternalDataBound;
+        gridFiles.OnAction += gridFiles_OnAction;
 
         ControlsHelper.RegisterPostbackControl(btnOk);
 
@@ -133,8 +117,10 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
 
             if (siteId > 0)
             {
-                bool fs = StoreInFileSystem(siteId);
-                bool db = StoreInDatabase(siteId);
+                var filesLocationType = GetFilesLocationType(siteId);
+
+                bool fs = filesLocationType != FilesLocationTypeEnum.Database;
+                bool db = filesLocationType != FilesLocationTypeEnum.FileSystem;
 
                 copyFS = deleteDB = fs;
                 deleteFS = db;
@@ -241,7 +227,7 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
             if (ai.AttachmentBinary == null)
             {
                 // Ensure the binary data
-                ai.AttachmentBinary = AttachmentInfoProvider.GetFile(ai, GetSiteName(ai.AttachmentSiteID));
+                ai.AttachmentBinary = AttachmentInfoProvider.GetFile(ai, SiteInfoProvider.GetSiteName(ai.AttachmentSiteID));
                 ai.Generalized.UpdateData();
 
                 return true;
@@ -266,7 +252,7 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
             name = ai.AttachmentName;
 
             // Ensure the physical file
-            AttachmentInfoProvider.EnsurePhysicalFile(ai, GetSiteName(ai.AttachmentSiteID));
+            AttachmentInfoProvider.EnsurePhysicalFile(ai, SiteInfoProvider.GetSiteName(ai.AttachmentSiteID));
 
             return true;
         }
@@ -288,7 +274,7 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
         {
             name = ai.AttachmentName;
 
-            AttachmentInfoProvider.EnsurePhysicalFile(ai, GetSiteName(ai.AttachmentSiteID));
+            AttachmentInfoProvider.EnsurePhysicalFile(ai, SiteInfoProvider.GetSiteName(ai.AttachmentSiteID));
 
             // Clear the binary data
             ai.AttachmentBinary = null;
@@ -322,12 +308,12 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
                 if (!hasBinary)
                 {
                     // Copy the binary data to database
-                    ai.AttachmentBinary = AttachmentInfoProvider.GetFile(ai, GetSiteName(ai.AttachmentSiteID));
+                    ai.AttachmentBinary = AttachmentInfoProvider.GetFile(ai, SiteInfoProvider.GetSiteName(ai.AttachmentSiteID));
                     ai.Generalized.UpdateData();
                 }
 
                 // Delete the file from the disk
-                AttachmentInfoProvider.DeleteFile(ai.AttachmentGUID, GetSiteName(ai.AttachmentSiteID), true, false);
+                AttachmentInfoProvider.DeleteFile(ai.AttachmentGUID, SiteInfoProvider.GetSiteName(ai.AttachmentSiteID), true);
 
                 return true;
             }
@@ -388,18 +374,15 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
         if ((items != null) && (items.Count > 0))
         {
             string name = null;
-            int count = 0;
 
             // Process all items
-            foreach (object id in items)
+            foreach (string id in items)
             {
                 // Process the file
                 int attachmentId = ValidationHelper.GetInteger(id, 0);
 
                 if (ProcessFile(attachmentId, action, ref name))
                 {
-                    count++;
-
                     AddLog(name);
                 }
                 else if (!string.IsNullOrEmpty(name))
@@ -408,48 +391,6 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
                 }
             }
         }
-    }
-
-
-    /// <summary>
-    /// Gets the site name for the given site ID.
-    /// </summary>
-    /// <param name="siteId">Site ID</param>
-    protected string GetSiteName(int siteId)
-    {
-        if (siteId <= 0)
-        {
-            return null;
-        }
-
-        // Get the site name
-        SiteInfo si = SiteInfoProvider.GetSiteInfo(siteId);
-        if (si != null)
-        {
-            return si.SiteName;
-        }
-
-        return null;
-    }
-
-
-    /// <summary>
-    /// Returns true if the files are stored in file system on the given site.
-    /// </summary>
-    /// <param name="siteId">Site ID</param>
-    protected bool StoreInFileSystem(int siteId)
-    {
-        return SettingsKeyInfoProvider.GetBoolValue(GetSiteName(siteId) + ".CMSStoreFilesInFileSystem");
-    }
-
-
-    /// <summary>
-    /// Returns true if the files are stored in database on the given site.
-    /// </summary>
-    /// <param name="siteId">Site ID</param>
-    protected bool StoreInDatabase(int siteId)
-    {
-        return SettingsKeyInfoProvider.GetBoolValue(GetSiteName(siteId) + ".CMSStoreFilesInDatabase");
     }
 
 
@@ -467,19 +408,11 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
         else if (parameter is GridViewRow)
         {
             // Get data from the grid view row
-            GridViewRow gvr = (parameter as GridViewRow);
-            if (gvr != null)
-            {
-                drv = (DataRowView)gvr.DataItem;
-            }
+            drv = (DataRowView)((GridViewRow)parameter).DataItem;
         }
 
         // Get the action button
-        CMSGridActionButton btn = null;
-        if (sender is CMSGridActionButton)
-        {
-            btn = (CMSGridActionButton)sender;
-        }
+        var btn = sender as CMSGridActionButton;
 
         switch (sourceName)
         {
@@ -487,7 +420,7 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
                 {
                     // Delete action
                     int siteId = ValidationHelper.GetInteger(drv["AttachmentSiteID"], 0);
-                    string siteName = GetSiteName(siteId);
+                    string siteName = SiteInfoProvider.GetSiteName(siteId);
 
                     Guid guid = ValidationHelper.GetGuid(drv["AttachmentGUID"], Guid.Empty);
                     string extension = ValidationHelper.GetString(drv["AttachmentExtension"], "");
@@ -506,20 +439,20 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
                     // If the file is present in both file system and database, delete is allowed
                     if (fs && db)
                     {
-                        // If the files are stored in file system, delete is allowed in database 
-                        if (StoreInFileSystem(siteId))
+                        var filesLocationType = GetFilesLocationType(siteId);
+
+                        // If the files are stored in file system or use both locations, delete is allowed in database 
+                        if (filesLocationType != FilesLocationTypeEnum.Database)
                         {
                             btn.OnClientClick = btn.OnClientClick.Replace("'delete'", "'deleteindatabase'");
                             btn.ToolTip = "Delete from database";
                             return parameter;
                         }
-                        // If the files are stored in database, delete is allowed in file system
-                        if (StoreInDatabase(siteId))
-                        {
-                            btn.OnClientClick = btn.OnClientClick.Replace("'delete'", "'deleteinfilesystem'");
-                            btn.ToolTip = "Delete from file system";
-                            return parameter;
-                        }
+
+                        // Else the files are stored in database, delete is allowed in file system
+                        btn.OnClientClick = btn.OnClientClick.Replace("'delete'", "'deleteinfilesystem'");
+                        btn.ToolTip = "Delete from file system";
+                        return parameter;
                     }
 
                     btn.Visible = false;
@@ -530,7 +463,7 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
                 {
                     // Delete action
                     int siteId = ValidationHelper.GetInteger(drv["AttachmentSiteID"], 0);
-                    string siteName = GetSiteName(siteId);
+                    string siteName = SiteInfoProvider.GetSiteName(siteId);
 
                     Guid guid = ValidationHelper.GetGuid(drv["AttachmentGUID"], Guid.Empty);
                     string extension = ValidationHelper.GetString(drv["AttachmentExtension"], "");
@@ -546,8 +479,10 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
                         fs = true;
                     }
 
+                    var filesLocationType = GetFilesLocationType(siteId);
+
                     // If the file is stored in file system and the file is not present in database, copy to database is allowed
-                    if (fs && !db && StoreInDatabase(siteId) && StoreInFileSystem(siteId))
+                    if (fs && !db && (filesLocationType == FilesLocationTypeEnum.Both))
                     {
                         btn.OnClientClick = btn.OnClientClick.Replace("'copy'", "'copytodatabase'");
                         btn.ToolTip = "Copy to database";
@@ -555,7 +490,7 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
                         return parameter;
                     }
                     // If the file is stored in database and the file is not present in file system, copy to file system is allowed
-                    if (db && !fs && StoreInFileSystem(siteId))
+                    if (db && !fs && filesLocationType != FilesLocationTypeEnum.Database)
                     {
                         btn.OnClientClick = btn.OnClientClick.Replace("'copy'", "'copytofilesystem'");
                         btn.ToolTip = "Copy to file system";
@@ -629,7 +564,7 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
                 {
                     // Delete action
                     int siteId = ValidationHelper.GetInteger(drv["AttachmentSiteID"], 0);
-                    string siteName = GetSiteName(siteId);
+                    string siteName = SiteInfoProvider.GetSiteName(siteId);
 
                     Guid guid = ValidationHelper.GetGuid(drv["AttachmentGUID"], Guid.Empty);
                     string extension = ValidationHelper.GetString(drv["AttachmentExtension"], "");
@@ -650,6 +585,17 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
         }
 
         return parameter;
+    }
+
+
+    /// <summary>
+    /// Gets the files location type
+    /// </summary>
+    /// <param name="siteId">Site identifier</param>
+    private static FilesLocationTypeEnum GetFilesLocationType(int siteId)
+    {
+        var siteIdentifier = new SiteInfoIdentifier(siteId);
+        return FileHelper.FilesLocationType(siteIdentifier.ObjectCodeName);
     }
 
 
@@ -709,12 +655,10 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
                 ctlAsyncLog.TitleText = drpAction.SelectedItem.Text;
 
                 CurrentError = string.Empty;
-                CurrentLog.Close();
-                EnsureLog();
 
                 // Process the file asynchronously
-                ctlAsyncLog.Parameter = new object[] { items, drpAction.SelectedValue };
-                ctlAsyncLog.RunAsync(ProcessFiles, WindowsIdentity.GetCurrent());
+                var parameter = new object[] { items, drpAction.SelectedValue };
+                ctlAsyncLog.RunAsync(p => ProcessFiles(parameter), WindowsIdentity.GetCurrent());
             }
         }
     }
@@ -729,15 +673,15 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
     /// </summary>
     private void ctlAsyncLog_OnCancel(object sender, EventArgs e)
     {
-        ctlAsyncLog.Parameter = null;
-        string canceled = "The operation was canceled.";
+        const string canceled = "The operation was canceled.";
+
         AddLog(canceled);
         ShowConfirmation(canceled);
+
         if (!String.IsNullOrEmpty(CurrentError))
         {
             ShowError(CurrentError);
         }
-        CurrentLog.Close();
 
         pnlContent.Visible = true;
         pnlLog.Visible = false;
@@ -745,15 +689,6 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
         // Reload the grid
         gridFiles.ResetSelection();
         gridFiles.ReloadData();
-    }
-
-
-    /// <summary>
-    /// Logs event handler.
-    /// </summary>
-    private void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
     }
 
 
@@ -766,12 +701,11 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
         {
             ctlAsyncLog.Stop();
         }
-        ctlAsyncLog.Parameter = null;
+
         if (!String.IsNullOrEmpty(CurrentError))
         {
             ShowError(CurrentError);
         }
-        CurrentLog.Close();
 
         // Reload the grid
         gridFiles.ResetSelection();
@@ -784,11 +718,8 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
     /// </summary>
     private void ctlAsyncLog_OnFinished(object sender, EventArgs e)
     {
-        CurrentLog.Close();
-
         if (!String.IsNullOrEmpty(CurrentError))
         {
-            ctlAsyncLog.Parameter = null;
             ShowError(CurrentError);
         }
 
@@ -802,23 +733,12 @@ public partial class CMSModules_System_Files_System_FilesAttachments : GlobalAdm
 
 
     /// <summary>
-    /// Ensures the logging context.
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext log = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-        return log;
-    }
-
-
-    /// <summary>
     /// Adds the log information.
     /// </summary>
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -72,7 +72,7 @@ public partial class CMSModules_PortalEngine_UI_PageTemplates_PageTemplate_Docum
     protected void UniGrid_OnBeforeDataReload()
     {
         // Generate where condition
-        string where = String.Format("DocumentPageTemplateID = {0} OR NodeTemplateID = {0} OR NodeWireframeTemplateID = {0}", PageTemplateID);
+        string where = String.Format("DocumentPageTemplateID = {0} OR NodeTemplateID = {0}", PageTemplateID);
 
         where = SqlHelper.AddWhereCondition(where, filterDocuments.WhereCondition);
         docElem.UniGrid.WhereCondition = SqlHelper.AddWhereCondition(docElem.UniGrid.WhereCondition, where);

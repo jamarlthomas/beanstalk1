@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Groups_Controls_GroupInvite" Codebehind="GroupInvite.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Groups_Controls_GroupInvite"  Codebehind="GroupInvite.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/Membership/FormControls/Users/selectuser.ascx" TagName="SelectUser" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Groups/FormControls/CommunityGroupSelector.ascx" TagName="GroupSelector"

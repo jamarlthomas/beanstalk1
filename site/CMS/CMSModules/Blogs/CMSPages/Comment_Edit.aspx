@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Blogs_CMSPages_Comment_Edit"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Blogs_CMSPages_Comment_Edit"
     Theme="Default" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master"
-    Title="Comment edit" Codebehind="Comment_Edit.aspx.cs" %>
+    Title="Comment edit"  Codebehind="Comment_Edit.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Blogs/Controls/BlogCommentEdit.ascx" TagName="BlogCommentEdit" TagPrefix="cms" %>
 

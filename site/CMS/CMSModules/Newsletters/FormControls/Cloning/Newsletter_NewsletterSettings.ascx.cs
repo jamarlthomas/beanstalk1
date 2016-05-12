@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 
 using CMS.Newsletters;
@@ -21,13 +21,25 @@ public partial class CMSModules_Newsletters_FormControls_Cloning_Newsletter_News
 
 
     /// <summary>
-    /// Excluded other binding tasks.
+    /// Excluded child types.
+    /// </summary>
+    public override string ExcludedChildTypes
+    {
+        get
+        {
+            return string.Join(";", OpenedEmailInfo.OBJECT_TYPE, LinkInfo.OBJECT_TYPE);
+        }
+    }
+
+
+    /// <summary>
+    /// Excluded other binding types.
     /// </summary>
     public override string ExcludedOtherBindingTypes
     {
         get
         {
-            return SubscriberNewsletterInfo.OBJECT_TYPE + ";" + OpenedEmailInfo.OBJECT_TYPE;
+            return SubscriberNewsletterInfo.OBJECT_TYPE;
         }
     }
 

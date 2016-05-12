@@ -36,7 +36,7 @@ public class PermissionsListControlExtender : ControlExtender<UniGrid>
         // Show warning when module is not editable
         Control.Load += (sender, args) =>
         {
-            if ((Resource != null) && (Resource.ResourceId > 0) && !Resource.IsEditable)
+            if ((Resource != null) && (Resource.ResourceID > 0) && !Resource.IsEditable)
             {
                 Control.ShowInformation(Control.GetString("resource.permissionsinstalledresourcewarning"));
             }
@@ -55,10 +55,10 @@ public class PermissionsListControlExtender : ControlExtender<UniGrid>
             case "delete":
             case "moveup":
             case "movedown":
-                ((CMSGridActionButton)sender).Enabled = (Resource != null) && (Resource.ResourceId > 0) && Resource.IsEditable;
+                ((CMSGridActionButton)sender).Enabled = (Resource != null) && (Resource.ResourceID > 0) && Resource.IsEditable;
                 break;
             case "#objectmenu":
-                ((CMSGridActionButton)sender).Visible = (Resource != null) && (Resource.ResourceId > 0) && Resource.IsEditable;
+                ((CMSGridActionButton)sender).Visible = (Resource != null) && (Resource.ResourceID > 0) && Resource.IsEditable;
                 break;
         }
 

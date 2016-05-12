@@ -3,6 +3,8 @@
 using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.ExtendedControls;
+using CMS.Membership;
+
 
 /// <summary>
 /// Currency selector web part
@@ -117,11 +119,10 @@ public partial class CMSWebParts_Ecommerce_Checkout_Selectors_CurrencySelection 
         if (ShoppingCart.ShoppingCartCurrencyID == 0)
         {
             // Set customer preferred options   
-            CustomerInfo currentCustomer = ECommerceContext.CurrentCustomer;
-
-            if ((currentCustomer != null) && (currentCustomer.CustomerUser != null))
+            var currentUser = MembershipContext.AuthenticatedUser;
+            if ((currentUser != null) && (!currentUser.IsPublic()))
             {
-                ShoppingCart.ShoppingCartCurrencyID = currentCustomer.CustomerUser.GetUserPreferredCurrencyID(ShoppingCart.SiteName);
+                ShoppingCart.ShoppingCartCurrencyID = currentUser.GetUserPreferredCurrencyID(ShoppingCart.SiteName);
                 // Invalidate the shopping cart
                 ShoppingCart.InvalidateExchangeRate();
                 ShoppingCart.InvalidateCalculations();
@@ -131,9 +132,8 @@ public partial class CMSWebParts_Ecommerce_Checkout_Selectors_CurrencySelection 
         // Set the currency to the site currency, if preferred currency isn't set by the user
         if (ShoppingCart.ShoppingCartCurrencyID == 0)
         {
-            CurrencyInfo mainCurrency = CurrencyInfoProvider.GetMainCurrency(ShoppingCart.ShoppingCartSiteID);
-
-            if ((ShoppingCart.SiteName != null) && (mainCurrency != null))
+            var mainCurrency = CurrencyInfoProvider.GetMainCurrency(ShoppingCart.ShoppingCartSiteID);
+            if (mainCurrency != null)
             {
                 ShoppingCart.ShoppingCartCurrencyID = mainCurrency.CurrencyID;
                 // Invalidate the shopping cart

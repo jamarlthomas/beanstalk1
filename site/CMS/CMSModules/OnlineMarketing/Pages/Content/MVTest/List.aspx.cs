@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls.ActionsConfig;
 using CMS.Helpers;
@@ -37,7 +37,7 @@ public partial class CMSModules_OnlineMarketing_Pages_Content_MVTest_List : CMSM
     protected void Page_Load(object sender, EventArgs e)
     {
         // Set disabled module info
-        ucDisabledModule.SettingsKeys = "CMSAnalyticsEnabled;CMSMVTEnabled;CMSAnalyticsTrackConversions";
+        ucDisabledModule.SettingsKeys = "CMSAnalyticsEnabled;CMSMVTEnabled";
         ucDisabledModule.ParentPanel = pnlDisabled;
 
         InitHeaderActions();

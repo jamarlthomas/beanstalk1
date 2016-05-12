@@ -1,10 +1,17 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSApp", "CMS\CMSApp.csproj", "{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9E5B66C9-14F4-453F-8E8F-D2A930C1E945}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSApp_MVC", "CMS\CMSApp_MVC.csproj", "{EF510AB9-7BEB-4B8B-A88E-BD1AE1989E8E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{B65E6A8F-0C74-42FF-AABE-74B85E8E2758}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSApp", "CMS\CMSApp.csproj", "{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSApp_AppCode", "CMS\CMSApp_AppCode.csproj", "{92B0A977-72C4-4616-9E24-6D851212A82D}"
 EndProject
@@ -36,6 +43,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{AC51B58C-8B6
 		Lib\CMS.CMSSiteMapProvider.xml = Lib\CMS.CMSSiteMapProvider.xml
 		Lib\CMS.Community.dll = Lib\CMS.Community.dll
 		Lib\CMS.Community.xml = Lib\CMS.Community.xml
+		Lib\CMS.ContinuousIntegration.dll = Lib\CMS.ContinuousIntegration.dll
+		Lib\CMS.ContinuousIntegration.xml = Lib\CMS.ContinuousIntegration.xml
 		Lib\CMS.Controls.dll = Lib\CMS.Controls.dll
 		Lib\CMS.Controls.xml = Lib\CMS.Controls.xml
 		Lib\CMS.Controls.XmlSerializers.dll = Lib\CMS.Controls.XmlSerializers.dll
@@ -100,8 +109,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{AC51B58C-8B6
 		Lib\CMS.MessageBoards.xml = Lib\CMS.MessageBoards.xml
 		Lib\CMS.Messaging.dll = Lib\CMS.Messaging.dll
 		Lib\CMS.Messaging.xml = Lib\CMS.Messaging.xml
-		Lib\CMS.MetaWeblogProvider.dll = Lib\CMS.MetaWeblogProvider.dll
-		Lib\CMS.MetaWeblogProvider.xml = Lib\CMS.MetaWeblogProvider.xml
 		Lib\CMS.Modules.dll = Lib\CMS.Modules.dll
 		Lib\CMS.Modules.xml = Lib\CMS.Modules.xml
 		Lib\CMS.ModuleUsageTracking.dll = Lib\CMS.ModuleUsageTracking.dll
@@ -126,14 +133,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{AC51B58C-8B6
 		Lib\CMS.PortalControls.xml = Lib\CMS.PortalControls.xml
 		Lib\CMS.PortalEngine.dll = Lib\CMS.PortalEngine.dll
 		Lib\CMS.PortalEngine.xml = Lib\CMS.PortalEngine.xml
-		Lib\CMS.ProjectManagement.dll = Lib\CMS.ProjectManagement.dll
-		Lib\CMS.ProjectManagement.xml = Lib\CMS.ProjectManagement.xml
 		Lib\CMS.Protection.dll = Lib\CMS.Protection.dll
 		Lib\CMS.Protection.xml = Lib\CMS.Protection.xml
 		Lib\CMS.Relationships.dll = Lib\CMS.Relationships.dll
 		Lib\CMS.Relationships.xml = Lib\CMS.Relationships.xml
 		Lib\CMS.Reporting.dll = Lib\CMS.Reporting.dll
 		Lib\CMS.Reporting.xml = Lib\CMS.Reporting.xml
+		Lib\CMS.Routing.Web.dll = Lib\CMS.Routing.Web.dll
+		Lib\CMS.Routing.Web.xml = Lib\CMS.Routing.Web.xml
 		Lib\CMS.SalesForce.dll = Lib\CMS.SalesForce.dll
 		Lib\CMS.SalesForce.xml = Lib\CMS.SalesForce.xml
 		Lib\CMS.Scheduler.dll = Lib\CMS.Scheduler.dll
@@ -150,8 +157,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{AC51B58C-8B6
 		Lib\CMS.SharePoint.xml = Lib\CMS.SharePoint.xml
 		Lib\CMS.SiteProvider.dll = Lib\CMS.SiteProvider.dll
 		Lib\CMS.SiteProvider.xml = Lib\CMS.SiteProvider.xml
-		Lib\CMS.skmMenuControl.dll = Lib\CMS.skmMenuControl.dll
-		Lib\CMS.skmMenuControl.xml = Lib\CMS.skmMenuControl.xml
 		Lib\CMS.SocialMarketing.dll = Lib\CMS.SocialMarketing.dll
 		Lib\CMS.SocialMarketing.xml = Lib\CMS.SocialMarketing.xml
 		Lib\CMS.SocialMedia.dll = Lib\CMS.SocialMedia.dll
@@ -159,6 +164,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{AC51B58C-8B6
 		Lib\CMS.StrandsRecommender.dll = Lib\CMS.StrandsRecommender.dll
 		Lib\CMS.StrandsRecommender.xml = Lib\CMS.StrandsRecommender.xml
 		Lib\CMS.Synchronization.dll = Lib\CMS.Synchronization.dll
+		Lib\CMS.Synchronization.Web.dll = Lib\CMS.Synchronization.Web.dll
+		Lib\CMS.Synchronization.Web.xml = Lib\CMS.Synchronization.Web.xml
 		Lib\CMS.Synchronization.WSE3.dll = Lib\CMS.Synchronization.WSE3.dll
 		Lib\CMS.Synchronization.WSE3.xml = Lib\CMS.Synchronization.WSE3.xml
 		Lib\CMS.Synchronization.xml = Lib\CMS.Synchronization.xml
@@ -192,7 +199,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{AC51B58C-8B6
 		Lib\CMS.WinServiceEngine.xml = Lib\CMS.WinServiceEngine.xml
 		Lib\CMS.WorkflowEngine.dll = Lib\CMS.WorkflowEngine.dll
 		Lib\CMS.WorkflowEngine.xml = Lib\CMS.WorkflowEngine.xml
-		Lib\CookComputing.XmlRpcV2.dll = Lib\CookComputing.XmlRpcV2.dll
+		Lib\ContinuousIntegration.exe = Lib\ContinuousIntegration.exe
 		Lib\DocumentFormat.OpenXml.dll = Lib\DocumentFormat.OpenXml.dll
 		Lib\DotNetOpenAuth.dll = Lib\DotNetOpenAuth.dll
 		Lib\Facebook.dll = Lib\Facebook.dll
@@ -205,7 +212,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{AC51B58C-8B6
 		Lib\Interop.IWshRuntimeLibrary.dll = Lib\Interop.IWshRuntimeLibrary.dll
 		Lib\ITHit.WebDAV.Server.dll = Lib\ITHit.WebDAV.Server.dll
 		Lib\ITHit.WebDAV.Server.xml = Lib\ITHit.WebDAV.Server.xml
-		Lib\JSTest.dll = Lib\JSTest.dll
 		Lib\Kentico.Google.Apis.dll = Lib\Kentico.Google.Apis.dll
 		Lib\LinkedIn.dll = Lib\LinkedIn.dll
 		Lib\LinqToTwitter.dll = Lib\LinqToTwitter.dll
@@ -215,6 +221,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{AC51B58C-8B6
 		Lib\Microsoft.IdentityModel.dll = Lib\Microsoft.IdentityModel.dll
 		Lib\Microsoft.SharePoint.Client.dll = Lib\Microsoft.SharePoint.Client.dll
 		Lib\Microsoft.SharePoint.Client.Runtime.dll = Lib\Microsoft.SharePoint.Client.Runtime.dll
+		Lib\Microsoft.Web.Infrastructure.dll = Lib\Microsoft.Web.Infrastructure.dll
 		Lib\Microsoft.Web.Services3.dll = Lib\Microsoft.Web.Services3.dll
 		Lib\Mono.Cecil.dll = Lib\Mono.Cecil.dll
 		Lib\NetSpell.SpellChecker.dll = Lib\NetSpell.SpellChecker.dll
@@ -244,39 +251,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure", "Azure", "{5FC2C4C6
 		Lib\Azure\System.Spatial.xml = Lib\Azure\System.Spatial.xml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC", "MVC", "{E2430284-0314-4FD7-9AB2-F7756C7592AF}"
-	ProjectSection(SolutionItems) = preProject
-		Lib\MVC\CMS.Mvc4.Impl.dll = Lib\MVC\CMS.Mvc4.Impl.dll
-		Lib\MVC\Microsoft.Web.Infrastructure.dll = Lib\MVC\Microsoft.Web.Infrastructure.dll
-		Lib\MVC\Microsoft.Web.Mvc.FixedDisplayModes.dll = Lib\MVC\Microsoft.Web.Mvc.FixedDisplayModes.dll
-		Lib\MVC\System.Net.Http.dll = Lib\MVC\System.Net.Http.dll
-		Lib\MVC\System.Net.Http.Formatting.dll = Lib\MVC\System.Net.Http.Formatting.dll
-		Lib\MVC\System.Net.Http.WebRequest.dll = Lib\MVC\System.Net.Http.WebRequest.dll
-		Lib\MVC\System.Net.Http.WebRequest.xml = Lib\MVC\System.Net.Http.WebRequest.xml
-		Lib\MVC\System.Web.Helpers.dll = Lib\MVC\System.Web.Helpers.dll
-		Lib\MVC\System.Web.Helpers.xml = Lib\MVC\System.Web.Helpers.xml
-		Lib\MVC\System.Web.Http.dll = Lib\MVC\System.Web.Http.dll
-		Lib\MVC\System.Web.Http.WebHost.dll = Lib\MVC\System.Web.Http.WebHost.dll
-		Lib\MVC\System.Web.Mvc.dll = Lib\MVC\System.Web.Mvc.dll
-		Lib\MVC\System.Web.Mvc.xml = Lib\MVC\System.Web.Mvc.xml
-		Lib\MVC\System.Web.Razor.dll = Lib\MVC\System.Web.Razor.dll
-		Lib\MVC\System.Web.Razor.xml = Lib\MVC\System.Web.Razor.xml
-		Lib\MVC\System.Web.WebPages.Deployment.dll = Lib\MVC\System.Web.WebPages.Deployment.dll
-		Lib\MVC\System.Web.WebPages.Deployment.xml = Lib\MVC\System.Web.WebPages.Deployment.xml
-		Lib\MVC\System.Web.WebPages.dll = Lib\MVC\System.Web.WebPages.dll
-		Lib\MVC\System.Web.WebPages.Razor.dll = Lib\MVC\System.Web.WebPages.Razor.dll
-		Lib\MVC\System.Web.WebPages.Razor.xml = Lib\MVC\System.Web.WebPages.Razor.xml
-		Lib\MVC\System.Web.WebPages.xml = Lib\MVC\System.Web.WebPages.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9E5B66C9-14F4-453F-8E8F-D2A930C1E945}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{B65E6A8F-0C74-42FF-AABE-74B85E8E2758}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSApp_MVC", "CMS\CMSApp_MVC.csproj", "{EF510AB9-7BEB-4B8B-A88E-BD1AE1989E8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -284,28 +259,27 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}.Debug|Any CPU.Build.0 = Release|Any CPU
-		{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EF510AB9-7BEB-4B8B-A88E-BD1AE1989E8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF510AB9-7BEB-4B8B-A88E-BD1AE1989E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF510AB9-7BEB-4B8B-A88E-BD1AE1989E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF510AB9-7BEB-4B8B-A88E-BD1AE1989E8E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{92B0A977-72C4-4616-9E24-6D851212A82D}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{92B0A977-72C4-4616-9E24-6D851212A82D}.Debug|Any CPU.Build.0 = Release|Any CPU
-		{92B0A977-72C4-4616-9E24-6D851212A82D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{92B0A977-72C4-4616-9E24-6D851212A82D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B65E6A8F-0C74-42FF-AABE-74B85E8E2758}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B65E6A8F-0C74-42FF-AABE-74B85E8E2758}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B65E6A8F-0C74-42FF-AABE-74B85E8E2758}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B65E6A8F-0C74-42FF-AABE-74B85E8E2758}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB8817AE-48DF-4672-A1CB-CFB7441B88DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92B0A977-72C4-4616-9E24-6D851212A82D}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{92B0A977-72C4-4616-9E24-6D851212A82D}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{92B0A977-72C4-4616-9E24-6D851212A82D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92B0A977-72C4-4616-9E24-6D851212A82D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF510AB9-7BEB-4B8B-A88E-BD1AE1989E8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF510AB9-7BEB-4B8B-A88E-BD1AE1989E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF510AB9-7BEB-4B8B-A88E-BD1AE1989E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF510AB9-7BEB-4B8B-A88E-BD1AE1989E8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5FC2C4C6-B96F-4010-8714-64FC000836D4} = {AC51B58C-8B61-4B71-AEA1-C8CFCB60E5AD}
-		{E2430284-0314-4FD7-9AB2-F7756C7592AF} = {AC51B58C-8B61-4B71-AEA1-C8CFCB60E5AD}
 	EndGlobalSection
 EndGlobal

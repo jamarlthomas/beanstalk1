@@ -14,9 +14,9 @@ using CMS.IO;
 using CMS.ExtendedControls.ActionsConfig;
 using CMS.FormControls;
 using CMS.ExtendedControls;
+using CMS.DocumentEngine;
 
 using HtmlAgilityPack;
-using CMS.DocumentEngine;
 
 public partial class CMSAdminControls_Validation_AccessibilityValidator : DocumentValidator
 {
@@ -25,7 +25,7 @@ public partial class CMSAdminControls_Validation_AccessibilityValidator : Docume
     /// <summary>
     /// Accessibility standard enum
     /// </summary>
-    public enum AccessibilityStandardEnum : int
+    public enum AccessibilityStandardEnum
     {
         /// <summary>
         /// BIK BITV 1
@@ -231,12 +231,10 @@ public partial class CMSAdminControls_Validation_AccessibilityValidator : Docume
 
     #region "Variables"
 
-    private string mValidatorURL = null;
-    private bool mUseServerRequest = false;
-    private static DataSet mDataSource = null;
-    private Regex mIntNumberRegEx = null;
-    private CMSDropDownList mStandardList = null;
-    private string mErrorText = null;
+    private string mValidatorURL;
+    private Regex mIntNumberRegEx;
+    private CMSDropDownList mStandardList;
+    private string mErrorText;
 
     #endregion
 
@@ -281,14 +279,8 @@ public partial class CMSAdminControls_Validation_AccessibilityValidator : Docume
     /// </summary>
     public bool UseServerRequestType
     {
-        get
-        {
-            return mUseServerRequest;
-        }
-        set
-        {
-            mUseServerRequest = value;
-        }
+        get;
+        set;
     }
 
 
@@ -302,30 +294,7 @@ public partial class CMSAdminControls_Validation_AccessibilityValidator : Docume
             return "validation|access|" + CultureCode + "|" + Url;
         }
     }
-
-
-    /// <summary>
-    /// Gets or sets source of the data for unigrid control
-    /// </summary>
-    public override DataSet DataSource
-    {
-        get
-        {
-            if (mDataSource == null)
-            {
-                mDataSource = base.DataSource;
-            }
-            base.DataSource = mDataSource;
-
-            return mDataSource;
-        }
-        set
-        {
-            base.DataSource = value;
-            mDataSource = value;
-        }
-    }
-
+    
 
     /// <summary>
     /// Gets or sets validation standard
@@ -763,15 +732,11 @@ public partial class CMSAdminControls_Validation_AccessibilityValidator : Docume
                     result.Tables.Add(tbError);
                     return result;
                 }
-                else
-                {
-                    return dsValidationResult;
-                }
+
+                return dsValidationResult;
             }
-            else
-            {
-                mErrorText = GetString("validation.diffdomainorprotocol");
-            }
+
+            mErrorText = GetString("validation.diffdomainorprotocol");
         }
 
         return null;

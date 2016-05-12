@@ -1,11 +1,11 @@
-using System;
-using System.Web.UI.WebControls;
+﻿using System;
 using System.Data;
+using System.Web.UI.WebControls;
 
 using CMS.CustomTables;
 using CMS.Helpers;
-using CMS.SiteProvider;
 using CMS.Membership;
+using CMS.SiteProvider;
 using CMS.UIControls;
 
 [UIElement("CMS.Staging", "Data")]
@@ -21,11 +21,11 @@ public partial class CMSModules_Staging_Tools_Data_Tree : CMSStagingPage
 
         if (CultureHelper.IsUICultureRTL())
         {
-            objectTree.LineImagesFolder = GetImageUrl("RTL/Design/Controls/Tree", false, false);
+            objectTree.LineImagesFolder = GetImageUrl("RTL/Design/Controls/Tree");
         }
         else
         {
-            objectTree.LineImagesFolder = GetImageUrl("Design/Controls/Tree", false, false);
+            objectTree.LineImagesFolder = GetImageUrl("Design/Controls/Tree");
         }
         objectTree.ImageSet = TreeViewImageSet.Custom;
         objectTree.ExpandImageToolTip = GetString("General.Expand");

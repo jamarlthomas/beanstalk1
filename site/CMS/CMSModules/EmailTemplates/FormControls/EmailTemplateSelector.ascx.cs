@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Base;
 using CMS.DataEngine;
@@ -121,23 +121,12 @@ public partial class CMSModules_EmailTemplates_FormControls_EmailTemplateSelecto
     /// <summary>
     /// E-mail template type. (null represents all types)
     /// </summary>
-    public EmailTemplateTypeEnum? TemplateType
+    /// <seealso cref="EmailTemplateTypeEnum"/>
+    public string TemplateType
     {
         get
         {
-            EmailTemplateTypeEnum? emailType = GetValue("TemplateType") as EmailTemplateTypeEnum?;
-            if (emailType.HasValue)
-            {
-                return emailType.Value;
-            }
-
-            string val = ValidationHelper.GetString(GetValue("TemplateType"), null);
-            if (val != null)
-            {
-                return val.ToEnum<EmailTemplateTypeEnum>();
-            }
-
-            return null;
+            return ValidationHelper.GetString(GetValue("TemplateType"), null);
         }
         set
         {
@@ -303,10 +292,10 @@ public partial class CMSModules_EmailTemplates_FormControls_EmailTemplateSelecto
         usTemplate.WhereCondition = SqlHelper.AddWhereCondition(usTemplate.WhereCondition, (SiteId > 0) ? "EmailTemplateSiteID = " + SiteId : "EmailTemplateSiteID IS NULL");
 
         // Filter type
-        if (TemplateType.HasValue)
+        if (!String.IsNullOrEmpty(TemplateType))
         {
             usTemplate.WhereCondition = new WhereCondition(usTemplate.WhereCondition)
-                .WhereEquals("EmailTemplateType", TemplateType.Value.ToStringRepresentation<EmailTemplateTypeEnum>())
+                .WhereEquals("EmailTemplateType", TemplateType)
                 .ToString(true);
         }
 
@@ -316,7 +305,7 @@ public partial class CMSModules_EmailTemplates_FormControls_EmailTemplateSelecto
             string templateType = null;
             if (TemplateType != null)
             {
-                templateType = "&templatetype=" + TemplateType.Value.ToStringRepresentation<EmailTemplateTypeEnum>();
+                templateType = "&templatetype=" + URLHelper.URLEncode(TemplateType);
             }
 
             if (!String.IsNullOrEmpty(EditDialogUrl) && ShowEditButton)

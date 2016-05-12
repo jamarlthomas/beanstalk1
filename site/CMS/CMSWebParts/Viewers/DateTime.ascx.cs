@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Helpers;
@@ -56,32 +56,6 @@ public partial class CMSWebParts_Viewers_DateTime : CMSAbstractWebPart
         }
     }
 
-
-    /// <summary>
-    /// Page prerender.
-    /// </summary>
-    protected void Page_PreRender(object sender, EventArgs e)
-    {
-        bool checkCollision = false;
-        if (ParentZone != null)
-        {
-            checkCollision = ParentZone.WebPartManagementRequired;
-        }
-        else
-        {
-            checkCollision = PortalContext.IsDesignMode(ViewMode, false);
-        }
-        if (ScriptHelper.IsPrototypeBoxRegistered() && checkCollision)
-        {
-            Label lblError = new Label();
-            lblError.EnableViewState = false;
-            lblError.CssClass = "ErrorLabel";
-            lblError.Text = GetString("javascript.mootoolsprototype");
-            Controls.Clear();
-            Controls.Add(lblError);
-        }
-    }
-
     #endregion
 
 
@@ -97,27 +71,34 @@ public partial class CMSWebParts_Viewers_DateTime : CMSAbstractWebPart
         {
             ltlDateTime.Text = "<div id=\"time_" + ClientID + "\" ></div>";
 
-            //Register mootools javascript framework
-            ScriptHelper.RegisterMooTools(Page);
-
             // Register DateTime.js script file
             ScriptHelper.RegisterScriptFile(Page, "~/CMSWebParts/Viewers/DateTime_files/DateTime.js");
 
-            string jScript = "window.addEvent('load',function(){\n" +
-                             "var now = new Date();\n";
+            string jScript = @"
+function dt_attachLoadEvent(callBack) {
+	if (window.addEventListener) {                    
+        window.addEventListener('load', callBack);
+    } else if (window.attachEvent) {                  
+        window.attachEvent('onload', callBack);
+    }
+}
 
+dt_attachLoadEvent(function() {
+	var now = new Date();
+	var diff = 0;
+";
             if (JsUseServerTime)
             {
-                jScript += "var local = now.getTime()\n" +
-                           "var server = " + Math.Round((DateTime.Now.ToUniversalTime() - DateTimeHelper.UNIX_TIME_START).TotalMilliseconds, 0, MidpointRounding.AwayFromZero) + "\n" +
-                           "var diff = server - local;\n";
+                jScript += @"
+var serverTime = " + Math.Round((DateTime.Now.ToUniversalTime() - DateTimeHelper.UNIX_TIME_START).TotalMilliseconds, 0, MidpointRounding.AwayFromZero) + @";
+diff = serverTime - now.getTime();
+";
             }
-            else
-            {
-                jScript += "var diff = 0;";
-            }
-            jScript += "startTimer(\"" + ClientID + "\",\"" + JsFormat + "\",diff)\n" +
-                       "});";
+
+            jScript += @"
+startTimer('" + ClientID + @"','" + JsFormat + @"',diff);
+});
+";
             ScriptHelper.RegisterClientScriptBlock(this, typeof(string), ("timerScript" + ClientID), ScriptHelper.GetScript(jScript));
         }
         else

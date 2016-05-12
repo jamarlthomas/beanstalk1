@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="CodeNameWithPrefix.ascx.cs" Inherits="CMSFormControls_System_CodeNameWithPrefix" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="CodeNameWithPrefix.ascx.cs" Inherits="CMSFormControls_System_CodeNameWithPrefix" %>
 
 <div class="codename-with-prefix">
     <div class="control-group-inline">

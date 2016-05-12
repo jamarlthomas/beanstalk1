@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_ImageEditor_BaseImageEditor"
-    Codebehind="BaseImageEditor.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_ImageEditor_BaseImageEditor"
+     Codebehind="BaseImageEditor.ascx.cs" %>
 <%@ Register Src="~/CMSModules/AdminControls/Controls/MetaFiles/MetaDataEdit.ascx" TagName="MetaDataEditor"
     TagPrefix="cms" %>
 <div class="image-editor-menu-column">
@@ -51,7 +51,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group form-group-submit">
-                                    <cms:LocalizedButton ID="btnResize" runat="server" OnClick="btnResizeClick" ButtonStyle="Primary" EnableViewState="false" ResourceString="general.ok" />
+                                    <cms:LocalizedButton ID="btnResize" runat="server" OnClick="btnResizeClick" ButtonStyle="Primary" EnableViewState="false" ResourceString="general.resize" />
                                 </div>
                             </div>
                         </ContentTemplate>
@@ -114,7 +114,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group form-group-submit">
-                                    <cms:CMSButton ID="btnConvert" runat="server" OnClick="btnConvertClick" ButtonStyle="Primary" EnableViewState="false" />
+                                    <cms:LocalizedButton ID="btnConvert" runat="server" OnClick="btnConvertClick" ButtonStyle="Primary" EnableViewState="false" ResourceString="img.convert" />
                                 </div>
                             </div>
                         </ContentTemplate>
@@ -169,7 +169,7 @@
                                 </div>
                             </div>
                             <div class="form-group form-group-submit">
-                                <cms:LocalizedButton ID="btnCrop" runat="server" ButtonStyle="Primary" CssClass="js-btn-crop" ResourceString="general.ok" RenderScript="true"
+                                <cms:LocalizedButton ID="btnCrop" runat="server" ButtonStyle="Primary" CssClass="js-btn-crop" ResourceString="img.crop" RenderScript="true"
                                     OnClick="btnCropClick" EnableViewState="false" />
                                 <cms:LocalizedButton ID="btnCropReset" runat="server" ButtonStyle="Default" CssClass="js-btn-crop-reset" ResourceString="img.reset" RenderScript="true"
                                     EnableViewState="false" />
@@ -261,7 +261,7 @@
                             </div>
                         </div>
                         <div class="form-group form-group-submit">
-                            <cms:CMSButton ID="btnChangeMetaData" runat="server" OnClick="btnChangeMetaDataClick" EnableViewState="false" ButtonStyle="Primary" />
+                            <cms:LocalizedButton ID="btnChangeMetaData" runat="server" OnClick="btnChangeMetaDataClick" EnableViewState="false" ButtonStyle="Primary" ResourceString="general.update" />
                         </div>
                     </div>
                 </ContentTemplate>
@@ -274,22 +274,3 @@
     <iframe id="frameImg" name="imageFrame" scrolling="auto" runat="server" class="image-editor-frame" />
     <asp:Image ID="imgMain" runat="server" Visible="false" CssClass="editing-image" />
 </div>
-
-<asp:Literal ID="ltlScript" runat="server" />
-<script type="text/javascript" language="javascript">
-    //<![CDATA[
-    function resizeIframe() {
-        var fameElem = document.getElementById('<%=frameImg.ClientID%>');
-        var propElem = document.getElementById('divProperties');
-        var height = document.documentElement.clientHeight - 130; // footer height
-
-        fameElem.style.height = Math.max(height - 16, 0) + "px";
-        propElem.style.height = Math.max(height - 20, 0) + "px";
-        fameElem.style.width = "100%";
-    };
-
-    function afterResize() {
-        resizeIframe();
-    }
-    //]]>
-</script>

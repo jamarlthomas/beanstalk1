@@ -39,6 +39,24 @@ public partial class CMSModules_AdminControls_Controls_Class_AlternativeFormEdit
     protected global::CMS.FormControls.FormField fName;
     
     /// <summary>
+    /// lblCodeName control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.FormControls.FormLabel lblCodeName;
+    
+    /// <summary>
+    /// codeName control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.FormControls.FormControl codeName;
+    
+    /// <summary>
     /// fInherits control.
     /// </summary>
     /// <remarks>

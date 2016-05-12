@@ -1,19 +1,11 @@
-using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+﻿using System;
 using System.Linq;
 
-using CMS.ExtendedControls;
-using CMS.FormControls;
 using CMS.Helpers;
 using CMS.SiteProvider;
 using CMS.UIControls;
 using CMS.WorkflowEngine;
-using CMS.Base;
-using CMS.EmailEngine;
+
 
 public partial class CMSModules_Workflows_Controls_UI_WorkflowStep_Emails : CMSUserControl
 {
@@ -130,9 +122,9 @@ public partial class CMSModules_Workflows_Controls_UI_WorkflowStep_Emails : CMSU
             return;
         }
 
-        ucApprove.TemplateType = EmailTemplateTypeEnum.WorkflowEmail;
-        ucReadyApproval.TemplateType = EmailTemplateTypeEnum.WorkflowEmail;
-        ucReject.TemplateType = EmailTemplateTypeEnum.WorkflowEmail;
+        ucApprove.TemplateType = WorkflowModule.WORKFLOW_EMAIL_TEMPLATE_TYPE_NAME;
+        ucReadyApproval.TemplateType = WorkflowModule.WORKFLOW_EMAIL_TEMPLATE_TYPE_NAME;
+        ucReject.TemplateType = WorkflowModule.WORKFLOW_EMAIL_TEMPLATE_TYPE_NAME;
 
         chkEmails.NotSetChoice.Text = chkReadyApproval.NotSetChoice.Text = chkApprove.NotSetChoice.Text = chkReject.NotSetChoice.Text = GetString("general.workflowsettings") + " (##DEFAULT##)";
         chkEmails.SetDefaultValue(Workflow.SendEmails(SiteContext.CurrentSiteName, WorkflowEmailTypeEnum.Unknown));

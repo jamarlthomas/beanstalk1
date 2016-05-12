@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSModules/Reporting/FormControls/FilterReportCategory.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSModules/Reporting/FormControls/FilterReportCategory.ascx.cs"
     Inherits="CMSModules_Reporting_FormControls_FilterReportCategory" %>
 <asp:Panel CssClass="Filter" runat="server" ID="pnlSearch">
     <cms:LocalizedLabel ID="lblCategory" ResourceString="administration-pagetemplate_general.category" runat="server" EnableViewState="false" />&nbsp;

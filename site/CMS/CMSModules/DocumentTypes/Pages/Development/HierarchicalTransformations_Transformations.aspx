@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Codebehind="HierarchicalTransformations_Transformations.aspx.cs" Inherits="CMSModules_DocumentTypes_Pages_Development_HierarchicalTransformations_Transformations" %>
+     Codebehind="HierarchicalTransformations_Transformations.aspx.cs" Inherits="CMSModules_DocumentTypes_Pages_Development_HierarchicalTransformations_Transformations" %>
 
 <%@ Register Src="~/CMSModules/DocumentTypes/Controls/HierarchicalTransformations_List.ascx"
     TagName="HierarchicalTransfList" TagPrefix="cms" %>

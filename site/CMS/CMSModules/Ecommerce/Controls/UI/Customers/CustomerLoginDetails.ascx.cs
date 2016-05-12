@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.UI.WebControls;
 
+using CMS.Core;
 using CMS.Base;
 using CMS.DataEngine;
 using CMS.Ecommerce;
@@ -11,6 +12,7 @@ using CMS.Membership;
 using CMS.PortalEngine;
 using CMS.SiteProvider;
 using CMS.UIControls;
+
 
 public partial class CMSModules_Ecommerce_Controls_UI_Customers_CustomerLoginDetails : CMSAdminControl
 {
@@ -92,7 +94,7 @@ public partial class CMSModules_Ecommerce_Controls_UI_Customers_CustomerLoginDet
 
             txtUserName.Text = HTMLHelper.HTMLEncode(Functions.GetFormattedUserName(Customer.CustomerUser.UserName));
 
-            HeaderActions.AddHeaderAction(new SaveAction(PageContext.CurrentPage));
+            HeaderActions.AddHeaderAction(new SaveAction());
             HeaderActions.AddHeaderAction(new HeaderAction
             {
                 Text = GetString("com.customer.generatepassword"),
@@ -104,6 +106,8 @@ public partial class CMSModules_Ecommerce_Controls_UI_Customers_CustomerLoginDet
         else
         {
             txtUserName.Text = Customer.CustomerEmail;
+            pnlPassword.Visible = false;
+            lblRegistrationNotification.ResourceString = GetString("com.customer.registrednotificationgenerate");
 
             HeaderActions.AddHeaderAction(new HeaderAction
             {
@@ -126,57 +130,27 @@ public partial class CMSModules_Ecommerce_Controls_UI_Customers_CustomerLoginDet
 
         switch (e.CommandName)
         {
-            // Registering user with random password
+            // Registering user with generated password
             case "create":
-                {
-                    var errorMessage = ValidateForm();
-                    if (!String.IsNullOrEmpty(errorMessage))
-                    {
-                        ShowError(errorMessage);
-                        return;
-                    }
-
-                    var userNotUniqueError = ValidateUserUniqueness();
-
-                    if (!String.IsNullOrEmpty(userNotUniqueError))
-                    {
-                        ShowError(userNotUniqueError);
-                        return;
-                    }
-
-                    var displayError = false;
-                    if (!CustomerInfoProvider.RegisterAndNotify(Customer, TEMPLATE_REGISTER_AND_NOTIFY, Customer.CustomerEmail, PasswordField))
-                    {
-                        if (Customer.CustomerUserID <= 1)
-                        {
-                            ShowError(GetString("com.customer.usernotcreated"));
-                            return;
-                        }
-
-                        displayError = true;
-                    }
-
-                    ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "LoginRedirect", "parent.window.location='" + GetRedirectUrl(displayError) + "';", true);
-                }
+                RegisterCustomer();
 
                 break;
 
             // Changing password to registered customer
-            case ComponentEvents.SAVE:
+            case ComponentEvents.SAVE:              
+                var errorMessage = ValidateForm();
+                if (!String.IsNullOrEmpty(errorMessage))
                 {
-                    var errorMessage = ValidateForm();
-                    if (!String.IsNullOrEmpty(errorMessage))
-                    {
-                        ShowError(errorMessage);
-                        return;
-                    }
-
-                    SavePassword(GetString("com.customer.passwordsaved"), PasswordField);
-
-                    break;
+                    ShowError(errorMessage);
+                    return;
                 }
 
-            // Generate new random password and send it to customer
+                SavePassword(GetString("com.customer.passwordsaved"), PasswordField);
+
+                break;
+                
+
+            // Generate new random password and send it to registered customer
             case "generate":
                 SavePassword(GetString("com.customer.passwordgenerated"));
 
@@ -190,13 +164,45 @@ public partial class CMSModules_Ecommerce_Controls_UI_Customers_CustomerLoginDet
     #region "Private methods"
 
     /// <summary>
+    /// Registers new user with generated password.
+    /// </summary>
+    private void RegisterCustomer()
+    {
+        var password = UserInfoProvider.GenerateNewPassword(SiteContext.CurrentSiteName);
+
+        var userNotUniqueError = ValidateUserUniqueness();
+
+        if (!String.IsNullOrEmpty(userNotUniqueError))
+        {
+            ShowError(userNotUniqueError);
+            return;
+        }
+
+        var displayError = false;
+        if (!CustomerInfoProvider.RegisterAndNotify(Customer, TEMPLATE_REGISTER_AND_NOTIFY, Customer.CustomerEmail, password))
+        {
+            if (Customer.CustomerUserID <= 1)
+            {
+                ShowError(GetString("com.customer.usernotcreated"));
+                return;
+            }
+
+            displayError = true;
+        }
+
+        ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "LoginRedirect", "parent.window.location='" + GetRedirectUrl(displayError) + "';", true);
+
+    }
+
+
+    /// <summary>
     /// Generates url to parent element.
     /// </summary>
     /// <param name="displayError">Decide if error message should be displayed after redirection</param>
     private string GetRedirectUrl(bool displayError)
     {
         string customerID = Customer.CustomerID.ToString();
-        string url = UIContextHelper.GetElementUrl("cms.ecommerce", "editcustomersproperties", false, customerID.ToInteger(0));
+        string url = UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, "editcustomersproperties", false, customerID.ToInteger(0));
         url = URLHelper.AddParameterToUrl(url, "customerid", customerID);
         url = URLHelper.AddParameterToUrl(url, "saved", "1");
 
@@ -224,7 +230,7 @@ public partial class CMSModules_Ecommerce_Controls_UI_Customers_CustomerLoginDet
 
         if (String.IsNullOrEmpty(password))
         {
-            password = UserInfoProvider.GenerateNewPassword();
+            password = UserInfoProvider.GenerateNewPassword(SiteContext.CurrentSiteName);
         }
 
         UserInfoProvider.SetPassword(user, password, true);
@@ -313,7 +319,7 @@ public partial class CMSModules_Ecommerce_Controls_UI_Customers_CustomerLoginDet
         }
         if (!ECommerceContext.IsUserAuthorizedToModifyCustomer())
         {
-            RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyCustomers");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyCustomers");
         }
     }
 

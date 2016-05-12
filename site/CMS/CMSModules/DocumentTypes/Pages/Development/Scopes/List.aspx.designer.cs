@@ -39,13 +39,13 @@ public partial class CMSModules_DocumentTypes_Pages_Development_Scopes_List {
     protected global::CMSFormControls_Sites_SiteSelector selectSite;
     
     /// <summary>
-    /// pnlActons control.
+    /// pnlActions control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSUpdatePanel pnlActons;
+    protected global::CMS.ExtendedControls.CMSUpdatePanel pnlActions;
     
     /// <summary>
     /// headerActions control.

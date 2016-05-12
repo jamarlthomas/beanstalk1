@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Content_Controls_Dialogs_Properties_DocCopyMoveProperties" Codebehind="DocCopyMoveProperties.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Content_Controls_Dialogs_Properties_DocCopyMoveProperties"  Codebehind="DocCopyMoveProperties.ascx.cs" %>
 <asp:PlaceHolder ID="plcPropContent" runat="server">
     <div style="width: 100%; height: 500px; position: relative;" id="iframeDiv">
         <iframe id="innerFrame" runat="server" frameborder="0" marginheight="0" marginwidth="0"

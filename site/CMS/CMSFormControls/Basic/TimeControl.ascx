@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="TimeControl.ascx.cs" Inherits="CMSFormControls_Basic_TimeControl" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="TimeControl.ascx.cs" Inherits="CMSFormControls_Basic_TimeControl" %>
 <%@ Register Src="~/CMSFormControls/Basic/TextBoxControl.ascx" TagName="TextBoxControl"
     TagPrefix="cms" %>
 

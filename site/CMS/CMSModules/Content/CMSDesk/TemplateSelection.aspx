@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_TemplateSelection"
-    Theme="Default" Codebehind="TemplateSelection.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_TemplateSelection"
+    Theme="Default"  Codebehind="TemplateSelection.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" %>
 
 <%@ Register Src="New/TemplateSelection.ascx" TagName="TemplateSelection" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Content/Controls/EditMenu.ascx" TagName="editmenu"

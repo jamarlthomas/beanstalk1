@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Notifications_Controls_NotificationSubscription_NotificationSubscription" Codebehind="NotificationSubscription.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Notifications_Controls_NotificationSubscription_NotificationSubscription"  Codebehind="NotificationSubscription.ascx.cs" %>
 <div class="NotificationSubscriptionHeader">
     <cms:LocalizedLabel ID="lblDescription" runat="server" EnableViewState="false" />
 </div>

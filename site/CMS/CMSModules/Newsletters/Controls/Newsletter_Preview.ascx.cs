@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -44,12 +44,7 @@ public partial class CMSModules_Newsletters_Controls_Newsletter_Preview : CMSUse
                                                                 .WhereEquals("NewsletterID", issue.IssueNewsletterID)
                                                                 .Where(w => w.WhereTrue("SubscriptionApproved")
                                                                             .Or()
-                                                                            .WhereNull("SubscriptionApproved"))
-                                                                .Where(w => w.WhereTrue("SubscriptionEnabled")
-                                                                            .Or()
-                                                                            .WhereNull("SubscriptionEnabled"))
-                                                                );
-
+                                                                            .WhereNull("SubscriptionApproved")));
         string script;
         if (!DataHelper.DataSourceIsEmpty(subscribers))
         {
@@ -73,7 +68,7 @@ var subscribers = new Array(guid, email);", issue.IssueID, maxCount);
                 script = string.Format("{0} guid[{1}] = '{2}'; \n ", script, i, subscriber.SubscriberGUID);
 
                 // Get subscriber's member (different for user, role or contact group subscribers)
-                SortedDictionary<int, SubscriberInfo> subMembers = SubscriberInfoProvider.GetSubscribers(subscriber, 1, 0, issue.IssueNewsletterID);
+                SortedDictionary<int, SubscriberInfo> subMembers = SubscriberInfoProvider.GetSubscribers(subscriber, 1);
                 if ((subMembers != null) && (subMembers.Count > 0))
                 {
                     foreach (KeyValuePair<int, SubscriberInfo> item in subMembers)

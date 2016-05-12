@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Controls_GroupSizeSlider"
-    Codebehind="GroupSizeSlider.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Controls_GroupSizeSlider"
+     Codebehind="GroupSizeSlider.ascx.cs" %>
 
 <asp:Panel runat="server" ID="pW" CssClass="newsletter-group-size">
     <asp:Panel runat="server" ID="pnlSlider" >

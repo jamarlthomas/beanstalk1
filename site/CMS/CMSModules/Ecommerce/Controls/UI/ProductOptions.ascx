@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_UI_ProductOptions"
-    Codebehind="ProductOptions.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_UI_ProductOptions"
+     Codebehind="ProductOptions.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
@@ -22,7 +22,7 @@
                     FontIconClass="icon-edit" FontIconStyle="Allow" ExternalSourceName="EditItem" />
             </GridActions>
             <GridColumns>
-                <ug:Column Source="CategoryID" Caption="$optioncategoryselect.itemname$" Wrap="false"
+                <ug:Column Source="CategoryID" Caption="$com.ProductOptions.CategoryName$" Wrap="false"
                     ExternalSourceName="CategoryDisplayName" Sort="CategoryDisplayName">
                 </ug:Column>
                 <ug:Column Source="CategoryType" Caption="$com.ProductOptions.Type$" Wrap="false"

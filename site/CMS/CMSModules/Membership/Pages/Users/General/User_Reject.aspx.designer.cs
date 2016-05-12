@@ -12,15 +12,6 @@
 public partial class CMSModules_Membership_Pages_Users_General_User_Reject {
     
     /// <summary>
-    /// ltlScript1 control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Literal ltlScript1;
-    
-    /// <summary>
     /// lblReason control.
     /// </summary>
     /// <remarks>
@@ -48,15 +39,6 @@ public partial class CMSModules_Membership_Pages_Users_General_User_Reject {
     protected global::CMS.ExtendedControls.CMSCheckBox chkSendEmail;
     
     /// <summary>
-    /// btnReject control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedButton btnReject;
-    
-    /// <summary>
     /// btnCancel control.
     /// </summary>
     /// <remarks>
@@ -66,11 +48,11 @@ public partial class CMSModules_Membership_Pages_Users_General_User_Reject {
     protected global::CMS.ExtendedControls.LocalizedButton btnCancel;
     
     /// <summary>
-    /// ltlScript control.
+    /// btnReject control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Literal ltlScript;
+    protected global::CMS.ExtendedControls.LocalizedButton btnReject;
 }

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SimpleCountrySelector.ascx.cs" Inherits="CMSFormControls_SimpleCountrySelector" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SimpleCountrySelector.ascx.cs" Inherits="CMSFormControls_SimpleCountrySelector" %>
 
 <%@ Register TagPrefix="cms" TagName="CountrySelector" Src="~/CMSFormControls/CountrySelector.ascx" %>
 

@@ -1,8 +1,6 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Theme="Default" Codebehind="Tab_InsertMacroCode.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Theme="Default"  Codebehind="Tab_InsertMacroCode.aspx.cs"
     Inherits="CMSAdminControls_UI_Macros_Dialogs_Tab_InsertMacroCode" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" %>
 
-<%@ Register Src="~/CMSAdminControls/UI/Macros/MacroEditor.ascx" TagName="MacroEditor"
-    TagPrefix="cms" %>
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <cms:MacroEditor ID="macroEditor" runat="server" MixedMode="false" />
 </asp:Content>

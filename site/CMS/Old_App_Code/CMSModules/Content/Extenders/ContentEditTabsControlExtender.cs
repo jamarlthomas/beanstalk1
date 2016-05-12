@@ -31,9 +31,6 @@ public class ContentEditTabsControlExtender : UITabsExtender
     private bool showProductTab;
     private bool showMasterPage;
     private bool showDesign;
-    
-    private bool isWireframe;
-    private bool hasWireframe;
 
     #endregion
 
@@ -107,23 +104,18 @@ public class ContentEditTabsControlExtender : UITabsExtender
             {
                 URLHelper.Redirect(DocumentUIHelper.GetPageNotAvailable(string.Empty, false, node.DocumentName));
             }
-           
-            showProductTab = node.HasSKU;
 
-            // Initialize required variables
-            isWireframe = node.IsWireframe();
-            hasWireframe = isWireframe || (node.NodeWireframeTemplateID > 0);
+            showProductTab = node.HasSKU;
 
             try
             {
-                var pi = PageInfoProvider.GetPageInfo(node.NodeSiteName, node.NodeAliasPath, node.DocumentCulture, node.DocumentUrlPath, false);
-                if ((pi != null) && (pi.DesignPageTemplateInfo != null))
+                var pageInfo = new PageInfo();
+                pageInfo.LoadVersion(node);
+                var template = pageInfo.DesignPageTemplateInfo;
+                if (template != null)
                 {
-                    var pti = pi.DesignPageTemplateInfo;
-
-                    showMasterPage = pti.IsPortal && ((node.NodeAliasPath == "/") || pti.ShowAsMasterTemplate);
-
-                    showDesign = ((pti.PageTemplateType == PageTemplateTypeEnum.Portal) || (pti.PageTemplateType == PageTemplateTypeEnum.AspxPortal));
+                    showMasterPage = template.IsPortal && ((node.NodeAliasPath == "/") || template.ShowAsMasterTemplate);
+                    showDesign = (template.PageTemplateType == PageTemplateTypeEnum.Portal) || (template.PageTemplateType == PageTemplateTypeEnum.AspxPortal);
                 }
             }
             catch
@@ -131,7 +123,7 @@ public class ContentEditTabsControlExtender : UITabsExtender
                 // Page info not found - probably tried to display document from different site
             }
 
-            if (node.NodeClassName.EqualsCSafe("CMS.File", true))
+            if (node.IsFile())
             {
                 showDesign = false;
                 showMasterPage = false;
@@ -170,16 +162,16 @@ public class ContentEditTabsControlExtender : UITabsExtender
 
         var element = e.UIElement;
 
-        string elem = element.ElementName.ToLowerCSafe();
+        string elementName = element.ElementName.ToLowerCSafe();
 
-        // Hide other tabs for wireframe
-        if (isWireframe && ((elem != "wireframe") && (elem != "editform")))
+        // Hides UI element if it is not relevant for edited node
+        if (DocumentUIHelper.IsElementHiddenForNode(element, Node))
         {
             e.Tab = null;
             return;
         }
 
-        switch (elem)
+        switch (elementName)
         {
             case "page":
                 {
@@ -196,18 +188,6 @@ public class ContentEditTabsControlExtender : UITabsExtender
                     }
 
                     mode = "design";
-                }
-                break;
-
-            case "wireframe":
-                {
-                    if (!hasWireframe)
-                    {
-                        e.Tab = null;
-                        return;
-                    }
-
-                    mode = "wireframe";
                 }
                 break;
 
@@ -251,12 +231,6 @@ public class ContentEditTabsControlExtender : UITabsExtender
 
             case "analytics":
                 {
-                    if (isWireframe)
-                    {
-                        e.Tab = null;
-                        return;
-                    }
-
                     mode = "analytics";
                 }
                 break;
@@ -277,6 +251,7 @@ public class ContentEditTabsControlExtender : UITabsExtender
 
             // Ensure correct URL
             tab.RedirectUrl = DocumentUIHelper.GetDocumentPageUrl(settings);
+            tab.Text = DocumentUIHelper.GetUIElementDisplayName(element, Node);
         }
     }
 

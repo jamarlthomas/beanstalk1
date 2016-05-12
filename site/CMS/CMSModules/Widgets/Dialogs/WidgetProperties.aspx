@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Widgets_Dialogs_WidgetProperties"
-    Codebehind="WidgetProperties.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Widgets_Dialogs_WidgetProperties"
+     Codebehind="WidgetProperties.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

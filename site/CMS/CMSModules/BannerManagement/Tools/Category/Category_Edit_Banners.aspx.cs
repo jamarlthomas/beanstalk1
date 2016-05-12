@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -65,7 +65,7 @@ public partial class CMSModules_BannerManagement_Tools_Category_Category_Edit_Ba
             case "bannertype":
                 BannerTypeEnum bannerType = (BannerTypeEnum)(int)parameter;
                 
-                return HTMLHelper.HTMLEncode(ResHelper.GetString("banner.bannertype." + bannerType.ToString().ToLowerCSafe()));
+                return HTMLHelper.HTMLEncode(ResHelper.GetString("BannerTypeEnum." + bannerType.ToString().ToLowerCSafe()));
             case "hitsclicksleft":
                 if (parameter == DBNull.Value)
                 {

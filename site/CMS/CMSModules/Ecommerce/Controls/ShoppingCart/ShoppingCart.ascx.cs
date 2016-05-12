@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -7,6 +7,7 @@ using CMS.EcommerceProvider;
 using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.Base;
+using CMS.Membership;
 using CMS.SiteProvider;
 using CMS.Protection;
 
@@ -78,16 +79,18 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCart : S
     /// </summary>
     protected void Page_Load(object sender, EventArgs e)
     {
-        // If shopping cart is created -> create empty one
-        if ((ShoppingCartInfoObj == null) && (SiteContext.CurrentSite != null))
+        var currentSite = SiteContext.CurrentSite;
+        
+            // If shopping cart is created -> create empty one
+        if ((ShoppingCartInfoObj == null) && (currentSite != null))
         {
-            ShoppingCartInfoObj = ShoppingCartInfoProvider.CreateShoppingCartInfo(SiteContext.CurrentSiteID);
+            ShoppingCartInfoObj = ShoppingCartInfoProvider.CreateShoppingCartInfo(currentSite.SiteID);
 
-            // Set customer preferred options   
-            CustomerInfo currentCustomer = ECommerceContext.CurrentCustomer;
-            if ((currentCustomer != null) && (currentCustomer.CustomerUser != null))
+            // Set users preferred options   
+            var currentUser = MembershipContext.AuthenticatedUser;
+            if ((currentUser != null) && (!currentUser.IsPublic()))
             {
-                ShoppingCartInfoObj.ShoppingCartCurrencyID = currentCustomer.CustomerUser.GetUserPreferredCurrencyID(SiteContext.CurrentSiteName);
+                ShoppingCartInfoObj.ShoppingCartCurrencyID = currentUser.GetUserPreferredCurrencyID(currentSite.SiteName);
             }
         }
 
@@ -107,10 +110,10 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCart : S
         if (ShoppingCartInfoObj != null)
         {
             // Get order information
-            OrderInfo oi = OrderInfoProvider.GetOrderInfo(ShoppingCartInfoObj.OrderId);
+            var order = OrderInfoProvider.GetOrderInfo(ShoppingCartInfoObj.OrderId);
 
             // If order is paid
-            if ((oi != null) && (oi.OrderIsPaid))
+            if ((order != null) && (order.OrderIsPaid))
             {
                 // Disable specific controls
                 btnNext.Enabled = false;

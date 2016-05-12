@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.EmailEngine;
 using CMS.Helpers;
@@ -177,7 +177,7 @@ public partial class CMSModules_AdminControls_Controls_MetaFiles_MetaFileDialog 
             AttachmentList.Visible = false;
 
             // Redirect to error page
-            string url = ResolveUrl("~/CMSMessages/Error.aspx?title=" + GetString("dialogs.badhashtitle") + "&text=" + GetString("dialogs.badhashtext") + "&cancel=1");
+            string url = ResolveUrl(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
             ScriptHelper.RegisterStartupScript(this, typeof(string), "BadHashRedirection", string.Format("window.location = '{0}';", url), true);
         }
     }

@@ -30,15 +30,6 @@ public partial class CMSModules_PortalEngine_Controls_WebParts_WebPartSelector {
     protected global::CMSModules_PortalEngine_Controls_WebParts_WebPartTree treeUI;
     
     /// <summary>
-    /// treeWireframes control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMSModules_PortalEngine_Controls_WebParts_WebPartTree treeWireframes;
-    
-    /// <summary>
     /// flatElem control.
     /// </summary>
     /// <remarks>

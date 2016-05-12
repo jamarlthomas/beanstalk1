@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Posts_PostApprove"
-    Codebehind="PostApprove.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Posts_PostApprove"
+     Codebehind="PostApprove.ascx.cs" %>
     
 <cms:CMSPanel CssClass="ForumPostApprove" runat="server" ID="pnlContent">
     <div class="form-horizontal">

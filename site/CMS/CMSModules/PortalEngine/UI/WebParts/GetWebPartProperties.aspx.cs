@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -20,24 +20,17 @@ public partial class CMSModules_PortalEngine_UI_WebParts_GetWebPartProperties : 
     {
         base.OnInit(e);
 
-        if (PortalContext.ViewMode.IsWireframe())
+        // Check standard design permissions
+        var currentUser = MembershipContext.AuthenticatedUser;
+        if (!currentUser.IsAuthorizedPerUIElement("CMS.Design", new string[] { "Design", "Design.WebPartProperties" }, SiteContext.CurrentSiteName))
         {
-            // Check wireframe permissions                
+            RedirectToUIElementAccessDenied("CMS.Design", "Design;Design.WebPartProperties");
         }
-        else
-        {
-            // Check standard design permissions
-            var currentUser = MembershipContext.AuthenticatedUser;
-            if (!currentUser.IsAuthorizedPerUIElement("CMS.Design", new string[] { "Design", "Design.WebPartProperties" }, SiteContext.CurrentSiteName))
-            {
-                RedirectToUIElementAccessDenied("CMS.Design", "Design;Design.WebPartProperties");
-            }
 
-            // Check content design
-            if (!currentUser.IsAuthorizedPerResource("CMS.Design", "Design"))
-            {
-                RedirectToAccessDenied("CMS.Design", "Design");
-            }
+        // Check content design
+        if (!currentUser.IsAuthorizedPerResource("CMS.Design", "Design"))
+        {
+            RedirectToAccessDenied("CMS.Design", "Design");
         }
     }
 
@@ -59,7 +52,8 @@ public partial class CMSModules_PortalEngine_UI_WebParts_GetWebPartProperties : 
 
         if (pti == null)
         {
-            PageInfo pi = PageInfoProvider.GetPageInfo(SiteContext.CurrentSiteName, aliasPath, LocalizationContext.PreferredCultureCode, null, SiteContext.CurrentSite.CombineWithDefaultCulture);
+            var siteName = SiteContext.CurrentSiteName;
+            PageInfo pi = PageInfoProvider.GetPageInfo(siteName, aliasPath, LocalizationContext.PreferredCultureCode, null, SiteInfoProvider.CombineWithDefaultCulture(siteName));
             if (pi != null)
             {
                 pti = pi.UsedPageTemplateInfo;
@@ -149,7 +143,7 @@ public partial class CMSModules_PortalEngine_UI_WebParts_GetWebPartProperties : 
     /// </summary>
     /// <param name="elem">List of properties to export</param>
     /// <param name="webPart">WebPart instance with data</param>
-    private string GetProperties(IEnumerable<IField> elem, WebPartInstance webPart)
+    private string GetProperties(IEnumerable<IDataDefinitionItem> elem, WebPartInstance webPart)
     {
         StringBuilder sb = new StringBuilder();
 

@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Scheduler_Pages_Tab_Tasks"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Scheduler_Pages_Tab_Tasks"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" Title="Scheduled tasks - Task List"
-    Codebehind="Tab_Tasks.aspx.cs" %>
+     Codebehind="Tab_Tasks.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Scheduler/Controls/UI/List.ascx" TagName="TaskList" TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" TagName="HeaderActions"

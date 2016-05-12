@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Community_Profile_GroupPolls" Codebehind="~/CMSWebParts/Community/Profile/GroupPolls.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Community_Profile_GroupPolls"  Codebehind="~/CMSWebParts/Community/Profile/GroupPolls.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Polls/Controls/Polls.ascx" TagName="Polls" TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/System/PermissionMessage.ascx" TagName="PermissionMessage"
     TagPrefix="cms" %>

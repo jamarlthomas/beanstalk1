@@ -25,7 +25,7 @@ public class CMSCheckoutWebPart : CMSAbstractWebPart
     #region "Event names constants"
 
     public const string SHOPPING_CART_CHANGED = "ShoppingCartChanged";
-    public const string MESSAGE_RAISED = "ShoppingCartMessageRised";
+    public const string MESSAGE_RAISED = "ShoppingCartMessageRaised";
 
     #endregion
 
@@ -151,9 +151,6 @@ public class CMSCheckoutWebPart : CMSAbstractWebPart
         // We are on last step and checkout process has not been finalized yet by any web part
         if (e.IsLastStep && (e.GetValue(CHOP_FINALIZED_KEY) == null))
         {
-            // Handle automatic selection of payment and shipping options
-            HandleAutomaticSelections(ShoppingCart);
-
             string validationMessage;
             // Validate cart; in case of failure user is able to go through checkout process and fix errors
             if (!ValidateShoppingCart(ShoppingCart, out validationMessage))
@@ -277,35 +274,6 @@ public class CMSCheckoutWebPart : CMSAbstractWebPart
     }
 
 
-    private void HandleAutomaticSelections(ShoppingCartInfo currentShoppingCart)
-    {
-        if ((currentShoppingCart.ShippingOption == null) && currentShoppingCart.IsShippingNeeded)
-        {
-            // Try to select shipping option if there is only one in system
-            var query = ShippingOptionInfoProvider.GetShippingOptions(currentShoppingCart.ShoppingCartSiteID, true).Column("ShippingOptionID");
-            if (query.Count == 1)
-            {
-                currentShoppingCart.ShoppingCartShippingOptionID = DataHelper.GetIntegerValues(query.Tables[0], "ShippingOptionID").FirstOrDefault();
-            }
-        }
-
-        if (currentShoppingCart.PaymentOption == null)
-        {
-            // Try to select payment option if there is only one in system
-            var query = PaymentOptionInfoProvider.GetPaymentOptions(currentShoppingCart.ShoppingCartSiteID, true).Column("PaymentOptionID");
-            if (query.Count == 1)
-            {
-                int paymentOptionId = DataHelper.GetIntegerValues(query.Tables[0], "PaymentOptionID").FirstOrDefault();
-                // Check if payment is allowed for shipping, or shipping is not set
-                if (CheckPaymentIsAllowedForShipping(currentShoppingCart, paymentOptionId))
-                {
-                    currentShoppingCart.ShoppingCartPaymentOptionID = paymentOptionId;
-                }
-            }
-        }
-    }
-
-
     private static bool CheckPaymentIsAllowedForShipping(ShoppingCartInfo currentShoppingCart, int paymentOptionId)
     {
         return (currentShoppingCart.ShoppingCartShippingOptionID == 0) ||
@@ -415,34 +383,13 @@ public class CMSCheckoutWebPart : CMSAbstractWebPart
         CustomerInfoProvider.SetCustomerInfo(customer);
         shoppingCart.ShoppingCartCustomerID = customer.CustomerID;
 
-        if (customer.CustomerID > 0)
-        {
-            // Track successful registration conversion
-            string name = ECommerceSettings.RegistrationConversionName(shoppingCart.SiteName);
-            ECommerceHelper.TrackRegistrationConversion(shoppingCart.SiteName, name);
-            // Log customer registration activity
-            var activityCustomerRegistration = new ActivityCustomerRegistration(customer, MembershipContext.AuthenticatedUser, AnalyticsContext.ActivityEnvironmentVariables);
-            if (activityCustomerRegistration.Data != null)
-            {
-                if ((ContactID <= 0) && (customer.CustomerUser != null))
-                {
-                    activityCustomerRegistration.Data.ContactID = ModuleCommands.OnlineMarketingGetUserLoginContactID(customer.CustomerUser);
-                }
-                else
-                {
-                    activityCustomerRegistration.Data.ContactID = ContactID;
-                }
-
-                activityCustomerRegistration.Log();
-            }
-
-            return true;
-        }
-        else
+        if (customer.CustomerID == 0)
         {
             LogError("Save customer action failed", EVENT_CODE_SAVING);
             return false;
         }
+
+        return true;
     }
 
 

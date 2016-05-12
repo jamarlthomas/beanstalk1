@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="PasswordStrength.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="PasswordStrength.ascx.cs"
     Inherits="CMSModules_Membership_FormControls_Passwords_PasswordStrength" %>
 <div class="password-strength">
     <cms:CMSTextBox runat="server" ID="txtPassword" TextMode="Password" />

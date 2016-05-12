@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.DataEngine;
@@ -74,7 +74,7 @@ public partial class CMSModules_CssStylesheets_Pages_CssStylesheet_General : CMS
             // Check hash
             if (!QueryHelper.ValidateHash("hash", "objectid", null, true))
             {
-                URLHelper.Redirect(ResolveUrl(string.Format("~/CMSMessages/Error.aspx?title={0}&text={1}", ResHelper.GetString("dialogs.badhashtitle"), ResHelper.GetString("dialogs.badhashtext"))));
+                URLHelper.Redirect(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext"));
             }
 
             // Check 'Design Web site' permission 
@@ -127,7 +127,7 @@ public partial class CMSModules_CssStylesheets_Pages_CssStylesheet_General : CMS
 
             if (DataHelper.DataSourceIsEmpty(ds))
             {
-                URLHelper.Redirect(ResolveUrl(string.Format("~/CMSMessages/Error.aspx?title={0}&text={1}", ResHelper.GetString("cssstylesheet.errorediting"), ResHelper.GetString("cssstylesheet.notallowedtoedit"))));
+                URLHelper.Redirect(UIHelper.GetErrorPageUrl("cssstylesheet.errorediting", "cssstylesheet.notallowedtoedit"));
             }
         }
 

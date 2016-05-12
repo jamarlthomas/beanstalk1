@@ -99,5 +99,5 @@ public partial class CMSFormControls_Layouts_PageLayoutCode {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSAdminControls_UI_Macros_MacroEditor tbLayoutCode;
+    protected global::CMS.UIControls.MacroEditor tbLayoutCode;
 }

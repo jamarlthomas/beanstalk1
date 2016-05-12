@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="EditImage.aspx.cs" Inherits="CMSModules_PortalEngine_UI_OnSiteEdit_EditImage"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="EditImage.aspx.cs" Inherits="CMSModules_PortalEngine_UI_OnSiteEdit_EditImage"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" %>
 <%@ Register Src="~/CMSModules/Content/Controls/EditMenu.ascx" TagName="editmenu"
     TagPrefix="cms" %>

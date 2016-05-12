@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="EventLog.ascx.cs" Inherits="CMSModules_EventLog_Controls_EventLog" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="EventLog.ascx.cs" Inherits="CMSModules_EventLog_Controls_EventLog" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 

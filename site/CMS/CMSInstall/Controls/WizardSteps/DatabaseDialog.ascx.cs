@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using CMS.DataEngine;
 using CMS.Helpers;
@@ -389,7 +390,7 @@ public partial class CMSInstall_Controls_WizardSteps_DatabaseDialog : CMSUserCon
         }
 
         // Set up the connection string
-        ConnectionString = ConnectionHelper.GetConnectionString(AuthenticationType, ServerName, Database, Username, Password, 240, false);
+        ConnectionString = ConnectionHelper.BuildConnectionString(AuthenticationType, ServerName, Database, Username, Password, 240);
 
         // Test existing DB
         if (radUseExisting.Checked || !SqlServerCapabilities.SupportsDatabaseCreation)
@@ -437,7 +438,7 @@ public partial class CMSInstall_Controls_WizardSteps_DatabaseDialog : CMSUserCon
         }
 
         // Test if tasks are stopped
-        if (EnabledTasks())
+        if (SchedulingHelper.EnableScheduler || SchedulingHelper.IsAnyTaskRunning())
         {
             DisplaySeparationError(GetString("separationDB.stoptaskserror"));
             return false;
@@ -460,7 +461,7 @@ public partial class CMSInstall_Controls_WizardSteps_DatabaseDialog : CMSUserCon
     /// </summary>
     private void DisplayTaskStatus()
     {
-        if (EnabledTasks())
+        if (SchedulingHelper.EnableScheduler || SchedulingHelper.IsAnyTaskRunning())
         {
             if (!btnStopTasks.Visible && TasksManuallyStopped && (hdnTurnedOff.Value != bool.TrueString))
             {
@@ -502,16 +503,6 @@ public partial class CMSInstall_Controls_WizardSteps_DatabaseDialog : CMSUserCon
 
 
     /// <summary>
-    /// Checks if any tasks are enabled.
-    /// </summary>
-    public bool EnabledTasks()
-    {
-        InfoDataSet<TaskInfo> tasks = TaskInfoProvider.GetTasks("(TaskNextRunTime IS NULL) AND (TaskInterval NOT LIKE '" + SchedulingHelper.PERIOD_ONCE + "%') AND (TaskEnabled = 1)", null, -1, "TaskID");
-        return ((tasks != null) && (tasks.Items.Count > 0)) || SchedulingHelper.EnableScheduler;
-    }
-
-
-    /// <summary>
     /// Stop tasks.
     /// </summary>
     void btnStopTasks_Click(object sender, EventArgs e)
@@ -520,7 +511,7 @@ public partial class CMSInstall_Controls_WizardSteps_DatabaseDialog : CMSUserCon
         PersistentStorageHelper.SetValue("CMSSchedulerTasksEnabled", SettingsKeyInfoProvider.GetBoolValue("CMSSchedulerTasksEnabled"));
         if (SchedulingHelper.EnableScheduler)
         {
-            SettingsKeyInfoProvider.SetValue("CMSSchedulerTasksEnabled", false);
+            SettingsKeyInfoProvider.SetGlobalValue("CMSSchedulerTasksEnabled", false);
         }
 
         // Restart win service

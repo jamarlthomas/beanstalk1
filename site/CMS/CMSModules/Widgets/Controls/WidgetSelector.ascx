@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Widgets_Controls_WidgetSelector" Codebehind="WidgetSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Widgets_Controls_WidgetSelector"  Codebehind="WidgetSelector.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Widgets/Controls/WidgetFlatSelector.ascx" TagName="WidgetFlatSelector"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Widgets/Controls/WidgetTree.ascx" TagName="WidgetTree"

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_Documents_DocumentURLPath"
-    Codebehind="DocumentURLPath.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_Documents_DocumentURLPath"
+     Codebehind="DocumentURLPath.ascx.cs" %>
 
 <asp:Panel ID="pnlContainer" runat="server">
     <cms:CMSUpdatePanel runat="server" ID="pnlUpdate">

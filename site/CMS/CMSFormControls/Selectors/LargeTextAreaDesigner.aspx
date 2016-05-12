@@ -1,11 +1,7 @@
-<%@ Page Language="C#" AutoEventWireup="true" Codebehind="LargeTextAreaDesigner.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="LargeTextAreaDesigner.aspx.cs"
     Inherits="CMSFormControls_Selectors_LargeTextAreaDesigner" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="Edit text" %>
 
-<%@ Register Src="~/CMSAdminControls/UI/Macros/MacroEditor.ascx" TagName="MacroEditor"
-    TagPrefix="cms" %>
-<%@ Register Src="~/CMSAdminControls/UI/Macros/MacroSelector.ascx" TagPrefix="cms"
-    TagName="MacroSelector" %>
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <asp:Panel runat="server" ID="pnlContent">
         <cms:MacroEditor ID="txtText" Height="500px" Width="99%" runat="server" />

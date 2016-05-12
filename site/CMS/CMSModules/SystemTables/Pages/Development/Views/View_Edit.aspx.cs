@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.UI.WebControls;
 
@@ -70,7 +70,7 @@ public partial class CMSModules_SystemTables_Pages_Development_Views_View_Edit :
         if (objName != null)
         {
             // Save button
-            HeaderActions.AddAction(new SaveAction(Page)
+            HeaderActions.AddAction(new SaveAction
             {
                 Enabled = loadedCorrectly,
                 RegisterShortcutScript = loadedCorrectly

@@ -9,6 +9,9 @@ public partial class CMSModules_Content_FormControls_Documents_ChangePermissions
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        // Register save changes
+        ScriptHelper.RegisterSaveChanges(Page);
+
         // Set master page
         PageTitle.TitleText = GetString("selectsinglepath.setpermissions");
         if (QueryHelper.ValidateHash("hash"))

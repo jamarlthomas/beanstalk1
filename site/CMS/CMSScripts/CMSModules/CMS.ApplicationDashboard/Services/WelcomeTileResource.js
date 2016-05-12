@@ -1,4 +1,4 @@
-cmsdefine(["require", "exports", 'CMS/Application'], function(cmsrequire, exports, application) {
+cmsdefine(["require", "exports", 'CMS/Application'], function (cmsrequire, exports, application) {
     exports.Resource = [
         '$resource',
         function ($resource) {

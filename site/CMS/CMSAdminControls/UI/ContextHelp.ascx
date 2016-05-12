@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_ContextHelp" Codebehind="ContextHelp.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_ContextHelp"  Codebehind="ContextHelp.ascx.cs" %>
 <h2 class="sr-only"><%= GetString("contexthelp.title") %></h2>
 <a class="accordion-toggle collapsed js-context-help" href="#cms-nav-help" data-toggle="collapse" title="<%= GetString("helpicon.help") %>">
     <i class="icon-question-circle cms-nav-icon-medium" aria-hidden="true"></i>
@@ -17,6 +17,9 @@
             </li>
             <li>
                 <a href="<%= DocumentationHelper.GetDocumentationRootUrl() %>" target="_blank"><%= GetString("contexthelp.opendocumentation") %></a>
+            </li>
+            <li>
+                <a href="http://devnet.kentico.com/questions-answers?utm_campaign=helpbar" target="_blank"><%= GetString("contexthelp.askcommunity") %></a>
             </li>
             <li>
                 <a href="http://ideas.kentico.com" target="_blank"><%= GetString("contexthelp.requestfeature") %></a>

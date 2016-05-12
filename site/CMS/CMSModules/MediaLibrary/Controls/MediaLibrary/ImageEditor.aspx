@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_ImageEditor"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_ImageEditor"
     MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" Title="Edit image"
-    Theme="Default" Codebehind="ImageEditor.aspx.cs" %>
+    Theme="Default"  Codebehind="ImageEditor.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/MediaLibrary/ImageEditor.ascx"
     TagName="ImageEditor" TagPrefix="cms" %>

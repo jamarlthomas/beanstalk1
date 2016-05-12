@@ -21,15 +21,6 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions
     protected global::System.Web.UI.HtmlControls.HtmlForm form1;
     
     /// <summary>
-    /// fileSystemDataSource control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.Controls.FileSystemDataSource fileSystemDataSource;
-    
-    /// <summary>
     /// pnlLog control.
     /// </summary>
     /// <remarks>

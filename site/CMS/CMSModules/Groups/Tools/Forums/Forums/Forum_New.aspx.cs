@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Forums;
 using CMS.Helpers;
@@ -9,12 +9,10 @@ using CMS.UIControls;
 public partial class CMSModules_Groups_Tools_Forums_Forums_Forum_New : CMSGroupForumPage
 {
     protected int forumGroupId = 0;
-    protected int groupId = 0;
 
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        groupId = QueryHelper.GetInteger("groupid", 0);
         forumGroupId = QueryHelper.GetInteger("forumgroupid", 0);
         forumNew.GroupID = forumGroupId;
         forumNew.OnSaved += forumNew_OnSaved;

@@ -234,7 +234,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
     /// Gets collection of the options from specific category which are allowed for the SKU (SKUAllowedOption relationship).
     /// </summary>
     /// <returns>Collection of allowed option Ids for the SKU.</returns>
-    private List<string> GetAllowedOptionIds()
+    private IEnumerable<string> GetAllowedOptionIds()
     {
         var result = SKUAllowedOptionInfoProvider.GetSKUOptions().Source(s => s.Join<SKUInfo>("OptionSKUID", "COM_SKU.SKUID"))
                                                                          .WhereEquals("SKUOptionCategoryID", optionSKUCategoryInfo.CategoryID)
@@ -242,7 +242,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
                                                                          .Column("OptionSKUID")
                                                                          .OrderBy("COM_SKU.SKUID");
 
-        return result.ToList(column => column.OptionSKUID.ToString());
+        return result.Select(column => column.OptionSKUID.ToString());
     }
 
 
@@ -276,7 +276,8 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
     {
         var query = SKUInfoProvider.GetSKUOptions(optionSKUCategoryInfo.CategoryID, false).WhereFalse("SKUEnabled");
 
-        return query.ToList(x => x.SKUID.ToString());
+        return query.Select(x => x.SKUID.ToString())
+                    .ToList();
     }
 
 
@@ -295,7 +296,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
         // Check if user is authorized to modify product
         if (!ECommerceContext.IsUserAuthorizedToModifySKU(product))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", product.IsGlobal ? "EcommerceGlobalModify" : "EcommerceModify OR ModifyProducts");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, product.IsGlobal ? EcommercePermissions.ECOMMERCE_MODIFYGLOBAL : "EcommerceModify OR ModifyProducts");
 
             return;
         }

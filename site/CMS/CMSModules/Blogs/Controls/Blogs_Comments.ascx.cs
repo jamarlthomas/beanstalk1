@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Web.UI.WebControls;
 using System.Data;
 
@@ -299,6 +298,8 @@ public partial class CMSModules_Blogs_Controls_Blogs_Comments : CMSAdminControl
         {
             gridComments.Pager.DefaultPageSize = ValidationHelper.GetInteger(ItemsPerPage, -1);
         }
+
+        RegisterScripts();
     }
 
 
@@ -516,6 +517,44 @@ public partial class CMSModules_Blogs_Controls_Blogs_Comments : CMSAdminControl
         gridComments.FilterIsSet = true;
         gridComments.ReloadData();
         base.ReloadData();
+    }
+
+
+    /// <summary>
+    /// Registers helper JS scripts
+    /// </summary>
+    private void RegisterScripts()
+    {
+        string script = @"
+// Refreshes current page when comment properties are changed
+function RefreshBlogCommentPage(filterParams, usePostback) {
+    var url = window.location.href,
+        index = url.indexOf('?');
+
+    if (index > 0) {
+        url = url.substring(0, index);
+    }
+    if (usePostback) {
+        postBack();
+    }
+    else {
+        window.location.replace(url + filterParams);
+    }
+}
+
+// Confirm mass delete
+function MassConfirm(dropdown, msg) {
+    var drop = document.getElementById(dropdown);
+    if (drop) {
+        if (drop.value === ""delete"") {
+            return confirm(msg);
+        }
+    }
+    return true;
+    }    
+";
+
+        ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "Blog_Comments_" + ClientID, script, true);
     }
 
     #endregion

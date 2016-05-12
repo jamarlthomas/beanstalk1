@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 
 using CMS.Community;
@@ -70,7 +70,7 @@ public partial class CMSModules_Friends_Controls_Friends_Request : FriendsAction
 
         selectUser.WhereCondition = "UserName NOT LIKE N'public'";
 
-        if (IsLiveSite && !isGlobalAdmin)
+        if (!isGlobalAdmin)
         {
             selectUser.HideDisabledUsers = true;
             selectUser.HideHiddenUsers = true;

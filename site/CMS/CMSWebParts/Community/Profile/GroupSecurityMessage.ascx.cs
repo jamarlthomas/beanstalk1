@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.UI;
 
@@ -73,7 +73,7 @@ public partial class CMSWebParts_Community_Profile_GroupSecurityMessage : CMSAbs
     {
         get
         {
-            return ResolveUrl(DataHelper.GetNotEmpty(GetValue("LoginURL"), SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSSecuredAreasLogonPage")));
+            return ResolveUrl(DataHelper.GetNotEmpty(GetValue("LoginURL"), AuthenticationHelper.GetSecuredAreasLogonPage(SiteContext.CurrentSiteName)));
         }
         set
         {

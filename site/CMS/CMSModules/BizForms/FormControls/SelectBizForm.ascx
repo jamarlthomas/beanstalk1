@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_BizForms_FormControls_SelectBizForm" Codebehind="SelectBizForm.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_BizForms_FormControls_SelectBizForm"  Codebehind="SelectBizForm.ascx.cs" %>
 <%@ Register src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" tagname="UniSelector" tagprefix="cms" %>
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">
     <ContentTemplate>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.EventLog;
@@ -52,6 +52,7 @@ public partial class CMSModules_EventLog_EventLog : CMSEventLogPage
         else
         {
             // Set site selector
+            CurrentMaster.DisplaySiteSelectorPanel = true;
             siteSelector.DropDownSingleSelect.AutoPostBack = true;
             siteSelector.OnlyRunningSites = false;
             siteSelector.AllowAll = true;

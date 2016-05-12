@@ -75,8 +75,8 @@ function CMSMessageLoadOptions(options) {
     if (typeof (options.wrpCtrlid) === "undefined") { options.wrpCtrlid = wrpCtrlid; }
     if (typeof (options.lblDetails) === "undefined") { options.lblDetails = lblDetails; }
     if (typeof (options.lblLess) === "undefined") { options.lblLess = lblLess; }
-    if (typeof (options.posOffsetX) === "undefined") { options.posOffsetX = posOffsetX; }
     if (typeof (options.posOffsetY) === "undefined") { options.posOffsetY = posOffsetY; }
+    if (typeof (options.posOffsetX) === "undefined") { options.posOffsetX = posOffsetX; }
     if (typeof (options.lblsOpacity) === "undefined") { options.lblsOpacity = lblsOpacity; }
     if (typeof (options.useRelPlc) === "undefined") { options.useRelPlc = useRelPlc; }
 
@@ -99,7 +99,7 @@ function CMSRfrLblPos(elm, options) {
     var opacity = elm.css('opacity');
     elm.css('opacity', 0).css('position', 'static');
     var offset = elm.offset();
-    elm.css('position', 'fixed');
+    elm.css('position', 'absolute');
     var top = CMSGetPlcPos();
 
     //Wrapper object
@@ -129,24 +129,19 @@ function CMSRfrLblPos(elm, options) {
         }
     });
 
-    // Add Y offset if defined
-    top = top + options.posOffsetY;
+    elm.css('opacity', opacity);
 
-    elm.css('top', top).css('opacity', opacity);
-    var isrtl = $cmsj('body').hasClass('RTL');
-    var xpos = isrtl ? 'right' : 'left';
+    var offsetY = options.posOffsetY;
+    var offsetX = options.posOffsetX;
 
-    // Wrapper X-axis offset
-    var wrapperOfsetX = offset.left;
-    if ((ctlrwrpobj !== null)) {
-        if (isrtl) {
-            wrapperOfsetX = $cmsj(window).width() - (ctlrwrpobj.offset().left + ctlrwrpobj.outerWidth());
-        }
-        else {
-            wrapperOfsetX = ctlrwrpobj.offset().left;
-        }
+    // Add offset to the absolute label possition (if defined)
+    if (offsetY > 0) {
+        elm.css('top', top + offsetY);
     }
-    elm.css(xpos, options.posOffsetX + wrapperOfsetX);
+
+    if (offsetX > 0) {
+        elm.css('left', offsetX);
+    }
 }
 
 function CMSGetPlcPos() {

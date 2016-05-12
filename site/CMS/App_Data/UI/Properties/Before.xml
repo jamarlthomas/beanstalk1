@@ -5,6 +5,7 @@
       <ControlName>ObjectTypeSelector</ControlName>
       <objecttypelist>ObjectTypes.AllObjectTypes</objecttypelist>
       <SpecialFields>;(inherit)</SpecialFields>
+      <DisplayAll>false</DisplayAll>
     </settings>
   </field>
   <field column="ParentObjectType" fieldcaption="Parent object type" visible="true" fielddescription="{$documentation.property.parentobjecttype$}" columntype="text" fieldtype="CustomUserControl" allowempty="true" columnsize="200" publicfield="false" spellcheck="false" guid="2BC65BD6-D60C-4474-9B25-2AE36373E84A"  >

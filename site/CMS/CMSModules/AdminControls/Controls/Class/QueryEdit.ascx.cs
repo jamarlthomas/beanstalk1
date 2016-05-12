@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -332,7 +332,6 @@ public partial class CMSModules_AdminControls_Controls_Class_QueryEdit : CMSUser
     /// <summary>
     /// Gets the class to which belongs currently edited query or the query that's being created.
     /// </summary>
-    /// <returns>Class to which belongs currently edited query or the query that's being created</returns>
     private DataClassInfo GetClass()
     {
         DataClassInfo classInfo = null;
@@ -465,15 +464,17 @@ public partial class CMSModules_AdminControls_Controls_Class_QueryEdit : CMSUser
         }
         else
         {
-            if ((Module != null) && !Module.IsEditable)
+            if ((Module != null) && !Module.IsEditable && (QueryID > 0) && !Query.QueryIsLocked)
             {
                 // Enable customization system tables in modules not in development (this includes different header-actions)
                 pnlCustomization.HeaderActions = HeaderActions;
                 pnlCustomization.MessagesPlaceHolder = MessagesPlaceHolder;
             }
-
-            // Normal processing for new queries and queries in document types etc.
-            pnlCustomization.StopProcessing = true;
+            else
+            {            
+                // Normal processing for new queries and queries in document types etc.
+                pnlCustomization.StopProcessing = true;
+            }
         }
     }
 
@@ -577,8 +578,9 @@ public partial class CMSModules_AdminControls_Controls_Class_QueryEdit : CMSUser
         // Only for new query
         if (!existing)
         {
-            // Set NOT custom only for queries created in development mode or in module in development
-            bool custom = (Module == null) || !Module.IsEditable;
+            // Queries created in system development mode under any module ARE NOT custom. 
+            // All other queries including those created under module that is currently in development ARE custom (they are exported with the module).
+            bool custom = (Module == null) || !SystemContext.DevelopmentMode;
 
             newQuery.QueryIsCustom = custom;
             newQuery.QueryIsLocked = custom;

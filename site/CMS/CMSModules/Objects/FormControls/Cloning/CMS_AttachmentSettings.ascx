@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="CMS_AttachmentSettings.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="CMS_AttachmentSettings.ascx.cs"
     Inherits="CMSModules_Objects_FormControls_Cloning_CMS_AttachmentSettings" %>
 <div class="form-horizontal">
     <div class="form-group">

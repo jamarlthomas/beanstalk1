@@ -19,6 +19,8 @@ using CMS.EventLog;
 using CMS.ExtendedControls;
 using CMS.DataEngine;
 
+using Attachment = System.Net.Mail.Attachment;
+
 [Title("SubmitIssue.Title")]
 [UIElementAttribute(ModuleName.CMS, "SubmitIssue")]
 public partial class CMSModules_Support_Pages_SubmitIssue : GlobalAdminPage
@@ -164,7 +166,7 @@ public partial class CMSModules_Support_Pages_SubmitIssue : GlobalAdminPage
         htmlTemplateBody.ResolvedValue = string.Empty;
         chkSettings.Checked = true;
         radDontKnow.Checked = true;
-        radAspx.Checked = radMix.Checked = radPortal.Checked = false;
+        radAspx.Checked = radMix.Checked = radPortal.Checked = radMvc.Checked = false;
     }
 
 
@@ -325,12 +327,17 @@ public partial class CMSModules_Support_Pages_SubmitIssue : GlobalAdminPage
 
         if (radMix.Checked)
         {
-            return "Both";
+            return "ASPX Templates + Portal engine";
         }
 
         if (radDontKnow.Checked)
         {
             return "I don't know";
+        }
+
+        if (radMvc.Checked)
+        {
+            return "MVC";
         }
 
         return string.Empty;

@@ -12,6 +12,15 @@
 public partial class CMSModules_System_Debug_System_DebugThreads {
     
     /// <summary>
+    /// btnRunDummy control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSButton btnRunDummy;
+    
+    /// <summary>
     /// hdnGuid control.
     /// </summary>
     /// <remarks>
@@ -28,15 +37,6 @@ public partial class CMSModules_System_Debug_System_DebugThreads {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Button btnCancel;
-    
-    /// <summary>
-    /// btnRunDummy control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSButton btnRunDummy;
     
     /// <summary>
     /// pnlUpdate control.

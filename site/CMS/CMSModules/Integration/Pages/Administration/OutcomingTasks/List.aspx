@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Title="Integration task list" Inherits="CMSModules_Integration_Pages_Administration_OutcomingTasks_List"
-    Theme="Default" Codebehind="List.aspx.cs" %>
+    Theme="Default"  Codebehind="List.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Integration/Controls/UI/IntegrationTask/List.ascx"
     TagName="IntegrationTaskList" TagPrefix="cms" %>
@@ -12,7 +12,7 @@
                 <cms:LocalizedLabel CssClass="control-label" ID="lblConnector" runat="server" ResourceString="integration.connector"
                     EnableViewState="false" DisplayColon="true" />
             </div>
-            <div class="filter-form-value-cell">
+            <div class="filter-form-value-cell-wide">
                 <cms:ConnectorSelector ID="connectorSelector" runat="server" />
             </div>
         </div>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -52,8 +52,6 @@ public partial class CMSInlineControls_WebPartZone : InlineUserControl
         {
             zoneElem.ID = zoneId;
         }
-
-        zoneElem.Wireframe = ValidationHelper.GetBoolean(GetValue("Wireframe"), false);
     }
 
     #endregion

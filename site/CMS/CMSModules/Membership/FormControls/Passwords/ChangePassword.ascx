@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_FormControls_Passwords_ChangePassword"
-    Codebehind="ChangePassword.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_FormControls_Passwords_ChangePassword"
+     Codebehind="ChangePassword.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/Membership/FormControls/Passwords/PasswordStrength.ascx"
     TagName="PasswordStrength" TagPrefix="cms" %>

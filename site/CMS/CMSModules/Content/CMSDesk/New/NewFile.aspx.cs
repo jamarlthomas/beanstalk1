@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.FormEngine;
@@ -72,7 +72,7 @@ public partial class CMSModules_Content_CMSDesk_New_NewFile : CMSContentPage
 
 
     /// <summary>
-    /// Data class info for the cms.file.
+    /// Data class info for the file type.
     /// </summary>
     public DataClassInfo DataClass
     {
@@ -80,11 +80,11 @@ public partial class CMSModules_Content_CMSDesk_New_NewFile : CMSContentPage
         {
             if (mDataClass == null)
             {
-                // Get document type ('cms.file') settings
-                mDataClass = DataClassInfoProvider.GetDataClassInfo("cms.file");
+                // Get file document type settings
+                mDataClass = DataClassInfoProvider.GetDataClassInfo(SystemDocumentTypes.File);
                 if (mDataClass == null)
                 {
-                    throw new Exception("[NewFile.aspx]: Class 'cms.file' is missing!");
+                    throw new DocumentTypeNotExistsException("[NewFile.aspx]: Class for file type is missing!");
                 }
             }
             return mDataClass;
@@ -413,7 +413,10 @@ public partial class CMSModules_Content_CMSDesk_New_NewFile : CMSContentPage
         node.DocumentName = fileName;
         if (node.ContainsColumn("FileDescription"))
         {
-            node.SetValue("FileDescription", txtFileDescription.Text);
+            string fileDescription = txtFileDescription.Text.Trim();
+            fileDescription = TextHelper.LimitLength(fileDescription, txtFileDescription.MaxLength);
+
+            node.SetValue("FileDescription", fileDescription);
         }
         node.SetValue("FileAttachment", Guid.Empty);
 
@@ -447,7 +450,10 @@ public partial class CMSModules_Content_CMSDesk_New_NewFile : CMSContentPage
         node.DocumentName = fileName;
         if (node.ContainsColumn("FileDescription"))
         {
-            node.SetValue("FileDescription", txtFileDescription.Text);
+            string fileDescription = txtFileDescription.Text.Trim();
+            fileDescription = TextHelper.LimitLength(fileDescription, txtFileDescription.MaxLength);
+
+            node.SetValue("FileDescription", fileDescription);
         }
         node.SetValue("FileAttachment", Guid.Empty);
 

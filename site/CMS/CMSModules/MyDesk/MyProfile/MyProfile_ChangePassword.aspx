@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_MyDesk_MyProfile_MyProfile_ChangePassword" Theme="Default"
-    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="MyProfile - Change password" Codebehind="MyProfile_ChangePassword.aspx.cs" %>
+    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="MyProfile - Change password"  Codebehind="MyProfile_ChangePassword.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Membership/FormControls/Passwords/ChangePassword.ascx"
     TagName="ChangePassword" TagPrefix="cms" %>

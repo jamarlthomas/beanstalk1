@@ -42,7 +42,7 @@ public class DomainAliasListControlExtender : ControlExtender<UniGrid>
             case "sitedefaultvisitorculture":
 
                 // Get visitor culture
-                string defaultCulture = DataHelper.GetDataRowViewValue((DataRowView)parameter, "SiteDefaultVisitorCulture") as string;
+                string defaultCulture = parameter as string;
 
                 // If not set it is Automatic
                 if (String.IsNullOrEmpty(defaultCulture))

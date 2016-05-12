@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="CMS_CategorySettings.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="CMS_CategorySettings.ascx.cs"
     Inherits="CMSModules_Objects_FormControls_Cloning_CMS_CategorySettings" %>
 
 <%@ Register Src="~/CMSModules/Categories/Controls/SelectCategory.ascx" TagName="SelectCategory" TagPrefix="cms" %>

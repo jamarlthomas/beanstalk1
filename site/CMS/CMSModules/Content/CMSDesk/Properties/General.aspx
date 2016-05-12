@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_General"
-    Theme="Default" MaintainScrollPositionOnPostback="true" Codebehind="General.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_General"
+    Theme="Default" MaintainScrollPositionOnPostback="true" CodeBehind="General.aspx.cs"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/editmenu.ascx" TagName="editmenu"
@@ -32,7 +32,7 @@
         </cms:UIPlaceHolder>
         <cms:UIPlaceHolder ID="pnlUIOther" runat="server" ModuleName="CMS.Content" ElementName="General.OtherProperties">
             <asp:Panel ID="pnlOther" runat="server">
-                <cms:LocalizedHeading runat="server" ID="headOtherProperties" Level="4" ResourceString="GeneralProperties.OtherGroup" EnableViewState="false" />
+                <cms:LocalizedHeading runat="server" ID="headOtherProperties" Level="4" EnableViewState="false" />
                 <div class="form-horizontal">
                     <div class="form-group">
                         <div class="editing-form-label-cell">
@@ -154,17 +154,19 @@
                             <asp:Label CssClass="control-label" ID="lblLiveURLTitle" runat="server" EnableViewState="false" />
                         </div>
                         <div class="editing-form-value-cell">
-                            <asp:HyperLink ID="lnkLiveURL" runat="server" Target="_blank" EnableViewState="false" CssClass="form-control-text" />
+                            <a id="lnkLiveURL" runat="server" target="_blank" class="form-control-text"></a>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="editing-form-label-cell">
-                            <cms:LocalizedLabel CssClass="control-label" ID="lblPermanentUrl" runat="server" EnableViewState="false" ResourceString="general.permanenturl" DisplayColon="True" />
+                    <asp:PlaceHolder runat="server" ID="plcPermanent">
+                        <div class="form-group">
+                            <div class="editing-form-label-cell">
+                                <cms:LocalizedLabel CssClass="control-label" ID="lblPermanentUrl" runat="server" EnableViewState="false" ResourceString="general.permanenturl" DisplayColon="True" />
+                            </div>
+                            <div class="editing-form-value-cell">
+                                <a id="lnkPermanentURL" runat="server" target="_blank" class="form-control-text"></a>
+                            </div>
                         </div>
-                        <div class="editing-form-value-cell">
-                            <asp:HyperLink ID="lnkPermanentUrl" runat="server" Target="_blank" EnableViewState="false" CssClass="form-control-text" />
-                        </div>
-                    </div>
+                    </asp:PlaceHolder>
                     <asp:PlaceHolder ID="plcPreview" runat="server" Visible="false">
                         <div class="editing-form-label-cell">
                             <asp:Label CssClass="control-label" ID="lblPreviewURLTitle" runat="server" EnableViewState="false" />
@@ -173,7 +175,7 @@
                             <cms:CMSUpdatePanel ID="pnlUpdatePreviewUrl" runat="server" UpdateMode="conditional">
                                 <ContentTemplate>
                                     <cms:LocalizedLabel ID="lblNoPreviewGuid" runat="server" EnableViewState="false" Visible="false" CssClass="form-control-text" />
-                                    <asp:HyperLink ID="lnkPreviewURL" runat="server" Target="_blank" EnableViewState="false" CssClass="form-control-text" />
+                                    <a id="lnkPreviewURL" runat="server" target="_blank" class="form-control-text"><%= ResHelper.GetString("GeneralProperties.ShowPreview") %></a>
                                     <cms:CMSAccessibleButton runat="server" ID="btnResetPreviewGuid" EnableViewState="false" IconOnly="True" IconCssClass="icon-rotate-right" />
                                 </ContentTemplate>
                             </cms:CMSUpdatePanel>
@@ -278,11 +280,6 @@
                     </asp:PlaceHolder>
                     <asp:PlaceHolder ID="plcAdHocForums" runat="server" Visible="false">
                         <cms:LocalizedButton ID="btnForums" runat="server" EnableViewState="false" ResourceString="PageProperties.AdHocForum" ButtonStyle="Default" />
-                    </asp:PlaceHolder>
-                    <asp:PlaceHolder ID="plcWireframe" runat="server" Visible="false">
-                        <cms:UIPlaceHolder ID="plcUIWireframe" runat="server" ModuleName="CMS.Design" PermissionName="Wireframing">
-                            <cms:LocalizedButton ID="btnWireframe" runat="server" EnableViewState="false" ButtonStyle="Default" />
-                        </cms:UIPlaceHolder>
                     </asp:PlaceHolder>
                 </div>
             </asp:Panel>

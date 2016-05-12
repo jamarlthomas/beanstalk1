@@ -1,8 +1,8 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="ViewCode.aspx.cs" Inherits="CMSModules_Content_CMSDesk_Validation_ViewCode"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="ViewCode.aspx.cs" Inherits="CMSModules_Content_CMSDesk_Validation_ViewCode"
     MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" Theme="Default" %>
 
 <asp:Content ContentPlaceHolderID="plcContent" runat="server" ID="cntContent">
-    <cms:MessagesPlaceHolder ID="plcMess" runat="server" ContainerCssClass="ValidatorError" />
+    <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
     <cms:CMSUpdatePanel runat="server" ID="pnlUpdate" UpdateMode="Always">
         <ContentTemplate>
             <asp:Panel runat="server" ID="pnlCode">

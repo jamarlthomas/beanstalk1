@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Theme="Default"
-    Inherits="CMSFormControls_Selectors_InsertImageOrMedia_Tabs_Web" EnableEventValidation="false" Codebehind="Tabs_Web.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Theme="Default"
+    Inherits="CMSFormControls_Selectors_InsertImageOrMedia_Tabs_Web" EnableEventValidation="false"  Codebehind="Tabs_Web.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/Web/WebContentSelector.ascx" TagName="WebContentSelector"
     TagPrefix="cms" %>

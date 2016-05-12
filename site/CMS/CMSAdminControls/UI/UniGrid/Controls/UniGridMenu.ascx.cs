@@ -1,5 +1,6 @@
 ﻿using System;
 
+using CMS.Base;
 using CMS.ExtendedControls;
 using CMS.Helpers;
 
@@ -10,21 +11,40 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_UniGridMenu : CMSConte
         string menuId = ContextMenu.MenuID;
         string parentElemId = ContextMenu.ParentElementClientID;
 
+        // Get menu settings
+        string[] settings = ContextMenu.Parameter.Split('|');
+
+        bool allowExport = ValidationHelper.GetBoolean(settings[0], false);
+        bool allowReset = ValidationHelper.GetBoolean(settings[1], false);
+        bool allowShowFilter = SystemContext.DevelopmentMode && ValidationHelper.GetBoolean(settings[2], false);
+
         string parameterScript = "GetContextMenuParameter('" + menuId + "')";
 
-        string actionPattern = "UG_Export_" + parentElemId + "('{0}', " + parameterScript + ");";
+        string actionPattern = "window.CMS.UG_Export_" + parentElemId + ".ugExport('{0}', " + parameterScript + ");";
 
+        string jsGrid = "window.CMS.UG_" + parentElemId;
+
+        var disableProgressScript = ScriptHelper.GetDisableProgressScript();
+        
         // Initialize menu
-        lblExcel.Text = ResHelper.GetString("export.exporttoexcel");
-        pnlExcel.Attributes.Add("onclick", ScriptHelper.GetDisableProgressScript() + String.Format(actionPattern, DataExportFormatEnum.XLSX));
+        if (allowExport)
+        {
+            iExcel.Attributes.Add("onclick", disableProgressScript + String.Format(actionPattern, DataExportFormatEnum.XLSX));
+            iCSV.Attributes.Add("onclick", disableProgressScript + String.Format(actionPattern, DataExportFormatEnum.CSV));
+            iXML.Attributes.Add("onclick", disableProgressScript + String.Format(actionPattern, DataExportFormatEnum.XML));
+            iAdvanced.Attributes.Add("onclick", string.Format(actionPattern, "advancedexport"));
 
-        lblCSV.Text = ResHelper.GetString("export.exporttocsv");
-        pnlCSV.Attributes.Add("onclick", ScriptHelper.GetDisableProgressScript() + String.Format(actionPattern, DataExportFormatEnum.CSV));
+            sm1.Visible = allowReset || allowShowFilter;
+        }
+        else
+        {
+            plcExport.Visible = false;
+        }
 
-        lblXML.Text = ResHelper.GetString("export.exporttoxml");
-        pnlXML.Attributes.Add("onclick", ScriptHelper.GetDisableProgressScript() + String.Format(actionPattern, DataExportFormatEnum.XML));
+        iReset.Visible = allowReset;
+        iReset.Attributes.Add("onclick", disableProgressScript + jsGrid + ".reset();");
 
-        lblAdvancedExport.Text = ResHelper.GetString("export.advancedexport");
-        pnlAdvancedExport.Attributes.Add("onclick", string.Format(actionPattern, "advancedexport"));
+        iFilter.Visible = allowShowFilter;
+        iFilter.Attributes.Add("onclick", disableProgressScript + jsGrid + ".showFilter();");
     }
 }

@@ -1,6 +1,6 @@
-<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
+﻿<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
     Inherits="CMSModules_Membership_Pages_Users_General_User_WaitingForApproval"
-    Title="Untitled Page" Theme="Default" Codebehind="User_WaitingForApproval.aspx.cs" EnableEventValidation="false" %>
+    Title="Untitled Page" Theme="Default"  Codebehind="User_WaitingForApproval.aspx.cs" EnableEventValidation="false" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">

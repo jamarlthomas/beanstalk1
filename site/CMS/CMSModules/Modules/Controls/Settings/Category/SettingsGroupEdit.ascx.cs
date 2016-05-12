@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 using System.Data;
 
@@ -137,7 +137,7 @@ public partial class CMSModules_Modules_Controls_Settings_Category_SettingsGroup
 
             ResourceInfo resource = ResourceInfoProvider.GetResourceInfo(ModuleID);
 
-            group.AllowEdit = (resource != null) && ((resource.ResourceIsInDevelopment && (resource.ResourceId == category.CategoryResourceID)) || SystemContext.DevelopmentMode);        
+            group.AllowEdit = (resource != null) && ((resource.ResourceIsInDevelopment && (resource.ResourceID == category.CategoryResourceID)) || SystemContext.DevelopmentMode);        
         }
 
         return group;

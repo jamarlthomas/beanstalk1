@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Content_Controls_Dialogs_Properties_BBLinkProperties" Codebehind="BBLinkProperties.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Content_Controls_Dialogs_Properties_BBLinkProperties"  Codebehind="BBLinkProperties.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/General/URLSelector.ascx" TagPrefix="cms" TagName="URLSelector" %>
 <div class="BBLinkProperties" enableviewstate="false">
     <asp:Panel runat="server" ID="pnlEmpty" Visible="true" CssClass="DialogInfoArea">

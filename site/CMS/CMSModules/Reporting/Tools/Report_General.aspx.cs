@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 using System.Web.Services;
 using System.Web.UI.WebControls;
@@ -108,7 +108,7 @@ public partial class CMSModules_Reporting_Tools_Report_General : CMSReportingPag
         lblValues.Text = GetString("Report_General.TablesValues") + ":";
         lblReportAccess.Text = GetString("Report_General.ReportAccessLabel");
 
-        actionsElem.ActionsList.Add(new SaveAction(Page));
+        actionsElem.ActionsList.Add(new SaveAction());
         actionsElem.ActionPerformed += actionsElem_ActionPerformed;
 
         AttachmentTitle.TitleText = GetString("general.attachments");
@@ -130,33 +130,33 @@ public partial class CMSModules_Reporting_Tools_Report_General : CMSReportingPag
         {
             LoadData();
         }
-        
+
         htmlTemplateBody.AutoDetectLanguage = false;
         htmlTemplateBody.DefaultLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
         htmlTemplateBody.EditorAreaCSS = "";
-        
+
         ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "ReportingHTML", ScriptHelper.GetScript(" var reporting_htmlTemplateBody = '" + htmlTemplateBody.ClientID + "'"));
-        
+
         // initialize item list controls
         ilGraphs.Report = ri;
         ilTables.Report = ri;
         ilValues.Report = ri;
         ilHtmlGraphs.Report = ri;
-        
+
         ilGraphs.EditUrl = "ReportGraph_Edit.aspx";
         ilTables.EditUrl = "ReportTable_Edit.aspx";
         ilValues.EditUrl = "ReportValue_Edit.aspx";
         ilHtmlGraphs.EditUrl = "ReportHtmlGraph_Edit.aspx";
-        
+
         ilGraphs.ItemType = ReportItemType.Graph;
         ilTables.ItemType = ReportItemType.Table;
         ilValues.ItemType = ReportItemType.Value;
         ilHtmlGraphs.ItemType = ReportItemType.HtmlGraph;
-        
+
         // Refresh script
         string script = "function RefreshWOpener(w) { if (w.refreshPageOnClose){ " + ControlsHelper.GetPostBackEventReference(this, "arg") + " }}";
         ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "ReportingRefresh", ScriptHelper.GetScript(script));
-        
+
     }
 
 
@@ -250,7 +250,7 @@ public partial class CMSModules_Reporting_Tools_Report_General : CMSReportingPag
                 // If there was a change in display name refresh category tree 
                 if ((reportInfo.ReportDisplayName != txtReportDisplayName.Text.Trim()) || (reportInfo.ReportCategoryID != categoryID))
                 {
-                    ltlScript.Text += ScriptHelper.GetScript(@"if ((parent != null) && (parent.Refresh != null)) {parent.Refresh();}");
+                    ScriptHelper.RegisterClientScriptBlock(Page, typeof(String), "RefreshParent", ScriptHelper.GetScript("if (parent.refreshPage) {parent.refreshPage()} else parent.location = parent.location;"));
                 }
 
                 reportInfo.ReportDisplayName = txtReportDisplayName.Text.Trim();

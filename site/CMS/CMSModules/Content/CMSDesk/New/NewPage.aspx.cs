@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.ExtendedControls;
@@ -8,9 +8,7 @@ using CMS.Membership;
 using CMS.PortalEngine;
 using CMS.Base;
 using CMS.DocumentEngine;
-using CMS.SiteProvider;
 using CMS.UIControls;
-using CMS.PortalControls;
 using CMS.DataEngine;
 
 public partial class CMSModules_Content_CMSDesk_New_NewPage : CMSContentPage
@@ -19,7 +17,7 @@ public partial class CMSModules_Content_CMSDesk_New_NewPage : CMSContentPage
 
     private string mode;
 
-    private string pageClassName = "CMS.MenuItem";
+    private string pageClassName = SystemDocumentTypes.MenuItem;
 
     #endregion
 
@@ -79,14 +77,6 @@ public partial class CMSModules_Content_CMSDesk_New_NewPage : CMSContentPage
         DocumentManager.NewNodeCultureCode = QueryHelper.GetString("parentculture", null);
         DocumentManager.NewNodeClassID = QueryHelper.GetInteger("classId", 0);
 
-        // Set up the document conversion
-        int convertDocumentId = QueryHelper.GetInteger("convertdocumentid", 0);
-        if (convertDocumentId > 0)
-        {
-            DocumentManager.SourceDocumentID = convertDocumentId;
-            DocumentManager.Mode = FormModeEnum.Convert;
-        }
-
         // Load proper class name
         DataClassInfo dci = NewNodeClass;
         if (dci != null)
@@ -119,16 +109,11 @@ public partial class CMSModules_Content_CMSDesk_New_NewPage : CMSContentPage
             {
                 selTemplate.SetDefaultTemplate(dci.ClassDefaultPageTemplateID);
             }
-
-            if (dci.ClassName.EqualsCSafe("cms.wireframe", true) && PortalHelper.IsWireframingEnabled(SiteContext.CurrentSiteName))
-            {
-                selTemplate.IsWireframe = true;
-            }
         }
 
         // Display footer only in dialog mode
         pnlFooterContent.Visible = RequiresDialog;
-        
+
         base.OnInit(e);
     }
 
@@ -155,10 +140,6 @@ public partial class CMSModules_Content_CMSDesk_New_NewPage : CMSContentPage
         // Set default focus on page name field
         if (!RequestHelper.IsPostBack())
         {
-            if (DocumentManager.Mode == FormModeEnum.Convert)
-            {
-                txtPageName.Text = DocumentManager.Node.DocumentName;
-            }
             txtPageName.Focus();
         }
     }
@@ -167,7 +148,7 @@ public partial class CMSModules_Content_CMSDesk_New_NewPage : CMSContentPage
     protected override void OnPreRender(EventArgs e)
     {
         base.OnPreRender(e);
-        
+
         // For blank page and page template selector - focus page name text box to proper ctrl+c function.
         if ((selTemplate.TemplateSelectionState == 1) || (selTemplate.TemplateSelectionState == 3))
         {
@@ -178,7 +159,7 @@ public partial class CMSModules_Content_CMSDesk_New_NewPage : CMSContentPage
         if (RequiresDialog)
         {
             SetTitle(HTMLHelper.HTMLEncode(String.Format(GetString("content.newdocument"), NewNodeClass.ClassDisplayName)));
-            
+
             // Turn off fixed position in dialog to avoid blank gap in page
             pnlContainer.FixedPosition = false;
         }
@@ -241,72 +222,35 @@ function ValidateNewPage(){{
 
         bool updateGuidAfterInsert = false;
 
-        bool wireframe = node.IsWireframe() && PortalHelper.IsWireframingEnabled(SiteContext.CurrentSiteName);
-        if (wireframe)
+        // Same template for all language versions by default
+        PageTemplateInfo pti = selTemplate.EnsureTemplate(node.DocumentName, node.NodeGUID, ref errorMessage);
+        if (pti != null)
         {
-            node.DocumentSearchExcluded = true;
+            node.SetDefaultPageTemplateID(pti.PageTemplateId);
 
-            // Wireframe
-            PageTemplateInfo pti = selTemplate.EnsureTemplate(node.DocumentName, node.NodeGUID, ref errorMessage);
-            if (pti != null)
+            // Template should by updated after document insert
+            if (!pti.IsReusable)
             {
-                node.NodeWireframeTemplateID = pti.PageTemplateId;
-            }
-        }
-        else
-        {
-            // Same template for all language versions by default
-            PageTemplateInfo pti = selTemplate.EnsureTemplate(node.DocumentName, node.NodeGUID, ref errorMessage);
-            if (pti != null)
-            {
-                node.SetDefaultPageTemplateID(pti.PageTemplateId);
-
-                // Template should by updated after document insert
-                if (!pti.IsReusable)
-                {
-                    updateGuidAfterInsert = true;
-                }
+                updateGuidAfterInsert = true;
             }
         }
 
         // Insert node if no error
         if (String.IsNullOrEmpty(errorMessage))
         {
-            // Switch to design mode (the template is empty at this moment)
-            if (!DocumentManager.CreateAnother && (PortalContext.ViewMode != ViewModeEnum.EditLive))
-            {
-                if (wireframe)
-                {
-                    // Wireframe mode for wireframes
-                    PortalContext.ViewMode = ViewModeEnum.Wireframe;
-                }
-                else if (selTemplate.NewTemplateIsEmpty)
-                {
-                    // Design mode for empty template
-                    PortalContext.ViewMode = ViewModeEnum.Design;
-                }
-            }
-
             // Insert the document
-            if (DocumentManager.Mode == FormModeEnum.Convert)
-            {
-                DocumentManager.UpdateDocument(true);
-            }
-            else
-            {
-                // Ensures documents consistency (blog post hierarchy etc.)
-                DocumentManager.EnsureDocumentsConsistency();
-                DocumentHelper.InsertDocument(node, DocumentManager.ParentNode, DocumentManager.Tree);
+            // Ensures documents consistency (blog post hierarchy etc.)
+            DocumentManager.EnsureDocumentsConsistency();
+            DocumentHelper.InsertDocument(node, DocumentManager.ParentNode, DocumentManager.Tree);
 
-                if (updateGuidAfterInsert)
+            if (updateGuidAfterInsert)
+            {
+                PageTemplateInfo pageTemplateInfo = PageTemplateInfoProvider.GetPageTemplateInfo(node.NodeTemplateID);
+                if (pageTemplateInfo != null)
                 {
-                    PageTemplateInfo pti = PageTemplateInfoProvider.GetPageTemplateInfo(node.NodeTemplateID);
-                    if (pti != null)
-                    {
-                        // Update template's node GUID
-                        pti.PageTemplateNodeGUID = node.NodeGUID;
-                        PageTemplateInfoProvider.SetPageTemplateInfo(pti);
-                    }
+                    // Update template's node GUID
+                    pageTemplateInfo.PageTemplateNodeGUID = node.NodeGUID;
+                    PageTemplateInfoProvider.SetPageTemplateInfo(pageTemplateInfo);
                 }
             }
 

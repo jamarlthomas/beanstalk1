@@ -1,10 +1,4 @@
-using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.UIControls;
@@ -13,9 +7,6 @@ public partial class CMSModules_Membership_Pages_Users_General_User_Reject : CMS
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        // Pagetitle
-        Title = GetString("administration.users.rejectusers");
-
         // Set the master page header
         PageTitle.TitleText = GetString("administration.users.rejectusers");
         // Initialize other properties        
@@ -27,7 +18,7 @@ public partial class CMSModules_Membership_Pages_Users_General_User_Reject : CMS
                                                ScriptHelper.GetScript(
                                                    "function CloseAndRefresh()\n" +
                                                    "{\n" +
-                                                   "var txtReason = document.getElementById('" + txtReason.ClientID + "').value;\n" +
+                                                   "var txtReason = document.getElementById('" + txtReason.ClientID + "').value.substring(0, " + txtReason.MaxLength + ");\n" +
                                                    "var chkSendEmail = document.getElementById('" + chkSendEmail.ClientID + "').checked;\n" +
                                                    "wopener.SetRejectParam(txtReason, chkSendEmail, 'true');\n" +
                                                    "CloseDialog();\n" +

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 using System.Data;
 
@@ -238,16 +238,7 @@ public partial class CMSModules_PortalEngine_Controls_WebParts_WebPartDocumentat
 
         if (WidgetID != 0)
         {
-            PageInfo pi = null;
-            try
-            {
-                // Load page info from alias path and page template
-                pi = CMSWebPartPropertiesPage.GetPageInfo(AliasPath, PageTemplateID, CultureCode);
-            }
-            catch (PageNotFoundException)
-            {
-                // Do not throw exception if page info not found (e.g. bad alias path)
-            }
+            PageInfo pi = CMSWebPartPropertiesPage.GetPageInfo(AliasPath, PageTemplateID, CultureCode);
 
             if (pi != null)
             {
@@ -452,9 +443,7 @@ function resizeareainternal () {
         {
             string widgetProperties = FormHelper.MergeFormDefinitions(wpi.WebPartProperties, wi.WidgetProperties);
 
-            FormInfo zoneTypeDefinition = PortalFormHelper.GetPositionFormInfo(zoneType);
-            FormInfo fi = PortalFormHelper.GetWidgetFormInfo(wi.WidgetName, Enum.GetName(typeof(WidgetZoneTypeEnum), zoneType), widgetProperties, zoneTypeDefinition, false);
-            return fi;
+            return PortalFormHelper.GetWidgetFormInfo(wi.WidgetName, zoneType, widgetProperties, false);
         }
         return null;
     }
@@ -513,7 +502,7 @@ function resizeareainternal () {
         string newCategory = null;
 
         // Check all items in object array
-        foreach (IField contrl in infos)
+        foreach (IDataDefinitionItem contrl in infos)
         {
             // Generate row for form category
             if (contrl is FormCategoryInfo)

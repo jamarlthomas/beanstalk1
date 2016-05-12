@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Title="Polls" Inherits="CMSModules_Polls_Tools_Polls_List" Theme="Default" Codebehind="Polls_List.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+    Title="Polls" Inherits="CMSModules_Polls_Tools_Polls_List" Theme="Default"  Codebehind="Polls_List.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Polls/Controls/PollsList.ascx" TagName="PollsList"
     TagPrefix="cms" %>
@@ -13,14 +13,13 @@
 <asp:Content ID="cntActions" runat="server" ContentPlaceHolderID="plcActions">
     <cms:CMSUpdatePanel ID="pnlActons" runat="server">
         <ContentTemplate>
-            <div class="btn-actions">
+            <div class="control-group-inline header-actions-container">
                 <cms:HeaderActions ID="hdrActions" runat="server" ShortID="ha" IsLiveSite="false" />
+                <div class="header-actions-label">
+                    <cms:LocalizedLabel ID="lblWarnNew" runat="server" ResourceString="pollslist.choosegloborsite"
+                        EnableViewState="false" Visible="false" CssClass="form-control-text" />
+                </div>
             </div>
-            <div class="header-actions-label control-group-inline">
-                <cms:LocalizedLabel ID="lblWarnNew" runat="server" ResourceString="pollslist.choosegloborsite"
-                    EnableViewState="false" Visible="false" CssClass="PollsInfoLabel form-control-text" />
-            </div>
-            <div class="ClearBoth"></div>
         </ContentTemplate>
     </cms:CMSUpdatePanel>
 </asp:Content>

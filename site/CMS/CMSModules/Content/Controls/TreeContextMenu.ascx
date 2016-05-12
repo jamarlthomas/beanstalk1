@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_TreeContextMenu"
-    Codebehind="TreeContextMenu.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_TreeContextMenu"
+     Codebehind="TreeContextMenu.ascx.cs" %>
 <cms:ContextMenu runat="server" ID="menuNew" MenuID="newMenu" VerticalPosition="Bottom"
     HorizontalPosition="Left" OffsetX="25" ActiveItemCssClass="ItemSelected" CssClass="TreeContextMenu TreeNewContextMenu" OuterCssClass="TreeContextMenu"
     Dynamic="true" MenuLevel="1" ShowMenuOnMouseOver="true">

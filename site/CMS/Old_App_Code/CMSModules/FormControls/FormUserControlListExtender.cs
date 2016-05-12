@@ -30,7 +30,7 @@ public class FormUserControlListExtender : ControlExtender<UniGrid>
         {
             if ((parameter != null) && (parameter != DBNull.Value))
             {
-                return CoreServices.Localization.GetString("formcontrolstype." + FormUserControlInfoProvider.GetTypeEnum(ValidationHelper.GetInteger(parameter, 0)));
+                return CoreServices.Localization.GetString("formusercontroltypeenum." + FormUserControlInfoProvider.GetTypeEnum(ValidationHelper.GetInteger(parameter, 0)));
             }
         }
 

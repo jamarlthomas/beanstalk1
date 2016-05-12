@@ -45,9 +45,9 @@ var CodeMirror = (function () {
                     h = 200;
                 }
                 if (scroller.scrollWidth > scroller.clientWidth + 1) {
-                    h += 4;
+                    h += 20;
                 }
-                h += 8;
+                h += 12;
 
                 h = h + 'px';
                 if (scroller.style.height != h) {
@@ -3341,10 +3341,11 @@ Toolbar.prototype = {
         var fsClass = " CM-FullScreen";
         var elem = this.editor.getWrapperElement().parentNode;
         var scroller = this.editor.getScrollerElement();
+        // Normal view
         if (this.editor.fullScreen) {
             scroller.style.height = scroller.oldHeight;
             elem.style.position = elem.oldPosition;
-
+            
             if (elem.oldTop != null) {
                 elem.style.top = elem.oldTop;
             }
@@ -3355,6 +3356,7 @@ Toolbar.prototype = {
 
             elem.className = elem.className.substring(0, elem.className.length - fsClass.length);
         }
+        // Fullscreen
         else {
             scroller.oldHeight = scroller.style.height;
             scroller.style.height = '';
@@ -3387,20 +3389,24 @@ Toolbar.prototype = {
         }
 
         var fullScreenParentID = this.editor.getOption("fullScreenParentID");
+        // Dialog options
         if (fullScreenParentID != '') {
 
             var parent = $cmsj('#' + fullScreenParentID);
             if (parent.length > 0) {
                 var jElem = $cmsj(elem);
-
+                // Dialog fullscreen
                 if (!this.editor.fullScreen) {
+                    // Set fullscreen top position (excluding tabs/toolbar)
                     jElem.offset(parent.offset());
-
-                    var bottom = $cmsj(window).height() - parent.height() - parent.position().top - 2;
+                    // Set fullscreen bottom position (excluding footer)
+                    var bottom = $cmsj(window).height() - parent.outerHeight() - parent.position().top - 2;
                     jElem.css('bottom', bottom);
+                    // Set width to correct resize
+                    jElem.css('width', 'auto');
                 }
                 else {
-                    jElem.css('width', 'auto');
+                    jElem.css('width', '100%');
                     jElem.css('height', 'auto');
                     jElem.css('top', 'auto');
                     jElem.css('left', 'auto');
@@ -3790,4 +3796,5 @@ CodeMirror.commands.replace = function (ed) { setTimeout(function () { ed.toolba
 CodeMirror.commands.bookmarks = function (ed) { ed.bookmarks.toggle(); };
 CodeMirror.commands.fullscreen = function (ed) { ed.toolbar.fitWindow(); };
 CodeMirror.commands.linenumbers = function (ed) { ed.toolbar.toggleLineNumbers(); };
+CodeMirror.commands.save = function (ed) { ed.save(); };
 /* CMS end */

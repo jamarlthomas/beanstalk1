@@ -8,15 +8,25 @@ function addGoogleMarker(map, latitude, longitude, title, content, zoom, iconURL
         title: title,
         icon: iconURL
     });
-    // Create info window object
-    var wname = new google.maps.InfoWindow({
-        content: content
-    });
+
+    if (content) {
+        // Create info window object
+        var wname = new google.maps.InfoWindow({
+            content: content
+        });
+    }
+
     // Register click event
-    google.maps.event.addListener(marker, 'click', function() {
-        map.setCenter(point);
+    google.maps.event.addListener(marker, 'click', function () {
         var oZoom = map.getZoom();
-        if (oZoom != zoom) { map.setZoom(zoom); }
-        wname.open(map, marker);
+        map.setCenter(point);
+
+        if (oZoom !== zoom) {
+            map.setZoom(zoom);
+        }
+
+        if (wname) {
+            wname.open(map, marker);
+        }
     });
-}   
+}

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Blogs;
 using CMS.DataEngine;

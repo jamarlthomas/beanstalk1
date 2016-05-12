@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master"
-    Theme="Default" Inherits="CMSModules_Groups_CMSPages_InviteToGroup" Codebehind="InviteToGroup.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master"
+    Theme="Default" Inherits="CMSModules_Groups_CMSPages_InviteToGroup"  Codebehind="InviteToGroup.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Groups/Controls/GroupInvite.ascx" TagName="GroupInvite"
     TagPrefix="cms" %>

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="ContactSelectorDialog.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="ContactSelectorDialog.aspx.cs"
     Inherits="CMSModules_ContactManagement_FormControls_ContactSelectorDialog" Title="Select contact"
     EnableEventValidation="false" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Theme="Default" %>

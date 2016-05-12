@@ -1,23 +1,20 @@
-using System;
+﻿using System;
 using System.Data;
+using System.Linq;
 using System.Text;
 using System.Xml;
+using System.Collections.Generic;
+
 using CMS.DataEngine;
 using CMS.DocumentEngine;
 using CMS.Helpers;
 using CMS.Base;
 using CMS.Synchronization;
 using CMS.UIControls;
+using CMS.Membership;
 
 public partial class CMSModules_Staging_Tools_Controls_ViewTask : CMSAdminEditControl
 {
-    #region "Variables"
-
-    private int mTaskId = 0;
-
-    #endregion
-
-
     #region "Properties"
 
     /// <summary>
@@ -25,14 +22,8 @@ public partial class CMSModules_Staging_Tools_Controls_ViewTask : CMSAdminEditCo
     /// </summary>
     public int TaskId
     {
-        get
-        {
-            return mTaskId;
-        }
-        set
-        {
-            mTaskId = value;
-        }
+        get;
+        set;
     }
 
     #endregion
@@ -44,27 +35,98 @@ public partial class CMSModules_Staging_Tools_Controls_ViewTask : CMSAdminEditCo
         // Set edited object
         EditedObject = ti;
 
-        if (ti != null)
+        if (ti == null)
         {
-            ((CMSDeskPage)Page).PageTitle.TitleText += " (" + HTMLHelper.HTMLEncode(ti.TaskTitle) + ")";
-
-            // Prepare task description
-            StringBuilder sbTaskInfo = new StringBuilder();
-            sbTaskInfo.Append("<table>");
-            sbTaskInfo.Append("<tr><td class=\"Title Grid\" style=\"width:135px\">" + GetString("staging.tasktype") + "</td><td>" + ti.TaskType.ToString() + "</td></tr>");
-            sbTaskInfo.Append("<tr><td class=\"Title Grid\">" + GetString("staging.tasktime") + "</td><td>" + ti.TaskTime.ToString() + "</td></tr>");
-            sbTaskInfo.Append("<tr><td class=\"Title Grid\">" + GetString("staging.taskprocessedby") + "</td><td>" + DataHelper.GetNotEmpty(ti.TaskServers.Trim(';').Replace(";", ", "), "-") + "</td></tr>");
-            sbTaskInfo.Append("</table>");
-
-            string objectType = ti.TaskObjectType;
-            if (ti.TaskNodeID > 0)
-            {
-                objectType = TreeNode.OBJECT_TYPE;
-            }
-            viewDataSet.ObjectType = objectType;
-            viewDataSet.DataSet = GetDataSet(ti.TaskData, ti.TaskType, ti.TaskObjectType);
-            viewDataSet.AdditionalContent = sbTaskInfo.ToString();
+            return;
         }
+
+        ((CMSDeskPage)Page).PageTitle.TitleText += " (" + HTMLHelper.HTMLEncode(ti.TaskTitle) + ")";
+
+        // Get users and task groups
+        var usersWhoModifiedObject = GetUsersFromStagingTask(ti);
+        var taskInGroups = GetTaskGroupsFromStagingTask(ti);
+
+        string objectType = ti.TaskObjectType;
+        if (ti.TaskNodeID > 0)
+        {
+            objectType = TreeNode.OBJECT_TYPE;
+        }
+
+        viewDataSet.ObjectType = objectType;
+        viewDataSet.DataSet = GetDataSet(ti.TaskData, ti.TaskType, ti.TaskObjectType);
+        viewDataSet.AdditionalContent = GetTaskHeader(ti, usersWhoModifiedObject, taskInGroups);
+    }
+
+
+    /// <summary>
+    /// Returns task header table in HTML code
+    /// </summary>
+    private string GetTaskHeader(StagingTaskInfo ti, IEnumerable<string> usersWhoModifiedObject, IEnumerable<string> taskInGroups)
+    {
+        const string FORMATTED_TABLE_ROW = "<tr><td class=\"Title Grid\">{0}</td><td>{1}</td></tr>";
+
+        var taskHeaderInHtml = "<table class=\"table table-hover\">";
+        taskHeaderInHtml += String.Format(FORMATTED_TABLE_ROW, GetString("staging.detailtasktype"), GetEncodedTaskType(ti));
+        taskHeaderInHtml += String.Format(FORMATTED_TABLE_ROW, GetString("staging.detailtasktime"), ti.TaskTime);
+        taskHeaderInHtml += String.Format(FORMATTED_TABLE_ROW, GetString("staging.taskprocessedby"), GetEncodedTaskProccessedBy(ti));
+        taskHeaderInHtml += String.Format(FORMATTED_TABLE_ROW, GetString("taskUser.taskModifiedBy"), GetEncodedEnumeration(usersWhoModifiedObject));
+        taskHeaderInHtml += String.Format(FORMATTED_TABLE_ROW, GetString("stagingTaskGroup.taskGroupedIn"), GetEncodedEnumeration(taskInGroups));
+        taskHeaderInHtml += "</table>";
+        return taskHeaderInHtml;
+    }
+
+
+    private static string GetEncodedTaskType(StagingTaskInfo ti)
+    {
+        return HTMLHelper.HTMLEncode(ti.TaskType.ToLocalizedString(TaskHelper.TASK_TYPE_RESOURCE_STRING_PREFIX));
+    }
+
+
+    private static string GetEncodedTaskProccessedBy(StagingTaskInfo ti)
+    {
+        return DataHelper.GetNotEmpty(ti.TaskServers.Trim(';').Replace(";", ", "), "-");
+    }
+
+
+    private static string GetEncodedEnumeration(IEnumerable<string> items)
+    {
+        return HTMLHelper.HTMLEncode(String.Join(", ", items));
+    }
+
+
+    /// <summary>
+    /// Gets the usernames of users, who modified object for which the given staging task was created.
+    /// </summary>
+    /// <param name="ti">Staging task</param>
+    /// <returns>Returns usernames of users, who modified object for which the given staging task was created</returns>
+    private static IEnumerable<string> GetUsersFromStagingTask(StagingTaskInfo ti)
+    {
+        List<string> usersWhoModifiedObject = new List<string>();
+
+        UserInfoProvider.GetUsers()
+            .Columns("UserID", "UserName")
+            .WhereIn("UserID", StagingTaskUserInfoProvider.GetTaskUsers().Column("UserID").WhereEquals("TaskID", ti.TaskID))
+            .ForEachObject(u => usersWhoModifiedObject.Add(u.UserName));
+
+        return usersWhoModifiedObject;
+    }
+
+
+    /// <summary>
+    /// Gets the task groups, in which the staging task is.
+    /// </summary>
+    /// <param name="ti">Staging task</param>
+    /// <returns>Returns display names of task groups, in which the task exists</returns>
+    private static IEnumerable<string> GetTaskGroupsFromStagingTask(StagingTaskInfo ti)
+    {
+        List<string> taskGroups = new List<string>();
+
+        TaskGroupInfoProvider.GetTaskGroups()
+            .Columns("TaskGroupID", "TaskGroupCodeName")
+            .WhereIn("TaskGroupID", TaskGroupTaskInfoProvider.GetTaskGroupTasks().WhereEquals("TaskID", ti.TaskID).Column("TaskGroupID"))
+            .ForEachObject(t => taskGroups.Add(t.TaskGroupCodeName));
+
+        return taskGroups;
     }
 
 

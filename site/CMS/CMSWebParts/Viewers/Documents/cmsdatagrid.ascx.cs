@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Web;
@@ -241,7 +241,7 @@ public partial class CMSWebParts_Viewers_Documents_cmsdatagrid : CMSAbstractWebP
         }
         set
         {
-            SetValue("SelctOnlyPublished", value);
+            SetValue("SelectOnlyPublished", value);
             gridElem.SelectOnlyPublished = value;
         }
     }

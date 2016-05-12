@@ -111,7 +111,6 @@ public partial class CMSModules_Personas_Dialogs_DocumentsMassTagging : CMSModal
                                     .AllCultures();
 
         // LatestVersion() must be used here to be sure that data is fetched from the same view as on document listing page.
-        // It's because personas filter uses View_CMS_Tree_Joined_Versions directly.
         query = query.LatestVersion();
 
         if (classID > 0)

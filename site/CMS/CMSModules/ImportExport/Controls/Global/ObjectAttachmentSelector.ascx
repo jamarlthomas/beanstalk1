@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_ImportExport_Controls_Global_ObjectAttachmentSelector" Codebehind="ObjectAttachmentSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_ImportExport_Controls_Global_ObjectAttachmentSelector"  Codebehind="ObjectAttachmentSelector.ascx.cs" %>
 <asp:HiddenField ID="hdnLastSelected" runat="server" />
 <asp:Literal ID="ltlScript" EnableViewState="false" runat="server" />
 
@@ -37,7 +37,7 @@
                                 <div>
                                     <cms:LocalizedHeading runat="server" Level="3" Text="<%#HTMLHelper.HTMLEncode(Eval(DisplayNameColumn).ToString())%>" EnableViewState="false" />
                                     <div>
-                                        <%#HTMLHelper.RemoveScripts(Eval(DescriptionColumn).ToString())%>
+                                        <%# ResHelper.LocalizeString(HTMLHelper.RemoveScripts(Eval(DescriptionColumn).ToString()))%>
                                     </div>
                                 </div>
                             </td>

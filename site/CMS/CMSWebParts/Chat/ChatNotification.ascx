@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/Chat/ChatNotification.ascx.cs" Inherits="CMSWebParts_Chat_ChatNotification" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/Chat/ChatNotification.ascx.cs" Inherits="CMSWebParts_Chat_ChatNotification" %>
 
 <asp:Panel runat="server" ID="pnlWPNotifications" CssClass="ChatWebpartContainer ChatWebpartContainerNotification">
 

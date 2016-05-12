@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Base;
 using CMS.DataEngine;
@@ -16,7 +16,7 @@ public partial class CMSFormControls_System_OptionsSelector : FormEngineUserCont
 {
     #region "Variables"
 
-    private bool disabledSql;
+    private bool mDisabledSql;
 
     #endregion
 
@@ -48,9 +48,16 @@ public partial class CMSFormControls_System_OptionsSelector : FormEngineUserCont
         get
         {
             // Options
+            string text = txtValue.Text.Trim();
+            if (lstOptions.SelectedIndex == NoneSourceIndex && !String.IsNullOrEmpty(text))
+            {
+                // Preselect options variant if something was inserted
+                lstOptions.SelectedIndex = ListSourceIndex;
+            }
+
             if (lstOptions.SelectedIndex == ListSourceIndex)
             {
-                return txtValue.Text.Trim();
+                return text;
             }
             return null;
         }
@@ -290,7 +297,7 @@ public partial class CMSFormControls_System_OptionsSelector : FormEngineUserCont
         if (lstOptions.SelectedIndex == ListSourceIndex)
         {
             // Some option must be included
-            if (string.IsNullOrEmpty(txtValue.Text.Trim()))
+            if (String.IsNullOrWhiteSpace(txtValue.Text))
             {
                 ValidationError += GetString("TemplateDesigner.ErrorDropDownListOptionsEmpty") + " ";
                 valid = false;
@@ -304,10 +311,11 @@ public partial class CMSFormControls_System_OptionsSelector : FormEngineUserCont
                 for (lineIndex = 0; lineIndex <= lines.GetUpperBound(0); lineIndex++)
                 {
                     // Loop through only not-empty lines
-                    if ((lines[lineIndex] != null) && (lines[lineIndex].Trim() != string.Empty))
+                    string line = lines[lineIndex];
+                    if (!String.IsNullOrWhiteSpace(line))
                     {
                         // Get line items
-                        string[] items = lines[lineIndex].Replace(SpecialFieldsDefinition.SEMICOLON_TO_REPLACE, SpecialFieldsDefinition.REPLACED_SEMICOLON).Split(';');
+                        string[] items = line.Replace(SpecialFieldsDefinition.SEMICOLON_TO_REPLACE, SpecialFieldsDefinition.REPLACED_SEMICOLON).Split(';');
 
                         // Every line must have value and item element and optionally visibility macro
                         if (items.Length > 3)
@@ -352,12 +360,12 @@ public partial class CMSFormControls_System_OptionsSelector : FormEngineUserCont
             }
         }
         // Check SQL query validity
-        else if ((lstOptions.SelectedIndex == SqlSourceIndex) && (string.IsNullOrEmpty(txtValue.Text.Trim())))
+        else if ((lstOptions.SelectedIndex == SqlSourceIndex) && String.IsNullOrWhiteSpace(txtValue.Text))
         {
             ValidationError += GetString("TemplateDesigner.ErrorDropDownListQueryEmpty") + " ";
             valid = false;
         }
-        else if ((lstOptions.SelectedIndex == MacroSourceIndex) && (string.IsNullOrEmpty(txtValue.Text.Trim())))
+        else if ((lstOptions.SelectedIndex == MacroSourceIndex) && String.IsNullOrWhiteSpace(txtValue.Text))
         {
             ValidationError += GetString("TemplateDesigner.ErrorDropDownListMacroEmpty") + " ";
             valid = false;
@@ -403,7 +411,7 @@ public partial class CMSFormControls_System_OptionsSelector : FormEngineUserCont
         if (lstOptions.SelectedIndex == SqlSourceIndex)
         {
             // Keep original SQL value
-            if (disabledSql)
+            if (mDisabledSql)
             {
                 values[0, 1] = Form.Data.GetValue(QueryColumnName);
                 values[1, 1] = null;
@@ -511,22 +519,22 @@ public partial class CMSFormControls_System_OptionsSelector : FormEngineUserCont
                 lstOptions.SelectedIndex = SqlSourceIndex;
                 if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("CMS.Form", "EditSQLQueries"))
                 {
-                    disabledSql = true;
+                    mDisabledSql = true;
                 }
                 return query;
             }
+        }
 
-            // Macro data source selected
-            if (ContainsColumn(MacroColumnName))
+        // Macro data source selected
+        if (ContainsColumn(MacroColumnName))
+        {
+            string macro = ValidationHelper.GetString(Form.Data.GetValue(MacroColumnName), string.Empty).Trim();
+            if (!String.IsNullOrEmpty(macro))
             {
-                string macro = ValidationHelper.GetString(Form.Data.GetValue(MacroColumnName), string.Empty).Trim();
-                if (!String.IsNullOrEmpty(macro))
-                {
-                    lstOptions.SelectedIndex = MacroSourceIndex;
-                    txtValue.Editor.ValueIsMacro = true;
+                lstOptions.SelectedIndex = MacroSourceIndex;
+                txtValue.Editor.ValueIsMacro = true;
 
-                    return MacroProcessor.RemoveDataMacroBrackets(macro);
-                }
+                return MacroProcessor.RemoveDataMacroBrackets(macro);
             }
         }
 

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_ImportExport_Controls_ImportGridTasks"
-    Codebehind="ImportGridTasks.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_ImportExport_Controls_ImportGridTasks"
+     Codebehind="ImportGridTasks.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/Pager/UIPager.ascx" TagName="UIPager"
     TagPrefix="cms" %>
 <asp:PlaceHolder ID="plcGrid" runat="server">

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Community_Membership_MySentInvitations" Codebehind="~/CMSWebParts/Community/Membership/MySentInvitations.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Community_Membership_MySentInvitations"  Codebehind="~/CMSWebParts/Community/Membership/MySentInvitations.ascx.cs" %>
 <asp:Literal runat="server" ID="ltlMessage" EnableViewState="false" />
 <asp:Label runat="Server" ID="lblInfo" EnableViewState="false" />
 <cms:BasicRepeater ID="rptMySentInvitations" runat="server">

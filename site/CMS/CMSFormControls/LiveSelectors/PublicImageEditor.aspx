@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_LiveSelectors_PublicImageEditor"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_LiveSelectors_PublicImageEditor"
     Theme="Default" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master"
-    Title="Edit image" Codebehind="PublicImageEditor.aspx.cs" %>
+    Title="Edit image"  Codebehind="PublicImageEditor.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/ImageEditor/ImageEditor.ascx" TagName="ImageEditor"
     TagPrefix="cms" %>

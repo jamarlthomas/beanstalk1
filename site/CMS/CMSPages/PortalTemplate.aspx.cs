@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 
+using CMS.Base;
 using CMS.UIControls;
 using CMS.ExtendedControls;
-using CMS.PortalEngine;
 using CMS.Helpers;
 
 public partial class CMSPages_PortalTemplate : PortalPage
@@ -19,7 +19,6 @@ public partial class CMSPages_PortalTemplate : PortalPage
             // Enable document manager
             docMan.Visible = true;
             docMan.StopProcessing = false;
-            docMan.RegisterSaveChangesScript = (PortalContext.ViewMode.IsOneOf(ViewModeEnum.Edit, ViewModeEnum.EditLive));
             return docMan;
         }
     }
@@ -39,16 +38,28 @@ public partial class CMSPages_PortalTemplate : PortalPage
     #endregion
 
 
+    #region "Methods"
+
+    protected override void OnInit(EventArgs e)
+    {
+        var resolvedTemplatePage = URLHelper.ResolveUrl(URLHelper.PortalTemplatePage);
+        if (RequestContext.RawURL.StartsWithCSafe(resolvedTemplatePage, true))
+        {
+            // Deny direct access to this page
+            RequestHelper.Respond404();
+        }
+
+        base.OnInit(e);
+    }
+
+
     protected override void OnPreRender(EventArgs e)
     {
         base.OnPreRender(e);
 
         // Init the header tags
         tags.Text = HeaderTags;
-
-        if (PortalContext.ViewMode.IsWireframe())
-        {
-            CSSHelper.RegisterWireframesMode(this);
-        }
     }
+
+    #endregion
 }

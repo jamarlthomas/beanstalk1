@@ -64,9 +64,9 @@ public partial class CMSModules_Scoring_Pages_ScoreDetail : CMSToolsModalPage
         {
             case "quantity":
                 // Get contact's total value for the rule
-                int value = ValidationHelper.GetInteger(DataHelper.GetDataRowValue(row.Row, "Value"), 0);
+                int value = DataHelper.GetIntValue(row.Row, "Value");
                 // Get rule value
-                int ruleValue = ValidationHelper.GetInteger(DataHelper.GetDataRowValue(row.Row, "RuleValue"), 0);
+                int ruleValue = DataHelper.GetIntValue(row.Row, "RuleValue");
                 if (value == 0 || ruleValue == 0)
                 {
                     return 0;

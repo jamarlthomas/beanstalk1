@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-            Inherits="CMSModules_Newsletters_Controls_SubscriberFilter" Codebehind="SubscriberFilter.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+            Inherits="CMSModules_Newsletters_Controls_SubscriberFilter"  Codebehind="SubscriberFilter.ascx.cs" %>
 
 <div class="form-condition-cell-generated">
     <cms:CMSDropDownList ID="filter" runat="server" />

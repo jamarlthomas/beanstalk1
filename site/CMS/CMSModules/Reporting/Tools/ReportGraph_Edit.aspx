@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_Tools_ReportGraph_Edit"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_Tools_ReportGraph_Edit"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    EnableEventValidation="false" Codebehind="~/CMSModules/Reporting/Tools/ReportGraph_Edit.aspx.cs" %>
+    EnableEventValidation="false"  Codebehind="~/CMSModules/Reporting/Tools/ReportGraph_Edit.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/Selectors/FontSelector.ascx" TagPrefix="cms"
     TagName="FontSelector" %>
@@ -21,7 +21,7 @@
     <div class="WebpartProperties LightTabs">
         <cms:UITabs ID="tabControlElem" runat="server" />
         <div id="pnlWebPartForm_Properties" class="WebPartForm" runat="server">
-            <asp:Panel ID="divScrolable" runat="server">
+            <asp:Panel ID="divScrolable" runat="server" CssClass="dialog-content-scrollable">
                 <div id="FormPanelHolder" runat="server" class="form-horizontal">
                     <div class="ReportFormPanel" style="overflow: hidden">
                         <cms:MessagesPlaceHolder ID="plcMess" runat="server" IsLiveSite="false" />
@@ -29,7 +29,7 @@
                             <asp:Panel runat="server" ID="DefaultNameRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtDefaultName" ID="lblDefaultNameRow" runat="server" ResourceString="general.displayname" CssClass="control-label" DisplayColon="true" ShowRequiredMark="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtDefaultName" ID="lblDefaultNameRow" runat="server" ResourceString="general.displayname" CssClass="control-label" DisplayColon="true" ShowRequiredMark="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:LocalizableTextBox runat="server" ID="txtDefaultName"
@@ -42,7 +42,7 @@
                             <asp:Panel runat="server" ID="DefaultCodeNameRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtDefaultCodeName" ID="lblDefaultCodeNameRow" runat="server" ResourceString="general.codename" CssClass="control-label" DisplayColon="true" ShowRequiredMark="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtDefaultCodeName" ID="lblDefaultCodeNameRow" runat="server" ResourceString="general.codename" CssClass="control-label" DisplayColon="true" ShowRequiredMark="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CodeName runat="server" ID="txtDefaultCodeName" MaxLength="100"
@@ -55,7 +55,7 @@
                             <asp:Panel runat="server" ID="DefaultEnableExportRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="chkExportEnable" ID="lblDefaultEnableExportRow" runat="server" ResourceString="rep.enableexport" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="chkExportEnable" ID="lblDefaultEnableExportRow" runat="server" ResourceString="rep.enableexport" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSCheckBox runat="server" ID="chkExportEnable" />
@@ -65,7 +65,7 @@
                             <asp:Panel runat="server" ID="DefaultSubscriptionRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="chkSubscription" ID="lblDefaultSubscriptionRow" runat="server" ResourceString="rep.enablesubscription" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="chkSubscription" ID="lblDefaultSubscriptionRow" runat="server" ResourceString="rep.enablesubscription" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSCheckBox runat="server" ID="chkSubscription" />
@@ -77,20 +77,20 @@
                             <asp:Panel runat="server" ID="QueryQueryRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtQueryQuery" ID="lblQueryQueryRow" runat="server" ResourceString="Reporting_ReportGraph_Edit.Query" CssClass="control-label" DisplayColon="true" ShowRequiredMark="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtQueryQuery" ID="lblQueryQueryRow" runat="server" ResourceString="Reporting_ReportGraph_Edit.Query" CssClass="control-label" DisplayColon="true" ShowRequiredMark="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:ExtendedTextArea runat="server" ID="txtQueryQuery" Name="txtQueryQuery" EditorMode="Advanced"
                                             Language="SQL" Width="560px" Height="240px" />
                                         <cms:LocalizedLabel runat="server" ID="lblQueryHelp" ResourceString="rep.queryhelp"
-                                            CssClass="explanation-text" />
+                                            CssClass="explanation-text" EnableViewState="false" />
                                     </div>
                                 </div>
                             </asp:Panel>
                             <asp:Panel runat="server" ID="IsStoredProcedureRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="chkIsStoredProcedure" ID="lblIsStoredProcedureRow" runat="server" ResourceString="rep.isstoredprocedure" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="chkIsStoredProcedure" ID="lblIsStoredProcedureRow" runat="server" ResourceString="rep.isstoredprocedure" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSCheckBox runat="server" ID="chkIsStoredProcedure" name="chkQueryIsQuery" />
@@ -100,7 +100,7 @@
                             <asp:Panel runat="server" ID="ConnectionStringRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucSelectString" ID="lblConnectionStringRow" runat="server" ResourceString="ConnectionString.Title" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucSelectString" ID="lblConnectionStringRow" runat="server" ResourceString="ConnectionString.Title" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:SelectString runat="server" ID="ucSelectString" DisplayInherit="true" />
@@ -110,7 +110,7 @@
                             <asp:Panel runat="server" ID="QueryNoRecordText">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtQueryNoRecordText" ID="lblQueryNoRecordText" runat="server" ResourceString="rep.graph.norecordtext" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtQueryNoRecordText" ID="lblQueryNoRecordText" runat="server" ResourceString="rep.graph.norecordtext" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" name="txtNoRecordText" ID="txtQueryNoRecordText" />
@@ -122,10 +122,10 @@
                             <asp:Panel runat="server" ID="ChartTypeRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpChartType" ID="lblChartTypeRow" runat="server" ResourceString="Reporting_ReportGraph_Edit.GraphType" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpChartType" ID="lblChartTypeRow" runat="server" ResourceString="Reporting_ReportGraph_Edit.GraphType" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
-                                        <cms:CMSDropDownList runat="server" CssClass="DropDownField" ID="drpChartType" name="drpChartType" />
+                                        <cms:CMSDropDownList runat="server" CssClass="DropDownField" ID="drpChartType" name="drpChartType" onChange="typeChanged()" />
                                     </div>
                                 </div>
                             </asp:Panel>
@@ -133,7 +133,7 @@
                             <asp:Panel runat="server" ID="BarDrawingStyleRow" CssClass="Bar">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpBarDrawingStyle" ID="lblBarDrawingStyleRow" runat="server" ResourceString="rep.graph.drawingstyle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpBarDrawingStyle" ID="lblBarDrawingStyleRow" runat="server" ResourceString="rep.graph.drawingstyle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" CssClass="DropDownField" ID="drpBarDrawingStyle"
@@ -141,20 +141,10 @@
                                     </div>
                                 </div>
                             </asp:Panel>
-                            <asp:Panel runat="server" ID="BarOverlayRow" CssClass="Bar">
-                                <div class="form-group">
-                                    <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="chkBarOverlay" ID="lblBarOverlayRow" runat="server" ResourceString="rep.graph.overlay" CssClass="control-label" DisplayColon="true" />
-                                    </div>
-                                    <div class="editing-form-value-cell">
-                                        <cms:CMSCheckBox runat="server" CssClass="DropDownField" ID="chkBarOverlay" name="chkBarOverlay" />
-                                    </div>
-                                </div>
-                            </asp:Panel>
                             <asp:Panel runat="server" ID="BarOrientationRow" CssClass="Bar">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpBarOrientation" ID="lblBarOrientationRow" runat="server" ResourceString="rep.graph.orientation" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpBarOrientation" ID="lblBarOrientationRow" runat="server" ResourceString="rep.graph.orientation" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" CssClass="DropDownField" ID="drpBarOrientation"
@@ -162,32 +152,32 @@
                                     </div>
                                 </div>
                             </asp:Panel>
+                            <asp:Panel runat="server" ID="BarOverlayRow" CssClass="Bar">
+                                <div class="form-group">
+                                    <div class="editing-form-label-cell">
+                                        <cms:LocalizedLabel AssociatedControlID="chkBarOverlay" ID="lblBarOverlayRow" runat="server" ResourceString="rep.graph.overlay" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
+                                    </div>
+                                    <div class="editing-form-value-cell">
+                                        <cms:CMSCheckBox runat="server" CssClass="DropDownField" ID="chkBarOverlay" name="chkBarOverlay" />
+                                    </div>
+                                </div>
+                            </asp:Panel>
                             <%--BAR STACKED--%>
                             <asp:Panel runat="server" ID="StackedBarDrawingStyleRow" CssClass="StackedBar">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpStackedBarDrawingStyle" ID="lblStackedBarDrawingStyleRow" runat="server" ResourceString="rep.graph.drawingstyle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpStackedBarDrawingStyle" ID="lblStackedBarDrawingStyleRow" runat="server" ResourceString="rep.graph.drawingstyle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" CssClass="DropDownField" ID="drpStackedBarDrawingStyle"
-                                            name="drpStackedBarDrawingStyle" />
-                                    </div>
-                                </div>
-                            </asp:Panel>
-                            <asp:Panel runat="server" ID="StackedBar100ProcStacked" CssClass="StackedBar">
-                                <div class="form-group">
-                                    <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="chkStacked" ID="lblStackedBar100ProcStacked" runat="server" ResourceString="rep.graph.stacked" CssClass="control-label" DisplayColon="true" />
-                                    </div>
-                                    <div class="editing-form-value-cell">
-                                        <cms:CMSCheckBox runat="server" ID="chkStacked" name="chkStacked" />
+                                            name="drpStackedBarDrawingStyle" onChange="stackedBarStyleChanged()" />
                                     </div>
                                 </div>
                             </asp:Panel>
                             <asp:Panel runat="server" ID="BarStackedOrientationRow" CssClass="StackedBar">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpBarStackedOrientation" ID="lblBarStackedOrientationRow" runat="server" ResourceString="rep.graph.orientation" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpBarStackedOrientation" ID="lblBarStackedOrientationRow" runat="server" ResourceString="rep.graph.orientation" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" CssClass="DropDownField" ID="drpBarStackedOrientation"
@@ -195,11 +185,21 @@
                                     </div>
                                 </div>
                             </asp:Panel>
+                            <asp:Panel runat="server" ID="StackedBar100ProcStacked" CssClass="StackedBar">
+                                <div class="form-group">
+                                    <div class="editing-form-label-cell">
+                                        <cms:LocalizedLabel AssociatedControlID="chkStacked" ID="lblStackedBar100ProcStacked" runat="server" ResourceString="rep.graph.stacked" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
+                                    </div>
+                                    <div class="editing-form-value-cell">
+                                        <cms:CMSCheckBox runat="server" ID="chkStacked" name="chkStacked" />
+                                    </div>
+                                </div>
+                            </asp:Panel>
                             <!--  PIE CHARTS  //-->
                             <asp:Panel runat="server" ID="PieDrawingStyleRow" CssClass="Pie">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpPieDrawingStyle" ID="lblPieDrawingStyleRow" runat="server" ResourceString="rep.graph.drawingstyle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpPieDrawingStyle" ID="lblPieDrawingStyleRow" runat="server" ResourceString="rep.graph.drawingstyle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" CssClass="DropDownField" onChange="pieStyleChanged()"
@@ -210,7 +210,7 @@
                             <asp:Panel runat="server" ID="PieDrawingDesign" CssClass="Pie">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpPieDrawingDesign" ID="lblPieDrawingDesign" runat="server" ResourceString="rep.graph.drawingdesign" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpPieDrawingDesign" ID="lblPieDrawingDesign" runat="server" ResourceString="rep.graph.drawingdesign" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" CssClass="DropDownField" ID="drpPieDrawingDesign"
@@ -221,7 +221,7 @@
                             <asp:Panel runat="server" ID="PieLabelStyleRow" CssClass="Pie">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpPieLabelStyle" ID="lblPieLabelStyleRow" runat="server" ResourceString="rep.graph.labelstyle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpPieLabelStyle" ID="lblPieLabelStyleRow" runat="server" ResourceString="rep.graph.labelstyle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" CssClass="DropDownField" ID="drpPieLabelStyle" name="drpPieLabelStyle" />
@@ -231,7 +231,7 @@
                             <asp:Panel runat="server" ID="PieDoughnutRadiusRow" CssClass="Pie">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpPieDoughnutRadius" ID="lblPieDoughnutRadiusRow" runat="server" ResourceString="rep.graph.doughnutradius" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpPieDoughnutRadius" ID="lblPieDoughnutRadiusRow" runat="server" ResourceString="rep.graph.doughnutradius" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" CssClass="DropDownField" ID="drpPieDoughnutRadius"
@@ -242,7 +242,7 @@
                             <asp:Panel runat="server" ID="PieOtherValue" CssClass="Pie">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtPieOtherValue" ID="lblPieOtherValue" runat="server" ResourceString="rep.graph.collectpieslices" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtPieOtherValue" ID="lblPieOtherValue" runat="server" ResourceString="rep.graph.collectpieslices" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtPieOtherValue" name="txtPieOtherValue" />
@@ -253,7 +253,7 @@
                             <asp:Panel runat="server" ID="LineDrawingStyleRow" CssClass="Line">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpLineDrawingStyle" ID="lblLineDrawingStyleRow" runat="server" ResourceString="rep.graph.drawingstyle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpLineDrawingStyle" ID="lblLineDrawingStyleRow" runat="server" ResourceString="rep.graph.drawingstyle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" CssClass="DropDownField" ID="drpLineDrawingStyle"
@@ -265,7 +265,7 @@
                             <asp:Panel runat="server" ID="ShowAs3DRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="chkShowAs3D" ID="lblShowAs3DRow" runat="server" ResourceString="rep.graph.showas3D" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="chkShowAs3D" ID="lblShowAs3DRow" runat="server" ResourceString="rep.graph.showas3D" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSCheckBox runat="server" ID="chkShowAs3D" onclick="showAs3DClicked()" name="chkShowAs3D" />
@@ -275,7 +275,7 @@
                             <asp:Panel runat="server" ID="RotateXRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtRotateX" ID="lblRotateXRow" runat="server" ResourceString="rep.graph.rotatex" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtRotateX" ID="lblRotateXRow" runat="server" ResourceString="rep.graph.rotatex" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtRotateX" name="txtRotateX" />
@@ -285,7 +285,7 @@
                             <asp:Panel runat="server" ID="RotateYRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtRotateY" ID="lblRotateYRow" runat="server" ResourceString="rep.graph.rotatey" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtRotateY" ID="lblRotateYRow" runat="server" ResourceString="rep.graph.rotatey" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtRotateY" name="txtRotateY" />
@@ -295,7 +295,7 @@
                             <asp:Panel runat="server" ID="ChartWidthRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtChartWidth" ID="lblChartWidthRow" runat="server" ResourceString="Reporting_ReportGraph_Edit.GraphWidth" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtChartWidth" ID="lblChartWidthRow" runat="server" ResourceString="Reporting_ReportGraph_Edit.GraphWidth" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtChartWidth" MaxLength="50" name="txtChartWidth" />
@@ -305,7 +305,7 @@
                             <asp:Panel runat="server" ID="ChartHeightRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtChartHeight" ID="lblChartHeightRow" runat="server" ResourceString="Reporting_ReportGraph_Edit.GraphHeight" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtChartHeight" ID="lblChartHeightRow" runat="server" ResourceString="Reporting_ReportGraph_Edit.GraphHeight" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtChartHeight" MaxLength="50" name="txtChartHeight" />
@@ -315,7 +315,7 @@
                             <asp:Panel runat="server" ID="ChartShowGridRow" CssClass="Grid">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="chkShowGrid" ID="lblChartShowGridRow" runat="server" ResourceString="rep.graph.showgrid" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="chkShowGrid" ID="lblChartShowGridRow" runat="server" ResourceString="rep.graph.showgrid" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSCheckBox runat="server" ID="chkShowGrid" name="chkShowGrid" />
@@ -327,7 +327,7 @@
                             <asp:Panel runat="server" ID="TitleRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtGraphTitle" ID="lblTitleRow" runat="server" ResourceString="Reporting_ReportGraph_Edit.GraphTitle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtGraphTitle" ID="lblTitleRow" runat="server" ResourceString="Reporting_ReportGraph_Edit.GraphTitle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtGraphTitle" MaxLength="150" name="txtGraphTitle" />
@@ -337,7 +337,7 @@
                             <asp:Panel runat="server" ID="TitleFontRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucTitleFont" ID="lblTitleFontRow" runat="server" ResourceString="rep.graph.titlefont" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucTitleFont" ID="lblTitleFontRow" runat="server" ResourceString="rep.graph.titlefont" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:FontSelector runat="server" ID="ucTitleFont" name="ucTitleFont" />
@@ -347,7 +347,7 @@
                             <asp:Panel runat="server" ID="TitleColorRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucTitleColor" ID="lblTitleColorRow" runat="server" ResourceString="rep.graph.titlecolor" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucTitleColor" ID="lblTitleColorRow" runat="server" ResourceString="rep.graph.titlecolor" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:ColorPicker runat="server" ID="ucTitleColor" />
@@ -357,7 +357,7 @@
                             <asp:Panel runat="server" ID="TitlePositionRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpTitlePosition" ID="lblTitlePositionRow" runat="server" ResourceString="rep.graph.titleposition" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpTitlePosition" ID="lblTitlePositionRow" runat="server" ResourceString="rep.graph.titleposition" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" ID="drpTitlePosition" CssClass="DropDownField" MaxLength="50"
@@ -370,7 +370,7 @@
                             <asp:Panel runat="server" ID="LegendBgColorRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucLegendBgColor" ID="lblLegendBgColorRow" runat="server" ResourceString="rep.graph.legendbgcolor" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucLegendBgColor" ID="lblLegendBgColorRow" runat="server" ResourceString="rep.graph.legendbgcolor" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:ColorPicker runat="server" ID="ucLegendBgColor" />
@@ -380,7 +380,7 @@
                             <asp:Panel runat="server" ID="LegendBorderColorRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucLegendBorderColor" ID="lblLegendBorderColorRow" runat="server" ResourceString="rep.graph.bordercolor" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucLegendBorderColor" ID="lblLegendBorderColorRow" runat="server" ResourceString="rep.graph.bordercolor" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:ColorPicker runat="server" ID="ucLegendBorderColor" />
@@ -390,7 +390,7 @@
                             <asp:Panel runat="server" ID="LegendBorderSizeRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtLegendBorderSize" ID="lblLegendBorderSizeRow" runat="server" ResourceString="rep.graph.bordersize" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtLegendBorderSize" ID="lblLegendBorderSizeRow" runat="server" ResourceString="rep.graph.bordersize" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtLegendBorderSize" MaxLength="50" name="txtLegendBorderSize" />
@@ -400,7 +400,7 @@
                             <asp:Panel runat="server" ID="LegendBorderStyleRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpLegendBorderStyle" ID="lblLegendBorderStyleRow" runat="server" ResourceString="rep.graph.borderstyle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpLegendBorderStyle" ID="lblLegendBorderStyleRow" runat="server" ResourceString="rep.graph.borderstyle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" CssClass="DropDownField" name="drpLegendBorderStyle"
@@ -411,7 +411,7 @@
                             <asp:Panel runat="server" ID="LegendPositionRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpLegendPosition" ID="lblLegendPositionRow" runat="server" ResourceString="rep.graph.position" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpLegendPosition" ID="lblLegendPositionRow" runat="server" ResourceString="rep.graph.position" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" CssClass="DropDownField" ID="drpLegendPosition"
@@ -422,7 +422,7 @@
                             <asp:Panel runat="server" ID="LegendInsideRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="chkLegendInside" ID="lblLegendInsideRow" runat="server" ResourceString="rep.graph.legendinside" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="chkLegendInside" ID="lblLegendInsideRow" runat="server" ResourceString="rep.graph.legendinside" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSCheckBox runat="server" ID="chkLegendInside" name="chkLegendInside" />
@@ -432,7 +432,7 @@
                             <asp:Panel runat="server" ID="LegendTitle">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtLegendTitle" ID="lblLegendTitle" runat="server" ResourceString="rep.graph.legendtitle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtLegendTitle" ID="lblLegendTitle" runat="server" ResourceString="rep.graph.legendtitle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtLegendTitle" />
@@ -444,7 +444,7 @@
                             <asp:Panel runat="server" ID="XAxisTitleRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtXAxisTitle" ID="lblXAxisTitleRow" runat="server" ResourceString="Reporting_ReportGraph_Edit.GraphXAxisTitle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtXAxisTitle" ID="lblXAxisTitleRow" runat="server" ResourceString="Reporting_ReportGraph_Edit.GraphXAxisTitle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtXAxisTitle" MaxLength="150" name="txtXAxisTitle" />
@@ -454,7 +454,7 @@
                             <asp:Panel runat="server" ID="XAxisTitleColorRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucXAxisTitleColor" ID="lblXAxisTitleColorRow" runat="server" ResourceString="rep.graph.titlecolor" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucXAxisTitleColor" ID="lblXAxisTitleColorRow" runat="server" ResourceString="rep.graph.titlecolor" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:ColorPicker runat="server" ID="ucXAxisTitleColor" />
@@ -464,7 +464,7 @@
                             <asp:Panel runat="server" ID="XAxisAngleRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtXAxisAngle" ID="lblXAxisAngleRow" runat="server" ResourceString="rep.graph.xaxisangle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtXAxisAngle" ID="lblXAxisAngleRow" runat="server" ResourceString="rep.graph.xaxisangle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtXAxisAngle" MaxLength="50" name="txtXAxisAngle" />
@@ -474,7 +474,7 @@
                             <asp:Panel runat="server" ID="XAxisFormatRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtXAxisFormat" ID="lblXAxisFormatRow" runat="server" ResourceString="rep.graph.xaxisformat" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtXAxisFormat" ID="lblXAxisFormatRow" runat="server" ResourceString="rep.graph.xaxisformat" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" MaxLength="150" ID="txtXAxisFormat"
@@ -485,7 +485,7 @@
                             <asp:Panel runat="server" ID="XAxisTitleFontRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucXAxisTitleFont" ID="lblXAxisTitleFontRow" runat="server" ResourceString="rep.graph.titlefont" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucXAxisTitleFont" ID="lblXAxisTitleFontRow" runat="server" ResourceString="rep.graph.titlefont" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:FontSelector runat="server" ID="ucXAxisTitleFont" />
@@ -495,7 +495,7 @@
                             <asp:Panel runat="server" ID="XAxisTitlePositionRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpXAxisTitlePosition" ID="lblXAxisTitlePositionRow" runat="server" ResourceString="rep.graph.position" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpXAxisTitlePosition" ID="lblXAxisTitlePositionRow" runat="server" ResourceString="rep.graph.position" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" CssClass="DropDownField" name="drpXAxisTitlePosition"
@@ -506,7 +506,7 @@
                             <asp:Panel runat="server" ID="XAxisLabelFont">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucXAxisLabelFont" ID="lblXAxisLabelFont" runat="server" ResourceString="rep.graph.axislabelfont" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucXAxisLabelFont" ID="lblXAxisLabelFont" runat="server" ResourceString="rep.graph.axislabelfont" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:FontSelector runat="server" name="ucXAxisLabelFont" ID="ucXAxisLabelFont" />
@@ -516,7 +516,7 @@
                             <asp:Panel runat="server" ID="XAxisInterval">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtXAxisInterval" ID="lblXAxisInterval" runat="server" ResourceString="rep.graph.xaxisinterval" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtXAxisInterval" ID="lblXAxisInterval" runat="server" ResourceString="rep.graph.xaxisinterval" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtXAxisInterval" MaxLength="50"
@@ -527,7 +527,7 @@
                             <asp:Panel runat="server" ID="XAxisUseSort">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="chkXAxisSort" ID="lblXAxisUseSort" runat="server" ResourceString="rep.graph.usexsort" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="chkXAxisSort" ID="lblXAxisUseSort" runat="server" ResourceString="rep.graph.usexsort" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSCheckBox runat="server" ID="chkXAxisSort" name="chkXAxisSort" />
@@ -539,7 +539,7 @@
                             <asp:Panel runat="server" ID="YAxisTitleRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtYAxisTitle" ID="lblYAxisTitleRow" runat="server" ResourceString="Reporting_ReportGraph_Edit.GraphYAxisTitle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtYAxisTitle" ID="lblYAxisTitleRow" runat="server" ResourceString="Reporting_ReportGraph_Edit.GraphYAxisTitle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtYAxisTitle" MaxLength="150"
@@ -550,7 +550,7 @@
                             <asp:Panel runat="server" ID="YAxisTitleColorRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucYAxisTitleColor" ID="lblYAxisTitleColorRow" runat="server" ResourceString="rep.graph.titlecolor" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucYAxisTitleColor" ID="lblYAxisTitleColorRow" runat="server" ResourceString="rep.graph.titlecolor" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:ColorPicker runat="server" ID="ucYAxisTitleColor" />
@@ -560,7 +560,7 @@
                             <asp:Panel runat="server" ID="YAxisAngleRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtYAxisAngle" ID="lblYAxisAngleRow" runat="server" ResourceString="rep.graph.yaxisangle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtYAxisAngle" ID="lblYAxisAngleRow" runat="server" ResourceString="rep.graph.yaxisangle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtYAxisAngle" MaxLength="50"
@@ -571,7 +571,7 @@
                             <asp:Panel runat="server" ID="YAxisFormatRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtYAxisFormat" ID="lblYAxisFormatRow" runat="server" ResourceString="rep.graph.yaxisformat" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtYAxisFormat" ID="lblYAxisFormatRow" runat="server" ResourceString="rep.graph.yaxisformat" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtYAxisFormat" MaxLength="150"
@@ -582,7 +582,7 @@
                             <asp:Panel runat="server" ID="YAxisUseXSettingsRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="chkYAxisUseXSettings" ID="lblYAxisUseXSettingsRow" runat="server" ResourceString="rep.graph.usexsettings" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="chkYAxisUseXSettings" ID="lblYAxisUseXSettingsRow" runat="server" ResourceString="rep.graph.usexsettings" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSCheckBox runat="server" ID="chkYAxisUseXSettings" name="chkYAxisUseXSettings" onclick="checkXAxisSettings();" />
@@ -592,7 +592,7 @@
                             <asp:Panel runat="server" ID="YAxisTitleFontRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucYAxisTitleFont" ID="lblYAxisTitleFontRow" runat="server" ResourceString="rep.graph.titlefont" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucYAxisTitleFont" ID="lblYAxisTitleFontRow" runat="server" ResourceString="rep.graph.titlefont" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:FontSelector runat="server" ID="ucYAxisTitleFont" name="ucYAxisTitleFont" />
@@ -602,7 +602,7 @@
                             <asp:Panel runat="server" ID="YAxisTitlePositionRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpYAxisTitlePosition" ID="lblYAxisTitlePositionRow" runat="server" ResourceString="rep.graph.position" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpYAxisTitlePosition" ID="lblYAxisTitlePositionRow" runat="server" ResourceString="rep.graph.position" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" CssClass="DropDownField" name="drpYAxisTitlePosition"
@@ -613,7 +613,7 @@
                             <asp:Panel runat="server" ID="YAxisLabelFont">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucYAxisLabelFont" ID="lblYAxisLabelFont" runat="server" ResourceString="rep.graph.axislabelfont" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucYAxisLabelFont" ID="lblYAxisLabelFont" runat="server" ResourceString="rep.graph.axislabelfont" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:FontSelector runat="server" name="ucYAxisLabelFont" ID="ucYAxisLabelFont" />
@@ -625,7 +625,7 @@
                             <asp:Panel runat="server" ID="SeriesPrBgColorRow" CssClass="Common">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucSeriesPrBgColor" ID="lblSeriesPrBgColorRow" runat="server" ResourceString="rep.graph.primarybgcolor" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucSeriesPrBgColor" ID="lblSeriesPrBgColorRow" runat="server" ResourceString="rep.graph.primarybgcolor" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:ColorPicker runat="server" ID="ucSeriesPrBgColor" />
@@ -635,7 +635,7 @@
                             <asp:Panel runat="server" ID="SeriesSecBgColorRow" CssClass="Common">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucSeriesSecBgColor" ID="lblSeriesSecBgColorRow" runat="server" ResourceString="rep.graph.secondarybgcolor" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucSeriesSecBgColor" ID="lblSeriesSecBgColorRow" runat="server" ResourceString="rep.graph.secondarybgcolor" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:ColorPicker runat="server" ID="ucSeriesSecBgColor" />
@@ -645,7 +645,7 @@
                             <asp:Panel runat="server" ID="SeriesGradientRow" CssClass="Common">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpSeriesGradient" ID="lblSeriesGradientRow" runat="server" ResourceString="rep.graph.gradient" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpSeriesGradient" ID="lblSeriesGradientRow" runat="server" ResourceString="rep.graph.gradient" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList class="DropDownField" name="drpSeriesGradient" ID="drpSeriesGradient"
@@ -656,7 +656,7 @@
                             <asp:Panel runat="server" ID="SeriesBorderColorRow" CssClass="Common">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucSeriesBorderColor" ID="lblSeriesBorderColorRow" runat="server" ResourceString="rep.graph.bordercolor" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucSeriesBorderColor" ID="lblSeriesBorderColorRow" runat="server" ResourceString="rep.graph.bordercolor" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:ColorPicker runat="server" ID="ucSeriesBorderColor" />
@@ -666,7 +666,7 @@
                             <asp:Panel runat="server" ID="SeriesBorderSizeRow" CssClass="Common">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtSeriesBorderSize" ID="lblSeriesBorderSizeRow" runat="server" ResourceString="rep.graph.bordersize" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtSeriesBorderSize" ID="lblSeriesBorderSizeRow" runat="server" ResourceString="rep.graph.bordersize" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtSeriesBorderSize" MaxLength="50"
@@ -677,7 +677,7 @@
                             <asp:Panel runat="server" ID="SeriesBorderStyleRow" CssClass="Common">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpSeriesBorderStyle" ID="lblSeriesBorderStyleRow" runat="server" ResourceString="rep.graph.borderstyle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpSeriesBorderStyle" ID="lblSeriesBorderStyleRow" runat="server" ResourceString="rep.graph.borderstyle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList class="DropDownField" name="drpSeriesBorderStyle" ID="drpSeriesBorderStyle"
@@ -688,7 +688,7 @@
                             <asp:Panel runat="server" ID="SeriesDisplayItemValue">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="chkSeriesDisplayItemValue" ID="lblSeriesDisplayItemValue" runat="server" ResourceString="rep.graph.displayitemvalue" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="chkSeriesDisplayItemValue" ID="lblSeriesDisplayItemValue" runat="server" ResourceString="rep.graph.displayitemvalue" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSCheckBox name="chkSeriesDisplayItemValue" ID="chkSeriesDisplayItemValue" runat="server" />
@@ -698,7 +698,7 @@
                             <asp:Panel runat="server" ID="SeriesItemValueFormat">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtItemValueFormat" ID="lblSeriesItemValueFormat" runat="server" ResourceString="rep.graph.itemvalueformat" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtItemValueFormat" ID="lblSeriesItemValueFormat" runat="server" ResourceString="rep.graph.itemvalueformat" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtItemValueFormat" />
@@ -708,7 +708,7 @@
                             <asp:Panel runat="server" ID="SeriesLineColorRow" CssClass="Line">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucSeriesLineColor" ID="lblSeriesLineColorRow" runat="server" ResourceString="rep.graph.serieslinecolor" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucSeriesLineColor" ID="lblSeriesLineColorRow" runat="server" ResourceString="rep.graph.serieslinecolor" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:ColorPicker runat="server" ID="ucSeriesLineColor" />
@@ -718,7 +718,7 @@
                             <asp:Panel runat="server" ID="SeriesLineBorderSizeRow" CssClass="Line">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtSeriesLineBorderSize" ID="lblSeriesLineBorderSizeRow" runat="server" ResourceString="rep.graph.serieslinesbordersize" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtSeriesLineBorderSize" ID="lblSeriesLineBorderSizeRow" runat="server" ResourceString="rep.graph.serieslinesbordersize" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtSeriesLineBorderSize"
@@ -729,7 +729,7 @@
                             <asp:Panel runat="server" ID="SeriesLineBorderStyleRow" CssClass="Line">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpSeriesLineBorderStyle" ID="lblSeriesLineBorderStyleRow" runat="server" ResourceString="rep.graph.serieslineborderstyle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpSeriesLineBorderStyle" ID="lblSeriesLineBorderStyleRow" runat="server" ResourceString="rep.graph.serieslineborderstyle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList class="DropDownField" name="drpSeriesLineBorderStyle" ID="drpSeriesLineBorderStyle"
@@ -740,7 +740,7 @@
                             <asp:Panel runat="server" ID="SeriesSymbols" CssClass="Line">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpSeriesSymbols" ID="lblSeriesSymbols" runat="server" ResourceString="rep.graph.symbols" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpSeriesSymbols" ID="lblSeriesSymbols" runat="server" ResourceString="rep.graph.symbols" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList class="DropDownField" name="drpSeriesSymbols" ID="drpSeriesSymbols"
@@ -751,7 +751,7 @@
                             <asp:Panel runat="server" ID="SeriesItemTooltip">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtSeriesItemTooltip" ID="lblSeriesItemTooltip" runat="server" ResourceString="rep.graph.itemtooltip" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtSeriesItemTooltip" ID="lblSeriesItemTooltip" runat="server" ResourceString="rep.graph.itemtooltip" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:LargeTextArea runat="server" ID="txtSeriesItemTooltip" name="txtSeriesItemTooltip" />
@@ -761,7 +761,7 @@
                             <asp:Panel runat="server" ID="SeriesItemLink">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtSeriesItemLink" ID="lblSeriesItemLink" runat="server" ResourceString="rep.graph.itemlink" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtSeriesItemLink" ID="lblSeriesItemLink" runat="server" ResourceString="rep.graph.itemlink" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtSeriesItemLink" MaxLength="100"
@@ -772,7 +772,7 @@
                             <asp:Panel runat="server" ID="SeriesValuesAsPercent" CssClass="StackedBar Bar Line">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="chkValuesAsPercent" ID="lblSeriesValuesAsPercent" runat="server" ResourceString="rep.graph.valuesaspercent" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="chkValuesAsPercent" ID="lblSeriesValuesAsPercent" runat="server" ResourceString="rep.graph.valuesaspercent" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSCheckBox name="chkValuesAsPercent" ID="chkValuesAsPercent" runat="server" />
@@ -784,7 +784,7 @@
                             <asp:Panel runat="server" ID="ChartAreaPrBgColorRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucChartAreaPrBgColor" ID="lblChartAreaPrBgColorRow" runat="server" ResourceString="rep.graph.primarybgcolor" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucChartAreaPrBgColor" ID="lblChartAreaPrBgColorRow" runat="server" ResourceString="rep.graph.primarybgcolor" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:ColorPicker runat="server" ID="ucChartAreaPrBgColor" />
@@ -794,7 +794,7 @@
                             <asp:Panel runat="server" ID="ChartAreaSecBgColorRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucChartAreaSecBgColor" ID="lblChartAreaSecBgColorRow" runat="server" ResourceString="rep.graph.secondarybgcolor" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucChartAreaSecBgColor" ID="lblChartAreaSecBgColorRow" runat="server" ResourceString="rep.graph.secondarybgcolor" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:ColorPicker runat="server" ID="ucChartAreaSecBgColor" />
@@ -804,7 +804,7 @@
                             <asp:Panel runat="server" ID="ChartAreaGradientRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpChartAreaGradient" ID="lblChartAreaGradientRow" runat="server" ResourceString="rep.graph.gradient" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpChartAreaGradient" ID="lblChartAreaGradientRow" runat="server" ResourceString="rep.graph.gradient" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" CssClass="DropDownField" name="drpChartAreaGradient"
@@ -815,7 +815,7 @@
                             <asp:Panel runat="server" ID="ChartAreaBorderColorRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucChartAreaBorderColor" ID="lblChartAreaBorderColorRow" runat="server" ResourceString="rep.graph.bordercolor" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucChartAreaBorderColor" ID="lblChartAreaBorderColorRow" runat="server" ResourceString="rep.graph.bordercolor" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:ColorPicker runat="server" ID="ucChartAreaBorderColor" />
@@ -825,7 +825,7 @@
                             <asp:Panel runat="server" ID="ChartAreaBorderSizeRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtChartAreaBorderSize" ID="lblChartAreaBorderSizeRow" runat="server" ResourceString="rep.graph.bordersize" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtChartAreaBorderSize" ID="lblChartAreaBorderSizeRow" runat="server" ResourceString="rep.graph.bordersize" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtChartAreaBorderSize"
@@ -836,7 +836,7 @@
                             <asp:Panel runat="server" ID="ChartAreaBorderStyleRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpChartAreaBorderStyle" ID="lblChartAreaBorderStyleRow" runat="server" ResourceString="rep.graph.borderstyle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpChartAreaBorderStyle" ID="lblChartAreaBorderStyleRow" runat="server" ResourceString="rep.graph.borderstyle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" CssClass="DropDownField" name="drpChartAreaBorderStyle"
@@ -847,7 +847,7 @@
                             <asp:Panel runat="server" ID="ChartAreaScaleMin">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtScaleMin" ID="lblChartAreaScaleMin" runat="server" ResourceString="rep.graph.scalemin" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtScaleMin" ID="lblChartAreaScaleMin" runat="server" ResourceString="rep.graph.scalemin" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" name="txtScaleMin" ID="txtScaleMin" />
@@ -857,7 +857,7 @@
                             <asp:Panel runat="server" ID="ChartAreaScaleMax">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtScaleMax" ID="lblChartAreaScaleMax" runat="server" ResourceString="rep.graph.scalemax" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtScaleMax" ID="lblChartAreaScaleMax" runat="server" ResourceString="rep.graph.scalemax" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" name="txtScaleMax" ID="txtScaleMax" />
@@ -867,7 +867,7 @@
                             <asp:Panel runat="server" ID="ChartAreaTenPowers">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="chkTenPowers" ID="lblChartAreaTenPowers" runat="server" ResourceString="rep.graph.tenpowers" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="chkTenPowers" ID="lblChartAreaTenPowers" runat="server" ResourceString="rep.graph.tenpowers" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSCheckBox runat="server" ID="chkTenPowers" name="chkTenPowers" />
@@ -877,7 +877,7 @@
                             <asp:Panel runat="server" ID="ChartAreaReverseYRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="chkReverseY" ID="lblChartAreaReverseYRow" runat="server" ResourceString="rep.graph.reversey" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="chkReverseY" ID="lblChartAreaReverseYRow" runat="server" ResourceString="rep.graph.reversey" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSCheckBox runat="server" ID="chkReverseY" name="chkReverseY" />
@@ -887,7 +887,7 @@
                             <asp:Panel runat="server" ID="ChartAreaBorderSkinStyle">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpBorderSkinStyle" ID="lblChartAreaBorderSkinStyle" runat="server" ResourceString="rep.graph.borderskinstyle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpBorderSkinStyle" ID="lblChartAreaBorderSkinStyle" runat="server" ResourceString="rep.graph.borderskinstyle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList ID="drpBorderSkinStyle" runat="server" CssClass="DropDownField" />
@@ -899,7 +899,7 @@
                             <asp:Panel runat="server" ID="PlotAreaPrBgColorRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucPlotAreaPrBgColor" ID="lblPlotAreaPrBgColorRow" runat="server" ResourceString="rep.graph.primarybgcolor" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucPlotAreaPrBgColor" ID="lblPlotAreaPrBgColorRow" runat="server" ResourceString="rep.graph.primarybgcolor" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:ColorPicker runat="server" ID="ucPlotAreaPrBgColor" />
@@ -909,7 +909,7 @@
                             <asp:Panel runat="server" ID="PlotAreaSecBgColorRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucPlotAreSecBgColor" ID="lblPlotAreaSecBgColorRow" runat="server" ResourceString="rep.graph.secondarybgcolor" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucPlotAreSecBgColor" ID="lblPlotAreaSecBgColorRow" runat="server" ResourceString="rep.graph.secondarybgcolor" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:ColorPicker runat="server" ID="ucPlotAreSecBgColor" />
@@ -919,7 +919,7 @@
                             <asp:Panel runat="server" ID="PlotAreaGradientRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpPlotAreaGradient" ID="lblPlotAreaGradientRow" runat="server" ResourceString="rep.graph.gradient" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpPlotAreaGradient" ID="lblPlotAreaGradientRow" runat="server" ResourceString="rep.graph.gradient" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList runat="server" CssClass="DropDownField" name="drpPlotAreaGradient"
@@ -930,7 +930,7 @@
                             <asp:Panel runat="server" ID="PlotAreaBorderColorRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="ucPlotAreaBorderColor" ID="lblPlotAreaBorderColorRow" runat="server" ResourceString="rep.graph.bordercolor" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="ucPlotAreaBorderColor" ID="lblPlotAreaBorderColorRow" runat="server" ResourceString="rep.graph.bordercolor" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:ColorPicker runat="server" ID="ucPlotAreaBorderColor" />
@@ -940,7 +940,7 @@
                             <asp:Panel runat="server" ID="PlotAreaBorderSizeRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="txtPlotAreaBorderSize" ID="lblPlotAreaBorderSizeRow" runat="server" ResourceString="rep.graph.bordersize" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="txtPlotAreaBorderSize" ID="lblPlotAreaBorderSizeRow" runat="server" ResourceString="rep.graph.bordersize" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSTextBox runat="server" ID="txtPlotAreaBorderSize"
@@ -951,7 +951,7 @@
                             <asp:Panel runat="server" ID="PlotAreaBorderStyleRow">
                                 <div class="form-group">
                                     <div class="editing-form-label-cell">
-                                        <cms:LocalizedLabel AssociatedControlID="drpPlotAreaBorderStyle" ID="lblPlotAreaBorderStyleRow" runat="server" ResourceString="rep.graph.borderstyle" CssClass="control-label" DisplayColon="true" />
+                                        <cms:LocalizedLabel AssociatedControlID="drpPlotAreaBorderStyle" ID="lblPlotAreaBorderStyleRow" runat="server" ResourceString="rep.graph.borderstyle" CssClass="control-label" DisplayColon="true" EnableViewState="false" />
                                     </div>
                                     <div class="editing-form-value-cell">
                                         <cms:CMSDropDownList class="DropDownField" name="drpPlotAreaBorderStyle" ID="drpPlotAreaBorderStyle"
@@ -964,7 +964,6 @@
                     </div>
                 </div>
                 <asp:HiddenField ID="txtNewGraphHidden" runat="server" />
-                <asp:Literal runat="server" ID="ltlScript" EnableViewState="false" />
                 <asp:Panel runat="server" ID="pnlPreview" CssClass="ReportFormPanel" Visible="false">
                     <cms:ReportGraph ID="ctrlReportGraph" runat="server" Visible="false" RenderCssClasses="true" />
                 </asp:Panel>

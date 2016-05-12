@@ -24,7 +24,7 @@
       <tooltip source="EventOpenTo" externalsourcename="eventopentotooltip" />
     </column>
   </columns>
-  <objecttype name="cms.bookingeventlist" columns="NodeID, DocumentName, SiteName, DocumentNamePath, DocumentCulture, EventDate, EventCapacity, AttendeesCount, EventOpenFrom, EventOpenTo" />
+  <objecttype name="cms.bookingeventlist" columns="NodeID, DocumentName, DocumentNamePath, NodeSiteID, DocumentCulture, EventDate, EventCapacity, AttendeesCount, EventOpenFrom, EventOpenTo" />
   <options>
     <key name="DisplayFilter" value="true" />
   </options>

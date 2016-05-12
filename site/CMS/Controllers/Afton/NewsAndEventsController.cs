@@ -43,9 +43,18 @@ namespace CMS.Mvc.Controllers.Afton
             var recordsOnPage = Int32.Parse(ConfigurationManager.AppSettings["NewsEventsBlogsRecordOnPageCount"]);
             
             var contentList = _newsAndEventsPageProvier.GetContentList(page, request).ToList();
+            if (!String.Equals(request.SortOrder, "DESC", StringComparison.OrdinalIgnoreCase))
+            {
+                contentList.Reverse();
+            }
             List<DateTime> Dates = contentList.Select(x => Convert.ToDateTime(x.GetStringValue("Date", ""))).ToList();
             List<string> MonthDate = Dates.Select(y => y.ToString("MMM yy")).Distinct().ToList();
+            if (!MonthDate.Contains(request.DateFilter)&&!string.IsNullOrEmpty(request.DateFilter)) {
+                request.DateFilter = MonthDate.First();
+            }
             model.NewsAndEventsList = contentList
+                .Where(x=>!string.IsNullOrEmpty(request.DateFilter) ?
+                    (Convert.ToDateTime(x.GetStringValue("Date","")).ToString("MMM yy")==request.DateFilter):1==1)
                 .Skip((request.Page - 1) * recordsOnPage ?? 0)
                 .Take(recordsOnPage)
                 .Select(AutoMapper.Mapper.Map<NewsAndEventViewModel>).ToList();
@@ -53,10 +62,7 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 //item.Date = UtilsHelper.ConvertToCST(item.Date);
             }
-            if (!String.Equals(request.SortOrder, "DESC", StringComparison.OrdinalIgnoreCase))
-            {
-                model.NewsAndEventsList.Reverse();
-            }
+ 
             model.Dates = MonthDate;
             model.Pagination = GetPagination((int)Math.Ceiling((double)contentList.Count / recordsOnPage), request.Page);
             model.SelectedSortOrder = request.SortOrder;

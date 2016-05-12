@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 using CMS.ExtendedControls;
@@ -34,8 +34,8 @@ public partial class CMSModules_Newsletters_Tools_ImportExportSubscribers_Subscr
 
         // Initialize radio button list items text
         rblExportList.Items[0].Text = GetString("newsletter.allsubscribers");
-        rblExportList.Items[1].Text = GetString("general.approved");
-        rblExportList.Items[2].Text = GetString("general.notapproved");
+        rblExportList.Items[1].Text = GetString("newsletter.approvedsubscribers");
+        rblExportList.Items[2].Text = GetString("newsletter.notapprovedsubscribers");
 
         if (!RequestHelper.IsPostBack())
         {
@@ -58,17 +58,15 @@ public partial class CMSModules_Newsletters_Tools_ImportExportSubscribers_Subscr
         }
 
         // Get selected newsletters
-        List<int> newsletterIds = new List<int>();
+        var newsletterIDs = new List<int>();
         string values = ValidationHelper.GetString(usNewsletters.Value, null);
         if (!String.IsNullOrEmpty(values))
         {
-            string[] newItems = values.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            if (newItems != null)
+            string[] newItems = values.Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string item in newItems)
             {
-                foreach (string item in newItems)
-                {
-                    newsletterIds.Add(ValidationHelper.GetInteger(item, 0));
-                }
+                newsletterIDs.Add(ValidationHelper.GetInteger(item, 0));
             }
         }
 
@@ -76,7 +74,7 @@ public partial class CMSModules_Newsletters_Tools_ImportExportSubscribers_Subscr
         string subscribers = null;
         if (SiteContext.CurrentSite != null)
         {
-            subscribers = SubscriberInfoProvider.ExportSubscribersFromSite(newsletterIds, SiteContext.CurrentSiteID, true, ValidationHelper.GetInteger(rblExportList.SelectedValue, 0));
+            subscribers = SubscriberInfoProvider.ExportSubscribersFromSite(newsletterIDs, SiteContext.CurrentSiteID, true, ValidationHelper.GetInteger(rblExportList.SelectedValue, 0));
         }
 
         // No subscribers exported

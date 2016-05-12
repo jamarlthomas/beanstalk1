@@ -12,20 +12,20 @@
 public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_TrackedLinks {
     
     /// <summary>
-    /// fltLinks control.
+    /// pnlContent control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSModules_Newsletters_Controls_TrackedLinksFilter fltLinks;
+    protected global::CMS.ExtendedControls.CMSPanel pnlContent;
     
     /// <summary>
-    /// UniGrid control.
+    /// issueLinks control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSAdminControls_UI_UniGrid_UniGrid UniGrid;
+    protected global::CMSModules_Newsletters_Controls_IssueLinks issueLinks;
 }

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="TextCaptcha.ascx.cs" Inherits="CMSFormControls_Captcha_TextCaptcha" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="TextCaptcha.ascx.cs" Inherits="CMSFormControls_Captcha_TextCaptcha" %>
 <div class="text-captcha">
     <asp:Panel runat="server" ID="pnlSecurityLbl" Visible="false">
         <cms:LocalizedLabel ID="lblSecurityCode" runat="server" EnableViewState="false" ResourceString="SecurityCode.lblSecurityCodeText" />

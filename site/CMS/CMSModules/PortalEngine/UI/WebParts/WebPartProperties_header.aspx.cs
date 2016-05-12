@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Helpers;
@@ -115,14 +115,6 @@ public partial class CMSModules_PortalEngine_UI_WebParts_WebPartProperties_heade
 
         switch (element.ElementName.ToLowerCSafe())
         {
-
-            case "webpartproperties.general":
-                if (PortalContext.ViewMode.IsWireframe())
-                {
-                    tab.SkipCheckPermissions = true;
-                }
-                break;
-
             case "webpartproperties.datasource":
                 if ((type != WebPartTypeEnum.BasicViewer) || isNew)
                 {

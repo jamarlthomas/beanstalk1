@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.Security;
 using System.Web.UI;
 
@@ -58,7 +58,7 @@ public partial class CMSWebParts_Community_Shortcuts : CMSAbstractWebPart, IPost
             // If empty then use default logon page from settings
             if (signInPath == "")
             {
-                signInPath = ResolveUrl(SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSSecuredAreasLogonPage"));
+                signInPath = ResolveUrl(AuthenticationHelper.GetSecuredAreasLogonPage(SiteContext.CurrentSiteName));
             }
             else
             {
@@ -838,56 +838,6 @@ public partial class CMSWebParts_Community_Shortcuts : CMSAbstractWebPart, IPost
         }
     }
 
-
-    /// <summary>
-    /// Gets or sets property to mark if My tasks link should be displayed.
-    /// </summary>
-    public bool DisplayMyTasks
-    {
-        get
-        {
-            return ValidationHelper.GetBoolean(GetValue("DisplayMyTasks"), false);
-        }
-        set
-        {
-            SetValue("DisplayMyTasks", value);
-        }
-    }
-
-
-    /// <summary>
-    /// Gets or sets path to be redirected to when user clicks My tasks link.
-    /// </summary>
-    public string MyTasksPath
-    {
-        get
-        {
-            // Get path from path selector
-            return ValidationHelper.GetString(GetValue("MyTasksPath"), string.Empty);
-        }
-        set
-        {
-            SetValue("MyTasksPath", value);
-        }
-    }
-
-
-    /// <summary>
-    /// Gets or sets text for the my tasks link.
-    /// </summary>
-    public string MyTasksText
-    {
-        get
-        {
-            return DataHelper.GetNotEmpty(ValidationHelper.GetString(GetValue("MyTasksText"), null), ResHelper.GetString("shotcuts.mytask"));
-        }
-        set
-        {
-            SetValue("MyTasksText", value);
-            lnkMyTasks.Text = value;
-        }
-    }
-
     #endregion
 
 
@@ -953,7 +903,6 @@ public partial class CMSWebParts_Community_Shortcuts : CMSAbstractWebPart, IPost
             lnkMyMessages.Text = MyMessagesText;
             lnkMyFriends.Text = MyFriendsText;
             lnkMyInvitations.Text = MyInvitationsText;
-            lnkMyTasks.Text = MyTasksText;
 
             // If current user is public...
             if (currentUser.IsPublic())
@@ -1046,14 +995,6 @@ public partial class CMSWebParts_Community_Shortcuts : CMSAbstractWebPart, IPost
                     pnlPersonalLinks.Visible = true;
                 }
 
-                // Display My tasks link
-                if (DisplayMyTasks)
-                {
-                    lnkMyTasks.NavigateUrl = GetUrl(MyTasksPath);
-                    pnlMyTasks.Visible = true;
-                    pnlPersonalLinks.Visible = true;
-                }
-
                 GroupMemberInfo gmi = null;
 
                 if (CommunityContext.CurrentGroup != null)
@@ -1086,7 +1027,7 @@ public partial class CMSWebParts_Community_Shortcuts : CMSAbstractWebPart, IPost
                             pnlGroupLinks.Visible = true;
                         }
                         else if ((gmi.MemberStatus == GroupMemberStatus.Approved) || (MembershipContext.AuthenticatedUser.IsGlobalAdministrator))
-                            // Display Leave the group link if user is the group member
+                        // Display Leave the group link if user is the group member
                         {
                             if (String.IsNullOrEmpty(LeaveGroupPath))
                             {
@@ -1116,13 +1057,13 @@ public partial class CMSWebParts_Community_Shortcuts : CMSAbstractWebPart, IPost
                     }
                 }
 
+                // Get user info from site context
+                UserInfo siteContextUser = MembershipContext.CurrentUserProfile;
+
                 if (DisplayInviteToGroup)
                 {
                     // Get group info from community context
                     GroupInfo currentGroup = CommunityContext.CurrentGroup;
-
-                    // Get user info from site context
-                    UserInfo siteContextUser = MembershipContext.CurrentUserProfile;
 
                     // Display invite to group link for user who is visiting a group page
                     if (currentGroup != null)
@@ -1167,11 +1108,8 @@ public partial class CMSWebParts_Community_Shortcuts : CMSAbstractWebPart, IPost
                     }
                 }
 
-                if (SiteContext.CurrentUser != null)
+                if (siteContextUser != null)
                 {
-                    // Get user info from site context
-                    UserInfo siteContextUser = MembershipContext.CurrentUserProfile;
-
                     // Display Friendship link if set so and user is visiting an user's page
                     if (DisplayFriendshipLinks && (currentUser.UserID != siteContextUser.UserID) && friendsEnabled)
                     {

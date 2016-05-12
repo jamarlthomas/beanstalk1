@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Text;
 
@@ -15,9 +15,6 @@ public partial class CMSAdminControls_UI_DocumentFlags : DocumentFlagsControl
 {
     #region "Private variables"
 
-    private int mNodeID;
-    private object mDataSource;
-    private DataSet mSiteCultures;
     private string mDefaultSiteCulture;
     private int mRepeatColumns = 10;
     private string mSelectJSFunction = "DF_Redir";
@@ -42,14 +39,8 @@ public partial class CMSAdminControls_UI_DocumentFlags : DocumentFlagsControl
     /// </summary>
     public override int NodeID
     {
-        get
-        {
-            return mNodeID;
-        }
-        set
-        {
-            mNodeID = value;
-        }
+        get;
+        set;
     }
 
 
@@ -74,14 +65,8 @@ public partial class CMSAdminControls_UI_DocumentFlags : DocumentFlagsControl
     /// </summary>
     public override object DataSource
     {
-        get
-        {
-            return mDataSource;
-        }
-        set
-        {
-            mDataSource = value;
-        }
+        get;
+        set;
     }
 
 
@@ -90,14 +75,8 @@ public partial class CMSAdminControls_UI_DocumentFlags : DocumentFlagsControl
     /// </summary>
     public override DataSet SiteCultures
     {
-        get
-        {
-            return mSiteCultures;
-        }
-        set
-        {
-            mSiteCultures = value;
-        }
+        get;
+        set;
     }
 
 
@@ -246,8 +225,8 @@ function DF_Redir(nodeId, culture, translated, url) {
                 DateTime lastModification = DateTimeHelper.ZERO_TIME;
                 string versionNumber = null;
                 TranslationStatusEnum status = TranslationStatusEnum.NotAvailable;
-                string cultureName = ValidationHelper.GetString(DataHelper.GetDataRowValue(dr, "CultureName"), "-");
-                string cultureCode = ValidationHelper.GetString(DataHelper.GetDataRowValue(dr, "CultureCode"), "-");
+                string cultureName = DataHelper.GetStringValue(dr, "CultureName", "-");
+                string cultureCode = DataHelper.GetStringValue(dr, "CultureCode", "-");
 
                 // Get document for given culture
                 if (table != null)
@@ -256,7 +235,7 @@ function DF_Redir(nodeId, culture, translated, url) {
                     // Document doesn't exist
                     if (rows.Length != 0)
                     {
-                        versionNumber = ValidationHelper.GetString(DataHelper.GetDataRowValue(rows[0], "VersionNumber"), null);
+                        versionNumber = DataHelper.GetStringValue(rows[0], "DocumentLastVersionNumber", null);
 
                         // Check if document is outdated
                         if (versionNumber != null)
@@ -273,7 +252,10 @@ function DF_Redir(nodeId, culture, translated, url) {
                 }
 
                 sb.Append("<span class=\"", GetStatusCSSClass(status), "\">");
-                sb.Append("<img onmouseout=\"UnTip()\" style=\"cursor:pointer;\" onclick=\"", SelectJSFunction, "('", NodeID, "','", cultureCode, "'," + Convert.ToInt32((status != TranslationStatusEnum.NotAvailable)) + "," + ScriptHelper.GetString(ItemUrl + "?" + URLHelper.LanguageParameterName + "=" + cultureCode) + ")\" onmouseover=\"DF_Tip('", GetFlagIconUrl(cultureCode, "48x48"), "', '", cultureName, "', '", GetStatusString(status), "', '");
+
+                var query = QueryHelper.BuildQuery(URLHelper.LanguageParameterName, cultureCode);
+                var itemUrl = URLHelper.ResolveUrl(DocumentURLProvider.GetPresentationUrlHandlerPath(cultureCode, NodeID, query));
+                sb.Append("<img onmouseout=\"UnTip()\" style=\"cursor:pointer;\" onclick=\"", SelectJSFunction, "('", NodeID, "','", cultureCode, "'," + Convert.ToInt32((status != TranslationStatusEnum.NotAvailable)) + "," + ScriptHelper.GetString(itemUrl) + ")\" onmouseover=\"DF_Tip('", GetFlagIconUrl(cultureCode, "48x48"), "', '", cultureName, "', '", GetStatusString(status), "', '");
 
                 sb.Append(versionNumber ?? string.Empty);
                 sb.Append("', '");

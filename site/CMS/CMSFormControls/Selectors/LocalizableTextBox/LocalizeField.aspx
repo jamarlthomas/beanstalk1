@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     AutoEventWireup="true" EnableEventValidation="false" Inherits="CMSFormControls_Selectors_LocalizableTextBox_LocalizeField"
-    Title="Localize field" Codebehind="LocalizeField.aspx.cs" %>
+    Title="Localize field"  Codebehind="LocalizeField.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/Selectors/LocalizableTextBox/ResourceStringSelector.ascx"
     TagName="ResourceSelector" TagPrefix="cms" %>

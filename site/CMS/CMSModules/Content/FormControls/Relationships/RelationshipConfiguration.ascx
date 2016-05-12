@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Content_FormControls_Relationships_RelationshipConfiguration" Codebehind="RelationshipConfiguration.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Content_FormControls_Relationships_RelationshipConfiguration"  Codebehind="RelationshipConfiguration.ascx.cs" %>
 
 <div class="radio-list-vertical">
     <cms:CMSRadioButton runat="server" ResourceString="RelationshipConfiguration.NoRelationship" ID="radNoRel" GroupName="Relationship" />

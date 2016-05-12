@@ -1,15 +1,14 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Polls_Controls_AnswerList"
-    Codebehind="AnswerList.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Polls_Controls_AnswerList"
+     Codebehind="AnswerList.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 <asp:Panel ID="pnlBody" runat="server">
     <cms:UniGrid runat="server" ID="uniGrid" ObjectType="polls.pollanswer" OrderBy="AnswerOrder ASC"
         Columns="AnswerID, AnswerText, AnswerCount, AnswerEnabled, AnswerForm">
         <GridActions>
+            <ug:Action Name="#move" Caption="$General.DragMove$" FontIconClass="icon-dots-vertical"/>
             <ug:Action Name="edit" Caption="$General.Edit$" FontIconClass="icon-edit" FontIconStyle="Allow" ExternalSourceName="edit"/>
             <ug:Action Name="delete" Caption="$General.Delete$" FontIconClass="icon-bin" FontIconStyle="Critical" Confirmation="$General.ConfirmDelete$" ExternalSourceName="delete" />
-            <ug:Action Name="moveup" Caption="$General.MoveUp$" FontIconClass="icon-chevron-up" ExternalSourceName="moveup"/>
-            <ug:Action Name="movedown" Caption="$General.MoveDown$" FontIconClass="icon-chevron-down" ExternalSourceName="movedown"/>
             <ug:Action Name="viewresults" Caption="$Polls.ViewResults$" FontIconClass="icon-eye" FontIconStyle="Allow" ExternalSourceName="AnswerForm" />
         </GridActions>
         <GridColumns>

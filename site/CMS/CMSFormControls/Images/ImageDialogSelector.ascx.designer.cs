@@ -12,6 +12,15 @@
 public partial class CMSFormControls_Images_ImageDialogSelector {
     
     /// <summary>
+    /// pnlRadio control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSPanel pnlRadio;
+    
+    /// <summary>
     /// radImageNo control.
     /// </summary>
     /// <remarks>

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_ProductOptions_ProductOptionSelector"
-    Codebehind="ProductOptionSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_ProductOptions_ProductOptionSelector"
+     Codebehind="ProductOptionSelector.ascx.cs" %>
 <cms:LocalizedLabel ID="lblNoProductOptions" runat="server" Visible="false"
     EnableViewState="false" ResourceString="optioncategory_edit.noproductoptions" />
 <asp:Panel ID="pnlContainer" runat="server" CssClass="ProductOptionSelectorContainer form-group">

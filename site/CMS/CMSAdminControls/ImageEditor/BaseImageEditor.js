@@ -20,7 +20,7 @@ function Refresh() {
 }
 
 function InitRefresh(clientId, fullRefresh, refreshTree, guid, action) {
-    eval("if (wopener.InitRefresh_" + clientId + "){wopener.InitRefresh_" + clientId + "('', " + fullRefresh + ", " + refreshTree + ", 'attachmentguid|" + guid + "', '" + action + "'); } else { if(" + fullRefresh + "){ FullRefresh('" + clientId + "','attachmentguid|" + guid + "'); } else { Refresh(); } }");
+    eval("if (wopener.InitRefresh_" + clientId + "){ wopener.InitRefresh_" + clientId + "('', " + fullRefresh + ", " + refreshTree + ", 'attachmentguid|" + guid + "', '" + action + "'); } else { if(" + fullRefresh + "){ FullRefresh('" + clientId + "','attachmentguid|" + guid + "'); } else { Refresh(); } }");
 }
 
 // Refresh using postback

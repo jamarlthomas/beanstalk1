@@ -138,10 +138,13 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookPageId : Fo
     {
         base.OnLoad(e);
 
-        if (!RequestHelper.IsPostBack() && (EditedAccount != null))
+        if (Form != null)
         {
-            PageUrl = txtPageUrl.Text = EditedAccount.FacebookPageIdentity.PageUrl;
-            PageId = EditedAccount.FacebookPageIdentity.PageId;
+            if (!RequestHelper.IsPostBack() && (EditedAccount != null))
+            {
+                PageUrl = txtPageUrl.Text = EditedAccount.FacebookPageIdentity.PageUrl;
+                PageId = EditedAccount.FacebookPageIdentity.PageId;
+            }
         }
     }
 

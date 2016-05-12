@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -301,7 +301,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Account_CollisionD
             plcCustomFields.Controls.Add(content);
 
             // Display all custom fields
-            foreach (IField item in list)
+            foreach (IDataDefinitionItem item in list)
             {
                 ffi = item as FormFieldInfo;
                 if (ffi != null)

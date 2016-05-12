@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_PageElements_AnchorDropup" Codebehind="AnchorDropup.ascx.cs"%>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_PageElements_AnchorDropup"  Codebehind="AnchorDropup.ascx.cs"%>
 
 <asp:Panel ID="pnlWrapper" runat="server">        
     <div class="btn-group context-menu dropup anchor-dropup pull-right <%= IsOpened ? "open" : "" %><%= CssClass %>">        

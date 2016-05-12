@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Data;
@@ -135,47 +135,54 @@ public partial class CMSModules_Content_Controls_SearchDialog : CMSUserControl
     /// </summary>
     private string GetWhere()
     {
-        string where = null;
-        string val = QueryHelper.GetString("searchculture", "##ANY##");
-        string mode = QueryHelper.GetString("searchlanguage", null);
-        const string query = " (NodeID IN (SELECT NodeID FROM View_CMS_Tree_Joined GROUP BY NodeID HAVING (COUNT(NodeID) {0} {1}))) ";
-
-        if (val == "")
+        var where = new WhereCondition();
+        var oper = QueryHelper.GetString("searchlanguage", null).ToEnum<QueryOperator>();
+        var val = QueryHelper.GetString("searchculture", "##ANY##");
+        if (String.IsNullOrEmpty(val))
         {
             val = "##ANY##";
         }
 
-        // If culture IS
-        if (mode == "=")
+        if (val != "##ANY##")
         {
-            // document IS in ALL cultures
-            if (val == "##ALL##")
-            {
-                where = String.Format(query, mode, SiteCulturesCount);
-            }
-        }
-        // If culture IS NOT
-        else if (mode == "<>")
-        {
+            // Create base query
+            var tree = new TreeProvider();
+            var query = tree.SelectNodes()
+                            .All()
+                            .Column("NodeID");
+
             switch (val)
             {
-                // document IS NOT in ALL cultures
                 case "##ALL##":
-                    where = String.Format(query, mode, SiteCulturesCount);
+                    {
+                        query.GroupBy("NodeID").Having(string.Format("(COUNT(NodeID) {0} {1})", oper.ToStringRepresentation(), SiteCulturesCount));
+
+                        where.WhereIn("NodeID", query);
+                    }
                     break;
 
-                // document IS NOT in ANY culture is always empty result
-                case "##ANY##":
-                    where = SqlHelper.NO_DATA_WHERE;
-                    break;
-
-                // document IS NOT in one specific culture
                 default:
-                    where = " (DocumentCulture <> '" + SqlHelper.EscapeQuotes(val) + "')";
+                    {
+                        query.WhereEquals("DocumentCulture", val);
+
+                        if (oper == QueryOperator.NotEquals)
+                        {
+                            where.WhereNotIn("NodeID", query);
+                        }
+                        else
+                        {
+                            where.WhereIn("NodeID", query);
+                        }
+                    }
                     break;
             }
         }
-        return where;
+        else if (oper == QueryOperator.NotEquals)
+        {
+            where.NoResults();
+        }
+
+        return where.ToString(true);
     }
 
 
@@ -209,7 +216,8 @@ public partial class CMSModules_Content_Controls_SearchDialog : CMSUserControl
 
         cultureElem.UniSelector.SpecialFields.Add(new SpecialField
         {
-            Text = GetString("transman.anyculture"), Value = ANY
+            Text = GetString("transman.anyculture"),
+            Value = ANY
         });
 
         if (selected != SQL)
@@ -221,7 +229,8 @@ public partial class CMSModules_Content_Controls_SearchDialog : CMSUserControl
         {
             cultureElem.UniSelector.SpecialFields.Add(new SpecialField
             {
-                Text = GetString("transman.allcultures"), Value = "##ALL##"
+                Text = GetString("transman.allcultures"),
+                Value = "##ALL##"
             });
             drpLanguage.Visible = true;
             pnlCultureElem.CssClass = "filter-form-value-cell";

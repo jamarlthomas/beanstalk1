@@ -516,24 +516,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaPro
     protected global::CMS.ExtendedControls.LocalizedLabel lblRemoveLinkText2;
     
     /// <summary>
-    /// radImageLarger control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSRadioButton radImageLarger;
-    
-    /// <summary>
-    /// imgWidthHeightElem control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMSModules_Content_Controls_Dialogs_General_WidthHeightSelector imgWidthHeightElem;
-    
-    /// <summary>
     /// tabFlashGeneral control.
     /// </summary>
     /// <remarks>
@@ -946,13 +928,4 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaPro
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Button btnSizeRefreshHidden;
-    
-    /// <summary>
-    /// btnBehaviorSizeRefreshHidden control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Button btnBehaviorSizeRefreshHidden;
 }

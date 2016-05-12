@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_Controls_WebParts_WebPartSelector"
-    Codebehind="WebPartSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_Controls_WebParts_WebPartSelector"
+     Codebehind="WebPartSelector.ascx.cs" %>
 <%@ Register Src="~/CMSModules/PortalEngine/Controls/WebParts/WebPartFlatSelector.ascx"
     TagName="WebPartFlatSelector" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/PortalEngine/Controls/WebParts/WebPartTree.ascx" TagName="WebPartTree"
@@ -14,8 +14,6 @@
                             SelectWebParts="false" ShowRecentlyUsed="true" />
                         <cms:WebPartTree EnableViewState="false" UsePostBack="false" ID="treeUI" runat="server"
                             SelectWebParts="false" ShowRecentlyUsed="false" RootPath="UIWebparts" />
-                        <cms:WebPartTree EnableViewState="false" UsePostBack="false" ID="treeWireframes"
-                            runat="server" SelectWebParts="false" ShowRecentlyUsed="false" RootPath="Wireframes" />
                     </div>
                 </div>
             </td>

@@ -1,22 +1,10 @@
-using System;
-using System.ComponentModel;
-using System.Data;
-using System.Collections;
-using System.Globalization;
-using System.Threading;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
+﻿using System;
 using System.Collections.Generic;
 
-using CMS.Controls;
-using CMS.ExtendedControls;
-using CMS.FormEngine;
 using CMS.Helpers;
 using CMS.PortalControls;
 using CMS.PortalEngine;
-using CMS.Base;
+
 
 public partial class CMSWebParts_Text_editabletext : CMSAbstractEditableWebPart
 {
@@ -71,8 +59,8 @@ public partial class CMSWebParts_Text_editabletext : CMSAbstractEditableWebPart
 
         if (!StopProcessing)
         {
-            ucEditableText.ContentID = this.WebPartID;
-            ucEditableText.DataControl = this as ISimpleDataContainer;
+            ucEditableText.ContentID = WebPartID;
+            ucEditableText.DataControl = this;
             ucEditableText.PageManager = PageManager;
             ucEditableText.PagePlaceholder = PagePlaceholder;
             ucEditableText.Title = HTMLHelper.HTMLEncode(String.Format("{0} ({1})", GetString("general.richtexteditor"), String.IsNullOrEmpty(WebPartTitle) ? WebPartID : WebPartTitle));

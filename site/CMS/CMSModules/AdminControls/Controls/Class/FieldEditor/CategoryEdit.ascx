@@ -1,8 +1,6 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="CategoryEdit.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="CategoryEdit.ascx.cs"
     Inherits="CMSModules_AdminControls_Controls_Class_FieldEditor_CategoryEdit" %>
-<%@ Register Src="~/CMSFormControls/System/LocalizableTextBox.ascx" TagName="LocalizableTextBox"
-    TagPrefix="cms" %>
-<%@ Register TagPrefix="cms" TagName="ConditionBuilder" Src="~/CMSFormControls/Macros/ConditionBuilder.ascx" %>
+
 <cms:LocalizedHeading runat="server" Level="4" ResourceString="templatedesigner.section.category"></cms:LocalizedHeading>
 <asp:Panel ID="pnlCategory" runat="server" CssClass="FieldPanel">
     <div class="form-horizontal">

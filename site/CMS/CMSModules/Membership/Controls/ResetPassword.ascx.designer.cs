@@ -90,5 +90,5 @@ public partial class CMSModules_Membership_Controls_ResetPassword {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSButton btnReset;
+    protected global::CMS.ExtendedControls.LocalizedButton btnReset;
 }

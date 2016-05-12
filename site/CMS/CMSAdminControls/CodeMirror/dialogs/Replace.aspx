@@ -1,5 +1,5 @@
-<%@ Page Title="Replace" Language="C#" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Theme="Default" AutoEventWireup="true" Codebehind="Replace.aspx.cs" Inherits="CMSAdminControls_CodeMirror_dialogs_Replace" %>
+﻿<%@ Page Title="Replace" Language="C#" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
+    Theme="Default" AutoEventWireup="true"  Codebehind="Replace.aspx.cs" Inherits="CMSAdminControls_CodeMirror_dialogs_Replace" %>
 
 <asp:Content ID="plcContentContent" ContentPlaceHolderID="plcContent" runat="server">
     <div class="form-horizontal">

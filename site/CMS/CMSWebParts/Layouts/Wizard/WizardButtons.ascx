@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Layouts_Wizard_WizardButtons"
-    Codebehind="~/CMSWebParts/Layouts/Wizard/WizardButtons.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Layouts_Wizard_WizardButtons"
+     Codebehind="~/CMSWebParts/Layouts/Wizard/WizardButtons.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniControls/UniButton.ascx" TagName="UniButton"
     TagPrefix="cms" %>
 <div class="WizardButtons">

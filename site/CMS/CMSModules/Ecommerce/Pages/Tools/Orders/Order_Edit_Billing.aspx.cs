@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.Core;
@@ -113,9 +113,9 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Orders_Order_Edit_Billing 
     protected void editOrderBilling_OnCheckPermissions(object sender, EventArgs e)
     {
         // Check 'EcommerceModify' permission
-        if (!ECommerceContext.IsUserAuthorizedForPermission("ModifyOrders"))
+        if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.ORDERS_MODIFY))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyOrders");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyOrders");
         }
     }
 

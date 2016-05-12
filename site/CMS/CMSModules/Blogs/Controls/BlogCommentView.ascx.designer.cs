@@ -12,33 +12,6 @@
 public partial class CMSModules_Blogs_Controls_BlogCommentView {
     
     /// <summary>
-    /// pnlTrackbackURL control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlTrackbackURL;
-    
-    /// <summary>
-    /// lblURLTitle control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblURLTitle;
-    
-    /// <summary>
-    /// lblURLValue control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblURLValue;
-    
-    /// <summary>
     /// lblTitle control.
     /// </summary>
     /// <remarks>

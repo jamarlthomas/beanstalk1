@@ -2,36 +2,51 @@
     'use strict';
 
     var Module = function(data) {
-        var logText = '',
-            received = 0,
+        var received = 0,
             callBackParam,
             asyncProcessFinished = false,
             timeout = null,
             asyncBusy = false,
             config = data,
+            warnings = '',
+            errors = '',
+            infos = '',
+            
+            setNextTimeout = function (ms) {
+                if (ms == null) {
+                    ms = 200;
+                }
 
-            setNextTimeout = function() {
-                timeout = setTimeout(getAsyncStatus, 200);
+                if (!asyncProcessFinished) {
+                    timeout = setTimeout(getAsyncStatus, ms);
+                }
             },
 
             getAsyncStatus = function() {
                 if (!asyncBusy) {
-                    asyncBusy = true;
-                    setTimeout('asyncBusy = false;', 2000);
-                    callBackParam = received + '|' + config.machineName;
-                    var cbOptions = {
-                        targetControlUniqueId: config.uniqueId,
-                        args: callBackParam,
-                        successCallback: receiveAsyncStatus
-                    };
-                    webFormCaller.doCallback(cbOptions);
+                    try {
+                        asyncBusy = true;
+                        setTimeout('asyncBusy = false;', 2000);
+                        callBackParam = received + '|' + config.machineName;
+                        var cbOptions = {
+                            targetControlUniqueId: config.uniqueId,
+                            args: callBackParam,
+                            successCallback: receiveAsyncStatus,
+                            errorCallback: receiveError
+                        };
+                        webFormCaller.doCallback(cbOptions);
+                    } catch (ex) {
+                        setNextTimeout();
+                        throw ex;
+                    }
                 }
+
                 if (asyncProcessFinished) {
                     cancel(false);
                     return;
-                } else {
-                    setNextTimeout();
                 }
+
+                setNextTimeout();
             },
 
             setClose = function() {
@@ -39,6 +54,10 @@
                 if (cancelElem != null) {
                     cancelElem.value = config.closeText;
                 }
+            },
+
+            receiveError = function () {
+                setNextTimeout();
             },
 
             receiveAsyncStatus = function(rvalue) {
@@ -65,66 +84,110 @@
                 }
 
                 if (code == 'running') {
+                    // Keep running, no extra actions
                 } else if (code == 'finished') {
-                    asyncProcessFinished = true;
+                    if (errors == '') {
+                        finish();
+                    } else {
+                        finishWithErrors();
+                    }
+                } else if ((code == 'threadlost') || (code == 'stopped')) {
+                    processFinished();
+                    setClose();
+                } else if (code == 'error') {
+                    finishWithErrors();
+                }
+            },
 
+            finish = function () {
+                processFinished();
+
+                if (config.postbackOnFinish) {
                     webFormCaller.doPostback({
                         targetControlUniqueId: config.uniqueId,
                         args: 'finished|' + config.machineName
                     });
-                } else if ((code == 'threadlost') || (code == 'stopped')) {
-                    asyncProcessFinished = true;
+                } else {
                     setClose();
-                } else if (code == 'error') {
-                    asyncProcessFinished = true;
+                }
+            },
 
-                    if (config.postbackOnError) {
-                        webFormCaller.doPostback({
-                            targetControlUniqueId: config.uniqueId,
-                            args: 'error|' + config.machineName
-                        });
-                    } else {
-                        setClose();
-                    }
+            finishWithErrors = function() {
+                processFinished();
+
+                if (config.postbackOnError) {
+                    webFormCaller.doPostback({
+                        targetControlUniqueId: config.uniqueId,
+                        args: 'error|' + config.machineName
+                    });
+                } else {
+                    setClose();
+                }
+            },
+
+            processFinished = function () {
+                asyncProcessFinished = true;
+
+                if (config.finishClientCallback) {
+                    var cb = window[config.finishClientCallback];
+                    cb(window.CMS['AC_' + config.id]);
                 }
             },
 
             setLog = function(text, totalReceived) {
                 var elem = document.getElementById(config.logId),
-                    lines,
-                    log;
+                    lines, line, i, log = '';
 
-                if (config.maxLogLines == 0) {
-                    logText += text;
-                } else {
-                    logText = text;
-                }
                 received = totalReceived;
+                lines = text.split('\n');
 
-                lines = logText.split('\n');
-
-                log = '';
                 if (config.reversed) {
-                    for (var i = lines.length - 1; i >= 0; i--) {
-                        if (i != 0) {
-                            log += lines[i] + '<br />';
-                        } else {
-                            log += lines[i];
+                    lines = lines.reverse();
+                }
+
+                // Process lines
+                for (i = 0; i < lines.length; i++) {
+                    line = lines[i];
+                    if (line != '') {
+                        if (line.indexOf("##ERROR##") == 0) {
+                            line = line.substr(9);
+                            errors = addLine(errors, line);
                         }
-                    }
-                } else {
-                    for (var i = 0; i < lines.length; i++) {
-                        if (i != lines.length) {
-                            log += lines[i] + '<br />';
-                        } else {
-                            log += lines[i];
+                        else if (line.indexOf("##WARNING##") == 0) {
+                            line = line.substr(11);
+                            warnings = addLine(warnings, line);
                         }
+                        else {
+                            infos = addLine(infos, line);
+                        }
+
+                        log = addLine(log, line);
                     }
                 }
 
-                elem.innerHTML = log;
+                // Set log in output placeholder
+                if (log != '') {
+                    var node = document.createElement("div");
+                    node.innerHTML = log;
+
+                    if ((elem.childNodes.count < 1) || !config.reversed) {
+                        elem.appendChild(node);
+                    } else {
+                        elem.insertBefore(node, elem.childNodes[0]);
+                    }
+                }
             },
 
+            addLine = function(log, line) {
+                if (log != '') {
+                    log += '<br />' + line;
+                } else {
+                    log += line;
+                }
+
+                return log;
+            },
+            
             cancel = function(withPostback) {
                 var t;
 
@@ -141,12 +204,15 @@
                 }
             }
 
-        setNextTimeout();
-
         window.CMS = window.CMS || {};
 
+        setNextTimeout(1);
+
         return window.CMS['AC_' + config.id] = {
-            cancel: cancel
+            cancel: cancel,
+            getWarnings: function ( ) { return warnings; },
+            getErrors: function ( ) { return errors; },
+            getInfos: function ( ) { return infos; },
         };
     }
 

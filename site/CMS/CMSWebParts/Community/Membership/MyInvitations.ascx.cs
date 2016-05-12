@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -15,7 +15,6 @@ public partial class CMSWebParts_Community_Membership_MyInvitations : CMSAbstrac
 {
     #region "Private variables"
 
-    private int mUserId = 0;
     private string mUserName = String.Empty;
     protected string mDeleteImageUrl = string.Empty;
     protected string mAcceptImageUrl = string.Empty;
@@ -92,25 +91,6 @@ public partial class CMSWebParts_Community_Membership_MyInvitations : CMSAbstrac
         {
             SetValue("ZeroRowsText", value);
             rptMyInvitations.ZeroRowsText = value;
-        }
-    }
-
-
-    /// <summary>
-    /// ID of user.
-    /// </summary>
-    [Obsolete("Use UserName instead")]
-    public int UserID
-    {
-        get
-        {
-            mUserId = ValidationHelper.GetInteger(GetValue("UserID"), 0);
-            return (mUserId == 0) ? MembershipContext.AuthenticatedUser.UserID : mUserId;
-        }
-        set
-        {
-            SetValue("UserID", value);
-            mUserId = value;
         }
     }
 

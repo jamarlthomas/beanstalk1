@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Filter.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_Contact_Filter" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Filter.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_Contact_Filter" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/Filters/TextSimpleFilter.ascx" TagName="TextSimpleFilter"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/ContactManagement/FormControls/ContactStatusSelector.ascx"

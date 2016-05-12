@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="OM_ContactSettings.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="OM_ContactSettings.ascx.cs"
     Inherits="CMSModules_ContactManagement_FormControls_Cloning_OM_ContactSettings" %>
 
 <div class="form-horizontal">

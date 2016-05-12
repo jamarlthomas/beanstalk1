@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Comment.ascx.cs" Inherits="CMSModules_Workflows_Controls_UI_Comment" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Comment.ascx.cs" Inherits="CMSModules_Workflows_Controls_UI_Comment" %>
 <cms:CMSPanel ID="pnlContainer" ShortID="pC" runat="server">
     <div class="form-horizontal">
         <asp:PlaceHolder ID="plcSteps" runat="server" Visible="false">

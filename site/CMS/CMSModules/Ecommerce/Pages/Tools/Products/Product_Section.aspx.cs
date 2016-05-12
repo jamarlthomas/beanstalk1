@@ -37,6 +37,9 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Section :
 
     protected override void OnPreInit(EventArgs e)
     {
+        // Check hash
+        QueryHelper.ValidateHash("hash");
+
         parentNodeID = QueryHelper.GetInteger("parentNodeId", 0);
 
         if (parentNodeID > 0)
@@ -53,8 +56,10 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Section :
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        const string CONTENT_CMSDESK_FOLDER = "~/CMSModules/Content/CMSDesk/";
+
         // Register script files
-        ScriptHelper.RegisterScriptFile(this, @"~/CMSModules/Content/CMSDesk/EditTabs.js");
+        ScriptHelper.RegisterScriptFile(this, CONTENT_CMSDESK_FOLDER + "EditTabs.js");
 
         bool checkCulture = false;
         bool splitViewSupported = false;
@@ -79,9 +84,11 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Section :
                     }
                 }
 
+                const string EC_PRODUCTS_FOLDER = "~/CMSModules/Ecommerce/Pages/Tools/Products/";
+
                 if (classId > 0)
                 {
-                    viewpage = ResolveUrl("~/CMSModules/Content/CMSDesk/Edit/Edit.aspx");
+                    viewpage = ResolveUrl(CONTENT_CMSDESK_FOLDER + "Edit/Edit.aspx");
 
                     // Check if document type is allowed under parent node
                     if (parentNodeID > 0)
@@ -92,7 +99,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Section :
                         {
                             if (!DocumentHelper.IsDocumentTypeAllowed(TreeNode, classId))
                             {
-                                viewpage = "~/CMSModules/Content/CMSDesk/NotAllowed.aspx?action=child";
+                                viewpage = CONTENT_CMSDESK_FOLDER + "NotAllowed.aspx?action=child";
                             }
                         }
                     }
@@ -101,30 +108,30 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Section :
                     classInfo = classInfo ?? DataClassInfoProvider.GetDataClassInfo(classId);
                     if ((classInfo != null) && (classInfo.ClassIsProduct))
                     {
-                        viewpage = ResolveUrl("~/CMSModules/Ecommerce/Pages/Tools/Products/Product_New.aspx");
+                        viewpage = ResolveUrl(EC_PRODUCTS_FOLDER + "Product_New.aspx");
                     }
                 }
                 else
                 {
                     if (parentNodeID > 0)
                     {
-                        viewpage = "~/CMSModules/Ecommerce/Pages/Tools/Products/New_ProductOrSection.aspx";
+                        viewpage = EC_PRODUCTS_FOLDER + "New_ProductOrSection.aspx";
                     }
                     else
                     {
-                        viewpage = "~/CMSModules/Ecommerce/Pages/Tools/Products/Product_New.aspx?parentNodeId=0";
+                        viewpage = EC_PRODUCTS_FOLDER + "Product_New.aspx?parentNodeId=0";
                     }
                 }
                 break;
 
             case "delete":
                 // Delete dialog
-                viewpage = "~/CMSModules/Content/CMSDesk/Delete.aspx";
+                viewpage = CONTENT_CMSDESK_FOLDER + "Delete.aspx";
                 break;
 
             default:
                 // Edit mode
-                viewpage = "~/CMSModules/Content/CMSDesk/Edit/edit.aspx?mode=editform";
+                viewpage = CONTENT_CMSDESK_FOLDER + "Edit/edit.aspx?mode=editform";
                 splitViewSupported = true;
 
                 // Ensure class info

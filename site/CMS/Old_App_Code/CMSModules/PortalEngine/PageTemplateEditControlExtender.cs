@@ -53,7 +53,7 @@ public class PageTemplateEditControlExtender : ControlExtender<UIForm>
                 ClassNames = TreeProvider.ALL_CLASSNAMES,
                 SiteName = TreeProvider.ALL_SITES,
                 Columns = "NodeID, DocumentCulture",
-                Where = String.Format("DocumentPageTemplateID = {0} OR NodeTemplateID = {0} OR NodeWireframeTemplateID = {0}", pti.PageTemplateId),
+                Where = String.Format("DocumentPageTemplateID = {0} OR NodeTemplateID = {0}", pti.PageTemplateId),
                 CultureCode = TreeProvider.ALL_CULTURES,
                 CombineWithDefaultCulture = true,
             };

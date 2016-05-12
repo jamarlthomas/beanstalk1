@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/OnlineMarketing/MyContacts.ascx.cs" Inherits="CMSWebParts_OnlineMarketing_MyContacts" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/OnlineMarketing/MyContacts.ascx.cs" Inherits="CMSWebParts_OnlineMarketing_MyContacts" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 <asp:Label runat="server" ID="lblInfo" CssClass="InfoLabel" EnableViewState="false"

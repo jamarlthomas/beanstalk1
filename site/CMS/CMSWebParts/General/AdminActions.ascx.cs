@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Text;
@@ -256,7 +256,7 @@ public partial class CMSWebParts_General_AdminActions : CMSAbstractWebPart
                         sb.Append(" " + Separator + " ");
                     }
 
-                    string url = HTMLHelper.EncodeForHtmlAttribute(DocumentHelper.GetDocumentEditUrl(DocumentContext.CurrentDocument.NodeID, DocumentContext.CurrentDocumentCulture.CultureCode));
+                    string url = HTMLHelper.EncodeForHtmlAttribute(DocumentUIHelper.GetDocumentEditUrl(DocumentContext.CurrentDocument.NodeID, DocumentContext.CurrentDocumentCulture.CultureCode));
                     if (PreferOnSiteEdit && PortalHelper.IsOnSiteEditingEnabled(CurrentSiteName))
                     {
                          url = URLHelper.ResolveUrl(PortalHelper.OnSiteEditRelativeURL);
@@ -274,10 +274,10 @@ public partial class CMSWebParts_General_AdminActions : CMSAbstractWebPart
                             }
                         }
 
-                        url = URLHelper.UpdateParameterInUrl(url, "returnurl", HTMLHelper.HTMLEncode(HttpUtility.UrlEncode(retUrl)));
+                        url = URLHelper.UpdateParameterInUrl(url, "editurl", HttpUtility.UrlEncode(retUrl));
                     }
 
-                    sb.AppendFormat(EditDocumentText, string.Concat("<a href=\"", url, "\">", EditDocumentLinkText, "</a>"));
+                    sb.AppendFormat(EditDocumentText, string.Concat("<a href=\"", HTMLHelper.EncodeForHtmlAttribute(url), "\">", EditDocumentLinkText, "</a>"));
                 }
 
                 ltlAdminActions.Text = sb.ToString();

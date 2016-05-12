@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -458,7 +458,7 @@ public partial class CMSAdminControls_UI_UniSelector_UniSelector : UniSelector, 
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);
-
+        
         if (String.IsNullOrEmpty(hdnHash.Value))
         {
             // Init hash value
@@ -500,7 +500,7 @@ public partial class CMSAdminControls_UI_UniSelector_UniSelector : UniSelector, 
             // Validate value against hash
             ValidateValue();
         }
-    }
+   }
 
 
     protected override void OnLoad(EventArgs e)
@@ -551,8 +551,6 @@ public partial class CMSAdminControls_UI_UniSelector_UniSelector : UniSelector, 
             return;
         }
 
-        ScriptHelper.RegisterBootstrapScripts(Page);
-
         if (!String.IsNullOrEmpty(AdditionalDropDownCSSClass))
         {
             txtAutocomplete.AddCssClass(AdditionalDropDownCSSClass);
@@ -596,7 +594,7 @@ public partial class CMSAdminControls_UI_UniSelector_UniSelector : UniSelector, 
 
             if (DynamicColumnName)
             {
-                gridView.HeaderRow.Cells[1].Text = GetString(ResourcePrefix + ".itemname|general.itemname");
+                gridView.HeaderRow.Cells[1].Text = GetString("general.itemname");
             }
         }
 
@@ -610,8 +608,6 @@ public partial class CMSAdminControls_UI_UniSelector_UniSelector : UniSelector, 
 
         // Always reset the new value from dialog
         hdnDialogSelect.Value = String.Empty;
-
-        InitializeControlEnvelope();
 
         // Enable/disable buttons when manually set
         SetButtonsEnabled();
@@ -655,7 +651,19 @@ public partial class CMSAdminControls_UI_UniSelector_UniSelector : UniSelector, 
             return;
         }
 
-        writer.Write("<div id=\"" + UniSelectorClientID + "\">");
+        string classAtr = String.Empty;
+        string styleAtr = String.Empty;
+
+        if (!String.IsNullOrEmpty(CssClass))
+        {
+            classAtr = String.Format(" class=\"{0}\"", CssClass);
+        }
+        if (!String.IsNullOrEmpty(ControlStyle))
+        {
+            styleAtr = String.Format(" style=\"{0}\"", ControlStyle);
+        }
+
+        writer.Write("<div id=\"{0}\"{1}{2}>", UniSelectorClientID, classAtr, styleAtr);
 
         // Render child controls
         RenderChildren(writer);
@@ -716,7 +724,7 @@ public partial class CMSAdminControls_UI_UniSelector_UniSelector : UniSelector, 
 
             case "itemname":
                 {
-                    DataRowView drv = (parameter as DataRowView);
+                    DataRowView drv = (DataRowView)parameter;
 
                     // Get item ID
                     string itemID = drv[ReturnColumnName].ToString();
@@ -809,7 +817,7 @@ return false;", UniSelectorClientID, ScriptSafeValueSeparator, mCheckBoxClass, S
         // Unselect selected items
         if (!String.IsNullOrEmpty(hiddenSelected.Value))
         {
-            hiddenField.Value = DataHelper.GetNewItemsInList(hiddenSelected.Value, hiddenField.Value, ValuesSeparator[0]);
+            hiddenField.Value = DataHelper.GetNewItemsInList(hiddenSelected.Value, hiddenField.Value, ValuesSeparator);
             hdnHash.Value = ValidationHelper.GetHashString(hiddenField.Value);
 
             Reload(true);
@@ -877,14 +885,27 @@ return false;", UniSelectorClientID, ScriptSafeValueSeparator, mCheckBoxClass, S
     /// </summary>
     public string GetSelectionDialogScript()
     {
-        return "US_SelectionDialog_" + UniSelectorClientID + "(); return false;";
+        var script = String.Format("US_SelectionDialog_{0}(); return false;", UniSelectorClientID);
+        if (!OnGetSelectionDialogScript.IsBound)
+        {
+            return script;
+        }
+
+        var e = new GetSelectionDialogScriptEventArgs
+        {
+            Script = script
+        };
+
+        OnGetSelectionDialogScript.StartEvent(e);
+
+        return e.Script;
     }
 
     #endregion
 
 
     #region "Private methods"
-
+    
     private void SetEnabled()
     {
         btnClear.Enabled = Enabled;
@@ -983,14 +1004,14 @@ return false;", UniSelectorClientID, ScriptSafeValueSeparator, mCheckBoxClass, S
 
     private void SetHiddenValue(object value)
     {
-        hiddenField.Value = String.Format("{0}{1}{0}", ValuesSeparator, ValidationHelper.GetString(value, String.Empty).Trim(ValuesSeparator.ToCharArray()));
+        hiddenField.Value = String.Format("{0}{1}{0}", ValuesSeparator, ValidationHelper.GetString(value, String.Empty).Trim(ValuesSeparator));
         hdnHash.Value = ValidationHelper.GetHashString(hiddenField.Value);
     }
 
 
     private void SetTextBoxValue(object value)
     {
-        string text = ValidationHelper.GetString(value, String.Empty).Trim(ValuesSeparator.ToCharArray());
+        string text = ValidationHelper.GetString(value, String.Empty).Trim(ValuesSeparator);
         if (AllowEditTextBox)
         {
             txtSingleSelect.Text = text;
@@ -1058,7 +1079,7 @@ return false;", UniSelectorClientID, ScriptSafeValueSeparator, mCheckBoxClass, S
                         result = hiddenField.Value;
                     }
 
-                    return trim ? result.Trim(ValuesSeparator.ToCharArray()) : result;
+                    return trim ? result.Trim(ValuesSeparator) : result;
                 }
         }
     }
@@ -1071,7 +1092,7 @@ return false;", UniSelectorClientID, ScriptSafeValueSeparator, mCheckBoxClass, S
     {
         string result;
 
-        if (!mHashValidated && ControlsHelper.CausedPostBack(this) && Request.Form[Page.postEventArgumentID].EqualsCSafe("reload", true) && Request.Form.AllKeys.Contains(hdnDialogSelect.UniqueID))
+        if (!mHashValidated && ControlsHelper.CausedPostBack(new Control[]{ this }) && Request.Form[Page.postEventArgumentID].EqualsCSafe("reload", true) && Request.Form.AllKeys.Contains(hdnDialogSelect.UniqueID))
         {
             hdnDialogSelect.Value = Request.Form[hdnDialogSelect.UniqueID];
         }
@@ -1082,7 +1103,7 @@ return false;", UniSelectorClientID, ScriptSafeValueSeparator, mCheckBoxClass, S
             result = hdnDialogSelect.Value;
         }
         // For DropDown control data loaded on PreRender, get value directly from request when postback and data not loaded explicitly
-        else if (!mLoaded && mHashIsValid && RequestHelper.IsPostBack() && Request.Form.AllKeys.Contains(drpSingleSelect.UniqueID))
+        else if (Enabled && !mLoaded && mHashIsValid && RequestHelper.IsPostBack() && Request.Form.AllKeys.Contains(drpSingleSelect.UniqueID))
         {
             result = Request.Form[drpSingleSelect.UniqueID];
         }
@@ -1120,27 +1141,6 @@ return false;", UniSelectorClientID, ScriptSafeValueSeparator, mCheckBoxClass, S
             Value = null;
         }
         mHashValidated = true;
-    }
-
-
-    /// <summary>   
-    /// Initializes control envelope used in form controls definition.
-    /// </summary>
-    private void InitializeControlEnvelope()
-    {
-        if (!String.IsNullOrEmpty(ControlStyle) || !String.IsNullOrEmpty(CssClass))
-        {
-            string classAtr = !String.IsNullOrEmpty(CssClass) ? String.Format(" class=\"{0}\"", CssClass) : "";
-            string styleAtr = !String.IsNullOrEmpty(ControlStyle) ? String.Format(" style=\"{0}\"", ControlStyle) : "";
-
-            ltlContentBefore.Text = String.Format("<div{0}{1}>", classAtr, styleAtr);
-            ltlContentAfter.Text = "</div>";
-        }
-        else
-        {
-            ltlContentBefore.Visible = false;
-            ltlContentAfter.Visible = false;
-        }
     }
 
 
@@ -1303,11 +1303,11 @@ return false;", UniSelectorClientID, ScriptSafeValueSeparator, mCheckBoxClass, S
 function US_EditItem_", UniSelectorClientID, @"(selectedItem) {
     selectedItem = US_TrimSeparators(selectedItem, ", ScriptSafeValueSeparator, @");
     if (selectedItem == '') {
-        alert(", ScriptHelper.GetLocalizedString(ResourcePrefix + ".pleaseselectitem|general.pleaseselectitem"), @"); 
+        alert(", ScriptHelper.GetLocalizedString("general.pleaseselectitem"), @"); 
         return false; 
     }
     else if (selectedItem.indexOf('{%') >= 0) { 
-        alert(", ScriptHelper.GetLocalizedString(ResourcePrefix + ".cannoteditmacro|general.cannoteditmacro"), @"); 
+        alert(", ScriptHelper.GetLocalizedString("general.cannoteditmacro"), @"); 
         return false; 
     }
     var url = '", ScriptHelper.ResolveUrl(editUrl), @"';
@@ -1591,15 +1591,15 @@ function US_SelectionDialogReady_{0}(rvalue, context)
         SetEnabled();
 
         // Add resource strings
-        btnClear.ResourceString = ResourcePrefix + ".clear|general.clear";
+        btnClear.ResourceString = "general.clear";
         btnClear.ShowAsButton = true;
 
-        btnSelect.ResourceString = ResourcePrefix + ".select|general.select";
+        btnSelect.ResourceString = "general.select";
         btnSelect.ShowAsButton = true;
 
         if (string.IsNullOrEmpty(btnDialog.ResourceString))
         {
-            btnDialog.ResourceString = ResourcePrefix + ".select|general.select";
+            btnDialog.ResourceString = "general.select";
         }
 
         switch (SelectionMode)
@@ -1678,7 +1678,7 @@ function US_SelectionDialogReady_{0}(rvalue, context)
         {
             btnEdit.Visible = true;
 
-            btnEdit.ResourceString = ResourcePrefix + ".edit|general.edit";
+            btnEdit.ResourceString = "general.edit";
             btnEdit.ShowAsButton = true;
 
             if (isTextBoxMode && AllowEditTextBox)
@@ -1696,7 +1696,7 @@ function US_SelectionDialogReady_{0}(rvalue, context)
         {
             btnNew.Visible = true;
 
-            btnNew.ResourceString = ResourcePrefix + ".new|general.new";
+            btnNew.ResourceString = "general.new";
             btnNew.ShowAsButton = true;
 
             if (isTextBoxMode && AllowEditTextBox)
@@ -1732,7 +1732,7 @@ function US_SelectionDialogReady_{0}(rvalue, context)
     {
         var selScript = GetSelectionDialogScript();
 
-        btnAddItems.ResourceString = ResourcePrefix + ".additems|general.additems";
+        btnAddItems.ResourceString = "general.additems";
         btnAddItems.OnClientClick = selScript;
 
         // Remove buttons
@@ -1740,12 +1740,12 @@ function US_SelectionDialogReady_{0}(rvalue, context)
         btnRemove.Actions.Clear();
         btnRemove.Actions.Add(new CMSButtonAction
         {
-            Text = GetString(ResourcePrefix + ".removeselected|general.removeselected"),
+            Text = GetString("general.removeselected"),
             OnClientClick = "if (confirm(" + ScriptHelper.GetString(confirmation) + ")) { " + ControlsHelper.GetPostBackEventReference(btnRemoveSelected) + " } return false;",
         });
         btnRemove.Actions.Add(new CMSButtonAction
         {
-            Text = GetString(ResourcePrefix + ".removeall|general.removeall"),
+            Text = GetString("general.removeall"),
             OnClientClick = "US_ContextRemoveAll(" + ScriptHelper.GetString(UniSelectorClientID) + "); return false;"
         });
 
@@ -1769,7 +1769,7 @@ function US_SelectionDialogReady_{0}(rvalue, context)
         {
             btnDropEdit.Visible = true;
 
-            btnDropEdit.ResourceString = ResourcePrefix + ".edit|general.edit";
+            btnDropEdit.ResourceString = "general.edit";
             btnDropEdit.ShowAsButton = true;
 
             btnDropEdit.ButtonControl.RenderScript = true;
@@ -1781,7 +1781,7 @@ function US_SelectionDialogReady_{0}(rvalue, context)
         {
             btnDropNew.Visible = true;
 
-            btnDropNew.ResourceString = ResourcePrefix + ".new|general.new";
+            btnDropNew.ResourceString = "general.new";
             btnDropNew.ShowAsButton = true;
 
             btnDropNew.OnClientClick = "US_NewItem_" + UniSelectorClientID + "(US_GetVal('" + GetClientID(ctrl) + "')); return false;";
@@ -1898,7 +1898,7 @@ function US_SelectionDialogReady_{0}(rvalue, context)
                     // Check if all items were displayed or if '(more items)' item should be added
                     if (maxExceeded)
                     {
-                        drpSingleSelect.Items.Add(NewListItem(GetString(ResourcePrefix + ".moreitems|general.moreitems"), US_MORE_RECORDS.ToString()));
+                        drpSingleSelect.Items.Add(NewListItem(GetString("general.moreitems"), US_MORE_RECORDS.ToString()));
                     }
                 }
 
@@ -1908,7 +1908,7 @@ function US_SelectionDialogReady_{0}(rvalue, context)
                 // New item link
                 if (DisplayNewButton)
                 {
-                    drpSingleSelect.Items.Add(NewListItem(GetString(ResourcePrefix + ".newitem|general.newitem"), US_NEW_RECORD.ToString()));
+                    drpSingleSelect.Items.Add(NewListItem(GetString("general.newitem"), US_NEW_RECORD.ToString()));
                 }
 
                 // Load selected value to drop-down list
@@ -1918,7 +1918,7 @@ function US_SelectionDialogReady_{0}(rvalue, context)
                 if (drpSingleSelect.Items.Count == 0)
                 {
                     // Get item name
-                    string name = GetString(ResourcePrefix + ".empty|general.empty");
+                    string name = GetString("general.empty");
 
                     drpSingleSelect.Items.Insert(0, NewListItem(name, NoneRecordValue));
                     EnsureSelectedField(null);
@@ -2000,7 +2000,7 @@ function US_SelectionDialogReady_{0}(rvalue, context)
         // Display "No data" message
         if (!hasData)
         {
-            lblStatus.Text = ZeroRowsText ?? GetString(ResourcePrefix + ".nodata|general.nodata");
+            lblStatus.Text = ZeroRowsText ?? GetString("general.nodata");
         }
         else
         {
@@ -2088,7 +2088,7 @@ function US_SelectionDialogReady_{0}(rvalue, context)
             // Add more items field
             if (count > MaxDisplayedItems)
             {
-                String moreItemsLabel = String.Format(GetString("smartsearchselector.moreitems"), MaxDisplayedItems, count);
+                String moreItemsLabel = String.Format(GetString("uniselector.moreitemsavailable"), MaxDisplayedItems, count);
                 AppendField(moreItemsLabel, US_MORE_RECORDS.ToString(), String.Empty, sb);
             }
 
@@ -2288,7 +2288,6 @@ null), Page.ClientScript.GetPostBackEventReference(this, "selectionchanged"), Al
             case "refresh":
                 // Reload the data without raising changed event
                 Reload(true);
-
                 break;
 
             case "reload":
@@ -2339,6 +2338,9 @@ null), Page.ClientScript.GetPostBackEventReference(this, "selectionchanged"), Al
                 hiddenSelected.Value = String.Empty;
                 break;
         }
+
+        // Raise form engine user control Changed event
+        RaiseOnChanged();
     }
 
     #endregion

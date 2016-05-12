@@ -1,10 +1,9 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using CMS.Base;
-using CMS.Controls.Configuration;
 using CMS.DataEngine;
 using CMS.ExtendedControls;
 using CMS.FormEngine;
@@ -54,8 +53,10 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit : CMSReportingM
 
     #region "Methods"
 
-    protected void Page_Load(object sender, EventArgs e)
+    protected override void OnInit(EventArgs e)
     {
+        base.OnInit(e);
+
         ucSelectString.Scope = ReportInfo.OBJECT_TYPE;
         ConnectionStringRow.Visible = MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("cms.reporting", "SetConnectionString");
         txtQueryQuery.FullScreenParentElementID = pnlWebPartForm_Properties.ClientID;
@@ -80,20 +81,62 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit : CMSReportingM
         Title = "ReportGraph Edit";
         PageTitle.HelpTopicName = HELP_TOPIC_LINK;
 
-        RegisterClientScript();
-
         rfvCodeName.ErrorMessage = GetString("general.requirescodename");
         rfvDisplayName.ErrorMessage = GetString("general.requiresdisplayname");
-
 
         Save += (s, ea) =>
         {
             if (SetData(true))
             {
-                ltlScript.Text += ScriptHelper.GetScript("window.RefreshContent();CloseDialog();");
+                ScriptHelper.RegisterStartupScript(this, typeof(string), "SaveData_" + ClientID, "window.RefreshContent();CloseDialog();", true);
             }
         };
 
+        if (!RequestHelper.IsPostBack())
+        {
+            // Fill border styles
+            FillBorderStyle(drpLegendBorderStyle);
+            FillBorderStyle(drpChartAreaBorderStyle);
+            FillBorderStyle(drpPlotAreaBorderStyle);
+            FillBorderStyle(drpSeriesBorderStyle);
+            FillBorderStyle(drpSeriesLineBorderStyle);
+
+            // Fill gradient styles
+            FillGradientStyle(drpChartAreaGradient);
+            FillGradientStyle(drpPlotAreaGradient);
+            FillGradientStyle(drpSeriesGradient);
+
+            // Fill axis's position
+            FillPosition(drpYAxisTitlePosition);
+            FillPosition(drpXAxisTitlePosition);
+            FillTitlePosition(drpTitlePosition);
+
+            // Fill legend's position
+            FillLegendPosition(drpLegendPosition);
+
+            // Fill font type
+            FillChartType(drpChartType);
+
+            // Fill Chart type controls
+            FillBarType(drpBarDrawingStyle);
+            FillStackedBarType(drpStackedBarDrawingStyle);
+            FillPieType(drpPieDrawingStyle);
+            FillDrawingDesign(drpPieDrawingDesign);
+            FillLabelStyle(drpPieLabelStyle);
+            FillPieRadius(drpPieDoughnutRadius);
+            FillLineDrawingStyle(drpLineDrawingStyle);
+            FillOrientation(drpBarOrientation);
+            FillOrientation(drpBarStackedOrientation);
+            FillBorderSkinStyle();
+
+            // Fill symbols
+            FillSymbols(drpSeriesSymbols);
+        }
+    }
+
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
         int reportId = QueryHelper.GetInteger("reportid", 0);
         bool isPreview = QueryHelper.GetBoolean("preview", false);
 
@@ -109,7 +152,7 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit : CMSReportingM
             mReportInfo = ReportInfoProvider.GetReportInfo(reportId);
         }
 
-        // Must be valid reportid parameter
+        // Must be valid reportId parameter
         if (PersistentEditedObject == null)
         {
             if (mReportInfo != null)
@@ -166,43 +209,6 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit : CMSReportingM
 
         if (!RequestHelper.IsPostBack())
         {
-            // Fill border styles
-            FillBorderStyle(drpLegendBorderStyle);
-            FillBorderStyle(drpChartAreaBorderStyle);
-            FillBorderStyle(drpPlotAreaBorderStyle);
-            FillBorderStyle(drpSeriesBorderStyle);
-            FillBorderStyle(drpSeriesLineBorderStyle);
-
-            // Fill gradient styles
-            FillGradientStyle(drpChartAreaGradient);
-            FillGradientStyle(drpPlotAreaGradient);
-            FillGradientStyle(drpSeriesGradient);
-
-            // Fill axis's position
-            FillPosition(drpYAxisTitlePosition);
-            FillPosition(drpXAxisTitlePosition);
-            FillTitlePosition(drpTitlePosition);
-
-            // Fill legend's position
-            FillLegendPosition(drpLegendPosition);
-
-            // Fill font type
-            FillChartType(drpChartType);
-
-            // Fill Chart type controls
-            FillBarType(drpBarDrawingStyle);
-            FillStackedBarType(drpStackedBarDrawingStyle);
-            FillPieType(drpPieDrawingStyle);
-            FillDrawingDesign(drpPieDrawingDesign);
-            FillLabelStyle(drpPieLabelStyle);
-            FillPieRadius(drpPieDoughnutRadius);
-            FillLineDrawingStyle(drpLineDrawingStyle);
-            FillOrientation(drpBarOrientation);
-            FillOrientation(drpBarStackedOrientation);
-            FillBorderSkinStyle();
-
-            // FillSymbos
-            FillSymbols(drpSeriesSymbols);
             if (!mNewReport)
             {
                 LoadData();
@@ -210,60 +216,12 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit : CMSReportingM
             // Load default data
             else
             {
-                chkExportEnable.Checked = ReportGraphDefaults.ExportEnable;
-                chkSubscription.Checked = ReportGraphDefaults.Subscription;
-
-                ucSelectString.Value = ReportGraphDefaults.SelectConnectionString;
-
-                // Set default values for some controls
-                txtQueryNoRecordText.Text = ResHelper.GetString("attachmentswebpart.nodatafound");
-                drpPieLabelStyle.SelectedValue = ReportGraphDefaults.PieLabelStyle;
-                drpPieDoughnutRadius.SelectedValue = ReportGraphDefaults.PieDoughnutRadius;
-                drpSeriesBorderStyle.SelectedValue = ReportGraphDefaults.SeriesBorderStyle;
-                drpSeriesLineBorderStyle.SelectedValue = ReportGraphDefaults.SeriesLineBorderStyle;
-                drpLegendBorderStyle.SelectedValue = ReportGraphDefaults.LegendBorderStyle;
-                drpChartAreaBorderStyle.SelectedValue = ReportGraphDefaults.ChartAreaBorderStyle;
-                drpPlotAreaBorderStyle.SelectedValue = ReportGraphDefaults.PlotAreaBorderStyle;
-
-                // Border size
-                txtSeriesLineBorderSize.Text = ReportGraphDefaults.SeriesLineBorderSize.ToString();
-                txtSeriesBorderSize.Text = ReportGraphDefaults.SeriesBorderSize.ToString();
-                txtChartAreaBorderSize.Text = ReportGraphDefaults.ChartAreaBorderSize.ToString();
-                txtPlotAreaBorderSize.Text = ReportGraphDefaults.PlotAreaBorderSize.ToString();
-                txtLegendBorderSize.Text = ReportGraphDefaults.LegendBorderSize.ToString();
-
-                // Border color
-                ucPlotAreaBorderColor.SelectedColor = ReportGraphDefaults.PlotAreaBorderColor;
-                ucChartAreaBorderColor.SelectedColor = ReportGraphDefaults.ChartAreaBorderColor;
-                ucLegendBorderColor.SelectedColor = ReportGraphDefaults.LegendBorderColor;
-                ucSeriesBorderColor.SelectedColor = ReportGraphDefaults.SeriesBorderColor;
-
-                // Other values
-                ucChartAreaPrBgColor.SelectedColor = ReportGraphDefaults.ChartAreaPrBgColor;
-                ucChartAreaSecBgColor.SelectedColor = ReportGraphDefaults.ChartAreaSecBgColor;
-                drpChartAreaGradient.SelectedValue = ReportGraphDefaults.ChartAreaGradient;
-                ucTitleColor.SelectedColor = ReportGraphDefaults.TitleColor;
-                drpBorderSkinStyle.SelectedValue = ReportGraphDefaults.BorderSkinStyle;
-                txtChartWidth.Text = ReportGraphDefaults.ChartWidth.ToString();
-                txtChartHeight.Text = ReportGraphDefaults.ChartHeight.ToString();
-                chkShowGrid.Checked = ReportGraphDefaults.ShowGrid;
-                chkYAxisUseXSettings.Checked = ReportGraphDefaults.YAxisUseXSettings;
-                ucXAxisTitleColor.SelectedColor = ReportGraphDefaults.XAxisTitleColor;
-                ucYAxisTitleColor.SelectedColor = ReportGraphDefaults.YAxisTitleColor;
-                drpSeriesSymbols.SelectedValue = ReportGraphDefaults.SeriesSymbols;
-
-                drpBarDrawingStyle.SelectedValue = ReportGraphDefaults.BarDrawingStyle;
-                chkSeriesDisplayItemValue.Checked = ReportGraphDefaults.SeriesDisplayItemValue;
-                txtXAxisInterval.Text = ReportGraphDefaults.XAxisInterval.ToString();
-                chkXAxisSort.Checked = ReportGraphDefaults.XAxisSort;
-                drpPieDrawingStyle.SelectedValue = ReportGraphDefaults.PieDrawingStyle;
-                drpPieDrawingDesign.SelectedValue = ReportGraphDefaults.PieDrawingDesign;
-                drpStackedBarDrawingStyle.SelectedValue = ReportGraphDefaults.StackedBarDrawingStyle;
+                LoadDefaultData();
             }
         }
 
         HideChartTypeControls(drpChartType.SelectedIndex);
-        ucXAxisTitleFont.SetOnChangeAttribute("xAxixTitleFontChanged ()");
+        ucXAxisTitleFont.SetOnChangeAttribute("xAxisTitleFontChanged()");
 
         // Font settings
         ucTitleFont.DefaultSize = 14;
@@ -277,10 +235,8 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit : CMSReportingM
         txtRotateY.Enabled = chkShowAs3D.Checked;
         chkBarOverlay.Enabled = chkShowAs3D.Checked;
 
-        // Doughnut settings
-        drpPieDoughnutRadius.Enabled = drpPieDrawingStyle.SelectedValue == "Doughnut";
-
-        CurrentMaster.PanelContent.RemoveCssClass("dialog-content");
+        drpBarStackedOrientation.Enabled = !(drpStackedBarDrawingStyle.SelectedValue.EqualsCSafe("Area", true));
+        drpPieDoughnutRadius.Enabled = drpPieDrawingStyle.SelectedValue.EqualsCSafe("Doughnut", true);
     }
 
 
@@ -289,7 +245,7 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit : CMSReportingM
     /// </summary>
     protected override void OnPreRender(EventArgs e)
     {
-        divScrolable.CssClass = "";
+        CurrentMaster.PanelContent.CssClass = "";
 
         // State
         var tabIndex = tabControlElem.SelectedTab < 0 ? 0 : tabControlElem.SelectedTab;
@@ -297,7 +253,6 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit : CMSReportingM
         {
             // Edit
             case 0:
-                divScrolable.CssClass = "ScrollableContent";
                 pnlPreview.Visible = false;
                 pnlVersions.Visible = false;
                 DisplayEditControls(true);
@@ -313,7 +268,6 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit : CMSReportingM
                 else
                 {
                     tabControlElem.SelectedTab = 0;
-                    divScrolable.CssClass = "ScrollableContent";
                 }
                 break;
 
@@ -335,6 +289,7 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit : CMSReportingM
         ScriptHelper.RegisterDialogScript(this);
         AddNoCacheTag();
         RegisterModalPageScripts();
+        RegisterClientScript();
 
         base.OnPreRender(e);
     }
@@ -448,12 +403,6 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit : CMSReportingM
         if (graphType == "barpercentage")
         {
             chkStacked.Checked = true;
-            drpChartType.SelectedValue = "barstacked";
-        }
-
-        if (graphType == "barstacked")
-        {
-            chkStacked.Checked = false;
             drpChartType.SelectedValue = "barstacked";
         }
 
@@ -708,7 +657,64 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit : CMSReportingM
 
 
     /// <summary>
-    /// Fills drop down list with border style enum
+    /// Initializes dialog components for new graph configuration.
+    /// </summary>
+    private void LoadDefaultData()
+    {
+        chkExportEnable.Checked = ReportGraphDefaults.ExportEnable;
+        chkSubscription.Checked = ReportGraphDefaults.Subscription;
+
+        ucSelectString.Value = ReportGraphDefaults.SelectConnectionString;
+
+        // Set default values for some controls
+        txtQueryNoRecordText.Text = ResHelper.GetString("attachmentswebpart.nodatafound");
+        drpPieLabelStyle.SelectedValue = ReportGraphDefaults.PieLabelStyle;
+        drpPieDoughnutRadius.SelectedValue = ReportGraphDefaults.PieDoughnutRadius;
+        drpSeriesBorderStyle.SelectedValue = ReportGraphDefaults.SeriesBorderStyle;
+        drpSeriesLineBorderStyle.SelectedValue = ReportGraphDefaults.SeriesLineBorderStyle;
+        drpLegendBorderStyle.SelectedValue = ReportGraphDefaults.LegendBorderStyle;
+        drpChartAreaBorderStyle.SelectedValue = ReportGraphDefaults.ChartAreaBorderStyle;
+        drpPlotAreaBorderStyle.SelectedValue = ReportGraphDefaults.PlotAreaBorderStyle;
+
+        // Border size
+        txtSeriesLineBorderSize.Text = ReportGraphDefaults.SeriesLineBorderSize.ToString();
+        txtSeriesBorderSize.Text = ReportGraphDefaults.SeriesBorderSize.ToString();
+        txtChartAreaBorderSize.Text = ReportGraphDefaults.ChartAreaBorderSize.ToString();
+        txtPlotAreaBorderSize.Text = ReportGraphDefaults.PlotAreaBorderSize.ToString();
+        txtLegendBorderSize.Text = ReportGraphDefaults.LegendBorderSize.ToString();
+
+        // Border color
+        ucPlotAreaBorderColor.SelectedColor = ReportGraphDefaults.PlotAreaBorderColor;
+        ucChartAreaBorderColor.SelectedColor = ReportGraphDefaults.ChartAreaBorderColor;
+        ucLegendBorderColor.SelectedColor = ReportGraphDefaults.LegendBorderColor;
+        ucSeriesBorderColor.SelectedColor = ReportGraphDefaults.SeriesBorderColor;
+
+        // Other values
+        ucChartAreaPrBgColor.SelectedColor = ReportGraphDefaults.ChartAreaPrBgColor;
+        ucChartAreaSecBgColor.SelectedColor = ReportGraphDefaults.ChartAreaSecBgColor;
+        drpChartAreaGradient.SelectedValue = ReportGraphDefaults.ChartAreaGradient;
+        ucTitleColor.SelectedColor = ReportGraphDefaults.TitleColor;
+        drpBorderSkinStyle.SelectedValue = ReportGraphDefaults.BorderSkinStyle;
+        txtChartWidth.Text = ReportGraphDefaults.ChartWidth;
+        txtChartHeight.Text = ReportGraphDefaults.ChartHeight;
+        chkShowGrid.Checked = ReportGraphDefaults.ShowGrid;
+        chkYAxisUseXSettings.Checked = ReportGraphDefaults.YAxisUseXSettings;
+        ucXAxisTitleColor.SelectedColor = ReportGraphDefaults.XAxisTitleColor;
+        ucYAxisTitleColor.SelectedColor = ReportGraphDefaults.YAxisTitleColor;
+        drpSeriesSymbols.SelectedValue = ReportGraphDefaults.SeriesSymbols;
+
+        drpBarDrawingStyle.SelectedValue = ReportGraphDefaults.BarDrawingStyle;
+        chkSeriesDisplayItemValue.Checked = ReportGraphDefaults.SeriesDisplayItemValue;
+        txtXAxisInterval.Text = ReportGraphDefaults.XAxisInterval.ToString();
+        chkXAxisSort.Checked = ReportGraphDefaults.XAxisSort;
+        drpPieDrawingStyle.SelectedValue = ReportGraphDefaults.PieDrawingStyle;
+        drpPieDrawingDesign.SelectedValue = ReportGraphDefaults.PieDrawingDesign;
+        drpStackedBarDrawingStyle.SelectedValue = ReportGraphDefaults.StackedBarDrawingStyle;
+    }
+
+
+    /// <summary>
+    /// Fills drop down list with border style
     /// </summary>
     /// <param name="drp">Data drop down list</param>
     private void FillBorderStyle(CMSDropDownList drp)
@@ -741,7 +747,7 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit : CMSReportingM
 
 
     /// <summary>
-    /// Fills drop down list with usable position for axe titles
+    /// Fills drop down list with usable position for axis titles
     /// </summary>
     /// <param name="drp">Drop down list</param>
     private void FillPosition(CMSDropDownList drp)
@@ -926,128 +932,118 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit : CMSReportingM
         
         string script = @"
 function checkXAxisSettings() {  
-if ($cmsj('#" + chkYAxisUseXSettings.ClientID + @"').is(':checked')) { 
+    if ($cmsj('#" + chkYAxisUseXSettings.ClientID + @"').is(':checked')) { 
 
-    var YAxisTitleFontRow = $cmsj('#" + YAxisTitleFontRow.ClientID + @"');
-    if (YAxisTitleFontRow) {
-        YAxisTitleFontRow.addClass('hidden');
-    }
+        var YAxisTitleFontRow = $cmsj('#" + YAxisTitleFontRow.ClientID + @"');
+        if (YAxisTitleFontRow) {
+            YAxisTitleFontRow.addClass('hidden');
+        }
  
-    var YAxisTitlePositionRow = $cmsj('#" + YAxisTitlePositionRow.ClientID + @"');
-    if (YAxisTitlePositionRow) {
-        YAxisTitlePositionRow.addClass('hidden'); 
-    }
+        var YAxisTitlePositionRow = $cmsj('#" + YAxisTitlePositionRow.ClientID + @"');
+        if (YAxisTitlePositionRow) {
+            YAxisTitlePositionRow.addClass('hidden'); 
+        }
 
-    var YAxisLabelFont = $cmsj('#" + YAxisLabelFont.ClientID + @"');
-    if (YAxisLabelFont) {
-        YAxisLabelFont.addClass('hidden');
-    }
+        var YAxisLabelFont = $cmsj('#" + YAxisLabelFont.ClientID + @"');
+        if (YAxisLabelFont) {
+            YAxisLabelFont.addClass('hidden');
+        }
                 
-    var drpYAxisTitlePosition = $cmsj('#" + drpYAxisTitlePosition.ClientID + @"');
-    var drpXAxisTitlePosition = $cmsj('#" + drpXAxisTitlePosition.ClientID + @"');
-    var ucYAxisLabelFont = $cmsj('#" + ucYAxisLabelFont.FontTypeTextBoxClientId + @"');
-    var ucYAxisTitleFont = $cmsj('#" + ucYAxisTitleFont.FontTypeTextBoxClientId + @"');
-    var ucXAxisLabelFont = $cmsj('#" + ucXAxisLabelFont.FontTypeTextBoxClientId + @"');
-    var ucXAxisTitleFont = $cmsj('#" + ucXAxisTitleFont.FontTypeTextBoxClientId + @"');
+        var drpYAxisTitlePosition = $cmsj('#" + drpYAxisTitlePosition.ClientID + @"');
+        var drpXAxisTitlePosition = $cmsj('#" + drpXAxisTitlePosition.ClientID + @"');
+        var ucYAxisLabelFont = $cmsj('#" + ucYAxisLabelFont.FontTypeTextBoxClientId + @"');
+        var ucYAxisTitleFont = $cmsj('#" + ucYAxisTitleFont.FontTypeTextBoxClientId + @"');
+        var ucXAxisLabelFont = $cmsj('#" + ucXAxisLabelFont.FontTypeTextBoxClientId + @"');
+        var ucXAxisTitleFont = $cmsj('#" + ucXAxisTitleFont.FontTypeTextBoxClientId + @"');
 
-    if (drpYAxisTitlePosition && drpXAxisTitlePosition) {
-        drpYAxisTitlePosition.val(drpXAxisTitlePosition.val());
-    }
+        if (drpYAxisTitlePosition && drpXAxisTitlePosition) {
+            drpYAxisTitlePosition.val(drpXAxisTitlePosition.val());
+        }
 
-    if (ucYAxisLabelFont && ucXAxisLabelFont) {
-        ucYAxisLabelFont.val(ucXAxisLabelFont.val());
-    }
+        if (ucYAxisLabelFont && ucXAxisLabelFont) {
+            ucYAxisLabelFont.val(ucXAxisLabelFont.val());
+        }
 
-    if (ucYAxisTitleFont && ucXAxisTitleFont) {
-        ucYAxisTitleFont.val(ucXAxisTitleFont.val());
-    }
-}
-else  {   
-    var YAxisTitleFontRow = $cmsj('#" + YAxisTitleFontRow.ClientID + @"');
-    if (YAxisTitleFontRow) {
-        YAxisTitleFontRow.removeClass('hidden');
-    }
+        if (ucYAxisTitleFont && ucXAxisTitleFont) {
+            ucYAxisTitleFont.val(ucXAxisTitleFont.val());
+        }
+    } else {
+        var YAxisTitleFontRow = $cmsj('#" + YAxisTitleFontRow.ClientID + @"');
+        if (YAxisTitleFontRow) {
+            YAxisTitleFontRow.removeClass('hidden');
+        }
  
-    var YAxisTitlePositionRow = $cmsj('#" + YAxisTitlePositionRow.ClientID + @"');
-    if (YAxisTitlePositionRow) {
-        YAxisTitlePositionRow.removeClass('hidden');
-    }
-
-    var YAxisLabelFont = $cmsj('#" + YAxisLabelFont.ClientID + @"');
-    if (YAxisLabelFont) {
-        YAxisLabelFont.removeClass('hidden');
-    }            
-} 
-}
-";
-
-script += @"function hideAllChartTypeControls() {
-        $cmsj('.Bar').addClass('hidden');
-        $cmsj('.StackedBar').addClass('hidden');
-        $cmsj('.Pie').addClass('hidden');
-        $cmsj('.Line').addClass('hidden');
-        $cmsj('.Common').addClass('hidden');
-        $cmsj('.Grid').addClass('hidden');
-    }
-
-    function showAs3DClicked() {
-        if (document.getElementById ('" + chkShowAs3D.ClientID + @"').checked == false) {
-            document.getElementById ('" + txtRotateX.ClientID + @"').disabled = true;
-            document.getElementById ('" + txtRotateY.ClientID + @"').disabled = true;
-            document.getElementById ('" + chkBarOverlay.ClientID + @"').disabled = true;
+        var YAxisTitlePositionRow = $cmsj('#" + YAxisTitlePositionRow.ClientID + @"');
+        if (YAxisTitlePositionRow) {
+            YAxisTitlePositionRow.removeClass('hidden');
         }
-        else {
-            document.getElementById ('" + txtRotateX.ClientID + @"').disabled = false;
-            document.getElementById ('" + txtRotateY.ClientID + @"').disabled = false;
-            document.getElementById ('" + chkBarOverlay.ClientID + @"').disabled = false;
-}
-    }
 
-function pieStyleChanged() { 
-        if (document.getElementById ('" + drpPieDrawingStyle.ClientID + @"').value == 'Doughnut') {
-            document.getElementById ('" + drpPieDoughnutRadius.ClientID + @"').disabled = false;    
+        var YAxisLabelFont = $cmsj('#" + YAxisLabelFont.ClientID + @"');
+        if (YAxisLabelFont) {
+            YAxisLabelFont.removeClass('hidden');
         }
-        else {
-            document.getElementById ('" + drpPieDoughnutRadius.ClientID + @"').disabled = true;    
-        }
-}
-        function typeChanged() {
-                var value=$cmsj('#" + drpChartType.ClientID + @"').prop('selectedIndex');
-                hideAllChartTypeControls();
-                switch (value) {
-                    case 0: $cmsj('.Bar').removeClass('hidden');
-                            $cmsj('.Common').removeClass('hidden');
-                            $cmsj('.Grid').removeClass('hidden');
-                    break;
-                    case 1: $cmsj('.StackedBar').removeClass('hidden');
-                            $cmsj('.Common').removeClass('hidden');
-                            $cmsj('.Grid').removeClass('hidden');
-                        break;
-                    case 2: $cmsj('.Pie').removeClass('hidden');
-                            $cmsj('.Common').removeClass('hidden');                                      
-                        break;
-                    case 3: $cmsj('.Line').removeClass('hidden');
-                            $cmsj('.Grid').removeClass('hidden');
-                        break;
-                }                                          
     }
-                
-";
+}
 
-        drpChartType.Attributes["onChange"] = "typeChanged()";
-        ScriptHelper.RegisterClientScriptBlock(Page, typeof(Page), "YAxisScript", ScriptHelper.GetScript(script));
+function hideAllChartTypeControls() {
+    $cmsj('.Bar').addClass('hidden');
+    $cmsj('.StackedBar').addClass('hidden');
+    $cmsj('.Pie').addClass('hidden');
+    $cmsj('.Line').addClass('hidden');
+    $cmsj('.Common').addClass('hidden');
+    $cmsj('.Grid').addClass('hidden');
+}
+
+function showAs3DClicked() {
+    var checked = document.getElementById('" + chkShowAs3D.ClientID + @"').checked;
+
+    document.getElementById('" + txtRotateX.ClientID + @"').disabled = !checked;
+    document.getElementById('" + txtRotateY.ClientID + @"').disabled = !checked;
+    document.getElementById('" + chkBarOverlay.ClientID + @"').disabled = !checked;
+}
+
+function stackedBarStyleChanged() {
+    document.getElementById ('" + drpBarStackedOrientation.ClientID + @"').disabled = (document.getElementById ('" + drpStackedBarDrawingStyle.ClientID + @"').value == 'Area');
+}
+
+function pieStyleChanged() {
+    document.getElementById ('" + drpPieDoughnutRadius.ClientID + @"').disabled = (document.getElementById ('" + drpPieDrawingStyle.ClientID + @"').value != 'Doughnut');
+}
+
+function typeChanged() {
+    var value=$cmsj('#" + drpChartType.ClientID + @"').prop('selectedIndex');
+    hideAllChartTypeControls();
+    switch (value) {
+        case 0: $cmsj('.Bar').removeClass('hidden');
+                $cmsj('.Common').removeClass('hidden');
+                $cmsj('.Grid').removeClass('hidden');
+            break;
+        case 1: $cmsj('.StackedBar').removeClass('hidden');
+                $cmsj('.Common').removeClass('hidden');
+                $cmsj('.Grid').removeClass('hidden');
+            break;
+        case 2: $cmsj('.Pie').removeClass('hidden');
+                $cmsj('.Common').removeClass('hidden');
+            break;
+        case 3: $cmsj('.Line').removeClass('hidden');
+                $cmsj('.Grid').removeClass('hidden');
+            break;
+    }
+}";
+
+        ScriptHelper.RegisterClientScriptBlock(Page, typeof(Page), "GraphScript_" + ClientID, ScriptHelper.GetScript(script));
     }
 
 
     /// <summary>
-    /// Check if control contains valid non negative integer
+    /// Check if control contains valid non negative integer.
     /// </summary>
     /// <param name="txtControl">Text control</param>
     /// <param name="errorMessage">Error message text from previous controls</param>
-    /// <param name="row">Row with textbox control</param>    
-    private string ValidateNonNegativeIntegerValue(TextBox txtControl, string errorMessage, object row)
+    private string ValidateNonNegativeIntegerValue(TextBox txtControl, string errorMessage)
     {
-        if ((txtControl.Text.Trim() != String.Empty) && ((!ValidationHelper.IsInteger(txtControl.Text.Trim())) || (Int32.Parse(txtControl.Text.Trim()) < 0)))
+        var input = txtControl.Text.Trim();
+        if (!String.IsNullOrEmpty(input) && (!ValidationHelper.IsInteger(input) || (Int32.Parse(input) < 0)))
         {
             // Show error
             ShowError("rep.invalidnonnegativeinteger");
@@ -1062,10 +1058,10 @@ function pieStyleChanged() {
     /// </summary>
     /// <param name="txtControl">Text control</param>
     /// <param name="errorMessage">Error message text from previous controls</param>
-    /// <param name="row">Row with textbox control</param> 
-    private string ValidateIntegerValue(TextBox txtControl, string errorMessage, object row)
+    private string ValidateIntegerValue(TextBox txtControl, string errorMessage)
     {
-        if ((txtControl.Text.Trim() != String.Empty) && (!ValidationHelper.IsInteger(txtControl.Text.Trim())))
+        var input = txtControl.Text.Trim();
+        if (!String.IsNullOrEmpty(input) && !ValidationHelper.IsInteger(input))
         {
             // Show error
             ShowError("rep.invalidinteger");
@@ -1117,24 +1113,24 @@ function pieStyleChanged() {
             errorMessage = new Validator().NotEmpty(txtQueryQuery.Text.Trim(), GetString("Reporting_ReportGraph_Edit.ErrorQuery")).Result;
 
             // Test valid integers 
-            errorMessage = ValidateNonNegativeIntegerValue(txtChartWidth, errorMessage, ChartWidthRow);
-            errorMessage = ValidateNonNegativeIntegerValue(txtChartHeight, errorMessage, ChartHeightRow);
+            errorMessage = ValidateNonNegativeIntegerValue(txtChartWidth, errorMessage);
+            errorMessage = ValidateNonNegativeIntegerValue(txtChartHeight, errorMessage);
 
-            errorMessage = ValidateIntegerValue(txtRotateX, errorMessage, RotateXRow);
-            errorMessage = ValidateIntegerValue(txtRotateY, errorMessage, RotateYRow);
+            errorMessage = ValidateIntegerValue(txtRotateX, errorMessage);
+            errorMessage = ValidateIntegerValue(txtRotateY, errorMessage);
 
-            errorMessage = ValidateIntegerValue(txtXAxisAngle, errorMessage, XAxisAngleRow);
-            errorMessage = ValidateIntegerValue(txtYAxisAngle, errorMessage, YAxisAngleRow);
-            errorMessage = ValidateNonNegativeIntegerValue(txtXAxisInterval, errorMessage, XAxisInterval);
+            errorMessage = ValidateIntegerValue(txtXAxisAngle, errorMessage);
+            errorMessage = ValidateIntegerValue(txtYAxisAngle, errorMessage);
+            errorMessage = ValidateNonNegativeIntegerValue(txtXAxisInterval, errorMessage);
 
-            errorMessage = ValidateIntegerValue(txtScaleMin, errorMessage, ChartAreaScaleMin);
-            errorMessage = ValidateIntegerValue(txtScaleMax, errorMessage, ChartAreaScaleMax);
+            errorMessage = ValidateIntegerValue(txtScaleMin, errorMessage);
+            errorMessage = ValidateIntegerValue(txtScaleMax, errorMessage);
 
-            errorMessage = ValidateNonNegativeIntegerValue(txtChartAreaBorderSize, errorMessage, ChartAreaBorderSizeRow);
-            errorMessage = ValidateNonNegativeIntegerValue(txtSeriesBorderSize, errorMessage, SeriesBorderSizeRow);
-            errorMessage = ValidateNonNegativeIntegerValue(txtLegendBorderSize, errorMessage, LegendBorderSizeRow);
-            errorMessage = ValidateNonNegativeIntegerValue(txtPlotAreaBorderSize, errorMessage, PlotAreaBorderSizeRow);
-            errorMessage = ValidateNonNegativeIntegerValue(txtSeriesLineBorderSize, errorMessage, SeriesLineBorderSizeRow);
+            errorMessage = ValidateNonNegativeIntegerValue(txtChartAreaBorderSize, errorMessage);
+            errorMessage = ValidateNonNegativeIntegerValue(txtSeriesBorderSize, errorMessage);
+            errorMessage = ValidateNonNegativeIntegerValue(txtLegendBorderSize, errorMessage);
+            errorMessage = ValidateNonNegativeIntegerValue(txtPlotAreaBorderSize, errorMessage);
+            errorMessage = ValidateNonNegativeIntegerValue(txtSeriesLineBorderSize, errorMessage);
         }
 
         if (errorMessage == String.Empty)
@@ -1177,7 +1173,7 @@ function pieStyleChanged() {
             // ChartType                        
             settings["BarDrawingStyle"] = drpBarDrawingStyle.SelectedValue;
             settings["BarOverlay"] = chkBarOverlay.Checked.ToString();
-            settings["BarOrientation"] = drpChartType.SelectedValue.ToLowerCSafe() == "bar" ? drpBarOrientation.SelectedValue : drpBarStackedOrientation.SelectedValue;
+            settings["BarOrientation"] = drpChartType.SelectedValue.EqualsCSafe("bar", true) ? drpBarOrientation.SelectedValue : drpBarStackedOrientation.SelectedValue;
 
             settings["StackedBarDrawingStyle"] = drpStackedBarDrawingStyle.SelectedValue;
             settings["StackedBarMaxStacked"] = chkStacked.Checked.ToString();
@@ -1318,7 +1314,6 @@ function pieStyleChanged() {
     {
         // Color picker preview issue
         DisplayEditControls(false);
-
         
         pnlVersions.Visible = false;
         if (mReportInfo != null)

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartItemSelector"
-    Codebehind="ShoppingCartItemSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartItemSelector"
+     Codebehind="ShoppingCartItemSelector.ascx.cs" %>
 <%@ Register TagPrefix="cms" TagName="DonationProperties" Src="~/CMSModules/Ecommerce/Controls/ProductOptions/DonationProperties.ascx" %>
 <cms:CMSUpdatePanel ID="upnlAjax" runat="server">
     <ContentTemplate>

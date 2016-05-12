@@ -2,6 +2,7 @@
 using System.Collections;
 
 using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.SiteProvider;
@@ -318,7 +319,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
             fileUploader.SourceType = MediaSourceEnum.PhysicalFile;
             fileUploader.TargetFolderPath = TargetFolderPath;
             fileUploader.AllowedExtensions = AllowedExtensions;
-            fileUploader.AfterSaveJavascript = "SetRefreshAction";
+            fileUploader.AfterSaveJavascript = "FSS_FilesUploaded";
         }
         else
         {
@@ -343,7 +344,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
                     fileUploader.DocumentID = DocumentID;
                     fileUploader.FormGUID = FormGUID;
                     fileUploader.NodeParentNodeID = ((NodeID > 0) ? NodeID : ParentNodeID);
-                    fileUploader.NodeClassName = "CMS.File";
+                    fileUploader.NodeClassName = SystemDocumentTypes.File;
                     fileUploader.LibraryID = LibraryID;
                     fileUploader.LibraryFolderPath = LibraryFolderPath;
                     fileUploader.ResizeToHeight = ResizeToHeight;

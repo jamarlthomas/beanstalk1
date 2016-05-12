@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Ecommerce_Controls_PaymentGateways_CreditPaymentForm" Codebehind="CreditPaymentForm.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Ecommerce_Controls_PaymentGateways_CreditPaymentForm"  Codebehind="CreditPaymentForm.ascx.cs" %>
 
 <cms:LocalizedLabel ID="lblTitle" ResourceString="CreditPayment.lblTitle" runat="server" CssClass="BlockTitle" EnableViewState="false" />
 <asp:Label ID="lblError" runat="server" CssClass="ErrorLabel" EnableViewState="false"

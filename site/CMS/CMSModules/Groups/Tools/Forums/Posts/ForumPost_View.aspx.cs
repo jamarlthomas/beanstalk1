@@ -1,10 +1,4 @@
-using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
+﻿using System;
 
 using CMS.Forums;
 using CMS.Helpers;
@@ -27,7 +21,7 @@ public partial class CMSModules_Groups_Tools_Forums_Posts_ForumPost_View : CMSGr
                 "function BackToListing() { location.href = '" + ResolveUrl("~/CMSModules/Groups/Tools/Forums/Posts/ForumPost_Listing.aspx?postid=" + ScriptHelper.GetString(postView.ListingPost, false)) + "'; }\n"));
         }
 
-        postView.OnCheckPermissions += new CMSAdminControl.CheckPermissionsEventHandler(postView_OnCheckPermissions);
+        postView.OnCheckPermissions += postView_OnCheckPermissions;
 
         InitializeMasterPage();
     }

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SplitView.ascx.cs" Inherits="CMSModules_Content_Controls_SplitView_SplitView" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SplitView.ascx.cs" Inherits="CMSModules_Content_Controls_SplitView_SplitView" %>
 <frameset border="0" rows="40%,*,40%" id="mainFrameset" frameborder="0" runat="server">
     <frame name="frame1" id="frame1" src="" scrolling="auto" runat="server" noresize="noresize" />
     <asp:PlaceHolder ID="plcSplit" runat="server" >

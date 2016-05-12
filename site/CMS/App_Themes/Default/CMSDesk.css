@@ -678,28 +678,6 @@ ADMIN
     text-align: left;
 }
 
-.PageHeaderItem {
-    float: left;
-    padding-right: 25px;
-}
-
-.RTL .PageHeaderItem {
-    float: right;
-    padding-right: 0;
-    padding-left: 25px;
-}
-
-.PageHeaderItemRight {
-    float: right;
-    padding-left: 25px;
-}
-
-.RTL .PageHeaderItemRight {
-    float: left;
-    padding-left: 0;
-    padding-right: 25px;
-}
-
 .NewItemImage {
     vertical-align: middle;
     margin: 0 5px 1px 0;
@@ -871,10 +849,12 @@ ADMIN
     }
 
     .ContentMenuSlider.LeftSlider {
+        position:absolute;
         left: 0;
     }
 
     .ContentMenuSlider.RightSlider {
+        position:absolute;
         right: 0;
     }
 
@@ -2257,12 +2237,6 @@ POLLS
     width: auto !important;
 }
 
-.PollsInfoLabel {
-    margin: 0 10px;
-    vertical-align: middle;
-    float: left;
-}
-
 .PollVoteButton {
     width: 100px;
 }
@@ -2906,12 +2880,6 @@ DIALOGS
     left: 0;
     right: 0;
     bottom: 0;
-}
-
-.DialogPropertiesFullSize {
-    height: 100%;
-    width: 100%;
-    overflow: auto;
 }
 
 .DialogItemUrlRefresh {
@@ -3669,11 +3637,6 @@ input.CodeNameTextBoxInactive {
     padding-left: 3px;
 }
 
-.EditingFormControlNestedControl .RelatedDocuments {
-    border: 1px solid #cccccc;
-    padding: 5px;
-}
-
 .WebAnalitycsMenuItemEdit {
     padding-right: 10px;
 }
@@ -3742,11 +3705,6 @@ input.CodeNameTextBoxInactive {
 
 .MacroElementHandle {
     height: 22px;
-}
-
-.MacroDesigner {
-    padding: 10px;
-    width: 97%;
 }
 
 .MacroDesignerGroup {
@@ -3997,10 +3955,6 @@ input.CodeNameTextBoxInactive {
     margin-left: 40px;
 }
 
-.CampaignSubmitButton {
-    margin-left: 150px;
-}
-
 .ComboBoxColumn {
     width: 294px;
 }
@@ -4019,10 +3973,6 @@ input.CodeNameTextBoxInactive {
         max-height: 300px;
     }
 
-.MergeDialog .SelectorColumn {
-    width: 386px;
-}
-
 .ResolveButton {
     margin-left: 10px;
     margin-right: 10px;
@@ -4030,34 +3980,6 @@ input.CodeNameTextBoxInactive {
 
 .ui-corner-all {
     border-radius: 0 !important;
-}
-
-.MergeDialog .ContentPanel {
-    width: 655px;
-}
-
-.MergeDialog .ui-tabs .ui-tabs-nav {
-    /*position: fixed;*/
-    width: 100%;
-}
-
-.MergeDialog .JqueryUITabs .ui-tabs-panel {
-    height: 100% !important;
-    padding: 0 !important;
-}
-
-.MergeDialog .BodyPanel {
-    position: fixed;
-    bottom: 40px;
-    top: 64px;
-    width: 100%;
-    z-index: 1;
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-
-.MergeDialog .PaddingPanel {
-    padding: 6px;
 }
 
 .RuleSettingsLabel {
@@ -4105,13 +4027,6 @@ ul.ComboSelector {
 }
 
 /* Validation styles */
-.ValidatorError {
-    margin: 5px;
-    filter: alpha(opacity=100) !important;
-    opacity: 1.0 !important;
-    position: fixed;
-}
-
 .Validation .Status {
     font-weight: bold;
     padding: 0 5px 10px 5px;
@@ -4135,16 +4050,6 @@ ul.ComboSelector {
     margin: 0 5px;
 }
 
-.CampaignRedFlag {
-    font-weight: bold;
-    color: Red;
-}
-
-.CampaignGoal {
-    font-weight: bold;
-    color: Green;
-}
-
 /* Categories */
 
 .Categories {
@@ -4166,11 +4071,6 @@ ul.ComboSelector {
 
 select {
     height: 22px;
-}
-
-
-.AutoCompleteHints li {
-    white-space: nowrap;
 }
 
 .ForumPostApprove td {
@@ -4253,7 +4153,7 @@ select {
 }
 
 /* There is no need to display the separtor */
-.HeaderSeparator, .HeaderSeparatorEnvelope .HeaderSeparator, .MergeDialog .HeaderSeparator {
+.HeaderSeparator, .HeaderSeparatorEnvelope .HeaderSeparator {
     display: none;
 }
 
@@ -4768,18 +4668,6 @@ th.UnigridSelection {
     overflow: hidden;
     margin-bottom: 5px;
     margin-left: 4px;
-}
-
-.ProjectTaskTable {
-    margin-top: 32px;
-}
-
-.Safari .ProjectTaskTable {
-    margin-top: 24px;
-}
-
-.IE9 .ProjectTaskTable {
-    margin-top: 24px;
 }
 
 .WebPartForm .ScrollableContent {
@@ -5339,6 +5227,10 @@ th.UnigridSelection {
     bottom: 0;
     right: 0;
     left: 0;
+}
+
+.message-edit .PageFooterLine{
+    position: fixed;
 }
 
 .DialogPageBody .PageTitleHeader {
@@ -6241,10 +6133,6 @@ fieldset {
     width: 147px;
 }
 
-.FileImportFilter {
-    margin-bottom: 10px;
-}
-
 /* Layout controls */
 .LayoutCSSControl {
     padding-top: 8px;
@@ -6389,33 +6277,6 @@ fieldset {
     color: #ee0000;
 }
 
-/* Object edit menu */
-.ObjectEditMenuInfo {
-    clear: both;
-    background-color: #F5FAFF;
-    overflow: hidden;
-    padding: 4px 5px 4px 10px;
-    color: #000;
-    text-align: left;
-}
-
-.RTL .ObjectEditMenuInfo {
-    text-align: right;
-}
-
-.PreviewMenu .ObjectEditMenuInfo {
-    margin: 0;
-    border-top: 0;
-}
-
-.ObjectEditMenuInfoWrapper {
-    clear: both;
-}
-
-.cms-edit-menu .ObjectEditMenuInfoWrapper {
-    padding-top: 6px;
-}
-
 .UITreeSelectButtonAllowed {
     cursor: pointer;
 }
@@ -6442,18 +6303,10 @@ fieldset {
 /* UI pages*/
 
 /* @Layout */
-.UIHeader,
 .UIContent,
 .UIFooter {
     position: absolute;
     width: 100%;
-}
-
-.UIHeader {
-    top: 0;
-    /*overflow: hidden;*/
-    background-color: white;
-    z-index: 1;
 }
 
 .UIContent {
@@ -6480,16 +6333,6 @@ span + .ChangeStylesheetLanguageLink {
 }
 
 /* @End CSS stylsheets*/
-
-.UIHeader .ObjectEditMenuInfo {
-    margin: auto;
-    border-top: none;
-}
-
-.UIHeader .ObjectEditMenuInfoWrapper {
-    margin-top: -1px;
-    padding-top: 0;
-}
 
 .Inactive {
     pointer-events: none;

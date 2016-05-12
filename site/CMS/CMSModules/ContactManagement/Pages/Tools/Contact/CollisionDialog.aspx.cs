@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -268,7 +268,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Contact_CollisionD
             content.Text = "<div class=\"form-horizontal form-merge-collisions\">";
             plcCustomFields.Controls.Add(content);
 
-            foreach (IField item in list)
+            foreach (IDataDefinitionItem item in list)
             {
                 ffi = item as FormFieldInfo;
                 if (ffi != null)

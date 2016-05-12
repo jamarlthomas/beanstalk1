@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_MessageBoards_Controls_Boards_BoardUserSubscriptions" Codebehind="BoardUserSubscriptions.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_MessageBoards_Controls_Boards_BoardUserSubscriptions"  Codebehind="BoardUserSubscriptions.ascx.cs" %>
 <%@ Register src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" tagname="UniGrid" tagprefix="cms" %>
 <cms:MessagesPlaceHolder ID="plcMess" runat="server" LiveSiteOnly="true" />
 <cms:LocalizedLabel ID="lblMessage" runat="server" CssClass="InfoLabel" EnableViewState="false"

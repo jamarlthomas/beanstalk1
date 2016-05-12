@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Text;
 using System.Web.UI;
@@ -278,7 +278,7 @@ public partial class CMSModules_Objects_Controls_Versioning_ViewObjectVersion : 
         {
             // Get object data table name
             GeneralizedInfo obj = ModuleManager.GetReadOnlyObject(Version.VersionObjectType);
-            string objectTable = DataClassInfoProvider.GetTableName(obj);
+            string objectTable = ObjectHelper.GetSerializationTableName(obj);
 
             dsObject = CreateTableDataSet(dsObject, objectTable, obj);
             dsCompare = CreateTableDataSet(dsCompare, objectTable, obj);
@@ -421,7 +421,7 @@ public partial class CMSModules_Objects_Controls_Versioning_ViewObjectVersion : 
             if (rollbackEnabled)
             {
                 var confirmScript = "if (confirm(\"" + confirmText + "\")) { ";
-                confirmScript += ControlsHelper.GetPostBackEventReference(this, objectVersion.VersionID + "|" + chkDisplayAllData.Checked) + "; return false; }";
+                confirmScript += ControlsHelper.GetPostBackEventReference(this, objectVersion.VersionID + "|" + chkDisplayAllData.Checked) + "; } return false;";
                 imgRollback.Attributes.Add("onclick", confirmScript);
             }
 

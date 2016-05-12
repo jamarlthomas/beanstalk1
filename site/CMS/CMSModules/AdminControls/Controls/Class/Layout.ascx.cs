@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 using System.Web.UI.WebControls;
 
@@ -40,6 +40,16 @@ public partial class CMSModules_AdminControls_Controls_Class_Layout : CMSUserCon
 
 
     #region "Public properties"
+
+    /// <summary>
+    /// Sets the validation function for ASCX editing permission
+    /// </summary>
+    public Func<bool> IsAuthorizedForAscxEditingFunction
+    {
+        private get;
+        set;
+    }
+
 
     /// <summary>
     /// Messages placeholder
@@ -382,6 +392,8 @@ public partial class CMSModules_AdminControls_Controls_Class_Layout : CMSUserCon
         pnlCustomLayout.Visible = radCustomLayout.Checked;
         pnlLayoutType.Visible = radCustomLayout.Checked;
 
+        pnlCustomLayout.Enabled = IsAuthorizedForAscxEditing();
+
         base.OnPreRender(e);
     }
 
@@ -436,12 +448,17 @@ public partial class CMSModules_AdminControls_Controls_Class_Layout : CMSUserCon
     /// </summary>
     protected void ObjectManager_OnSaveData(object sender, SimpleObjectManagerEventArgs e)
     {
-        SaveData();
-
-        // Perform OnAfterSave if defined
-        if (OnAfterSave != null)
+        if (SaveData())
         {
-            OnAfterSave(this, EventArgs.Empty);
+            // Perform OnAfterSave if defined
+            if (OnAfterSave != null)
+            {
+                OnAfterSave(this, EventArgs.Empty);
+            }
+        }
+        else
+        {
+            e.IsValid = false;
         }
     }
 
@@ -474,12 +491,13 @@ public partial class CMSModules_AdminControls_Controls_Class_Layout : CMSUserCon
             OnBeforeSave(this, EventArgs.Empty);
         }
 
-        SaveData();
-
-        // Perform OnAfterSave if defined
-        if (OnAfterSave != null)
+        if (SaveData())
         {
-            OnAfterSave(this, EventArgs.Empty);
+            // Perform OnAfterSave if defined
+            if (OnAfterSave != null)
+            {
+                OnAfterSave(this, EventArgs.Empty);
+            }
         }
     }
 
@@ -622,10 +640,33 @@ public partial class CMSModules_AdminControls_Controls_Class_Layout : CMSUserCon
 
 
     /// <summary>
+    /// Returns true if user is authorized to change the ASCX layout
+    /// </summary>
+    private bool IsAuthorizedForAscxEditing()
+    {
+        if (LayoutType == LayoutTypeEnum.Ascx)
+        {
+            if ((IsAuthorizedForAscxEditingFunction != null) && !IsAuthorizedForAscxEditingFunction())
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    /// <summary>
     /// Saves form layout.
     /// </summary>
-    protected void SaveData()
+    protected bool SaveData()
     {
+        if (!IsAuthorizedForAscxEditing())
+        {
+            ShowError(GetString("EditCode.NotAllowed"));
+            return false;
+        }
+
         bool saved = false;
         bool deleted = false;
 
@@ -685,6 +726,8 @@ public partial class CMSModules_AdminControls_Controls_Class_Layout : CMSUserCon
         {
             UIContext.EditedObject = null;
         }
+
+        return true;
     }
 
 
@@ -872,7 +915,7 @@ public partial class CMSModules_AdminControls_Controls_Class_Layout : CMSUserCon
         if (drpLayoutType.SelectedValue == LayoutTypeEnum.Html.ToString())
         {
             drpFieldType.Items.Add(new ListItem { Text = "general.label", Value = "label" });
-            drpFieldType.Items.Add(new ListItem { Text = "formcontrolstype.input", Value = "input" });
+            drpFieldType.Items.Add(new ListItem { Text = "formusercontroltypeenum.input", Value = "input" });
             drpFieldType.Items.Add(new ListItem { Text = "documenttype_edit_form.validationlabel", Value = "validation" });
 
             // Display button for inserting visibility macros only if enabled and the class is 'cms.user'
@@ -893,7 +936,7 @@ public partial class CMSModules_AdminControls_Controls_Class_Layout : CMSUserCon
         {
             drpFieldType.Items.Add(new ListItem { Text = "templatedesigner.section.field", Value = "field" });
             drpFieldType.Items.Add(new ListItem { Text = "general.label", Value = "label" });
-            drpFieldType.Items.Add(new ListItem { Text = "formcontrolstype.input", Value = "input" });
+            drpFieldType.Items.Add(new ListItem { Text = "formusercontroltypeenum.input", Value = "input" });
             drpFieldType.Items.Add(new ListItem { Text = "documenttype_edit_form.errorlabel", Value = "errorlabel" });
 
             // Custom table forms use default submit button in header actions

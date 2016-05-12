@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="WebPartDocumentation.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="WebPartDocumentation.ascx.cs"
     Inherits="CMSModules_PortalEngine_Controls_WebParts_WebPartDocumentation" %>
 <div class="WebpartTabsPageHeader LightTabs">
     <cms:UITabs ID="tabControlElem" runat="server" OnOnTabClicked="tabControlElem_clicked" />

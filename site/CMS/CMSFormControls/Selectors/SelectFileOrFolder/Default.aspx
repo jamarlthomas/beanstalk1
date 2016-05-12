@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Theme="Default" Inherits="CMSFormControls_Selectors_SelectFileOrFolder_Default"
-    EnableEventValidation="false" Codebehind="Default.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Theme="Default" Inherits="CMSFormControls_Selectors_SelectFileOrFolder_Default"
+    EnableEventValidation="false"  Codebehind="Default.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Ecommerce_Checkout_Forms_PaymentForm" Codebehind="~/CMSWebParts/Ecommerce/Checkout/Forms/PaymentForm.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Ecommerce_Checkout_Forms_PaymentForm"  Codebehind="~/CMSWebParts/Ecommerce/Checkout/Forms/PaymentForm.ascx.cs" %>
 <asp:Panel runat="server" ID="pnlPayment">
     <asp:Panel runat="server" ID="pnlError" CssClass="ErrorLabel" Visible="false">
         <asp:Label runat="server" ID="lblError" EnableViewState="false" />

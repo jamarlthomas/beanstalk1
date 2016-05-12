@@ -48,7 +48,7 @@ public partial class CMSModules_OnlineMarketing_Pages_Content_MVTest_MVTestRepor
 
         // Set disabled module info
         ucDisabledModule.SettingsKeys = "CMSAnalyticsEnabled;CMSMVTEnabled";
-        ucDisabledModule.ParentPanel = pnlWarning;
+        ucDisabledModule.ParentPanel = pnlDisabled;
 
         // Register actions
         ComponentEvents.RequestEvents.RegisterForEvent(ComponentEvents.SAVE, (s, args) => Save());
@@ -249,8 +249,7 @@ public partial class CMSModules_OnlineMarketing_Pages_Content_MVTest_MVTestRepor
         reportHeader.ReportName = mUcDisplayReport.ReportName;
         reportHeader.ReportParameters = mUcDisplayReport.ReportParameters;
         reportHeader.SelectedInterval = ucGraphType.SelectedInterval;
-        reportHeader.ManageDataCodeName = "mvtconversion;" + mTestName + ";%";
-
+        
         base.OnPreRender(e);
     }
 

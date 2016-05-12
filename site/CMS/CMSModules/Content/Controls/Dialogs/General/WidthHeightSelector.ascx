@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Content_Controls_Dialogs_General_WidthHeightSelector" Codebehind="WidthHeightSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Content_Controls_Dialogs_General_WidthHeightSelector"  Codebehind="WidthHeightSelector.ascx.cs" %>
 
 <div class="form-group">
     <div class="editing-form-label-cell">

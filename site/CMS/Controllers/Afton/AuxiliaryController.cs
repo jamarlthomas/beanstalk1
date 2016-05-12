@@ -8,7 +8,6 @@ using CMS.Mvc.Old_App_Code;
 using CMS.Mvc.Old_App_Code.CustomActions;
 using CMS.Mvc.ViewModels.Auxiliary;
 
-
 namespace CMS.Mvc.Controllers.Afton
 {
     public class AuxiliaryController : BaseController

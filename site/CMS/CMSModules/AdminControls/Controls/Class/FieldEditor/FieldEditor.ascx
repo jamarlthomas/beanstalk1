@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="false" Inherits="CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEditor"
-    Codebehind="FieldEditor.ascx.cs" %>
+     Codebehind="FieldEditor.ascx.cs" %>
 <%@ Register Src="~/CMSModules/AdminControls/Controls/Class/FieldEditor/ControlSettings.ascx"
     TagName="ControlSettings" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/AdminControls/Controls/Class/FieldEditor/CSSsettings.ascx"

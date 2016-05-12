@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="CheckedOutObjectsList.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="CheckedOutObjectsList.ascx.cs"
     Inherits="CMSModules_Objects_Controls_Locking_CheckedOutObjectsList" %>
 <%@ Register TagPrefix="cms" TagName="UniGrid" Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" %>
 <%@ Register TagPrefix="ug" Assembly="CMS.UIControls" Namespace="CMS.UIControls.UniGridConfig" %>

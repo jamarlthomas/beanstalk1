@@ -1,7 +1,6 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls;
-using CMS.Helpers;
 using CMS.UIControls;
 
 public partial class CMSAdminControls_Debug_SecurityLog : SecurityLog
@@ -22,8 +21,8 @@ public partial class CMSAdminControls_Debug_SecurityLog : SecurityLog
 
             HeaderText = GetString("SecurityLog.Info");
 
-            gridSec.DataSource = dt;
-            gridSec.DataBind();
+            // Bind the data
+            BindGrid(gridSec, dt);
         }
     }
 }

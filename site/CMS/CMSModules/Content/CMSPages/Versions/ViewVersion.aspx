@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="ViewVersion.aspx.cs" Inherits="CMSModules_Content_CMSPages_Versions_ViewVersion"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="ViewVersion.aspx.cs" Inherits="CMSModules_Content_CMSPages_Versions_ViewVersion"
     MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master" Theme="Default" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/ViewVersion.ascx" TagName="ViewVersion"

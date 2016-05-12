@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Net;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -26,7 +26,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Web_WebContentSelector 
     /// <summary>
     /// Returns current properties (according to OutputFormat).
     /// </summary>
-    private ItemProperties Properties
+    private ItemProperties ItemProperties
     {
         get
         {
@@ -34,8 +34,10 @@ public partial class CMSModules_Content_Controls_Dialogs_Web_WebContentSelector 
             {
                 case OutputFormatEnum.HTMLMedia:
                     return propMedia;
+
                 case OutputFormatEnum.BBMedia:
                     return propBBMedia;
+
                 default:
                     return propURL;
             }
@@ -212,7 +214,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Web_WebContentSelector 
             MediaSource source = CMSDialogHelper.GetMediaData(txtUrl.Text, null);
             if ((source == null) || (source.MediaType == MediaTypeEnum.Unknown))
             {
-                Properties.ItemNotSystem = true;
+                ItemProperties.ItemNotSystem = true;
 
                 // Try get source type from URL extension
                 int index = txtUrl.Text.LastIndexOfCSafe('.');
@@ -242,7 +244,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Web_WebContentSelector 
             }
             else
             {
-                Properties.ItemNotSystem = false;
+                ItemProperties.ItemNotSystem = false;
             }
 
             if (source != null)
@@ -344,7 +346,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Web_WebContentSelector 
         properties[DialogParameters.URL_URL] = txtUrl.Text.Trim();
         properties[DialogParameters.EDITOR_CLIENTID] = Config.EditorClientID;
         drpMediaType.SelectedValue = "";
-        Properties.LoadProperties(properties);
+        ItemProperties.LoadProperties(properties);
     }
 
 
@@ -394,7 +396,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Web_WebContentSelector 
     /// </summary>
     private void ShowProperties()
     {
-        Properties.Config = Config;
+        ItemProperties.Config = Config;
 
         // Save session data before shoving properties
         Hashtable dialogParameters = SessionHelper.GetValue("DialogSelectedParameters") as Hashtable;
@@ -448,17 +450,17 @@ public partial class CMSModules_Content_Controls_Dialogs_Web_WebContentSelector 
             }
             if (URLHelper.IsPostback())
             {
-                Properties.LoadSelectedItems(mi, dialogParameters);
+                ItemProperties.LoadSelectedItems(mi, dialogParameters);
             }
         }
         else if ((Config.OutputFormat == OutputFormatEnum.BBMedia) && (URLHelper.IsPostback()))
         {
             mi.Extension = String.IsNullOrEmpty(ext) ? "jpg" : ext;
-            Properties.LoadSelectedItems(mi, dialogParameters);
+            ItemProperties.LoadSelectedItems(mi, dialogParameters);
         }
         else if ((Config.OutputFormat == OutputFormatEnum.URL) && (URLHelper.IsPostback()))
         {
-            Properties.LoadSelectedItems(mi, dialogParameters);
+            ItemProperties.LoadSelectedItems(mi, dialogParameters);
         }
         // Set saved session data back into session
         if (dialogParameters != null)
@@ -550,7 +552,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Web_WebContentSelector 
     /// </summary>
     public Hashtable GetSelectedItem()
     {
-        return Properties.GetItemProperties();
+        return ItemProperties.GetItemProperties();
     }
 
 
@@ -578,14 +580,16 @@ public partial class CMSModules_Content_Controls_Dialogs_Web_WebContentSelector 
             {
                 drpMediaType.SelectedValue = "image";
 
-                /*int width = ValidationHelper.GetInteger(temp[DialogParameters.IMG_WIDTH], 0);
-                int height = ValidationHelper.GetInteger(temp[DialogParameters.IMG_HEIGHT], 0);
-
-                int originalWidth = ValidationHelper.GetInteger(temp[DialogParameters.IMG_ORIGINALWIDTH], 0);
-                int originalHeight = ValidationHelper.GetInteger(temp[DialogParameters.IMG_ORIGINALHEIGHT], 0);*/
                 // Update URL
                 string url = ValidationHelper.GetString(properties[DialogParameters.IMG_URL], "");
                 txtUrl.Text = url;
+
+                // Get original dimensions
+                GetExternalImageDimensions(url);
+
+                temp[DialogParameters.IMG_ORIGINALWIDTH] = mWidth;
+                temp[DialogParameters.IMG_ORIGINALHEIGHT] = mHeight;
+
             }
             else if ((properties[DialogParameters.URL_URL] != null) && ((properties[DialogParameters.LAST_TYPE] == null) || ((MediaTypeEnum)properties[DialogParameters.LAST_TYPE] == MediaTypeEnum.Unknown)))
             {
@@ -595,7 +599,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Web_WebContentSelector 
             {
                 ShowProperties();
                 // Load temp properties because ShowProperties() change original properties
-                Properties.LoadItemProperties(temp);
+                ItemProperties.LoadItemProperties(temp);
             }
         }
     }

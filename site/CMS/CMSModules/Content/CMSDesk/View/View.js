@@ -167,7 +167,7 @@ var CMSView = {
             // Force dimensions in case unexpected error
             w = centerPanel[0].clientWidth;
             h = centerPanel[0].clientHeight;
-        }   
+        }
 
         if ((w > 0) && (h > 0)) {
 
@@ -191,18 +191,23 @@ var CMSView = {
             devFrame.find('.CenterPiece .jspHorizontalBar').hide();
 
             if (CMSView.FrameScrollPane) {
-                iFrame.contents().find('body').unbind('mouseup').bind('mouseup', function () {
-                    var frameScrollPane = null;
-                    if (window.CMSView) {
-                        frameScrollPane = window.CMSView.FrameScrollPane;
-                    }
-                    if (window.parent.CMSView) {
-                        frameScrollPane = window.parent.CMSView.FrameScrollPane;
-                    }
-                    if (frameScrollPane) {
-                        frameScrollPane.cancelDrag();
-                    }
-                });
+                try {
+                    iFrame.contents().find('body').unbind('mouseup').bind('mouseup', function () {
+                        var frameScrollPane = null;
+                        if (window.CMSView) {
+                            frameScrollPane = window.CMSView.FrameScrollPane;
+                        }
+                        if (window.parent.CMSView) {
+                            frameScrollPane = window.parent.CMSView.FrameScrollPane;
+                        }
+                        if (frameScrollPane) {
+                            frameScrollPane.cancelDrag();
+                        }
+                    });
+                }
+                catch (error) {
+                    // the frame might contain content from another domain so scroll events are not available
+                }
             }
 
             devFrame.find('.CenterPiece').css({ 'visible': 'visible' });

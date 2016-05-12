@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" Title="MassEmails - Recipients"
-    Inherits="CMSModules_EmailQueue_MassEmails_Recipients" Theme="Default" Codebehind="MassEmails_Recipients.aspx.cs" %>
+    Inherits="CMSModules_EmailQueue_MassEmails_Recipients" Theme="Default"  Codebehind="MassEmails_Recipients.aspx.cs" %>
 <%@ Register src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" tagname="UniGrid" tagprefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 
