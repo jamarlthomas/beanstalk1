@@ -9,7 +9,6 @@ Body.DevicePreview
 .DeviceFrame
 {
     overflow: auto;
-    height: 0px;
     width: 100%;
 }
 

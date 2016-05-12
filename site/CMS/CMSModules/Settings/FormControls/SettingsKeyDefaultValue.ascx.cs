@@ -51,7 +51,10 @@ public partial class CMSModules_Settings_FormControls_SettingsKeyDefaultValue : 
     /// </summary>
     private void SelectDefaultValueControl()
     {
-        chkKeyValue.Visible = ValidationHelper.GetString(Form.GetFieldValue("KeyType"), "").EqualsCSafe("boolean");
-        txtKeyValue.Visible = !chkKeyValue.Visible;
+        if (Form != null)
+        {
+            chkKeyValue.Visible = ValidationHelper.GetString(Form.GetFieldValue("KeyType"), "").EqualsCSafe("boolean");
+            txtKeyValue.Visible = !chkKeyValue.Visible;
+        }
     }
 }

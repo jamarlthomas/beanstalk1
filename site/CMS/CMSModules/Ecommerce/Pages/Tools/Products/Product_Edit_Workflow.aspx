@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Product_Edit_Workflow.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Product_Edit_Workflow.aspx.cs"
     Inherits="CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Workflow" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Theme="Default" %>
 

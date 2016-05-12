@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 
 using CMS.Helpers;
@@ -12,6 +12,13 @@ using CMS.DataEngine;
 
 public partial class CMSModules_Objects_FormControls_Cloning_CMS_AttachmentSettings : CloneSettingsControl
 {
+    #region Consts
+     
+    private const string ATTACHMENT_NAME = "AttachmentName";
+
+    #endregion
+
+
     #region "Properties"
 
     /// <summary>
@@ -37,6 +44,18 @@ public partial class CMSModules_Objects_FormControls_Cloning_CMS_AttachmentSetti
         }
     }
 
+
+    /// <summary>
+    /// Hides the object display name
+    /// </summary>
+    public override bool HideDisplayName
+    {
+        get
+        {
+            return true;
+        }
+    }
+
     #endregion
 
 
@@ -47,7 +66,7 @@ public partial class CMSModules_Objects_FormControls_Cloning_CMS_AttachmentSetti
         if (!RequestHelper.IsPostBack())
         {
             AttachmentInfo ai = (AttachmentInfo)InfoToClone;
-            string uniqueName = ai.Generalized.GetUniqueName(ai.AttachmentName, 0, ai.Generalized.CodeNameColumn, "_{0}" + ai.AttachmentExtension, "([_](\\d+))?\\" + ai.AttachmentExtension +"$", true);
+            string uniqueName = ai.Generalized.GetUniqueName(ai.AttachmentName, 0, ATTACHMENT_NAME, "_{0}" + ai.AttachmentExtension, "([_](\\d+))?\\" + ai.AttachmentExtension +"$", true);
             txtFileName.Text = Path.GetFileNameWithoutExtension(uniqueName);
         }
     }

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="ObjectEditPanel.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="ObjectEditPanel.ascx.cs"
     Inherits="CMSModules_Objects_Controls_Locking_ObjectEditPanel" %>
 <%@ Register Src="~/CMSModules/Objects/Controls/Locking/ObjectEditMenu.ascx" TagName="ObjectEditMenu"
     TagPrefix="cms" %>

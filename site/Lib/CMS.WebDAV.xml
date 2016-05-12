@@ -225,12 +225,6 @@
             </summary>
             <param name="lockToken">Lock with this token should be removed from the item</param>
         </member>
-        <member name="M:CMS.WebDAV.BaseAttachmentResource.CanCurrentUserApproveCustomStep(CMS.DocumentEngine.TreeNode)">
-            <summary>
-            Indicates if current user can approve custom step. If document doesn't use workflow, returns True.
-            </summary>
-            <param name="node">Document</param>
-        </member>
         <member name="M:CMS.WebDAV.BaseAttachmentResource.EnsureBinaryData(CMS.DocumentEngine.AttachmentInfo)">
             <summary>
             Ensures attachment binary data.
@@ -481,23 +475,23 @@
         </member>
         <member name="M:CMS.WebDAV.ContentFolder.CreateCMSFile(CMS.DocumentEngine.TreeNode,CMS.DocumentEngine.TreeNode,CMS.DataEngine.GeneralizedInfo,System.String,System.Boolean@)">
             <summary>
-            Creates CMS.File with the specified name in this folder. 
+            Creates file with the specified name in this folder. 
             </summary>
             <param name="newNode">New tree node</param>
             <param name="parentNode">Parent tree node</param>
             <param name="group">Group info. Null if not under a group page.</param>
-            <param name="resourceName">Name of the CMS.File to create</param>
+            <param name="resourceName">Name of the file to create</param>
             <param name="newDocumentCreated">Indicates if document was created.</param>
             <returns>WebDAV response</returns>
         </member>
         <member name="M:CMS.WebDAV.ContentFolder.CreateCMSFolder(CMS.DocumentEngine.TreeNode,CMS.DocumentEngine.TreeNode,CMS.DataEngine.GeneralizedInfo,System.String,System.Boolean@)">
             <summary>
-            Creates CMS.Folder with the specified name in this folder. 
+            Creates folder with the specified name in this folder. 
             </summary>
             <param name="newNode">New tree node</param>
             <param name="parentNode">Parent tree node</param>
             <param name="group">Group info. Null if not under a group page.</param>
-            <param name="resourceName">Name of the CMS.File to create</param>
+            <param name="resourceName">Name of the file to create</param>
             <param name="newDocumentCreated">Indicates if document was created.</param>
             <returns>WebDAV response</returns>
         </member>
@@ -539,9 +533,9 @@
         </member>
         <member name="M:CMS.WebDAV.ContentFolder.DeleteFolder(System.Boolean)">
             <summary>
-            Deletes CMS.Folder document.
+            Deletes folder document.
             </summary>
-            <param name="destroy">Indicates if CMS.Folder document should be destroyed instead of moving to recycle bin.</param>
+            <param name="destroy">Indicates if folder document should be destroyed instead of moving to recycle bin.</param>
         </member>
         <member name="M:CMS.WebDAV.ContentFolder.IsAuthorizedToCreateNewDocument(CMS.DocumentEngine.TreeNode,CMS.DocumentEngine.TreeNode,System.String)">
             <summary>
@@ -551,12 +545,6 @@
             <param name="targetNode">Target node</param>
             <param name="sourceNodeClassName">Source node class name</param>
             <returns>True if authorized</returns>
-        </member>
-        <member name="M:CMS.WebDAV.ContentFolder.CanCurrentUserApproveCustomStep(CMS.DocumentEngine.TreeNode)">
-            <summary>
-            Indicates if current user can approve custom step. If document doesn't use workflow, returns True.
-            </summary>
-            <param name="node">Document</param>
         </member>
         <member name="M:CMS.WebDAV.ContentFolder.CopyContentToContentFolder(CMS.WebDAV.ContentFolder,System.String)">
             <summary>
@@ -1652,11 +1640,6 @@
             WebDAV handler.
             </summary>
         </member>
-        <member name="M:CMS.WebDAV.WebDAVHandler.#cctor">
-            <summary>
-            Static constructor.
-            </summary>
-        </member>
         <member name="M:CMS.WebDAV.WebDAVHandler.ProcessRequest(System.Web.HttpContext)">
             <summary>
             Processes WebDAV request.
@@ -1854,7 +1837,7 @@
             <param name="parentNode">Parent document</param>
             <param name="tree">Tree provider</param>
             <param name="cultureCode">Culture code</param>
-            <param name="ffi">Form file info 'cms.file'</param>
+            <param name="ffi">Form file info</param>
             <returns>New document</returns>
         </member>
         <member name="M:CMS.WebDAV.WebDAVHelper.IsDocumentCheckedOutByAnotherUser(CMS.DocumentEngine.TreeNode)">
@@ -2037,6 +2020,12 @@
             <param name="library">Media library</param>
             <param name="mediaFilePath">Media file path</param>
         </member>
+        <member name="M:CMS.WebDAV.WebDAVHelper.CanCurrentUserApproveCustomStep(CMS.DocumentEngine.TreeNode)">
+            <summary>
+            Indicates if current user can approve custom step. If document doesn't use workflow, returns True.
+            </summary>
+            <param name="node">Document</param>
+        </member>
         <member name="P:CMS.WebDAV.WebDAVHelper.CulturesCodes">
             <summary>
             Gets culture codes of site.
@@ -2105,16 +2094,6 @@
         <member name="F:CMS.WebDAV.WebDAVSettings.MAX_SIDE_SIZE">
             <summary>
             Image resize maximum side size.
-            </summary>
-        </member>
-        <member name="F:CMS.WebDAV.WebDAVSettings.CMS_FILE">
-            <summary>
-            Class name of the CMS File document type.
-            </summary>
-        </member>
-        <member name="F:CMS.WebDAV.WebDAVSettings.CMS_FOLDER">
-            <summary>
-            Class name of the CMS Folder document type.
             </summary>
         </member>
         <member name="M:CMS.WebDAV.WebDAVSettings.GetAllowedExtensions(System.String)">

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Theme="Default"
-    Inherits="CMSFormControls_Selectors_InsertImageOrMedia_Tabs_Email" EnableEventValidation="false" Codebehind="Tabs_Email.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Theme="Default"
+    Inherits="CMSFormControls_Selectors_InsertImageOrMedia_Tabs_Email" EnableEventValidation="false"  Codebehind="Tabs_Email.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/Properties/HTMLEmailProperties.ascx"
     TagName="HTMLEmailProperties" TagPrefix="cms" %>

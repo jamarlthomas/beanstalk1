@@ -1,7 +1,4 @@
-using System;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.PortalControls;
@@ -18,7 +15,6 @@ public partial class CMSWebParts_Newsletters_SubscriptionApproval : CMSAbstractW
         get
         {
             return ValidationHelper.GetString(GetValue("SuccessfulApprovalText"), null);
-            ;
         }
         set
         {
@@ -35,7 +31,6 @@ public partial class CMSWebParts_Newsletters_SubscriptionApproval : CMSAbstractW
         get
         {
             return ValidationHelper.GetString(GetValue("UnsuccessfulApprovalText"), null);
-            ;
         }
         set
         {
@@ -65,22 +60,19 @@ public partial class CMSWebParts_Newsletters_SubscriptionApproval : CMSAbstractW
     {
         if (StopProcessing)
         {
-            // Stop processing
             subscriptionApproval.StopProcessing = true;
+            return;
+        }
+
+        string subscription = QueryHelper.GetString("subscriptionhash", string.Empty);
+        if (!string.IsNullOrEmpty(subscription))
+        {
+            subscriptionApproval.SuccessfulApprovalText = SuccessfulApprovalText;
+            subscriptionApproval.UnsuccessfulApprovalText = UnsuccessfulApprovalText;
         }
         else
         {
-            string subscription = QueryHelper.GetString("subscriptionhash", string.Empty);
-
-            if (!string.IsNullOrEmpty(subscription))
-            {
-                subscriptionApproval.SuccessfulApprovalText = SuccessfulApprovalText;
-                subscriptionApproval.UnsuccessfulApprovalText = UnsuccessfulApprovalText;
-            }
-            else
-            {
-                Visible = false;
-            }
+            Visible = false;
         }
     }
 

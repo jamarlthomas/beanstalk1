@@ -93,15 +93,6 @@ public partial class CMSModules_PortalEngine_UI_Layout_SaveNewPageTemplate {
     protected global::CMS.ExtendedControls.CMSTextArea txtTemplateDescription;
     
     /// <summary>
-    /// plcKeep control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.PlaceHolder plcKeep;
-    
-    /// <summary>
     /// lblKeep control.
     /// </summary>
     /// <remarks>

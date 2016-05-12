@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 
-using CMS.EventLog;
 using CMS.Helpers;
 using CMS.LicenseProvider;
 using CMS.Base;
@@ -78,7 +77,7 @@ public partial class CMSModules_Sites_Pages_CultureChange : CMSModalGlobalAdminP
                 try
                 {
                     // Set default culture and change current culture label
-                    SettingsKeyInfoProvider.SetValue(si.SiteName + ".CMSDefaultCultureCode", culture.Trim());
+                    SettingsKeyInfoProvider.SetValue("CMSDefaultCultureCode", si.SiteName, culture.Trim());
 
                     // Change culture of documents
                     if (chkDocuments.Checked)
@@ -95,11 +94,11 @@ public partial class CMSModules_Sites_Pages_CultureChange : CMSModalGlobalAdminP
                         CultureSiteInfoProvider.AddCultureToSite(culture, si.SiteName);
                     }
 
-                    ltlScript.Text = ScriptHelper.GetScript("wopener.ChangeCulture('" + chkDocuments.Checked.ToString() + "'); CloseDialog();");
+                    ltlScript.Text = ScriptHelper.GetScript("wopener.ChangeCulture('" + chkDocuments.Checked + "'); CloseDialog();");
                 }
                 catch (Exception ex)
                 {
-                    EventLogProvider.LogException("Sites", "ChangeDefaultCulture", ex);
+                    LogAndShowError("Sites", "ChangeDefaultCulture", ex);
                 }
             }
         }

@@ -1,9 +1,7 @@
-using System;
-using System.Web.UI.WebControls;
+﻿using System;
 using System.Linq;
 using System.Text;
 
-using CMS.Automation;
 using CMS.Core;
 using CMS.Helpers;
 using CMS.PortalEngine;
@@ -67,7 +65,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Automation_List : 
         {
             case "recurrencetype":
                 var val = (ProcessRecurrenceTypeEnum)ValidationHelper.GetInteger(parameter, (int)ProcessRecurrenceTypeEnum.Recurring);
-                return val.ToLocalizedString("cms.workflow.recurrency");
+                return val.ToLocalizedString(null);
 
             case "delete":
                 if (!WorkflowStepInfoProvider.CanUserManageAutomationProcesses(CurrentUser, CurrentSiteName))
@@ -104,20 +102,15 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Automation_List : 
                 break;
 
             case "delete":
-                if (AutomationHelper.CheckProcessDependencies(processId))
-                {
-                    ShowError(GetString("MA.process.CannotDeleteUsed"));
-
-                    return;
-                }
-
                 if (!WorkflowStepInfoProvider.CanUserManageAutomationProcesses(CurrentUser, CurrentSiteName))
                 {
                     RedirectToAccessDenied(ModuleName.ONLINEMARKETING, "ManageProcesses");
                 }
 
-                // Delete the workflow
+                // Delete the workflow with all the dependencies
                 WorkflowInfoProvider.DeleteWorkflowInfo(processId);
+
+                ShowConfirmation(GetString("ma.process.delete.confirmation"));
                 break;
         }
     }

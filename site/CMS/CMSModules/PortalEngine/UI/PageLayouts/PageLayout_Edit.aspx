@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_PageLayouts_PageLayout_Edit"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_PageLayouts_PageLayout_Edit"
     Theme="Default" ValidateRequest="false" EnableEventValidation="false" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
-    Title="Page Layout Edit" Codebehind="PageLayout_Edit.aspx.cs" %>
+    Title="Page Layout Edit"  Codebehind="PageLayout_Edit.aspx.cs" %>
 
 <%@ Register TagPrefix="cms" Src="~/CMSModules/AdminControls/Controls/Preview/PreviewHierarchy.ascx"
     TagName="PreviewHierarchy" %>

@@ -194,22 +194,6 @@
             </summary>
             <param name="countryId">Country id</param>
         </member>
-        <member name="M:CMS.Globalization.CountryInfoProvider.GetCountries(System.String,System.String)">
-            <summary>
-            Gets the countries.
-            </summary>
-            <param name="where">Where condition</param>
-            <param name="orderBy">Order by</param>
-        </member>
-        <member name="M:CMS.Globalization.CountryInfoProvider.GetCountries(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Gets the countries.
-            </summary>
-            <param name="where">Where condition</param>
-            <param name="orderBy">Order by</param>
-            <param name="topN">TOP N rows</param>
-            <param name="columns">Returned columns</param>
-        </member>
         <member name="M:CMS.Globalization.CountryInfoProvider.GetCountries">
             <summary>
             Returns countries query.
@@ -235,7 +219,7 @@
             <summary>
             Clears hashtables.
             </summary>
-            <param name="logTasks">If true, web farm tasks are logged</param>
+            <param name="logTasks">If true, web farm tasks are logged.</param>
         </member>
         <member name="M:CMS.Globalization.CountryInfoProvider.GetCountryInfoInternal(System.Int32)">
             <summary>
@@ -266,15 +250,6 @@
             Deletes specified country.
             </summary>
             <param name="countryObj">Country object</param>
-        </member>
-        <member name="M:CMS.Globalization.CountryInfoProvider.GetCountriesInternal(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Gets all countries according specified parameters.
-            </summary>
-            <param name="where">Where condition</param>
-            <param name="orderBy">Order by</param>
-            <param name="topN">TOP N rows</param>
-            <param name="columns">Returned columns</param>
         </member>
         <member name="M:CMS.Globalization.CountryInfoProvider.GetCountriesWithStatesInternal">
             <summary>
@@ -410,15 +385,6 @@
             </summary>
             <param name="countryId">Country id</param>
         </member>
-        <member name="M:CMS.Globalization.StateInfoProvider.GetStates(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Returns DataSet with states.
-            </summary>
-            <param name="where">Where condition</param>
-            <param name="orderBy">Order by</param>
-            <param name="topN">TOP N rows</param>
-            <param name="columns">Returned columns</param>
-        </member>
         <member name="M:CMS.Globalization.StateInfoProvider.GetStates">
             <summary>
             Returns states query.
@@ -464,7 +430,7 @@
             <summary>
             Clears hashtables.
             </summary>
-            <param name="logTasks">If true, web farm tasks are logged</param>
+            <param name="logTasks">If true, web farm tasks are logged.</param>
         </member>
         <member name="M:CMS.Globalization.StateInfoProvider.GetStateInfoInternal(System.Int32)">
             <summary>
@@ -483,15 +449,6 @@
             Returns DataSet with states of the specified country.
             </summary>
             <param name="countryId">Country id</param>
-        </member>
-        <member name="M:CMS.Globalization.StateInfoProvider.GetStatesInternal(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Returns DataSet with states.
-            </summary>
-            <param name="where">Where condition</param>
-            <param name="orderBy">Order by</param>
-            <param name="topN">TOP N rows</param>
-            <param name="columns">Returned columns</param>
         </member>
         <member name="M:CMS.Globalization.StateInfoProvider.GetStateInfoByCodeInternal(System.String)">
             <summary>
@@ -551,6 +508,12 @@
             <summary>
             Initializes the module.
             </summary>
+        </member>
+        <member name="M:CMS.Globalization.GlobalizationModule.ClearHashtables(System.Boolean)">
+            <summary>
+            Clears the module hashtables.
+            </summary>
+            <param name="logTasks">If true, web farm tasks are logged.</param>
         </member>
         <member name="T:CMS.Globalization.ITimeZoneManager">
             <summary>
@@ -834,7 +797,7 @@
         </member>
         <member name="P:CMS.Globalization.TimeZoneInfo.TimeZoneDaylight">
             <summary>
-            If time zone uses daylight saving time.
+            Indicates if time zone uses daylight saving time (DST).
             </summary>
         </member>
         <member name="P:CMS.Globalization.TimeZoneInfo.TimeZoneDisplayName">
@@ -854,12 +817,12 @@
         </member>
         <member name="P:CMS.Globalization.TimeZoneInfo.TimeZoneRuleStartRule">
             <summary>
-            Rule Start Rule.
+            Time zone DST Start Rule.
             </summary>
         </member>
         <member name="P:CMS.Globalization.TimeZoneInfo.TimeZoneRuleEndRule">
             <summary>
-            TimeZone Rule End Rule.
+            Time zone DST End Rule.
             </summary>
         </member>
         <member name="P:CMS.Globalization.TimeZoneInfo.TimeZoneRuleStartIn">
@@ -869,7 +832,7 @@
         </member>
         <member name="P:CMS.Globalization.TimeZoneInfo.TimeZoneGMT">
             <summary>
-            GMT shift of time zone.
+            Time zone UTC offset.
             </summary>
         </member>
         <member name="P:CMS.Globalization.TimeZoneInfo.TimeZoneGUID">
@@ -959,23 +922,6 @@
         <member name="M:CMS.Globalization.TimeZoneInfoProvider.GenerateTimeZoneRules">
             <summary>
             Regenerate all time zone rules.
-            </summary>
-        </member>
-        <member name="M:CMS.Globalization.TimeZoneInfoProvider.GetTimeZoneTypeEnum(System.String)">
-            <summary>
-            Returns the enum representation of timezone based on specified string.
-            </summary>
-            <param name="timeZoneTypeString">String representation of timezone</param>
-        </member>
-        <member name="M:CMS.Globalization.TimeZoneInfoProvider.GetTimeZoneTypeString(CMS.Globalization.TimeZoneTypeEnum)">
-            <summary>
-            Returns the string representation of timezone type based on specified enum value.
-            </summary>
-            <param name="timeZoneType">Enum representation of avatar type</param>
-        </member>
-        <member name="M:CMS.Globalization.TimeZoneInfoProvider.GetTimeZoneTypeString(System.Type,System.Int32)">
-            <summary>
-            Returns TimeZoneTypeEnum string code derived from type of enumeration and enum value.
             </summary>
         </member>
         <member name="M:CMS.Globalization.TimeZoneInfoProvider.GetTimeZoneInfoInternal(System.Int32)">

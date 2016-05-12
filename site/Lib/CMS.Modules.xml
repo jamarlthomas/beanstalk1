@@ -4,6 +4,787 @@
         <name>CMS.Modules</name>
     </assembly>
     <members>
+        <member name="T:CMS.Modules.InstallableModulesInformationService">
+            <summary>
+            Provides information about installable modules.
+            </summary>
+            <remarks>
+            The <see cref="T:CMS.Core.Internal.IInstallableModulesInformationService"/> could be implemented directly by <see cref="T:CMS.Modules.InstallableModulesManager"/>,
+            but it is a singleton and it is not possible to register interface implementation while providing your own singleton instance (new singleton instance
+            would be created).
+            </remarks>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesInformationService.GetModuleNamesOmittedFromInitialization">
+            <summary>
+            Gets set of module names which are not installed and therefore omitted from initialization.
+            </summary>
+            <returns>Set of module names omitted from initialization. Returns null if all installable modules are omitted from initialization.</returns>
+        </member>
+        <member name="T:CMS.Modules.InstallableModulesManager">
+            <summary>
+            Manages installable modules.
+            </summary>
+        </member>
+        <member name="F:CMS.Modules.InstallableModulesManager.MODULE_DESCRIPTION_PATTERN">
+            <summary>
+            Pattern for module description with module's name and version.
+            </summary>
+            <remarks>
+            Substitution '{0}' is replaced by the module codename.
+            Substitution '{1}' is replaced by the module version.
+            </remarks>
+        </member>
+        <member name="F:CMS.Modules.InstallableModulesManager.MODULE_DESCRIPTION_META_FILE_NAME_PATTERN">
+            <summary>
+            File name pattern for module description meta file.
+            </summary>
+            <remarks>
+            Substitution '{0}' is replaced by the module codename.
+            Substitution '{1}' is replaced by the module version.
+            </remarks>
+        </member>
+        <member name="F:CMS.Modules.InstallableModulesManager.NUGET_MODULES_META_FILES_PATH">
+            <summary>
+            Relative path to directory containing module descriptions managed by NuGet (with trailing slash).
+            Each description file is expected to be named accordingly to <see cref="F:CMS.Modules.InstallableModulesManager.MODULE_DESCRIPTION_META_FILE_NAME_PATTERN"/>.
+            </summary>
+        </member>
+        <member name="F:CMS.Modules.InstallableModulesManager.INSTALLED_NUGET_MODULES_META_FILES_PATH">
+            <summary>
+            Relative path to directory containing meta files of installed modules (with trailing slash).
+            </summary>
+            <remarks>
+            The folder denoted by this path contains uninstallation tokens (a token is a meta file). Such tokens allow the instance to uninstall a module
+            for which it has a token.
+            </remarks>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.#ctor">
+            <summary>
+            Prepares the only instance of installable module manager.
+            </summary>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.GetCurrentState">
+            <summary>
+            Gets current state of installable modules.
+            </summary>
+            <returns>Object representing current state of installable modules.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.GetUninstallationTokens">
+            <summary>
+            Gets list of basic module meta data for which the instance has an uninstallation token.
+            </summary>
+            <returns>List of uninstallation tokens.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.GetModuleNamesOmittedFromInitialization">
+            <summary>
+            Gets set of module names which are not installed in the system in the same version as their corresponding NuGet package meta file has
+            and are omitted from initialization.
+            </summary>
+            <returns>Set of module names omitted from initialization.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.GetModulesToBeInstalled(CMS.Modules.InstallableModulesState)">
+            <summary>
+            Gets enumeration of modules which have NuGet package meta file but are not installed in the system.
+            Only modules which were not processed by installation process on this instance are returned.
+            </summary>
+            <param name="state">State of installable modules from which the result is determined.</param>
+            <returns>Enumeration of modules for installation.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.GetModulesToBeUpdated(CMS.Modules.InstallableModulesState)">
+            <summary>
+            <para>
+            Gets enumeration of module pairs which have NuGet package meta file in newer version than the version installed in the system.
+            Only modules which were processed by installation process on this instance are returned.
+            </para>
+            <para>
+            Each pair consists of older version meta data and newer version meta data.
+            </para>
+            </summary>
+            <param name="state">State of installable modules from which the result is determined.</param>
+            <returns>Enumeration of module pairs for update.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.GetModulesToBeUninstalled(CMS.Modules.InstallableModulesState)">
+            <summary>
+            Gets enumeration of modules which are installed in the system, but their NuGet package meta file is gone.
+            Only modules which were processed by installation process on this instance are returned.
+            </summary>
+            <param name="state">State of installable modules from which the result is determined.</param>
+            <returns>Enumeration of modules for uninstallation.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.GetInstalledModulesWithoutUninstallationToken(CMS.Modules.InstallableModulesState)">
+            <summary>
+            Gets enumeration of modules which are installed in the system, but their uninstallation token is not present.
+            </summary>
+            <param name="state">State of installable modules from which the result is determined.</param>
+            <returns>Enumeration of installed modules without token.</returns>
+            <remarks>
+            Missing token for installed modules is usually the result of module installation in an environment where multiple instances
+            share one database.
+            </remarks>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.GetUninstalledModulesWithUninstallationToken(CMS.Modules.InstallableModulesState)">
+            <summary>
+            Gets enumeration of modules which were uninstalled from the system, but their uninstallation token is still present.
+            </summary>
+            <param name="state">State of installable modules from which the result is determined.</param>
+            <returns>Enumeration of uninstalled modules which have redundant token.</returns>
+            <remarks>
+            Redundant token for a module is usually the result of module uninstallation in an environment where multiple instances
+            share one database.
+            </remarks>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.MarkModuleAsInstalled(CMS.Core.BasicModuleInstallationMetaData,System.Boolean)">
+            <summary>
+            Marks given module as installed, or installed but in need of a restart.
+            </summary>
+            <param name="moduleInstallationMetaData">Basic module installation meta data.</param>
+            <param name="restartPending">Whether module needs a restart to be ready.</param>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.RestartPerformed">
+            <summary>
+            Notifies the manager about performed restart.
+            </summary>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.EnsureModuleUninstallationToken(CMS.Core.BasicModuleInstallationMetaData)">
+            <summary>
+            Ensures uninstallation token for given <paramref name="moduleInstallationMetaData"/>.
+            </summary>
+            <param name="moduleInstallationMetaData">Basic module installation meta data.</param>
+            <remarks>
+            <para>
+            Module uninstallation token allows for module uninstallation. Module uninstallation can be performed only
+            on an instance which has the token. This prevents unintended uninstallation of module whose code base
+            has not been distributed to all application servers yet.
+            </para>
+            <para>
+            Moreover once an instance has the token, it will not reinstall the module. This prevents unintended reinstallation
+            of module which has been uninstalled on one instance and the code base has not been synchronized yet.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.RemoveModuleUninstallationToken(CMS.Core.BasicModuleInstallationMetaData)">
+            <summary>
+            Removes uninstallation token for given <paramref name="moduleInstallationMetaData"/>.
+            Does nothing when the token does not exist.
+            </summary>
+            <param name="moduleInstallationMetaData">Basic module installation meta data.</param>
+            <remarks>
+            <para>
+            Module uninstallation token allows for module uninstallation. Module uninstallation can be performed only
+            on an instance which has the token. This prevents unintended uninstallation of module whose code base
+            has not been distributed to all application servers yet.
+            </para>
+            <para>
+            Moreover once an instance has the token, it will not reinstall the module. This prevents unintended reinstallation
+            of module which has been uninstalled on one instance and the code base has not been synchronized yet.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.SetModuleInstallationState(CMS.Core.BasicModuleInstallationMetaData,System.String)">
+            <summary>
+            Sets state of installable module to desired state.
+            </summary>
+            <param name="moduleInstallationMetaData">Basic module installation meta data.</param>
+            <param name="state">Installation state.</param>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.GetInitializableModules">
+            <summary>
+            Gets modules which are initializable.
+            </summary>
+            <returns>Object query for initializable modules</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.GetModulesByInstallationState(System.String)">
+            <summary>
+            Gets modules in given installation state.
+            </summary>
+            <param name="installationState">Module's installation state.</param>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.GetInstalledModules">
+            <summary>
+            Gets list of modules installed in the database.
+            </summary>
+            <returns>List of installed modules.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.GetTokenMetaFileName(CMS.Core.BasicModuleInstallationMetaData)">
+            <summary>
+            Gets token meta file name for module meta data.
+            </summary>
+            <param name="moduleInstallationMetaData">Basic module installation meta data.</param>
+            <returns>Token meta file name.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.GetNuGetModules">
+            <summary>
+            Loads description of modules installed by NuGet.
+            </summary>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.ParseBasicModuleDescriptionFileName(System.String,System.String@,System.String@)">
+            <summary>
+            Parses module name and version from basic module description meta file name.
+            The file name has to follow the <see cref="F:CMS.Modules.InstallableModulesManager.MODULE_DESCRIPTION_META_FILE_NAME_PATTERN"/> format.
+            </summary>
+            <param name="descriptionFileName">Basic module description meta file name.</param>
+            <param name="name">Module name parsed from file name.</param>
+            <param name="version">Module version parsed from file name.</param>
+            <exception cref="T:System.IO.InvalidDataException">Thrown when file name has not the expected format.</exception>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.GetNuGetModuleDescriptionFileNames">
+            <summary>
+            Gets enumeration of meta file names (managed by NuGet) containing description of modules.
+            </summary>
+            <returns>Enumeration of meta file names.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.GetUninstallationTokenFileNames">
+            <summary>
+            Gets enumeration of uninstallation tokens (meta files).
+            </summary>
+            <returns>Enumeration of meta file names.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesManager.TryEnsureMetaFilesPath(System.String,System.String)">
+            <summary>
+            Tries to ensure meta files path.
+            </summary>
+            <param name="metaFilesPath">Meta files path.</param>
+            <param name="startingPath">Starting path.</param>
+        </member>
+        <member name="P:CMS.Modules.InstallableModulesManager.Current">
+            <summary>
+            Gets current instance.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.InstallableModulesManager.RootPath">
+            <summary>
+            Root path for resolving relative paths.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.InstallableModulesManager.NuGetModulesMetaFilesPath">
+            <summary>
+            Rooted path to directory containing module descriptions managed by NuGet (with trailing slash).
+            Each description file is expected to be named accordingly to <see cref="F:CMS.Modules.InstallableModulesManager.MODULE_DESCRIPTION_META_FILE_NAME_PATTERN"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.InstallableModulesManager.InstalledNuGetModulesMetaFilesPath">
+            <summary>
+            Rooted path to directory containing meta files of installed modules (with trailing slash).
+            </summary>
+        </member>
+        <member name="T:CMS.Modules.InstallableModulesState">
+            <summary>
+            State object containing information regarding installable modules.
+            </summary>
+        </member>
+        <member name="F:CMS.Modules.InstallableModulesState.mNuGetInstalledModules">
+            <summary>
+            List with basic module installation meta data from the <see cref="F:CMS.Modules.InstallableModulesManager.NUGET_MODULES_META_FILES_PATH"/> folder.
+            </summary>
+        </member>
+        <member name="F:CMS.Modules.InstallableModulesState.mUninstallationTokens">
+            <summary>
+            List with module uninstallation tokens from the <see cref="F:CMS.Modules.InstallableModulesManager.INSTALLED_NUGET_MODULES_META_FILES_PATH"/> folder.
+            </summary>
+        </member>
+        <member name="F:CMS.Modules.InstallableModulesState.mDatabaseInstalledModules">
+            <summary>
+            List of modules installed in the database.
+            </summary>
+        </member>
+        <member name="F:CMS.Modules.InstallableModulesState.mNuGetInstalledModuleVersions">
+            <summary>
+            Dictionary with module name and version pairs. Contains the same entries as <see cref="F:CMS.Modules.InstallableModulesState.mNuGetInstalledModules"/>.
+            </summary>
+        </member>
+        <member name="F:CMS.Modules.InstallableModulesState.mUninstallationTokenVersions">
+            <summary>
+            Dictionary with uninstallation tokens for modules - set of versions for given name. Contains the same entries as <see cref="F:CMS.Modules.InstallableModulesState.mUninstallationTokens"/>.
+            </summary>
+            <remarks>
+            Token for certain module can be present in more than one version when upgrading.
+            </remarks>
+        </member>
+        <member name="F:CMS.Modules.InstallableModulesState.mDatabaseInstalledModuleVersions">
+            <summary>
+            Dictionary with modules in the database - name and version pairs. Contains the same entries as <see cref="F:CMS.Modules.InstallableModulesState.mDatabaseInstalledModules"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesState.IsNuGetModulePresent(System.String)">
+            <summary>
+            Tells you whether module of given <paramref name="name"/> is present in any version.
+            </summary>
+            <param name="name">Module name.</param>
+            <returns>True if the module is present, false otherwise.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesState.IsNuGetModulePresent(System.String,System.String)">
+            <summary>
+            Tells you whether module of given <paramref name="name"/> is present in specified <paramref name="version"/>.
+            </summary>
+            <param name="name">Module name.</param>
+            <param name="version">Module version.</param>
+            <returns>True if the module is present, false otherwise.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesState.IsUninstallationTokenPresent(System.String,System.String)">
+            <summary>
+            Tells you whether uninstallation token for module of given <paramref name="name"/> is present in specified <paramref name="version"/>.
+            </summary>
+            <param name="name">Module name.</param>
+            <param name="version">Module version.</param>
+            <returns>True if uninstallation token is present, false otherwise.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesState.IsDatabaseModulePresent(System.String)">
+            <summary>
+            Tells you whether module of given <paramref name="name"/> is present in any version in the database.
+            </summary>
+            <param name="name">Module name.</param>
+            <returns>True if the module is present, false otherwise.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesState.IsDatabaseModulePresent(System.String,System.String)">
+            <summary>
+            Tells you whether module of given <paramref name="name"/> is present in specified <paramref name="version"/> in the database.
+            </summary>
+            <param name="name">Module name.</param>
+            <param name="version">Module version.</param>
+            <returns>True if the module is present, false otherwise.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesState.IsDatabaseModulePresentInLowerVersion(System.String,System.String)">
+            <summary>
+            Tells you whether module of given <paramref name="name"/> is present in version which is less than <paramref name="newVersion"/>.
+            </summary>
+            <param name="name">Module name.</param>
+            <param name="newVersion">Module version.</param>
+            <returns>True if the module is present, false otherwise.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesState.GetDatabaseModule(System.String)">
+            <summary>
+            Gets module of given <paramref name="name"/> from <see cref="P:CMS.Modules.InstallableModulesState.DatabaseInstalledModules"/>.
+            </summary>
+            <param name="name">Module name.</param>
+            <returns>Module of given <paramref name="name"/>.</returns>
+            <remarks>
+            Use <see cref="M:CMS.Modules.InstallableModulesState.IsDatabaseModulePresent(System.String)"/>, <see cref="M:CMS.Modules.InstallableModulesState.IsDatabaseModulePresent(System.String,System.String)"/> or <see cref="M:CMS.Modules.InstallableModulesState.IsDatabaseModulePresentInLowerVersion(System.String,System.String)"/> to determine whether module
+            of name <paramref name="name"/> exists in the database.
+            </remarks>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesState.VersionsMatch(System.String,System.String)">
+            <summary>
+            Tells you whether two version strings represent the same version or not.
+            </summary>
+            <param name="version1">Version string.</param>
+            <param name="version2">Version string.</param>
+            <returns>True if <paramref name="version1"/> represents the same version as <paramref name="version2"/>.</returns>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesState.FillDictionaries">
+            <summary>
+            Prepares lookup dictionaries.
+            </summary>
+        </member>
+        <member name="M:CMS.Modules.InstallableModulesState.#ctor(System.Collections.Generic.List{CMS.Core.BasicModuleInstallationMetaData},System.Collections.Generic.List{CMS.Core.BasicModuleInstallationMetaData},System.Collections.Generic.List{CMS.Modules.ResourceInfo})">
+            <summary>
+            Creates a new installable modules state.
+            </summary>
+            <param name="installedNuGetModules">List of modules installed by NuGet.</param>
+            <param name="uninstallationTokens">List of uninstallation tokens.</param>
+            <param name="installedDatabaseModules">List of modules installed in the database.</param>
+        </member>
+        <member name="P:CMS.Modules.InstallableModulesState.NuGetInstalledModules">
+            <summary>
+            List with basic module installation meta data from the <see cref="F:CMS.Modules.InstallableModulesManager.NUGET_MODULES_META_FILES_PATH"/> folder.
+            </summary>
+            <seealso cref="M:CMS.Modules.InstallableModulesState.IsDatabaseModulePresent(System.String)"/>
+        </member>
+        <member name="P:CMS.Modules.InstallableModulesState.UninstallationTokens">
+            <summary>
+            List with module uninstallation tokens from the <see cref="F:CMS.Modules.InstallableModulesManager.INSTALLED_NUGET_MODULES_META_FILES_PATH"/> folder.
+            </summary>
+            <seealso cref="M:CMS.Modules.InstallableModulesState.IsUninstallationTokenPresent(System.String,System.String)"/>
+        </member>
+        <member name="P:CMS.Modules.InstallableModulesState.DatabaseInstalledModules">
+            <summary>
+            List of modules installed in the database.
+            </summary>
+            <seealso cref="M:CMS.Modules.InstallableModulesState.IsDatabaseModulePresent(System.String)"/>
+        </member>
+        <member name="T:CMS.Modules.ModuleInstallationException">
+            <summary>
+            Thrown when module installation operation fails.
+            </summary>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstallationException.#ctor">
+            <summary>
+            Creates a new instance of ModuleInstallationException.
+            </summary>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstallationException.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            Creates a new instance of ModuleInstallationException.
+            </summary>
+            <param name="message">Exception's message.</param>
+            <param name="moduleName">Name of the module that caused the exception.</param>
+            <param name="operation">Name of the operation that caused the exception.</param>
+            <param name="moduleVersion">Version of the module that caused the exception.</param>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstallationException.#ctor(System.String,System.String,System.String,System.Exception)">
+            <summary>
+            Creates a new instance of ModuleInstallationException.
+            </summary>
+            <param name="message">Exception's message.</param>
+            <param name="moduleName">Name of the module that caused the exception.</param>
+            <param name="operation">Name of the operation that caused the exception.</param>
+            <param name="inner">Inner exception.</param>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstallationException.#ctor(System.String,System.String,System.String,System.String,System.Exception)">
+            <summary>
+            Creates a new instance of ModuleInstallationException.
+            </summary>
+            <param name="message">Exception's message.</param>
+            <param name="moduleName">Name of the module that caused the exception.</param>
+            <param name="operation">Name of the operation that caused the exception.</param>
+            <param name="moduleVersion">Version of the module that caused the exception.</param>
+            <param name="inner">Inner exception.</param>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstallationException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Creates a new instance of ModuleInstallationException.
+            </summary>
+            <param name="info">SerializationInfo.</param>
+            <param name="context">StreamingContext.</param>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstallationException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Populates a SerializationInfo with the data needed to serialize the target object.
+            </summary>
+            <param name="info">The SerializationInfo to populate with data. </param>
+            <param name="context">The destination (see StreamingContext) for this serialization. </param>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationException.ModuleName">
+            <summary>
+            Gets name of the module that caused the exception.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationException.ModuleVersion">
+            <summary>
+            Gets version of the module that caused the exception.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationException.Operation">
+            <summary>
+            Gets the name of installation operation that caused the exception.
+            </summary>
+        </member>
+        <member name="T:CMS.Modules.ModuleInstallationState">
+            <summary>
+            Contains installation well-known states of modules.
+            </summary>
+        </member>
+        <member name="F:CMS.Modules.ModuleInstallationState.INSTALLED">
+            <summary>
+            State of a module which is installed in the DB (ready to use).
+            </summary>
+        </member>
+        <member name="F:CMS.Modules.ModuleInstallationState.INSTALLED_PENDING_RESTART">
+            <summary>
+            State of a module which is installed in the DB, but needs a restart to be fully operable.
+            </summary>
+        </member>
+        <member name="T:CMS.Modules.ModuleInstaller">
+            <summary>
+            Class responsible for modules installation from the high level perspective.
+            </summary>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstaller.ProcessInstallation">
+            <summary>
+            Processes installation changes in modules.
+            </summary>
+            <returns>Returns true if the installation changes finished successfully, false otherwise.</returns>
+            <remarks>
+            The installation changes stop on first failing module.
+            </remarks>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstaller.ResetUninstallationTokens">
+            <summary>
+            <para>
+            Cleans out uninstallation tokens for all modules, including associated data (i.e. module uninstallation files).
+            This allows for module re-installation when the database has been lost, but the modules are still present
+            in code base (e.g. after dropping the database and installing a new one using the wizard).
+            </para>
+            <para>
+            This method must be called after application pre-initialization phase has finished (to reflect changes in custom path mapping).
+            When called after the instance has already been initialized (and module installation processed), the module re-installation will occur upon next startup.
+            </para>
+            </summary>
+            <remarks>
+            <para>
+            Reset of module uninstallation tokens allows for re-installation of modules which had already been processed by this instance,
+            but have not been uninstalled (i.e. have not been removed from the code base). It is designed for situations when you want need
+            to install all modules again (e.g. after database has been recreated to its initial state).
+            If you need to allow for re-installation of some particular module, you should simply uninstall it (i.e. remove from code base) and then install again.
+            </para>
+            <para>
+            If you reset uninstallation tokens when modules are installed (i.e. they are present in the database and code base), you prevent them from being uninstalled by this instance.
+            However, the instance will recover the missing tokens (and associated data) for installed modules upon its next startup.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstaller.InstallModule(CMS.Core.BasicModuleInstallationMetaData,CMS.Base.IUserInfo)">
+            <summary>
+            Installs a new module to the system.
+            </summary>
+            <param name="basicModuleInstallationMetaData">Basic module installation meta data.</param>
+            <param name="userInfo">User info to be used for module installation.</param>
+            <exception cref="T:CMS.Modules.ModuleInstallationException">Thrown when installation fails.</exception>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstaller.UpdateModule(CMS.Core.BasicModuleInstallationMetaData,CMS.Core.BasicModuleInstallationMetaData,CMS.Base.IUserInfo)">
+            <summary>
+            Updates a module installed in the system.
+            </summary>
+            <param name="installedModuleVersion">Basic module installation meta data of currently installed module version.</param>
+            <param name="updatedModuleVersion">Basic module installation meta data of newer module version.</param>
+            <param name="userInfo">User info to be used for module update.</param>
+            <exception cref="T:CMS.Modules.ModuleInstallationException">Thrown when module update fails.</exception>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstaller.UninstallModule(CMS.Core.BasicModuleInstallationMetaData)">
+            <summary>
+            Uninstalls a module from the system.
+            </summary>
+            <param name="basicModuleInstallationMetaData">Basic module installation meta data.</param>
+            <exception cref="T:CMS.Modules.ModuleInstallationException">Thrown when uninstallation fails.</exception>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstaller.FinishModuleInstallation(CMS.Core.BasicModuleInstallationMetaData,CMS.Modules.ModuleInstallationFileResolver)">
+            <summary>
+            Performs finish actions after module installation. Writes to event log in case of failure.
+            Failure to perform the actions has no impact on module functionality. However, such module
+            can not be uninstalled until finish actions are successfully performed.
+            </summary>
+            <param name="basicModuleInstallationMetaData">Basic module installation meta data.</param>
+            <param name="fileResolver">Resolver for module paths.</param>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstaller.FinishModuleUninstallation(CMS.Core.BasicModuleInstallationMetaData,CMS.Modules.ModuleInstallationFileResolver)">
+            <summary>
+            Performs finish actions after module uninstallation. Writes to event log in case of failure.
+            Failure to perform the actions has not direct impact on module uninstallation. However, such module
+            can not be installed again until finish actions are successfully performed.
+            </summary>
+            <param name="basicModuleInstallationMetaData">Basic module installation meta data.</param>
+            <param name="fileResolver">Resolver for module paths.</param>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstaller.FinishModuleUninstallationInternal(CMS.Core.BasicModuleInstallationMetaData,CMS.Modules.ModuleInstallationFileResolver)">
+            <summary>
+            Performs finish actions after module uninstallation. Does not handle exceptions.
+            Failure to perform the actions has not direct impact on module uninstallation. However, such module
+            can not be installed again until finish actions are successfully performed.
+            </summary>
+            <param name="basicModuleInstallationMetaData">Basic module installation meta data.</param>
+            <param name="fileResolver">Resolver for module paths.</param>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstaller.CopyUninstallationFiles(CMS.Modules.ModuleInstallationFileResolver)">
+            <summary>
+            Copies module files, which are necessary for uninstallation, to repository.
+            </summary>
+            <param name="fileResolver">Resolver for module paths.</param>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstaller.CopyUninstallationFile(System.String,System.String)">
+            <summary>
+            Copies uninstallation file if it exists. Ensures the <paramref name="targetFilePath"/> existence before copying.
+            Overwrites existing file.
+            </summary>
+            <param name="sourceFilePath">Source path.</param>
+            <param name="targetFilePath">Target path.</param>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstaller.SetRestartFlag(System.Boolean)">
+            <summary>
+            Sets restart flag if <paramref name="restartNeeded"/> is true.
+            Otherwise does nothing.
+            </summary>
+            <param name="restartNeeded">True if restart is needed, false otherwise.</param>
+            <remarks>
+            Modules having a DLL are omitted from the initialization and therefore
+            are not fully ready until application is restarted.
+            </remarks>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstaller.IsRestartNeeded(CMS.Core.BasicModuleInstallationMetaData)">
+            <summary>
+            Tells you whether module needs restart after making installation changes.
+            </summary>
+            <param name="basicModuleInstallationMetaData">Basic module installation meta data.</param>
+            <returns>True if module needs restart, false otherwise.</returns>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstaller.ExecuteSqlScript(System.String,CMS.DataEngine.QueryDataParameters)">
+            <summary>
+            Executes SQL script from a file.
+            </summary>
+            <param name="sqlScriptFilePath">SQL script file path.</param>
+            <param name="parameters">Query parameters.</param>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstaller.RemoveInstalledModuleRepository(CMS.Modules.ModuleInstallationFileResolver)">
+            <summary>
+            Removes all installed module meta data.
+            </summary>
+            <param name="fileResolver">File resolver used for resolving module meta file paths.</param>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstaller.RemoveInstalledModuleData(System.String)">
+            <summary>
+            Removes all module's data from the database.
+            </summary>
+            <param name="moduleName">Module code name.</param>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstaller.#ctor">
+            <summary>
+            Prepares the only instance of module installer.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstaller.Current">
+            <summary>
+            Gets current instance.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstaller.RestartRequired">
+            <summary>
+            Tells you whether module installer has processed any module requiring application restart.
+            Once set to true the flag is not cleared until application is restarted.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstaller.RootPath">
+            <summary>
+            Path to application root.
+            </summary>
+        </member>
+        <member name="T:CMS.Modules.Internal.ModuleInstallerConfiguration">
+            <summary>
+            Holds configuration information for module installation.
+            </summary>
+            <remarks>
+            This API supports the framework infrastructure and is not intended to be used directly from your code.
+            </remarks>
+        </member>
+        <member name="M:CMS.Modules.Internal.ModuleInstallerConfiguration.GetInstallationUser">
+            <summary>
+            Gets user to be used in module installation.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.Internal.ModuleInstallerConfiguration.ModuleInstallerUserProvider">
+            <summary>
+            Gets or sets function providing user for the purpose of module installation.
+            </summary>
+            <remarks>
+            The provided user is used in the process of macro signing.
+            </remarks>
+        </member>
+        <member name="T:CMS.Modules.ModuleDataProvider">
+            <summary>
+            Provides module objects of supported types from database.
+            </summary>
+        </member>
+        <member name="F:CMS.Modules.ModuleDataProvider.mSupportedObjectTypes">
+            <summary>
+            Contains object types of supported module database objects.
+            </summary>
+        </member>
+        <member name="M:CMS.Modules.ModuleDataProvider.GetModuleObjects(System.String)">
+            <summary>
+            Gets object query for module objects of given type.
+            <paramref name="objectType"/> must be one of those enumerated in <see cref="P:CMS.Modules.ModuleDataProvider.SupportedObjectTypes"/>, otherwise returns null.
+            </summary>
+            <param name="objectType">Type of object to return object query for.</param>
+            <returns>Object query for given object type, or null.</returns>
+            <seealso cref="P:CMS.Modules.ModuleDataProvider.SupportedObjectTypes"/>
+        </member>
+        <member name="M:CMS.Modules.ModuleDataProvider.GetModulePageTypes">
+            <summary>
+            Gets object query for page types (contained in module) to be included in the export package.
+            </summary>
+            <returns>Page types of module</returns>
+        </member>
+        <member name="M:CMS.Modules.ModuleDataProvider.GetModuleWebParts">
+            <summary>
+            Gets object query for web parts (contained in module) to be included in the export package.
+            </summary>
+            <returns>Web parts of module</returns>
+        </member>
+        <member name="M:CMS.Modules.ModuleDataProvider.GetModuleWebPartCategories">
+            <summary>
+            Gets object query for web part categories (contained in module) to be included in the export package.
+            </summary>
+            <returns>Web part categories of module</returns>
+        </member>
+        <member name="M:CMS.Modules.ModuleDataProvider.GetModuleFormControls">
+            <summary>
+            Gets object query for form controls (contained in module) to be included in the export package.
+            </summary>
+            <returns>Form controls of module</returns>
+        </member>
+        <member name="M:CMS.Modules.ModuleDataProvider.GetModuleSettingsKeys">
+            <summary>
+            Gets object query for settings keys (contained in module) to be included in the export package.
+            </summary>
+            <returns>Settings keys of module</returns>
+        </member>
+        <member name="M:CMS.Modules.ModuleDataProvider.GetModuleSettingsCategories">
+            <summary>
+            Gets object query for settings categories (contained in module) to be included in the export package.
+            </summary>
+            <returns>Settings categories of module</returns>
+        </member>
+        <member name="M:CMS.Modules.ModuleDataProvider.#ctor(CMS.Modules.ResourceInfo)">
+            <summary>
+            Creates a new module database objects provider.
+            </summary>
+            <param name="module">Module for which the objects are retrieved.</param>
+        </member>
+        <member name="P:CMS.Modules.ModuleDataProvider.SupportedObjectTypes">
+            <summary>
+            Enumerates object types which are considered as module's objects.
+            The module object type itself ("cms.resource") is not present in the enumeration.
+            </summary>
+            <returns>Enumeration of object types.</returns>
+            <seealso cref="M:CMS.Modules.ModuleDataProvider.GetModuleObjects(System.String)"/>
+        </member>
+        <member name="T:CMS.Modules.ModuleExportPackageImporter">
+            <summary>
+            Class responsible for import of export package shipped with installable module.
+            </summary>
+        </member>
+        <member name="M:CMS.Modules.ModuleExportPackageImporter.Import(System.String)">
+            <summary>
+            Imports package residing in <paramref name="exportPackagePath"/>.
+            </summary>
+            <param name="exportPackagePath">Path to export package.</param>
+        </member>
+        <member name="M:CMS.Modules.ModuleExportPackageImporter.CreateImportSettings(System.String)">
+            <summary>
+            Creates new settings object for import and sets its basic properties.
+            </summary>
+            <param name="sourceFilePath">Path to the zip for importing.</param>
+            <returns>Import settings.</returns>
+        </member>
+        <member name="M:CMS.Modules.ModuleExportPackageImporter.#ctor(CMS.Base.IUserInfo)">
+            <summary>
+            Creates a new instance of module package importer.
+            </summary>
+            <param name="userInfo">User info to be used in the import process.</param>
+        </member>
+        <member name="T:CMS.Modules.ModuleInstallationMetaDataBuilder">
+            <summary>
+            Builds meta data needed on target instance for module
+            installation/uninstallation.
+            </summary>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstallationMetaDataBuilder.BuildModuleDescription(System.String,System.String)">
+            <summary>
+            Builds a new module description meta file.
+            </summary>
+            <param name="targetFolderPath">Target folder where to build the meta file.</param>
+            <param name="targetFileName">Name of the built meta file.</param>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstallationMetaDataBuilder.#ctor(CMS.Modules.ResourceInfo)">
+            <summary>
+            Creates a new builder handling installation meta files creation.
+            </summary>
+            <param name="module">Module for which the meta files will be created</param>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstallationMetaDataBuilder.Save(System.String,CMS.Core.ModuleInstallationMetaData)">
+            <summary>
+            Saves meta data to file.
+            </summary>
+            <param name="fileName">File name.</param>
+            <param name="metaData">Meta data to be serialized to file.</param>
+        </member>
         <member name="T:CMS.Modules.ModuleFile">
             <summary>
             Specifies module file that will be included in the module package.
@@ -29,17 +810,70 @@
         </member>
         <member name="T:CMS.Modules.ModuleFileResolver">
             <summary>
-            Provides paths to all module files and folders.
+            Provides paths to all module files and folders which are needed during installation package creation.
             </summary>
         </member>
-        <member name="F:CMS.Modules.ModuleFileResolver.mContentPathRules">
+        <member name="T:CMS.Modules.ModuleFileResolverBase">
             <summary>
-            Specifies all paths where module files can be located. 
+            Base class for resolving paths to all module files and folders related to installation packages.
+            </summary>
+        </member>
+        <member name="F:CMS.Modules.ModuleFileResolverBase.EXPORT_PACKAGE_FILE_NAME_PATTERN">
+            <summary>
+            File name pattern for import/export package.
             </summary>
             <remarks>
             Substitution '{0}' is replaced by the module codename.
             Substitution '{1}' is replaced by the module version.
             </remarks>
+        </member>
+        <member name="F:CMS.Modules.ModuleFileResolverBase.INSTALLATION_DIRECTORY_PATH_PATTERN">
+            <summary>
+            Path pattern for module installation directory.
+            </summary>
+            <remarks>
+            Substitution '{0}' is replaced by the module codename.
+            </remarks>
+        </member>
+        <member name="F:CMS.Modules.ModuleFileResolverBase.UPDATE_DIRECTORY_PATH_PATTERN">
+            <summary>
+            Path pattern for module update directory.
+            </summary>
+            <remarks>
+            Substitution '{0}' is replaced by the module codename.
+            </remarks>
+        </member>
+        <member name="F:CMS.Modules.ModuleFileResolverBase.UNINSTALLATION_DIRECTORY_PATH_PATTERN">
+            <summary>
+            Path pattern for module uninstallation directory.
+            </summary>
+            <remarks>
+            Substitution '{0}' is replaced by the module codename.
+            </remarks>
+        </member>
+        <member name="F:CMS.Modules.ModuleFileResolverBase.SQL_BEFORE_FILE_NAME">
+            <summary>
+            Name of SQL script executed before data import.
+            </summary>
+        </member>
+        <member name="F:CMS.Modules.ModuleFileResolverBase.SQL_AFTER_FILE_NAME">
+            <summary>
+            Name of SQL script executed after data import.
+            </summary>
+        </member>
+        <member name="M:CMS.Modules.ModuleFileResolverBase.SubstitutePath(System.String,System.String,System.String)">
+            <summary>
+            Performs substitution in path pattern.
+            </summary>
+            <param name="path">Path in which to perform the substitution.</param>
+            <param name="codename">Module name.</param>
+            <param name="version">Module version.</param>
+            <returns>Substituted path.</returns>
+        </member>
+        <member name="F:CMS.Modules.ModuleFileResolver.mInstanceGuid">
+            <summary>
+            GUID to be used in paths so that each instance has its own temp folders.
+            </summary>
         </member>
         <member name="F:CMS.Modules.ModuleFileResolver.mExcludedContentFileExtensions">
             <summary>
@@ -61,6 +895,11 @@
             </summary>
             <param name="module">Resource info specifying module for which paths are created.</param>
             <param name="rootPath">Root physical path. All paths are relative to this path.</param>
+        </member>
+        <member name="M:CMS.Modules.ModuleFileResolver.GetMetaDataFiles">
+            <summary>
+            Gets source and target paths of all module's installation meta data files.
+            </summary>
         </member>
         <member name="M:CMS.Modules.ModuleFileResolver.GetContentFiles">
             <summary>
@@ -85,6 +924,63 @@
             <param name="path">Path that can contain substitutions.</param>
             <returns>Resolved path.</returns>
         </member>
+        <member name="P:CMS.Modules.ModuleFileResolver.TemporaryFolderPathPattern">
+            <summary>
+            Path pattern to folder for temporary files. All temporary paths
+            must be created from this path so that all temporary
+            data can be deleted at once.
+            </summary>
+            <remarks>
+            Substitution '{0}' is replaced by the module codename.
+            </remarks>
+        </member>
+        <member name="P:CMS.Modules.ModuleFileResolver.ExportPackageFolderPathPattern">
+            <summary>
+            Path pattern to folder where export package is to be stored.
+            </summary>
+            <remarks>
+            Substitution '{0}' is replaced by the module codename.
+            </remarks>
+        </member>
+        <member name="P:CMS.Modules.ModuleFileResolver.ExportPackagePathPattern">
+            <summary>
+            Path pattern to file where export package is to be stored.
+            </summary>
+            <remarks>
+            Substitution '{0}' is replaced by the module codename.
+            Substitution '{1}' is replaced by the module version.
+            </remarks>
+        </member>
+        <member name="P:CMS.Modules.ModuleFileResolver.ExportPackageTempFolderPathPattern">
+            <summary>
+            Path pattern to folder where export package temporary data are to be stored.
+            </summary>
+            <remarks>
+            Substitution '{0}' is replaced by the module codename.
+            </remarks>
+        </member>
+        <member name="P:CMS.Modules.ModuleFileResolver.InstallationMetaDataTempFolderPathPattern">
+            <summary>
+            Path pattern to folder where installation meta data are to be stored.
+            </summary>
+            <remarks>
+            Substitution '{0}' is replaced by the module codename.
+            </remarks>
+        </member>
+        <member name="P:CMS.Modules.ModuleFileResolver.ContentPathRules">
+            <summary>
+            Specifies all paths where module files can be located. 
+            </summary>
+            <remarks>
+            Substitution '{0}' is replaced by the module codename.
+            Substitution '{1}' is replaced by the module version.
+            </remarks>
+        </member>
+        <member name="P:CMS.Modules.ModuleFileResolver.InstallationMetaDataPathRules">
+            <summary>
+            Specifies all paths where module installation meta data files can be located.
+            </summary>
+        </member>
         <member name="P:CMS.Modules.ModuleFileResolver.ExportPackageFolderPhysicalPath">
             <summary>
             Gets the physical path of the folder where the export package with module's data is located.
@@ -99,6 +995,152 @@
             <summary>
             Gets the physical path of the folder that is used as temporary storage while creating the package with module's data.
             </summary>
+        </member>
+        <member name="P:CMS.Modules.ModuleFileResolver.InstallationMetaDataTempFolderPhysicalPath">
+            <summary>
+            Gets the physical path of the folder that is used as temporary storage for installation meta data.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.ModuleFileResolver.InstallationMetaDataModuleDescriptionFileName">
+            <summary>
+            Gets the name of file containing installation module description.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.ModuleFileResolver.TemporaryFilesPath">
+            <summary>
+            Gets the physical path of the folder that is used as temporary storage during package creation.
+            All temporary paths are subfolders of this path so deleting this folder safely removes all
+            temporary data.
+            </summary>
+        </member>
+        <member name="T:CMS.Modules.ModuleInstallationFileResolver">
+            <summary>
+            Provides paths to all module files and folders which are needed during package installation.
+            </summary>
+        </member>
+        <member name="F:CMS.Modules.ModuleInstallationFileResolver.INSTALLED_NUGET_MODULES_REPOSITORY">
+            <summary>
+            Relative path to directory containing all meta files of installed modules (with trailing slash).
+            The directory serves as a repository. Once the module is removed via NuGet, the meta files have to be still available.
+            </summary>
+            <remarks>
+            Substitution '{0}' is replaced by the module codename.
+            Substitution '{1}' is replaced by the module version.
+            </remarks>
+        </member>
+        <member name="F:CMS.Modules.ModuleInstallationFileResolver.INSTALLED_NUGET_MODULES_UNINSTALLATION_FILES_REPOSITORY">
+            <summary>
+            Relative path to directory containing files of installed modules which are necessary for proper uninstallation (with trailing slash).
+            The directory serves as a repository. Once the module is removed via NuGet, the uninstallation files have to be still available.
+            </summary>
+            <remarks>
+            Substitution '{0}' is replaced by the module codename.
+            Substitution '{1}' is replaced by the module version.
+            </remarks>
+        </member>
+        <member name="M:CMS.Modules.ModuleInstallationFileResolver.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Creates a new file path resolver for installation/update/uninstallation of modules.
+            </summary>
+            <param name="rootPath">Root physical path. All paths are relative to this path.</param>
+            <param name="moduleName">Name of module for which paths are created.</param>
+            <param name="moduleVersion">Version of module for which paths are created.</param>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationFileResolver.InstallationExportPackagePath">
+            <summary>
+            Path to module import/export package.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationFileResolver.InstallationBeforeSqlPath">
+            <summary>
+            Path to SQL script to be executed before module package import.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationFileResolver.InstallationAfterSqlPath">
+            <summary>
+            Path to SQL script to be executed after module package import.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationFileResolver.UninstallationBeforeSqlPath">
+            <summary>
+            Path to SQL script to be executed before module DB data uninstallation.
+            </summary>
+            <remarks>
+            Path points to NuGet package, but the script is backed-up in local repository
+            since after module is removed via NuGet, the file would be inaccessible.
+            </remarks>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationFileResolver.UninstallationAfterSqlPath">
+            <summary>
+            Path to SQL script to be executed after module DB data uninstallation.
+            </summary>
+            <remarks>
+            Path points to NuGet package, but the script is backed-up in local repository
+            since after module is removed via NuGet, the file would be inaccessible.
+            </remarks>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationFileResolver.UpdateBeforeSqlPath">
+            <summary>
+            Path to SQL script to be executed before module DB data update.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationFileResolver.UpdateAfterSqlPath">
+            <summary>
+            Path to SQL script to be executed after module DB data update.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationFileResolver.UninstallationBeforeSqlRepositoryPath">
+            <summary>
+            Path to SQL script to be executed before module DB data uninstallation.
+            </summary>
+            <remarks>
+            Path points to repository which is available even after module is removed via NuGet.
+            </remarks>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationFileResolver.UninstallationAfterSqlRepositoryPath">
+            <summary>
+            Path to SQL script to be executed after module DB data uninstallation.
+            </summary>
+            <remarks>
+            Path points to repository which is available even after module is removed via NuGet.
+            </remarks>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationFileResolver.RepositoryPath">
+            <summary>
+            Rooted path to module meta data repository folder.
+            </summary>
+            <remarks>
+            Path points to repository which is available even after module is removed via NuGet.
+            </remarks>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationFileResolver.RootedInstallationPath">
+            <summary>
+            Rooted path to module installation folder with performed substitutions.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationFileResolver.RootedUpdatePath">
+            <summary>
+            Rooted path to module update folder with performed substitutions.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationFileResolver.RootedUninstallationPath">
+            <summary>
+            Rooted path to module uninstallation folder with performed substitutions.
+            </summary>
+            <remarks>
+            Path points to NuGet package, but the path content is backed-up in local repository
+            since after module is removed via NuGet, the file would be inaccessible.
+            </remarks>
+            <seealso cref="P:CMS.Modules.ModuleInstallationFileResolver.RootedUninstallationRepositoryPath"/>
+        </member>
+        <member name="P:CMS.Modules.ModuleInstallationFileResolver.RootedUninstallationRepositoryPath">
+            <summary>
+            Rooted path to module uninstallation repository folder.
+            </summary>
+            <remarks>
+            Path points to repository which is available even after module is removed via NuGet.
+            </remarks>
+            <seealso cref="P:CMS.Modules.ModuleInstallationFileResolver.RootedUninstallationPath"/>
         </member>
         <member name="T:CMS.Modules.NuGetPackages.ModulePackageMetadata">
             <summary>
@@ -171,11 +1213,6 @@
             The package does not contain any files (those are handled by NuGet itself).
             </summary>
         </member>
-        <member name="F:CMS.Modules.ModuleExportPackageBuilder.mIncludedObjectTypes">
-            <summary>
-            Contains object types included in import/export package.
-            </summary>
-        </member>
         <member name="M:CMS.Modules.ModuleExportPackageBuilder.BuildExportPackage(System.String,System.String,System.String)">
             <summary>
             Builds a new export package using the import/export.
@@ -202,7 +1239,7 @@
         </member>
         <member name="M:CMS.Modules.ModuleExportPackageBuilder.GetModuleObjects(System.String)">
             <summary>
-            Gets object query for module objects of given type.
+            Gets object query for module objects of given type which are included in the export package.
             <paramref name="objectType"/> must be one of those enumerated in <see cref="P:CMS.Modules.ModuleExportPackageBuilder.IncludedObjectTypes"/>, otherwise returns null.
             </summary>
             <param name="objectType">Type of object to return object query for</param>
@@ -226,27 +1263,8 @@
         <member name="M:CMS.Modules.ModuleExportPackageBuilder.AddModuleObjects(CMS.CMSImportExport.SiteExportSettings)">
             <summary>
             Adds module objects to the export settings.
-            Only object types enumerated in <see cref="M:CMS.Modules.ModuleExportPackageBuilder.GetModuleObjects(System.String)"/> are considered.
             </summary>
             <param name="exportSettings">Export settings</param>
-        </member>
-        <member name="M:CMS.Modules.ModuleExportPackageBuilder.GetModuleWebParts">
-            <summary>
-            Gets object query for web parts (contained in module) to be included in the export package.
-            </summary>
-            <returns>Web parts of module</returns>
-        </member>
-        <member name="M:CMS.Modules.ModuleExportPackageBuilder.GetModuleFormControls">
-            <summary>
-            Gets object query for form controls (contained in module) to be included in the export package.
-            </summary>
-            <returns>Form controls of module</returns>
-        </member>
-        <member name="M:CMS.Modules.ModuleExportPackageBuilder.GetModuleSettingsKeys">
-            <summary>
-            Gets object query for settings keys (contained in module) to be included in the export package.
-            </summary>
-            <returns>Settings keys of module</returns>
         </member>
         <member name="M:CMS.Modules.ModuleExportPackageBuilder.CreateNewSettings(System.String,System.String,System.String)">
             <summary>
@@ -266,7 +1284,7 @@
         </member>
         <member name="P:CMS.Modules.ModuleExportPackageBuilder.IncludedObjectTypes">
             <summary>
-            Enumerates object types which are considered when creating export package.
+            The export package contains module objects of types enumerated by this property.
             The module object type itself ("cms.resource") is not present in the enumeration.
             </summary>
             <returns>Enumeration of object types</returns>
@@ -370,9 +1388,9 @@
         </member>
         <member name="M:CMS.Modules.ModulePackageBuilder.GetModuleFiles">
             <summary>
-            Gets List of relative paths to files that will be included in the instalation package.
+            Gets List of relative paths to files that will be included in the installation package.
             </summary>
-            <returns>List of relative paths to files that will be included in the instalation package.</returns>
+            <returns>List of relative paths to files that will be included in the installation package.</returns>
         </member>
         <member name="M:CMS.Modules.ModulePackageBuilder.GetModuleMetadata">
             <summary>
@@ -391,6 +1409,17 @@
             Adds all module files to the NuSpec manifest.
             </summary>
             <param name="nuSpecBuilder">NuSpec manifest builder that is used.</param>
+        </member>
+        <member name="M:CMS.Modules.ModulePackageBuilder.AddMetaFiles(CMS.Modules.NuSpecBuilder)">
+            <summary>
+            Adds module meta data files to the NuSpec manifest.
+            </summary>
+            <param name="nuSpecBuilder">NuSpec manifest builder that is used.</param>
+        </member>
+        <member name="M:CMS.Modules.ModulePackageBuilder.CleanupTempFiles">
+            <summary>
+            Cleans up all possible temporary files after building a module package.
+            </summary>
         </member>
         <member name="P:CMS.Modules.ModulePackageBuilder.IncludedObjectTypes">
             <summary>
@@ -544,7 +1573,7 @@
             <param name="result">Cloning result</param>
             <param name="originalObject">Original source BaseInfo (object being cloned)</param>
         </member>
-        <member name="P:CMS.Modules.ResourceInfo.ResourceId">
+        <member name="P:CMS.Modules.ResourceInfo.ResourceID">
             <summary>
             Gets or sets the resource ID.
             </summary>
@@ -607,6 +1636,17 @@
         <member name="P:CMS.Modules.ResourceInfo.ResourceAuthor">
             <summary>
             Author or comma-separated list of authors of the module for the purpose of installation package creation. Required if you want to create an installation package.
+            </summary>
+        </member>
+        <member name="P:CMS.Modules.ResourceInfo.ResourceInstallationState">
+            <summary>
+            State of the module. Applies to installed modules only.
+            </summary>
+            <seealso cref="T:CMS.Modules.ModuleInstallationState"/>
+        </member>
+        <member name="P:CMS.Modules.ResourceInfo.ResourceInstalledVersion">
+            <summary>
+            Currently installed version of the module. Applies to installed modules only.
             </summary>
         </member>
         <member name="P:CMS.Modules.ResourceInfo.ResourceIsInDevelopment">
@@ -754,30 +1794,11 @@
             </summary>
             <param name="resourceObj">Resource object</param>
         </member>
-        <member name="M:CMS.Modules.ResourceInfoProvider.GetResourcesInternal(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Gets all resources.
-            </summary>
-            <param name="orderBy">Order by statement to use</param>
-            <param name="where">Where condition to filter data</param>
-            <param name="topN">Number of data rows which should be included in the result</param>
-            <param name="columns">Table columns which should be included in the result</param>
-        </member>
-        <member name="M:CMS.Modules.ResourceInfoProvider.GetResourcesInternal(System.String,System.String,System.Int32,System.String,System.Int32)">
+        <member name="M:CMS.Modules.ResourceInfoProvider.GetResourcesInternal(System.Int32)">
             <summary>
             Gets resources for specified site based on the give parameters.
             </summary>
-            <param name="where">Where condition</param>
-            <param name="orderBy">Order by</param>
-            <param name="topN">Select top N values</param>
-            <param name="columns">List of columns which should be selected</param>
             <param name="siteId">Site ID</param>
-        </member>
-        <member name="M:CMS.Modules.ResourceInfoProvider.GetResourcesPerSiteInternal(System.Int32)">
-            <summary>
-            Returns dataSet with resources of specified site.
-            </summary>
-            <param name="siteId">ID of site</param>
         </member>
         <member name="T:CMS.Modules.ResourceSiteInfo">
             <summary>
@@ -940,6 +1961,12 @@
             <param name="resourceName">Name of the resource</param>
             <param name="siteName">Name of the site</param>
         </member>
+        <member name="M:CMS.Modules.ResourceSiteInfoProvider.GetRelatedDocumentTypeIDs(System.Int32)">
+            <summary>
+            Returns IDs of document types that are related to the module with given id.
+            </summary>
+            <param name="resourceID">Module ID</param>
+        </member>
         <member name="P:CMS.Modules.ResourceSiteInfoProvider.SiteResources">
             <summary>
             Table of the resources assigned to site [siteName] -> [resourceName -> true]
@@ -975,24 +2002,18 @@
             Initializes export handlers
             </summary>
         </member>
-        <member name="M:CMS.Modules.ImportSpecialActions.EnsureCustomModule">
+        <member name="M:CMS.Modules.ImportSpecialActions.SealModules(System.Data.DataTable)">
             <summary>
-            Returns custom module for custom elements
+            Seals the exported modules.
             </summary>
+            <param name="modules">Table with modules.</param>
         </member>
-        <member name="M:CMS.Modules.ImportSpecialActions.ConvertModuleToUIElements(CMS.Modules.ResourceInfo,System.Data.DataRow,CMS.CMSImportExport.SiteImportSettings)">
+        <member name="M:CMS.Modules.ImportSpecialActions.SealUIElements(System.Data.DataTable,System.Data.DataTable)">
             <summary>
-            Converts module settings to appropriate UI Elements.
+            Seals exported UI elements based on module's 'is in development' flag.
             </summary>
-            <param name="resource">Module object</param>
-            <param name="dr">Module original data</param>
-            <param name="settings">Site import settings</param>
-        </member>
-        <member name="M:CMS.Modules.ImportSpecialActions.IsToolsModule(System.String)">
-            <summary>
-            Returns true if specified module is standard module from CMS Desk -> Tools section, otherwise returns false.
-            </summary>
-            <param name="moduleName">Module name to check</param>        
+            <param name="uiElements">Table with UI elements.</param>
+            <param name="modules">Table with modules.</param>
         </member>
         <member name="T:CMS.Modules.ModuleExport">
             <summary>
@@ -1014,21 +2035,6 @@
             Initializes import handlers
             </summary>
         </member>
-        <member name="T:CMS.Modules.ModulesHandlers">
-            <summary>
-            Event handlers for modules
-            </summary>
-        </member>
-        <member name="M:CMS.Modules.ModulesHandlers.Init">
-            <summary>
-            Initializes the handlers
-            </summary>
-        </member>
-        <member name="M:CMS.Modules.ModulesHandlers.RegisterVirtualModules(System.Object,System.EventArgs)">
-            <summary>
-            Registers the virtual modules within the application
-            </summary>
-        </member>
         <member name="T:CMS.Modules.ModulesModule">
             <summary>
             Represents the Modules module.
@@ -1043,6 +2049,36 @@
             <summary>
             Init module
             </summary>
+        </member>
+        <member name="M:CMS.Modules.ModulesModule.ProcessInstallableModuleChanges(System.Object,System.EventArgs)">
+            <summary>
+            Processes changes in installable modules.
+            </summary>
+        </member>
+        <member name="M:CMS.Modules.ModulesModule.ResetUninstallationTokensOfInstallableModules">
+            <summary>
+            <para>
+            Cleans out uninstallation tokens for all modules, including associated data (i.e. module uninstallation files).
+            This allows for module re-installation when the database has been lost, but the modules are still present
+            in code base (e.g. after dropping the database and installing a new one using the wizard).
+            </para>
+            <para>
+            This method must be called after application pre-initialization phase has finished (to reflect changes in custom path mapping).
+            When called after the instance has already been initialized (and module installation processed), the module re-installation will occur upon next startup.
+            </para>
+            </summary>
+            <remarks>
+            <para>
+            Reset of module uninstallation tokens allows for re-installation of modules which had already been processed by this instance,
+            but have not been uninstalled (i.e. have not been removed from the code base). It is designed for situations when you want need
+            to install all modules again (e.g. after database has been recreated to its initial state).
+            If you need to allow for re-installation of some particular module, you should simply uninstall it (i.e. remove from code base) and then install again.
+            </para>
+            <para>
+            If you reset uninstallation tokens when modules are installed (i.e. they are present in the database and code base), you prevent them from being uninstalled by this instance.
+            However, the instance will recover the missing tokens (and associated data) for installed modules upon its next startup.
+            </para>
+            </remarks>
         </member>
         <member name="M:CMS.Modules.ModulesModule.ClearHashtables(System.Boolean)">
             <summary>
@@ -2408,7 +3444,7 @@
         <member name="P:CMS.Modules.UIElementInfo.ElementCheckModuleReadPermission">
             <summary>
             Indicates if the system should check the "read" permission for the module to which the current UI element is assigned.
-            When the "read" permission doesn’t exist for the current module, this setting has no effect.
+            When the "read" permission doesn�t exist for the current module, this setting has no effect.
             </summary>
         </member>
         <member name="P:CMS.Modules.UIElementInfo.RepresentsNew">

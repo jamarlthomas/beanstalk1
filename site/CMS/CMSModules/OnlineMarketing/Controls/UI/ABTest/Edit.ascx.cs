@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Text;
 
@@ -282,7 +282,7 @@ public partial class CMSModules_OnlineMarketing_Controls_UI_AbTest_Edit : CMSAdm
     /// </summary>
     private void InitHeaderActions()
     {
-        var btnSave = new SaveAction(Page)
+        var btnSave = new SaveAction
         {
             Permission = "Manage",
             ResourceName = "CMS.ABTest"

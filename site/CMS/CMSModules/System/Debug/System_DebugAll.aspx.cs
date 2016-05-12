@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 
 using CMS.Base;
@@ -28,12 +28,16 @@ public partial class CMSModules_System_Debug_System_DebugAll : CMSDebugPage
         {
             plcLogs.Controls.Clear();
 
-            for (int i = RequestDebug.Settings.LastLogs.Count - 1; i >= 0; i--)
+            var requestLogs = RequestDebug.Settings.LastLogs;
+
+            RequestLog lastLog = null;
+
+            for (int i = requestLogs.Count - 1; i >= 0; i--)
             {
                 try
                 {
                     // Get the request log
-                    var log = RequestDebug.Settings.LastLogs[i];
+                    var log = requestLogs[i];
                     if (log != null)
                     {
                         // Load the control only if there is more than only request log
@@ -42,11 +46,14 @@ public partial class CMSModules_System_Debug_System_DebugAll : CMSDebugPage
                         {
                             AllLog logCtrl = (AllLog)LoadLogControl(log, "~/CMSAdminControls/Debug/AllLog.ascx", i);
 
+                            logCtrl.PreviousLog = lastLog;
                             logCtrl.Logs = logs;
                             logCtrl.ShowCompleteContext = chkCompleteContext.Checked;
 
                             // Add to the output
                             plcLogs.Append(logCtrl);
+
+                            lastLog = log;
                         }
                     }
                 }

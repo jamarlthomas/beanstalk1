@@ -32,7 +32,7 @@
         if (openInNewWindow) {
             appList.openApplicationInNewWindow(documentSiteUrl, '', queryString, locationHash, 'PageTemplateWindow');
         } else {
-            appList.openApplication(undefined, undefined, queryString, locationHash);
+            appList.openApplication(documentSiteUrl, '', queryString, locationHash);
         }
     };
 

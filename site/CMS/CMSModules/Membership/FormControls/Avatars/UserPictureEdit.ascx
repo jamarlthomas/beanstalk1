@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_FormControls_Avatars_UserPictureEdit"
-    Codebehind="UserPictureEdit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_FormControls_Avatars_UserPictureEdit"
+     Codebehind="UserPictureEdit.ascx.cs" %>
 
 <%@ Reference Control="~/CMSAdminControls/UI/UserPicture.ascx" %>
 

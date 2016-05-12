@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SendVariantIssue.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SendVariantIssue.ascx.cs"
     Inherits="CMSModules_Newsletters_Controls_SendVariantIssue" %>
 <%@ Register Src="~/CMSModules/Newsletters/Controls/GroupSizeSlider.ascx" TagPrefix="cms"
     TagName="GroupSlider" %>

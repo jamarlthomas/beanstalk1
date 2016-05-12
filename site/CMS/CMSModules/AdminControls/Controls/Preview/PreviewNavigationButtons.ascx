@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="PreviewNavigationButtons.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="PreviewNavigationButtons.ascx.cs"
     Inherits="CMSModules_AdminControls_Controls_Preview_PreviewNavigationButtons" %>
 <%@ Register Src="~/CMSModules/AdminControls/Controls/Preview/Preview.ascx" TagName="Preview"
     TagPrefix="cms" %>

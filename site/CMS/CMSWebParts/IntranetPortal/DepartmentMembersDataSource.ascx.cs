@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.UI;
@@ -278,7 +278,7 @@ public partial class CMSWebParts_IntranetPortal_DepartmentMembersDataSource : CM
             }
 
             // If department document exists and has own ACL continue with initializing controls
-            if ((node != null) && AclInfoProvider.HasOwnAcl(node))
+            if ((node != null) && node.NodeIsACLOwner)
             {
                 // Get users and roles with read permission for department document
                 int aclId = ValidationHelper.GetInteger(node.GetValue("NodeACLID"), 0);

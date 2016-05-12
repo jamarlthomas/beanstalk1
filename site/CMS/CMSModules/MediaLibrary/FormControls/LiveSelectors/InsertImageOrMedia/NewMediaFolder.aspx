@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_FormControls_LiveSelectors_InsertImageOrMedia_NewMediaFolder"
-    Theme="Default" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalSimplePage.master" Codebehind="NewMediaFolder.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_FormControls_LiveSelectors_InsertImageOrMedia_NewMediaFolder"
+    Theme="Default" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalSimplePage.master"  Codebehind="NewMediaFolder.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/MediaLibrary/FolderActions/EditFolder.ascx"
     TagName="NewFolder" TagPrefix="cms" %>

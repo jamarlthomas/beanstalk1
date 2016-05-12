@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -52,8 +52,8 @@ public partial class CMSModules_Settings_Pages_GetSettings : GlobalAdminPage
     {
         var isSearch = !string.IsNullOrEmpty(searchText);
 
-        var isSite = site != null;
-        var siteName = isSite ? TranslationHelper.GetCodeNameFromDB(SiteInfo.OBJECT_TYPE, site.SiteID, "SiteName") : null;
+        var isSite = (site != null);
+        var siteName = isSite ? site.SiteName : null;
 
         var sb = new StringBuilder();
 

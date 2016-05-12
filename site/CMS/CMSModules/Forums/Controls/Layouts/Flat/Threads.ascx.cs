@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Forums;
 
@@ -31,9 +31,9 @@ public partial class CMSModules_Forums_Controls_Layouts_Flat_Threads : ForumView
         }
 
         // Get thread and subscribe link url
-        bool newThread = base.IsAvailable(null, ForumActionType.NewThread);
-        bool newSubscription = base.IsAvailable(null, ForumActionType.SubscribeToForum);
-        bool newFavorites = base.IsAvailable(null, ForumActionType.AddForumToFavorites);
+        bool newThread = IsAvailable(null, ForumActionType.NewThread);
+        bool newSubscription = IsAvailable(null, ForumActionType.SubscribeToForum);
+        bool newFavorites = IsAvailable(null, ForumActionType.AddForumToFavorites);
         bool newBreadCrumbs = (ForumBreadcrumbs1.GenerateBreadcrumbs() != "");
 
         // Hide separators according to the link visibility
@@ -54,15 +54,11 @@ public partial class CMSModules_Forums_Controls_Layouts_Flat_Threads : ForumView
 
         if ((ForumContext.CurrentForum != null) && (ForumContext.CurrentForum.ForumID > 0))
         {
-            string orderBy = "PostStickOrder Desc, PostThreadLastPostTime DESC";
-            if (ForumContext.UserIsModerator(ForumID, CommunityGroupID))
-            {
-                orderBy = "PostStickOrder Desc, PostThreadLastPostTimeAbsolute DESC";
-            }
-
+            string orderBy = String.Format("PostStickOrder DESC, {0} DESC", ForumContext.UserIsModerator(ForumID, CommunityGroupID) ? "PostThreadLastPostTimeAbsolute" :  "PostThreadLastPostTime");
+            
             // Retrieve data just for the current page
-            int currentOffset = EnablePostsPaging ? ThreadPageSize * (UniPager1.CurrentPage - 1) : 0;
-            int maxRecords = EnablePostsPaging ? ThreadPageSize : 0;
+            int currentOffset = EnableThreadPaging ? ThreadPageSize * (UniPager1.CurrentPage - 1) : 0;
+            int maxRecords = EnableThreadPaging ? ThreadPageSize : 0;
             int totalRecords = 0;
 
             listForums.DataSource = ForumPostInfoProvider.SelectForumPosts(ForumID, "/%", null, orderBy, 0, !ForumContext.UserIsModerator(ForumID, CommunityGroupID), -1, null, currentOffset, maxRecords, ref totalRecords);

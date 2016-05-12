@@ -24,6 +24,7 @@
     border-radius: @border-radius-large;
     white-space: nowrap;
     user-select: none;
+    text-shadow: none;
 
     &:focus {
         .tab-focus();
@@ -61,7 +62,11 @@
 
     &.icon-only {
         padding: 0 @btn-icononly-padding;
-		font-family: @icon-font-name;
+		font-family: @icon-font-name; 
+
+        &.js-_move {
+            cursor: move;
+        }
 
         i {
             padding-right: 0;

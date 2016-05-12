@@ -1,6 +1,5 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="MacroEditor.ascx.cs" Inherits="CMSFormControls_Macros_MacroEditor" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="MacroEditor.ascx.cs" Inherits="CMSFormControls_Macros_MacroEditor" %>
 
-<%@ Register Src="~/CMSAdminControls/UI/Macros/MacroEditor.ascx" TagPrefix="cms" TagName="MacroEditor" %>
 <%@ Register Src="~/CMSAdminControls/UI/Macros/MacroSelector.ascx" TagPrefix="cms" TagName="MacroSelector" %>
 <div class="macro-editor-form-control">
     <cms:MacroEditor runat="server" ID="ucEditor" />

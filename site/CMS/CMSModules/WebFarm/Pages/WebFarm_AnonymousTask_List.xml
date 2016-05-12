@@ -16,7 +16,7 @@
       <tooltip source="TaskTextData"/>
       <filter type="text" />
     </column>
-    <column source="TaskErrorMessage"  caption="$Unigrid.WebFarmServers.Columns.ErrorMessage$" wrap="false" cssclass="main-column-100" sort="ErrorMessage" >
+    <column source="TaskErrorMessage"  caption="$Unigrid.WebFarmServers.Columns.ErrorMessage$" wrap="false" cssclass="main-column-100" sort="TaskErrorMessage" >
       <filter type="text" />
     </column>
     <column visible="false" caption="$webfarm.taskstatus$" source="TaskID">

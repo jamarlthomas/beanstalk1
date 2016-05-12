@@ -67,7 +67,7 @@ public partial class CMSModules_ContactManagement_FormControls_ContactStatusDial
         }
 
         CurrentMaster.PanelContent.RemoveCssClass("dialog-content");
-        PageTitle.TitleText = GetString("om.contactstatus.select");
+        PageTitle.TitleText = GetString("om.contactstatus.selectitem");
         Page.Title = PageTitle.TitleText;
 
         siteId = ValidationHelper.GetInteger(Parameters["siteid"], 0);

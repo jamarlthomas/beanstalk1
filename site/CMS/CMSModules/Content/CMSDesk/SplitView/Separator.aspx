@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_SplitView_Separator"
-    Theme="Default" Codebehind="Separator.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_SplitView_Separator"
+    Theme="Default"  Codebehind="Separator.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

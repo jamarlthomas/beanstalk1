@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="FormControlSelector.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="FormControlSelector.ascx.cs"
     Inherits="CMSModules_FormControls_FormControls_FormControlSelector" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"
     TagPrefix="cms" %>

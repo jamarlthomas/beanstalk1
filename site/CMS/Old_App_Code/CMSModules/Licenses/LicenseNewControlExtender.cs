@@ -23,6 +23,17 @@ public class LicenseNewControlExtender : ControlExtender<UIForm>
     public override void OnInit()
     {
         Control.OnAfterValidate += Control_OnAfterValidate;
+        Control.OnBeforeRedirect += Control_OnAfterSave;
+    }
+
+
+    private void Control_OnAfterSave(object sender, EventArgs e)
+    {
+        using (new CMSActionContext{ AllowLicenseRedirect = false })
+        {
+            UserInfoProvider.ClearLicenseValues();
+            Functions.ClearHashtables();
+        }
     }
 
 
@@ -37,11 +48,6 @@ public class LicenseNewControlExtender : ControlExtender<UIForm>
             switch (lk.ValidationResult)
             {
                 case LicenseValidationEnum.Valid:
-                    using (new CMSActionContext { AllowLicenseRedirect = false })
-                    {
-                        UserInfoProvider.ClearLicenseValues();
-                        Functions.ClearHashtables();
-                    }
                     return;
 
                 case LicenseValidationEnum.Expired:

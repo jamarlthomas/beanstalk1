@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SystemTables_Controls_Views_SQLEdit"
-    Codebehind="SQLEdit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SystemTables_Controls_Views_SQLEdit"
+     Codebehind="SQLEdit.ascx.cs" %>
 
 <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
 <asp:PlaceHolder ID="plcGenerate" runat="server" Visible="false">

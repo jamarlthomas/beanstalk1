@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Linq;
 
 using CMS;
-using CMS.Base;
+using CMS.Core;
 using CMS.MacroEngine;
 using CMS.OnlineMarketing;
-
 
 [assembly: RegisterCustomClass("OnlineMarketingMacroRuleEditExtender", typeof(OnlineMarketingMacroRuleEditExtender))]
 
@@ -30,7 +28,7 @@ public class OnlineMarketingMacroRuleEditExtender : MacroRuleEditExtender
             string macroName = info.MacroRuleName;
             if (!MacroRuleMetadataContainer.IsTranslatorAvailable(macroName))
             {
-                Control.ShowWarning(Control.GetString("om.configuration.macro.slow"));
+                Control.ShowWarning(CoreServices.Localization.GetString("om.configuration.macro.slow"));
             }
         }
     }

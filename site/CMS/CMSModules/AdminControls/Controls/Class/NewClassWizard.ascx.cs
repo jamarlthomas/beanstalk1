@@ -1,22 +1,22 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web.UI.WebControls;
 
+using CMS.Base;
 using CMS.CustomTables;
 using CMS.DataEngine;
 using CMS.DocumentEngine;
+using CMS.EventLog;
 using CMS.FormEngine;
 using CMS.Helpers;
+using CMS.Modules;
 using CMS.PortalEngine;
-using CMS.Base;
 using CMS.Search;
 using CMS.SiteProvider;
-using CMS.UIControls;
-using CMS.EventLog;
 using CMS.Synchronization;
-using CMS.Modules;
+using CMS.UIControls;
 
 public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CMSUserControl
 {
@@ -131,6 +131,18 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
         }
     }
 
+
+    /// <summary>
+    /// Returns whether new fields are created as system fields.
+    /// </summary>
+    private bool AllowSystemFields
+    {
+        get
+        {
+            return SystemContext.DevelopmentMode && (Mode != NewClassWizardModeEnum.DocumentType);
+        }
+    }
+
     #endregion
 
 
@@ -230,8 +242,8 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                         rfvDisplayName.ErrorMessage = GetString("DocumentType_New.ErrorEmptyDisplayName");
                         rfvCodeName.ErrorMessage = GetString("DocumentType_New.ErrorEmptyCodeName");
                         rfvNamespaceName.ErrorMessage = GetString("DocumentType_New.ErrorEmptyNamespaceName");
-                        revNameSpaceName.ErrorMessage = GetString("DocumentType_New.NamespaceNameIdentifier");
-                        revCodeName.ErrorMessage = GetString("DocumentType_New.CodeNameIdentifier");
+                        revNameSpaceName.ErrorMessage = GetString("DocumentType_New.general.NamespaceNameIdentifier");
+                        revCodeName.ErrorMessage = GetString("DocumentType_New.general.CodeNameIdentifier");
 
                         txtNamespaceName.Text = "custom";
 
@@ -239,7 +251,7 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                     }
                     break;
 
-                // If the wizzard is running as new data class wizzard    
+                // If the wizard is running as new data class wizard    
                 case NewClassWizardModeEnum.Class:
                     {
                         lblDisplayName.Text = GetString("sysdev.class_new.DisplayName");
@@ -251,8 +263,8 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                         rfvDisplayName.ErrorMessage = GetString("sysdev.class_new.ErrorEmptyDisplayName");
                         rfvCodeName.ErrorMessage = GetString("sysdev.class_new.ErrorEmptyCodeName");
                         rfvNamespaceName.ErrorMessage = GetString("sysdev.class_new.ErrorEmptyNamespaceName");
-                        revNameSpaceName.ErrorMessage = GetString("sysdev.class_new.NamespaceNameIdentifier");
-                        revCodeName.ErrorMessage = GetString("sysdev.class_new.CodeNameIdentifier");
+                        revNameSpaceName.ErrorMessage = GetString("sysdev.class_new.general.NamespaceNameIdentifier");
+                        revCodeName.ErrorMessage = GetString("sysdev.class_new.general.CodeNameIdentifier");
 
                         // Get current module name
                         string moduleName = BaseAbstractInfoProvider.GetCodeName(ResourceInfo.OBJECT_TYPE, ModuleID);
@@ -262,7 +274,7 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                     }
                     break;
 
-                // If the wizzard is running as new custom table wizzard
+                // If the wizard is running as new custom table wizard
                 case NewClassWizardModeEnum.CustomTable:
                     {
                         lblDisplayName.Text = GetString("customtable.newwizzard.DisplayName");
@@ -274,8 +286,8 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                         rfvDisplayName.ErrorMessage = GetString("customtable.newwizzard.ErrorEmptyDisplayName");
                         rfvCodeName.ErrorMessage = GetString("customtable.newwizzard.ErrorEmptyCodeName");
                         rfvNamespaceName.ErrorMessage = GetString("customtable.newwizzard.ErrorEmptyNamespaceName");
-                        revNameSpaceName.ErrorMessage = GetString("customtable.newwizzard.NamespaceNameIdentifier");
-                        revCodeName.ErrorMessage = GetString("customtable.newwizzard.CodeNameIdentifier");
+                        revNameSpaceName.ErrorMessage = GetString("customtable.newwizzard.general.NamespaceNameIdentifier");
+                        revCodeName.ErrorMessage = GetString("customtable.newwizzard.general.CodeNameIdentifier");
 
                         txtNamespaceName.Text = "customtable";
                         ucHeader.Description = GetString("customtable.newwizzard.Step1Description");
@@ -332,6 +344,10 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
 
         // Do not provide suffix for breadcrumbs
         UIHelper.SetBreadcrumbsSuffix("");
+
+        // Add explanation tooltip to content only page type checkbox
+        ScriptHelper.AppendTooltip(lblContentOnly, GetString("DocumentType.ContentOnly.explanation"), "help");
+        ScriptHelper.RegisterTooltip(Page);
     }
 
 
@@ -345,11 +361,11 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
         switch (Mode)
         {
             case NewClassWizardModeEnum.DocumentType:
-                objectType = DataClassInfo.OBJECT_TYPE_DOCUMENTTYPE;
+                objectType = DocumentTypeInfo.OBJECT_TYPE_DOCUMENTTYPE;
                 break;
 
             case NewClassWizardModeEnum.CustomTable:
-                objectType = DataClassInfo.OBJECT_TYPE_CUSTOMTABLE;
+                objectType = CustomTableInfo.OBJECT_TYPE_CUSTOMTABLE;
                 break;
         }
 
@@ -460,37 +476,41 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
     /// </summary>
     protected void wzdNewDocType_NextButtonClick(object sender, WizardNavigationEventArgs e)
     {
-        switch (e.CurrentStepIndex)
+        // Do not create new version in the wizard, version is created explicitly at the end
+        using (new CMSActionContext { CreateVersion = false, LogEvents = false })
         {
-            // Step 1   
-            case 0:
-                ProcessStep1(e);
-                break;
+            switch (e.CurrentStepIndex)
+            {
+                // Step 1   
+                case 0:
+                    ProcessStep1(e);
+                    break;
 
-            // Step 2
-            case 1:
-                ProcessStep2(e);
-                break;
+                // Step 2
+                case 1:
+                    ProcessStep2(e);
+                    break;
 
-            // Step 3
-            case 2:
-                ProcessStep3(e);
-                break;
+                // Step 3
+                case 2:
+                    ProcessStep3(e);
+                    break;
 
-            // Step 4
-            case 3:
-                ProcessStep4(e);
-                break;
+                // Step 4
+                case 3:
+                    ProcessStep4(e);
+                    break;
 
-            // Step 5
-            case 4:
-                ProcessStep5(e);
-                break;
+                // Step 5
+                case 4:
+                    ProcessStep5(e);
+                    break;
 
-            // Step 6
-            case 5:
-                ProcessStep6(e);
-                break;
+                // Step 6
+                case 5:
+                    ProcessStep6(e);
+                    break;
+            }
         }
     }
 
@@ -505,38 +525,41 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
         // Validate checkboxes first
         string errorMessage = null;
 
+        var codeName = txtCodeName.Text.Trim();
+        var namespaceName = txtNamespaceName.Text.Trim();
+
         // Display proper error message based on development mode wizard setting
         switch (Mode)
         {
             case NewClassWizardModeEnum.DocumentType:
                 errorMessage = new Validator().NotEmpty(txtDisplayName.Text.Trim(), GetString("DocumentType_New.ErrorEmptyDisplayName")).
-                    NotEmpty(txtCodeName.Text.Trim(), GetString("DocumentType_New.ErrorEmptyCodeName")).
-                    NotEmpty(txtNamespaceName.Text.Trim(), GetString("DocumentType_New.ErrorEmptyNamespaceName")).
-                    IsCodeName(txtCodeName.Text.Trim(), GetString("DocumentType_New.CodeNameIdentifier")).
-                    IsIdentifier(txtNamespaceName.Text.Trim(), GetString("DocumentType_New.NamespaceNameIdentifier")).Result;
+                    NotEmpty(codeName, GetString("DocumentType_New.ErrorEmptyCodeName")).
+                    NotEmpty(namespaceName, GetString("DocumentType_New.ErrorEmptyNamespaceName")).
+                    IsCodeName(codeName, GetString("DocumentType_New.general.CodeNameIdentifier")).
+                    IsIdentifier(namespaceName, GetString("DocumentType_New.general.NamespaceNameIdentifier")).Result;
                 break;
 
             case NewClassWizardModeEnum.Class:
                 errorMessage = new Validator().NotEmpty(txtDisplayName.Text.Trim(), GetString("sysdev.class_new.ErrorEmptyDisplayName")).
-                    NotEmpty(txtCodeName.Text.Trim(), GetString("sysdev.class_new.ErrorEmptyCodeName")).
-                    NotEmpty(txtNamespaceName.Text.Trim(), GetString("sysdev.class_new.ErrorEmptyNamespaceName")).
-                    IsCodeName(txtCodeName.Text.Trim(), GetString("sysdev.class_new.CodeNameIdentifier")).
-                    IsIdentifier(txtNamespaceName.Text.Trim(), GetString("sysdev.class_new.NamespaceNameIdentifier")).Result;
+                    NotEmpty(codeName, GetString("sysdev.class_new.ErrorEmptyCodeName")).
+                    NotEmpty(namespaceName, GetString("sysdev.class_new.ErrorEmptyNamespaceName")).
+                    IsCodeName(codeName, GetString("sysdev.class_new.general.CodeNameIdentifier")).
+                    IsIdentifier(namespaceName, GetString("sysdev.class_new.general.NamespaceNameIdentifier")).Result;
                 break;
 
             case NewClassWizardModeEnum.CustomTable:
                 errorMessage = new Validator().NotEmpty(txtDisplayName.Text.Trim(), GetString("customtable.newwizzard.ErrorEmptyDisplayName")).
-                    NotEmpty(txtCodeName.Text.Trim(), GetString("customtable.newwizzard.ErrorEmptyCodeName")).
-                    NotEmpty(txtNamespaceName.Text.Trim(), GetString("customtable.newwizzard.ErrorEmptyNamespaceName")).
-                    IsCodeName(txtCodeName.Text.Trim(), GetString("customtable.newwizzard.CodeNameIdentifier")).
-                    IsIdentifier(txtNamespaceName.Text.Trim(), GetString("customtable.newwizzard.NamespaceNameIdentifier")).Result;
+                    NotEmpty(codeName, GetString("customtable.newwizzard.ErrorEmptyCodeName")).
+                    NotEmpty(namespaceName, GetString("customtable.newwizzard.ErrorEmptyNamespaceName")).
+                    IsCodeName(codeName, GetString("customtable.newwizzard.general.CodeNameIdentifier")).
+                    IsIdentifier(namespaceName, GetString("customtable.newwizzard.general.NamespaceNameIdentifier")).Result;
                 break;
         }
 
 
         if (String.IsNullOrEmpty(errorMessage))
         {
-            string className = txtNamespaceName.Text.Trim() + "." + txtCodeName.Text.Trim();
+            string className = namespaceName + "." + codeName;
             if (DataClassInfoProvider.GetDataClassInfo(className) != null)
             {
                 errorMessage = GetString("sysdev.class_edit_gen.codenameunique");
@@ -559,7 +582,6 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                         DataClassInfo.ClassShowAsSystemTable = false;
                         DataClassInfo.ClassShowTemplateSelection = false;
                         DataClassInfo.ClassIsDocumentType = false;
-                        DataClassInfo.ClassCreateSKU = false;
                         DataClassInfo.ClassIsProduct = false;
                         DataClassInfo.ClassIsMenuItemType = false;
                         DataClassInfo.ClassUsesVersioning = false;
@@ -571,7 +593,6 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                         DataClassInfo.ClassShowAsSystemTable = false;
                         DataClassInfo.ClassShowTemplateSelection = false;
                         DataClassInfo.ClassIsDocumentType = false;
-                        DataClassInfo.ClassCreateSKU = false;
                         DataClassInfo.ClassIsProduct = false;
                         DataClassInfo.ClassIsMenuItemType = false;
                         DataClassInfo.ClassUsesVersioning = false;
@@ -588,7 +609,10 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                     using (var tr = new CMSTransactionScope())
                     {
                         // Insert new class into DB
-                        DataClassInfoProvider.SetDataClassInfo(DataClassInfo);
+                        using (new CMSActionContext { LogEvents = true })
+                        {
+                            DataClassInfoProvider.SetDataClassInfo(DataClassInfo);
+                        }
 
                         // Set permissions and queries
                         switch (Mode)
@@ -638,8 +662,8 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                     ClassName = DataClassInfo.ClassName;
 
                     // Prefill textboxes in the next step with default values
-                    txtTableName.Text = txtNamespaceName.Text.Trim() + "_" + txtCodeName.Text.Trim();
-                    txtPKName.Text = TextHelper.FirstLetterToUpper(txtCodeName.Text.Trim() + "ID");
+                    txtTableName.Text = namespaceName + "_" + codeName;
+                    txtPKName.Text = TextHelper.FirstLetterToUpper(codeName + "ID");
 
                     wzdStep2.Title = GetString("DocumentType_New_Step2.Title");
 
@@ -676,6 +700,9 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                                 lblTableName.Text = GetString("sysdev.class_new.TableName");
                                 radCustom.Text = GetString("sysdev.class_new.Custom");
                                 lblIsMNTable.Text = GetString("sysdev.class_new.MNTable");
+
+                                lblClassGuid.Text = String.Format(GetString("sysdev.class_new.lblClassGuid"), TextHelper.FirstLetterToUpper(codeName));
+                                lblClassLastModified.Text = String.Format(GetString("sysdev.class_new.lblClassLastModified"), TextHelper.FirstLetterToUpper(codeName));
 
                                 radContainer.Visible = false;
                                 plcMNClassOptions.Visible = true;
@@ -751,23 +778,33 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                 // New document type has custom attributes -> no wizard steps will be omitted
                 if (radCustom.Checked)
                 {
-                    // Actions after next button click
                     bool fromExisting = (Mode == NewClassWizardModeEnum.CustomTable) && radExistingTable.Checked;
 
                     string tableName = (fromExisting) ? drpExistingTables.SelectedValue : txtTableName.Text.Trim();
 
-                    // Validate checkboxes first
                     string tableNameError = new Validator()
                         .NotEmpty(tableName, GetString("DocumentType_New.ErrorEmptyTableName"))
                         .IsIdentifier(tableName, GetString("class.ErrorIdentifier"))
                         .Result;
 
-                    string primaryKeyNameEmpty = new Validator().NotEmpty(txtPKName.Text.Trim(), GetString("DocumentType_New.ErrorEmptyPKName")).Result;
+                    string trimmedPrimaryKeyName = txtPKName.Text.Trim();
+                    string primaryKeyNameValidationResult = null;
 
-                    bool columnExists = DocumentHelper.ColumnExistsInDocumentView(txtPKName.Text.Trim());
+                    // Check whether primary key name is in identifier format for new table. 
+                    // For existing table is validation executed against the existing PK in database.
+                    if (!fromExisting)
+                    {
+                        primaryKeyNameValidationResult = new Validator()
+                            .NotEmpty(trimmedPrimaryKeyName, GetString("DocumentType_New.ErrorEmptyPKName"))
+                            .IsIdentifier(trimmedPrimaryKeyName, GetString("class.pkerroridentifier"))
+                            .Result;
+                    }
 
-                    // Textboxes are filled correctly
-                    if ((tableNameError == "") && (primaryKeyNameEmpty == "") && (!columnExists))
+                    // Check whether the column for page types is not in collision with columns used in document view
+                    bool columnExists = (Mode == NewClassWizardModeEnum.DocumentType) ? DocumentHelper.ColumnExistsInDocumentView(trimmedPrimaryKeyName) : false;
+
+                    // Textboxes are filled correctly or the values will be checked automatically from existing table
+                    if ((String.IsNullOrEmpty(tableNameError)) && (String.IsNullOrEmpty(primaryKeyNameValidationResult)) && (!columnExists))
                     {
                         try
                         {
@@ -796,6 +833,11 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                                     e.Cancel = true;
                                     ShowError(GetString("customtable.newwizard.mustbeidentitypk"));
                                 }
+                                else if (!ValidationHelper.IsIdentifier(primaryKeys[0]))
+                                {
+                                    e.Cancel = true;
+                                    ShowError(GetString("customtable.newwizard.pkerroridentifier"));
+                                }
                             }
                             else if (tableExists)
                             {
@@ -806,11 +848,11 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                             else if (Mode == NewClassWizardModeEnum.Class)
                             {
                                 // Standard class in development mode
-                                tm.CreateTable(tableName, txtPKName.Text.Trim(), !chbIsMNTable.Checked);
+                                tm.CreateTable(tableName, trimmedPrimaryKeyName, !chbIsMNTable.Checked);
                             }
                             else
                             {
-                                tm.CreateTable(tableName, txtPKName.Text.Trim());
+                                tm.CreateTable(tableName, trimmedPrimaryKeyName);
                             }
                         }
                         catch (Exception ex)
@@ -856,8 +898,19 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                                 // From existing DB table
                                 dci.ClassXmlSchema = tm.GetXmlSchema(tableName);
 
-                                string formDef = FormHelper.GetXmlFormDefinitionFromXmlSchema(dci.ClassXmlSchema, false);
-                                fi = new FormInfo(formDef);
+                                fi = new FormInfo();
+                                try
+                                {
+                                    fi.LoadFromDataStructure(tableName, tm, AllowSystemFields);
+                                }
+                                catch (Exception ex)
+                                {
+                                    e.Cancel = true;
+
+                                    // Show error message if something caused unhandled exception
+                                    ShowError(ex.Message);
+                                    return;
+                                }
                             }
                             else
                             {
@@ -872,35 +925,30 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                             dci.ClassIsCoupledClass = true;
 
                             dci.ClassInheritsFromClassID = ValidationHelper.GetInteger(selInherits.Value, 0);
+                            dci.ClassIsContentOnly = chbContentOnly.Checked;
 
                             // Update class in DB
-                            using (var context = new CMSActionContext())
-                            {
-                                // Disable logging into event log
-                                context.LogEvents = false;
+                            DataClassInfoProvider.SetDataClassInfo(dci);
 
-                                DataClassInfoProvider.SetDataClassInfo(dci);
-
-                                UpdateInheritedClass(dci);
-                            }
+                            UpdateInheritedClass(dci);
 
                             if (Mode == NewClassWizardModeEnum.CustomTable)
                             {
                                 try
                                 {
-                                    InitCustomTable(dci, fi, tm);
+                                    InitCustomTable(dci, fi);
                                 }
                                 catch (Exception ex)
                                 {
-                                    // Do not move to next step.
+                                    // Do not move to next step
                                     e.Cancel = true;
 
                                     EventLogProvider.LogException("NewClassWizard", "CREATE", ex);
 
-                                    string message = null;
-                                    if (ex is MissingSQLTypeException)
+                                    string message;
+                                    var missingSqlType = ex as MissingSQLTypeException;
+                                    if (missingSqlType != null)
                                     {
-                                        var missingSqlType = (MissingSQLTypeException)ex;
                                         if (DataTypeManager.IsType<byte[]>(TypeEnum.SQL, missingSqlType.RecommendedType))
                                         {
                                             message = String.Format(GetString("customtable.sqltypenotsupportedwithoutreplacement"), missingSqlType.UnsupportedType, missingSqlType.ColumnName);
@@ -916,6 +964,23 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                                     }
 
                                     pnlMessages2.ShowError(message);
+                                    pnlMessages2.Visible = true;
+                                }
+                            }
+                            else if (Mode == NewClassWizardModeEnum.Class)
+                            {
+                                try
+                                {
+                                    InitClass(dci, fi);
+                                }
+                                catch (Exception ex)
+                                {
+                                    // Do not move to next step
+                                    e.Cancel = true;
+
+                                    EventLogProvider.LogException("NewClassWizard", "CREATE", ex);
+
+                                    pnlMessages2.ShowError(ex.Message);
                                     pnlMessages2.Visible = true;
                                 }
                             }
@@ -978,10 +1043,10 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                             lblTableNameError.Visible = false;
                         }
 
-                        if (!String.IsNullOrEmpty(primaryKeyNameEmpty))
+                        if (!String.IsNullOrEmpty(primaryKeyNameValidationResult))
                         {
                             lblPKNameError.Visible = true;
-                            lblPKNameError.Text = primaryKeyNameEmpty;
+                            lblPKNameError.Text = primaryKeyNameValidationResult;
                         }
                         else
                         {
@@ -1020,14 +1085,7 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
 
                     dci.ClassIsCoupledClass = false;
 
-                    // Update class in DB
-                    using (CMSActionContext context = new CMSActionContext())
-                    {
-                        // Disable logging into event log
-                        context.LogEvents = false;
-
-                        DataClassInfoProvider.SetDataClassInfo(dci);
-                    }
+                    DataClassInfoProvider.SetDataClassInfo(dci);
 
                     // Remember that some steps were omitted
                     SomeStepsOmitted = true;
@@ -1087,8 +1145,7 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
     /// </summary>
     /// <param name="dci">DataClassInfo of the custom table</param>
     /// <param name="fi">Form info</param>
-    /// <param name="tm">Table manager</param>
-    private void InitCustomTable(DataClassInfo dci, FormInfo fi, TableManager tm)
+    private void InitCustomTable(DataClassInfo dci, FormInfo fi)
     {
         // Created by
         if (chkItemCreatedBy.Checked && !fi.FieldExists("ItemCreatedBy"))
@@ -1203,47 +1260,86 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
         // GUID
         if (chkItemGUID.Checked && !fi.FieldExists("ItemGUID"))
         {
-            var ffiGuid = CreateGuidField();
-
-            fi.AddFormItem(ffiGuid);
+            fi.AddFormItem(CreateGuidField("ItemGUID"));
         }
 
-        // Update table structure - columns could be added
-        bool old = TableManager.UpdateSystemFields;
+        UpdateDataClass(dci, fi);
+    }
 
-        TableManager.UpdateSystemFields = true;
 
-        string schema = fi.GetXmlDefinition();
-        tm.UpdateTableByDefinition(dci.ClassTableName, schema);
+    /// <summary>
+    /// Initializes class.
+    /// </summary>
+    /// <param name="dci">DataClassInfo</param>
+    /// <param name="fi">Form info</param>
+    private void InitClass(DataClassInfo dci, FormInfo fi)
+    {
+        // Get class code name
+        var pkName = txtPKName.Text.Trim();
+        var codeName = pkName.Substring(0, pkName.Length - 2);
 
-        TableManager.UpdateSystemFields = old;
-
-        // Update xml schema and form definition
-        dci.ClassFormDefinition = schema;
-        dci.ClassXmlSchema = tm.GetXmlSchema(dci.ClassTableName);
-
-        using (CMSActionContext context = new CMSActionContext())
+        // Guid
+        if (chkClassGuid.Checked && !fi.FieldExists(codeName + "Guid"))
         {
-            // Disable logging into event log
-            context.LogEvents = false;
-
-            DataClassInfoProvider.SetDataClassInfo(dci);
+            fi.AddFormItem(CreateGuidField(codeName + "Guid"));
         }
+
+        // Last modified
+        if (chkClassLastModified.Checked && !fi.FieldExists(codeName + "LastModified"))
+        {
+            FormFieldInfo ffi = new FormFieldInfo();
+
+            // Fill FormInfo object
+            ffi.Name = codeName + "LastModified";
+            ffi.SetPropertyValue(FormFieldPropertyEnum.FieldCaption, "Last modified");
+            ffi.DataType = FieldDataType.DateTime;
+            ffi.SetPropertyValue(FormFieldPropertyEnum.DefaultValue, String.Empty);
+            ffi.SetPropertyValue(FormFieldPropertyEnum.FieldDescription, String.Empty);
+            ffi.FieldType = FormFieldControlTypeEnum.CustomUserControl;
+            ffi.Settings["controlname"] = Enum.GetName(typeof(FormFieldControlTypeEnum), FormFieldControlTypeEnum.LabelControl).ToLowerCSafe();
+            ffi.PrimaryKey = false;
+            ffi.System = true;
+            ffi.Visible = false;
+            ffi.Size = 0;
+            ffi.AllowEmpty = false;
+
+            fi.AddFormItem(ffi);
+        }
+
+        UpdateDataClass(dci, fi);
+    }
+
+
+    /// <summary>
+    /// Updates DataClassInfo and modifies database accordingly.
+    /// </summary>
+    /// <param name="dci">DataClassInfo</param>
+    /// <param name="fi">Form info</param>
+    private void UpdateDataClass(DataClassInfo dci, FormInfo fi)
+    {
+        // Update definition
+        dci.ClassFormDefinition = fi.GetXmlDefinition();
+
+        // Update database structure
+        DataClassInfoProvider.EnsureDatabaseStructure(dci, true);
+
+        DataClassInfoProvider.SetDataClassInfo(dci);
     }
 
 
     /// <summary>
     /// Creates the GUID field
     /// </summary>
-    private static FormFieldInfo CreateGuidField()
+    /// <param name="name">Form field name.</param>
+    private static FormFieldInfo CreateGuidField(string name)
     {
-        FormFieldInfo ffiGuid = new FormFieldInfo();
+        var ffiGuid = new FormFieldInfo();
 
         // Fill FormInfo object
-        ffiGuid.Name = "ItemGUID";
+        ffiGuid.Name = name;
         ffiGuid.SetPropertyValue(FormFieldPropertyEnum.FieldCaption, "GUID");
         ffiGuid.DataType = FieldDataType.Guid;
-        ffiGuid.SetPropertyValue(FormFieldPropertyEnum.DefaultValue, string.Empty);
+        ffiGuid.SetPropertyValue(FormFieldPropertyEnum.DefaultValue, String.Empty);
         ffiGuid.SetPropertyValue(FormFieldPropertyEnum.FieldDescription, String.Empty);
         ffiGuid.FieldType = FormFieldControlTypeEnum.CustomUserControl;
         ffiGuid.Settings["controlname"] = Enum.GetName(typeof(FormFieldControlTypeEnum), FormFieldControlTypeEnum.LabelControl).ToLowerCSafe();
@@ -1276,9 +1372,8 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
         ffiPK.FieldType = FormFieldControlTypeEnum.CustomUserControl;
         ffiPK.Settings["controlname"] = Enum.GetName(typeof(FormFieldControlTypeEnum), FormFieldControlTypeEnum.LabelControl).ToLowerCSafe();
         ffiPK.PrimaryKey = true;
-        ffiPK.System = false;
+        ffiPK.System = AllowSystemFields;
         ffiPK.Visible = false;
-        ffiPK.Size = 0;
         ffiPK.AllowEmpty = false;
 
         // Add field to form definition
@@ -1314,19 +1409,6 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
             {
                 case NewClassWizardModeEnum.DocumentType:
                     {
-                        TableManager tm = new TableManager(null);
-
-                        // Create new view if doesn't exist
-                        string viewName = SqlHelper.GetViewName(dci.ClassTableName, null);
-
-                        // Create view for document types
-                        if (!tm.ViewExists(viewName))
-                        {
-                            tm.CreateView(viewName, SqlGenerator.GetSqlQuery(ClassName, SqlOperationTypeEnum.SelectView, null));
-                        }
-
-                        // If new document type is created prepare next step otherwise skip steps 4, 5 and 6
-
                         // Disable previous steps' viewstates
                         DisablePreviousStepsViewStates(e.CurrentStepIndex);
 
@@ -1375,13 +1457,7 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                 case NewClassWizardModeEnum.Class:
                     {
                         // Update class in DB
-                        using (CMSActionContext context = new CMSActionContext())
-                        {
-                            // Disable logging into event log
-                            context.LogEvents = false;
-
-                            DataClassInfoProvider.SetDataClassInfo(dci);
-                        }
+                        DataClassInfoProvider.SetDataClassInfo(dci);
 
                         // Remember that some steps were omitted
                         SomeStepsOmitted = true;
@@ -1403,13 +1479,7 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
                 case NewClassWizardModeEnum.CustomTable:
                     {
                         // Update class in DB
-                        using (CMSActionContext context = new CMSActionContext())
-                        {
-                            // Disable logging into event log
-                            context.LogEvents = false;
-
-                            DataClassInfoProvider.SetDataClassInfo(dci);
-                        }
+                        DataClassInfoProvider.SetDataClassInfo(dci);
 
                         // Remember that some steps were omitted, 
                         SomeStepsOmitted = true;
@@ -1443,13 +1513,7 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
         dci.ClassNodeNameSource = lstFields.SelectedValue;
 
         // Update node name source in DB
-        using (CMSActionContext context = new CMSActionContext())
-        {
-            // Disable logging into event log
-            context.LogEvents = false;
-
-            DataClassInfoProvider.SetDataClassInfo(dci);
-        }
+        DataClassInfoProvider.SetDataClassInfo(dci);
 
         // Prepare next step (5)
 
@@ -1548,31 +1612,7 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
             }
         }
 
-        // If is moving to the new step
-        if (licenseCheck)
-        {
-            // Create default transformations
-            switch (Mode)
-            {
-                case NewClassWizardModeEnum.DocumentType:
-
-                    if (!SomeStepsOmitted)
-                    {
-                        CreateDefaultTransformations(classId, true);
-                    }
-                    else
-                    {
-                        // Apply on if new document type was created
-                        lblTableCreated.Visible = false;
-                    }
-                    break;
-
-                case NewClassWizardModeEnum.CustomTable:
-                    CreateDefaultTransformations(classId, false);
-                    break;
-            }
-        }
-        else
+        if (!licenseCheck)
         {
             PrepareStep5();
             return;
@@ -1591,15 +1631,11 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
         EnableNextStepViewState(6);
         PrepareStep7();
 
-        // Explicitly log the synchronization with all changes
-        using (CMSActionContext context = new CMSActionContext())
+        // Explicitly log the synchronization with all changes and create version
+        using (new CMSActionContext { CreateVersion = true })
         {
-            // Disable logging into event log
-            context.LogEvents = false;
-
             SynchronizationHelper.LogObjectUpdate(dci);
         }
-
     }
 
 
@@ -1685,23 +1721,20 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
         switch (Mode)
         {
             case NewClassWizardModeEnum.DocumentType:
-                lblEditingFormCreated.Text = GetString("documenttype_new_step8_finished.editingformcreated");
-                lblQueryCreated.Text = GetString("documenttype_new_step8_finished.querycreated");
                 lblDocumentCreated.Text = GetString("documenttype_new_step8_finished.documentcreated");
+                lblTableCreated.Text = GetString("documenttype_new_step8_finished.tablecreated");
                 lblChildTypesAdded.Text = GetString("documenttype_new_step8_finished.parenttypesadded");
                 lblSitesSelected.Text = GetString("documenttype_new_step8_finished.sitesselected");
-                lblTransformationCreated.Text = GetString("documenttype_new_step8_finished.transformationcreated");
                 lblPermissionNameCreated.Text = GetString("documenttype_new_step8_finished.permissionnamecreated");
                 lblDefaultIconCreated.Text = GetString("documenttype_new_step8_finished.defaulticoncreated");
                 lblSearchSpecificationCreated.Text = GetString("documenttype_new_step8_finished.searchspecificationcreated");
 
                 // Hide some messages if creating container document type
-                lblTransformationCreated.Visible = !IsContainer;
                 lblSearchSpecificationCreated.Visible = !IsContainer;
+                lblTableCreated.Visible = !IsContainer;
                 break;
 
             case NewClassWizardModeEnum.Class:
-                lblQueryCreated.Text = GetString("documenttype_new_step8_finished.querycreated");
                 lblDocumentCreated.Text = GetString("sysdev.class_new_step8_finished.documentcreated");
                 lblTableCreated.Text = GetString("sysdev.class_new_step8_finished.tablecreated");
                 break;
@@ -1709,8 +1742,6 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
             case NewClassWizardModeEnum.CustomTable:
                 lblDocumentCreated.Text = GetString("customtable.newwizzard.CustomTableCreated");
                 lblSitesSelected.Text = GetString("customtable.newwizzard.SitesSelected");
-                lblTransformationCreated.Text = GetString("customtable.newwizzard.TransformationCreated");
-                lblQueryCreated.Text = GetString("customtable.newwizzard.QueryCreated");
                 lblPermissionNameCreated.Text = GetString("customtable.newwizzard.PermissionNameCreated");
                 lblSearchSpecificationCreated.Text = GetString("customtable.newwizzard.searchspecificationcreated");
                 break;
@@ -1740,68 +1771,6 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
         }
 
         return String.Empty;
-    }
-
-
-    /// <summary>
-    /// Creates default transformations for the classid.
-    /// </summary>
-    /// <param name="classId">Class id</param>
-    /// <param name="isDocument">Indicates if transformations for document should be created</param>
-    private void CreateDefaultTransformations(int classId, bool isDocument)
-    {
-        using (CMSActionContext context = new CMSActionContext())
-        {
-            // Disable logging of tasks
-            context.DisableLogging();
-
-            // Create default transformation
-            TransformationInfo ti = new TransformationInfo();
-
-            string classFormDefinition = DataClassInfoProvider.GetDataClassInfo(ClassName).ClassFormDefinition;
-
-            ti.TransformationName = ValidationHelper.GetCodeName(GetString("TransformationName.Default"));
-            ti.TransformationFullName = ClassName + "." + ti.TransformationName;
-            ti.TransformationCode = TransformationInfoProvider.GenerateTransformationCode(classFormDefinition, TransformationTypeEnum.Ascx, ClassName);
-            ti.TransformationType = TransformationTypeEnum.Ascx;
-            ti.TransformationClassID = classId;
-
-            // Set default transformation in DB
-            TransformationInfoProvider.SetTransformation(ti);
-
-            // Create preview transformation which has the same transformation code
-            ti = ti.Clone(true);
-
-            ti.TransformationName = ValidationHelper.GetCodeName(GetString("TransformationName.Preview"));
-            ti.TransformationFullName = ClassName + "." + ti.TransformationName;
-
-            // Set default transformation in DB
-            TransformationInfoProvider.SetTransformation(ti);
-
-            // Test if class is standard document type
-            if (isDocument)
-            {
-                // Create RSS transformation
-                ti = ti.Clone(true);
-
-                ti.TransformationName = ValidationHelper.GetCodeName(GetString("TransformationName.RSS"));
-                ti.TransformationFullName = ClassName + "." + ti.TransformationName;
-                ti.TransformationCode = TransformationInfoProvider.GenerateTransformationCode(classFormDefinition, TransformationTypeEnum.Ascx, ClassName, DefaultTransformationTypeEnum.RSS);
-
-                // Set RSS transformation in DB
-                TransformationInfoProvider.SetTransformation(ti);
-
-                // Create Atom transformation
-                ti = ti.Clone(true);
-
-                ti.TransformationName = ValidationHelper.GetCodeName(GetString("TransformationName.Atom"));
-                ti.TransformationFullName = ClassName + "." + ti.TransformationName;
-                ti.TransformationCode = TransformationInfoProvider.GenerateTransformationCode(classFormDefinition, TransformationTypeEnum.Ascx, ClassName, DefaultTransformationTypeEnum.Atom);
-
-                // Set Atom transformation in DB
-                TransformationInfoProvider.SetTransformation(ti);
-            }
-        }
     }
 
 
@@ -1965,7 +1934,7 @@ public partial class CMSModules_AdminControls_Controls_Class_NewClassWizard : CM
 
         var where = new WhereCondition()
             .WhereNotIn("TABLE_NAME", new ObjectQuery<DataClassInfo>().Column("ClassTableName").WhereNotNull("ClassTableName"))
-            .WhereNotIn("TABLE_NAME", new List<string> { "Analytics_Index", "sysdiagrams", "Temp_WebPart" });
+            .WhereNotIn("TABLE_NAME", new List<string> { "Analytics_Index", "sysdiagrams" });
 
         drpExistingTables.DataSource = tm.GetTables(where.ToString());
         drpExistingTables.DataBind();

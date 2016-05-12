@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -32,32 +32,32 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
 
     private VariantModeEnum mVariantMode = VariantModeEnum.None;
     private WidgetZoneTypeEnum mZoneType = WidgetZoneTypeEnum.None;
-    private bool isValidWidget = true;
-    private int xmlVersion = 0;
+    private bool mIsValidWidget = true;
+    private int mXmlVersion;
 
     // Web part info.
-    private WebPartInfo wpi = null;
+    private WebPartInfo mWebPartInfo;
 
     // Current widget (alias web part instance).
-    private WebPartInstance widgetInstance = null;
+    private WebPartInstance mWidgetInstance;
 
     // Current page template.
-    private PageTemplateInstance templateInstance = null;
+    private PageTemplateInstance mTemplateInstance;
 
     // Zone instance.
-    private WebPartZoneInstance zone = null;
+    private WebPartZoneInstance mWebPartZoneInstance;
 
     // Tree provider.
-    private readonly TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
+    private readonly TreeProvider mTreeProvider = new TreeProvider(MembershipContext.AuthenticatedUser);
 
     // Result of transformation (loaded in init).
     private List<FormFieldInfo> mFields;
 
     // Widget info object
-    private WidgetInfo wi = null;
+    private WidgetInfo mWidgetInfo;
 
     // Preferred culture code to use along with alias path.
-    private string mCultureCode = null;
+    private string mCultureCode;
 
     #endregion
 
@@ -207,26 +207,6 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
 
 
     /// <summary>
-    /// Before form definition.
-    /// </summary>
-    public string BeforeFormDefinition
-    {
-        get;
-        set;
-    }
-
-
-    /// <summary>
-    /// After form definition.
-    /// </summary>
-    public string AfterFormDefinition
-    {
-        get;
-        set;
-    }
-
-
-    /// <summary>
     /// Whether is widget new or not.
     /// </summary>
     public bool IsNewWidget
@@ -321,7 +301,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
 
             // Validate unique ID
             WebPartInstance existingPart = pti.GetWebPart(newId);
-            if ((existingPart != null) && (existingPart != widgetInstance) && (existingPart.InstanceGUID != widgetInstance.InstanceGUID))
+            if ((existingPart != null) && (existingPart != mWidgetInstance) && (existingPart.InstanceGUID != mWidgetInstance.InstanceGUID))
             {
                 // Error - duplicated IDs
                 errorMessage = GetString("Widgets.Properties.ErrorUniqueID");
@@ -343,7 +323,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
         if (IsInline)
         {
             // Is valid widget
-            if (!isValidWidget)
+            if (!mIsValidWidget)
             {
                 ltlScript.Text += ScriptHelper.GetScript("CloseDialog(false);");
                 return false;
@@ -374,10 +354,10 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                 {
                     StringBuilder sb = new StringBuilder();
 
-                    if (IsNewVariant && (widgetInstance != null))
+                    if (IsNewVariant && (mWidgetInstance != null))
                     {
                         // Select the new variant
-                        sb.Append("SendEvent('updatevariantposition', true, { itemCode: 'Variant_WP_", widgetInstance.InstanceGUID.ToString("N"), "', variantId: -1 }); ");
+                        sb.Append("SendEvent('updatevariantposition', true, { itemCode: 'Variant_WP_", mWidgetInstance.InstanceGUID.ToString("N"), "', variantId: -1 }); ");
                     }
                     else
                     {
@@ -404,7 +384,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
         if (Save())
         {
             hdnIsNewWebPart.Value = "false";
-            hdnInstanceGUID.Value = widgetInstance.InstanceGUID.ToString();
+            hdnInstanceGUID.Value = mWidgetInstance.InstanceGUID.ToString();
 
             if (WidgetIdChanged)
             {
@@ -445,7 +425,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
     private void InitForm(BasicForm form, DataRow dr, FormInfo fi)
     {
         form.DataRow = dr;
-        form.MacroTable = widgetInstance != null ? widgetInstance.MacroTable : new Hashtable(StringComparer.InvariantCultureIgnoreCase);
+        form.MacroTable = (mWidgetInstance != null) ? mWidgetInstance.MacroTable : new Hashtable(StringComparer.InvariantCultureIgnoreCase);
 
         form.SubmitButton.Visible = false;
         form.SiteName = SiteContext.CurrentSiteName;
@@ -510,30 +490,30 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
             }
 
             // Get template instance
-            templateInstance = CMSPortalManager.GetTemplateInstanceForEditing(CurrentPageInfo);
+            mTemplateInstance = CMSPortalManager.GetTemplateInstanceForEditing(CurrentPageInfo);
 
             if (!IsNewWidget)
             {
                 // Get the instance of widget
-                widgetInstance = templateInstance.GetWebPart(InstanceGUID, WidgetId);
-                if (widgetInstance == null)
+                mWidgetInstance = mTemplateInstance.GetWebPart(InstanceGUID, WidgetId);
+                if (mWidgetInstance == null)
                 {
                     ShowError(GetString("Widgets.Properties.WidgetNotFound"));
                     pnlFormArea.Visible = false;
                     return;
                 }
                 
-                if ((VariantID > 0) && (widgetInstance != null) && (widgetInstance.PartInstanceVariants != null))
+                if ((VariantID > 0) && (mWidgetInstance != null) && (mWidgetInstance.PartInstanceVariants != null))
                 {
                     // Check OnlineMarketing permissions.
                     if (CheckPermissions("Read"))
                     {
-                        widgetInstance = CurrentPageInfo.DocumentTemplateInstance.GetWebPart(InstanceGUID, WidgetId);
-                        widgetInstance = widgetInstance.PartInstanceVariants.Find(v => v.VariantID.Equals(VariantID));
+                        mWidgetInstance = CurrentPageInfo.DocumentTemplateInstance.GetWebPart(InstanceGUID, WidgetId);
+                        mWidgetInstance = mWidgetInstance.PartInstanceVariants.Find(v => v.VariantID.Equals(VariantID));
                         // Set the widget variant mode
-                        if (widgetInstance != null)
+                        if (mWidgetInstance != null)
                         {
-                            VariantMode = widgetInstance.VariantMode;
+                            VariantMode = mWidgetInstance.VariantMode;
                         }
                     }
                     else
@@ -544,24 +524,24 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                 }
 
                 // Get widget info by widget name(widget type)
-                wi = WidgetInfoProvider.GetWidgetInfo(widgetInstance.WebPartType);
+                mWidgetInfo = WidgetInfoProvider.GetWidgetInfo(mWidgetInstance.WebPartType);
             }
             // Widget instance hasn't created yet
             else
             {
-                wi = WidgetInfoProvider.GetWidgetInfo(ValidationHelper.GetInteger(WidgetId, 0));
+                mWidgetInfo = WidgetInfoProvider.GetWidgetInfo(ValidationHelper.GetInteger(WidgetId, 0));
             }
 
             // Keep xml version
-            if (widgetInstance != null)
+            if (mWidgetInstance != null)
             {
-                xmlVersion = widgetInstance.XMLVersion;
+                mXmlVersion = mWidgetInstance.XMLVersion;
             }
 
-            UIContext.EditedObject = wi;
+            UIContext.EditedObject = mWidgetInfo;
 
             // Get the zone to which it inserts
-            WebPartZoneInstance zone = templateInstance.GetZone(ZoneId);
+            WebPartZoneInstance zone = mTemplateInstance.GetZone(ZoneId);
             if ((ZoneType == WidgetZoneTypeEnum.None) && (zone != null))
             {
                 ZoneType = zone.WidgetZoneType;
@@ -575,7 +555,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                 // Group zone => Only group widgets and group admin
                 case WidgetZoneTypeEnum.Group:
                     // Should always be, only group widget are allowed in group zone
-                    if (!wi.WidgetForGroup || (!currentUser.IsGroupAdministrator(CurrentPageInfo.NodeGroupID) && ((PortalContext.ViewMode != ViewModeEnum.Design) || ((PortalContext.ViewMode == ViewModeEnum.Design) && (!currentUser.IsAuthorizedPerResource("CMS.Design", "Design"))))))
+                    if (!mWidgetInfo.WidgetForGroup || (!currentUser.IsGroupAdministrator(CurrentPageInfo.NodeGroupID) && ((PortalContext.ViewMode != ViewModeEnum.Design) || ((PortalContext.ViewMode == ViewModeEnum.Design) && (!currentUser.IsAuthorizedPerResource("CMS.Design", "Design"))))))
                     {
                         if (OnNotAllowed != null)
                         {
@@ -586,7 +566,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
 
                 // Widget must be allowed for editor zones
                 case WidgetZoneTypeEnum.Editor:
-                    if (!wi.WidgetForEditor)
+                    if (!mWidgetInfo.WidgetForEditor)
                     {
                         if (OnNotAllowed != null)
                         {
@@ -597,7 +577,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
 
                 // Widget must be allowed for user zones
                 case WidgetZoneTypeEnum.User:
-                    if (!wi.WidgetForUser)
+                    if (!mWidgetInfo.WidgetForUser)
                     {
                         if (OnNotAllowed != null)
                         {
@@ -608,7 +588,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
 
                 // Widget must be allowed for dashboard zones
                 case WidgetZoneTypeEnum.Dashboard:
-                    if (!wi.WidgetForDashboard)
+                    if (!mWidgetInfo.WidgetForDashboard)
                     {
                         if (OnNotAllowed != null)
                         {
@@ -619,7 +599,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
             }
 
             // Check security
-            if ((ZoneType != WidgetZoneTypeEnum.Group) && !WidgetRoleInfoProvider.IsWidgetAllowed(wi, currentUser.UserID, AuthenticationHelper.IsAuthenticated()))
+            if ((ZoneType != WidgetZoneTypeEnum.Group) && !WidgetRoleInfoProvider.IsWidgetAllowed(mWidgetInfo, currentUser.UserID, AuthenticationHelper.IsAuthenticated()))
             {
                 if (OnNotAllowed != null)
                 {
@@ -628,18 +608,16 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
             }
 
             // Get form schemas
-            wpi = WebPartInfoProvider.GetWebPartInfo(wi.WidgetWebPartID);
-            FormInfo zoneTypeDefinition = PortalFormHelper.GetPositionFormInfo(ZoneType);
-            string widgetProperties = FormHelper.MergeFormDefinitions(wpi.WebPartProperties, wi.WidgetProperties);
-            FormInfo fi = PortalFormHelper.GetWidgetFormInfo(wi.WidgetName, Enum.GetName(typeof(WidgetZoneTypeEnum), ZoneType), widgetProperties, zoneTypeDefinition, true, wi.WidgetDefaultValues);
+            mWebPartInfo = WebPartInfoProvider.GetWebPartInfo(mWidgetInfo.WidgetWebPartID);
+            string widgetProperties = FormHelper.MergeFormDefinitions(mWebPartInfo.WebPartProperties, mWidgetInfo.WidgetProperties);
+            FormInfo fi = PortalFormHelper.GetWidgetFormInfo(mWidgetInfo.WidgetName, ZoneType, widgetProperties, true, mWidgetInfo.WidgetDefaultValues);
 
             if (fi != null)
             {
-
-                fi.ContextResolver.Settings.RelatedObject = templateInstance;
+                fi.ContextResolver.Settings.RelatedObject = mTemplateInstance;
 
                 // Check if there are some editable properties
-                var ffi = fi.GetFields(true, false).ToList<FormFieldInfo>();
+                var ffi = fi.GetFields(true, false);
                 if ((ffi == null) || (ffi.Count == 0))
                 {
                     ShowInformation(GetString("widgets.emptyproperties"));
@@ -648,7 +626,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                 DataRow dr = fi.GetDataRow();
 
                 // Load overridden values for new widget
-                if (IsNewWidget || (xmlVersion > 0))
+                if (IsNewWidget || (mXmlVersion > 0))
                 {
                     fi.LoadDefaultValues(dr, FormResolveTypeEnum.WidgetVisible);
                 }
@@ -656,7 +634,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                 if (IsNewWidget)
                 {
                     // Override default value and set title as widget display name
-                    DataHelper.SetDataRowValue(dr, "WidgetTitle", ResHelper.LocalizeString(wi.WidgetDisplayName));
+                    DataHelper.SetDataRowValue(dr, "WidgetTitle", ResHelper.LocalizeString(mWidgetInfo.WidgetDisplayName));
                 }
 
                 // Load values from existing widget
@@ -696,13 +674,13 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                 // New widget - load widget info by id
                 if (!String.IsNullOrEmpty(WidgetId))
                 {
-                    wi = WidgetInfoProvider.GetWidgetInfo(ValidationHelper.GetInteger(WidgetId, 0));
+                    mWidgetInfo = WidgetInfoProvider.GetWidgetInfo(ValidationHelper.GetInteger(WidgetId, 0));
                 }
                 else
                 {
                     // Try to get widget from codename
                     widgetName = QueryHelper.GetString("WidgetName", String.Empty);
-                    wi = WidgetInfoProvider.GetWidgetInfo(widgetName);
+                    mWidgetInfo = WidgetInfoProvider.GetWidgetInfo(widgetName);
                 }
             }
             else
@@ -722,16 +700,16 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                     widgetName = parameters["name"].ToString();
                 }
 
-                wi = WidgetInfoProvider.GetWidgetInfo(widgetName);
+                mWidgetInfo = WidgetInfoProvider.GetWidgetInfo(widgetName);
             }
-            if (wi == null)
+            if (mWidgetInfo == null)
             {
                 DisplayError("widget.failedtoload");
                 return;
             }
 
             // If widget cant be used as inline
-            if (!wi.WidgetForInline)
+            if (!mWidgetInfo.WidgetForInline)
             {
                 DisplayError("widget.cantbeusedasinline");
                 return;
@@ -740,9 +718,9 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
 
             // Test permission for user
             var currentUser = MembershipContext.AuthenticatedUser;
-            if (!WidgetRoleInfoProvider.IsWidgetAllowed(wi, currentUser.UserID, AuthenticationHelper.IsAuthenticated()))
+            if (!WidgetRoleInfoProvider.IsWidgetAllowed(mWidgetInfo, currentUser.UserID, AuthenticationHelper.IsAuthenticated()))
             {
-                isValidWidget = false;
+                mIsValidWidget = false;
                 OnNotAllowed(this, null);
             }
 
@@ -753,10 +731,9 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                 zoneType = WidgetZoneTypeEnum.Editor;
             }
 
-            WebPartInfo wpi = WebPartInfoProvider.GetWebPartInfo(wi.WidgetWebPartID);
-            string widgetProperties = FormHelper.MergeFormDefinitions(wpi.WebPartProperties, wi.WidgetProperties);
-            FormInfo zoneTypeDefinition = PortalFormHelper.GetPositionFormInfo(zoneType);
-            FormInfo fi = PortalFormHelper.GetWidgetFormInfo(wi.WidgetName, Enum.GetName(typeof(WidgetZoneTypeEnum), zoneType), widgetProperties, zoneTypeDefinition, true, wi.WidgetDefaultValues);
+            WebPartInfo wpi = WebPartInfoProvider.GetWebPartInfo(mWidgetInfo.WidgetWebPartID);
+            string widgetProperties = FormHelper.MergeFormDefinitions(wpi.WebPartProperties, mWidgetInfo.WidgetProperties);
+            FormInfo fi = PortalFormHelper.GetWidgetFormInfo(mWidgetInfo.WidgetName, zoneType, widgetProperties, true, mWidgetInfo.WidgetDefaultValues);
             if (fi != null)
             {
                 // Check if there are some editable properties
@@ -767,7 +744,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                 }
 
                 // Get datarows with required columns
-                DataRow dr = PortalHelper.CombineWithDefaultValues(fi, wi);
+                DataRow dr = PortalHelper.CombineWithDefaultValues(fi, mWidgetInfo);
 
                 if (IsNewWidget)
                 {
@@ -794,7 +771,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                 }
 
                 // Override default value and set title as widget display name
-                DataHelper.SetDataRowValue(dr, "WidgetTitle", wi.WidgetDisplayName);
+                DataHelper.SetDataRowValue(dr, "WidgetTitle", mWidgetInfo.WidgetDisplayName);
 
                 // Init HTML toolbar if exists
                 InitHTMLToobar(fi);
@@ -840,7 +817,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
         }
 
         // Save the data
-        if ((CurrentPageInfo != null) && (templateInstance != null) && SaveForm(formCustom))
+        if ((CurrentPageInfo != null) && (mTemplateInstance != null) && SaveForm(formCustom))
         {
             ViewModeEnum viewMode = PortalContext.ViewMode;
 
@@ -860,7 +837,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                 }
             }
 
-            PageTemplateInfo pti = templateInstance.ParentPageTemplate;
+            PageTemplateInfo pti = mTemplateInstance.ParentPageTemplate;
             if (PortalContext.IsDesignMode(viewMode) && SynchronizationHelper.IsCheckedOutByOtherUser(pti))
             {
                 string userName = null;
@@ -875,11 +852,11 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
             }
 
             // Get the zone
-            zone = templateInstance.EnsureZone(ZoneId);
+            mWebPartZoneInstance = mTemplateInstance.EnsureZone(ZoneId);
 
-            if (zone != null)
+            if (mWebPartZoneInstance != null)
             {
-                zone.WidgetZoneType = ZoneType;
+                mWebPartZoneInstance.WidgetZoneType = ZoneType;
 
                 // Add new widget
                 if (IsNewWidget)
@@ -888,16 +865,16 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                     int widgetID = ValidationHelper.GetInteger(WidgetId, 0);
 
                     // Create new widget instance
-                    widgetInstance = PortalHelper.AddNewWidget(widgetID, ZoneId, ZoneType, isLayoutZone, templateInstance, null);
+                    mWidgetInstance = PortalHelper.AddNewWidget(widgetID, ZoneId, ZoneType, isLayoutZone, mTemplateInstance);
                 }
 
                 // Ensure handling of the currently edited object (if not exists -> redirect)
-                UIContext.EditedObject = widgetInstance;
+                UIContext.EditedObject = mWidgetInstance;
 
-                widgetInstance.XMLVersion = 1;
+                mWidgetInstance.XMLVersion = 1;
                 if (IsNewVariant)
                 {
-                    widgetInstance = widgetInstance.Clone();
+                    mWidgetInstance = mWidgetInstance.Clone();
 
                     // Check whether the editor widgets have been already customized
                     if (CurrentPageInfo.DocumentTemplateInstance.WebPartZones.Count == 0)
@@ -905,29 +882,29 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                         // There are no customized editor widgets yet => copy the default editor widgets from the page template under the document (to enable customization)
 
                         // Save to the document as editor admin changes
-                        TreeNode node = DocumentHelper.GetDocument(CurrentPageInfo.DocumentID, tree);
+                        TreeNode node = DocumentHelper.GetDocument(CurrentPageInfo.DocumentID, mTreeProvider);
 
                         // Extract and set the document web parts
-                        node.SetValue("DocumentWebParts", templateInstance.GetZonesXML(WidgetZoneTypeEnum.Editor));
+                        node.SetValue("DocumentWebParts", mTemplateInstance.GetZonesXML(WidgetZoneTypeEnum.Editor));
 
                         // Save the document
-                        DocumentHelper.UpdateDocument(node, tree);
+                        DocumentHelper.UpdateDocument(node, mTreeProvider);
                     }
                 }
 
-                bool isLayoutWidget = ((wpi != null) && ((WebPartTypeEnum)wpi.WebPartType == WebPartTypeEnum.Layout));
+                bool isLayoutWidget = ((mWebPartInfo != null) && ((WebPartTypeEnum)mWebPartInfo.WebPartType == WebPartTypeEnum.Layout));
 
                 // Get basicform's datarow and update widget            
-                SaveFormToWidget(formCustom, templateInstance, isLayoutWidget);
+                SaveFormToWidget(formCustom, mTemplateInstance, isLayoutWidget);
 
                 // Ensure unique id for new widget variant or layout widget
                 if (IsNewVariant || (isLayoutWidget && IsNewWidget)) 
                 {
-                    string controlId = GetUniqueWidgetId(wi.WidgetName);
+                    string controlId = GetUniqueWidgetId(mWidgetInfo.WidgetName);
 
                     if (!string.IsNullOrEmpty(controlId))
                     {
-                        widgetInstance.ControlID = controlId;
+                        mWidgetInstance.ControlID = controlId;
                     }
                     else
                     {
@@ -952,27 +929,27 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                         if (DocumentManager.AllowSave)
                         {
                             // Store the editor widgets in the temporary interlayer
-                            PortalContext.SaveEditorWidgets(CurrentPageInfo.DocumentID, templateInstance.GetZonesXML(WidgetZoneTypeEnum.Editor));
+                            PortalContext.SaveEditorWidgets(CurrentPageInfo.DocumentID, mTemplateInstance.GetZonesXML(WidgetZoneTypeEnum.Editor));
                         }
                     }
                     else
                     {
                         // Save the changes  
-                        CMSPortalManager.SaveTemplateChanges(CurrentPageInfo, templateInstance, ZoneType, viewMode, tree);
+                        CMSPortalManager.SaveTemplateChanges(CurrentPageInfo, mTemplateInstance, ZoneType, viewMode, mTreeProvider);
                     }
                 }
                 else if ((viewMode.IsEdit()) && (ZoneType == WidgetZoneTypeEnum.Editor))
                 {
                     Hashtable properties = WindowHelper.GetItem("variantProperties") as Hashtable;
 
-                    VariantHelper.SaveWebPartVariantChanges(widgetInstance, VariantID, 0, VariantMode, properties);
+                    VariantHelper.SaveWebPartVariantChanges(mWidgetInstance, VariantID, 0, VariantMode, properties);
 
                     // Clear the document template
-                    templateInstance.ParentPageTemplate.ParentPageInfo.DocumentTemplateInstance = null;
+                    mTemplateInstance.ParentPageTemplate.ParentPageInfo.DocumentTemplateInstance = null;
 
                     // Log widget variant synchronization
-                    TreeNode node = DocumentHelper.GetDocument(CurrentPageInfo.DocumentID, tree);
-                    DocumentSynchronizationHelper.LogDocumentChange(node, TaskTypeEnum.UpdateDocument, tree);
+                    TreeNode node = DocumentHelper.GetDocument(CurrentPageInfo.DocumentID, mTreeProvider);
+                    DocumentSynchronizationHelper.LogDocumentChange(node, TaskTypeEnum.UpdateDocument, mTreeProvider);
                 }
             }
 
@@ -983,10 +960,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
             ShowChangesSaved();
 
             // Clear the cached web part
-            if (InstanceGUID != null)
-            {
-                CacheHelper.TouchKey("webpartinstance|" + InstanceGUID.ToString().ToLowerCSafe());
-            }
+            CacheHelper.TouchKey("webpartinstance|" + InstanceGUID.ToString().ToLowerCSafe());
 
             return true;
         }
@@ -1002,7 +976,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
     {
         // Validate data
         if (!SaveForm(formCustom) ||
-            (wi == null) ||
+            (mWidgetInfo == null) ||
             (mFields == null))
         {
             return String.Empty;
@@ -1010,12 +984,12 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
 
         DataRow dr = formCustom.DataRow;
 
-        string script = PortalHelper.GetAddInlineWidgetScript(wi, dr, mFields);
+        string script = PortalHelper.GetAddInlineWidgetScript(mWidgetInfo, dr, mFields);
 
         if (!string.IsNullOrEmpty(script))
         {
             // Add to recently used widgets collection
-            MembershipContext.AuthenticatedUser.UserSettings.UpdateRecentlyUsedWidget(wi.WidgetName);
+            MembershipContext.AuthenticatedUser.UserSettings.UpdateRecentlyUsedWidget(mWidgetInfo.WidgetName);
             return script;
         }
 
@@ -1031,17 +1005,17 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
     /// <param name="isLayoutWidget">Indicates whether the edited widget is a layout widget</param>
     private void SaveFormToWidget(BasicForm form, PageTemplateInstance pti, bool isLayoutWidget)
     {
-        if (form.Visible && (widgetInstance != null))
+        if (form.Visible && (mWidgetInstance != null))
         {
             // Keep the old ID to check the change of the ID
-            string oldId = widgetInstance.ControlID.ToLowerCSafe();
+            string oldId = mWidgetInstance.ControlID.ToLowerCSafe();
 
             DataRow dr = form.DataRow;
 
             foreach (DataColumn column in dr.Table.Columns)
             {
-                widgetInstance.MacroTable[column.ColumnName.ToLowerCSafe()] = form.MacroTable[column.ColumnName.ToLowerCSafe()];
-                widgetInstance.SetValue(column.ColumnName, dr[column]);
+                mWidgetInstance.MacroTable[column.ColumnName.ToLowerCSafe()] = form.MacroTable[column.ColumnName.ToLowerCSafe()];
+                mWidgetInstance.SetValue(column.ColumnName, dr[column]);
 
                 // If name changed, move the content
                 // (This can happen when a user overrides the WidgetControlID property to be visible in the widget properties dialog)
@@ -1061,7 +1035,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                             string currentContent = CurrentPageInfo.EditableWebParts[oldId];
                             if (currentContent != null)
                             {
-                                TreeNode node = DocumentHelper.GetDocument(CurrentPageInfo.DocumentID, tree);
+                                TreeNode node = DocumentHelper.GetDocument(CurrentPageInfo.DocumentID, mTreeProvider);
 
                                 // Move the content in the page info
                                 CurrentPageInfo.EditableWebParts[oldId] = null;
@@ -1069,7 +1043,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
 
                                 // Update the document
                                 node.SetValue("DocumentContent", CurrentPageInfo.GetContentXml());
-                                DocumentHelper.UpdateDocument(node, tree);
+                                DocumentHelper.UpdateDocument(node, mTreeProvider);
                             }
 
                             // Change the underlying zone names if layout widget
@@ -1104,7 +1078,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
     /// <param name="dr">DataRow to fill</param>
     private void LoadDataRowFromWidget(DataRow dr, FormInfo fi)
     {
-        if (widgetInstance != null)
+        if (mWidgetInstance != null)
         {
             foreach (DataColumn column in dr.Table.Columns)
             {
@@ -1112,20 +1086,20 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                 {
                     bool load = true;
                     // switch by xml version
-                    switch (xmlVersion)
+                    switch (mXmlVersion)
                     {
                         case 1:
-                            load = widgetInstance.Properties.Contains(column.ColumnName.ToLowerCSafe()) || column.ColumnName.EqualsCSafe("webpartcontrolid", true);
+                            load = mWidgetInstance.Properties.Contains(column.ColumnName.ToLowerCSafe()) || column.ColumnName.EqualsCSafe("webpartcontrolid", true);
                             break;
                         // Version 0
                         default:
                             // Load default value for Boolean type in old XML version
-                            if ((column.DataType == typeof(bool)) && !widgetInstance.Properties.Contains(column.ColumnName.ToLowerCSafe()))
+                            if ((column.DataType == typeof(bool)) && !mWidgetInstance.Properties.Contains(column.ColumnName.ToLowerCSafe()))
                             {
                                 FormFieldInfo ffi = fi.GetFormField(column.ColumnName);
                                 if (ffi != null)
                                 {
-                                    widgetInstance.SetValue(column.ColumnName, ffi.GetPropertyValue(FormFieldPropertyEnum.DefaultValue));
+                                    mWidgetInstance.SetValue(column.ColumnName, ffi.GetPropertyValue(FormFieldPropertyEnum.DefaultValue));
                                 }
                             }
                             break;
@@ -1133,7 +1107,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
 
                     if (load)
                     {
-                        object value = widgetInstance.GetValue(column.ColumnName);
+                        object value = mWidgetInstance.GetValue(column.ColumnName);
 
                         // Convert value into default format
                         if ((value != null) && (value.ToString() != ""))
@@ -1149,7 +1123,10 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
                             }
                         }
 
-                        DataHelper.SetDataRowValue(dr, column.ColumnName, value);
+                        if (!DataHelper.IsEmpty(value))
+                        {
+                            DataHelper.SetDataRowValue(dr, column.ColumnName, value);
+                        }
                     }
                 }
                 catch
@@ -1190,7 +1167,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
     /// <param name="error">Error message to show</param>
     private void DisplayError(string error)
     {
-        isValidWidget = false;
+        mIsValidWidget = false;
         ShowError(GetString(error));
     }
 
@@ -1222,7 +1199,7 @@ public partial class CMSModules_Widgets_Controls_WidgetProperties : CMSUserContr
             && CurrentPageInfo.UsedPageTemplateInfo != null)
         {
             // Get the document widgets template instance
-            PageTemplateInstance documentTemplateInstance = zone.ParentTemplateInstance;
+            PageTemplateInstance documentTemplateInstance = mWebPartZoneInstance.ParentTemplateInstance;
             // Get the default widgets template instance
             PageTemplateInstance templateInstance = CurrentPageInfo.UsedPageTemplateInfo.TemplateInstance;
 

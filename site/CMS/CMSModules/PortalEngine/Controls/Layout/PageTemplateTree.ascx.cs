@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.Helpers;
@@ -389,14 +389,13 @@ function " + SelectFunctionName + @"(nodeid, sender) {
         categoryProvider.DisplayNameColumn = "DisplayName";
         categoryProvider.IDColumn = "ObjectID";
         categoryProvider.LevelColumn = "ObjectLevel";
-        categoryProvider.OrderColumn = "CategoryOrder";
         categoryProvider.ParentIDColumn = "ParentID";
         categoryProvider.PathColumn = "ObjectPath";
         categoryProvider.ValueColumn = "ObjectID";
         categoryProvider.ChildCountColumn = "CompleteChildCount";
         categoryProvider.QueryName = "cms.pagetemplatecategory.selectallview";
         categoryProvider.ObjectTypeColumn = "ObjectType";
-        categoryProvider.Columns = "DisplayName, CodeName, ObjectID, ObjectLevel, CategoryOrder, ParentID, ObjectPath, CompleteChildCount, ObjectType, CategoryChildCount, CategoryImagePath, Parameter";
+        categoryProvider.Columns = "DisplayName, CodeName, ObjectID, ObjectLevel, ParentID, ObjectPath, CompleteChildCount, ObjectType, CategoryChildCount, CategoryImagePath, Parameter";
         categoryProvider.ImageColumn = "CategoryImagePath";
         categoryProvider.ParameterColumn = "Parameter";
 

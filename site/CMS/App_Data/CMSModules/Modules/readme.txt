@@ -1,6 +1,10 @@
-﻿You have installed the module into your instance of Kentico.
+﻿You have installed or updated the module's files in the Kentico project. If you are using a web application project, you need to build the Kentico solution.
 
-To finish the installation process, you now need to import database objects from the module installation package to the Kentico database.
+To finish the installation or update, open your Kentico application in a browser. During the processing of the first request after the module installation or 
+update, the system automatically imports database objects from the module installation package to the Kentico database.
 
-See the 'Importing database objects from the module installation package to the Kentico database' section 
-in 'Installing modules from installation packages' available at https://docs.kentico.com/x/dih6Aw for more details.
+You can verify that the module was installed or updated successfully in the Event log application - check that the log contains no errors and the following event:
+
+Source = ModuleInstaller, Event code = MODULEINSTALLED
+ -or-
+Source = ModuleInstaller, Event code = MODULEUPDATED

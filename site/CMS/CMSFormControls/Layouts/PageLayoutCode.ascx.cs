@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.FormControls;
@@ -115,7 +115,7 @@ public partial class CMSFormControls_Layouts_PageLayoutCode : FormEngineUserCont
         values[0, 0] = CodeColumn;
         values[0, 1] = tbLayoutCode.Text;
         values[1, 0] = TypeColumn;
-        values[1, 1] = (drpType.SelectedValue == null ? TransformationTypeEnum.Ascx.ToString() : drpType.SelectedValue.ToLowerCSafe());
+        values[1, 1] = (drpType.SelectedValue == null ? TransformationTypeEnum.Ascx.ToStringRepresentation() : drpType.SelectedValue.ToLowerCSafe());
 
         return values;
     }
@@ -131,8 +131,8 @@ public partial class CMSFormControls_Layouts_PageLayoutCode : FormEngineUserCont
         var items = drpType.Items;
         if (items.Count == 0)
         {
-            items.Add(new ListItem(GetString("TransformationType.Ascx"), TransformationTypeEnum.Ascx.ToString()));
-            items.Add(new ListItem(GetString("TransformationType.Html"), TransformationTypeEnum.Html.ToString()));
+            items.Add(new ListItem(TransformationTypeEnum.Ascx.ToLocalizedString("TransformationType"), TransformationTypeEnum.Ascx.ToStringRepresentation()));
+            items.Add(new ListItem(TransformationTypeEnum.Html.ToLocalizedString("TransformationType"), TransformationTypeEnum.Html.ToStringRepresentation()));
         }
     }
 
@@ -287,6 +287,7 @@ function InsertLayoutElement()
         if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("cms.design", "editcode"))
         {
             drpType.SelectedIndex = 1;
+            ShowWarning(GetString("design.editcodemissing"));
             return;
         }
 

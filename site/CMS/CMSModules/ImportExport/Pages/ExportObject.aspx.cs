@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Security.Principal;
 
 using CMS.CMSImportExport;
@@ -207,9 +207,6 @@ function StartTimer() {
 
     private void btnOk_Click(object sender, EventArgs e)
     {
-        // Init the Mimetype helper (required for the export)
-        MimeTypeHelper.LoadMimeTypes();
-
         // Prepare the settings
         var exportSettings = new SiteExportSettings(MembershipContext.AuthenticatedUser)
         {
@@ -251,8 +248,8 @@ function StartTimer() {
             {
                 // Export the data
                 ScriptHelper.RegisterStartupScript(this, typeof(string), "StartTimer", "StartTimer();", true);
-                ucAsyncControl.Parameter = exportSettings;
-                ucAsyncControl.RunAsync(ExportSingleObject, WindowsIdentity.GetCurrent());
+                
+                ucAsyncControl.RunAsync(p => ExportSingleObject(exportSettings), WindowsIdentity.GetCurrent());
             }
             catch (Exception ex)
             {
@@ -302,8 +299,9 @@ function StartTimer() {
             }
         }
 
-        string path = GetDownloadPath(targetUrl);
-        lblResult.Text = String.Format(GetString(resultMessage), ExportedObjectDisplayName, path);
+        string path = ImportExportHelper.GetSiteUtilsFolderRelativePath() + "Export/" + txtFileName.Text;
+        string storageName = (StorageHelper.IsExternalStorage(path)) ? GetString("Export.StorageProviderName." + StorageHelper.GetStorageProvider(path).Name) : "";
+        lblResult.Text = String.Format(GetString(resultMessage), ExportedObjectDisplayName, storageName, path);
     }
 
 
@@ -362,52 +360,15 @@ function StartTimer() {
 
     private string GetTargetUrl()
     {
-        string targetUrl = null;
         if (IsBackupMode)
         {
             string path = ImportExportHelper.GetObjectBackupFolder(ExportedObjectInfo);
-            targetUrl = ResolveUrl(path) + "/" + txtFileName.Text;
+            return ResolveUrl(path) + "/" + txtFileName.Text;
         }
-        else
-        {
-            string path = ImportExportHelper.GetSiteUtilsFolderRelativePath();
-            if (path != null)
-            {
-                string fullPath = path + "Export/" + txtFileName.Text;
-
-                string externalUrl = null;
-
-                // Handle external storage URL
-                if (StorageHelper.IsExternalStorage(fullPath))
-                {
-                    externalUrl = File.GetFileUrl(fullPath, SiteContext.CurrentSiteName);
-                }
-
-                // Ensure default target URL if not set
-                targetUrl = String.IsNullOrEmpty(externalUrl) ? ResolveUrl(path) + "Export/" + txtFileName.Text : externalUrl;
-            }
-        }
-
-        return targetUrl;
+        return ImportExportHelper.GetExportPackageUrl(txtFileName.Text, SiteContext.CurrentSiteName);
     }
 
-
-    private string GetDownloadPath(string targetUrl)
-    {
-        string path = targetUrl;
-
-        // Display full path
-        string targetFolder = GetTargetFolder();
-        if ((path == null) || StorageHelper.IsExternalStorage(targetFolder))
-        {
-            path = DirectoryHelper.CombinePath(targetFolder, txtFileName.Text);
-            path = path.Replace(SystemContext.WebApplicationPhysicalPath, String.Empty);
-        }
-
-        return path;
-    }
-
-
+    
     private void CheckObjectPermissions()
     {
         if (!CurrentUser.IsGlobalAdministrator)

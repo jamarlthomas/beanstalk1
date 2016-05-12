@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Chat;
 using CMS.MacroEngine;

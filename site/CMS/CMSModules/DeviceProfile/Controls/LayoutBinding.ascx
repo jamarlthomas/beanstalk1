@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="false" Codebehind="LayoutBinding.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="false"  Codebehind="LayoutBinding.ascx.cs"
     Inherits="CMSModules_DeviceProfile_Controls_LayoutBinding" %>
 <div class="DeviceProfileLayoutMapping">
     <div class="FlatItem">

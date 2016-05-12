@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Linq;
 using System.Web.UI.WebControls;
@@ -533,9 +533,13 @@ public partial class CMSModules_AdminControls_Controls_ObjectRelationships_Objec
                         int selectedSiteId = ValidationHelper.GetInteger(siteSelector.Value, 0);
                         if (selectedSiteId >= 0)
                         {
+                            var siteCondition = (selectedSiteId > 0) ?
+                                                    new WhereCondition().WhereEquals(relatedTypeInfo.SiteIDColumn, selectedSiteId) :
+                                                    new WhereCondition().WhereNull(relatedTypeInfo.SiteIDColumn);
+
                             string siteQuery = new DataQuery(relatedTypeInfo.ObjectType, null)
                                                     .Column(relatedTypeInfo.IDColumn)
-                                                    .Where(SqlHelper.GetSiteIDWhereCondition(relatedTypeInfo.SiteIDColumn, selectedSiteId))
+                                                    .Where(siteCondition)
                                                     .QueryText;
 
                             // Where condition for the left object

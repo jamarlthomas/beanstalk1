@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Chat_Controls_UI_ChatRoom_List" Codebehind="List.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Chat_Controls_UI_ChatRoom_List"  Codebehind="List.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.FormEngine;
 using CMS.Helpers;
@@ -18,6 +18,10 @@ public partial class CMSModules_BizForms_Tools_AlternativeForms_AlternativeForms
         layoutElem.ObjectID = QueryHelper.GetInteger("altformid", 0);
         layoutElem.IsAlternative = true;
         layoutElem.OnBeforeSave += layoutElem_OnBeforeSave;
+        layoutElem.IsAuthorizedForAscxEditingFunction = () =>
+        {
+            return MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("cms.globalpermissions", "editcode");
+        }; 
 
         // Load CSS style sheet to editor area
         var currentSite = SiteContext.CurrentSite;

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Web;
@@ -821,6 +821,7 @@ public partial class CMSModules_Groups_Controls_GroupRegistration : CMSUserContr
         forumObj.ForumDisplayName = "General discussion";
         forumObj.ForumName = codeName;
         forumObj.ForumGroupID = forumGroupObj.GroupID;
+        forumObj.ForumCommunityGroupID = group.GroupID;
         forumObj.ForumModerated = false;
         forumObj.ForumAccess = 40000;
         forumObj.ForumPosts = 0;

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Tab_IPs.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Tab_IPs.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Title="Contact properties - IPs" Inherits="CMSModules_ContactManagement_Pages_Tools_Contact_Tab_IPs"
     Theme="Default" %>
 

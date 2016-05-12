@@ -207,19 +207,34 @@ public partial class CMSWebParts_Ecommerce_Checkout_Forms_CustomerAddress : CMSC
                     CurrentCartAddress = address;
                 }
 
-                // Get selected state from country selector in UIForm
-                var countrySelectorControl = addressForm.FieldControls["AddressCountryID"];
-                var addressStateID = countrySelectorControl != null ? countrySelectorControl.GetOtherValue("AddressStateID") : null;
-                // Get selected country from UIForm
-                var addressCountryId = addressForm.GetFieldValue("AddressCountryID");
-
-                CurrentCartAddress.AddressCountryID = ValidationHelper.GetInteger(addressCountryId, CurrentCartAddress.AddressCountryID);
-                CurrentCartAddress.AddressStateID = ValidationHelper.GetInteger(addressStateID, CurrentCartAddress.AddressStateID);
-
-                ShoppingCart.InvalidateCalculations();
-                ComponentEvents.RequestEvents.RaiseEvent(null, e, SHOPPING_CART_CHANGED);
+                var formControl = addressForm.FieldControls["AddressCountryID"];
+                if (formControl != null)
+                {
+                    formControl.Load += addressFormControlLoad;
+                }
             }
         }
+    }
+
+
+    void addressFormControlLoad(object sender, EventArgs e)
+    {
+        if (CurrentCartAddress == null)
+        {
+            return;
+        }
+
+        // Get selected state from country selector in UIForm
+        var countrySelectorControl = addressForm.FieldControls["AddressCountryID"];
+        var addressStateID = countrySelectorControl != null ? countrySelectorControl.GetOtherValue("AddressStateID") : null;
+        // Get selected country from UIForm
+        var addressCountryId = addressForm.GetFieldValue("AddressCountryID");
+
+        CurrentCartAddress.AddressCountryID = ValidationHelper.GetInteger(addressCountryId, CurrentCartAddress.AddressCountryID);
+        CurrentCartAddress.AddressStateID = ValidationHelper.GetInteger(addressStateID, 0);
+
+        ShoppingCart.InvalidateCalculations();
+        ComponentEvents.RequestEvents.RaiseEvent(null, e, SHOPPING_CART_CHANGED);
     }
 
 
@@ -326,10 +341,22 @@ public partial class CMSWebParts_Ecommerce_Checkout_Forms_CustomerAddress : CMSC
             if (ai != null)
             {
                 CurrentCartAddress = ai;
+                var customer = ShoppingCart.Customer;
 
-                if (string.IsNullOrEmpty(ai.AddressPersonalName) && (ShoppingCart.Customer != null))
+                if (string.IsNullOrEmpty(ai.AddressPersonalName) && (customer != null))
                 {
-                    ai.AddressPersonalName = TextHelper.LimitLength(string.Format("{0} {1}", ShoppingCart.Customer.CustomerFirstName, ShoppingCart.Customer.CustomerLastName), 200);
+                    ai.AddressPersonalName = TextHelper.LimitLength(string.Format("{0} {1}", customer.CustomerFirstName, customer.CustomerLastName), 200);
+                }
+
+                if (ai.AddressID != 0)
+                {
+                    // Save potential customer changes before address is updated
+                    if ((customer != null) && (customer.CustomerID != 0))
+                    {
+                        customer.Update();
+                    }
+
+                    ai.Update();
                 }
             }
         }
@@ -342,6 +369,7 @@ public partial class CMSWebParts_Ecommerce_Checkout_Forms_CustomerAddress : CMSC
 
         // Set shopping cart with current address change
         ShoppingCartInfoProvider.SetShoppingCartInfo(ShoppingCart);
+        ShoppingCart.InvalidateCalculations();
     }
 
     #endregion

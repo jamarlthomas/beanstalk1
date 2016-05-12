@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSModules/EventManager/Controls/EventAttendeesSendEmail.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSModules/EventManager/Controls/EventAttendeesSendEmail.ascx.cs"
     Inherits="CMSModules_EventManager_Controls_EventAttendeesSendEmail" %>
 
 <cms:LocalizedHeading runat="server" ID="lblTitle" Level="4" ResourceString="Events_SendEmail.lblTitle"

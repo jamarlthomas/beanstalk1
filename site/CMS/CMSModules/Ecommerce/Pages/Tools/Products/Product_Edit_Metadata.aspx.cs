@@ -34,7 +34,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Meta
         ScriptHelper.RegisterLoader(Page);
 
         MetaDataControlExtender extender = new MetaDataControlExtender();
-        extender.UIModuleName = "CMS.Ecommerce";
+        extender.UIModuleName = ModuleName.ECOMMERCE;
         extender.UIPageElementName = "Products.MetaData.Page";
         extender.UITagsElementName = "Products.MetaData.Tags";
         extender.Init(editForm);       

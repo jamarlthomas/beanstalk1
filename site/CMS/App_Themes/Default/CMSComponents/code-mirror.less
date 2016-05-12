@@ -165,7 +165,6 @@
 .CM .CM-toolbar {
     overflow: hidden;
     height: 22px;
-    min-width: 320px;
     padding: 2px 0 4px 0;
     text-align: center;
     background: @color-gray-150;
@@ -310,10 +309,8 @@
     &.AutoSize {
         padding: @padding-base-vertical @padding-base-horizontal * 0.5;
     }
-}
-
     // Special styles
-    .CM.CM-FullScreen {
+    &.CM-FullScreen {
         position: fixed;
         height: auto;
         width: auto;
@@ -323,11 +320,12 @@
         top: 0;
         right: 0;
         bottom: 0;
-        z-index: @zindex-codemirror-fullsreen;
+        z-index: @zindex-codemirror-fullscreen;
         border: solid 1px #ccc;
-    }
+        max-width: 100%;
+        margin-right: 0;
 
-        .CM.CM-FullScreen .code-mirror-scroll {
+        .code-mirror-scroll {
             position: absolute;
             height: auto;
             width: auto;
@@ -335,18 +333,19 @@
             top: 0;
             right: 0;
             bottom: 0;
-            z-index: @zindex-codemirror-fullsreen;
+            z-index: @zindex-codemirror-fullscreen;
             margin: 0px 1px 28px 0px;
         }
 
-
-        .CM.CM-FullScreen .CM-toolbar {
+        .CM-toolbar {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            z-index: @z-index-codemirror-toolbar;
+            z-index: @zindex-codemirror-toolbar;
         }
+    }
+}
 
 textarea[disabled="disabled"] + .code-mirror .code-mirror-scroll {
     background-color: #f4f4f4;
@@ -375,8 +374,13 @@ textarea[disabled="disabled"] + .code-mirror .code-mirror-cursor {
     height: 30px;
 }
 
-.MacroDesigner .TreeEditor .AutoSize .code-mirror-scroll {
-    width: 250px;
+.MacroDesigner {
+    padding: @base-unit @base-unit 0 @base-unit;
+    height: calc(~"100% - "(@dialog-footer-height));
+
+    .TreeEditor .AutoSize .code-mirror-scroll {
+        width: 250px;
+    }
 }
 
 // specific styles
@@ -389,9 +393,9 @@ textarea[disabled="disabled"] + .code-mirror .code-mirror-cursor {
         position: relative;
         font-size: @font-size-base;
     }
-
+    // Macro editor single line
     div.CM.CM-silver.CM-singleline.form-control {
-        width: @base-unit * 30;
+        width: @base-unit * 30;      
     }
 
     .code-mirror-scroll {
@@ -400,6 +404,16 @@ textarea[disabled="disabled"] + .code-mirror .code-mirror-cursor {
     // Icon only buttons after form control, e.g. textbox with insert macro button
     .form-control + .btn.icon-only {
         padding-left: 0;
+    }
+}
+
+// Code mirror in macro editor
+.cms_macrorule {
+    .macro-editor-form-control {
+        // Do not affect the fullscreen mode
+        div.CM.form-control:not(.CM-FullScreen) {
+            max-width: @base-unit * 30;
+        }
     }
 }
 
@@ -419,7 +433,7 @@ textarea[disabled="disabled"] + .code-mirror .code-mirror-cursor {
         position: relative;
         left: (@icon-size-80 + (@btn-icononly-padding * 2) + @margin-50)* -1;
         // CodeMirror (.CM in this file) has @zindex-codemirror. Button has to be on top of it.
-        // Fullscreen CM (.CM.CM-FullScreen in this file) has @zindex-codemirror-fullsreen. Button has to be underneath it.
+        // Fullscreen CM (.CM.CM-FullScreen in this file) has @zindex-codemirror-fullscreen. Button has to be underneath it.
         z-index: @zindex-codemirror + 1;
     }
 
@@ -454,7 +468,7 @@ textarea[disabled="disabled"] + .code-mirror .code-mirror-cursor {
 
         .code-mirror-scroll {
             background-color: transparent;
-            overflow:hidden;
+            overflow: hidden;
         }
     }
 }
@@ -466,7 +480,7 @@ textarea[disabled="disabled"] + .code-mirror .code-mirror-cursor {
 }
 
 // Macro auto completion
-.AutoCompleteHints {
+.auto-complete-hints {
     background-color: @color-white;
     border: 2px solid @color-gray-130;
     padding: @base-unit * 0.25;
@@ -485,43 +499,44 @@ textarea[disabled="disabled"] + .code-mirror .code-mirror-cursor {
 
     a {
         text-decoration: none;
-        color: black;
+        color: @text-color;
         cursor: default;
     }
-
+    // Icon
     i {
-        margin-right: 0px;
+        margin-right: 0;
     }
-
+    // Text
     div {
-        display: inline-block;
+        display: inline;
         width: 100%;
-        height: 20px;
+        height: @base-unit * 1.25;
         margin-right: 1px;
     }
 
     li {
-        height: 20px;
+        height: @base-unit * 1.25;
+        white-space: nowrap;
     }
 
     .hidden {
         display: none;
     }
 
-    .HiddenProperty a {
-        color: grey;
+    .hidden-property a {
+        color: @color-gray-70;
     }
 
     .selected div {
-        background-color: #39f;
+        background-color: #1e90ff;
 
         a {
-            color: white;
+            color: @color-white;
         }
     }
 }
 
-.AutoCompleteContext {
+.auto-complete-context {
     background: @color-orange-130;
     padding: @base-unit;
     overflow: auto;

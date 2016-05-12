@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Web.UI.WebControls;
 
@@ -20,7 +20,7 @@ public partial class CMSModules_Reporting_Tools_Subscription_Edit : CMSReporting
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        CurrentMaster.HeaderActions.AddAction(new SaveAction(Page));
+        CurrentMaster.HeaderActions.AddAction(new SaveAction());
         CurrentMaster.HeaderActions.ActionPerformed += new CommandEventHandler(HeaderActions_ActionPerformed);
     }
 

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Forums_Controls_AttachmentDisplayer"  Codebehind="AttachmentDisplayer.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Forums_Controls_AttachmentDisplayer"   Codebehind="AttachmentDisplayer.ascx.cs" %>
 
 <asp:PlaceHolder ID="plcPostAttachments" runat="server">
     <div class="PostAttachments">

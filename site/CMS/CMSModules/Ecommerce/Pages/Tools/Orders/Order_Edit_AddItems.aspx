@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_Orders_Order_Edit_AddItems"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_Orders_Order_Edit_AddItems"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Title="Ecommerce - Add order item" Codebehind="Order_Edit_AddItems.aspx.cs" %>
+    Title="Ecommerce - Add order item"  Codebehind="Order_Edit_AddItems.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Ecommerce/Controls/ProductOptions/ShoppingCartItemSelector.ascx"
     TagName="ShoppingCartItemSelector" TagPrefix="cms" %>

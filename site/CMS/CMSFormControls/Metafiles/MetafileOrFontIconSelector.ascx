@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="MetafileOrFontIconSelector.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="MetafileOrFontIconSelector.ascx.cs"
     Inherits="CMSFormControls_Metafiles_MetafileOrFontIconSelector" %>
 <%@ Register Src="~/CMSModules/AdminControls/Controls/MetaFiles/File.ascx" TagName="MetafileUploader"
     TagPrefix="cms" %>

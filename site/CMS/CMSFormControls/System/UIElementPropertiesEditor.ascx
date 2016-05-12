@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="UIElementPropertiesEditor.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="UIElementPropertiesEditor.ascx.cs"
     Inherits="CMSFormControls_System_UIElementPropertiesEditor" %>
 <cms:CMSUpdatePanel runat="server" UpdateMode="Always" ID="pnlUpdate">
     <ContentTemplate>

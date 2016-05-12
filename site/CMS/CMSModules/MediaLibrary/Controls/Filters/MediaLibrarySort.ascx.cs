@@ -1,11 +1,5 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 
 using CMS.Controls;
 using CMS.Helpers;
@@ -15,10 +9,8 @@ public partial class CMSModules_MediaLibrary_Controls_Filters_MediaLibrarySort :
 {
     #region "Variables"
 
-    private static List<string> columns = new List<string>() { "filename", "filecreatedwhen", "filesize" };
-    private string mFileIDQueryStringKey = null;
-    private string mSortQueryStringKey = null;
-    private int mFilterMethod = 0;
+    private readonly List<string> columns = new List<string> { "filename", "filecreatedwhen", "filesize" };
+    private int mFilterMethod;
 
     #endregion
 
@@ -36,7 +28,7 @@ public partial class CMSModules_MediaLibrary_Controls_Filters_MediaLibrarySort :
         }
         set
         {
-            ViewState["SortBy"] = (object)value;
+            ViewState["SortBy"] = value;
         }
     }
 
@@ -46,14 +38,8 @@ public partial class CMSModules_MediaLibrary_Controls_Filters_MediaLibrarySort :
     /// </summary>
     public string FileIDQueryStringKey
     {
-        get
-        {
-            return mFileIDQueryStringKey;
-        }
-        set
-        {
-            mFileIDQueryStringKey = value;
-        }
+        get;
+        set;
     }
 
 
@@ -62,14 +48,8 @@ public partial class CMSModules_MediaLibrary_Controls_Filters_MediaLibrarySort :
     /// </summary>
     public string SortQueryStringKey
     {
-        get
-        {
-            return mSortQueryStringKey;
-        }
-        set
-        {
-            mSortQueryStringKey = value;
-        }
+        get;
+        set;
     }
 
 
@@ -100,6 +80,12 @@ public partial class CMSModules_MediaLibrary_Controls_Filters_MediaLibrarySort :
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (StopProcessing)
+        {
+            Visible = false;
+            return;
+        }
+
         if (QueryHelper.GetInteger(FileIDQueryStringKey, 0) > 0)
         {
             StopProcessing = true;

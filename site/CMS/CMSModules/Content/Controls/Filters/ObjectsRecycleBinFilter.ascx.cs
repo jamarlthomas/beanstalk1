@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -166,16 +166,12 @@ public partial class CMSModules_Content_Controls_Filters_ObjectsRecycleBinFilter
             if (DisplayDateTimeFilter)
             {
                 // Fill the dropdown list
-                drpFilter.Items.Add(GetString("MyDesk.OutdatedDocuments.Days"));
-                drpFilter.Items.Add(GetString("MyDesk.OutdatedDocuments.Weeks"));
-                drpFilter.Items.Add(GetString("MyDesk.OutdatedDocuments.Months"));
-                drpFilter.Items.Add(GetString("MyDesk.OutdatedDocuments.Years"));
+                EnsureDropDownListFilterItems();
 
                 // Load default value
                 if (String.IsNullOrEmpty(txtFilter.Text))
                 {
                     txtFilter.Text = "0";
-                    drpFilter.SelectedIndex = 0;
                 }
             }
         }
@@ -285,6 +281,18 @@ public partial class CMSModules_Content_Controls_Filters_ObjectsRecycleBinFilter
         }
     }
 
+
+    private void EnsureDropDownListFilterItems()
+    {
+        if (drpFilter.Items.Count == 0)
+        {
+            drpFilter.Items.Add(GetString("MyDesk.OutdatedDocuments.Days"));
+            drpFilter.Items.Add(GetString("MyDesk.OutdatedDocuments.Weeks"));
+            drpFilter.Items.Add(GetString("MyDesk.OutdatedDocuments.Months"));
+            drpFilter.Items.Add(GetString("MyDesk.OutdatedDocuments.Years"));
+        }
+    }
+
     #endregion
 
 
@@ -332,8 +340,13 @@ public partial class CMSModules_Content_Controls_Filters_ObjectsRecycleBinFilter
     /// <param name="state">The object that holds the filter state.</param>
     public override void RestoreFilterState(FilterState state)
     {
+        // Before retrieving selected value from saved state is necessary to ensure items in DropDownList (delete before)
+        EnsureDropDownListFilterItems();
+
         base.RestoreFilterState(state);
+
         SelectedUser = state.GetInt32("ObjectRecycleBinUser");
+
     }
 
 

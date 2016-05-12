@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_LiveSelectors_SpellCheck"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_LiveSelectors_SpellCheck"
     Theme="Default" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master"
-    ValidateRequest="false" Title="Spell Checker" Codebehind="SpellCheck.aspx.cs" %>
+    ValidateRequest="false" Title="Spell Checker"  Codebehind="SpellCheck.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/SpellChecker/SpellCheck.ascx" TagName="SpellCheck"
     TagPrefix="cms" %>

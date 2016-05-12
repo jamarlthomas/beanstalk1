@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.EmailEngine;
@@ -213,7 +213,8 @@ public partial class CMSModules_Membership_Pages_Users_User_Edit_Password : CMSU
     private void SendEmail(string subject, string pswd, string emailType, bool showPassword)
     {
         // Check whether the 'From' element was specified
-        string emailFrom = SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSSendPasswordEmailsFrom");
+        string siteName = SiteContext.CurrentSiteName;
+        string emailFrom = SettingsKeyInfoProvider.GetValue("CMSSendPasswordEmailsFrom", siteName);
         bool fromMissing = string.IsNullOrEmpty(emailFrom);
 
         if ((!string.IsNullOrEmpty(emailType)) && (UserInfo != null) && (!fromMissing))
@@ -251,28 +252,20 @@ public partial class CMSModules_Membership_Pages_Users_User_Edit_Password : CMSU
                 {
                     try
                     {
-                        // Get e-mail template
-                        EmailTemplateInfo template = EmailTemplateProvider.GetEmailTemplate(templateName, null);
+                        // Get e-mail template - try to get site specific template if edited user is assigned to current site
+                        EmailTemplateInfo template = EmailTemplateProvider.GetEmailTemplate(templateName, UserInfo.IsInSite(siteName) ? siteName : null);
                         if (template != null)
                         {
                             em.Body = template.TemplateText;
 
-                            // Macros
-                            string[,] macros = new string[2, 2];
-                            macros[0, 0] = "UserName";
-                            macros[0, 1] = UserInfo.UserName;
-                            macros[1, 0] = "Password";
-                            macros[1, 1] = pswd;
-
                             // Create macro resolver
-                            MacroResolver resolver = MacroContext.CurrentResolver;
-                            resolver.SetNamedSourceData(macros);
+                            MacroResolver resolver = MembershipResolvers.GetPasswordResolver(UserInfo, pswd);
 
                             // Add template attachments
                             EmailHelper.ResolveMetaFileImages(em, template.TemplateID, EmailTemplateInfo.OBJECT_TYPE, ObjectAttachmentsCategories.TEMPLATE);
 
                             // Send message immediately (+ resolve macros)
-                            EmailSender.SendEmailWithTemplateText(SiteContext.CurrentSiteName, em, template, resolver, true);
+                            EmailSender.SendEmailWithTemplateText(siteName, em, template, resolver, true);
 
                             // Inform on success
                             ShowConfirmation(GetString("Administration-User_Edit_Password.PasswordsSent") + " " + HTMLHelper.HTMLEncode(emailTo));

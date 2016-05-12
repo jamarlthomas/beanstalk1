@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Linq;
 using System.Security.Principal;
 using System.Threading;
 using System.Web.UI;
@@ -19,24 +20,78 @@ using CMS.ExtendedControls;
 using CMS.Globalization;
 using CMS.WinServiceEngine;
 
-
 public partial class CMSModules_System_Controls_System : CMSAdminControl
 {
+    #region "Request statistics"
+
+    /// <summary>
+    /// Container for request statistics
+    /// </summary>
+    private class RequestStatistics
+    {
+        private DateTime LastRPS = DateTime.MinValue;
+
+        private long LastPageRequests;
+        private long LastNonPageRequests;
+        private long LastSystemPageRequests;
+        private long LastPageNotFoundRequests;
+        private long LastGetFileRequests;
+
+        public double RPSPageRequests = -1;
+        public double RPSNonPageRequests = -1;
+        public double RPSSystemPageRequests = -1;
+        public double RPSPageNotFoundRequests = -1;
+        public double RPSGetFileRequests = -1;
+
+
+        public void EvaluateRequests()
+        {
+            // Get values from counters
+            long totalSystemRequests = RequestHelper.TotalSystemPageRequests.GetValue(null);
+            long totalPageRequests = RequestHelper.TotalPageRequests.GetValue(null);
+            long totalPageNotFoundRequests = RequestHelper.TotalPageNotFoundRequests.GetValue(null);
+            long totalNonPageRequests = RequestHelper.TotalNonPageRequests.GetValue(null);
+            long totalGetFileRequests = RequestHelper.TotalGetFileRequests.GetValue(null);
+
+            // Reevaluate RPS
+            if (LastRPS != DateTime.MinValue)
+            {
+                double seconds = DateTime.Now.Subtract(LastRPS).TotalSeconds;
+                if ((seconds < 3) && (seconds > 0))
+                {
+                    RPSSystemPageRequests = (totalSystemRequests - LastSystemPageRequests) / seconds;
+                    RPSPageRequests = (totalPageRequests - LastPageRequests) / seconds;
+                    RPSPageNotFoundRequests = (totalPageNotFoundRequests - LastPageNotFoundRequests) / seconds;
+                    RPSNonPageRequests = (totalNonPageRequests - LastNonPageRequests) / seconds;
+                    RPSGetFileRequests = (totalGetFileRequests - LastGetFileRequests) / seconds;
+                }
+                else
+                {
+                    RPSGetFileRequests = -1;
+                    RPSNonPageRequests = -1;
+                    RPSPageNotFoundRequests = -1;
+                    RPSPageRequests = -1;
+                    RPSSystemPageRequests = -1;
+                }
+            }
+
+            LastRPS = DateTime.Now;
+
+            // Update last values
+            LastGetFileRequests = totalGetFileRequests;
+            LastNonPageRequests = totalNonPageRequests;
+            LastPageNotFoundRequests = totalPageNotFoundRequests;
+            LastPageRequests = totalPageRequests;
+            LastSystemPageRequests = totalSystemRequests;
+        }
+    }
+
+    #endregion
+
+
     #region "Variables"
 
-    private static DateTime mLastRPS = DateTime.MinValue;
-
-    private static long mLastPageRequests;
-    private static long mLastNonPageRequests;
-    private static long mLastSystemPageRequests;
-    private static long mLastPageNotFoundRequests;
-    private static long mLastGetFileRequests;
-
-    private static double mRPSPageRequests = -1;
-    private static double mRPSNonPageRequests = -1;
-    private static double mRPSSystemPageRequests = -1;
-    private static double mRPSPageNotFoundRequests = -1;
-    private static double mRPSGetFileRequests = -1;
+    private static readonly RequestStatistics Statistics = new RequestStatistics();
 
     private bool isSeparatedDB;
 
@@ -99,16 +154,12 @@ public partial class CMSModules_System_Controls_System : CMSAdminControl
         get
         {
             // Hide button if webfarms are not enabled or disallow restarting webfarms for Microsoft Azure
-            bool visible = WebSyncHelper.WebFarmEnabled && !SystemContext.IsRunningOnAzure;
+            bool visible = WebFarmContext.WebFarmEnabled && !SystemContext.IsRunningOnAzure;
 
             // Hide the web farm restart button if this web farm server is not enabled
-            if (!RequestHelper.IsPostBack())
+            if (!RequestHelper.IsPostBack() && !WebFarmContext.EnabledServers.Any(s => s.ServerName.EqualsCSafe(SystemContext.ServerName)))
             {
-                WebFarmServerInfo webFarmServerObj = WebFarmServerInfoProvider.GetWebFarmServerInfo(WebSyncHelper.ServerName);
-                if ((webFarmServerObj != null) && (!webFarmServerObj.ServerEnabled))
-                {
-                    visible = false;
-                }
+                visible = false;
             }
 
             return visible;
@@ -146,43 +197,7 @@ public partial class CMSModules_System_Controls_System : CMSAdminControl
             return;
         }
 
-        // Get values from counters
-        long totalSystemRequests = RequestHelper.TotalSystemPageRequests.GetValue(null);
-        long totalPageRequests = RequestHelper.TotalPageRequests.GetValue(null);
-        long totalPageNotFoundRequests = RequestHelper.TotalPageNotFoundRequests.GetValue(null);
-        long totalNonPageRequests = RequestHelper.TotalNonPageRequests.GetValue(null);
-        long totalGetFileRequests = RequestHelper.TotalGetFileRequests.GetValue(null);
-
-        // Reevaluate RPS
-        if (mLastRPS != DateTime.MinValue)
-        {
-            double seconds = DateTime.Now.Subtract(mLastRPS).TotalSeconds;
-            if ((seconds < 3) && (seconds > 0))
-            {
-                mRPSSystemPageRequests = (totalSystemRequests - mLastSystemPageRequests) / seconds;
-                mRPSPageRequests = (totalPageRequests - mLastPageRequests) / seconds;
-                mRPSPageNotFoundRequests = (totalPageNotFoundRequests - mLastPageNotFoundRequests) / seconds;
-                mRPSNonPageRequests = (totalNonPageRequests - mLastNonPageRequests) / seconds;
-                mRPSGetFileRequests = (totalGetFileRequests - mLastGetFileRequests) / seconds;
-            }
-            else
-            {
-                mRPSGetFileRequests = -1;
-                mRPSNonPageRequests = -1;
-                mRPSPageNotFoundRequests = -1;
-                mRPSPageRequests = -1;
-                mRPSSystemPageRequests = -1;
-            }
-        }
-
-        mLastRPS = DateTime.Now;
-
-        // Update last values
-        mLastGetFileRequests = totalGetFileRequests;
-        mLastNonPageRequests = totalNonPageRequests;
-        mLastPageNotFoundRequests = totalPageNotFoundRequests;
-        mLastPageRequests = totalPageRequests;
-        mLastSystemPageRequests = totalSystemRequests;
+        Statistics.EvaluateRequests();
 
         // Do not count this page with async postback
         if (RequestHelper.IsAsyncPostback())
@@ -206,25 +221,13 @@ public partial class CMSModules_System_Controls_System : CMSAdminControl
         plcSeparatedVersion.Visible = isSeparatedDB;
         plcSeparatedHeader.Visible = isSeparatedDB;
 
-        try
-        {
-            lblValuePool.Text = HTMLHelper.HTMLEncode(SystemHelper.GetApplicationPoolName());
-        }
-        catch
-        {
-        }
+        lblValuePool.Text = HTMLHelper.HTMLEncode(SystemContext.ApplicationPoolName);
 
         // Get application trust level
         lblTrustLevel.Text = GetString("Administration-System.TrustLevel");
         lblValueTrustLevel.Text = GetString("General.NA");
 
-        try
-        {
-            lblValueTrustLevel.Text = HTMLHelper.HTMLEncode(SystemContext.CurrentTrustLevel.ToString());
-        }
-        catch
-        {
-        }
+        lblValueTrustLevel.Text = HTMLHelper.HTMLEncode(SystemContext.CurrentTrustLevel.ToString());
 
         lblAspVersion.Text = GetString("Administration-System.Version");
         lblValueAspVersion.Text = HTMLHelper.HTMLEncode(Environment.Version.ToString());
@@ -265,7 +268,7 @@ public partial class CMSModules_System_Controls_System : CMSAdminControl
                     {
                         ShowConfirmation(GetString("Administration-System.WebframRestarted"));
                         // Restart other servers - create webfarm task for application restart
-                        WebFarmHelper.CreateTask(SystemTaskType.RestartApplication, "RestartApplication", "", null);
+                        WebFarmHelper.CreateTask(SystemTaskType.RestartApplication, "RestartApplication");
                     }
                     else
                     {
@@ -612,11 +615,11 @@ public partial class CMSModules_System_Controls_System : CMSAdminControl
         {
         }
 
-        lblValuePages.Text = GetViewValues(RequestHelper.TotalPageRequests.GetValue(null), mRPSPageRequests);
-        lblValuePagesNotFound.Text = GetViewValues(RequestHelper.TotalPageNotFoundRequests.GetValue(null), mRPSPageNotFoundRequests);
-        lblValueSystemPages.Text = GetViewValues(RequestHelper.TotalSystemPageRequests.GetValue(null), mRPSSystemPageRequests);
-        lblValueNonPages.Text = GetViewValues(RequestHelper.TotalNonPageRequests.GetValue(null), mRPSNonPageRequests);
-        lblValueGetFilePages.Text = GetViewValues(RequestHelper.TotalGetFileRequests.GetValue(null), mRPSGetFileRequests);
+        lblValuePages.Text = GetViewValues(RequestHelper.TotalPageRequests.GetValue(null), Statistics.RPSPageRequests);
+        lblValuePagesNotFound.Text = GetViewValues(RequestHelper.TotalPageNotFoundRequests.GetValue(null), Statistics.RPSPageNotFoundRequests);
+        lblValueSystemPages.Text = GetViewValues(RequestHelper.TotalSystemPageRequests.GetValue(null), Statistics.RPSSystemPageRequests);
+        lblValueNonPages.Text = GetViewValues(RequestHelper.TotalNonPageRequests.GetValue(null), Statistics.RPSNonPageRequests);
+        lblValueGetFilePages.Text = GetViewValues(RequestHelper.TotalGetFileRequests.GetValue(null), Statistics.RPSGetFileRequests);
 
         long pending = RequestHelper.PendingRequests.GetValue(null);
         if (pending > 1)

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -18,7 +18,7 @@ public partial class CMSModules_Widgets_InlineControl_InlineWidget : InlineUserC
     protected void Page_Load(object sender, EventArgs e)
     {
         StringSafeDictionary<object> decodedProperties = new StringSafeDictionary<object>();
-        foreach (DictionaryEntry param in properties)
+        foreach (DictionaryEntry param in Properties)
         {
             // Decode special CK editor char
             String str = String.Empty;
@@ -29,9 +29,9 @@ public partial class CMSModules_Widgets_InlineControl_InlineWidget : InlineUserC
 
             decodedProperties[param.Key] = HttpUtility.UrlDecode(str);
         }
-        properties = decodedProperties;
+        Properties = decodedProperties;
 
-        string widgetName = ValidationHelper.GetString(properties["name"], String.Empty);
+        string widgetName = ValidationHelper.GetString(Properties["name"], String.Empty);
 
         // Widget name must be specified
         if (String.IsNullOrEmpty(widgetName))
@@ -73,9 +73,8 @@ public partial class CMSModules_Widgets_InlineControl_InlineWidget : InlineUserC
                     string props = FormHelper.MergeFormDefinitions(wpi.WebPartProperties, wi.WidgetProperties);
 
                     // Prepare form
-                    WidgetZoneTypeEnum zoneType = WidgetZoneTypeEnum.Editor;
-                    FormInfo zoneTypeDefinition = PortalFormHelper.GetPositionFormInfo(zoneType);
-                    fi = PortalFormHelper.GetWidgetFormInfo(wi.WidgetName, Enum.GetName(typeof(WidgetZoneTypeEnum), zoneType), props, zoneTypeDefinition, true, wi.WidgetDefaultValues);
+                    const WidgetZoneTypeEnum zoneType = WidgetZoneTypeEnum.Editor;
+                    fi = PortalFormHelper.GetWidgetFormInfo(wi.WidgetName, zoneType, props, true, wi.WidgetDefaultValues);
 
                     // Apply changed values
                     dr = fi.GetDataRow();
@@ -134,12 +133,12 @@ public partial class CMSModules_Widgets_InlineControl_InlineWidget : InlineUserC
                 string columnName = column.ColumnName.ToLowerCSafe();
 
                 //Resolve set values by user
-                if (properties.Contains(columnName))
+                if (Properties.Contains(columnName))
                 {
                     FormFieldInfo ffi = fi.GetFormField(columnName);
                     if ((ffi != null) && ffi.Visible && ((ffi.DisplayIn == null) || !ffi.DisplayIn.Contains(FormInfo.DISPLAY_CONTEXT_DASHBOARD)))
                     {
-                        value = properties[columnName];
+                        value = Properties[columnName];
                     }
                 }
 

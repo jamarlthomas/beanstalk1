@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_System_Email"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_System_Email"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" 
-    Title="Administration - System - Email" Codebehind="System_Email.aspx.cs" %>
+    Title="Administration - System - Email"  Codebehind="System_Email.aspx.cs" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">            
     <div class="form-horizontal">

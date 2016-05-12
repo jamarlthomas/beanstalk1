@@ -1,6 +1,4 @@
-using System;
-using System.Collections;
-using System.Net;
+﻿using System;
 using System.Security.Principal;
 using System.Web;
 using System.Web.UI;
@@ -19,172 +17,112 @@ using CMS.LicenseProvider;
 using CMS.Localization;
 using CMS.MacroEngine;
 using CMS.Membership;
+using CMS.Modules;
 using CMS.PortalEngine;
 using CMS.UIControls;
 
 using MessageTypeEnum = CMS.DataEngine.MessageTypeEnum;
 using ProcessStatus = CMS.Base.ProcessStatus;
 
-
-#region "InstallInfo"
-
-/// <summary>
-/// Installation info.
-/// </summary>
-[Serializable]
-public class InstallInfo
+public partial class CMSInstall_install : CMSPage
 {
-    #region "Variables"
-
-    public const string SEPARATOR = "<#>";
-
-    private const string LOG = "I" + SEPARATOR + SEPARATOR + SEPARATOR;
-
-    // Deletion log
-    private string mInstallLog = LOG;
-    private string mScriptsFullPath;
-    private string mConnectionString;
-    private string mDBSchema;
-
-    #endregion
-
-
-    #region "Properties"
+    #region "InstallInfo"
 
     /// <summary>
-    /// Keep information about installation progress.
+    /// Installation info.
     /// </summary>
-    public string InstallLog
+    [Serializable]
+    private class InstallInfo
     {
-        get
+        #region "Variables"
+
+        private string mScriptsFullPath;
+        private string mConnectionString;
+        private string mDBSchema;
+
+        #endregion
+
+
+        #region "Properties"
+
+        /// <summary>
+        /// Connection string.
+        /// </summary>
+        public string ConnectionString
         {
-            return mInstallLog;
-        }
-        set
-        {
-            mInstallLog = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Connection string.
-    /// </summary>
-    public string ConnectionString
-    {
-        get
-        {
-            return mConnectionString;
-        }
-
-        set
-        {
-            mConnectionString = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Scripts full path.
-    /// </summary>
-    public string ScriptsFullPath
-    {
-        get
-        {
-            return mScriptsFullPath;
-        }
-
-        set
-        {
-            mScriptsFullPath = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Database schema.
-    /// </summary>
-    public string DBSchema
-    {
-        get
-        {
-            return mDBSchema;
-        }
-        set
-        {
-            mDBSchema = value;
-        }
-    }
-
-    #endregion
-
-
-    #region "Methods"
-
-    /// <summary>
-    /// Clear log.
-    /// </summary>
-    public void ClearLog()
-    {
-        InstallLog = LOG;
-    }
-
-
-    /// <summary>
-    /// Gets limited progress log for callback.
-    /// </summary>
-    /// <param name="reqMessageLength">Requested message part length</param>
-    /// <param name="reqErrorLength">Requested error part length</param>
-    /// <param name="reqWarningLength">Requested warning part length</param>
-    public string GetLimitedProgressLog(int reqMessageLength, int reqErrorLength, int reqWarningLength)
-    {
-        if (mInstallLog != null)
-        {
-            string[] parts = mInstallLog.Split(new string[] { SEPARATOR }, StringSplitOptions.None);
-
-            if (parts.Length != 4)
+            get
             {
-                return "F" + SEPARATOR + "Wrong internal log." + SEPARATOR + SEPARATOR;
+                return mConnectionString;
             }
 
-            string message = parts[1];
-            string error = parts[2];
-            string warning = parts[3];
-
-            // Message part
-            int messageLength = message.Length;
-            if (reqMessageLength > messageLength)
+            set
             {
-                reqMessageLength = messageLength;
+                mConnectionString = value;
             }
-
-            // Error part
-            int errorLength = error.Length;
-            if (reqErrorLength > errorLength)
-            {
-                reqErrorLength = errorLength;
-            }
-
-            // Warning part
-            int warningLength = warning.Length;
-            if (reqWarningLength > warningLength)
-            {
-                reqWarningLength = warningLength;
-            }
-
-            return parts[0] + SEPARATOR + message.Substring(0, messageLength - reqMessageLength) + SEPARATOR + parts[2].Substring(0, errorLength - reqErrorLength) + SEPARATOR + parts[3].Substring(0, warningLength - reqWarningLength);
         }
-        return "F" + SEPARATOR + "Internal error." + SEPARATOR + SEPARATOR;
+
+
+        /// <summary>
+        /// Scripts full path.
+        /// </summary>
+        public string ScriptsFullPath
+        {
+            get
+            {
+                return mScriptsFullPath;
+            }
+
+            set
+            {
+                mScriptsFullPath = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Database schema.
+        /// </summary>
+        public string DBSchema
+        {
+            get
+            {
+                return mDBSchema;
+            }
+            set
+            {
+                mDBSchema = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Log context
+        /// </summary>
+        public ILogContext LogContext
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
+
+        #region "Methods"
+
+        /// <summary>
+        /// Clears the log
+        /// </summary>
+        public void ClearLog()
+        {
+            LogContext.Clear();
+        }
+
+        #endregion
     }
 
     #endregion
-}
+    
 
-#endregion
-
-
-public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
-{
     #region "Constants"
 
     private const string WWAG_KEY = "CMSWWAGInstallation";
@@ -211,12 +149,15 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
 
     #region "Variables"
 
-    private static readonly Hashtable mInstallInfos = new Hashtable();
-    private static readonly Hashtable mManagers = new Hashtable();
+    private static readonly SafeDictionary<string, InstallInfo> mInstallInfos = new SafeDictionary<string, InstallInfo>();
+    private static readonly SafeDictionary<string, ImportManager> mManagers = new SafeDictionary<string, ImportManager>();
+
     private string hostName = RequestContext.URL.Host.ToLowerCSafe();
-    private static bool dbReady = false;
+    private static bool dbReady;
     private static bool writePermissions = true;
-    private UserInfo mImportUser = null;
+    
+    private UserInfo mImportUser;
+
     private LocalizedButton mNextButton;
     private LocalizedButton mPreviousButton;
     private LocalizedButton mStartNextButton;
@@ -229,13 +170,13 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
     /// <summary>
     /// User for actions context
     /// </summary>
-    protected UserInfo ImportUser
+    private UserInfo ImportUser
     {
         get
         {
             if (mImportUser == null)
             {
-                mImportUser = UserInfoProvider.GetUserInfo("administrator");
+                mImportUser = UserInfoProvider.AdministratorUser;
                 CMSActionContext.CurrentUser = mImportUser;
             }
 
@@ -298,22 +239,13 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
     /// <summary>
     /// Install info.
     /// </summary>
-    public InstallInfo InstallInfo
+    private InstallInfo Info
     {
         get
         {
             string key = "instInfos_" + ProcessGUID;
-            if (mInstallInfos[key] == null)
-            {
-                InstallInfo instInfo = new InstallInfo();
-                mInstallInfos[key] = instInfo;
-            }
-            return (InstallInfo)mInstallInfos[key];
-        }
-        set
-        {
-            string key = "instInfos_" + ProcessGUID;
-            mInstallInfos[key] = value;
+
+            return mInstallInfos[key] ?? (mInstallInfos[key] = new InstallInfo());
         }
     }
 
@@ -321,7 +253,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
     /// <summary>
     /// Authentication type.
     /// </summary>
-    public SQLServerAuthenticationModeEnum authenticationType
+    private SQLServerAuthenticationModeEnum AuthenticationType
     {
         get
         {
@@ -344,7 +276,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
     /// <summary>
     /// Database name.
     /// </summary>
-    public string Database
+    private string Database
     {
         get
         {
@@ -360,31 +292,17 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
     /// <summary>
     /// Import manager.
     /// </summary>
-    public ImportManager ImportManager
+    private ImportManager ImportManager
     {
         get
         {
             string key = "imManagers_" + ProcessGUID;
-            if (mManagers[key] == null)
-            {
-                SiteImportSettings imSettings = new SiteImportSettings(ImportUser);
-                imSettings.IsWebTemplate = true;
-                imSettings.ImportType = ImportTypeEnum.AllNonConflicting;
-                imSettings.CopyFiles = false;
-                imSettings.EnableSearchTasks = false;
-                ImportManager im = new ImportManager(imSettings);
-                mManagers[key] = im;
-            }
-            return (ImportManager)mManagers[key];
-        }
-        set
-        {
-            string key = "imManagers_" + ProcessGUID;
-            mManagers[key] = value;
+
+            return mManagers[key] ?? (mManagers[key] = CreateManager());
         }
     }
 
-
+    
     /// <summary>
     /// New site domain.
     /// </summary>
@@ -646,6 +564,29 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
     #endregion
 
 
+    #region "Methods"
+
+    private ImportManager CreateManager()
+    {
+        var settings = new SiteImportSettings(ImportUser);
+
+        settings.IsWebTemplate = true;
+
+        // Import all, but only add new data
+        settings.ImportType = ImportTypeEnum.AllNonConflicting;
+        settings.ImportOnlyNewObjects = true;
+        settings.CopyFiles = false;
+
+        // Allow bulk inserts for faster import, web templates must be consistent enough to allow this without collisions
+        settings.AllowBulkInsert = true;
+
+        settings.EnableSearchTasks = false;
+
+        ImportManager im = new ImportManager(settings);
+        return im;
+    }
+
+
     protected void Page_Load(Object sender, EventArgs e)
     {
         // Disable CSS minification
@@ -658,8 +599,8 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
         {
             EnsureApplicationConfiguration();
 
-            ucAsyncControl.OnFinished += worker_OnFinished;
-            ucDBAsyncControl.OnFinished += workerDB_OnFinished;
+            ctlAsyncImport.OnFinished += worker_OnFinished;
+            ctlAsyncDB.OnFinished += workerDB_OnFinished;
             databaseDialog.ServerName = userServer.ServerName;
 
             // Register script for pendingCallbacks repair
@@ -668,53 +609,40 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
             ScriptManager.RegisterClientScriptBlock(this, GetType(), "fixPendingCallbacks", "WebForm_CallbackComplete = WebForm_CallbackComplete_SyncFixed", true);
 
             // Javascript functions
-            string jsFunctions =
-                "var iMessageText = '';\n" +
-                "var iErrorText = '';\n" +
-                "var iWarningText = '';\n" +
-                "var getBusy = false; \n" +
-                "function GetInstallState(argument)\n" +
-                "{ if (getBusy) return; getBusy = true; setTimeout(\"getBusy = false;\", 2000); if(window.Activity){window.Activity();} var arg = argument + ';' + iMessageText.length + ';' + iErrorText.length + ';' + iWarningText.length; return " + Page.ClientScript.GetCallbackEventReference(this, "arg", "SetInstallStateMssg", "arg", true) + " } \n";
+            string script = String.Format(
+@"
+function Finished(sender) {{
+    var errorElement = document.getElementById('{2}');
 
-            jsFunctions +=
-                "function SetInstallStateMssg(rValue, context)\n" +
-                "{\n" +
-                "   getBusy = false; \n" +
-                "   if (rValue != '')\n" +
-                "   {\n" +
-                "       var args = context.split(';');\n" +
-                "       var values = rValue.split('" + AbstractImportExportSettings.SEPARATOR + "');\n" +
-                "       var messageElement = document.getElementById('lblProgress');\n" +
-                "       var errorElement = document.getElementById('" + errorPanel.ErrorLabelClientID + "');\n" +
-                "       var warningElement = document.getElementById('" + warningPanel.WarningLabelClientID + "');\n" +
-                "       var messageText = iMessageText;\n" +
-                "       messageText = values[1] + messageText.substring(messageText.length - args[2]);\n" +
-                "       if(messageText.length > iMessageText.length){ iMessageText = messageElement.innerHTML = messageText; }\n" +
-                "       var errorText = iErrorText;\n" +
-                "       errorText = values[2] + errorText.substring(errorText.length - args[3]);\n" +
-                "       if(errorText.length > iErrorText.length){ iErrorText = errorElement.innerHTML = errorText; errorElement.className=''; errorElement.className='ErrorLabel'; }\n" +
-                "       var warningText = iWarningText;\n" +
-                "       warningText = values[3] + warningText.substring(warningText.length - args[4]);\n" +
-                "       if(warningText.length > iWarningText.length){ iWarningText = warningElement.innerHTML = warningText; warningElement.className=''; warningElement.className='ErrorLabel'; }\n" +
-                "       if((values == '') || (values[0] == 'F'))\n" +
-                "       {\n" +
-                "           StopInstallStateTimer();\n" +
-                "           if(values[2] != '')\n" +
-                "           {\n" +
-                "               BTN_Disable('" + NextButton.ClientID + "');\n" +
-                "               BTN_Enable('" + PreviousButton.ClientID + "');\n" +
-                "           }\n" +
-                "           else\n" +
-                "           {\n" +
-                "               BTN_Disable('" + NextButton.ClientID + "');\n" +
-                "               BTN_Disable('" + PreviousButton.ClientID + "');\n" +
-                "           }\n" +
-                "       }\n" +
-                "   }\n" +
-                "}\n";
+    var errorText = sender.getErrors();
+    if (errorText != '') {{ 
+        errorElement.innerHTML = errorText;
+    }}
+
+    var warningElement = document.getElementById('{3}');
+    
+    var warningText = sender.getWarnings();
+    if (warningText != '') {{ 
+        warningElement.innerHTML = warningText;
+    }}    
+
+    var actDiv = document.getElementById('actDiv');
+    if (actDiv != null) {{ 
+        actDiv.style.display = 'none'; 
+    }}
+
+    BTN_Disable('{0}');
+    BTN_Enable('{1}');
+}}
+",
+                PreviousButton.ClientID,
+                NextButton.ClientID,
+                pnlError.ClientID,
+                pnlWarning.ClientID
+            );
 
             // JS for advanced options link
-            jsFunctions += "function ShowHideElement(elemid, show) { \n" +
+            script += "function ShowHideElement(elemid, show) { \n" +
                            " var elem = document.getElementById(elemid); \n" +
                            " if (elem) { \n" +
                            "   if (show=='1') { elem.style.display = ''; } else { elem.style.display = 'none'; } \n" +
@@ -736,7 +664,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
 
 
             // Register the script to perform get flags for showing buttons retrieval callback
-            ScriptHelper.RegisterClientScriptBlock(this, GetType(), "InstallFunctions", ScriptHelper.GetScript(jsFunctions));
+            ScriptHelper.RegisterClientScriptBlock(this, GetType(), "InstallFunctions", ScriptHelper.GetScript(script));
 
             StartHelp.Tooltip = ResHelper.GetFileString("install.tooltip");
             StartHelp.TopicName = HELP_TOPIC_LINK;
@@ -781,7 +709,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
                         btnPermissionTest.Text = ResHelper.GetFileString("Install.btnPermissionTest");
 
                         // Show troubleshoot link
-                        errorPanel.DisplayError("Install.ErrorPermissions", HELP_TOPIC_DISK_PERMISSIONS_LINK);
+                        pnlError.DisplayError("Install.ErrorPermissions", HELP_TOPIC_DISK_PERMISSIONS_LINK);
                         return;
                     }
 
@@ -810,7 +738,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
                 {
                     userServer.ServerName = SystemContext.MachineName;
                 }
-                authenticationType = SQLServerAuthenticationModeEnum.SQLServerAuthentication;
+                AuthenticationType = SQLServerAuthenticationModeEnum.SQLServerAuthentication;
 
                 wzdInstaller.ActiveStepIndex = 0;
             }
@@ -950,7 +878,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
     {
         if (!VirtualPathHelper.UsingVirtualPathProvider)
         {
-            AuthenticationHelper.AuthenticateUser("administrator", false);
+            AuthenticationHelper.AuthenticateUser(UserInfoProvider.AdministratorUserName, false);
             URLHelper.Redirect(UIContextHelper.GetApplicationUrl("cms", "administration"));
         }
         else
@@ -987,7 +915,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
                 Password = userServer.DBPassword;
 
                 // Set the authentication type
-                authenticationType = userServer.WindowsAuthenticationChecked ? SQLServerAuthenticationModeEnum.WindowsAuthentication : SQLServerAuthenticationModeEnum.SQLServerAuthentication;
+                AuthenticationType = userServer.WindowsAuthenticationChecked ? SQLServerAuthenticationModeEnum.WindowsAuthentication : SQLServerAuthenticationModeEnum.SQLServerAuthentication;
 
                 // Check the server name
                 if (userServer.ServerName == String.Empty)
@@ -997,7 +925,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
                 }
 
                 // Check if it is possible to connect to the database
-                string res = ConnectionHelper.TestConnection(authenticationType, userServer.ServerName, String.Empty, userServer.DBUsername, Password);
+                string res = ConnectionHelper.TestConnection(AuthenticationType, userServer.ServerName, String.Empty, userServer.DBUsername, Password);
                 if (!string.IsNullOrEmpty(res))
                 {
                     HandleError(res, "Install.ErrorSqlTroubleshoot", HELP_TOPIC_SQL_ERROR_LINK);
@@ -1005,7 +933,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
                 }
 
                 // Set credentials for the next step
-                databaseDialog.AuthenticationType = authenticationType;
+                databaseDialog.AuthenticationType = AuthenticationType;
                 databaseDialog.Password = Password;
                 databaseDialog.Username = userServer.DBUsername;
                 databaseDialog.ServerName = userServer.ServerName;
@@ -1032,7 +960,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
                 }
                 else
                 {
-                    ConnectionString = ConnectionHelper.GetConnectionString(authenticationType, userServer.ServerName, Database, userServer.DBUsername, Password, SqlInstallationHelper.DB_CONNECTION_TIMEOUT, false);
+                    ConnectionString = ConnectionHelper.BuildConnectionString(AuthenticationType, userServer.ServerName, Database, userServer.DBUsername, Password, SqlInstallationHelper.DB_CONNECTION_TIMEOUT);
                 }
 
                 // Check if existing DB has the same version as currently installed CMS
@@ -1069,7 +997,8 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
                     dbSchema = databaseDialog.SchemaText;
                 }
 
-                InstallInfo.DBSchema = dbSchema;
+                Info.DBSchema = dbSchema;
+                Info.LogContext = ctlAsyncDB.LogContext;
 
                 // Use existing database
                 if (databaseDialog.UseExistingChecked)
@@ -1137,7 +1066,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
                     {
                         if (DBInstalled && DBCreated)
                         {
-                            ucDBAsyncControl.RaiseFinished(this, EventArgs.Empty);
+                            ctlAsyncDB.RaiseFinished(this, EventArgs.Empty);
                         }
                         else
                         {
@@ -1193,8 +1122,6 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
 
                         // Continue with next step
                         CheckLicense();
-
-                        RequestMetaFile();
                     }
                     else
                     {
@@ -1246,89 +1173,41 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
                 {
                     case CMSInstall_Controls_WizardSteps_SiteCreationDialog.CreationTypeEnum.Template:
                         {
+                            // Get web template
                             if (ucSiteCreationDialog.TemplateName == "")
                             {
                                 HandleError(ResHelper.GetFileString("install.notemplate"));
                                 return;
                             }
 
-                            // Settings preparation
-                            SiteImportSettings settings = new SiteImportSettings(ImportUser);
-                            settings.IsWebTemplate = true;
-                            settings.ImportType = ImportTypeEnum.AllNonConflicting;
-                            settings.CopyFiles = false;
-                            settings.EnableSearchTasks = false;
-                            settings.CreateVersion = false;
-
-                            if (HttpContext.Current != null)
-                            {
-                                const string www = "www.";
-                                if (hostName.StartsWithCSafe(www))
-                                {
-                                    hostName = hostName.Remove(0, www.Length);
-                                }
-
-                                if (!RequestContext.URL.IsDefaultPort)
-                                {
-                                    hostName += ":" + RequestContext.URL.Port;
-                                }
-
-                                settings.SiteDomain = hostName;
-                                Domain = hostName;
-                            }
-
-                            // Create site
-                            WebTemplateInfo ti = WebTemplateInfoProvider.GetWebTemplateInfo(ucSiteCreationDialog.TemplateName);
+                            var ti = WebTemplateInfoProvider.GetWebTemplateInfo(ucSiteCreationDialog.TemplateName);
                             if (ti == null)
                             {
                                 HandleError("[Install]: Template not found.");
                                 return;
                             }
 
-                            settings.SiteName = ti.WebTemplateName;
-                            settings.SiteDisplayName = ti.WebTemplateDisplayName;
-
-                            if (HttpContext.Current != null)
-                            {
-                                string path = HttpContext.Current.Server.MapPath(ti.WebTemplateFileName);
-                                if (File.Exists(path + "\\template.zip"))
-                                {                                    // Template from zip file
-                                    path += "\\" + ZipStorageProvider.GetZipFileName("template.zip");
-                                    settings.TemporaryFilesPath = path;
-                                    settings.SourceFilePath = path;
-                                    settings.TemporaryFilesCreated = true;
-                                }
-                                else
-                                {
-                                    settings.SourceFilePath = path;
-                                }
-                                settings.WebsitePath = HttpContext.Current.Server.MapPath("~/");
-                            }
-
-                            settings.SetSettings(ImportExportHelper.SETTINGS_DELETE_SITE, true);
-                            settings.SetSettings(ImportExportHelper.SETTINGS_DELETE_TEMPORARY_FILES, false);
+                            var settings = PrepareSettings(ti);
 
                             SiteName = settings.SiteName;
-
-                            // Init the Mimetype helper (required for the Import)
-                            MimeTypeHelper.LoadMimeTypes();
 
                             // Import the site asynchronously
                             ImportManager.Settings = settings;
 
-                            ucAsyncControl.RunAsync(ImportManager.Import, WindowsIdentity.GetCurrent());
+                            settings.LogContext = ctlAsyncImport.LogContext;
+
+                            ctlAsyncImport.RunAsync(ImportManager.Import, WindowsIdentity.GetCurrent());
+
                             NextButton.Attributes.Add("disabled", "true");
                             PreviousButton.Attributes.Add("disabled", "true");
                             wzdInstaller.ActiveStepIndex = 6;
-
-                            ltlInstallScript.Text = ScriptHelper.GetScript("StartInstallStateTimer('IM');");
                         }
                         break;
 
                     // Else redirect to the site import
                     case CMSInstall_Controls_WizardSteps_SiteCreationDialog.CreationTypeEnum.ExistingSite:
                         {
-                            AuthenticationHelper.AuthenticateUser("administrator", false);
+                            AuthenticationHelper.AuthenticateUser(UserInfoProvider.AdministratorUserName, false);
                             URLHelper.Redirect(UIContextHelper.GetApplicationUrl("cms", "sites", "action=import"));
                         }
                         break;
@@ -1336,7 +1215,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
                     // Else redirect to the new site wizard
                     case CMSInstall_Controls_WizardSteps_SiteCreationDialog.CreationTypeEnum.NewSiteWizard:
                         {
-                            AuthenticationHelper.AuthenticateUser("administrator", false);
+                            AuthenticationHelper.AuthenticateUser(UserInfoProvider.AdministratorUserName, false);
                             URLHelper.Redirect(UIContextHelper.GetApplicationUrl("cms", "sites", "action=new"));
                         }
                         break;
@@ -1350,6 +1229,65 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
     }
 
 
+    private SiteImportSettings PrepareSettings(WebTemplateInfo ti)
+    {
+        // Settings preparation
+        var settings = new SiteImportSettings(ImportUser);
+
+        // Import all, but only add new data
+        settings.ImportType = ImportTypeEnum.AllNonConflicting;
+        settings.ImportOnlyNewObjects = true;
+        settings.CopyFiles = false;
+
+        // Allow bulk inserts for faster import, web templates must be consistent enough to allow this without collisions
+        settings.AllowBulkInsert = true;
+
+        settings.IsWebTemplate = true;
+        settings.EnableSearchTasks = false;
+        settings.CreateVersion = false;
+        settings.SiteName = ti.WebTemplateName;
+        settings.SiteDisplayName = ti.WebTemplateDisplayName;
+
+        if (HttpContext.Current != null)
+        {
+            const string www = "www.";
+            if (hostName.StartsWithCSafe(www))
+            {
+                hostName = hostName.Remove(0, www.Length);
+            }
+
+            if (!RequestContext.URL.IsDefaultPort)
+            {
+                hostName += ":" + RequestContext.URL.Port;
+            }
+
+            settings.SiteDomain = hostName;
+            Domain = hostName;
+
+            string path = HttpContext.Current.Server.MapPath(ti.WebTemplateFileName);
+            if (File.Exists(path + "\\template.zip"))
+            {
+                // Template from zip file
+                path += "\\" + ZipStorageProvider.GetZipFileName("template.zip");
+                settings.TemporaryFilesPath = path;
+                settings.SourceFilePath = path;
+                settings.TemporaryFilesCreated = true;
+            }
+            else
+            {
+                settings.SourceFilePath = path;
+            }
+
+            settings.WebsitePath = HttpContext.Current.Server.MapPath("~/");
+        }
+
+        settings.SetSettings(ImportExportHelper.SETTINGS_DELETE_SITE, true);
+        settings.SetSettings(ImportExportHelper.SETTINGS_DELETE_TEMPORARY_FILES, false);
+
+        return settings;
+    }
+
+
     /// <summary>
     /// Runs SQL installation scripts
     /// </summary>
@@ -1357,24 +1295,24 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
     private void RunSQLInstallation(string dbSchema)
     {
         // Setup the installation
-        InstallInfo.ScriptsFullPath = SqlInstallationHelper.GetSQLInstallPath();
-        InstallInfo.ConnectionString = ConnectionString;
+        var info = Info;
+
+        info.ScriptsFullPath = SqlInstallationHelper.GetSQLInstallPath();
+        info.ConnectionString = ConnectionString;
 
         if (dbSchema != null)
         {
-            InstallInfo.DBSchema = dbSchema;
+            info.DBSchema = dbSchema;
         }
 
-        InstallInfo.ClearLog();
+        info.ClearLog();
 
         // Start the installation process
-        ucDBAsyncControl.RunAsync(InstallDatabase, WindowsIdentity.GetCurrent());
+        ctlAsyncDB.RunAsync(InstallDatabase, WindowsIdentity.GetCurrent());
 
         NextButton.Attributes.Add("disabled", "true");
         PreviousButton.Attributes.Add("disabled", "true");
         wzdInstaller.ActiveStepIndex = 3;
-
-        ltlInstallScript.Text = ScriptHelper.GetScript("StartInstallStateTimer('DB');");
     }
 
 
@@ -1389,10 +1327,6 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
         }
         else
         {
-            string log = ImportManager.Settings.ProgressLog;
-            string[] messages = log.Split(new[] { InstallInfo.SEPARATOR }, StringSplitOptions.None);
-            errorPanel.ErrorLabelText = messages[2];
-            siteProgress.ProgressText = messages[1];
             NextButton.Enabled = false;
         }
     }
@@ -1420,24 +1354,6 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
         TimeZoneInfoProvider.GenerateTimeZoneRules();
 
         CheckLicense();
-
-        RequestMetaFile();
-    }
-
-
-    private void RequestMetaFile()
-    {
-        // Request meta file
-        try
-        {
-            WebClient client = new WebClient();
-            string url = RequestContext.CurrentScheme + "://" + RequestContext.URL.Host + SystemContext.ApplicationPath.TrimEnd('/') + "/CMSPages/GetMetaFile.aspx";
-            client.DownloadData(url);
-            client.Dispose();
-        }
-        catch
-        {
-        }
     }
 
 
@@ -1452,7 +1368,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
         // Try to add trial license
         if (CreateDBObjects && (ucSiteCreationDialog.CreationType != CMSInstall_Controls_WizardSteps_SiteCreationDialog.CreationTypeEnum.ExistingSite))
         {
-            licensesAdded = AddTrialLicenseKeys(ConnectionString);
+            licensesAdded = AddTrialLicenseKeys();
         }
 
         if (licensesAdded)
@@ -1481,7 +1397,8 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
     /// </summary>
     private void ManualConnectionStringInsertion()
     {
-        string connectionString = ConnectionHelper.GetConnectionString(authenticationType, userServer.ServerName, Database, userServer.DBUsername, Password, SqlInstallationHelper.DB_CONNECTION_TIMEOUT, true, azure: SystemContext.IsRunningOnAzure);
+        string encodedPassword = HttpUtility.HtmlEncode(HttpUtility.HtmlEncode(Password));
+        string connectionString = ConnectionHelper.BuildConnectionString(AuthenticationType, userServer.ServerName, Database, userServer.DBUsername, encodedPassword, SqlInstallationHelper.DB_CONNECTION_TIMEOUT, isForAzure: SystemContext.IsRunningOnAzure);
 
         // Set error message
         string connectionStringEntry = "&lt;add name=\"CMSConnectionString\" connectionString=\"" + connectionString + "\"/&gt;";
@@ -1496,7 +1413,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
         if (!SystemContext.IsRunningOnAzure)
         {
             // Show troubleshoot link
-            errorPanel.DisplayError("Install.ErrorPermissions", HELP_TOPIC_DISK_PERMISSIONS_LINK);
+            pnlError.DisplayError("Install.ErrorPermissions", HELP_TOPIC_DISK_PERMISSIONS_LINK);
         }
     }
 
@@ -1543,8 +1460,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
     /// <summary>
     /// Adds trial license keys to DB. No license is added when running in web application gallery mode.
     /// </summary>
-    /// <param name="connectionString">Connection string</param>
-    private bool AddTrialLicenseKeys(string connectionString)
+    private bool AddTrialLicenseKeys()
     {
         // Skip creation of trial license keys if running in WWAG mode
         if (ValidationHelper.GetBoolean(SettingsHelper.AppSettings[WWAG_KEY], false))
@@ -1557,10 +1473,8 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
         {
             return LicenseHelper.AddTrialLicenseKeys(licenseKey, true, false);
         }
-        else
-        {
-            errorPanel.ErrorLabelText = ResHelper.GetFileString("Install.ErrorTrialLicense");
-        }
+
+        pnlError.ErrorLabelText = ResHelper.GetFileString("Install.ErrorTrialLicense");
 
         return false;
     }
@@ -1651,6 +1565,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
                 {
                     StartHelp.Visible = Help.Visible = false;
                     lblHeader.Text += ResHelper.GetFileString("Install.Step2");
+                    lblDBProgress.Text = ResHelper.GetFileString("Install.lblDBProgress");
                     SetSelectedCSSClass("stepPanel1");
                     break;
                 }
@@ -1722,6 +1637,8 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
         }
     }
 
+    #endregion
+
 
     #region "Installation methods"
 
@@ -1733,7 +1650,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
             AddResult(message);
             LogProgressState(LogStatusEnum.Info, message);
 
-            string connectionString = ConnectionHelper.GetConnectionString(authenticationType, userServer.ServerName, "", userServer.DBUsername, Password, SqlInstallationHelper.DB_CONNECTION_TIMEOUT, false);
+            string connectionString = ConnectionHelper.BuildConnectionString(AuthenticationType, userServer.ServerName, String.Empty, userServer.DBUsername, Password, SqlInstallationHelper.DB_CONNECTION_TIMEOUT);
 
             // Use default collation, if none specified
             if (String.IsNullOrEmpty(collation))
@@ -1789,9 +1706,12 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
     {
         if (!DBInstalled)
         {
+            TryResetUninstallationTokens();
+
             SqlInstallationHelper.AfterDataGet += OnAfterGetDefaultData;
 
-            bool success = SqlInstallationHelper.InstallDatabase(InstallInfo.ConnectionString, InstallInfo.ScriptsFullPath, ResHelper.GetFileString("Installer.LogErrorCreateDBObjects"), ResHelper.GetFileString("Installer.LogErrorDefaultData"), Log, InstallInfo.DBSchema);
+            var info = Info;
+            bool success = SqlInstallationHelper.InstallDatabase(info.ConnectionString, info.ScriptsFullPath, ResHelper.GetFileString("Installer.LogErrorCreateDBObjects"), ResHelper.GetFileString("Installer.LogErrorDefaultData"), Log, info.DBSchema);
 
             SqlInstallationHelper.AfterDataGet -= OnAfterGetDefaultData;
 
@@ -1807,12 +1727,30 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
     }
 
 
-    private void OnAfterGetDefaultData(object sender, DataSetPostProcessingEventArgs args)
+    /// <summary>
+    /// Tries to reset uninstallation tokens of installable modules.
+    /// Logs the result into event log.
+    /// </summary>
+    private static void TryResetUninstallationTokens()
     {
-        MacroSecurityProcessor.RefreshSecurityParameters(args.Data, "administrator");
+        try
+        {
+            ModulesModule.ResetUninstallationTokensOfInstallableModules();
+            CoreServices.EventLog.LogEvent("I", "Installation", "RESETUNINSTALLATIONTOKENS", "Uninstallation tokens of installable modules have been automatically reset due to database installation.");
+        }
+        catch (Exception ex)
+        {
+            CoreServices.EventLog.LogEvent("E", "Installation", "RESETUNINSTALLATIONTOKENS", String.Format("Reset of uninstallation tokens of installable modules has failed. The modules can not be installed again until their tokens are reset. To recover from such state, uninstall the modules and run the instance so it can recover (i.e. remove the uninstallation tokens for modules during application startup). Then install the modules again. {0}", ex));
+        }
     }
 
 
+    private void OnAfterGetDefaultData(object sender, DataSetPostProcessingEventArgs args)
+    {
+        // We use the default admin user name for installation as the users may not yet be ready and we count with administrator account to be installed
+        MacroSecurityProcessor.RefreshSecurityParameters(args.Data, UserInfoProvider.DEFAULT_ADMIN_USERNAME);
+    }
+    
     #endregion
 
 
@@ -1824,7 +1762,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
         {
             --StepIndex;
         }
-        errorPanel.ErrorLabelText = message;
+        pnlError.ErrorLabelText = message;
         e.Cancel = true;
     }
 
@@ -1835,7 +1773,7 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
         {
             --StepIndex;
         }
-        errorPanel.ErrorLabelText = message;
+        pnlError.ErrorLabelText = message;
     }
 
 
@@ -1845,8 +1783,8 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
         {
             --StepIndex;
         }
-        errorPanel.ErrorLabelText = message;
-        errorPanel.DisplayError(resourceString, topic);
+        pnlError.ErrorLabelText = message;
+        pnlError.DisplayError(resourceString, topic);
     }
 
     #endregion
@@ -1871,99 +1809,42 @@ public partial class CMSInstall_install : CMSPage, ICallbackEventHandler
     /// <param name="message">Message to be logged</param>
     public void LogProgressState(LogStatusEnum type, string message)
     {
-        string[] status = InstallInfo.InstallLog.Split(new[] { InstallInfo.SEPARATOR }, StringSplitOptions.None);
-
-        // Wrong format of the internal status
-        if (status.Length != 4)
-        {
-            InstallInfo.InstallLog = String.Format("F{0}Wrong internal log.{0}{0}", InstallInfo.SEPARATOR);
-        }
-
         message = HTMLHelper.HTMLEncode(message);
+
+        string logMessage = null;
+        string messageType = null;
 
         switch (type)
         {
             case LogStatusEnum.Info:
-                status[0] = "I";
-                status[1] = String.Format("{0}<br />{1}", message, status[1]);
+            case LogStatusEnum.Start:
+                logMessage = message;
                 break;
 
             case LogStatusEnum.Error:
-                status[0] = "F";
-                status[2] = String.Format("{0}<strong>{1}</strong>{2}<br />", status[2], ResHelper.GetFileString("Global.ErrorSign"), message);
+            {
+                messageType = "##ERROR##";
+                logMessage = "<strong>" + ResHelper.GetFileString("Global.ErrorSign", "ERROR:") + "&nbsp;</strong>" + message;
+            }
                 break;
 
             case LogStatusEnum.Warning:
-                status[3] = String.Format("{0}<strong>{1}</strong>{2}<br />", status[3], ResHelper.GetFileString("Global.Warning"), message);
+            {
+                messageType = "##WARNING##";
+                logMessage = "<strong>" + ResHelper.GetFileString("Global.Warning", "WARNING:") + "&nbsp;</strong>" + message;
+            }
                 break;
 
             case LogStatusEnum.Finish:
-                status[0] = "F";
-                status[1] = String.Format("<strong>{0}</strong><br /><br />{1}", message, status[1]);
+            case LogStatusEnum.UnexpectedFinish:
+                logMessage = "<strong>" + message + "</strong>";
                 break;
         }
 
-        InstallInfo.InstallLog = status[0] + InstallInfo.SEPARATOR + status[1] + InstallInfo.SEPARATOR + status[2] + InstallInfo.SEPARATOR + status[3];
-    }
+        logMessage = messageType + logMessage;
 
-    #endregion
-
-
-    #region "ICallbackEventHandler Members"
-
-    public string GetCallbackResult()
-    {
-        return hdnState.Value;
-    }
-
-
-    public void RaiseCallbackEvent(string eventArgument)
-    {
-        // Get arguments
-        string[] args = eventArgument.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-        bool cancel = ValidationHelper.GetBoolean(args[0], false);
-        bool import = (args[1] == "IM");
-        int messageLength = 0;
-        int errorLength = 0;
-        int warningLength = 0;
-
-        if (args.Length == 5)
-        {
-            messageLength = ValidationHelper.GetInteger(args[2], 0);
-            errorLength = ValidationHelper.GetInteger(args[3], 0);
-            warningLength = ValidationHelper.GetInteger(args[4], 0);
-        }
-
-        if (import)
-        {
-            try
-            {
-                // Cancel
-                if (cancel)
-                {
-                    ImportManager.Settings.Cancel();
-                }
-
-                hdnState.Value = ImportManager.Settings.GetLimitedProgressLog(messageLength, errorLength, warningLength);
-            }
-            catch
-            {
-                ImportManager.Settings.LogProgressState(LogStatusEnum.Finish, ResHelper.GetFileString("SiteImport.Applicationrestarted"));
-                hdnState.Value = ImportManager.Settings.GetLimitedProgressLog(messageLength, errorLength, warningLength);
-            }
-        }
-        else
-        {
-            try
-            {
-                hdnState.Value = InstallInfo.GetLimitedProgressLog(messageLength, errorLength, warningLength);
-            }
-            catch
-            {
-                LogProgressState(LogStatusEnum.Finish, ResHelper.GetFileString("SiteImport.Applicationrestarted"));
-                hdnState.Value = InstallInfo.GetLimitedProgressLog(messageLength, errorLength, warningLength);
-            }
-        }
+        // Log to context
+        Info.LogContext.AppendText(logMessage);
     }
 
     #endregion

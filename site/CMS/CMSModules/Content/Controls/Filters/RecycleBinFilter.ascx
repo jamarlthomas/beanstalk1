@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="RecycleBinFilter.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="RecycleBinFilter.ascx.cs"
     Inherits="CMSModules_Content_Controls_Filters_RecycleBinFilter" %>
 <%@ Register Src="~/CMSModules/Membership/FormControls/Users/SelectUser.ascx" TagName="SelectUser"
     TagPrefix="cms" %>

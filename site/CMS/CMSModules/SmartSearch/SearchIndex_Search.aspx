@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_SmartSearch_SearchIndex_Search"
-    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Codebehind="SearchIndex_Search.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_SmartSearch_SearchIndex_Search"
+    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"  Codebehind="SearchIndex_Search.aspx.cs" %>
 
 <%@ Register Src="SearchTransformationItem.ascx" TagName="SearchTransformationItem"
     TagPrefix="cms" %>

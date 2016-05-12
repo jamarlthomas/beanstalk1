@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls.ActionsConfig;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.PortalEngine;
 using CMS.UIControls;
+using CMS.OnlineMarketing;
 
 [Security(Resource = "CMS.ABTest", UIElements = "ABTestListing")]
 [UIElement("CMS.ABTest", "ABTestListing")]
@@ -37,11 +38,12 @@ public partial class CMSModules_OnlineMarketing_Pages_Content_ABTesting_ABTest_L
     protected void Page_Load(object sender, EventArgs e)
     {
         // Set disabled module info
-        ucDisabledModule.SettingsKeys = "CMSAnalyticsEnabled;CMSABTestingEnabled;CMSAnalyticsTrackConversions";
+        ucDisabledModule.SettingsKeys = "CMSAnalyticsEnabled;CMSABTestingEnabled";
         ucDisabledModule.ParentPanel = pnlDisabled;
 
         InitHeaderActions();
         InitTitle();
+        InitSmartTip();
     }
 
 
@@ -92,5 +94,22 @@ public partial class CMSModules_OnlineMarketing_Pages_Content_ABTesting_ABTest_L
         {
             SetTitle(GetString("analytics_codename.abtests"));
         }
+    }
+
+
+    /// <summary>
+    /// Init the smart tip with the how to video.
+    /// Shows how to video.
+    /// </summary>
+    private void InitSmartTip()
+    {      
+        var linkBuilder = new MagnificPopupYouTubeLinkBuilder();
+        var linkID = Guid.NewGuid().ToString();
+        var link = linkBuilder.GetLink("2wU7rNzC95w", linkID, GetString("abtesting.howto.howtosetupabtest.link"));
+             
+        new MagnificPopupYouTubeJavaScriptRegistrator().RegisterMagnificPopupElement(this, linkID);
+
+        smrtpHowToListing.Content = string.Format("<h4>{0}</h4>{1}<br />{2}", GetString("abtesting.howto.howtosetupabtest.title"), GetString("abtesting.howto.howtosetupabtest.text"), link);
+        smrtpHowToListing.DismissedStateIdentifier = "howtovideo|abtest|listing";
     }
 }

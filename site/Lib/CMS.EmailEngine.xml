@@ -4,6 +4,80 @@
         <name>CMS.EmailEngine</name>
     </assembly>
     <members>
+        <member name="T:CMS.EmailEngine.EmailTemplateTypeRegister">
+            <summary>
+            Register for email template types.
+            </summary>
+            <remarks>
+            The register is thread-safe and its performance is tailored for read operations.
+            </remarks>
+        </member>
+        <member name="M:CMS.EmailEngine.EmailTemplateTypeRegister.AddTemplateType(CMS.EmailEngine.EmailTemplateTypeRegisterItem)">
+            <summary>
+            Adds a new template type to the register.
+            </summary>
+            <param name="registerItem">Register item to be added.</param>
+            <exception cref="T:System.InvalidOperationException">Thrown when item with name <see cref="P:CMS.EmailEngine.EmailTemplateTypeRegisterItem.Name"/> is already present in the register.</exception>
+        </member>
+        <member name="M:CMS.EmailEngine.EmailTemplateTypeRegister.GetTemplateTypes">
+            <summary>
+            Gets read-only list containing all registered email template types.
+            </summary>
+            <returns>Email template types</returns>
+        </member>
+        <member name="M:CMS.EmailEngine.EmailTemplateTypeRegister.GetTemplateType(System.String)">
+            <summary>
+            Gets registered email template type by its name.
+            </summary>
+            <param name="name">Name of the registered type.</param>
+            <returns>Registered type, or null.</returns>
+        </member>
+        <member name="M:CMS.EmailEngine.EmailTemplateTypeRegister.AddDefaultItems">
+            <summary>
+            Adds default items to the register. Must be called from thread-safe method.
+            </summary>
+            <remarks>
+            For backward compatibility reasons, the default values contain all the values from the original EmailTemplateTypeEnum.
+            Modules registering their own template type should do so in their module's <see cref="M:CMS.Core.ModuleEntry.OnInit"/> method.
+            Since all the default data is imported to the DB at once, regardless of separable modules, the default items contain
+            all email template types present in the default data.
+            </remarks>
+        </member>
+        <member name="M:CMS.EmailEngine.EmailTemplateTypeRegister.#ctor">
+            <summary>
+            Private constructor for singleton.
+            </summary>
+        </member>
+        <member name="P:CMS.EmailEngine.EmailTemplateTypeRegister.Current">
+            <summary>
+            Gets current instance of email template types register.
+            </summary>
+        </member>
+        <member name="T:CMS.EmailEngine.EmailTemplateTypeRegisterItem">
+            <summary>
+            Item in email template type register.
+            </summary>
+            <remarks>
+            Instances of this class are immutable.
+            </remarks>
+        </member>
+        <member name="M:CMS.EmailEngine.EmailTemplateTypeRegisterItem.#ctor(System.String,System.String)">
+            <summary>
+            Creates a new register item.
+            </summary>
+            <param name="name">Code name of the item.</param>
+            <param name="displayNameResourceString">Display name resource string.</param>
+        </member>
+        <member name="P:CMS.EmailEngine.EmailTemplateTypeRegisterItem.Name">
+            <summary>
+            Code name of the register item.
+            </summary>
+        </member>
+        <member name="P:CMS.EmailEngine.EmailTemplateTypeRegisterItem.DisplayNameResourceString">
+            <summary>
+            Resource string for display name of the register item.
+            </summary>
+        </member>
         <member name="T:CMS.EmailEngine.EmailHandlers">
             <summary>
             Event handlers for e-mail module 
@@ -14,9 +88,9 @@
             Initializes the event handlers
             </summary>
         </member>
-        <member name="M:CMS.EmailEngine.EmailHandlers.ResetSendingStatus(System.Object,System.EventArgs)">
+        <member name="M:CMS.EmailEngine.EmailHandlers.CancelEmailSending(System.Object,CMS.DataEngine.SettingsKeyChangedEventArgs)">
             <summary>
-            Resets the e-mail sending status for all e-mails
+            Cancels sending of emails if related settings key changed
             </summary>
         </member>
         <member name="T:CMS.EmailEngine.EmailModuleMetadata">
@@ -138,13 +212,14 @@
             <param name="siteName">Site name; default value is null</param>
             <returns>New MailMessage object</returns>
         </member>
-        <member name="M:CMS.EmailEngine.EmailInfoProvider.FetchEmails(CMS.EmailEngine.EmailMailoutEnum,System.Int32,System.Int32)">
+        <member name="M:CMS.EmailEngine.EmailInfoProvider.FetchEmails(CMS.EmailEngine.EmailMailoutEnum,System.Int32,System.Int32,System.Nullable{System.DateTime})">
             <summary>
             Fetches e-mails which should be sent and marks them as being sent.
             </summary>
             <param name="emailsToFetch">Determines which e-mails are to be fetched</param>
             <param name="firstEmailId">First email ID (only e-mails with the same or higher ID are fetched)</param>
             <param name="batchSize">Number of e-mails to retrieve; default value is 0 - in this case batch size is retrieved from Settings</param>
+            <param name="failedEmailsNewerThan">Timestamp indicating that only failed emails that are younger than given date should be sent. Only works for <see cref="F:CMS.EmailEngine.EmailMailoutEnum.Failed"/>.</param>
             <returns>DataSet with fetched e-mails</returns>
         </member>
         <member name="M:CMS.EmailEngine.EmailInfoProvider.FetchMassEmail(CMS.EmailEngine.EmailMailoutEnum,System.Int32,System.Int32,System.Int32)">
@@ -181,19 +256,17 @@
         </member>
         <member name="M:CMS.EmailEngine.EmailInfoProvider.ResetSendingStatus">
             <summary>
-            Resets e-mail's status to 'waiting' anywhere the status is 'sending'. Runs the action within a new thread.
+            Resets e-mail's status to 'waiting' anywhere the status is 'sending' for longer time.
             </summary>
+            <remarks>
+            Runs the action within a new thread.
+            The reset action is performed on those records which are in the 'sending' state more than 30 minutes. This preserves 'sending' state of emails which are currently sent by other servers.
+            </remarks>
         </member>
         <member name="M:CMS.EmailEngine.EmailInfoProvider.ResetSendingStatusInternal">
             <summary>
             Resets e-mail's status to 'waiting' anywhere the status is 'sending'.
             </summary>
-        </member>
-        <member name="M:CMS.EmailEngine.EmailInfoProvider.GetLastSetRelatedID(System.String)">
-            <summary>
-            Gets last related ID from e-mail set defined by set name.
-            </summary>
-            <param name="setName">Set name</param>
         </member>
         <member name="M:CMS.EmailEngine.EmailInfoProvider.GetEmailCount(System.String)">
             <summary>
@@ -375,11 +448,6 @@
         <member name="F:CMS.EmailEngine.EmailTemplateTypeEnum.Password">
             <summary>
             Password template type.
-            </summary>
-        </member>
-        <member name="F:CMS.EmailEngine.EmailTemplateTypeEnum.ProjectManagement">
-            <summary>
-            Project management template type.
             </summary>
         </member>
         <member name="F:CMS.EmailEngine.EmailTemplateTypeEnum.Messaging">
@@ -725,7 +793,7 @@
         </member>
         <member name="M:CMS.EmailEngine.SMTPServerLookupResult.#ctor(CMS.EmailEngine.SMTPServerAvailabilityEnum,CMS.EmailEngine.SMTPServerTokenData)">
             <summary>
-            Initializes a new instance of the <see cref="T:CMS.EmailEngine.SMTPServerLookupResult"/> struct.
+            Initializes a new instance of the <see cref="T:CMS.EmailEngine.SMTPServerLookupResult"/> structure.
             </summary>
             <param name="availability">The SMTP server availability</param>
             <param name="smtpServer">The SMTP server</param>
@@ -737,7 +805,7 @@
         </member>
         <member name="P:CMS.EmailEngine.SMTPServerLookupResult.SMTPServer">
             <summary>
-            Gets the the SMTP server.
+            Gets the SMTP server.
             </summary>        
         </member>
         <member name="T:CMS.EmailEngine.SMTPServerPriorityEnum">
@@ -818,8 +886,10 @@
         </member>
         <member name="P:CMS.EmailEngine.SMTPServerInfo.ServerPassword">
             <summary>
-            Gets or sets the password for authentication.
+            Gets or sets the encrypted password for authentication.
             </summary>
+            <seealso cref="M:CMS.Helpers.EncryptionHelper.EncryptData(System.String)"/>
+            <seealso cref="M:CMS.Helpers.EncryptionHelper.DecryptData(System.String)"/>
         </member>
         <member name="P:CMS.EmailEngine.SMTPServerInfo.ServerUseSSL">
             <summary>
@@ -1211,11 +1281,6 @@
             E-mail used as default sender
             </summary>
         </member>
-        <member name="M:CMS.EmailEngine.EmailHelper.#cctor">
-            <summary>
-            Initializes the <see cref="T:CMS.EmailEngine.EmailHelper"/> class.
-            </summary>
-        </member>
         <member name="M:CMS.EmailEngine.EmailHelper.IsAnySendingEnabled">
             <summary>
             Returns if e-mail sending is enabled in either global or any site settings.
@@ -1455,6 +1520,11 @@
             Sends all e-mails waiting in the queue.
             </summary>            
         </member>
+        <member name="M:CMS.EmailEngine.EmailHelper.Queue.SendScheduledAndFailed(System.DateTime)">
+            <summary>
+            Sends all e-mails waiting in the queue. Also sends all failed emails, which are newer than <see cref="T:System.DateTime"/>.
+            </summary>            
+        </member>
         <member name="M:CMS.EmailEngine.EmailHelper.Queue.SendScheduled">
             <summary>
             Runs the e-mail queue mailout in a separate thread.
@@ -1533,13 +1603,6 @@
             <param name="siteName">Name of the site</param>
             <returns>An e-mail address to use as a sender of error notifications</returns>
         </member>
-        <member name="M:CMS.EmailEngine.EmailHelper.Settings.NotificationsSenderAdress(System.String)">
-            <summary>
-            Gets the e-mail address for error notifications that should be used as a sender.
-            </summary>
-            <param name="siteName">Name of the site</param>
-            <returns>An e-mail address to use as a sender of error notifications</returns>
-        </member>
         <member name="M:CMS.EmailEngine.EmailHelper.Settings.ServerName(System.String)">
             <summary>
             Gets the name of the default SMTP server for the specified site.
@@ -1554,12 +1617,13 @@
             <param name="siteName">Name of the site</param>
             <returns>Username for the default SMTP server (in the settings)</returns>
         </member>
-        <member name="M:CMS.EmailEngine.EmailHelper.Settings.ServerPassword(System.String)">
+        <member name="M:CMS.EmailEngine.EmailHelper.Settings.ServerPassword(System.String,System.Boolean)">
             <summary>
-            Gets the password for the default SMTP server for the specified site.
+            Gets the password for the default SMTP server for the specified site in either plaintext or encrypted form.
             </summary>
             <param name="siteName">Name of the site</param>
-            <returns>Password for the default SMTP server (in the settings)</returns>
+            <param name="encrypted">Whether to return the password in plaintext or encrypted form.</param>
+            <returns>Password for the default SMTP server (in the settings).</returns>
         </member>
         <member name="M:CMS.EmailEngine.EmailHelper.Settings.ServerUseSSL(System.String)">
             <summary>
@@ -1713,6 +1777,11 @@
             E-mail last modified.
             </summary>
         </member>
+        <member name="P:CMS.EmailEngine.EmailInfo.EmailCreated">
+            <summary>
+            Timestamp of object creation. Is set in <see cref="T:CMS.EmailEngine.EmailInfoProvider"/> when creating a new object.
+            </summary>
+        </member>
         <member name="P:CMS.EmailEngine.EmailInfo.EmailSetName">
             <summary>
             E-mail set name. Could be used to flag e-mails of specific set. Allows null.
@@ -1756,7 +1825,7 @@
             Gets individual email header fields from header text.
             </summary>
             <param name="emailHeader">Email header text</param>
-            <returns>Name-value collection containing inidividual field names and bodies</returns>
+            <returns>Name-value collection containing individual field names and bodies</returns>
             <remarks>
             This approximates how the email header fields should be parsed, see RFC 5322 for complete specification.
             </remarks>
@@ -1851,6 +1920,11 @@
         <member name="T:CMS.EmailEngine.EmailModule">
             <summary>
             Represents the Email module.
+            </summary>
+        </member>
+        <member name="F:CMS.EmailEngine.EmailModule.GENERAL_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for general purposes.
             </summary>
         </member>
         <member name="M:CMS.EmailEngine.EmailModule.#ctor">
@@ -2045,6 +2119,16 @@
             </summary>
             <param name="dr">Datarow with the object data</param>
         </member>
+        <member name="M:CMS.EmailEngine.EmailTemplateInfo.CheckPermissionsInternal(CMS.DataEngine.PermissionsEnum,System.String,CMS.Base.IUserInfo,System.Boolean)">
+            <summary>
+            Checks whether the specified user has permissions for this object. This method is called automatically after CheckPermissions event was fired.
+            </summary>
+            <param name="permission">Permission to perform this operation will be checked</param>
+            <param name="siteName">Permissions on this site will be checked</param>
+            <param name="userInfo">Permissions of this user will be checked</param>
+            <param name="exceptionOnFailure">If true, PermissionCheckException is thrown whenever a permission check fails</param>
+            <returns>True if user is allowed to perform specified operation on the this object; otherwise false</returns>
+        </member>
         <member name="P:CMS.EmailEngine.EmailTemplateInfo.TemplateID">
             <summary>
             Gets or sets the e-mail template ID.
@@ -2124,7 +2208,7 @@
         <member name="F:CMS.EmailEngine.EmailTemplateProvider.GLOBAL_TEMPLATES">
             <summary>
             Used by GetEmailTemplates(int siteID) to compare with siteID. 
-            GLOBAL_TEMPLATES represents globals templates, ie. templates with siteID = NULL.
+            GLOBAL_TEMPLATES represents global templates, ie. templates with siteID = NULL.
             </summary>
         </member>
         <member name="M:CMS.EmailEngine.EmailTemplateProvider.GetEmailTemplate(System.String,System.Int32)">
@@ -2173,6 +2257,11 @@
             </summary>
             <param name="templateId">Template ID</param>
         </member>
+        <member name="M:CMS.EmailEngine.EmailTemplateProvider.GetEmailTemplates">
+            <summary>
+            Returns all e-mail templates.
+            </summary>
+        </member>
         <member name="M:CMS.EmailEngine.EmailTemplateProvider.GetEmailTemplates(System.String,System.String,System.Int32,System.String)">
             <summary>
             Returns all e-mail templates for specific site or all global templates or all templates sorted by template display name ascending.
@@ -2194,6 +2283,12 @@
             </summary>
             <param name="templateName">Template name</param>
             <param name="siteName">Site name or null for global templates</param>
+        </member>
+        <member name="M:CMS.EmailEngine.EmailTemplateProvider.GetEmailTemplatesInternal(System.Int32)">
+            <summary>
+            Returns all e-mail templates for specific site or all global templates or all templates sorted by template display name ascending.
+            </summary>
+            <param name="siteId">Site ID</param>
         </member>
         <member name="T:CMS.EmailEngine.EmailUserInfo">
             <summary>
@@ -2435,6 +2530,11 @@
             (just after all messages have been sent and before the sending is finished).
             </remarks>
         </member>
+        <member name="F:CMS.EmailEngine.ThreadSender.mSendFailedEmailsNewerThan">
+            <summary>
+            Sends only failed emails, that are newer than this DateTime.
+            </summary>
+        </member>
         <member name="M:CMS.EmailEngine.ThreadSender.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:CMS.EmailEngine.ThreadSender"/> class.
@@ -2451,18 +2551,20 @@
             </summary>
             <param name="emailIds">List of IDs of the e-mail messages to send</param>
         </member>
-        <member name="M:CMS.EmailEngine.ThreadSender.Send(CMS.EmailEngine.EmailMailoutEnum)">
+        <member name="M:CMS.EmailEngine.ThreadSender.Send(CMS.EmailEngine.EmailMailoutEnum,System.Nullable{System.DateTime})">
             <summary>
             Sends the e-mail messages with the specified status.
             </summary>
             <param name="emailsToSend">Which e-mail messages should be sent</param>
+            <param name="failedEmailsNewerThan">Timestamp indicating that only emails that are younger than given date should be sent. Only works for <see cref="F:CMS.EmailEngine.EmailMailoutEnum.Failed"/>.</param>
         </member>
-        <member name="M:CMS.EmailEngine.ThreadSender.Send(System.Int32[],CMS.EmailEngine.EmailMailoutEnum)">
+        <member name="M:CMS.EmailEngine.ThreadSender.Send(System.Int32[],CMS.EmailEngine.EmailMailoutEnum,System.Nullable{System.DateTime})">
             <summary>
             Sends the e-mail messages with the specified status.
             </summary>
             <param name="emailIds">List of IDs of the e-mail messages to send</param>
             <param name="emailsToSend">Which e-mail messages should be sent</param>
+            <param name="failedEmailsNewerThan">Timestamp indicating that only emails that are younger than given date should be sent. Only works for <see cref="F:CMS.EmailEngine.EmailMailoutEnum.Failed"/>.</param>
         </member>
         <member name="M:CMS.EmailEngine.ThreadSender.SendToQueue(CMS.EmailEngine.EmailMessage,System.String)">
             <summary>
@@ -2879,31 +2981,6 @@
             Global objects must have site ID 0 and/or site name equal to empty string.
             </remarks>
         </member>
-        <member name="F:CMS.EmailEngine.SMTPServerLookupTable.lookupTable">
-            <summary>
-            Singleton instance of the SMTP server lookup table.
-            </summary>
-        </member>
-        <member name="F:CMS.EmailEngine.SMTPServerLookupTable.instanceLock">
-            <summary>
-            Lock over initialization of the singleton that guarantees that only one instance is created.
-            </summary>
-        </member>
-        <member name="F:CMS.EmailEngine.SMTPServerLookupTable.servers">
-            <summary>
-            Dictionary of all available SMTP server, which uses server ID as the key.
-            </summary>
-        </member>
-        <member name="F:CMS.EmailEngine.SMTPServerLookupTable.serverChains">
-            <summary>
-            Dictionary of server chains (list of server IDs) for individual sites. Uses site name as the key.
-            </summary>
-        </member>
-        <member name="F:CMS.EmailEngine.SMTPServerLookupTable.lookupLock">
-            <summary>
-            Lock over the lookup operations that ensures that SMTP servers are manipulated sequentially.
-            </summary>
-        </member>
         <member name="M:CMS.EmailEngine.SMTPServerLookupTable.#ctor">
             <summary>
             Creates a new instance of the SMTP server lookup table.
@@ -2924,20 +3001,25 @@
             <param name="smtpServer">If an SMTP server is available, this will contain the reference to the server</param>
             <returns>Next available SMTP server for a site.</returns>
         </member>
-        <member name="M:CMS.EmailEngine.SMTPServerLookupTable.Acquire(CMS.EmailEngine.SMTPServerTokenData)">
+        <member name="M:CMS.EmailEngine.SMTPServerLookupTable.Acquire(System.Int32)">
             <summary>
             This method will mark the server as being in use. It provides exclusive access and
             should be used before sending any messages via the specified server. When the sending
             is finished, the server should be released immediately afterwards.
             </summary>
-            <param name="smtpServer">SMTP server</param>
+            <param name="serverId">SMTP server ID</param>
         </member>
         <member name="M:CMS.EmailEngine.SMTPServerLookupTable.Release(CMS.EmailEngine.SMTPServerTokenData)">
             <summary>
-            This method will mark the server as available to any requests to send message. 
+            This method will mark the server as available to any requests to send message.
             It should be called immediately after the sending is complete.
             </summary>
             <param name="smtpServer">SMTP server</param>
+        </member>
+        <member name="M:CMS.EmailEngine.SMTPServerLookupTable.ReleaseAll">
+            <summary>
+            This method will mark all servers as available to any requests to send message.
+            </summary>
         </member>
         <member name="M:CMS.EmailEngine.SMTPServerLookupTable.Flush">
             <summary>
@@ -2985,7 +3067,7 @@
         </member>
         <member name="M:CMS.EmailEngine.SMTPServerLookupTable.GetSMTPServerCount(System.String)">
             <summary>
-            Retruns number of SMTP servers for specified site.
+            Returns number of SMTP servers for specified site.
             </summary>
             <param name="siteName">Site name</param>
         </member>

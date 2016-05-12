@@ -1,12 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Collections;
 using System.Security.Principal;
 using System.Web.UI.WebControls;
 using System.Linq;
 
-using CMS.EventLog;
 using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.IO;
@@ -24,24 +22,10 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
 
     protected string filterWhere = null;
 
-    private static readonly Hashtable mErrors = new Hashtable();
-
     #endregion
 
 
     #region "Properties"
-
-    /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
 
     /// <summary>
     /// Current Error.
@@ -50,11 +34,11 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
     {
         get
         {
-            return ValidationHelper.GetString(mErrors["DeleteError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mErrors["DeleteError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -70,7 +54,6 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
         // Initialize events
         ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
         ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-        ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
         ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
 
         if (RequestHelper.IsCallback())
@@ -141,8 +124,10 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
 
             if (siteId > 0)
             {
-                bool fs = StoreInFileSystem(siteId);
-                bool db = StoreInDatabase(siteId);
+                var locationType = GetFilesLocationType(siteId);
+
+                bool fs = locationType != FilesLocationTypeEnum.Database;
+                bool db = locationType != FilesLocationTypeEnum.FileSystem;
 
                 copyFS = deleteDB = fs;
                 deleteFS = db;
@@ -274,7 +259,7 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
             if (mi.MetaFileBinary == null)
             {
                 // Ensure the binary data
-                mi.MetaFileBinary = MetaFileInfoProvider.GetFile(mi, GetSiteName(mi.MetaFileSiteID));
+                mi.MetaFileBinary = MetaFileInfoProvider.GetFile(mi, SiteInfoProvider.GetSiteName(mi.MetaFileSiteID));
                 mi.Generalized.UpdateData();
 
                 return true;
@@ -299,7 +284,7 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
             name = mi.MetaFileName;
 
             // Ensure the physical file
-            MetaFileInfoProvider.EnsurePhysicalFile(mi, GetSiteName(mi.MetaFileSiteID));
+            MetaFileInfoProvider.EnsurePhysicalFile(mi, SiteInfoProvider.GetSiteName(mi.MetaFileSiteID));
 
             return true;
         }
@@ -321,7 +306,7 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
         {
             name = mi.MetaFileName;
 
-            MetaFileInfoProvider.EnsurePhysicalFile(mi, GetSiteName(mi.MetaFileSiteID));
+            MetaFileInfoProvider.EnsurePhysicalFile(mi, SiteInfoProvider.GetSiteName(mi.MetaFileSiteID));
 
             // Clear the binary data
             mi.MetaFileBinary = null;
@@ -355,12 +340,12 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
                 if (!hasBinary)
                 {
                     // Copy the binary data to database
-                    mi.MetaFileBinary = MetaFileInfoProvider.GetFile(mi, GetSiteName(mi.MetaFileSiteID));
+                    mi.MetaFileBinary = MetaFileInfoProvider.GetFile(mi, SiteInfoProvider.GetSiteName(mi.MetaFileSiteID));
                     mi.Generalized.UpdateData();
                 }
 
                 // Delete the file from the disk
-                MetaFileInfoProvider.DeleteFile(GetSiteName(mi.MetaFileSiteID), mi.MetaFileGUID.ToString(), true, false);
+                MetaFileInfoProvider.DeleteFile(SiteInfoProvider.GetSiteName(mi.MetaFileSiteID), mi.MetaFileGUID.ToString(), true, false);
 
                 return true;
             }
@@ -421,18 +406,15 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
         if ((items != null) && (items.Count > 0))
         {
             string name = null;
-            int count = 0;
 
             // Process all items
-            foreach (object id in items)
+            foreach (string id in items)
             {
                 // Process the file
                 int fileId = ValidationHelper.GetInteger(id, 0);
 
                 if (ProcessFile(fileId, action, ref name))
                 {
-                    count++;
-
                     AddLog(name);
                 }
                 else if (!string.IsNullOrEmpty(name))
@@ -441,48 +423,6 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
                 }
             }
         }
-    }
-
-
-    /// <summary>
-    /// Gets the site name for the given site ID.
-    /// </summary>
-    /// <param name="siteId">Site ID</param>
-    protected string GetSiteName(int siteId)
-    {
-        if (siteId <= 0)
-        {
-            return null;
-        }
-
-        // Get the site name
-        SiteInfo si = SiteInfoProvider.GetSiteInfo(siteId);
-        if (si != null)
-        {
-            return si.SiteName;
-        }
-
-        return null;
-    }
-
-
-    /// <summary>
-    /// Returns true if the files are stored in file system on the given site.
-    /// </summary>
-    /// <param name="siteId">Site ID</param>
-    protected bool StoreInFileSystem(int siteId)
-    {
-        return MetaFileInfoProvider.StoreFilesInFileSystem(GetSiteName(siteId));
-    }
-
-
-    /// <summary>
-    /// Returns true if the files are stored in database on the given site.
-    /// </summary>
-    /// <param name="siteId">Site ID</param>
-    protected bool StoreInDatabase(int siteId)
-    {
-        return MetaFileInfoProvider.StoreFilesInDatabase(GetSiteName(siteId));
     }
 
 
@@ -500,19 +440,11 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
         else if (parameter is GridViewRow)
         {
             // Get data from the grid view row
-            GridViewRow gvr = (parameter as GridViewRow);
-            if (gvr != null)
-            {
-                drv = (DataRowView)gvr.DataItem;
-            }
+            drv = (DataRowView)((GridViewRow)parameter).DataItem;
         }
 
         // Get the action button
-        CMSGridActionButton btn = null;
-        if (sender is CMSGridActionButton)
-        {
-            btn = (CMSGridActionButton)sender;
-        }
+        CMSGridActionButton btn = sender as CMSGridActionButton;
 
         switch (sourceName)
         {
@@ -520,7 +452,7 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
                 {
                     // Delete action
                     int siteId = ValidationHelper.GetInteger(drv["MetaFileSiteID"], 0);
-                    string siteName = GetSiteName(siteId);
+                    string siteName = SiteInfoProvider.GetSiteName(siteId);
 
                     Guid guid = ValidationHelper.GetGuid(drv["MetaFileGUID"], Guid.Empty);
                     string extension = ValidationHelper.GetString(drv["MetaFileExtension"], "");
@@ -539,20 +471,20 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
                     // If the file is present in both file system and database, delete is allowed
                     if (fs && db)
                     {
-                        // If the files are stored in file system, delete is allowed in database 
-                        if (StoreInFileSystem(siteId))
+                        var locationType = GetFilesLocationType(siteId);
+
+                        // If the files are stored in file system or use both locations, delete is allowed in database 
+                        if (locationType != FilesLocationTypeEnum.Database)
                         {
                             btn.OnClientClick = btn.OnClientClick.Replace("'delete'", "'deleteindatabase'");
                             btn.ToolTip = "Delete from database";
                             return parameter;
                         }
-                        // If the files are stored in database, delete is allowed in file system
-                        if (StoreInDatabase(siteId))
-                        {
-                            btn.OnClientClick = btn.OnClientClick.Replace("'delete'", "'deleteinfilesystem'");
-                            btn.ToolTip = "Delete from file system";
-                            return parameter;
-                        }
+                        
+                        // Files are stored in database, delete is allowed in file system
+                        btn.OnClientClick = btn.OnClientClick.Replace("'delete'", "'deleteinfilesystem'");
+                        btn.ToolTip = "Delete from file system";
+                        return parameter;
                     }
 
                     btn.Visible = false;
@@ -563,7 +495,7 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
                 {
                     // Delete action
                     int siteId = ValidationHelper.GetInteger(drv["MetaFileSiteID"], 0);
-                    string siteName = GetSiteName(siteId);
+                    string siteName = SiteInfoProvider.GetSiteName(siteId);
 
                     Guid guid = ValidationHelper.GetGuid(drv["MetaFileGUID"], Guid.Empty);
                     string extension = ValidationHelper.GetString(drv["MetaFileExtension"], "");
@@ -579,8 +511,10 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
                         fs = true;
                     }
 
+                    var locationType = GetFilesLocationType(siteId);
+
                     // If the file is stored in file system and the file is not present in database, copy to database is allowed
-                    if (fs && !db && StoreInDatabase(siteId) && StoreInFileSystem(siteId))
+                    if (fs && !db && (locationType == FilesLocationTypeEnum.Both))
                     {
                         btn.OnClientClick = btn.OnClientClick.Replace("'copy'", "'copytodatabase'");
                         btn.ToolTip = "Copy to database";
@@ -588,7 +522,7 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
                         return parameter;
                     }
                     // If the file is stored in database and the file is not present in file system, copy to file system is allowed
-                    if (db && !fs && StoreInFileSystem(siteId))
+                    if (db && !fs && (locationType != FilesLocationTypeEnum.Database))
                     {
                         btn.OnClientClick = btn.OnClientClick.Replace("'copy'", "'copytofilesystem'");
                         btn.ToolTip = "Copy to file system";
@@ -661,7 +595,7 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
                 {
                     // Delete action
                     int siteId = ValidationHelper.GetInteger(drv["MetaFileSiteID"], 0);
-                    string siteName = GetSiteName(siteId);
+                    string siteName = SiteInfoProvider.GetSiteName(siteId);
 
                     Guid guid = ValidationHelper.GetGuid(drv["MetaFileGUID"], Guid.Empty);
                     string extension = ValidationHelper.GetString(drv["MetaFileExtension"], "");
@@ -741,14 +675,23 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
                 ctlAsyncLog.TitleText = drpAction.SelectedItem.Text;
 
                 CurrentError = string.Empty;
-                CurrentLog.Close();
-                EnsureLog();
 
                 // Process the file asynchronously
-                ctlAsyncLog.Parameter = new object[] { items, drpAction.SelectedValue };
-                ctlAsyncLog.RunAsync(ProcessFiles, WindowsIdentity.GetCurrent());
+                var parameter = new object[] { items, drpAction.SelectedValue };
+                ctlAsyncLog.RunAsync(p => ProcessFiles(parameter), WindowsIdentity.GetCurrent());
             }
         }
+    }
+
+
+    /// <summary>
+    /// Gets the files location type
+    /// </summary>
+    /// <param name="siteId">Site identifier</param>
+    private static FilesLocationTypeEnum GetFilesLocationType(int siteId)
+    {
+        var siteIdentifier = new SiteInfoIdentifier(siteId);
+        return FileHelper.FilesLocationType(siteIdentifier.ObjectCodeName);
     }
 
     #endregion
@@ -761,7 +704,6 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
     /// </summary>
     private void ctlAsyncLog_OnCancel(object sender, EventArgs e)
     {
-        ctlAsyncLog.Parameter = null;
         string canceled = "The operation was canceled.";
         AddLog(canceled);
         ShowConfirmation(canceled);
@@ -769,7 +711,6 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
         {
             ShowError(CurrentError);
         }
-        CurrentLog.Close();
 
         pnlContent.Visible = true;
         pnlLog.Visible = false;
@@ -777,15 +718,6 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
         // Reload the grid
         gridFiles.ResetSelection();
         gridFiles.ReloadData();
-    }
-
-
-    /// <summary>
-    /// Logs event handler.
-    /// </summary>
-    private void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
     }
 
 
@@ -798,12 +730,11 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
         {
             ctlAsyncLog.Stop();
         }
-        ctlAsyncLog.Parameter = null;
+
         if (!String.IsNullOrEmpty(CurrentError))
         {
             ShowError(CurrentError);
         }
-        CurrentLog.Close();
 
         // Reload the grid
         gridFiles.ResetSelection();
@@ -816,11 +747,8 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
     /// </summary>
     private void ctlAsyncLog_OnFinished(object sender, EventArgs e)
     {
-        CurrentLog.Close();
-
         if (!String.IsNullOrEmpty(CurrentError))
         {
-            ctlAsyncLog.Parameter = null;
             ShowError(CurrentError);
         }
 
@@ -834,23 +762,12 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
 
 
     /// <summary>
-    /// Ensures the logging context.
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext log = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-        return log;
-    }
-
-
-    /// <summary>
     /// Adds the log information.
     /// </summary>
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
 

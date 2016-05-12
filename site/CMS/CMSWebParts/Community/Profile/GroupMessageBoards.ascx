@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Community_Profile_GroupMessageBoards" Codebehind="~/CMSWebParts/Community/Profile/GroupMessageBoards.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Community_Profile_GroupMessageBoards"  Codebehind="~/CMSWebParts/Community/Profile/GroupMessageBoards.ascx.cs" %>
 <%@ Register Src="~/CMSModules/MessageBoards/Controls/LiveControls/MessageBoards.ascx"
     TagName="MessageBoards" TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/System/PermissionMessage.ascx" TagName="PermissionMessage"

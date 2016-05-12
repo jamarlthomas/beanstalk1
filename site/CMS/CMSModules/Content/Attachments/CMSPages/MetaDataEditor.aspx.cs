@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.SiteProvider;
@@ -72,7 +72,7 @@ public partial class CMSModules_Content_Attachments_CMSPages_MetaDataEditor : CM
             metaDataEditor.Visible = false;
             btnSave.Visible = false;
 
-            string url = ResolveUrl("~/CMSMessages/Error.aspx?title=" + GetString("dialogs.badhashtitle") + "&text=" + GetString("dialogs.badhashtext") + "&cancel=1");
+            string url = ResolveUrl(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
             ltlScript.Text = ScriptHelper.GetScript("window.location = '" + url + "';");
         }
     }

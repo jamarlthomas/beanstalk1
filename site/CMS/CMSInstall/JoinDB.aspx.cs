@@ -260,7 +260,7 @@ public partial class CMSInstall_JoinDB : GlobalAdminPage
             {
                 EnableTasks();
                 TakeSitesOnline();
-                WebFarmHelper.CreateTask(SystemTaskType.RestartApplication, "RestartApplication", "", null);
+                WebFarmHelper.CreateTask(SystemTaskType.RestartApplication, "RestartApplication");
                 ScriptHelper.RegisterStartupScript(this, typeof(string), "Close dialog", ScriptHelper.GetScript("RefreshParent(); CloseDialog();"));
             }
         }
@@ -525,7 +525,7 @@ public partial class CMSInstall_JoinDB : GlobalAdminPage
     {
         if (ValidationHelper.GetBoolean(PersistentStorageHelper.GetValue("CMSSchedulerTasksEnabled"), false))
         {
-            SettingsKeyInfoProvider.SetValue("CMSSchedulerTasksEnabled", true);
+            SettingsKeyInfoProvider.SetGlobalValue("CMSSchedulerTasksEnabled", true);
 
             // Restart win service
             WinServiceItem def = WinServiceHelper.GetServiceDefinition(WinServiceHelper.HM_SERVICE_BASENAME);

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.DocumentEngine;
 using CMS.FormControls;
@@ -102,7 +102,7 @@ public partial class CMSModules_Membership_FormControls_Users_MultipleCategories
     {
         base.OnLoad(e);
 
-        if (Form.IsFirstLoad)
+        if ((Form != null) && Form.IsFirstLoad)
         {
             categorySelector.ReloadData();
         }

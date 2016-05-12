@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.DataEngine;
 using CMS.EventLog;
@@ -328,7 +328,7 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_ImageEditor_C
         string url = null;
         if (mediafileGuid != Guid.Empty)
         {
-            url = "~/CMSPages/MediaLibrary/GetMediaFile.aspx?fileguid=" + mediafileGuid;
+            url = "~/CMSPages/GetMediaFile.aspx?fileguid=" + mediafileGuid;
         }
         baseImageEditor.MediaUrl = URLHelper.UpdateParameterInUrl(url, "chset", Guid.NewGuid().ToString());
     }

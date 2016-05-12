@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Data;
+using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
 using CMS.ExtendedControls.ActionsConfig;
@@ -13,7 +14,7 @@ using CMS.SiteProvider;
 using CMS.UIControls;
 using CMS.MacroEngine;
 using CMS.DataEngine;
-using CMS.ExtendedControls;
+
 
 /// <summary>
 /// Displays a list of issues for a specified newsletter.
@@ -22,14 +23,22 @@ using CMS.ExtendedControls;
 [UIElement("CMS.Newsletter", "Newsletter.Issues")]
 public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_List : CMSNewsletterPage
 {
+    #region "Constants"
+
+    const string ZERO_PERCENT = "0%";
+
+    #endregion
+
+
     #region "Variables"
 
     private bool mBounceMonitoringEnabled;
-    private bool mOnlineMarketingEnabled;
     private bool mTrackingEnabled;
-    private bool mABTestEnabled;
     private NewsletterInfo mNewsletter;
-
+    private DataSet mClickedLinksSummary;
+    private DataSet mVariantIssueSummaries;
+    private DataSet mVariantIssues;
+    
     #endregion
 
 
@@ -38,7 +47,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_L
     protected void Page_Load(object sender, EventArgs e)
     {
         mNewsletter = EditedObject as NewsletterInfo;
-     
+
         if (mNewsletter == null)
         {
             RedirectToAccessDenied(GetString("general.invalidparameters"));
@@ -48,21 +57,16 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_L
         {
             RedirectToAccessDenied(mNewsletter.TypeInfo.ModuleName, "Read");
         }
-        
+
         mBounceMonitoringEnabled = NewsletterHelper.MonitorBouncedEmails(CurrentSiteName);
-        mOnlineMarketingEnabled = NewsletterHelper.OnlineMarketingAvailable(CurrentSiteName);
         mTrackingEnabled = NewsletterHelper.IsTrackingAvailable();
-        mABTestEnabled = NewsletterHelper.IsABTestingAvailable();
 
-        ScriptHelper.RegisterDialogScript(this);
+        if (mTrackingEnabled && !mBounceMonitoringEnabled)
+        {
+            ShowInformation(GetString("newsletter.viewadditionalstatsmessage"));
+        }
 
-        string scriptBlock = string.Format(@"
-            function RefreshPage() {{ document.location.replace(document.location); }}
-            function ShowOpenedBy(id) {{ modalDialog('{0}?objectid=' + id, 'NewsletterIssueOpenedBy', '900px', '700px');  return false; }}
-            function ViewClickedLinks(id) {{ modalDialog('{1}?objectid=' + id, 'NewsletterTrackedLinks', '900px', '700px'); return false; }}",
-                                           ResolveUrl(@"~\CMSModules\Newsletters\Tools\Newsletters\Newsletter_Issue_OpenedBy.aspx"),
-                                           ResolveUrl(@"~\CMSModules\Newsletters\Tools\Newsletters\Newsletter_Issue_TrackedLinks.aspx"));
-        ScriptHelper.RegisterClientScriptBlock(this, GetType(), "Actions", scriptBlock, true);
+        ScriptHelper.RegisterTooltip(this);
 
         // Initialize unigrid
         UniGrid.WhereCondition = String.Format("IssueNewsletterID={0} AND IssueVariantOfIssueID IS NULL", mNewsletter.NewsletterID);
@@ -73,6 +77,28 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_L
 
         // Initialize header actions
         InitHeaderActions();
+
+        // Prepare data for listing
+        // Group clicked link records by IssueID with Columns LinkIssueID, UniqueUserClicks, VariantParent (to calculate clicked links through all variant)
+        mClickedLinksSummary = ClickedLinkInfoProvider.GetClickedLinks()
+            .Columns(new QueryColumn("LinkIssueID"),
+                     new AggregatedColumn(AggregationType.Count, "DISTINCT(ClickedLinkEmail)").As("UniqueUserClicks"))
+            .Source(s => s.Join<LinkInfo>("ClickedLinkNewsletterLinkID", "LinkID"))
+            .GroupBy("LinkIssueID");
+
+        // Prepare variant summaries
+        mVariantIssueSummaries = IssueInfoProvider.GetIssues()
+            .Columns(new QueryColumn("IssueVariantOfIssueID"),
+                     new AggregatedColumn(AggregationType.Sum, "IssueOpenedEmails").As("OpenedEmailsSum"))
+            .WhereEquals("IssueNewsletterID", mNewsletter.NewsletterID)
+            .GroupBy("IssueVariantOfIssueID")
+            .Having("IssueVariantOfIssueID IS NOT NULL");
+        
+        // AB Variant issues for current newsletter
+        mVariantIssues = IssueInfoProvider.GetIssues()
+            .Columns("IssueID", "IssueVariantOfIssueID")
+            .WhereEquals("IssueNewsletterID", mNewsletter.NewsletterID)
+            .WhereNotNull("IssueVariantOfIssueID");
     }
 
 
@@ -94,14 +120,12 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_L
 
     protected void UniGrid_OnBeforeDataReload()
     {
-        // Hide opened emails if tracking is not available
+        // Hide opened/clicked emails if tracking is not available
         UniGrid.NamedColumns["openedemails"].Visible = mTrackingEnabled;
+        UniGrid.NamedColumns["issueclickedlinks"].Visible = mTrackingEnabled;
 
         // Hide bounced emails info if monitoring disabled or tracking is not available
-        UniGrid.NamedColumns["bounces"].Visible = mBounceMonitoringEnabled;
-
-        // Hide A/B test column for dynamic newsletters or if A/B testing is not available
-        UniGrid.NamedColumns["isabtest"].Visible = mABTestEnabled && mNewsletter.NewsletterType.EqualsCSafe(NewsletterType.TemplateBased);
+        UniGrid.NamedColumns["deliveryrate"].Visible = mBounceMonitoringEnabled;
     }
 
 
@@ -114,51 +138,69 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_L
     /// <returns>Formatted value to be used in the UniGrid</returns>
     protected object UniGrid_OnExternalDataBound(object sender, string sourceName, object parameter)
     {
+        string tooltipText = null;
+        var webControl = sender as WebControl;
+        
+        // Prepare a tooltip for the column
+        switch (sourceName.ToLowerCSafe())
+        {
+            case "issueopenedemails":
+                tooltipText = GetString(mBounceMonitoringEnabled ? "newsletter.openratetooltip.delivered" : "newsletter.openratetooltip.sent");
+                break;
+
+            case "issueclickedlinks":
+                tooltipText = GetString(mBounceMonitoringEnabled ? "newsletter.clickratetooltip.delivered" : "newsletter.clickratetooltip.sent");
+                break;
+
+            case "deliveryrate":
+                tooltipText = GetString("newsletter.deliveryratetooltip");
+                break;
+
+            case "unsubscriberate":
+                tooltipText = GetString(mBounceMonitoringEnabled ? "newsletter.unsubscriptionratetooltip.delivered" : "newsletter.unsubscriptionratetooltip.sent");
+                break;
+
+            default:
+                break;
+        }
+
+        // If the sender is from a column with a tooltip, append tooltip to the control
+        if ((webControl != null) && !String.IsNullOrEmpty(tooltipText))
+        {
+            ScriptHelper.AppendTooltip(webControl, tooltipText, null);
+        }
+        
         switch (sourceName.ToLowerCSafe())
         {
             case "issuesubject":
-                return HTMLHelper.HTMLEncode(MacroSecurityProcessor.RemoveSecurityParameters(parameter.ToString(), true, null));
-
-            case "issueopenedemails":
-                return GetOpenedEmails(parameter as DataRowView);
+                return GetIssueSubject(parameter as DataRowView);
 
             case "issuestatus":
-                IssueStatusEnum status = IssueStatusEnum.Idle;
-                if ((parameter != DBNull.Value) && (parameter != null))
-                {
-                    status = (IssueStatusEnum)parameter;
-                }
-                return GetString(String.Format("newsletterissuestatus." + Convert.ToString(status)));
+                IssueStatusEnum status = EnumHelper.GetDefaultValue<IssueStatusEnum>();
+                var statusID = ValidationHelper.GetInteger(parameter, -1);
 
-            case "viewclickedlinks":
-                if (sender is CMSGridActionButton)
+                if (Enum.IsDefined(typeof(IssueStatusEnum), statusID))
                 {
-                    // Hide 'view clicked links' action if tracking is not available or if the issue has no tracked links
-                    CMSGridActionButton imageButton = sender as CMSGridActionButton;
-                    if (!mTrackingEnabled)
-                    {
-                        imageButton.Visible = false;
-                    }
-                    else
-                    {
-                        GridViewRow gvr = parameter as GridViewRow;
-                        if (gvr != null)
-                        {
-                            DataRowView drv = gvr.DataItem as DataRowView;
-                            if (drv != null)
-                            {
-                                int issueId = ValidationHelper.GetInteger(drv["IssueID"], 0);
-                                // Try to get one tracked link (only ID) of the issue
-                                var links = LinkInfoProvider.GetLinks().WhereEquals("LinkIssueID", issueId).TopN(1).Column("LinkID");
-                                if (!links.Any())
-                                {
-                                    imageButton.Visible = false;
-                                }
-                            }
-                        }
-                    }
+                    status = (IssueStatusEnum)statusID;
                 }
-                return sender;
+
+                return IssueHelper.GetStatusFriendlyName(status, null);
+
+            case "issuesentemails":
+                var num = ValidationHelper.GetInteger(parameter, 0);
+                return (num > 0) ? num.ToString() : String.Empty;
+
+            case "issueopenedemails":                
+                return GetOpenedEmails(parameter as DataRowView);
+
+            case "issueclickedlinks":               
+                return GetClickRate(parameter as DataRowView);
+
+            case "deliveryrate":
+                return GetDeliveryRate(parameter as DataRowView);
+
+            case "unsubscriberate":
+                return GetUnsubscriptionRate(parameter as DataRowView);
 
             default:
                 return parameter;
@@ -186,67 +228,166 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_L
                 break;
         }
     }
+    
+
+    /// <summary>
+    /// Returns a subject of an issue. A/B test icon is added to the subject if the issue is an A/B test.
+    /// </summary>
+    /// <param name="rowView">A <see cref="DataRowView" /> that represents one row from UniGrid's source</param>
+    private string GetIssueSubject(DataRowView rowView)
+    {
+        var isABTest = DataHelper.GetBoolValue(rowView.Row, "IssueIsABTest");
+        var subject = HTMLHelper.HTMLEncode(MacroSecurityProcessor.RemoveSecurityParameters(DataHelper.GetStringValue(rowView.Row, "IssueSubject"), true, null));
+
+        // Add the icon for A/B tests
+        if (isABTest)
+        {
+            subject += UIHelper.GetAccessibleIconTag("NodeLink icon-two-squares-line tn", GetString("unigrid.newsletter_issue.abtesticontooltip"));
+        }
+
+        return subject;
+    }
 
 
     /// <summary>
-    /// Gets a clickable opened emails counter based on the values from datasource.
+    /// Gets a clickable open rate link based on the values from datasource.
     /// </summary>
     /// <param name="rowView">A <see cref="DataRowView" /> that represents one row from UniGrid's source</param>
     /// <returns>A link with detailed statistics about opened emails</returns>
     private string GetOpenedEmails(DataRowView rowView)
     {
+        var issueRow = rowView.Row;
+
+        var issueSentEmails = DataHelper.GetIntValue(issueRow, "IssueSentEmails");
+        if (issueSentEmails == 0)
+        {
+            return String.Empty;
+        }
+
         // Get issue ID
-        int issueId = ValidationHelper.GetInteger(DataHelper.GetDataRowViewValue(rowView, "IssueID"), 0);
+        int issueId = DataHelper.GetIntValue(issueRow, "IssueID");
 
         // Get opened emails count from issue record
-        int openedEmails = ValidationHelper.GetInteger(DataHelper.GetDataRowViewValue(rowView, "IssueOpenedEmails"), 0);
-        if (mOnlineMarketingEnabled)
-        {
-            // Get number of emails opened by contact group members
-            openedEmails += OpenedEmailInfoProvider.GetMultiSubscriberOpenedIssueActivityCount(issueId);
-        }
-
+        int openedEmails = DataHelper.GetIntValue(issueRow, "IssueOpenedEmails");
+        
         // Add winner variant data if it is an A/B test and a winner has been selected
-        if (ValidationHelper.GetBoolean(DataHelper.GetDataRowViewValue(rowView, "IssueIsABTest"), false))
+        if (DataHelper.GetBoolValue(issueRow, "IssueIsABTest"))
         {
-            openedEmails += GetWinnerVariantOpenes(issueId);
+            var row = mVariantIssueSummaries.Tables[0].Select(string.Format("IssueVariantOfIssueID={0}", issueId)).FirstOrDefault();
+            if(row != null)
+            { 
+                int variantOpensSum = DataHelper.GetIntValue(row, "OpenedEmailsSum");
+                openedEmails += variantOpensSum;
+            }
         }
 
-        if (openedEmails > 0)
+        var delivered = GetDeliveredCount(rowView);
+
+        if ((openedEmails > 0) && (delivered > 0))
         {
-            return string.Format(@"<a href=""#"" onclick=""ShowOpenedBy({0})"">{1}</a>", issueId, openedEmails);
+            return string.Format("{0:F2}%", ((double)openedEmails / delivered) * 100);
         }
 
-        return "0";
+        return ZERO_PERCENT;
     }
 
 
     /// <summary>
-    /// Gets number of opened e-mails of winner variant issue.
+    /// Gets a clickable click rate link based on the values from datasource.
     /// </summary>
-    /// <param name="issueId">ID of parent issue</param>
-    private int GetWinnerVariantOpenes(int issueId)
+    /// <param name="rowView">A <see cref="DataRowView" /> that represents one row from UniGrid's source</param>
+    /// <returns>A link with detailed statistics clicks</returns>
+    private string GetClickRate(DataRowView rowView)
     {
-        int openedEmails = 0;
-
-        ABTestInfo test = ABTestInfoProvider.GetABTestInfoForIssue(issueId);
-        if ((test != null) && (test.TestWinnerIssueID > 0))
+        var issueSentEmails = DataHelper.GetIntValue(rowView.Row, "IssueSentEmails");
+        if (issueSentEmails == 0)
         {
-            IssueInfo winner = IssueInfoProvider.GetIssueInfo(test.TestWinnerIssueID);
-            if (winner != null)
-            {
-                // Get opened emails count from winner issue
-                openedEmails += winner.IssueOpenedEmails;
-
-                if (mOnlineMarketingEnabled)
-                {
-                    // Get number of emails opened by contact group and persona members
-                    openedEmails += OpenedEmailInfoProvider.GetMultiSubscriberOpenedIssueActivityCount(winner.IssueID);
-                }
-            }
+            return String.Empty;
         }
 
-        return openedEmails;
+        if (DataHelper.DataSourceIsEmpty(mClickedLinksSummary))
+        {
+            return ZERO_PERCENT;
+        }
+
+        var issueId = DataHelper.GetIntValue(rowView.Row, "IssueID");
+
+        // All issue ids (main issue and AB variants) to sum up click count
+        var allIssueIds = new List<int> { issueId };
+        // Get variants for current issue and add them to issue id list
+        var variantIds = mVariantIssues.Tables[0].Select(string.Format("IssueVariantOfIssueID={0}", issueId));
+        allIssueIds.AddRange(variantIds.Select(variantRow => DataHelper.GetIntValue(variantRow, "IssueID")));
+
+        // Get clicked links summary rows for main issue and AB variant issues
+        var clickedLinks = mClickedLinksSummary.Tables[0].Select(string.Format("LinkIssueID IN ({0})", TextHelper.Join(",", allIssueIds)));
+
+        var delivered = GetDeliveredCount(rowView);
+
+        if ((clickedLinks.Length > 0) && (delivered > 0))
+        {
+            // Sum up unique clicks for the base issue and also the AB variants
+            var uniqueClicks = clickedLinks.Sum(dataRow => ValidationHelper.GetInteger(DataHelper.GetDataRowValue(dataRow, "UniqueUserClicks"), 0));
+            return string.Format("{0:F2}%", ((double)uniqueClicks / delivered) * 100);
+        }
+
+        return ZERO_PERCENT;
+    }
+
+
+    /// <summary>
+    /// Returns delivery rate based on the values from datasource.
+    /// </summary>
+    /// <param name="rowView">A <see cref="DataRowView" /> that represents one row from UniGrid's source</param>
+    private string GetDeliveryRate(DataRowView rowView)
+    {
+        var sent = DataHelper.GetIntValue(rowView.Row, "IssueSentEmails");
+        var delivered = (double)GetDeliveredCount(rowView);
+
+        if (sent == 0)
+        {
+            return String.Empty;
+        }
+
+        return (delivered > 0) ? string.Format("{0:F2}%", (delivered / sent) * 100) : ZERO_PERCENT;
+    }
+
+
+    /// <summary>
+    /// Returns unsubscription rate based on the values from datasource.
+    /// </summary>
+    /// <param name="rowView">A <see cref="DataRowView" /> that represents one row from UniGrid's source</param>
+    private string GetUnsubscriptionRate(DataRowView rowView)
+    {
+        var issueSentEmails = DataHelper.GetIntValue(rowView.Row, "IssueSentEmails");
+        if (issueSentEmails == 0)
+        {
+            return String.Empty;
+        }
+
+        var unsubscribed = DataHelper.GetIntValue(rowView.Row, "IssueUnsubscribed");
+        if (unsubscribed > 0)
+        {
+            return string.Format("{0:F2}%", ((double)unsubscribed / GetDeliveredCount(rowView)) * 100);
+        }
+
+        return ZERO_PERCENT;
+    }
+
+    /// <summary>
+    /// Returns delivered emails count based on the values from datasource. Sent emails count is returned if the bounce monitoring is disabled.
+    /// </summary>
+    /// <param name="rowView">A <see cref="DataRowView" /> that represents one row from UniGrid's source</param>
+    private int GetDeliveredCount(DataRowView rowView)
+    {
+        var sent = DataHelper.GetIntValue(rowView.Row, "IssueSentEmails");
+
+        if (!mBounceMonitoringEnabled)
+        {
+            return sent;
+        }
+
+        var bounces = DataHelper.GetIntValue(rowView.Row, "IssueBounces");
+        return sent - bounces;
     }
 
 
@@ -262,7 +403,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_L
         {
             RedirectToAccessDenied(GetString("general.invalidparameters"));
         }
-        
+
         // User has to have both destroy and issue privileges to be able to delete the issue.
         if (!issue.CheckPermissions(PermissionsEnum.Delete, SiteContext.CurrentSiteName, MembershipContext.AuthenticatedUser))
         {

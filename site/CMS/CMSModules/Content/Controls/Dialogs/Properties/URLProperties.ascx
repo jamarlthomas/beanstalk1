@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Dialogs_Properties_URLProperties"
-    Codebehind="URLProperties.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Dialogs_Properties_URLProperties"
+     Codebehind="URLProperties.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/General/WidthHeightSelector.ascx"
     TagPrefix="cms" TagName="WidthHeightSelector" %>

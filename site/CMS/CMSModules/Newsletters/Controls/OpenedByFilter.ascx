@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Controls_OpenedByFilter"
-    Codebehind="OpenedByFilter.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Controls_OpenedByFilter"
+     Codebehind="OpenedByFilter.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/Filters/TextSimpleFilter.ascx" TagName="TextSimpleFilter"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/Filters/TimeSimpleFilter.ascx" TagName="TimeSimpleFilter"
@@ -11,16 +11,9 @@
     <div class="form-horizontal form-filter">
         <div class="form-group">
             <div class="filter-form-label-cell">
-                <cms:LocalizedLabel CssClass="control-label" ID="lblSubscriberName" runat="server" ResourceString="unigrid.subscribers.columns.subscribername"
-                    DisplayColon="true" EnableViewState="false" />
-            </div>
-            <cms:TextSimpleFilter ID="fltSubscriberName" runat="server" Column="SubscriberFullName" />
-        </div>
-        <div class="form-group">
-            <div class="filter-form-label-cell">
                 <cms:LocalizedLabel CssClass="control-label" ID="lblEmail" runat="server" ResourceString="general.email" DisplayColon="true" EnableViewState="false" />
             </div>
-            <cms:TextSimpleFilter ID="fltEmail" runat="server" Column="SubscriberEmail" IncludeNULLCondition="false" />
+            <cms:TextSimpleFilter ID="fltEmail" runat="server" Column="OpenedEmailEmail" IncludeNULLCondition="false" />
         </div>
         <asp:PlaceHolder ID="plcDate" runat="server">
             <div class="form-group">
@@ -29,7 +22,7 @@
                         DisplayColon="true" EnableViewState="false" />
                 </div>
                 <div class="filter-form-value-cell-wide">
-                    <cms:TimeSimpleFilter ID="fltOpenedBetween" runat="server" Column="OpenedWhen" />
+                    <cms:TimeSimpleFilter ID="fltOpenedBetween" runat="server" Column="OpenedEmailTime" />
                 </div>
             </div>
         </asp:PlaceHolder>

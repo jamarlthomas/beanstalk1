@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Tools_Forums_Forum_New"
-    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Codebehind="Forum_New.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Tools_Forums_Forum_New"
+    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default"  Codebehind="Forum_New.aspx.cs" %>
 <%@ Register Src="~/CMSModules/Forums/Controls/Forums/ForumNew.ascx" TagName="ForumNew" TagPrefix="cms" %>
 
 <asp:Content ContentPlaceHolderID="plcContent" ID="content" runat="server">

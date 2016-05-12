@@ -119,6 +119,102 @@
             </summary>
             <param name="manager">AB user state manager</param>
         </member>
+        <member name="T:CMS.OnlineMarketing.ABTestUsageDataSource">
+            <summary>
+            Module usage tracking data source for A/B testing module.
+            </summary>
+        </member>
+        <member name="F:CMS.OnlineMarketing.ABTestUsageDataSource.mSettingsToLog">
+            <summary>
+            Settings keys which are logged.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ABTestUsageDataSource.GetData">
+            <summary>
+            Get all module statistical data.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ABTestUsageDataSource.GetSettingsUsage(System.Boolean)">
+            <summary>
+            Returns how many times is specific setting used with value which is not same as default value. 
+            Only settings on running sites (if <paramref name="global"/> is true), not hidden and not custom are retrieved.
+            Only global settings when <paramref name="global"/> is false.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.ABTestUsageDataSource.Name">
+            <summary>
+            Get the data source name.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.Internal.ABTestAndConversionDataGenerator">
+            <summary>
+            Class generating and deleting sample statistics for A/B tests and campaigns.
+            </summary>
+            <exclude />
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.ABTestAndConversionDataGenerator.#ctor(CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="site">Site to generate data for</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.ABTestAndConversionDataGenerator.Generate">
+            <summary>
+            Generates statistics for AB tests on the current site.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.ABTestAndConversionDataGenerator.ClearStatisticsData">
+            <summary>
+            Removes all previously logged data related to the Dancing Goat default A/B test and Campaign.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.ABTestAndConversionDataGenerator.GetTotalConversions">
+            <summary>
+            Gets total number of conversion logged for the A/B test. The result is suitable for generating data for the Conversion object itself.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.ABTestAndConversionDataGenerator.GetTotalVisits">
+            <summary>
+            Gets total number of visits logged for the A/B test. The result is suitable for generating data for the Campaign object itself.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.ABTestAndConversionDataGenerator.LogCampaignConversionHits(System.Int32[],System.Int32[],System.Int32,System.DateTime)">
+             <summary>
+             Performs logging of the pure conversion and campaign hits.
+             </summary>
+             <param name="totalConversions">Array containing total number of all conversions for every day in the last two weeks</param>
+             <param name="totalVisits">Array containing total number of all visits on landing page for every day in the last two weeks</param>
+             <param name="daysFromStart">
+                 Determines for which day should be the logging performed (selects correct value from the 
+                 <paramref name="totalConversions"/> and <paramref name="totalVisits"/> according to this value)
+            </param>
+             <param name="logDate">Date the hit is assigned to</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.ABTestAndConversionDataGenerator.LogABConversionHits(System.Int32,System.DateTime)">
+            <summary>
+            Performs logging of A/B conversion hits.
+            </summary>
+            <param name="daysFromStart">Determines for which day should be the logging performed (selects correct values from the data arrays)</param>
+            <param name="logDate">Date the hit is assigned to</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.ABTestAndConversionDataGenerator.LogABVisitHits(System.Int32,System.DateTime)">
+            <summary>
+            Performs logging of A/B visit hits.
+            </summary>
+            <param name="daysFromStart">Determines for which day should be the logging performed (selects correct values from the data arrays)</param>
+            <param name="logDate">Date the hit is assigned to</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.ABTestAndConversionDataGenerator.GetABHitCodename(System.String,CMS.OnlineMarketing.ABTestInfo,CMS.OnlineMarketing.ABVariantInfo)">
+            <summary>
+            Constructs proper statistics code name for the A/B hit.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.ABTestAndConversionDataGenerator.LogHit(System.String,System.Int32,System.Int32,System.DateTime,System.String)">
+            <summary>
+            Performs logging of the hit.
+            </summary>
+        </member>
         <member name="T:CMS.OnlineMarketing.ActivityInfoConverter">
             <summary>
             Contains methods for converting to activity info.
@@ -138,12 +234,188 @@
             <param name="activityData">Activity data to be converted</param>
             <returns>Converted activity info</returns>
         </member>
+        <member name="T:CMS.OnlineMarketing.ContactGroupController">
+            <summary>
+            Handles posting of contact group to the server.
+            </summary>
+            <exclude />
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactGroupController.Post(System.Guid,System.String)">
+            <summary>
+            Creates contact group by given name on specified site.
+            </summary>
+            <param name="siteGuid">Site guid where contact group will be created.</param>
+            <param name="contactGroupName">Contact group name. Will be used as Display name and also as a code name.</param>
+        </member>
+        <member name="T:CMS.OnlineMarketing.ContactImportExceptionHandlingAttribute">
+            <summary>
+            Any exception thrown by ContactImport should be passed to client translated and with correct HTTP status code. 
+            This class ensure such a behavior.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.NotImportedContactsResultModel">
+            <summary>
+            Refers to data which were not imported. Result is same as <see cref="T:CMS.OnlineMarketing.RequestModel"/> and contains explanation message for each failed row.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.NotImportedContactsResultModel.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.NotImportedContactsResultModel.FieldsOrder">
+            <summary>
+            Names of the contact fields which shall be imported. This list specifies meaning of fields values in <see cref="P:CMS.OnlineMarketing.NotImportedContactsResultModel.FieldValues"/> property. 
+            </summary>
+            <example>
+            If FieldsOrder[0] is "ContactEmail", than first item in each row in <see cref="P:CMS.OnlineMarketing.NotImportedContactsResultModel.FieldValues"/> property represents contact email.
+            </example>
+        </member>
+        <member name="P:CMS.OnlineMarketing.NotImportedContactsResultModel.FieldValues">
+            <summary>
+            Values of contact fields in order specified by <see cref="P:CMS.OnlineMarketing.NotImportedContactsResultModel.FieldsOrder"/> property.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.NotImportedContactsResultModel.Messages">
+            <summary>
+            Each message is trying to explain why was corresponding row in <see cref="P:CMS.OnlineMarketing.NotImportedContactsResultModel.FieldValues"/> rejected.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.Internal.ContactGroupDataGenerator">
+            <summary>
+            Contains methods for generating sample data for the Contact groups module.
+            </summary>
+            <exclude />
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.ContactGroupDataGenerator.#ctor(CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="site">Site the newsletters data will be generated for</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.ContactGroupDataGenerator.Generate">
+            <summary>
+            Performs contact group sample data generation.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.ContactGroupUsageDataSource">
+            <summary>
+            Provides statistical information about contact groups.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactGroupUsageDataSource.GetData">
+            <summary>
+            Add contact groups statistics to the usage data collection.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactGroupUsageDataSource.GetEnabledDynamicGroupsCount(System.Collections.Generic.IEnumerable{CMS.OnlineMarketing.ContactGroupInfo})">
+            <summary>
+            Returns number of dynamic contact groups.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactGroupUsageDataSource.GetEnabledStaticGroupCount(System.Collections.Generic.IEnumerable{CMS.OnlineMarketing.ContactGroupInfo})">
+            <summary>
+            Returns number of static contact groups.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactGroupUsageDataSource.GetContactsCountPerContactGroup">
+            <summary>
+            Returns number of contacts per each contact group.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactGroupUsageDataSource.GetNumberOfContactGroupsWithAccount">
+            <summary>
+            Returns how many contact groups contains account.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.ContactGroupUsageDataSource.Name">
+            <summary>
+            Get the data source name.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.ContactManagementUsageDataSource">
+            <summary>
+            Module usage tracking data source for contact management module.
+            </summary>
+        </member>
+        <member name="F:CMS.OnlineMarketing.ContactManagementUsageDataSource.mSettingsToLog">
+            <summary>
+            Settings keys which are logged.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactManagementUsageDataSource.GetData">
+            <summary>
+            Get all module statistical data.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactManagementUsageDataSource.GetSettingsUsage(System.Boolean)">
+            <summary>
+            Returns how many times is specific setting used with value which is not same as default value. 
+            Only settings on running sites (if <paramref name="global"/> is true), not hidden and not custom are retrieved.
+            Only global settings when <paramref name="global"/> is false.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.ContactManagementUsageDataSource.Name">
+            <summary>
+            Get the data source name.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.ContactUsageDataSource">
+            <summary>
+            Provides statistical information about contacts.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactUsageDataSource.GetData">
+            <summary>
+            Add contacts statistics to the usage data collection.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.ContactUsageDataSource.Name">
+            <summary>
+            Get the data source name.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.ImportDataEmailFixer">
+            <summary>
+            Tries to fix common error in email.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ImportDataEmailFixer.TrimSpaces(CMS.OnlineMarketing.ContactImportData)">
+            <summary>
+            This method trims spaces in ContactEmail column.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.ImportDataConvertor">
+            <summary>
+            Converts list of fields and list of values to stream of <see cref="T:CMS.OnlineMarketing.ContactImportData"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ImportDataConvertor.ConvertToImportData(System.Collections.Generic.IList{System.String},System.Collections.Generic.IList{System.Collections.Generic.List{System.String}},System.Action{System.Collections.Generic.List{System.String},System.Exception})">
+            <summary>
+            Converts list of fields and list of values to stream of <see cref="T:CMS.OnlineMarketing.ContactImportData"/>. <paramref name="onErrorAction"/> is called for each failed conversion.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.ContactImportData">
+            <summary>
+            Represents data for contact import. 
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.ContactImportData.Email">
+            <summary>
+            Contact email
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.ContactImportData.Data">
+            <summary>
+            Represents FieldName, FieldValue pair
+            </summary>
+        </member>
         <member name="T:CMS.OnlineMarketing.ContactImporter">
             <summary>
             Imports contacts into database.
             </summary>
         </member>
-        <member name="M:CMS.OnlineMarketing.ContactImporter.ImportContacts(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{System.String}},CMS.SiteProvider.SiteInfo)">
+        <member name="M:CMS.OnlineMarketing.ContactImporter.ImportContacts(System.Collections.Generic.IList{CMS.OnlineMarketing.ContactImportData},CMS.SiteProvider.SiteInfo)">
             <summary>
             Imports contacts into database. Large number of contacts can be imported, because bulk insert is used. Finds existing contacts by ContactEmail and updates them.
             This method does not check permissions. Contact groups and scoring are recalculated only for updated contacts.
@@ -164,12 +436,17 @@
             2 imported (1@email.cz and 2@email.cz)
             3 duplicities (twice 2@email.cz and 3@email.cz) 
             </example>
-            <param name="fieldsOrder">Names of the contact fields which shall be imported. This list specifies meaning of fields values in <paramref name="fieldValues"/> parameter</param>
-            <param name="fieldValues">Values of contact fields. One item in list represents one contact and its fields as specified by <paramref name="fieldsOrder"/> parameter</param>
+            <param name="records">Contacts to be imported</param>
             <param name="site">Site where contacts will be imported</param>
             <returns>Results of the import</returns>
         </member>
-        <member name="M:CMS.OnlineMarketing.ContactImporter.UpdateExistingContacts(System.Collections.Generic.IEnumerable{CMS.OnlineMarketing.ContactInfo},CMS.OnlineMarketing.ContactImporter.ContactImportData,CMS.OnlineMarketing.ContactImportResults)">
+        <member name="M:CMS.OnlineMarketing.ContactImporter.InsertContactsToDatabase(CMS.SiteProvider.SiteInfo,System.Data.DataTable)">
+            <summary>
+            Inserts given dataTable containing contact data to database.
+            Enqueues new contacts to <see cref="T:CMS.OnlineMarketing.ContactChangeQueue"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactImporter.UpdateExistingContacts(System.Collections.Generic.IEnumerable{CMS.OnlineMarketing.ContactInfo},CMS.OnlineMarketing.ContactImportData,CMS.OnlineMarketing.ContactImportResults)">
             <summary>
             Updates <paramref name="contactsToUpdate"/> with values specified in <paramref name="contactImportData"/>.
             </summary>
@@ -177,27 +454,32 @@
             <param name="contactImportData">New field values</param>
             <param name="result">Results of this operation will be stored in this instance</param>
         </member>
-        <member name="M:CMS.OnlineMarketing.ContactImporter.SetContactInfoFields(CMS.OnlineMarketing.ContactInfo,CMS.OnlineMarketing.ContactImporter.ContactImportData)">
+        <member name="M:CMS.OnlineMarketing.ContactImporter.SetContactInfoFields(CMS.OnlineMarketing.ContactInfo,CMS.OnlineMarketing.ContactImportData)">
             <summary>
             Sets <paramref name="contact"/> fields to values specified in <paramref name="contactImportData"/>. 
             </summary>
             <param name="contact">Contact whose fields will be updated</param>
             <param name="contactImportData">New values of the fields</param>
         </member>
-        <member name="M:CMS.OnlineMarketing.ContactImporter.AddDataRow(System.Data.DataTable,CMS.OnlineMarketing.ContactImporter.ContactImportData,System.Guid,CMS.SiteProvider.SiteInfo)">
+        <member name="M:CMS.OnlineMarketing.ContactImporter.AddDataRow(System.Data.DataTable,CMS.OnlineMarketing.ContactImportData,System.Guid,CMS.SiteProvider.SiteInfo)">
             <summary>
             Adds <paramref name="contactImportData"/> as row to <paramref name="contactDataTable"/>. 
             </summary>
         </member>
-        <member name="T:CMS.OnlineMarketing.ContactImporter.ContactImportData">
+        <member name="M:CMS.OnlineMarketing.ContactImporter.GetErrorMessageForInvalidCast(System.String,System.String)">
             <summary>
-            Represents contact data in raw form as List of strings (<see cref="P:CMS.OnlineMarketing.ContactImporter.ContactImportData.FieldsValues"/>) together with metadata mapping those values to contact fields (<see cref="P:CMS.OnlineMarketing.ContactImporter.ContactImportData.FieldsOrder"/>).
+            Prepares error message when invalid cast occures while processing contact data.
             </summary>
+            <param name="fieldDisplayName">Field name</param>
+            <param name="fieldDataType">Type of field</param>
+            <returns>Localized error message.</returns>
         </member>
-        <member name="P:CMS.OnlineMarketing.ContactImporter.ContactImportData.IsValid">
+        <member name="M:CMS.OnlineMarketing.ContactImporter.ValidateFieldLength(System.String,System.String)">
             <summary>
-            Checks if this contact values are valid and can be inserted.
+            Validates value according to fields parameters.
             </summary>
+            <param name="fieldName">Field name</param>
+            <param name="value">Field value</param>
         </member>
         <member name="M:CMS.OnlineMarketing.ContactImportException.Clone">
             <summary>
@@ -239,6 +521,11 @@
             All exceptions which happened during import.
             </summary>
         </member>
+        <member name="P:CMS.OnlineMarketing.ContactImportResults.FailedData">
+            <summary>
+            Data which were not imported, data correspond to each exception in Exceptions
+            </summary>
+        </member>
         <member name="T:CMS.OnlineMarketing.ContactImportController">
             <summary>
             Handles posting of contacts to the server.
@@ -253,7 +540,17 @@
             <param name="request">Fields must contain "ContactEmail".</param>
             <param name="siteGuid">Site guid where contact will be imported.</param>
             <param name="contactGroupGuid">Optional contact group where contacts will be assigned</param>
-            <returns></returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactImportController.GetMessageFromException(System.Exception)">
+            <summary>
+            For <see cref="T:CMS.Base.CMSException"/> returns UIMessage otherwise exception message.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactImportController.GetUniqueImportData(System.Collections.Generic.List{CMS.OnlineMarketing.ContactImportData},CMS.OnlineMarketing.ResultModel)">
+            <summary>
+            Filter out duplicates, the last one is one that's needed, because of consistency when duplicates are in more than one batch.
+            Also updates <paramref name="resultModel"/> duplicities.
+            </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.AffectedContactGroupsFilter">
             <summary>
@@ -282,6 +579,330 @@
             <param name="activities">List of logged activities</param>
             <param name="contactChanges">List of logged contact changes</param>
             <returns>Set of filtered contact IDs</returns>
+        </member>
+        <member name="T:CMS.OnlineMarketing.ContactImportFieldsProvider">
+            <summary>
+            Class responsible for filtering out contact fields that are not supported by contact import functionality.
+            </summary>
+        </member>
+        <member name="F:CMS.OnlineMarketing.ContactImportFieldsProvider.SupportedDataTypes">
+            <summary>
+            Contains data types that are supported by contact import functionality
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactImportFieldsProvider.IsFieldAvailableForImport(System.String)">
+            <summary>
+            Checks whether contact field is available for import.
+            </summary>
+            <param name="fieldName">Name of contact field</param>
+            <returns>True when field is supported</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactImportFieldsProvider.GetCachedAllowedFieldNames">
+            <summary>
+            Contains contact field that are available for import.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactImportFieldsProvider.GetCategoriesAndFieldsAvailableForImport">
+            <summary>
+            Gets fields and categories from "om.contact.CMSImportContacts" alternative form without fields that are not supported by contact import (eg. DateTime).
+            Supported data types are text, longtext, integer, longinteger.
+            </summary>
+            <returns>Categories and fields that are available for contact import.</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactImportFieldsProvider.IsFieldAvailableForImport(CMS.FormEngine.FormFieldInfo)">
+            <summary>
+            Decides whether given <see cref="T:CMS.FormEngine.FormFieldInfo"/> should be available for import.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.ContactWithoutEmailWhereCondition">
+            <summary>
+            Represents object with additional where condition for <see cref="T:CMS.OnlineMarketing.ContactInfo"/> query.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.IContactsWhereCondition">
+            <summary>
+            Represents object with additional where condition for <see cref="T:CMS.OnlineMarketing.ContactInfo"/> query.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.IContactsWhereCondition.GetWhere">
+            <summary>
+            Where condition for <see cref="T:CMS.OnlineMarketing.ContactInfo"/> query.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactWithoutEmailWhereCondition.GetWhere">
+            <summary>
+            Returns contacts without email.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.ContactLastActivityOlderThanWhereCondition">
+            <summary>
+            Represents object with additional where condition for <see cref="T:CMS.OnlineMarketing.ContactInfo"/> query.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactLastActivityOlderThanWhereCondition.#ctor(System.Int32)">
+            <summary>
+            Selects all contact with last activity older than x <paramref name="days"/> or contact with no activities but older than x <paramref name="days"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactLastActivityOlderThanWhereCondition.GetWhere">
+            <summary>
+            Selects all contact with last activity older than x days or contact with no activities but older than x days.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.ContactOnSiteWhereCondition">
+            <summary>
+            Represents object with additional where condition for <see cref="T:CMS.OnlineMarketing.ContactInfo"/> query.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactOnSiteWhereCondition.#ctor(CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Select contact on <paramref name="site"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactOnSiteWhereCondition.GetWhere">
+            <summary>
+            Select contact based on the site parameter specified in the constructor.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.DeleteContactsNotActiveLastXDaysAndNoEmail">
+            <summary>
+            Deletes contacts not active last x days and with no email.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.IDeleteContacts">
+            <summary>
+            Deletes contacts on one site based on settings (days, batch size).
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.IDeleteContacts.Delete(CMS.SiteProvider.SiteInfo,System.Int32,System.Int32)">
+            <summary>
+            Deletes batch of contacts for given site.
+            </summary>
+            <param name="site">The site on which the contact deletion was requested</param>
+            <param name="days">Days that are set in the settings. Is used to delete contacts older than this number of days.</param>
+            <param name="batchSize">Size of the batch that should be deleted at most.</param>
+            <returns>Number of contacts remaining to delete.</returns>
+        </member>
+        <member name="F:CMS.OnlineMarketing.DeleteContactsNotActiveLastXDaysAndNoEmail.NAME">
+            <summary>
+            Implementation name.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DeleteContactsNotActiveLastXDaysAndNoEmail.Delete(CMS.SiteProvider.SiteInfo,System.Int32,System.Int32)">
+            <summary>
+            Deletes batch of contacts not active last x days and with no email.
+            </summary>
+            <returns>Number of contacts remaining to delete</returns>
+        </member>
+        <member name="T:CMS.OnlineMarketing.DeleteContactsNotActiveLastXDays">
+            <summary>
+            Deletes contacts not active last x days.
+            </summary>
+        </member>
+        <member name="F:CMS.OnlineMarketing.DeleteContactsNotActiveLastXDays.NAME">
+            <summary>
+            Implementation name.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DeleteContactsNotActiveLastXDays.Delete(CMS.SiteProvider.SiteInfo,System.Int32,System.Int32)">
+            <summary>
+            Deletes batch of contacts contacts not active last x days.
+            </summary>
+            <returns>Number of contacts remaining to delete</returns>
+        </member>
+        <member name="T:CMS.OnlineMarketing.Internal.DeleteContactsSettingsContainer">
+            <summary>
+            Contains <see cref="T:CMS.OnlineMarketing.IDeleteContacts"/> implementations that can be used to delete inactive contacts. 
+            </summary>
+            <remarks>
+            For registering to this container use <see cref="T:CMS.OnlineMarketing.RegisterDeleteContactsImplementationAttribute"/>.
+            </remarks>
+            <exclude/>
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.DeleteContactsSettingsContainer.GetImplementation(System.String)">
+            <summary>
+            Return implementation given by name. Implementations should be registered via <see cref="T:CMS.OnlineMarketing.RegisterDeleteContactsImplementationAttribute"/>.
+            </summary>
+            <param name="name">Implementation name</param>
+            <returns>If no implementation found null is returned.</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.DeleteContactsSettingsContainer.RegisterImplementation(CMS.OnlineMarketing.Internal.DeleteContactsSettingsItem)">
+            <summary>
+            Registers a settings item which will be displayed in settings for contact deletion. 
+            All registration should be done through <see cref="T:CMS.OnlineMarketing.RegisterDeleteContactsImplementationAttribute"/>.
+            </summary>
+            <param name="item">Item that will be shown in the settings.</param>
+        </member>
+        <member name="P:CMS.OnlineMarketing.Internal.DeleteContactsSettingsContainer.SettingsItems">
+            <summary>
+            Returns all the items that are currently registered as delete contact options.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.Internal.DeleteContactsSettingsItem">
+            <summary>
+            Representation of one setting in Online Marketing settings for inactive contacts' deletion.
+            For registration of new items, a <see cref="T:CMS.OnlineMarketing.RegisterDeleteContactsImplementationAttribute"/> should be used.
+            </summary>
+            <exclude/>
+        </member>
+        <member name="P:CMS.OnlineMarketing.Internal.DeleteContactsSettingsItem.DisplayNameResourceString">
+            <summary>
+            The resource string that will be resolved as a display name in the settings.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.Internal.DeleteContactsSettingsItem.Name">
+            <summary>
+            The name that will be used as a value in the radio list in the settings.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.Internal.DeleteContactsSettingsItem.Implementation">
+            <summary>
+            Instance of implementation of contact deletion.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.RegisterDeleteContactsImplementationAttribute">
+            <summary>
+            Registers implementation for deleting inactive contacts. All registered implementations will be shown in the settings as an option for an administrator.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.RegisterDeleteContactsImplementationAttribute.#ctor(System.String,System.String,System.Type)">
+            <summary>
+            Attribute constructor.
+            </summary>
+            <param name="name">Implementation name. Will be used as a value in the settings.</param>
+            <param name="resourceString">Resource string that will be resolved and shown in the UI in the settings.</param>
+            <param name="deleteInactiveContactsType"><see cref="T:CMS.OnlineMarketing.IDeleteContacts"/> that will be used when <paramref name="name"/> is chosen in the settings.</param>
+            <exception cref="T:System.ArgumentNullException">If <see paramref="name"/> is null.</exception>
+            <exception cref="T:System.ArgumentException">If <see paramref="deleteInactiveContactsType"/> is null or if does not implement <see cref="T:CMS.OnlineMarketing.IDeleteContacts"/>.</exception>
+        </member>
+        <member name="M:CMS.OnlineMarketing.RegisterDeleteContactsImplementationAttribute.PreInit">
+            <summary>
+            Registers the <see cref="T:CMS.OnlineMarketing.IDeleteContacts"/> factory to the <see cref="T:CMS.OnlineMarketing.Internal.DeleteContactsSettingsContainer"/>.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.RegisterDeleteContactsImplementationAttribute.MarkedType">
+            <summary>
+            <see cref="T:CMS.OnlineMarketing.IDeleteContacts"/> that will be used when in the settings.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.Internal.ScoringWithRulesGenerator">
+            <summary>
+            Contains methods for generating sample scoring objects with rules of various types.
+            </summary>
+            <exclude />
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.ScoringWithRulesGenerator.#ctor(CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="site">Site that will contain generated objects</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.ScoringWithRulesGenerator.Generate">
+            <summary>
+            Performs scoring objects and rules generation.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.DefaultContactCreator">
+            <summary>
+            Provides method for creating new anonymous contact.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.IContactCreator">
+            <summary>
+            Provides method for creating new anonymous contact.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.IContactCreator.CreateAnonymousContact(CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Creates new anonymous contact on the given <paramref name="site"/>
+            </summary>
+            <param name="site">Site the contact is created on</param>
+            <returns>New anonymous contact located on <paramref name="site"/></returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultContactCreator.CreateAnonymousContact(CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Creates new anonymous contact on the given <paramref name="site"/>
+            </summary>
+            <param name="site">Site the contact is created on</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="site"/> is null</exception>
+            <returns>New anonymous contact located on <paramref name="site"/></returns>
+        </member>
+        <member name="T:CMS.OnlineMarketing.IContactsRelatedToUserMerger">
+            <summary>
+            Determines, how should be contacts related to the user handled when only one contact can be selected as the current one.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.IContactsRelatedToUserMerger.Merge(System.Collections.Generic.List{CMS.OnlineMarketing.ContactInfo},CMS.OnlineMarketing.ContactInfo)">
+            <summary>
+            Merges given related contacts into given result contact.
+            </summary>
+            <param name="relatedContacts">Collection of contacts related to the user</param>
+            <param name="resultContact">Contact chosen to be the result one, representing the current contact</param>
+        </member>
+        <member name="T:CMS.OnlineMarketing.DefaultContactsRelatedToUserMerger">
+            <summary>
+            Provides method for merging related contacts with the found contact.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultContactsRelatedToUserMerger.Merge(System.Collections.Generic.List{CMS.OnlineMarketing.ContactInfo},CMS.OnlineMarketing.ContactInfo)">
+            <summary>
+            Merges given related contacts into given result contact.
+            </summary>
+            <param name="relatedContacts">Collection of contacts related to the user</param>
+            <param name="resultContact">Contact chosen to be the result one, representing the current contact</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="relatedContacts"/> or <paramref name="resultContact"/> is null</exception>
+        </member>
+        <member name="T:CMS.OnlineMarketing.DefaultCurrentContactProvider">
+            <summary>
+            Service for recognizing and storing information about contact currently browsing the live site. 
+            This implementation uses all known methods to recognize contact.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.ICurrentContactProvider">
+            <summary>
+            Service for recognizing and storing information about contact currently browsing the live site. 
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ICurrentContactProvider.GetCurrentContact(CMS.OnlineMarketing.RequestDependencies,CMS.SiteProvider.SiteInfo,CMS.Membership.CurrentUserInfo,System.Boolean)">
+            <summary>
+            Recognizes contact currently browsing the live site. If contact cannot be recognized a new one is created. A returned contact is always 
+            valid (exists in database, is not merged, etc.) and is automatically assigned to <paramref name="currentUser"/> User (if it's not a public
+            user). Contact can only be recognized during web request as RequestDependencies are required in <paramref name="request"/> param.
+            </summary>
+            <param name="request">Information about current request</param>
+            <param name="site">Site where request happened</param>
+            <param name="currentUser">Currently signed in user or public user</param>
+            <param name="forceUserMatching">If true, current contact is tried to be determined by the user even if it can be found by other ways</param>
+            <returns>Recognized contact or new contact, if it was not possible to recognize contact</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ICurrentContactProvider.SetCurrentContact(CMS.SiteProvider.SiteInfo,CMS.OnlineMarketing.ContactInfo)">
+            <summary>
+            Stores information about the current contact into the current session, so next time (possibly in another request in the same session) <see cref="M:CMS.OnlineMarketing.ICurrentContactProvider.GetCurrentContact(CMS.OnlineMarketing.RequestDependencies,CMS.SiteProvider.SiteInfo,CMS.Membership.CurrentUserInfo,System.Boolean)"/> 
+            is called the stored contact is returned.
+            </summary>
+            <param name="site">Site where request happened.</param>
+            <param name="contact">Contact who performed the request.</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultCurrentContactProvider.GetCurrentContact(CMS.OnlineMarketing.RequestDependencies,CMS.SiteProvider.SiteInfo,CMS.Membership.CurrentUserInfo,System.Boolean)">
+            <summary>
+            Recognizes contact currently browsing the live site. If contact cannot be recognized a new one is created. A returned contact is always 
+            valid (exists in database, is not merged, etc.) and is automatically assigned to <paramref name="currentUser"/> User (if it's not a public
+            user). Contact can only be recognized during web request as RequestDependencies are required in <paramref name="request"/> param.
+            </summary>
+            <param name="request">Information about current request</param>
+            <param name="site">Site where request happened</param>
+            <param name="currentUser">Currently signed in user or public user</param>
+            <param name="forceUserMatching">If true, current contact is tried to be determined by the user even if it can be found by other ways</param>
+            <returns>Recognized contact or new contact, if it was not possible to recognize contact</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultCurrentContactProvider.SetCurrentContact(CMS.SiteProvider.SiteInfo,CMS.OnlineMarketing.ContactInfo)">
+            <summary>
+            Stores information about the current contact into the persistent storage (<see cref="T:CMS.OnlineMarketing.IContactPersistentStorage"/>), so next time 
+            (possibly in another request in the same session) <see cref="M:CMS.OnlineMarketing.ICurrentContactProvider.GetCurrentContact(CMS.OnlineMarketing.RequestDependencies,CMS.SiteProvider.SiteInfo,CMS.Membership.CurrentUserInfo,System.Boolean)"/> is called, the stored 
+            contact is returned.
+            </summary>
+            <param name="site">Site where request happened.</param>
+            <param name="contact">Contact who performed the request.</param>
         </member>
         <member name="T:CMS.OnlineMarketing.ContactsAffectingRulesFilter">
             <summary>
@@ -316,45 +937,6 @@
             </summary>
             <param name="site">Contacts' site</param>
             <returns>Number of new contacts</returns>
-        </member>
-        <member name="T:CMS.OnlineMarketing.ActivityLogProcessor">
-            <summary>
-            Activity log processor class.
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ActivityLogProcessor.Execute(CMS.Scheduler.TaskInfo)">
-            <summary>
-            Executes the logprocessor action.
-            </summary>
-            <param name="task">Task to process</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ActivityLogProcessor.ProcessFinishedLogs">
-            <summary>
-            Gets the log files that are finished (are no longer valid).
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ActivityLogProcessor.ProcessLog(System.String)">
-            <summary>
-            Processes the whole log file in memory and writes the results to the database.
-            </summary>
-            <param name="fileName">Log file name</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ActivityLogProcessor.GetCreationTimeFromFileName(System.String)">
-            <summary>
-             Returns creation time from file name.
-            </summary>
-            <param name="fileName">Processed file name</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ActivityLogProcessor.RemoveMachineName(System.String)">
-            <summary>
-            Removes machine name from file name.
-            </summary>
-            <param name="fileName">File name.</param>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ActivityLogProcessor.TimeRegex">
-            <summary>
-            Regular expression for time format HHmm.
-            </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ContactActionsLogWorker">
             <summary>
@@ -655,13 +1237,6 @@
             <param name="contactGroup">Contact group to be rebuilded</param>
             <param name="contactIDs">Contacts whose membership in the group will be reevaluated</param>
         </member>
-        <member name="M:CMS.OnlineMarketing.ContactGroupRebuilder.RebuildGroupsForContact(CMS.OnlineMarketing.ContactInfo,System.Collections.Generic.List{CMS.OnlineMarketing.ContactGroupInfo})">
-            <summary>
-            Rebuilds contact group memberships of given contact.
-            </summary>
-            <param name="contact">Contact to rebuild contact groups for</param>
-            <param name="contactGroups">Contact groups in which to reevaluate membership of the contact. Leave null to reevaluate memberships of all contact groups</param>
-        </member>
         <member name="T:CMS.OnlineMarketing.ContactGroupSqlRebuilder">
             <summary>
             Rebuilds the whole contact group. Rebuild is done by converting dynamic macro condition to SQL query and thus leaving most of 
@@ -717,6 +1292,12 @@
             Returns dynamic groups for given sites including global groups.
             </summary>
             <param name="siteIDs">List of site ids</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactGroupHandlers.ObtainSubscriberAddressesForContactGroupSubscriber(System.Object,CMS.Newsletters.ObtainSubscriberAddressesEventArgs)">
+            <summary>
+            Fills the <see cref="P:CMS.Newsletters.ObtainSubscriberAddressesEventArgs.Addresses"/> list with e-mail addresses of contacts that are in a contact group of given subscriber (in case that subscriber is 
+            contact group subscriber).
+            </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ContactGroupInfoExtensions">
             <summary>
@@ -1040,6 +1621,36 @@
             Returns cached RuleInfos types belonging to enabled Scores on all sites.
             </summary>
         </member>
+        <member name="T:CMS.OnlineMarketing.ScoringUsageDataSource">
+            <summary>
+            Provides statistical information about module.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ScoringUsageDataSource.GetData">
+            <summary>
+            Get all module statistical data.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ScoringUsageDataSource.GetTotalEnabledScoringCount(System.Collections.Generic.IEnumerable{CMS.OnlineMarketing.ScoreInfo})">
+            <summary>
+            Gets total count of enabled scoring within the page.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ScoringUsageDataSource.GetNumberOfRulesInScoresGroupedByType">
+            <summary>
+            Returns number of rule types per each score.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ScoringUsageDataSource.GetNumberOfContactsInEachScore">
+            <summary>
+            Returns number of contacts in each score.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.ScoringUsageDataSource.Name">
+            <summary>
+            Get the data source name.
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.BatchScoreTriggersRunner.#ctor(System.Collections.Generic.ISet{System.Int32})">
             <summary>
             Constructor.
@@ -1105,6 +1716,11 @@
             </summary>
             <exclude/>
         </member>
+        <member name="M:CMS.OnlineMarketing.ResultModel.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ResultModel.Equals(System.Object)">
             <summary>
             Indicates whether the ResultModel equals to some other ResultModel
@@ -1130,6 +1746,233 @@
         <member name="P:CMS.OnlineMarketing.ResultModel.Imported">
             <summary>
             Number of contacts which were created.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.ResultModel.NotImportedContacts">
+            <summary>
+            Information about contact which were not imported
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.DefaultUserContactAssigner">
+            <summary>
+            Provides method for creating relationship between contact and user.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.IUserContactAssigner">
+            <summary>
+            Provides method for creating relationship between contact and user.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.IUserContactAssigner.Assign(CMS.Membership.UserInfo,CMS.OnlineMarketing.ContactInfo)">
+            <summary>
+            Creates relationship between given <paramref name="user"/> and <paramref name="contact"/>.
+            </summary>
+            <param name="user">User to be assigned to the <paramref name="contact"/></param>
+            <param name="contact">Contact the <paramref name="user"/> should be assigned to</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultUserContactAssigner.Assign(CMS.Membership.UserInfo,CMS.OnlineMarketing.ContactInfo)">
+            <summary>
+            Creates relationship between given <paramref name="user"/> and <paramref name="contact"/>.
+            </summary>
+            <param name="user">Current user to be assigned to the <paramref name="contact"/></param>
+            <param name="contact">Contact the <paramref name="user"/> should be assigned to</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="user"/> or <paramref name="contact"/> is null</exception>
+        </member>
+        <member name="T:CMS.OnlineMarketing.DefaultCurrentUserRelatedContactProvider">
+            <summary>
+            Provides methods for getting contact for user.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.ICurrentUserRelatedContactProvider">
+            <summary>
+            Provides methods for getting contact for user.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ICurrentUserRelatedContactProvider.GetContactForCurrentUser(CMS.Membership.CurrentUserInfo,CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Gets the contact from the given <paramref name="site"/> for the given <paramref name="currentUser"/> when no information about the possible current contact is available.
+            </summary>
+            <param name="currentUser">Current user the contacts will be obtained for</param>
+            <param name="site">Current site</param>
+            <returns>
+            Contact selected as the current one for the <paramref name="currentUser"/>. 
+            </returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ICurrentUserRelatedContactProvider.GetContactForCurrentUserAndContact(CMS.Membership.CurrentUserInfo,CMS.OnlineMarketing.ContactInfo,CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Gets the contact from the given <paramref name="site"/> for the given <paramref name="currentUser"/> when there is a priori information about the possible current contact available.
+            </summary>
+            <param name="currentUser">Current user the contacts will be obtained for</param>
+            <param name="currentContact">Possible candidate to be the selected as the current contact</param>
+            <param name="site">Current site</param>
+            <returns>
+            Contact selected as the current one for the <paramref name="currentUser"/>. 
+            </returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultCurrentUserRelatedContactProvider.#ctor(CMS.OnlineMarketing.IContactSelector,CMS.OnlineMarketing.IContactsRelatedToUserMerger)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="contactSelector">Service for selecting one contact out of many in according to the settings</param>
+            <param name="contactsRelatedToUserMerger">Service for merging the contacts where there are more contacts related to the user available</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="contactSelector"/> or <paramref name="contactsRelatedToUserMerger"/> is null</exception>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultCurrentUserRelatedContactProvider.GetContactForCurrentUser(CMS.Membership.CurrentUserInfo,CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Gets the contact from the given <paramref name="site"/> for the given <paramref name="currentUser"/> when no information about the possible current contact is available.
+            </summary>
+            <param name="currentUser">Current user the contacts will be obtained for</param>
+            <param name="site">Current site</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="currentUser"/> or <paramref name="site"/> is null</exception>
+            <returns>
+            Contact selected as the current one for the <paramref name="currentUser"/>. Note all other contacts related to the <paramref name="currentUser"/> are merged into this one.
+            If current user is public, returns null.
+            </returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultCurrentUserRelatedContactProvider.GetContactForCurrentUserAndContact(CMS.Membership.CurrentUserInfo,CMS.OnlineMarketing.ContactInfo,CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Gets the contact from the given <paramref name="site"/> for the given <paramref name="currentUser"/> when there is a priori information about the possible current contact available.
+            </summary>
+            <param name="currentUser">Current user the contacts will be obtained for</param>
+            <param name="currentContact">Possible candidate to be the selected as the current contact</param>
+            <param name="site">Current site</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="currentUser"/> or <paramref name="currentContact"/> or <paramref name="site"/> is null</exception>
+            <returns>
+            Contact selected as the current one for the <paramref name="currentUser"/>. Note all other contacts related to the <paramref name="currentUser"/> are merged into this one.
+            If current user is public, returns null.
+            </returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultCurrentUserRelatedContactProvider.GetRelatedContacts(CMS.Membership.UserInfo,CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Gets all contacts that are related to the given <paramref name="user"/>
+            </summary>
+            <param name="user">User the related contacts are searched for</param>
+            <param name="site">Site</param>
+            <returns>Collection of contacts that are related to the <paramref name="user"/></returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultCurrentUserRelatedContactProvider.ContactHasUserAssigned(CMS.OnlineMarketing.ContactInfo)">
+            <summary>
+            Determines whether the given <paramref name="contact"/> has at least one user assigned.
+            </summary>
+            <param name="contact">Contact the user assignment will be searched for</param>
+            <returns>True, if contact has at least one user assigned; otherwise, false</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultCurrentUserRelatedContactProvider.GetUserRelationships(CMS.Membership.UserInfo)">
+            <summary>
+            Gets all relations of the given <paramref name="user"/>.
+            </summary>
+            <param name="user">User the relations will be searched for</param>
+            <returns>Object query containing all relations of the given <paramref name="user"/></returns>
+        </member>
+        <member name="T:CMS.OnlineMarketing.DefaultDeleteContactsService">
+            <summary>
+            Service responsible for deleting all inactive contact for all sites.
+            Method for deleting is determined by settings.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.IDeleteContactsService">
+            <summary>
+            Service responsible for deleting contacts for all sites. Is used for deleting inactive contacts.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.IDeleteContactsService.DeleteForAllSite(System.Int32)">
+            <summary>
+            Deletes batch of contacts for all sites.
+            </summary>
+            <param name="siteBatchSize">Number of contacts to delete.</param>
+            <returns>Returns true when there are more contacts to delete</returns>
+        </member>
+        <member name="F:CMS.OnlineMarketing.DefaultDeleteContactsService.LAST_X_DAYS_MIN_VALUE">
+            <summary>
+            Min value that you can insert in the UI (CMSDeleteInactiveContactsLastXDays setting).
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultDeleteContactsService.DeleteForAllSite(System.Int32)">
+            <summary>
+            Deletes batch of inactive contacts for all sites.
+            </summary>
+            <param name="siteBatchSize">Number of contacts to delete in one call</param>
+            <returns>Returns true when there are more contacts to delete</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultDeleteContactsService.IsAllowedDeleteContactsForSite(CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Indicates if contacts should be deleted for given site.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultDeleteContactsService.Delete(CMS.SiteProvider.SiteInfo,System.Int32)">
+            <summary>
+            Deletes inactive contacts for given site.
+            </summary>
+            <param name="batchSize">Number of contacts to delete. You can then check returned number of contacts left to delete and call this method until it is 0.</param>
+            <param name="site">Site on which to delete the contacts</param>
+            <returns>Number of contacts left to delete</returns>
+        </member>
+        <member name="T:CMS.OnlineMarketing.IOffPeakService">
+            <summary>
+            Interface for deciding when in the day is off peak time, meaning when is the best to run tasks with bigger load.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.IOffPeakService.GetNextOffPeakPeriodStart(System.DateTime)">
+            <summary>
+            Returns the exact <see cref="T:System.DateTime"/> of next off-peak period.
+            </summary>
+            <param name="dateTime">Timestamp of from when to look for next off-peak period.</param>
+            <returns><see cref="T:System.DateTime"/> of next off-peak period.</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.IOffPeakService.IsOffPeak(System.DateTime)">
+            <summary>
+            Checks whether given <see cref="T:System.DateTime"/> is in off-peak period.
+            </summary>
+            <param name="dateTime">The date to check off-peak period for</param>
+            <returns>True if <paramref name="dateTime"/> is in off-peak, false otherwise.</returns>
+        </member>
+        <member name="T:CMS.OnlineMarketing.DefaultOffPeakService">
+            <summary>
+            Interface for deciding when in the day is off peak time, meaning when is the best to run tasks with bigger load.
+            Counts with off peak between 2am and 6am.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultOffPeakService.GetNextOffPeakPeriodStart(System.DateTime)">
+            <summary>
+            Returns the exact <see cref="T:System.DateTime"/> of next off-peak period.
+            Counts with off-peak between 2am and 6am.
+            </summary>
+            <param name="dateTime">Timestamp of from when to look for next off-peak period.</param>
+            <returns><see cref="T:System.DateTime"/> of next off-peak period.</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultOffPeakService.IsOffPeak(System.DateTime)">
+            <summary>
+            Checks whether given <see cref="T:System.DateTime"/> is in off-peak period.
+            Counts with off-peak between 2am and 6am.
+            </summary>
+            <param name="dateTime">The date to check off-peak period for</param>
+            <returns>True if <paramref name="dateTime"/> is in off-peak, false otherwise.</returns>
+        </member>
+        <member name="T:CMS.OnlineMarketing.ContentPersonalizationUsageDataSource">
+            <summary>
+            Module usage tracking data source for content personalization module.
+            </summary>
+        </member>
+        <member name="F:CMS.OnlineMarketing.ContentPersonalizationUsageDataSource.mSettingsToLog">
+            <summary>
+            Settings keys which are logged.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContentPersonalizationUsageDataSource.GetData">
+            <summary>
+            Get all module statistical data.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContentPersonalizationUsageDataSource.GetSettingsUsage(System.Boolean)">
+            <summary>
+            Returns how many times is specific setting used with value which is not same as default value. 
+            Only settings on running sites (if <paramref name="global"/> is true), not hidden and not custom are retrieved.
+            Only global settings when <paramref name="global"/> is false.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.ContentPersonalizationUsageDataSource.Name">
+            <summary>
+            Get the data source name.
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.DocumentationLinks">
@@ -1205,7 +2048,7 @@
         </member>
         <member name="F:CMS.OnlineMarketing.ContactManagementEvents.ProcessContactActionsBatch">
             <summary>
-            Event fires when contact actions batch (activities, contact changes) is being processed from log file to DB.
+            Event fires when contact actions batch (activities, contact changes) is being processed from queue to DB.
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ProcessContactActionsBatchEventArgs">
@@ -1235,6 +2078,248 @@
             </summary>
             <param name="activities">Activities which are going to be (Before) or were inserted to the DB (After)</param>
             <param name="changes">Contact changes which took place in the last interval. Those changes are already written in the database even on the Before event</param>
+        </member>
+        <member name="T:CMS.OnlineMarketing.Internal.ContactWithActivitiesGenerator">
+            <summary>
+            Contains methods for generating sample contacts with activities data.
+            </summary>
+            <exclude />
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.ContactWithActivitiesGenerator.#ctor(CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="site">Site contacts and activities will be generated for</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.ContactWithActivitiesGenerator.Generate">
+            <summary>
+            Performs contacts and activities generation.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DateTimeNowService.GetDateTimeNow">
+            <summary>
+            Returns current date and time.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.CMSContactFilledFormFieldWithValueInstanceTranslator">
+            <summary>
+            Translates ContactHasEnteredASpecificValueInASpecificFormSFieldInTheLastXDays Macro rule.
+            {_perfectum}Contact.FilledFormFieldWithValue("{field}", "{value}", {days});
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.IMacroRuleInstanceTranslator">
+            <summary>
+            Defines methods needed to translate macro rule instance of one particular macro rule type to data query.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.IMacroRuleInstanceTranslator.Translate(CMS.OnlineMarketing.MacroRuleInstance)">
+            <summary>
+            Translates one rule to object query returning contacts. Is used to speed up the process of recalculating contact groups.
+            </summary>
+            <param name="macroRuleInstance">Instance of the macro rule representing one line in the condition builder.</param>
+            <returns>Object query for contacts that fit in this rule.</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.SingleMacroRuleInstanceTranslatorBase.Translate(CMS.OnlineMarketing.MacroRuleInstance)">
+            <summary>
+            Translates one rule to object query returning contacts. Is used to speed up the process of recalculating contact groups.
+            </summary>
+            <param name="macroRuleInstance">Instance of the macro rule representing one line in the condition builder.</param>
+            <returns>Object query for contacts that fit in this rule.</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.CMSContactHasUnsubscribedFromAllEmailsInTheLastXDaysInstanceTranslator.TranslateInternal(CMS.Base.StringSafeDictionary{CMS.MacroEngine.MacroRuleParameter})">
+            <summary>
+            CMSContactHasUnsubscribedFromAllEmailsInTheLastXDays
+            {_perfectum}Contact.UnsubscribedFromAllEmails(ToInt({days}))
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.CMSContactHasUnsubscribedFromAllEmailsInTheLastXDaysInstanceTranslator.TranslateInternal(System.Boolean,System.Int32,CMS.Newsletters.INewslettersConfiguration)">
+            <summary>
+            CMSContactHasUnsubscribedFromAllEmailsInTheLastXDays
+            {_perfectum}Contact.UnsubscribedFromAllEmails(ToInt({days}))
+            </summary>
+            <param name="getUnsubscribed">If true, unsubscribed contacts will be returned, otherwise not unsubscribed</param>
+            <param name="lastXDays">Constraint for last X days (if zero or negative value is given, no constraint is applied)</param>
+            <param name="newslettersConfiguration">Implementation of <see cref="T:CMS.Newsletters.INewslettersConfiguration"/> interface</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.CMSContactHasUnsubscribedFromAllEmailsInTheLastXDaysInstanceTranslator.GetUnsubscribedContactIDsForAllSites(CMS.DataEngine.ObjectQuery{CMS.Newsletters.UnsubscriptionInfo})">
+            <summary>
+            Returns query with contact IDs that are unsubscribed from all emails, not site related.
+            </summary>
+            <param name="unsubscribedEmails">Query to get all blacklisted email addresses</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.CMSContactHasUnsubscribedFromAllEmailsInTheLastXDaysInstanceTranslator.GetUnsubscribedContactIDsForEachSite(CMS.DataEngine.ObjectQuery{CMS.Newsletters.UnsubscriptionInfo})">
+            <summary>
+            Returns query with contact IDs that are unsubscribed from all emails, site related.
+            </summary>
+            <param name="unsubscribedEmails">Query to get all blacklisted email addresses</param>
+        </member>
+        <member name="T:CMS.OnlineMarketing.MagnificPopupYouTubeJavaScriptRegistrator">
+            <summary>
+            Class for registering video link elements that show YouTube video in Magnific Popup lightbox.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.MagnificPopupYouTubeJavaScriptRegistrator.RegisterMagnificPopupElement(System.Web.UI.Page,System.String)">
+            <summary>
+            Registers element with given <paramref name="elementID"/> to the Magnific popup module.
+            </summary>
+            <param name="page">Page that link will be used on</param>
+            <param name="elementID">Unique client ID of the registered element</param>
+            <exception cref="T:System.ArgumentException"><paramref name="elementID"/> is null or empty</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="page"/> is null</exception>
+        </member>
+        <member name="T:CMS.OnlineMarketing.MagnificPopupYouTubeLinkBuilder">
+            <summary>
+            Class for creating links that show YouTube video in Magnific Popup lightbox.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.MagnificPopupYouTubeLinkBuilder.GetLink(System.String,System.String,System.String)">
+            <summary>
+            Returns link that can be used on provided page to show YouTube video in Magnific Popup lightbox.
+            </summary>
+            <param name="videoID">YouTube video ID</param>
+            <param name="linkID">Unique client ID that element will have</param>
+            <param name="content">Content that will be in the link</param>
+            <exception cref="T:System.ArgumentException"><paramref name="videoID"/> or <paramref name="linkID"/> or <paramref name="content"/> is null or empty</exception>
+        </member>
+        <member name="T:CMS.MarketingAutomation.MarketingAutomationUsageDataSource">
+            <summary>
+            Provides statistical information about module.
+            </summary>
+        </member>
+        <member name="M:CMS.MarketingAutomation.MarketingAutomationUsageDataSource.GetData">
+            <summary>
+            Get all module statistical data.
+            </summary>
+        </member>
+        <member name="M:CMS.MarketingAutomation.MarketingAutomationUsageDataSource.GetNumberOfEnabledMarketingAutomationProcesses(System.Collections.Generic.IEnumerable{CMS.WorkflowEngine.WorkflowInfo})">
+            <summary>
+            Returns number of enabled marketing automation processes.
+            </summary>
+        </member>
+        <member name="M:CMS.MarketingAutomation.MarketingAutomationUsageDataSource.GetNumberOfDisabledMarketingAutomationProcesses(System.Collections.Generic.IEnumerable{CMS.WorkflowEngine.WorkflowInfo})">
+            <summary>
+            Returns number of disabled marketing automation processes.
+            </summary>
+        </member>
+        <member name="M:CMS.MarketingAutomation.MarketingAutomationUsageDataSource.GetNumberOfContactsWithinEachProcess">
+            <summary>
+            Returns number of contacts within each process.
+            </summary>
+        </member>
+        <member name="P:CMS.MarketingAutomation.MarketingAutomationUsageDataSource.Name">
+            <summary>
+            Get the data source name.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.MVTestUsageDataSource">
+            <summary>
+            Module usage tracking data source for MVTest module.
+            </summary>
+        </member>
+        <member name="F:CMS.OnlineMarketing.MVTestUsageDataSource.mSettingsToLog">
+            <summary>
+            Settings keys which are logged.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.MVTestUsageDataSource.GetData">
+            <summary>
+            Get all module statistical data.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.MVTestUsageDataSource.GetSettingsUsage(System.Boolean)">
+            <summary>
+            Returns how many times is specific setting used with value which is not same as default value. 
+            Only settings on running sites (if <paramref name="global"/> is true), not hidden and not custom are retrieved.
+            Only global settings when <paramref name="global"/> is false.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.MVTestUsageDataSource.Name">
+            <summary>
+            Get the data source name.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.OnlineMarketingUsageDataSource">
+            <summary>
+            Module usage tracking data source for Online marketing module.
+            </summary>
+        </member>
+        <member name="F:CMS.OnlineMarketing.OnlineMarketingUsageDataSource.mSettingsToLog">
+            <summary>
+            Settings keys which are logged.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingUsageDataSource.GetData">
+            <summary>
+            Get all module statistical data.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingUsageDataSource.GetRunningSites">
+            <summary>
+            Returns all running sites.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingUsageDataSource.GetSettingsUsage(System.Boolean)">
+            <summary>
+            Returns how many times is specific setting used with value which is not same as default value. 
+            Only settings on running sites (if <paramref name="global"/> is true), not hidden and not custom are retrieved.
+            Only global settings when <paramref name="global"/> is false.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.OnlineMarketingUsageDataSource.Name">
+            <summary>
+            Get the data source name.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.Internal.DancingGoatSampleDataGenerator">
+            <summary>
+            Sample online marketing data generator providing sample data for Dancing Goat demo site.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.DancingGoatSampleDataGenerator.Generate(System.Int32)">
+            <summary>
+            Generates sample online marketing data. Suitable only for Dancing Goat demo site.
+            </summary>
+            <param name="siteID">ID of the site to generate sample data for.</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.Internal.DancingGoatSampleDataGenerator.GenerateWithReflection(System.String,System.String,CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Invokes generator using reflection to avoid build errors when required modules are not loaded.
+            </summary>
+            <param name="assembly">Assembly containing the generator</param>
+            <param name="typeName">Full name of the generator type</param>
+            <param name="site">Site used in constructor of the generator</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.WebPartsStructuredData.LoadFromXmlElement(System.Xml.XmlElement)">
+            <summary>
+            Loads the data from the given XML element
+            </summary>
+            <param name="element">XML element</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.WebPartsStructuredData.GetXmlElement(System.Xml.XmlDocument)">
+            <summary>
+            Gets the XML element for the data
+            </summary>
+            <param name="doc">Parent XML document</param>
+        </member>
+        <member name="T:CMS.OnlineMarketing.ApplicationsGuidList">
+            <summary>
+            Contains properties representing Guids of the selected UI elements used by smart tip.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.ApplicationsGuidList.ContactGroup">
+            <summary>
+            Gets contact group application guid.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.ApplicationsGuidList.EmailMarketing">
+            <summary>
+            Gets email marketing application guid.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.ApplicationsGuidList.Pages">
+            <summary>
+            Gets pages application guid.
+            </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.CachedMacroRuleTrees">
             <summary>
@@ -1376,30 +2461,6 @@
             Leave null to not recalculate the rule on any attribute change.
             </param>
         </member>
-        <member name="M:CMS.OnlineMarketing.MacroRuleMetadata.#ctor(System.String,CMS.OnlineMarketing.IMacroRuleInstanceTranslator,System.Collections.Generic.IList{System.String})">
-            <summary>
-            Constructor.
-            </summary>
-            <param name="macroRuleName">Rule of the macro (see <see cref="P:CMS.MacroEngine.MacroRuleInfo.MacroRuleName"/>)</param>
-            <param name="translator">A translator to use for macro with name <paramref name="macroRuleName"/></param>
-            <param name="affectingActivities">
-            List of activities that affect this macro rule. The rule gets recalculated only if one of these activity types performs.
-            Leave null to recalculate the rule on all activities.
-            </param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.MacroRuleMetadata.#ctor(System.String,CMS.OnlineMarketing.IMacroRuleInstanceTranslator,System.String)">
-            <summary>
-            Constructor.
-            </summary>
-            <param name="macroRuleName">Rule of the macro (see <see cref="P:CMS.MacroEngine.MacroRuleInfo.MacroRuleName"/>)</param>
-            <param name="translator">A translator to use for macro with name <paramref name="macroRuleName"/></param>
-            <param name="affectingActivity">An activity that affect this macro rule. The rule gets recalculated only if this activity type performs.</param>
-        </member>
-        <member name="F:CMS.OnlineMarketing.MacroRuleMetadata.mAllAttributesList">
-            <summary>
-            List with <see cref="F:CMS.OnlineMarketing.MacroRuleMetadata.ALL_ACTIVITIES"/> to mark that the rule should be recalculated on every activity.
-            </summary>
-        </member>
         <member name="T:CMS.OnlineMarketing.MacroRuleTreeAnalyzer">
             <summary>
             Provides methods to analyze a MacroRuleTree.
@@ -1438,7 +2499,7 @@
         </member>
         <member name="T:CMS.OnlineMarketing.MacroRuleMetadataContainer">
             <summary>
-            Class for registering <see cref="T:CMS.OnlineMarketing.MacroRuleMetadata"/> to the system. Use <see cref="M:CMS.OnlineMarketing.MacroRuleMetadataContainer.RegisterMetadata(CMS.OnlineMarketing.MacroRuleMetadata)"/> to speed up recalculation of contact groups 
+            Class for registering <see cref="T:CMS.OnlineMarketing.MacroRuleMetadata"/> to the system. Use <see cref="M:CMS.OnlineMarketing.MacroRuleMetadataContainer.RegisterMetadata(CMS.OnlineMarketing.MacroRuleMetadata)"/> or <see cref="M:CMS.OnlineMarketing.MacroRuleMetadataContainer.RegisterMetadata(System.Collections.Generic.Dictionary{System.String,CMS.OnlineMarketing.MacroRuleMetadata},CMS.OnlineMarketing.MacroRuleMetadata)"/> to speed up recalculation of contact groups 
             when registered macro rule is used in group condition.
             </summary>
             <remarks>
@@ -1456,15 +2517,16 @@
             that need rebuild on each request.
             </remarks>
         </member>
-        <member name="F:CMS.OnlineMarketing.MacroRuleMetadataContainer.mMetadata">
-            <summary>
-            Translators container.
-            </summary>
-        </member>
         <member name="M:CMS.OnlineMarketing.MacroRuleMetadataContainer.GetMetadata(System.String)">
             <summary>
             Gets a translator for given macro rule codename.
             </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.MacroRuleMetadataContainer.IsMetadataAvailable(System.String)">
+            <summary>
+            Checks whether <see cref="T:CMS.OnlineMarketing.MacroRuleMetadata"/> is registered for given macro rule codename.
+            </summary>
+            <returns>True if <see cref="T:CMS.OnlineMarketing.MacroRuleMetadata"/> is registered</returns>
         </member>
         <member name="M:CMS.OnlineMarketing.MacroRuleMetadataContainer.IsTranslatorAvailable(System.String)">
             <summary>
@@ -1472,14 +2534,27 @@
             </summary>
             <returns>True if translator is registered</returns>
         </member>
+        <member name="M:CMS.OnlineMarketing.MacroRuleMetadataContainer.RegisterMetadata(System.Collections.Generic.Dictionary{System.String,CMS.OnlineMarketing.MacroRuleMetadata},CMS.OnlineMarketing.MacroRuleMetadata)">
+            <summary>
+            Registers metadata for a macro rule. Overrides already registered translators if the <see cref="F:CMS.OnlineMarketing.MacroRuleMetadata.MacroRuleName"/> collides.
+            </summary>
+            <param name="dict">Metadata dictionary</param>
+            <param name="metadata">Metadata to register</param>
+        </member>
         <member name="M:CMS.OnlineMarketing.MacroRuleMetadataContainer.RegisterMetadata(CMS.OnlineMarketing.MacroRuleMetadata)">
             <summary>
             Registers metadata for a macro rule. Overrides already registered translators if the <see cref="F:CMS.OnlineMarketing.MacroRuleMetadata.MacroRuleName"/> collides.
             </summary>
+            <param name="metadata">Metadata to register</param>
         </member>
-        <member name="M:CMS.OnlineMarketing.MacroRuleMetadataContainer.RegisterDefaultMetadata">
+        <member name="M:CMS.OnlineMarketing.MacroRuleMetadataContainer.GetDefaultMetadata">
             <summary>
             Registers default metadata for existing macro rules.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.MacroRuleMetadataContainer.Metadata">
+            <summary>
+            Translators container.
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.MacroRuleTreeParser">
@@ -1537,25 +2612,6 @@
             <summary>
             Site ID on which the rule should be evaluated.
             </summary>
-        </member>
-        <member name="T:CMS.OnlineMarketing.IMacroRuleInstanceTranslator">
-            <summary>
-            Defines methods needed to translate macro rule instance of one particular macro rule type to data query.
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.IMacroRuleInstanceTranslator.Translate(CMS.OnlineMarketing.MacroRuleInstance)">
-            <summary>
-            Translates one rule to object query returning contacts. Is used to speed up the process of recalculating contact groups.
-            </summary>
-            <param name="macroRuleInstance">Instance of the macro rule representing one line in the condition builder.</param>
-            <returns>Object query for contacts that fit in this rule.</returns>
-        </member>
-        <member name="M:CMS.OnlineMarketing.SingleMacroRuleInstanceTranslatorBase.Translate(CMS.OnlineMarketing.MacroRuleInstance)">
-            <summary>
-            Translates one rule to object query returning contacts. Is used to speed up the process of recalculating contact groups.
-            </summary>
-            <param name="macroRuleInstance">Instance of the macro rule representing one line in the condition builder.</param>
-            <returns>Object query for contacts that fit in this rule.</returns>
         </member>
         <member name="M:CMS.OnlineMarketing.CMSContactIsInCommunityGroupInstanceTranslator.TranslateInternal(CMS.Base.StringSafeDictionary{CMS.MacroEngine.MacroRuleParameter})">
             <summary>
@@ -1701,6 +2757,23 @@
             Contact {_is} subscribed to newsletter {item}
             </summary>
         </member>
+        <member name="M:CMS.OnlineMarketing.CMSContactIsSubscribedToSpecifiedNewsletterInstanceTranslator.PerformTranslationInternal(System.Boolean,System.String)">
+            <summary>
+            Performs translation of all newsletter with given <paramref name="newsletterName"/>. This method was extracted from the <see cref="M:CMS.OnlineMarketing.CMSContactIsSubscribedToSpecifiedNewsletterInstanceTranslator.TranslateInternal(CMS.Base.StringSafeDictionary{CMS.MacroEngine.MacroRuleParameter})"/>
+            in order to provide the testability.
+            </summary>
+            <param name="isSubscribed">Determine whether contacts are subscribed to the given newsletters or not</param>
+            <param name="newsletterName">Codename of the newsletters to be examined</param>
+            <returns>Object query containing all contacts satisfying the macro condition</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.CMSContactIsSubscribedToSpecifiedNewsletterInstanceTranslator.GetContactIdsForSingleNewsletter(CMS.Newsletters.NewsletterInfo,CMS.Newsletters.IUnsubscriptionProvider)">
+            <summary>
+            Get IDs of all contacts that are subscribed to given <paramref name="newsletter"/>. Removes contacts that have unsubscription in the Unsubscription table.
+            </summary>
+            <param name="newsletter">Newsletter the contacts are subscribed to</param>
+            <param name="unsubscriptionProvider">Service for getting emails unsubscribed from given <paramref name="newsletter"/></param>
+            <returns>Object query containing all IDs of contacts subscribed to given <paramref name="newsletter"/></returns>
+        </member>
         <member name="M:CMS.OnlineMarketing.CMSContactStatusIsInstanceTranslator.TranslateInternal(CMS.Base.StringSafeDictionary{CMS.MacroEngine.MacroRuleParameter})">
             <summary>
             Translates CMSContactStatusIs Macro rule.
@@ -1820,6 +2893,28 @@
             </summary>
             <exception cref="T:System.ArgumentNullException"><paramref name="contactsQuery"/> is null</exception>
         </member>
+        <member name="M:CMS.OnlineMarketing.ContactInfoObjectQueryExtensions.NotBounced(CMS.DataEngine.ObjectQuery{CMS.OnlineMarketing.ContactInfo},System.Boolean,System.Int32)">
+            <summary>
+            Filters out contacts whose email address is unreachable (it has bounced more than <paramref name="bouncedEmailsLimit"/> times).
+            Contacts blocked manually by administrator are filtered out as well.
+            </summary>
+            <param name="contactsQuery">Query which will be changed to include where clause filtering out bounced contacts</param>
+            <param name="monitorBouncedEmails">If true, bounces will be checked against the <paramref name="bouncedEmailsLimit"/> parameter. Otherwise, only contacts blocked in the UI will be filtered out.</param>
+            <param name="bouncedEmailsLimit">Number of bounces which are allowed</param>
+            <returns>Modified query</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactInfoObjectQueryExtensions.WithEmail(CMS.DataEngine.ObjectQuery{CMS.OnlineMarketing.ContactInfo},System.String)">
+            <summary>
+            Filters out contacts whose email address does not match given <paramref name="email"/>. 
+            </summary>
+            <remarks>
+            Since email address is not unique per contact on single site, query can contain multiple contacts.
+            </remarks>
+            <param name="contactsQuery">Query which will be changed to omit contacts not satisfying the condition</param>
+            <param name="email">Email address the contacts will be filtered for. Can be null, in such case filters contacts with email address set to null</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="contactsQuery"/> is null</exception>
+            <returns>Modified query</returns>
+        </member>
         <member name="M:CMS.OnlineMarketing.ContactInfoObjectQueryExtensions.SearchedForAll(CMS.DataEngine.ObjectQuery{CMS.OnlineMarketing.ContactInfo},System.Collections.Generic.IEnumerable{System.String},System.Int32)">
             <summary>
             Filters out contacts who have searched for all of the specified keywords in last x days.
@@ -1920,6 +3015,11 @@
             Used as a query parameter when logging analytics via JavaScript. 
             </summary>
         </member>
+        <member name="F:CMS.OnlineMarketing.ABHandlers.PARAM_ABTEST_VARIANT_NAME">
+            <summary>
+            Used as a query parameter when logging analytics via JavaScript. 
+            </summary>
+        </member>
         <member name="F:CMS.OnlineMarketing.ABHandlers.PARAM_ABVISIT_FIRST">
             <summary>
             Used as a query parameter when logging analytics via JavaScript. 
@@ -2002,11 +3102,6 @@
             Marks documents in content tree with icons.
             </summary>
         </member>
-        <member name="M:CMS.OnlineMarketing.ABHandlers.GenerateABStatistics(System.Object,CMS.WebAnalytics.GenerateStatisticsEventArgs)">
-            <summary>
-            Generates sample statistics for AB tests.
-            </summary>
-        </member>
         <member name="M:CMS.OnlineMarketing.ABHandlers.SendPageFromCache(System.Object,CMS.OutputFilter.OutputCacheEventArgs)">
             <summary>
             Tries to fetch correct content from output cache if page AB testing is enabled.
@@ -2087,218 +3182,6 @@
         <member name="P:CMS.OnlineMarketing.StaticRandom.Instance">
             <summary>
             Gets instance for generator. Differs for each thread.
-            </summary>
-        </member>
-        <member name="T:CMS.OnlineMarketing.ABTestDataGenerator">
-            <summary>
-            Class generating and deleting sample statistics for AB tests.
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ABTestDataGenerator.#ctor(CMS.SiteProvider.SiteInfo)">
-            <summary>
-            Constructor.
-            </summary>
-            <param name="site">Site to generate data for</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ABTestDataGenerator.Generate(System.DateTime,System.DateTime)">
-            <summary>
-            Generates statistics for AB tests on the current site.
-            </summary>
-            <param name="from">Date to generate data from</param>
-            <param name="to">Date to generate data to</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ABTestDataGenerator.GetSampleConversionInfos">
-            <summary>
-            Gets sample conversions.
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ABTestDataGenerator.GetOrSetConversionInfo(System.String,System.String)">
-            <summary>
-            Gets conversion with given code name or sets new one using display name and codename.
-            </summary>
-            <param name="displayName">Display name</param>
-            <param name="codeName">Code name</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ABTestDataGenerator.LogConversionHit(System.String,CMS.OnlineMarketing.ABTestInfo,CMS.OnlineMarketing.ABVariantInfo,CMS.WebAnalytics.ConversionInfo,System.Int32,System.Int32,System.DateTime)">
-            <summary>
-            Logs hit for conversion of the given type.
-            </summary>
-            <param name="conversionType">Conversion type</param>
-            <param name="test"></param>
-            <param name="variant"></param>
-            <param name="conversion"></param>
-            <param name="conversionFirstCount"></param>
-            <param name="hitsValue">Conversion value</param>
-            <param name="logTime">Log time</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ABTestDataGenerator.LogVisitHit(System.String,CMS.OnlineMarketing.ABTestInfo,CMS.OnlineMarketing.ABVariantInfo,System.Int32,System.DateTime)">
-            <summary>
-            Logs hit for visit of the given type.
-            </summary>
-            <param name="visitType">Visit type</param>
-            <param name="test">AB test</param>
-            <param name="variant">AB variant</param>
-            <param name="visits">Number of visits</param>
-            <param name="logTime">Log time</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ABTestDataGenerator.GetVisits(System.Int32,System.Int32)">
-            <summary>
-            Gets visit count from approximate values.
-            </summary>
-            <param name="visitsApprox">Approximate visit count</param>
-            <param name="visitsDeviation">Visit deviation</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ABTestDataGenerator.GetConversionRate(System.Double,System.Double)">
-            <summary>
-            Gets conversion rate from approximate values.
-            </summary>
-            <param name="conversionRateApprox">Approximate conversion rate</param>
-            <param name="conversionRateDeviation">Conversion rate deviation</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ABTestDataGenerator.GetConversionCount(System.Int32,System.Double)">
-            <summary>
-            Gets conversion count.
-            </summary>
-            <param name="visitCount">Visit count</param>
-            <param name="conversionRate">Conversion rate</param>
-        </member>
-        <member name="T:CMS.OnlineMarketing.ABTestDataGenerator.TestData">
-            <summary>
-            Class representing random data for an AB test. 
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ABTestDataGenerator.TestData.#ctor(System.Random)">
-            <summary>
-            Constructor.
-            </summary>
-            <param name="random">Random generator</param>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.TestData.VisitFirstApprox">
-            <summary>
-            Approximate visit first count.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.TestData.VisitFirstDeviation">
-            <summary>
-            Visit first deviation.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.TestData.VisitReturnApprox">
-            <summary>
-            Approximate visit return count.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.TestData.VisitReturnDeviation">
-            <summary>
-            Visit return deviation.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.TestData.ConversionFirstRateApprox">
-            <summary>
-            Approximate conversion first rate.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.TestData.ConversionFirstRateDeviation">
-            <summary>
-            Conversion first rate deviation.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.TestData.ConversionRecurringRateApprox">
-            <summary>
-            Approximate conversion recurring rate.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.TestData.ConversionRecurringRateDeviation">
-            <summary>
-            Conversion recurring rate deviation.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.TestData.ConversionEveryRateApprox">
-            <summary>
-            Approximate conversion every rate.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.TestData.ConversionEveryRateDeviation">
-            <summary>
-            Conversion every rate deviation.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.TestData.Random">
-            <summary>
-            Random generator.
-            </summary>
-        </member>
-        <member name="T:CMS.OnlineMarketing.ABTestDataGenerator.VariantData">
-            <summary>
-            Class representing random data for an AB variant. 
-            </summary>
-        </member>
-        <member name="F:CMS.OnlineMarketing.ABTestDataGenerator.VariantData.mRandom">
-            <summary>
-            Random generator.
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ABTestDataGenerator.VariantData.#ctor(CMS.OnlineMarketing.ABTestDataGenerator.TestData)">
-            <summary>
-            Constructor.
-            </summary>
-            <param name="testData">Test data</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ABTestDataGenerator.VariantData.GetConversionRate(System.Double,System.Double)">
-            <summary>
-            Gets conversion rate from approximate values.
-            </summary>
-            <param name="conversionRateApprox">Approximate conversion rate</param>
-            <param name="conversionRateDeviation">Conversion rate deviation</param>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.VariantData.VisitFirstApprox">
-            <summary>
-            Approximate visit first count.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.VariantData.VisitFirstDeviation">
-            <summary>
-            Visit first deviation.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.VariantData.VisitReturnApprox">
-            <summary>
-            Approximate visit return count.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.VariantData.VisitReturnDeviation">
-            <summary>
-            Visit return deviation.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.VariantData.ConversionFirstRateApprox">
-            <summary>
-            Approximate conversion first rate.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.VariantData.ConversionFirstRateDeviation">
-            <summary>
-            Conversion first rate deviation.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.VariantData.ConversionRecurringRateApprox">
-            <summary>
-            Approximate conversion recurring rate.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.VariantData.ConversionRecurringRateDeviation">
-            <summary>
-            Conversion recurring rate deviation.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.VariantData.ConversionEveryRateApprox">
-            <summary>
-            Approximate conversion every rate.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ABTestDataGenerator.VariantData.ConversionEveryRateDeviation">
-            <summary>
-            Conversion every rate deviation.
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ABTestMessagesWriter">
@@ -3388,6 +4271,8 @@
             Executes asynchronous recalculation of score.
             </summary>
             <returns>Recalculation task.</returns>
+            <remarks>Note that the method does not check if the score is already being recalculated. That is, multiple recalculations for the same score may be running at one time. 
+            However, once all the recalculations are finished, all the contacts will have valid score values. The downside is that multiple notification emails may have been sent.</remarks>
         </member>
         <member name="M:CMS.OnlineMarketing.ScoreAsyncRecalculator.Run">
             <summary>
@@ -4126,11 +5011,6 @@
             Scoring related events.
             </summary>
         </member>
-        <member name="F:CMS.OnlineMarketing.ScoringEvents.RecalculateAfterContactAction">
-            <summary>
-            When contact performs an action which can affect its score, score has to be recalculated. This event is fired when this recalculation happens.
-            </summary>
-        </member>
         <member name="F:CMS.OnlineMarketing.ScoringEvents.RecalculateScoreForAllContacts">
             <summary>
             Fired when recalculation of points for all contacts for one score is performed (e.g. when manually performing recalculation of rules by hitting the "Recalculate" button).
@@ -4257,11 +5137,6 @@
             </summary>
             <param name="sender">Sender</param>
             <param name="e">Event arguments containing collection of affected contacts</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ScoringHandlers.FireOldRecalculateEvent(System.Object,CMS.OnlineMarketing.RecalculateAfterContactActionsBatchEventArgs)">
-            <summary>
-            Backward compatibility. Invokes the events which were invoked when scoring was processed, before they were replaced by ScoringEvents.RecalculateAfterContactActionsBatch in version 8.1.
-            </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ActivityInfoMethods">
             <summary>
@@ -4435,8 +5310,8 @@
         <member name="M:CMS.OnlineMarketing.ContactInfoMethods.SubscribedToNewsletter(CMS.MacroEngine.EvaluationContext,System.Object[])">
             <summary>
             Checks whether contact is subscribed to the given newsletter. Check is made based on the contact's email address. If
-            there is a subscriber with the contact's email subscribed to the newsletter, it means contact is subscribed. If subscriber with
-            contact's email is not subscribed, contact's activities are checked. If contact has subscription activity, he is subscribed.        
+            there is a subscriber with the contact's email subscribed to the newsletter, it means contact is subscribed. 
+            Performs check against the Unsubscription table to determine, whether the contact is unsubscripted from the newsletter or not.
             </summary>
             <param name="context">Evaluation context with child resolver</param>
             <param name="parameters">Method parameters</param>
@@ -4472,6 +5347,20 @@
         <member name="M:CMS.OnlineMarketing.ContactInfoMethods.PurchasedProduct(CMS.MacroEngine.EvaluationContext,System.Object[])">
             <summary>
             Returns true if the contact purchased specified product.
+            </summary>
+            <param name="context">Evaluation context with child resolver</param>
+            <param name="parameters">Method parameters</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactInfoMethods.UnsubscribedFromAllEmails(CMS.MacroEngine.EvaluationContext,System.Object[])">
+            <summary>
+            Returns true if the contact unsubscribed from all emails in the last X days.
+            </summary>
+            <param name="context">Evaluation context with child resolver</param>
+            <param name="parameters">Method parameters</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactInfoMethods.FilledFormFieldWithValue(CMS.MacroEngine.EvaluationContext,System.Object[])">
+            <summary>
+            Returns true if the contact filled a form with the given field at least once so that the value contains expected value.
             </summary>
             <param name="context">Evaluation context with child resolver</param>
             <param name="parameters">Method parameters</param>
@@ -4633,12 +5522,24 @@
         <member name="M:CMS.OnlineMarketing.OnlineMarketingTransformationFunctions.SubscribedToNewsletter(System.Object,System.String,System.Int32)">
             <summary>
             Checks whether contact is subscribed to the given newsletter. Check is made based on the contact's email address. If
-            there is a subscriber with the contact's email subscribed to the newsletter, it means contact is subscribed. If subscriber with
-            contact's email is not subscribed, contact's activities are checked. If contact has subscription activity, he is subscribed.
+            there is a subscriber with the contact's email subscribed to the newsletter, it means contact is subscribed. 
+            Performs check against the Unsubscription table to determine, whether the contact is unsubscripted from the newsletter or not.
             </summary>
             <param name="contact">Contact whose email should be checked</param>
             <param name="newsletterName">Newsletter name</param>
             <param name="lastXDays">Constraint for last X days (if zero or negative value is given, no constraint is applied)</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingTransformationFunctions.ContactSubscribedToNewsletterInternal(CMS.OnlineMarketing.ContactInfo,CMS.Newsletters.NewsletterInfo,System.Int32,CMS.Newsletters.ISubscriptionService)">
+            <summary>
+            Checks whether the given <paramref name="newsletter"/> should be sent to the given <paramref name="contact"/>. 
+            Checks if the subscription exists, if <paramref name="contact"/> is not present in the Unsubscription table and the subscription is not 
+            older in days than the given <paramref name="lastXDays"/>.
+            </summary>
+            <param name="contact">Contact to be checked</param>
+            <param name="newsletter">Newsletter the subscription is tested against. Note that this check can be avoided if the unsubscription should be considered as the global one (as set up in the settings)</param>
+            <param name="lastXDays">Constraint for last X days (if zero or negative value is given, no constraint is applied)</param>
+            <param name="subscritionService">Service for checking whether the <paramref name="contact"/> is unsubscribed in the Unsubscription table</param>
+            <returns>True, if the <paramref name="contact"/> is subscribed to the <paramref name="newsletter"/>; otherwise, false.</returns>
         </member>
         <member name="M:CMS.OnlineMarketing.OnlineMarketingTransformationFunctions.ClickedLinkInNewsletter(System.Object,System.String,System.Int32)">
             <summary>
@@ -4657,12 +5558,12 @@
             <param name="click">Indicates whether contact should have clicked the newsletter issue or just open it.</param>
             <param name="lastXDays">Constraint for last X days (if zero or negative value is given, no constraint is applied)</param>
         </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingTransformationFunctions.PurchasedProduct(System.Object,System.String,System.Int32)">
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingTransformationFunctions.PurchasedProduct(System.Object,System.Guid,System.Int32)">
             <summary>
             Returns true if the contact purchased specified product or its variant.
             </summary>
             <param name="contact">Contact which should be checked</param>
-            <param name="skuName">Name or guid of the SKU</param>
+            <param name="skuGuid">GUID of the SKU</param>
             <param name="lastXDays">Constraint for last X days (if zero or negative value is given, no constraint is applied)</param>
         </member>
         <member name="M:CMS.OnlineMarketing.OnlineMarketingTransformationFunctions.VisitedPage(System.Object,System.String,System.String,System.Int32)">
@@ -4696,6 +5597,15 @@
             <param name="objectType">Object type</param>
             <param name="identifier">Code name or GUID of object</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingTransformationFunctions.GetContactInfo(CMS.Newsletters.SubscriberInfo)">
+            <summary>
+            Returns contact related with subscriber. If there is no known relation between contact and subscriber, 
+            returns contact with the same email. In this case, if there is more contacts with the same email, selects the one with last logged activity.
+            </summary>
+            <param name="subscriber">Subscriber info</param>
+            <returns>Contact info related to subscriber</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when subscriber is null</exception>
+        </member>
         <member name="M:CMS.OnlineMarketing.OnlineMarketingTransformationFunctions.GetObjectID(System.String,System.String,System.Int32,System.Boolean)">
             <summary>
             Returns object ID.
@@ -4705,14 +5615,23 @@
             <param name="siteID">Site ID</param>
             <param name="allowGlobalObjects">Allow global objects (if site object is not found, global object with given name is retrieved)</param>
         </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingTransformationFunctions.GetContactInfo(CMS.Newsletters.SubscriberInfo)">
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingTransformationFunctions.UnsubscribedFromAllEmails(System.Object,System.Int32)">
             <summary>
-            Returns contact related with subscriber. If there is no known relation between contact and subscriber, 
-            returns contact with the same email. In this case, if there is more contacts with the same email, selects the one with last logged activity.
+            Returns true if the contact unsubscribed from all emails in the last X days.
             </summary>
-            <param name="subscriber">Subscriber info</param>
-            <returns>Contact info related to subscriber</returns>
-            <exception cref="T:System.ArgumentNullException">Thrown when subscriber is null</exception>
+            <param name="contact">Contact which should be checked</param>
+            <param name="lastXDays">Constraint for last X days (if zero or negative value is given, no constraint is applied)</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingTransformationFunctions.FilledFormFieldWithValue(CMS.OnlineMarketing.ContactInfo,System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Returns true if the contact filled a form with the given field at least once so that the value contains expected value.
+            Also returns false for global contacts.
+            </summary>
+            <param name="contact">Contact info</param>
+            <param name="formName">Form name</param>
+            <param name="fieldName">Filed name</param>
+            <param name="expectedValue">Expected value</param>
+            <param name="lastXDays">Constraint for last X days (if zero or negative value is given, no constraint is applied)</param>
         </member>
         <member name="T:CMS.OnlineMarketing.OnlineMarketingTransformationMethods">
             <summary>
@@ -4756,9 +5675,45 @@
             Initializes the events handlers.
             </summary>
         </member>
-        <member name="M:CMS.OnlineMarketing.ContactManagementHandlers.FireOldProcessActivityEvents(System.Object,CMS.OnlineMarketing.ProcessContactActionsBatchEventArgs)">
+        <member name="M:CMS.OnlineMarketing.ContactManagementHandlers.LogNewsletterUnsubscribingFromAllActivity(System.Object,CMS.Newsletters.UnsubscriptionEventArgs)">
             <summary>
-            Backward compatibility. Invokes the events which were invoked when activities were processed, before they were replaced by ContactManagementEvents.ProcessContactActionsBatch in version 8.1.
+            Logs newsletter unsubscribing from all activity when unsubscription happened on live site.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactManagementHandlers.LogNewsletterUnsubscribingActivity(System.Object,CMS.Newsletters.UnsubscriptionEventArgs)">
+            <summary>
+            Logs newsletter unsubscribing activity when unsubscription happened on live site.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactManagementHandlers.SubscriberClicksTrackedLink(System.Object,CMS.Newsletters.LinksEventArgs)">
+            <summary>
+            Logs NewsletterClickThrough activity for contact specified in <paramref name="e"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactManagementHandlers.SubscriberOpensEmail(System.Object,CMS.Newsletters.LinksEventArgs)">
+            <summary>
+            Logs NewsletterOpen activity for contact specified in <paramref name="e"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactManagementHandlers.LogSubscriberActivity(System.Func{CMS.WebAnalytics.ActivityContext,CMS.WebAnalytics.Activity},System.Int32)">
+            <summary>
+            Sets up activity context and performs logging of activity created with given <paramref name="activityConstructor"/>.
+            </summary>
+            <param name="activityConstructor">Constructor for creating a activity</param>
+            <param name="contactID">Contact ID which should be set to the activity context</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactManagementHandlers.GetContactIDFromEmail(System.String,System.Int32)">
+            <summary>
+            Gets Contact ID from given <paramref name="email"/> and <paramref name="siteID"/>.
+            </summary>
+            <param name="email">Email of the contact</param>
+            <param name="siteID">Site ID the contact is related to</param>
+            <returns>Contact ID of found <see cref="T:CMS.OnlineMarketing.ContactInfo"/></returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactManagementHandlers.FindUnsubscribedContactAndMergeWithCurrent(System.Object,CMS.Newsletters.UnsubscriptionEventArgs)">
+            <summary>
+            Finds contact by email address. This contact represents visitor that is being unsubscribed from email marketing communication.
+            Merge him with current contact if current contact is anonymous.
             </summary>
         </member>
         <member name="M:CMS.OnlineMarketing.ContactManagementHandlers.LogActivityToQueue(System.Object,CMS.WebAnalytics.ActivityLoggedEventArgs)">
@@ -4766,10 +5721,10 @@
             Executes when individual activity is logged
             </summary>
         </member>
-        <member name="M:CMS.OnlineMarketing.ContactManagementHandlers.MergeCurrentContactWithGivenContact(System.Int32)">
+        <member name="M:CMS.OnlineMarketing.ContactManagementHandlers.MergeCurrentAnonymousContactWithGivenContact(System.Int32)">
             <summary>
             Merges current contact with given contact when current contact does not have email address filled.
-            We don't want to impersonate when email was forwarded to known contact.
+            We don't want to impersonate for example when email was forwarded to known contact.
             </summary>
             <param name="contactId">Contact Id</param>
         </member>
@@ -4829,14 +5784,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.AccountContactListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.AccountContactListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.AccountContactListInfo.ColumnNames">
-            <summary>
-            Columns in appropriate SQL view.
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.AccountContactInfo">
@@ -5422,14 +6377,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.AccountListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.AccountListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.AccountListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.AccountMembershipListInfo">
@@ -5458,14 +6413,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.AccountMembershipListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.AccountMembershipListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.AccountMembershipListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ActivityListInfo">
@@ -5494,14 +6449,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ActivityListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ActivityListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ActivityListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ActivityContactListInfo">
@@ -5530,14 +6485,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ActivityContactListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ActivityContactListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ActivityContactListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ActivityContactMergedListInfo">
@@ -5566,14 +6521,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ActivityContactMergedListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ActivityContactMergedListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ActivityContactMergedListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ActivityContactGlobalListInfo">
@@ -5602,14 +6557,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ActivityContactGlobalListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ActivityContactGlobalListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ActivityContactGlobalListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ActivityObjectMapper">
@@ -5849,14 +6804,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ContactScoreListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ContactScoreListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ContactScoreListInfo.ColumnNames">
-            <summary>
-            Columns of appropriate SQL view.
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.AutomaticContactMerger">
@@ -6161,6 +7116,11 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ScoreContactListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ScoreContactListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
@@ -6192,178 +7152,17 @@
             Indicates if tooltips should be displayed.
             </summary>
         </member>
-        <member name="T:CMS.OnlineMarketing.ContactMergedSite">
-            <summary>
-            Merged into site contact.
-            </summary>
-        </member>
-        <member name="T:CMS.OnlineMarketing.SettingsWhere">
-            <summary>
-            Abstract class for WHERE condition from settings.
-            </summary>
-        </member>
-        <member name="T:CMS.OnlineMarketing.ContactMergedWhen">
-            <summary>
-            Contact merged before X days.
-            </summary>
-        </member>
-        <member name="T:CMS.OnlineMarketing.ContactLastModified">
-            <summary>
-            Contact last modified before X days.
-            </summary>
-        </member>
-        <member name="T:CMS.OnlineMarketing.ContactLastLogon">
-            <summary>
-            Contact last logon before X days.
-            </summary>
-        </member>
-        <member name="T:CMS.OnlineMarketing.ContactCreatedBefore">
-            <summary>
-            Contact created before X days.
-            </summary>
-        </member>
-        <member name="T:CMS.OnlineMarketing.ContactIsAnonymous">
-            <summary>
-            Contact is anonymous.
-            </summary>
-        </member>
-        <member name="T:CMS.OnlineMarketing.ContactMergedGlobal">
-            <summary>
-            Contact merged into global contact.
-            </summary>
-        </member>
-        <member name="T:CMS.OnlineMarketing.ContactCustomQuery">
-            <summary>
-            Custom query.
-            </summary>
-        </member>
-        <member name="T:CMS.OnlineMarketing.LastActivityOlderThan">
-            <summary>
-            Last activity older than specified number of days.
-            </summary>
-        </member>
-        <member name="T:CMS.OnlineMarketing.WhereAssembler">
-            <summary>
-            Creates complete SQL WHERE condition for specified site for deleting inactive contacts based on settings. 
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.WhereAssembler.GetWhereCondition">
-            <summary>
-            Returns WHERE condition for specified site's settings.
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.WhereAssembler.GetSettingsWhere">
-            <summary>
-            Returns WHERE condition from settings.
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.WhereAssembler.AppendSiteWhere">
-            <summary>
-            Appends site WHERE condition to complete WHERE.
-            </summary>
-        </member>
         <member name="T:CMS.OnlineMarketing.DeleteInactiveContacts">
             <summary>
-            Scheduled task that deletes old contacts. Contacts to be deleted are specified by task data. Each line in task data section represents one rule for contact filtering.
+            Deletes inactive contacts for all sites. Takes a batch of 1000 which is deleted and replans itself if there are more to delete. 
             </summary>
         </member>
         <member name="M:CMS.OnlineMarketing.DeleteInactiveContacts.Execute(CMS.Scheduler.TaskInfo)">
             <summary>
-             Evaluates the membership of contacts to given contact group.
+            Deletes inactive contacts for all sites.
+            Takes a batch of 1000 which is deleted and reschedules itself if there are more to delete. 
             </summary>
             <param name="task">Task to process</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.DeleteInactiveContacts.DeleteContactsForAllSites">
-            <summary>
-            Delete old contacts for all sites.
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.DeleteInactiveContacts.AllowDeleteContactsForSite(CMS.SiteProvider.SiteInfo)">
-            <summary>
-            Indicates if contacts should be deleted for given site.
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.DeleteInactiveContacts.DeleteContactsForSite(System.Int32)">
-            <summary>
-            Deletes contacts for specified site.
-            </summary>
-        </member>
-        <member name="T:CMS.OnlineMarketing.DynamicConditionEvaluator">
-            <summary>
-            Is able to evaluate Contact group's dynamic condition in asynchronous thread or synchronously.
-            </summary>
-        </member>
-        <member name="F:CMS.OnlineMarketing.DynamicConditionEvaluator.mWindowsIdentity">
-            <summary>
-            Windows identity.
-            </summary>
-        </member>
-        <member name="F:CMS.OnlineMarketing.DynamicConditionEvaluator.mContactCache">
-            <summary>
-            Cached contacts which were recently processed.
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.DynamicConditionEvaluator.RunAsync(System.Security.Principal.WindowsIdentity)">
-            <summary>
-            Run asynchronous evaluation.
-            </summary>
-            <param name="wi">Windows identity</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.DynamicConditionEvaluator.Run">
-            <summary>
-            Run contact group evaluation, this is not asynchronous execution.
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.DynamicConditionEvaluator.ActivityForAllGroups(System.String[])">
-            <summary>
-            Evaluates all contact group conditions and assigns contact to those which conditions are met.
-            Doesn't run in separate thread as it is called from task for processing activities.
-            InvalidateCache method must be called after all activities are processed.
-            </summary>
-            <param name="values">Values which were used to create activity</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.DynamicConditionEvaluator.ActivityForAllGroups(CMS.OnlineMarketing.ActivityInfo)">
-            <summary>
-            Evaluates all contact group conditions and assigns contact to those which conditions are met.
-            Doesn't run in separate thread as it is called from task for processing activities.
-            InvalidateCache method must be called after all activities are processed.
-            </summary>
-            <param name="ai">Activity info</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.DynamicConditionEvaluator.InvalidateCache">
-            <summary>
-            Invalidates contacts which were used in last mass operation. Must be deleted after every mass 
-            operation to prevent difference between DB and cache.
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.DynamicConditionEvaluator.EvaluateCondition(CMS.OnlineMarketing.ContactInfo,CMS.OnlineMarketing.ContactGroupInfo,CMS.OnlineMarketing.ActivityInfo)">
-            <summary>
-            Evaluates contact group's dynamic condition according to specified contact and activity.
-            Merged contacts are ignored.
-            </summary>
-            <param name="contact">Current contact</param>
-            <param name="contactGroup">Current contact group</param>
-            <param name="activity">Current activity</param>
-        </member>
-        <member name="P:CMS.OnlineMarketing.DynamicConditionEvaluator.Contact">
-            <summary>
-            Contact which caused activity.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.DynamicConditionEvaluator.ContactGroup">
-            <summary>
-            Current group which is being evaluated.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.DynamicConditionEvaluator.Activity">
-            <summary>
-            Activity which causes evaluation.
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.DynamicConditionEvaluator.ContactCache">
-            <summary>
-            Cached contacts which were recently processed.
-            </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.MemberAddedHowEnum">
             <summary>
@@ -6750,14 +7549,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.IPGlobalListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.IPGlobalListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.IPGlobalListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ContactMembershipGlobalCustomerListInfo">
@@ -6786,14 +7585,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ContactMembershipGlobalCustomerListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ContactMembershipGlobalCustomerListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ContactMembershipGlobalCustomerListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ContactMembershipGlobalSubscriberListInfo">
@@ -6822,14 +7621,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ContactMembershipGlobalSubscriberListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ContactMembershipGlobalSubscriberListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ContactMembershipGlobalSubscriberListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ContactMembershipGlobalUserListInfo">
@@ -6858,14 +7657,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ContactMembershipGlobalUserListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ContactMembershipGlobalUserListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ContactMembershipGlobalUserListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.IPMergedListInfo">
@@ -6894,14 +7693,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.IPMergedListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.IPMergedListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.IPMergedListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.IPListInfo">
@@ -6930,14 +7729,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.IPListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.IPListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.IPListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ContactMembershipMergedCustomerListInfo">
@@ -6966,14 +7765,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ContactMembershipMergedCustomerListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ContactMembershipMergedCustomerListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ContactMembershipMergedCustomerListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ContactMembershipMergedSubscriberListInfo">
@@ -7002,14 +7801,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ContactMembershipMergedSubscriberListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ContactMembershipMergedSubscriberListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ContactMembershipMergedSubscriberListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ContactMembershipMergedUserListInfo">
@@ -7038,14 +7837,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ContactMembershipMergedUserListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ContactMembershipMergedUserListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ContactMembershipMergedUserListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ContactMembershipSubscriberListInfo">
@@ -7074,14 +7873,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ContactMembershipSubscriberListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ContactMembershipSubscriberListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ContactMembershipSubscriberListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ContactMembershipCustomerListInfo">
@@ -7110,14 +7909,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ContactMembershipCustomerListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ContactMembershipCustomerListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ContactMembershipCustomerListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ContactMembershipUserListInfo">
@@ -7146,14 +7945,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ContactMembershipUserListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ContactMembershipUserListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ContactMembershipUserListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.MemberTypeEnum">
@@ -8131,11 +8930,6 @@
             Starts contact groups members evaluation.
             </summary>
         </member>
-        <member name="P:CMS.OnlineMarketing.ContactGroupEvaluator.ContactGroupID">
-            <summary>
-            Contact group ID. Optional, should be set if this class is used outside the scheduler.
-            </summary>
-        </member>
         <member name="P:CMS.OnlineMarketing.ContactGroupEvaluator.ContactGroup">
             <summary>
             Contact group. Optional, should be set if this class is used outside the scheduler.
@@ -8436,13 +9230,6 @@
             </summary>
             <param name="variantId">The variant id</param>
         </member>
-        <member name="M:CMS.OnlineMarketing.ContentPersonalizationVariantInfoProvider.GetContentPersonalizationVariantId(System.Int32,System.String)">
-            <summary>
-            Returns the Content personalization variant id for the specified template and code name.
-            </summary>
-            <param name="pageTemplateId">The page template id</param>
-            <param name="variantName">The variant code name</param>
-        </member>
         <member name="M:CMS.OnlineMarketing.ContentPersonalizationVariantInfoProvider.LoadContentPersonalizationVariants(System.Object,System.Boolean)">
             <summary>
             Loads the Content personalization variants for the specified instance (web part/zone/widget).
@@ -8742,6 +9529,255 @@
             </summary>
             <param name="objectType">Type of the object</param>
         </member>
+        <member name="T:CMS.OnlineMarketing.DefaultContactSelector">
+            <summary>
+            Provides method for selecting one contact from many with accordance to the method of selection
+            specified in settings.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.IContactSelector">
+            <summary>
+            Provides method for selecting one contact from many according to given conditions.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.IContactSelector.SelectContact(System.Collections.Generic.IList{CMS.OnlineMarketing.ContactInfo},CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Selects most proper single contact from the given collection. 
+            </summary>
+            <param name="contacts">Collection of contact to be select form</param>
+            <param name="site">Current site context</param>
+            <returns>Single contact satisfying certain conditions</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultContactSelector.SelectContact(System.Collections.Generic.IList{CMS.OnlineMarketing.ContactInfo},CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Selects most proper single contact from the given collection. 
+            </summary>
+            <param name="contacts">Collection of contact to be select form</param>
+            <param name="site">Current site context</param>
+            <returns>Single contact satisfying certain conditions</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultContactSelector.GetContactSelector(CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Gets proper contact selector according to the settings.
+            </summary>
+            <param name="site">Current site context</param>
+            <returns>Proper contact selector instance</returns>
+        </member>
+        <member name="T:CMS.OnlineMarketing.OnlineMarketingContext">
+            <summary>
+            Contact context method and variables.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.GetCurrentContact">
+            <summary>
+            Returns current contact. Tries to find contact in persistent storage, obtains it from the users or tries to recognize
+            it according to known information. If no contact can be found, it creates a new anonymous contact. If Online marketing is 
+            not enabled or there is no license for ContactManagement found, null is returned. Also, null is returned if request
+            is made by crawler (googlebot, etc.) and CMSEnableContactBots web.config setting is disabled. Currently authenticated
+            user is used to find contacts.
+            </summary>
+            <returns>Current contact</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.GetCurrentContact(CMS.Membership.CurrentUserInfo,System.Boolean)">
+            <summary>
+            Returns current contact. Tries to find contact in persistent storage, obtains it from the users or tries to recognize
+            it according to known information. If no contact can be found, it creates a new anonymous contact. If Online marketing is 
+            not enabled or there is no license for ContactManagement found, null is returned. Also, null is returned if request
+            is made by crawler (googlebot, etc.) and CMSEnableContactBots web.config setting is disabled.
+            </summary>
+            <param name="currentUser">Contact assigned to this user will be returned, if contact is not already known</param>
+            <param name="forceUserMatching">If true, contact contact will be taken from user in <paramref name="currentUser"/> parameter even if it is already known from cookie for example.</param>
+            <returns>Current contact</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.SetCurrentContact(CMS.OnlineMarketing.ContactInfo)">
+            <summary>
+            Stores contact in request items, session or cookies.
+            </summary>
+            <param name="contact">Contact to be set</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.SetCurrentContactInternal(CMS.OnlineMarketing.ContactInfo)">
+            <summary>
+            Stores contact in request items, session or cookies.
+            </summary>
+            <param name="contact">Contact to be set</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.CheckEnabled">
+            <summary>
+            Checks if Online marketing is enabled, including license check and crawler check.
+            </summary>
+            <returns>True if online marketing is enabled, license is available and check pro crawlers passed.</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.CheckCrawlers">
+            <summary>
+            Checks if current visitor is a crawler and if logging of crawlers is enabled.
+            </summary>
+            <returns>Returns true, if current request does not come from crawler or logging of crawlers is enabled</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.SelectContactForVisitor(System.Data.DataSet)">
+            <summary>
+            Returns single contact determined for current visitor by settings 'When a visitor has more Contacts, use'.
+            </summary>
+            <param name="foundContacts">DataSet with found contacts</param>
+            <returns>ContactInfo of selected contact</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.CheckPermissions(CMS.OnlineMarketing.VariantTypeEnum)">
+            <summary>
+            Check permissions for MVT or CP.
+            </summary>
+            <param name="variantType">Type of editing object (widget, webpart, zone)</param>
+        </member>
+        <member name="P:CMS.OnlineMarketing.OnlineMarketingContext.CurrentContact">
+            <summary>
+            Current contact info.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.OnlineMarketingContext.CurrentContactID">
+            <summary>
+            Current contact ID.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.DefaultCrawlerChecker">
+            <summary>
+            Provides method for checking whether the current visitor is crawler.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.ICrawlerChecker">
+            <summary>
+            Provides method for checking whether the current visitor is crawler.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ICrawlerChecker.IsCrawler">
+            <summary>
+            Checks whether the current request comes from the crawler.
+            </summary>
+            <returns>True, if current request comes from the crawler; otherwise, false</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultCrawlerChecker.IsCrawler">
+            <summary>
+            Checks whether the current request comes from the crawler.
+            </summary>
+            <returns>True, if current request comes from the crawler; otherwise, false</returns>
+        </member>
+        <member name="T:CMS.OnlineMarketing.LastLoggedContactSelector">
+            <summary>
+            Provides method for selecting single contact from many according to "Select last logged contact" setting.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.LastLoggedContactSelector.SelectContact(System.Collections.Generic.IList{CMS.OnlineMarketing.ContactInfo},CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Returns last logged contact from the given collection. 
+            </summary>
+            <param name="contacts">Collection of contact to be select form</param>
+            <param name="site">Current site context</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="contacts"/> or <paramref name="site"/> is null</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="contacts"/> is empty</exception>
+            <returns>Last logged contact from the given collection</returns>
+        </member>
+        <member name="T:CMS.OnlineMarketing.DefaultContactValidator">
+            <summary>
+            Provides method for validating contact against the database.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.IContactValidator">
+            <summary>
+            Provides method for validating contact against the database.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.IContactValidator.ValidateContact(CMS.OnlineMarketing.ContactInfo,CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Checks whether contact passed in <paramref name="contact"/> is valid and can be used as a current contact.
+            Updates contact from hashtables/DB. If contact does not belong to current site, returns null. 
+            If contact is merged, returns parent contact if available.
+            </summary>
+            <param name="contact">Contact to be validated</param>
+            <param name="site">Current site context</param>
+            <returns>Returns updated and parent contact or null if passed contact is not valid</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultContactValidator.ValidateContact(CMS.OnlineMarketing.ContactInfo,CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Checks whether contact passed in <paramref name="contact"/> is valid and can be used as a current contact.
+            Updates contact from hashtables/DB. If contact does not belong to current site, returns null. 
+            If contact is merged, returns parent contact if available.
+            </summary>
+            <param name="contact">Contact to be validated</param>
+            <param name="site">Current site context</param>
+            <returns>Returns updated and parent contact or null if passed contact is not valid</returns>
+        </member>
+        <member name="T:CMS.OnlineMarketing.DefaultContactPersistentStorage">
+            <summary>
+            Provides methods for get and set contact from/to the cookie.
+            </summary>
+        </member>
+        <member name="T:CMS.OnlineMarketing.IContactPersistentStorage">
+            <summary>
+            Provides methods for storing and retrieving contact from/to persistent storage.
+            Persistent storage is a place where contact can be stored and after the same contact
+            makes another request, it will be returned.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.IContactPersistentStorage.GetPersistentContact(CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Gets contact from the persistent storage.
+            </summary>
+            <param name="site">Contact site</param>
+            <returns>Contact retrieved from the persistent storage</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.IContactPersistentStorage.SetPersistentContact(CMS.SiteProvider.SiteInfo,CMS.OnlineMarketing.ContactInfo)">
+            <summary>
+            Sets given contact to the persistent storage.
+            </summary>
+            <param name="site">Contact site</param>
+            <param name="contact">Contact to be set</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultContactPersistentStorage.GetPersistentContact(CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Gets contact from the cookie.
+            </summary>
+            <param name="site">Contact site</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="site"/> is null</exception>
+            <returns>Contact retrieved from the persistent storage</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.DefaultContactPersistentStorage.SetPersistentContact(CMS.SiteProvider.SiteInfo,CMS.OnlineMarketing.ContactInfo)">
+            <summary>
+            Sets given contact to the cookie.
+            </summary>
+            <param name="site">Contact site</param>
+            <param name="contact">Contact to be set</param>
+        </member>
+        <member name="T:CMS.OnlineMarketing.MostActiveContactSelector">
+            <summary>
+            Provides method for selecting single contact from many according to "Select most active contact" setting.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.MostActiveContactSelector.SelectContact(System.Collections.Generic.IList{CMS.OnlineMarketing.ContactInfo},CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Returns most active contact from the given collection. 
+            </summary>
+            <param name="contacts">Collection of contact to be select form</param>
+            <param name="site">Current site context</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="contacts"/> is null</exception>
+            <returns>Most active contact from the given collection</returns>
+        </member>
+        <member name="T:CMS.OnlineMarketing.RequestDependencies">
+            <summary>
+            Online marketing context dependencies related to current request context.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.RequestDependencies.RequestDomain">
+            <summary>
+            Domain of the request URL.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.RequestDependencies.RequestIPAddress">
+            <summary>
+            IP address the request was send from.
+            </summary>
+        </member>
+        <member name="P:CMS.OnlineMarketing.RequestDependencies.RequestUserAgent">
+            <summary>
+            User agent the request was send from.
+            </summary>
+        </member>
         <member name="T:CMS.OnlineMarketing.OnlineMarketingHandlers">
             <summary>
             Online marketing event handlers.
@@ -8763,7 +9799,14 @@
             his IP.
             </summary>
         </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingHandlers.RunActivityTriggers(System.Object,CMS.OnlineMarketing.ProcessContactActionsBatchEventArgs)">
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingHandlers.SetAbAndMvtContext(System.Collections.Generic.IDictionary{System.String,System.String},System.String)">
+            <summary>
+            Sets up <see cref="T:CMS.OnlineMarketing.ABTestContext"/> and <see cref="T:CMS.OnlineMarketing.MVTContext"/> according to the parameters in given <paramref name="parameters"/>.
+            </summary>
+            <param name="parameters">Dictionary containing all required parameters</param>
+            <param name="siteName">Site name for which should be the context set up</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.OnlineMarketingHandlers.RunTriggers(System.Object,CMS.OnlineMarketing.ProcessContactActionsBatchEventArgs)">
             <summary>
             Runs marketing automation triggers connected to activities.
             </summary>
@@ -8825,6 +9868,11 @@
             Conversion name.
             </summary>
         </member>
+        <member name="F:CMS.OnlineMarketing.MVTHandlers.PARAM_MVT_COMBINATION_NAME">
+            <summary>
+            Used as a query parameter when logging analytics via JavaScript. 
+            </summary>
+        </member>
         <member name="F:CMS.OnlineMarketing.MVTHandlers.LogViaJavaScriptKeyName">
             <summary>
             Log via JavaScript key name.
@@ -8833,6 +9881,16 @@
         <member name="M:CMS.OnlineMarketing.MVTHandlers.Init">
             <summary>
             Initializes the events handlers.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.MVTHandlers.InsertMVTestJavaScriptWebServiceParameters(System.Object,CMS.WebAnalytics.AnalyticsJSEventArgs)">
+            <summary>
+            Inserts additional query parameters to the web analytics Javascript snippet.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.MVTHandlers.MoveMVTests(System.Object,CMS.DocumentEngine.DocumentEventArgs)">
+            <summary>
+            Moves MVT tests together with a document
             </summary>
         </member>
         <member name="M:CMS.OnlineMarketing.MVTHandlers.SaveMVTToOutputCache(System.Object,CMS.OutputFilter.OutputCacheEventArgs)">
@@ -8992,6 +10050,17 @@
             </summary>
             <param name="zoneInstance">The zone instance.</param>
         </member>
+        <member name="T:CMS.OnlineMarketing.VariantPermissionsChecker">
+            <summary>
+            Contains method for checking permission for MVT or CP variants.
+            </summary>
+        </member>
+        <member name="M:CMS.OnlineMarketing.VariantPermissionsChecker.CheckPermissions(CMS.OnlineMarketing.VariantTypeEnum)">
+            <summary>
+            Check permissions for MVT or CP.
+            </summary>
+            <param name="variantType">Type of editing object (widget, webpart, zone)</param>
+        </member>
         <member name="T:CMS.OnlineMarketing.Range`1">
             <summary>
             Class representing range of values.
@@ -9048,121 +10117,6 @@
             </summary>
             <param name="variantType">The variant type</param>
         </member>
-        <member name="T:CMS.OnlineMarketing.OnlineMarketingContext">
-            <summary>
-            Contact context method and variables.
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.CheckPermissions(CMS.OnlineMarketing.VariantTypeEnum)">
-            <summary>
-            Check permissions for MVT or CP. 
-            </summary>
-            <param name="variantType">Type of editing object (widget, webpart, zone)</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.GetCurrentContact">
-            <summary>
-            Returns current contact. Tries to find contact in persistent storage, obtains it from the users or tries to recognize it according to known information. If no contact can be found, it creates a new anonymous contact.
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.GetCurrentContact(CMS.Membership.CurrentUserInfo,System.Boolean)">
-            <summary>
-            Returns current contact. Tries to find contact in persistent storage, obtains it from the users or tries to recognize it according to known information. If no contact can be found, it creates a new anonymous contact. 
-            </summary>
-            <param name="currentUser">User info</param>
-            <param name="isLogin">Indicates if current operation requesting CurrentContact is user login</param>
-            <returns>Returns current contact</returns>
-        </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.SelectContactForVisitor(System.Data.DataSet)">
-            <summary>
-            Returns single contact determined for current visitor by settings 'When a visitor has more Contacts, use'.
-            </summary>
-            <param name="foundContacts">DataSet with found contacts</param>
-            <returns>ContactInfo of selected contact</returns>
-        </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.FindCurrentOrCreateNewContact(CMS.Membership.CurrentUserInfo,System.Boolean,System.Boolean)">
-            <summary>
-            Tries to find contact in persistent storage, obtains it from the users or tries to recognize it according to known information. If no contact can be found, it creates a new anonymous contact.
-            </summary>
-            <param name="currentUser">User from which the contact can be obtained</param>
-            <param name="getContactFromUser">Determines, whether the contact should be obtained from the current user</param>
-            <param name="isLoginRequest">Determines whether the current request is the login one</param>
-            <returns></returns>
-        </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.ValidateContact(CMS.OnlineMarketing.ContactInfo)">
-            <summary>
-            Updates contact from hashtables/DB. If contact does not belong to current site, returns null. If contact is merged, returns parent contact if available.
-            </summary>
-            <param name="contact">Contact to be validated</param>
-            <returns>Returns appropriate contact</returns>
-        </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.SetCurrentContact(CMS.OnlineMarketing.ContactInfo)">
-            <summary>
-            Stores contact in request items, session or cookies.
-            </summary>
-            <param name="contact">Contact to be set</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.SetPersistentContact(CMS.OnlineMarketing.ContactInfo)">
-            <summary>
-            Sets given contact to session or to the cookie. Used storage is determined by the site settings. 
-            </summary>
-            <param name="contact">Contact to be set</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.GetPersistentContact">
-            <summary>
-            Tries to get current contact from session or from cookies. If no contact is found or the contact is from different site, returns null.
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.GetUserContact(CMS.OnlineMarketing.ContactInfo,CMS.Membership.CurrentUserInfo,System.Boolean)">
-            <summary>
-            Tries to find contact for current user.
-            </summary>
-            <param name="contactFromSession">Current contact from session or cookie.</param>
-            <param name="currentUser">Current user.</param>
-            <param name="isLogin">Indicates if current operation requesting contact is a login operation</param>
-            <returns>Returns ContactInfo of contact assigned to given user</returns>
-        </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.AssingUserToContact(CMS.OnlineMarketing.ContactInfo,CMS.Membership.CurrentUserInfo,System.Boolean)">
-            <summary>
-            Assigns provided contact to current user. If contact is anonymous then it fills in information from user 
-            and changed anonymous contact to regular contact.
-            </summary>
-            <param name="contact">Contact to be assigned to current user</param>
-            <param name="user">Current user</param>
-            <param name="isLogin">Indicates if current operation requesting contact is a login operation</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.RecognizeContact">
-            <summary>
-            Tries to determine contact from available information about visitor.
-            </summary>
-        </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.CheckEnabled">
-            <summary>
-            Checks if Online marketing is enabled, including license check and crawler check.
-            </summary>
-            <returns>Returns TRUE if all conditions are valid.</returns>
-        </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.CheckLicense">
-            <summary>
-            Checks license.
-            </summary>
-            <returns>Returns TRUE if license is valid</returns>
-        </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingContext.CheckBotsEnabled">
-            <summary>
-            Checks if current visitor is a crawler and if logging of crawlers is enabled.
-            </summary>
-            <returns>Returns TRUE if bot is enabled</returns>
-        </member>
-        <member name="P:CMS.OnlineMarketing.OnlineMarketingContext.CurrentContact">
-            <summary>
-            Current contact info        
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.OnlineMarketingContext.CurrentContactID">
-            <summary>
-            Current contact ID
-            </summary>
-        </member>
         <member name="F:CMS.OnlineMarketing.ContactGroupAccountListInfo.OBJECT_TYPE">
             <summary>
             Object type
@@ -9183,6 +10137,11 @@
             Constructor - Creates a new ContactGroupAccountListInfo object from the given DataRow.
             </summary>
             <param name="dr">DataRow with the object data</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactGroupAccountListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
         </member>
         <member name="M:CMS.OnlineMarketing.ContactGroupAccountListInfo.GetDataQueryInternal">
             <summary>
@@ -9215,14 +10174,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ContactGroupContactListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ContactGroupContactListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ContactGroupContactListInfo.ColumnNames">
-            <summary>
-            Column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ContactGroupMemberTypeEnum">
@@ -9266,14 +10225,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ContactAccountListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ContactAccountListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ContactAccountListInfo.ColumnNames">
-            <summary>
-            Columns of appropriate SQL view.
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ContactMembershipListInfo">
@@ -9302,14 +10261,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ContactMembershipListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ContactMembershipListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ContactMembershipListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.AccountHelper">
@@ -9351,6 +10310,19 @@
             <param name="ACcollisionResult">Optional. Hashtable containing result of account-contact collision results. Contains 'ContactID' keys and 'ContactRoleID' values.</param>
             <param name="CGresult">Optional. Hashtable containing result of contact groups which should be added to parent contact.</param>
             <returns>Returns TRUE if merging was successful.</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.AccountHelper.CanBeMerged(CMS.OnlineMarketing.AccountInfo,CMS.OnlineMarketing.AccountInfo)">
+            <summary>
+            Returns true if two accounts can be merged.
+            </summary>
+            <param name="parent">Will be merging into this account. Must be on same site as 'mergeFrom' account or global.</param>
+            <param name="child">Will be merged. Must be on the same site as 'mergeInto' account or global if 'mergeInto' is global.</param>
+        </member>
+        <member name="M:CMS.OnlineMarketing.AccountHelper.GetAccountChildrenIDs(CMS.OnlineMarketing.AccountInfo)">
+            <summary>
+            Returns IDs of all children for given account.
+            </summary>
+            <param name="account">Account info.</param>
         </member>
         <member name="M:CMS.OnlineMarketing.AccountHelper.MergeIntoGlobalAccount(CMS.OnlineMarketing.AccountInfo,CMS.OnlineMarketing.AccountInfo,System.Collections.Hashtable,System.Collections.Hashtable)">
             <summary>
@@ -9738,16 +10710,6 @@
             </summary>
             <param name="url">URL</param>
             <param name="content">Link text (will be HTML encoded)</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ActivityDetail.GetUserName(System.Object,System.Object,System.Object,System.Object,System.Object)">
-            <summary>
-            Joins user name consisting of first, middle, last and e-mail address in one string.
-            </summary>
-            <param name="first">First name</param>
-            <param name="middle">Middle name</param>
-            <param name="last">Last name</param>
-            <param name="emailAddress">E-mail address</param>
-            <param name="userName">User name</param>
         </member>
         <member name="M:CMS.OnlineMarketing.ActivityDetail.GetLinkForDocument(System.Int32,System.String)">
             <summary>
@@ -10183,11 +11145,6 @@
             Gets or sets the macro condition of given group.
             </summary>
         </member>
-        <member name="P:CMS.OnlineMarketing.ContactGroupInfo.ContactGroupScheduledTaskID">
-            <summary>
-            Gets or sets the ID of scheduled task for re-evaluation if the group is dynamic.
-            </summary>
-        </member>
         <member name="P:CMS.OnlineMarketing.ContactGroupInfo.ContactGroupEnabled">
             <summary>
             Gets or sets if the contact group is enabled.
@@ -10258,23 +11215,6 @@
             Deletes contact group with specified ID.
             </summary>
             <param name="groupId">Contact group ID</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ContactGroupInfoProvider.EnableScheduledTask(CMS.OnlineMarketing.ContactGroupInfo)">
-            <summary>
-            Enables scheduled task connected to the given contact group.
-            If such task does not exits, creates a new one.
-            </summary>
-            <param name="contactGroup">Contact group containing the scheduled task</param>
-            <exception cref="T:System.ArgumentException">Task info ID provided in <paramref name="contactGroup"/> is null. -or-Task info with ID provided in <paramref name="contactGroup"/> does not exist.</exception>
-            <exception cref="T:System.ArgumentNullException"><paramref name="contactGroup"/> is null</exception>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ContactGroupInfoProvider.DisableScheduledTask(CMS.OnlineMarketing.ContactGroupInfo)">
-            <summary>
-            Disables scheduled task connected to the given contact group.
-            </summary>
-            <param name="contactGroup">Contact group containing the scheduled task</param>
-            <exception cref="T:System.ArgumentException">Task info ID provided in <paramref name="contactGroup"/> is null. -or-Task info with ID provided in <paramref name="contactGroup"/> does not exist.</exception>
-            <exception cref="T:System.ArgumentNullException"><paramref name="contactGroup"/> is null</exception>
         </member>
         <member name="M:CMS.OnlineMarketing.ContactGroupInfoProvider.GetContactGroupsInternal">
             <summary>
@@ -10559,38 +11499,6 @@
             Returns number of contacts in specified contact group.
             </summary>
             <param name="contactGroupId">Contact group ID</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ContactGroupMemberInfoProvider.SetContactGroupMembersInfo(System.Int32,System.Collections.Generic.List{System.String},CMS.OnlineMarketing.ContactGroupMemberTypeEnum,CMS.OnlineMarketing.MemberAddedHowEnum)">
-            <summary>
-            Sets relationship among specified contact group and related objects of specific type.
-            </summary>
-            <param name="groupId">Contact group ID</param>
-            <param name="relatedObjectIds">List of strings with related object IDs</param>
-            <param name="memberType">Member type</param>
-            <param name="addedHow">Possible types of contact addition into contact group</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ContactGroupMemberInfoProvider.SetContactGroupMembersInfo(System.Int32,System.Collections.Generic.List{System.Int32},CMS.OnlineMarketing.ContactGroupMemberTypeEnum,CMS.OnlineMarketing.MemberAddedHowEnum)">
-            <summary>
-            Sets relationship among specified contact group and related objects of specific type.
-            </summary>
-            <param name="groupId">Contact group ID</param>
-            <param name="relatedObjectIds">List of integers with related object IDs</param>
-            <param name="memberType">Member type</param>
-            <param name="addedHow">Possible types of contact addition into contact group</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ContactGroupMemberInfoProvider.GetNumberOfContactsInGroup(System.Int32,System.Boolean)">
-            <summary>
-            Returns number of contacts in specified contact group.
-            </summary>
-            <param name="contactGroupId">Contact group ID</param>
-            <param name="excludeMerged">Indicates if merged contacts should be excluded from the count</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ContactGroupMemberInfoProvider.GetNumberOfContactsInGroupInternal(System.Int32,System.Boolean)">
-            <summary>
-            Returns number of contacts in specified contact group.
-            </summary>
-            <param name="contactGroupId">Contact group ID</param>
-            <param name="excludeMerged">Indicates if merged contacts should be excluded from the count</param>
         </member>
         <member name="T:CMS.OnlineMarketing.ContactInfo">
             <summary>
@@ -11019,6 +11927,7 @@
             Deletes all infos by stored procedure.
             </summary>
             <param name="whereCondition">Where condition</param>
+            <remarks>This method can slow down the system, if there is a lot of contacts to delete</remarks>
         </member>
         <member name="M:CMS.OnlineMarketing.ContactInfoProvider.DeleteContactInfos(System.String,System.Int32)">
             <summary>
@@ -11196,11 +12105,6 @@
             Sets (updates or inserts) specified contact.
             </summary>
         </member>
-        <member name="M:CMS.OnlineMarketing.ContactInfoProvider.ProcessTriggers(CMS.OnlineMarketing.ContactInfo,System.Boolean)">
-            <summary>
-            Processes all triggers that are bound to ContactInfo object type.
-            </summary>
-        </member>
         <member name="M:CMS.OnlineMarketing.ContactInfoProvider.ProcessAutomaticMerging(CMS.OnlineMarketing.ContactInfo,System.Collections.Generic.List{System.String})">
             <summary>
             Runs all automatic contact mergers. Starts with merging by email set up in settings, then proceeds to AutomaticContactMergers added via API.
@@ -11240,7 +12144,7 @@
         </member>
         <member name="M:CMS.OnlineMarketing.ContactInfoProvider.LogContactChange(CMS.OnlineMarketing.ContactInfo,System.Collections.Generic.List{System.String},System.Int32,System.Boolean)">
             <summary>
-            Logs the contact change to the change queue, so it can be processed later by Contact Group and Scoring evaluators.
+            Logs the contact change to the change queue (<see cref="T:CMS.OnlineMarketing.ContactChangeQueue"/>), so it can be processed later by Contact Group and Scoring evaluators.
             </summary>
             <param name="contact">Currently changed contact</param>
             <param name="changedProperties">List of properties which were changed</param>
@@ -11345,6 +12249,16 @@
             Gets contact from context or by ID.
             </summary>
         </member>
+        <member name="M:CMS.OnlineMarketing.ContactInfoProvider.LogContactChange(System.Int32,System.Int32,System.Collections.Generic.List{System.String},System.Boolean,System.Boolean)">
+            <summary>
+            Log contact to ContactChangeQueue.
+            </summary>
+            <param name="contactID">ID of the contact</param>
+            <param name="contactSiteID">ID of the contact site</param>
+            <param name="changedProperties">Changes to mark</param>
+            <param name="wasMergedOrSplit">Is it merged or spitted contact</param>
+            <param name="newContact">Is it new contact</param>
+        </member>
         <member name="T:CMS.OnlineMarketing.ContactListInfo">
             <summary>
             "Virtual" object for loading data from contact view.
@@ -11371,14 +12285,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.ContactListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.ContactListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.OnlineMarketing.ContactListInfo.ColumnNames">
-            <summary>
-            Gets the list of column names
             </summary>
         </member>
         <member name="T:CMS.OnlineMarketing.ContactRoleInfo">
@@ -12128,39 +13042,6 @@
             Updates Account - Contact relation.
             </summary>
         </member>
-        <member name="M:CMS.OnlineMarketing.ContactHelper.Split(CMS.OnlineMarketing.ContactInfo,System.Collections.Generic.IList{System.String},System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
-            <summary>
-            Splits contacts.
-            </summary>
-            <param name="parentContact">Parent contact from which contacts are splitted</param>
-            <param name="contacts">List of contacts to split</param>
-            <param name="copyMissingFields">Indicates if empty fields on split contact should be filled with fields from merged contact</param>
-            <param name="copyActivities">Indicates if activities, IPs, membership relations</param>
-            <param name="removeAccounts">Indicates if accounts related to splitted contact should be removed from parent contact</param>
-            <param name="removeContactGroups">Indicates if contact groups related to splitted contact should be removed from parent contact</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ContactHelper.Split(CMS.OnlineMarketing.ContactInfo,System.Data.DataSet,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
-            <summary>
-            Splits contacts.
-            </summary>
-            <param name="parentContact">Parent contact from which contacts are splitted</param>
-            <param name="contacts">List of contacts to split</param>
-            <param name="copyMissingFields">Indicates if empty fields on split contact should be filled with fields from merged contact</param>
-            <param name="copyActivities">Indicates if activities, IPs, membership relations</param>
-            <param name="removeAccounts">Indicates if accounts related to splitted contact should be removed from parent contact</param>
-            <param name="removeContactGroups">Indicates if contact groups related to splitted contact should be removed from parent contact</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.ContactHelper.Split(CMS.OnlineMarketing.ContactInfo,System.Collections.Generic.List{CMS.OnlineMarketing.ContactInfo},System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
-            <summary>
-            Splits contacts.
-            </summary>
-            <param name="parentContact">Parent contact from which contacts are splitted</param>
-            <param name="contacts">List of contacts to split</param>
-            <param name="copyMissingFields">Indicates if empty fields on split contact should be filled with fields from merged contact</param>
-            <param name="copyActivities">Indicates if activities, IPs, membership relations</param>
-            <param name="removeAccounts">Indicates if accounts related to splitted contact should be removed from parent contact</param>
-            <param name="removeContactGroups">Indicates if contact groups related to splitted contact should be removed from parent contact</param>
-        </member>
         <member name="M:CMS.OnlineMarketing.ContactHelper.SplitContacts(CMS.OnlineMarketing.ContactInfo,System.Collections.Generic.List{CMS.OnlineMarketing.ContactInfo},System.Boolean,System.Boolean,System.Boolean)">
             <summary>
             Splits contacts.
@@ -12307,6 +13188,22 @@
             </summary>
             <param name="parentContactId">Parent contact to be found</param>
             <returns>Returns parent contact which is not merged into another site contact</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactHelper.SelectContactForVisitor(System.Data.DataSet)">
+            <summary>
+            Returns single contact determined for current visitor by settings 'When a visitor has more Contacts, use'.
+            </summary>
+            <param name="foundContacts">DataSet with found contacts</param>
+            <returns>ContactInfo of selected contact</returns>
+        </member>
+        <member name="M:CMS.OnlineMarketing.ContactHelper.GetSiteParentRecursive(CMS.OnlineMarketing.ContactInfo)">
+            <summary>
+            Gets parent contact. If parent contact does not exist, or is from another site than the original site, returns original contact. 
+            Otherwise, try to get parent contact from found contact recursively.
+            </summary>
+            <param name="contact">Original contact the parent is searched for</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="contact"/> is null</exception>
+            <returns>Returns top parent contact which is not merged into another contact and is from the same site as the original contact</returns>
         </member>
         <member name="M:CMS.OnlineMarketing.ContactHelper.AuthorizedReadContact(System.Int32,System.Boolean)">
             <summary>
@@ -14348,6 +15245,11 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.OnlineMarketing.MVTestListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.OnlineMarketing.MVTestListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
@@ -14356,6 +15258,11 @@
         <member name="T:CMS.OnlineMarketing.OnlineMarketingModule">
             <summary>
             Represents the Online Marketing module.
+            </summary>
+        </member>
+        <member name="F:CMS.OnlineMarketing.OnlineMarketingModule.SCORING_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for scoring.
             </summary>
         </member>
         <member name="M:CMS.OnlineMarketing.OnlineMarketingModule.#ctor">
@@ -14452,12 +15359,6 @@
         <member name="M:CMS.OnlineMarketing.OnlineMarketingModule.SetContactBounces(System.Object[])">
             <summary>
             Sets the bounced e-mails counter to specified value for a contact
-            </summary>
-            <param name="parameters">Parameters array</param>
-        </member>
-        <member name="M:CMS.OnlineMarketing.OnlineMarketingModule.IsContactUnsubscribed(System.Object[])">
-            <summary>
-            Returns true if a contact has newsletter unsubscription activity for specified contact group and newsletter
             </summary>
             <param name="parameters">Parameters array</param>
         </member>

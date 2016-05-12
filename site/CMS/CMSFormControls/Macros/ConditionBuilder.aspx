@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_Macros_ConditionBuilderDialog"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_Macros_ConditionBuilderDialog"
     ValidateRequest="false" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Title="Edit macro condition" Codebehind="ConditionBuilder.aspx.cs" %>
+    Title="Edit macro condition"  Codebehind="ConditionBuilder.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/Macros/MacroDesigner.ascx" TagName="MacroDesigner"
     TagPrefix="cms" %>

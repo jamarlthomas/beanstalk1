@@ -1,6 +1,6 @@
-<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
+﻿<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
     Inherits="CMSModules_Groups_Tools_MessageBoards_Boards_Board_List" Title="Message boards - List"
-    Theme="Default" Codebehind="Board_List.aspx.cs" %>
+    Theme="Default"  Codebehind="Board_List.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/MessageBoards/Controls/Boards/BoardList.ascx" TagName="BoardList"
     TagPrefix="cms" %>

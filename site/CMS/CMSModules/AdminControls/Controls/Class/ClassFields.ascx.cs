@@ -1,6 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI.WebControls;
+
 using CMS.Base;
 using CMS.FormControls;
 using CMS.FormEngine;
@@ -11,7 +13,6 @@ public partial class CMSModules_AdminControls_Controls_Class_ClassFields : FormE
 {
     #region "Variables"
 
-    private string mFieldDataType = CMS.DataEngine.FieldDataType.Unknown;
     private string mClassName;
 
     #endregion
@@ -126,11 +127,11 @@ public partial class CMSModules_AdminControls_Controls_Class_ClassFields : FormE
     {
         get
         {
-            return mFieldDataType;
+            return ValidationHelper.GetString(GetValue("FieldDataType"), CMS.DataEngine.FieldDataType.Unknown);
         }
         set
         {
-            mFieldDataType = value;
+            SetValue("FieldDataType", value);
         }
     }
 
@@ -165,11 +166,11 @@ public partial class CMSModules_AdminControls_Controls_Class_ClassFields : FormE
                     FormInfo coupledInfo = FormHelper.GetFormInfo("cms.usersettings", false);
                     if (coupledInfo != null)
                     {
-                        fi.CombineWithForm(coupledInfo, false, null);
+                        fi.CombineWithForm(coupledInfo, false);
                     }
                 }
 
-                List<FormFieldInfo> fields;
+                IEnumerable<FormFieldInfo> fields;
                 if (FieldDataType != CMS.DataEngine.FieldDataType.Unknown)
                 {
                     fields = fi.GetFields(FieldDataType);

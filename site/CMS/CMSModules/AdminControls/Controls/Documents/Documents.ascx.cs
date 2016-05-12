@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Text;
 using System.Web.UI;
@@ -28,8 +28,6 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
     #region "Constants"
 
     // Source fields
-    private const string SOURCE_SITENAME = "SiteName";
-
     private const string SOURCE_MODIFIEDWHEN = "DocumentModifiedWhen";
 
     private const string SOURCE_CLASSDISPLAYNAME = "ClassDisplayName";
@@ -59,8 +57,6 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
     private const string SOURCE_TYPE = "Type";
 
     // External source fields
-    private const string EXTERNALSOURCE_SITENAME = "sitename";
-
     private const string EXTERNALSOURCE_STEPDISPLAYNAME = "stepdisplayname";
 
     private const string EXTERNALSOURCE_MODIFIEDWHEN = "modifiedwhen";
@@ -86,6 +82,9 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
     // Listing type
     private const string LISTINGTYPE_RECYCLEBIN = "Recycle bin";
 
+    // Versioning
+    private const string VERSION_COLUMN = "DocumentCheckedOutVersionHistoryID";
+
     #endregion
 
 
@@ -98,7 +97,7 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
 
     // Property variables
     private string mOrderBy = "DocumentModifiedWhen";
-    private string mPath = "/%";
+    private string mPath = TreeProvider.ALL_DOCUMENTS;
     private string mSiteName = String.Empty;
     private string mDocumentType = String.Empty;
     private string mItemsPerPage = String.Empty;
@@ -211,7 +210,7 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
         {
             if (String.IsNullOrEmpty(mPath))
             {
-                return "/%";
+                return TreeProvider.ALL_DOCUMENTS;
             }
             return mPath;
         }
@@ -380,6 +379,7 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
         gridElem.IsLiveSite = IsLiveSite;
         gridElem.OnExternalDataBound += gridElem_OnExternalDataBound;
         gridElem.HideControlForZeroRows = false;
+        gridElem.OnAfterRetrieveData += GridElem_OnAfterRetrieveData;    
 
         // Main controls
         SetupGridColumns();
@@ -392,7 +392,7 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
         SetupGridFilterWhereCondition();
     }
 
-
+       
     /// <summary>
     /// Page_PreRender event handler.
     /// </summary>
@@ -411,7 +411,26 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
 
 
     #region "Grid events"
+    
+    /// <summary>
+    /// On after retrieve data handler to apply versioned data
+    /// </summary>
+    /// <param name="data">Retrieved data</param>
+    private DataSet GridElem_OnAfterRetrieveData(DataSet data)
+    {
+        if (IsLiveSite)
+        {
+            return data;
+        }
 
+        var manager = VersionManager.GetInstance(Tree);
+
+        manager.ApplyVersionData(data, false);
+
+        return data;
+    }
+
+    
     /// <summary>
     /// External data binding handler.
     /// </summary>
@@ -470,13 +489,13 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
                     else
                     {
                         culture = ValidationHelper.GetString(data[SOURCE_DOCUMENTCULTURE], string.Empty);
-                        string nodeAliasPath = ValidationHelper.GetString(data[SOURCE_NODEALIASPATH], string.Empty);
+                        var nodeID = ValidationHelper.GetInteger(data[SOURCE_NODEID], 0);
                         
                         // Generate preview URL
-                        string url = DocumentURLProvider.GetUrl(nodeAliasPath, null, site.SiteName);
-                        url = URLHelper.AddParameterToUrl(url, "viewmode", "2");
-                        url = URLHelper.AddParameterToUrl(url, URLHelper.LanguageParameterName, culture);
-                        previewButton.Attributes.Add("data-preview-url", URLHelper.ResolveUrl(url));
+                        var query = QueryHelper.BuildQuery("viewmode", ((int)ViewModeEnum.Preview).ToString(), URLHelper.LanguageParameterName, culture);
+                        string url = DocumentURLProvider.GetPresentationUrlHandlerPath(culture, nodeID, query);
+                        
+                        previewButton.Attributes.Add("data-preview-url", URLHelper.GetAbsoluteUrl(url, site.DomainName));
                     }
 
                     previewButton.OnClientClick = "return false";
@@ -522,7 +541,7 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
                     if (isLink)
                     {
                         // Add link icon
-                        result += DocumentHelper.GetDocumentMarkImage(Parent.Page, DocumentMarkEnum.Link);
+                        result += DocumentUIHelper.GetDocumentMarkImage(Parent.Page, DocumentMarkEnum.Link);
                     }
                 }
                 return result;
@@ -565,12 +584,6 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
                 }
                 parameter = HTMLHelper.HTMLEncode(parameter.ToString());
                 return parameter;
-
-            // Site name column
-            case EXTERNALSOURCE_SITENAME:
-                string siteName = ValidationHelper.GetString(parameter, string.Empty);
-                site = SiteInfoProvider.GetSiteInfo(siteName);
-                return HTMLHelper.HTMLEncode(site.DisplayName);
 
             // Document timestamp column
             case EXTERNALSOURCE_MODIFIEDWHEN:
@@ -679,14 +692,17 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
         modifiedWhen.Caption = (ListingType == ListingTypeEnum.CheckedOut) ? "$general.checkouttime$" : "$general.modified$";
         gridElem.GridColumns.Columns.Add(modifiedWhen);
 
-        // Add column with workflow information
-        Column workflowStep = new Column();
-        workflowStep.Caption = "$general.workflowstep$";
-        workflowStep.Wrap = false;
-        workflowStep.AllowSorting = false;
-        workflowStep.Source = SOURCE_WORKFLOWSTEPID;
-        workflowStep.ExternalSourceName = EXTERNALSOURCE_STEPDISPLAYNAME;
-        gridElem.GridColumns.Columns.Add(workflowStep);
+        if (!IsLiveSite)
+        {
+            // Add column with workflow information
+            Column workflowStep = new Column();
+            workflowStep.Caption = "$general.workflowstep$";
+            workflowStep.Wrap = false;
+            workflowStep.AllowSorting = false;
+            workflowStep.Source = SOURCE_WORKFLOWSTEPID;
+            workflowStep.ExternalSourceName = EXTERNALSOURCE_STEPDISPLAYNAME;
+            gridElem.GridColumns.Columns.Add(workflowStep);
+        }
 
         // Add version information
         if (ListingType == ListingTypeEnum.WorkflowDocuments)
@@ -714,18 +730,9 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
             Column siteName = new Column();
             siteName.Caption = "$general.site$";
             siteName.Wrap = false;
-
-            if (ListingType == ListingTypeEnum.All)
-            {
-                siteName.Source = SOURCE_NODESITEID;
-                siteName.ExternalSourceName = "#sitename";
-                siteName.AllowSorting = false;
-            }
-            else
-            {
-                siteName.Source = SOURCE_SITENAME;
-                siteName.ExternalSourceName = EXTERNALSOURCE_SITENAME;
-            }
+            siteName.Source = SOURCE_NODESITEID;
+            siteName.ExternalSourceName = "#sitename";
+            siteName.AllowSorting = false;
 
             gridElem.GridColumns.Columns.Add(siteName);
         }
@@ -734,11 +741,10 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
         string baseColumns = SqlHelper.MergeColumns(new []
         {
             SOURCE_CLASSNAME,
-            SOURCE_SITENAME,
             SOURCE_CLASSDISPLAYNAME,
             SOURCE_MODIFIEDWHEN,
-            SOURCE_WORKFLOWSTEPID,
             SOURCE_NODEID,
+            SOURCE_NODESITEID,
             SOURCE_DOCUMENTCULTURE,
             SOURCE_DOCUMENTNAME,
             SOURCE_DOCUMENTNAMEPATH,
@@ -746,6 +752,16 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
             SOURCE_NODELINKEDNODEID,
             SOURCE_DOCUMENTCULTURE
         });
+        
+        if (!IsLiveSite)
+        {
+            baseColumns = SqlHelper.MergeColumns(new[]
+                {
+                    baseColumns,
+                    VERSION_COLUMN,
+                    SOURCE_WORKFLOWSTEPID
+                });
+        }
 
         // Set UniGrid options
         switch (ListingType)
@@ -754,7 +770,6 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
                 gridElem.Columns = SqlHelper.MergeColumns(new []
                 {
                     baseColumns,
-                    SOURCE_NODESITEID,
                     "NodeACLID",
                     "NodeOwner"
                 });
@@ -817,6 +832,12 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
     /// </summary>
     private void SetupGridActions()
     {
+        if (IsLiveSite)
+        {
+            // Do not add actions on the live site
+            return;
+        }
+
         gridElem.GridActions = new UniGridActions();
 
         // Add edit action
@@ -925,7 +946,7 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
 
         if (ListingType == ListingTypeEnum.OutdatedDocuments)
         {
-            parameters.Add("@SiteID", SiteContext.CurrentSite.SiteID);
+            parameters.Add("@SiteID", SiteContext.CurrentSiteID);
         }
 
         // Initialize UserID query parameter
@@ -982,19 +1003,23 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
         switch (ListingType)
         {
             case ListingTypeEnum.CheckedOut:
-                where = "View_CMS_Tree_Joined.DocumentCheckedOutByUserID = @UserID";
+                where = "DocumentCheckedOutByUserID = @UserID";
                 break;
 
             case ListingTypeEnum.MyDocuments:
-                where = "View_CMS_Tree_Joined.NodeOwner = @UserID";
+                where = "NodeOwner = @UserID";
                 break;
 
             case ListingTypeEnum.RecentDocuments:
-                where = "((View_CMS_Tree_Joined.DocumentCreatedByUserID = @UserID OR View_CMS_Tree_Joined.DocumentModifiedByUserID = @UserID OR View_CMS_Tree_Joined.DocumentCheckedOutByUserID = @UserID))";
+                where = "((DocumentCreatedByUserID = @UserID OR DocumentModifiedByUserID = @UserID OR DocumentCheckedOutByUserID = @UserID))";
                 break;
 
             case ListingTypeEnum.PendingDocuments:
                 where = "DocumentWorkflowStepID IN (SELECT StepID FROM CMS_WorkflowStep WHERE " + WorkflowStepInfoProvider.GetWorkflowPendingStepsWhereCondition(currentUserInfo, new SiteInfoIdentifier(SiteName)).ToString(false) + ")";
+                break;
+
+            case ListingTypeEnum.OutdatedDocuments:
+                where = "DocumentCreatedByUserID = @UserID OR DocumentModifiedByUserID = @UserID OR DocumentCheckedOutByUserID = @UserID";
                 break;
 
             case ListingTypeEnum.All:
@@ -1017,7 +1042,7 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
         // Site running filter
         if ((SiteName == UniGrid.ALL) && DisplayOnlyRunningSites)
         {
-            gridElem.WhereCondition = SqlHelper.AddWhereCondition(gridElem.WhereCondition, "SiteName IN (SELECT SiteName FROM CMS_Site WHERE SiteStatus = 'RUNNING')");
+            gridElem.WhereCondition = SqlHelper.AddWhereCondition(gridElem.WhereCondition, "NodeSiteID IN (SELECT SiteID FROM CMS_Site WHERE SiteStatus = 'RUNNING')");
         }
 
         // Path filter
@@ -1048,16 +1073,7 @@ public partial class CMSModules_AdminControls_Controls_Documents_Documents : CMS
     /// <returns>Initialized site info</returns>
     private SiteInfo GetSiteFromRow(DataRowView data)
     {
-        SiteInfo site;
-        if (ListingType == ListingTypeEnum.All)
-        {
-            site = SiteInfoProvider.GetSiteInfo(ValidationHelper.GetInteger(data[SOURCE_NODESITEID], 0));
-        }
-        else
-        {
-            site = SiteInfoProvider.GetSiteInfo(ValidationHelper.GetString(data[SOURCE_SITENAME], String.Empty));
-        }
-        return site;
+        return SiteInfoProvider.GetSiteInfo(ValidationHelper.GetInteger(data[SOURCE_NODESITEID], 0));
     }
 
 

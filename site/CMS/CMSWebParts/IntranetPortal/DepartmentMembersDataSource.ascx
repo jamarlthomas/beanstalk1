@@ -1,2 +1,2 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_IntranetPortal_DepartmentMembersDataSource" Codebehind="~/CMSWebParts/IntranetPortal/DepartmentMembersDataSource.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_IntranetPortal_DepartmentMembersDataSource"  Codebehind="~/CMSWebParts/IntranetPortal/DepartmentMembersDataSource.ascx.cs" %>
 <cms:UsersDataSource ID="srcUsers" runat="server" />

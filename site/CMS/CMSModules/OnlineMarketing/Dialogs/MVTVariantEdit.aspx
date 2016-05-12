@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="Mvtest properties" Inherits="CMSModules_OnlineMarketing_Dialogs_MVTVariantEdit"
-    Theme="Default" Codebehind="MVTVariantEdit.aspx.cs" %>
+    Theme="Default"  Codebehind="MVTVariantEdit.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/OnlineMarketing/Controls/UI/MVTVariant/Edit.ascx"
     TagName="MvtVariantEdit" TagPrefix="cms" %>

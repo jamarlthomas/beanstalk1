@@ -30,13 +30,40 @@ public partial class CMSModules_Newsletters_Controls_MySubscriptions {
     protected global::CMS.ExtendedControls.MessagesPlaceHolder plcMess;
     
     /// <summary>
+    /// headNewsletters control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedHeading headNewsletters;
+    
+    /// <summary>
+    /// lblUnsubscribeFromAll control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblUnsubscribeFromAll;
+    
+    /// <summary>
+    /// btnUsubscribeFromAll control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSButton btnUsubscribeFromAll;
+    
+    /// <summary>
     /// lblText control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblText;
+    protected global::CMS.ExtendedControls.LocalizedLabel lblText;
     
     /// <summary>
     /// usNewsletters control.

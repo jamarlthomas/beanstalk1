@@ -14,11 +14,10 @@ public partial class CMSModules_AdminControls_Controls_UIControls_WebPartSystemP
 {
     #region "Variables"
 
-    String defaultValueColumName = String.Empty;
-    BaseInfo eObject = null;
-    String defaultSet = String.Empty;
-    String trimmedSet = String.Empty;
-    String webPartProperties = "<form></form>";
+    String mDefaultValueColumName = String.Empty;
+    BaseInfo mEditedObject;
+    String mDefaultSet = String.Empty;
+    String mWebPartProperties = "<form></form>";
 
     #endregion
 
@@ -27,7 +26,7 @@ public partial class CMSModules_AdminControls_Controls_UIControls_WebPartSystemP
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        eObject = UIContext.EditedObject as BaseInfo;
+        mEditedObject = UIContext.EditedObject as BaseInfo;
 
         // If saved is found in query string
         if (!RequestHelper.IsPostBack() && (QueryHelper.GetInteger("saved", 0) == 1))
@@ -35,22 +34,22 @@ public partial class CMSModules_AdminControls_Controls_UIControls_WebPartSystemP
             ShowChangesSaved();
         }
 
-        string before = String.Empty;
-        string after = String.Empty;
+        string before;
+        string after;
 
-        String objectType = UIContextHelper.GetObjectType(UIContext);
+        string objectType = UIContextHelper.GetObjectType(UIContext);
 
         switch (objectType.ToLowerCSafe())
         {
             case "cms.webpart":
-                defaultValueColumName = "WebPartDefaultValues";
+                mDefaultValueColumName = "WebPartDefaultValues";
 
                 before = PortalFormHelper.GetWebPartProperties(WebPartTypeEnum.Standard, PropertiesPosition.Before);
                 after = PortalFormHelper.GetWebPartProperties(WebPartTypeEnum.Standard, PropertiesPosition.After);
 
-                defaultSet = FormHelper.CombineFormDefinitions(before, after);
+                mDefaultSet = FormHelper.CombineFormDefinitions(before, after);
 
-                WebPartInfo wi = eObject as WebPartInfo;
+                WebPartInfo wi = mEditedObject as WebPartInfo;
 
                 // If inherited web part load parent properties
                 if (wi.WebPartParentID > 0)
@@ -58,12 +57,12 @@ public partial class CMSModules_AdminControls_Controls_UIControls_WebPartSystemP
                     WebPartInfo parentInfo = WebPartInfoProvider.GetWebPartInfo(wi.WebPartParentID);
                     if (parentInfo != null)
                     {
-                        webPartProperties = FormHelper.MergeFormDefinitions(parentInfo.WebPartProperties, wi.WebPartProperties);
+                        mWebPartProperties = FormHelper.MergeFormDefinitions(parentInfo.WebPartProperties, wi.WebPartProperties);
                     }
                 }
                 else
                 {
-                    webPartProperties = wi.WebPartProperties;
+                    mWebPartProperties = wi.WebPartProperties;
                 }
 
                 break;
@@ -72,16 +71,16 @@ public partial class CMSModules_AdminControls_Controls_UIControls_WebPartSystemP
                 before = PortalFormHelper.LoadProperties("Widget", "Before.xml");
                 after = PortalFormHelper.LoadProperties("Widget", "After.xml");
 
-                defaultSet = FormHelper.CombineFormDefinitions(before, after);
+                mDefaultSet = FormHelper.CombineFormDefinitions(before, after);
 
-                defaultValueColumName = "WidgetDefaultValues";
-                WidgetInfo wii = eObject as WidgetInfo;
+                mDefaultValueColumName = "WidgetDefaultValues";
+                WidgetInfo wii = mEditedObject as WidgetInfo;
                 if (wii != null)
                 {
                     WebPartInfo wiiWp = WebPartInfoProvider.GetWebPartInfo(wii.WidgetWebPartID);
                     if (wiiWp != null)
                     {
-                        webPartProperties = FormHelper.MergeFormDefinitions(wiiWp.WebPartProperties, wii.WidgetProperties);
+                        mWebPartProperties = FormHelper.MergeFormDefinitions(wiiWp.WebPartProperties, wii.WidgetProperties);
                     }
                 }
 
@@ -89,16 +88,16 @@ public partial class CMSModules_AdminControls_Controls_UIControls_WebPartSystemP
         }
 
         // Get the web part info
-        if (eObject != null)
+        if (mEditedObject != null)
         {
-            String defVal = ValidationHelper.GetString(eObject.GetValue(defaultValueColumName), string.Empty);
-            defaultSet = LoadDefaultValuesXML(defaultSet);
+            String defVal = ValidationHelper.GetString(mEditedObject.GetValue(mDefaultValueColumName), string.Empty);
+            mDefaultSet = LoadDefaultValuesXML(mDefaultSet);
 
             fieldEditor.Mode = FieldEditorModeEnum.SystemWebPartProperties;
-            fieldEditor.FormDefinition = FormHelper.MergeFormDefinitions(defaultSet, defVal);
+            fieldEditor.FormDefinition = FormHelper.MergeFormDefinitions(mDefaultSet, defVal);
             fieldEditor.OnAfterDefinitionUpdate += fieldEditor_OnAfterDefinitionUpdate;
-            fieldEditor.OriginalFormDefinition = defaultSet;
-            fieldEditor.WebPartId = eObject.Generalized.ObjectID;
+            fieldEditor.OriginalFormDefinition = mDefaultSet;
+            fieldEditor.WebPartId = mEditedObject.Generalized.ObjectID;
         }
 
         ScriptHelper.HideVerticalTabs(Page);
@@ -108,7 +107,6 @@ public partial class CMSModules_AdminControls_Controls_UIControls_WebPartSystemP
     /// <summary>
     /// Load XML with default values (remove keys already overridden in properties tab).
     /// </summary>
-    /// <param name="wi">Web part info</param>
     /// <param name="formDef">String XML definition of default values of webpart</param>
     private String LoadDefaultValuesXML(string formDef)
     {
@@ -116,7 +114,7 @@ public partial class CMSModules_AdminControls_Controls_UIControls_WebPartSystemP
 
         // Test if there is any default properties set
         XmlDocument xmlProperties = new XmlDocument();
-        xmlProperties.LoadXml(webPartProperties);
+        xmlProperties.LoadXml(mWebPartProperties);
 
         // Load default system xml 
         xmlDefault.LoadXml(formDef);
@@ -125,7 +123,7 @@ public partial class CMSModules_AdminControls_Controls_UIControls_WebPartSystemP
         XmlNodeList defaultList = xmlDefault.SelectNodes(@"//field");
         foreach (XmlNode node in defaultList)
         {
-            string columnName = node.Attributes["column"].Value.ToString();
+            string columnName = node.Attributes["column"].Value;
 
             XmlNodeList propertiesList = xmlProperties.SelectNodes("//field[@column=\"" + columnName + "\"]");
             //This property already set in properties tab
@@ -179,9 +177,9 @@ public partial class CMSModules_AdminControls_Controls_UIControls_WebPartSystemP
 
     protected void fieldEditor_OnAfterDefinitionUpdate(object sender, EventArgs e)
     {
-        String defVal = FormHelper.GetFormDefinitionDifference(defaultSet, fieldEditor.FormDefinition, true);
-        eObject.SetValue(defaultValueColumName, defVal);
-        eObject.Update();
+        String defVal = FormHelper.GetFormDefinitionDifference(mDefaultSet, fieldEditor.FormDefinition, true);
+        mEditedObject.SetValue(mDefaultValueColumName, defVal);
+        mEditedObject.Update();
     }
 
     #endregion

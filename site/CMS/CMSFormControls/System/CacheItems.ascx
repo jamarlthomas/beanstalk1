@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSFormControls/System/CacheItems.ascx.cs" Inherits="CMSFormControls_System_CacheItems" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSFormControls/System/CacheItems.ascx.cs" Inherits="CMSFormControls_System_CacheItems" %>
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">
     <ContentTemplate>
         <cms:CMSPanel runat="server" ID="pnlItems">

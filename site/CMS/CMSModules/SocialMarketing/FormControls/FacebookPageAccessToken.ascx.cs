@@ -2,14 +2,15 @@
 using System.Collections;
 using System.Globalization;
 using System.Text;
-using System.Web.UI;
 
+using CMS.Core;
 using CMS.FormControls;
 using CMS.Globalization;
 using CMS.Membership;
 using CMS.SiteProvider;
 using CMS.SocialMarketing;
 using CMS.Helpers;
+using CMS.SocialMarketing.Internal;
 
 
 public partial class CMSModules_SocialMarketing_FormControls_FacebookPageAccessToken : FormEngineUserControl
@@ -77,16 +78,20 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookPageAccessT
     protected override void OnLoad(EventArgs e)
     {
         base.OnLoad(e);
-        CheckFieldEmptiness = false;
 
-        if (!RequestHelper.IsPostBack() && (FacebookAccount != null))
+        if (Form != null)
         {
-            var expiration = FacebookAccount.FacebookPageAccessToken.Expiration;
-            hdnTokenExpiration.Value = expiration.HasValue ? expiration.Value.ToString("g", CultureInfo.InvariantCulture) : String.Empty;
-            hdnTokenAppId.Value = FacebookAccount.FacebookAccountFacebookApplicationID.ToString();
-            hdnTokenPageId.Value = FacebookAccount.FacebookPageIdentity.PageId;
+            CheckFieldEmptiness = false;
+
+            if (!RequestHelper.IsPostBack() && (FacebookAccount != null))
+            {
+                var expiration = FacebookAccount.FacebookPageAccessToken.Expiration;
+                hdnTokenExpiration.Value = expiration.HasValue ? expiration.Value.ToString("g", CultureInfo.InvariantCulture) : String.Empty;
+                hdnTokenAppId.Value = FacebookAccount.FacebookAccountFacebookApplicationID.ToString();
+                hdnTokenPageId.Value = FacebookAccount.FacebookPageIdentity.PageId;
+            }
+            ValidateToken();
         }
-        ValidateToken();
 
         // Register the dialog script
         ScriptHelper.RegisterDialogScript(Page);
@@ -98,41 +103,47 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookPageAccessT
     /// </summary>
     protected void btnGetToken_OnClick(object sender, EventArgs e)
     {
-        // Control data, show error if something is missing
-        int appId = ValidationHelper.GetInteger(Form.GetFieldValue("FacebookAccountFacebookApplicationID"), 0);
-        FacebookApplicationInfo appInfo = FacebookApplicationInfoProvider.GetFacebookApplicationInfo(appId);
-        if (appInfo == null)
+        if (Form != null)
         {
-            ShowError(GetString("sm.facebook.account.msg.appnotset"));
-            return;
+            // Control data, show error if something is missing
+            int appId = ValidationHelper.GetInteger(Form.GetFieldValue("FacebookAccountFacebookApplicationID"), 0);
+            FacebookApplicationInfo appInfo = FacebookApplicationInfoProvider.GetFacebookApplicationInfo(appId);
+            if (appInfo == null)
+            {
+                ShowError(GetString("sm.facebook.account.msg.appnotset"));
+                return;
+            }
+
+            var facebookAccessTokenService = Service<IFacebookAccessTokenService>.Entry();
+            FacebookContext.FacebookAccessToken = facebookAccessTokenService.GetAccessToken(appInfo.FacebookApplicationConsumerKey, appInfo.FacebookApplicationConsumerSecret);
+
+            string pageId = Form.GetFieldValue("FacebookAccountPageID").ToString();
+            if (String.IsNullOrEmpty(pageId))
+            {
+                ShowError(GetString("sm.facebook.account.msg.pageurlnotset"));
+                return;
+            }
+
+            // Store data in session
+            string sessionKey = Guid.NewGuid().ToString();
+            Hashtable parameters = new Hashtable
+            {
+                    {"AppId", appInfo.FacebookApplicationConsumerKey},
+                    {"AppSecret", appInfo.FacebookApplicationConsumerSecret},
+                    {"PageId", pageId},
+                    {"TokenCntId", hdnToken.ClientID},
+                    {"TokenExpirationCntId", hdnTokenExpiration.ClientID},
+                    {"InfoLblId", lblMessage.ClientID},
+                    {"TokenPageIdCntId", hdnTokenPageId.ClientID},
+                    {"TokenAppIdCntId", hdnTokenAppId.ClientID},
+                    {"TokenAppInfoId", appInfo.FacebookApplicationID.ToString()}
+                };
+            WindowHelper.Add(sessionKey, parameters);
+
+            // Open client dialog script
+            string openDialogScript = String.Format("fbOpenModalDialog('{0}');", sessionKey);
+            ScriptHelper.RegisterStartupScript(this, GetType(), "FBAccessTokenOpenModal" + ClientID, openDialogScript, true);
         }
-
-        string pageId = Form.GetFieldValue("FacebookAccountPageId").ToString();
-        if (String.IsNullOrEmpty(pageId))
-        {
-            ShowError(GetString("sm.facebook.account.msg.pageurlnotset"));
-            return;
-        }
-
-        // Store data in session
-        string sessionKey = Guid.NewGuid().ToString();
-        Hashtable parameters =  new Hashtable
-        {
-                {"AppId", appInfo.FacebookApplicationConsumerKey},
-                {"AppSecret", appInfo.FacebookApplicationConsumerSecret},
-                {"PageId", pageId},
-                {"TokenCntId", hdnToken.ClientID},
-                {"TokenExpirationCntId", hdnTokenExpiration.ClientID},
-                {"InfoLblId", lblMessage.ClientID},
-                {"TokenPageIdCntId", hdnTokenPageId.ClientID},
-                {"TokenAppIdCntId", hdnTokenAppId.ClientID},
-                {"TokenAppInfoId", appInfo.FacebookApplicationID.ToString()}
-            };
-        WindowHelper.Add(sessionKey, parameters);
-
-        // Open client dialog script
-        string openDialogScript = String.Format("fbOpenModalDialog('{0}');", sessionKey);
-        ScriptHelper.RegisterStartupScript(this, GetType(), "FBAccessTokenOpenModal" + ClientID, openDialogScript, true);
     }
 
     #endregion

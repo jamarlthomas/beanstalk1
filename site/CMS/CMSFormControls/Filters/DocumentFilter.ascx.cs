@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -7,7 +7,6 @@ using CMS.DataEngine;
 using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.Membership;
-using CMS.Base;
 using CMS.DocumentEngine;
 using CMS.FormEngine;
 
@@ -15,9 +14,7 @@ public partial class CMSFormControls_Filters_DocumentFilter : CMSAbstractBaseFil
 {
     #region "Variables"
 
-    private bool mAllowSiteAutopostback = true;
-    private bool mIncludeSiteCondition = false;
-    private bool mLoadSites = false;
+    private bool mAllowSiteAutoPostBack = true;
 
     #endregion
 
@@ -77,14 +74,8 @@ public partial class CMSFormControls_Filters_DocumentFilter : CMSAbstractBaseFil
     /// </summary>
     public bool LoadSites
     {
-        get
-        {
-            return mLoadSites;
-        }
-        set
-        {
-            mLoadSites = value;
-        }
+        get;
+        set;
     }
 
 
@@ -93,29 +84,23 @@ public partial class CMSFormControls_Filters_DocumentFilter : CMSAbstractBaseFil
     /// </summary>
     public bool IncludeSiteCondition
     {
-        get
-        {
-            return mIncludeSiteCondition;
-        }
-        set
-        {
-            mIncludeSiteCondition = value;
-        }
+        get;
+        set;
     }
 
 
     /// <summary>
-    /// Determines whether the site selector DDL has autopostback option on or off.
+    /// Determines whether the site selector DDL has AutoPostBack option on or off.
     /// </summary>
     public bool AllowSiteAutopostback
     {
         get
         {
-            return mAllowSiteAutopostback;
+            return mAllowSiteAutoPostBack;
         }
         set
         {
-            mAllowSiteAutopostback = value;
+            mAllowSiteAutoPostBack = value;
         }
     }
 
@@ -214,7 +199,7 @@ public partial class CMSFormControls_Filters_DocumentFilter : CMSAbstractBaseFil
             if (user.CheckPrivilegeLevel(UserPrivilegeLevelEnum.GlobalAdmin))
             {
                 siteSelector.AllowAll = false;
-                siteSelector.UniSelector.SpecialFields.Add(new SpecialField() { Text = GetString("general.selectall"), Value = TreeProvider.ALL_SITES }); 
+                siteSelector.UniSelector.SpecialFields.Add(new SpecialField { Text = GetString("general.selectall"), Value = TreeProvider.ALL_SITES }); 
             }
 
             // Preselect all
@@ -244,7 +229,7 @@ public partial class CMSFormControls_Filters_DocumentFilter : CMSAbstractBaseFil
 
         if (IncludeSiteCondition && !string.IsNullOrEmpty(siteSelector.SiteName) && (siteSelector.SiteName != TreeProvider.ALL_SITES))
         {
-            where = SqlHelper.AddWhereCondition(where, "SiteName = '" + SqlHelper.EscapeQuotes(siteSelector.SiteName) + "'");
+            where = SqlHelper.AddWhereCondition(where, "NodeSiteID = " + siteSelector.SiteID);
         }
         return where;
     }

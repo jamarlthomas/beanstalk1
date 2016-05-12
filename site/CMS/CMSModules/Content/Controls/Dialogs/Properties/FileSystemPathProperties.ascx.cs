@@ -95,10 +95,10 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_FileSystemPa
         if (Validate())
         {
             // Get selected item information
-            Hashtable properties = GetItemProperties();
+            var props = GetItemProperties();
 
             // Get JavaScript for inserting the item
-            string script = CMSDialogHelper.GetFileSystemItem(properties);
+            var script = CMSDialogHelper.GetFileSystemItem(props);
             if (!string.IsNullOrEmpty(script))
             {
                 ScriptManager.RegisterStartupScript(Page, typeof(Page), "insertItemScript", script, true);

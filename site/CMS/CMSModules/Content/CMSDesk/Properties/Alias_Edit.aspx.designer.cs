@@ -75,24 +75,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_Alias_Edit {
     protected global::CMS.ExtendedControls.CMSTextBox txtURLExtensions;
     
     /// <summary>
-    /// lblTrackCampaign control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblTrackCampaign;
-    
-    /// <summary>
-    /// usSelectCampaign control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMSModules_WebAnalytics_FormControls_SelectCampaign usSelectCampaign;
-    
-    /// <summary>
     /// pnlUrlInfo control.
     /// </summary>
     /// <remarks>

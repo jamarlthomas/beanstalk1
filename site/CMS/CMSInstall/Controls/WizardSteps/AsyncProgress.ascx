@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="AsyncProgress.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="AsyncProgress.ascx.cs"
     Inherits="CMSInstall_Controls_WizardSteps_AsyncProgress" %>
 <script type="text/javascript">
         //<![CDATA[

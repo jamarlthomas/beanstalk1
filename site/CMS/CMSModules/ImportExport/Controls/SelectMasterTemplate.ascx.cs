@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.DataEngine;
@@ -91,13 +91,13 @@ public partial class CMSModules_ImportExport_Controls_SelectMasterTemplate : CMS
         {
             // Update all culture versions
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-            DataSet ds = tree.SelectNodes(SiteName, "/", TreeProvider.ALL_CULTURES, false, "CMS.Root", null, null, -1, false);
+            DataSet ds = tree.SelectNodes(SiteName, "/", TreeProvider.ALL_CULTURES, false, SystemDocumentTypes.Root, null, null, -1, false);
             if (!DataHelper.DataSourceIsEmpty(ds))
             {
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     // Update the document
-                    TreeNode node = TreeNode.New("CMS.Root", dr, tree);
+                    TreeNode node = TreeNode.New(SystemDocumentTypes.Root, dr, tree);
 
                     node.SetDefaultPageTemplateID(MasterTemplateId);
 

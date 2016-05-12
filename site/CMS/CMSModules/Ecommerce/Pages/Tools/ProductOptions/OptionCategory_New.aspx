@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCategory_New"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCategory_New"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Option Category - New"
-    Codebehind="OptionCategory_New.aspx.cs" %>
+     Codebehind="OptionCategory_New.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Ecommerce/Controls/UI/ProductOptions/OptionCategoryEdit.ascx"
     TagName="OptionCategoryEdit" TagPrefix="cms" %>

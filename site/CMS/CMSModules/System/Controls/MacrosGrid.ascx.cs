@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -167,7 +167,7 @@ public partial class CMSModules_System_Controls_MacrosGrid : CMSUserControl, IUn
             try
             {
                 int maxRecords = pageSize == -1 ? -1 : (pageSize * (pagerItems.CurrentPage + 11));
-                var macros = GetMacros(startIndex, endIndex, maxRecords, ref mTotalItems);
+                var macros = GetMacros(startIndex, endIndex, maxRecords, out mTotalItems);
                 foreach (MacroExpr expression in macros)
                 {
                     RenderItem(expression);
@@ -200,7 +200,7 @@ public partial class CMSModules_System_Controls_MacrosGrid : CMSUserControl, IUn
     /// <param name="endIndex">End index</param>
     /// <param name="maxTotalRecords">Maximum number of total records to process</param>
     /// <param name="totalRecords">Returns the total number of records found</param>
-    private IEnumerable<MacroExpr> GetMacros(int startIndex, int endIndex, int maxTotalRecords, ref int totalRecords)
+    private IEnumerable<MacroExpr> GetMacros(int startIndex, int endIndex, int maxTotalRecords, out int totalRecords)
     {
         var index = 0;
         IEnumerable<string> objectTypes = null;
@@ -209,7 +209,7 @@ public partial class CMSModules_System_Controls_MacrosGrid : CMSUserControl, IUn
         var selectedType = ValidationHelper.GetString(selObjectType.Value, "");
         if (!String.IsNullOrEmpty(selectedType))
         {
-            if (ObjectTypeManager.GetRegisteredTypeInfo(selectedType) != null)
+            if (ObjectTypeManager.GetTypeInfo(selectedType) != null)
             {
                 objectTypes = new List<string> { selectedType };
             }
@@ -220,13 +220,13 @@ public partial class CMSModules_System_Controls_MacrosGrid : CMSUserControl, IUn
             objectTypes = ObjectTypeManager.ObjectTypesWithMacros;
         }
 
-        var result = new List<MacroExpr>();
-        var search = txtFilter.Text;
-
-        var invalid = chkInvalid.Checked;
-        var skipTesting = SystemContext.DevelopmentMode && chkSkipTesting.Checked;
-
+        var textToSearch = txtTextToSearch.Text;
+        var searchByText = !String.IsNullOrEmpty(textToSearch);
+        var reportProblems = chkReportProblems.Checked;
+        var skipTestingObjects = SystemContext.DevelopmentMode && chkSkipTestingObjects.Checked;
         var type = drpType.Text;
+
+        var result = new List<MacroExpr>();
 
         foreach (var objectType in objectTypes)
         {
@@ -247,86 +247,81 @@ public partial class CMSModules_System_Controls_MacrosGrid : CMSUserControl, IUn
 
             var typeInfo = infos.TypeInfo;
 
-            if (skipTesting)
+            if (skipTestingObjects)
             {
                 ExcludeTestingObjects(infos);
             }
 
-            if (!String.IsNullOrEmpty(search))
-            {
-                // Search particular expression
-                infos.WhereAnyColumnContains(search);
-            }
-            else
-            {
-                // Search just type
-                infos.WhereAnyColumnContains("{" + type);
-            }
+            // Search particular expression or search macros of specific type
+            infos.WhereAnyColumnContains(searchByText ? textToSearch : "{" + type);
 
             Action<DataRow> collectMacros = dr =>
             {
                 var drc = new DataRowContainer(dr);
 
                 // Process all expressions
-                MacroProcessor.ProcessMacros(drc, (expression, colName) =>
+                MacroProcessor.ProcessMacros(drc, (context, colName) =>
+                {
+                    // Get original macro text with hash
+                    int length = context.MacroEnd - context.MacroStart;
+                    string macroType;
+                    string expression = MacroProcessor.RemoveMacroBrackets(context.SourceText.Substring(context.MacroStart, length), out macroType);
+
+                    // Decode macro from XML if needed
+                    if (MacroProcessor.IsXMLColumn(colName))
                     {
-                        var originalExpression = expression;
+                        expression = HTMLHelper.HTMLDecode(expression);
+                    }
 
-                        // Decode macro from XML
-                        if (MacroProcessor.IsXMLColumn(colName))
+                    MacroExpr e = null;
+                    bool add = false;
+
+                    if (!searchByText || (expression.IndexOfCSafe(textToSearch, true) >= 0))
+                    {
+                        // If not tracking errors, count immediately
+                        if (!reportProblems)
                         {
-                            expression = HTMLHelper.HTMLDecode(expression);
+                            // Apply paging. Endindex is -1 when paging is off
+                            if ((endIndex < 0) || ((index >= startIndex) && (index <= endIndex)))
+                            {
+                                e = GetMacroExpr(expression);
+                                add = true;
+                            }
+
+                            index++;
                         }
-
-                        MacroExpr e = null;
-                        bool add = false;
-
-                        if (String.IsNullOrEmpty(search) || (expression.IndexOfCSafe(search, true) >= 0))
+                        else
                         {
-                            // If not tracking errors, count immediately
-                            if (!invalid)
+                            e = GetMacroExpr(expression);
+
+                            // Filter invalid signature / syntax
+                            var pass = !e.SignatureValid || e.Error;
+                            if (pass)
                             {
                                 // Apply paging. Endindex is -1 when paging is off
                                 if ((endIndex < 0) || ((index >= startIndex) && (index <= endIndex)))
                                 {
-                                    e = GetMacroExpr(expression);
                                     add = true;
                                 }
 
                                 index++;
                             }
-                            else
-                            {
-                                e = GetMacroExpr(expression);
-
-                                // Filter invalid signature / syntax
-                                var pass = !e.SignatureValid || e.Error;
-                                if (pass)
-                                {
-                                    // Apply paging. Endindex is -1 when paging is off
-                                    if ((endIndex < 0) || ((index >= startIndex) && (index <= endIndex)))
-                                    {
-                                        add = true;
-                                    }
-
-                                    index++;
-                                }
-                            }
                         }
+                    }
 
-                        if (add)
-                        {
-                            // Fill in the object information
-                            e.ObjectType = objectType;
-                            e.ObjectID = (typeInfo.IDColumn == ObjectTypeInfo.COLUMN_NAME_UNKNOWN) ? 0 : ValidationHelper.GetInteger(dr[typeInfo.IDColumn], 0);
-                            e.Field = colName;
+                    if (add)
+                    {
+                        // Fill in the object information
+                        e.ObjectType = objectType;
+                        e.ObjectID = (typeInfo.IDColumn == ObjectTypeInfo.COLUMN_NAME_UNKNOWN) ? 0 : ValidationHelper.GetInteger(dr[typeInfo.IDColumn], 0);
+                        e.Field = colName;
 
-                            result.Add(e);
-                        }
+                        result.Add(e);
+                    }
 
-                        return originalExpression;
-                    },
-                    new List<string> { type }
+                    return context.Expression;
+                },
+                new List<string> { type }
                 );
 
                 if ((maxTotalRecords != -1) && (index >= maxTotalRecords))
@@ -352,7 +347,7 @@ public partial class CMSModules_System_Controls_MacrosGrid : CMSUserControl, IUn
         totalRecords = index;
         return result;
     }
-
+    
 
     /// <summary>
     /// Excludes the testing objects from the given infos query

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Comment.ascx.cs" Inherits="CMSModules_Objects_Controls_Locking_Comment" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Comment.ascx.cs" Inherits="CMSModules_Objects_Controls_Locking_Comment" %>
 <cms:CMSObjectManager ID="objectManager" runat="server" />
 <cms:CMSPanel ID="pnlContainer" ShortID="pC" runat="server">
     <div class="form-horizontal">

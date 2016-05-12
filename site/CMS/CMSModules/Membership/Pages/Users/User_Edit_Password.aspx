@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_Membership_Pages_Users_User_Edit_Password" Theme="Default"
-    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="User Edit - Password" Codebehind="User_Edit_Password.aspx.cs" %>
+    MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="User Edit - Password"  Codebehind="User_Edit_Password.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Membership/FormControls/Passwords/PasswordStrength.ascx" TagName="PasswordStrength"
     TagPrefix="cms" %>
@@ -13,7 +13,7 @@
                     <cms:LocalizedLabel ID="lblPassword" runat="server" Text="Label" CssClass="control-label" AssociatedControlID="passStrength" ResourceString="Administration-User_Edit_Password.NewPassword" />
                 </div>
                 <div class="editing-form-value-cell">
-                    <cms:PasswordStrength runat="server" ID="passStrength" AllowEmpty="true" />
+                    <cms:PasswordStrength runat="server" ID="passStrength" AllowEmpty="true" MaxLength="100" />
                 </div>
             </div>
             <div class="form-group">

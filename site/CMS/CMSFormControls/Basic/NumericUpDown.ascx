@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="NumericUpDown.ascx.cs" Inherits="CMSFormControls_Basic_NumericUpDown" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="NumericUpDown.ascx.cs" Inherits="CMSFormControls_Basic_NumericUpDown" %>
 <asp:Panel ID="pnlContainer" runat="server" CssClass="control-group-inline numeric-up-down">
     <cms:CMSTextBox ID="textbox" runat="server" />
     <div class="numeric-updown-buttons">

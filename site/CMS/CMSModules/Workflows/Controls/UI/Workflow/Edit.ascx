@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Workflows_Controls_UI_Workflow_Edit"
-    Codebehind="Edit.ascx.cs" %>
+     Codebehind="Edit.ascx.cs" %>
 
 <cms:UIForm runat="server" ID="editForm" ObjectType="cms.workflow" DefaultFieldLayout="TwoColumns" RefreshHeader="True">
     <SecurityCheck Resource="CMS.Workflow" Permission="modify" />

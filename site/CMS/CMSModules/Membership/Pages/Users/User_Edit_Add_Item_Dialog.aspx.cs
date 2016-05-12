@@ -77,7 +77,7 @@ public partial class CMSModules_Membership_Pages_Users_User_Edit_Add_Item_Dialog
         else
         {
             // Redirect to error page
-            URLHelper.Redirect(ResolveUrl("~/CMSMessages/Error.aspx?title=" + ResHelper.GetString("dialogs.badhashtitle") + "&text=" + ResHelper.GetString("dialogs.badhashtext")));
+            URLHelper.Redirect(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
         }
 
         ((ICMSModalMasterPage)CurrentMaster).ShowSaveAndCloseButton();

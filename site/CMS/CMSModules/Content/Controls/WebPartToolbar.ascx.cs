@@ -4,9 +4,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Collections.Generic;
-using System.Web.UI.DataVisualization.Charting;
 using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 using System.Linq;
 
 using CMS.DocumentEngine;
@@ -15,22 +13,19 @@ using CMS.Base;
 using CMS.ExtendedControls;
 using CMS.PortalControls;
 using CMS.PortalEngine;
-using CMS.SiteProvider;
 using CMS.Membership;
 using CMS.DataEngine;
 using CMS.IO;
 
+
 public partial class CMSModules_Content_Controls_WebPartToolbar : CMSAbstractPortalUserControl
 {
-
     #region "Variables"
 
     /// <summary>
     /// CategorySelector - CMSDropDownList codes
     /// </summary>
     private const string CATEGORY_RECENTLY_USED = "##recentlyused##";
-    private const string CATEGORY_ALL = "##all##";
-    private const string CATEGORY_WIREFRAMES = "Wireframes";
     private const string CATEGORY_UIWEBPARTS = "UIWebparts";
     private const string SPACE_REPLACEMENT = "__SPACE__";
     private const string CATEGORY_CHANGED_CODE = "wptcategorychanged";
@@ -65,26 +60,17 @@ public partial class CMSModules_Content_Controls_WebPartToolbar : CMSAbstractPor
             {
                 // Get the selected category from the cookie
                 mSelectedCategory = CookieHelper.GetValue(COOKIE_SELECTED_CATEGORY);
-                if (string.IsNullOrEmpty(mSelectedCategory))
-                {
-                    // Select the All web parts category by default
-                    mSelectedCategory = CATEGORY_ALL;
 
-                    // Pre-select wireframe category for wireframe pages
+                if (String.IsNullOrEmpty(mSelectedCategory))
+                {
                     string rootPath = categorySelector.RootPath;
                     if (String.IsNullOrEmpty(rootPath))
                     {
                         rootPath = "/";
                     }
 
-                    if (!String.IsNullOrEmpty(rootPath))
-                    {
-                        WebPartCategoryInfo wpci = WebPartCategoryInfoProvider.GetWebPartCategoryInfoByCodeName(rootPath);
-                        if (wpci != null)
-                        {
-                            mSelectedCategory = wpci.CategoryID.ToString();
-                        }
-                    }
+                    WebPartCategoryInfo wpci = WebPartCategoryInfoProvider.GetWebPartCategoryInfoByCodeName(rootPath);
+                    mSelectedCategory = (wpci != null) ? wpci.CategoryID.ToString() : CATEGORY_RECENTLY_USED;
                 }
                 else if (IsUITemplate() && (mSelectedCategory == CATEGORY_RECENTLY_USED))
                 {
@@ -115,47 +101,23 @@ public partial class CMSModules_Content_Controls_WebPartToolbar : CMSAbstractPor
         currentUser = MembershipContext.AuthenticatedUser;
         prefferedUICultureCode = currentUser.PreferredUICultureCode;
 
-        if (IsWireframe() || (PortalContext.ViewMode.IsWireframe()))
-        {
-            categorySelector.RootPath = CATEGORY_WIREFRAMES;
-            COOKIE_SELECTED_CATEGORY += "WF";
-        }
-        else if (IsUITemplate())
+        var categoryWhere = new WhereCondition();
+
+        if (IsUITemplate())
         {
             categorySelector.RootPath = CATEGORY_UIWEBPARTS;
             COOKIE_SELECTED_CATEGORY += "UI";
         }
         else
         {
-            if (!PortalHelper.IsWireframingEnabled(SiteContext.CurrentSiteName))
-            {
-                categorySelector.RootPath = "/";
-            }
-
-            categorySelector.WhereCondition = String.Format("ObjectPath <> N'{0}' AND ObjectPath NOT LIKE N'{0}/%'", CATEGORY_UIWEBPARTS);
+            categoryWhere.WhereNotEquals("ObjectPath", CATEGORY_UIWEBPARTS).WhereNotStartsWith("ObjectPath", CATEGORY_UIWEBPARTS + "/");
         }
 
         // Display only top level categories
-        categorySelector.WhereCondition = SqlHelper.AddWhereCondition(categorySelector.WhereCondition, "ObjectLevel < 2");
+        categoryWhere.WhereLessThan("ObjectLevel", 2);
+        categorySelector.WhereCondition = categoryWhere.ToString(true);
 
         base.OnInit(e);
-    }
-
-
-    /// <summary>
-    /// Returns true, if the current document is wireframe
-    /// </summary>
-    private static bool IsWireframe()
-    {
-        var pageInfo = DocumentContext.CurrentPageInfo;
-        if (pageInfo == null)
-        {
-            return false;
-        }
-        else
-        {
-            return pageInfo.ClassName.EqualsCSafe("cms.wireframe", true);
-        }
     }
 
 
@@ -225,21 +187,12 @@ var WPTImgBaseSrc = '""" + ResolveUrl("~/CMSPages/GetMetaFile.aspx?maxsidesize=6
 "));
 
         // Adjust the page to accommodate the web part toolbar
-        scrollPanel.Layout = RepeatDirection.Vertical;
         scrollPanel.IsRTL = uiCultureRTL;
 
         // Set the selected category
         if (!RequestHelper.IsPostBack())
         {
-            if (SelectedCategory == CATEGORY_ALL)
-            {
-                // Select the "All web parts" category by index (value for the "All" category is not known)
-                categorySelector.DropDownListControl.SelectedIndex = 1;
-            }
-            else
-            {
-                categorySelector.DropDownListControl.SelectedValue = SelectedCategory;
-            }
+            categorySelector.DropDownListControl.SelectedValue = SelectedCategory;
         }
         else
         {
@@ -379,6 +332,8 @@ var WPTImgBaseSrc = '""" + ResolveUrl("~/CMSPages/GetMetaFile.aspx?maxsidesize=6
     {
         if (!dataLoaded || forceLoad)
         {
+            var repeaterWhere = new WhereCondition();
+            
             /* The order is category driven => first level category display name is used for all nodes incl. sub-nodes */
             string categoryOrder = @"
 (SELECT CMS_WebPartCategory.CategoryDisplayName FROM CMS_WebPartCategory 
@@ -387,6 +342,7 @@ THEN ObjectPath
 ELSE SUBSTRING(ObjectPath, 0, LEN(ObjectPath) - (LEN(ObjectPath) - CHARINDEX('/', ObjectPath, CHARINDEX('/', ObjectPath, 0) + 1)))
 END))
 ";
+
             // Set query repeater
             repItems.SelectedColumns = " ObjectID, DisplayName, ObjectType, ParentID, ThumbnailGUID, IconClass, ObjectLevel, WebPartDescription, WebPartSkipInsertProperties";
             repItems.OrderBy = categoryOrder + ", ObjectType  DESC, DisplayName";
@@ -424,7 +380,15 @@ END))
                         // Get all web parts for the selected category and its subcategories
                         if (categoryPath.EqualsCSafe("/"))
                         {
-                            repItems.WhereCondition = SqlHelper.AddWhereCondition(repItems.WhereCondition, "(ObjectType=N'webpart' OR ObjectLevel=1) AND (ParentID = " + selectedCategoryId + " OR ParentID IN (SELECT CategoryID FROM CMS_WebPartCategory WHERE CategoryPath LIKE N'" + categoryPath.Replace("'", "''") + "%'))");
+                            repeaterWhere.Where(repItems.WhereCondition).Where(w => w
+                                .WhereEquals("ObjectType", "webpart")
+                                .Or()
+                                .WhereEquals("ObjectLevel", 1)
+                            ).Where(w => w
+                                .WhereEquals("ParentID", selectedCategoryId)
+                                .Or()
+                                .WhereIn("ParentID", WebPartCategoryInfoProvider.GetCategories().WhereStartsWith("CategoryPath", categoryPath))
+                            );
 
                             // Set caching for query repeater
                             repItems.ForceCacheMinutes = true;
@@ -437,34 +401,45 @@ END))
                         else
                         {
                             // Prepare where condition -- the part that restricts web parts
-                            string where = "(ObjectType=N'webpart' AND (ParentID = " + selectedCategoryId + " OR ParentID IN (SELECT CategoryID FROM CMS_WebPartCategory WHERE CategoryPath LIKE N'" + categoryPath.Replace("'", "''") + "%')))";
+                            repeaterWhere.WhereEquals("ObjectType", "webpart")
+                                .Where(w => w
+                                    .WhereEquals("ParentID", selectedCategoryId)
+                                    .Or()
+                                    .WhereIn("ParentID", WebPartCategoryInfoProvider.GetCategories().WhereStartsWith("CategoryPath", categoryPath))
+                                );
 
                             // Get first level category path
                             firstLevelCategoryPath = categoryPath.Substring(0, categoryPath.IndexOf('/', 2));
 
+                            var selectedCategoryWhere = new WhereCondition();
+
                             // Distinguish special categories
-                            if (categoryPath.StartsWithCSafe(CATEGORY_WIREFRAMES, true) || categoryPath.StartsWithCSafe(CATEGORY_UIWEBPARTS, true))
+                            if (categoryPath.StartsWithCSafe(CATEGORY_UIWEBPARTS, true))
                             {
                                 if (!categoryPath.EqualsCSafe(firstLevelCategoryPath + "/", true))
                                 {
                                     // Currently selected category is one of subcategories
                                     string specialCategoryPath = firstLevelCategoryPath;
-                                    firstLevelCategoryPath = categoryPath.Substring(CATEGORY_WIREFRAMES.Length + 1).TrimEnd('/');
-                                    where += " OR (ObjectType = N'webpartcategory' AND ObjectLevel = 1 AND ObjectPath = N'" + specialCategoryPath + "/" + firstLevelCategoryPath + "')";
+                                    firstLevelCategoryPath = categoryPath.Substring(CATEGORY_UIWEBPARTS.Length + 1).TrimEnd('/');
+                                    selectedCategoryWhere.WhereEquals("ObjectPath", specialCategoryPath + "/" + firstLevelCategoryPath);
                                 }
                                 else
                                 {
                                     // Currently selected category is root category
-                                    where += " OR (ObjectType = N'webpartcategory' AND ObjectLevel = 1 AND ObjectPath LIKE N'" + firstLevelCategoryPath + "%')";
+                                    selectedCategoryWhere.WhereStartsWith("ObjectPath", firstLevelCategoryPath);
                                 }
                             }
                             else
                             {
                                 // All web part category
-                                where += " OR (ObjectType = N'webpartcategory' AND ObjectLevel = 1 AND ObjectPath = N'" + firstLevelCategoryPath + "')";
+                                selectedCategoryWhere.WhereEquals("ObjectPath", firstLevelCategoryPath);
                             }
 
-                            repItems.WhereCondition = SqlHelper.AddWhereCondition(repItems.WhereCondition, where);
+                            repeaterWhere.Or().Where(w => w
+                                .WhereEquals("ObjectType", "webpartcategory")
+                                .WhereEquals("ObjectLevel", 1)
+                                .Where(selectedCategoryWhere)
+                            );
 
                             // Set caching for query repeater
                             repItems.CacheMinutes = 0;
@@ -474,7 +449,14 @@ END))
                 }
 
                 // Do not display "Widget only" web parts in the toolbar
-                repItems.WhereCondition = SqlHelper.AddWhereCondition(repItems.WhereCondition, " ((WebPartType IS NULL) OR (WebPartType <> " + (int)WebPartTypeEnum.WidgetOnly + "))");
+                repItems.WhereCondition = new WhereCondition()
+                    .Where(repeaterWhere)
+                    .Where(w => w
+                        .WhereNull("WebPartType")
+                        .Or()
+                        .WhereNotEquals("WebPartType", (int)WebPartTypeEnum.WidgetOnly)
+                    )
+                    .ToString(true);
 
                 // Limit items if required
                 if (limitItems)

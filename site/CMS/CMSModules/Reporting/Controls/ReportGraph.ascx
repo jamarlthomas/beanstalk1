@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_Controls_ReportGraph"
-    Codebehind="ReportGraph.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_Controls_ReportGraph"
+     Codebehind="ReportGraph.ascx.cs" %>
 <div id="graphDiv" runat="server" class="ReportGraphDiv">
     <cms:ContextMenuContainer runat="server" ID="menuCont" MenuID="">
         <asp:Label runat="server" ID="lblInfo" EnableViewState="False" Visible="False" />

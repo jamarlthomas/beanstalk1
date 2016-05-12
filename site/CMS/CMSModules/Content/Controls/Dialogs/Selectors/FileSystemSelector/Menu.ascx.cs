@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -7,6 +7,22 @@ using CMS.UIControls;
 public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSelector_Menu : CMSUserControl
 {
     #region "Public properties"
+
+    /// <summary>
+    /// If true, upload button is available
+    /// </summary>
+    public bool AllowNew
+    {
+        get
+        {
+            return NewFile.Visible;
+        }
+        set
+        {
+            NewFile.Visible = value;
+        }
+    }
+
 
     /// <summary>
     /// Gets or sets the value which determines whether to show the Parent button or not.
@@ -146,11 +162,14 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
     /// </summary>
     private void SetupControls()
     {
-        NewFile.AllowedExtensions = AllowedExtensions;
-        NewFile.TargetFolderPath = TargetFolderPath;
-        NewFile.NewTextFileExtension = NewTextFileExtension;
-        NewFile.SourceType = MediaSourceEnum.PhysicalFile;
-        NewFile.IsLiveSite = IsLiveSite;
+        if (AllowNew)
+        {
+            NewFile.AllowedExtensions = AllowedExtensions;
+            NewFile.TargetFolderPath = TargetFolderPath;
+            NewFile.NewTextFileExtension = NewTextFileExtension;
+            NewFile.SourceType = MediaSourceEnum.PhysicalFile;
+            NewFile.IsLiveSite = IsLiveSite;
+        }
 
         // Parent directory button
         if (ShowParentButton && (!String.IsNullOrEmpty(NodeParentID)))
@@ -159,6 +178,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
             btnParent.OnClientClick = String.Format("SelectNode('{0}');SetParentAction('{0}'); return false;", NodeParentID.Replace("\\", "\\\\").Replace("'", "\\'"));
         }
     }
-    
+
     #endregion
 }

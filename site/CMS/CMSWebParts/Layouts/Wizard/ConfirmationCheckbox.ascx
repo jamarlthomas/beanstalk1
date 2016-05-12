@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Layouts_Wizard_ConfirmationCheckbox" Codebehind="~/CMSWebParts/Layouts/Wizard/ConfirmationCheckbox.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Layouts_Wizard_ConfirmationCheckbox"  Codebehind="~/CMSWebParts/Layouts/Wizard/ConfirmationCheckbox.ascx.cs" %>
 
 <asp:panel runat="server" ID="pnlCheckBox" CssClass="CofirmationCheckbox" Visible="false">
     <cms:CMSCheckBox runat="server" id="chkAccept" visible="true"/> 

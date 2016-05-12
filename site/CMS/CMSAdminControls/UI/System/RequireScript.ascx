@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSAdminControls_UI_System_RequireScript" Codebehind="RequireScript.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSAdminControls_UI_System_RequireScript"  Codebehind="RequireScript.ascx.cs" %>
 <%@ Register src="~/CMSAdminControls/UI/PageElements/PageTitle.ascx" tagname="PageTitle" tagprefix="cms" %>
 
 <div class="RequireScript" id="scriptCheck">

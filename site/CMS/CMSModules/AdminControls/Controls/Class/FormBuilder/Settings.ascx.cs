@@ -1,5 +1,4 @@
-using System;
-using System.Web.UI;
+﻿using System;
 
 using CMS.ExtendedControls;
 using CMS.FormEngine;
@@ -18,8 +17,10 @@ public partial class CMSModules_AdminControls_Controls_Class_FormBuilder_Setting
 
     #region "Methods"
 
-    protected void Page_Load(object sender, EventArgs e)
+    protected override void OnLoad(EventArgs e)
     {
+        base.OnLoad(e);
+
         var btnGeneral = new CMSButtonGroupAction() { Text = GetString("general.properties"), OnClientClick = "manageSelectedTab(1); return false;" };
         var btnValidation = new CMSButtonGroupAction() { Text = GetString("formbuilder.validation"), OnClientClick = "manageSelectedTab(2); return false;", Enabled = !FieldIsPrimary };
 

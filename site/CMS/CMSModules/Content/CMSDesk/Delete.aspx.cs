@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -40,7 +40,6 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
     private CurrentUserInfo currentUser;
     private SiteInfo currentSite;
 
-    private static readonly Hashtable mErrors = new Hashtable();
     private Hashtable mParameters;
 
     private string currentCulture = CultureHelper.DefaultUICultureCode;
@@ -53,29 +52,17 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
     #region "Properties"
 
     /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
-
-    /// <summary>
     /// Current Error.
     /// </summary>
     private string CurrentError
     {
         get
         {
-            return ValidationHelper.GetString(mErrors["DeleteError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mErrors["DeleteError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -217,7 +204,6 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
         // Initialize events
         ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
         ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-        ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
         ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
 
         if (!RequestHelper.IsCallback())
@@ -245,15 +231,12 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
             }
             else
             {
-                string where = "ClassName <> 'CMS.Root'";
-                if (!string.IsNullOrEmpty(WhereCondition))
-                {
-                    where = SqlHelper.AddWhereCondition(where, WhereCondition);
-                }
+                var where = new WhereCondition(WhereCondition)
+                    .WhereNotEquals("ClassName", SystemDocumentTypes.Root);
                 allDocs = tree.SelectNodes(currentSite.SiteName, parentAliasPath.TrimEnd(new[] { '/' }) + "/%",
-                    TreeProvider.ALL_CULTURES, true, ClassID > 0 ? DataClassInfoProvider.GetClassName(ClassID) : TreeProvider.ALL_CLASSNAMES, where,
+                    TreeProvider.ALL_CULTURES, true, ClassID > 0 ? DataClassInfoProvider.GetClassName(ClassID) : TreeProvider.ALL_CLASSNAMES, where.ToString(true),
                                            "DocumentName", TreeProvider.ALL_LEVELS, false, 0,
-                                           TreeProvider.SELECTNODES_REQUIRED_COLUMNS + ",DocumentName,NodeParentID,NodeSiteID,NodeAliasPath,NodeSKUID");
+                                           DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS + ",DocumentName,NodeParentID,NodeSiteID,NodeAliasPath,NodeSKUID");
 
                 if (!DataHelper.DataSourceIsEmpty(allDocs))
                 {
@@ -409,7 +392,7 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
                         {
                             string nodeName = HTMLHelper.HTMLEncode(node.GetDocumentName());
                             // Get name for root document
-                            if (node.NodeClassName.ToLowerCSafe() == "cms.root")
+                            if (node.IsRoot())
                             {
                                 nodeName = HTMLHelper.HTMLEncode(currentSite.DisplayName);
                             }
@@ -465,7 +448,7 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
 
                         if (string.IsNullOrEmpty(parentAliasPath))
                         {
-                            cancelNodeId = ValidationHelper.GetInteger(DataHelper.GetDataRowValue(ds.Tables[0].Rows[0], "NodeParentID"), 0);
+                            cancelNodeId = DataHelper.GetIntValue(ds.Tables[0].Rows[0], "NodeParentID");
                         }
                         else
                         {
@@ -484,7 +467,7 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
                                 docList += HTMLHelper.HTMLEncode(name);
                                 if (isLink)
                                 {
-                                    docList += DocumentHelper.GetDocumentMarkImage(Page, DocumentMarkEnum.Link);
+                                    docList += DocumentUIHelper.GetDocumentMarkImage(Page, DocumentMarkEnum.Link);
                                 }
                                 docList += "<br />";
                                 lblDocuments.Text = docList;
@@ -563,7 +546,7 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
                     // Check that user can edit all site cultures
                     foreach (DataRow culture in siteCultures.Tables[0].Rows)
                     {
-                        string cultureCode = ValidationHelper.GetString(DataHelper.GetDataRowValue(culture, "CultureCode"), string.Empty);
+                        string cultureCode = DataHelper.GetStringValue(culture, "CultureCode");
                         if (!currentUser.IsCultureAllowed(cultureCode, currentSite.SiteName))
                         {
                             denyAllCulturesDeletion = true;
@@ -654,9 +637,8 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
         pnlContent.Visible = false;
 
         CurrentError = string.Empty;
-        CurrentLog.Close();
-        EnsureLog();
 
+        ctlAsyncLog.EnsureLog();
         ctlAsyncLog.Parameter = CultureCode + ";" + currentSite.SiteName + ";" + IsMultipleAction + ";" + AllLevels + ";" + deleteMode;
         ctlAsyncLog.RunAsync(Delete, WindowsIdentity.GetCurrent());
     }
@@ -703,14 +685,14 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
 
             // Prepare the where condition
             string where = new WhereCondition().WhereIn("NodeID", nodeIds).ToString(true);
-            string columns = SqlHelper.MergeColumns(TreeProvider.SELECTNODES_REQUIRED_COLUMNS, "NodeAliasPath, ClassName, DocumentCulture, NodeParentID");
+            string columns = SqlHelper.MergeColumns(DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS, "NodeAliasPath, ClassName, DocumentCulture, NodeParentID");
 
             bool combineWithDefaultCulture = false;
             string cultureCode = parameters[0];
 
             switch (parameters[4])
             {
-                // Normalne page deletion
+                // Standard page deletion
                 case "documentoptions":
                     combineWithDefaultCulture = chkAllCultures.Checked;
                     cultureCode = combineWithDefaultCulture ? TreeProvider.ALL_CULTURES : parameters[0];
@@ -719,7 +701,6 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
                 // Root page deletion
                 case "rootoptions":
                     cultureCode = rblRoot.SelectedValue == "allpages" ? TreeProvider.ALL_CULTURES : parameters[0];
-                    tree.DeleteChildNodes = rblRoot.SelectedValue != "current";
                     where = rblRoot.SelectedValue == "allculturepages" ? String.Empty : where;
                     break;
             }
@@ -805,8 +786,7 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
                         }
 
                         // Prepare settings for delete
-                        DeleteDocumentSettings settings = new DeleteDocumentSettings(node, chkAllCultures.Checked, chkDestroy.Checked, tree);
-
+                        var settings = new DeleteDocumentSettings(node, chkAllCultures.Checked, chkDestroy.Checked, tree);
                         bool skip = false;
 
                         // Add additional settings if alternating document is specified
@@ -814,6 +794,7 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
                         {
                             var nodeAliasPath = node.NodeAliasPath;
                             var altNodeAliasPath = altNode.NodeAliasPath;
+
                             // Skip deletion for pages which have alternative node as their child or itself
                             if (altNodeAliasPath.EqualsCSafe(nodeAliasPath, true) || altNodeAliasPath.StartsWithCSafe(nodeAliasPath.TrimEnd('/') + "/", true))
                             {
@@ -824,7 +805,7 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
                             {
                                 settings.AlternatingDocument = altNode;
                                 settings.AlternatingDocumentCopyAllPaths = chkAltAliases.Checked;
-                                settings.AlternatingDocumentMaxLevel = chkAltSubNodes.Checked ? -1 : node.NodeLevel;    
+                                settings.AlternatingDocumentMaxLevel = chkAltSubNodes.Checked ? -1 : node.NodeLevel;
                             }
                         }
 
@@ -845,8 +826,7 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state == CMSThread.ABORT_REASON_STOP)
+            if (CMSThread.Stopped(ex))
             {
                 // When canceled
                 ShowError(ResHelper.GetString("DeleteDocument.DeletionCanceled", currentCulture));
@@ -899,7 +879,7 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
                         TreeNode tn = DocumentHelper.GetDocument(refreshId, TreeProvider.ALL_CULTURES, tp);
                         if (tn != null)
                         {
-                            url = URLHelper.ResolveUrl(DocumentURLProvider.GetUrl(tn.NodeAliasPath));
+                            url = URLHelper.ResolveUrl(DocumentURLProvider.GetUrl(tn));
                         }
                     }
 
@@ -1061,13 +1041,6 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
         AddLog(cancel);
         ltlScript.Text += ScriptHelper.GetScript("var __pendingCallbacks = new Array();RefreshCurrent();");
         ShowConfirmation(cancel);
-        CurrentLog.Close();
-    }
-
-
-    private void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
     }
 
 
@@ -1079,14 +1052,12 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
         }
         ctlAsyncLog.Parameter = null;
         ShowError(CurrentError);
-        CurrentLog.Close();
     }
 
 
     private void ctlAsyncLog_OnFinished(object sender, EventArgs e)
     {
         ShowError(CurrentError);
-        CurrentLog.Close();
 
         if (!string.IsNullOrEmpty(CurrentError))
         {
@@ -1102,23 +1073,12 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
 
 
     /// <summary>
-    /// Ensures the logging context.
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext log = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-        return log;
-    }
-
-
-    /// <summary>
     /// Adds the log information.
     /// </summary>
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
 

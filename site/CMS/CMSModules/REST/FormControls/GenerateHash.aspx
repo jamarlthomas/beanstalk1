@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="GenerateHash.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="GenerateHash.aspx.cs"
     Inherits="CMSModules_REST_FormControls_GenerateHash" Theme="Default" EnableEventValidation="true"
     MaintainScrollPositionOnPostback="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="REST Service - Generate authetication hash" %>

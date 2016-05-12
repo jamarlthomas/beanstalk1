@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Tools_Groups_Group_General" 
- MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Title="Group General" Codebehind="Group_General.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Tools_Groups_Group_General" 
+ MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Title="Group General"  Codebehind="Group_General.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Forums/Controls/Groups/GroupEdit.ascx" TagName="GroupEdit" TagPrefix="cms" %>
 

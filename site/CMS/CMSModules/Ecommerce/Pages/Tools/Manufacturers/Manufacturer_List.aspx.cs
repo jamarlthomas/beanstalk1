@@ -40,40 +40,9 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Manufacturers_Manufacturer
 
         if (actionName == "edit")
         {
-            var url = UIContextHelper.GetElementUrl("CMS.Ecommerce", "EditManufacturer", false, actionArgument.ToInteger(0));
+            var url = UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, "EditManufacturer", false, actionArgument.ToInteger(0));
             url = URLHelper.AddParameterToUrl(url, "action", "edit");
             URLHelper.Redirect(url);
-        }
-        else if (actionName == "delete")
-        {
-            // Check module permissions
-            var manufacturerObj = ManufacturerInfoProvider.GetManufacturerInfo(manufacturerId);
-            if (manufacturerObj != null)
-            {
-                if (!ECommerceContext.IsUserAuthorizedToModifyManufacturer(manufacturerObj))
-                {
-                    if (manufacturerObj.IsGlobal)
-                    {
-                        RedirectToAccessDenied("CMS.Ecommerce", "EcommerceGlobalModify");
-                    }
-                    else
-                    {
-                        RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyManufacturers");
-                    }
-                }
-
-                // Check dependencies
-                if (manufacturerObj.Generalized.CheckDependencies())
-                {
-                    // Show error message
-                    ShowError(ECommerceHelper.GetDependencyMessage(manufacturerObj));
-
-                    return;
-                }
-
-                // Delete ManufacturerInfo object from database
-                ManufacturerInfoProvider.DeleteManufacturerInfo(manufacturerObj);
-            }
         }
     }
 

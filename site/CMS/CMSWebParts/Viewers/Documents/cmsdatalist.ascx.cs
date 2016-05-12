@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web;
 using System.Web.UI;
@@ -232,7 +232,7 @@ public partial class CMSWebParts_Viewers_Documents_cmsdatalist : CMSAbstractWebP
         }
         set
         {
-            SetValue("SelctOnlyPublished", value);
+            SetValue("SelectOnlyPublished", value);
             lstElem.SelectOnlyPublished = value;
         }
     }

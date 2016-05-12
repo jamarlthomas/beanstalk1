@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.Core;
@@ -10,7 +10,6 @@ using CMS.SiteProvider;
 using CMS.UIControls;
 using CMS.ExtendedControls;
 using CMS.DataEngine;
-using CMS.Ecommerce;
 
 // Edited object
 [EditedObject(ContactInfo.OBJECT_TYPE, "contactid")]
@@ -185,9 +184,9 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Contact_Membership
                         continue;
                     }
 
-                    var customer = CustomerInfoProvider.GetCustomerInfo(customerIdInt);
                     // Only allow adding customers on the same site as contact or registered customers
-                    if ((customer == null) || ((customer.CustomerSiteID != currentSiteID) && (customer.CustomerSiteID != 0)))
+                    var customer = BaseAbstractInfoProvider.GetInfoById(PredefinedObjectType.CUSTOMER, customerIdInt);
+                    if ((customer == null) || ((customer.Generalized.ObjectSiteID != currentSiteID) && !customer.IsGlobal))
                     {
                         continue;
                     }

@@ -1,4 +1,4 @@
-using CMS.Chat;
+﻿using CMS.Chat;
 using CMS.UIControls;
 
 [EditedObject(ChatRoomInfo.OBJECT_TYPE, "roomId")]

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Dashboard.aspx.cs" Inherits="CMSModules_OnlineMarketing_Pages_Dashboard"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Dashboard.aspx.cs" Inherits="CMSModules_OnlineMarketing_Pages_Dashboard"
     Theme="Default" EnableEventValidation="false" %>
 
 <%@ Register Src="~/CMSModules/Widgets/Controls/Dashboard.ascx" TagName="Dashboard" TagPrefix="cms" %>

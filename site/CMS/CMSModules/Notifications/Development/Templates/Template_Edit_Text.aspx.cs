@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Base;
@@ -38,7 +38,7 @@ public partial class CMSModules_Notifications_Development_Templates_Template_Edi
 
         if (templateTextElem.GatewayCount <= 10)
         {
-            SaveAction saveAction = new SaveAction(Page);
+            SaveAction saveAction = new SaveAction();
 
             if (templateTextElem.GatewayCount == 0)
             {

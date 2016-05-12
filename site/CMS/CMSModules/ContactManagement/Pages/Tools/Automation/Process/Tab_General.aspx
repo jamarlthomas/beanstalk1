@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="True"
+﻿<%@ Page Language="C#" AutoEventWireup="True"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Automation process – General"
-    Inherits="CMSModules_ContactManagement_Pages_Tools_Automation_Process_Tab_General" Theme="Default" Codebehind="Tab_General.aspx.cs" %>            
+    Inherits="CMSModules_ContactManagement_Pages_Tools_Automation_Process_Tab_General" Theme="Default"  Codebehind="Tab_General.aspx.cs" %>            
 <%@ Register Src="~/CMSModules/Workflows/Controls/UI/Workflow/Edit.ascx"
     TagName="WorkflowEdit" TagPrefix="cms" %>
     

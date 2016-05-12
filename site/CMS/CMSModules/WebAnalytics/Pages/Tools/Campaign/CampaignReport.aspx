@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="CampaignReport.aspx.cs" Inherits="CMSModules_WebAnalytics_Pages_Tools_Campaign_CampaignReport"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="CampaignReport.aspx.cs" Inherits="CMSModules_WebAnalytics_Pages_Tools_Campaign_CampaignReport"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Campaign report"
     Theme="Default" EnableEventValidation="false" %>
 
@@ -13,12 +13,14 @@
 <%@ Register Src="~/CMSModules/WebAnalytics/Controls/ReportHeader.ascx" TagName="ReportHeaderActions"
     TagPrefix="cms" %>
 <asp:Content ID="cntHeader" runat="server" ContentPlaceHolderID="plcBeforeContent">
-    <asp:Panel runat="server" ID="pnlDisabled" CssClass="header-panel">
-        <cms:DisabledModule runat="server" ID="ucDisabledModule" />
-    </asp:Panel>
-    <cms:ReportHeaderActions runat="server" ID="reportHeaderActions" />
+    <div class="header-actions-container">
+        <cms:ReportHeaderActions runat="server" ID="reportHeaderActions" />
+    </div>
 </asp:Content>
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
+    <asp:Panel runat="server" ID="pnlDisabled" CssClass="header-panel-alert">
+        <cms:DisabledModule runat="server" ID="ucDisabledModule" />
+    </asp:Panel>
     <cms:GraphPreLoader runat="server" ID="ucGraphPreLoader" />
     <asp:Panel CssClass="header-panel" runat="server" ID="pnlHeader">
         <cms:GraphType runat="server" ID="ucGraphType" />

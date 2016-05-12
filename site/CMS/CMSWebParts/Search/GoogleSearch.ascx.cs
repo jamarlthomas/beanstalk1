@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -111,7 +111,7 @@ public partial class CMSWebParts_Search_GoogleSearch : CMSAbstractWebPart
                 if (Layout == "dialog")
                 {
                     ltlGoogleSearch.Text = "<div id=\"cse-search-form\" style=\"width: 100%;\">Loading</div><link rel=\"stylesheet\" href=\"http://www.google.com/cse/style/look/" + LayoutStyle + ".css\" type=\"text/css\" />";
-                    ScriptHelper.RegisterStartupScript(Page, typeof(string), ClientID + "linkscript", ScriptHelper.GetIncludeScript("http://www.google.com/jsapi"));
+                    ScriptHelper.RegisterStartupScript(Page, typeof(string), ClientID + "linkscript", ScriptHelper.GetScriptTag("http://www.google.com/jsapi"));
                     ScriptHelper.RegisterStartupScript(Page, typeof(string), ClientID + "linescript", ScriptHelper.GetScript("google.load('search', '1', {language : '" + culture + "'}); google.setOnLoadCallback(function() { var customSearchControl = new google.search.CustomSearchControl('" + SearchEngineUniqueID + "'); customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET); var options = new google.search.DrawOptions(); options.setSearchFormRoot('cse-search-form'); customSearchControl.draw('" + SearchResultsElementID + "', options); }, true);"));
                 }
                 else if (Layout == "results")
@@ -121,7 +121,7 @@ public partial class CMSWebParts_Search_GoogleSearch : CMSAbstractWebPart
                 else
                 {
                     ltlGoogleSearch.Text = "<div id=\"cse\" style=\"width: 100%;\">Loading</div><link rel=\"stylesheet\" href=\"http://www.google.com/cse/style/look/" + LayoutStyle + ".css\" type=\"text/css\" />";
-                    ScriptHelper.RegisterStartupScript(Page, typeof(string), ClientID + "linkscript", ScriptHelper.GetIncludeScript("http://www.google.com/jsapi"));
+                    ScriptHelper.RegisterStartupScript(Page, typeof(string), ClientID + "linkscript", ScriptHelper.GetScriptTag("http://www.google.com/jsapi"));
                     ScriptHelper.RegisterStartupScript(Page, typeof(string), ClientID + "linescript", ScriptHelper.GetScript("google.load('search', '1', {language : '" + culture + "'});google.setOnLoadCallback(function() {var customSearchControl = new google.search.CustomSearchControl('" + SearchEngineUniqueID + "');customSearchControl.setResultSetSize(google.search.Search." + Layout + ");customSearchControl.draw('cse');}, true);"));
                 }
             }

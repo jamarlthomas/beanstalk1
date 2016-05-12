@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -74,7 +74,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Customers_Customer_Edit_Ad
         // Check permissions
         if (!ECommerceContext.IsUserAuthorizedToModifyCustomer())
         {
-            RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyCustomers");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyCustomers");
         }
     }
 

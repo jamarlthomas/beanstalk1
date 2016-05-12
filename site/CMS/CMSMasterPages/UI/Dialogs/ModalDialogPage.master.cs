@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -329,7 +329,7 @@ function ResizeWorkingArea()
     {
         var headerHeight = headerElem.offsetHeight + ((dialogCMSHeaderPad != null) ? dialogCMSHeaderPad.offsetHeight : 0);
         var footerHeight = ((footerElem != null) ? footerElem.offsetHeight : 0) + ((dialogCKFooter != null) ? dialogCKFooter.offsetHeight : 0);
-        var height = (document.body.offsetHeight - headerHeight - footerHeight);
+        var height = ($cmsj(window).height() - headerHeight - footerHeight);
         if (height > 0)
         {
             var h = (height > 0 ? height : '0') + 'px';

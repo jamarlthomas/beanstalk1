@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_PageLayouts_PageLayout_CustomDeviceLayout"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_PageLayouts_PageLayout_CustomDeviceLayout"
     Theme="Default" ValidateRequest="false" EnableEventValidation="false" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Title="New device layout" Codebehind="PageLayout_CustomDeviceLayout.aspx.cs" %>
+    Title="New device layout"  Codebehind="PageLayout_CustomDeviceLayout.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelectorControl"
     TagPrefix="cms" %>

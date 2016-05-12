@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" Title="EventLog - Details"
-    Inherits="CMSModules_EventLog_EventLog_Details" Theme="Default" Codebehind="EventLog_Details.aspx.cs" %>
+    Inherits="CMSModules_EventLog_EventLog_Details" Theme="Default"  Codebehind="EventLog_Details.aspx.cs" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <div class="form-horizontal">

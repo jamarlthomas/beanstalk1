@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_AdminControls_Controls_MetaFiles_FileList"
-    Codebehind="FileList.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_AdminControls_Controls_MetaFiles_FileList"
+     Codebehind="FileList.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Content/Controls/Attachments/DirectFileUploader/DirectFileUploader.ascx"
     TagName="DirectFileUploader" TagPrefix="cms" %>

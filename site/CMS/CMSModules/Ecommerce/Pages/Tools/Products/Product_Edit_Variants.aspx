@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Product_Edit_Variants.aspx.cs" Inherits="CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Variants"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Product_Edit_Variants.aspx.cs" Inherits="CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Variants"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
@@ -8,7 +8,7 @@
 
 <asp:Content ContentPlaceHolderID="plcBeforeBody" runat="server" ID="cntBeforeBody">
     <asp:Panel runat="server" ID="pnlLog" Visible="false">
-        <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+        <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="Variants" />
     </asp:Panel>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="plcContent" ID="content1" runat="server">

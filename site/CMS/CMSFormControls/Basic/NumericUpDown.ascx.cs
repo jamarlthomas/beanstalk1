@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -321,7 +321,14 @@ public partial class CMSFormControls_Basic_NumericUpDown : FormEngineUserControl
 
             try
             {
-                FormHelper.LoadItemsIntoList(options, query, items, FieldInfo, ContextResolver);
+                new SpecialFieldsDefinition(resolver: ContextResolver)
+                {
+                    FieldInfo = FieldInfo,
+                    AllowDuplicates = true
+                }
+                .LoadFromText(options)
+                .LoadFromQuery(query)
+                .FillItems(items);
 
                 foreach (ListItem item in items)
                 {
@@ -508,8 +515,10 @@ Sys.Application.add_load(function (){
     private void EnableCheckingChanges()
     {
         const string script = @"
-Sys.Extended.UI.NumericUpDownBehavior.prototype.initializeOrig = Sys.Extended.UI.NumericUpDownBehavior.prototype.initialize;
-Sys.Extended.UI.NumericUpDownBehavior.prototype.initialize = function(){
+if(!Sys.Extended.UI.NumericUpDownBehavior.prototype.initializeOrig) {
+    Sys.Extended.UI.NumericUpDownBehavior.prototype.initializeOrig = Sys.Extended.UI.NumericUpDownBehavior.prototype.initialize;
+}
+Sys.Extended.UI.NumericUpDownBehavior.prototype.initialize = function() {
     this.initializeOrig();
     $cmsj(this._elementTextBox).data('ignorechanges', false);
 };";

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_MessageBoards_MessageBoardUnsubscription" Codebehind="~/CMSWebParts/MessageBoards/MessageBoardUnsubscription.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_MessageBoards_MessageBoardUnsubscription"  Codebehind="~/CMSWebParts/MessageBoards/MessageBoardUnsubscription.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/MessageBoards/Controls/Unsubscription.ascx" TagName="Unsubscription"
     TagPrefix="cms" %>

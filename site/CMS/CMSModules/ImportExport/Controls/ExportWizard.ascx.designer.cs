@@ -102,13 +102,13 @@ public partial class CMSModules_ImportExport_Controls_ExportWizard {
     protected global::System.Web.UI.WebControls.WizardStep wzdStepProgress;
     
     /// <summary>
-    /// lblProgress control.
+    /// ctlAsyncExport control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblProgress;
+    protected global::CMS.UIControls.AsyncControl ctlAsyncExport;
     
     /// <summary>
     /// pnlError control.
@@ -126,7 +126,7 @@ public partial class CMSModules_ImportExport_Controls_ExportWizard {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblError;
+    protected global::CMS.ExtendedControls.AlertLabel lblError;
     
     /// <summary>
     /// pnlWarning control.
@@ -144,7 +144,25 @@ public partial class CMSModules_ImportExport_Controls_ExportWizard {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblWarning;
+    protected global::CMS.ExtendedControls.AlertLabel lblWarning;
+    
+    /// <summary>
+    /// pnlErrorBlank control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlErrorBlank;
+    
+    /// <summary>
+    /// lblErrorBlank control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.AlertLabel lblErrorBlank;
     
     /// <summary>
     /// pnlPermissions control.
@@ -183,11 +201,11 @@ public partial class CMSModules_ImportExport_Controls_ExportWizard {
     protected global::System.Web.UI.WebControls.Literal ltlScriptAfter;
     
     /// <summary>
-    /// ctrlAsync control.
+    /// ctrlAsyncSelection control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.UIControls.AsyncControl ctrlAsync;
+    protected global::CMS.UIControls.AsyncControl ctrlAsyncSelection;
 }

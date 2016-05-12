@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Posts_PostListing"
-    Codebehind="PostListing.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Posts_PostListing"
+     Codebehind="PostListing.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <cms:UniGrid ID="gridPosts" runat="server" GridName="~/CMSModules/Forums/Controls/Posts/PostListing.xml"
     EnableViewState="true" DelayedReload="false" IsLiveSite="false" OrderBy="PostTime" />

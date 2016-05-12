@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Dashboard.ascx.cs" Inherits="CMSModules_Widgets_Controls_Dashboard" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Dashboard.ascx.cs" Inherits="CMSModules_Widgets_Controls_Dashboard" %>
 <script type="text/javascript">
         //<![CDATA[
     window.useDraggedClass = false;

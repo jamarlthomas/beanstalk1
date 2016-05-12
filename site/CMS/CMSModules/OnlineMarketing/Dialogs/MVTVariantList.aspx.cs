@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.Membership;
@@ -43,7 +43,7 @@ public partial class CMSModules_OnlineMarketing_Dialogs_MVTVariantList : CMSVari
         variantType = listElem.VariantType = VariantTypeFunctions.GetVariantTypeEnum(QueryHelper.GetString("varianttype", string.Empty));
 
         // Check permissions and redirect
-        OnlineMarketingContext.CheckPermissions(variantType);
+        VariantPermissionsChecker.CheckPermissions(variantType);
 
         // Get the alias path of the current node
         if (Node == null)

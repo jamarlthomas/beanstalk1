@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="PendingContacts.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_Automation_PendingContacts" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="PendingContacts.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_Automation_PendingContacts" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 <cms:UniGrid runat="server" ID="listElem" OrderBy="StateStatus, StateStepID" Columns="StateID, StateStepID, StateObjectID, StateWorkflowID, StateStatus, StateCreated, StateSiteID, StateUserID"

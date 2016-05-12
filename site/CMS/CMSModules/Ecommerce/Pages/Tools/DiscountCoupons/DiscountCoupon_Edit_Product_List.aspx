@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_DiscountCoupons_DiscountCoupon_Edit_Product_List"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_DiscountCoupons_DiscountCoupon_Edit_Product_List"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Discount coupon - Edit"
-    Codebehind="DiscountCoupon_Edit_Product_List.aspx.cs" %>
+     Codebehind="DiscountCoupon_Edit_Product_List.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"
     TagPrefix="cms" %>

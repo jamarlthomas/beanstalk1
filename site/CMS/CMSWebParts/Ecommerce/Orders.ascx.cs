@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 
+using CMS.Core;
 using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.ExtendedControls;
@@ -485,13 +486,13 @@ public partial class CMSWebParts_Ecommerce_Orders : CMSAbstractWebPart
         switch (actionName.ToLowerCSafe())
         {
             case "edit":
-                string redirectToUrl = UIContextHelper.GetElementUrl("cms.ecommerce", "orderproperties", false, orderId);
+                string redirectToUrl = UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, "orderproperties", false, orderId);
                 URLHelper.Redirect(redirectToUrl);
                 break;
 
             case "delete":
                 // Check 'ModifyOrders' and 'EcommerceModify' permission
-                if (!ECommerceContext.IsUserAuthorizedForPermission("ModifyOrders"))
+                if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.ORDERS_MODIFY))
                 {
                     return;
                 }
@@ -502,7 +503,7 @@ public partial class CMSWebParts_Ecommerce_Orders : CMSAbstractWebPart
 
             case "previous":
                 // Check 'ModifyOrders' and 'EcommerceModify' permission
-                if (!ECommerceContext.IsUserAuthorizedForPermission("ModifyOrders"))
+                if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.ORDERS_MODIFY))
                 {
                     return;
                 }
@@ -522,7 +523,7 @@ public partial class CMSWebParts_Ecommerce_Orders : CMSAbstractWebPart
 
             case "next":
                 // Check 'ModifyOrders' and 'EcommerceModify' permission
-                if (!ECommerceContext.IsUserAuthorizedForPermission("ModifyOrders"))
+                if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.ORDERS_MODIFY))
                 {
                     return;
                 }
@@ -555,7 +556,7 @@ public partial class CMSWebParts_Ecommerce_Orders : CMSAbstractWebPart
         base.OnContentLoaded();
 
         // Check module permissions
-        if (!ECommerceContext.IsUserAuthorizedForPermission("ReadOrders"))
+        if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.ORDERS_READ))
         {
             ShowError(String.Format(GetString("CMSMessages.AccessDeniedResource"), "EcommerceRead OR ReadOrders"));
             gridElem.Visible = false;
@@ -623,7 +624,7 @@ public partial class CMSWebParts_Ecommerce_Orders : CMSAbstractWebPart
             }
         }
         // Do not hide only if user has permissions
-        if (!hideAction && ECommerceContext.IsUserAuthorizedForPermission("ModifyOrders"))
+        if (!hideAction && ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.ORDERS_MODIFY))
         {
             return;
         }

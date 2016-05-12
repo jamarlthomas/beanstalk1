@@ -12,6 +12,15 @@
 public partial class CMSModules_System_Debug_System_DebugFiles {
     
     /// <summary>
+    /// btnClear control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSButton btnClear;
+    
+    /// <summary>
     /// ucDisabled control.
     /// </summary>
     /// <remarks>
@@ -39,6 +48,24 @@ public partial class CMSModules_System_Debug_System_DebugFiles {
     protected global::CMS.ExtendedControls.CMSDropDownList drpOperationType;
     
     /// <summary>
+    /// lblWriteOnly control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblWriteOnly;
+    
+    /// <summary>
+    /// chkWriteOnly control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSCheckBox chkWriteOnly;
+    
+    /// <summary>
     /// chkCompleteContext control.
     /// </summary>
     /// <remarks>
@@ -46,15 +73,6 @@ public partial class CMSModules_System_Debug_System_DebugFiles {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.CMSCheckBox chkCompleteContext;
-    
-    /// <summary>
-    /// btnClear control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSButton btnClear;
     
     /// <summary>
     /// plcLogs control.

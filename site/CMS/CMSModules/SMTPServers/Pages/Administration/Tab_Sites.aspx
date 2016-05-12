@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_SMTPServers_Pages_Administration_Tab_Sites"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_SMTPServers_Pages_Administration_Tab_Sites"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="SMTP Server Edit - Sites"
-    Codebehind="Tab_Sites.aspx.cs" %>
+     Codebehind="Tab_Sites.aspx.cs" %>
 
 <%@ Register src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" tagname="UniSelector" tagprefix="cms" %>
 

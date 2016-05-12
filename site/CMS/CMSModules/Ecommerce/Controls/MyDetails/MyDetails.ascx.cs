@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Ecommerce;
@@ -132,32 +132,18 @@ public partial class CMSModules_Ecommerce_Controls_MyDetails_MyDetails : CMSAdmi
         }
 
         btnOk.Text = GetString("General.OK");
- 
+
         // WAI validation
         lblCustomerPreferredCurrency.AssociatedControlClientID = selectCurrency.InputClientID;
         lblCustomerPreferredShippingOption.AssociatedControlClientID = drpShipping.InputClientID;
         lblCustomerPrefferedPaymentOption.AssociatedControlClientID = drpPayment.InputClientID;
 
         // Displays/hides company info region
+
         plcCompanyInfo.Visible = IsBusiness;
+        lblTaxRegistrationID.Text = GetString("Customers_Edit.lblTaxRegistrationID");
+        lblOrganizationID.Text = GetString("Customers_Edit.lblOrganizationID");
 
-        if (ECommerceSettings.ShowTaxRegistrationID(SiteContext.CurrentSite.SiteName))
-        {
-            lblTaxRegistrationID.Text = GetString("Customers_Edit.lblTaxRegistrationID");
-        }
-        else
-        {
-            plhTaxRegistrationID.Visible = false;
-        }
-
-        if (ECommerceSettings.ShowOrganizationID(SiteContext.CurrentSite.SiteName))
-        {
-            lblOrganizationID.Text = GetString("Customers_Edit.lblOrganizationID");
-        }
-        else
-        {
-            plhOrganizationID.Visible = false;
-        }
 
         int siteId = SiteContext.CurrentSiteID;
 
@@ -329,14 +315,8 @@ public partial class CMSModules_Ecommerce_Controls_MyDetails_MyDetails : CMSAdmi
             if (IsBusiness)
             {
                 mCustomer.CustomerCompany = txtCustomerCompany.Text.Trim();
-                if (ECommerceSettings.ShowOrganizationID(siteName))
-                {
-                    mCustomer.CustomerOrganizationID = txtOraganizationID.Text.Trim();
-                }
-                if (ECommerceSettings.ShowTaxRegistrationID(siteName))
-                {
-                    mCustomer.CustomerTaxRegistrationID = txtTaxRegistrationID.Text.Trim();
-                }
+                mCustomer.CustomerOrganizationID = txtOraganizationID.Text.Trim();
+                mCustomer.CustomerTaxRegistrationID = txtTaxRegistrationID.Text.Trim();
             }
             else
             {
@@ -347,15 +327,6 @@ public partial class CMSModules_Ecommerce_Controls_MyDetails_MyDetails : CMSAdmi
 
             // Update customer data
             CustomerInfoProvider.SetCustomerInfo(mCustomer);
-
-            // Update corresponding user email
-            UserInfo user = mCustomer.CustomerUser;
-            if (user != null)
-            {
-                user.Email = mCustomer.CustomerEmail;
-                user.UserSettings.SetValue("UserPhone", Customer.CustomerPhone);
-                UserInfoProvider.SetUserInfo(user);
-            }
 
             // Update corresponding contact data
             ModuleCommands.OnlineMarketingUpdateContactFromExternalData(mCustomer, DataClassInfoProvider.GetDataClassInfo(CustomerInfo.TYPEINFO.ObjectClassName).ClassContactOverwriteEnabled,

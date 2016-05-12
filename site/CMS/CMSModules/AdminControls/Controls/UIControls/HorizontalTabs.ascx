@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSModules/AdminControls/Controls/UIControls/HorizontalTabs.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSModules/AdminControls/Controls/UIControls/HorizontalTabs.ascx.cs"
     Inherits="CMSModules_AdminControls_Controls_UIControls_HorizontalTabs" %>
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/PageTitle.ascx" TagName="PageTitle" TagPrefix="cms" %>
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector" TagPrefix="cms" %>

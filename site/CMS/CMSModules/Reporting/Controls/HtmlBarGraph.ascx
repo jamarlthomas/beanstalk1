@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="HtmlBarGraph.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="HtmlBarGraph.ascx.cs"
     Inherits="CMSModules_Reporting_Controls_HtmlBarGraph" %>
 <asp:Label runat="server" ID="lblError" CssClass="ErrorLabel" EnableViewState="false"
     Visible="false" />

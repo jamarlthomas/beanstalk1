@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_System_FieldSelector"
-    Codebehind="FieldSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_System_FieldSelector"
+     Codebehind="FieldSelector.ascx.cs" %>
 <%@ Register Src="~/CMSFormControls/Classes/SelectClassNames.ascx" TagPrefix="cms"
     TagName="SelectClassNames" %>
 <div class="editing-form-value-cell">

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="UserServer.ascx.cs" Inherits="CMSInstall_Controls_WizardSteps_UserServer" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="UserServer.ascx.cs" Inherits="CMSInstall_Controls_WizardSteps_UserServer" %>
 <div class="install-content">
     <div class="install-wizard">
     <table class="install-wizard" border="0" cellpadding="0" cellspacing="0">

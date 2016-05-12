@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Controls_Subscriptions"
-    Codebehind="Subscriptions.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Controls_Subscriptions"
+     Codebehind="Subscriptions.ascx.cs" %>
 <cms:LocalizedHeading runat="server" Level="4" ID="headNewsletters" ResourceString="Subscriptions.Newsletters" IsAnchor="true" Visible="false" EnableViewState="false" />
 <asp:Panel ID="pnlNewsletters" runat="server" Visible="false" />
 <cms:LocalizedHeading runat="server" Level="4" ID="headBlogs" ResourceString="Subscriptions.BlogPosts" IsAnchor="true" Visible="false" EnableViewState="false" />

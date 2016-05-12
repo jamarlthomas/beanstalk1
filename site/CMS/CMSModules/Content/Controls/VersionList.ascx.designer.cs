@@ -39,15 +39,6 @@ public partial class CMSModules_Content_Controls_VersionList {
     protected global::CMS.ExtendedControls.LocalizedHeading headHistory;
     
     /// <summary>
-    /// btnDestroy control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedButton btnDestroy;
-    
-    /// <summary>
     /// gridHistory control.
     /// </summary>
     /// <remarks>
@@ -55,4 +46,13 @@ public partial class CMSModules_Content_Controls_VersionList {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMSAdminControls_UI_UniGrid_UniGrid gridHistory;
+    
+    /// <summary>
+    /// btnDestroy control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedButton btnDestroy;
 }

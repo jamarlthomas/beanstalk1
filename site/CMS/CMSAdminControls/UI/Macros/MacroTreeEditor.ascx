@@ -1,7 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_Macros_MacroTreeEditor"
-    Codebehind="MacroTreeEditor.ascx.cs" %>
-<%@ Register Src="~/CMSAdminControls/UI/Macros/MacroEditor.ascx" TagName="MacroEditor"
-    TagPrefix="cms" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_Macros_MacroTreeEditor"
+     Codebehind="MacroTreeEditor.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/Trees/MacroTree.ascx" TagName="MacroTree"
     TagPrefix="cms" %>
 <asp:PlaceHolder runat="server" ID="plcControl">

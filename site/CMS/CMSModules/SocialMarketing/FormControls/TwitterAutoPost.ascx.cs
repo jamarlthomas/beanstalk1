@@ -42,7 +42,7 @@ public partial class CMSModules_SocialMarketing_FormControls_TwitterAutoPost : S
                 var document = Document;
                 if ((mTweetInfo == null) && (document != null) && (document.DocumentGUID != Guid.Empty) && IsFeatureAvailable)
                 {
-                    mTweetInfo = TwitterPostInfoProvider.GetTwitterPostInfosByDocumentGuid(document.DocumentGUID, document.NodeSiteID).ToList().FirstOrDefault(x => x.TwitterPostIsCreatedByUser);
+                    mTweetInfo = TwitterPostInfoProvider.GetTwitterPostInfosByDocumentGuid(document.DocumentGUID, SiteIdentifier).ToList().FirstOrDefault(x => x.TwitterPostIsCreatedByUser);
                 }
                 mTweetInfoSet = true;
             }
@@ -256,7 +256,6 @@ public partial class CMSModules_SocialMarketing_FormControls_TwitterAutoPost : S
             ShowPostStateWarning(ResHelper.GetString("sm.twitter.posts.backcompatibility"));
         }
 
-        urlShortenerSelector.Enabled = chkShortenUrls.Checked;
         publishDateTime.Enabled = !chkPostAfterDocumentPublish.Checked;
 
         if ((TweetInfo != null) && !TweetInfo.IsEditable)
@@ -372,19 +371,6 @@ public partial class CMSModules_SocialMarketing_FormControls_TwitterAutoPost : S
 
 
     /// <summary>
-    /// Checkbox chkShortenUrls OnCheckedChanged event.
-    /// </summary>
-    protected void chkShortenUrls_OnCheckedChanged(object sender, EventArgs e)
-    {
-        urlShortenerSelector.Enabled = chkShortenUrls.Checked;
-        if (!chkShortenUrls.Checked)
-        {
-            urlShortenerSelector.Value = URLShortenerTypeEnum.None;
-        }
-    }
-
-
-    /// <summary>
     /// Checkbox chkPostToTwitter OnCheckedChanged event.
     /// </summary>
     protected void chkPostToTwitter_OnCheckedChanged(object sender, EventArgs e)
@@ -441,18 +427,19 @@ public partial class CMSModules_SocialMarketing_FormControls_TwitterAutoPost : S
             publishDateTime.Value = DateTime.Now;
         }
 
-        TwitterAccountInfo defaultAccountInfo = TwitterAccountInfoProvider.GetDefaultTwitterAccount(CurrentSite.SiteID);
+        channelSelector.ObjectSiteName = SiteIdentifier;
+        TwitterAccountInfo defaultAccountInfo = TwitterAccountInfoProvider.GetDefaultTwitterAccount(SiteIdentifier);
         if (defaultAccountInfo != null)
         {
             channelSelector.Value = defaultAccountInfo.TwitterAccountID;
         }
 
         ClearPostState();
-        chkShortenUrls.Checked = false;
-        urlShortenerSelector.Value = (int)URLShortenerTypeEnum.None;
-        urlShortenerSelector.Enabled = false;
+        urlShortenerSelector.SiteID = SiteIdentifier;
+        urlShortenerSelector.Value = URLShortenerHelper.GetDefaultURLShortenerForSocialNetwork(SocialNetworkTypeEnum.Twitter, SiteIdentifier);
         chkPostAfterDocumentPublish.Visible = (Document != null);
         campaingSelector.Value = null;
+        campaingSelector.ObjectSiteName = SiteIdentifier;
 
         if ((FieldInfo != null) && !FieldInfo.AllowEmpty)
         {
@@ -485,11 +472,7 @@ public partial class CMSModules_SocialMarketing_FormControls_TwitterAutoPost : S
         publishDateTime.Value = post.TwitterPostScheduledPublishDateTime;
 
         campaingSelector.Value = post.TwitterPostCampaignID;
-        if (TweetInfo.TwitterPostURLShortenerType != URLShortenerTypeEnum.None)
-        {
-            chkShortenUrls.Checked = true;
-            urlShortenerSelector.Value = (int)post.TwitterPostURLShortenerType;
-        }
+        urlShortenerSelector.Value = post.TwitterPostURLShortenerType;
 
         DisplayForm = true;
         ShowPostPublishState(post);
@@ -510,14 +493,11 @@ public partial class CMSModules_SocialMarketing_FormControls_TwitterAutoPost : S
 
         post.TwitterPostTwitterAccountID = ValidationHelper.GetInteger(channelSelector.Value, 0);
         post.TwitterPostText = (string)tweetContent.Value;
-        if (chkShortenUrls.Checked)
-        {
-            post.TwitterPostURLShortenerType = (URLShortenerTypeEnum)ValidationHelper.GetInteger(urlShortenerSelector.Value, 0);
-        }
+        post.TwitterPostURLShortenerType = (URLShortenerTypeEnum)urlShortenerSelector.Value;
         post.TwitterPostPostAfterDocumentPublish = chkPostAfterDocumentPublish.Checked;
         post.TwitterPostScheduledPublishDateTime = ValidationHelper.GetDateTime(publishDateTime.Value, DateTimeHelper.ZERO_TIME);
         post.TwitterPostCampaignID = ValidationHelper.GetInteger(campaingSelector.Value, 0);
-        post.TwitterPostSiteID = SiteContext.CurrentSiteID;
+        post.TwitterPostSiteID = SiteIdentifier;
         post.TwitterPostIsCreatedByUser = true;
 
         return post;
@@ -581,7 +561,6 @@ public partial class CMSModules_SocialMarketing_FormControls_TwitterAutoPost : S
         chkPostToTwitter.Enabled = enabled;
         channelSelector.Enabled = enabled;
         tweetContent.Enabled = enabled;
-        chkShortenUrls.Enabled = enabled;
         urlShortenerSelector.Enabled = enabled;
         publishDateTime.Enabled = enabled;
         campaingSelector.Enabled = enabled;
@@ -609,13 +588,13 @@ public partial class CMSModules_SocialMarketing_FormControls_TwitterAutoPost : S
         return post.TwitterPostText.EqualsCSafe((string)tweetContent.Value)
             && post.TwitterPostScheduledPublishDateTime == formScheduledPublishTime
             && post.TwitterPostTwitterAccountID == ValidationHelper.GetInteger(channelSelector.Value, 0)
-            && post.TwitterPostURLShortenerType == (URLShortenerTypeEnum)ValidationHelper.GetInteger(urlShortenerSelector.Value, 0)
+            && post.TwitterPostURLShortenerType == (URLShortenerTypeEnum)urlShortenerSelector.Value
             && post.TwitterPostPostAfterDocumentPublish == chkPostAfterDocumentPublish.Checked
             && ValidationHelper.GetInteger(post.TwitterPostCampaignID, 0) == ValidationHelper.GetInteger(campaingSelector.Value, 0)
-            && post.TwitterPostSiteID == SiteContext.CurrentSiteID;
+            && post.TwitterPostSiteID == SiteIdentifier;
     }
 
-    
+
     /// <summary>
     /// Shows given message as an information into inner info label.
     /// </summary>

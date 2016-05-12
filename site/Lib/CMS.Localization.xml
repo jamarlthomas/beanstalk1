@@ -132,20 +132,6 @@
             </summary>
             <param name="cultureId">ID of culture to retrieve</param>
         </member>
-        <member name="M:CMS.Localization.CultureInfoProvider.GetSafeCulture(System.Int32)">
-            <summary>
-            Returns CultureInfo object for specified culture ID or null if it does not exist.
-            </summary>
-            <param name="cultureId">Culture ID</param>
-            <returns>CultureInfo with the specified ID or null</returns>
-        </member>
-        <member name="M:CMS.Localization.CultureInfoProvider.GetSafeCulture(System.String)">
-            <summary>
-            Returns CultureInfo object for specified culture code or null if it does not exist.
-            </summary>
-            <param name="cultureCode">Culture code</param>
-            <returns>CultureInfo with the specified code or null</returns>
-        </member>
         <member name="M:CMS.Localization.CultureInfoProvider.SetCultureInfo(CMS.Localization.CultureInfo)">
             <summary>
             Sets the specified culture info data.
@@ -170,6 +156,11 @@
             </summary>
             <param name="cultureCode">Code name of the culture to delete</param>
         </member>
+        <member name="M:CMS.Localization.CultureInfoProvider.GetCultures">
+            <summary>
+            Returns all culture records.
+            </summary>
+        </member>
         <member name="M:CMS.Localization.CultureInfoProvider.GetCultures(System.String,System.String,System.Int32,System.String)">
             <summary>
             Returns the DataSet of all the culture records with where condition and order by clause applied.
@@ -178,6 +169,11 @@
             <param name="orderBy">Order by clause</param>
             <param name="topN">Top N users</param>
             <param name="columns">Columns to get</param>
+        </member>
+        <member name="M:CMS.Localization.CultureInfoProvider.GetUICultures">
+            <summary>
+            Returns all UI culture records.
+            </summary>
         </member>
         <member name="M:CMS.Localization.CultureInfoProvider.GetUICultures(System.String,System.String,System.Int32,System.String)">
             <summary>
@@ -272,14 +268,15 @@
             </summary>
             <param name="ci">Culture object</param>
         </member>
-        <member name="M:CMS.Localization.CultureInfoProvider.GetCulturesInternal(System.String,System.String,System.Int32,System.String)">
+        <member name="M:CMS.Localization.CultureInfoProvider.GetCulturesInternal">
             <summary>
-            Returns the DataSet of all the culture records with where condition and order by clause applied.
+            Returns all culture records.
             </summary>
-            <param name="where">Where condition</param>]
-            <param name="orderBy">Order by clause</param>
-            <param name="topN">Top N users</param>
-            <param name="columns">Columns to get</param>
+        </member>
+        <member name="M:CMS.Localization.CultureInfoProvider.GetUICulturesInternal">
+            <summary>
+            Returns all UI culture records.
+            </summary>
         </member>
         <member name="P:CMS.Localization.CultureInfoProvider.CultureInfos">
             <summary>
@@ -680,6 +677,52 @@
             Localization event handler.
             </summary>
         </member>
+        <member name="M:CMS.Localization.ILocalizationStringSource.GetString(System.String,System.String)">
+            <summary>
+            Returns specified string from the localization string source.
+            </summary>
+            <param name="stringName">Name of the string</param>
+            <param name="culture">Culture</param>
+        </member>
+        <member name="P:CMS.Localization.ILocalizationStringSource.DefaultCulture">
+            <summary>
+            Source default culture
+            </summary>
+        </member>
+        <member name="M:CMS.Localization.SQLLocalizationSource.GetString(System.String,System.String)">
+            <summary>
+            Returns specified string from the localization string source.
+            </summary>
+            <param name="stringName">Name of the string</param>
+            <param name="culture">Culture</param>
+        </member>
+        <member name="P:CMS.Localization.SQLLocalizationSource.Instance">
+            <summary>
+            Singleton instance
+            </summary>
+        </member>
+        <member name="P:CMS.Localization.SQLLocalizationSource.DefaultCulture">
+            <summary>
+            Source default culture
+            </summary>
+        </member>
+        <member name="M:CMS.Localization.FileLocalizationSource.GetString(System.String,System.String)">
+            <summary>
+            Returns specified string from the localization string source.
+            </summary>
+            <param name="stringName">Name of the string</param>
+            <param name="culture">Culture</param>
+        </member>
+        <member name="P:CMS.Localization.FileLocalizationSource.Instance">
+            <summary>
+            Singleton instance
+            </summary>
+        </member>
+        <member name="P:CMS.Localization.FileLocalizationSource.DefaultCulture">
+            <summary>
+            Source default culture
+            </summary>
+        </member>
         <member name="T:CMS.Localization.LocalizationContext">
             <summary>
             Localization related context methods and variables.
@@ -759,7 +802,7 @@
             Initializes the tasks for media files synchronization
             </summary>
         </member>
-        <member name="M:CMS.Localization.LocalizationSynchronization.RemoveString(System.String,System.String,CMS.Core.BinaryData)">
+        <member name="M:CMS.Localization.LocalizationSynchronization.RemoveString(System.String,System.String[],CMS.Core.BinaryData)">
             <summary>
             Removes the resource string
             </summary>
@@ -780,6 +823,16 @@
         <member name="T:CMS.Localization.LocalizationHelper">
             <summary>
             Resource manager class that retrieves localized strings from resources.
+            </summary>
+        </member>
+        <member name="F:CMS.Localization.LocalizationHelper.SITE_RESOURCE_ROOT_FOLDER">
+            <summary>
+            Folder root name to store site specific resource strings
+            </summary>
+        </member>
+        <member name="F:CMS.Localization.LocalizationHelper.SITE_RESOURCE_RESX_FOLDER">
+            <summary>
+            Folder name to store site specific resx files
             </summary>
         </member>
         <member name="F:CMS.Localization.LocalizationHelper.MAX_KEY_LENGTH">
@@ -817,6 +870,31 @@
             If true, the localized texts are marked with special character to be easily recognizable
             </summary>
         </member>
+        <member name="F:CMS.Localization.LocalizationHelper.mDefaultManager">
+            <summary>
+            Default file resource manager
+            </summary>
+        </member>
+        <member name="F:CMS.Localization.LocalizationHelper.mFileManagers">
+            <summary>
+            Resource file managers dictionary
+            </summary>
+        </member>
+        <member name="F:CMS.Localization.LocalizationHelper.mUseSQLResourceManagerAsPrimary">
+            <summary>
+            If true, SQL Resource manager if used as primary source to retrieve the strings.
+            </summary>
+        </member>
+        <member name="F:CMS.Localization.LocalizationHelper.mSQLPrioritizedStringSources">
+            <summary>
+            Localization string sources to be used when sql source has higher priority.
+            </summary>
+        </member>
+        <member name="F:CMS.Localization.LocalizationHelper.mFilePrioritizedStringSources">
+            <summary>
+            Localization string sources to be used when file resx source has higher priority.
+            </summary>
+        </member>
         <member name="M:CMS.Localization.LocalizationHelper.GetDefaultManager">
             <summary>
             Gets the default resource manager
@@ -836,20 +914,32 @@
             <param name="resKey">Resource key</param>
             <param name="resPrefix">Resource prefix</param>
         </member>
-        <member name="M:CMS.Localization.LocalizationHelper.GetUniqueResStringKey(System.String,System.String,System.Boolean,System.Int32)">
+        <member name="M:CMS.Localization.LocalizationHelper.GetUniqueResStringKey(System.String,System.String,System.Int32)">
             <summary>
             Returns unique resource string key from given plain text.
             </summary>
             <param name="resKeyPrefix">Prefix of the resource string that should be used</param>
             <param name="plainText">Plain text from which the string should be generated</param>
             <param name="maxKeyLength">Maximal resource string key length</param>
-            <param name="returnWithPrefix">Indicates whether return resource string with prefix</param>
+        </member>
+        <member name="M:CMS.Localization.LocalizationHelper.LimitLength(System.String,System.Int32)">
+            <summary>
+            Limits the string length.
+            </summary>
+            <param name="text">Text to trim</param>
+            <param name="maxLength">Max length</param>
         </member>
         <member name="M:CMS.Localization.LocalizationHelper.CreateFileManager(System.String)">
             <summary>
             Creates a new instance of file manager.
             </summary>
             <param name="culture">Culture</param>
+        </member>
+        <member name="M:CMS.Localization.LocalizationHelper.Clear">
+            <summary>
+            Clears the current instances of the file managers which can retrieve data from the resource files.
+            This will ensure reloading the resource strings from the resource files.
+            </summary>
         </member>
         <member name="M:CMS.Localization.LocalizationHelper.GetResourceFilePaths(System.String,System.String)">
             <summary>
@@ -874,6 +964,14 @@
             <param name="baseFolderPath">The path to the folder with resource files.</param>
             <param name="cultureCode">The culture name in the format <c>languagecode2-country/regioncode2</c>, or an empty string for the default localization.</param>
             <returns>An enumerable collection of the full names of modular resource files (including their paths) for the specified culture</returns>
+        </member>
+        <member name="M:CMS.Localization.LocalizationHelper.GetSitesResourcesFilePaths(System.String,System.String)">
+            <summary>
+            Returns an enumerable collection of the names of site resource files (including their paths) for the specified culture.
+            </summary>
+            <param name="appDataFolderPath">The path to the site folder with resource files.</param>
+            <param name="cultureCode">The culture name in the format <c>languagecode2-country/regioncode2</c>, or an empty string for the default localization.</param>
+            <returns>An enumerable collection of the full names of site resource files (including their paths) for the specified culture</returns>
         </member>
         <member name="M:CMS.Localization.LocalizationHelper.GetFolderResourcesFilePaths(System.String,System.String)">
             <summary>
@@ -1011,14 +1109,42 @@
             </summary>
             <param name="value">String to process</param>
         </member>
+        <member name="M:CMS.Localization.LocalizationHelper.GetStringInternal(System.String,System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Returns specified string.
+            </summary>
+            <param name="stringName">Key of the string</param>
+            <param name="culture">Culture</param>
+            <param name="defaultValue">Value to return in case string not found</param>
+            <param name="useDefaultCulture">If true the default culture translation is used if translation in chosen culture doesn't exists</param>
+            <param name="allowMultiple">If true, multiple string variants are allowed</param>
+        </member>
+        <member name="M:CMS.Localization.LocalizationHelper.GetFileStringInternal(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Returns specified string from the resource files.
+            </summary>
+            <param name="stringName">Name of the string</param>
+            <param name="culture">Culture</param>
+            <param name="defaultValue">Default value to return in case no string found</param>
+            <param name="useDefaultCulture">If true the default culture translation is used if translation in chosen culture doesn't exists</param>
+        </member>
+        <member name="M:CMS.Localization.LocalizationHelper.GetFileManagerInternal(System.String)">
+            <summary>
+            Returns the file resource manager for given culture.
+            </summary>
+        </member>
+        <member name="M:CMS.Localization.LocalizationHelper.GetStringFromLocalizationSource(System.String,System.String,System.Boolean,System.Collections.Generic.IEnumerable{CMS.Localization.ILocalizationStringSource})">
+            <summary>
+            Returns specified localized string from given sources. Priority of the sources is given by their order.
+            </summary>
+            <param name="stringName">Key of the string</param>
+            <param name="culture">Culture</param>
+            <param name="useDefaultCulture">If true the default culture translation is used if translation in chosen culture doesn't exists</param>
+            <param name="sources">Localization string sources</param>
+        </member>
         <member name="P:CMS.Localization.LocalizationHelper.TrackLocalizations">
             <summary>
             If true, the localizations are tracked for current request
-            </summary>
-        </member>
-        <member name="P:CMS.Localization.LocalizationHelper.CurrentResources">
-            <summary>
-            Returns the list of resources used by current request. Hashtable [stringKey] -> [resolved]
             </summary>
         </member>
         <member name="P:CMS.Localization.LocalizationHelper.DefaultResourceFiles">
@@ -1029,11 +1155,6 @@
         <member name="P:CMS.Localization.LocalizationHelper.RegExResourceName">
             <summary>
             Resource name regular expression.
-            </summary>
-        </member>
-        <member name="P:CMS.Localization.LocalizationHelper.UseSQLResourceManager">
-            <summary>
-            If true, SQL Resource manager if used to retrieve the strings.
             </summary>
         </member>
         <member name="P:CMS.Localization.LocalizationHelper.UseSQLResourceManagerAsPrimary">
@@ -1051,14 +1172,19 @@
             Returns default file resource manager.
             </summary>
         </member>
-        <member name="P:CMS.Localization.LocalizationHelper.FileManagers">
-            <summary>
-            File managers.
-            </summary>
-        </member>
         <member name="P:CMS.Localization.LocalizationHelper.RegexSpecialMacro">
             <summary>
             Regular expression for resolving special macro.
+            </summary>
+        </member>
+        <member name="P:CMS.Localization.LocalizationHelper.DefaultManagerInternal">
+            <summary>
+            Returns default file resource manager.
+            </summary>
+        </member>
+        <member name="P:CMS.Localization.LocalizationHelper.FileManagers">
+            <summary>
+            File managers.
             </summary>
         </member>
         <member name="T:CMS.Localization.ResourceStringInfo">
@@ -1160,17 +1286,11 @@
             </summary>
             <param name="dr">Data row with the class info data</param>
         </member>
-        <member name="M:CMS.Localization.ResourceStringInfo.LoadFromDataContainer(CMS.Base.IDataContainer)">
+        <member name="M:CMS.Localization.ResourceStringInfo.LoadData(CMS.DataEngine.LoadDataSettings)">
             <summary>
             Loads the object data from given data container.
             </summary>
-            <param name="data">Container with the data</param>
-        </member>
-        <member name="M:CMS.Localization.ResourceStringInfo.LoadFromDataRow(System.Data.DataRow)">
-            <summary>
-            Loads the object data from given DataRow.
-            </summary>
-            <param name="dr">Data row with the data</param>
+            <param name="settings">Data settings</param>
         </member>
         <member name="P:CMS.Localization.ResourceStringInfo.TranslationText">
             <summary>
@@ -1264,6 +1384,11 @@
         <member name="M:CMS.Localization.ResourceStringListInfo.#ctor">
             <summary>
             Constructor - Creates an empty ResourceStringListInfo object.
+            </summary>
+        </member>
+        <member name="M:CMS.Localization.ResourceStringListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
             </summary>
         </member>
         <member name="M:CMS.Localization.ResourceStringListInfo.GetDataQueryInternal">
@@ -1584,6 +1709,22 @@
             </summary>
             <param name="key">Resource string key</param>
         </member>
+        <member name="M:CMS.Localization.ResourceStringInfoProvider.GetStringInternal(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Returns string by specified key and specified cultureCode.
+            </summary>
+            <param name="key">Resource string key</param>
+            <param name="cultureCode">Resource string UICulture code</param>
+            <param name="defaultValue">Default value in case string was not found</param>
+            <param name="useDefaultCulture">If true the default culture translation is used if translation in chosen culture doesn't exist</param>
+        </member>
+        <member name="M:CMS.Localization.ResourceStringInfoProvider.GetStringFromDBInternal(System.String,System.String)">
+            <summary>
+            Returns string by specified key and specified cultureCode.
+            </summary>
+            <param name="key">Resource string key</param>
+            <param name="cultureCode">Resource string UICulture code</param>
+        </member>
         <member name="P:CMS.Localization.ResourceStringInfoProvider.Resources">
             <summary>
             Contains Resources pre-loaded in memory. Table of [cultureCode.ToLower + "." + stringKey.ToLower] -> [Text]
@@ -1592,6 +1733,11 @@
         <member name="P:CMS.Localization.ResourceStringInfoProvider.DefaultUICulture">
             <summary>
             Returns default UI culture.
+            </summary>
+        </member>
+        <member name="P:CMS.Localization.ResourceStringInfoProvider.DatabaseAvailable">
+            <summary>
+            Indicates if database is available and provider is ready to obtain translation from the database.  
             </summary>
         </member>
         <member name="T:CMS.Localization.LocalizationModule">

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Inherits="CMSModules_BadWords_BadWords_Edit_General" Theme="Default" Codebehind="BadWords_Edit_General.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+    Inherits="CMSModules_BadWords_BadWords_Edit_General" Theme="Default"  Codebehind="BadWords_Edit_General.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/BadWords/FormControls/SelectBadWordAction.ascx" TagPrefix="cms"
     TagName="SelectBadWordAction" %>

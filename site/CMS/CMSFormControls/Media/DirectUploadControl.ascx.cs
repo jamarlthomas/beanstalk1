@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 
+using CMS.Base;
 using CMS.DocumentEngine;
 using CMS.FormControls;
 using CMS.FormEngine;
@@ -79,16 +80,21 @@ public partial class CMSFormControls_Media_DirectUploadControl : FormEngineUserC
 
     #region "Methods"
 
+    protected override void OnInit(EventArgs e)
+    {
+        base.OnInit(e);
+        if (FieldInfo != null)
+        {
+            directUpload.ID = FieldInfo.Name;
+        }
+    }
+
+
     /// <summary>
     /// Page load.
     /// </summary>
     protected void Page_Load(object sender, EventArgs e)
     {
-        // Initialize control
-        directUpload.Form = Form;
-
-        directUpload.OnUploadFile += Form.RaiseOnUploadFile;
-        directUpload.OnDeleteFile += Form.RaiseOnDeleteFile;
         directUpload.CheckPermissions = false;
         if (FieldInfo != null)
         {
@@ -107,9 +113,9 @@ public partial class CMSFormControls_Media_DirectUploadControl : FormEngineUserC
         // Set image auto resize configuration
         if (FieldInfo != null)
         {
-            int width = 0;
-            int height = 0;
-            int maxSideSize = 0;
+            int width;
+            int height;
+            int maxSideSize;
             ImageHelper.GetAutoResizeDimensions(FieldInfo.Settings, SiteContext.CurrentSiteName, out width, out height, out maxSideSize);
             directUpload.ResizeToWidth = width;
             directUpload.ResizeToHeight = height;
@@ -119,6 +125,11 @@ public partial class CMSFormControls_Media_DirectUploadControl : FormEngineUserC
         // Set control properties from parent Form
         if (Form != null)
         {
+            directUpload.Form = Form;
+
+            directUpload.OnUploadFile += Form.RaiseOnUploadFile;
+            directUpload.OnDeleteFile += Form.RaiseOnDeleteFile;
+
             // Get node
             TreeNode node = (TreeNode)Form.EditedObject;
 
@@ -167,16 +178,6 @@ public partial class CMSFormControls_Media_DirectUploadControl : FormEngineUserC
     }
 
 
-    protected override void OnInit(EventArgs e)
-    {
-        base.OnInit(e);
-        if (FieldInfo != null)
-        {
-            directUpload.ID = FieldInfo.Name;
-        }
-    }
-
-
     /// <summary>
     /// Returns true if user control is valid.
     /// </summary>
@@ -188,7 +189,15 @@ public partial class CMSFormControls_Media_DirectUploadControl : FormEngineUserC
             string value = ValidationHelper.GetString(directUpload.Value, string.Empty).Trim();
             if ((String.IsNullOrEmpty(value)) || (ValidationHelper.GetGuid(value, Guid.Empty) == Guid.Empty))
             {
-                ValidationError += ResHelper.GetString("BasicForm.ErrorEmptyValue");
+                // Empty error
+                if ((ErrorMessage != null) && !ErrorMessage.EqualsCSafe(ResHelper.GetString("BasicForm.InvalidInput"), true))
+                {
+                    ValidationError = ErrorMessage;
+                }
+                else
+                {
+                    ValidationError += ResHelper.GetString("BasicForm.ErrorEmptyValue");
+                }
                 return false;
             }
         }

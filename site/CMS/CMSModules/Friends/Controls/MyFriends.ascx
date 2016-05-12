@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Friends_Controls_MyFriends" Codebehind="MyFriends.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Friends_Controls_MyFriends"  Codebehind="MyFriends.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Friends/Controls/FriendsList.ascx" TagName="FriendsList"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Friends/Controls/FriendsToApprovalList.ascx" TagName="FriendsToApprovalList"

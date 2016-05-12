@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Dialogs_YouTube_YouTubeProperties"
-    Codebehind="YouTubeProperties.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Dialogs_YouTube_YouTubeProperties"
+     Codebehind="YouTubeProperties.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/General/WidthHeightSelector.ascx"
     TagPrefix="cms" TagName="WidthHeightSelector" %>
@@ -44,15 +44,6 @@
                         </div>
                         <div class="editing-form-value-cell">
                             <cms:CMSCheckBox ID="chkAutoplay" runat="server" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="editing-form-label-cell">
-                            <cms:LocalizedLabel CssClass="control-label" ID="lblLoop" runat="server" EnableViewState="false" ResourceString="dialogs.vid.loop"
-                                DisplayColon="true" AssociatedControlID="chkLoop" />
-                        </div>
-                        <div class="editing-form-value-cell">
-                            <cms:CMSCheckBox ID="chkLoop" runat="server" />
                         </div>
                     </div>
                     <div class="form-group">

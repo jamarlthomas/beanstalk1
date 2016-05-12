@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" 
+﻿<%@ Page Language="C#" AutoEventWireup="true" 
     Inherits="CMSModules_Widgets_Dialogs_WidgetSelector" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Theme="Default" Title="Add widget" Codebehind="WidgetSelector.aspx.cs" %>
+    Theme="Default" Title="Add widget"  Codebehind="WidgetSelector.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Widgets/Controls/WidgetSelector.ascx" TagName="WidgetSelector"
     TagPrefix="cms" %>

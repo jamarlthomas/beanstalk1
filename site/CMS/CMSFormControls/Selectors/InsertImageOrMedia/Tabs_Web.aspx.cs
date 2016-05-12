@@ -9,8 +9,11 @@ public partial class CMSFormControls_Selectors_InsertImageOrMedia_Tabs_Web : CMS
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        string output = QueryHelper.GetString("output", "");
+        OutputFormatEnum outputFormat = CMSDialogHelper.GetOutputFormat(output, QueryHelper.GetBoolean("link", false));
+        
         // Check UIProfile
-        if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerUIElement("CMS.WYSIWYGEditor", "InsertImageOrMedia"))
+        if ((outputFormat == OutputFormatEnum.HTMLMedia) && !MembershipContext.AuthenticatedUser.IsAuthorizedPerUIElement("CMS.WYSIWYGEditor", "InsertImageOrMedia"))
         {
             RedirectToUIElementAccessDenied("CMS.WYSIWYGEditor", "InsertImageOrMedia");
         }
@@ -19,9 +22,9 @@ public partial class CMSFormControls_Selectors_InsertImageOrMedia_Tabs_Web : CMS
             RedirectToUIElementAccessDenied("CMS.MediaDialog", "WebTab");
         }
 
-		// CKEditor's plugin filebrowser add custom params to url. 
-		// This ensures that custom params aren't validated
-		if (QueryHelper.ValidateHash("hash", "CKEditor;CKEditorFuncNum;langCode", validateWithoutExcludedParameters: true))
+        // CKEditor's plugin filebrowser add custom params to url. 
+        // This ensures that custom params aren't validated
+        if (QueryHelper.ValidateHash("hash", "CKEditor;CKEditorFuncNum;langCode", validateWithoutExcludedParameters: true))
         {
             ScriptHelper.RegisterJQuery(Page);
             CMSDialogHelper.RegisterDialogHelper(Page);
@@ -30,7 +33,7 @@ public partial class CMSFormControls_Selectors_InsertImageOrMedia_Tabs_Web : CMS
         {
             webContentSelector.StopProcessing = true;
             webContentSelector.Visible = false;
-            string url = ResolveUrl("~/CMSMessages/Error.aspx?title=" + GetString("dialogs.badhashtitle") + "&text=" + GetString("dialogs.badhashtext") + "&cancel=1");
+            string url = ResolveUrl(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
             ltlScript.Text = ScriptHelper.GetScript("if (window.parent != null) { window.parent.location = '" + url + "' }");
         }
     }

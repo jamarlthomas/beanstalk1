@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Web.UI;
@@ -126,7 +126,7 @@ public partial class CMSModules_Groups_Controls_Security_GroupSecurity : CMSAdmi
         {
             // Retrieve permission matrix data
             QueryDataParameters parameters = new QueryDataParameters();
-            parameters.Add("@ID", resGroups.ResourceId);
+            parameters.Add("@ID", resGroups.ResourceID);
             parameters.Add("@GroupID", GroupID);
             parameters.Add("@SiteID", SiteContext.CurrentSiteID);
 
@@ -190,7 +190,7 @@ public partial class CMSModules_Groups_Controls_Security_GroupSecurity : CMSAdmi
             group = GroupInfoProvider.GetGroupInfo(GroupID);
 
             // Get permissions for the current group resource                       
-            DataSet permissions = PermissionNameInfoProvider.GetResourcePermissions(resGroups.ResourceId);
+            DataSet permissions = PermissionNameInfoProvider.GetResourcePermissions(resGroups.ResourceID);
             if (DataHelper.DataSourceIsEmpty(permissions))
             {
                 ShowInformation(GetString("general.emptymatrix"));

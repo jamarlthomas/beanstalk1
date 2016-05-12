@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/AbuseReport/AbuseReportList.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/AbuseReport/AbuseReportList.ascx.cs"
     Inherits="CMSWebParts_AbuseReport_AbuseReportList" %>
 <%@ Register Src="~/CMSModules/AbuseReport/Controls/AbuseReportListAndEdit.ascx"
     TagName="AbuseReportList" TagPrefix="cms" %>

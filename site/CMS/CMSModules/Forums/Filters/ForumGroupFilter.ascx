@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Forums_Filters_ForumGroupFilter" Codebehind="ForumGroupFilter.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Forums_Filters_ForumGroupFilter"  Codebehind="ForumGroupFilter.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Forums/FormControls/ForumGroupSelector.ascx" TagName="ForumGroupSelector"
     TagPrefix="cms" %>
 <asp:Panel CssClass="Filter" runat="server" ID="pnlSearch">

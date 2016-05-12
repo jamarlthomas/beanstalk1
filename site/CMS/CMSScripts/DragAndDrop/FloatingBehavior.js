@@ -217,7 +217,7 @@ CMSExtendedControls.FloatingBehavior = function (element) {
 
     this.checkCanDrag = function (element) {
         var undraggableTagNames = ["input", "button", "select", "textarea", "label"];
-        var undraggableClassNames = ["notdraggable", "webpartresizerhandle", "webpartresizerhandle horizontalonly", "webpartresizerhandle verticalonly"]
+        var undraggableClassNames = ["notdraggable"];
 
         var tagName = element.tagName;
         var className = element.className;

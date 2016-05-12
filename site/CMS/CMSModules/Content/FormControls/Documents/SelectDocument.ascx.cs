@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls;
 using CMS.FormControls;
@@ -201,16 +201,11 @@ public partial class CMSModules_Content_FormControls_Documents_SelectDocument : 
 function DS_ClearDocument(txtClientID, hiddenClientId) { 
     document.getElementById(txtClientID).value = ''; 
     document.getElementById(hiddenClientId).value=''; 
-
-    DS_Changed();
-} 
-
-function DS_Changed() {
+    
     if(window.Changed != null) { 
         Changed(); 
     }
-}
-";
+}";
         ScriptHelper.RegisterClientScriptBlock(this, typeof (string), "DS_Scripts", script, true);
     }
 
@@ -229,9 +224,6 @@ function DS_Changed() {
     {
         int nodeId = ValidationHelper.GetInteger(txtGuid.Text, 0);
 
-        // Notify page about the change
-        RegisterChangedScript();
-
         if (FieldIsInteger())
         {
             txtName.Text = GetNodeName(nodeId);
@@ -248,15 +240,6 @@ function DS_Changed() {
                 txtGuid.Text = node.NodeGUID + site;
             }
         }
-    }
-
-
-    /// <summary>
-    /// Registers script notifying page that change occurred.
-    /// </summary>
-    private void RegisterChangedScript()
-    {
-        ScriptHelper.RegisterStartupScript(Page, typeof(string), "DS_Changed", "DS_Changed();", true);
     }
 
 

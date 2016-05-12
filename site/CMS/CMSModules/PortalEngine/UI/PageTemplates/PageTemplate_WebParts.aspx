@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" EnableEventValidation="false" Inherits="CMSModules_PortalEngine_UI_PageTemplates_PageTemplate_WebParts"
+﻿<%@ Page Language="C#" AutoEventWireup="true" EnableEventValidation="false" Inherits="CMSModules_PortalEngine_UI_PageTemplates_PageTemplate_WebParts"
     Theme="Default" ValidateRequest="false" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Title="Page Template Edit - Web Parts" Codebehind="PageTemplate_WebParts.aspx.cs" %>
+    Title="Page Template Edit - Web Parts"  Codebehind="PageTemplate_WebParts.aspx.cs" %>
 
 <%@ Register Assembly="CMS.UIControls" Namespace="CMS.UIControls" TagPrefix="cms" %>
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">

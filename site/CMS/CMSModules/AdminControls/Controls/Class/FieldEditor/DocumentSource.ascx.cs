@@ -176,8 +176,9 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Documen
                         AddField(drpSourceField, name);
                     }
 
-                    // Add all fields except file and document attachment fields
-                    if ((ffiColumn.DataType != FieldDataType.File) && (ffiColumn.DataType != FieldDataType.DocAttachments))
+                    // Add all fields which allow to be used as alias
+                    var dataType = DataTypeManager.GetDataType(TypeEnum.Field, ffiColumn.DataType);
+                    if ((dataType != null) && dataType.AllowAsAliasSource)
                     {
                         AddField(drpSourceAliasField, name);
                     }

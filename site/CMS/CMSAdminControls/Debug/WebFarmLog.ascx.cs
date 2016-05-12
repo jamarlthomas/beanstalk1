@@ -1,7 +1,6 @@
-using System;
+﻿using System;
 
 using CMS.ExtendedControls;
-using CMS.Helpers;
 using CMS.UIControls;
 
 public partial class CMSAdminControls_Debug_WebFarmLog : WebFarmLog
@@ -21,8 +20,8 @@ public partial class CMSAdminControls_Debug_WebFarmLog : WebFarmLog
 
             HeaderText = GetString("WebFarmLog.Info");
 
-            gridQueries.DataSource = dt;
-            gridQueries.DataBind();
+            // Bind the data
+            BindGrid(gridQueries, dt);
         }
     }
 }

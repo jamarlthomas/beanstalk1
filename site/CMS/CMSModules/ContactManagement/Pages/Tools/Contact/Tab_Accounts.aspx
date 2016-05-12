@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Tab_Accounts.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_Contact_Tab_Accounts"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Tab_Accounts.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_Contact_Tab_Accounts"
 MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Contact properties - Accounts" Theme="Default" %>
 
 <%@ Register Src="~/CMSModules/ContactManagement/Controls/UI/Contact/Accounts.ascx" TagName="Accounts" TagPrefix="cms" %>

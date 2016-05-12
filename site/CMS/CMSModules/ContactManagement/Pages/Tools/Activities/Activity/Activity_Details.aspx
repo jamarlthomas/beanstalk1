@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="Activity - Details" Inherits="CMSModules_ContactManagement_Pages_Tools_Activities_Activity_Activity_Details"
-    Theme="Default" Codebehind="Activity_Details.aspx.cs" %>
+    Theme="Default"  Codebehind="Activity_Details.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/ContactManagement/Controls/UI/Activity/Details.ascx"
     TagName="Details" TagPrefix="cms" %>
@@ -36,7 +36,7 @@
                     </div>
                     <div class="editing-form-value-cell">
                         <asp:Label ID="lblContactVal" CssClass="form-control-text" runat="server" EnableViewState="false" />
-                        <cms:CMSAccessibleButton runat="server" ID="btnContact" IconCssClass="icon-magnifier" IconOnly="true" EnableViewState="false" />
+                        <cms:CMSAccessibleButton runat="server" ID="btnContact" IconCssClass="icon-edit" IconOnly="true" EnableViewState="false" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -56,7 +56,7 @@
                     <div class="editing-form-value-cell control-group-inline">
                         <cms:CMSTextBox ID="txtURL" runat="server" ReadOnly="true" CssClass="ActivityCommentBox" />
                         <asp:HyperLink runat="server" ID="btnView" CssClass="btn-icon" Target="_blank" Visible="false" EnableViewState="false">
-                            <i class="icon-magnifier cms-icon-80" aria-hidden="true"></i>
+                            <i class="icon-eye cms-icon-80" aria-hidden="true"></i>
                             <cms:LocalizedLabel CssClass="sr-only" ID="lblBtnView" runat="server" ResourceString="general.view" EnableViewState="false" />
                         </asp:HyperLink>
                     </div>

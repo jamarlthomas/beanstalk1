@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -82,21 +82,6 @@ public partial class CMSModules_Membership_Pages_Users_General_User_Online : CMS
             return SessionManager.StoreOnlineUsersInDatabase
              && ResourceSiteInfoProvider.IsResourceOnSite("CMS.ContactManagement", SiteContext.CurrentSiteName)
              && ModuleManager.IsModuleLoaded(ModuleName.CONTACTMANAGEMENT);
-        }
-    }
-
-
-    /// <summary>
-    /// Indicates if score can be displayed.
-    /// </summary>
-    private bool DisplayScore
-    {
-        get
-        {
-            return CurrentUser.IsAuthorizedPerUIElement("CMS.OnlineMarketing", "Scoring")
-                && ResourceSiteInfoProvider.IsResourceOnSite("CMS.Scoring", SiteContext.CurrentSiteName)
-                && LicenseHelper.CheckFeature(RequestContext.CurrentDomain, FeatureEnum.LeadScoring)
-                && MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("CMS.Scoring", "Read");
         }
     }
 
@@ -222,7 +207,7 @@ public partial class CMSModules_Membership_Pages_Users_General_User_Online : CMS
             gridElem.GridView.Columns[3].Visible = !guestByDefault;
             gridElem.GridView.Columns[4].Visible = !guestByDefault;
             gridElem.GridView.Columns[8].Visible = filter.DisplayGuests;
-            gridElem.GridView.Columns[9].Visible = DisplayScore && (filter.SelectedScore > 0);
+            gridElem.GridView.Columns[9].Visible = filter.SelectedScore > 0;
             gridElem.GridView.Columns[10].Visible = String.IsNullOrEmpty(SiteName) && (filter.SelectedSite <= 0);
 
             ScriptHelper.RegisterDialogScript(Page);

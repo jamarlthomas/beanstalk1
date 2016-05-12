@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_Configuration_ExchangeRates_ExchangeTable_Edit"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_Configuration_ExchangeRates_ExchangeTable_Edit"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Exchange table - properties"
-    Codebehind="ExchangeTable_Edit.aspx.cs" %>
+     Codebehind="ExchangeTable_Edit.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/System/LocalizableTextBox.ascx" TagName="LocalizableTextBox"
     TagPrefix="cms" %>

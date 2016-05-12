@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -132,7 +132,7 @@ public partial class CMSModules_Forums_Controls_LiveControls_Posts : CMSAdminIte
 
                 if (attachmentGuid != Guid.Empty)
                 {
-                    string url = URLHelper.GetAbsoluteUrl("~/CMSModules/Forums/CMSPages/GetForumAttachment.aspx?fileguid=" + attachmentGuid);
+                    string url = URLHelper.GetAbsoluteUrl("~/CMSPages/GetForumAttachment.aspx?fileguid=" + attachmentGuid);
                     string title = ValidationHelper.GetString(row["AttachmentFileName"], "");
 
                     // Create link to post attachment

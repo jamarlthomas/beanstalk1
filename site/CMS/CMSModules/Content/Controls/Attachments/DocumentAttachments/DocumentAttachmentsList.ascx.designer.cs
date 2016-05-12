@@ -66,6 +66,24 @@ public partial class CMSModules_Content_Controls_Attachments_DocumentAttachments
     protected global::System.Web.UI.WebControls.Panel pnlGrid;
     
     /// <summary>
+    /// plcUploader control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.PlaceHolder plcUploader;
+    
+    /// <summary>
+    /// newAttachmentElem control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMSModules_Content_Controls_Attachments_DirectFileUploader_DirectFileUploader newAttachmentElem;
+    
+    /// <summary>
     /// pnlFilter control.
     /// </summary>
     /// <remarks>
@@ -100,24 +118,6 @@ public partial class CMSModules_Content_Controls_Attachments_DocumentAttachments
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.LocalizedButton btnFilter;
-    
-    /// <summary>
-    /// plcUploader control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.PlaceHolder plcUploader;
-    
-    /// <summary>
-    /// newAttachmentElem control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMSModules_Content_Controls_Attachments_DirectFileUploader_DirectFileUploader newAttachmentElem;
     
     /// <summary>
     /// gridAttachments control.

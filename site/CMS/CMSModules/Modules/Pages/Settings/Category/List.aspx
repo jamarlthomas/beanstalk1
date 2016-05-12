@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="List.aspx.cs" MaintainScrollPositionOnPostback="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="List.aspx.cs" MaintainScrollPositionOnPostback="true"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Inherits="CMSModules_Modules_Pages_Settings_Category_List" %>
 
 <%@ Register Src="~/CMSModules/Modules/Controls/Settings/Category/SettingsGroupEdit.ascx" TagName="SettingsGroupEdit"

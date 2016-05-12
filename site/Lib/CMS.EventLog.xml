@@ -9,10 +9,23 @@
             Helper class for registering event log source name to Windows event log.
             </summary>
         </member>
-        <member name="F:CMS.EventLog.EventLogSourceHelper.EVENT_LOG_SOURCE_NAME">
+        <member name="M:CMS.EventLog.EventLogSourceHelper.RegisterInstance(System.String)">
             <summary>
-            User-friendly name of event log source.
+            Registers instance to Windows event log.
             </summary>
+            <param name="pathToWebConfig">Path to web.config</param>
+        </member>
+        <member name="M:CMS.EventLog.EventLogSourceHelper.UnregisterInstance(System.String)">
+            <summary>
+            Unregisters instance from Windows event log.
+            </summary>
+            <param name="pathToWebConfig">Path to web.config</param>
+        </member>
+        <member name="M:CMS.EventLog.EventLogSourceHelper.IsInstanceRegistered(System.String)">
+            <summary>
+            Checks if instance is registered in Windows event log.
+            </summary>
+            <param name="pathToWebConfig">Path to web.config</param>
         </member>
         <member name="M:CMS.EventLog.EventLogSourceHelper.RegisterSourceName(System.String)">
             <summary>
@@ -32,28 +45,13 @@
             </summary>
             <param name="sourceName">Event source name (backslash "\" in source name is not allowed).</param>
         </member>
-        <member name="M:CMS.EventLog.EventLogSourceHelper.RegisterInstance(System.String)">
-            <summary>
-            Registers instance to Windows event log.
-            </summary>
-            <param name="pathToWebConfig">Path to web.config</param>
-        </member>
-        <member name="M:CMS.EventLog.EventLogSourceHelper.UnregisterInstance(System.String)">
-            <summary>
-            Unregisters instance from Windows event log.
-            </summary>
-            <param name="pathToWebConfig">Path to web.config</param>
-        </member>
-        <member name="M:CMS.EventLog.EventLogSourceHelper.IsInstanceRegistered(System.String)">
-            <summary>
-            Checks if instance is registered in Windows event log.
-            </summary>
-            <param name="pathToWebConfig">Path to web.config</param>
-        </member>
         <member name="M:CMS.EventLog.EventLogSourceHelper.RegisterDefaultEventLogListener">
             <summary>
             Registers default event log trace listener.
             </summary>
+            <remarks>
+            Registration is allowed only if <see cref="P:CMS.EventLog.EventLogSourceHelper.UseDefaultEventLogTraceListener"/> is true.
+            </remarks>
         </member>
         <member name="M:CMS.EventLog.EventLogSourceHelper.UnregisterDefaultEventLogListener">
             <summary>
@@ -67,88 +65,72 @@
             <param name="pathToWebConfig">Path to web.config.</param>
             <param name="checkWebConfigPath">Indicates if web.config path should be checked</param>
         </member>
-        <member name="M:CMS.EventLog.EventLogSourceHelper.SetupDefaultEventLogListener(System.Boolean)">
+        <member name="M:CMS.EventLog.EventLogSourceHelper.TryGetSourceName(System.String@)">
             <summary>
-            Setups default event log trace listener.
+            Tries get source name for current application.
             </summary>
-            <param name="unregister">If true listener should be unregistered.</param>
+            <param name="sourceName"></param>
+            <returns>Returns true if source name was obtained; otherwise false.</returns>
         </member>
-        <member name="P:CMS.EventLog.EventLogSourceHelper.UseEventLogTraceListener">
+        <member name="P:CMS.EventLog.EventLogSourceHelper.UseDefaultEventLogTraceListener">
             <summary>
             Indicates if default event log trace listener should be used.
             </summary>
         </member>
-        <member name="T:CMS.EventLog.AbstractEventLogStrategy">
+        <member name="T:CMS.EventLog.EventLoggingContext">
             <summary>
-            Provides abstract class for logging strategy.
+            Context for the process of event logging.
             </summary>
         </member>
-        <member name="T:CMS.EventLog.IEventLogStrategy">
+        <member name="F:CMS.EventLog.EventLoggingContext.mEventLoggingInProgress">
             <summary>
-            Provides interface for logging strategy
+            Indicates whether event logging procedure code is being executed.
             </summary>
         </member>
-        <member name="M:CMS.EventLog.IEventLogStrategy.LogEvent(System.String,System.String,System.String,System.String,System.Exception)">
+        <member name="M:CMS.EventLog.EventLoggingContext.RestoreOriginalValues">
             <summary>
-            Writes a new event to the event log.
-            </summary>
-            <param name="eventType">Type of the event. Please use predefined constants from EventLogProvider</param>
-            <param name="source">Source of the event (Content, Administration, etc.)</param>
-            <param name="eventCode">Event code (UPDATEDOC, SENDEMAIL, DELETE, etc.)</param>
-            <param name="eventDescription">Event message.</param>
-            <param name="exception">Exception to be logged</param>
-        </member>
-        <member name="M:CMS.EventLog.IEventLogStrategy.LogEvent(CMS.EventLog.EventLogInfo)">
-            <summary>
-            Writes a new event to the event log.
+            Restores the original values to the context
             </summary>
         </member>
-        <member name="F:CMS.EventLog.AbstractEventLogStrategy.mNextChainedStrategy">
+        <member name="P:CMS.EventLog.EventLoggingContext.EventLoggingInProgress">
             <summary>
-            Following strategy
+            Indicates whether event logging procedure code is being executed.
             </summary>
         </member>
-        <member name="M:CMS.EventLog.AbstractEventLogStrategy.AddChainedStrategy(CMS.EventLog.AbstractEventLogStrategy)">
+        <member name="P:CMS.EventLog.EventLoggingContext.CurrentEventLoggingInProgress">
             <summary>
-            Add chained strategy.
-            </summary>
-            <param name="chainedStrategy">Following strategy connected in responsibility chain</param>
-        </member>
-        <member name="M:CMS.EventLog.AbstractEventLogStrategy.LogEvent(System.String,System.String,System.String,System.String,System.Exception)">
-            <summary>
-            Writes a new event to the event log.
-            </summary>
-            <param name="eventType">Type of the event. Please use predefined constants from EventLogProvider</param>
-            <param name="source">Source of the event (Content, Administration, etc.)</param>
-            <param name="eventCode">Event code (UPDATEDOC, SENDEMAIL, DELETE, etc.)</param>
-            <param name="eventDescription">Event message.</param>
-            <param name="exception">Exception to be logged</param>
-        </member>
-        <member name="M:CMS.EventLog.AbstractEventLogStrategy.LogEvent(CMS.EventLog.EventLogInfo)">
-            <summary>
-            Writes a new event to the event log.
+            Indicates whether event logging procedure code is being executed.
             </summary>
         </member>
-        <member name="T:CMS.EventLog.DefaultLoggingStrategy">
+        <member name="T:CMS.EventLog.EventLoggingRecursionException">
             <summary>
-            Provides default logging strategy.
+            Thrown when recursion is detected while logging an event.
             </summary>
         </member>
-        <member name="M:CMS.EventLog.DefaultLoggingStrategy.LogEvent(System.String,System.String,System.String,System.String,System.Exception)">
+        <member name="M:CMS.EventLog.EventLoggingRecursionException.#ctor">
             <summary>
-            Writes a new record to the event log.
+            Initializes a new instance of the <see cref="T:CMS.EventLog.EventLoggingRecursionException"/> class with default values.
             </summary>
-            <param name="eventType">Type of the event. Please use predefined constants from EventLogProvider</param>
-            <param name="source">Source of the event (Content, Administration, etc.)</param>
-            <param name="eventCode">Event code (UPDATEDOC, SENDEMAIL, DELETE, etc.)</param>
-            <param name="eventDescription">Detailed description of the event.</param>
-            <param name="exception">Fired exception.</param>
         </member>
-        <member name="M:CMS.EventLog.DefaultLoggingStrategy.LogEvent(CMS.EventLog.EventLogInfo)">
+        <member name="M:CMS.EventLog.EventLoggingRecursionException.#ctor(System.String)">
             <summary>
-            Writes a new record to the event log.
+            Initializes a new instance of the <see cref="T:CMS.EventLog.EventLoggingRecursionException"/> class with a specified error message.
             </summary>
-            <param name="eventObject">EventLogInfo object.</param>
+            <param name="message">The message that describes the error.</param>
+        </member>
+        <member name="M:CMS.EventLog.EventLoggingRecursionException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMS.EventLog.EventLoggingRecursionException"/> class with a specified error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+            <param name="innerException">The exception that is the cause of the current exception, or a null reference if no inner exception is specified.</param>
+        </member>
+        <member name="M:CMS.EventLog.EventLoggingRecursionException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMS.EventLog.EventLoggingRecursionException"/> class with serialized data.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
         </member>
         <member name="T:CMS.EventLog.EventLogWorker">
             <summary>
@@ -195,89 +177,6 @@
         <member name="P:CMS.EventLog.EventLogWorker.UseLogContext">
             <summary>
             Use the log context to report status
-            </summary>
-        </member>
-        <member name="T:CMS.EventLog.PreventMultipleEventsLogStrategy">
-            <summary>
-            Provides strategy for logging events if they reach up expiration period. 
-            </summary>
-        </member>
-        <member name="M:CMS.EventLog.PreventMultipleEventsLogStrategy.#ctor">
-            <summary>
-            Creates PreventMultipleEventsLogStrategy with chained default logging strategy. 
-            </summary>
-        </member>
-        <member name="M:CMS.EventLog.PreventMultipleEventsLogStrategy.#ctor(CMS.EventLog.AbstractEventLogStrategy)">
-            <summary>
-            Creates PreventMultipleEventsLogStrategy with chained following strategy.
-            </summary>
-            <param name="chainedStrategy">Following logging strategy.</param>
-        </member>
-        <member name="M:CMS.EventLog.PreventMultipleEventsLogStrategy.LogEvent(System.String,System.String,System.String,System.String,System.Exception)">
-            <summary>
-            Writes a new event to the event log.
-            </summary>
-            <param name="eventType">Type of the event. Please use predefined constants from EventLogProvider</param>
-            <param name="source">Source of the event (Content, Administration, etc.)</param>
-            <param name="eventCode">Event code (UPDATEDOC, SENDEMAIL, DELETE, etc.)</param>
-            <param name="eventDescription">Event message.</param>
-            <param name="exception">Exception to be logged</param>
-        </member>
-        <member name="M:CMS.EventLog.PreventMultipleEventsLogStrategy.LogEvent(CMS.EventLog.EventLogInfo)">
-            <summary>
-            Writes a new event to the event log.
-            </summary>
-        </member>
-        <member name="M:CMS.EventLog.PreventMultipleEventsLogStrategy.GetKey(System.String,System.String,System.String)">
-            <summary>
-            Return key for event.
-            </summary>
-            <param name="eventType">Type of the event. Please use predefined constants from EventLogProvider</param>
-            <param name="source">Source of the event (Content, Administration, etc.)</param>
-            <param name="eventCode">Event code (UPDATEDOC, SENDEMAIL, DELETE, etc.)</param>
-        </member>
-        <member name="M:CMS.EventLog.PreventMultipleEventsLogStrategy.GetEventLogInfo(System.String,System.String,System.String,System.String,System.Exception,System.Boolean)">
-            <summary>
-            Creates EventLogInfo.
-            </summary>
-            <param name="eventType">Type of the event. Please use predefined constants from EventLogProvider</param>
-            <param name="source">Source of the event (Content, Administration, etc.)</param>
-            <param name="eventCode">Event code (UPDATEDOC, SENDEMAIL, DELETE, etc.)</param>
-            <param name="eventDescription">Event message.</param>
-            <param name="exception">Exception to be logged</param>
-            <param name="allowMultiple">If true, it is allowed to log this exception multiple times within the application run</param>
-        </member>
-        <member name="M:CMS.EventLog.PreventMultipleEventsLogStrategy.SaveToLoggedEvents(System.String,System.DateTime)">
-            <summary>
-            Save to logged events.
-            </summary>
-        </member>
-        <member name="M:CMS.EventLog.PreventMultipleEventsLogStrategy.IsEventExpired(System.String)">
-            <summary>
-            Return if logged event is expired.
-            </summary>
-            <param name="key">Key for finding Event in logged events.</param>
-        </member>
-        <member name="M:CMS.EventLog.PreventMultipleEventsLogStrategy.IsEventAlreadyLogged(System.String)">
-            <summary>
-            Return if event was already logged.
-            </summary>
-            <param name="key">Key for finding Event in logged events.</param>
-        </member>
-        <member name="M:CMS.EventLog.PreventMultipleEventsLogStrategy.EventShouldBeLogged(System.String)">
-            <summary>
-            Return if logged event is invalid. 
-            </summary>
-            <param name="key">Key for event entry in dictionary</param>
-        </member>
-        <member name="P:CMS.EventLog.PreventMultipleEventsLogStrategy.EventValidityExpirationPeriod">
-            <summary>
-            Sets period in minutes after that event will be expired.
-            </summary>
-        </member>
-        <member name="P:CMS.EventLog.PreventMultipleEventsLogStrategy.ComparativeDateTime">
-            <summary>
-            DateTime record for events validity comparison. 
             </summary>
         </member>
         <member name="T:CMS.EventLog.LogContext">
@@ -330,6 +229,16 @@
             Counter used for logging multiple events at once.
             </summary>
         </member>
+        <member name="F:CMS.EventLog.LogContext.lockObject">
+            <summary>
+            Object for locking the context within multiple threads
+            </summary>
+        </member>
+        <member name="F:CMS.EventLog.LogContext.mAllowedContexts">
+            <summary>
+            Set of context names from which the log context receives messages
+            </summary>
+        </member>
         <member name="M:CMS.EventLog.LogContext.#ctor">
             <summary>
             Constructor - Registers the context within request.
@@ -340,22 +249,30 @@
             Constructor - Registers the context within request.
             </summary>
         </member>
+        <member name="M:CMS.EventLog.LogContext.SetAllowedContexts(System.String[])">
+            <summary>
+            Sets the list of the context names that the log context accepts. Use empty string for context which logs messages that do not provide context.
+            </summary>
+            <param name="contextNames">Context names</param>
+        </member>
         <member name="M:CMS.EventLog.LogContext.Close">
             <summary>
             Closes the log.
             </summary>
         </member>
-        <member name="M:CMS.EventLog.LogContext.AppendLine(System.String)">
+        <member name="M:CMS.EventLog.LogContext.AppendLine(System.String,System.String)">
             <summary>
             Appends text to the log.
             </summary>
             <param name="text">Text to append</param>
+            <param name="contextName">Context name</param>
         </member>
-        <member name="M:CMS.EventLog.LogContext.Append(System.String)">
+        <member name="M:CMS.EventLog.LogContext.Append(System.String,System.String)">
             <summary>
             Appends text to the log.
             </summary>
             <param name="text">Text to append</param>
+            <param name="contextName">Context name</param>
         </member>
         <member name="M:CMS.EventLog.LogContext.CloseCurrent">
             <summary>
@@ -379,6 +296,17 @@
             Returns true if the given log exists.
             </summary>
             <param name="logGuid">Log GUID</param>
+        </member>
+        <member name="M:CMS.EventLog.LogContext.Clear">
+            <summary>
+            Clears the log
+            </summary>
+        </member>
+        <member name="M:CMS.EventLog.LogContext.AllowMessageFromContext(System.String)">
+            <summary>
+            Returns true if the given context allows messages from the given context name
+            </summary>
+            <param name="contextName">Context name to check</param>
         </member>
         <member name="M:CMS.EventLog.LogContext.AppendText(System.String,System.Boolean)">
             <summary>
@@ -417,6 +345,11 @@
             Fires when the log has changed.
             </summary>
         </member>
+        <member name="E:CMS.EventLog.LogContext.TextAppended">
+            <summary>
+            Event which fires if some text is appended to the log
+            </summary>
+        </member>
         <member name="P:CMS.EventLog.LogContext.Current">
             <summary>
             Gets or sets current log context.
@@ -445,6 +378,11 @@
         <member name="P:CMS.EventLog.LogContext.LogGuid">
             <summary>
             Logs guid.
+            </summary>
+        </member>
+        <member name="P:CMS.EventLog.LogContext.LogAlways">
+            <summary>
+            If true, the context always logs regardless of the action context settings
             </summary>
         </member>
         <member name="P:CMS.EventLog.LogContext.LogSingleEvents">
@@ -482,20 +420,43 @@
             URL of event.
             </summary>
         </member>
-        <member name="T:CMS.EventLog.EventLogStrategies">
+        <member name="T:CMS.EventLog.LoggingPolicyExtensions">
             <summary>
-            Provides strategy for logging multiple events. 
+            Class providing extension methods for logging policy.
             </summary>
         </member>
-        <member name="P:CMS.EventLog.EventLogStrategies.CurrentEventlogStrategy">
+        <member name="M:CMS.EventLog.LoggingPolicyExtensions.TryMarkEventAsLogged(CMS.EventLog.EventLogInfo)">
             <summary>
-            Current Loggin strategy, if no strategy is selected the default one is used.
+            Ensures that event is marked as logged in internal cache with dependence on <see cref="T:CMS.Core.LoggingPolicy"/> for current event.
             </summary>
+            <param name="eventObject">Event object.</param>
+            <exception cref="T:System.NotSupportedException">Thrown when unknown policy type is used.</exception>
+            <returns>False if event was already logged; otherwise true.</returns>
         </member>
-        <member name="P:CMS.EventLog.EventLogStrategies.LoggedEventsBuffer">
+        <member name="M:CMS.EventLog.LoggingPolicyExtensions.IsLogged(CMS.EventLog.EventLogInfo)">
             <summary>
-            Stores logged events.
+            Checks if the event was already logged.
             </summary>
+            <param name="eventObject">Event object.</param>
+            <returns>True if event was already logged; false otherwise.</returns>
+        </member>
+        <member name="M:CMS.EventLog.LoggingPolicyExtensions.GetCacheItemPolicy(System.DateTimeOffset)">
+            <summary>
+            Creates default <see cref="T:System.Runtime.Caching.CacheItemPolicy"/> object.
+            </summary>
+            <param name="absoluteExpiration">Absolute expiration <see cref="T:System.DateTimeOffset"/></param>
+        </member>
+        <member name="M:CMS.EventLog.LoggingPolicyExtensions.GetCacheItem(CMS.EventLog.EventLogInfo)">
+            <summary>
+            Creates <see cref="T:System.Runtime.Caching.CacheItem"/> object for specified <paramref name="eventObject"/>.
+            </summary>
+            <param name="eventObject">Event object.</param>
+        </member>
+        <member name="M:CMS.EventLog.LoggingPolicyExtensions.GetPolicyItemCacheKey(CMS.EventLog.EventLogInfo)">
+            <summary>
+            Returns key value used for log policy cache items.
+            </summary>
+            <param name="eventObject">Event object.</param>
         </member>
         <member name="T:CMS.EventLog.EventLogService">
             <summary>
@@ -523,14 +484,14 @@
             <param name="eventCode">Event code (UPDATEDOC, SENDEMAIL, DELETE, etc.)</param>
             <param name="eventDescription">Detailed description of the event</param>
         </member>
-        <member name="M:CMS.EventLog.EventLogService.LogException(System.String,System.String,System.Exception,System.Boolean)">
+        <member name="M:CMS.EventLog.EventLogService.LogException(System.String,System.String,System.Exception,CMS.Core.LoggingPolicy)">
             <summary>
             Writes a new error to the event log.
             </summary>
             <param name="source">Source of the event (Content, Administration, etc.)</param>
             <param name="eventCode">Event code (UPDATEDOC, SENDEMAIL, DELETE, etc.)</param>
             <param name="ex">Exception to be logged</param>
-            <param name="allowMultiple">If true, it is allowed to log this exception multiple times within the application run</param>
+            <param name="loggingPolicy">Logging policy.</param>
         </member>
         <member name="P:CMS.EventLog.EventLogService.CurrentLogContext">
             <summary>
@@ -804,11 +765,6 @@
             Type information.
             </summary>
         </member>
-        <member name="F:CMS.EventLog.EventLogInfo.mMultipleLoggingEnabled">
-            <summary>
-            Enable multiple logging for this event.
-            </summary>
-        </member>
         <member name="M:CMS.EventLog.EventLogInfo.#ctor">
             <summary>
             Constructor - Creates an empty EventLogInfo object.
@@ -826,9 +782,9 @@
         </member>
         <member name="M:CMS.EventLog.EventLogInfo.#ctor(System.String,System.String,System.String)">
             <summary>
-            Constructor - Creates a new EventLogInfo object from the given Data class.
+            Constructor - Creates a new EventLogInfo.
             </summary>
-            <param name="eventType">Type of the event. Please use predefined constants from EventLogProvider</param>
+            <param name="eventType">Type of the event. Please use predefined constants from <see cref="P:CMS.EventLog.EventLogInfo.EventType"/> class.</param>
             <param name="source">Source of the event (Content, Administration, etc.)</param>
             <param name="eventCode">Event code (UPDATEDOC, SENDEMAIL, DELETE, etc.)</param>
         </member>
@@ -839,7 +795,7 @@
         </member>
         <member name="M:CMS.EventLog.EventLogInfo.GetPermissionName(CMS.DataEngine.PermissionsEnum)">
             <summary>
-            Converts permissions enum to permission code name when CheckPermission() is called.
+            Converts permissions enum to permission code name when <see cref="M:CMS.DataEngine.BaseInfo.CheckPermissions(CMS.DataEngine.PermissionsEnum,System.String,CMS.Base.IUserInfo,System.Boolean)"/> is called.
             </summary>
             <param name="permission">Permissions enum</param>
         </member>
@@ -848,9 +804,9 @@
             Updates the object using appropriate provider.
             </summary>
         </member>
-        <member name="M:CMS.EventLog.EventLogInfo.ValidateParametres(System.String,System.String,System.String)">
+        <member name="M:CMS.EventLog.EventLogInfo.ValidateParameters(System.String,System.String,System.String)">
             <summary>
-            Validate required parametres.
+            Validate required parameters.
             </summary>
             <param name="eventType">Type of the event. Please use predefined constants from EventLogProvider</param>
             <param name="source">Source of the event (Content, Administration, etc.)</param>
@@ -867,6 +823,12 @@
             Set properties to default value.
             </summary>
         </member>
+        <member name="M:CMS.EventLog.EventLogInfo.ExecuteSilently(System.Action)">
+            <summary>
+            Executes given action and suppresses any exception (intended for reading properties from HttpContext).
+            </summary>
+            <param name="action">Action</param>
+        </member>
         <member name="P:CMS.EventLog.EventLogInfo.EventMachineName">
             <summary>
             Name of machine on which event is being logged.
@@ -874,7 +836,7 @@
         </member>
         <member name="P:CMS.EventLog.EventLogInfo.EventType">
             <summary>
-            Type of event, use predefined constants from EventLogProvider (or "I" for Info, "W" for Warning, "E" for Error).
+            Type of event, use predefined constants from <see cref="P:CMS.EventLog.EventLogInfo.EventType"/> (or "I" for Info, "W" for Warning, "E" for Error).
             </summary>
         </member>
         <member name="P:CMS.EventLog.EventLogInfo.IPAddress">
@@ -947,10 +909,13 @@
             Event identifier.
             </summary>
         </member>
-        <member name="P:CMS.EventLog.EventLogInfo.EnableMultipleLogging">
+        <member name="P:CMS.EventLog.EventLogInfo.LoggingPolicy">
             <summary>
-            Enable multiple logging for this event. By default is true.
+            Logging policy for this event.
             </summary>
+            <remarks>
+            <see cref="F:CMS.Core.LoggingPolicy.DEFAULT"/> is used as default.
+            </remarks>
         </member>
         <member name="P:CMS.EventLog.EventLogInfo.Exception">
             <summary>
@@ -1023,11 +988,6 @@
             General database connection.
             </summary>
         </member>
-        <member name="F:CMS.EventLog.EventLogProvider.mLoggedEvents">
-            <summary>
-            Events already logged by this application instance [type, source, code]
-            </summary>
-        </member>
         <member name="M:CMS.EventLog.EventLogProvider.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:CMS.EventLog.EventLogProvider"/> class.
@@ -1047,6 +1007,11 @@
             Returns specified event info object from the event log.
             </summary>
             <param name="eventId">Event ID</param>
+        </member>
+        <member name="M:CMS.EventLog.EventLogProvider.GetEvents">
+            <summary>
+            Returns the query for all events.
+            </summary>   
         </member>
         <member name="M:CMS.EventLog.EventLogProvider.GetAllEvents(System.String,System.String,System.Int32,System.String)">
             <summary>
@@ -1116,11 +1081,6 @@
             Logs the application end.
             </summary>
         </member>
-        <member name="M:CMS.EventLog.EventLogProvider.GetAppName">
-            <summary>
-            Gets the application name for the log messages
-            </summary>
-        </member>
         <member name="M:CMS.EventLog.EventLogProvider.GetFieldValue(System.Object,System.String)">
             <summary>
             Gets a field value from the given object
@@ -1128,7 +1088,7 @@
             <param name="obj">Object</param>
             <param name="fieldName">Field name</param>
         </member>
-        <member name="M:CMS.EventLog.EventLogProvider.LogEvent(System.String,System.String,System.String,System.String,System.String,System.Int32,System.String,System.Int32,System.String,System.String,System.Int32,System.String,System.String,System.String,System.Nullable{System.DateTime})">
+        <member name="M:CMS.EventLog.EventLogProvider.LogEvent(System.String,System.String,System.String,System.String,System.String,System.Int32,System.String,System.Int32,System.String,System.String,System.Int32,System.String,System.String,System.String,System.Nullable{System.DateTime},CMS.Core.LoggingPolicy)">
             <summary>
             Writes a new record to the event log.
             </summary>
@@ -1147,6 +1107,7 @@
             <param name="urlReferrer">Referrer URL</param>
             <param name="userAgent">User agent</param>
             <param name="eventTime">Date and time when the event occurs</param>
+            <param name="loggingPolicy">Logging policy.</param>
         </member>
         <member name="M:CMS.EventLog.EventLogProvider.LogEvent(CMS.EventLog.EventLogInfo,System.Boolean,System.Boolean)">
             <summary>
@@ -1156,7 +1117,7 @@
             <param name="logDirectly">If true, the event is logged directly to the database. Otherwise, the event is logged to the queue processed by background worker to optimize performance.</param>
             <param name="deleteOlder">If true, older items are deleted if the log length exceeds maximum</param>
         </member>
-        <member name="M:CMS.EventLog.EventLogProvider.LogException(System.String,System.String,System.Exception,System.Int32,System.String,System.Boolean)">
+        <member name="M:CMS.EventLog.EventLogProvider.LogException(System.String,System.String,System.Exception,System.Int32,System.String,CMS.Core.LoggingPolicy)">
             <summary>
             Writes a new error to the event log.
             </summary>
@@ -1165,13 +1126,7 @@
             <param name="ex">Exception to be logged</param>
             <param name="siteId">Current site ID</param>
             <param name="additionalMessage">Additional information to the exception message</param>
-            <param name="allowMultiple">If true, it is allowed to log this exception multiple times within the application run</param>
-        </member>
-        <member name="M:CMS.EventLog.EventLogProvider.CannotLogEvent(System.Exception)">
-            <summary>
-            Executes when the event logging throws an error.
-            </summary>
-            <param name="ex">Exception thrown upon problem with logging</param>
+            <param name="loggingPolicy">Logging policy.</param>
         </member>
         <member name="M:CMS.EventLog.EventLogProvider.LogWarning(System.String,System.String,System.Exception,System.Int32,System.String)">
             <summary>
@@ -1199,6 +1154,48 @@
             <param name="logDirectly">If true, the event is logged directly to the database. Otherwise, the event is logged to the queue processed by background worker to optimize performance.</param>
             <param name="deleteOlder">If true, older items are deleted if the log length exceeds maximum</param>
         </member>
+        <member name="M:CMS.EventLog.EventLogProvider.LogEventInternal(System.String,System.String,System.String,System.String,System.String,System.Int32,System.String,System.Int32,System.String,System.String,System.Int32,System.String,System.String,System.String,System.Nullable{System.DateTime},CMS.Core.LoggingPolicy)">
+            <summary>
+            Writes a new record to the event log.
+            </summary>
+            <param name="eventType">Type of the event. Please use predefined constants from EventLogProvider</param>
+            <param name="source">Source of the event (Content, Administration, etc.)</param>
+            <param name="eventCode">Event code (UPDATEDOC, SENDEMAIL, DELETE, etc.)</param>
+            <param name="eventDescription">Detailed description of the event</param>
+            <param name="eventUrl">Event URL address</param>
+            <param name="userId">ID of the user, who caused logged event</param>
+            <param name="userName">Name of the user, who caused logged event</param>
+            <param name="nodeId">ID value of the document</param>
+            <param name="documentName">NamePath value of the document</param>
+            <param name="ipAddress">IP Address of the user, who caused logged event</param>
+            <param name="siteId">ID of the site</param>
+            <param name="machineName">Name of machine</param>
+            <param name="urlReferrer">Referrer URL</param>
+            <param name="userAgent">User agent</param>
+            <param name="eventTime">Date and time when the event occurs</param>
+            <param name="loggingPolicy">Logging policy.</param>
+        </member>
+        <member name="M:CMS.EventLog.EventLogProvider.LogExceptionInternal(System.String,System.String,System.Exception,System.Int32,System.String,CMS.Core.LoggingPolicy)">
+            <summary>
+            Writes a new error to the event log.
+            </summary>
+            <param name="source">Source of the event (Content, Administration, etc.)</param>
+            <param name="eventCode">Event code (UPDATEDOC, SENDEMAIL, DELETE, etc.)</param>
+            <param name="ex">Exception to be logged</param>
+            <param name="siteId">Current site ID</param>
+            <param name="additionalMessage">Additional information to the exception message</param>
+            <param name="loggingPolicy">Logging policy.</param>
+        </member>
+        <member name="M:CMS.EventLog.EventLogProvider.SafelyExecuteLogging(System.Action)">
+            <summary>
+            Executes <paramref name="loggingAction"/> while making sure no exception leaks.
+            </summary>
+        </member>
+        <member name="M:CMS.EventLog.EventLogProvider.AddRecursionInformation(CMS.EventLog.EventLogInfo,CMS.EventLog.EventLoggingRecursionException)">
+            <summary>
+            Adds information about recursive logging to <paramref name="eventObject"/>.
+            </summary>
+        </member>
         <member name="M:CMS.EventLog.EventLogProvider.MaintainLogLength(System.Int32,System.Int32,System.Boolean,System.Boolean)">
             <summary>
             Maintains the log length for the given site. Deletes the extra items id the configured limit plus buffer is reached.
@@ -1214,17 +1211,12 @@
             </summary>
             <param name="eventObject">Contains event</param>
         </member>
-        <member name="M:CMS.EventLog.EventLogProvider.CanLogEvent(CMS.EventLog.EventLogInfo)">
+        <member name="M:CMS.EventLog.EventLogProvider.CanLogEvent(CMS.EventLog.EventLogInfo,System.Boolean)">
             <summary>
             Returns true if the event can be logged
             </summary>
             <param name="eventObject">Event object</param>
-        </member>
-        <member name="M:CMS.EventLog.EventLogProvider.SingleEventWasAlreadyLogged(CMS.EventLog.EventLogInfo)">
-            <summary>
-            Returns true if the event was already logged, and should not be logged again
-            </summary>
-            <param name="eventObject">Event object</param>
+            <param name="logDirectly">Whether the event is being logged directly (meaning not using the thread worker).</param>
         </member>
         <member name="M:CMS.EventLog.EventLogProvider.IncrementEventCounters(CMS.EventLog.EventLogInfo)">
             <summary>
@@ -1324,6 +1316,7 @@
             Sets event log.
             </summary>
             <param name="eventLog">Event log object</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="eventLog"/> is null.</exception>
         </member>
         <member name="M:CMS.EventLog.EventLogProvider.GetLogSizeInternal(System.Int32)">
             <summary>
@@ -1374,6 +1367,12 @@
             Logs event message to Trace.
             </summary>
             <param name="eventLogInfo">EventLogInfo object</param>
+        </member>
+        <member name="M:CMS.EventLog.EventLogProvider.CannotLogEvent(System.Exception)">
+            <summary>
+            Executes when the event logging throws an error.
+            </summary>
+            <param name="ex">Exception thrown upon problem with logging</param>
         </member>
         <member name="P:CMS.EventLog.EventLogProvider.UseEventLogPopUp">
             <summary>
@@ -1484,6 +1483,11 @@
         <member name="M:CMS.EventLog.EventLogHandlers.UpdateObject(System.Object,CMS.DataEngine.ObjectEventArgs)">
             <summary>
             Actions that execute upon object update
+            </summary>
+        </member>
+        <member name="M:CMS.EventLog.EventLogHandlers.SettingsKeyChange(System.Object,CMS.DataEngine.SettingsKeyChangedEventArgs)">
+            <summary>
+            Handles settings key change
             </summary>
         </member>
     </members>

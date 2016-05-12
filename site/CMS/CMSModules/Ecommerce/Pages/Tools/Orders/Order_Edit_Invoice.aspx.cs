@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.Ecommerce;
@@ -65,9 +65,9 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Orders_Order_Edit_Invoice 
     protected void btnGenerate_Click(object sender, EventArgs e)
     {
         // check 'EcommerceModify' permission
-        if (!ECommerceContext.IsUserAuthorizedForPermission("ModifyOrders"))
+        if (!ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.ORDERS_MODIFY))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyOrders");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyOrders");
         }
 
         // Load the shopping cart from order

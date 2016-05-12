@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Threading;
 using System.Web.UI.WebControls;
@@ -56,7 +56,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_InvoiceTempl
         HeaderActions actions = CurrentMaster.HeaderActions;
 
         // Save action
-        actions.ActionsList.Add(new SaveAction(this)
+        actions.ActionsList.Add(new SaveAction
         {
             CommandName = "lnksave_click"
         });
@@ -85,8 +85,8 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_InvoiceTempl
         AttachmentList.CheckObjectPermissions = false;
         
         if (ConfiguredSiteInfo != null)
-        {          
-            bool allowEdit = ECommerceContext.IsUserAuthorizedForPermission("ConfigurationModify");
+        {
+            bool allowEdit = ECommerceContext.IsUserAuthorizedForPermission(EcommercePermissions.CONFIGURATION_MODIFY);
             if (allowEdit)
             {
                 // Display attachments tab in media dialog
@@ -207,14 +207,12 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_InvoiceTempl
                 }
 
                 // Save template
+                string siteName = null;
                 if (ConfiguredSiteInfo != null)
                 {
-                    SettingsKeyInfoProvider.SetValue(ConfiguredSiteInfo.SiteName + "." + ECommerceSettings.INVOICE_TEMPLATE, htmlInvoiceTemplate.ResolvedValue.Trim());
+                    siteName = ConfiguredSiteInfo.SiteName;
                 }
-                else
-                {
-                    SettingsKeyInfoProvider.SetValue(ECommerceSettings.INVOICE_TEMPLATE, htmlInvoiceTemplate.ResolvedValue.Trim());
-                }
+                SettingsKeyInfoProvider.SetValue(ECommerceSettings.INVOICE_TEMPLATE, siteName, htmlInvoiceTemplate.ResolvedValue.Trim());
 
                 // Show message
                 ShowChangesSaved();

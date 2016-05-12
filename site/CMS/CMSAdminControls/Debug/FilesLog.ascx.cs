@@ -1,6 +1,8 @@
-using System;
+﻿using System;
 using System.Data;
+using System.Linq;
 
+using CMS.DataEngine;
 using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.IO;
@@ -22,11 +24,20 @@ public partial class CMSAdminControls_Debug_FilesLog : FilesLog
 
             lock (dt)
             {
-                dv = new DataView(dt);
-
-                if (providerSet)
+                if (providerSet || WriteOnly)
                 {
-                    dv.RowFilter = "ProviderName = '" + ProviderName + "'";
+                    var readOnlyOperationSet = FileDebugOperation.ReadOnlyOperations.ToHashSet(StringComparer.InvariantCultureIgnoreCase);
+
+                    var results = from row in dt.AsEnumerable()
+                                  where (!providerSet || row.Field<string>("ProviderName").Equals(ProviderName, StringComparison.InvariantCultureIgnoreCase)) 
+                                        && (!WriteOnly || !readOnlyOperationSet.Contains(row.Field<string>("FileOperation")))
+                                  select row;
+
+                    dv = results.AsDataView();
+                }
+                else
+                {
+                    dv = new DataView(dt);
                 }
             }
 
@@ -44,8 +55,8 @@ public partial class CMSAdminControls_Debug_FilesLog : FilesLog
 
                 HeaderText = GetString("FilesLog.Info");
 
-                gridStates.DataSource = dv;
-                gridStates.DataBind();
+                // Bind the data
+                BindGrid(gridStates, dv);
             }
         }
     }

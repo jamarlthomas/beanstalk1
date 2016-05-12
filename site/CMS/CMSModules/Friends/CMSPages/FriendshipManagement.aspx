@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_Friends_CMSPages_FriendshipManagement" Title="Friendship management"
-    ValidateRequest="false" Theme="Default" Codebehind="FriendshipManagement.aspx.cs" %>
+    ValidateRequest="false" Theme="Default"  Codebehind="FriendshipManagement.aspx.cs" %>
 
 <%@ Register Src="~/CMSWebParts/Community/Friends/FriendshipManagement.ascx" TagName="FriendshipManagement"
     TagPrefix="cms" %>

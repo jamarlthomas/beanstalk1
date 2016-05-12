@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="True" Inherits="CMSAdminControls_UI_ScreenLock_ScreenLockDialog" Codebehind="ScreenLockDialog.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="True" Inherits="CMSAdminControls_UI_ScreenLock_ScreenLockDialog"  Codebehind="ScreenLockDialog.ascx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/PageTitle.ascx" TagName="PageTitle" TagPrefix="cms" %>
 

@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Sites_Pages_Site_Delete"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Sites_Pages_Site_Delete"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Delete Site"
-    Codebehind="Site_Delete.aspx.cs" %>
+     Codebehind="Site_Delete.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/Wizard/Header.ascx" TagName="WizardHeader" TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/System/ActivityBar.ascx" TagName="ActivityBar"

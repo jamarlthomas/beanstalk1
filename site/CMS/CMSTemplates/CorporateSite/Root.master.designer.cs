@@ -120,13 +120,58 @@ public partial class CMSTemplates_CorporateSite_Root {
     protected global::CMSWebParts_Membership_Logon_currentuser wC;
     
     /// <summary>
-    /// wSC control.
+    /// dsLanguages control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSWebParts_Ecommerce_ShoppingCart_ShoppingCartMiniPreviewWebPart wSC;
+    protected global::CMSWebParts_DataSources_LanguageDataSource dsLanguages;
+    
+    /// <summary>
+    /// rptLanguages control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMSWebParts_Viewers_Basic_BasicRepeater rptLanguages;
+    
+    /// <summary>
+    /// lnkShoppingCart control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.HyperLink lnkShoppingCart;
+    
+    /// <summary>
+    /// lnkMyAccount control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.HyperLink lnkMyAccount;
+    
+    /// <summary>
+    /// lnkMyWishList control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.HyperLink lnkMyWishList;
+    
+    /// <summary>
+    /// lblPrice control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label lblPrice;
     
     /// <summary>
     /// wCS control.
@@ -136,15 +181,6 @@ public partial class CMSTemplates_CorporateSite_Root {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMSWebParts_General_CssStyleSelector wCS;
-    
-    /// <summary>
-    /// wLS control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMSWebParts_Localization_languageselectionwithflags wLS;
     
     /// <summary>
     /// wM control.

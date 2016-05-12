@@ -1,5 +1,5 @@
 <%@ Master Language="C#" AutoEventWireup="true" Inherits="CMSMasterPages_UI_TabsHeader"
-    Codebehind="TabsHeader.master.cs" %>
+     Codebehind="TabsHeader.master.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" TagName="HeaderActions"
     TagPrefix="cms" %>

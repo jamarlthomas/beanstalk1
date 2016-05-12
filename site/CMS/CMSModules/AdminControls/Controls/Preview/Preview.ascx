@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Preview.ascx.cs" Inherits="CMSModules_AdminControls_Controls_Preview_Preview" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Preview.ascx.cs" Inherits="CMSModules_AdminControls_Controls_Preview_Preview" %>
 <%@ Register Src="~/CMSModules/Content/FormControls/Documents/SelectPath.ascx"
     TagName="SelectPath" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Content/Controls/LanguageMenu.ascx" TagName="LanguageMenu"

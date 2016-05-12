@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="True" Inherits="CMSModules_Integration_Controls_UI_Connectors_List"
-    Codebehind="List.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="True" Inherits="CMSModules_Integration_Controls_UI_Connectors_List"
+     Codebehind="List.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 <cms:UniGrid runat="server" ID="gridElem" ObjectType="integration.connector" OrderBy="ConnectorDisplayName"

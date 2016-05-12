@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_ImportExport_Pages_ExportHistory_ExportHistory_Edit_History"
-    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Export History - List" Codebehind="ExportHistory_Edit_History.aspx.cs" %>
+    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Export History - List"  Codebehind="ExportHistory_Edit_History.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector" TagPrefix="cms" %>
@@ -12,7 +12,7 @@
                 <cms:LocalizedLabel ID="lblSite" runat="server" ResourceString="general.site" DisplayColon="true"
                     EnableViewState="false" CssClass="control-label" />
             </div>
-            <div class="filter-form-value-cell">
+            <div class="filter-form-value-cell-wide">
                 <cms:SiteSelector ID="siteSelector" runat="server" IsLiveSite="false" />
             </div>
         </div>

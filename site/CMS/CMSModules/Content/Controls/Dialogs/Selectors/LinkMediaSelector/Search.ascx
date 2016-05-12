@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSelector_Search" Codebehind="Search.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSelector_Search"  Codebehind="Search.ascx.cs" %>
 
 <asp:Literal ID="ltlScript" runat="server" />
 <asp:Panel ID="pnlDialogSearch" runat="server">

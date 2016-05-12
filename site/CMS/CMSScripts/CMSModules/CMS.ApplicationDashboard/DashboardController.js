@@ -1,10 +1,6 @@
 ﻿cmsdefine(["require", "exports", 'CMS/EventHub', 'lodash'], function(cmsrequire, exports, eventHub, lodash) {
     var _ = lodash;
 
-    
-
-    
-
     var Controller = (function () {
         /**
         * Controller's constructor. Initializes $scope with default values and
@@ -90,11 +86,12 @@
                 _this.$animate.removeClass(angular.element('[data-edit-btn]'), 'btn-edit-mode-translate');
             });
 
-            eventHub.subscribe('cms.applicationdashboard.ApplicationAdded', function (guid) {
-                return _this.addTile(guid);
+            eventHub.subscribe('cms.applicationdashboard.ApplicationAdded', function (id) {
+                return _this.addTile(id);
             });
-            eventHub.subscribe('cms.applicationdashboard.ApplicationRemoved', function (guid) {
-                _this.removeTileByGuid(guid);
+
+            eventHub.subscribe('cms.applicationdashboard.ApplicationRemoved', function (id) {
+                _this.removeTileById(id);
             });
         }
         /**
@@ -131,8 +128,9 @@
         */
         Controller.prototype.addTile = function (appGuid) {
             var _this = this;
-            this.__tiles.get({ guid: appGuid }, function (tile) {
-                if (!_.contains(_.pluck(_this.$scope.model.tiles, 'Guid'), tile.Guid)) {
+            this.__tiles.load({ guid: appGuid }, function (tile) {
+                if (!_.contains(_.pluck(_this.$scope.model.tiles, 'Id'), tile.Id)) {
+                    eventHub.publish('cms.applicationdashboard.DashboardItemLoaded', tile.Id);
                     _this.$scope.model.tiles.push(tile);
                     _this.saveChanges();
                 }
@@ -142,9 +140,9 @@
         /**
         * Removes tile from the dashboard based on the application guid
         */
-        Controller.prototype.removeTileByGuid = function (appGuid) {
+        Controller.prototype.removeTileById = function (id) {
             var tileIdx = _.findIndex(this.$scope.model.tiles, function (t) {
-                return t.Guid === appGuid;
+                return t.Id === id;
             });
 
             this.removeTile(tileIdx);
@@ -155,7 +153,7 @@
         */
         Controller.prototype.enableEditable = function () {
             eventHub.publish('cms.applicationdashboard.DashboardEditableModeChanged', true, this.$scope.model.tiles.map(function (t) {
-                return t.Guid;
+                return t.Id;
             }));
 
             this.$scope.model.isEditableMode = true;

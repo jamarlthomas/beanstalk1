@@ -35,6 +35,11 @@
             Represents the Event Manager module.
             </summary>
         </member>
+        <member name="F:CMS.EventManager.EventManagerModule.BOOKING_EVENT_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for booking event.
+            </summary>
+        </member>
         <member name="M:CMS.EventManager.EventManagerModule.#ctor">
             <summary>
             Default constructor
@@ -178,25 +183,19 @@
             Provides ObjectQuery access to EventAttendees
             </summary>
         </member>
-        <member name="M:CMS.EventManager.EventAttendeeInfoProvider.GetEventAttendees(System.Int32)">
-            <summary>
-            Gets the DataSet of EventAttendeeInfos of the specific event.
-            </summary>
-            <param name="eventNodeId">Event node ID</param>
-        </member>
         <member name="M:CMS.EventManager.EventAttendeeInfoProvider.GetEventAttendees(System.Int32,System.String,System.String,System.String,System.Int32)">
             <summary>
-            Gets the DataSet of EventAttendeeInfos of the specific event.
+            Gets the DataSet of event attendees of the specific event.
             </summary>
             <param name="eventNodeId">Event node ID</param>
-            <param name="where">Event node ID</param>
-            <param name="orderBy">Event node ID</param>
-            <param name="columns">Event node ID</param>
-            <param name="topN">Event node ID</param>
+            <param name="where">Where condition</param>
+            <param name="orderBy">Order by</param>
+            <param name="columns">Columns</param>
+            <param name="topN">Top N</param>
         </member>
-        <member name="M:CMS.EventManager.EventAttendeeInfoProvider.GetEventAttendeesCount(System.Int32)">
+        <member name="M:CMS.EventManager.EventAttendeeInfoProvider.GetEventAttendees(System.Int32)">
             <summary>
-            Gets the number of attendees who are assigned to the specific event.
+            Gets the ObjectQuery of event attendees of the specific event.
             </summary>
             <param name="eventNodeId">Event node ID</param>
         </member>
@@ -206,6 +205,35 @@
             </summary>
             <param name="eventNodeId">Event node</param>
             <param name="attendeeEmail">Attendee's e-mail</param>
+        </member>
+        <member name="M:CMS.EventManager.EventAttendeeInfoProvider.GetEventAttendeeInfoInternal(System.Int32)">
+            <summary>
+            Returns the EventAttendeeInfo structure for the specified eventAttendee.
+            </summary>
+            <param name="attendeeId">EventAttendee id</param>
+        </member>
+        <member name="M:CMS.EventManager.EventAttendeeInfoProvider.GetEventAttendeeInfoByGUIDInternal(System.Guid)">
+            <summary>
+            Returns the EventAttendeeInfo structure for the specified eventAttendee.
+            </summary>
+            <param name="attendeeGuid">EventAttendee guid</param>
+        </member>
+        <member name="M:CMS.EventManager.EventAttendeeInfoProvider.SetEventAttendeeInfoInternal(CMS.EventManager.EventAttendeeInfo)">
+            <summary>
+            Sets (updates or inserts) specified eventAttendee.
+            </summary>
+            <param name="eventAttendee">EventAttendee to set</param>
+        </member>
+        <member name="M:CMS.EventManager.EventAttendeeInfoProvider.DeleteEventAttendeeInfoInternal(CMS.EventManager.EventAttendeeInfo)">
+            <summary>
+            Deletes specified eventAttendee.
+            </summary>
+            <param name="eventAttendeeObj">EventAttendee object</param>
+        </member>
+        <member name="M:CMS.EventManager.EventAttendeeInfoProvider.GetEventAttendeesInternal">
+            <summary>
+            Provides ObjectQuery access to EventAttendees
+            </summary>
         </member>
         <member name="T:CMS.EventManager.EventManagerModuleMetadata">
             <summary>
@@ -256,14 +284,6 @@
             <param name="columns">Columns</param>
             <returns>Returns dataset with result</returns>
         </member>
-        <member name="M:CMS.EventManager.EventProvider.GetEvent(System.Int32,System.String)">
-            <summary>
-            Gets event data for all sites.
-            </summary>
-            <param name="eventNodeId">ID of event node</param>
-            <param name="columns">Columns</param>
-            <returns>Returns dataset with result</returns>
-        </member>
         <member name="M:CMS.EventManager.EventProvider.GetEventDateString(System.DateTime,System.DateTime,System.Boolean,CMS.Globalization.TimeZoneInfo,System.String)">
             <summary>
             Returns string representation of event time with dependence on current ITimeZone manager
@@ -274,6 +294,12 @@
             <param name="isAllDayEvent">Indicates if it is all day event - if yes, result does not contain times</param>
             <param name="tzi">Time zone for shifting datetime values</param>
             <param name="siteName">Site name</param>
+        </member>
+        <member name="M:CMS.EventManager.EventProvider.GetBookingEventQuery(System.String)">
+            <summary>
+            Gets the booking event query for selecting events with number of event attendees.
+            </summary>
+            <param name="columns">Columns to be selected</param>
         </member>
         <member name="T:CMS.EventManager.EventSendEmail">
             <summary>

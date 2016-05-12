@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_ImportExport_Controls_Import___objects__"
-    Codebehind="__objects__.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_ImportExport_Controls_Import___objects__"
+     Codebehind="__objects__.ascx.cs" %>
 
 <script type="text/javascript">
     //<![CDATA[
@@ -64,9 +64,6 @@
                 <cms:CMSCheckBox ID="chkBindings" runat="server" />
                 <cms:CMSCheckBox ID="chkRunSite" runat="server" />
                 <cms:CMSCheckBox ID="chkDeleteSite" runat="server" />
-            </asp:PlaceHolder>
-            <asp:PlaceHolder runat="server" ID="plcOverwriteQueries" Visible="false">
-                <cms:CMSCheckBox ID="chkOverwriteSystemQueries" runat="server" />
             </asp:PlaceHolder>
             <cms:CMSCheckBox ID="chkSkipOrfans" runat="server" />
             <cms:CMSCheckBox ID="chkImportTasks" runat="server" />

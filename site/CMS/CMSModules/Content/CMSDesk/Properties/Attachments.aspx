@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_Attachments"
-    Theme="Default" Codebehind="Attachments.aspx.cs" MaintainScrollPositionOnPostback="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_Attachments"
+    Theme="Default"  Codebehind="Attachments.aspx.cs" MaintainScrollPositionOnPostback="true"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Attachments/DocumentAttachments/DocumentAttachmentsList.ascx"

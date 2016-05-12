@@ -33,12 +33,6 @@ function NewDocument(parentNodeId, className) {
     }
 }
 
-function ConvertDocument(parentNodeId, convertDocumentId) {
-    if ((parent != this) && (parentNodeId != 0) && (convertDocumentId != 0)) {
-        parent.ConvertDocument(parentNodeId, convertDocumentId);
-    }
-}
-
 function DeleteDocument(nodeId) {
     if ((nodeId != 0) && (parent != this)) {
         parent.DeleteDocument(nodeId);

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Base;
 using CMS.Core;
@@ -52,13 +52,13 @@ public partial class CMSModules_Modules_Pages_Class_Search : GlobalAdminPage
                         searchFields.ItemID = dci.ClassID;
                     }
                     searchFields.AdvancedMode = SystemContext.DevelopmentMode;
-                    CurrentMaster.HeaderActions.AddAction(new SaveAction(this));
+                    CurrentMaster.HeaderActions.AddAction(new SaveAction());
                     break;
 
                 default:
                     searchFields.ItemID = ClassInfo.ClassID;
                     searchFields.LoadActualValues = true;
-                    CurrentMaster.HeaderActions.AddAction(new SaveAction(this));
+                    CurrentMaster.HeaderActions.AddAction(new SaveAction());
                     break;
             }
 

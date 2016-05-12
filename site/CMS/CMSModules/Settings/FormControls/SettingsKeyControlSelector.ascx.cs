@@ -8,14 +8,17 @@ using CMS.Helpers;
 
 public partial class CMSModules_Settings_FormControls_SettingsKeyControlSelector : FormEngineUserControl
 {
+    #region "Private members"
+
     private bool controlsLoaded;
 
     private const string STRING = "string";
-
     private const string INT = "int";
 
+    #endregion
 
-    #region Properties
+
+    #region "Properties"
 
     /// <summary>
     /// Gets or sets form control code name or user control file system path.
@@ -112,6 +115,8 @@ public partial class CMSModules_Settings_FormControls_SettingsKeyControlSelector
     #endregion
 
 
+    #region "Control events"
+
     protected override void OnLoad(EventArgs e)
     {
         base.OnLoad(e);
@@ -146,6 +151,16 @@ public partial class CMSModules_Settings_FormControls_SettingsKeyControlSelector
         pnlFileSystem.Visible = radFileSystem.Checked;
     }
 
+
+    protected void component_Changed(object sender, EventArgs e)
+    {
+        RaiseOnChanged();
+    }
+
+    #endregion
+
+
+    #region "Methods"
 
     private void LoadControls(string controlPath)
     {
@@ -212,4 +227,6 @@ public partial class CMSModules_Settings_FormControls_SettingsKeyControlSelector
         // Otherwise (if not fixed in UniSelector) FormControlSelector will not return correct selected value.
         ucFormControlSelector.Reload(true);
     }
+
+    #endregion
 }

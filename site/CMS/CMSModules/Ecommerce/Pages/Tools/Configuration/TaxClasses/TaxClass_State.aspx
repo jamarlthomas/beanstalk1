@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_Configuration_TaxClasses_TaxClass_State"
-    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Codebehind="TaxClass_State.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_Configuration_TaxClasses_TaxClass_State"
+    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"  Codebehind="TaxClass_State.aspx.cs" %>
 
 <asp:Content ID="cntControls" runat="server" ContentPlaceHolderID="plcSiteSelector">
     <div class="form-horizontal form-filter">
@@ -8,7 +8,7 @@
                 <cms:LocalizedLabel CssClass="control-label" ID="lblCountry" runat="server" EnableViewState="false" ResourceString="taxclass_state.lblcountry"
                     DisplayColon="true"></cms:LocalizedLabel>
             </div>
-            <div class="filter-form-value-cell">
+            <div class="filter-form-value-cell-wide">
                 <cms:CMSDropDownList ID="drpCountry" runat="server" AutoPostBack="true" OnSelectedIndexChanged="drpCountry_SelectedIndexChanged"
                     EnableViewState="true" />
             </div>
@@ -30,14 +30,8 @@
                     <div class="inline-editing-textbox">
                         <cms:CMSTextBox ID="txtTaxValue" runat="server" Text='<%#DataBinder.Eval(Container.DataItem, "TaxValue")%>'
                             MaxLength="10" OnTextChanged="txtTaxValue_Changed" EnableViewState="false" CssClass="input-width-15 editing-textbox"></cms:CMSTextBox>
-                        <asp:Label ID="lblCurrency" runat="server" />
+                        <span>%</span>
                     </div>
-                </ItemTemplate>
-            </asp:TemplateField>
-            <asp:TemplateField>
-                <ItemTemplate>
-                    <cms:CMSCheckBox ID="chkIsFlatValue" runat="server" Checked='<%#ValidationHelper.GetBoolean(DataBinder.Eval(Container.DataItem, "IsFlatValue"), false)%>'
-                        OnCheckedChanged="chkIsFlatValue_Changed" EnableViewState="false" />
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:BoundField DataField="StateID">

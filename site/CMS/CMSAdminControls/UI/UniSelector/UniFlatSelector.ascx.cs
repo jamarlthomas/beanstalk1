@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Text;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
@@ -8,7 +7,6 @@ using System.Data;
 using CMS.Controls;
 using CMS.ExtendedControls;
 using CMS.Helpers;
-using CMS.Base;
 using CMS.UIControls;
 using CMS.DataEngine;
 
@@ -393,7 +391,7 @@ public partial class CMSAdminControls_UI_UniSelector_UniFlatSelector : UniFlatSe
         // Set default selected value to javascript-side variable
         if (!RequestHelper.IsPostBack())
         {
-            ScriptHelper.RegisterStartupScript(this, typeof(string), "FirstSelectorValue", ScriptHelper.GetScript("selectedValue = '" + SelectedItem + "'; selectedSkipDialog = false; selectedFlatItem = $cmsj('.FlatSelectedItem'); selectedItemName = selectedFlatItem.find('.SelectorFlatText').text().trim();"));
+            ScriptHelper.RegisterStartupScript(this, typeof(string), "FirstSelectorValue", ScriptHelper.GetScript("selectedValue = '" + ScriptHelper.GetString(SelectedItem, false) + "'; selectedSkipDialog = false; selectedFlatItem = $cmsj('.FlatSelectedItem'); selectedItemName = selectedFlatItem.find('.SelectorFlatText').text().trim();"));
         }
 
         ScriptHelper.RegisterJQuery(Page);
@@ -458,7 +456,7 @@ public partial class CMSAdminControls_UI_UniSelector_UniFlatSelector : UniFlatSe
             ";
 
         ScriptHelper.RegisterStartupScript(this, typeof(string), "DelayedSearch", ScriptHelper.GetScript(delayedSearchScript));
-        btnUpdate.Click += new EventHandler(btnUpdate_Click);
+        btnUpdate.Click += btnUpdate_Click;
 
         // Create and register select item script
         if (String.IsNullOrEmpty(JavascriptFunction))
@@ -610,7 +608,7 @@ public partial class CMSAdminControls_UI_UniSelector_UniFlatSelector : UniFlatSe
             // Avoid SQL injection
             searchText = SqlHelper.EscapeQuotes(searchText);
 
-            string[] columns = SearchColumn.Split(new char[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] columns = SearchColumn.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries);
             string columnsWhere = string.Empty;
 
             foreach (string column in columns)
@@ -631,35 +629,33 @@ public partial class CMSAdminControls_UI_UniSelector_UniFlatSelector : UniFlatSe
             int topN = currentGroup * pgrItems.GroupSize * pgrItems.DefaultPageSize + pgrItems.DefaultPageSize;
             repItems.TopN = topN;
         }
-
-
-        // Clear selected item value if remembering is disabled (category change, paginng, ...)
-        if ((!RememberSelectedItem) && !String.IsNullOrEmpty(SelectedItem))
+        
+        if (!String.IsNullOrEmpty(SelectedItem))
         {
-            SelectedItem = string.Empty;
+            var clearSelectedItemScript = String.Empty;
 
-            // Get updated description
+            if (!RememberSelectedItem)
+            {
+                // Clear selected item value if remembering is disabled (category change, paging, ...)
+                SelectedItem = string.Empty;
+                clearSelectedItemScript = @"
+selectedFlatItem = null;
+selectedValue = null;
+selectedItemName = null;";
+            }
+            
+            // Get description
             string description = RaiseOnItemSelected(SelectedItem);
 
-            // Clear client side values and update description
-            ScriptHelper.RegisterStartupScript(this, typeof(string), "ClearSelectedItem",
-                                               ScriptHelper.GetScript(
-                                                   "selectedFlatItem = null;" +
-                                                   "selectedValue = null;" +
-                                                   "selectedItemName = null;" +
-                                                   callBackHandlerFunction + "('" + description + "');"
-                                                   ));
+            // Create startup script which optionally clears selected item and updates description if selected item is not removed
+            var startupScript = clearSelectedItemScript + "\r\n" + callBackHandlerFunction + "('" + description + "');";
+
+            // Register startup script
+            ScriptHelper.RegisterStartupScript(this, typeof(string), ClientID + "_StartupScript", ScriptHelper.GetScript(startupScript));
         }
 
         // Different no records messages based on search
-        if (String.IsNullOrEmpty(SearchText))
-        {
-            lblNoRecords.Text = GetString(NoRecordsMessage);
-        }
-        else
-        {
-            lblNoRecords.Text = GetString(NoRecordsSearchMessage);
-        }
+        lblNoRecords.Text = GetString(String.IsNullOrEmpty(SearchText) ? NoRecordsMessage : NoRecordsSearchMessage);
 
         repItems.ReloadData(true);
 
@@ -735,11 +731,8 @@ public partial class CMSAdminControls_UI_UniSelector_UniFlatSelector : UniFlatSe
             }
 
             // Add javascript function
-            string link = string.Empty;
-
-            link = selectItemFunction + "(" + ScriptHelper.GetString(value) + ", this )";
-
-
+            string link = selectItemFunction + "(" + ScriptHelper.GetString(value) + ", this )";
+            
             // Add postback event reference
             if (UsePostback)
             {

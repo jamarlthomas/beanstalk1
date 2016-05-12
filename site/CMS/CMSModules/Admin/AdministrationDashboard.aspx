@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Theme="Default" Codebehind="AdministrationDashboard.aspx.cs" Inherits="CMSModules_Admin_AdministrationDashboard" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Theme="Default"  Codebehind="AdministrationDashboard.aspx.cs" Inherits="CMSModules_Admin_AdministrationDashboard" %>
 
 <%@ Register Src="~/CMSModules/Widgets/Controls/Dashboard.ascx" TagName="Dashboard"
     TagPrefix="uc1" %>

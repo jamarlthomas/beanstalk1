@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_UserContributions_ContributionList" Codebehind="ContributionList.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_UserContributions_ContributionList"  Codebehind="ContributionList.ascx.cs" %>
 <%@ Register src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" tagname="UniGrid" tagprefix="cms" %>
 <%@ Register Src="~/CMSModules/Content/Controls/UserContributions/EditForm.ascx" TagName="EditForm" TagPrefix="cms" %>
 

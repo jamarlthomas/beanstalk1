@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Data;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 
@@ -21,15 +20,15 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileUplo
 {
     #region "Variables"
 
-    private string mInnerDivClass = null;
-    private string mInnerLoadingDivClass = null;
+    private string mInnerDivClass;
+    private string mInnerLoadingDivClass;
 
-    private MediaLibraryInfo mLibraryInfo = null;
-    private MediaFileInfo mFileInfo = null;
+    private MediaLibraryInfo mLibraryInfo;
+    private MediaFileInfo mFileInfo;
 
-    private string previewPath = null;
-    private string previewName = null;
-    private string previewExt = null;
+    private string previewPath;
+    private string previewName;
+    private string previewExt;
 
     #endregion
 
@@ -215,18 +214,6 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileUplo
         }
     }
 
-
-    /// <summary>
-    /// Indicates whether the asynchronous postback occurs on the page.
-    /// </summary>
-    private bool IsAsyncPostback
-    {
-        get
-        {
-            return ScriptManager.GetCurrent(Page).IsInAsyncPostBack;
-        }
-    }
-
     #endregion
 
 
@@ -281,7 +268,10 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileUplo
         // Register dialog script
         ScriptHelper.RegisterDialogScript(Page);
 
-        string editorUrl = null;
+        string editorUrl;
+
+        const string MEDIA_LIBRARY_FOLDER = "~/CMSModules/MediaLibrary/";
+
         if (IsLiveSite)
         {
             if (AuthenticationHelper.IsAuthenticated())
@@ -290,12 +280,12 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileUplo
             }
             else
             {
-                editorUrl = URLHelper.ResolveUrl("~/CMSModules/MediaLibrary/CMSPages/ImageEditor.aspx");
+                editorUrl = URLHelper.ResolveUrl(MEDIA_LIBRARY_FOLDER + "CMSPages/ImageEditor.aspx");
             }
         }
         else
         {
-            editorUrl = URLHelper.ResolveUrl("~/CMSModules/MediaLibrary/Controls/MediaLibrary/ImageEditor.aspx");
+            editorUrl = URLHelper.ResolveUrl(MEDIA_LIBRARY_FOLDER + "Controls/MediaLibrary/ImageEditor.aspx");
         }
 
         // Dialog for editing image
@@ -307,7 +297,6 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileUplo
         // Grid initialization
         gridAttachments.IsLiveSite = IsLiveSite;
         gridAttachments.Visible = true;
-        gridAttachments.GridName = "~/CMSModules/MediaLibrary/Controls/MediaLibrary/MediaFileUpload.xml";
         gridAttachments.OnExternalDataBound += GridOnExternalDataBound;
         gridAttachments.OnAction += GridOnAction;
         pnlGrid.Attributes.Add("style", "padding-top: 2px;");
@@ -427,7 +416,7 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileUplo
             }
             else
             {
-                gridAttachments.DataSource = MediaFileInfoProvider.GetMediaFiles("FileID = " + MediaFileID, null);
+                gridAttachments.DataSource = MediaFileInfoProvider.GetMediaFiles("FileID = " + MediaFileID);
             }
 
             gridAttachments.ReloadData();
@@ -602,7 +591,7 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileUplo
                     {
                         fileName = previewName;
                         fileExt = previewExt;
-                        fileUrl = ResolveUrl("~/CMSPages/MediaLibrary/GetMediaFile.aspx?preview=1&fileguid=" + FileInfo.FileGUID);
+                        fileUrl = ResolveUrl("~/CMSPages/GetMediaFile.aspx?preview=1&fileguid=" + FileInfo.FileGUID);
                     }
                     else
                     {

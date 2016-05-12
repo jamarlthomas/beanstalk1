@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/Navigation/xmlsitemap.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/Navigation/xmlsitemap.ascx.cs"
     Inherits="CMSWebParts_Navigation_xmlsitemap" %>
 <cms:googlesitemap runat="server" id="ucSiteMap"> 
 

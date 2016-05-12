@@ -784,6 +784,11 @@
             Class providing ChatInitiatedChatRequestInfo management.
             </summary>
         </member>
+        <member name="M:CMS.Chat.ChatInitiatedChatRequestInfoProvider.GetInitiatedChatRequests">
+            <summary>
+            Returns the query for all chat initiated chat requests.
+            </summary>
+        </member>
         <member name="M:CMS.Chat.ChatInitiatedChatRequestInfoProvider.GetInitiatedChatRequests(System.String,System.String,System.Int32,System.String)">
             <summary>
             Returns dataset of all initiated chat requests matching the specified parameters.
@@ -856,15 +861,6 @@
             Cleans old initiated chat requests. First, requests are changed to the 'deleted' state, co they can be removed from cache and on the second pass, they are completely deleted.
             </summary>
             <returns>Number of completely deleted requests.</returns>
-        </member>
-        <member name="M:CMS.Chat.ChatInitiatedChatRequestInfoProvider.GetInitiatedChatRequestsInternal(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Returns dataset of all initiated chat requests matching the specified parameters.
-            </summary>
-            <param name="where">Where condition.</param>
-            <param name="orderBy">Order by expression.</param>
-            <param name="topN">Number of records to be selected.</param>        
-            <param name="columns">Columns to be selected.</param>
         </member>
         <member name="M:CMS.Chat.ChatInitiatedChatRequestInfoProvider.GetChatInitiatedChatRequestInfoInternal(System.Int32)">
             <summary>
@@ -1565,6 +1561,11 @@
             Class providing ChatOnlineSupportInfo management.
             </summary>
         </member>
+        <member name="M:CMS.Chat.ChatOnlineSupportInfoProvider.GetChatOnlineSupportEngineers">
+            <summary>
+            Returns the query for all chat online support engineers.
+            </summary>
+        </member>
         <member name="M:CMS.Chat.ChatOnlineSupportInfoProvider.GetOnlineSupportEngineers(System.String,System.String,System.Int32,System.String)">
             <summary>
             Returns dataset of all online support engineers matching the specified parameters.
@@ -1652,15 +1653,6 @@
             </summary>
             <param name="token">Login token</param>
             <param name="siteID">Users on this site will be searched</param>
-        </member>
-        <member name="M:CMS.Chat.ChatOnlineSupportInfoProvider.GetOnlineSupportEngineersInternal(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Returns dataset of all online support engineers matching the specified parameters.
-            </summary>
-            <param name="where">Where condition.</param>
-            <param name="orderBy">Order by expression.</param>
-            <param name="topN">Number of records to be selected.</param>        
-            <param name="columns">Columns to be selected.</param>
         </member>
         <member name="M:CMS.Chat.ChatOnlineSupportInfoProvider.GetChatOnlineSupportInfoInternal(System.Int32)">
             <summary>
@@ -1833,6 +1825,11 @@
             Class providing ChatOnlineUser management.
             </summary>
         </member>
+        <member name="M:CMS.Chat.ChatOnlineUserInfoProvider.GetChatOnlineUsers">
+            <summary>
+            Returns the query for all chat online users.
+            </summary>
+        </member>
         <member name="M:CMS.Chat.ChatOnlineUserInfoProvider.GetChatOnlineUsers(System.String,System.String,System.Int32,System.String)">
             <summary>
             Returns dataset of all chat online users matching the specified parameters.
@@ -1913,9 +1910,7 @@
         <member name="M:CMS.Chat.ChatOnlineUserInfoProvider.Login(System.Int32,System.Int32,System.Boolean)">
             <summary>
             Logs in user to chat.
-            
             It returns login token which can be used later to re-login user to chat if server looses session.
-            
             If user is already logged in, old token is returned. Otherwise it is generated.
             </summary>
             <param name="siteID">Site ID</param>
@@ -1938,15 +1933,6 @@
             </summary>
             <param name="token">Token</param>
             <param name="siteID">Only users online on this site will be searhed</param>
-        </member>
-        <member name="M:CMS.Chat.ChatOnlineUserInfoProvider.GetChatOnlineUsersInternal(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Returns dataset of all chat online users matching the specified parameters.
-            </summary>
-            <param name="where">Where condition.</param>
-            <param name="orderBy">Order by expression.</param>
-            <param name="topN">Number of records to be selected.</param>        
-            <param name="columns">Columns to be selected.</param>
         </member>
         <member name="M:CMS.Chat.ChatOnlineUserInfoProvider.GetChatOnlineUserInternal(System.Int32)">
             <summary>
@@ -2074,7 +2060,7 @@
             Name of this class.
             </summary>
         </member>
-        <member name="F:CMS.Chat.ChatGlobalData.instance">
+        <member name="F:CMS.Chat.ChatGlobalData.mInstance">
             <summary>
             Instance.
             </summary>
@@ -2358,6 +2344,11 @@
             Class providing ChatPopupWindowSettings management.
             </summary>
         </member>
+        <member name="M:CMS.Chat.ChatPopupWindowSettingsInfoProvider.GetChatPopupWindowSettings">
+            <summary>
+            Returns the query for all chat popup window settings.
+            </summary>
+        </member>
         <member name="M:CMS.Chat.ChatPopupWindowSettingsInfoProvider.GetPopupWindowSettings(System.String,System.String,System.Int32,System.String)">
             <summary>
             Returns dataset of all popup window settings matching the specified parameters.
@@ -2419,16 +2410,7 @@
             <param name="userTrans">User transformation setting</param>
             <param name="errorTrans">Error transformation setting</param>
             <param name="errorClearTrans">Error clear transformation setting</param>
-            <returns>Stored settins</returns>
-        </member>
-        <member name="M:CMS.Chat.ChatPopupWindowSettingsInfoProvider.GetPopupWindowSettingsInternal(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Returns dataset of all popup window settings matching the specified parameters.
-            </summary>
-            <param name="where">Where condition.</param>
-            <param name="orderBy">Order by expression.</param>
-            <param name="topN">Number of records to be selected.</param>        
-            <param name="columns">Columns to be selected.</param>
+            <returns>Stored settings</returns>
         </member>
         <member name="M:CMS.Chat.ChatPopupWindowSettingsInfoProvider.GetChatPopupWindowSettingsInternal(System.Int32)">
             <summary>
@@ -2639,6 +2621,11 @@
             Class providing ChatSupportTakenRoomsInfo management.
             </summary>
         </member>
+        <member name="M:CMS.Chat.ChatSupportTakenRoomInfoProvider.GetChatSupportTakenRooms">
+            <summary>
+            Returns the query for all chat support taken rooms.
+            </summary>
+        </member>
         <member name="M:CMS.Chat.ChatSupportTakenRoomInfoProvider.GetRoomsTakenBySupport(System.String,System.String,System.Int32,System.String)">
             <summary>
             Returns dataset of all rooms taken by support matching the specified parameters.
@@ -2709,15 +2696,6 @@
             <param name="roomID">ID of room to check</param>
             <param name="omitChatUserID">If room is taken by this user, it won't count</param>
             <returns>True if room is taken</returns>
-        </member>
-        <member name="M:CMS.Chat.ChatSupportTakenRoomInfoProvider.GetRoomsTakenBySupportInternal(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Returns dataset of all rooms taken by support matching the specified parameters.
-            </summary>
-            <param name="where">Where condition.</param>
-            <param name="orderBy">Order by expression.</param>
-            <param name="topN">Number of records to be selected.</param>        
-            <param name="columns">Columns to be selected.</param>
         </member>
         <member name="M:CMS.Chat.ChatSupportTakenRoomInfoProvider.GetChatSupportTakenRoomsInfoInternal(System.Int32)">
             <summary>
@@ -2828,6 +2806,17 @@
             Updates the object using appropriate provider.
             </summary>
         </member>
+        <member name="M:CMS.Chat.ChatSupportCannedResponseInfo.CheckPermissionsInternal(CMS.DataEngine.PermissionsEnum,System.String,CMS.Base.IUserInfo,System.Boolean)">
+            <summary>
+            Checks whether the specified user has permissions for this object. This method is called automatically after CheckPermissions event was fired.
+            Check takes into account the fact, that the canned response can be personal and its owner thus has all the permissions.
+            </summary>
+            <param name="permission">Permission to perform this operation will be checked</param>
+            <param name="siteName">Permissions on this site will be checked</param>
+            <param name="userInfo">Permissions of this user will be checked</param>
+            <param name="exceptionOnFailure">If true, PermissionCheckException is thrown whenever a permission check fails</param>
+            <returns>True if user is allowed to perform specified operation on the this object; otherwise false</returns>
+        </member>
         <member name="M:CMS.Chat.ChatSupportCannedResponseInfo.#ctor">
             <summary>
             Constructor - Creates an empty ChatSupportCannedResponseInfo object.
@@ -2877,6 +2866,11 @@
         <member name="T:CMS.Chat.ChatSupportCannedResponseInfoProvider">
             <summary>
             Class providing ChatSupportCannedResponseInfo management.
+            </summary>
+        </member>
+        <member name="M:CMS.Chat.ChatSupportCannedResponseInfoProvider.GetChatSupportCannedResponses">
+            <summary>
+            Returns the query for all chat support canned responses.
             </summary>
         </member>
         <member name="M:CMS.Chat.ChatSupportCannedResponseInfoProvider.GetChatSupportCannedResponses(System.String,System.String,System.Int32,System.String)">
@@ -2931,15 +2925,6 @@
             <param name="chatUserID">Owner of canned responses</param>
             <param name="siteID">Site of canned responses</param>
             <returns>Canned responses</returns>
-        </member>
-        <member name="M:CMS.Chat.ChatSupportCannedResponseInfoProvider.GetChatSupportCannedResponsesInternal(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Returns dataset of all chat support canned responses matching the specified parameters.
-            </summary>
-            <param name="where">Where condition.</param>
-            <param name="orderBy">Order by expression.</param>
-            <param name="topN">Number of records to be selected.</param>        
-            <param name="columns">Columns to be selected.</param>
         </member>
         <member name="M:CMS.Chat.ChatSupportCannedResponseInfoProvider.GetChatSupportCannedResponseInfoInternal(System.Int32)">
             <summary>
@@ -3801,6 +3786,11 @@
             Class providing ChatMessageInfo management.
             </summary>
         </member>
+        <member name="M:CMS.Chat.ChatMessageInfoProvider.GetChatMessages">
+            <summary>
+            Returns the query for all chat messages.
+            </summary>
+        </member>
         <member name="M:CMS.Chat.ChatMessageInfoProvider.GetChatMessages(System.String,System.String,System.Int32,System.String)">
             <summary>
             Returns dataset of all chat messages matching the specified parameters.
@@ -3861,15 +3851,6 @@
             </summary>
             <param name="roomID">Room ID</param>
             <returns>Newest ChatMessageLastModified or null if there are no messages in this room</returns>
-        </member>
-        <member name="M:CMS.Chat.ChatMessageInfoProvider.GetChatMessagesInternal(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Returns dataset of all chat messages matching the specified parameters.
-            </summary>
-            <param name="where">Where condition.</param>
-            <param name="orderBy">Order by expression.</param>
-            <param name="topN">Number of records to be selected.</param>        
-            <param name="columns">Columns to be selected.</param>
         </member>
         <member name="M:CMS.Chat.ChatMessageInfoProvider.GetChatMessageInfoInternal(System.Int32)">
             <summary>
@@ -3990,6 +3971,11 @@
             Class providing ChatNotificationInfo management.
             </summary>
         </member>
+        <member name="M:CMS.Chat.ChatNotificationInfoProvider.GetChatNotifications">
+            <summary>
+            Returns the query for all chat notifications.
+            </summary>
+        </member>
         <member name="M:CMS.Chat.ChatNotificationInfoProvider.GetChatNotifications(System.String,System.String,System.Int32,System.String)">
             <summary>
             Returns dataset of all chat notifications matching the specified parameters.
@@ -4070,15 +4056,6 @@
             </summary>
             <param name="receiverID">Receiver of notifications</param>
             <param name="untilWhen">Notifications arrived before this time</param>
-        </member>
-        <member name="M:CMS.Chat.ChatNotificationInfoProvider.GetChatNotificationsInternal(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Returns dataset of all chat notifications matching the specified parameters.
-            </summary>
-            <param name="where">Where condition.</param>
-            <param name="orderBy">Order by expression.</param>
-            <param name="topN">Number of records to be selected.</param>        
-            <param name="columns">Columns to be selected.</param>
         </member>
         <member name="M:CMS.Chat.ChatNotificationInfoProvider.GetChatNotificationInfoInternal(System.Int32)">
             <summary>
@@ -4715,6 +4692,11 @@
             Class providing ChatRoomInfo management.
             </summary>
         </member>
+        <member name="M:CMS.Chat.ChatRoomInfoProvider.GetChatRooms">
+            <summary>
+            Returns the query for all chat rooms.
+            </summary>
+        </member>
         <member name="M:CMS.Chat.ChatRoomInfoProvider.GetChatRooms(System.String,System.String,System.Int32,System.String)">
             <summary>
             Returns dataset of all chat rooms matching the specified parameters.
@@ -4839,14 +4821,10 @@
             Gets current time on SQL Server. 
             </summary>
         </member>
-        <member name="M:CMS.Chat.ChatRoomInfoProvider.GetChatRoomsInternal(System.String,System.String,System.Int32,System.String)">
+        <member name="M:CMS.Chat.ChatRoomInfoProvider.UpdateCachedRooms">
             <summary>
-            Returns dataset of all chat rooms matching the specified parameters.
+            Updates data of all cached rooms.
             </summary>
-            <param name="where">Where condition.</param>
-            <param name="orderBy">Order by expression.</param>
-            <param name="topN">Number of records to be selected.</param>        
-            <param name="columns">Columns to be selected.</param>
         </member>
         <member name="M:CMS.Chat.ChatRoomInfoProvider.GetChatRoomInfoInternal(System.Int32)">
             <summary>
@@ -6252,6 +6230,11 @@
             Class providing ChatUserInfo management.
             </summary>
         </member>
+        <member name="M:CMS.Chat.ChatUserInfoProvider.GetChatUsers">
+            <summary>
+            Returns the query for all chat users.
+            </summary>
+        </member>
         <member name="M:CMS.Chat.ChatUserInfoProvider.GetChatUsers(System.String,System.String,System.Int32,System.String)">
             <summary>
             Returns dataset of all chat users matching the specified parameters.
@@ -6316,19 +6299,10 @@
         </member>
         <member name="M:CMS.Chat.ChatUserInfoProvider.GetAnonymousChatUsersByNickname(System.String)">
             <summary>
-            Returns chat users with the specified nickname.
+            Returns anonymous chat users with the specified nickname.
             </summary>
             <param name="nickname">Nickname of the user</param>
             <rereturns>Anonymous users with specified nickname.</rereturns>
-        </member>
-        <member name="M:CMS.Chat.ChatUserInfoProvider.GetChatUsersInternal(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Returns dataset of all chat users matching the specified parameters.
-            </summary>
-            <param name="where">Where condition.</param>
-            <param name="orderBy">Order by expression.</param>
-            <param name="topN">Number of records to be selected.</param>        
-            <param name="columns">Columns to be selected.</param>
         </member>
         <member name="M:CMS.Chat.ChatUserInfoProvider.GetChatUserInfoInternal(System.Int32)">
             <summary>

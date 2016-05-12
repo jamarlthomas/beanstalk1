@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -34,7 +34,10 @@ public partial class CMSModules_Reporting_Tools_Report_View : CMSReportingPage
         ReportInfo ri = ReportInfoProvider.GetReportInfo(reportId);
         if (ri != null)
         {
-            displayReport.ReportName = ri.ReportName;
+            var reportName = ri.ReportName;
+
+            displayReport.ReportName = reportName;
+            reportHeader.ReportName = reportName;
         }
     }
 
@@ -53,7 +56,6 @@ public partial class CMSModules_Reporting_Tools_Report_View : CMSReportingPage
     {
         base.OnPreRender(e);
 
-        reportHeader.ReportName = displayReport.ReportName;
         reportHeader.ReportParameters = displayReport.ReportParameters;
 
         // Disable print option if form parameters aren't valid

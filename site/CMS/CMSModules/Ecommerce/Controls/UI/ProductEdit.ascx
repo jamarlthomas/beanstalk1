@@ -1,15 +1,15 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="ProductEdit.ascx.cs" Inherits="CMSModules_Ecommerce_Controls_UI_ProductEdit" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="ProductEdit.ascx.cs" Inherits="CMSModules_Ecommerce_Controls_UI_ProductEdit" %>
 <%@ Register TagPrefix="cms" TagName="EditMenuUC" Src="~/CMSModules/Content/Controls/EditMenu.ascx" %>
 <%@ Register TagPrefix="cms" TagName="HeaderActionsUC" Src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" %>
 <%@ Register TagPrefix="cms" TagName="AnchorDropup" Src="~/CMSAdminControls/UI/PageElements/AnchorDropup.ascx" %>
 <%@ Register TagPrefix="cms" TagName="SelectSKUBinding" Src="~/CMSModules/Ecommerce/FormControls/SelectSKUBinding.ascx" %>
 <%-- Header --%>
-<div id="CMSHeaderDiv" class="shadow-holder">
+<div id="CMSHeaderDiv">
     <asp:PlaceHolder ID="plcHeaderActions" runat="server">
         <%-- Edit menu --%>
         <cms:EditMenuUC ID="editMenuElem" runat="server" ShortID="em" Visible="false" StopProcessing="true" />
         <%-- Header actions --%>
-        <asp:Panel ID="pnlHeaderActions" runat="server" CssClass="cms-edit-menu" Visible="false">
+        <asp:Panel ID="pnlHeaderActions" runat="server" Visible="false" CssClass="control-group-inline header-actions-container">
             <cms:HeaderActionsUC ID="headerActionsElem" runat="server" StopProcessing="true" />
         </asp:Panel>
     </asp:PlaceHolder>
@@ -23,12 +23,12 @@
 <cms:CMSPanel ID="pnlForms" runat="server" CssClass="ProductEditForms" ShortID="pf">
     <cms:CMSPanel ID="pnlFormsInner" runat="server" ShortID="pfi">
         <%-- Messages --%>
-        <cms:CMSPanel ID="pnlMessages" runat="server" CssClass="MessagesWrapper">
+        <cms:CMSPanel ID="pnlMessages" runat="server">
             <cms:MessagesPlaceHolder ID="plcMessages" runat="server" WrapperControlID="pnlMessages" />
         </cms:CMSPanel>
         <%-- SKU binding - create --%>
         <cms:CMSPanel ID="pnlCreateSkuBinding" runat="server" ShortID="psb" Visible="false">
-            <cms:LocalizedHeading runat="server" ID="headBinding" Level="4" EnableViewState="false" IsAnchor="true" ResourceString="com.productedit.skubinding"/>
+            <cms:LocalizedHeading runat="server" ID="headBinding" Level="4" EnableViewState="false" IsAnchor="true" ResourceString="com.productedit.skubinding" />
             <cms:SelectSKUBinding ID="selectSkuBindingElem" runat="server" ShortID="sb" />
         </cms:CMSPanel>
         <span class="ClearBoth"></span>

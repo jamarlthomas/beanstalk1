@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SelectGraphTypeAndPeriod.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SelectGraphTypeAndPeriod.ascx.cs"
     Inherits="CMSModules_WebAnalytics_Controls_SelectGraphTypeAndPeriod" %>
 <%@ Register Src="~/CMSModules/WebAnalytics/Controls/SelectGraphType.ascx" TagName="GraphType"
     TagPrefix="cms" %>

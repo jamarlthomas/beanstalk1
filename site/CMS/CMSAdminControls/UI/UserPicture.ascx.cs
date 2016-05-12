@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Web;
 using System.Web.UI;
 
 using CMS.Helpers;
@@ -18,17 +19,21 @@ public partial class CMSAdminControls_UI_UserPicture : CMSUserControl
     private bool mDisplayPicture = true;
     private int mUserId = 0;
     private int mGroupId = 0;
-    private int mAvatarID = 0;
-    private bool mKeepAspectRatio = false;
-    private bool mRenderOuterDiv = false;
     private string mOuterDivCSSClass = "UserPicture";
     private string mUserAvatarType = AvatarInfoProvider.AVATAR;
     private string mUserEmail = "";
 
 
-    protected string imageUrl = "";
     public string width = "";
     public string height = "";
+
+
+    public CMSAdminControls_UI_UserPicture()
+    {
+        RenderOuterDiv = false;
+        AvatarID = 0;
+        KeepAspectRatio = false;
+    }
 
     #endregion
 
@@ -40,14 +45,8 @@ public partial class CMSAdminControls_UI_UserPicture : CMSUserControl
     /// </summary>
     public bool KeepAspectRatio
     {
-        get
-        {
-            return mKeepAspectRatio;
-        }
-        set
-        {
-            mKeepAspectRatio = value;
-        }
+        get;
+        set;
     }
 
 
@@ -136,14 +135,8 @@ public partial class CMSAdminControls_UI_UserPicture : CMSUserControl
     /// </summary>
     public int AvatarID
     {
-        get
-        {
-            return mAvatarID;
-        }
-        set
-        {
-            mAvatarID = value;
-        }
+        get;
+        set;
     }
 
 
@@ -184,14 +177,8 @@ public partial class CMSAdminControls_UI_UserPicture : CMSUserControl
     /// </summary>
     public bool RenderOuterDiv
     {
-        get
-        {
-            return mRenderOuterDiv;
-        }
-        set
-        {
-            mRenderOuterDiv = value;
-        }
+        get;
+        set;
     }
 
 
@@ -233,7 +220,7 @@ public partial class CMSAdminControls_UI_UserPicture : CMSUserControl
         // Only if display picture is allowed
         if (DisplayPicture)
         {
-            string imageUrl = ResolveUrl("~/CMSModules/Avatars/CMSPages/GetAvatar.aspx?avatarguid=");
+            string imageUrl = ResolveUrl("~/CMSPages/GetAvatar.aspx?avatarguid=");
 
             bool isGravatar = false;
 
@@ -323,6 +310,7 @@ public partial class CMSAdminControls_UI_UserPicture : CMSUserControl
                 if (ai != null)
                 {
                     imageUrl += ai.AvatarGUID.ToString();
+                    imageUrl = URLHelper.AppendQuery(imageUrl, "lastModified=" + SecurityHelper.GetSHA2Hash(ai.AvatarLastModified.ToString()));
                     Visible = true;
                 }
             }

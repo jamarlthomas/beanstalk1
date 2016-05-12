@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Messaging_Controls_SendMessage" Codebehind="SendMessage.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Messaging_Controls_SendMessage"  Codebehind="SendMessage.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Messaging/FormControls/MessageUserSelector.ascx" TagName="MessageUserSelector"
     TagPrefix="cms" %>
 

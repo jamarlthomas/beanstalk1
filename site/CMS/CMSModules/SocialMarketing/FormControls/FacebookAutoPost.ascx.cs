@@ -13,7 +13,7 @@ using MessageTypeEnum = CMS.ExtendedControls.MessageTypeEnum;
 public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost : SocialMarketingAutoPostControl
 {
     #region "Private fields"
-    
+
     private string mDefaultValue;
     private bool mPublishedWhileEditing;
     private bool mPostInfoSet;
@@ -42,7 +42,7 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost : 
                 var document = Document;
                 if ((document != null) && (document.DocumentGUID != Guid.Empty) && IsFeatureAvailable)
                 {
-                    mPostInfo = FacebookPostInfoProvider.GetFacebookPostInfosByDocumentGuid(document.DocumentGUID, document.NodeSiteID).ToList().FirstOrDefault(x => x.FacebookPostIsCreatedByUser);
+                    mPostInfo = FacebookPostInfoProvider.GetFacebookPostInfosByDocumentGuid(document.DocumentGUID, SiteIdentifier).ToList().FirstOrDefault(x => x.FacebookPostIsCreatedByUser);
                 }
                 mPostInfoSet = true;
             }
@@ -104,7 +104,7 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost : 
             if (postId > 0)
             {
                 PostInfo = FacebookPostInfoProvider.GetFacebookPostInfo(postId);
-                
+
                 return;
             }
 
@@ -118,7 +118,7 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost : 
             {
                 // Try to get value from previous CMS version
                 mBackCompatibilityValue = SocialMarketingBackCompatibilityHelper.DeserializePublishingElement(defaultValue);
-                if ((mBackCompatibilityValue.Value.SocialNetworkType != SocialNetworkTypeEnum.Facebook) 
+                if ((mBackCompatibilityValue.Value.SocialNetworkType != SocialNetworkTypeEnum.Facebook)
                     || mBackCompatibilityValue.Value.IsPublished
                     || String.IsNullOrWhiteSpace(mBackCompatibilityValue.Value.Template))
                 {
@@ -173,7 +173,7 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost : 
         if (String.IsNullOrWhiteSpace(txtPost.Text))
         {
             ValidationError = ResHelper.GetString("sm.facebook.posts.msg.postempty");
-            
+
             return false;
         }
 
@@ -201,7 +201,7 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost : 
         if (!IsFeatureAvailable || !HasUserReadPermission)
         {
             StopProcessing = true;
-            
+
             return;
         }
 
@@ -256,7 +256,6 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost : 
             ShowPostStateWarning(ResHelper.GetString("sm.facebook.posts.backcompatibility"));
         }
 
-        urlShortenerSelector.Enabled = chkShortenUrls.Checked;
         publishDateTime.Enabled = !chkPostAfterDocumentPublish.Checked;
 
         if ((PostInfo != null) && !PostInfo.IsEditable)
@@ -293,7 +292,7 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost : 
             return;
         }
 
-        if (chkPostToFacebook.Checked) 
+        if (chkPostToFacebook.Checked)
         {
             if ((PostInfo == null) || PostInfo.IsEditable)
             {
@@ -306,7 +305,7 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost : 
                 mPublishedWhileEditing = true;
             }
         }
-        else 
+        else
         {
             // Checkbox post to Facebook is not checked
             if (PostInfo != null)
@@ -329,7 +328,7 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost : 
                 mBackCompatibilityValue = null;
                 InitializeControls();
             }
-        }  
+        }
     }
 
 
@@ -368,18 +367,6 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost : 
             PublishPost(PostInfo.FacebookPostID);
         }
         LoadPostDataIntoControl(PostInfo);
-    }
-
-
-    /// <summary>
-    /// Checkbox chkShortenUrls OnCheckedChanged event.
-    /// </summary>
-    protected void chkShortenUrls_OnCheckedChanged(object sender, EventArgs e)
-    {
-        if (!chkShortenUrls.Checked)
-        {
-            urlShortenerSelector.Value = URLShortenerTypeEnum.None;
-        }
     }
 
 
@@ -439,18 +426,19 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost : 
             publishDateTime.Value = DateTime.Now;
         }
 
-        FacebookAccountInfo defaultAccountInfo = FacebookAccountInfoProvider.GetDefaultFacebookAccount(CurrentSite.SiteID);
+        pageSelector.ObjectSiteName = SiteIdentifier;
+        FacebookAccountInfo defaultAccountInfo = FacebookAccountInfoProvider.GetDefaultFacebookAccount(SiteIdentifier);
         if (defaultAccountInfo != null)
         {
             pageSelector.Value = defaultAccountInfo.FacebookAccountID;
         }
 
         ClearPostState();
-        chkShortenUrls.Checked = false;
-        urlShortenerSelector.Value = (int) URLShortenerTypeEnum.None;
-        urlShortenerSelector.Enabled = false;
+        urlShortenerSelector.SiteID = SiteIdentifier;
+        urlShortenerSelector.Value = URLShortenerHelper.GetDefaultURLShortenerForSocialNetwork(SocialNetworkTypeEnum.Facebook, SiteIdentifier);
         chkPostAfterDocumentPublish.Visible = (Document != null);
         campaingSelector.Value = null;
+        campaingSelector.ObjectSiteName = SiteIdentifier;
 
         if ((FieldInfo != null) && !FieldInfo.AllowEmpty)
         {
@@ -483,11 +471,7 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost : 
         publishDateTime.Value = post.FacebookPostScheduledPublishDateTime;
 
         campaingSelector.Value = post.FacebookPostCampaignID;
-        if (PostInfo.FacebookPostURLShortenerType != URLShortenerTypeEnum.None)
-        {
-            chkShortenUrls.Checked = true;
-            urlShortenerSelector.Value = (int)post.FacebookPostURLShortenerType;
-        }
+        urlShortenerSelector.Value = post.FacebookPostURLShortenerType;
 
         DisplayForm = true;
         ShowPostPublishState(post);
@@ -508,14 +492,11 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost : 
 
         post.FacebookPostFacebookAccountID = ValidationHelper.GetInteger(pageSelector.Value, 0);
         post.FacebookPostText = txtPost.Text;
-        if (chkShortenUrls.Checked)
-        {
-            post.FacebookPostURLShortenerType = (URLShortenerTypeEnum)ValidationHelper.GetInteger(urlShortenerSelector.Value, 0);
-        }
+        post.FacebookPostURLShortenerType = (URLShortenerTypeEnum)urlShortenerSelector.Value;
         post.FacebookPostPostAfterDocumentPublish = chkPostAfterDocumentPublish.Checked;
         post.FacebookPostScheduledPublishDateTime = ValidationHelper.GetDateTime(publishDateTime.Value, DateTimeHelper.ZERO_TIME);
         post.FacebookPostCampaignID = ValidationHelper.GetInteger(campaingSelector.Value, 0);
-        post.FacebookPostSiteID = SiteContext.CurrentSiteID;
+        post.FacebookPostSiteID = SiteIdentifier;
         post.FacebookPostIsCreatedByUser = true;
 
         return post;
@@ -579,7 +560,6 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost : 
         chkPostToFacebook.Enabled = enabled;
         pageSelector.Enabled = enabled;
         txtPost.Enabled = enabled;
-        chkShortenUrls.Enabled = enabled;
         urlShortenerSelector.Enabled = enabled;
         publishDateTime.Enabled = enabled;
         campaingSelector.Enabled = enabled;
@@ -607,10 +587,10 @@ public partial class CMSModules_SocialMarketing_FormControls_FacebookAutoPost : 
         return post.FacebookPostText.EqualsCSafe(txtPost.Text)
             && post.FacebookPostScheduledPublishDateTime == formScheduledPublishTime
             && post.FacebookPostFacebookAccountID == ValidationHelper.GetInteger(pageSelector.Value, 0)
-            && post.FacebookPostURLShortenerType == (URLShortenerTypeEnum)ValidationHelper.GetInteger(urlShortenerSelector.Value, 0)
+            && post.FacebookPostURLShortenerType == (URLShortenerTypeEnum)urlShortenerSelector.Value
             && post.FacebookPostPostAfterDocumentPublish == chkPostAfterDocumentPublish.Checked
             && ValidationHelper.GetInteger(post.FacebookPostCampaignID, 0) == ValidationHelper.GetInteger(campaingSelector.Value, 0)
-            && post.FacebookPostSiteID == SiteContext.CurrentSiteID;
+            && post.FacebookPostSiteID == SiteIdentifier;
     }
 
 

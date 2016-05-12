@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="ContactGroupDialog.aspx.cs" Inherits="CMSModules_ContactManagement_FormControls_ContactGroupDialog"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="ContactGroupDialog.aspx.cs" Inherits="CMSModules_ContactManagement_FormControls_ContactGroupDialog"
     Title="Contact group" EnableEventValidation="false" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" Theme="Default" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>

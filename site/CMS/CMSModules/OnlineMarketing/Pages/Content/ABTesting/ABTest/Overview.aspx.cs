@@ -28,6 +28,7 @@ using Action = CMS.UIControls.UniGridConfig.Action;
 /// <remarks>Saves state of selectors to a cookie</remarks>
 [Security(Resource = "CMS.ABTest", UIElements = "Overview")]
 [Security(Resource = "CMS.ABTest", UIElements = "Detail")]
+[UIElement("CMS.ABTest", "Overview")]
 public partial class CMSModules_OnlineMarketing_Pages_Content_ABTesting_ABTest_Overview : CMSABTestPage
 {
     #region "Variables"
@@ -334,6 +335,7 @@ public partial class CMSModules_OnlineMarketing_Pages_Content_ABTesting_ABTest_O
         MessagesWriter.ShowMissingVariantsTranslationsWarning(ABTest);
 
         InitializeSelectors();
+        InitSmartTip();
 
         // Hide summary and table if the test has not been started yet
         if ((ABTest.ABTestOpenFrom > DateTime.Now) || (ABTest.ABTestOpenFrom == DateTimeHelper.ZERO_TIME))
@@ -1163,7 +1165,7 @@ public partial class CMSModules_OnlineMarketing_Pages_Content_ABTesting_ABTest_O
         {
             Text = String.Format(" {0:P2}", improvement),
         });
-        
+
         return panel;
     }
 
@@ -1293,6 +1295,22 @@ public partial class CMSModules_OnlineMarketing_Pages_Content_ABTesting_ABTest_O
             Text = GetString("abtesting.rate.daywise"),
             OnClientClick = "ABOverview.saveSelectorStateGraphDataClick(this);"
         });
+    }
+
+
+    /// <summary>
+    /// Initializes the smart tip with the how to video.
+    /// </summary>
+    private void InitSmartTip()
+    {
+        var linkBuilder = new MagnificPopupYouTubeLinkBuilder();
+        var linkID = Guid.NewGuid().ToString();
+        var link = linkBuilder.GetLink("EGzYxXggueM", linkID, GetString("abtesting.howto.howtoevaluateabtest.link"));
+
+        new MagnificPopupYouTubeJavaScriptRegistrator().RegisterMagnificPopupElement(this, linkID);
+
+        smrtpHowToOverview.Content = string.Format("{0}", link);
+        smrtpHowToOverview.DismissedStateIdentifier = "howtovideo|abtest|overview";
     }
 
     #endregion

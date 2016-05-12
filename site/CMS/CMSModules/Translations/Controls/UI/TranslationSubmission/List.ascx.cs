@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Linq;
 using System.Security.Principal;
@@ -24,6 +24,8 @@ public partial class CMSModules_Translations_Controls_UI_TranslationSubmission_L
     private const string PROCESS_ACTION = "process";
     private const string RESUBMIT_ACTION = "resubmit";
     private const string UPDATE_STATUSES_ACTION = "updatestatuses";
+
+    private const string SEPARATOR = "##SEP##";
 
     #endregion
 
@@ -97,14 +99,18 @@ public partial class CMSModules_Translations_Controls_UI_TranslationSubmission_L
         ctlAsync.OnError += worker_OnError;
         ctlAsync.OnFinished += worker_OnFinished;
         HeaderActions.ActionPerformed += HeaderActions_ActionPerformed;
-        Page.PreRender += (o, args) =>
-        {
-            ScriptHelper.RegisterDialogScript(Page);
 
-            CreateButtons();
+        Page.PreRender += Page_OnPreRender;
+    }
 
-            HandleAsyncProgress();
-        };
+
+    private void Page_OnPreRender(object o, EventArgs args)
+    {
+        ScriptHelper.RegisterDialogScript(Page);
+
+        CreateButtons();
+
+        HandleAsyncProgress();
     }
 
 
@@ -318,16 +324,17 @@ public partial class CMSModules_Translations_Controls_UI_TranslationSubmission_L
 
     private void worker_OnFinished(object sender, EventArgs e)
     {
-        var parameters = ctlAsync.Parameter as Tuple<string, string, TranslationSubmissionInfo>;
-        if (parameters == null)
+        var parameter = ctlAsync.Parameter;
+        if (parameter == null)
         {
             return;
         }
 
-        var commandName = parameters.Item1.ToLowerCSafe();
-        var error = parameters.Item2;
-        var submission = parameters.Item3;
-        var submissionName = submission != null ? submission.SubmissionName : null;
+        string error;
+        string submissionName;
+        string commandName;
+        
+        ParseParameter(parameter, out commandName, out error, out submissionName);
 
         if (!string.IsNullOrEmpty(error))
         {
@@ -362,6 +369,16 @@ public partial class CMSModules_Translations_Controls_UI_TranslationSubmission_L
     }
 
 
+    private static void ParseParameter(string parameter, out string action, out string error, out string submissionName)
+    {
+        var parameters = TextHelper.SplitByString(parameter, SEPARATOR, 3);
+
+        action = ValidationHelper.GetString(parameters[0], "").ToLowerCSafe();
+        error = ValidationHelper.GetString(parameters[1], "");
+        submissionName = ValidationHelper.GetString(parameters[2], "");
+    }
+
+
     private void worker_OnError(object sender, EventArgs e)
     {
         ShowError(GetString("translationservice.actionfailed"));
@@ -380,18 +397,19 @@ public partial class CMSModules_Translations_Controls_UI_TranslationSubmission_L
         submission.Update();
 
         // Run action
-        ctlAsync.Parameter = new Tuple<string, TranslationSubmissionInfo>(commandName, submission);
-        ctlAsync.RunAsync(ProcessAction, WindowsIdentity.GetCurrent());
+        var parameter = new Tuple<string, TranslationSubmissionInfo>(commandName, submission);
+
+        ctlAsync.Parameter = GetParameter(commandName, null, submission);
+        ctlAsync.RunAsync(p => ProcessAction(parameter), WindowsIdentity.GetCurrent());
     }
 
 
     /// <summary>
     /// Processes action
     /// </summary>
-    /// <param name="parameter">Parameter</param>
-    private void ProcessAction(object parameter)
+    /// <param name="parameters">Parameter</param>
+    private void ProcessAction(Tuple<string, TranslationSubmissionInfo> parameters)
     {
-        var parameters = parameter as Tuple<string, TranslationSubmissionInfo>;
         if (parameters == null)
         {
             return;
@@ -413,7 +431,15 @@ public partial class CMSModules_Translations_Controls_UI_TranslationSubmission_L
         }
 
         // Set result of the action
-        ctlAsync.Parameter = new Tuple<string, string, TranslationSubmissionInfo>(commandName, error, submissionInfo);
+        ctlAsync.Parameter = GetParameter(commandName, error, submissionInfo);
+    }
+
+
+    private static string GetParameter(string action, string error, TranslationSubmissionInfo submissionInfo)
+    {
+        var submissionName = (submissionInfo != null) ? submissionInfo.SubmissionName : null;
+
+        return action + SEPARATOR + error + SEPARATOR + submissionName;
     }
 
 
@@ -423,8 +449,8 @@ public partial class CMSModules_Translations_Controls_UI_TranslationSubmission_L
     private void UpdateStatusesAsync()
     {
         // Run action
-        ctlAsync.Parameter = SiteContext.CurrentSiteName;
-        ctlAsync.RunAsync(UpdateStatuses, WindowsIdentity.GetCurrent());
+        ctlAsync.Parameter = null;
+        ctlAsync.RunAsync(p => UpdateStatuses(SiteContext.CurrentSiteName), WindowsIdentity.GetCurrent());
 
         Grid.ReloadData();
     }
@@ -433,14 +459,13 @@ public partial class CMSModules_Translations_Controls_UI_TranslationSubmission_L
     /// <summary>
     /// Processes action
     /// </summary>
-    /// <param name="parameter">Parameter</param>
-    private void UpdateStatuses(object parameter)
+    /// <param name="siteName">Site name</param>
+    private void UpdateStatuses(string siteName)
     {
-        var siteName = ValidationHelper.GetString(parameter, null);
         var error = TranslationServiceHelper.CheckAndDownloadTranslations(siteName);
 
         // Set result of the action
-        ctlAsync.Parameter = new Tuple<string, string, TranslationSubmissionInfo>(UPDATE_STATUSES_ACTION, error, null);
+        ctlAsync.Parameter = GetParameter(UPDATE_STATUSES_ACTION, error, null);
     }
 
 
@@ -485,15 +510,26 @@ public partial class CMSModules_Translations_Controls_UI_TranslationSubmission_L
             {
                 label.ID = "lblStatus";
 
-                string text = null;
-                var parameters = ctlAsync.Parameter as Tuple<string, TranslationSubmissionInfo>;
-                if (parameters != null)
+                string text;
+
+                var parameter = ctlAsync.Parameter;
+                if (parameter != null)
                 {
-                    var status = parameters.Item1 == PROCESS_ACTION ? TranslationStatusEnum.ProcessingSubmission : TranslationStatusEnum.ResubmittingSubmission;
-                    var submission = parameters.Item2;
-                    if (submission != null)
+                    string error;
+                    string action;
+                    string submissionName;
+                    
+                    ParseParameter(parameter, out action, out error, out submissionName);
+
+                    if (action == UPDATE_STATUSES_ACTION)
                     {
-                        text = string.Format(GetString(status.ToLocalizedString("translations.status.name")), HTMLHelper.HTMLEncode(submission.SubmissionName));
+                        text = GetString("translationservice.updatingstatuses");
+                    }
+                    else
+                    {
+                        var status = (action == PROCESS_ACTION) ? TranslationStatusEnum.ProcessingSubmission : TranslationStatusEnum.ResubmittingSubmission;
+
+                        text = string.Format(GetString(status.ToLocalizedString("translations.status.name")), HTMLHelper.HTMLEncode(submissionName));
                     }
                 }
                 else

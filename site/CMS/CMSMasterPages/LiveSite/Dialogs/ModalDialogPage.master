@@ -1,5 +1,5 @@
 <%@ Master Language="C#" AutoEventWireup="true" Inherits="CMSMasterPages_LiveSite_Dialogs_ModalDialogPage"
-    Codebehind="ModalDialogPage.master.cs" %>
+    CodeBehind="ModalDialogPage.master.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" TagName="HeaderActions"
     TagPrefix="cms" %>
@@ -46,11 +46,9 @@
                     </asp:Panel>
                     <asp:ContentPlaceHolder ID="plcBeforeContent" runat="server" />
                 </cms:CMSPanel>
-                <asp:Panel ID="pnlContent" runat="server">
-                    <div id="divContent" class="dialog-content">
-                        <asp:PlaceHolder runat="server" ID="plcLabels" />
-                        <asp:ContentPlaceHolder ID="plcContent" runat="server" />
-                    </div>
+                <asp:Panel ID="divContent" runat="server" ClientIDMode="Static" CssClass="dialog-content">
+                    <asp:PlaceHolder runat="server" ID="plcLabels" />
+                    <asp:ContentPlaceHolder ID="plcContent" runat="server" />
                 </asp:Panel>
                 <asp:Panel runat="server" ID="pnlFooterContainer">
                     <div id="divFooter" class="dialog-footer">

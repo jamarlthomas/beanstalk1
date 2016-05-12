@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Content_Controls_Dialogs_Web_WebContentSelector" Codebehind="WebContentSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Content_Controls_Dialogs_Web_WebContentSelector"  Codebehind="WebContentSelector.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/Properties/HTMLMediaProperties.ascx"
     TagName="MediaProperties" TagPrefix="cms" %>

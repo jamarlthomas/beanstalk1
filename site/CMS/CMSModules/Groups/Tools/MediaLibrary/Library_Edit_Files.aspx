@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
     Title="Media library - Files" Inherits="CMSModules_Groups_Tools_MediaLibrary_Library_Edit_Files"
-    Theme="Default" EnableEventValidation="false" Codebehind="Library_Edit_Files.aspx.cs" %>
+    Theme="Default" EnableEventValidation="false"  Codebehind="Library_Edit_Files.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/MediaLibrary/MediaLibrary.ascx"
     TagName="MediaLibrary" TagPrefix="cms" %>

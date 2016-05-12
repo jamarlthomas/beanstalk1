@@ -6805,9 +6805,6 @@ Text zprávy:
   <data name="content.ui.widgetproperties" xml:space="preserve">
     <value>Vlastnosti widgetu</value>
   </data>
-  <data name="content.ui.wireframe" xml:space="preserve">
-    <value>Wireframe</value>
-  </data>
   <data name="content.undocheckedoutdocs" xml:space="preserve">
     <value>Zrušit uzamčení pro zamknuté dokumenty</value>
   </data>
@@ -8051,9 +8048,6 @@ Vyberte akciu, ktorá má byť vykonaná so SKU, ktorá je priradená k dokument
   <data name="development-webpart_edit.typewidgetonly" xml:space="preserve">
     <value>Pouze widget</value>
   </data>
-  <data name="development-webpart_edit.typewireframe" xml:space="preserve">
-    <value>Wireframe</value>
-  </data>
   <data name="development-workflow_edit.emails" xml:space="preserve">
     <value>E-maily</value>
   </data>
@@ -9131,9 +9125,6 @@ Vyberte akciu, ktorá má byť vykonaná so SKU, ktorá je priradená k dokument
   </data>
   <data name="documentation.webpartproperties.combinewithdefaultculture" xml:space="preserve">
     <value>Určuje, zda jsou výsledky v zadaném jazyku kombinovány s výsledky v implicitní kultuře.</value>
-  </data>
-  <data name="documentation.webpartproperties.comments" xml:space="preserve">
-    <value>Může být použito pro vložení komentáře pro zadanou komponentu wireframe. Komponenty, které mají komentář, jsou zobrazeny ve wireframe gride s ikonou otazníku v rohu, která zobrazuje text komentáře jako tooltip.</value>
   </data>
   <data name="documentation.webpartproperties.containercssclass" xml:space="preserve">
     <value>CSS třída použitá pro kontejner. Aplikována pouze když je použito makro {%ContainerCSSClass%} jako hodnota atributu Třída (Class) v kódu kontejneru.</value>
@@ -28476,9 +28467,6 @@ Defaultní hodnota: None</value>
   <data name="tree.waitingfortranslationtooltip" xml:space="preserve">
     <value>Dokument čeká na překlad</value>
   </data>
-  <data name="tree.wireframetooltip" xml:space="preserve">
-    <value>Včetně wireframe</value>
-  </data>
   <data name="tut_aspx.caption" xml:space="preserve">
     <value>Kentico Tutorial (ASPX templates)</value>
   </data>
@@ -29874,33 +29862,6 @@ Defaultní hodnota: None</value>
   </data>
   <data name="widgets.zoneuser" xml:space="preserve">
     <value>(uživatel)</value>
-  </data>
-  <data name="wireframe.comment" xml:space="preserve">
-    <value>Komentáře</value>
-  </data>
-  <data name="wireframe.confirmremove" xml:space="preserve">
-    <value>Opravdu chcete z dokumentu odstranit šablonu wireframe a komentáře?</value>
-  </data>
-  <data name="wireframe.create" xml:space="preserve">
-    <value>Přidat wireframe na tuto stránku</value>
-  </data>
-  <data name="wireframe.nextpagelevel" xml:space="preserve">
-    <value>Úroveň další stránky</value>
-  </data>
-  <data name="wireframe.notset" xml:space="preserve">
-    <value>Tento doument nemá wireframe, pokud jej chcete vytvořit, klikněte na tlačítko.</value>
-  </data>
-  <data name="wireframe.remove" xml:space="preserve">
-    <value>Odstranit wireframe</value>
-  </data>
-  <data name="wireframe.selecttemplate" xml:space="preserve">
-    <value>Vyberte, prosím, šablonu pro wireframe...</value>
-  </data>
-  <data name="wireframenolivesite.header" xml:space="preserve">
-    <value>Wireframe</value>
-  </data>
-  <data name="wireframenolivesite.info" xml:space="preserve">
-    <value>Wireframe dokument neposkytuje náhled na živém webu, chová se vždy jako nepublikovaný.</value>
   </data>
   <data name="worfklowproperties.archived" xml:space="preserve">
     <value>Archivováno</value>
@@ -53147,33 +53108,6 @@ Defaultní hodnota: None</value>
   <data name="codename.tooltipedit" xml:space="preserve">
     <value>Klikněte na text, pokud ho chcete upravit.</value>
   </data>
-  <data name="com.generator.deletebutton" xml:space="preserve">
-    <value>Smazat</value>
-  </data>
-  <data name="com.generator.deleteconfirm" xml:space="preserve">
-    <value>Opravdu chcete smazat všechny zákazníky se jménem začínajícím 'GENERATED'?</value>
-  </data>
-  <data name="com.generator.deletegroup" xml:space="preserve">
-    <value>Smazat vzorová data</value>
-  </data>
-  <data name="com.generator.deletepericope" xml:space="preserve">
-    <value>Klikněte na tlačítko Smazat, pokud chcete smazat všechny zákazníky se jménem začínajícím "GENERATED" a jejich objednávky.</value>
-  </data>
-  <data name="com.generator.generatebutton" xml:space="preserve">
-    <value>Generovat</value>
-  </data>
-  <data name="com.generator.generateconfirm" xml:space="preserve">
-    <value>Opravdu chcete vygenerovat vzorové zákazníky a jejich objednávky?</value>
-  </data>
-  <data name="com.generator.generategroup" xml:space="preserve">
-    <value>Generovat vzorová data</value>
-  </data>
-  <data name="com.generator.generatepericope" xml:space="preserve">
-    <value>Klikněte na tlačítko Generovat, pokud chcete vygenerovat vzorové zákazníky a jejich objednávky. Jména všech vygenerovaných zákazníků budou začínat "GENERATED".</value>
-  </data>
-  <data name="com.generator.mainpericope" xml:space="preserve">
-    <value>Pokud se chcete lépe seznámit s reporty modulu E-commerce, můžete dát vygenerovat vzorové zákazníky a jejich objednávky. Všimněte si prosím, že jiná data, než například produkty, nebudou vygenerována, ale použijí se data z webu; nebudou však ovlivněné generátorem. Vygenerovaní zákazníci a jejich objednávky mohou být následně smazáni.</value>
-  </data>
   <data name="com.isimportant" xml:space="preserve">
     <value>Důležité</value>
   </data>
@@ -54496,12 +54430,6 @@ Pro opravu jděte do &lt;strong&gt;E-commerce -&gt; Konfigurace -&gt; Nastavení
   <data name="settingscategory.googleplus" xml:space="preserve">
     <value>Google+</value>
   </data>
-  <data name="settingskey.cmsallowwireframing" xml:space="preserve">
-    <value>Povolit wireframing</value>
-  </data>
-  <data name="settingskey.cmsallowwireframing.description" xml:space="preserve">
-    <value>Pokud je povoleno, bude možné vytvářet a upravovat wireframe schéma v rozhraní &lt;strong&gt;CMS Desk -&gt; Obsah&lt;/strong&gt;. To poskytuje způsob, jak lehce naplánovat strukturu, design a funkcionalitu dokumentů webu přímo na stromě obsahu.</value>
-  </data>
   <data name="settingskey.cmschatallowanonymglobally" xml:space="preserve">
     <value>Povolit anonymní uživatele</value>
   </data>
@@ -54826,12 +54754,6 @@ Pro opravu jděte do &lt;strong&gt;E-commerce -&gt; Konfigurace -&gt; Nastavení
   <data name="settingskey.cmsdefaultreportconnectionstring.description" xml:space="preserve">
     <value>Nastaví databázový connection string, který systém přiřadí novým reportem. Existující reporty mohou též dědit hodnotu connection stringu z tohoto nastavení.</value>
   </data>
-  <data name="settingskey.cmsdisplaywireframeicon" xml:space="preserve">
-    <value>Zobrazit wireframe ikonu</value>
-  </data>
-  <data name="settingskey.cmsdisplaywireframeicon.description" xml:space="preserve">
-    <value>Pokud je zakliknuto, zobrazí se ve stromě obsahu vedle dokumentů, které obsahují wireframe definici, ikona wireframe.</value>
-  </data>
   <data name="settingskey.cmsenablegeolocation.description" xml:space="preserve">
     <value>Určuje, zda může být poloha kontaktu sledována a uložena v jeho profilu.</value>
   </data>
@@ -55116,9 +55038,6 @@ Pro opravu jděte do &lt;strong&gt;E-commerce -&gt; Konfigurace -&gt; Nastavení
   </data>
   <data name="wf.action.twitter.text.desc" xml:space="preserve">
     <value>Vložit text tweetu</value>
-  </data>
-  <data name="wireframe.entertext" xml:space="preserve">
-    <value>(vložte text)</value>
   </data>
   <data name="workflow.conditionstepcase" xml:space="preserve">
     <value>Proces pokračuje po této cestě, pokud je splněna daná podmínka.</value>

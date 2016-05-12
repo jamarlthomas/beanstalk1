@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_UniMenu_UniMenu"
-    Codebehind="UniMenu.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_UniMenu_UniMenu"
+     Codebehind="UniMenu.ascx.cs" %>
 <%@ Register TagPrefix="cms" Namespace="CMS.ExtendedControls" Assembly="CMS.ExtendedControls" %>
 
 <cms:ScrollPanel ID="pnlScrollControls" ShortID="sp" runat="server" CssClass="Horizontal" ScrollAreaDefaultSize="4000"

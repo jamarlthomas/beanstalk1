@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" Theme="Default" AutoEventWireup="true"
     Inherits="CMSModules_Content_CMSDesk_Properties_Properties_Footer" EnableEventValidation="false"
-    MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" Title="Properties - footer" Codebehind="Properties_Footer.aspx.cs" %>
+    MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" Title="Properties - footer"  Codebehind="Properties_Footer.aspx.cs" %>
 
 <asp:Content ID="cntBody" ContentPlaceHolderID="plcContent" runat="Server">
     <div class="PageFooterLine">

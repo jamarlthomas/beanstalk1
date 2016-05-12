@@ -1,9 +1,8 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
 using CMS.Core;
-using CMS.FormEngine;
 using CMS.Helpers;
 using CMS.OnlineForms;
 using CMS.Polls;
@@ -144,36 +143,6 @@ public partial class CMSModules_Polls_Controls_AnswerList : CMSAdminListControl
             PollAnswerInfoProvider.DeletePollAnswerInfo(Convert.ToInt32(actionArgument));
             ReloadData(true);
         }
-        else if (actionName == "moveup")
-        {
-            if (!AllowEdit)
-            {
-                return;
-            }
-            if (GroupId > 0)
-            {
-                CMSGroupPage.CheckGroupPermissions(GroupId, PERMISSION_MANAGE);
-            }
-
-            // Move the answer up in order
-            PollAnswerInfoProvider.MoveAnswerUp(PollId, Convert.ToInt32(actionArgument));
-            ReloadData(true);
-        }
-        else if (actionName == "movedown")
-        {
-            if (!AllowEdit)
-            {
-                return;
-            }
-            if (GroupId > 0)
-            {
-                CMSGroupPage.CheckGroupPermissions(GroupId, PERMISSION_MANAGE);
-            }
-
-            // Move the answer down in order
-            PollAnswerInfoProvider.MoveAnswerDown(PollId, Convert.ToInt32(actionArgument));
-            ReloadData(true);
-        }
     }
 
 
@@ -198,8 +167,6 @@ public partial class CMSModules_Polls_Controls_AnswerList : CMSAdminListControl
         switch (sourceName.ToLowerCSafe())
         {
             case "edit":
-            case "moveup":
-            case "movedown":
             case "delete":
                 (sender as CMSGridActionButton).Visible = AllowEdit;
                 return sender;

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.EventLog;
@@ -27,26 +27,29 @@ public partial class CMSAdminControls_Debug_ViewState : ViewStateLog
             {
                 // Get the log table
                 DataTable dt = Log.LogTable;
-                DataView dv = new DataView(dt);
-
-                if (!DataHelper.DataSourceIsEmpty(dv))
+                lock (dt)
                 {
-                    Visible = true;
-
-                    gridStates.SetHeaders("", "ViewStateLog.ID", "ViewStateLog.IsDirty", "ViewStateLog.ViewState", "ViewStateLog.Size");
-
-                    HeaderText = GetString("ViewStateLog.Info");
-
-                    // Bind to the grid
-                    if (DisplayOnlyDirty)
+                    if (!DataHelper.DataSourceIsEmpty(dt))
                     {
-                        dv.RowFilter = "HasDirty = 1";
+                        var dv = new DataView(dt);
+
+                        Visible = true;
+
+                        gridStates.SetHeaders("", "ViewStateLog.ID", "ViewStateLog.IsDirty", "ViewStateLog.ViewState", "ViewStateLog.Size");
+
+                        HeaderText = GetString("ViewStateLog.Info");
+
+                        // Bind to the grid
+                        if (DisplayOnlyDirty)
+                        {
+                            dv.RowFilter = "HasDirty = 1";
+                        }
+
+                        MaxSize = DataHelper.GetMaximumValue<int>(dv, "ViewStateSize");
+
+                        // Bind the data
+                        BindGrid(gridStates, dv);
                     }
-
-                    MaxSize = DataHelper.GetMaximumValue<int>(dv, "ViewStateSize");
-
-                    gridStates.DataSource = dv;
-                    gridStates.DataBind();
                 }
             }
         }

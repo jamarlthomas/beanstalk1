@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SiteCultureChanger.ascx.cs" Inherits="CMSFormControls_Sites_SiteCultureChanger" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SiteCultureChanger.ascx.cs" Inherits="CMSFormControls_Sites_SiteCultureChanger" %>
 
 <script type="text/javascript">
     //<![CDATA[

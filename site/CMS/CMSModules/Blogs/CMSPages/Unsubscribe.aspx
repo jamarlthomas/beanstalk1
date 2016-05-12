@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Blogs_CMSPages_Unsubscribe"
-    Theme="Default" Codebehind="Unsubscribe.aspx.cs" MasterPageFile="~/CMSMasterPages/LiveSite/SimplePage.master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Blogs_CMSPages_Unsubscribe"
+    Theme="Default"  Codebehind="Unsubscribe.aspx.cs" MasterPageFile="~/CMSMasterPages/LiveSite/SimplePage.master" %>
 
 <%@ Register Src="~/CMSModules/Blogs/Controls/Unsubscription.ascx" TagName="Unsubscription"
     TagPrefix="cms" %>

@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Ecommerce_Wishlist" Codebehind="~/CMSWebParts/Ecommerce/Wishlist.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Ecommerce_Wishlist"  Codebehind="~/CMSWebParts/Ecommerce/Wishlist.ascx.cs" %>
 
        
 <table class="WishlistTable" style="width: 100%" cellpadding="0" cellspacing="0">  

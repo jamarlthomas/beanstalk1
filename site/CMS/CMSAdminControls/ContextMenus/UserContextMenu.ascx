@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSAdminControls_ContextMenus_UserContextMenu" Codebehind="UserContextMenu.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSAdminControls_ContextMenus_UserContextMenu"  Codebehind="UserContextMenu.ascx.cs" %>
 <asp:Panel runat="server" ID="pnlUserContextMenu">
     <asp:Repeater runat="server" ID="repItem">
         <ItemTemplate>

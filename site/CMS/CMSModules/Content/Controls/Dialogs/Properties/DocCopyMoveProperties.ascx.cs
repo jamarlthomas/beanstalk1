@@ -127,7 +127,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_DocCopyMoveP
         {
             StringBuilder aliasPaths = new StringBuilder();
             TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
-            DataSet ds = tree.SelectNodes(SiteContext.CurrentSiteName, TreeProvider.ALL_DOCUMENTS, TreeProvider.ALL_CULTURES, true, null, String.Format("NodeID IN ({0})", nodeIdsString.Trim('|').Replace("|", ",")), null, TreeProvider.ALL_LEVELS, false, 0, TreeProvider.SELECTNODES_REQUIRED_COLUMNS + ",NodeParentID, DocumentName, NodeAliasPath, NodeLinkedNodeID");
+            DataSet ds = tree.SelectNodes(SiteContext.CurrentSiteName, TreeProvider.ALL_DOCUMENTS, TreeProvider.ALL_CULTURES, true, null, String.Format("NodeID IN ({0})", nodeIdsString.Trim('|').Replace("|", ",")), null, TreeProvider.ALL_LEVELS, false, 0, DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS + ",NodeParentID, DocumentName, NodeAliasPath, NodeLinkedNodeID");
             if (!DataHelper.DataSourceIsEmpty(ds))
             {
                 const string lineBreak = "<br />";
@@ -138,7 +138,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_DocCopyMoveP
                     aliasPaths.Append(ValidationHelper.GetString(dr["NodeAliasPath"], string.Empty));
                     if (ValidationHelper.GetInteger(dr["NodeLinkedNodeID"], 0) != 0)
                     {
-                        aliasPaths.Append(DocumentHelper.GetDocumentMarkImage(Page, DocumentMarkEnum.Link));
+                        aliasPaths.Append(DocumentUIHelper.GetDocumentMarkImage(Page, DocumentMarkEnum.Link));
                     }
                     aliasPaths.Append(lineBreak);
                 }
@@ -176,7 +176,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_DocCopyMoveP
         properties.Add("aliaspath", aliasPath);
         properties.Add("multiple", multiple);
         properties.Add("parameters", parameters);
-        properties.Add("output", CurrentAction);
+        properties.Add("output", CurrentAction.ToString());
 
         Hashtable param = WindowHelper.GetItem(parameters as string) as Hashtable;
         if (param != null)

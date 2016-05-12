@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -162,25 +162,8 @@ public partial class CMSFormControls_Cultures_SiteCultureSelector : FormEngineUs
             SetValue("DisplayAllCultures", value);
         }
     }
-
-
-    /// <summary>
-    ///  If true, returned value is CultureCode, if false, selected value is CultureID.
-    /// </summary>
-    [Obsolete("This property is obsolete. Use 'ReturnColumnName' property instead.")]
-    public bool UseCultureCode
-    {
-        get
-        {
-            return ReturnColumnName == "CultureCode";
-        }
-        set
-        {
-            ReturnColumnName = (value ? "CultureCode" : "CultureID");
-        }
-    }
-
-
+    
+   
     /// <summary>
     /// Column name of the object which value should be returned by the selector. 
     /// If NULL, ID column is used.
@@ -197,24 +180,7 @@ public partial class CMSFormControls_Cultures_SiteCultureSelector : FormEngineUs
         }
     }
 
-
-    /// <summary>
-    /// Gets or sets the value which determines, whether to add (default) item record to the drop down list.
-    /// </summary>
-    [Obsolete("This property is obsolete. Use 'AllowDefault' property instead.")]
-    public bool AddDefaultRecord
-    {
-        get
-        {
-            return AllowDefault;
-        }
-        set
-        {
-            AllowDefault = value;
-        }
-    }
-
-
+    
     /// <summary>
     /// Specifies, whether the selector allows empty selection.
     /// </summary>
@@ -263,24 +229,7 @@ public partial class CMSFormControls_Cultures_SiteCultureSelector : FormEngineUs
         }
     }
 
-
-    /// <summary>
-    /// Gets or sets the value which determines, whether to add (all) item record to the drop down list.
-    /// </summary>
-    [Obsolete("This property is obsolete. Use 'AllowAll' property instead.")]
-    public bool AddAllRecord
-    {
-        get
-        {
-            return AllowAll;
-        }
-        set
-        {
-            AllowAll = value;
-        }
-    }
-
-
+    
     /// <summary>
     /// Gets or sets the ID of the site for which the cultures should be returned. Zero value means current site.
     /// </summary>

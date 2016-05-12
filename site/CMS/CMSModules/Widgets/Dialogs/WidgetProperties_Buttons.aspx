@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Widgets_Dialogs_WidgetProperties_Buttons" Theme="default" Codebehind="WidgetProperties_Buttons.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Widgets_Dialogs_WidgetProperties_Buttons" Theme="default"  Codebehind="WidgetProperties_Buttons.aspx.cs"
     MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" %>
 
 <asp:Content ID="pnlContent" ContentPlaceHolderID="plcContent" runat="server">

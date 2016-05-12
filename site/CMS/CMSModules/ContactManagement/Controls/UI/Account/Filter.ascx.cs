@@ -1,9 +1,11 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.DataEngine;
+using CMS.Globalization;
 using CMS.Helpers;
-using CMS.Base;
+using CMS.Membership;
+using CMS.OnlineMarketing;
 using CMS.SiteProvider;
 using CMS.UIControls;
 using CMS.Controls;
@@ -397,31 +399,33 @@ public partial class CMSModules_ContactManagement_Controls_UI_Account_Filter : C
     /// </summary>    
     private string GenerateWhereCondition()
     {
-        string whereCond = string.Empty;
+        var whereCondition = new WhereCondition();
 
         // Create WHERE condition for basic filter
         int contactStatus = ValidationHelper.GetInteger(fltAccountStatus.Value, -1);
         if (fltAccountStatus.Value == null)
         {
-            whereCond = "AccountStatusID IS NULL";
+            whereCondition = whereCondition.WhereNull("AccountStatusID");
         }
         else if (contactStatus > 0)
         {
-            whereCond = "AccountStatusID = " + contactStatus;
+            whereCondition = whereCondition.WhereEquals("AccountStatusID", contactStatus);
         }
 
-        whereCond = SqlHelper.AddWhereCondition(whereCond, fltName.GetCondition());
-        whereCond = SqlHelper.AddWhereCondition(whereCond, fltEmail.GetCondition());
-        whereCond = SqlHelper.AddWhereCondition(whereCond, fltContactName.GetCondition());
+        whereCondition = whereCondition
+            .Where(fltName.GetCondition())
+            .Where(fltEmail.GetCondition())
+            .Where(fltContactName.GetCondition());
 
         if (IsAdvancedMode)
         {
-            whereCond = SqlHelper.AddWhereCondition(whereCond, GetOwnerCondition(fltOwner));
-            whereCond = SqlHelper.AddWhereCondition(whereCond, GetCountryCondition(fltCountry));
-            whereCond = SqlHelper.AddWhereCondition(whereCond, GetStateCondition(fltState));
-            whereCond = SqlHelper.AddWhereCondition(whereCond, fltCity.GetCondition());
-            whereCond = SqlHelper.AddWhereCondition(whereCond, fltPhone.GetCondition());
-            whereCond = SqlHelper.AddWhereCondition(whereCond, fltCreated.GetCondition());
+            whereCondition = whereCondition
+                .Where(fltCity.GetCondition())
+                .Where(fltPhone.GetCondition())
+                .Where(fltCreated.GetCondition())
+                .Where(GetOwnerCondition(fltOwner))
+                .Where(GetCountryCondition(fltCountry))
+                .Where(GetStateCondition(fltState));
         }
 
         // When "merged/not merged" filter is hidden
@@ -429,13 +433,24 @@ public partial class CMSModules_ContactManagement_Controls_UI_Account_Filter : C
             (IsAdvancedMode && !HideMergedFilter && !chkMerged.Checked) ||
             (!IsAdvancedMode && !HideMergedFilter && !NotMerged))
         {
-            whereCond = SqlHelper.AddWhereCondition(whereCond, "(AccountMergedWithAccountID IS NULL AND AccountSiteID > 0) OR (AccountGlobalAccountID IS NULL AND AccountSiteID IS NULL)");
+            whereCondition = whereCondition
+               .Where(
+                   new WhereCondition(
+                       new WhereCondition()
+                           .WhereNull("AccountMergedWithAccountID")
+                           .WhereGreaterOrEquals("AccountSiteID", 0)
+                       )
+                       .Or(
+                           new WhereCondition()
+                               .WhereNull("AccountGlobalAccountID")
+                               .WhereNull("AccountSiteID")
+                       ));
         }
 
-        // Hide accounts merged into global account when displying list of available accounts for global account
+        // Hide accounts merged into global account when displaying list of available accounts for global account
         if (HideMergedIntoGlobal)
         {
-            whereCond = SqlHelper.AddWhereCondition(whereCond, "AccountGlobalAccountID IS NULL");
+            whereCondition = whereCondition.WhereNull("AccountGlobalAccountID");
         }
 
         if (!DisableGeneratingSiteClause)
@@ -446,12 +461,12 @@ public partial class CMSModules_ContactManagement_Controls_UI_Account_Filter : C
                 // Filter site objects
                 if (SiteID > 0)
                 {
-                    whereCond = SqlHelper.AddWhereCondition(whereCond, "(AccountSiteID = " + SiteID.ToString() + ")");
+                    whereCondition = whereCondition.WhereEquals("AccountSiteID", SiteID);
                 }
                 // Filter only global objects
                 else if (SiteID == UniSelector.US_GLOBAL_RECORD)
                 {
-                    whereCond = SqlHelper.AddWhereCondition(whereCond, "(AccountSiteID IS NULL)");
+                    whereCondition = whereCondition.WhereNull("AccountSiteID");
                 }
             }
             // Filter by site filter
@@ -460,22 +475,22 @@ public partial class CMSModules_ContactManagement_Controls_UI_Account_Filter : C
                 // Only global objects
                 if (SelectedSiteID == UniSelector.US_GLOBAL_RECORD)
                 {
-                    whereCond = SqlHelper.AddWhereCondition(whereCond, "AccountSiteID IS NULL");
+                    whereCondition = whereCondition.WhereNull("AccountSiteID");
                 }
                 // Global and site objects
                 else if (SelectedSiteID == UniSelector.US_GLOBAL_AND_SITE_RECORD)
                 {
-                    whereCond = SqlHelper.AddWhereCondition(whereCond, "AccountSiteID IS NULL OR AccountSiteID = " + SiteContext.CurrentSiteID);
+                    whereCondition = whereCondition.WhereEqualsOrNull("AccountSiteID", SiteContext.CurrentSiteID);
                 }
                 // Site objects
                 else if (SelectedSiteID != UniSelector.US_ALL_RECORDS)
                 {
-                    whereCond = SqlHelper.AddWhereCondition(whereCond, "AccountSiteID = " + mSelectedSiteID);
+                    whereCondition = whereCondition.WhereEquals("AccountSiteID", mSelectedSiteID);
                 }
             }
         }
 
-        return whereCond;
+        return whereCondition.ToString(true);
     }
 
     #endregion
@@ -484,56 +499,89 @@ public partial class CMSModules_ContactManagement_Controls_UI_Account_Filter : C
     #region "Additional filter conditions"
 
     /// <summary>
-    /// Gets SQL Where condition for a country.
+    /// Gets Where condition for filtering by the country. When using separated database, materializes the nested query on the main DB.
     /// </summary>
     private string GetCountryCondition(TextSimpleFilter filter)
     {
         string originalQuery = filter.WhereCondition;
-        if (!String.IsNullOrEmpty(originalQuery))
+        if (String.IsNullOrEmpty(originalQuery))
         {
-            originalQuery = String.Format("AccountCountryID IN (SELECT CountryID FROM CMS_Country WHERE {0})", originalQuery);
-            if (filter.FilterOperator == WhereBuilder.NOT_LIKE || filter.FilterOperator == WhereBuilder.NOT_EQUAL)
-            {
-                originalQuery = SqlHelper.AddWhereCondition("AccountCountryID IS NULL", originalQuery, "OR");
-            }
+            return string.Empty;
         }
-        return originalQuery;
+
+        // Query with AccountInfo context has to be used in order to be able to determine DB context of the query (otherwise the materialization would not perform).
+        var query = AccountInfoProvider.GetAccounts()
+            .WhereIn("AccountCountryID", CountryInfoProvider
+                .GetCountries()
+                .Where(originalQuery)
+                .Column(CountryInfo.TYPEINFO.IDColumn)
+            );
+
+        if (filter.FilterOperator == WhereBuilder.NOT_LIKE || filter.FilterOperator == WhereBuilder.NOT_EQUAL)
+        {
+            query = query.Or(new WhereCondition().WhereNull("AccountCountryID"));
+        }
+
+        query.EnsureParameters();
+        return query.Parameters.Expand(query.WhereCondition);
     }
 
 
     /// <summary>
-    /// Gets SQL Where condition user.
+    /// Gets Where condition for filtering by the user. When using separated database, materializes the nested query on the other DB.
     /// </summary>
     private string GetOwnerCondition(TextSimpleFilter filter)
     {
         string originalQuery = filter.WhereCondition;
-        if (!String.IsNullOrEmpty(originalQuery))
+        if (String.IsNullOrEmpty(originalQuery))
         {
-            originalQuery = String.Format("AccountOwnerUserID IN (SELECT UserID FROM CMS_User WHERE {0})", originalQuery);
-            if (filter.FilterOperator == WhereBuilder.NOT_LIKE || filter.FilterOperator == WhereBuilder.NOT_EQUAL)
-            {
-                originalQuery = SqlHelper.AddWhereCondition("AccountOwnerUserID IS NULL", originalQuery, "OR");
-            }
+            return string.Empty;
         }
-        return originalQuery;
+
+        // Query with AccountInfo context has to be used in order to be able to determine DB context of the query (otherwise the materialization would not perform).
+        var query = AccountInfoProvider.GetAccounts()
+            .WhereIn("AccountOwnerUserID", UserInfoProvider
+                .GetUsers()
+                .Where(originalQuery)
+                .Column(UserInfo.TYPEINFO.IDColumn)
+            );
+
+        if (filter.FilterOperator == WhereBuilder.NOT_LIKE || filter.FilterOperator == WhereBuilder.NOT_EQUAL)
+        {
+            query = query.Or(new WhereCondition().WhereNull("AccountOwnerUserID"));
+        }
+
+        query.EnsureParameters();
+        return query.Parameters.Expand(query.WhereCondition);
     }
 
 
     /// <summary>
-    /// Gets SQL Where condition for a state.
+    /// Gets Where condition for filtering by the state. When using separated database, materializes the nested query on the other DB.
     /// </summary>
     private string GetStateCondition(TextSimpleFilter filter)
     {
         string originalQuery = filter.WhereCondition;
-        if (!String.IsNullOrEmpty(originalQuery))
+        if (String.IsNullOrEmpty(originalQuery))
         {
-            originalQuery = String.Format("AccountStateID IN (SELECT StateID FROM CMS_State WHERE {0})", originalQuery);
-            if (filter.FilterOperator == WhereBuilder.NOT_LIKE || filter.FilterOperator == WhereBuilder.NOT_EQUAL)
-            {
-                originalQuery = SqlHelper.AddWhereCondition("AccountStateID IS NULL", originalQuery, "OR");
-            }
+            return string.Empty;
         }
-        return originalQuery;
+
+        // Query with AccountInfo context has to be used in order to be able to determine DB context of the query (otherwise the materialization would not perform).
+        var query = AccountInfoProvider.GetAccounts()
+            .WhereIn("AccountStateID", StateInfoProvider
+                .GetStates()
+                .Where(originalQuery)
+                .Column(StateInfo.TYPEINFO.IDColumn)
+            );
+
+        if (filter.FilterOperator == WhereBuilder.NOT_LIKE || filter.FilterOperator == WhereBuilder.NOT_EQUAL)
+        {
+            query = query.Or(new WhereCondition().WhereNull("AccountStateID"));
+        }
+
+        query.EnsureParameters();
+        return query.Parameters.Expand(query.WhereCondition);
     }
 
     #endregion

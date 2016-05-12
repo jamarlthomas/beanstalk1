@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="BlogComment.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_ActivityDetails_BlogComment" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="BlogComment.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_ActivityDetails_BlogComment" %>
 <div class="form-horizontal">
     <div class="form-group">
         <div class="editing-form-label-cell">

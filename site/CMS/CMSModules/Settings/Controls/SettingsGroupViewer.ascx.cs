@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
@@ -8,20 +8,14 @@ using CMS;
 using CMS.Base;
 using CMS.Core;
 using CMS.DataEngine;
-using CMS.EmailEngine;
 using CMS.EventLog;
 using CMS.ExtendedControls;
 using CMS.FormControls;
 using CMS.FormEngine;
-using CMS.HealthMonitoring;
 using CMS.Helpers;
 using CMS.MacroEngine;
-using CMS.PortalEngine;
-using CMS.Scheduler;
 using CMS.SiteProvider;
-using CMS.TranslationServices;
 using CMS.UIControls;
-using CMS.WinServiceEngine;
 
 public partial class CMSModules_Settings_Controls_SettingsGroupViewer : SettingsGroupViewerControl
 {
@@ -350,8 +344,12 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
                 };
                 pnlValueCell.Controls.Add(pnlIcons);
 
-                Label helpIcon = GetIcon("icon-question-circle", MacroResolver.Resolve(ResHelper.LocalizeString(keyInfo.KeyDescription)));
-                pnlIcons.Controls.Add(helpIcon);
+                // Don't show help icon when not provided. (Help icon will be shown if macro resolution results in an empty string.)
+                if (!String.IsNullOrWhiteSpace(keyInfo.KeyDescription))
+                {
+                    Label helpIcon = GetIcon("icon-question-circle", ResHelper.LocalizeString(keyInfo.KeyDescription));
+                    pnlIcons.Controls.Add(helpIcon);
+                }
 
                 CMSCheckBox chkInherit = null;
                 if (mSiteId > 0)
@@ -395,7 +393,7 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
                 {
                     Panel pnlExplanationText = new Panel
                     {
-                        CssClass = "explanation-text"
+                        CssClass = "explanation-text-settings"
                     };
                     LocalizedLiteral explanationText = new LocalizedLiteral
                     {
@@ -584,18 +582,18 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
 
             var keyChanged = false;
 
-            if (item.ValueControl is TextBox)
+            if (item.ValueControl is CMSTextBox)
             {
-                var tb = (TextBox)item.ValueControl;
-                tb.Text = tb.Text.Trim();
-                keyChanged = (tb.Text != item.KeyValue);
-                item.KeyValue = tb.Text;
+                var textBox = (CMSTextBox)item.ValueControl;
+                textBox.Text = textBox.Text.Trim();
+                keyChanged = (textBox.Text != item.KeyValue);
+                item.KeyValue = textBox.Text;
             }
             else if (item.ValueControl is CMSCheckBox)
             {
-                var cb = (CMSCheckBox)item.ValueControl;
-                keyChanged = (cb.Checked.ToString() != item.KeyValue);
-                item.KeyValue = cb.Checked.ToString();
+                var checkBox = (CMSCheckBox)item.ValueControl;
+                keyChanged = (checkBox.Checked.ToString() != item.KeyValue);
+                item.KeyValue = checkBox.Checked.ToString();
             }
             else if (item.ValueControl is FormEngineUserControl)
             {
@@ -669,166 +667,6 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
 
 
     /// <summary>
-    /// Clears the cache to apply the settings to the web site.
-    /// </summary>
-    private void ClearCache(string keyName, object keyValue)
-    {
-        var clearCache = false;
-        var clearOutputCache = false;
-        var clearCSSCache = false;
-        var clearPartialCache = false;
-
-        string serviceBaseName = null;
-        var serviceEnabled = false;
-
-        // Clear the cached items
-        switch (keyName.ToLowerCSafe())
-        {
-            case "cmsemailsenabled":
-                if ((mSiteId <= 0) && (keyValue.ToString().EqualsCSafe("false", true)))
-                {
-                    // Stop current sending of e-mails and newsletters if e-mails are disabled in global settings
-                    EmailHelper.Queue.CancelSending();
-                    ModuleCommands.CancelNewsletterSending();
-                }
-                break;
-
-            case "cmslogsize":
-                // Log size changed
-                EventLogProvider.Clear();
-                break;
-
-            case "cmscacheminutes":
-            case "cmscachepageinfo":
-            case "cmscacheimages":
-            case "cmsmaxcachefilesize":
-            case "cmsdefaultaliaspath":
-            case "cmsdefaultculturecode":
-            case "cmscombinewithdefaultculture":
-                // Clear cache upon change
-                clearCache = true;
-                break;
-
-            case "cmspagekeywordsprefix":
-            case "cmspagedescriptionprefix":
-            case "cmspagetitleformat":
-            case "cmspagetitleprefix":
-            case "cmscontrolelement":
-            case "cmsenableoutputcache":
-            case "cmsfilesystemoutputcacheminutes":
-                // Clear output cache upon change
-                clearOutputCache = true;
-                break;
-
-            case "cmsenablepartialcache":
-                // Clear output cache upon change
-                clearPartialCache = true;
-                break;
-
-            case "cmsresourcecompressionenabled":
-            case "cmsstylesheetminificationenabled":
-            case "cmsresolvemacrosincss":
-                // Clear the CSS styles
-                clearCSSCache = true;
-                break;
-
-            case "cmsuseexternalservice":
-            case "cmsservicehealthmonitoringinterval":
-            case "cmsenablehealthmonitoring":
-                // Restart Health Monitoring service
-                {
-                    serviceBaseName = WinServiceHelper.HM_SERVICE_BASENAME;
-                    serviceEnabled = HealthMonitoringHelper.UseExternalService;
-
-                    // Clear status of health monitoring
-                    HealthMonitoringHelper.Clear();
-                }
-                break;
-
-            case "cmsprogressivecaching":
-                CacheHelper.ProgressiveCaching = ValidationHelper.GetBoolean(keyValue, false);
-                break;
-
-            case "cmsscheduleruseexternalservice":
-            case "cmsschedulerserviceinterval":
-            case "cmsschedulertasksenabled":
-                // Restart Scheduler service
-                serviceBaseName = WinServiceHelper.SCHEDULER_SERVICE_BASENAME;
-                serviceEnabled = SchedulingHelper.UseExternalService;
-                break;
-
-            case "cmsresizeimagestodevice":
-                CacheHelper.TouchKey(DeviceProfileInfoProvider.DEVICE_IMAGE_CACHE_KEY);
-                break;
-
-            case "cmstranslationscomurl":
-            case "cmstranslationscomusername":
-            case "cmstranslationscompassword":
-            case "cmstranslationscomprojectcode":
-                AbstractHumanTranslationService.ClearHashtables();
-                break;
-
-            case "cmsuseeventloglistener":
-                if (ValidationHelper.GetBoolean(keyValue, false))
-                {
-                    EventLogSourceHelper.RegisterDefaultEventLogListener();
-                }
-                else
-                {
-                    EventLogSourceHelper.UnregisterDefaultEventLogListener();
-                }
-
-                break;
-        }
-
-        // Clear the cache to apply the settings to the web site
-        if (clearCache)
-        {
-            CacheHelper.ClearCache(null);
-        }
-        // Restart windows service
-        else if (serviceBaseName != null)
-        {
-            try
-            {
-                WinServiceItem def = WinServiceHelper.GetServiceDefinition(serviceBaseName);
-                if (def != null)
-                {
-                    if (serviceEnabled)
-                    {
-                        WinServiceHelper.RestartService(def.GetServiceName());
-                    }
-                    else
-                    {
-                        WinServiceHelper.DeleteServiceFile(def.GetServiceName());
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                EventLogProvider.LogException("Settings", "RestartService", ex);
-            }
-        }
-        else
-        {
-            // Clear only cache portions
-            if (clearOutputCache)
-            {
-                CacheHelper.ClearFullPageCache();
-            }
-            if (clearCSSCache)
-            {
-                CacheHelper.ClearCSSCache();
-            }
-            if (clearPartialCache)
-            {
-                CacheHelper.ClearPartialCache();
-            }
-        }
-    }
-
-
-    /// <summary>
     /// Saves changes made to settings keys into the database.
     /// </summary>
     public void SaveChanges()
@@ -870,8 +708,6 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
                     }
 
                     SettingsKeyInfoProvider.SetValue(keyName, SiteName, keyValue, logSynchronization);
-
-                    ClearCache(keyName, keyValue);
                 }
 
                 // Show message
@@ -960,8 +796,9 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
             {
                 control = Page.LoadUserControl(controlNameOrPath) as FormEngineUserControl;
             }
-            catch
+            catch(Exception ex)
             {
+                EventLogProvider.LogException("Settings", "LoadControl", ex);
             }
         }
 
@@ -984,7 +821,7 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
     /// <param name="groupNo">Number representing index of the processing settings group</param>
     private CategoryPanel GetCategoryPanel(SettingsCategoryInfo group, int groupNo)
     {
-        string title = null;
+        string title;
         if (IsSearchTextValid)
         {
             var categories = SettingsCategoryInfoProvider.GetCategoriesOnPath(group.CategoryIDPath);
@@ -1152,7 +989,7 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
             label.AssociatedControlID = inputControl.ID;
         }
 
-        ScriptHelper.AppendTooltip(label, MacroResolver.Resolve(ResHelper.LocalizeString(settingsKey.KeyDescription)), null);
+        ScriptHelper.AppendTooltip(label, ResHelper.LocalizeString(settingsKey.KeyDescription), null);
 
         return label;
     }
@@ -1170,7 +1007,7 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
             CssClass = "info-icon"
         };
 
-	    toolTip = ScriptHelper.FormatTooltipString(toolTip, false, false);
+        toolTip = ScriptHelper.FormatTooltipString(toolTip, false, false);
 
         CMSIcon helpIcon = new CMSIcon
         {
@@ -1208,18 +1045,19 @@ public partial class CMSModules_Settings_Controls_SettingsGroupViewer : Settings
 
     private IEnumerable<SettingsKeyInfo> GetKeys(int groupId)
     {
-        IEnumerable<SettingsKeyInfo> keys = SettingsKeyInfoProvider.GetSettingsKeys(groupId)
-            .Where(new WhereCondition().WhereFalse("KeyIsHidden").Or().WhereNull("KeyIsHidden"))
-            .OrderBy("KeyOrder", "KeyDisplayName");
+        var query = SettingsKeyInfoProvider.GetSettingsKeys(groupId)
+            .WhereEqualsOrNull("KeyIsHidden", false);
+        
+        if (SiteID > 0)
+        {
+            query.WhereEqualsOrNull("KeyIsGlobal", false);
+        }
+        
+        IEnumerable<SettingsKeyInfo> keys = query.OrderBy("KeyOrder", "KeyDisplayName");
 
         if (IsSearchTextValid)
         {
             keys = keys.Where(k => SettingsKeyInfoProvider.SearchSettingsKey(k, mSearchText, mSearchDescription));
-        }
-
-        if (SiteID > 0)
-        {
-            return keys.Where(k => !k.KeyIsGlobal);
         }
 
         return keys;

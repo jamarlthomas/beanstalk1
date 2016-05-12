@@ -216,7 +216,7 @@ public partial class CMSModules_AdminControls_Controls_Class_Layout {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSAdminControls_UI_Macros_MacroEditor txtCode;
+    protected global::CMS.UIControls.MacroEditor txtCode;
     
     /// <summary>
     /// btnSave control.

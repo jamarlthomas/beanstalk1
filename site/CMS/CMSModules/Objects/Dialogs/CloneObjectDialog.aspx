@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="CloneObjectDialog.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="CloneObjectDialog.aspx.cs"
     Inherits="CMSModules_Objects_Dialogs_CloneObjectDialog" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="Clone Object" Theme="Default" %>
 

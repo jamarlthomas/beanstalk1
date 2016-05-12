@@ -1,4 +1,4 @@
-<%@ Page Title="Post detail" Language="C#" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" AutoEventWireup="true" Inherits="CMSModules_SocialMarketing_Pages_FacebookPostDetailDialog" Codebehind="FacebookPostDetailDialog.aspx.cs" Theme="Default" %>
+﻿<%@ Page Title="Post detail" Language="C#" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" AutoEventWireup="true" Inherits="CMSModules_SocialMarketing_Pages_FacebookPostDetailDialog"  Codebehind="FacebookPostDetailDialog.aspx.cs" Theme="Default" %>
 
 <asp:Content runat="server" ID="content" ContentPlaceHolderID="plcContent">
     <asp:Panel runat="server" ID="pnlPostDetail" CssClass="sm-post-detail form-horizontal">

@@ -190,7 +190,7 @@ public partial class CMSAdminControls_MultiFileUploader_MultiFileUploader : CMSU
 
 
     /// <summary>
-    /// Upload mode for the silverlight uploader application.
+    /// Upload mode for the MultiFileUploader JavaScript module.
     /// The default value is DirectSingle.
     /// </summary>
     public MultifileUploaderModeEnum UploadMode
@@ -384,7 +384,7 @@ public partial class CMSAdminControls_MultiFileUploader_MultiFileUploader : CMSU
 
 
     /// <summary>
-    /// Indicates whether some javascript should be raised on click event.
+    /// Indicates whether some JavaScript should be raised on click event.
     /// Default value is false.
     /// </summary>
     public bool RaiseOnClick
@@ -403,9 +403,10 @@ public partial class CMSAdminControls_MultiFileUploader_MultiFileUploader : CMSU
         {
             if (mEnabled == null)
             {
-                mEnabled = DirectoryHelper.CheckPermissions(Server.MapPath(UploaderHelper.TEMP_PATH), true, true, true, true);
+                mEnabled = DirectoryHelper.CheckPermissions(UploaderHelper.TempPath, true, true, true, true);
             }
-            return (mEnabled ?? false);
+
+            return mEnabled.Value;
         }
         set
         {
@@ -502,7 +503,7 @@ public partial class CMSAdminControls_MultiFileUploader_MultiFileUploader : CMSU
     #endregion
 
 
-    #region "CMS.File Properties"
+    #region "File type properties"
 
     /// <summary>
     /// Current site name.
@@ -521,7 +522,7 @@ public partial class CMSAdminControls_MultiFileUploader_MultiFileUploader : CMSU
 
 
     /// <summary>
-    /// ID of the parent node, where to upload CMS.File.
+    /// ID of the parent node, where to upload the file.
     /// </summary>
     public int NodeID
     {
@@ -625,6 +626,15 @@ public partial class CMSAdminControls_MultiFileUploader_MultiFileUploader : CMSU
         set;
     }
 
+
+    /// <summary>
+    /// Indicates if full refresh should be performed after uploading attachments under workflow
+    /// </summary>
+    public bool FullRefresh
+    {
+        get;
+        set;
+    }
 
     /// <summary>
     /// GUID of the form.
@@ -804,21 +814,21 @@ public partial class CMSAdminControls_MultiFileUploader_MultiFileUploader : CMSU
         var data = new
         {
             UploaderClientID = uploadFile.ClientID,
-            InstanceGuid = InstanceGuid,
+            InstanceGuid,
             ModeParameters = GetModeParameters(),
             AditionalParameters = GetAdditionalParameters(),
-            MaxNumberToUpload = MaxNumberToUpload,
-            MaximumTotalUpload = MaximumTotalUpload,
+            MaxNumberToUpload,
+            MaximumTotalUpload,
             MaximumUploadSize = MaximumUpload,
-            UploadChunkSize = UploadChunkSize,
-            UploadMode = UploadMode,
+            UploadChunkSize,
+            UploadMode,
             UploadPage = UploadHandlerUrl,
             ResizeArgs = string.Format("{0};{1};{2}", ResizeToWidth, ResizeToHeight, ResizeToMaxSideSize),
             AllowedExtensions = GetAllowedExtensions(),
-            OnUploadBegin = OnUploadBegin,
-            OnUploadCompleted = OnUploadCompleted,
-            OnUploadProgressChanged = OnUploadProgressChanged,
-            ContainerID = ContainerID,
+            OnUploadBegin,
+            OnUploadCompleted,
+            OnUploadProgressChanged,
+            ContainerID,
             OverlayClientID = pnlUpload.ClientID
         };
 
@@ -838,7 +848,7 @@ public partial class CMSAdminControls_MultiFileUploader_MultiFileUploader : CMSU
     {
         StringBuilder sb = new StringBuilder();
 
-        List<String> resources = new List<String>()
+        var resources = new List<String>
                                      {
                                          "multifileuploader.errormaxnumbertoupload",
                                          "multifileuploader.maxuploadamount",
@@ -936,68 +946,61 @@ public partial class CMSAdminControls_MultiFileUploader_MultiFileUploader : CMSU
                        };
             return "MediaLibraryArgs=" + GetArgumentsString(args);
         }
-        else
+
+        if ((NodeID > 0) && (SourceType == MediaSourceEnum.Content))
         {
-            if ((NodeID > 0) && (SourceType == MediaSourceEnum.Content))
+            // File mode
+            args = new[]
             {
-                // CMS.File mode
-                args = new[]
-                           {
-                               "NodeID", NodeID.ToString(),
-                               "DocumentCulture", DocumentCulture,
-                               "IncludeExtension", IncludeExtension.ToString(),
-                               "NodeGroupID", NodeGroupID.ToString()
-                           };
-                return "FileArgs=" + GetArgumentsString(args);
-            }
-            else
+                "NodeID", NodeID.ToString(),
+                "DocumentCulture", DocumentCulture,
+                "IncludeExtension", IncludeExtension.ToString(),
+                "NodeGroupID", NodeGroupID.ToString()
+            };
+            return "FileArgs=" + GetArgumentsString(args);
+        }
+
+        if (ObjectID > 0)
+        {
+            // MetaFile mode
+            args = new[]
             {
-                if (ObjectID > 0)
-                {
-                    // MetaFile mode
-                    args = new[]
-                               {
-                                   "MetaFileID", MetaFileID.ToString(),
-                                   "ObjectID", ObjectID.ToString(),
-                                   "SiteID", SiteID.ToString(),
-                                   "ObjectType", ObjectType,
-                                   "Category", Category
-                               };
-                    return "MetaFileArgs=" + GetArgumentsString(args);
-                }
-                else
-                {
-                    if (PostForumID > 0)
-                    {
-                        // Forum attachment
-                        args = new[]
-                                   {
-                                       "PostForumID", PostForumID.ToString(),
-                                       "PostID", PostID.ToString()
-                                   };
-                        return "ForumArgs=" + GetArgumentsString(args);
-                    }
-                    else
-                    {
-                        if ((DocumentID > 0) || (FormGUID != Guid.Empty))
-                        {
-                            // Attachment mode
-                            args = new[]
-                                       {
-                                           "DocumentID", DocumentID.ToString(),
-                                           "DocumentParentNodeID", DocumentParentNodeID.ToString(),
-                                           "NodeClassName", NodeClassName,
-                                           "AttachmentGUIDColumnName", AttachmentGUIDColumnName,
-                                           "AttachmentGUID", AttachmentGUID.ToString(),
-                                           "AttachmentGroupGUID", AttachmentGroupGUID.ToString(),
-                                           "FormGUID", FormGUID.ToString(),
-                                           "IsFieldAttachment", mIsFiledAttachment.ToString()
-                                       };
-                            return "AttachmentArgs=" + GetArgumentsString(args);
-                        }
-                    }
-                }
-            }
+                "MetaFileID", MetaFileID.ToString(),
+                "ObjectID", ObjectID.ToString(),
+                "SiteID", SiteID.ToString(),
+                "ObjectType", ObjectType,
+                "Category", Category
+            };
+            return "MetaFileArgs=" + GetArgumentsString(args);
+        }
+
+        if (PostForumID > 0)
+        {
+            // Forum attachment
+            args = new[]
+            {
+                "PostForumID", PostForumID.ToString(),
+                "PostID", PostID.ToString()
+            };
+            return "ForumArgs=" + GetArgumentsString(args);
+        }
+                
+        if ((DocumentID > 0) || (FormGUID != Guid.Empty))
+        {
+            // Attachment mode
+            args = new[]
+            {
+                "DocumentID", DocumentID.ToString(),
+                "DocumentParentNodeID", DocumentParentNodeID.ToString(),
+                "NodeClassName", NodeClassName,
+                "AttachmentGUIDColumnName", AttachmentGUIDColumnName,
+                "AttachmentGUID", AttachmentGUID.ToString(),
+                "AttachmentGroupGUID", AttachmentGroupGUID.ToString(),
+                "FormGUID", FormGUID.ToString(),
+                "IsFieldAttachment", mIsFiledAttachment.ToString(),
+                "FullRefresh", FullRefresh.ToString()
+            };
+            return "AttachmentArgs=" + GetArgumentsString(args);
         }
         return String.Empty;
     }
@@ -1008,7 +1011,8 @@ public partial class CMSAdminControls_MultiFileUploader_MultiFileUploader : CMSU
     /// </summary>
     private string GetAllowedExtensions()
     {
-        string filter = null;
+        string filter;
+
         if (String.IsNullOrEmpty(AllowedExtensions))
         {
             if (MediaLibraryID > 0)

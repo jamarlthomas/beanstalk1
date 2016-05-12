@@ -1,5 +1,5 @@
-<%@ Page Language="C#" Theme="Default" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_FormControls_Selectors_InsertImageOrMedia_Tabs_Media"
-    EnableEventValidation="false" Codebehind="Tabs_Media.aspx.cs" %>
+﻿<%@ Page Language="C#" Theme="Default" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_FormControls_Selectors_InsertImageOrMedia_Tabs_Media"
+    EnableEventValidation="false"  Codebehind="Tabs_Media.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/Dialogs/LinkMediaSelector.ascx"
     TagName="LinkMedia" TagPrefix="cms" %>

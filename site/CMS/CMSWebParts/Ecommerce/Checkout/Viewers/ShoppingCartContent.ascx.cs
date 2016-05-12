@@ -2,6 +2,7 @@
 
 using CMS.Ecommerce;
 using CMS.Controls;
+using CMS.EventLog;
 using CMS.ExtendedControls;
 using CMS.PortalEngine;
 using CMS.Base;
@@ -15,6 +16,7 @@ public partial class CMSWebParts_Ecommerce_Checkout_Viewers_ShoppingCartContent 
     #region "Variables"
 
     private bool orderChanged;
+    private string cartGuidQueryString;
 
     #endregion
 
@@ -22,6 +24,7 @@ public partial class CMSWebParts_Ecommerce_Checkout_Viewers_ShoppingCartContent 
     #region "Constants"
 
     private const string EMPTY_CART_REDIRECTED = "EMPTY_CART_REDIRECTED";
+    private const string GUID_QUERY_PARAMETER = "cg";
 
     #endregion
 
@@ -43,6 +46,15 @@ public partial class CMSWebParts_Ecommerce_Checkout_Viewers_ShoppingCartContent 
         }
     }
 
+
+    private string CartGuidQueryString
+    {
+        get
+        {
+            return cartGuidQueryString ?? (cartGuidQueryString = QueryHelper.GetString(GUID_QUERY_PARAMETER, String.Empty));
+        }
+    }
+
     #endregion
 
 
@@ -57,6 +69,12 @@ public partial class CMSWebParts_Ecommerce_Checkout_Viewers_ShoppingCartContent 
 
         // Subscribe to the checkout events
         SubscribeToCheckoutEvents();
+        
+        if (ShouldLoadAbandonedCart())
+        {
+            TryReplaceCartWithNewOneUsingGuidInUrl();
+            RedirectToCartWithoutGuidInUrl(); 
+        }
     }
 
 
@@ -256,6 +274,74 @@ public partial class CMSWebParts_Ecommerce_Checkout_Viewers_ShoppingCartContent 
                 // Makes sure new data is loaded if the date changes and transformation needs to be reloaded
                 shoppingCartUniView.DataBind();
             }
+        }
+    }
+
+
+    private void TryReplaceCartWithNewOneUsingGuidInUrl()
+    {
+        try
+        {
+            Guid cartGuid = Guid.Parse(CartGuidQueryString);
+            ShoppingCartInfo abandonedCart = ShoppingCartInfoProvider.GetShoppingCartInfo(cartGuid);
+
+            if ((abandonedCart != null) && (ECommerceContext.CurrentShoppingCart.ShoppingCartGUID != abandonedCart.ShoppingCartGUID))
+            {
+                ECommerceContext.CurrentShoppingCart = CloneShoppingCartInfo(abandonedCart);
+            }
+        }
+        catch (FormatException)
+        {
+            EventLogProvider.LogException("Load abandoned cart", "LOADABANDONEDCART", null, CurrentSite.SiteID, "Invalid format of GUID");
+        }
+    }
+
+
+    private void RedirectToCartWithoutGuidInUrl()
+    {
+        string currentUrlWithoutGuid = URLHelper.RemoveParameterFromUrl(RequestContext.CurrentURL, GUID_QUERY_PARAMETER);
+        URLHelper.Redirect(currentUrlWithoutGuid);
+    }
+
+
+    private bool ShouldLoadAbandonedCart()
+    {
+        return !String.IsNullOrEmpty(CartGuidQueryString);
+    }
+
+
+    /// <summary>
+    /// Creates a new shopping cart record and corresponding shopping cart items records in the database 
+    /// as a copy of given shopping cart info. 
+    /// Currency is set according to the currency of given cart.
+    /// If a configuration of cart item is no longer available it is not cloned to new shopping cart.
+    /// Correct user id for logged user is _not_ handled in this method, because it does not depend on 
+    /// abandoned cart's user id. It should be handled according to user's status (logged in/anonymous)
+    /// in the browser where the cart is loaded: 
+    ///  - anonymous cart or user's cart opened in the browser where user is logged in - new cart userId should be set to logged user's id
+    ///  - anonymous cart or user's cart opened in the browser where user is _not_ logged in - new cart userId should be empty (anonymous cart)
+    /// </summary>
+    /// <param name="originalCart">Original cart to clone.</param>
+    /// <returns>Created shopping cart info.</returns>
+    private ShoppingCartInfo CloneShoppingCartInfo(ShoppingCartInfo originalCart)
+    {
+        using (new CMSActionContext { UpdateTimeStamp = false })
+        {
+            ShoppingCartInfo cartClone = ShoppingCartInfoProvider.CreateShoppingCartInfo(CurrentSite.SiteID);
+
+            cartClone.ShoppingCartCurrencyID = originalCart.ShoppingCartCurrencyID;
+            cartClone.ShoppingCartLastUpdate = originalCart.ShoppingCartLastUpdate;
+            ShoppingCartInfoProvider.SetShoppingCartInfo(cartClone);
+
+            ShoppingCartInfoProvider.CopyShoppingCartItems(originalCart, cartClone);
+
+            // Set the shopping cart items into the database
+            foreach (ShoppingCartItemInfo item in cartClone.CartItems)
+            {
+                ShoppingCartItemInfoProvider.SetShoppingCartItemInfo(item);
+            }
+
+            return cartClone;
         }
     }
 

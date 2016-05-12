@@ -13,32 +13,34 @@ using CMS.UIControls;
 
 public partial class CMSAdminControls_UI_UniGrid_Controls_AdvancedExport : AdvancedExport, IPostBackEventHandler
 {
-    #region "Constants"
-
-    protected const string VALIDATE_EXPORT_PREFIX = "ValidateExport_";
-
-    protected const string DEFAULT_SELECTION_PREFIX = "DefaultSelection_";
-
-    protected const string FIX_DIALOG_HEIGHT_PREFIX = "FixDialogHeight_";
-
-    protected const string SET_CHECKED_PREFIX = "SetChecked";
-    
-    #endregion
-
-
     #region "Variables"
 
-	private string mCurrentDelimiter;
-
-	private bool mAlertAdded;
-
-	private bool mControlLoaded;
+    private string mCurrentDelimiter;
+    private string alertMessage;
+    private bool mControlLoaded;
+    private bool? mUserCanEditSql;
 
     #endregion
 
     
     #region "Properties"
-    
+
+    /// <summary>
+    /// Gets the value that indicates whether current user is able to edit SQL code
+    /// </summary>
+    private bool UserCanEditSql
+    {
+        get
+        {
+            if (mUserCanEditSql == null)
+            {
+                mUserCanEditSql = MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("cms.globalpermissions", "editsqlcode");
+            }
+            return mUserCanEditSql.Value;
+        }
+    }
+
+
     /// <summary>
     /// Currently selected format (in dropdown list).
     /// </summary>
@@ -122,100 +124,39 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_AdvancedExport : Advan
 
         if (!StopProcessing)
         {
-            ScriptHelper.RegisterJQueryDialog(Page);
-
-            // Register control scripts
-            StringBuilder exportScript = new StringBuilder();
-            exportScript.Append(@"
-function UG_Export_", UniGrid.ClientID, @"(format, param)
-{
-    document.getElementById('", hdnParameter.ClientID, @"').value = format;
-    if(format == 'advancedexport')
-    {",
-                                ControlsHelper.GetPostBackEventReference(this, "##PARAM##").Replace("'##PARAM##'", "format"), @";
-    }
-    else
-    {",
-                                ControlsHelper.GetPostBackEventReference(btnFullPostback, "", false, false), @";
-    }
-}");
-
-            ScriptHelper.RegisterStartupScript(pnlUpdate, typeof(string), "exportScript_" + ClientID, ScriptHelper.GetScript(exportScript.ToString()));
-
-			if (Visible && pnlUpdate.Visible && !ShouldCloseDialog())
+            var fixHeight = false;
+            if (Visible && pnlUpdate.Visible && !ShouldCloseDialog())
             {
                 if (RequestHelper.IsPostBack() && (CurrentModal != null))
                 {
-                    // Register scripts shared across multiple advanced export controls
-                    StringBuilder sharedExportScript = new StringBuilder();
-                    sharedExportScript.Append(@"
-function ", SET_CHECKED_PREFIX, @"(id, checked)
-{
-    $cmsj('#' + id + ' :checkbox').attr('checked', checked);
-    return false;
-}
-");
-                    StringBuilder modalSupportScripts = new StringBuilder();
-                    // Register script for default column selection
-                    modalSupportScripts.Append(@"
-function ", DEFAULT_SELECTION_PREFIX, chlColumns.ClientID, @"()
-{
-    var checkBoxes = $cmsj(""input[type='checkbox']"",'#", chlColumns.ClientID, @"');
-    var defSelStr = document.getElementById('", hdnDefaultSelection.ClientID, @"').value;
-    var defaultSelection = defSelStr.split(',');
-    for (var i = 0; i < checkBoxes.length; i++)
-    {
-        var indexOfChk = $cmsj.inArray(i.toString(), defaultSelection);        
-        $cmsj(checkBoxes[i]).attr('checked', (indexOfChk > -1));
-    }
-    return false;  
-}");
-                    // Register script for keeping correct dialog dimensions
-                    modalSupportScripts.Append(@"
-var numVal = 'none';
-var colVal = 'none';
-function ", FIX_DIALOG_HEIGHT_PREFIX, ClientID, @"()
-{
-    var numberValidator = document.getElementById('", revRecords.ClientID, @"');
-    var columnValidator = document.getElementById('", cvColumns.ClientID, @"');
-    if((numberValidator != 'undefined') && (columnValidator != 'undefined') && (numberValidator != null) && (columnValidator != null))
-    {
-        var process = false;
-        if(numVal != numberValidator.style.display)
-        {
-            process = true;
-        }
-        numVal = numberValidator.style.display;
-        if(colVal != columnValidator.style.display)
-        {
-            process = true;
-        }
-        colVal = columnValidator.style.display;
-        if(process)
-        {
-            resizableDialog = true;
-            keepDialogAccesible('", mdlAdvancedExport.ClientID, @"');
-        }
-    }
-    setTimeout('", FIX_DIALOG_HEIGHT_PREFIX, ClientID, @"()',500);
-}");
-                    // Register column selection validation script
-                    modalSupportScripts.Append(@"
-function ", VALIDATE_EXPORT_PREFIX, ClientID, @"(source, arguments)
-{
-    var checked = $cmsj(""input[type='checkbox']:checked"",'#", chlColumns.ClientID, @"');
-    arguments.IsValid = (checked.length > 0);
-}
-");
-                    ScriptHelper.RegisterStartupScript(pnlUpdate, typeof(string), "sharedExportScript", ScriptHelper.GetScript(sharedExportScript.ToString()));
-                    ScriptHelper.RegisterStartupScript(pnlUpdate, typeof(string), "modalSupportScripts_" + ClientID, ScriptHelper.GetScript(modalSupportScripts.ToString()));
-                    ScriptHelper.RegisterStartupScript(this, typeof(string), "fixDialogHeight" + ClientID, ScriptHelper.GetScript("setTimeout('" + FIX_DIALOG_HEIGHT_PREFIX + ClientID + "()',500);"));
-
                     // Show popup after postback
                     CurrentModal.Show();
+                    fixHeight = true;
                 }
             }
+
             pnlAdvancedExport.EnableViewState = (CurrentDialog == pnlAdvancedExport);
+
+            // Setup the javascript module
+            object config = new
+            {
+                id = ClientID,
+                uniqueId = UniqueID,
+                unigridId = UniGrid.ClientID,
+                hdnParamId = hdnParameter.ClientID,
+                btnFullPostbackUniqueId = btnFullPostback.UniqueID,
+                chlColumnsId = chlColumns.ClientID,
+                hdnDefaultSelectionId = hdnDefaultSelection.ClientID,
+                revRecordsId = revRecords.ClientID,
+                cvColumnsId = cvColumns.ClientID,
+                mdlAdvancedExportId = mdlAdvancedExport.ClientID,
+                fixHeight,
+                alertMessage
+            };
+
+            ScriptHelper.EnsurePostbackMethods(this);
+            ScriptHelper.RegisterJQueryDialog(Page);
+            ScriptHelper.RegisterModule(this, "CMS/AdvancedExport", config);
         }
     }
 
@@ -229,15 +170,7 @@ function ", VALIDATE_EXPORT_PREFIX, ClientID, @"(source, arguments)
     /// </summary>
     protected void btnExport_Click(object sender, EventArgs e)
     {
-        try
-        {
-            DataExportFormatEnum format = (DataExportFormatEnum)Enum.Parse(typeof(DataExportFormatEnum), drpExportTo.SelectedItem.Value);
-            ExportData(format);
-        }
-        catch (Exception ex)
-        {
-            AddAlert(GetString("general.erroroccurred") + " " + ex.Message);
-        }
+        TryExport(drpExportTo.SelectedItem.Value);
     }
 
 
@@ -246,15 +179,7 @@ function ", VALIDATE_EXPORT_PREFIX, ClientID, @"(source, arguments)
     /// </summary>
     protected void btnPreview_Click(object sender, EventArgs e)
     {
-        try
-        {
-            DataExportFormatEnum format = (DataExportFormatEnum)Enum.Parse(typeof(DataExportFormatEnum), drpExportTo.SelectedItem.Value);
-            ExportData(format, 100);
-        }
-        catch (Exception ex)
-        {
-            AddAlert(GetString("general.erroroccurred") + " " + ex.Message);
-        }
+        TryExport(drpExportTo.SelectedItem.Value, true);
     }
 
 
@@ -263,17 +188,7 @@ function ", VALIDATE_EXPORT_PREFIX, ClientID, @"(source, arguments)
     /// </summary>
     protected void btnFullPostback_Click(object sender, EventArgs e)
     {
-        // Parse format to export
-        string parameter = ValidationHelper.GetString(hdnParameter.Value, string.Empty);
-        try
-        {
-            DataExportFormatEnum format = (DataExportFormatEnum)Enum.Parse(typeof(DataExportFormatEnum), parameter);
-            ExportData(format);
-        }
-        catch (Exception ex)
-        {
-            AddAlert(GetString("general.erroroccurred") + " " + ex.Message);
-        }
+        TryExport(hdnParameter.Value);
     }
 
 
@@ -314,15 +229,18 @@ function ", VALIDATE_EXPORT_PREFIX, ClientID, @"(source, arguments)
                 // Parse event argument
                 switch (eventArgument)
                 {
-	                case "advancedexport":
-		                pnlAdvancedExport.Visible = true;
-		                ShowPopup(pnlAdvancedExport, mdlAdvancedExport);
-		                InitializeAdvancedExport();
-		                break;
-					case CLOSE_DIALOG:
-		                HideCurrentPopup();
-		                break;
+                    case "advancedexport":
+                        pnlAdvancedExport.Visible = true;
+                        ShowPopup(pnlAdvancedExport, mdlAdvancedExport);
+                        InitializeAdvancedExport();
+                        break;
+                    case CLOSE_DIALOG:
+                        HideCurrentPopup();
+                        break;
                 }
+
+                // Update panel with dialog
+                pnlUpdate.Update();
             }
             catch (Exception ex)
             {
@@ -341,60 +259,79 @@ function ", VALIDATE_EXPORT_PREFIX, ClientID, @"(source, arguments)
     /// </summary>
     private void SetupControl()
     {
-	    if (mControlLoaded || StopProcessing)
-	    {
-		    return;
-	    }
+        if (mControlLoaded || StopProcessing)
+        {
+            return;
+        }
 
-	    // Register full postback buttons for direct and advanced export
-	    ControlsHelper.RegisterPostbackControl(btnExport);
-	    ControlsHelper.RegisterPostbackControl(btnPreview);
+        // Register full postback buttons for direct and advanced export
+        ControlsHelper.RegisterPostbackControl(btnExport);
+        ControlsHelper.RegisterPostbackControl(btnPreview);
+        ControlsHelper.RegisterPostbackControl(btnFullPostback);
 
-	    // Initialize page title
-	    advancedExportTitle.TitleText = GetString("export.advancedexport");
-	    advancedExportTitle.ShowFullScreenButton = false;
-		advancedExportTitle.SetCloseJavaScript(ControlsHelper.GetPostBackEventReference(this, CLOSE_DIALOG) + "; return false;");
+        // Initialize page title
+        advancedExportTitle.TitleText = GetString("export.advancedexport");
+        advancedExportTitle.ShowFullScreenButton = false;
+        advancedExportTitle.SetCloseJavaScript(ControlsHelper.GetPostBackEventReference(this, CLOSE_DIALOG) + "; return false;");
 
-	    // Initialize help icon
-	    advancedExportTitle.IsDialog = true;
-	    advancedExportTitle.HelpTopicName = HELP_TOPIC_LINK;
+        // Initialize help icon
+        advancedExportTitle.IsDialog = true;
+        advancedExportTitle.HelpTopicName = HELP_TOPIC_LINK;
 
-	    // Initialize column-selecting buttons
-	    btnSelectAll.OnClientClick = "return " + SET_CHECKED_PREFIX + "('" + chlColumns.ClientID + "' , true);";
-	    btnDeselectAll.OnClientClick = "return " + SET_CHECKED_PREFIX + "('" + chlColumns.ClientID + "' , false);";
-	    btnDefaultSelection.OnClientClick = "return " + DEFAULT_SELECTION_PREFIX + chlColumns.ClientID + "();";
+        // Initialize column-selecting buttons
+        btnSelectAll.OnClientClick = GetModuleMethod("checkAll", true);
+        btnDeselectAll.OnClientClick = GetModuleMethod("uncheckAll", true);
+        btnDefaultSelection.OnClientClick = GetModuleMethod("defaultSelection", true);
 
-	    lblCurrentPageOnly.ToolTip = GetString("export.currentpagetooltip");
-	    chkCurrentPageOnly.ToolTip = GetString("export.currentpagetooltip");
+        lblCurrentPageOnly.ToolTip = GetString("export.currentpagetooltip");
+        chkCurrentPageOnly.ToolTip = GetString("export.currentpagetooltip");
 
-	    // Set up validator
-	    string validationGroup = "advancedExport_" + ClientID;
+        // Set up validator
+        string validationGroup = "advancedExport_" + ClientID;
 
-	    revRecords.ValidationGroup = validationGroup;
-	    revRecords.ErrorMessage = GetString("export.validinteger");
-	    revRecords.ValidationExpression = "^\\d{1,9}$";
+        revRecords.ValidationGroup = validationGroup;
+        revRecords.ErrorMessage = GetString("export.validinteger");
+        revRecords.ValidationExpression = "^\\d{1,9}$";
 
-	    cvColumns.ValidationGroup = validationGroup;
-	    cvColumns.ClientValidationFunction = VALIDATE_EXPORT_PREFIX + ClientID;
-	    cvColumns.ErrorMessage = GetString("export.selectcolumns");
+        cvColumns.ValidationGroup = validationGroup;
+        cvColumns.ClientValidationFunction = GetModuleMethod("validateExport", false, false);
+        cvColumns.ErrorMessage = GetString("export.selectcolumns");
 
-	    btnExport.ValidationGroup = validationGroup;
-	    btnExport.OnClientClick = ScriptHelper.GetDisableProgressScript();
+        btnExport.ValidationGroup = validationGroup;
+        btnExport.OnClientClick = ScriptHelper.GetDisableProgressScript();
 
-	    btnPreview.ValidationGroup = validationGroup;
-	    btnPreview.OnClientClick = ScriptHelper.GetDisableProgressScript();
+        btnPreview.ValidationGroup = validationGroup;
+        btnPreview.OnClientClick = ScriptHelper.GetDisableProgressScript();
 
-	    // Initialize
-	    if (!MembershipContext.AuthenticatedUser.IsGlobalAdministrator)
-	    {
-            // Make the dialog wider when OrderBy controls are displayed
-            pnlAdvancedExport.Width = new Unit("1100px");
-		    InitializeOrderBy(false);
-	    }
-	    mControlLoaded = true;
+        orderByElem.Enabled = txtWhereCondition.Enabled = txtOrderBy.Enabled = !chkCurrentPageOnly.Checked;
+
+        // Initialize
+        if (!UserCanEditSql)
+        {
+            InitializeOrderBy(false);
+        }
+        mControlLoaded = true;
     }
 
     
+    /// <summary>
+    /// Tries to export data in the given format.
+    /// </summary>
+    /// <param name="format">Format name</param>
+    /// <param name="isPreview">Indicates if export is only preview (first 100 items)</param>
+    private void TryExport(string format, bool isPreview = false)
+    {
+        try
+        {
+            ExportData(format.ToEnum<DataExportFormatEnum>(), isPreview ? (int?)100 : null);
+        }
+        catch (Exception ex)
+        {
+            AddAlert(ex.Message);
+        }
+    }
+
+
     /// <summary>
     /// Exports data based on given format.
     /// </summary>
@@ -427,15 +364,16 @@ function ", VALIDATE_EXPORT_PREFIX, ClientID, @"(source, arguments)
                 UniGridExportHelper.CurrentPageOnly = false;
             }
         }
-
-        UniGridExportHelper.UseGridFilter = chkUseGridFilter.Checked;
         
         // Get order by clause from correct control
-        UniGridExportHelper.OrderBy = MembershipContext.AuthenticatedUser.IsGlobalAdministrator ? TrimExtendedTextAreaValue(txtOrderBy.Text) : ValidationHelper.GetString(orderByElem.Value, null);
-        UniGridExportHelper.WhereCondition = TrimExtendedTextAreaValue(txtWhereCondition.Text);
+        if (!chkCurrentPageOnly.Checked)
+        {
+            UniGridExportHelper.OrderBy = UserCanEditSql ? TrimExtendedTextAreaValue(txtOrderBy.Text) : ValidationHelper.GetString(orderByElem.Value, null);
+            UniGridExportHelper.WhereCondition = TrimExtendedTextAreaValue(txtWhereCondition.Text);
+        }
         UniGridExportHelper.Columns = GetSelectedColumns();
 
-        if (IsCMSDesk)
+        if (IsCMSDesk || (UIContext.SiteID > 0))
         {
             UniGridExportHelper.SiteName = SiteContext.CurrentSiteName;
         }
@@ -456,9 +394,9 @@ function ", VALIDATE_EXPORT_PREFIX, ClientID, @"(source, arguments)
             ListItem column = chlColumns.Items[i];
             if (column.Selected)
             {
-	            // Get correct set of selected columns
-	            string col = chkExportRawData.Checked ? UniGridExportHelper.AvailableColumns[i] : i.ToString();
-	            if (!string.IsNullOrEmpty(col))
+                // Get correct set of selected columns
+                string col = chkExportRawData.Checked ? UniGridExportHelper.AvailableColumns[i] : i.ToString();
+                if (!string.IsNullOrEmpty(col))
                 {
                     exportedColumns.Add(col);
                 }
@@ -482,11 +420,12 @@ function ", VALIDATE_EXPORT_PREFIX, ClientID, @"(source, arguments)
         InitializeDelimiter();
         InitializeExportHeader();
         InitializeColumns(false);
-        plcWhere.Visible = MembershipContext.AuthenticatedUser.IsGlobalAdministrator;
-        plcExportRawData.Visible = MembershipContext.AuthenticatedUser.IsGlobalAdministrator;
-        orderByElem.Visible = !MembershipContext.AuthenticatedUser.IsGlobalAdministrator;
-        txtOrderBy.Visible = MembershipContext.AuthenticatedUser.IsGlobalAdministrator;
-        btnDefaultSelection.Visible = MembershipContext.AuthenticatedUser.IsGlobalAdministrator;
+
+        plcWhere.Visible = UserCanEditSql;
+        plcExportRawData.Visible = UserCanEditSql;
+        orderByElem.Visible = !UserCanEditSql;
+        txtOrderBy.Visible = UserCanEditSql;
+        btnDefaultSelection.Visible = UserCanEditSql;
     }
 
 
@@ -520,18 +459,26 @@ function ", VALIDATE_EXPORT_PREFIX, ClientID, @"(source, arguments)
         }
         if (orderByElem.Columns.Count == 0)
         {
+            IEnumerable<ListItem> columns = null;
+
             if (chkExportRawData.Checked)
             {
-                orderByElem.Columns.AddRange(from c in UniGridExportHelper.AvailableColumns select new ListItem(c, c));
+                columns = UniGridExportHelper.AvailableColumns.Select(c => new ListItem(c, c));
             }
             else
             {
-                orderByElem.Columns.AddRange(from f in UniGridExportHelper.BoundFields where (f.DataField != UniGrid.ALL && !string.IsNullOrEmpty(f.DataField) && IsColumnAvailable(f.DataField)) select new ListItem(f.HeaderText, f.DataField));
+                columns = from field in UniGridExportHelper.BoundFields
+                          let column = (field.DataField == UniGrid.ALL) ? field.SortExpression : field.DataField
+                          where !String.IsNullOrEmpty(column) && IsColumnAvailable(column)
+                          select new ListItem(field.HeaderText, column);
             }
+
+            orderByElem.Columns.AddRange(columns);
+
             orderByElem.ReloadData();
         }
     }
-    
+
 
     /// <summary>
     /// Initializes columns checkboxlist (and default selection JS array).
@@ -600,26 +547,28 @@ function ", VALIDATE_EXPORT_PREFIX, ClientID, @"(source, arguments)
     
 
     /// <summary>
-    /// Adds alert script to the page.
+    /// Displays alert message.
     /// </summary>
     /// <param name="message">Message to show</param>
     private void AddAlert(string message)
     {
-        if (!mAlertAdded)
+        if (String.IsNullOrEmpty(alertMessage))
         {
-            AddScript(ScriptHelper.GetScript("setTimeout(function() {" + ScriptHelper.GetAlertScript(message, false) + "}, 50);"));
-            mAlertAdded = true;
+            alertMessage = GetString("general.erroroccurred") + " " + message;
         }
     }
 
 
     /// <summary>
-    /// Adds script to the page.
+    /// Returns javascript method from AdvancedExport module.
     /// </summary>
-    /// <param name="script">Script to add</param>
-    private void AddScript(string script)
+    /// <param name="methodName">Method name</param>
+    /// <param name="isReturn">Indicates whether the script is return statement.</param>
+    /// <param name="callFunction">Indicates whether the script is function call.</param>
+    /// <returns></returns>
+    private string GetModuleMethod(string methodName, bool isReturn = false, bool callFunction = true)
     {
-        ScriptHelper.RegisterStartupScript(this, typeof(string), script.GetHashCode().ToString(), script);
+        return String.Format("{0} CMS.UG_Export_{1}.{2}{3}", isReturn ? "return" : "", UniGrid.ClientID, methodName, callFunction ? "()" : "");       
     }
 
     #endregion

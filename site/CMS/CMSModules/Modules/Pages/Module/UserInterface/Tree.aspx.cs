@@ -273,10 +273,7 @@ public partial class CMSModules_Modules_Pages_Module_UserInterface_Tree : Global
                     isChild = nodePath.StartsWith(path);
                 }
 
-                if ((path == nodePath) && (!UIElementInfoProvider.AllowEditOnlyCurrentModule))
-                {
-                    cssClass = " highlighted";
-                }
+                cssClass = " highlighted";
 
                 if ((path.StartsWithCSafe(nodePath)))
                 {
@@ -299,13 +296,10 @@ public partial class CMSModules_Modules_Pages_Module_UserInterface_Tree : Global
 
         if (disable)
         {
-            if (UIElementInfoProvider.AllowEditOnlyCurrentModule)
-            {
-                cssClass = " disabled";
-            }
-
+            cssClass = " disabled";
+            
             // Expanded node = different module, but parent from module nodes
-            if (!isChild && ((defaultNode.Expanded != null) && defaultNode.Expanded.Value) && UIElementInfoProvider.AllowEditOnlyCurrentModule)
+            if (!isChild && ((defaultNode.Expanded != null) && defaultNode.Expanded.Value))
             {
                 cssClass += " highlighted";
             }

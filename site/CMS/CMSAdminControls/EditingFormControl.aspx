@@ -1,9 +1,7 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_EditingFormControl"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_EditingFormControl"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Title="Edit field value" Codebehind="EditingFormControl.aspx.cs" %>
+    Title="Edit field value"  Codebehind="EditingFormControl.aspx.cs" %>
 
-<%@ Register Src="~/CMSAdminControls/UI/Macros/MacroEditor.ascx" TagName="MacroEditor"
-    TagPrefix="cms" %>
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <script type="text/javascript">
         //<![CDATA[

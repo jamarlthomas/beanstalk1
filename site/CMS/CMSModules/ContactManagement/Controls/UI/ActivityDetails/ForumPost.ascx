@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="ForumPost.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_ActivityDetails_ForumPost" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="ForumPost.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_ActivityDetails_ForumPost" %>
 
 <div class="form-horizontal">
     <div class="form-group">

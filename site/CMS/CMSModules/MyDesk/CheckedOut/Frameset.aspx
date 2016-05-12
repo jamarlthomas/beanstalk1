@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Frameset.aspx.cs" Inherits="CMSModules_MyDesk_CheckedOut_Frameset" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Frameset.aspx.cs" Inherits="CMSModules_MyDesk_CheckedOut_Frameset" %>
 
 <%@ Register TagPrefix="cms" TagName="TabsFrameset" Src="~/CMSAdminControls/UI/PageElements/TabsFrameset.ascx" %>
 <!DOCTYPE html>

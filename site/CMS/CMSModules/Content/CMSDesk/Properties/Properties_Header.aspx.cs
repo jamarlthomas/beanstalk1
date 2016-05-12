@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
+using CMS.DocumentEngine;
 using CMS.SiteProvider;
 using CMS.UIControls;
 using CMS.Helpers;
-using CMS.Base;
 
 using TreeNode = CMS.DocumentEngine.TreeNode;
 
@@ -31,7 +28,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Properties_Header : C
         {
             string nodeName = node.GetDocumentName();
             // Get name for root document
-            if (node.NodeClassName.ToLowerCSafe() == "cms.root")
+            if (node.IsRoot())
             {
                 nodeName = SiteContext.CurrentSite.DisplayName;
             }

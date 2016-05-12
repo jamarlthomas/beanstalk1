@@ -301,16 +301,6 @@
             Report subscription information - used for sending reports by email.
             </summary>
         </member>
-        <member name="T:CMS.Reporting.ImportSpecialActions">
-            <summary>
-            Handles special actions during the import process.
-            </summary>
-        </member>
-        <member name="M:CMS.Reporting.ImportSpecialActions.Init">
-            <summary>
-            Initializes export handlers
-            </summary>
-        </member>
         <member name="T:CMS.Reporting.ReportImport">
             <summary>
             Handles special actions during the Report import process.
@@ -577,6 +567,26 @@
             The chart height
             </summary>
         </member>
+        <member name="T:CMS.Reporting.ReportingUsageDataSource">
+            <summary>
+            Provides statistical information about reporting module.
+            </summary>
+        </member>
+        <member name="M:CMS.Reporting.ReportingUsageDataSource.GetData">
+            <summary>
+            Get all module statistical data.
+            </summary>
+        </member>
+        <member name="M:CMS.Reporting.ReportingUsageDataSource.GetReportingSubscribersCount">
+            <summary>
+            Returns number of all users that are subscribed to at least one report.
+            </summary>
+        </member>
+        <member name="P:CMS.Reporting.ReportingUsageDataSource.Name">
+            <summary>
+            Get the data source name.
+            </summary>
+        </member>
         <member name="F:CMS.Reporting.ReportListInfo.OBJECT_TYPE">
             <summary>
             Object type
@@ -723,6 +733,23 @@
             If true values of one point are show as percent (all get total 100 %).
             </summary>
         </member>
+        <member name="M:CMS.Reporting.ReportGraph.CreateChart(CMS.Reporting.ReportGraphInfo,System.Data.DataSet,CMS.MacroEngine.MacroResolver,System.Boolean)">
+            <summary>
+            Creates chart.
+            </summary>
+            <param name="graphInfo">Chart's settings</param>
+            <param name="dsGraphData">Data set with chart data</param>
+            <param name="resolver">Helper for resolve macros</param>
+            <param name="returnByteData">If true code returns byte data</param>
+        </member>
+        <member name="M:CMS.Reporting.ReportGraph.CreateInvalidDataGraph(CMS.Reporting.ReportGraphInfo,System.String,System.Boolean)">
+            <summary>
+            If given data set is null return this graph.
+            </summary>
+            <param name="graphInfo">Graph info</param>
+            <param name="titleStr">Text to show</param>
+            <param name="returnByteData">Return byte array representing chart if true</param>
+        </member>
         <member name="M:CMS.Reporting.ReportGraph.ConvertAlignment(System.String)">
             <summary>
             Converts Alignment for axis titles to MS Chart enum.
@@ -768,21 +795,20 @@
             Convert gradient to ms chart enum.
             </summary>
             <param name="gradient">Settings gradient string</param>
-            <param name="prColor">Primary color (chart,serie,plot)</param>
-            <param name="secColor">Secondary color (chart,serie,plot)</param>        
+            <param name="prColor">Primary color (chart, serie, plot)</param>
+            <param name="secColor">Secondary color (chart, serie, plot)</param>        
         </member>
         <member name="M:CMS.Reporting.ReportGraph.SetDefaultGrid(System.Web.UI.DataVisualization.Charting.Axis,System.Boolean)">
             <summary>
             Sets grid color,style and width for axis.
-            </summary>        
-        </member>
-        <member name="M:CMS.Reporting.ReportGraph.CreateInvalidDataGraph(CMS.Reporting.ReportGraphInfo,System.String,System.Boolean)">
-            <summary>
-            If given data set is null return this graph.
             </summary>
-            <param name="graphInfo">Graph info</param>
-            <param name="titleStr">Text to show</param>
-            /// <param name="returnByteData">Return byte array representing chart if true</param>
+        </member>
+        <member name="M:CMS.Reporting.ReportGraph.SetAxisScale(System.Web.UI.DataVisualization.Charting.Axis,CMS.Reporting.ReportCustomData)">
+            <summary>
+            Sets scale and logarithm usage for set axis.
+            </summary>
+            <param name="axis">Char's axis</param>
+            <param name="settings">Settings from GUI</param>
         </member>
         <member name="M:CMS.Reporting.ReportGraph.SetSerie(System.Web.UI.DataVisualization.Charting.Series,System.Web.UI.DataVisualization.Charting.ChartArea,CMS.Reporting.ReportGraphInfo,System.Collections.Generic.IEnumerable{System.String})">
             <summary>
@@ -793,29 +819,12 @@
             <param name="graphInfo">Chart's data</param>
             <param name="columnMacros">Column name macro</param>
         </member>
-        <member name="M:CMS.Reporting.ReportGraph.SetAxisScale(System.Web.UI.DataVisualization.Charting.Axis,CMS.Reporting.ReportCustomData)">
+        <member name="M:CMS.Reporting.ReportGraph.SetChartDimensions(System.Web.UI.DataVisualization.Charting.Chart,CMS.Reporting.ReportGraphInfo)">
             <summary>
-            Sets scale and logarithm usage for set axis.
+            Sets width and height to the given <paramref name="chart"/> based on <paramref name="graphInfo"/> or default settings.
             </summary>
-            <param name="axis">Char's axis</param>
-            <param name="settings">Settings from GUI</param>
-        </member>
-        <member name="M:CMS.Reporting.ReportGraph.CreateChart(CMS.Reporting.ReportGraphInfo,System.Data.DataSet,CMS.MacroEngine.MacroResolver)">
-            <summary>
-            Creates chart.
-            </summary>
-            <param name="graphInfo">Chart's settings</param>
-            <param name="dsGraphData">Data set with chart data</param>
-            <param name="resolver">Helper for resolve macros</param>
-        </member>
-        <member name="M:CMS.Reporting.ReportGraph.CreateChart(CMS.Reporting.ReportGraphInfo,System.Data.DataSet,CMS.MacroEngine.MacroResolver,System.Boolean)">
-            <summary>
-            Creates chart.
-            </summary>
-            <param name="graphInfo">Chart's settings</param>
-            <param name="dsGraphData">Data set with chart data</param>
-            <param name="resolver">Helper for resolve macros</param>
-            <param name="returnByteData">If true code returns byte data</param>
+            <param name="chart">Chart object</param>
+            <param name="graphInfo">Report graph object</param>
         </member>
         <member name="M:CMS.Reporting.ReportGraph.mChart_Customize(System.Object,System.EventArgs)">
             <summary>
@@ -840,6 +849,11 @@
         <member name="T:CMS.Reporting.ReportingModule">
             <summary>
             Represents the Reporting module.
+            </summary>
+        </member>
+        <member name="F:CMS.Reporting.ReportingModule.REPORTING_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for reporting.
             </summary>
         </member>
         <member name="M:CMS.Reporting.ReportingModule.#ctor">
@@ -1300,12 +1314,6 @@
             </summary>
             <param name="reportGraphId">ReportGraph ID</param>
         </member>
-        <member name="M:CMS.Reporting.ReportGraphInfoProvider.DeleteGraphs(System.Int32)">
-            <summary>
-            Deletes all report graphs in relation to specified report.
-            </summary>
-            <param name="reportId">Report ID</param>
-        </member>
         <member name="M:CMS.Reporting.ReportGraphInfoProvider.GetGraphData(CMS.Reporting.ReportGraphInfo,CMS.DataEngine.QueryDataParameters)">
             <summary>
             Uses the query to retrieve the graph data from the database and returns the resulting table.
@@ -1731,12 +1739,6 @@
             </summary>
             <param name="reportTableId">ReportTable ID</param>
         </member>
-        <member name="M:CMS.Reporting.ReportTableInfoProvider.DeleteTables(System.Int32)">
-            <summary>
-            Deletes all reportTables in relation to specified report;.
-            </summary>
-            <param name="reportId">Report ID</param>
-        </member>
         <member name="M:CMS.Reporting.ReportTableInfoProvider.GetTableData(CMS.Reporting.ReportTableInfo,CMS.DataEngine.QueryDataParameters)">
             <summary>
             Uses the query to retrieve the table data from the database and returns the resulting table.
@@ -1943,12 +1945,6 @@
             </summary>
             <param name="reportValueId">ReportValue ID</param>
         </member>
-        <member name="M:CMS.Reporting.ReportValueInfoProvider.DeleteValues(System.Int32)">
-            <summary>
-            Deletes all reportValues in relation to specified report.
-            </summary>
-            <param name="reportId">Report ID</param>
-        </member>
         <member name="M:CMS.Reporting.ReportValueInfoProvider.GetValueData(CMS.Reporting.ReportValueInfo,CMS.DataEngine.QueryDataParameters)">
             <summary>
             Uses the query to retrieve the value data from the database and returns the resulting scalar value.
@@ -2038,7 +2034,7 @@
             It is in format [param1 name];[param1 value];[param2 name];[param2 value];....[paramN name];[paramN value].</param>
             <param name="replacement">Semicolon replacement in the parameter value</param>
             <param name="stringCulture">Culture of the parameters in the input string</param>
-            <param name="rowCulture">Culture of the the parameters in the output data row</param>
+            <param name="rowCulture">Culture of the parameters in the output data row</param>
         </member>
         <member name="M:CMS.Reporting.ReportHelper.GetDefaultReportConnectionString">
             <summary>
@@ -2047,13 +2043,13 @@
         </member>
         <member name="M:CMS.Reporting.ReportHelper.WriteParametersToXml(System.Data.DataRow)">
             <summary>
-            Converts report's parameters datarow to XML String representation
+            Converts report's parameters datarow to XML string representation.
             </summary>
             <param name="dr">Data row to convert</param>
         </member>
         <member name="M:CMS.Reporting.ReportHelper.ApplySubscriptionParameters(CMS.Reporting.ReportSubscriptionInfo,System.Data.DataRow,System.Boolean)">
             <summary>
-            Applies subscription parameters to default report datarow
+            Applies subscription parameters to default report datarow.
             </summary>
             <param name="rsi">Report subscription object</param>
             <param name="dr">Report's default parameters</param>
@@ -2676,6 +2672,18 @@
             Creates type and name string identification of subscription item
             </summary>
             <param name="rsi">Report subscription object</param>        
+        </member>
+        <member name="M:CMS.Reporting.ReportSubscriptionSender.ResolveMetaFiles(System.String,System.String)">
+            <summary>
+            Resolves metafiles in the given report HTML. Returns HTML with resolved metafiles
+            </summary>
+            <param name="reportName">Report name</param>
+            <param name="html">Report HTML</param>
+        </member>
+        <member name="P:CMS.Reporting.ReportSubscriptionSender.InlineImageRegex">
+            <summary>
+            Regex object for search inline images in report.
+            </summary>
         </member>
         <member name="P:CMS.Reporting.ReportSubscriptionSender.ReportPage">
             <summary>

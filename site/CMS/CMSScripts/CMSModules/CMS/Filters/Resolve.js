@@ -1,14 +1,14 @@
-﻿cmsdefine(['angular'], function (angular) {
+﻿cmsdefine([], function () {
 
-    return function (resourceStrings) {
+    return function (angular, resources) {
 
         var moduleName = 'CMS/Filters.Resolve',
             module = angular.module(moduleName, []);
 
         module.filter('resolve', function () {
-            return function (resourceStringKey) {
-                return resourceStrings[resourceStringKey] || resourceStringKey;
-            }
+            return function(key) {
+                return resources[key] || key;
+            };
         });
 
         return moduleName;

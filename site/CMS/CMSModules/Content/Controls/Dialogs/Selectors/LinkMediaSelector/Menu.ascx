@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSelector_Menu"
-    Codebehind="Menu.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSelector_Menu"
+     Codebehind="Menu.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/General/ViewModeMenu.ascx"
     TagName="ViewModeMenu" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/Selectors/LinkMediaSelector/NewFile.ascx" TagPrefix="cms" TagName="NewFile" %>

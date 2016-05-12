@@ -1,8 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Collections;
 using System.Web.UI.WebControls;
 using System.Security.Principal;
 
@@ -40,7 +39,6 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Variant_New : CMS
     private Dictionary<OptionCategoryInfo, List<SKUInfo>> mAllCategoriesOptions;
     private Dictionary<OptionCategoryInfo, List<SKUInfo>> mVariantCategoriesOptions;
 
-    private static readonly Hashtable mWarnings = new Hashtable();
     private bool mRegenerateVariants;
 
     private List<DataRow> mVariantsToGenerate;
@@ -121,29 +119,15 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Variant_New : CMS
             {
                 return (bool)ViewState["DisplayFilter"];
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
         set
         {
             ViewState["DisplayFilter"] = value;
         }
     }
-
-
-    /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
+    
 
     /// <summary>
     /// Current Warning.
@@ -152,11 +136,11 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Variant_New : CMS
     {
         get
         {
-            return ValidationHelper.GetString(mWarnings["DefineWarning_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Warning;
         }
         set
         {
-            mWarnings["DefineWarning_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Warning = value;
         }
     }
 
@@ -168,11 +152,11 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Variant_New : CMS
     {
         get
         {
-            return ValidationHelper.GetString(mWarnings["DefineError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mWarnings["DefineError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -226,7 +210,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Variant_New : CMS
         base.OnInit(e);
 
         // Assign save action to the save button in header actions
-        HeaderActions.AddAction(new SaveAction(Page));
+        HeaderActions.AddAction(new SaveAction());
         HeaderActions.ActionPerformed += HeaderActions_ActionPerformed;
 
         CategorySelector.ProductID = ProductID;
@@ -854,15 +838,12 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Variant_New : CMS
 
     private void ctlAsyncLog_OnCancel(object sender, EventArgs e)
     {
-        CurrentLog.Close();
         RedirectTo("error", GetString("com.variant.terminated"));
     }
 
 
     private void ctlAsyncLog_OnFinished(object sender, EventArgs e)
     {
-        CurrentLog.Close();
-
         if (!String.IsNullOrEmpty(CurrentWarning))
         {
             RedirectTo("warning", CurrentWarning);
@@ -889,7 +870,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Variant_New : CMS
     protected void AddLog(string newLog)
     {
         EnsureLog();
-        LogContext.AppendLine(newLog);
+        LogContext.AppendLine(newLog, "Variants");
     }
 
 
@@ -910,11 +891,9 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Variant_New : CMS
     {
         pnlLog.Visible = true;
         pnlContent.Visible = false;
+
         CurrentWarning = string.Empty;
         CurrentError = string.Empty;
-
-        CurrentLog.Close();
-        EnsureLog();
     }
 
 
@@ -934,8 +913,6 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Variant_New : CMS
     private void SetupAsyncControl()
     {
         ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
-        ctlAsyncLog.OnError += (s, e) => CurrentLog.Close();
-        ctlAsyncLog.OnRequestLog += (s, e) => { ctlAsyncLog.LogContext = CurrentLog; };
         ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
 
         ctlAsyncLog.MaxLogLines = 1000;

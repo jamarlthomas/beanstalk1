@@ -1,6 +1,8 @@
-using System;
+﻿using System;
+using System.Linq;
 
 using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.EventLog;
 using CMS.FormEngine;
 using CMS.Helpers;
@@ -15,6 +17,7 @@ public partial class CMSModules_DocumentTypes_Pages_Development_DocumentType_Edi
 
     private string oldClassName;
     private int oldInheritedID;
+    private int oldResourceID;
 
     #endregion
 
@@ -45,6 +48,7 @@ public partial class CMSModules_DocumentTypes_Pages_Development_DocumentType_Edi
         // Get original value
         oldClassName = DocumentType.ClassName;
         oldInheritedID = DocumentType.ClassInheritsFromClassID;
+        oldResourceID = DocumentType.ClassResourceID;
 
         // Bind events
         editElem.OnAfterSave += editElem_OnAfterSave;
@@ -109,10 +113,10 @@ public partial class CMSModules_DocumentTypes_Pages_Development_DocumentType_Edi
             ClassStructureInfo.Remove(DocumentType.ClassName, true);
         }
 
-        if (classNameChanged)
+        // Synchronize site bindings
+        if (oldResourceID != DocumentType.ClassResourceID)
         {
-            // Generate new default view if class name changed
-            SqlGenerator.GenerateDefaultView(DocumentType, null);
+            DocumentTypeHelper.SynchronizeSiteBindingsWithResource(DocumentType as DocumentTypeInfo);
         }
     }
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -9,6 +9,7 @@ using CMS.Helpers.Markup;
 using CMS.LicenseProvider;
 using CMS.Newsletters;
 using CMS.Base;
+using CMS.PortalEngine;
 using CMS.SiteProvider;
 using CMS.Membership;
 using CMS.UIControls;
@@ -22,8 +23,6 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
     #region "Variables"
 
     private const string SELECT = "SELECT";
-    private const string UNSUBSCRIBE = "UNSUBSCRIBE";
-    private const string SUBSCRIBE = "SUBSCRIBE";
     private const string APPROVE = "APPROVE";
     private const string REMOVE = "REMOVE";
     private const string BLOCK = "BLOCK";
@@ -32,6 +31,8 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
     private int mBounceLimit;
     private bool mBounceInfoAvailable;
     private NewsletterInfo mNewsletter;
+    private readonly ISubscriptionService mSubscriptionService = Service<ISubscriptionService>.Entry();
+
 
     /// <summary>
     /// Contact group selector.
@@ -83,13 +84,13 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
         string currentSiteName = SiteContext.CurrentSiteName;
         mBounceLimit = NewsletterHelper.BouncedEmailsLimit(currentSiteName);
         mBounceInfoAvailable = NewsletterHelper.MonitorBouncedEmails(currentSiteName);
-        
+
         // Check if newsletter enables double opt-in
         if (!mNewsletter.NewsletterEnableOptIn)
         {
             chkRequireOptIn.Visible = false;
         }
-        
+
         if (!RequestHelper.IsPostBack())
         {
             chkSendConfirmation.Checked = false;
@@ -99,6 +100,8 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
         UniGridSubscribers.WhereCondition = "NewsletterID = " + mNewsletter.NewsletterID;
         UniGridSubscribers.OnAction += UniGridSubscribers_OnAction;
         UniGridSubscribers.OnExternalDataBound += UniGridSubscribers_OnExternalDataBound;
+        UniGridSubscribers.ZeroRowsText = GetString("newsletter.subscribers.nodata");
+        UniGridSubscribers.FilteredZeroRowsText = GetString("newsletter.subscribers.noitemsfound");
 
         // Initialize selectors and mass actions
         SetupSelectors();
@@ -124,6 +127,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
         selectRole.CurrentSelector.SelectionMode = SelectionModeEnum.MultipleButton;
         selectRole.CurrentSelector.OnItemsSelected += RolesSelector_OnItemsSelected;
         selectRole.CurrentSelector.ReturnColumnName = "RoleID";
+        selectRole.CurrentSelector.ZeroRowsText = string.Format(GetString("newsletter.subscribers.addroles.nodata"), URLHelper.ResolveUrl(UIContextHelper.GetApplicationUrl("CMS.Roles", "Administration.Roles")));
         selectRole.ShowSiteFilter = false;
         selectRole.CurrentSelector.ResourcePrefix = "addroles";
         selectRole.IsLiveSite = false;
@@ -136,6 +140,8 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
         selectUser.UniSelector.ReturnColumnName = "UserID";
         selectUser.UniSelector.DisplayNameFormat = "{%FullName%} ({%Email%})";
         selectUser.UniSelector.AdditionalSearchColumns = "UserName, Email";
+        selectUser.UniSelector.ZeroRowsText = string.Format(GetString("newsletter.subscribers.addusers.nodata"), URLHelper.ResolveUrl(UIContextHelper.GetApplicationUrl("CMS.Users", "Administration.Users")));
+        selectUser.WhereCondition = new WhereCondition().WhereNotEmpty("Email").ToString(true);
         selectUser.ShowSiteFilter = false;
         selectUser.ResourcePrefix = "newsletteraddusers";
         selectUser.IsLiveSite = false;
@@ -144,6 +150,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
         selectSubscriber.UniSelector.SelectionMode = SelectionModeEnum.MultipleButton;
         selectSubscriber.UniSelector.OnItemsSelected += SubscriberSelector_OnItemsSelected;
         selectSubscriber.UniSelector.ReturnColumnName = "SubscriberID";
+        selectSubscriber.UniSelector.ZeroRowsText = string.Format(GetString("newsletter.subscribers.addsubscribers.nodata"), URLHelper.ResolveUrl(UIContextHelper.GetApplicationUrl(ModuleName.NEWSLETTER, "Newsletter", "?tabname=AllSubscribers")));
         selectSubscriber.ShowSiteFilter = false;
         selectSubscriber.IsLiveSite = false;
         selectSubscriber.UniSelector.RemoveMultipleCommas = true;
@@ -169,6 +176,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
                         // Bind an event handler on 'items selected' event
                         selector.OnItemsSelected += CGSelector_OnItemsSelected;
                         selector.ResourcePrefix = "contactgroupsubscriber";
+                        selector.ZeroRowsText = string.Format(GetString("newsletter.subscribers.addcontactgroups.nodata"), URLHelper.ResolveUrl(UIContextHelper.GetApplicationUrl(ModuleName.ONLINEMARKETING, "ContactGroups")));
                     }
                     // Insert selector to the header
                     plcSelectCG.Controls.Add(cgSelector);
@@ -198,6 +206,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
                         selector.ResourcePrefix = "contactsubscriber";
                         selector.DisplayNameFormat = "{%ContactFirstName%} {%ContactLastName%} ({%ContactEmail%})";
                         selector.AdditionalSearchColumns = "ContactFirstName,ContactMiddleName,ContactEmail";
+                        selector.ZeroRowsText = string.Format(GetString("newsletter.subscribers.addcontacts.nodata"), URLHelper.ResolveUrl(UIContextHelper.GetApplicationUrl(ModuleName.ONLINEMARKETING, "ContactsFrameset", "?tabname=contacts")));
                     }
                     // Insert selector to the header
                     plcSelectCG.Controls.Add(cSelector);
@@ -224,6 +233,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
                     personaSelector.DisplayNameFormat = "{%PersonaDisplayName%}";
                     personaSelector.ResourcePrefix = "personasubscriber";
                     personaSelector.IsLiveSite = false;
+                    personaSelector.ZeroRowsText = string.Format(GetString("newsletter.subscribers.addpersonas.nodata"), URLHelper.ResolveUrl(UIContextHelper.GetApplicationUrl(ModuleName.PERSONAS, "Personas")));
 
                     // Bind an event handler on 'items selected' event
                     personaSelector.OnItemsSelected += PersonaSelector_OnItemsSelected;
@@ -238,8 +248,6 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
         if (drpActions.Items.Count == 0)
         {
             drpActions.Items.Add(new ListItem(GetString("general.selectaction"), SELECT));
-            drpActions.Items.Add(new ListItem(GetString("newsletter.unsubscribelink"), UNSUBSCRIBE));
-            drpActions.Items.Add(new ListItem(GetString("newsletter.renewsubscription"), SUBSCRIBE));
             drpActions.Items.Add(new ListItem(GetString("newsletter.approvesubscription"), APPROVE));
             drpActions.Items.Add(new ListItem(GetString("newsletter.deletesubscription"), REMOVE));
         }
@@ -255,23 +263,6 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
 
         switch (sourceNameUpper)
         {
-            case SUBSCRIBE:
-            case UNSUBSCRIBE:
-            
-                var subscribeDataItem = ((DataRowView)((GridViewRow)parameter).DataItem);
-                bool subscriptionEnabled = ValidationHelper.GetBoolean(subscribeDataItem.Row["SubscriptionEnabled"], true);
-                
-                ((CMSGridActionButton)sender).Visible =
-                    ((sourceNameUpper == SUBSCRIBE) && !subscriptionEnabled) ||
-                    ((sourceNameUpper == UNSUBSCRIBE) && subscriptionEnabled);
-
-                var user = GetSubscriberUser(subscribeDataItem);
-                if (user != null)
-                {
-                    ((CMSGridActionButton)sender).Enabled = user.UserEnabled;
-                }
-                break;
-
             case BLOCK:
                 var gridViewRow = parameter as GridViewRow;
                 if (gridViewRow != null)
@@ -289,13 +280,9 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
                 break;
 
             case APPROVE:
-                bool approved = ValidationHelper.GetBoolean(((DataRowView)((GridViewRow)parameter).DataItem).Row["SubscriptionApproved"], false);
-                bool enabled = ValidationHelper.GetBoolean(((DataRowView)((GridViewRow)parameter).DataItem).Row["SubscriptionEnabled"], true);
-                if (approved || !enabled)
-                {
-                    CMSGridActionButton button = ((CMSGridActionButton)sender);
-                    button.Visible = false;
-                }
+                bool approved = ValidationHelper.GetBoolean(((DataRowView)((GridViewRow)parameter).DataItem).Row["SubscriptionApproved"], true);
+                CMSGridActionButton button = ((CMSGridActionButton)sender);
+                button.Visible = !approved;
                 break;
 
             case "EMAIL":
@@ -372,23 +359,13 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
     /// </summary>
     private object GetEmail(DataRowView rowView)
     {
-        // Try to get subscriber email
+        // Try to get subscriber email - classic or contact one
         string email = ValidationHelper.GetString(rowView.Row["SubscriberEmail"], string.Empty);
         if (string.IsNullOrEmpty(email))
         {
-            // Try to get user email
-            email = ValidationHelper.GetString(rowView.Row["Email"], string.Empty);
+            // Get user email
+            return ValidationHelper.GetString(rowView.Row["Email"], string.Empty);
         }
-
-        if (string.IsNullOrEmpty(email) && ValidationHelper.GetString(rowView.Row["SubscriberType"], string.Empty).EqualsCSafe(PredefinedObjectType.CONTACT))
-        {
-            // Add the field transformation control that handles the translation
-            var tr = new ObjectTransformation("om.contact", ValidationHelper.GetInteger(rowView.Row["SubscriberRelatedID"], 0));
-            tr.Transformation = "ContactEmail";
-
-            return tr;
-        }
-
         return email;
     }
 
@@ -398,31 +375,27 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
     /// </summary>
     private FormattedText GetSubscriptionStatus(DataRowView rowView)
     {
+        var subscriberID = DataHelper.GetIntValue(rowView.Row, "SubscriberID");
+
         var user = GetSubscriberUser(rowView);
         if (user != null && !user.UserEnabled)
         {
-            return new FormattedText(GetString("newsletterview.subscriberuserdisabled")).ColorRed();   
+            return new FormattedText(GetString("newsletterview.subscriberuserdisabled")).ColorRed();
         }
 
-        bool approved = ValidationHelper.GetBoolean(DataHelper.GetDataRowValue(rowView.Row, "SubscriptionApproved"), false);
-        bool enabled = ValidationHelper.GetBoolean(DataHelper.GetDataRowValue(rowView.Row, "SubscriptionEnabled"), true);
-
-        if (!enabled)
+        var subscribed = mSubscriptionService.IsSubscribed(subscriberID, mNewsletter.NewsletterID);
+        if (!subscribed)
         {
-            return new FormattedText(GetString("newsletterview.headerunsubscribed"))
-                .ColorRed();
+            return new FormattedText(GetString("newsletterview.headerunsubscribed")).ColorRed();
         }
 
+        bool approved = DataHelper.GetBoolValue(rowView.Row, "SubscriptionApproved", true);
         if (approved)
         {
-            return new FormattedText(GetString("general.approved"))
-                .ColorGreen();
+            return new FormattedText(GetString("general.approved")).ColorGreen();
         }
-        else
-        {
-            return new FormattedText(GetString("administration.users_header.myapproval"))
-                .ColorOrange();
-        }
+
+        return new FormattedText(GetString("administration.users_header.myapproval")).ColorOrange();
     }
 
 
@@ -566,8 +539,8 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
             int roleID = ValidationHelper.GetInteger(item, 0);
 
             // Get subscriber
-            SubscriberInfo sb = SubscriberInfoProvider.GetSubscriberInfo(RoleInfo.OBJECT_TYPE, roleID, siteId);
-            if (sb == null)
+            SubscriberInfo subscriber = SubscriberInfoProvider.GetSubscriberInfo(RoleInfo.OBJECT_TYPE, roleID, siteId);
+            if (subscriber == null)
             {
                 // Get role info and copy display name to new subscriber
                 RoleInfo ri = RoleInfoProvider.GetRoleInfo(roleID);
@@ -577,30 +550,27 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
                 }
 
                 // Create new subscriber of role type
-                sb = new SubscriberInfo();
-                sb.SubscriberFirstName = ri.DisplayName;
+                subscriber = new SubscriberInfo();
+                subscriber.SubscriberFirstName = ri.DisplayName;
                 // Full name consists of "role " and role display name
-                sb.SubscriberFullName = new SubscriberFullNameFormater().GetRoleSubscriberName(ri.DisplayName);
-                sb.SubscriberSiteID = siteId;
-                sb.SubscriberType = RoleInfo.OBJECT_TYPE;
-                sb.SubscriberRelatedID = roleID;
+                subscriber.SubscriberFullName = new SubscriberFullNameFormater().GetRoleSubscriberName(ri.DisplayName);
+                subscriber.SubscriberSiteID = siteId;
+                subscriber.SubscriberType = RoleInfo.OBJECT_TYPE;
+                subscriber.SubscriberRelatedID = roleID;
 
-                CheckPermissionsForSubscriber(sb);
+                CheckPermissionsForSubscriber(subscriber);
 
-                SubscriberInfoProvider.SetSubscriberInfo(sb);
+                SubscriberInfoProvider.SetSubscriberInfo(subscriber);
             }
 
-            // If subscriber exists and is not subscribed, subscribe him
-            if (!SubscriberInfoProvider.IsSubscribed(sb.SubscriberID, mNewsletter.NewsletterID))
+            if (!mSubscriptionService.IsSubscribed(subscriber.SubscriberID, mNewsletter.NewsletterID))
             {
-                try
+                mSubscriptionService.Subscribe(subscriber.SubscriberID, mNewsletter.NewsletterID, new SubscribeSettings()
                 {
-                    SubscriberInfoProvider.Subscribe(sb.SubscriberID, mNewsletter.NewsletterID, DateTime.Now, chkSendConfirmation.Checked, false);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    ShowError(ex.Message);
-                }
+                    SendConfirmationEmail = chkSendConfirmation.Checked,
+                    RequireOptIn = false,
+                    RemoveAlsoUnsubscriptionFromAllNewsletters = false,
+                });
             }
         }
 
@@ -636,8 +606,8 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
             int userID = ValidationHelper.GetInteger(item, 0);
 
             // Get subscriber
-            SubscriberInfo sb = SubscriberInfoProvider.GetSubscriberInfo(UserInfo.OBJECT_TYPE, userID, siteId);
-            if (sb == null)
+            SubscriberInfo subscriber = SubscriberInfoProvider.GetSubscriberInfo(UserInfo.OBJECT_TYPE, userID, siteId);
+            if (subscriber == null)
             {
                 // Get user info
                 UserInfo ui = UserInfoProvider.GetUserInfo(userID);
@@ -647,29 +617,26 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
                 }
 
                 // Create new subscriber of user type
-                sb = new SubscriberInfo();
-                sb.SubscriberFirstName = ui.FullName;
-                sb.SubscriberFullName = new SubscriberFullNameFormater().GetUserSubscriberName(ui.FullName);
-                sb.SubscriberSiteID = siteId;
-                sb.SubscriberType = UserInfo.OBJECT_TYPE;
-                sb.SubscriberRelatedID = userID;
+                subscriber = new SubscriberInfo();
+                subscriber.SubscriberFirstName = ui.FullName;
+                subscriber.SubscriberFullName = new SubscriberFullNameFormater().GetUserSubscriberName(ui.FullName);
+                subscriber.SubscriberSiteID = siteId;
+                subscriber.SubscriberType = UserInfo.OBJECT_TYPE;
+                subscriber.SubscriberRelatedID = userID;
 
-                CheckPermissionsForSubscriber(sb);
+                CheckPermissionsForSubscriber(subscriber);
 
-                SubscriberInfoProvider.SetSubscriberInfo(sb);
+                SubscriberInfoProvider.SetSubscriberInfo(subscriber);
             }
 
-            // If subscriber exists and is not subscribed, subscribe him
-            if (!SubscriberInfoProvider.IsSubscribed(sb.SubscriberID, mNewsletter.NewsletterID))
+            if (!mSubscriptionService.IsSubscribed(subscriber.SubscriberID, mNewsletter.NewsletterID))
             {
-                try
+                mSubscriptionService.Subscribe(subscriber.SubscriberID, mNewsletter.NewsletterID, new SubscribeSettings()
                 {
-                    SubscriberInfoProvider.Subscribe(sb.SubscriberID, mNewsletter.NewsletterID, DateTime.Now, chkSendConfirmation.Checked, chkRequireOptIn.Checked);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    ShowError(ex.Message);
-                }
+                    SendConfirmationEmail = chkSendConfirmation.Checked,
+                    RequireOptIn = chkRequireOptIn.Checked,
+                    RemoveAlsoUnsubscriptionFromAllNewsletters = false,
+                });
             }
         }
 
@@ -711,20 +678,21 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
             int subscriberID = ValidationHelper.GetInteger(item, 0);
 
             // Get subscriber
-            SubscriberInfo sb = SubscriberInfoProvider.GetSubscriberInfo(subscriberID);
+            SubscriberInfo subscriber = SubscriberInfoProvider.GetSubscriberInfo(subscriberID);
 
             // If subscriber exists and is not subscribed, subscribe him
-            if ((sb != null) && (!SubscriberInfoProvider.IsSubscribed(sb.SubscriberID, mNewsletter.NewsletterID)))
+            if (subscriber != null)
             {
-                CheckPermissionsForSubscriber(sb);
+                CheckPermissionsForSubscriber(subscriber);
 
-                try
+                if (!mSubscriptionService.IsSubscribed(subscriber.SubscriberID, mNewsletter.NewsletterID))
                 {
-                    SubscriberInfoProvider.Subscribe(sb.SubscriberID, mNewsletter.NewsletterID, DateTime.Now, chkSendConfirmation.Checked, chkRequireOptIn.Checked);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    ShowError(ex.Message);
+                    mSubscriptionService.Subscribe(subscriber.SubscriberID, mNewsletter.NewsletterID, new SubscribeSettings()
+                    {
+                        SendConfirmationEmail = chkSendConfirmation.Checked,
+                        RequireOptIn = chkRequireOptIn.Checked,
+                        RemoveAlsoUnsubscriptionFromAllNewsletters = false,
+                    });
                 }
             }
         }
@@ -767,8 +735,8 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
             int groupID = ValidationHelper.GetInteger(item, 0);
 
             // Try to get subscriber
-            SubscriberInfo sb = SubscriberInfoProvider.GetSubscriberInfo(PredefinedObjectType.CONTACTGROUP, groupID, siteId);
-            if (sb == null)
+            SubscriberInfo subscriber = SubscriberInfoProvider.GetSubscriberInfo(PredefinedObjectType.CONTACTGROUP, groupID, siteId);
+            if (subscriber == null)
             {
                 // Get contact group display name
                 string cgName = ModuleCommands.OnlineMarketingGetContactGroupName(groupID);
@@ -778,30 +746,27 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
                 }
 
                 // Create new subscriber of contact group type
-                sb = new SubscriberInfo();
-                sb.SubscriberFirstName = cgName;
+                subscriber = new SubscriberInfo();
+                subscriber.SubscriberFirstName = cgName;
                 // Full name consists of "contact group " and display name
-                sb.SubscriberFullName = new SubscriberFullNameFormater().GetContactGroupSubscriberName(cgName);
-                sb.SubscriberSiteID = siteId;
-                sb.SubscriberType = PredefinedObjectType.CONTACTGROUP;
-                sb.SubscriberRelatedID = groupID;
+                subscriber.SubscriberFullName = new SubscriberFullNameFormater().GetContactGroupSubscriberName(cgName);
+                subscriber.SubscriberSiteID = siteId;
+                subscriber.SubscriberType = PredefinedObjectType.CONTACTGROUP;
+                subscriber.SubscriberRelatedID = groupID;
 
-                CheckPermissionsForSubscriber(sb);
+                CheckPermissionsForSubscriber(subscriber);
 
-                SubscriberInfoProvider.SetSubscriberInfo(sb);
+                SubscriberInfoProvider.SetSubscriberInfo(subscriber);
             }
 
-            // If subscriber exists and is not subscribed, subscribe him
-            if (!SubscriberInfoProvider.IsSubscribed(sb.SubscriberID, mNewsletter.NewsletterID))
+            if (!mSubscriptionService.IsSubscribed(subscriber.SubscriberID, mNewsletter.NewsletterID))
             {
-                try
+                mSubscriptionService.Subscribe(subscriber.SubscriberID, mNewsletter.NewsletterID, new SubscribeSettings()
                 {
-                    SubscriberInfoProvider.Subscribe(sb.SubscriberID, mNewsletter.NewsletterID, DateTime.Now, chkSendConfirmation.Checked, false);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    ShowError(ex.Message);
-                }
+                    SendConfirmationEmail = chkSendConfirmation.Checked,
+                    RequireOptIn = false,
+                    RemoveAlsoUnsubscriptionFromAllNewsletters = false,
+                });
             }
         }
 
@@ -843,8 +808,8 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
             int contactID = ValidationHelper.GetInteger(item, 0);
 
             // Try to get subscriber
-            SubscriberInfo sb = SubscriberInfoProvider.GetSubscriberInfo(PredefinedObjectType.CONTACT, contactID, siteId);
-            if (sb == null)
+            SubscriberInfo subscriber = SubscriberInfoProvider.GetSubscriberInfo(PredefinedObjectType.CONTACT, contactID, siteId);
+            if (subscriber == null)
             {
                 // Get contact's info
                 DataSet contactData = ModuleCommands.OnlineMarketingGetContactForNewsletters(contactID, "ContactFirstName,ContactMiddleName,ContactLastName,ContactEmail");
@@ -859,31 +824,28 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
                 string email = ValidationHelper.GetString(contactData.Tables[0].Rows[0]["ContactEmail"], string.Empty);
 
                 // Create new subscriber of contact type
-                sb = new SubscriberInfo();
-                sb.SubscriberFirstName = firstName;
-                sb.SubscriberLastName = lastName;
-                sb.SubscriberEmail = email;
-                sb.SubscriberFullName = new SubscriberFullNameFormater().GetContactSubscriberName(firstName, middleName, lastName);
-                sb.SubscriberSiteID = siteId;
-                sb.SubscriberType = PredefinedObjectType.CONTACT;
-                sb.SubscriberRelatedID = contactID;
+                subscriber = new SubscriberInfo();
+                subscriber.SubscriberFirstName = firstName;
+                subscriber.SubscriberLastName = lastName;
+                subscriber.SubscriberEmail = email;
+                subscriber.SubscriberFullName = new SubscriberFullNameFormater().GetContactSubscriberName(firstName, middleName, lastName);
+                subscriber.SubscriberSiteID = siteId;
+                subscriber.SubscriberType = PredefinedObjectType.CONTACT;
+                subscriber.SubscriberRelatedID = contactID;
 
-                CheckPermissionsForSubscriber(sb);
+                CheckPermissionsForSubscriber(subscriber);
 
-                SubscriberInfoProvider.SetSubscriberInfo(sb);
+                SubscriberInfoProvider.SetSubscriberInfo(subscriber);
             }
 
-            // Subscribe the existing or created subscriber
-            if (!SubscriberInfoProvider.IsSubscribed(sb.SubscriberID, mNewsletter.NewsletterID))
+            if (!mSubscriptionService.IsSubscribed(subscriber.SubscriberID, mNewsletter.NewsletterID))
             {
-                try
+                mSubscriptionService.Subscribe(subscriber.SubscriberID, mNewsletter.NewsletterID, new SubscribeSettings()
                 {
-                    SubscriberInfoProvider.Subscribe(sb.SubscriberID, mNewsletter.NewsletterID, DateTime.Now, chkSendConfirmation.Checked, chkRequireOptIn.Checked);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    ShowError(ex.Message);
-                }
+                    SendConfirmationEmail = chkSendConfirmation.Checked,
+                    RequireOptIn = chkRequireOptIn.Checked,
+                    RemoveAlsoUnsubscriptionFromAllNewsletters = false,
+                });
             }
         }
 
@@ -954,17 +916,14 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
                 SubscriberInfoProvider.SetSubscriberInfo(subscriber);
             }
 
-            // If subscriber exists and is not subscribed, subscribe him
-            if (!SubscriberInfoProvider.IsSubscribed(subscriber.SubscriberID, mNewsletter.NewsletterID))
+            if (!mSubscriptionService.IsSubscribed(subscriber.SubscriberID, mNewsletter.NewsletterID))
             {
-                try
+                mSubscriptionService.Subscribe(subscriber.SubscriberID, mNewsletter.NewsletterID, new SubscribeSettings()
                 {
-                    SubscriberInfoProvider.Subscribe(subscriber.SubscriberID, mNewsletter.NewsletterID, DateTime.Now, chkSendConfirmation.Checked, false);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    ShowError(ex.Message);
-                }
+                    SendConfirmationEmail = chkSendConfirmation.Checked,
+                    RequireOptIn = false,
+                    RemoveAlsoUnsubscriptionFromAllNewsletters = false,
+                });
             }
         }
 
@@ -979,7 +938,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
     /// </summary>
     private static bool IsMultiSubscriber(DataRowView rowView)
     {
-        string type = ValidationHelper.GetString(DataHelper.GetDataRowValue(rowView.Row, "SubscriberType"), string.Empty);
+        string type = DataHelper.GetStringValue(rowView.Row, "SubscriberType");
         return (type.EqualsCSafe(RoleInfo.OBJECT_TYPE, true) || type.EqualsCSafe(PredefinedObjectType.CONTACTGROUP, true) || type.EqualsCSafe(PredefinedObjectType.PERSONA));
     }
 
@@ -989,7 +948,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
     /// </summary>
     private static int GetBouncesFromRow(DataRowView rowView)
     {
-        return ValidationHelper.GetInteger(DataHelper.GetDataRowValue(rowView.Row, "SubscriberBounces"), 0);
+        return DataHelper.GetIntValue(rowView.Row, "SubscriberBounces");
     }
 
 
@@ -1043,40 +1002,9 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
 
             switch (actionName.ToUpperInvariant())
             {
-                // Subscribe
-                case SUBSCRIBE:
-                    if (subscriberIsUserAndIsDisabled())
-                    {
-                        return;
-                    }
-
-                    var subscription = SubscriberNewsletterInfoProvider.GetSubscriberNewsletterInfo(subscriberId, mNewsletter.NewsletterID);
-                    if ((subscription == null) || subscription.SubscriptionEnabled)
-                    {
-                        return;
-                    }
-
-                    SubscriberInfoProvider.RenewSubscription(subscriberId, mNewsletter.NewsletterID, chkSendConfirmation.Checked);
-                    SubscriberNewsletterInfoProvider.SetApprovalStatus(subscriberId, mNewsletter.NewsletterID, !chkRequireOptIn.Checked);
-                    if (chkRequireOptIn.Checked)
-                    {
-                        IssueInfoProvider.SendDoubleOptInEmail(subscriberId, mNewsletter.NewsletterID);
-                    }
-                    break;
-
-                // Unsubscribe
-                case UNSUBSCRIBE:
-                    if (subscriberIsUserAndIsDisabled())
-                    {
-                        return;
-                    }
-
-                    SubscriberInfoProvider.Unsubscribe(subscriberId, mNewsletter.NewsletterID, chkSendConfirmation.Checked);
-                    break;
-
                 // Remove subscription
                 case REMOVE:
-                    SubscriberInfoProvider.DeleteSubscription(subscriberId, mNewsletter.NewsletterID, chkSendConfirmation.Checked);
+                    mSubscriptionService.RemoveSubscription(subscriberId, mNewsletter.NewsletterID, chkSendConfirmation.Checked);
                     break;
 
                 // Approve subscription
@@ -1085,7 +1013,6 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
                     {
                         return;
                     }
-
                     SubscriberNewsletterInfoProvider.ApproveSubscription(subscriberId, mNewsletter.NewsletterID);
                     break;
 
@@ -1100,9 +1027,9 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Subscri
                     break;
             }
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
-            LogAndShowError("Newsletter subscriber", "NEWSLETTERS", e);
+            LogAndShowError("Newsletter subscriber", "NEWSLETTERS", exception);
         }
     }
 

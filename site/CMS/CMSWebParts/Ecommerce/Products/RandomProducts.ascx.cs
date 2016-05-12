@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.DataEngine;
 using CMS.Ecommerce;
@@ -584,14 +584,14 @@ public partial class CMSWebParts_Ecommerce_Products_RandomProducts : CMSAbstract
         where.WhereNull("SKUOptionCategoryID").And().WhereTrue("SKUEnabled");
 
         // Get products only with specified public status
-        if (ProductPublicStatusName != allRecords)
+        if (!string.IsNullOrEmpty(ProductPublicStatusName) && (ProductPublicStatusName != allRecords))
         {
             int pStatusSiteID = ECommerceSettings.UseGlobalPublicStatus(SiteName) ? 0 : SiteInfoProvider.GetSiteID(SiteName);
             where.WhereEquals("SKUPublicStatusID", new IDQuery<PublicStatusInfo>("PublicStatusID").Where("ISNULL(PublicStatusSiteID, 0) = " + pStatusSiteID).And().WhereEquals("PublicStatusName", ProductPublicStatusName).TopN(1));
         }
 
         // Get products only with specified internal status
-        if (ProductInternalStatusName != allRecords)
+        if (!string.IsNullOrEmpty(ProductInternalStatusName) && (ProductInternalStatusName != allRecords))
         {
             int iStatusSiteID = ECommerceSettings.UseGlobalInternalStatus(SiteName) ? 0 : SiteInfoProvider.GetSiteID(SiteName);
             where.WhereEquals("SKUInternalStatusID", new IDQuery<InternalStatusInfo>("InternalStatusID").Where("ISNULL(InternalStatusSiteID, 0) = " + iStatusSiteID).And().WhereEquals("InternalStatusName", ProductInternalStatusName).TopN(1));

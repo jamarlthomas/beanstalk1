@@ -1,11 +1,13 @@
-using System;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 
+using CMS;
 using CMS.Base;
 using CMS.Controls;
 using CMS.DataEngine;
@@ -343,7 +345,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
         set
         {
             mOriginalFormDefinition = value;
-            
+
             FormDefinitionChanged();
         }
     }
@@ -1175,7 +1177,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
         if (UseCustomHeaderActions)
         {
             // Add save action
-            btnSave = new SaveAction(Page);
+            btnSave = new SaveAction();
             btnSave.Enabled = Enabled;
             HeaderActions.AddAction(btnSave);
             HeaderActions.AddAction(btnReset);
@@ -1231,7 +1233,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
         if (btnSave == null)
         {
             // Create new action
-            btnSave = new SaveAction(Page);
+            btnSave = new SaveAction();
             btnSave.Enabled = Enabled;
 
             HeaderActions.InsertAction(-2, btnSave);
@@ -1495,7 +1497,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
 
         InitUIContext(FormInfo);
 
-        return (!isError);
+        return true;
     }
 
 
@@ -1517,7 +1519,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
             if (itemList != null)
             {
                 MacroResolver resolver = MacroResolverStorage.GetRegisteredResolver(ResolverName);
-                foreach (IField item in itemList)
+                foreach (IDataDefinitionItem item in itemList)
                 {
                     string itemDisplayName = null;
                     string itemCodeName = null;
@@ -1712,7 +1714,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
                     btnDeleteItem.Visible = false;
                     disableSaveAction = true;
 
-                    ShowInformation(String.Format(GetString("DocumentType.FieldIsInherited"), parentCi.ClassDisplayName));
+                    ShowInformation(String.Format(GetString("DocumentType.FieldIsInherited"), ResHelper.LocalizeString(parentCi.ClassDisplayName)));
                 }
             }
         }
@@ -2011,7 +2013,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
             document.LoadXml(diff);
 
             // Select proper node
-            XmlNode element = document.SelectSingleNode((SelectedItemType == FieldEditorSelectedItemEnum.Field ? "//field[@column='" : "//category[@name='") + SelectedItemName + "']");
+            var element = (XmlElement)document.SelectSingleNode((SelectedItemType == FieldEditorSelectedItemEnum.Field ? "//field[@column='" : "//category[@name='") + SelectedItemName + "']");
             if (element != null)
             {
                 // Check if the element is in the original definition
@@ -2024,18 +2026,18 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
                     element.RemoveAll();
                     element.Attributes.RemoveAll();
 
-                    // Append 'column' or 'name' attribute to node
-                    XmlAttribute columnAttr = document.CreateAttribute(SelectedItemType == FieldEditorSelectedItemEnum.Field ? "column" : "name");
-                    columnAttr.Value = SelectedItemName;
-                    element.Attributes.Append(columnAttr);
+                    // Add new attributes
+                    var attributes = new Dictionary<string, string>();
+
+                    var colName = (SelectedItemType == FieldEditorSelectedItemEnum.Field ? "column" : "name");
+                    attributes[colName] = SelectedItemName;
 
                     if (order >= 0)
                     {
-                        // Append 'order' attribute
-                        XmlAttribute orderAttr = document.CreateAttribute("order");
-                        orderAttr.Value = order.ToString();
-                        element.Attributes.Append(orderAttr);
+                        attributes["order"] = order.ToString();
                     }
+
+                    element.AddAttributes(attributes);
                 }
                 else
                 {
@@ -2150,7 +2152,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
                     {
                         dci.ClassFormDefinition = FormDefinition;
 
-                        using (CMSActionContext context = new CMSActionContext())
+                        using (CMSActionContext context = new CMSActionContext { CreateVersion = !IsWizard })
                         {
                             // Do not log synchronization for BizForm
                             if (mMode == FieldEditorModeEnum.BizFormDefinition)
@@ -2427,7 +2429,6 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
             FormCategoryInfo fciUpdated = null;
 
             // For some types of forms initialize table manager
-            string tableName = null;
             TableManager tm = null;
 
             if (IsMainForm)
@@ -2444,9 +2445,6 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
                             dci = DataClassInfoProvider.GetDataClassInfo(ClassName);
                             if (dci != null)
                             {
-                                // Set table name 
-                                tableName = dci.ClassTableName;
-
                                 tm = new TableManager(dci.ClassConnectionString);
                                 tr.BeginTransaction();
                             }
@@ -2470,83 +2468,115 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
 
             string error = null;
 
-            switch (SelectedItemType)
+            AbstractAdvancedHandler h = null;
+
+            try
             {
-                case FieldEditorSelectedItemEnum.Field:
-                    // Fill FormFieldInfo structure with original data
-                    ffi = FormInfo.GetFormField(SelectedItemName);
+                switch (SelectedItemType)
+                {
+                    case FieldEditorSelectedItemEnum.Field:
+                        // Fill FormFieldInfo structure with original data
+                        ffi = FormInfo.GetFormField(SelectedItemName);
 
-                    // Fill FormFieldInfo structure with updated form data
-                    ffiUpdated = FillFormFieldInfoStructure(ffi);
+                        // Fill FormFieldInfo structure with updated form data
+                        ffiUpdated = FillFormFieldInfoStructure(ffi);
 
-                    try
-                    {
-                        error = UpdateFormField(tm, tableName, ffiUpdated);
-                    }
-                    catch (Exception ex)
-                    {
-                        EventLogProvider.LogException("FieldEditor", "SAVE", ex);
-
-                        // User friendly message for not null setting of column
-                        if (!IsNewItemEdited && ffi.AllowEmpty && !ffiUpdated.AllowEmpty)
+                        if (IsNewItemEdited)
                         {
-                            ShowError(GetString("FieldEditor.ColumnNotAcceptNull"), ex.Message);
+                            // Raise event for field addition
+                            h = DataDefinitionItemEvents.AddItem.StartEvent(dci, ffiUpdated);
                         }
                         else
                         {
-                            ShowError(GetString("general.saveerror"), ex.Message);
+                            // Raise event for field change
+                            h = DataDefinitionItemEvents.ChangeItem.StartEvent(dci, ffi, ffiUpdated);
                         }
-                        return false;
-                    }
-                    break;
 
-                case FieldEditorSelectedItemEnum.Category:
-                    // Fill FormCategoryInfo structure with original data
-                    fci = FormInfo.GetFormCategory(SelectedItemName);
+                        try
+                        {
+                            error = UpdateFormField(dci, ffiUpdated, tm);
+                        }
+                        catch (Exception ex)
+                        {
+                            EventLogProvider.LogException("FieldEditor", "SAVE", ex);
 
-                    // Initialize new FormCategoryInfo structure
-                    fciUpdated = new FormCategoryInfo();
+                            // User friendly message for not null setting of column
+                            if (!IsNewItemEdited && ffi.AllowEmpty && !ffiUpdated.AllowEmpty)
+                            {
+                                ShowError(GetString("FieldEditor.ColumnNotAcceptNull"), ex.Message);
+                            }
+                            else
+                            {
+                                ShowError(GetString("general.saveerror"), ex.Message);
+                            }
+                            return false;
+                        }
+                        break;
 
-                    error = UpdateFormCategory(fciUpdated);
-                    break;
-            }
+                    case FieldEditorSelectedItemEnum.Category:
+                        // Fill FormCategoryInfo structure with original data
+                        fci = FormInfo.GetFormCategory(SelectedItemName);
 
-            if (!String.IsNullOrEmpty(error))
-            {
-                ShowError(error);
-                return false;
-            }
+                        // Initialize new FormCategoryInfo structure
+                        fciUpdated = new FormCategoryInfo();
 
-            // Make changes in database
-            if (SelectedItemType != 0)
-            {
-                // Get updated definition
-                FormDefinition = FormInfo.GetXmlDefinition();
-
-                if (IsMainForm)
-                {
-                    switch (mMode)
-                    {
-                        case FieldEditorModeEnum.WebPartProperties:
-                            error = UpdateWebPartProperties();
-                            break;
-
-                        case FieldEditorModeEnum.ClassFormDefinition:
-                        case FieldEditorModeEnum.BizFormDefinition:
-                        case FieldEditorModeEnum.SystemTable:
-                        case FieldEditorModeEnum.CustomTable:
-                            error = UpdateDependencies(dci, tm, ffiUpdated, out updateInherited);
-                            break;
-
-                    }
+                        error = UpdateFormCategory(fciUpdated);
+                        break;
                 }
 
                 if (!String.IsNullOrEmpty(error))
                 {
-                    ShowError("[FieldEditor.SaveSelectedField()]: " + error);
+                    ShowError(error);
                     return false;
                 }
+
+                // Make changes in database
+                if (SelectedItemType != 0)
+                {
+                    // Get updated definition
+                    FormDefinition = FormInfo.GetXmlDefinition();
+
+                    if (IsMainForm)
+                    {
+                        switch (mMode)
+                        {
+                            case FieldEditorModeEnum.WebPartProperties:
+                                error = UpdateWebPartProperties();
+                                break;
+
+                            case FieldEditorModeEnum.ClassFormDefinition:
+                            case FieldEditorModeEnum.BizFormDefinition:
+                            case FieldEditorModeEnum.SystemTable:
+                            case FieldEditorModeEnum.CustomTable:
+                                error = UpdateDependencies(dci, tm, ffiUpdated, out updateInherited);
+                                break;
+
+                        }
+                    }
+
+                    if (!String.IsNullOrEmpty(error))
+                    {
+                        ShowError("[FieldEditor.SaveSelectedField()]: " + error);
+                        if (dci != null)
+                        {
+                            // Transaction will be rolled back, remove the modified data class info from cache
+                            dci.DeleteFromHashtables();
+                        }
+                        return false;
+                    }
+                }
+
+                // Finish the possibly open event
+                h.FinishEvent();
             }
+            finally
+            {
+                if (h != null)
+                {
+                    h.Dispose();
+                }
+            }
+
 
             // All done and new item, fire OnFieldCreated  event
             RaiseOnFieldCreated(ffiUpdated);
@@ -2922,21 +2952,12 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
                                         case FieldEditorModeEnum.SystemTable:
                                         case FieldEditorModeEnum.CustomTable:
                                             {
-                                                // If document type is edited AND field that should be removed is FILE
-                                                if (IsDocumentType && (mMode == FieldEditorModeEnum.ClassFormDefinition) && !String.IsNullOrEmpty(ClassName) && (ffiSelected.DataType == FieldDataType.File))
-                                                {
-                                                    DocumentHelper.DeleteDocumentAttachments(ClassName, ffiSelected.Name, null);
-                                                }
-
-                                                // If bizform is edited AND field that should be removed is FILE
-                                                if ((mMode == FieldEditorModeEnum.BizFormDefinition) && !String.IsNullOrEmpty(ClassName) && (ffiSelected.FieldType == FormFieldControlTypeEnum.UploadControl))
-                                                {
-                                                    BizFormInfoProvider.DeleteBizFormFiles(ClassName, ffiSelected.Name, SiteContext.CurrentSiteID);
-                                                }
-
                                                 // Update xml definition
                                                 if (dci != null)
                                                 {
+                                                    // Raise event for field removal before definition update
+                                                    DataDefinitionItemEvents.RemoveItem.StartEvent(dci, ffiSelected);
+
                                                     dci.ClassFormDefinition = FormDefinition;
 
                                                     if (!ffiSelected.IsDummyField)
@@ -2974,7 +2995,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
                                                     // Update changes in database
                                                     try
                                                     {
-                                                        using (CMSActionContext context = new CMSActionContext())
+                                                        using (CMSActionContext context = new CMSActionContext{ CreateVersion = !IsWizard })
                                                         {
                                                             // Do not log synchronization for BizForm
                                                             if (mMode == FieldEditorModeEnum.BizFormDefinition)
@@ -2991,7 +3012,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
                                                             updateInherited = true;
 
                                                             // Update alternative forms of form class
-                                                            RemoveFieldFromAlternativeForms(dci);
+                                                            FormHelper.RemoveFieldFromAlternativeForms(dci, SelectedItemName, lstAttributes.SelectedIndex);
                                                         }
                                                     }
                                                     catch (Exception ex)
@@ -3000,12 +3021,15 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
                                                         errorMessage = ex.Message;
                                                     }
 
+                                                    // If bizform is edited AND field that should be removed is FILE
+                                                    if ((mMode == FieldEditorModeEnum.BizFormDefinition) && !String.IsNullOrEmpty(ClassName) && (ffiSelected.FieldType == FormFieldControlTypeEnum.UploadControl))
+                                                    {
+                                                        BizFormInfoProvider.DeleteBizFormFiles(ClassName, ffiSelected.Name, SiteContext.CurrentSiteID);
+                                                    }
+
                                                     // Refresh views and queries only if changes to DB were made
                                                     if (!ffiSelected.External)
                                                     {
-                                                        // Generate default view
-                                                        SqlGenerator.GenerateDefaultView(dci, mMode == FieldEditorModeEnum.BizFormDefinition ? SiteContext.CurrentSiteName : null);
-
                                                         QueryInfoProvider.ClearDefaultQueries(dci, true, true);
 
                                                         // Updates custom views
@@ -3054,7 +3078,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
                                             // Update changes in database
                                             try
                                             {
-                                                using (CMSActionContext context = new CMSActionContext())
+                                                using (CMSActionContext context = new CMSActionContext { CreateVersion = !IsWizard })
                                                 {
                                                     // Do not log synchronization for BizForm
                                                     if (mMode == FieldEditorModeEnum.BizFormDefinition)
@@ -3067,7 +3091,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
 
                                                     updateInherited = true;
 
-                                                    RemoveFieldFromAlternativeForms(dci);
+                                                    FormHelper.RemoveFieldFromAlternativeForms(dci, SelectedItemName, lstAttributes.SelectedIndex);
                                                 }
                                             }
                                             catch (Exception ex)
@@ -3170,7 +3194,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
 
                 try
                 {
-                    using (CMSActionContext context = new CMSActionContext())
+                    using (CMSActionContext context = new CMSActionContext { CreateVersion = !IsWizard })
                     {
                         // Do not log synchronization for BizForm
                         if (mMode == FieldEditorModeEnum.BizFormDefinition)
@@ -3398,18 +3422,12 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
     {
         var mode = Mode;
 
-        if (((mode == FieldEditorModeEnum.BizFormDefinition) || (mode == FieldEditorModeEnum.SystemTable) ||
-             (mode == FieldEditorModeEnum.AlternativeBizFormDefinition) || (mode == FieldEditorModeEnum.AlternativeSystemTable))
-            && (databaseConfiguration.AttributeType == FieldDataType.File))
+        if ((databaseConfiguration.AttributeType == FieldDataType.File) && ((mode == FieldEditorModeEnum.BizFormDefinition) || (mode == FieldEditorModeEnum.SystemTable)
+             || (mode == FieldEditorModeEnum.AlternativeBizFormDefinition) || (mode == FieldEditorModeEnum.AlternativeSystemTable)))
         {
             // Allow to save <guid>.<extension>
             formFieldInfo.DataType = FieldDataType.Text;
             formFieldInfo.Size = 500;
-        }
-        else if (databaseConfiguration.AttributeType == FieldDataType.DocAttachments)
-        {
-            formFieldInfo.DataType = FieldDataType.DocAttachments;
-            formFieldInfo.Size = 200;
         }
         else
         {
@@ -3444,7 +3462,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
     /// Adds new form item (field or category) to the form definition.
     /// </summary>
     /// <param name="formItem">Form item to add</param>
-    protected void InsertFormItem(IField formItem)
+    protected void InsertFormItem(IDataDefinitionItem formItem)
     {
         // Set new item prefix
         string newItemPreffix = (formItem is FormFieldInfo) ? newFieldPreffix : newCategPreffix;
@@ -3517,7 +3535,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
         FormControlsResolvers.ClearResolvers(true);
 
         // Invalidate objects based on object type
-        ObjectTypeInfo ti = ObjectTypeManager.GetRegisteredTypeInfo(ClassName);
+        ObjectTypeInfo ti = ObjectTypeManager.GetTypeInfo(ClassName);
         if ((ti != null) && (ti.ProviderType != null))
         {
             ti.InvalidateColumnNames();
@@ -3534,7 +3552,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
     }
 
 
-    private void CreateDatabaseColumn(TableManager tm, string tableName, FormFieldInfo updatedFieldInfo)
+    private void CreateDatabaseColumn(DataClassInfo classInfo, FormFieldInfo updatedFieldInfo, TableManager tm)
     {
         updatedFieldInfo.PrimaryKey = IsPrimaryField;
 
@@ -3556,7 +3574,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
                         // Set column type and size
                         string newColumnType = DataTypeManager.GetSqlType(updatedFieldInfo.DataType, updatedFieldInfo.Size, updatedFieldInfo.Precision);
 
-                        tm.AddTableColumn(tableName, updatedFieldInfo.Name, newColumnType, updatedFieldInfo.AllowEmpty, newDefaultValue, !DevelopmentMode);
+                        tm.AddTableColumn(classInfo.ClassTableName, updatedFieldInfo.Name, newColumnType, updatedFieldInfo.AllowEmpty, newDefaultValue, !DevelopmentMode);
 
                         // Recreate the table PK constraint
                         if (IsPrimaryField)
@@ -3569,7 +3587,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
 
                             var primaryKeys = pkFields.Select(pk => String.Format("[{0}]", pk.Name));
 
-                            tm.RecreatePKConstraint(tableName, primaryKeys.ToArray());
+                            tm.RecreatePKConstraint(classInfo.ClassTableName, primaryKeys.ToArray());
                         }
                     }
                     break;
@@ -3614,7 +3632,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
     }
 
 
-    private string UpdateFormField(TableManager tm, string tableName, FormFieldInfo updatedFieldInfo)
+    private string UpdateFormField(DataClassInfo classInfo, FormFieldInfo updatedFieldInfo, TableManager tm)
     {
         // Validate whether column with this name already exists
         string errorMessage = ValidateFieldColumn(updatedFieldInfo);
@@ -3626,12 +3644,12 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
         if (IsNewItemEdited)
         {
             // Create the DB column
-            CreateDatabaseColumn(tm, tableName, updatedFieldInfo);
+            CreateDatabaseColumn(classInfo, updatedFieldInfo, tm);
         }
         else
         {
             // Update the DB column
-            errorMessage = UpdateDatabaseColumn(tm, tableName, updatedFieldInfo);
+            errorMessage = UpdateDatabaseColumn(classInfo, updatedFieldInfo, tm);
 
             if (!String.IsNullOrEmpty(errorMessage))
             {
@@ -3648,7 +3666,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
             if (IsMainForm)
             {
                 DataClassInfo dci = DataClassInfoProvider.GetDataClassInfo(ClassName);
-                HideFieldInAlternativeForms(updatedFieldInfo, dci);
+                FormHelper.HideFieldInAlternativeForms(updatedFieldInfo, dci);
             }
         }
         else
@@ -3677,7 +3695,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
             // Check column name duplicity in JOINed tables
             if (!IsSystemFieldSelected)
             {
-                // Check whether current column already exists in 'View_CMS_Tree_Joined'
+                // Check whether current column already exists in main document view
                 if (IsDocumentType && DocumentHelper.ColumnExistsInDocumentView(fieldInfo.Name))
                 {
                     return GetString("TemplateDesigner.ErrorExistingColumnInJoinedTable");
@@ -3722,8 +3740,12 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
             // Update changes in DB
             try
             {
-                // Save the data class
-                DataClassInfoProvider.SetDataClassInfo(dci);
+                // Do not create a new version if field editor is in the wizard
+                using (new CMSActionContext { CreateVersion = !IsWizard })
+                {
+                    // Save the data class
+                    DataClassInfoProvider.SetDataClassInfo(dci);
+                }
 
                 updateInheritedForms = true;
             }
@@ -3735,9 +3757,6 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
 
             if ((SelectedItemType == FieldEditorSelectedItemEnum.Field) && !updatedFieldInfo.IsDummyField)
             {
-                // Generate default view
-                SqlGenerator.GenerateDefaultView(dci, mMode == FieldEditorModeEnum.BizFormDefinition ? SiteContext.CurrentSiteName : null);
-
                 QueryInfoProvider.ClearDefaultQueries(dci, true, true);
             }
 
@@ -3837,7 +3856,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
     }
 
 
-    private string UpdateDatabaseColumn(TableManager tm, string tableName, FormFieldInfo updatedFieldInfo)
+    private string UpdateDatabaseColumn(DataClassInfo classInfo, FormFieldInfo updatedFieldInfo, TableManager tm)
     {
         // Get info whether it is a primary key or system field
         updatedFieldInfo.PrimaryKey = ffi.PrimaryKey;
@@ -3860,7 +3879,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
                     case FieldEditorModeEnum.BizFormDefinition:
                     case FieldEditorModeEnum.SystemTable:
                     case FieldEditorModeEnum.CustomTable:
-                        UpdateDatabaseColumn(ffi, updatedFieldInfo, tm, tableName);
+                        UpdateDatabaseColumn(classInfo, ffi, updatedFieldInfo, tm, classInfo.ClassTableName);
                         break;
 
                 }
@@ -3875,20 +3894,6 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
     }
 
 
-    private void RemoveFieldFromAlternativeForms(DataClassInfo formClassInfo)
-    {
-        string where = GetAlternativeFormsWhere(formClassInfo);
-
-        // Update alternative forms
-        var altforms = AlternativeFormInfoProvider.GetAlternativeForms(where, null);
-        foreach (AlternativeFormInfo afi in altforms)
-        {
-            afi.FormDefinition = FormHelper.RemoveFieldFromAlternativeDefinition(afi.FormDefinition, SelectedItemName, lstAttributes.SelectedIndex);
-            AlternativeFormInfoProvider.SetAlternativeFormInfo(afi);
-        }
-    }
-
-
     private string RefreshViews(TableManager tm, DataClassInfo dci)
     {
         string errorMessage = null;
@@ -3896,11 +3901,6 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
         try
         {
             tm.RefreshCustomViews(dci.ClassTableName);
-
-            if (dci.ClassName.EqualsCSafe("cms.document", StringComparison.InvariantCultureIgnoreCase) || dci.ClassName.EqualsCSafe("cms.tree", StringComparison.InvariantCultureIgnoreCase))
-            {
-                tm.RefreshDocumentViews();
-            }
         }
         catch (Exception ex)
         {
@@ -3918,7 +3918,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
     /// <param name="newField">Newly created field</param>
     protected void RaiseOnFieldCreated(FormFieldInfo newField)
     {
-        if (IsNewItemEdited && (newField != null) && OnFieldCreated != null)
+        if (IsNewItemEdited && (newField != null) && (OnFieldCreated != null))
         {
             OnFieldCreated(this, newField);
         }
@@ -4038,11 +4038,10 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
         string tableName = databaseConfiguration.GroupValue;
         string columnName = databaseConfiguration.SystemValue;
 
-        if (SelectedItemName.ToLowerCSafe() != columnName.ToLowerCSafe())
+        if (!SelectedItemName.EqualsCSafe(columnName, true))
         {
-            DataClassInfo dci = DataClassInfoProvider.GetDataClassInfo(ClassName);
-
             // Get field info from database column
+            var dci = DataClassInfoProvider.GetDataClassInfo(ClassName);
             ffi = FormHelper.GetFormFieldInfo(dci, tableName, columnName);
         }
         else

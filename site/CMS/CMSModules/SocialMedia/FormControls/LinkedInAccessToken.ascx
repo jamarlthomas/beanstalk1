@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SocialMedia_FormControls_LinkedInAccessToken" Codebehind="LinkedInAccessToken.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SocialMedia_FormControls_LinkedInAccessToken"  Codebehind="LinkedInAccessToken.ascx.cs" %>
 
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">
     <ContentTemplate>

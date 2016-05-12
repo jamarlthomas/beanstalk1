@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Dialogs_General_DialogFooter"
-    Codebehind="DialogFooter.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Dialogs_General_DialogFooter"
+     Codebehind="DialogFooter.ascx.cs" %>
 <asp:HiddenField ID="hdnSelected" runat="server" />
 <asp:HiddenField ID="hdnAnchors" runat="server" />
 <asp:HiddenField ID="hdnIds" runat="server" />

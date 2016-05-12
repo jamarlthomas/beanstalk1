@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Polls_Controls_PollSecurity" Codebehind="PollSecurity.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Polls_Controls_PollSecurity"  Codebehind="PollSecurity.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/Membership/FormControls/Roles/securityAddRoles.ascx" TagName="AddRoles" TagPrefix="cms" %>
 

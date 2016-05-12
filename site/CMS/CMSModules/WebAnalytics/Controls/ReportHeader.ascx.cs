@@ -15,11 +15,12 @@ public partial class CMSModules_WebAnalytics_Controls_ReportHeader : CMSAdminCon
 {
     #region "Variables"
 
-    private bool mManageData = true;
     private string mPrintPageURL = "~/CMSModules/Reporting/Tools/Analytics_Print.aspx";
     private HitsIntervalEnum mSelectedInterval = HitsIntervalEnum.None;
     private string mPanelCssClass = "cms-edit-menu";
     private bool mPrintEnabled = true;
+    private HeaderAction mPrintAction;
+    private HeaderAction mSubscriptionAction;
 
     #endregion
 
@@ -91,32 +92,6 @@ public partial class CMSModules_WebAnalytics_Controls_ReportHeader : CMSAdminCon
 
 
     /// <summary>
-    /// Set/get codename (for parameter datacodename) which is passed to manage analytics data dialog.
-    /// </summary>
-    public String ManageDataCodeName
-    {
-        get;
-        set;
-    }
-
-
-    /// <summary>
-    /// If true, button for manage analytics data is displayed.
-    /// </summary>
-    public bool DisplayManageData
-    {
-        get
-        {
-            return mManageData;
-        }
-        set
-        {
-            mManageData = value;
-        }
-    }
-
-
-    /// <summary>
     /// Gets or sets the print page URL for the print action.
     /// </summary>
     public string PrintPageURL
@@ -161,20 +136,59 @@ public partial class CMSModules_WebAnalytics_Controls_ReportHeader : CMSAdminCon
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        headerActions.ActionPerformed += HeaderActions_ActionPerformed;
+        headerActions.ActionPerformed += OnActionPerformed;
+        headerActions.PanelCssClass = PanelCssClass;
+
+        // Create header actions
+        SaveAction save = new SaveAction();
+        headerActions.AddAction(save);
+
+        // Print
+        mPrintAction = new HeaderAction
+        {
+            Text = GetString("Analytics_Report.Print"),
+            Enabled = PrintEnabled,
+            ButtonStyle = ButtonStyle.Default,
+        };
+        headerActions.AddAction(mPrintAction);
+
+        var cui = MembershipContext.AuthenticatedUser;
+
+        // Report subscription enabled test
+        GeneralizedInfo ri = BaseAbstractInfoProvider.GetInfoByName(PredefinedObjectType.REPORT, ReportName);
+        if (ri != null)
+        {
+            bool enableSubscription = ValidationHelper.GetBoolean(ri.GetValue("ReportEnableSubscription"), true);
+
+            // Show enable subscription only for users with subscribe or modify.            
+            enableSubscription &= (cui.IsAuthorizedPerResource("cms.reporting", "subscribe") || cui.IsAuthorizedPerResource("cms.reporting", "modify"));
+
+            if (enableSubscription)
+            {
+                // Subscription
+                mSubscriptionAction = new HeaderAction
+                {
+                    Text = GetString("notifications.subscribe"),
+                    ButtonStyle = ButtonStyle.Default,
+                };
+                headerActions.AddAction(mSubscriptionAction);
+            }
+        }        
+    }
+
+
+    protected void OnActionPerformed(object sender, CommandEventArgs e)
+    {
+        if (ActionPerformed != null)
+        {
+            ActionPerformed(sender, e);
+        }
     }
 
 
     protected override void OnPreRender(EventArgs e)
     {
-        string dataCodeName = string.IsNullOrEmpty(ManageDataCodeName) ? QueryHelper.GetString("dataCodeName", string.Empty) : ManageDataCodeName;
-
-        string deleteDialogUrl = ResolveUrl("~/CMSModules/Reporting/WebAnalytics/Analytics_ManageData.aspx");
-        
-        deleteDialogUrl = URLHelper.AddParameterToUrl(deleteDialogUrl, "statcodename", URLHelper.URLEncode(dataCodeName));
-        deleteDialogUrl = URLHelper.AddParameterToUrl(deleteDialogUrl, "hash", QueryHelper.GetHash(deleteDialogUrl));
-
-        string deleteScript = string.Format("modalDialog('{0}','AnalyticsManageData',{1},{2});", deleteDialogUrl, 680, 350);
+        base.OnPreRender(e);
 
         string printDialogUrl = string.Format("{0}?reportname={1}&parameters={2}",
             ResolveUrl(PrintPageURL),
@@ -200,70 +214,19 @@ public partial class CMSModules_WebAnalytics_Controls_ReportHeader : CMSAdminCon
 
         // Register special script for print window
         ScriptHelper.RegisterPrintDialogScript(Page);
-
         ScriptHelper.RegisterDialogScript(Page);
 
-        headerActions.PanelCssClass = PanelCssClass;
-
-        // Create header actions
-        SaveAction save = new SaveAction(Page);
-        headerActions.ActionsList.Add(save);
-
-        // Print
-        HeaderAction print = new HeaderAction
-        {
-            Text = GetString("Analytics_Report.Print"),
-            OnClientClick = printScript,
-            Enabled = PrintEnabled,
-            ButtonStyle = ButtonStyle.Default,
-        };
-        headerActions.ActionsList.Add(print);
-
-        var cui = MembershipContext.AuthenticatedUser;
-
-        // Manage data
-        if (cui.IsAuthorizedPerResource("CMS.WebAnalytics", "ManageData") && DisplayManageData)
-        {
-            HeaderAction delete = new HeaderAction
-            {
-                Text = GetString("Analytics_Report.ManageData"),
-                OnClientClick = deleteScript,
-                ButtonStyle = ButtonStyle.Default,
-            };
-            headerActions.ActionsList.Add(delete);
-        }
-
-        // Report subscription enabled test
-        GeneralizedInfo ri = BaseAbstractInfoProvider.GetInfoByName(PredefinedObjectType.REPORT, ReportName);
-        if (ri != null)
-        {
-            bool enableSubscription = ValidationHelper.GetBoolean(ri.GetValue("ReportEnableSubscription"), true);
-
-            // Show enable subscription only for users with subscribe or modify.            
-            enableSubscription &= (cui.IsAuthorizedPerResource("cms.reporting", "subscribe") || cui.IsAuthorizedPerResource("cms.reporting", "modify"));
-
-            if (enableSubscription)
-            {
-                // Subscription
-                HeaderAction subscription = new HeaderAction
-                {
-                    Text = GetString("notifications.subscribe"),
-                    OnClientClick = subscriptionScript,
-                    ButtonStyle = ButtonStyle.Default,
-                };
-                headerActions.ActionsList.Add(subscription);
-            }
-        }
-
-        base.OnPreRender(e);
+        // Scripts have to be assigned when ReportName and ReportParameters are available!
+        AssignClientScriptToAction(mPrintAction, printScript);
+        AssignClientScriptToAction(mSubscriptionAction, subscriptionScript);
     }
 
 
-    protected void HeaderActions_ActionPerformed(object sender, CommandEventArgs e)
+    private static void AssignClientScriptToAction(HeaderAction action, string clientScript)
     {
-        if (ActionPerformed != null)
+        if (action != null)
         {
-            ActionPerformed(sender, e);
+            action.OnClientClick = clientScript;
         }
     }
 

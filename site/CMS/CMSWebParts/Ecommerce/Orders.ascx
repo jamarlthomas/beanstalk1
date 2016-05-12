@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/Ecommerce/Orders.ascx.cs" Inherits="CMSWebParts_Ecommerce_Orders" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/Ecommerce/Orders.ascx.cs" Inherits="CMSWebParts_Ecommerce_Orders" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 <cms:MessagesPlaceHolder ID="plcMessages" runat="server" WrapperControlID="pnlMessages" />

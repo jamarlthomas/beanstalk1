@@ -1,6 +1,6 @@
-<%@ Page Language="C#" Theme="default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" Theme="default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     AutoEventWireup="true" Inherits="CMSModules_Friends_Administration_Users_User_Edit_Friends_Rejected"
-    Codebehind="User_Edit_Friends_Rejected.aspx.cs" %>
+     Codebehind="User_Edit_Friends_Rejected.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Friends/Controls/FriendsRejectedList.ascx" TagName="FriendsListRejected"
     TagPrefix="cms" %>

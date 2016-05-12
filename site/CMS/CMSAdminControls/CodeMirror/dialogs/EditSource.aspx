@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Search" Language="C#" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Theme="Default" AutoEventWireup="true" Codebehind="EditSource.aspx.cs" Inherits="CMSAdminControls_CodeMirror_dialogs_EditSource" %>
+    Theme="Default" AutoEventWireup="true"  Codebehind="EditSource.aspx.cs" Inherits="CMSAdminControls_CodeMirror_dialogs_EditSource" %>
 
 <asp:Content ID="plcContentContent" ContentPlaceHolderID="plcContent" runat="server">
     <cms:CMSTextArea runat="server" ID="txtSource" Rows="37" />

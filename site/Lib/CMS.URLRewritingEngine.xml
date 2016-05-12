@@ -133,19 +133,19 @@
             <param name="relativePath">Relative path</param>
             <param name="excludedEnum">Excluded enum</param>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewritingHandlers.Alias_Update_Before(System.Object,CMS.DataEngine.ObjectEventArgs)">
+        <member name="M:CMS.URLRewritingEngine.URLRewritingHandlers.RefreshAliasRoutesIfDependentDataChanged(System.Object,CMS.DataEngine.ObjectEventArgs)">
             <summary>
-            Executes after update of document alias
+            Refreshes alias routes if dependent data changed.
             </summary>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewritingHandlers.Alias_Insert_Delete_After(System.Object,CMS.DataEngine.ObjectEventArgs)">
+        <member name="M:CMS.URLRewritingEngine.URLRewritingHandlers.RefreshAliasRoutes(System.Object,CMS.DataEngine.ObjectEventArgs)">
             <summary>
-            Executes after insert of document alias
+            Refreshes document alias routes
             </summary>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewritingHandlers.Document_Delete_After(System.Object,CMS.DocumentEngine.DocumentEventArgs)">
+        <member name="M:CMS.URLRewritingEngine.URLRewritingHandlers.RefreshRoutesAfterDocumentDelete(System.Object,CMS.DocumentEngine.DocumentEventArgs)">
             <summary>
-            Executes after the document delete
+            Refreshes routes for deleted document and all aliases
             </summary>
         </member>
         <member name="M:CMS.URLRewritingEngine.URLRewritingHandlers.CreateRoute(System.Object,CMS.DocumentEngine.DocumentEventArgs)">
@@ -522,18 +522,6 @@
             <param name="siteName">Site name</param>
             <param name="routes">List of routes to collect the registered routes</param>
         </member>
-        <member name="M:CMS.URLRewritingEngine.CMSDocumentRouteHelper.RegisterRoute(System.String,System.String,System.String,System.Int32,System.String,System.Boolean,CMS.DocumentEngine.AliasActionModeEnum)">
-            <summary>
-            Registers the given route
-            </summary>
-            <param name="siteName">Site name</param>
-            <param name="aliasPath">Alias path</param>
-            <param name="urlPath">URL path</param>
-            <param name="nodeId">Node ID</param>
-            <param name="culture">Document culture</param>
-            <param name="alias">If true, the route comes from document alias</param>
-            <param name="aliasAction">Alias action</param>
-        </member>
         <member name="M:CMS.URLRewritingEngine.CMSDocumentRouteHelper.RegisterRoute(System.String,System.String,System.String,System.Int32,System.String,System.Boolean)">
             <summary>
             Registers the given route
@@ -695,11 +683,6 @@
             <param name="values">Values of the route</param>
             <param name="routeDirection">Direction of the route</param>
         </member>
-        <member name="P:CMS.URLRewritingEngine.CMSDocumentRouteConstraint.AliasActionMode">
-            <summary>
-            Gets or sets the alias action mode
-            </summary>
-        </member>
         <member name="T:CMS.URLRewritingEngine.URLRewriter">
             <summary>
             URL rewriter class.
@@ -740,19 +723,9 @@
             Prefixes for the available permanent attachment URLs.
             </summary>
         </member>
-        <member name="F:CMS.URLRewritingEngine.URLRewriter.mGetFilePrefixes">
-            <summary>
-            Prefixes for the available permanent getfile URLs.
-            </summary>
-        </member>
         <member name="F:CMS.URLRewritingEngine.URLRewriter.mEncodeNodeAliasPath">
             <summary>
             Indicates whether node alias path should be encoded for RewritePath method.
-            </summary>
-        </member>
-        <member name="F:CMS.URLRewritingEngine.URLRewriter.mHandleTrailingSlashForGetFile">
-            <summary>
-            Indicates whether trailing slash should be removed for internal processing.
             </summary>
         </member>
         <member name="F:CMS.URLRewritingEngine.URLRewriter.mRedirectLangParameterToPrefix">
@@ -775,11 +748,6 @@
         <member name="F:CMS.URLRewritingEngine.URLRewriter.mWildcardQueryMapping">
             <summary>
             Wildcard query mapping setting. Possible values: join replaceexisting keepexisting.
-            </summary>
-        </member>
-        <member name="F:CMS.URLRewritingEngine.URLRewriter.mProcessTrailingSlashForFile">
-            <summary>
-            Indicates whether trailing slash should be processed for files.
             </summary>
         </member>
         <member name="F:CMS.URLRewritingEngine.URLRewriter.mFixRewriteRedirect">
@@ -872,13 +840,6 @@
             </summary>
             <param name="path">Path to rewrite to</param>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.RewritePath(System.String,System.Boolean)">
-            <summary>
-            Rewrites the URL by using the given path
-            </summary>
-            <param name="path">Path to rewrite to</param>
-            <param name="rebaseClientPath">True to reset the virtual path; false to keep the virtual path unchanged</param>
-        </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.RewriteUrl(CMS.Helpers.RequestStatusEnum,System.String,CMS.Helpers.ExcludedSystemEnum)">
             <summary>
             Rewrites the URL and performs all operations required after URL rewriting.
@@ -897,6 +858,14 @@
             <param name="viewMode">View mode</param>
             <returns>Returns how current URL was processed</returns>
         </member>
+        <member name="M:CMS.URLRewritingEngine.URLRewriter.FileDomainRedirect(CMS.SiteProvider.SiteNameOnDemand,CMS.PortalEngine.ViewModeOnDemand,CMS.URLRewritingEngine.UrlRewritingAction)">
+            <summary>
+            Redirects files to proper domain if enabled
+            </summary>
+            <param name="siteName">Site name</param>
+            <param name="viewMode">View mode</param>
+            <param name="action">Rewriting action</param>
+        </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.RedirectToDefaultPage(CMS.SiteProvider.SiteNameOnDemand,CMS.PortalEngine.ViewModeOnDemand,CMS.DocumentEngine.PageInfo)">
             <summary>
             Ensures the default page settings
@@ -905,14 +874,6 @@
             <param name="viewMode">View mode</param>
             <param name="pageInfo">Current page info</param>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.SetAliasCampaign(CMS.DocumentEngine.PageInfo,CMS.SiteProvider.SiteNameOnDemand,CMS.DocumentEngine.PageInfoSource)">
-            <summary>
-            Sets the document alias campaign for document alias
-            </summary>
-            <param name="pi">Page info</param>
-            <param name="siteName">Site name</param>
-            <param name="source">PageInfo source</param>
-        </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.CheckPublishedState(CMS.DocumentEngine.PageInfo@,CMS.SiteProvider.SiteNameOnDemand,CMS.PortalEngine.ViewModeOnDemand)">
             <summary>
             Checks the published state of the document. If the document is not published and combine with default culture is enabled and default culture is published, default culture is returned. If no published version is found, the page info is set to null.
@@ -920,19 +881,6 @@
             <param name="pageInfo">Page info</param>
             <param name="siteName">Site name</param>
             <param name="viewMode">View mode</param>
-        </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.HandleCampaign(CMS.SiteProvider.SiteNameOnDemand,CMS.URLRewritingEngine.UrlRewritingAction)">
-            <summary>
-            Handles the campaign processing
-            </summary>
-            <param name="siteName">Site name</param>
-            <param name="action">Rewriting action</param>
-        </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.ProcessPageTemplate(CMS.DocumentEngine.PageInfo)">
-            <summary>
-            Processes the page template and returns file name to rewrite to, if returning file name is null, no rewriting should occur and was handled internally
-            </summary>
-            <param name="pageInfo">Page info</param>
         </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.GetTemplateFileName(CMS.DocumentEngine.PageInfo)">
             <summary>
@@ -957,17 +905,6 @@
             <param name="siteName">Current site name</param>
             <param name="docCulture">Required culture</param>
             <param name="currentDomain">Current domain</param>
-        </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.ProcessABTest(System.String,CMS.PortalEngine.ViewModeEnum,CMS.DocumentEngine.PageInfo,CMS.URLRewritingEngine.UrlRewritingAction,System.String,System.String)">
-            <summary>
-            Returns current page info with dependence on A/B test settings.
-            </summary>
-            <param name="siteName">Site name</param>
-            <param name="viewMode">View mode</param>
-            <param name="pageInfo">Original page info</param>
-            <param name="action">Url rewriting action</param>
-            <param name="query">Query string</param>
-            <param name="filename">Filename path</param>
         </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.ProcessABTest(System.String,CMS.PortalEngine.ViewModeEnum,CMS.DocumentEngine.PageInfo)">
             <summary>
@@ -1077,13 +1014,6 @@
             <param name="action">Rewriting action</param>
             <param name="path">Target path</param>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.ProcessRewritingAction(CMS.URLRewritingEngine.UrlRewritingAction,CMS.PortalEngine.ViewModeOnDemand)">
-            <summary>
-            Processes the given rewriting action.
-            </summary>
-            <param name="action">Action to process</param>
-            <param name="viewMode">View mode</param>
-        </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.ValidateCulture(CMS.SiteProvider.SiteNameOnDemand,CMS.PortalEngine.ViewModeOnDemand,CMS.Helpers.PreferredCultureOnDemand,CMS.URLRewritingEngine.UrlRewritingAction)">
             <summary>
             Validates the culture value.
@@ -1105,12 +1035,6 @@
             </summary>
             <returns>Return culture code</returns>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.GetHandledUrl(System.String)">
-            <summary>
-            Returns the url handled by handler404 page.
-            </summary>
-            <param name="url">Raw url</param>
-        </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.GetRelativePathFromUrl(System.String)">
             <summary>
             Returns relative path from url.
@@ -1120,9 +1044,10 @@
         </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.GetLiveUrl(CMS.DocumentEngine.TreeNode)">
             <summary>
-            Gets the live page URL
+            Gets the live page URL.
             </summary>
             <param name="node">Document node</param>
+            <remarks>The URL is always formed of NodeAliasPath and URL path is ignored.</remarks>
         </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.GetEditingUrl(CMS.DocumentEngine.TreeNode)">
             <summary>
@@ -1130,14 +1055,12 @@
             </summary>
             <param name="node">Document node</param>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.CheckLicense(System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction)">
+        <member name="M:CMS.URLRewritingEngine.URLRewriter.ValidateLicense(System.String,System.String)">
             <summary>
-            Check if license for actual Url is valid.
+            Checks whether a license for the given URL and domain exists and is valid.
             </summary>
+            <param name="domain">Current domain without www. Taken from url when empty.</param>
             <param name="url">URL to check</param>
-            <param name="domain">Current domain without www</param>
-            <param name="action">Rewriting action to store the result</param>
-            <returns>Returns true if the path was rewritten (license invalid)</returns>
         </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.SetLanguage(CMS.SiteProvider.SiteNameOnDemand,CMS.PortalEngine.ViewModeOnDemand,System.String,CMS.URLRewritingEngine.UrlRewritingAction,System.Boolean)">
             <summary>
@@ -1170,15 +1093,15 @@
             <param name="url">URL</param>
             <param name="query">Query string</param>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.RedirectToMainExtension(CMS.SiteProvider.SiteNameOnDemand,CMS.DocumentEngine.PageInfoSource,System.String,CMS.URLRewritingEngine.UrlRewritingAction,System.Boolean)">
+        <member name="M:CMS.URLRewritingEngine.URLRewriter.RedirectToMainExtension(CMS.SiteProvider.SiteNameOnDemand,CMS.DocumentEngine.PageInfo,CMS.DocumentEngine.PageInfoSource,System.String,CMS.URLRewritingEngine.UrlRewritingAction)">
             <summary>
             Redirects document to its URL with main extension if current extension isn't main.
             </summary>
             <param name="siteName">Current site name</param>
+            <param name="pageInfo">Page info</param>
             <param name="pageInfoSource">Page info source</param>
             <param name="originalQuery">Original querystring</param>
             <param name="action">UrlRewriting action</param>
-            <param name="fileExtension">Indicates whether should be used files extension</param>
             <returns>Returns true if document was redirected</returns>
         </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.RedirectToMainUrl(CMS.SiteProvider.SiteNameOnDemand,CMS.DocumentEngine.PageInfo,CMS.DocumentEngine.PageInfoSource,System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction,CMS.Helpers.PreferredCultureOnDemand)">
@@ -1270,28 +1193,6 @@
             <param name="relativePath">Relative path</param>
             <param name="siteName">Site name</param>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.IsGetFilePage(System.String)">
-            <summary>
-            Returns true if the page is a GetFile page.
-            </summary>
-            <param name="relativePath">Relative path</param>
-        </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.CheckGetAttachment(System.String@,System.Boolean)">
-            <summary>
-            Checks if the link if GetDoc path.
-            </summary>
-            <param name="path">Path to check</param>
-            <param name="removePrefix">Remove the prefix if match</param>
-        </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.GetAttachment(System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction)">
-            <summary>
-            Rewrite path when path started with /getattachment/GUID/ to  ..../getfile.aspx?guid=GUID....
-            </summary>
-            <param name="relativePath">Relative path</param>
-            <param name="query">Query</param>
-            <param name="action">Rewriting action</param>
-            <returns>Return true if path is rewritten</returns>
-        </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.SetRewritingAction(System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction,CMS.Helpers.RequestStatusEnum)">
             <summary>
             Sets rewriting action. In case of using virtual context then preview hash in query string is updated to the new path.
@@ -1301,63 +1202,6 @@
             <param name="action">Rewriting action object</param>
             <param name="status">Request status enumeration</param>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.CheckGetFile(System.String@,System.Boolean)">
-            <summary>
-            Checks if the link if GetFile path.
-            </summary>
-            <param name="path">Path to check</param>
-            <param name="removePrefix">Remove the prefix if match</param>
-        </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.GetFile(System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction)">
-            <summary>
-            Rewrite path when path started with /getfile/GUID/ to  ..../getfile.aspx?nodeguid=GUID....
-            </summary>
-            <param name="relativePath">Relative path</param>
-            <param name="query">Query</param>
-            <param name="action">Rewriting action</param>
-            <returns>Return true if path is rewritten</returns>
-        </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.AddQueryFileParameters(System.String,System.String,System.String,System.String@)">
-            <summary>
-            Adds file parameters to the query string
-            </summary>
-            <param name="relativePath">Document relative path</param>
-            <param name="parameterName">Name of the GUID query parameter</param>
-            <param name="requiredType">Required type of the file</param>
-            <param name="query">Query string to be modified</param>
-        </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.CheckGetMetaFile(System.String@,System.Boolean)">
-            <summary>
-            Checks if the link if GetMetaFile path.
-            </summary>
-            <param name="path">Path to check</param>
-            <param name="removePrefix">Remove the prefix if match</param>
-        </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.GetMetaFile(System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction)">
-            <summary>
-            Rewrite path when path started with /getmetafile/GUID/ to  ..../getmetafile.aspx?guid=GUID....
-            </summary>
-            <param name="relativePath">Relative path</param>
-            <param name="query">Query</param>
-            <param name="action">Rewriting action</param>
-            <returns>Return true if path is rewritten</returns>
-        </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.CheckGetMediaFile(System.String@,System.Boolean)">
-            <summary>
-            Checks if the link if GetMediaFile path.
-            </summary>
-            <param name="path">Path to check</param>
-            <param name="removePrefix">Remove the prefix if match</param>
-        </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.GetMediaFile(System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction)">
-            <summary>
-            Rewrite path when path started with /getmedia/GUID/ to  ..../getmediafile.aspx?guid=GUID....
-            </summary>
-            <param name="relativePath">Relative path</param>
-            <param name="query">Query</param>
-            <param name="action">Rewriting action</param>
-            <returns>Return true if path is rewritten</returns>
-        </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.CheckGetProduct(System.String@,System.Boolean)">
             <summary>
             Checks if the link if GetProduct path.
@@ -1365,7 +1209,7 @@
             <param name="path">Path to check</param>
             <param name="removePrefix">Remove the prefix if match</param>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.GetProduct(System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction)">
+        <member name="M:CMS.URLRewritingEngine.URLRewriter.RewriteGetProduct(System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction)">
             <summary>
             Rewrite path when path started with /getproduct/GUID/ to  ..../getproduct.aspx?guid=GUID....
             </summary>
@@ -1381,7 +1225,7 @@
             <param name="path">Path to check</param>
             <param name="removePrefix">Remove the prefix if match</param>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.GetProductFile(System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction)">
+        <member name="M:CMS.URLRewritingEngine.URLRewriter.RewriteGetProductFile(System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction)">
             <summary>
             Rewrite path when path is starting with /getproductfile/GUID/ to  .../GetProductFile.aspx?token=GUID...
             </summary>
@@ -1390,30 +1234,28 @@
             <param name="action">Rewriting action</param>
             <returns>Returns true if path is rewritten</returns>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.CheckGetImage(System.String@,System.Boolean)">
+        <member name="M:CMS.URLRewritingEngine.URLRewriter.RemoveGetAttachmentPrefix(System.String@)">
             <summary>
-            Checks if the link if GetImage path.
+            Checks whether the given path is GetAttachment path: /getattachment/ and removes this prefix from the path.
             </summary>
             <param name="path">Path to check</param>
-            <param name="removePrefix">Remove the prefix if match</param>
+            <returns>Returns true if prefix was found and removed.</returns>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.GetImage(System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction)">
+        <member name="M:CMS.URLRewritingEngine.URLRewriter.RewriteGetAttachment(System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction)">
             <summary>
-            Rewrite path when path started with /GetImage/GUID/ to  ..../getfile.aspx?guid=GUID&amp;requiredtype=image....
+            Rewrites path for attachments identified by node alias path.
+            URL format: /getattachment/node/alias/path/filename{*.extension} rewrites to  CMSPages/getfile.aspx?filename=...aliaspath=...
             </summary>
             <param name="relativePath">Relative path</param>
             <param name="query">Query</param>
             <param name="action">Rewriting action</param>
-            <returns>Return true if path is rewritten</returns>
+            <returns>Return true if path was rewritten.</returns>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.GetTrackback(System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction)">
+        <member name="M:CMS.URLRewritingEngine.URLRewriter.GenerateGetFileParameters(System.String)">
             <summary>
-            Rewrite path when path started with /trackback/GUID/ to  ..../trackback.aspx?guid=GUID....
+            Generates query string parameters for GetFile handler
             </summary>
-            <param name="relativePath">Relative path</param>
-            <param name="query">Query</param>
-            <param name="action">Rewriting action</param>
-            <returns>Return true if path is rewritten</returns>
+            <param name="relativePath">Document relative path. Format: "document/relative/path/filename{*.extension}"</param>
         </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.IsGetDocPrefix(System.String)">
             <summary>
@@ -1433,11 +1275,10 @@
             </summary>
             <param name="url">URL</param>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.SetViewMode(CMS.URLRewritingEngine.UrlRewritingAction)">
+        <member name="M:CMS.URLRewritingEngine.URLRewriter.SetViewMode">
             <summary>
             Sets the viewmode if viewmode parameter present in current request parameters.
             </summary>
-            <param name="action">Rewriting action</param>
         </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.PageNotFoundForNonPublished(System.String)">
             <summary>
@@ -1474,14 +1315,20 @@
             Completes request
             </summary>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.CheckLicenseInternal(System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction)">
+        <member name="M:CMS.URLRewritingEngine.URLRewriter.ValidateLicenseInternal(System.String,System.String)">
             <summary>
-            Check if license for actual Url is valid.
+            Checks whether a license for the given URL and domain exists and is valid.
             </summary>
+            <param name="domain">Current domain without www. Taken from url when empty.</param>
             <param name="url">URL to check</param>
-            <param name="domain">Current domain without www</param>
-            <param name="action">Rewriting action to store the result</param>
-            <returns>Returns true if the path was rewritten (license invalid)</returns>
+        </member>
+        <member name="M:CMS.URLRewritingEngine.URLRewriter.RewriteToInvalidLicensePage(System.String,CMS.LicenseProvider.LicenseValidationEnum,CMS.URLRewritingEngine.UrlRewritingAction)">
+            <summary>
+            Rewrites the URL to the invalid license page.
+            </summary>
+            <param name="url">The URL without valid license</param>
+            <param name="licenseStatus">License status</param>
+            <param name="action">The action which </param>
         </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.RedirectPermanentInternal(System.String,System.String)">
             <summary>
@@ -1518,14 +1365,16 @@
             <param name="path">Path to rewrite to</param>
             <param name="rebaseClientPath">True to reset the virtual path; false to keep the virtual path unchanged</param>
         </member>
+        <member name="M:CMS.URLRewritingEngine.URLRewriter.HandledByGetAttachmentHandler(System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction)">
+            <summary>
+            Process the request by GetAttachment handler for attachments identified by node alias path.
+            URL format: /getattachment/node/alias/path/filename{*.extension} rewrites to  CMSPages/getfile.aspx?filename=...aliaspath=...
+            </summary>
+            <returns>Return true if the request was processed by GetAttachment handler.</returns>
+        </member>
         <member name="P:CMS.URLRewritingEngine.URLRewriter.ProviderObject">
             <summary>
             Provider object.
-            </summary>
-        </member>
-        <member name="P:CMS.URLRewritingEngine.URLRewriter.UseDomaiRedirectForFiles">
-            <summary>
-            Indicates whether domain redirect should be used for file request (getattachment, getmediafile, getmetafile, etc)
             </summary>
         </member>
         <member name="P:CMS.URLRewritingEngine.URLRewriter.UseDomainRedirectForFiles">
@@ -1554,16 +1403,6 @@
             culture prefix if culture prefix is enabled for current site
             </summary>
         </member>
-        <member name="P:CMS.URLRewritingEngine.URLRewriter.HandleTrailingSlashForGetFile">
-            <summary>
-            Gets the value that indicates whether trailing slash should be removed for getfile pages.
-            </summary>
-        </member>
-        <member name="P:CMS.URLRewritingEngine.URLRewriter.ProcessTrailingSlashForFile">
-            <summary>
-            Gets the value that indicates whether trailing slash should be processed for files.
-            </summary>
-        </member>
         <member name="P:CMS.URLRewritingEngine.URLRewriter.EncodeNodeAliasPath">
             <summary>
             Gets the value that indicates whether node alias path should be encoded for RewritePath method.
@@ -1572,11 +1411,6 @@
         <member name="P:CMS.URLRewritingEngine.URLRewriter.GetAttachmentPrefixes">
             <summary>
             Prefixes for the available permanent attachment URLs.
-            </summary>
-        </member>
-        <member name="P:CMS.URLRewritingEngine.URLRewriter.GetFilePrefixes">
-            <summary>
-            Prefixes for the available permanent getfile URLs.
             </summary>
         </member>
         <member name="T:CMS.URLRewritingEngine.UrlRewritingAction">
@@ -1589,16 +1423,6 @@
             Rewriting result.
             </summary>
         </member>
-        <member name="F:CMS.URLRewritingEngine.UrlRewritingAction.SetLanguage">
-            <summary>
-            Sets language.
-            </summary>
-        </member>
-        <member name="F:CMS.URLRewritingEngine.UrlRewritingAction.SetCampaign">
-            <summary>
-            Sets campaign.
-            </summary>
-        </member>
         <member name="F:CMS.URLRewritingEngine.UrlRewritingAction.RewritePath">
             <summary>
             Rewriting page path.
@@ -1609,24 +1433,9 @@
             Rewriting page query.
             </summary>
         </member>
-        <member name="F:CMS.URLRewritingEngine.UrlRewritingAction.RebasePath">
-            <summary>
-            Rebase client path.
-            </summary>
-        </member>
         <member name="F:CMS.URLRewritingEngine.UrlRewritingAction.RedirectURL">
             <summary>
             Redirection URL.
-            </summary>
-        </member>
-        <member name="F:CMS.URLRewritingEngine.UrlRewritingAction.SiteName">
-            <summary>
-            Site name.
-            </summary>
-        </member>
-        <member name="F:CMS.URLRewritingEngine.UrlRewritingAction.PermanentRedirect">
-            <summary>
-            Use permanent redirection.
             </summary>
         </member>
         <member name="T:CMS.URLRewritingEngine.URLRewritingModule">

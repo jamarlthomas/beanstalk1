@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.DataEngine;
 using CMS.ExtendedControls;
@@ -68,7 +68,7 @@ $cmsj(window).load(function () {
             btnSave.Visible = false;
             btnClose.Visible = false;
 
-            string url = ResolveUrl(String.Format("~/CMSMessages/Error.aspx?title={0}&text={1}&cancel=1", GetString("dialogs.badhashtitle"), GetString("dialogs.badhashtext")));
+            string url = ResolveUrl(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
             ltlScript.Text = ScriptHelper.GetScript(String.Format("window.location = '{0}';", url));
         }
     }

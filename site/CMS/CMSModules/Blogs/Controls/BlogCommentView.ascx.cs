@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -13,30 +13,29 @@ using CMS.Base;
 using CMS.DocumentEngine;
 using CMS.SiteProvider;
 using CMS.UIControls;
-using CMS.URLRewritingEngine;
 
 using TreeNode = CMS.DocumentEngine.TreeNode;
 
 public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditControl
 {
+    #region "Variables"
+
     private BlogProperties mBlogProperties = new BlogProperties();
     private string mCommentDetailControlPath = "~/CMSModules/Blogs/Controls/BlogCommentDetail.ascx";
-    private bool mReloadPageAfterAction = false;
-    private bool mDisplayTrackbacks = false;
 
-    private bool isUserAuthorized = false;
+    private bool isUserAuthorized;
 
-    private TreeNode mPostNode = null;
+    private TreeNode mPostNode;
 
-    private string mAliasPath = null;
-    private string mCulture = null;
-    private string mSiteName = null;
-    private string mSeparator = null;
+    private string mAliasPath;
+    private string mCulture;
+    private string mSiteName;
 
     protected string mAbuseReportRoles = null;
     protected SecurityAccessEnum mAbuseReportSecurityAccess = SecurityAccessEnum.AllUsers;
     protected int mAbuseReportOwnerID = 0;
-    protected int mTrackbackURLSize = 0;
+
+    #endregion
 
 
     #region "Public properties"
@@ -46,14 +45,8 @@ public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditCon
     /// </summary>
     public bool ReloadPageAfterAction
     {
-        get
-        {
-            return mReloadPageAfterAction;
-        }
-        set
-        {
-            mReloadPageAfterAction = value;
-        }
+        get;
+        set;
     }
 
 
@@ -64,11 +57,7 @@ public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditCon
     {
         get
         {
-            if (mAliasPath == null)
-            {
-                mAliasPath = DocumentContext.CurrentPageInfo.NodeAliasPath;
-            }
-            return mAliasPath;
+            return mAliasPath ?? (mAliasPath = DocumentContext.CurrentPageInfo.NodeAliasPath);
         }
         set
         {
@@ -84,11 +73,7 @@ public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditCon
     {
         get
         {
-            if (mCulture == null)
-            {
-                mCulture = LocalizationContext.PreferredCultureCode;
-            }
-            return mCulture;
+            return mCulture ?? (mCulture = LocalizationContext.PreferredCultureCode);
         }
         set
         {
@@ -104,11 +89,7 @@ public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditCon
     {
         get
         {
-            if (mSiteName == null)
-            {
-                mSiteName = SiteContext.CurrentSiteName;
-            }
-            return mSiteName;
+            return mSiteName ?? (mSiteName = SiteContext.CurrentSiteName);
         }
         set
         {
@@ -122,14 +103,8 @@ public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditCon
     /// </summary>
     public string Separator
     {
-        get
-        {
-            return mSeparator;
-        }
-        set
-        {
-            mSeparator = value;
-        }
+        get;
+        set;
     }
 
 
@@ -140,20 +115,22 @@ public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditCon
     {
         get
         {
-            if (mPostNode == null)
+            if (mPostNode != null)
             {
-                SetContext();
-
-                // Get the document
-                TreeProvider tree = new TreeProvider();
-                mPostNode = tree.SelectSingleNode(SiteName, AliasPath, Culture, false, "CMS.BlogPost", true);
-                if ((mPostNode != null) && (PortalContext.ViewMode != ViewModeEnum.LiveSite))
-                {
-                    mPostNode = DocumentHelper.GetDocument(mPostNode, tree);
-                }
-
-                ReleaseContext();
+                return mPostNode;
             }
+
+            SetContext();
+
+            // Get the document
+            TreeProvider tree = new TreeProvider();
+            mPostNode = tree.SelectSingleNode(SiteName, AliasPath, Culture, false, "CMS.BlogPost");
+            if ((mPostNode != null) && (PortalContext.ViewMode != ViewModeEnum.LiveSite))
+            {
+                mPostNode = DocumentHelper.GetDocument(mPostNode, tree);
+            }
+
+            ReleaseContext();
             return mPostNode;
         }
         set
@@ -202,42 +179,43 @@ public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditCon
     {
         get
         {
-            bool isOpened = false;
-
             // Get current post document info            
-            if (PostNode != null)
+            if (PostNode == null)
             {
-                var currrentUser = MembershipContext.AuthenticatedUser;
+                return false;
+            }
 
-                if (!ValidationHelper.GetBoolean(PostNode.GetValue("BlogPostAllowComments"), false))
+            bool isOpened;
+            var currentUser = MembershipContext.AuthenticatedUser;
+
+            if (!ValidationHelper.GetBoolean(PostNode.GetValue("BlogPostAllowComments"), false))
+            {
+                // Comments are not allowed for current post
+                isOpened = false;
+            }
+            else
+            {
+                // Check new comment dialog expiration
+                switch (BlogProperties.OpenCommentsFor)
                 {
-                    // Comments are not allowed for current post
-                    isOpened = false;
+                    case BlogProperties.OPEN_COMMENTS_ALWAYS:
+                        isOpened = true;
+                        break;
+
+                    case BlogProperties.OPEN_COMMENTS_DISABLE:
+                        isOpened = false;
+                        break;
+
+                    default:
+                        DateTime postDate = ValidationHelper.GetDateTime(PostNode.GetValue("BlogPostDate"), DateTimeHelper.ZERO_TIME);
+                        isOpened = (DateTime.Now <= postDate.AddDays(BlogProperties.OpenCommentsFor));
+
+                        break;
                 }
-                else
+
+                if (currentUser.IsPublic())
                 {
-                    // Check new comment dialog expiration
-                    switch (BlogProperties.OpenCommentsFor)
-                    {
-                        case BlogProperties.OPEN_COMMENTS_ALWAYS:
-                            isOpened = true;
-                            break;
-
-                        case BlogProperties.OPEN_COMMENTS_DISABLE:
-                            isOpened = false;
-                            break;
-
-                        default:
-                            DateTime postDate = ValidationHelper.GetDateTime(PostNode.GetValue("BlogPostDate"), DateTimeHelper.ZERO_TIME);
-                            isOpened = (DateTime.Now <= postDate.AddDays(BlogProperties.OpenCommentsFor));
-
-                            break;
-                    }
-
-                    if (currrentUser.IsPublic())
-                    {
-                        isOpened = (isOpened && BlogProperties.AllowAnonymousComments);
-                    }
+                    isOpened = (isOpened && BlogProperties.AllowAnonymousComments);
                 }
             }
 
@@ -293,38 +271,6 @@ public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditCon
         }
     }
 
-
-    /// <summary>
-    /// Gets or sets displaying trackbacks.
-    /// </summary>
-    public bool DisplayTrackbacks
-    {
-        get
-        {
-            return mDisplayTrackbacks;
-        }
-        set
-        {
-            mDisplayTrackbacks = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Gets or sets number of characters after which the trackback URL is automatically wprapped, otherwise it is not wrapped which can break the design when url is too long.
-    /// </summary>
-    public int TrackbackURLSize
-    {
-        get
-        {
-            return mTrackbackURLSize;
-        }
-        set
-        {
-            mTrackbackURLSize = value;
-        }
-    }
-
     #endregion
 
 
@@ -344,19 +290,16 @@ public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditCon
         if (PostNode != null)
         {
             // Check permissions for blog
-            if (BlogProperties.CheckPermissions)
+            if (BlogProperties.CheckPermissions && MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(PostNode, NodePermissionsEnum.Read) != AuthorizationResultEnum.Allowed)
             {
-                if (MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(PostNode, NodePermissionsEnum.Read) != AuthorizationResultEnum.Allowed)
-                {
-                    Visible = false;
-                }
+                Visible = false;
             }
 
             if (Visible)
             {
-                rptComments.ItemDataBound += new RepeaterItemEventHandler(rptComments_ItemDataBound);
-                ctrlCommentEdit.OnAfterCommentSaved += new OnAfterCommentSavedEventHandler(ctrlCommentEdit_OnAfterCommentSaved);
-                ctrlCommentEdit.OnBeforeCommentSaved += new OnBeforeCommentSavedEventHandler(ctrlCommentEdit_OnBeforeCommentSaved);
+                rptComments.ItemDataBound += rptComments_ItemDataBound;
+                ctrlCommentEdit.OnAfterCommentSaved += ctrlCommentEdit_OnAfterCommentSaved;
+                ctrlCommentEdit.OnBeforeCommentSaved += ctrlCommentEdit_OnBeforeCommentSaved;
                 ctrlCommentEdit.UseCaptcha = BlogProperties.UseCaptcha;
                 ctrlCommentEdit.EnableSubscriptions = BlogProperties.EnableSubscriptions;
                 ctrlCommentEdit.RequireEmails = BlogProperties.RequireEmails;
@@ -368,16 +311,9 @@ public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditCon
                 elemSubscription.NodeID = PostNode.NodeID;
                 elemSubscription.Culture = PostNode.DocumentCulture;
             }
-
-            // Check if trackback should displayed
-            if (DisplayTrackbacks && BlogProperties.EnableTrackbacks)
-            {
-                pnlTrackbackURL.Visible = true;
-                lblURLValue.Text = TextHelper.EnsureMaximumLineLength(URLHelper.GetAbsoluteUrl(BlogHelper.GetBlogPostTrackbackUrl(PostNode.NodeGUID, PostNode.GetDocumentName(), PostNode.DocumentCulture)), TrackbackURLSize);
-            }
         }
 
-        // Make sure info label is dispalyed to the user when saved succesfully
+        // Make sure info label is displayed to the user when saved successfully
         if (QueryHelper.GetBoolean("saved", false))
         {
             ctrlCommentEdit.CommentSavedText = GetString("Blog.CommentView.CommentSaved");
@@ -436,9 +372,8 @@ public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditCon
     {
         // Get comment ID
         int commentId = ValidationHelper.GetInteger(actionArgument, 0);
-        BlogCommentInfo bci = null;
-        var currrentUser = MembershipContext.AuthenticatedUser;
-
+        BlogCommentInfo bci;
+        
         switch (actionName.ToLowerCSafe())
         {
             case "delete":
@@ -464,9 +399,11 @@ public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditCon
 
                 // Set comment as 'approved'
                 bci = BlogCommentInfoProvider.GetBlogCommentInfo(commentId);
-                if ((bci != null) && (currrentUser != null))
+                var currentUser = MembershipContext.AuthenticatedUser;
+
+                if ((bci != null) && (currentUser != null))
                 {
-                    bci.CommentApprovedByUserID = currrentUser.UserID;
+                    bci.CommentApprovedByUserID = currentUser.UserID;
                     bci.CommentApproved = true;
                     BlogCommentInfoProvider.SetBlogCommentInfo(bci);
                 }
@@ -552,7 +489,7 @@ public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditCon
                 isUserAuthorized = BlogHelper.IsUserAuthorizedToManageComments(blogNode);
 
                 // Get all post comments
-                rptComments.DataSource = BlogCommentInfoProvider.GetPostComments(PostNode.DocumentID, !isUserAuthorized, isUserAuthorized, DisplayTrackbacks);
+                rptComments.DataSource = BlogCommentInfoProvider.GetPostComments(PostNode.DocumentID, !isUserAuthorized, isUserAuthorized);
                 rptComments.DataBind();
             }
         }
@@ -571,39 +508,41 @@ public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditCon
             lblInfo.Visible = false;
         }
 
-        if (e.Item.DataItem != null)
+        if (e.Item.DataItem == null)
         {
-            // Create new comment info object
-            BlogCommentInfo bci = new BlogCommentInfo(((DataRowView)e.Item.DataItem).Row);
+            return;
+        }
 
-            // Load 'BlogCommentDetail.ascx' control
-            BlogCommentDetail mBlogComment = (BlogCommentDetail)LoadUserControl(mCommentDetailControlPath);
+        // Create new comment info object
+        var comment = new BlogCommentInfo(((DataRowView)e.Item.DataItem).Row);
 
-            // Set control data and properties
-            mBlogComment.ID = "blogElem";
-            mBlogComment.BlogpPoperties = mBlogProperties;
-            mBlogComment.CommentsDataRow = ((DataRowView)e.Item.DataItem).Row;
-            mBlogComment.IsLiveSite = IsLiveSite;
+        // Load 'BlogCommentDetail.ascx' control
+        var commentControl = (BlogCommentDetail)LoadUserControl(mCommentDetailControlPath);
 
-            // Initialiaze comment 'Action buttons'
-            mBlogComment.OnCommentAction += new OnCommentActionEventHandler(mBlogComment_OnCommentAction);
-            mBlogComment.ShowRejectButton = (isUserAuthorized && bci.CommentApproved);
-            mBlogComment.ShowApproveButton = (isUserAuthorized && !bci.CommentApproved);
-            mBlogComment.ShowDeleteButton = (mBlogProperties.ShowDeleteButton && isUserAuthorized);
-            mBlogComment.ShowEditButton = (mBlogProperties.ShowEditButton && isUserAuthorized);
+        // Set control data and properties
+        commentControl.ID = "blogElem";
+        commentControl.BlogProperties = mBlogProperties;
+        commentControl.Comment = comment;
+        commentControl.IsLiveSite = IsLiveSite;
 
-            // Abuse report security properties 
-            mBlogComment.AbuseReportSecurityAccess = AbuseReportSecurityAccess;
-            mBlogComment.AbuseReportRoles = AbuseReportRoles;
-            mBlogComment.AbuseReportOwnerID = AbuseReportOwnerID;
+        // Initialize comment 'Action buttons'
+        commentControl.OnCommentAction += mBlogComment_OnCommentAction;
+        commentControl.ShowRejectButton = (isUserAuthorized && comment.CommentApproved);
+        commentControl.ShowApproveButton = (isUserAuthorized && !comment.CommentApproved);
+        commentControl.ShowDeleteButton = (mBlogProperties.ShowDeleteButton && isUserAuthorized);
+        commentControl.ShowEditButton = (mBlogProperties.ShowEditButton && isUserAuthorized);
 
-            // Add loaded control as comment list item
-            e.Item.Controls.Clear();
-            e.Item.Controls.Add(mBlogComment);
-            if (Separator != null)
-            {
-                e.Item.Controls.Add(new LiteralControl(Separator));
-            }
+        // Abuse report security properties 
+        commentControl.AbuseReportSecurityAccess = AbuseReportSecurityAccess;
+        commentControl.AbuseReportRoles = AbuseReportRoles;
+        commentControl.AbuseReportOwnerID = AbuseReportOwnerID;
+
+        // Add loaded control as comment list item
+        e.Item.Controls.Clear();
+        e.Item.Controls.Add(commentControl);
+        if (Separator != null)
+        {
+            e.Item.Controls.Add(new LiteralControl(Separator));
         }
     }
 
@@ -613,11 +552,6 @@ public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditCon
     /// </summary>
     private void SetupControl()
     {
-        btnLeaveMessage.Attributes.Add("onclick", "ShowSubscription(0, '" + hdnSelSubsTab.ClientID + "','" + pnlComment.ClientID + "','" +
-                                                  pnlSubscription.ClientID + "'); return false; ");
-        btnSubscribe.Attributes.Add("onclick", " ShowSubscription(1, '" + hdnSelSubsTab.ClientID + "','" + pnlComment.ClientID + "','" +
-                                               pnlSubscription.ClientID + "'); return false; ");
-
         // Show/hide appropriate control based on current selection form hidden field
         if (ValidationHelper.GetInteger(hdnSelSubsTab.Value, 0) == 0)
         {
@@ -633,5 +567,62 @@ public partial class CMSModules_Blogs_Controls_BlogCommentView : CMSAdminEditCon
             pnlComment.Style.Remove("display");
             pnlComment.Style.Add("display", "none");
         }
+
+        RegisterScripts();
+    }
+
+
+    /// <summary>
+    /// Registers required scripts
+    /// </summary>
+    private void RegisterScripts()
+    {
+
+        btnLeaveMessage.Attributes.Add("onclick", "ShowSubscription(0, '" + hdnSelSubsTab.ClientID + "','" + pnlComment.ClientID + "','" +
+                                                  pnlSubscription.ClientID + "'); return false; ");
+        btnSubscribe.Attributes.Add("onclick", " ShowSubscription(1, '" + hdnSelSubsTab.ClientID + "','" + pnlComment.ClientID + "','" +
+                                               pnlSubscription.ClientID + "'); return false; ");
+
+        var script = @"
+// Refreshes current page when comment properties are changed in modal dialog window
+function RefreshBlogCommentPage() 
+{         
+    var url = window.location.href;
+        
+    // String ""#comments"" found in url -> trim it
+    var charIndex = window.location.href.indexOf('#');
+    if (charIndex != -1)
+    {
+        url = url.substring(0, charIndex);
+    }
+        
+    // Refresh page content
+    window.location.replace(url);       
+}
+    
+// Switches between edit control and subscription control
+function ShowSubscription(subs, hdnField, elemEdit, elemSubscr) {
+    if (hdnField && elemEdit && elemSubscr) 
+    {
+        var hdnFieldElem = document.getElementById(hdnField);
+        var elemEditElem = document.getElementById(elemEdit);
+        var elemSubscrElem = document.getElementById(elemSubscr);
+        if((hdnFieldElem!=null)&&(elemEditElem!=null)&&(elemSubscrElem!=null))
+        {
+            if (subs == 1) { // Show subscriber control
+                elemEditElem.style.display = 'none';
+                elemSubscrElem.style.display = 'block';
+            }
+            else
+            {                // Show edit control
+                elemEditElem.style.display = 'block';
+                elemSubscrElem.style.display = 'none';
+            }
+            hdnFieldElem.value = subs;
+        }
+    }      
+}";
+    
+       ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "ShowSubscription" + ClientID, script, true);
     }
 }

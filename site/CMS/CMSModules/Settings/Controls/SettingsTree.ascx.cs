@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web.UI.WebControls;
 using System.Data;
@@ -485,7 +485,7 @@ public partial class CMSModules_Settings_Controls_SettingsTree : CMSUserControl
             provider.WhereCondition = "((CategoryIsGroup IS NULL) OR (CategoryIsGroup = 0)) " + levelWhere;
             if (!ShowEmptyCategories)
             {
-                var where = "CategoryID IN (SELECT CategoryParentID FROM CMS_SettingsCategory WHERE (CategoryIsGroup = 0) OR (CategoryIsGroup = 1 AND CategoryID IN (SELECT KeyCategoryID FROM CMS_SettingsKey WHERE ISNULL(SiteID, 0) = 0";
+                var where = "CategoryID IN (SELECT CategoryParentID FROM CMS_SettingsCategory WHERE (CategoryIsGroup = 0) OR (CategoryIsGroup = 1 AND CategoryID IN (SELECT KeyCategoryID FROM CMS_SettingsKey WHERE ISNULL(SiteID, 0) = 0 AND ISNULL(KeyIsHidden, 0) = 0";
                 if (SiteID > 0)
                 {
                     where += " AND KeyIsGlobal = 0";

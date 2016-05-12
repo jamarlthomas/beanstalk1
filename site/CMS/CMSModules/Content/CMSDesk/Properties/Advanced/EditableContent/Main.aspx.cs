@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -17,6 +17,8 @@ using TreeNode = CMS.DocumentEngine.TreeNode;
 public partial class CMSModules_Content_CMSDesk_Properties_Advanced_EditableContent_Main : CMSModalPage
 {
     #region "Private variables"
+
+    private const string EDITABLE_CONTENT_FOLDER = "~/CMSModules/Content/CMSDesk/Properties/Advanced/EditableContent/";
 
     private string keyName;
     private EditableContentType keyType;
@@ -160,7 +162,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Advanced_EditableCont
         if (node != null)
         {
             // Initialize java scripts
-            ltlScript.Text += ScriptHelper.GetScript("mainUrl = '" + ResolveUrl("~/CMSModules/Content/CMSDesk/Properties/Advanced/EditableContent/main.aspx") + "?nodeid=" + node.NodeID + "';");
+            ltlScript.Text += ScriptHelper.GetScript("mainUrl = '" + ResolveUrl(EDITABLE_CONTENT_FOLDER + "main.aspx") + "?nodeid=" + node.NodeID + "';");
 
             if ((keyName != string.Empty) || createNew)
             {
@@ -259,7 +261,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Advanced_EditableCont
             {
                 // Prepare script for refresh menu in Tree
                 string script = "parent.frames['tree'].location.replace('" +
-                                ResolveUrl("~/CMSModules/Content/CMSDesk/Properties/Advanced/EditableContent/tree.aspx") + "?nodeid=" +
+                                ResolveUrl(EDITABLE_CONTENT_FOLDER + "tree.aspx") + "?nodeid=" +
                                 node.NodeID + "&selectednodename=" + ScriptHelper.GetString(keyName, false) + "&selectednodetype=" + keyType + "');";
 
                 // Script for UpdateMenu in tree
@@ -338,7 +340,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Advanced_EditableCont
         {
             ltlScript.Text +=
                 ScriptHelper.GetScript("parent.frames['tree'].location.replace('" +
-                                       ResolveUrl("~/CMSModules/Content/CMSDesk/Properties/Advanced/EditableContent/tree.aspx") + "?nodeid=" +
+                                       ResolveUrl(EDITABLE_CONTENT_FOLDER + "tree.aspx") + "?nodeid=" +
                                        node.NodeID + "&selectednodename=" + ScriptHelper.GetString(codeName, false) + "&selectednodetype=" + keyType +
                                        "');SelectNode('" + ScriptHelper.GetString(codeName, false) + "', '" + keyType + "')");
             if (editingForm == EditingForms.EditableImage)
@@ -437,10 +439,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Advanced_EditableCont
                 break;
         }
 
-        // Get content
-        content = node.DocumentContent.GetContentXml();
-        node.UpdateOriginalValues();
-        node.SetValue("DocumentContent", content);
+        node.SetValue("DocumentContent", node.DocumentContent.GetContentXml());
     }
 
     #endregion

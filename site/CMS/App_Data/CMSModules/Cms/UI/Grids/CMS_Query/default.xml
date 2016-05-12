@@ -9,7 +9,7 @@
       <filter type="text"	/>
     </column>
   </columns>
-  <objecttype name="cms.query" columns="QueryID, QueryName" />
+  <objecttype name="cms.query" columns="QueryID, QueryName, QueryIsCustom" />
   <options>
     <key name="DisplayFilter" value="true" />
   </options>

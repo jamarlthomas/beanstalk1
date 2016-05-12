@@ -1,10 +1,9 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_UniSelector_UniSelector"
-    Codebehind="UniSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_UniSelector_UniSelector"
+     Codebehind="UniSelector.ascx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniControls/UniButton.ascx" TagName="UniButton" TagPrefix="cms" %>
 
-<asp:Literal ID="ltlContentBefore" runat="server" EnableViewState="false" />
 <asp:Label ID="lblStatus" runat="server" EnableViewState="False" CssClass="form-control-text InfoLabel" />
 
 <asp:PlaceHolder runat="server" ID="plcButtonSelect" Visible="false" EnableViewState="false">
@@ -55,7 +54,6 @@
     </div>
 </asp:Panel>
 
-<asp:Literal ID="ltlContentAfter" runat="server" EnableViewState="false" />
 <asp:HiddenField ID="hdnDialogSelect" runat="server" EnableViewState="false" />
 <asp:HiddenField ID="hdnIdentifier" runat="server" EnableViewState="false" />
 <asp:HiddenField ID="hiddenField" runat="server" />

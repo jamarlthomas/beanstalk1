@@ -140,13 +140,13 @@ public class ProductTabsExtender : UITabsExtender
             if (node == null)
             {
                 // Redirect to create new culture version
-                URLHelper.Redirect(ProductUIHelper.GetNewCultureVersionPageUrl());
+                URLHelper.ResponseRedirect(ProductUIHelper.GetNewCultureVersionPageUrl(), false);
+                CMSHttpContext.Current.ApplicationInstance.CompleteRequest();
+                return;
             }
-            else
-            {
-                Node = node;
-                breadcrumbName = Node.Site.Generalized.ObjectDisplayName;
-            }
+            
+            Node = node;
+            breadcrumbName = Node.Site.Generalized.ObjectDisplayName;
         }
 
         // Get product name and option category ID

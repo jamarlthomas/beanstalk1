@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Debug_QueryLog"
-    Codebehind="QueryLog.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Debug_QueryLog"
+     Codebehind="QueryLog.ascx.cs" %>
 <cms:UIGridView runat="server" ID="gridQueries" ShowFooter="true" AutoGenerateColumns="false" CssClass="wrap-normal">
     <Columns>
         <asp:TemplateField>

@@ -36,7 +36,7 @@ public partial class CMSModules_SocialMarketing_FormControls_LinkedInAutoPost : 
                 var document = Document;
                 if ((mPostInfo == null) && (document != null) && (document.DocumentGUID != Guid.Empty) && IsFeatureAvailable)
                 {
-                    mPostInfo = LinkedInPostInfoProvider.GetLinkedInPostInfosByDocumentGuid(document.DocumentGUID, document.NodeSiteID).ToList().FirstOrDefault(x => x.LinkedInPostIsCreatedByUser);
+                    mPostInfo = LinkedInPostInfoProvider.GetLinkedInPostInfosByDocumentGuid(document.DocumentGUID, SiteIdentifier).ToList().FirstOrDefault(x => x.LinkedInPostIsCreatedByUser);
                 }
                 mPostInfoSet = true;
             }
@@ -98,7 +98,7 @@ public partial class CMSModules_SocialMarketing_FormControls_LinkedInAutoPost : 
             if (postId > 0)
             {
                 PostInfo = LinkedInPostInfoProvider.GetLinkedInPostInfo(postId);
-                
+
                 return;
             }
 
@@ -151,7 +151,7 @@ public partial class CMSModules_SocialMarketing_FormControls_LinkedInAutoPost : 
         if (String.IsNullOrWhiteSpace(txtPost.Text))
         {
             ValidationError = ResHelper.GetString("sm.linkedin.posts.msg.postempty");
-            
+
             return false;
         }
 
@@ -185,7 +185,7 @@ public partial class CMSModules_SocialMarketing_FormControls_LinkedInAutoPost : 
         if (!IsFeatureAvailable || !HasUserReadPermission)
         {
             StopProcessing = true;
-            
+
             return;
         }
 
@@ -234,8 +234,7 @@ public partial class CMSModules_SocialMarketing_FormControls_LinkedInAutoPost : 
             ShowPostStateWarning(ResHelper.GetString("sm.linkedin.posts.nomodifypermission"));
             SetUnderlyingControlsEnabledState(false);
         }
-        
-        urlShortenerSelector.Enabled = chkShortenUrls.Checked;
+
         publishDateTime.Enabled = !chkPostAfterDocumentPublish.Checked;
 
         if ((PostInfo != null) && !PostInfo.IsEditable)
@@ -272,7 +271,7 @@ public partial class CMSModules_SocialMarketing_FormControls_LinkedInAutoPost : 
             return;
         }
 
-        if (chkPostToLinkedIn.Checked) 
+        if (chkPostToLinkedIn.Checked)
         {
             if ((PostInfo == null) || PostInfo.IsEditable)
             {
@@ -285,7 +284,7 @@ public partial class CMSModules_SocialMarketing_FormControls_LinkedInAutoPost : 
                 mPublishedWhileEditing = true;
             }
         }
-        else 
+        else
         {
             // Checkbox post to LinkedIn is not checked
             if (PostInfo != null)
@@ -302,7 +301,7 @@ public partial class CMSModules_SocialMarketing_FormControls_LinkedInAutoPost : 
                     mPublishedWhileEditing = true;
                 }
             }
-        }  
+        }
     }
 
 
@@ -341,18 +340,6 @@ public partial class CMSModules_SocialMarketing_FormControls_LinkedInAutoPost : 
             PublishPost(PostInfo.LinkedInPostID);
         }
         LoadPostDataIntoControl(PostInfo);
-    }
-
-
-    /// <summary>
-    /// Checkbox chkShortenUrls OnCheckedChanged event.
-    /// </summary>
-    protected void chkShortenUrls_OnCheckedChanged(object sender, EventArgs e)
-    {
-        if (!chkShortenUrls.Checked)
-        {
-            urlShortenerSelector.Value = URLShortenerTypeEnum.None;
-        }
     }
 
 
@@ -407,18 +394,19 @@ public partial class CMSModules_SocialMarketing_FormControls_LinkedInAutoPost : 
             publishDateTime.Value = DateTime.Now;
         }
 
-        LinkedInAccountInfo defaultAccountInfo = LinkedInAccountInfoProvider.GetDefaultLinkedInAccount(CurrentSite.SiteID);
+        companySelector.ObjectSiteName = SiteIdentifier;
+        LinkedInAccountInfo defaultAccountInfo = LinkedInAccountInfoProvider.GetDefaultLinkedInAccount(SiteIdentifier);
         if (defaultAccountInfo != null)
         {
             companySelector.Value = defaultAccountInfo.LinkedInAccountID;
         }
 
         ClearPostState();
-        chkShortenUrls.Checked = false;
-        urlShortenerSelector.Value = (int) URLShortenerTypeEnum.None;
-        urlShortenerSelector.Enabled = false;
+        urlShortenerSelector.SiteID = SiteIdentifier;
+        urlShortenerSelector.Value = URLShortenerHelper.GetDefaultURLShortenerForSocialNetwork(SocialNetworkTypeEnum.LinkedIn, SiteIdentifier);
         chkPostAfterDocumentPublish.Visible = (Document != null);
         campaingSelector.Value = null;
+        campaingSelector.ObjectSiteName = SiteIdentifier;
 
         if ((FieldInfo != null) && !FieldInfo.AllowEmpty)
         {
@@ -446,11 +434,7 @@ public partial class CMSModules_SocialMarketing_FormControls_LinkedInAutoPost : 
         publishDateTime.Value = post.LinkedInPostScheduledPublishDateTime;
 
         campaingSelector.Value = post.LinkedInPostCampaignID;
-        if (PostInfo.LinkedInPostURLShortenerType != URLShortenerTypeEnum.None)
-        {
-            chkShortenUrls.Checked = true;
-            urlShortenerSelector.Value = (int)post.LinkedInPostURLShortenerType;
-        }
+        urlShortenerSelector.Value = post.LinkedInPostURLShortenerType;
 
         DisplayForm = true;
         ShowPostPublishState(post);
@@ -471,14 +455,11 @@ public partial class CMSModules_SocialMarketing_FormControls_LinkedInAutoPost : 
 
         post.LinkedInPostLinkedInAccountID = ValidationHelper.GetInteger(companySelector.Value, 0);
         post.LinkedInPostComment = txtPost.Text;
-        if (chkShortenUrls.Checked)
-        {
-            post.LinkedInPostURLShortenerType = (URLShortenerTypeEnum)ValidationHelper.GetInteger(urlShortenerSelector.Value, 0);
-        }
+        post.LinkedInPostURLShortenerType = (URLShortenerTypeEnum)urlShortenerSelector.Value;
         post.LinkedInPostPostAfterDocumentPublish = chkPostAfterDocumentPublish.Checked;
         post.LinkedInPostScheduledPublishDateTime = ValidationHelper.GetDateTime(publishDateTime.Value, DateTimeHelper.ZERO_TIME);
         post.LinkedInPostCampaignID = ValidationHelper.GetInteger(campaingSelector.Value, 0);
-        post.LinkedInPostSiteID = SiteContext.CurrentSiteID;
+        post.LinkedInPostSiteID = SiteIdentifier;
         post.LinkedInPostIsCreatedByUser = true;
 
         return post;
@@ -542,7 +523,6 @@ public partial class CMSModules_SocialMarketing_FormControls_LinkedInAutoPost : 
         chkPostToLinkedIn.Enabled = enabled;
         companySelector.Enabled = enabled;
         txtPost.Enabled = enabled;
-        chkShortenUrls.Enabled = enabled;
         urlShortenerSelector.Enabled = enabled;
         publishDateTime.Enabled = enabled;
         campaingSelector.Enabled = enabled;
@@ -570,10 +550,10 @@ public partial class CMSModules_SocialMarketing_FormControls_LinkedInAutoPost : 
         return post.LinkedInPostComment.EqualsCSafe(txtPost.Text)
             && post.LinkedInPostScheduledPublishDateTime == formScheduledPublishTime
             && post.LinkedInPostLinkedInAccountID == ValidationHelper.GetInteger(companySelector.Value, 0)
-            && post.LinkedInPostURLShortenerType == (URLShortenerTypeEnum)ValidationHelper.GetInteger(urlShortenerSelector.Value, 0)
+            && post.LinkedInPostURLShortenerType == (URLShortenerTypeEnum)urlShortenerSelector.Value
             && post.LinkedInPostPostAfterDocumentPublish == chkPostAfterDocumentPublish.Checked
             && ValidationHelper.GetInteger(post.LinkedInPostCampaignID, 0) == ValidationHelper.GetInteger(campaingSelector.Value, 0)
-            && post.LinkedInPostSiteID == SiteContext.CurrentSiteID;
+            && post.LinkedInPostSiteID == SiteIdentifier;
     }
 
 

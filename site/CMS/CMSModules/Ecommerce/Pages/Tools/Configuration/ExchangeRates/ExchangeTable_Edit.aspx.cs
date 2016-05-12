@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Collections;
@@ -62,16 +62,14 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_ExchangeRate
         iconHelpGlobalExchangeRate.ToolTip = GetString("ExchangeTable_Edit.ExchangeRateHelp");
         iconHelpMainExchangeRate.ToolTip = GetString("ExchangeTable_Edit.ExchangeRateHelp");
 
-        dtPickerExchangeTableValidFrom.SupportFolder = "~/CMSAdminControls/Calendar";
-        dtPickerExchangeTableValidTo.SupportFolder = "~/CMSAdminControls/Calendar";
-        // Use timezones for DateTimePickers
+        // Use time zones for DateTimePickers
         CMS.Globalization.TimeZoneInfo tzi = TimeZoneHelper.GetTimeZoneInfo(MembershipContext.AuthenticatedUser, SiteContext.CurrentSite);
         dtPickerExchangeTableValidFrom.TimeZone = TimeZoneTypeEnum.Custom;
         dtPickerExchangeTableValidFrom.CustomTimeZone = tzi;
         dtPickerExchangeTableValidTo.TimeZone = TimeZoneTypeEnum.Custom;
         dtPickerExchangeTableValidTo.CustomTimeZone = tzi;
 
-        // Get exchangeTable id from querystring		
+        // Get exchangeTable id from query string		
         mExchangeTableId = QueryHelper.GetInteger("exchangeid", 0);
         if (mExchangeTableId > 0)
         {
@@ -167,7 +165,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_ExchangeRate
         switch (e.CommandName)
         {
             case COPY_FROM_GLBOAL:
-                // Copy excahnge rates from global
+                // Copy exchange rates from global
                 CopyFromGlobal();
                 URLHelper.Redirect("ExchangeTable_Edit.aspx?exchangeid=" + exchangeTableObj.ExchangeTableID + "&saved=1&siteId=" + SiteID);
                 break;
@@ -317,7 +315,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_ExchangeRate
                 string tmp = txt.Text.Trim();
                 if (tmp != String.Empty)
                 {
-                    // Exchange rate mus be double
+                    // Exchange rate must be double
                     if (!ValidationHelper.IsDouble(tmp))
                     {
                         errorMessage = GetString("ExchangeTable_Edit.DoubleFormatRequired");
@@ -494,14 +492,15 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_ExchangeRate
     /// </summary>
     protected bool IsFromGlobalRateNeeded()
     {
+        var siteId = ConfiguredSiteID;
 
-        if ((ConfiguredSiteID == 0) || (ECommerceSettings.UseGlobalCurrencies(ConfiguredSiteID)))
+        if ((siteId == 0) || (ECommerceSettings.UseGlobalCurrencies(siteId)))
         {
             return false;
         }
 
         string globalMainCode = CurrencyInfoProvider.GetMainCurrencyCode(0);
-        string siteMainCode = CurrencyInfoProvider.GetMainCurrencyCode(ConfiguredSiteID);
+        string siteMainCode = CurrencyInfoProvider.GetMainCurrencyCode(siteId);
 
         // Check whether main currencies are defined
         if (string.IsNullOrEmpty(siteMainCode) || string.IsNullOrEmpty(globalMainCode))
@@ -510,16 +509,22 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_ExchangeRate
         }
 
         // Check whether global and site main currency are the same
-        if (globalMainCode.ToLowerCSafe() == siteMainCode.ToLowerCSafe())
+        if (globalMainCode.EqualsCSafe(siteMainCode, true))
         {
             return false;
         }
 
-        return ECommerceSettings.AllowGlobalDiscountCoupons(ConfiguredSiteID) ||
-               ECommerceSettings.AllowGlobalProductOptions(ConfiguredSiteID) ||
-               ECommerceSettings.AllowGlobalProducts(ConfiguredSiteID) ||
-               ECommerceSettings.UseGlobalCredit(ConfiguredSiteID) ||
-               ECommerceSettings.UseGlobalTaxClasses(ConfiguredSiteID);
+        // Check if site has currency with same code as global main -> no need for global rate
+        if (CurrencyInfoProvider.GetCurrenciesByCode(siteId).ContainsKey(globalMainCode))
+        {
+            return false;
+        }
+
+        return ECommerceSettings.AllowGlobalDiscountCoupons(siteId) ||
+               ECommerceSettings.AllowGlobalProductOptions(siteId) ||
+               ECommerceSettings.AllowGlobalProducts(siteId) ||
+               ECommerceSettings.UseGlobalCredit(siteId) ||
+               ECommerceSettings.UseGlobalTaxClasses(siteId);
     }
 
     #endregion

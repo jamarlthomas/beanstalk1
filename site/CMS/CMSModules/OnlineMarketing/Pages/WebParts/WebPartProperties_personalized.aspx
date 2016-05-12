@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_OnlineMarketing_Pages_WebParts_WebPartProperties_personalized"
     EnableEventValidation="false" Theme="Default" ValidateRequest="false" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Codebehind="WebPartProperties_personalized.aspx.cs" %>
+     Codebehind="WebPartProperties_personalized.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/OnlineMarketing/Controls/UI/ContentPersonalizationVariant/Edit.ascx"
     TagName="ContentPersonalizationVariantEdit" TagPrefix="cms" %>

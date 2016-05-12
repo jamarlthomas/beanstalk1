@@ -98,6 +98,25 @@
             Constructor.
             </summary>
         </member>
+        <member name="M:CMS.Synchronization.WSE3.Server.SyncServerWse.ProcessSynchronizationTaskData(CMS.Synchronization.IStagingTaskData)">
+            <summary>
+            Synchronizes StagingTaskData to target server.
+            </summary>
+            <param name="stagingTaskData">StagingTaskData to be synchronized</param>
+        </member>
+        <member name="M:CMS.Synchronization.WSE3.Server.SyncServerWse.ProcessSynchronizationTaskData(System.String)">
+            <summary>
+            Synchronizes StagingTaskData to target server.
+            </summary>
+            <param name="stagingTaskData">Serialized StagingTaskData</param>
+        </member>
+        <member name="M:CMS.Synchronization.WSE3.Server.SyncServerWse.ProcessSynchronizationTaskDataAsync(System.String,System.Object)">
+            <summary>
+            Synchronizes StagingTaskData to target server in asynchronous manner.
+            </summary>
+            <param name="stagingTaskData"></param>
+            <param name="userState"></param>
+        </member>
         <member name="T:CMS.Synchronization.WSE3.SyncClient">
             <summary>
             Synchronization client.
@@ -108,7 +127,7 @@
             Returns full path of the SyncServer.asmx server from the starting path of target server instance.
             If the full path in the old format comes, the suffix /CMSPages/SyncServer.asmx is trimmed and replaced by the current location.
             </summary>
-            <param name="serverServiceBaseUrl"></param>
+            <param name="serverServiceBaseUrl">Synchronization server base URL</param>
         </member>
         <member name="M:CMS.Synchronization.WSE3.SyncClient.RunTask(CMS.Synchronization.StagingTaskInfo)">
             <summary>
@@ -163,14 +182,6 @@
             Indicates if automatic ordering for documents should be used on target server.
             </summary>
         </member>
-        <member name="M:CMS.Synchronization.WSE3.SyncServer.ProcessSyncTask(System.String,System.String,System.String)">
-            <summary>
-            Processes the given synchronization task.
-            </summary>
-            <param name="taskTitle">Title of the synchronization task</param>
-            <param name="taskType">Type of the synchronization task</param>
-            <param name="taskData">Document data for the synchronization task</param>
-        </member>
         <member name="M:CMS.Synchronization.WSE3.SyncServer.ProcessSynchronizationTask(System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Processes the given synchronization task.
@@ -203,6 +214,31 @@
             <param name="taskBinaryData">Binary data for the synchronization task</param>
             <param name="taskServerList">List of servers, which already processed the synchronization task</param>
             <param name="systemVersion">System version</param>
+        </member>
+        <member name="M:CMS.Synchronization.WSE3.SyncServer.ProcessSynchronizationTaskData(System.String)">
+            <summary>
+            Processes the given synchronization task.
+            </summary>
+            <param name="stagingTaskData">Serialized staging task data</param>
+        </member>
+        <member name="M:CMS.Synchronization.WSE3.SyncServer.ProcessSynchronizationTaskInternal(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Processes the given synchronization task.
+            </summary>
+            <param name="taskType">Type of the synchronization task</param>
+            <param name="taskObjectType">Task object type</param>
+            <param name="taskData">Document data for the synchronization task</param>
+            <param name="taskBinaryData">Binary data for the synchronization task</param>
+            <param name="taskServerList">List of servers, which already processed the synchronization task</param>
+            <param name="systemVersion">System version</param>
+            <param name="userGuid">Guid of user who synchronized changes from source</param>
+            <param name="username">Username of user who synchronized changes from source</param>
+        </member>
+        <member name="M:CMS.Synchronization.WSE3.SyncServer.ProcessSynchronizationTaskInternal(CMS.Synchronization.IStagingTaskData)">
+            <summary>
+            Processes the given synchronization task.
+            </summary>
+            <param name="stagingTaskData">Serialized staging task data</param>
         </member>
         <member name="M:CMS.Synchronization.WSE3.SyncServer.GetError(System.String)">
             <summary>

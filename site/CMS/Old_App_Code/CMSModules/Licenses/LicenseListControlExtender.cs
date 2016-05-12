@@ -9,7 +9,7 @@ using CMS.ExtendedControls;
 using CMS.ExtendedControls.ActionsConfig;
 using CMS.Helpers;
 using CMS.LicenseProvider;
-using CMS.PortalEngine;
+using CMS.Membership;
 using CMS.UIControls;
 
 
@@ -160,6 +160,12 @@ public class LicenseListControlExtender : ControlExtender<UniGrid>
         if (actionname == "delete")
         {
             LicenseKeyInfoProvider.DeleteLicenseKeyInfo(Convert.ToInt32(actionargument));
+
+            using (new CMSActionContext { AllowLicenseRedirect = false })
+            {
+                UserInfoProvider.ClearLicenseValues();
+                Functions.ClearHashtables();
+            }
 
             mRefreshUI = true;
         }

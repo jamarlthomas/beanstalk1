@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="OptionCategoryProductOptionSelector.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="OptionCategoryProductOptionSelector.ascx.cs"
     Inherits="CMSModules_Ecommerce_FormControls_OptionCategoryProductOptionSelector" %>
 
 <cms:LocalizedLabel runat="server" ID="lblInfoMessage" ResourceString="com.skuoptions.notavailablecreating" CssClass="explanation-text" Visible="false" />

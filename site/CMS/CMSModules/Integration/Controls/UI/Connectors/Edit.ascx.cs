@@ -1,4 +1,4 @@
-using CMS.UIControls;
+﻿using CMS.UIControls;
 
 public partial class CMSModules_Integration_Controls_UI_Connectors_Edit : CMSAdminEditControl
 {

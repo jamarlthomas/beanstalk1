@@ -37,12 +37,11 @@ public partial class CMSModules_Content_Controls_SplitView_Documents_DocumentToo
         {
             string preferredCultureCode = LocalizationContext.PreferredCultureCode;
             string currentSiteName = SiteContext.CurrentSiteName;
-            string where = "CultureCode IN (SELECT DocumentCulture FROM View_CMS_Tree_Joined WHERE NodeID = " + Node.NodeID + ")";
-            DataSet documentCultures = CultureInfoProvider.GetCultures(where, null, 0, "CultureCode");
+            var documentCultures = Node.GetTranslatedCultures();
 
             // Get site cultures
             DataSet siteCultures = CultureSiteInfoProvider.GetSiteCultures(currentSiteName);
-            if (!DataHelper.DataSourceIsEmpty(siteCultures) && !DataHelper.DataSourceIsEmpty(documentCultures))
+            if (!DataHelper.DataSourceIsEmpty(siteCultures) && (documentCultures.Count > 0))
             {
                 string suffixNotTranslated = GetString("SplitMode.NotTranslated");
 
@@ -58,18 +57,13 @@ public partial class CMSModules_Content_Controls_SplitView_Documents_DocumentToo
                     {
                         suffix = GetString("SplitMode.Current");
                     }
-                    else
+                    else if (!documentCultures.Contains(cultureCode))
                     {
-                        // Find culture
-                        DataRow[] findRows = documentCultures.Tables[0].Select("CultureCode = '" + cultureCode + "'");
-                        if (findRows.Length == 0)
-                        {
-                            suffix = suffixNotTranslated;
-                        }
+                        suffix = suffixNotTranslated;
                     }
 
                     // Add new item
-                    ListItem item = new ListItem(cultureName + " " + suffix, cultureCode);
+                    var item = new ListItem(cultureName + " " + suffix, cultureCode);
                     drpCultures.Items.Add(item);
                 }
             }

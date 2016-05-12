@@ -215,6 +215,18 @@ public partial class CMSModules_AdminControls_Controls_UIControls_Listing : CMSA
         }
     }
 
+
+    /// <summary>
+    /// Indicates if grid should offer data export, if not set then value from TypeInfo is used.
+    /// </summary>
+    private bool AllowDataExport
+    {
+        get
+        {
+            return GetBoolContextValue("AllowDataExport", false);
+        }
+    }
+
     #endregion
 
 
@@ -272,6 +284,11 @@ public partial class CMSModules_AdminControls_Controls_UIControls_Listing : CMSA
             {
                 gridElem.OnBeforeDataReload += gridElem_OnBeforeDataReload;
                 gridElem.OnExternalDataBound += gridElem_OnExternalDataBound;
+            }
+
+            if (AllowDataExport)
+            {
+                gridElem.ShowExportMenu = AllowDataExport;
             }
 
             // Must be called before permission check to initialize grid extenders properly

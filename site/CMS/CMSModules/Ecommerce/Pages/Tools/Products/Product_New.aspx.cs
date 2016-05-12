@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.DataEngine;
@@ -344,7 +344,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_New : CMS
 
                 if (categoryInfo.CategoryType == OptionCategoryTypeEnum.Products)
                 {
-                    url = UIContextHelper.GetElementUrl("cms.ecommerce", "ProductOptions.Options.Edit", false);
+                    url = UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, "ProductOptions.Options.Edit", false);
                 }
             }
         }

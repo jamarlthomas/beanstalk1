@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.Helpers;
@@ -91,7 +91,7 @@ public partial class CMSModules_DocumentTypes_Pages_Development_Scopes_Edit : Gl
         string path = TreePathUtils.EnsureSingleNodePath(form.FieldControls["ScopePath"].Value.ToString());
 
         // Ensure slash at the beginning
-        if (!path.StartsWithCSafe("/"))
+        if (!string.IsNullOrEmpty(path) && !path.StartsWithCSafe("/"))
         {
             path = "/" + path;
         }

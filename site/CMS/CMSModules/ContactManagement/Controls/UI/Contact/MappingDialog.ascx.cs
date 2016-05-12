@@ -330,7 +330,7 @@ public partial class CMSModules_ContactManagement_Controls_UI_Contact_MappingDia
     /// Adds contact's custom fields to the dialog.
     /// </summary>
     /// <param name="fields">Array list with custom fields (FormFieldInfo)</param>
-    protected void AddCustomFields(IEnumerable<IField> fields)
+    protected void AddCustomFields(IEnumerable<IDataDefinitionItem> fields)
     {
         CMSModules_AdminControls_Controls_Class_ClassFields fieldControl = null;
 
@@ -343,7 +343,7 @@ public partial class CMSModules_ContactManagement_Controls_UI_Contact_MappingDia
 
         FormFieldInfo field;
 
-        foreach (IField item in fields)
+        foreach (IDataDefinitionItem item in fields)
         {
             if (!(item is FormFieldInfo))
             {

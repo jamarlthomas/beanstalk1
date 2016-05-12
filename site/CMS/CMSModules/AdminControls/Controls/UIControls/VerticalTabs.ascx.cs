@@ -69,6 +69,18 @@ public partial class CMSModules_AdminControls_Controls_UIControls_VerticalTabs :
 
 
     /// <summary>
+    /// Indicates whether this instance represents a UI application.
+    /// </summary>
+    public bool IsApplication
+    {
+        get
+        {
+            return (UIContext.UIElement != null) && UIContext.UIElement.IsApplication;
+        }
+    }
+
+
+    /// <summary>
     /// If true, drop down contains '(global)'
     /// </summary>
     public bool AllowGlobal
@@ -310,6 +322,7 @@ public partial class CMSModules_AdminControls_Controls_UIControls_VerticalTabs :
         {
             ScriptHelper.RegisterJQuery(Page);
             RequestContext.ClientApplication.Add("isVerticalTabs", true);
+            RequestContext.ClientApplication.Add("isApplication", IsApplication);
 
             bool allowScrolling = !PortalContext.ViewMode.IsDesign(true);
 

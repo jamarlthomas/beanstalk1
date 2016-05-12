@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,30 +8,28 @@ using System.Web.UI.WebControls;
 using System.Linq;
 
 using CMS.Ecommerce;
+using CMS.EventLog;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.Base;
 using CMS.SiteProvider;
 using CMS.UIControls;
-using CMS.WebAnalytics;
 using CMS.DataEngine;
 using System.Text;
+
+using CMS.WebAnalytics;
+
 
 public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartItemSelector : CMSUserControl
 {
     #region "Variables"
 
     // String variable
-    private string mAddToCartLinkText = "";
     private string mAddToCartText = "shoppingcart.addtoshoppingcart";
-    private string mAddToCartTooltip = "";
     private string mQuantityText = "ecommerce.shoppingcartcontent.skuunits";
-    private string mAddToWishlistImageButton = "";
-    private string mAddToWishlistLinkText = "";
-    private string mImageFolder = "";
-    private string mAddToCartImageButton = "";
-    private string mShoppingCartUrl = "";
-    private string mWishlistUrl = "";
+    private string mImageFolder;
+    private string mShoppingCartUrl;
+    private string mWishlistUrl;
     private string mCssClassFade = "text-muted";
     private string mCssClassNormal = "normal";
 
@@ -160,7 +158,6 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
         set
         {
             mSKUEnabled = value;
-            InitializeControls();
         }
     }
 
@@ -232,14 +229,8 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
     /// </summary>
     public string AddToCartImageButton
     {
-        get
-        {
-            return mAddToCartImageButton;
-        }
-        set
-        {
-            mAddToCartImageButton = value;
-        }
+        get;
+        set;
     }
 
 
@@ -248,14 +239,8 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
     /// </summary>
     public string AddToCartLinkText
     {
-        get
-        {
-            return mAddToCartLinkText;
-        }
-        set
-        {
-            mAddToCartLinkText = value;
-        }
+        get;
+        set;
     }
 
 
@@ -296,14 +281,8 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
     /// </summary>
     public string AddToCartTooltip
     {
-        get
-        {
-            return mAddToCartTooltip;
-        }
-        set
-        {
-            mAddToCartTooltip = value;
-        }
+        get;
+        set;
     }
 
 
@@ -522,13 +501,7 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
     {
         get
         {
-            if (mImageFolder == "")
-            {
-                // Set default image folder
-                mImageFolder = GetImageUrl("ShoppingCart/");
-            }
-
-            return mImageFolder;
+            return mImageFolder ?? (mImageFolder = GetImageUrl("ShoppingCart/"));
         }
         set
         {
@@ -544,11 +517,7 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
     {
         get
         {
-            if (mShoppingCartUrl == "")
-            {
-                mShoppingCartUrl = ECommerceSettings.ShoppingCartURL(SiteContext.CurrentSiteName);
-            }
-            return mShoppingCartUrl;
+            return mShoppingCartUrl ?? (mShoppingCartUrl = ECommerceSettings.ShoppingCartURL(SiteContext.CurrentSiteName));
         }
         set
         {
@@ -586,11 +555,7 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
     {
         get
         {
-            if (mWishlistUrl == "")
-            {
-                mWishlistUrl = ECommerceSettings.WishListURL(SiteContext.CurrentSiteName);
-            }
-            return mWishlistUrl;
+            return mWishlistUrl ?? (mWishlistUrl = ECommerceSettings.WishListURL(SiteContext.CurrentSiteName));
         }
         set
         {
@@ -604,14 +569,8 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
     /// </summary>
     public string AddToWishlistImageButton
     {
-        get
-        {
-            return mAddToWishlistImageButton;
-        }
-        set
-        {
-            mAddToWishlistImageButton = value;
-        }
+        get;
+        set;
     }
 
 
@@ -620,14 +579,8 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
     /// </summary>
     public string AddToWishlistLinkText
     {
-        get
-        {
-            return mAddToWishlistLinkText;
-        }
-        set
-        {
-            mAddToWishlistLinkText = value;
-        }
+        get;
+        set;
     }
 
 
@@ -1006,7 +959,7 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
         // Fill units textbox with default quantity
         if (ShowUnitsTextBox)
         {
-            if (txtUnits.Text.Trim() == "")
+            if (String.IsNullOrWhiteSpace(txtUnits.Text))
             {
                 txtUnits.Text = DefaultQuantity.ToString();
             }
@@ -1135,14 +1088,14 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
         // Display "Add to Wishlist" link     
         if (ShowWishlistLink)
         {
-            if (AddToWishlistLinkText != "")
+            if (!String.IsNullOrEmpty(AddToWishlistLinkText))
             {
                 lnkWishlist.Visible = true;
                 lnkWishlist.Text = ResHelper.LocalizeString(AddToWishlistLinkText);
                 lnkWishlist.ToolTip = ResHelper.LocalizeString(AddToWishlistLinkText);
             }
             // Display "Add to Wishlist" image button
-            else if (AddToWishlistImageButton != "")
+            else if (!String.IsNullOrEmpty(AddToWishlistImageButton))
             {
                 // Image button
                 btnWishlist.Visible = true;
@@ -1202,7 +1155,7 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
             // Get product options
             options = ProductOptionsParameters;
         }
-        // Create params
+        // Create parameters
         ShoppingCartItemParameters cartItemParams = new ShoppingCartItemParameters(skuId, Quantity, options);
 
         // Ensure minimum allowed number of items is met
@@ -1223,7 +1176,7 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
                 cartItemParams.IsPrivate = donationProperties.DonationIsPrivate;
                 // Get exchange rate from cart currency to site main currency         
                 double rate = (SKU.IsGlobal) ? ShoppingCart.ExchangeRateForGlobalItems : ShoppingCart.ExchangeRate;
-                donationPrice = ExchangeRateInfoProvider.ApplyExchangeRate(donationProperties.DonationAmount, 1 / rate);
+                donationPrice = (double)CurrencyConverter.ApplyExchangeRate((decimal)donationProperties.DonationAmount, (decimal)(1 / rate));
             }
             cartItemParams.Price = donationPrice;
         }
@@ -1393,7 +1346,7 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
             {
                 ShoppingCart.User = ui;
                 updateCart = true;
-            }
+            }     
 
             // Shopping cart is not saved yet
             if (ShoppingCart.ShoppingCartID == 0)
@@ -1453,7 +1406,7 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
                 else
                 {
                     // Localize SKU name
-                    string skuName = (addedItem.SKU != null) ? ResHelper.LocalizeString(addedItem.SKU.SKUName) : "";
+                    string skuName = (addedItem.SKU != null) ? ResHelper.LocalizeString(addedItem.SKU.SKUName) : String.Empty;
 
                     // Check inventory
                     ShoppingCartCheckResult checkResult = ShoppingCartInfoProvider.CheckShoppingCart(ShoppingCart);
@@ -1525,8 +1478,10 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
         if (!DataHelper.DataSourceIsEmpty(dsCategories))
         {
             mProductOptions = new Hashtable();
-            // Is only one option category available for variants?
-            mOneCategoryUsed = dsCategories.Tables[0].Rows.Count == 1;
+
+            // Is only one option category available for variants?           
+            var variantCategories = Variants.Any() ? Variants.First().ProductAttributes.CategoryIDs.ToList() : null;
+            mOneCategoryUsed = variantCategories != null && variantCategories.Count == 1;        
 
             foreach (DataRow dr in dsCategories.Tables[0].Rows)
             {
@@ -1536,7 +1491,8 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
                     ProductOptionSelector selector = (ProductOptionSelector)LoadUserControl("~/CMSModules/Ecommerce/Controls/ProductOptions/ProductOptionSelector.ascx");
 
                     // Add control to the collection
-                    selector.ID = "opt" + ValidationHelper.GetInteger(dr["CategoryID"], 0);
+                    var categoryID = ValidationHelper.GetInteger(dr["CategoryID"], 0);
+                    selector.ID = "opt" + categoryID;
 
                     // Init selector
                     selector.LocalShoppingCartObj = ShoppingCart;
@@ -1548,7 +1504,7 @@ public partial class CMSModules_Ecommerce_Controls_ProductOptions_ShoppingCartIt
                     selector.OptionCategory = new OptionCategoryInfo(dr);
 
                     // If one category is used, fix the one selector with options to use only options which are not in disabled variants
-                    if (mOneCategoryUsed)
+                    if (mOneCategoryUsed && variantCategories.Contains(categoryID))
                     {
                         var disabled = from variant in Variants
                                        where !variant.Variant.SKUEnabled

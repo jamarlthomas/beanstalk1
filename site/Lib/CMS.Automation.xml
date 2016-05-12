@@ -14,6 +14,11 @@
             Refreshes object instance
             </summary>
         </member>
+        <member name="M:CMS.Automation.AutomationAction.GetDefaultMacroResolver">
+            <summary>
+            Gets the default macro resolver.
+            </summary>
+        </member>
         <member name="P:CMS.Automation.AutomationAction.AutomationManager">
             <summary>
             Automation manager
@@ -812,6 +817,14 @@
             </summary>
             <param name="arguments">Action arguments</param>
         </member>
+        <member name="M:CMS.Automation.AbstractAutomationManager`1.TrySetStateCustomData(System.String,CMS.Base.StringSafeDictionary{System.Object},CMS.Helpers.ContainerCustomData)">
+            <summary>
+            Copy data under specific key from triggerData to stateData. Null items or already existing ones will be ignored.
+            </summary>
+            <param name="key">Specific key</param>
+            <param name="triggerData">Trigger data</param>
+            <param name="stateData">State data</param>
+        </member>
         <member name="P:CMS.Automation.AbstractAutomationManager`1.CheckPermissions">
             <summary>
             Indicates if step permissions should be checked when the step is moved.
@@ -852,9 +865,13 @@
         </member>
         <member name="M:CMS.Automation.AutomationManager.GetInstance(CMS.Membership.UserInfo)">
             <summary>
-            Gets the instance of the manager.
+            Gets the instance of the manager for the given user.
             </summary>
-            <param name="user">User</param>
+            <remarks>
+            When calling other methods of <see cref="T:CMS.Automation.AutomationManager"/> (for example <see cref="M:CMS.Automation.AbstractAutomationManager`1.StartProcess(`0,System.Int32,CMS.Automation.ObjectWorkflowTriggerInfo)"/>) permissions are checked for the given user.
+            If user is not granted required permissions automation process doesn't work correctly.
+            </remarks>
+            <param name="user">User whose context is used. See remarks for more information.</param>
         </member>
         <member name="T:CMS.Automation.AutomationHandlers">
             <summary>
@@ -885,6 +902,11 @@
         <member name="T:CMS.Automation.AutomationModule">
             <summary>
             Represents the automation module.
+            </summary>
+        </member>
+        <member name="F:CMS.Automation.AutomationModule.AUTOMATION_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for automation.
             </summary>
         </member>
         <member name="M:CMS.Automation.AutomationModule.#ctor">
@@ -1763,6 +1785,31 @@
             Resolves trigger macro on given object and creates workflow process if successful.
             </summary>
         </member>
+        <member name="T:CMS.Automation.TriggerDataConstants">
+            <summary>
+            Constants for trigger related issues
+            </summary>
+        </member>
+        <member name="F:CMS.Automation.TriggerDataConstants.TRIGGER_DATA_ACTIVITY_ITEMID">
+            <summary>
+            The trigger activity item id dictionary key
+            </summary>
+        </member>
+        <member name="F:CMS.Automation.TriggerDataConstants.TRIGGER_DATA_ACTIVITY_ITEM_DETAILID">
+            <summary>
+            The trigger activity detail item id dictionary key
+            </summary>
+        </member>
+        <member name="F:CMS.Automation.TriggerDataConstants.TRIGGER_DATA_ACTIVITY_VALUE">
+            <summary>
+            The trigger activity value dictionary key
+            </summary>
+        </member>
+        <member name="F:CMS.Automation.TriggerDataConstants.TRIGGER_DATA">
+            <summary>
+            The trigger data dictionary key
+            </summary>
+        </member>
         <member name="T:CMS.Automation.TriggerHelper">
             <summary>
             Class for managing automation triggers.
@@ -1850,6 +1897,11 @@
         <member name="F:CMS.Automation.TriggerOptions.PassFunction">
             <summary>
             Function that must be passed to process trigger.
+            </summary>
+        </member>
+        <member name="F:CMS.Automation.TriggerOptions.AdditionalData">
+            <summary>
+            The additional data for trigger that will be available in trigger via TriggerParameters[TRIGGER_DATA]
             </summary>
         </member>
         <member name="T:CMS.Automation.TriggerWorker">

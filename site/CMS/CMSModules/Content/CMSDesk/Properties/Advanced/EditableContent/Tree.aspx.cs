@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using CMS.Helpers;
 using CMS.Membership;
@@ -267,12 +267,8 @@ public partial class CMSModules_Content_CMSDesk_Properties_Advanced_EditableCont
 
     void DocumentManager_OnSaveData(object sender, CMS.ExtendedControls.DocumentManagerEventArgs e)
     {
-        TreeNode node = e.Node;
-
-        // Get content
-        string content = node.DocumentContent.GetContentXml();
-        node.UpdateOriginalValues();
-        node.SetValue("DocumentContent", content);
+        var node = e.Node;
+        node.SetValue("DocumentContent", node.DocumentContent.GetContentXml());
     }
 
     #endregion

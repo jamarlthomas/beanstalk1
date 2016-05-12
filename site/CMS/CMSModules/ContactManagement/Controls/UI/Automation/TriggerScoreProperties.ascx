@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="TriggerScoreProperties.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="TriggerScoreProperties.ascx.cs"
     Inherits="CMSModules_ContactManagement_Controls_UI_Automation_TriggerScoreProperties" %>
 <%@ Register Src="~/CMSFormControls/Basic/TextBoxControl.ascx" TagName="TextBoxControl"
     TagPrefix="cms" %>

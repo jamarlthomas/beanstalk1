@@ -381,33 +381,6 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit {
     protected global::CMS.ExtendedControls.CMSDropDownList drpBarDrawingStyle;
     
     /// <summary>
-    /// BarOverlayRow control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel BarOverlayRow;
-    
-    /// <summary>
-    /// lblBarOverlayRow control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblBarOverlayRow;
-    
-    /// <summary>
-    /// chkBarOverlay control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSCheckBox chkBarOverlay;
-    
-    /// <summary>
     /// BarOrientationRow control.
     /// </summary>
     /// <remarks>
@@ -433,6 +406,33 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.CMSDropDownList drpBarOrientation;
+    
+    /// <summary>
+    /// BarOverlayRow control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel BarOverlayRow;
+    
+    /// <summary>
+    /// lblBarOverlayRow control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblBarOverlayRow;
+    
+    /// <summary>
+    /// chkBarOverlay control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSCheckBox chkBarOverlay;
     
     /// <summary>
     /// StackedBarDrawingStyleRow control.
@@ -462,33 +462,6 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit {
     protected global::CMS.ExtendedControls.CMSDropDownList drpStackedBarDrawingStyle;
     
     /// <summary>
-    /// StackedBar100ProcStacked control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel StackedBar100ProcStacked;
-    
-    /// <summary>
-    /// lblStackedBar100ProcStacked control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lblStackedBar100ProcStacked;
-    
-    /// <summary>
-    /// chkStacked control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSCheckBox chkStacked;
-    
-    /// <summary>
     /// BarStackedOrientationRow control.
     /// </summary>
     /// <remarks>
@@ -514,6 +487,33 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.CMSDropDownList drpBarStackedOrientation;
+    
+    /// <summary>
+    /// StackedBar100ProcStacked control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel StackedBar100ProcStacked;
+    
+    /// <summary>
+    /// lblStackedBar100ProcStacked control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblStackedBar100ProcStacked;
+    
+    /// <summary>
+    /// chkStacked control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSCheckBox chkStacked;
     
     /// <summary>
     /// PieDrawingStyleRow control.
@@ -2539,15 +2539,6 @@ public partial class CMSModules_Reporting_Tools_ReportGraph_Edit {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.HiddenField txtNewGraphHidden;
-    
-    /// <summary>
-    /// ltlScript control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Literal ltlScript;
     
     /// <summary>
     /// pnlPreview control.

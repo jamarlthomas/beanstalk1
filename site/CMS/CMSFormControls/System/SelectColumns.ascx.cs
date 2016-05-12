@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Xml;
 using CMS.DataEngine;
@@ -50,117 +50,128 @@ public partial class CMSFormControls_System_SelectColumns : FormEngineUserContro
     {
         base.OnPreRender(e);
 
-        bool IsQuery = true;
-        bool IsClassNames = true;
-        bool IsCustomTable = true;
-        string mJavaScript = "";
-
-        ScriptHelper.RegisterDialogScript(Page);
-
-        btnDesign.OnClientClick = "OpenModalDialog('" + hdnSelectedColumns.ClientID + "','" + txtColumns.ClientID + "'); return false;";
-
-        mJavaScript += "function SetValue(input, txtInput,hdnSelColId,hdnColId){document.getElementById(hdnSelColId).value = input; document.getElementById(hdnColId).value = txtInput;return false }\n";
-        mJavaScript += "function GetClassNames(hdnColId)  { return document.getElementById(hdnColId).value; return false;    }\n";
-        mJavaScript += "function GetSelectedColumns(hdnSelColId) { return document.getElementById(hdnSelColId).value; return false;   }\n";
-
-        // Try to find QueryName or ClassNames field
-
-        object value;
-        bool succ = Form.Data.TryGetValue("QueryName", out value);
-        if (succ)
+        if (Form != null)
         {
-            hdnProperties.Value = value.ToString();
-            IsClassNames = false;
-            IsCustomTable = false;
-        }
-        else
-        {
-            IsQuery = false;
-        }
+            bool IsQuery = true;
+            bool IsClassNames = true;
+            bool IsCustomTable = true;
 
-        // If it still can be custom table, try it
-        if (IsCustomTable)
-        {
-            // Fake it as query
-            succ = Form.Data.TryGetValue("CustomTable", out value);
+            ScriptHelper.RegisterDialogScript(Page);
+
+            btnDesign.OnClientClick = "OpenModalDialog('" + hdnSelectedColumns.ClientID + "','" + txtColumns.ClientID + "'); return false;";
+
+            string script = @"
+function SetValue(input, txtInput,hdnSelColId,hdnColId){
+    document.getElementById(hdnSelColId).value = input;
+    document.getElementById(hdnColId).value = txtInput;
+    return false;
+}
+function GetClassNames(hdnColId)  {
+    return document.getElementById(hdnColId).value;
+}
+function GetSelectedColumns(hdnSelColId) { 
+    return document.getElementById(hdnSelColId).value;
+}";
+
+            // Try to find QueryName or ClassNames field
+
+            object value;
+            bool succ = Form.Data.TryGetValue("QueryName", out value);
             if (succ)
             {
                 hdnProperties.Value = value.ToString();
                 IsClassNames = false;
-                IsQuery = true;
-            }
-            else
-            {
                 IsCustomTable = false;
             }
-        }
-
-        // If it still can be class names, try it
-        if (IsClassNames)
-        {
-            value = String.Empty;
-            succ = Form.Data.TryGetValue("ClassNames", out value);
-            if (succ)
-            {
-                hdnProperties.Value = value.ToString();
-            }
             else
             {
-                IsClassNames = false;
+                IsQuery = false;
             }
-        }
 
-        // if QueryName field was found
-        if (IsQuery)
-        {
-            // if query name isnt empty
-            if (!String.IsNullOrEmpty(hdnProperties.Value))
+            // If it still can be custom table, try it
+            if (IsCustomTable)
             {
-                // Custom tables uses selectall query by default
-                if (IsCustomTable)
+                // Fake it as query
+                succ = Form.Data.TryGetValue("CustomTable", out value);
+                if (succ)
                 {
-                    hdnProperties.Value += ".selectall";
-                }
-
-                string properties = ScriptHelper.GetString(hdnProperties.Value, false);
-
-                mJavaScript += "function OpenModalDialog(hdnSelColId, hdnColId) { modalDialog('" + ResolveUrl("~/CMSFormControls/Selectors/GridColumnDesigner.aspx") + "?queryname=" + properties + "&SelColId=' + hdnSelColId + '&ColId=' + hdnColId + '&hash=" + ValidationHelper.GetHashString("?queryname=" + properties + "&SelColId=" + hdnSelectedColumns.ClientID + "&ColId=" + txtColumns.ClientID) + "' ,'GridColumnDesigner', 700, 560); return false;}\n";
-            }
-            else
-            {
-                string message;
-
-                // Different message for query and custom table
-                if (IsCustomTable)
-                {
-                    var classes = DataClassInfoProvider.GetClasses().Where("ClassIsCustomTable = 1 AND ClassID IN (SELECT ClassID FROM CMS_ClassSite WHERE SiteID = " + SiteContext.CurrentSiteID + ")");
-
-                    message = classes.HasResults() ? GetString("SelectColumns.ApplyFirst") : GetString("SelectColumns.nocustomtablesavaible");
+                    hdnProperties.Value = value.ToString();
+                    IsClassNames = false;
+                    IsQuery = true;
                 }
                 else
                 {
-                    message = GetString("SelectColumns.EmptyQueryName");
+                    IsCustomTable = false;
                 }
-
-                mJavaScript += "function OpenModalDialog(hdnSelColId, hdnColId) { alert('" + message + "'); return false;}\n";
             }
-        }
-        else if (IsClassNames)
-        {
-            mJavaScript += "function OpenModalDialog(hdnSelColId, hdnColId) { modalDialog('" + ResolveUrl("~/CMSFormControls/Selectors/GridColumnDesigner.aspx") + "?classnames=" + ScriptHelper.GetString(hdnProperties.Value, false) + "&SelColId=' + hdnSelColId + '&ColId=' + hdnColId ,'GridColumnDesigner', 700, 560); return false;}\n";
-        }
-        else // Cant find QueryName or ClassNames or Custom table fiels 
-        {
-            mJavaScript += "function OpenModalDialog(hdnSelColId, hdnColId) { alert(" + ScriptHelper.GetLocalizedString("SelectColumns.EmptyClassNamesAndQueryName") + ");}\n";
-        }
 
-        //Register JavaScript
-        ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "SelectColumsGlobal", ScriptHelper.GetScript(mJavaScript));
+            // If it still can be class names, try it
+            if (IsClassNames)
+            {
+                value = String.Empty;
+                succ = Form.Data.TryGetValue("ClassNames", out value);
+                if (succ)
+                {
+                    hdnProperties.Value = value.ToString();
+                }
+                else
+                {
+                    IsClassNames = false;
+                }
+            }
 
-        btnDesign.Text = GetString("general.select");
+            // if QueryName field was found
+            if (IsQuery)
+            {
+                // if query name isnt empty
+                if (!String.IsNullOrEmpty(hdnProperties.Value))
+                {
+                    // Custom tables uses selectall query by default
+                    if (IsCustomTable)
+                    {
+                        hdnProperties.Value += ".selectall";
+                    }
 
-        // Set to Textbox selected columns
-        txtColumns.Text = ConvertXML(hdnSelectedColumns.Value);
+                    string properties = ScriptHelper.GetString(hdnProperties.Value, false);
+
+                    script += "function OpenModalDialog(hdnSelColId, hdnColId) { modalDialog('" + ResolveUrl("~/CMSFormControls/Selectors/GridColumnDesigner.aspx") + "?queryname=" + properties + "&SelColId=' + hdnSelColId + '&ColId=' + hdnColId + '&hash=" + ValidationHelper.GetHashString("?queryname=" + properties + "&SelColId=" + hdnSelectedColumns.ClientID + "&ColId=" + txtColumns.ClientID) + "' ,'GridColumnDesigner', 700, 560); return false;}\n";
+                }
+                else
+                {
+                    string message;
+
+                    // Different message for query and custom table
+                    if (IsCustomTable)
+                    {
+                        var classes = DataClassInfoProvider.GetClasses().Where("ClassIsCustomTable = 1 AND ClassID IN (SELECT ClassID FROM CMS_ClassSite WHERE SiteID = " + SiteContext.CurrentSiteID + ")");
+
+                        message = classes.HasResults() ? GetString("SelectColumns.ApplyFirst") : GetString("SelectColumns.nocustomtablesavaible");
+                    }
+                    else
+                    {
+                        message = GetString("SelectColumns.EmptyQueryName");
+                    }
+
+                    script += "function OpenModalDialog(hdnSelColId, hdnColId) { alert('" + message + "'); return false;}\n";
+                }
+            }
+            else if (IsClassNames)
+            {
+                script += "function OpenModalDialog(hdnSelColId, hdnColId) { modalDialog('" + ResolveUrl("~/CMSFormControls/Selectors/GridColumnDesigner.aspx") + "?classnames=" + ScriptHelper.GetString(hdnProperties.Value, false) + "&SelColId=' + hdnSelColId + '&ColId=' + hdnColId ,'GridColumnDesigner', 700, 560); return false;}\n";
+            }
+            else // Cant find QueryName or ClassNames or Custom table fiels 
+            {
+                script += "function OpenModalDialog(hdnSelColId, hdnColId) { alert(" + ScriptHelper.GetLocalizedString("SelectColumns.EmptyClassNamesAndQueryName") + ");}\n";
+            }
+
+            //Register JavaScript
+            ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "SelectColumsGlobal", ScriptHelper.GetScript(script));
+
+            btnDesign.Text = GetString("general.select");
+
+            // Set to Textbox selected columns
+            txtColumns.Text = ConvertXML(hdnSelectedColumns.Value);
+        }
     }
 
 

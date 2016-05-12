@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_ImportExport_Controls_Export_Site_cms_form" Codebehind="cms_form.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_ImportExport_Controls_Export_Site_cms_form"  Codebehind="cms_form.ascx.cs" %>
 
 <script type="text/javascript">
     //<![CDATA[

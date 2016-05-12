@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 
 using CMS.Helpers;
@@ -198,7 +198,7 @@ public partial class CMSWebParts_Navigation_cmstreeview : CMSAbstractWebPart
         }
         set
         {
-            SetValue("SelctOnlyPublished", value);
+            SetValue("SelectOnlyPublished", value);
             treeView.SelectOnlyPublished = value;
         }
     }
@@ -1056,6 +1056,7 @@ public partial class CMSWebParts_Navigation_cmstreeview : CMSAbstractWebPart
             treeView.InactivateSelectedItem = InactivateSelectedItem;
             treeView.InactivateAllItemsInPath = InactivateAllItemsInPath;
             treeView.HiglightSelectedItem = HiglightSelectedItem;
+            treeView.IgnoreDocumentMenuAction = IgnoreDocumentMenuAction;
 
             treeView.Target = Target;
             treeView.InactiveItemStyle = InactiveItemStyle;

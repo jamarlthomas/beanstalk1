@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="TranslationServiceSelector.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  CodeBehind="TranslationServiceSelector.ascx.cs"
     Inherits="CMSModules_Translations_Controls_TranslationServiceSelector" %>
 
 <%@ Register Src="~/CMSFormControls/Cultures/SiteCultureSelector.ascx" TagName="SiteCultureSelector"

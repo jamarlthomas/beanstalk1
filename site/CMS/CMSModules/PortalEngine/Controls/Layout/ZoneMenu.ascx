@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_Controls_Layout_ZoneMenu"
-    Codebehind="ZoneMenu.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_Controls_Layout_ZoneMenu"
+     Codebehind="ZoneMenu.ascx.cs" %>
 <%@ Register TagPrefix="cms" Namespace="CMS.UIControls" Assembly="CMS.UIControls" %>
 <cms:ContextMenu runat="server" ID="menuMoveTo" MenuID="zoneMoveToMenu" VerticalPosition="Bottom"
     HorizontalPosition="Left" OffsetX="25" ActiveItemCssClass="ItemSelected" MenuLevel="1"

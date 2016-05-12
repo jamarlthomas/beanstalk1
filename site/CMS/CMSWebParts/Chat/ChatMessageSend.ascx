@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/Chat/ChatMessageSend.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/Chat/ChatMessageSend.ascx.cs"
   Inherits="CMSWebParts_Chat_ChatMessageSend" %>
 <asp:Panel runat="server" ID="pnlWebpartContent" CssClass="ChatWebpartContainer ChatWebpartContainerMessageSend EnabledWebpart">
 

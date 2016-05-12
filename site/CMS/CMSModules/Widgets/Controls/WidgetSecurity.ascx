@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Widgets_Controls_WidgetSecurity"
-    Codebehind="WidgetSecurity.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Widgets_Controls_WidgetSecurity"
+     Codebehind="WidgetSecurity.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniMatrix.ascx" TagName="UniMatrix"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector"
@@ -78,6 +78,6 @@
         <cms:UniMatrix ID="gridMatrix" runat="server" QueryName="cms.widgetrole.getpermissionmatrix"
             RowItemIDColumn="RoleID" ColumnItemIDColumn="PermissionID" RowItemCodeNameColumn="RoleName" RowItemDisplayNameColumn="RoleDisplayName"
             ColumnItemDisplayNameColumn="PermissionDisplayName" RowTooltipColumn="RowDisplayName" FirstColumnClass="first-column"
-            ColumnItemTooltipColumn="PermissionDescription" ColumnTooltipColumn="PermissionDescription" ItemTooltipColumn="PermissionDescription" />
+            ColumnItemTooltipColumn="PermissionDescription" ColumnTooltipColumn="PermissionDescription" ItemTooltipColumn="PermissionDescription" MaxFilterLength="100" />
     </ContentTemplate>
 </cms:CMSUpdatePanel>

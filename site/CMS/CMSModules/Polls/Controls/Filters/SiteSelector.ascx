@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SiteSelector.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SiteSelector.ascx.cs"
     Inherits="CMSModules_Polls_Controls_Filters_SiteSelector" %>
 
 <asp:Panel CssClass="form-horizontal form-filter" runat="server" ID="pnlSearch">

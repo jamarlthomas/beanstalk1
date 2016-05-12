@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.Ecommerce;
@@ -117,14 +117,14 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Orders_Order_New : CMSEcom
                 message = "EcommerceModify OR " + message;
             }
 
-            RedirectToAccessDenied("CMS.Ecommerce", message);
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, message);
         }
     }
 
 
     private void GoToOrderDetail()
     {
-        URLHelper.Redirect(UIContextHelper.GetElementUrl("CMS.Ecommerce", "OrderProperties", false, ShoppingCart.OrderId) + "&customerid=" + customerId);
+        URLHelper.Redirect(UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, "OrderProperties", false, ShoppingCart.OrderId) + "&customerid=" + customerId);
     }
 
 

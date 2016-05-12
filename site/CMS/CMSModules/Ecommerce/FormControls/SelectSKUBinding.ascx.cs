@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 
+using CMS.Core;
 using CMS.Ecommerce;
 using CMS.FormControls;
 using CMS.Helpers;
@@ -235,7 +236,7 @@ public partial class CMSModules_Ecommerce_FormControls_SelectSKUBinding : FormEn
     private void InitSkuSelector()
     {
         var user = MembershipContext.AuthenticatedUser;
-        skuSelectorElem.UserID = user.IsAuthorizedPerResource("CMS.Ecommerce", "AccessAllDepartments") ? 0 : user.UserID;
+        skuSelectorElem.UserID = user.IsAuthorizedPerResource(ModuleName.ECOMMERCE, EcommercePermissions.PRODUCTS_ACCESSALLDEPARTMENTS) ? 0 : user.UserID;
         skuSelectorElem.SiteID = SiteContext.CurrentSiteID;
         skuSelectorElem.UniSelector.AddGlobalObjectSuffix = true;
         skuSelectorElem.DisplayGlobalProducts = AllowCreateNewGlobal;

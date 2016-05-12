@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Controls;
 using CMS.Helpers;
@@ -632,23 +632,6 @@ public partial class CMSWebParts_Maps_Documents_BingMaps : CMSAbstractWebPart
 
 
     /// <summary>
-    /// Gets or sets the value that indicates if current document is in classnames only this document is displayed.
-    /// </summary>
-    [Obsolete("Use property LoadCurrentPageOnly instead")]
-    public bool EnableSelectedItem
-    {
-        get
-        {
-            return LoadCurrentPageOnly;
-        }
-        set
-        {
-            LoadCurrentPageOnly = value;
-        }
-    }
-
-
-    /// <summary>
     /// Gets or sets the value that indicates that if a page is selected,
     /// the datasource will provide data for the selected page only.
     /// </summary>
@@ -884,16 +867,7 @@ public partial class CMSWebParts_Maps_Documents_BingMaps : CMSAbstractWebPart
             if (ucDocumentSource != null && EnableServerProcessing)
             {
                 ucBingMap.CacheItemName = ucDocumentSource.CacheItemName;
-
-                if (ucDocumentSource.CacheMinutes <= 0)
-                {
-                    // If zero or less, get from the site settings
-                    ucBingMap.CacheMinutes = SettingsKeyInfoProvider.GetIntValue(CurrentSiteName + ".CMSCacheMinutes");
-                }
-                else
-                {
-                    ucBingMap.CacheMinutes = ucDocumentSource.CacheMinutes;
-                }
+                ucBingMap.CacheMinutes = ucDocumentSource.CacheMinutes;
 
                 // Cache depends on data source and properties of web part
                 ucBingMap.CacheDependencies = CacheHelper.GetCacheDependencies(CacheDependencies, ucDocumentSource.GetDefaultCacheDependencies());

@@ -39,13 +39,13 @@ public partial class CMSModules_AdminControls_Controls_Class_TransformationEdit 
     protected global::CMSModules_Objects_Controls_Locking_ObjectEditPanel editMenuElem;
     
     /// <summary>
-    /// pnlCustomization control.
+    /// pnlScreen control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.UIControls.ObjectCustomizationPanel pnlCustomization;
+    protected global::System.Web.UI.WebControls.Panel pnlScreen;
     
     /// <summary>
     /// pnlMessagePlaceholder control.
@@ -55,15 +55,6 @@ public partial class CMSModules_AdminControls_Controls_Class_TransformationEdit 
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.MessagesPlaceHolder pnlMessagePlaceholder;
-    
-    /// <summary>
-    /// pnlScreen control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlScreen;
     
     /// <summary>
     /// editElem control.

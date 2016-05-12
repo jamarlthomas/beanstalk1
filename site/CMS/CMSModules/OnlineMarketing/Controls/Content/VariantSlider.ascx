@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_OnlineMarketing_Controls_Content_VariantSlider"
-    Codebehind="VariantSlider.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_OnlineMarketing_Controls_Content_VariantSlider"
+     Codebehind="VariantSlider.ascx.cs" %>
 <asp:Panel ID="pnlVariations" runat="server" CssClass="VariantSlider" EnableViewState="false">
     <asp:PlaceHolder ID="plcSliderPanel" runat="server">
         <div class="SliderItem">

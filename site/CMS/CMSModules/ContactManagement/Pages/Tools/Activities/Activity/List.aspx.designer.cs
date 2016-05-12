@@ -12,24 +12,6 @@
 public partial class CMSModules_ContactManagement_Pages_Tools_Activities_Activity_List {
     
     /// <summary>
-    /// pnlDis control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlDis;
-    
-    /// <summary>
-    /// ucDisabledModule control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMSAdminControls_Basic_DisabledModuleInfo ucDisabledModule;
-    
-    /// <summary>
     /// pnlActons control.
     /// </summary>
     /// <remarks>
@@ -55,6 +37,24 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Activities_Activit
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.LocalizedLabel lblWarnNew;
+    
+    /// <summary>
+    /// pnlDis control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlDis;
+    
+    /// <summary>
+    /// ucDisabledModule control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMSAdminControls_Basic_DisabledModuleInfo ucDisabledModule;
     
     /// <summary>
     /// listElem control.

@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="CompanyFilter.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_DataCom_CompanyFilter" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="CompanyFilter.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_DataCom_CompanyFilter" %>
 <div class="form-horizontal form-filter">
         <div class="form-group">
             <div class="filter-form-label-cell">

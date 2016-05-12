@@ -2735,6 +2735,33 @@
             <param name="task">The task that is being executed.</param>
             <returns>A message if there was an error during replication; otherwise, an empty string.</returns>
         </member>
+        <member name="T:CMS.SalesForce.SalesForceUsageDataSource">
+            <summary>
+            Module usage tracking data source for SalesForce module.
+            </summary>
+        </member>
+        <member name="F:CMS.SalesForce.SalesForceUsageDataSource.mSettingsToLog">
+            <summary>
+            Settings keys which are logged.
+            </summary>
+        </member>
+        <member name="M:CMS.SalesForce.SalesForceUsageDataSource.GetData">
+            <summary>
+            Get all module statistical data.
+            </summary>
+        </member>
+        <member name="M:CMS.SalesForce.SalesForceUsageDataSource.GetSettingsUsage(System.Boolean)">
+            <summary>
+            Returns how many times is specific setting used with value which is not same as default value. 
+            Only settings on running sites (if <paramref name="global"/> is true), not hidden and not custom are retrieved.
+            Only global settings when <paramref name="global"/> is false.
+            </summary>
+        </member>
+        <member name="P:CMS.SalesForce.SalesForceUsageDataSource.Name">
+            <summary>
+            Get the data source name.
+            </summary>
+        </member>
         <member name="T:CMS.SalesForce.WebServiceClient.LoginFault">
             <remarks/>
         </member>

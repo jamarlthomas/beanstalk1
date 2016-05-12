@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileUpload"
-    Codebehind="MediaFileUpload.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileUpload"
+     Codebehind="MediaFileUpload.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Content/Controls/Attachments/DirectFileUploader/DirectFileUploader.ascx"
     TagName="DirectFileUploader" TagPrefix="cms" %>
@@ -15,7 +15,7 @@
             <asp:Label ID="lblError" runat="server" CssClass="ErrorLabel" Visible="false" EnableViewState="false" />
             <asp:Label ID="lblInfo" runat="server" CssClass="InfoLabel" Visible="false" EnableViewState="false" />
             <asp:Panel ID="pnlGrid" runat="server">
-                <cms:UniGrid ID="gridAttachments" runat="server" />
+                <cms:UniGrid ID="gridAttachments" runat="server" GridName="~/CMSModules/MediaLibrary/Controls/MediaLibrary/MediaFileUpload.xml" />
             </asp:Panel>
             <div>
                 <asp:Button ID="hdnPostback" CssClass="HiddenButton" runat="server" EnableViewState="false" />

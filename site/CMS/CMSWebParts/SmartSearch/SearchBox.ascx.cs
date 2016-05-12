@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -931,7 +931,7 @@ public partial class CMSWebParts_SmartSearch_SearchBox : CMSAbstractWebPart, ICa
                 }
 
                 // Fill repeater with results
-                repSearchResults.ItemTemplate = CMSDataProperties.LoadTransformation(this, PredictiveSearchResultItemTransformationName, false);
+                repSearchResults.ItemTemplate = CMSDataProperties.LoadTransformation(this, PredictiveSearchResultItemTransformationName);
                 repSearchResults.DataSource = categories.Value;
                 repSearchResults.DataBind();
                 repSearchResults.RenderControl(new HtmlTextWriter(stringWriter));

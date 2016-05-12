@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
 using CMS.Controls;
 using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.Helpers;
 using CMS.PortalControls;
 
@@ -177,7 +178,7 @@ public partial class CMSWebParts_Viewers_Documents_ImageGallery : CMSAbstractWeb
         }
         set
         {
-            SetValue("SelctOnlyPublished", value);
+            SetValue("SelectOnlyPublished", value);
             lstImages.SelectOnlyPublished = value;
         }
     }
@@ -631,7 +632,7 @@ public partial class CMSWebParts_Viewers_Documents_ImageGallery : CMSAbstractWeb
             lstImages.CacheDependencies = CacheDependencies;
             lstImages.CacheMinutes = CacheMinutes;
             lstImages.CheckPermissions = CheckPermissions;
-            lstImages.ClassNames = "cms.file";
+            lstImages.ClassNames = SystemDocumentTypes.File;
             lstImages.CombineWithDefaultCulture = CombineWithDefaultCulture;
             lstImages.CultureCode = CultureCode;
             lstImages.MaxRelativeLevel = MaxRelativeLevel;

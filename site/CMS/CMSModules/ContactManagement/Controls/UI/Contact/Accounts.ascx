@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Accounts.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_Contact_Accounts" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Accounts.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_Contact_Accounts" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
@@ -10,16 +10,16 @@
     <asp:HiddenField ID="hdnRoleID" runat="server" ClientIDMode="Static" />
 </asp:Panel>
 <asp:Panel ID="pnlBody" runat="server" CssClass="PageContent">
+    <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
     <cms:CMSUpdatePanel ID="pnlUpdate" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
-            <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
             <cms:UniGrid runat="server" ID="gridElem" ShortID="g" OrderBy="AccountName" ObjectType="om.contactaccountlist"
                 Columns="AccountContactID,AccountName,ContactRoleID,AccountStatusID,AccountCountryID,AccountID"
                 IsLiveSite="false" RememberStateByParam="issitemanager">
                 <GridActions>
                     <ug:Action ExternalSourceName="edit" Name="edit" Caption="$om.account.viewdetail$"
                         FontIconClass="icon-edit" FontIconStyle="Allow" ModuleName="CMS.OnlineMarketing" CommandArgument="AccountID" />
-                    <ug:Action ExternalSourceName="selectrole" Name="selectrole" Caption="$om.contactrole.select$"
+                    <ug:Action ExternalSourceName="selectrole" Name="selectrole" Caption="$om.contactrole.selectitem$"
                         FontIconClass="icon-app-roles" ModuleName="CMS.OnlineMarketing" />
                     <ug:Action ExternalSourceName="remove" Name="remove" Caption="$General.Remove$" FontIconClass="icon-bin" FontIconStyle="Critical"
                         Confirmation="$General.ConfirmRemove$" ModuleName="CMS.OnlineMarketing" />

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="RecycleBin_Documents.aspx.cs" Inherits="CMSModules_MyDesk_RecycleBin_RecycleBin_Documents" Theme="Default" EnableEventValidation="false" MaintainScrollPositionOnPostback="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="RecycleBin_Documents.aspx.cs" Inherits="CMSModules_MyDesk_RecycleBin_RecycleBin_Documents" Theme="Default" EnableEventValidation="false" MaintainScrollPositionOnPostback="true"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Pages recycle bin" %>
 
 <%@ Register Src="~/CMSModules/RecycleBin/Controls/RecycleBin.ascx" TagName="RecycleBin"

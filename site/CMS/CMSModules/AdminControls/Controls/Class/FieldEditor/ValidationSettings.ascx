@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="True" Codebehind="ValidationSettings.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="True"  Codebehind="ValidationSettings.ascx.cs"
     Inherits="CMSModules_AdminControls_Controls_Class_FieldEditor_ValidationSettings" %>
 <cms:LocalizedHeading runat="server" Level="4" ResourceString="TemplateDesigner.Section.Validation"></cms:LocalizedHeading>
 <asp:Panel ID="pnlSectionValidation" runat="server" CssClass="FieldPanel">

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_SmartSearch_Controls_UI_SearchIndex_Content_Edit" Codebehind="SearchIndex_Content_Edit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_SmartSearch_Controls_UI_SearchIndex_Content_Edit"  Codebehind="SearchIndex_Content_Edit.ascx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/Classes/selectclassnames.ascx" TagName="SelectClassnames"
     TagPrefix="cms" %>

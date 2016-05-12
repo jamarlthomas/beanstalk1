@@ -1,6 +1,6 @@
-﻿cmsdefine(['angular', "CMS/StringFormatter"], function (angular, stringFormatter) {
+﻿cmsdefine(["CMS/StringFormatter"], function (stringFormatter) {
 
-    return function () {
+    return function (angular) {
 
         var moduleName = 'CMS/Filters.StringFormat',
             module = angular.module(moduleName, []);

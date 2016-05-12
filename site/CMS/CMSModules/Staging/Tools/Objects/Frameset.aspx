@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Staging_Tools_Objects_Frameset"
-    EnableViewState="false" Codebehind="Frameset.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Staging_Tools_Objects_Frameset"
+    EnableViewState="false"  Codebehind="Frameset.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

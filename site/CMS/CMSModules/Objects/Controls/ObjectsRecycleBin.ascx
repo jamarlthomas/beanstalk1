@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Objects_Controls_ObjectsRecycleBin"
-    Codebehind="ObjectsRecycleBin.ascx.cs" %>
+     Codebehind="ObjectsRecycleBin.ascx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 
@@ -7,7 +7,7 @@
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 
 <asp:Panel runat="server" ID="pnlLog" Visible="false">
-    <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+    <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="RecycleBin" />
 </asp:Panel>
 <cms:MessagesPlaceholder ID="plcMess" runat="server" />
 <div>

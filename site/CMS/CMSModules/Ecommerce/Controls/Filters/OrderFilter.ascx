@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="OrderFilter.ascx.cs" Inherits="CMSModules_Ecommerce_Controls_Filters_OrderFilter" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="OrderFilter.ascx.cs" Inherits="CMSModules_Ecommerce_Controls_Filters_OrderFilter" %>
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Ecommerce/FormControls/OrderStatusSelector.ascx" TagName="OrderStatusSelector"

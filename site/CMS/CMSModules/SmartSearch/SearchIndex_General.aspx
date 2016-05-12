@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_SmartSearch_SearchIndex_General"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_SmartSearch_SearchIndex_General"
     Title="Search Index - General" ValidateRequest="false" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Theme="Default" Codebehind="SearchIndex_General.aspx.cs" EnableEventValidation="false" %>
+    Theme="Default"  Codebehind="SearchIndex_General.aspx.cs" EnableEventValidation="false" %>
 
 <%@ Register Src="~/CMSModules/SmartSearch/Controls/UI/SearchIndex_General.ascx" TagName="SearchIndexEdit" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/SmartSearch/Controls/IndexInfo.ascx" TagName="IndexInfo" TagPrefix="cms" %>

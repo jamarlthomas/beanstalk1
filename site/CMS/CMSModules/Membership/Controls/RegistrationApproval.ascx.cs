@@ -1,8 +1,5 @@
-using System;
-using System.Data;
-using System.Web;
+﻿using System;
 using System.Web.UI;
-using System.Configuration;
 
 using CMS.EmailEngine;
 using CMS.EventLog;
@@ -185,7 +182,7 @@ public partial class CMSModules_Membership_Controls_RegistrationApproval : CMSUs
 
         if (!QueryHelper.ValidateHash("hash", "aliaspath", settings))
         {
-            URLHelper.Redirect(ResolveUrl("~/CMSMessages/Error.aspx?title=" + ResHelper.GetString("dialogs.badhashtitle") + "&text=" + ResHelper.GetString("dialogs.badhashtext")));
+            URLHelper.Redirect(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext"));
         }
 
         // Get registered user
@@ -263,8 +260,10 @@ public partial class CMSModules_Membership_Controls_RegistrationApproval : CMSUs
             return;
         }
 
-        // User has already been activated or she is been waiting for administrator approval
-        if (RegisteredUser.UserEnabled || RegisteredUser.UserSettings.UserWaitingForApproval)
+        // User has already been activated or is waiting for administrator approval.
+        if (RegisteredUser.UserEnabled || 
+            (RegisteredUser.UserSettings.UserActivationDate > DateTime.MinValue) ||
+            RegisteredUser.UserSettings.UserWaitingForApproval)
         {
             DisplayErrorMessage(UnsuccessfulApprovalText, GetString("mem.reg.UnsuccessfulApprovalText"));
         }
@@ -298,8 +297,8 @@ public partial class CMSModules_Membership_Controls_RegistrationApproval : CMSUs
             ShowInformation(DataHelper.GetNotEmpty(SuccessfulApprovalText, GetString("mem.reg.succesfullapprovaltext")));
 
             // Get logon link if confirmation was successful
-            string logonlink = SettingsKeyInfoProvider.GetValue(currentSiteName + ".CMSSecuredAreasLogonPage");
-            lblInfo.Text = String.Format(GetString("memberhsip.logonlink"), ResolveUrl(DataHelper.GetNotEmpty(logonlink, "~/")));
+            string logonlink = AuthenticationHelper.GetSecuredAreasLogonPage(currentSiteName);
+            lblInfo.Text = String.Format(GetString("memberhsip.logonlink"), ResolveUrl(logonlink));
             btnConfirm.Visible = false;
 
             // Enable user
@@ -360,14 +359,15 @@ public partial class CMSModules_Membership_Controls_RegistrationApproval : CMSUs
     private void SendEmailToAdministrator(bool administrationApproval)
     {
         EmailTemplateInfo template = null;
-
+        MacroResolver resolver = MembershipResolvers.GetRegistrationResolver(RegisteredUser);
+        string currentSiteName = SiteContext.CurrentSiteName;
         if (administrationApproval)
         {
-            template = EmailTemplateProvider.GetEmailTemplate("Registration.Approve", SiteContext.CurrentSiteName);
+            template = EmailTemplateProvider.GetEmailTemplate("Registration.Approve", currentSiteName);
         }
         else
         {
-            template = EmailTemplateProvider.GetEmailTemplate("Registration.New", SiteContext.CurrentSiteName);
+            template = EmailTemplateProvider.GetEmailTemplate("Registration.New", currentSiteName);
         }
 
         if (template == null)
@@ -377,28 +377,9 @@ public partial class CMSModules_Membership_Controls_RegistrationApproval : CMSUs
         else
         {
             // E-mail template ok
-            string from = EmailHelper.GetSender(template, (!String.IsNullOrEmpty(FromAddress)) ? FromAddress : SettingsKeyInfoProvider.GetValue(SiteContext.CurrentSiteName + ".CMSNoreplyEmailAddress"));
+            string from = EmailHelper.GetSender(template, (!String.IsNullOrEmpty(FromAddress)) ? FromAddress : SettingsKeyInfoProvider.GetValue(currentSiteName + ".CMSNoreplyEmailAddress"));
             if (!String.IsNullOrEmpty(from))
             {
-                // Prepare macro replacements
-                string[,] replacements = new string[4, 2];
-                replacements[0, 0] = "firstname";
-                replacements[0, 1] = RegisteredUser.FirstName;
-                replacements[1, 0] = "lastname";
-                replacements[1, 1] = RegisteredUser.LastName;
-                replacements[2, 0] = "email";
-                replacements[2, 1] = RegisteredUser.Email;
-                replacements[3, 0] = "username";
-                replacements[3, 1] = RegisteredUser.UserName;
-
-                // Set resolver
-                MacroResolver resolver = MacroContext.CurrentResolver;
-                resolver.SetNamedSourceData(replacements);
-                resolver.Settings.EncodeResolvedValues = true;
-
-                // Add user info data
-                resolver.SetAnonymousSourceData(new object[1] { RegisteredUser });
-
                 // Email message
                 EmailMessage email = new EmailMessage();
                 email.EmailFormat = EmailFormatEnum.Default;
@@ -406,8 +387,12 @@ public partial class CMSModules_Membership_Controls_RegistrationApproval : CMSUs
 
                 // Get e-mail sender and subject from template, if used
                 email.From = from;
+
+                // Enable encoding of macro results for HTML mail body
+                resolver.Settings.EncodeResolvedValues = true;
                 email.Body = resolver.ResolveMacros(template.TemplateText);
 
+                // Disable encoding of macro results for plaintext body and subject
                 resolver.Settings.EncodeResolvedValues = false;
                 email.PlainTextBody = resolver.ResolveMacros(template.TemplatePlainText);
 
@@ -420,7 +405,7 @@ public partial class CMSModules_Membership_Controls_RegistrationApproval : CMSUs
                 {
                     EmailHelper.ResolveMetaFileImages(email, template.TemplateID, EmailTemplateInfo.OBJECT_TYPE, ObjectAttachmentsCategories.TEMPLATE);
                     // Send the e-mail immediately
-                    EmailSender.SendEmail(SiteContext.CurrentSiteName, email, true);
+                    EmailSender.SendEmail(currentSiteName, email, true);
                 }
                 catch
                 {

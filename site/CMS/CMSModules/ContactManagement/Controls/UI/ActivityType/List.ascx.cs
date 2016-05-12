@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -128,7 +128,7 @@ public partial class CMSModules_ContactManagement_Controls_UI_ActivityType_List 
             foreach (DataRow row in view.Table.Rows)
             {
                 // Hide object menu to system activity types (only custom activity types may be exported)
-                if (!ValidationHelper.GetBoolean(DataHelper.GetDataRowValue(row, "ActivityTypeIsCustom"), false))
+                if (!DataHelper.GetBoolValue(row, "ActivityTypeIsCustom"))
                 {
                     if ((gridElem.GridView.Rows[i].Cells.Count > 0) && (gridElem.GridView.Rows[i].Cells[0].Controls.Count > 2)
                         && (gridElem.GridView.Rows[i].Cells[0].Controls[2] is ContextMenuContainer))

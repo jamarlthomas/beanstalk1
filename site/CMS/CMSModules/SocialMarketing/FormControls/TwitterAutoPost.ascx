@@ -1,5 +1,7 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SocialMarketing_FormControls_TwitterAutoPost" Codebehind="TwitterAutoPost.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_SocialMarketing_FormControls_TwitterAutoPost"  Codebehind="TwitterAutoPost.ascx.cs" %>
 <%@ Import Namespace="CMS.MacroEngine" %>
+<%@ Register src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" tagPrefix="cms" tagName="UniSelector" %>
+<%@ Register src="~/CMSModules/SocialMarketing/FormControls/AvailableUrlShortenerSelector.ascx" tagPrefix="cms" tagName="UrlShortenerSelector" %>
 
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">
     <ContentTemplate>
@@ -11,14 +13,7 @@
                     <cms:LocalizedLabel runat="server" AssociatedControlID="channelSelector" ResourceString="sm.twitter.posts.account" DisplayColon="True" />
                 </div>
                 <div class="control-group-inline-forced">
-                    <cms:FormControl runat="server" ID="channelSelector" FormControlName="Uni_selector">
-                        <Properties>
-                            <cms:Property Name="ObjectType" Value="sm.twitteraccount" />
-                            <cms:Property Name="ReturnColumnName" Value="TwitterAccountID" />
-                            <cms:Property Name="ObjectSiteName" Value="#currentsite" />
-                            <cms:Property Name="SelectionMode" Value="SingleDropDownList" />
-                        </Properties>
-                    </cms:FormControl>
+                    <cms:UniSelector runat="server" ID="channelSelector" ObjectType="sm.twitteraccount" ReturnColumnName="TwitterAccountID" SelectionMode="SingleDropDownList" AllowEmpty="False" />
                     <span class="info-icon">
                         <cms:LocalizedLabel runat="server" ToolTipResourceString="sm.twitter.autopost.pagetooltip" CssClass="sr-only"></cms:LocalizedLabel>
                         <i aria-hidden="true" class="icon-question-circle" title="<%=GetString("sm.twitter.autopost.pagetooltip") %>"></i>
@@ -32,22 +27,12 @@
                     <div class="sm-related-margin-top form-text">
                         <% = MacroResolver.Resolve(GetString("sm.twitter.autopost.macrohint"))%>
                     </div>
-                    <div class="sm-related-margin-top">
-                        <div>
-                            <cms:CMSCheckBox runat="server" ID="chkShortenUrls" ResourceString="sm.twitter.autopost.shortenurls" OnCheckedChanged="chkShortenUrls_OnCheckedChanged" AutoPostBack="true" />
-                        </div>
-                        <div class="sm-related-margin-top control-group-inline-forced">
-                            <cms:FormControl runat="server" ID="urlShortenerSelector" FormControlName="AvailableURLShortenerSelector" CssClass="control-group-inline">
-                                <Properties>
-                                    <cms:Property Name="SocialNetworkName" Value="Twitter" />
-                                </Properties>
-                            </cms:FormControl>
-                            <span class="info-icon">
-                                <cms:LocalizedLabel runat="server" ToolTipResourceString="sm.twitter.autopost.urlshortenertooltip" CssClass="sr-only"></cms:LocalizedLabel>
-                                <i aria-hidden="true" class="icon-question-circle" title="<%=GetString("sm.twitter.autopost.urlshortenertooltip") %>"></i>
-                            </span>
-                        </div>
-                    </div>
+                </div>
+                <div class="sm-inner-control-label">
+                    <cms:LocalizedLabel runat="server" AssociatedControlID="urlShortenerSelector" ResourceString="sm.twitter.posts.urlshortener" DisplayColon="True" />
+                </div>
+                <div>
+                    <cms:UrlShortenerSelector runat="server" ID="urlShortenerSelector" SocialNetworkName="Twitter" />
                 </div>
                 <div class="sm-inner-control-label">
                     <cms:LocalizedLabel runat="server" AssociatedControlID="publishDateTime" ResourceString="sm.twitter.posts.scheduledpublish" DisplayColon="True" />
@@ -64,16 +49,7 @@
                     <cms:LocalizedLabel runat="server" AssociatedControlID="campaingSelector" ResourceString="sm.twitter.posts.campaign" DisplayColon="True" />
                 </div>
                 <div>
-                    <cms:FormControl runat="server" ID="campaingSelector" FormControlName="Uni_selector">
-                        <Properties>
-                            <cms:Property Name="ObjectType" Value="Analytics.Campaign" />
-                            <cms:Property Name="ReturnColumnName" Value="CampaignID" />
-                            <cms:Property Name="ObjectSiteName" Value="#currentsite" />
-                            <cms:Property Name="SelectionMode" Value="SingleDropDownList" />
-                            <cms:Property Name="AllowEmpty" Value="True" />
-                            <cms:Property Name="OrderBy" Value="CampaignDisplayName" />
-                        </Properties>
-                    </cms:FormControl>
+                    <cms:UniSelector runat="server" ID="campaingSelector" ObjectType="Analytics.Campaign" ReturnColumnName="CampaignID" SelectionMode="SingleDropDownList" AllowEmpty="True" OrderBy="CampaignDisplayName"/>
                 </div>
             </cms:CMSPanel>
         </div>

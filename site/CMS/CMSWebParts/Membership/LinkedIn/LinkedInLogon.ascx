@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Membership_LinkedIn_LinkedInLogon" Codebehind="~/CMSWebParts/Membership/LinkedIn/LinkedInLogon.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Membership_LinkedIn_LinkedInLogon"  Codebehind="~/CMSWebParts/Membership/LinkedIn/LinkedInLogon.ascx.cs" %>
 <cms:LocalizedLabel ID="lblError" runat="server" EnableViewState="false" CssClass="ErrorLabel webpart-error-label" />
 <cms:CMSButton ID="btnSignIn" runat="server" OnCommand="btnSignIn_Click" EnableViewState="false" Visible="false" ButtonStyle="Default" />
 <asp:ImageButton ID="btnSignInImage" runat="server" OnCommand="btnSignIn_Click" EnableViewState="false" Visible="false"  />

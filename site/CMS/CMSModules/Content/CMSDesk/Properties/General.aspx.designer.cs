@@ -405,7 +405,16 @@ public partial class CMSModules_Content_CMSDesk_Properties_General {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.HyperLink lnkLiveURL;
+    protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkLiveURL;
+    
+    /// <summary>
+    /// plcPermanent control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.PlaceHolder plcPermanent;
     
     /// <summary>
     /// lblPermanentUrl control.
@@ -417,13 +426,13 @@ public partial class CMSModules_Content_CMSDesk_Properties_General {
     protected global::CMS.ExtendedControls.LocalizedLabel lblPermanentUrl;
     
     /// <summary>
-    /// lnkPermanentUrl control.
+    /// lnkPermanentURL control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.HyperLink lnkPermanentUrl;
+    protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkPermanentURL;
     
     /// <summary>
     /// plcPreview control.
@@ -468,7 +477,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_General {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.HyperLink lnkPreviewURL;
+    protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkPreviewURL;
     
     /// <summary>
     /// btnResetPreviewGuid control.
@@ -811,33 +820,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_General {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.LocalizedButton btnForums;
-    
-    /// <summary>
-    /// plcWireframe control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.PlaceHolder plcWireframe;
-    
-    /// <summary>
-    /// plcUIWireframe control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.UIControls.UIPlaceHolder plcUIWireframe;
-    
-    /// <summary>
-    /// btnWireframe control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedButton btnWireframe;
     
     /// <summary>
     /// ltlScript control.

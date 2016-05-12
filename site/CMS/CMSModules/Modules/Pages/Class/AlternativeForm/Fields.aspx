@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Fields.aspx.cs" Inherits="CMSModules_Modules_Pages_Class_AlternativeForm_Fields"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Fields.aspx.cs" Inherits="CMSModules_Modules_Pages_Class_AlternativeForm_Fields"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="ALternative forms - fields" Theme="Default" EnableEventValidation="false" %>
 
 <%@ Register Src="~/CMSModules/AdminControls/Controls/Class/AlternativeFormFieldEditor.ascx" TagName="AlternativeFormFieldEditor" TagPrefix="cms" %>

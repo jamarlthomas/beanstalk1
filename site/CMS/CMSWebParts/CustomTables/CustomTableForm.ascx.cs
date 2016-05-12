@@ -208,7 +208,7 @@ public partial class CMSWebParts_CustomTables_CustomTableForm : CMSAbstractWebPa
             {
                 string siteName = SiteContext.CurrentSiteName;
 
-                if (AnalyticsHelper.AnalyticsEnabled(siteName) && AnalyticsHelper.TrackConversionsEnabled(siteName) && !AnalyticsHelper.IsIPExcluded(siteName, RequestContext.UserHostAddress))
+                if (AnalyticsHelper.AnalyticsEnabled(siteName) && !AnalyticsHelper.IsIPExcluded(siteName, RequestContext.UserHostAddress))
                 {
                     HitLogProvider.LogConversions(SiteContext.CurrentSiteName, LocalizationContext.PreferredCultureCode, TrackConversionName, 0, ConversionValue);
                 }

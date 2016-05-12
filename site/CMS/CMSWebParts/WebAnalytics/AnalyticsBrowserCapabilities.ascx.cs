@@ -1,7 +1,5 @@
-using System;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+﻿using System;
+
 using CMS.DocumentEngine;
 using CMS.Helpers;
 using CMS.PortalControls;
@@ -114,7 +112,7 @@ public partial class CMSWebParts_WebAnalytics_AnalyticsBrowserCapabilities : CMS
 
     #region "Methods"
 
-    /// </summary>
+    /// <summary>
     /// Content loaded event handler
     /// </summary>
     public override void OnContentLoaded()

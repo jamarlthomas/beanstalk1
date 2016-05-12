@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="AssemblyClassSelector.ascx.cs" Inherits="CMSFormControls_Classes_AssemblyClassSelector" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="AssemblyClassSelector.ascx.cs" Inherits="CMSFormControls_Classes_AssemblyClassSelector" %>
 
 <%@ Register Src="~/CMSFormControls/Basic/DropDownListControl.ascx" TagName="DropDownListControl"
     TagPrefix="cms" %>

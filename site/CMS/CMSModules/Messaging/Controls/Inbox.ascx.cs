@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -731,7 +731,7 @@ function ContextMessageAction_" + inboxGrid.ClientID + @"(action, messageId) {
             ShowConfirmation(resultMessage);
         }
 
-        inboxGrid.ResetSelection();
+        inboxGrid.ResetSelection(doPostback: false);
         inboxGrid.ReloadData();
     }
 

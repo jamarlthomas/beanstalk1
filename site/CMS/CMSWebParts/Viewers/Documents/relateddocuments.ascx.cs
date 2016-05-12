@@ -1,11 +1,7 @@
-using System;
-using System.Data;
-using System.Web;
-using System.Web.UI;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.PortalControls;
-using CMS.PortalEngine;
 using CMS.DocumentEngine;
 using CMS.SiteProvider;
 
@@ -270,6 +266,8 @@ public partial class CMSWebParts_Viewers_Documents_relateddocuments : CMSAbstrac
                 repElem.TopN = SelectTopN;
                 repElem.Columns = Columns;
                 repElem.WhereCondition = WhereCondition;
+                repElem.CacheDependencies = CacheDependencies;
+                repElem.CacheMinutes = CacheMinutes;
                 
                 if (TransformationName != string.Empty)
                 {

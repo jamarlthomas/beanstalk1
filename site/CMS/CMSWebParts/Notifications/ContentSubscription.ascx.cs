@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.MacroEngine;
@@ -352,10 +352,10 @@ public partial class CMSWebParts_Notifications_ContentSubscription : CMSAbstract
 
                     if (String.IsNullOrEmpty(currentDisplayName))
                     {
-                        nsi.SubscriptionEventDisplayName = String.Format(GetString("notifications.contentsubscription.name"),
+                        nsi.SubscriptionEventDisplayName = TextHelper.LimitLength(String.Format(GetString("notifications.contentsubscription.name"),
                                                                          (String.IsNullOrEmpty(Path) ? "/%" : Path),
                                                                          (String.IsNullOrEmpty(DocumentTypes) ? GetString("notifications.contentsubscription.alldoctypes") : DocumentTypes),
-                                                                         actions[i]);
+                                                                         actions[i]), 250, wholeWords: true, cutLocation: CutTextEnum.Middle);
                     }
                     else
                     {
@@ -389,7 +389,7 @@ public partial class CMSWebParts_Notifications_ContentSubscription : CMSAbstract
             {
                 // Remove site name from template name
                 templateName = templateName.Remove(0, siteName.Length + 1);
-                
+
                 // Site template
                 SiteInfo tempSite = SiteInfoProvider.GetSiteInfo(siteName);
                 if (tempSite != null)

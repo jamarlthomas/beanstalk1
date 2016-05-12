@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Layouts_Tree_SubscriptionEdit"
-    Codebehind="SubscriptionEdit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Layouts_Tree_SubscriptionEdit"
+     Codebehind="SubscriptionEdit.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Forums/Controls/SubscriptionForm.ascx" TagName="SubscriptionEdit"
     TagPrefix="cms" %>
 <%@ Register Namespace="CMS.Forums" Assembly="CMS.Forums" TagPrefix="cms" %>

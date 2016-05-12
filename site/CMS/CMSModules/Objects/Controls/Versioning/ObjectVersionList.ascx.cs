@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Text;
 using System.Web.UI;
@@ -440,7 +440,8 @@ public partial class CMSModules_Objects_Controls_Versioning_ObjectVersionList : 
                     {
                         try
                         {
-                            ObjectVersionManager.RollbackVersion(versionHistoryId, (actionName == "fullrollback"));
+                            var newVersionId = ObjectVersionManager.RollbackVersion(versionHistoryId, (actionName == "fullrollback"));
+                            ObjectVersionHistoryInfo newVersion = ObjectVersionHistoryInfoProvider.GetVersionHistoryInfo(newVersionId);
 
                             // Set object to null because after rollback it doesn't contain current data
                             Object = null;
@@ -454,6 +455,8 @@ public partial class CMSModules_Objects_Controls_Versioning_ObjectVersionList : 
                             ShowConfirmation(GetString("objectversioning.rollbackOK"));
 
                             ScriptHelper.RegisterStartupScript(this, typeof(string), "RefreshContent", ScriptHelper.GetScript("RefreshRelatedContent_" + ClientID + "();"));
+
+                            ScriptHelper.RefreshTabHeader(Page, newVersion.VersionObjectDisplayName);
                         }
                         catch (CodeNameNotUniqueException ex)
                         {

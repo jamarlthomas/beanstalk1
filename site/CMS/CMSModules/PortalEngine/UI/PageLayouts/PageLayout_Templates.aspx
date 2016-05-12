@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="PageLayout_Templates.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="PageLayout_Templates.aspx.cs"
     Inherits="CMSModules_PortalEngine_UI_PageLayouts_PageLayout_Templates" Theme="Default"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Page Layouts - Templates" %>
 

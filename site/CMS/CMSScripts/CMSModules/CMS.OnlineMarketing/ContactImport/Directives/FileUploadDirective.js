@@ -1,45 +1,33 @@
 cmsdefine([
     'Underscore',
     'CMS.OnlineMarketing/ContactImport/FileStreamer',
-    'CMS.OnlineMarketing/ContactImport/CSVParser'], function (
+    'CMS.OnlineMarketing/ContactImport/CSVParser',
+    'CMS.OnlineMarketing/MagnificPopup/MagnificPopup'], function (
         _,
         FileStreamer,
-        CSVParser) {
+        CSVParser,
+        MagnificPopup) {
 
         var Controller = function ($scope, $element, $timeout, resourceFilter, messageHub) {
             this.$scope = $scope;
             this.$fileInput = $element.children('.js-file-input');
-            this.fileReference = null;
             this.$timeout = $timeout;
             this.PREVIEW_ROW_COUNT = 5;
             this.CSVParser = CSVParser;
             this.getString = resourceFilter;
             this.messageHub = messageHub;
-
-            // All mime types that can be considered to be valid CSV source
-            this.acceptableCSVtypes = [
-                'text/csv',
-                'text/plain',
-                'application/csv',
-                'text/comma-separated-values',
-                'application/excel',
-                'application/vnd.ms-excel',
-                'application/vnd.msexcel',
-                'text/anytext',
-                'application/octet-stream',
-                'application/txt'
-            ];
-
             this.$scope.onClick = this.elementClick.bind(this);
             this.$fileInput.on('change', this.fileInputChanged.bind(this));
+
+            MagnificPopup.register('#' + this.$scope.linkId, { type: 'iframe', tClose: this.getString("general.close"), tLoading: this.getString("general.loading") });
         },
             directive = function () {
                 return {
                     restrict: 'A',
                     scope: {
-                        fileStream: '=',
+                        linkId: '@',
                     },
-                    templateUrl: 'fileUploadTemplate.html',
+                    templateUrl: 'fileUploadDirectiveTemplate.html',
                     controller: [
                         '$scope',
                         '$element',
@@ -75,15 +63,8 @@ cmsdefine([
          * Creates new instance of the FileStreamer for the given file.
          */
         Controller.prototype.fileSelected = function () {
-            this.fileReference = null;
-
-            if (!this.ensureMimeType()) {
-                this.badInputFile(this.getString('om.contact.importcsv.badmimetype'));
-                return;
-            }
-
-            this.$scope.$emit('fileSelected');
-            this.$scope.fileStream = new FileStreamer(this.fileReference);
+            this.$scope.sourceFileName = this.$fileInput[0].files[0];
+            this.$scope.fileStream = new FileStreamer(this.$scope.sourceFileName);
             this.fileStreamLoaded();
         };
 
@@ -92,36 +73,12 @@ cmsdefine([
          * Shows the given message and set value of the file input to null.
          * @param  {string}  message  Message to be displayed on error.
          */
-        Controller.prototype.badInputFile = function(message) {
+        Controller.prototype.badInputFile = function (message) {
             this.messageHub.publishError(message);
 
             // Set file input value to null to be able to get notified when the same file is selected again.
             this.$fileInput.val(null);
             this.$scope.$apply();
-        }
-
-
-        /**
-         * Ensures given file is in valid format to be considered as CSV file. 
-         * Acceptable mime type formats are presented in acceptableCSVtypes field.
-         * @return True, if file has valid MIME type; otherwise, false.
-         */
-        Controller.prototype.ensureMimeType = function () {
-            return _.contains(this.acceptableCSVtypes, this.getFileReference().type);
-        };
-
-
-        /**
-         * Gets file reference from the HTML file input.
-         * @return FileReference usable for further processing with File API.
-         */
-        Controller.prototype.getFileReference = function () {
-            if (this.fileReference) {
-                return this.fileReference;
-            }
-
-            this.fileReference = this.$fileInput[0].files[0];
-            return this.fileReference;
         };
 
 
@@ -142,29 +99,83 @@ cmsdefine([
                     return;
                 }
 
-                try
-                {
-                    result = that.CSVParser.findValidCSVInBuffer(buffer, handle.finished);
-                }
-                catch (e) {
-                    that.badInputFile(that.getString('om.contact.importcsv.badfileformat'));
+                try {
+                    result = that._getParserResultFromBuffer(buffer, handle);
+                } catch (e) {
+                    that.badInputFile(that.getString(e));
                     return;
                 }
 
                 lines = _.first(result.rows, that.PREVIEW_ROW_COUNT);
                 lines = that.CSVParser.filterEmptyRecords(lines);
-             
-                if (that.CSVParser.checkLineLength(lines)) {
-                    // Emitting to the parent controller, can use scope events.
-                    that.$scope.$emit('firstNRowsLoaded', {
-                        parsedLines: lines,
-                        fileStream: that.$scope.fileStream
-                    });
-                } else {
-                    that.badInputFile(that.getString('om.contact.importcsv.firstrowslengthdoesnotmatch'));
-                }
+
+                // Emitting to the parent controller, can use scope events.
+                that.$scope.$emit('firstNRowsLoaded', {
+                    parsedLines: lines,
+                    fileStream: that.$scope.fileStream,
+                    sourceFileName: that.$scope.sourceFileName
+                });
             });
         };
+
+
+        Controller.prototype._getParserResultFromBuffer = function (buffer, handle) {
+            var parserError,
+                batchParsedBySemicolon,
+                batchParsedByComma,
+                result,
+                defaultIgnoreRecordLenght = this.CSVParser.IGNORE_RECORD_LENGTH,
+                bothBatchesAreEmpty,
+                bothBatchesContainsOnlyOneRow;
+
+            // Does not ignore inconsistent records lengths
+            this.CSVParser.IGNORE_RECORD_LENGTH = false;
+
+            // Try find valid CSV in buffer with comma as separator.
+            try {
+                this.CSVParser.COLUMN_SEPARATOR = ',';
+                batchParsedByComma = this.CSVParser.findValidCSVInBuffer(buffer, handle.finished);
+            } catch (e) {
+                parserError = e;
+            }
+
+            // If previous parsing failed try find valid CSV in buffer with semicolon separator.
+            // Batch containing only one row or one column is considered as invalid/failed result. 
+            // (note: the batch may be still used if CSV contains only one row, this will be determinated later)
+            if (parserError || batchParsedByComma.rows.length <= 1 || batchParsedByComma.rows[0].length <= 1) {
+                parserError = null;
+                try {
+                    this.CSVParser.COLUMN_SEPARATOR = ';';
+                    batchParsedBySemicolon = this.CSVParser.findValidCSVInBuffer(buffer, handle.finished);
+                } catch (e) {
+                    parserError = e;
+                }
+            }
+
+            // If there was error or both batches contains less than one row (or nothing) throw error. After this IF statement at least one result will have valid output.
+            bothBatchesAreEmpty = !batchParsedByComma && !batchParsedBySemicolon;
+            bothBatchesContainsOnlyOneRow = batchParsedByComma && batchParsedBySemicolon && (batchParsedByComma.rows.length <= 1) && (batchParsedBySemicolon.rows.length <= 1);
+            if (parserError || bothBatchesAreEmpty || bothBatchesContainsOnlyOneRow) {
+                throw 'om.contact.importcsv.badfiletypeorformat';
+            }
+
+            // If both results have valid output the one with more columns wins.
+            if (batchParsedByComma && batchParsedBySemicolon) {
+                if (batchParsedByComma.rows.length != batchParsedBySemicolon.rows.length) {
+                    result = (batchParsedByComma.rows.length > batchParsedBySemicolon.rows.length) ? batchParsedByComma : batchParsedBySemicolon;
+                } else {
+                    result = (batchParsedByComma.rows[0].length > batchParsedBySemicolon.rows[0].length) ? batchParsedByComma : batchParsedBySemicolon;
+                }
+            } else {
+                // One result is null and the other is filled. Filled result wins.
+                result = batchParsedByComma || batchParsedBySemicolon;
+            }
+
+            this.CSVParser.COLUMN_SEPARATOR = result === batchParsedByComma ? ',' : ';';
+            this.CSVParser.IGNORE_RECORD_LENGTH = defaultIgnoreRecordLenght;
+
+            return result;
+        }
 
         return [directive];
     });

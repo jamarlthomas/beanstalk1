@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Ecommerce_Checkout_InputFields_RegisterAfterCheckout" Codebehind="~/CMSWebParts/Ecommerce/Checkout/InputFields/RegisterAfterCheckout.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Ecommerce_Checkout_InputFields_RegisterAfterCheckout"  Codebehind="~/CMSWebParts/Ecommerce/Checkout/InputFields/RegisterAfterCheckout.ascx.cs" %>
 
 <asp:panel runat="server" ID="pnlCheckBox">
     <cms:CMSCheckBox runat="server" id="chkRegister" /> 

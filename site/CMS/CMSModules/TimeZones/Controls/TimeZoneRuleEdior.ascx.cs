@@ -1,15 +1,15 @@
-using System;
-using System.Text;
+﻿using System;
 using System.Web.UI.WebControls;
 
+using CMS.Base;
 using CMS.Helpers;
 using CMS.UIControls;
 
 public partial class CMSModules_TimeZones_Controls_TimeZoneRuleEdior : CMSUserControl
 {
-    private string mRule = null;
+    private string mRule;
     private bool mEnabled = true;
-    private string mTitleText = "";
+
 
     /// <summary>
     /// Gets or sets the value that indicates whether control is enabled.
@@ -53,23 +53,13 @@ public partial class CMSModules_TimeZones_Controls_TimeZoneRuleEdior : CMSUserCo
     /// </summary>
     public string TitleText
     {
-        get
-        {
-            return mTitleText;
-        }
-        set
-        {
-            mTitleText = value;
-        }
+        get;
+        set;
     }
 
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        lblMonth.Text = GetString("TimeZ.RuleEditor.Month");
-        lblDay.Text = GetString("TimeZ.RuleEditor.Day");
-        lblTime.Text = GetString("TimeZ.RuleEditor.Time");
-        lblValue.Text = GetString("TimeZ.RuleEditor.Value");
         headText.Text = TitleText;
 
         if (!RequestHelper.IsPostBack())
@@ -80,7 +70,7 @@ public partial class CMSModules_TimeZones_Controls_TimeZoneRuleEdior : CMSUserCo
             SetRule(mRule);
         }
 
-        // Switch between day and dayvalue dropdown
+        // Switch between day and value dropdown
         CheckCondition();
 
         drpMonth.Enabled = Enabled;
@@ -98,7 +88,7 @@ public partial class CMSModules_TimeZones_Controls_TimeZoneRuleEdior : CMSUserCo
 
     protected void drpCondition_SelectedIndexChanged(object sender, EventArgs e)
     {
-        // Switch between day and dayvalue dropdown
+        // Switch between day and value dropdown
         CheckCondition();
     }
 
@@ -152,7 +142,7 @@ public partial class CMSModules_TimeZones_Controls_TimeZoneRuleEdior : CMSUserCo
         months[11, 0] = GetString("general.december");
         months[11, 1] = "DEC";
 
-        // Fill month, day and dayvalue dropdowns
+        // Fill month, day and value dropdowns
         for (int i = 0; i <= days.GetUpperBound(0); i++)
         {
             drpDay.Items.Add(new ListItem(days[i, 0], days[i, 1]));
@@ -165,6 +155,10 @@ public partial class CMSModules_TimeZones_Controls_TimeZoneRuleEdior : CMSUserCo
         {
             drpDayValue.Items.Add(new ListItem(i.ToString(), i.ToString()));
         }
+
+        // Localize first/last condition options
+        drpCondition.Items[0].Text = GetString("settings.first").ToUpperCSafe();
+        drpCondition.Items[1].Text = GetString("settings.last").ToUpperCSafe();
     }
 
 
@@ -263,23 +257,17 @@ public partial class CMSModules_TimeZones_Controls_TimeZoneRuleEdior : CMSUserCo
     /// </summary>
     private void GetRule()
     {
-        StringBuilder builder = new StringBuilder();
+        string[] values = new string[7];
 
         // Create rule string
-        builder.Append(ValidationHelper.GetString(drpMonth.SelectedValue, ""));
-        builder.Append("|");
-        builder.Append(ValidationHelper.GetString(drpDay.SelectedValue, ""));
-        builder.Append("|");
-        builder.Append(ValidationHelper.GetInteger(drpDayValue.SelectedValue, 0));
-        builder.Append("|");
-        builder.Append(ValidationHelper.GetString(Server.HtmlDecode(drpCondition.SelectedValue), ""));
-        builder.Append("|");
-        builder.Append(ValidationHelper.GetInteger(txtAtHour.Text, 0));
-        builder.Append("|");
-        builder.Append(ValidationHelper.GetInteger(txtAtMinute.Text, 0));
-        builder.Append("|");
-        builder.Append(ValidationHelper.GetInteger(txtValue.Text, 0));
+        values[0] = ValidationHelper.GetString(drpMonth.SelectedValue, "");
+        values[1] = ValidationHelper.GetString(drpDay.SelectedValue, "");
+        values[2] = ValidationHelper.GetInteger(drpDayValue.SelectedValue, 0).ToString();
+        values[3] = ValidationHelper.GetString(Server.HtmlDecode(drpCondition.SelectedValue), "");
+        values[4] = ValidationHelper.GetInteger(txtAtHour.Text, 0).ToString();
+        values[5] = ValidationHelper.GetInteger(txtAtMinute.Text, 0).ToString();
+        values[6] = ValidationHelper.GetInteger(txtValue.Text, 0).ToString();
 
-        mRule = builder.ToString();
+        mRule = String.Join("|", values);
     }
 }

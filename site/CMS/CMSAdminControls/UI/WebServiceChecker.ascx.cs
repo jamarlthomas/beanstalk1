@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Text;
-using System.Net;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
-using CMS.PortalEngine;
 using CMS.UIControls;
 using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.Base;
+
 
 public partial class CMSAdminControls_UI_WebServiceChecker : CMSUserControl, IPostBackEventHandler
 {
@@ -19,6 +16,8 @@ public partial class CMSAdminControls_UI_WebServiceChecker : CMSUserControl, IPo
     /// Short link to help topic page regarding WCF configuration.
     /// </summary>
     private const string HELP_TOPIC_CONFIGURING_WCF_LINK = "wcf_config";
+
+
     private const string HELP_TOPIC_CONFIGURING_WCF_HTTPS_LINK = HELP_TOPIC_CONFIGURING_WCF_LINK;
 
     #endregion
@@ -49,12 +48,14 @@ public partial class CMSAdminControls_UI_WebServiceChecker : CMSUserControl, IPo
 
     /// <summary>
     /// Text displayed when user is not authorized to use the service.
+    /// Might be caused by incorrect server configuration.
     /// </summary>
     public string NotAuthorizedText
     {
         get
         {
-            return ResHelper.GetString(mNotAuthorizedText);
+            string link = String.Format("<a target=\"_blank\" href=\"{0}\">{1}</a>", DocumentationHelper.GetDocumentationTopicUrl(HELP_TOPIC_CONFIGURING_WCF_LINK), GetString("general.ourdocumentation"));
+            return String.Format(ResHelper.GetString(mNotAuthorizedText), link);
         }
         set
         {
@@ -86,7 +87,7 @@ public partial class CMSAdminControls_UI_WebServiceChecker : CMSUserControl, IPo
     public string DisabledText
     {
         get
-        {            
+        {
             return ResHelper.GetString(mDisabledText);
         }
         set
@@ -151,7 +152,7 @@ public partial class CMSAdminControls_UI_WebServiceChecker : CMSUserControl, IPo
         else if (!RequestHelper.IsPostBack())
         {
             // This message is hidden by javascript as soon as possible
-            ShowWarning(ResHelper.GetString("webservices.checker.initialmessage"), null, null);
+            ShowWarning(ResHelper.GetString("webservices.checker.initialmessage"));
 
             // Request javascript proxy directly to avoid logon screen redirection
             string url = URLHelper.GetAbsoluteUrl(ServiceUrl.EndsWithCSafe("/js") ? ServiceUrl : ServiceUrl.TrimEnd('/') + "/js");
@@ -205,9 +206,9 @@ function PerformServiceCheck(){
     }
 }");
             ScriptHelper.RegisterJQuery(Page);
-            ScriptHelper.RegisterClientScriptBlock(Page, typeof(string), "WebServiceChecker_" + ClientID, ScriptHelper.GetScript(actionScript.ToString()));
+            ScriptHelper.RegisterClientScriptBlock(Page, typeof (string), "WebServiceChecker_" + ClientID, ScriptHelper.GetScript(actionScript.ToString()));
 
-            ScriptHelper.RegisterStartupScript(Page, typeof(string), "PerformServiceCheck_" + ClientID, "PerformServiceCheck();", true);
+            ScriptHelper.RegisterStartupScript(Page, typeof (string), "PerformServiceCheck_" + ClientID, "PerformServiceCheck();", true);
         }
     }
 
@@ -230,19 +231,19 @@ function PerformServiceCheck(){
         switch (eventArgument)
         {
             case "401":
-                ShowWarning(NotAuthorizedText, null, null);
+                ShowWarning(NotAuthorizedText);
                 break;
 
             case "403":
-                ShowWarning(DisabledText, null, null);
+                ShowWarning(DisabledText);
                 break;
 
             case "404":
-                ShowWarning(NotFoundText, null, null);
+                ShowWarning(NotFoundText);
                 break;
 
             case "500":
-                ShowWarning(ServerErrorText, null, null);
+                ShowWarning(ServerErrorText);
                 break;
         }
     }

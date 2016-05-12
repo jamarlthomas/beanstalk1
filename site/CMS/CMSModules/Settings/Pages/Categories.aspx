@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Settings_Pages_Categories"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Settings_Pages_Categories"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" Title="Settings"
-    Codebehind="Categories.aspx.cs" %>
+     Codebehind="Categories.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/Trees/TreeBorder.ascx" TagName="TreeBorder"
     TagPrefix="cms" %>

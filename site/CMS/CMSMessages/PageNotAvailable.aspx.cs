@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Web;
@@ -34,11 +34,6 @@ public partial class CMSMessages_PageNotAvailable : MessagePage
             case "notpublished":
                 title = GetString("NotPublished.Header");
                 lblInfo.Text = GetString("NotPublished.Info");
-                break;
-
-            case "wireframe":
-                title = GetString("WireframeNoLiveSite.Header");
-                lblInfo.Text = GetString("WireframeNoLiveSite.Info");
                 break;
 
             default:

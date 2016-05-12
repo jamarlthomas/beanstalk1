@@ -504,7 +504,7 @@ $cmsj(function() {{
         else
         {
             // Select first item if nothing was selected
-            if (drpAssemblyName.SelectedIndex < 0)
+            if (drpAssemblyName.SelectedIndex < 0 && String.IsNullOrEmpty(drpAssemblyName.SelectedValue))
             {
                 drpAssemblyName.SelectedIndex = 0;
             }
@@ -547,6 +547,10 @@ $cmsj(function() {{
             {
                 drpClassName.SelectedIndex = 0;
             }
+        }
+        else
+        {
+            drpClassName.DropDownList.Items.Add(drpClassName.SelectedValue);
         }
     }
 

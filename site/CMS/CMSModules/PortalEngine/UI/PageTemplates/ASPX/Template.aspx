@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_PageTemplates_ASPX_Template"
-    Theme="Default" ValidateRequest="false" Codebehind="Template.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_PageTemplates_ASPX_Template"
+    Theme="Default" ValidateRequest="false"  Codebehind="Template.aspx.cs" %>
 
 <%--REGISTER--%>
 <%=DocType%>

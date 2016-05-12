@@ -12,6 +12,24 @@
 public partial class CMSModules_Content_CMSDesk_OnlineMarketing_Reports {
     
     /// <summary>
+    /// pnlDisabled control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlDisabled;
+    
+    /// <summary>
+    /// ucDisabledModule control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMSAdminControls_Basic_DisabledModuleInfo ucDisabledModule;
+    
+    /// <summary>
     /// ucGraphPreLoader control.
     /// </summary>
     /// <remarks>
@@ -46,24 +64,6 @@ public partial class CMSModules_Content_CMSDesk_OnlineMarketing_Reports {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.CMSRadioButton rbTraffic;
-    
-    /// <summary>
-    /// pnlDisabled control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnlDisabled;
-    
-    /// <summary>
-    /// ucDisabledModule control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMSAdminControls_Basic_DisabledModuleInfo ucDisabledModule;
     
     /// <summary>
     /// pnlContent control.

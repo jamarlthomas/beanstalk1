@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="WorkflowDesignerToolbar.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="WorkflowDesignerToolbar.ascx.cs"
     Inherits="CMSModules_Workflows_Controls_WorkflowDesignerToolbar" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniMenu/UniMenu.ascx" TagName="UniMenu" TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniMenu/UniGraphToolbar/EditGroup.ascx" TagName="EditToolbar" TagPrefix="cms" %>

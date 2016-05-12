@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_Controls_Layout_TemplateLayoutEdit"
-    Codebehind="TemplateLayoutEdit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_Controls_Layout_TemplateLayoutEdit"
+     Codebehind="TemplateLayoutEdit.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/PortalEngine/FormControls/PageLayouts/PageLayoutSelector.ascx"
     TagName="LayoutSelector" TagPrefix="cms" %>

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="ResourceStringEdit.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="ResourceStringEdit.ascx.cs"
     Inherits="CMSModules_Cultures_Controls_UI_ResourceStringEdit" %>
 
 <cms:LocalizedHeading ID="lblGeneral" Level="4" runat="server" ResourceString="general.general" EnableViewState="false" />

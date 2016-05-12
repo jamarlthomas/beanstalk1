@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="IntegrationNotify.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="IntegrationNotify.aspx.cs"
     Inherits="CMSPages_IntegrationNotify" %>
 
 <!DOCTYPE html>

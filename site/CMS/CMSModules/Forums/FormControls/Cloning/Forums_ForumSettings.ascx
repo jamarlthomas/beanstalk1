@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Forums_ForumSettings.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Forums_ForumSettings.ascx.cs"
     Inherits="CMSModules_Forums_FormControls_Cloning_Forums_ForumSettings" %>
 <div class="form-horizontal">
     <div class="form-group">

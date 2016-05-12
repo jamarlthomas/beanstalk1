@@ -10,7 +10,7 @@
     <column source="##ALL##" externalsourcename="extedit" caption="$general.update$" wrap="false" columnname="extedit" cssclass="unigrid-actions" />
     <column source="##ALL##" externalsourcename="name" caption="$general.name$" cssclass="main-column-100" wrap="false" sort="DocumentName" />
     <column source="##ALL##" externalsourcename="type" caption="$general.type$" wrap="false" sort="AttachmentExtension" />
-    <column source="##ALL##" externalsourcename="size" caption="$general.size$" wrap="false"  sort="AttachmentSize" />
+    <column source="##ALL##" externalsourcename="size" caption="$general.size$" wrap="false" />
     <column source="DocumentModifiedWhen" externalsourcename="documentmodifiedwhen" caption="$general.modified$" wrap="false">
       <tooltip source="DocumentModifiedWhen" externalsourcename="documentmodifiedwhentooltip" />
     </column>

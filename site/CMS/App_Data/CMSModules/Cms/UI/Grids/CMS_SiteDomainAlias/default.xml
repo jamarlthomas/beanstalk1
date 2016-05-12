@@ -8,7 +8,7 @@
     <column source="SiteDomainAliasName" caption="$Unigrid.AliasesList.Columns.SiteDomainAliasName$" wrap="false">
       <filter type="text" />
     </column>
-    <column source="##ALL##" externalsourcename="sitedefaultvisitorculture" caption="$Unigrid.AliasesList.Columns.DefaultVisitorCulture$" wrap="false" />
+    <column source="SiteDefaultVisitorCulture" externalsourcename="sitedefaultvisitorculture" caption="$Unigrid.AliasesList.Columns.DefaultVisitorCulture$" wrap="false" />
     <column source="SiteDomainDefaultAliasPath" caption="$Unigrid.AliasesList.Columns.sitedomaindefaultaliaspath$" wrap="false" />
     <column cssclass="filling-column" />
   </columns>

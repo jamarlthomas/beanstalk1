@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -166,9 +166,6 @@ public partial class CMSModules_Scheduler_Controls_UI_List : CMSAdminListControl
 
     protected object gridElem_OnExternalDataBound(object sender, string sourceName, object parameter)
     {
-        DataRowView drv;
-        bool taskEnabled;
-
         switch (sourceName.ToLowerCSafe())
         {
             case "useexternalservice":
@@ -177,47 +174,23 @@ public partial class CMSModules_Scheduler_Controls_UI_List : CMSAdminListControl
                     CMSGridActionButton imgButton = sender as CMSGridActionButton;
                     if (imgButton != null)
                     {
-                        bool visible = false;
-                        // Only if setting 'Use external service' is allowed
+                        imgButton.Visible = false;
                         if (SchedulingHelper.UseExternalService)
                         {
-                            drv = UniGridFunctions.GetDataRowView(imgButton.Parent as DataControlFieldCell);
-                            if (drv != null)
+                            DataRowView dataRowView = UniGridFunctions.GetDataRowView(imgButton.Parent as DataControlFieldCell);
+                            if (dataRowView != null)
                             {
-                                // Indicates whether the task is processed by an external service
-                                bool taskUseExternalService = ValidationHelper.GetBoolean(drv["TaskUseExternalService"], false);
-                                // Indicates whether the task is enabled
-                                taskEnabled = ValidationHelper.GetBoolean(drv["TaskEnabled"], false);
+                                var taskInfo = new TaskInfo(dataRowView.Row);
 
-                                if (taskUseExternalService && taskEnabled)
+                                imgButton.Visible = SchedulingHelper.IsExternalTaskTooLate(taskInfo, 3);
+
+                                if (imgButton.Visible)
                                 {
-                                    DateTime taskLastRunTime = ValidationHelper.GetDateTime(drv["TaskLastRunTime"], DateTimeHelper.ZERO_TIME);
-
-                                    if (taskLastRunTime != DateTimeHelper.ZERO_TIME)
-                                    {
-                                        // Task period
-                                        string interval = ValidationHelper.GetString(drv["TaskInterval"], null);
-                                        DateTime now = DateTime.Now;
-                                        TimeSpan period = SchedulingHelper.GetNextTime(interval, taskLastRunTime, now).Subtract(now);
-                                        // Actual different time between now date and last run time
-                                        TimeSpan actualDifferent = now.Subtract(taskLastRunTime);
-
-                                        // Show image if actual different time is three times larger than task period
-                                        if ((period.TotalSeconds > 0) && (actualDifferent.TotalSeconds > (period.TotalSeconds * 3)))
-                                        {
-                                            imgButton.ToolTip = GetString("scheduledtask.useservicewarning");
-                                            visible = true;
-                                        }
-                                    }
+                                    imgButton.ToolTip = GetString("scheduledtask.useservicewarning");
+                                    imgButton.OnClientClick = "return false;";
+                                    imgButton.Style.Add(HtmlTextWriterStyle.Cursor, "default");
                                 }
                             }
-                        }
-
-                        imgButton.Visible = visible;
-                        if (imgButton.Visible)
-                        {
-                            imgButton.OnClientClick = "return false;";
-                            imgButton.Style.Add(HtmlTextWriterStyle.Cursor, "default");
                         }
                     }
                 }
@@ -231,12 +204,13 @@ public partial class CMSModules_Scheduler_Controls_UI_List : CMSAdminListControl
                 break;
 
             case "runactions":
+            {
                 // Image "run" button
                 CMSGridActionButton runButton = ((CMSGridActionButton)sender);
 
                 // Data row and task enabled value
-                drv = UniGridFunctions.GetDataRowView(runButton.Parent as DataControlFieldCell);
-                taskEnabled = ValidationHelper.GetBoolean(drv["TaskEnabled"], false);
+                DataRowView dataRowView = UniGridFunctions.GetDataRowView(runButton.Parent as DataControlFieldCell);
+                bool taskEnabled = ValidationHelper.GetBoolean(dataRowView["TaskEnabled"], false);
 
                 if (!taskEnabled)
                 {
@@ -245,7 +219,7 @@ public partial class CMSModules_Scheduler_Controls_UI_List : CMSAdminListControl
                 }
 
                 break;
-
+            }
         }
         return parameter;
     }

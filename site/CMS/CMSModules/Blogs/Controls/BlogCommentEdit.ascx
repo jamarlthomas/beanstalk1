@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Blogs_Controls_BlogCommentEdit"
-    Codebehind="BlogCommentEdit.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Blogs_Controls_BlogCommentEdit"
+     Codebehind="BlogCommentEdit.ascx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/Captcha/SecurityCode.ascx" TagName="SecurityCode"
     TagPrefix="cms" %>

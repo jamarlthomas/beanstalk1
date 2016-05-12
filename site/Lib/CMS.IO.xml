@@ -4,6 +4,185 @@
         <name>CMS.IO</name>
     </assembly>
     <members>
+        <member name="T:CMS.IO.FileDebugOperation">
+            <summary>
+            List of constants for file debugging operations
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.DELETE">
+            <summary>
+            Delete
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.COPY">
+            <summary>
+            Copy
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.CREATE">
+            <summary>
+            Create
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.MOVE">
+            <summary>
+            Move
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.WRITE_ALL_TEXT">
+            <summary>
+            Write all text
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.APPEND_ALL_TEXT">
+            <summary>
+            Append all text
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.WRITE_ALL_BYTES">
+            <summary>
+            Write all bytes
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.WRITE">
+            <summary>
+            Write
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.DELETE_DIR_STRUCTURE">
+            <summary>
+            Delete directory structure
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.MOVE_DIR">
+            <summary>
+            Move directory
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.DELETE_DIR">
+            <summary>
+            Delete directory
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.CREATE_DIR">
+            <summary>
+            Create directory
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.DirExists">
+            <summary>
+            Directory exists
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.GET_CURRENT_DIR">
+            <summary>
+            Get current directory
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.READ">
+            <summary>
+            Read
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.READ_ALL_TEXT">
+            <summary>
+            Read all text
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.READ_ALL_BYTES">
+            <summary>
+            Read all bytes
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.EXISTS">
+            <summary>
+            Exists
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.GET_FILES">
+            <summary>
+            GetFiles
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.GET_DIRECTORIES">
+            <summary>
+            GetDirectories
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.GET_ACCESS_CONTROL">
+            <summary>
+            GetAccessControl
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.OPEN">
+            <summary>
+            Open
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.DIR_EXISTS">
+            <summary>
+            Directory exists
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.CLOSE">
+            <summary>
+            Close
+            </summary>
+        </member>
+        <member name="F:CMS.IO.FileDebugOperation.mReadOnlyOperations">
+            <summary>
+            List of known read-only file system operations.
+            </summary>
+        </member>
+        <member name="M:CMS.IO.FileDebugOperation.RegisterReadOnlyOperation(System.String)">
+            <summary>
+            Registers the given operation as read-only. Extends the list <see cref="P:CMS.IO.FileDebugOperation.ReadOnlyOperations"/>
+            </summary>
+            <param name="operation">Operation to register</param>
+        </member>
+        <member name="P:CMS.IO.FileDebugOperation.ReadOnlyOperations">
+            <summary>
+            Collection of known read-only file system operations.
+            </summary>
+            <remarks>
+            Use <see cref="M:CMS.IO.FileDebugOperation.RegisterReadOnlyOperation(System.String)"/> to extend this list.
+            </remarks>
+        </member>
+        <member name="T:CMS.IO.IOEventArgs">
+            <summary>
+            Event arguments for the IO event handler
+            </summary>
+        </member>
+        <member name="P:CMS.IO.IOEventArgs.Path">
+            <summary>
+            File system path
+            </summary>
+        </member>
+        <member name="T:CMS.IO.IOEvents">
+            <summary>
+            IO events
+            </summary>
+        </member>
+        <member name="F:CMS.IO.IOEvents.DeleteFile">
+            <summary>
+            Fires when a file is deleted
+            </summary>
+        </member>
+        <member name="F:CMS.IO.IOEvents.DeleteDirectory">
+            <summary>
+            Fires when a directory is deleted
+            </summary>
+        </member>
+        <member name="T:CMS.IO.IOHandler">
+            <summary>
+            Event handler for IO operations
+            </summary>
+        </member>
+        <member name="M:CMS.IO.IOHandler.StartEvent(System.String)">
+            <summary>
+            Initiates the event handling
+            </summary>
+        </member>
         <member name="T:CMS.IO.FileDebug">
             <summary>
             File debug methods
@@ -157,16 +336,6 @@
             Directory lock suffix.
             </summary>
         </member>
-        <member name="F:CMS.IO.AbstractStorageProvider.mDefaultProvider">
-            <summary>
-            Default storage provider
-            </summary>
-        </member>
-        <member name="F:CMS.IO.AbstractStorageProvider.mSystemProvider">
-            <summary>
-            System.IO storage provider
-            </summary>
-        </member>
         <member name="M:CMS.IO.AbstractStorageProvider.#ctor">
             <summary>
             Constructor
@@ -275,7 +444,7 @@
             <summary>
             Returns new instance of FileInfo object.
             </summary>
-            <param name="filename">File name</param>
+            <param name="fileName">File name</param>
         </member>
         <member name="M:CMS.IO.AbstractStorageProvider.GetDirectoryInfo(System.String)">
             <summary>
@@ -329,7 +498,12 @@
         </member>
         <member name="P:CMS.IO.AbstractStorageProvider.IsExternalStorage">
             <summary>
-            Returns whether current instance running on external storage.
+            Returns whether current instance is running on external storage.
+            </summary>
+        </member>
+        <member name="P:CMS.IO.AbstractStorageProvider.IsSharedStorage">
+            <summary>
+            Returns whether current instance is running on shared storage.
             </summary>
         </member>
         <member name="P:CMS.IO.AbstractStorageProvider.DirectoryProviderObject">
@@ -775,6 +949,12 @@
             Gets or sets system stream.
             </summary>
         </member>
+        <member name="P:CMS.IO.Stream.CanSeek">
+            <summary>
+            When overridden in a derived class, gets a value indicating whether the current stream supports seeking.
+            </summary>
+            <returns>True if the stream supports seeking, false otherwise.</returns>
+        </member>
         <member name="P:CMS.IO.Stream.Length">
             <summary>
             Gets the length in bytes of the stream.
@@ -859,6 +1039,12 @@
             <summary>
             Gets or sets System.IO stream object.
             </summary>
+        </member>
+        <member name="P:CMS.IO.Compression.DeflateStream.CanSeek">
+            <summary>
+            Gets a value indicating whether the stream supports seeking.
+            </summary>
+            <returns>False in all cases.</returns>
         </member>
         <member name="P:CMS.IO.Compression.DeflateStream.Length">
             <summary>
@@ -949,6 +1135,12 @@
             <summary>
             Gets or sets System.IO stream object.
             </summary>
+        </member>
+        <member name="P:CMS.IO.Compression.GZipStream.CanSeek">
+            <summary>
+            Gets a value indicating whether the stream supports seeking.
+            </summary>
+            <returns>False in all cases.</returns>
         </member>
         <member name="P:CMS.IO.Compression.GZipStream.Length">
             <summary>
@@ -1304,18 +1496,18 @@
             Returns a file list from the current directory.
             </summary>        
         </member>
+        <member name="M:CMS.IO.DirectoryInfo.GetFiles(System.String)">
+            <summary>
+            Returns a file list from the current directory.
+            </summary>
+            <param name="searchPattern">Search pattern</param>              
+        </member>
         <member name="M:CMS.IO.DirectoryInfo.GetFiles(System.String,CMS.IO.SearchOption)">
             <summary>
             Returns a file list from the current directory.
             </summary>
             <param name="searchPattern">Search pattern</param>
-            <param name="searchOption">Search options</param>        
-        </member>
-        <member name="M:CMS.IO.DirectoryInfo.GetFiles(System.String)">
-            <summary>
-            Returns a file list from the current directory.
-            </summary>
-            <param name="searchPattern">Search pattern</param>               
+            <param name="searchOption">Search options</param>      
         </member>
         <member name="M:CMS.IO.DirectoryInfo.GetDirectories">
             <summary>
@@ -1329,6 +1521,32 @@
             <param name="searchPattern">Search pattern</param>
         </member>
         <member name="M:CMS.IO.DirectoryInfo.GetDirectories(System.String,CMS.IO.SearchOption)">
+            <summary>
+            Returns an array of directories in the current DirectoryInfo matching the given search criteria and using a value
+            to determine whether to search subdirectories.
+            </summary>        
+            <param name="searchPattern">Search pattern</param>
+            <param name="searchOption">Specifies whether to search the current directory, or the current directory and all subdirectories.</param>
+        </member>
+        <member name="M:CMS.IO.DirectoryInfo.CreateSubdirectoryInternal(System.String)">
+            <summary>
+            Creates subdirectory.
+            </summary>
+            <param name="subdir">Subdirectory to create</param>
+        </member>
+        <member name="M:CMS.IO.DirectoryInfo.DeleteInternal">
+            <summary>
+            Deletes directory.
+            </summary>
+        </member>
+        <member name="M:CMS.IO.DirectoryInfo.GetFilesInternal(System.String,CMS.IO.SearchOption)">
+            <summary>
+            Returns a file list from the current directory.
+            </summary>
+            <param name="searchPattern">Search pattern</param>
+            <param name="searchOption">Search options</param>        
+        </member>
+        <member name="M:CMS.IO.DirectoryInfo.GetDirectoriesInternal(System.String,CMS.IO.SearchOption)">
             <summary>
             Returns an array of directories in the current DirectoryInfo matching the given search criteria and using a value
             to determine whether to search subdirectories.
@@ -1387,12 +1605,13 @@
             </summary>
             <param name="startingPath">Starting path</param>
         </member>
-        <member name="M:CMS.IO.StorageProvider.#ctor(System.String,System.String)">
+        <member name="M:CMS.IO.StorageProvider.#ctor(System.String,System.String,System.Boolean)">
             <summary>
             Constructor
             </summary>
             <param name="externalStorageName">External storage name</param>
             <param name="providerAssemblyName">Provider assembly name</param>
+            <param name="isSharedStorage">Whether the storage is shared between web farm servers</param>
         </member>
         <member name="M:CMS.IO.StorageProvider.CreateFileProviderObject">
             <summary>
@@ -1408,7 +1627,7 @@
             <summary>
             Returns new instance of FileInfo object.
             </summary>
-            <param name="filename">File name</param>
+            <param name="fileName">File name</param>
         </member>
         <member name="M:CMS.IO.StorageProvider.GetDirectoryInfo(System.String)">
             <summary>
@@ -1883,6 +2102,12 @@
             Returns MemoryStream instance from System.IO.
             </summary>
         </member>
+        <member name="P:CMS.IO.StreamWrapper.CanSeek">
+            <summary>
+            Gets a value indicating whether the current stream supports seeking.
+            </summary>
+            <returns>True if the stream supports seeking, false otherwise.</returns>
+        </member>
         <member name="P:CMS.IO.StreamWrapper.Length">
             <summary>
             Gets the length in bytes of the stream.
@@ -1914,7 +2139,10 @@
             <summary>
             Determines whether the specified file exists.
             </summary>
-            <param name="path">Path to file</param>  
+            <param name="path">The file to check.</param> 
+            <returns>true if the caller has the required permissions and path contains the name of an existing file; otherwise, false. This method also returns false if path is null, an invalid path, or a zero-length string. 
+            If the caller does not have sufficient permissions to read the specified file, no exception is thrown and the method returns false regardless of the existence of path.
+            </returns>
         </member>
         <member name="M:CMS.IO.File.OpenText(System.String)">
             <summary>
@@ -2082,12 +2310,6 @@
             <param name="path">Path to file</param>
             <param name="lastWriteTime">Last write time</param>
         </member>
-        <member name="M:CMS.IO.File.GetActualUrl(System.String)">
-            <summary>
-            Returns actual URL of given absolute path.
-            </summary>
-            <param name="absolutePath">Absolute path</param> 
-        </member>
         <member name="M:CMS.IO.File.GetFileUrl(System.String,System.String)">
             <summary>
             Returns URL to file. If can be accessed directly then direct URL is generated else URL with GetFile page is generated.
@@ -2236,37 +2458,65 @@
         </member>
         <member name="M:CMS.IO.FileInfo.OpenRead">
             <summary>
-            Creates a read-only FileStream.
+            Creates a read-only ICMSFileStream.
             </summary> 
+        </member>
+        <member name="M:CMS.IO.FileInfo.CopyTo(System.String)">
+            <summary>
+            Copies current file to destination. 
+            </summary>
+            <param name="destFileName">Destination file name.</param>
+        </member>
+        <member name="M:CMS.IO.FileInfo.CopyTo(System.String,System.Boolean)">
+            <summary>
+            Copies current file to destination. 
+            </summary>
+            <param name="destFileName">Destination file name.</param>
+            <param name="overwrite">Indicates if existing file should be overwritten</param>        
+        </member>
+        <member name="M:CMS.IO.FileInfo.MoveTo(System.String)">
+            <summary>
+            Moves an existing file to a new file.
+            </summary>
+            <param name="destFileName">Destination file name.</param>        
         </member>
         <member name="M:CMS.IO.FileInfo.OpenText">
             <summary>
             Creates a StreamReader with UTF8 encoding that reads from an existing text file.
+            </summary>   
+        </member>
+        <member name="M:CMS.IO.FileInfo.CreateTextInternal">
+            <summary>
+            Creates or opens a file for writing UTF-8 encoded text.
+            </summary> 
+        </member>
+        <member name="M:CMS.IO.FileInfo.DeleteInternal">
+            <summary>
+            Deletes file.
+            </summary>
+        </member>
+        <member name="M:CMS.IO.FileInfo.OpenReadInternal">
+            <summary>
+            Creates a read-only FileStream.
+            </summary> 
+        </member>
+        <member name="M:CMS.IO.FileInfo.OpenTextInternal">
+            <summary>
+            Creates a StreamReader with UTF8 encoding that reads from an existing text file.
             </summary>        
         </member>
-        <member name="M:CMS.IO.FileInfo.CopyTo(System.String,System.Boolean)">
+        <member name="M:CMS.IO.FileInfo.CopyToInternal(System.String,System.Boolean)">
             <summary>
             Copies an existing file to a new file, allowing the overwriting of an existing file.
             </summary>
             <param name="destFileName">Destination file name</param>
             <param name="overwrite">Whether overwriting is allowed</param>
         </member>
-        <member name="M:CMS.IO.FileInfo.CopyTo(System.String)">
-            <summary>
-            Copies an existing file to a new file.
-            </summary>
-            <param name="destFileName">Destination file name</param>        
-        </member>
-        <member name="M:CMS.IO.FileInfo.MoveTo(System.String)">
+        <member name="M:CMS.IO.FileInfo.MoveToInternal(System.String)">
             <summary>
             Moves an existing file to a new file.
             </summary>
             <param name="destFileName">Destination file name</param>        
-        </member>
-        <member name="M:CMS.IO.FileInfo.ToString">
-            <summary>
-            Converts FileInfo object to string.
-            </summary>        
         </member>
         <member name="P:CMS.IO.FileInfo.Length">
             <summary>
@@ -2651,6 +2901,12 @@
             Returns MemoryStream instance from System.IO.
             </summary>
         </member>
+        <member name="P:CMS.IO.MemoryStream.CanSeek">
+            <summary>
+            Gets a value indicating whether the current stream supports seeking.
+            </summary>
+            <return>True if the stream is open.</return>
+        </member>
         <member name="P:CMS.IO.MemoryStream.Length">
             <summary>
             Gets the length in bytes of the stream.
@@ -2764,6 +3020,14 @@
             <param name="path1">First path</param>
             <param name="path2">Second path</param>
         </member>
+        <member name="M:CMS.IO.Path.Combine(System.String[])">
+            <summary>
+            Combines an array of strings into a path.
+            </summary>
+            <param name="paths">An array of parts of the path.</param>
+            <exception cref="T:System.ArgumentException">One of the strings in the array contains one or more of the invalid characters defined in <see cref="M:System.IO.Path.GetInvalidPathChars"/>. </exception>
+            <exception cref="T:System.ArgumentNullException">One of the strings in the array is null. </exception>
+        </member>
         <member name="M:CMS.IO.Path.GetFileNameWithoutExtension(System.String)">
             <summary>
             Returns the file name of the specified path string without the extension.
@@ -2865,9 +3129,15 @@
             </summary>
             <param name="stream">Stream to check</param>
         </member>
+        <member name="M:CMS.IO.StorageHelper.IsSharedStorage(System.String)">
+            <summary>
+            Returns whether the path is targeting a shared storage.
+            </summary>
+            <param name="path">File path to check (virtual or physical)</param>
+        </member>
         <member name="M:CMS.IO.StorageHelper.IsExternalStorage(System.String)">
             <summary>
-            Returns whether current instance running on external storage.
+            Returns whether the path is targeting an external storage.
             </summary>
             <param name="path">File path to check (virtual or physical)</param>
         </member>
@@ -3000,13 +3270,6 @@
             <param name="str">File stream</param>
             <param name="closeStream">If true, fileData stream is closed and disposed after save</param>
         </member>
-        <member name="M:CMS.IO.StorageHelper.EnsureLocalPath(System.String,System.String)">
-            <summary>
-            Ensures path on local file system for temp or cache folder.
-            </summary>
-            <param name="path">Path. If not specified path to temporary </param>
-            <param name="folder">Folder to create.</param> 
-        </member>
         <member name="M:CMS.IO.StorageHelper.GetFullFilePhysicalPath(System.String,System.String)">
             <summary>
             Returns full physical path of a file or folder. Does not change the ending slash
@@ -3025,6 +3288,12 @@
             Gets the real file path for the given path (for zip returns the path to the zip file)
             </summary>
             <param name="path">Path</param>
+        </member>
+        <member name="M:CMS.IO.StorageHelper.IsZippedFilePath(System.String)">
+            <summary>
+            Returns true if the given path is a path to the zipped file
+            </summary>
+            <param name="path">Path to check</param>
         </member>
         <member name="M:CMS.IO.StorageHelper.GetRealFilePath(System.String)">
             <summary>
@@ -3131,11 +3400,6 @@
             Reads the next character from the input stream and advances the character position by one character.
             </summary>        
         </member>
-        <member name="M:CMS.IO.StreamReader.Close">
-            <summary>
-            Closes the StreamReader object and the underlying stream, and releases any system resources associated with the reader.
-            </summary>
-        </member>
         <member name="M:CMS.IO.StreamReader.ReadToEnd">
             <summary>
             Reads the stream from the current position to the end of the stream.
@@ -3157,14 +3421,6 @@
             </summary>
             <param name="disposing">Disposing</param>
         </member>
-        <member name="M:CMS.IO.StreamReader.LogFileOperation(System.String,System.Int32,System.String)">
-            <summary>
-            Logs a file operation if logging is enabled and base stream is a FileStream.
-            </summary>
-            <param name="operation">Operation type</param>
-            <param name="size">Number of bytes read</param>
-            <param name="text">Content read</param>
-        </member>
         <member name="P:CMS.IO.StreamReader.EndOfStream">
             <summary>
             Gets a value that indicates whether the current stream position is at the end of the stream.
@@ -3175,20 +3431,11 @@
             Represents a writer that can write a sequential series of characters.
             </summary>
         </member>
-        <member name="M:CMS.IO.StreamWriter.#ctor(System.IO.StreamWriter,CMS.IO.FileStream)">
+        <member name="M:CMS.IO.StreamWriter.#ctor(System.IO.StreamWriter)">
             <summary>
             Creates new instance of stream writer.
             </summary>
             <param name="sw">Stream writer object</param>
-            <param name="fs">File stream</param>
-        </member>
-        <member name="M:CMS.IO.StreamWriter.#ctor(System.IO.StreamWriter,CMS.IO.FileStream,System.Text.Encoding)">
-            <summary>
-            Creates new instance of stream writer.
-            </summary>
-            <param name="sw">Stream writer object</param>
-            <param name="fs">File stream</param>
-            <param name="encoding">Encoding</param>
         </member>
         <member name="M:CMS.IO.StreamWriter.New(CMS.IO.Stream)">
             <summary>
@@ -3247,11 +3494,6 @@
             Clears all buffers for the current writer and causes any buffered data to be written to the underlying stream.
             </summary>
         </member>
-        <member name="M:CMS.IO.StreamWriter.Close">
-            <summary>
-            Closes stream.
-            </summary>
-        </member>
         <member name="M:CMS.IO.StreamWriter.Dispose(System.Boolean)">
             <summary>
             Releases all resources.
@@ -3271,19 +3513,6 @@
             <param name="buffer">Buffer with chars</param>
             <param name="index">Buffer start index</param>
             <param name="count">Number of characters to write</param>
-        </member>
-        <member name="M:CMS.IO.StreamWriter.LogFileOperation(System.String,System.Int32,System.String)">
-            <summary>
-            Logs a file operation if logging is enabled and base stream is a FileStream.
-            </summary>
-            <param name="operation">Operation type</param>
-            <param name="size">Number of bytes written</param>
-            <param name="text">Content written</param>
-        </member>
-        <member name="P:CMS.IO.StreamWriter.IsFileStream">
-            <summary>
-            Returns true if the inner stream is a file stream
-            </summary>
         </member>
         <member name="P:CMS.IO.StreamWriter.BaseStream">
             <summary>
@@ -3359,39 +3588,39 @@
             </summary>
             <param name="path">Input path</param>
         </member>
-        <member name="M:CMS.IO.ZipProviderLoader.NotImplemented">
-            <summary>
-            Throws the not implemented exception
-            </summary>
-        </member>
         <member name="M:CMS.IO.ZipProviderLoader.CreateFileProviderObject">
             <summary>
             Creates new directory provider object
             </summary>
+            <exception cref="T:System.NotImplementedException">Zip provider doesn't provide any IO access on it's own.</exception>
         </member>
         <member name="M:CMS.IO.ZipProviderLoader.CreateDirectoryProviderObject">
             <summary>
             Creates new directory provider object
             </summary>
+            <exception cref="T:System.NotImplementedException">Zip provider doesn't provide any IO access on it's own.</exception>
         </member>
         <member name="M:CMS.IO.ZipProviderLoader.GetFileInfo(System.String)">
             <summary>
             Returns new instance of FileInfo object.
             </summary>
-            <param name="filename">File name</param>
+            <param name="fileName">File name</param>
+            <exception cref="T:System.NotImplementedException">Zip provider doesn't provide any IO access on it's own.</exception>
         </member>
         <member name="M:CMS.IO.ZipProviderLoader.GetDirectoryInfo(System.String)">
             <summary>
             Returns new instance of directory info.
             </summary>
-            <param name="path">Path</param>        
+            <param name="path">Path</param>       
+            <exception cref="T:System.NotImplementedException">Zip provider doesn't provide any IO access on it's own.</exception> 
         </member>
         <member name="M:CMS.IO.ZipProviderLoader.GetFileStream(System.String,CMS.IO.FileMode)">
             <summary>
             Returns new instance of file stream.
             </summary>
             <param name="path">Path to file</param>
-            <param name="mode">File mode</param>        
+            <param name="mode">File mode</param>
+            <exception cref="T:System.NotImplementedException">Zip provider doesn't provide any IO access on it's own.</exception>        
         </member>
         <member name="M:CMS.IO.ZipProviderLoader.GetFileStream(System.String,CMS.IO.FileMode,CMS.IO.FileAccess)">
             <summary>
@@ -3400,6 +3629,7 @@
             <param name="path">Path to file</param>
             <param name="mode">File mode</param>    
             <param name="access">File access</param>
+            <exception cref="T:System.NotImplementedException">Zip provider doesn't provide any IO access on it's own.</exception>
         </member>
         <member name="M:CMS.IO.ZipProviderLoader.GetFileStream(System.String,CMS.IO.FileMode,CMS.IO.FileAccess,CMS.IO.FileShare)">
             <summary>
@@ -3409,6 +3639,7 @@
             <param name="mode">File mode</param>    
             <param name="access">File access</param>        
             <param name="share">Sharing permissions</param>
+            <exception cref="T:System.NotImplementedException">Zip provider doesn't provide any IO access on it's own.</exception>
         </member>
         <member name="M:CMS.IO.ZipProviderLoader.GetFileStream(System.String,CMS.IO.FileMode,CMS.IO.FileAccess,CMS.IO.FileShare,System.Int32)">
             <summary>
@@ -3419,6 +3650,7 @@
             <param name="access">File access</param>
             <param name="bufferSize">Buffer size</param>
             <param name="share">Sharing permissions</param>
+            <exception cref="T:System.NotImplementedException">Zip provider doesn't provide any IO access on it's own.</exception>
         </member>
         <member name="P:CMS.IO.ZipProviderLoader.FilePath">
             <summary>
@@ -3607,6 +3839,11 @@
             <param name="provider">Parent provider</param>
             <param name="path">Path to directory</param>
         </member>
+        <member name="M:CMS.IO.Zip.ZipDirectoryInfo.ThrowReadOnly">
+            <summary>
+            Throws a not supported exception that the zip file content is read-only
+            </summary>
+        </member>
         <member name="M:CMS.IO.Zip.ZipDirectoryInfo.RegisterFile(CMS.IO.Zip.ZipFileInfo)">
             <summary>
             Registers the file within the directory
@@ -3617,50 +3854,27 @@
             Registers the subdirectory within the directory
             </summary>
         </member>
-        <member name="M:CMS.IO.Zip.ZipDirectoryInfo.CreateSubdirectory(System.String)">
+        <member name="M:CMS.IO.Zip.ZipDirectoryInfo.CreateSubdirectoryInternal(System.String)">
             <summary>
             Creates subdirectory.
             </summary>
             <param name="subdir">Subdirectory to create</param>
         </member>
-        <member name="M:CMS.IO.Zip.ZipDirectoryInfo.Delete">
+        <member name="M:CMS.IO.Zip.ZipDirectoryInfo.DeleteInternal">
             <summary>
             Deletes directory.
             </summary>
         </member>
-        <member name="M:CMS.IO.Zip.ZipDirectoryInfo.GetFiles">
-            <summary>
-            Returns a file list from the current directory.
-            </summary>        
-        </member>
-        <member name="M:CMS.IO.Zip.ZipDirectoryInfo.GetFiles(System.String,CMS.IO.SearchOption)">
+        <member name="M:CMS.IO.Zip.ZipDirectoryInfo.GetFilesInternal(System.String,CMS.IO.SearchOption)">
             <summary>
             Returns a file list from the current directory.
             </summary>
             <param name="searchPattern">Search pattern</param>
             <param name="searchOption">Search options</param>      
         </member>
-        <member name="M:CMS.IO.Zip.ZipDirectoryInfo.GetFiles(System.String)">
-            <summary>
-            Returns a file list from the current directory.
-            </summary>
-            <param name="searchPattern">Search pattern</param>              
-        </member>
-        <member name="M:CMS.IO.Zip.ZipDirectoryInfo.GetDirectories">
+        <member name="M:CMS.IO.Zip.ZipDirectoryInfo.GetDirectoriesInternal(System.String,CMS.IO.SearchOption)">
             <summary>
             Returns the subdirectories of the current directory.
-            </summary>        
-        </member>
-        <member name="M:CMS.IO.Zip.ZipDirectoryInfo.GetDirectories(System.String)">
-            <summary>
-            Returns the subdirectories of the current directory.
-            </summary>        
-            <param name="searchPattern">Search pattern</param>
-        </member>
-        <member name="M:CMS.IO.Zip.ZipDirectoryInfo.GetDirectories(System.String,CMS.IO.SearchOption)">
-            <summary>
-            Returns an array of directories in the current DirectoryInfo matching the given search criteria and using a value
-            to determine whether to search subdirectories.
             </summary>        
             <param name="searchPattern">Search pattern</param>
             <param name="searchOption">Specifies whether to search the current directory, or the current directory and all subdirectories.</param>
@@ -3895,35 +4109,29 @@
             Throws a not supported exception that the zip file content is read-only
             </summary>
         </member>
-        <member name="M:CMS.IO.Zip.ZipFileInfo.CreateText">
+        <member name="M:CMS.IO.Zip.ZipFileInfo.CreateTextInternal">
             <summary>
             Creates or opens a file for writing UTF-8 encoded text.
             </summary> 
         </member>
-        <member name="M:CMS.IO.Zip.ZipFileInfo.Delete">
+        <member name="M:CMS.IO.Zip.ZipFileInfo.DeleteInternal">
             <summary>
             Deletes file.
             </summary>
         </member>
-        <member name="M:CMS.IO.Zip.ZipFileInfo.OpenRead">
+        <member name="M:CMS.IO.Zip.ZipFileInfo.OpenReadInternal">
             <summary>
             Opens file for reading.
             </summary> 
         </member>
-        <member name="M:CMS.IO.Zip.ZipFileInfo.CopyTo(System.String)">
-            <summary>
-            Copies current file to destination. 
-            </summary>
-            <param name="destFileName">Destination file name.</param>
-        </member>
-        <member name="M:CMS.IO.Zip.ZipFileInfo.CopyTo(System.String,System.Boolean)">
+        <member name="M:CMS.IO.Zip.ZipFileInfo.CopyToInternal(System.String,System.Boolean)">
             <summary>
             Copies current file to destination. 
             </summary>
             <param name="destFileName">Destination file name.</param>
             <param name="overwrite">Indicates if existing file should be overwritten</param>        
         </member>
-        <member name="M:CMS.IO.Zip.ZipFileInfo.MoveTo(System.String)">
+        <member name="M:CMS.IO.Zip.ZipFileInfo.MoveToInternal(System.String)">
             <summary>
             Copies an existing file to a new file, allowing the overwriting of an existing file.
             </summary>
@@ -3934,7 +4142,7 @@
             Converts current info to string.
             </summary>        
         </member>
-        <member name="M:CMS.IO.Zip.ZipFileInfo.OpenText">
+        <member name="M:CMS.IO.Zip.ZipFileInfo.OpenTextInternal">
             <summary>
             Creates a StreamReader with UTF8 encoding that reads from an existing text file.
             </summary>   
@@ -4115,6 +4323,12 @@
             <summary>
             Gets or sets system stream.
             </summary>
+        </member>
+        <member name="P:CMS.IO.Zip.ZipFileStream.CanSeek">
+            <summary>
+            Gets a value indicating whether the current stream supports seeking.
+            </summary>
+            <returns>True if the stream supports seeking, false otherwise.</returns>
         </member>
         <member name="P:CMS.IO.Zip.ZipFileStream.Length">
             <summary>
@@ -4522,66 +4736,6 @@
             Ending character for the zip archive within path
             </summary>
         </member>
-        <member name="F:CMS.IO.ZipStorageProvider.mCompressionBufferSize">
-            <summary>
-            Size of buffer used to un/compress packages
-            </summary>
-        </member>
-        <member name="F:CMS.IO.ZipStorageProvider.mLoadAllData">
-            <summary>
-            If true, all data is loaded when the provider is initialized
-            </summary>
-        </member>
-        <member name="F:CMS.IO.ZipStorageProvider.mCacheData">
-            <summary>
-            If true, the loaded data is cached
-            </summary>
-        </member>
-        <member name="F:CMS.IO.ZipStorageProvider.mCacheDataLimit">
-            <summary>
-            Limit size for the caching of the file data (bytes), 10 kB by default
-            </summary>
-        </member>
-        <member name="F:CMS.IO.ZipStorageProvider.mData">
-            <summary>
-            Table of file data indexed by names
-            </summary>
-        </member>
-        <member name="F:CMS.IO.ZipStorageProvider.mEntries">
-            <summary>
-            Table of zip entries indexed by names
-            </summary>
-        </member>
-        <member name="F:CMS.IO.ZipStorageProvider.mFiles">
-            <summary>
-            Table of file infos indexed by names
-            </summary>
-        </member>
-        <member name="F:CMS.IO.ZipStorageProvider.mDirectories">
-            <summary>
-            Table of directory infos indexed by names
-            </summary>
-        </member>
-        <member name="F:CMS.IO.ZipStorageProvider.mMappedZipProviders">
-            <summary>
-            Hashtable of existing mapped zip providers
-            </summary>
-        </member>
-        <member name="F:CMS.IO.ZipStorageProvider.mFileStream">
-            <summary>
-            Zip file stream
-            </summary>
-        </member>
-        <member name="F:CMS.IO.ZipStorageProvider.mStream">
-            <summary>
-            Zip input stream
-            </summary>
-        </member>
-        <member name="F:CMS.IO.ZipStorageProvider.mFile">
-            <summary>
-            Zip file
-            </summary>
-        </member>
         <member name="M:CMS.IO.ZipStorageProvider.#ctor(System.String,System.String,CMS.IO.AbstractStorageProvider)">
             <summary>
             Constructor
@@ -4589,6 +4743,12 @@
             <param name="zipFilePath">Path to the zip file</param>
             <param name="mappedPath">Mapped path</param>
             <param name="parentProvider">Parent storage provider</param>
+        </member>
+        <member name="M:CMS.IO.ZipStorageProvider.IsZipFile(System.String)">
+            <summary>
+            Returns true if the given file path is a zip file
+            </summary>
+            <param name="path">File path</param>
         </member>
         <member name="M:CMS.IO.ZipStorageProvider.Dispose">
             <summary>
@@ -4600,10 +4760,11 @@
             Disposes the storage provider for the given path
             </summary>
         </member>
-        <member name="M:CMS.IO.ZipStorageProvider.DisposeAll">
+        <member name="M:CMS.IO.ZipStorageProvider.DisposeAll(System.Func{System.String,System.Boolean})">
             <summary>
             Disposes the zip storage providers
             </summary>
+            <param name="pathCondition">Path condition</param>
         </member>
         <member name="M:CMS.IO.ZipStorageProvider.IsZipFolderPath(System.String)">
             <summary>
@@ -4626,7 +4787,7 @@
             <summary>
             Gets the internal stream for the given file
             </summary>
-            <param name="lowerFileName">Lowercase file name</param>
+            <param name="fileName">Lowercase file name</param>
             <param name="size">Returns the data size</param>
         </member>
         <member name="M:CMS.IO.ZipStorageProvider.GetFileData(System.String)">
@@ -4639,7 +4800,7 @@
             <summary>
             Gets the particular file data
             </summary>
-            <param name="filename">File name</param>
+            <param name="fileName">File name</param>
         </member>
         <member name="M:CMS.IO.ZipStorageProvider.CloseStreams">
             <summary>
@@ -4686,7 +4847,7 @@
             <summary>
             Returns new instance of FileInfo object.
             </summary>
-            <param name="filename">File name</param>
+            <param name="fileName">File name</param>
         </member>
         <member name="M:CMS.IO.ZipStorageProvider.GetDirectoryInfo(System.String)">
             <summary>

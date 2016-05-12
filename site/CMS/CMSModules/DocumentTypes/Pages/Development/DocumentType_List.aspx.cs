@@ -1,7 +1,8 @@
-using System;
+﻿using System;
+using System.Data;
+using System.Linq;
 
 using CMS.DataEngine;
-using CMS.EventLog;
 using CMS.Helpers;
 using CMS.IO;
 using CMS.PortalEngine;
@@ -17,8 +18,39 @@ public partial class CMSModules_DocumentTypes_Pages_Development_DocumentType_Lis
         RegisterExportScript();
 
         // Unigrid initialization
+        uniGrid.OnExternalDataBound += uniGrid_OnExternalDataBound;
         uniGrid.OnAction += uniGrid_OnAction;
         uniGrid.ZeroRowsText = GetString("general.nodatafound");
+    }
+
+
+    /// <summary>
+    /// Handles the UniGrid's OnExternalDataBound event.
+    /// </summary>
+    /// <param name="sender">Sender</param>
+    /// <param name="sourceName">Source name</param>
+    /// <param name="parameter">Parameter</param>
+    protected object uniGrid_OnExternalDataBound(object sender, string sourceName, object parameter)
+    {
+        if (sourceName == "DataType")
+        {
+            var dataClass = parameter as DataRowView;
+            if (dataClass == null)
+            {
+                return string.Empty;
+            }
+
+            var isContainer = !ValidationHelper.GetBoolean(dataClass.Row["ClassIsCoupledClass"], false);
+            if (isContainer)
+            {
+                return GetString("documenttype.type.container");
+            }
+
+            var isContentOnly = ValidationHelper.GetBoolean(dataClass.Row["ClassIsContentOnly"], false);
+            return GetString(isContentOnly ? "documenttype.type.contentonly" : "documenttype.type.page");
+        }
+
+        return parameter;
     }
 
 
@@ -36,65 +68,55 @@ public partial class CMSModules_DocumentTypes_Pages_Development_DocumentType_Lis
         else if (actionName == "delete")
         {
             int classId = ValidationHelper.GetInteger(actionArgument, 0);
-
-            DataClassInfo dci = DataClassInfoProvider.GetDataClassInfo(classId);
-
-            if (dci != null)
+            var dci = DataClassInfoProvider.GetDataClassInfo(classId);
+            if (dci == null)
             {
-                // Check unerasable dependences
-                if (DataClassInfoProvider.CheckDependencies(dci.ClassID))
+                return;
+            }
+
+            // Delete dataclass and its dependencies
+            try
+            {
+                string className = dci.ClassName;
+                DataClassInfoProvider.DeleteDataClassInfo(dci);
+
+                // Delete icons
+                string iconFile = UIHelper.GetDocumentTypeIconPath(this, className, "", false);
+                string iconLargeFile = UIHelper.GetDocumentTypeIconPath(this, className, "48x48", false);
+                iconFile = Server.MapPath(iconFile);
+                iconLargeFile = Server.MapPath(iconLargeFile);
+
+                if (File.Exists(iconFile))
                 {
-                    ShowError(String.Format(GetString("DocumentType_List.Dependences"), HTMLHelper.HTMLEncode(dci.ClassDisplayName)));
+                    File.Delete(iconFile);
                 }
-                else
+                // Ensure that ".gif" file will be deleted
+                iconFile = iconFile.Replace(".png", ".gif");
+
+                if (File.Exists(iconFile))
                 {
-                    // Delete dataclass and its dependencies
-                    try
-                    {
-                        // Delete view
-                        string viewName = SqlHelper.GetViewName(dci.ClassTableName, null);
-
-                        TableManager tm = new TableManager(null);
-                        tm.DropView(viewName);
-
-                        string className = dci.ClassName;
-                        DataClassInfoProvider.DeleteDataClassInfo(dci);
-                        
-                        // Delete icons
-                        string iconFile = UIHelper.GetDocumentTypeIconPath(this, className, "", false);
-                        string iconLargeFile = UIHelper.GetDocumentTypeIconPath(this, className, "48x48", false);
-                        iconFile = Server.MapPath(iconFile);
-                        iconLargeFile = Server.MapPath(iconLargeFile);
-
-                        if (File.Exists(iconFile))
-                        {
-                            File.Delete(iconFile);
-                        }
-                        // Ensure that ".gif" file will be deleted
-                        iconFile = iconFile.Replace(".png", ".gif");
-
-                        if (File.Exists(iconFile))
-                        {
-                            File.Delete(iconFile);
-                        }
-
-                        if (File.Exists(iconLargeFile))
-                        {
-                            File.Delete(iconLargeFile);
-                        }
-                        // Ensure that ".gif" file will be deleted
-                        iconLargeFile = iconLargeFile.Replace(".png", ".gif");
-                        if (File.Exists(iconLargeFile))
-                        {
-                            File.Delete(iconLargeFile);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        EventLogProvider.LogException("Development", "DeleteDocType", ex);
-                        ShowError(GetString("DocumentType_List.DeleteFailed") + " " + ex.Message);
-                    }
+                    File.Delete(iconFile);
                 }
+
+                if (File.Exists(iconLargeFile))
+                {
+                    File.Delete(iconLargeFile);
+                }
+                // Ensure that ".gif" file will be deleted
+                iconLargeFile = iconLargeFile.Replace(".png", ".gif");
+                if (File.Exists(iconLargeFile))
+                {
+                    File.Delete(iconLargeFile);
+                }
+            }
+            catch (CheckDependenciesException)
+            {
+                var description = uniGrid.GetCheckDependenciesDescription(dci);
+                ShowError(GetString("unigrid.deletedisabledwithoutenable"), description);
+            }
+            catch (Exception ex)
+            {
+                LogAndShowError("Development", "DeleteDocType", ex);
             }
         }
     }

@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 
+using CMS.Core;
 using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.UIControls;
@@ -79,11 +80,11 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Tax 
         if (OptionCategoryID > 0)
         {
             // Check elements in product options categories subtree
-            CheckUIElementAccessHierarchical("CMS.Ecommerce", "ProductOptions.Options.TaxClasses");
+            CheckUIElementAccessHierarchical(ModuleName.ECOMMERCE, "ProductOptions.Options.TaxClasses");
         }
         else
         {
-            CheckUIElementAccessHierarchical("CMS.Ecommerce", "Products.TaxClasses");
+            CheckUIElementAccessHierarchical(ModuleName.ECOMMERCE, "Products.TaxClasses");
         }
 
         if (ProductID > 0)

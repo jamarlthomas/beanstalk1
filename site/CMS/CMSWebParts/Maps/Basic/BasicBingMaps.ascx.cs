@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -534,17 +534,8 @@ public partial class CMSWebParts_Maps_Basic_BasicBingMaps : CMSAbstractWebPart
             if (DataSourceControl != null && EnableServerProcessing)
             {
                 BasicBingMaps.CacheItemName = DataSourceControl.CacheItemName;
-
-                if (DataSourceControl.CacheMinutes <= 0)
-                {
-                    // If zero or less, get from the site settings
-                    BasicBingMaps.CacheMinutes = SettingsKeyInfoProvider.GetIntValue(CurrentSiteName + ".CMSCacheMinutes");
-                }
-                else
-                {
-                    BasicBingMaps.CacheMinutes = DataSourceControl.CacheMinutes;
-                }
-
+                BasicBingMaps.CacheMinutes = DataSourceControl.CacheMinutes;
+                 
                 // Cache depends only on data source and properties of data source web part
                 string cacheDependencies = CacheHelper.GetCacheDependencies(DataSourceControl.CacheDependencies, DataSourceControl.GetDefaultCacheDependencies());
                 // All view modes, except LiveSite mode

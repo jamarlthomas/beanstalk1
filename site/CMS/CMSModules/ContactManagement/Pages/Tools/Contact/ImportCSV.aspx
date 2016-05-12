@@ -1,34 +1,17 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="ImportCSV.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default"
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ImportCSV.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default"
     Title="Contact list" Inherits="CMSModules_ContactManagement_Pages_Tools_Contact_ImportCSV" %>
 
+<%@ Register Src="~/CMSAdminControls/UI/SmartTip.ascx" TagPrefix="cms"
+    TagName="SmartTip" %>
+
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
-    <div data-ng-controller="CMS.OnlineMarketing.ContactImport.Controller">       
-        <div data-cms-file-upload-directive
-            data-on-file-loaded="model.onFileLoaded"
-            data-file-stream="model.fileStream"
-            data-ng-show="model.fileUploaderIsVisible">
-        </div>
-
-        <div data-cms-attribute-mapping-directive
-            data-contact-groups="model.contactGroups"
-            data-selected-contact-group="model.selectedContactGroup"
-            data-contact-fields="model.contactFields"
-            data-contact-fields-mapping="model.contactFieldsMapping"
-            data-parsed-lines="model.parsedLines"
-            data-file-stream="model.fileStream"
-            data-ng-show="model.attributeMapperIsVisible">
-        </div>
-
-        <div data-cms-import-process-directive
-            data-contact-fields-mapping="model.contactFieldsMapping"
-            data-file-stream="model.fileStream"
-            data-contact-group="model.selectedContactGroup"
-            data-site-guid="model.siteGuid"
-            data-ng-show="model.importProcessIsVisible">
-        </div>
-    </div>
+    <div data-ng-view="view"></div>
     
-    <script type="text/ng-template" id="importProcessTemplate.html">
+     <script type="text/ng-template" id="importProcessTemplate.html">
+        <div data-cms-import-process-directive></div>
+     </script>
+    
+    <script type="text/ng-template" id="importProcessDirectiveTemplate.html">
         <div class="UIContent scroll-area om-import-csv-process-container">
             <div class="PageContent">
                 <div data-cms-messages-placeholder></div>
@@ -37,19 +20,35 @@
 
                 <p class="lead">{{"om.contact.importcsv.importing"|resolve|stringFormat:result.processed}}</p>
                     
-                <ul>
+                <ul class="om-import-csv-list">
                     <li>{{"om.contact.importcsv.importedcount"|resolve|stringFormat:result.imported}}</li>
                     <li>{{"om.contact.importcsv.duplicatescount"|resolve|stringFormat:result.duplicities}}</li>
-                    <li>{{"om.contact.importcsv.notimported"|resolve|stringFormat:result.failures}}</li>
+                    <li>{{"om.contact.importcsv.notimported"|resolve|stringFormat:result.failures}} 
+                        <div data-cms-download-data-directive                      
+                            data-to-download="result.csvData" 
+                            data-file-name="not-imported-contacts.csv" 
+                            data-content-type="application/csv"
+                            data-ng-show="result.csvData">
+                        </div>
+                    </li>
                 </ul>
+                <div data-ng-show="finished">
+                    <cms:SmartTip runat="server" ID="smrtpContinueTo" />            
+                </div>
             </div>
         </div>
     </script>
 
     <script type="text/ng-template" id="fileUploadTemplate.html">
+        <div data-cms-file-upload-directive
+            data-link-id="<%= YouTubeVideoLinkID %>">
+        </div>    
+    </script>
+
+    <script type="text/ng-template" id="fileUploadDirectiveTemplate.html">
         <div class="UIHeader">
             <div class="header-container">
-                <div class="cms-edit-menu">
+                <div class="header-actions-container">
                     <div class="header-actions-main">
                         <button data-ng-click="onClick()" type="button" class="btn btn-primary">{{"om.contact.importcsv.selectfilebuttontext"|resolve}}</button>
                     </div>
@@ -60,30 +59,19 @@
         <div class="UIContent scroll-area om-import-csv-content-container">
             <div class="PageContent">    
                 <div data-cms-messages-placeholder></div> 
-                <h4>{{"om.contact.importcsv.selectfilestepmessage.main"|resolve}}</h4>
-                <div class="content-block-50">
-                    <p class="lead">{{"om.contact.importcsv.selectfilestepmessage.message"|resolve}}</p>
-                    <ul>
-                        <li>{{"om.contact.importcsv.selectfilestepmessage.header"|resolve}}</li>
-                        <li>{{"om.contact.importcsv.selectfilestepmessage.encoding"|resolve}}</li>
-                        <li>{{"om.contact.importcsv.selectfilestepmessage.comma"|resolve}}</li>
-                    </ul>
-                </div>        
-                <div class="content-block-50">
-                    <p class="lead">{{"om.contact.importcsv.selectfilestepmessage.note"|resolve}}</p>
-                    <ul>
-                        <li>{{"om.contact.importcsv.selectfilestepmessage.duplicates"|resolve}}</li>
-                        <li>{{"om.contact.importcsv.selectfilestepmessage.columns"|resolve}}</li>
-                    </ul>
-                </div>
+                <cms:SmartTip runat="server" ID="smrtpHowToImport" /> 
             </div>
-        </div>
+        </div>   
     </script>
 
     <script type="text/ng-template" id="attributeMappingTemplate.html">
+        <div data-cms-attribute-mapping-directive></div>
+    </script>
+
+    <script type="text/ng-template" id="attributeMappingDirectiveTemplate.html">
         <div class="UIHeader">
             <div class="header-container">
-                <div class="cms-edit-menu">
+                <div class="header-actions-container">
                     <div class="header-actions-main">
                         <button type="button" data-ng-click="onMappingFinished()" class="btn btn-primary">{{"om.contact.importcsv.importcontactsbuttontext"|resolve}}</button>
                     </div>
@@ -93,23 +81,58 @@
         <div class="UIContent scroll-area om-import-csv-content-container">
             <div class="PageContent">
                 <div data-cms-messages-placeholder></div>
-                <h4>{{message|resolve}}</h4>
-                <div class="form-horizontal" ng-hide="contactGroups.length === 0">            
+        
+                <h4>{{"om.contact.importcsv.segmentation.title"|resolve}}</h4>
+                <p>{{"om.contact.importcsv.segmentation.message"|resolve}}</p>
+        
+                <div class="form-horizontal">            
                     <div class="form-group">
-                        <div class="control-group-inline">         
-                            <div class="editing-form-label-cell">
-                                <label for="cgSelect" class="control-label">{{"om.contact.importcsv.selectcg"|resolve}}:</label>
-                            </div>            
-                            <div class="editing-form-value-cell">
-                                <select id="cgSelect" class="DropDownField form-control" 
-                                    data-ng-model="selectedContactGroup" 
-                                    data-ng-options="cg.contactGroupGUID as cg.contactGroupDisplayName for cg in contactGroups" >
-                                    <option value="">{{"om.contact.importcsv.nocg"|resolve}}</option>
-                                </select>
+                        <div class="editing-form-value-cell">
+                            <div class="radio-list-vertical">       
+                                <span class="radio">
+                                    <input id="radNew" type="radio" name="segmentation" value="new" data-ng-model="segmentationType">
+                                    <label for="radNew">{{"om.contact.importcsv.segmentation.createnew"|resolve}}</label>
+                                </span>
+                                <div class="selector-subitem" data-ng-show="segmentationType === 'new'">
+                                    <div class="form-group">
+                                        <div class="editing-form-label-cell">
+                                            <label class="control-label" for="cgSelect">{{"om.contact.importcsv.segmentation.contactgroupname"|resolve}}:</label>
+                                        </div>
+                                        <div class="editing-form-value-cell">
+                                            <input id="txtNewContactGroup" type="text" class="form-control" data-ng-model="contactGroup.name" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="radio">
+                                    <input id="radExisting" type="radio" name="segmentation" value="existing" data-ng-model="segmentationType">
+                                    <label for="radExisting">{{"om.contact.importcsv.segmentation.existing"|resolve}}</label>
+                                </span>
+                                <div class="selector-subitem" data-ng-show="segmentationType === 'existing'">
+                                    <div class="form-group">
+                                        <div class="editing-form-label-cell">
+                                            <label class="control-label" for="cgSelect">{{"om.contact.importcsv.segmentation.selectcontactgroup"|resolve}}:</label>
+                                        </div>
+                                        <div class="editing-form-value-cell">
+                                            <select id="cgSelect" class="DropDownField form-control" 
+                                                        data-ng-model="contactGroup.guid" 
+                                                        data-ng-options="cg.contactGroupGUID as cg.contactGroupDisplayName for cg in contactGroups">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="radio">
+                                    <input id="radNone" type="radio" name="segmentation" value="none" data-ng-model="segmentationType">
+                                    <label for="radNone">{{"om.contact.importcsv.segmentation.none"|resolve}}</label>
+                                </span>
                             </div>
                         </div>
-                    </div>  
-                </div> 
+                     </div>
+                </div>        
+        
+                <h4>{{"om.contact.importcsv.mapstepmessage"|resolve}}</h4>
+                <%-- Message text contains HTML so it can't be escaped --%>
+                <p data-ng-bind-html="resolveFilter('om.contact.importcsv.messagetext')"></p>
+                
             </div>    
             <div class="om-import-csv-mapping-tables-container">
                 <div data-ng-repeat="csvColumn in csvColumnNamesWithExamples" class="om-import-csv-mapping-table col-xs-12 col-md-6 col-lg-4">
@@ -119,7 +142,7 @@
         </div>
     </script>
 
-    <script type="text/ng-template" id="attributeMappingControlTemplate.html">
+    <script type="text/ng-template" id="attributeMappingControlDirectiveTemplate.html">
         <table class="table table-hover _nodivs">
             <thead>
                 <tr class="unigrid-head">
@@ -152,5 +175,23 @@
                 </div>
             </div>  
         </div>           
+    </script>
+
+    <script type="text/ng-template" id="downloadDataDirectiveTemplate.html">
+        <span>
+            <a data-ng-click="offerCSVToDownload()">{{"om.contact.importcsv.notimported.link"|resolve}}</a>
+            <span class="info-icon">
+                <asp:Label runat="server" ID="labelDownloadErrorCSV" CssClass="sr-only" />
+                <cms:CMSIcon runat="server" id="iconDownloadErrorCSV" enableviewstate="false" class="icon-question-circle" aria-hidden="true" />
+            </span>
+        </span>
+    </script>
+
+    <script type="text/ng-template" id="requirementsCheckerTemplate.html">
+        <div class="UIContent scroll-area om-import-csv-requirements-checker-container">
+            <div class="PageContent">
+                <div data-cms-messages-placeholder></div>
+            </div>
+        </div>
     </script>
 </asp:Content>

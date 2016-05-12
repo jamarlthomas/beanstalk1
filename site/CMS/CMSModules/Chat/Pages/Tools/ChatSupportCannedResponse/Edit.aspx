@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Edit.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Edit.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Title="Chat support canned response properties" Inherits="CMSModules_Chat_Pages_Tools_ChatSupportCannedResponse_Edit" Theme="Default" %>
 <%@ Register Src="~/CMSModules/Chat/Controls/UI/ChatSupportCannedResponse/Edit.ascx"
     TagName="ChatSupportCannedResponseEdit" TagPrefix="cms" %>

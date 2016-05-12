@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Title="Polls - security" Inherits="CMSModules_Polls_Tools_Polls_Security" Theme="Default" Codebehind="Polls_Security.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+    Title="Polls - security" Inherits="CMSModules_Polls_Tools_Polls_Security" Theme="Default"  Codebehind="Polls_Security.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Polls/Controls/PollSecurity.ascx" TagName="PollSecurity"
     TagPrefix="cms" %>

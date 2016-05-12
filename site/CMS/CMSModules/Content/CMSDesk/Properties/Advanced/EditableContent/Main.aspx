@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_Advanced_EditableContent_Main"
-    Theme="Default" Codebehind="Main.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_Advanced_EditableContent_Main"
+    Theme="Default"  Codebehind="Main.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/editmenu.ascx" TagName="editmenu"
     TagPrefix="cms" %>

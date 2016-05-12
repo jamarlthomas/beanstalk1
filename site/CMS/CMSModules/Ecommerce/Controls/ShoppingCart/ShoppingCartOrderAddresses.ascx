@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartOrderAddresses"
-    Codebehind="ShoppingCartOrderAddresses.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartOrderAddresses"
+     Codebehind="ShoppingCartOrderAddresses.ascx.cs" %>
 <%@ Register Src="~/CMSFormControls/CountrySelector.ascx" TagName="CountrySelector"
     TagPrefix="cms" %>
 

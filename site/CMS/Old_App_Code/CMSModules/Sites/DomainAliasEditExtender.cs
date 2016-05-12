@@ -156,7 +156,7 @@ public class DomainAliasEditExtender : ControlExtender<UIForm>
         // Remove protocol from the domain alias
         string newDomainName = ValidationHelper.GetString(Control.Data["SiteDomainAliasName"], String.Empty);
         newDomainName = URLHelper.RemoveProtocol(newDomainName);
-        Control.Data["SiteDomainAliasName"] = newDomainName;
+        Control.Data["SiteDomainAliasName"] = newDomainName.Trim();
 
         // Ensure uniqueness of the domain name
         if (Control.IsInsertMode)

@@ -168,7 +168,7 @@
             padding: @tile-padding;
             text-align: left;
             width: @w-tile-width; // 3 tiles + 2 tile spaces - welcome tile padding
-            height: @w-tile-height; // 2 tiles + 1 tile space - welcome tile padding
+            height: @w-tile-height - 0.5; // 2 tiles + 1 tile space - welcome tile padding. -0.5 should prevent problem with wrongly displayed tiles in browsers with zoom (see OM-2931)
             max-width: @w-tile-width; // 3 tiles + 2 tile spaces - welcome tile padding
             max-height: @w-tile-height; // 2 tiles + 1 tile space - welcome tile padding
             position: relative;
@@ -374,22 +374,45 @@
         color: @dashboard-color;
         padding: 0 @base-unit * 0.75 @base-unit * 0.75;
         overflow: hidden;
-        text-overflow: ellipsis;
-        word-wrap: break-word;
-        max-height: @base-unit * 3.5; // Fallback
-        -webkit-line-clamp: 3; // Number of lines to show
-        -webkit-box-orient: vertical;
     }
 
     .tile-empty {
         .empty .tile;
     }
 
+    // Single object tile
+    .tile-single-object {
+        .tile-live;
+
+        .tile-description {
+            .tile-live-description;
+            
+            @lines-to-show: 3;
+                
+            display: block;
+            max-width: inherit;
+            margin: @line-height-150 0 auto 0;
+            font-size: @font-size-base;
+            height: @line-height-150 * @lines-to-show;
+            overflow: hidden;
+            word-wrap: break-word;
+        }
+
+        .tile-single-object-btn{
+            .tile-live-btn;
+            
+            &.editable-mode:hover {
+                border-bottom:none;
+            }
+        }
+    }
+    
+
     h3 {
         color: @dashboard-color;
         font-size: @font-size-large;
         font-weight: normal;
-        line-height: @base-unit * 1.5;
+        line-height: @line-height-150;
         margin: 0;
         overflow: hidden;
         text-overflow: ellipsis;

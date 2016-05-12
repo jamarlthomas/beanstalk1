@@ -1,21 +1,22 @@
-using System;
+﻿using System;
+using System.Text;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Text;
 
+using CMS.Base;
+using CMS.DataEngine;
 using CMS.DocumentEngine;
+using CMS.EventLog;
 using CMS.ExtendedControls;
 using CMS.Helpers;
+using CMS.Membership;
 using CMS.MembershipProvider;
 using CMS.PortalControls;
 using CMS.PortalEngine;
-using CMS.Base;
 using CMS.SiteProvider;
-using CMS.Membership;
 using CMS.WebAnalytics;
-using CMS.DataEngine;
 
 public partial class CMSWebParts_Membership_Logon_LogonForm : CMSAbstractWebPart, ICallbackEventHandler
 {
@@ -187,24 +188,34 @@ public partial class CMSWebParts_Membership_Logon_LogonForm : CMSAbstractWebPart
         }
         else
         {
-            // Set strings
-            lnkPasswdRetrieval.Text = GetString("LogonForm.lnkPasswordRetrieval");
-            lblPasswdRetrieval.Text = GetString("LogonForm.lblPasswordRetrieval");
-            btnPasswdRetrieval.Text = GetString("LogonForm.btnPasswordRetrieval");
-            rqValue.ErrorMessage = GetString("LogonForm.rqValue");
-            rqValue.ValidationGroup = ClientID + "_PasswordRetrieval";
+            SetValidationGroup(rqValue, "_PasswordRetrieval");
+            SetValidationGroup(btnPasswdRetrieval, "_PasswordRetrieval");
+            SetValidationGroup(Login1.FindControl("LoginButton"), "_Logon");
 
-            // Set logon strings
-            LocalizedLabel lblItem = (LocalizedLabel)Login1.FindControl("lblUserName");
-            if (lblItem != null)
+            var rfv = Login1.FindControl("rfvUserNameRequired") as RequiredFieldValidator;
+            if (rfv != null)
             {
-                lblItem.Text = "{$LogonForm.UserName$}";
+                SetValidationGroup(rfv, "_Logon");
+
+                if (string.IsNullOrEmpty(rfv.ToolTip))
+                {
+                    rfv.ToolTip = GetString("LogonForm.NameRequired");
+                }
+
+                var enterNameText = GetString("LogonForm.EnterName");
+                if (string.IsNullOrEmpty(rfv.Text))
+                {
+                    rfv.Text = enterNameText;
+                }
+                if (string.IsNullOrEmpty(rfv.ErrorMessage))
+                {
+                    rfv.ErrorMessage = enterNameText;
+                }
             }
 
-            lblItem = (LocalizedLabel)Login1.FindControl("lblPassword");
-            if (lblItem != null)
+            if (string.IsNullOrEmpty(rqValue.ErrorMessage))
             {
-                lblItem.Text = "{$LogonForm.Password$}";
+                rqValue.ErrorMessage = GetString("LogonForm.rqValue");
             }
 
             CMSCheckBox chkItem = (CMSCheckBox)Login1.FindControl("chkRememberMe");
@@ -213,34 +224,13 @@ public partial class CMSWebParts_Membership_Logon_LogonForm : CMSAbstractWebPart
                 chkItem.Visible = false;
             }
 
-            if ((chkItem != null) && (!MFAuthenticationHelper.IsMultiFactorAutEnabled))
-            {
-                chkItem.Text = "{$LogonForm.RememberMe$}";
-            }
-            LocalizedButton btnItem = (LocalizedButton)Login1.FindControl("LoginButton");
-
-            if (btnItem != null)
-            {
-                btnItem.Text = "{$LogonForm.LogOnButton$}";
-                btnItem.ValidationGroup = ClientID + "_Logon";
-            }
-
-            RequiredFieldValidator rfv = (RequiredFieldValidator)Login1.FindControl("rfvUserNameRequired");
-            if (rfv != null)
-            {
-                rfv.ToolTip = GetString("LogonForm.NameRequired");
-                rfv.Text = rfv.ErrorMessage = GetString("LogonForm.EnterName");
-                rfv.ValidationGroup = ClientID + "_Logon";
-            }
+            lnkPasswdRetrieval.Visible = pnlUpdatePasswordRetrieval.Visible = pnlUpdatePasswordRetrievalLink.Visible = AllowPasswordRetrieval;
 
             CMSTextBox txtUserName = (CMSTextBox)Login1.FindControl("UserName");
             if (txtUserName != null)
             {
                 txtUserName.EnableAutoComplete = SecurityHelper.IsAutoCompleteEnabledForLogin(SiteContext.CurrentSiteName);
             }
-
-            lnkPasswdRetrieval.Visible = pnlUpdatePasswordRetrieval.Visible = pnlUpdatePasswordRetrievalLink.Visible = AllowPasswordRetrieval;
-            btnPasswdRetrieval.ValidationGroup = ClientID + "_PasswordRetrieval";
 
             if (!RequestHelper.IsPostBack())
             {
@@ -379,6 +369,22 @@ function UpdateLabel_", ClientID, @"(content, context) {
     }
 
 
+    private void SetValidationGroup(dynamic control, string postfix)
+    {
+        if (control != null)
+        {
+            try
+            {
+                control.ValidationGroup = ClientID + postfix;
+            }
+            catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException ex)
+            {
+                EventLogProvider.LogException("LogonForm", "EXCEPTION", ex);
+            }
+        }
+    }
+
+
     /// <summary>
     /// Sets SkinId to all controls in logon form.
     /// </summary>
@@ -388,38 +394,23 @@ function UpdateLabel_", ClientID, @"(content, context) {
         {
             Login1.SkinID = skinId;
 
-            LocalizedLabel lbl = (LocalizedLabel)Login1.FindControl("lblUserName");
-            if (lbl != null)
+            var controlNames = new string[]
             {
-                lbl.SkinID = skinId;
-            }
-            lbl = (LocalizedLabel)Login1.FindControl("lblPassword");
-            if (lbl != null)
-            {
-                lbl.SkinID = skinId;
-            }
+                "lblUserName",
+                "lblPassword",
+                "UserName",
+                "Password",
+                "chkRememberMe",
+                "LoginButton"
+            };
 
-            TextBox txt = (TextBox)Login1.FindControl("UserName");
-            if (txt != null)
+            foreach (string controlName in controlNames)
             {
-                txt.SkinID = skinId;
-            }
-            txt = (TextBox)Login1.FindControl("Password");
-            if (txt != null)
-            {
-                txt.SkinID = skinId;
-            }
-
-            CMSCheckBox chk = (CMSCheckBox)Login1.FindControl("chkRememberMe");
-            if (chk != null)
-            {
-                chk.SkinID = skinId;
-            }
-
-            LocalizedButton btn = (LocalizedButton)Login1.FindControl("LoginButton");
-            if (btn != null)
-            {
-                btn.SkinID = skinId;
+                var control = Login1.FindControl(controlName);
+                if (control != null)
+                {
+                    control.SkinID = skinId;
+                }
             }
         }
     }
@@ -479,8 +470,13 @@ function UpdateLabel_", ClientID, @"(content, context) {
             }
 
             bool success;
-            lblResult.Text = AuthenticationHelper.ForgottenEmailRequest(value, SiteContext.CurrentSiteName, "LOGONFORM", SendEmailFrom, ContextResolver, ResetPasswordURL, out success, returnUrl);
+            lblResult.Text = AuthenticationHelper.ForgottenEmailRequest(value, SiteContext.CurrentSiteName, "LOGONFORM", SendEmailFrom, null, ResetPasswordURL, out success, returnUrl);
             lblResult.Visible = true;
+
+            if (!success)
+            {
+                lblResult.AddCssClass("logon-password-retrieval-result-failed");
+            }
 
             pnlPasswdRetrieval.Visible = true;
         }
@@ -551,30 +547,35 @@ function UpdateLabel_", ClientID, @"(content, context) {
             activityLogin.Log();
         }
 
-        // Redirect user to the return url, or if is not defined redirect to the default target url
-        string url = QueryHelper.GetString("ReturnURL", string.Empty);
-        if (!string.IsNullOrEmpty(url))
+        // Redirect user to the return URL, or if is not defined redirect to the default target URL
+        var redirectUrl = RequestContext.CurrentURL;
+        string url = ResolveUrl(QueryHelper.GetString("ReturnURL", String.Empty));
+        string hash = QueryHelper.GetString("hash", String.Empty);
+
+        if (!String.IsNullOrEmpty(url))
         {
-            if (url.StartsWithCSafe("~") || url.StartsWithCSafe("/") || QueryHelper.ValidateHash("hash"))
+            if (URLHelper.IsLocalUrl(url, RequestContext.CurrentDomain))
             {
-                URLHelper.Redirect(ResolveUrl(QueryHelper.GetString("ReturnURL", string.Empty)));
+                redirectUrl = url;
             }
-            else
+            else if (!String.IsNullOrEmpty(hash))
             {
-                URLHelper.Redirect(ResolveUrl("~/CMSMessages/Error.aspx?title=" + ResHelper.GetString("general.badhashtitle") + "&text=" + ResHelper.GetString("general.badhashtext")));
+                if (QueryHelper.ValidateHash("hash", "aliaspath"))
+                {
+                    redirectUrl = url;
+                }
+                else
+                {
+                    redirectUrl = UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext");
+                }
             }
         }
-        else
+        else if (!String.IsNullOrEmpty(DefaultTargetUrl))
         {
-            if (DefaultTargetUrl != "")
-            {
-                URLHelper.Redirect(ResolveUrl(DefaultTargetUrl));
-            }
-            else
-            {
-                URLHelper.Redirect(RequestContext.CurrentURL);
-            }
+            redirectUrl = ResolveUrl(DefaultTargetUrl);
         }
+
+        URLHelper.Redirect(redirectUrl);
     }
 
 
@@ -704,12 +705,12 @@ function UpdateLabel_", ClientID, @"(content, context) {
             switch (UserAccountLockCode.ToEnum(ui.UserAccountLockReason))
             {
                 case UserAccountLockEnum.MaximumInvalidLogonAttemptsReached:
-                    result = AuthenticationHelper.SendUnlockAccountRequest(ui, siteName, "USERLOGON", SettingsKeyInfoProvider.GetValue(siteName + ".CMSSendPasswordEmailsFrom"), ContextResolver, returnUrl);
+                    result = AuthenticationHelper.SendUnlockAccountRequest(ui, siteName, "USERLOGON", SettingsKeyInfoProvider.GetValue(siteName + ".CMSSendPasswordEmailsFrom"), null, returnUrl);
                     break;
 
                 case UserAccountLockEnum.PasswordExpired:
-                    bool outParam = true;
-                    result = AuthenticationHelper.SendPasswordRequest(ui, siteName, "USERLOGON", SettingsKeyInfoProvider.GetValue(siteName + ".CMSSendPasswordEmailsFrom"), "Membership.PasswordExpired", ContextResolver, AuthenticationHelper.GetResetPasswordUrl(siteName), out outParam, returnUrl);
+                    bool outParam;
+                    result = AuthenticationHelper.SendPasswordRequest(ui, siteName, "USERLOGON", SettingsKeyInfoProvider.GetValue(siteName + ".CMSSendPasswordEmailsFrom"), "Membership.PasswordExpired", null, AuthenticationHelper.GetResetPasswordUrl(siteName), out outParam, returnUrl);
                     break;
             }
         }

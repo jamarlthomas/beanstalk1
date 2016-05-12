@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Groups_Controls_Members_MemberFilter" Codebehind="MemberFilter.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Groups_Controls_Members_MemberFilter"  Codebehind="MemberFilter.ascx.cs" %>
 
 <div class="form-horizontal form-filter">
     <div class="form-group">

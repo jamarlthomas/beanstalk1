@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="True" Inherits="CMSModules_ContactManagement_Controls_UI_Account_Contacts"
-    Codebehind="Contacts.ascx.cs" %>
+     Codebehind="Contacts.ascx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
@@ -16,16 +16,16 @@
     </div>
 </asp:Panel>
 <asp:Panel ID="pnlBody" runat="server" CssClass="PageContent">
+    <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
     <cms:CMSUpdatePanel ID="pnlUpdate" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
-            <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
             <cms:UniGrid runat="server" ID="gridElem" OrderBy="ContactLastName" ObjectType="om.accountcontactlist"
                 Columns="AccountContactID,ContactFirstName,ContactLastName,ContactEmail,ContactRoleID,ContactStatusID,ContactCountryID,ContactID"
                 IsLiveSite="false" RememberStateByParam="issitemanager">
                 <GridActions>
                     <ug:Action ExternalSourceName="edit" Name="edit" Caption="$om.contact.viewdetail$"
                         FontIconClass="icon-edit" FontIconStyle="Allow" ModuleName="CMS.OnlineMarketing" CommandArgument="ContactID" />
-                    <ug:Action ExternalSourceName="selectrole" Name="selectrole" Caption="$om.contactrole.select$"
+                    <ug:Action ExternalSourceName="selectrole" Name="selectrole" Caption="$om.contactrole.selectitem$"
                         FontIconClass="icon-app-roles" ModuleName="CMS.OnlineMarketing" />
                     <ug:Action ExternalSourceName="remove" Name="remove" Caption="$General.Remove$" FontIconClass="icon-bin" FontIconStyle="Critical"
                         Confirmation="$General.ConfirmRemove$" ModuleName="CMS.OnlineMarketing" />

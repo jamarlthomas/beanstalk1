@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Dialogs_General_URLSelector" Codebehind="URLSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_Controls_Dialogs_General_URLSelector"  Codebehind="URLSelector.ascx.cs" %>
 
 <div class="form-horizontal">
     <div class="form-group">

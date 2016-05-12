@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Content_Controls_Dialogs_Properties_HTMLEmailProperties" Codebehind="HTMLEmailProperties.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Content_Controls_Dialogs_Properties_HTMLEmailProperties"  Codebehind="HTMLEmailProperties.ascx.cs" %>
 
 <script type="text/javascript">
     function insertItem() {

@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Security.Principal;
 using System.Web;
 using System.Web.UI;
 
 using CMS.Core;
+using CMS.DataEngine;
 using CMS.Helpers;
 using CMS.PortalEngine;
 using CMS.SiteProvider;
@@ -17,20 +18,20 @@ public partial class CMSModules_Sites_Pages_Site_Delete : GlobalAdminPage, ICall
 {
     #region "Variables"
 
-    private static readonly Hashtable mManagers = new Hashtable();
+    private static readonly Hashtable Managers = new Hashtable();
 
     // Site ID
-    private int siteId;
+    private int mSiteId;
 
     // Site name
-    private string siteName = "";
+    private string mSiteName = "";
 
     // Site display name
-    private string siteDisplayName = "";
+    private string mSiteDisplayName = "";
 
-    private SiteInfo si;
+    private SiteInfo mSiteInfo;
 
-    private string backToSiteListUrl;
+    private string mBackToSiteListUrl;
 
     #endregion
 
@@ -45,7 +46,7 @@ public partial class CMSModules_Sites_Pages_Site_Delete : GlobalAdminPage, ICall
         get
         {
             string key = "delManagers_" + ProcessGUID;
-            if (mManagers[key] == null)
+            if (Managers[key] == null)
             {
                 // Restart of the application
                 if (ApplicationInstanceGUID != SystemHelper.ApplicationInstanceGUID)
@@ -58,14 +59,14 @@ public partial class CMSModules_Sites_Pages_Site_Delete : GlobalAdminPage, ICall
                 }
 
                 SiteDeletionManager dm = new SiteDeletionManager(DeletionInfo);
-                mManagers[key] = dm;
+                Managers[key] = dm;
             }
-            return (SiteDeletionManager)mManagers[key];
+            return (SiteDeletionManager)Managers[key];
         }
         set
         {
             string key = "delManagers_" + ProcessGUID;
-            mManagers[key] = value;
+            Managers[key] = value;
         }
     }
 
@@ -170,12 +171,12 @@ public partial class CMSModules_Sites_Pages_Site_Delete : GlobalAdminPage, ICall
 
             // Setup page title text and image
             PageTitle.TitleText = GetString("Site_Edit.DeleteSite");
-            backToSiteListUrl = UIContextHelper.GetElementUrl(ModuleName.CMS, "Sites", false);
+            mBackToSiteListUrl = UIContextHelper.GetElementUrl(ModuleName.CMS, "Sites", false);
 
             PageBreadcrumbs.AddBreadcrumb(new BreadcrumbItem
             {
                 Text = GetString("general.sites"),
-                RedirectUrl = backToSiteListUrl,
+                RedirectUrl = mBackToSiteListUrl,
                 Target = "cmsdesktop",
             });
 
@@ -185,27 +186,27 @@ public partial class CMSModules_Sites_Pages_Site_Delete : GlobalAdminPage, ICall
             });
 
             // Get site ID
-            siteId = QueryHelper.GetInteger("siteId", 0);
+            mSiteId = QueryHelper.GetInteger("siteId", 0);
 
-            si = SiteInfoProvider.GetSiteInfo(siteId);
-            if (si != null)
+            mSiteInfo = SiteInfoProvider.GetSiteInfo(mSiteId);
+            if (mSiteInfo != null)
             {
-                siteName = si.SiteName;
-                siteDisplayName = HTMLHelper.HTMLEncode(ResHelper.LocalizeString(si.DisplayName));
+                mSiteName = mSiteInfo.SiteName;
+                mSiteDisplayName = HTMLHelper.HTMLEncode(ResHelper.LocalizeString(mSiteInfo.DisplayName));
 
-                ucHeader.Header = string.Format(GetString("Site_Delete.Header"), siteDisplayName);
+                ucHeader.Header = string.Format(GetString("Site_Delete.Header"), mSiteDisplayName);
                 ucHeaderConfirm.Header = GetString("Site_Delete.HeaderConfirm");
 
                 // Initialize web root path
                 DeletionInfo.WebRootFullPath = HttpContext.Current.Server.MapPath("~/");
 
-                DeletionInfo.DeletionLog = string.Format("I" + SiteDeletionManager.SEPARATOR + DeletionManager.DeletionInfo.GetAPIString("Site_Delete.DeletingSite", "Initializing deletion of the site") + SiteDeletionManager.SEPARATOR + SiteDeletionManager.SEPARATOR, siteName);
+                DeletionInfo.DeletionLog = string.Format("I" + SiteDeletionManager.SEPARATOR + DeletionManager.DeletionInfo.GetAPIString("Site_Delete.DeletingSite", "Initializing deletion of the site") + SiteDeletionManager.SEPARATOR + SiteDeletionManager.SEPARATOR, mSiteName);
 
-                headConfirmation.Text = string.Format(GetString("Site_Edit.Confirmation"), siteDisplayName);
+                headConfirmation.Text = string.Format(GetString("Site_Edit.Confirmation"), mSiteDisplayName);
                 btnYes.Text = GetString("General.Yes");
                 btnNo.Text = GetString("General.No");
                 btnOk.Text = GetString("General.OK");
-                lblLog.Text = string.Format(GetString("Site_Delete.DeletingSite"), siteDisplayName);
+                lblLog.Text = string.Format(GetString("Site_Delete.DeletingSite"), mSiteDisplayName);
             }
 
             btnYes.Click += btnYes_Click;
@@ -256,18 +257,26 @@ public partial class CMSModules_Sites_Pages_Site_Delete : GlobalAdminPage, ICall
 
     protected void btnOK_Click(object sender, EventArgs e)
     {
-        URLHelper.Redirect(backToSiteListUrl);
+        URLHelper.Redirect(mBackToSiteListUrl);
     }
 
 
     protected void btnNo_Click(object sender, EventArgs e)
     {
-        URLHelper.Redirect(backToSiteListUrl);
+        URLHelper.Redirect(mBackToSiteListUrl);
     }
 
 
     private void btnYes_Click(object sender, EventArgs e)
     {
+        var worker = new AsyncWorker();
+        if (worker.Status == AsyncWorkerStatusEnum.Running)
+        {
+            // Preventing parallel deletion of 2 and more sites because of the database transaction deadlocks
+            ShowInformation(GetString("site_delete.alreadyrunning"));
+            return;
+        }
+
         pnlConfirmation.Visible = false;
         pnlDeleteSite.Visible = true;
 
@@ -280,15 +289,14 @@ public partial class CMSModules_Sites_Pages_Site_Delete : GlobalAdminPage, ICall
         di.DeleteAttachments = chkDeleteDocumentAttachments.Checked;
         di.DeleteMediaFiles = chkDeleteMediaFiles.Checked;
         di.DeleteMetaFiles = chkDeleteMetaFiles.Checked;
-        di.SiteName = siteName;
-        di.SiteDisplayName = siteDisplayName;
+        di.SiteName = mSiteName;
+        di.SiteDisplayName = mSiteDisplayName;
 
         var dm = DeletionManager;
 
         dm.CurrentUser = MembershipContext.AuthenticatedUser;
         dm.DeletionInfo = di;
 
-        AsyncWorker worker = new AsyncWorker();
         worker.RunAsync(dm.DeleteSite, WindowsIdentity.GetCurrent());
     }
 
@@ -321,7 +329,7 @@ public partial class CMSModules_Sites_Pages_Site_Delete : GlobalAdminPage, ICall
     #region "Other methods"
 
     /// <summary>
-    /// Iniliazes (hides) alert labels
+    /// Initializes (hides) alert labels
     /// </summary>
     private void InitAlertLabels()
     {

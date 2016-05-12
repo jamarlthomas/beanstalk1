@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_Languages"
-    Title="Languages" ValidateRequest="false" Theme="Default" Codebehind="Languages.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_Languages"
+    Title="Languages" ValidateRequest="false" Theme="Default"  Codebehind="Languages.aspx.cs"
     MaintainScrollPositionOnPostback="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 

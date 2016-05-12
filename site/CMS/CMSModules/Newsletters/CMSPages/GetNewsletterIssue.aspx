@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Newsletters_CMSPages_GetNewsletterIssue" Codebehind="GetNewsletterIssue.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Newsletters_CMSPages_GetNewsletterIssue"  Codebehind="GetNewsletterIssue.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

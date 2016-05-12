@@ -18,25 +18,16 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
     private String mSettingsKeys = String.Empty;
     private String mConfigKeys = String.Empty;
 
-    private List<String> mInfoTexts = new List<string>();
     private Panel mParentPanel;
     private String mInfoText = String.Empty;
 
     private bool settingsChecked = false;
     private bool mShowButtons = true;
 
-    private String mSiteObjects = String.Empty;
-    private String mGlobalObjects = String.Empty;
     private DisabledModuleScope mKeyScope = DisabledModuleScope.Both;
     private bool mReloadUIWhenModuleEnabled = true;
 
-
-    public CMSAdminControls_Basic_DisabledModuleInfo()
-    {
-        AtLeastOne = false;
-        SettingsEnabled = false;
-        SiteOrGlobal = false;
-    }
+    private string mInfoTextResourceString = "ui.moduledisabled.general";
 
     #endregion
 
@@ -44,8 +35,11 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
     #region "Properties"
 
     /// <summary>
-    /// Info text to show
+    /// Info text to show. This text has precedence over <see cref="InfoTextResourceString"/>.
     /// </summary>
+    /// <remarks>
+    /// Unlike the <see cref="InfoTextResourceString"/>, this text is used as it is (i.e. no format items substitution is performed).
+    /// </remarks>
     public String InfoText
     {
         get
@@ -59,8 +53,27 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
     }
 
 
+
     /// <summary>
-    /// Scope of key check. It's used only for 'SettingsKeys' property. Do not affect 'GlobalObjects' and 'SiteObjects' properties.
+    /// Info message resource string. Resource string is used only when <see cref="InfoText"/> is not set (i.e. null or empty).
+    /// If this property and <see cref="InfoText"/> is not set, default message The "XY" setting is currently disabled, is used.
+    /// Format string is expected in resource string value and it includes setting's display name.
+    /// </summary>
+    public string InfoTextResourceString
+    {
+        get
+        {
+            return mInfoTextResourceString;
+        }
+        set
+        {
+            mInfoTextResourceString = value;
+        }
+    }
+
+
+    /// <summary>
+    /// Scope of key check. It's used for 'SettingsKeys' property.
     /// </summary>
     public DisabledModuleScope KeyScope
     {
@@ -70,23 +83,9 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
         }
         set
         {
+            // Settings are not checked with new key scope
+            settingsChecked = false;
             mKeyScope = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Collection of texts, used for multiple info labels for multiple setting keys
-    /// </summary>
-    public List<String> InfoTexts
-    {
-        get
-        {
-            return mInfoTexts;
-        }
-        set
-        {
-            mInfoTexts = value;
         }
     }
 
@@ -94,13 +93,12 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
     /// <summary>
     /// Get/set sitename. Store sitename to viewstate - in case of save, before sitename is known.
     /// </summary>
-    public String SiteName
+    public string SiteName
     {
         get
         {
-            string msiteName = ValidationHelper.GetString(ViewState["SiteName"], null);
-
-            return msiteName ?? SiteContext.CurrentSiteName;
+            var siteName = ValidationHelper.GetString(ViewState["SiteName"], null);
+            return String.IsNullOrEmpty(siteName) ? SiteContext.CurrentSiteName : siteName;
         }
         set
         {
@@ -120,6 +118,8 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
         }
         set
         {
+            // Settings are not checked with new key scope
+            settingsChecked = false;
             mSettingsKeys = value;
         }
     }
@@ -158,16 +158,6 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
 
 
     /// <summary>
-    /// If true, global or site settings are check separately
-    /// </summary>
-    public bool SiteOrGlobal
-    {
-        get;
-        set;
-    }
-
-
-    /// <summary>
     /// This value contains result of settings checking
     /// </summary>
     public bool SettingsEnabled
@@ -194,48 +184,6 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
 
 
     /// <summary>
-    /// If true, settings are considered as checked if at least one setting is checked. This is used only for displaying general information.
-    /// </summary>
-    public bool AtLeastOne
-    {
-        get;
-        set;
-    }
-
-
-    /// <summary>
-    /// List of keys (delimited by ';') - indicates which settings will be tested (and checked) only for site settings
-    /// </summary>
-    public String SiteObjects
-    {
-        get
-        {
-            return mSiteObjects;
-        }
-        set
-        {
-            mSiteObjects = value;
-        }
-    }
-
-
-    /// <summary>
-    /// List of keys (delimited by ';') - indicates which settings will be tested (and checked) only for global settings
-    /// </summary>
-    public String GlobalObjects
-    {
-        get
-        {
-            return mGlobalObjects;
-        }
-        set
-        {
-            mGlobalObjects = value;
-        }
-    }
-
-
-    /// <summary>
     /// Indicates if UI should be refreshed by reload after enabling module
     /// </summary>
     public bool ReloadUIWhenModuleEnabled
@@ -250,6 +198,60 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
         }
     }
 
+
+    /// <summary>
+    /// Sets the text for global button.
+    /// </summary>
+    public string GlobalButtonText
+    {
+        get;
+        set;
+    }
+
+
+    /// <summary>
+    /// Sets the text for site button.
+    /// </summary>
+    public string SiteButtonText
+    {
+        get;
+        set;
+    }
+
+
+    /// <summary>
+    /// Returns settings keys in list.
+    /// </summary>
+    private List<string> SettingsList
+    {
+        get 
+        { 
+            return String.IsNullOrEmpty(SettingsKeys) ?  new List<string>() : SettingsKeys.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries).ToList(); 
+        }
+    }
+
+
+    /// <summary>
+    /// Returns config keys in list.
+    /// </summary>
+    private List<string> ConfigKeysList
+    {
+        get 
+        { 
+            return String.IsNullOrEmpty(ConfigKeys) ? new List<string>() : ConfigKeys.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries).ToList(); 
+        }
+    }
+
+
+    /// <summary>
+    /// If true, settings are considered as checked if at least one setting is checked. This is used only for displaying general information.
+    /// </summary>
+    public bool AtLeastOne
+    {
+        get;
+        set;
+    }
+
     #endregion
 
 
@@ -260,184 +262,8 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
         Visible = true;
 
         // Set text for link
-        btnGlobal.Text = GetString("module.allowglobal");
-        btnSite.Text = GetString("module.allowsite");
-    }
-
-
-    /// <summary>
-    /// Generate info text for given setting key
-    /// </summary>
-    /// <param name="ski">Setting key object</param>
-    private String GenerateInfoText(SettingsKeyInfo ski)
-    {
-        // Get setting's group
-        SettingsCategoryInfo sci = SettingsCategoryInfoProvider.GetSettingsCategoryInfo(ski.KeyCategoryID);
-
-        // Get resource name from group
-        ResourceInfo ri = ResourceInfoProvider.GetResourceInfo(sci.CategoryResourceID);
-
-        string resourceName = ResHelper.LocalizeString(ri.ResourceDisplayName);
-        string path = string.Join(" -> ", GetCategoryPath(sci).Reverse().Select(s => ResHelper.LocalizeString(s.CategoryDisplayName)));
-
-        return String.Format(GetString("ui.moduledisabled.general"), resourceName, path, ResHelper.GetString(ski.KeyDisplayName));
-    }
-
-
-    /// <summary>
-    /// Get path to the given settings category.
-    /// </summary>
-    /// <param name="settingsKeyCategoryInfo">The key that path is generated for</param>
-    /// <returns>Path to the given settings category</returns>
-    private IEnumerable<SettingsCategoryInfo> GetCategoryPath(SettingsCategoryInfo settingsKeyCategoryInfo)
-    {
-        var sci = SettingsCategoryInfoProvider.GetSettingsCategoryInfo(settingsKeyCategoryInfo.CategoryParentID);
-        while (sci != null)
-        {
-            yield return sci;
-            sci = SettingsCategoryInfoProvider.GetSettingsCategoryInfo(sci.CategoryParentID);
-        }
-    }
-
-
-    /// <summary>
-    /// Displays info label, if any module is disabled
-    /// </summary>
-    private bool DisplayErrorText()
-    {
-        GlobalObjects = ";" + GlobalObjects + ";";
-        SiteObjects = ";" + SiteObjects + ";";
-
-        bool keyDisabled = false;
-        bool isAnyKeySite = false;
-        bool settingChecked = false;
-        bool showSite = false;
-        bool showGlobal = false;
-
-        // Check config keys - stronger
-        if (!String.IsNullOrEmpty(ConfigKeys))
-        {
-            var keys = ConfigKeys.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string key in keys)
-            {
-                if (!ValidationHelper.GetBoolean(SettingsHelper.AppSettings[key], false))
-                {
-                    if (!AtLeastOne)
-                    {
-                        settingChecked = false;
-                        break;
-                    }
-                }
-                else
-                {
-                    settingChecked = true;
-                }
-            }
-        }
-
-        // Check settings
-        if (!settingChecked && !String.IsNullOrEmpty(SettingsKeys))
-        {
-            int i = 0;
-
-            var keys = SettingsKeys.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string key in keys)
-            {
-                String objectKey = ";" + key + ";";
-                bool globalObject = GlobalObjects.Contains(objectKey);
-                bool siteObject = SiteObjects.Contains(objectKey);
-                String siteKeyName = SiteName + "." + key;
-                String keyName = (SiteOrGlobal || globalObject || KeyScope == DisabledModuleScope.Global) ? key : siteKeyName;
-
-                // If module disabled
-                if (!SettingsKeyInfoProvider.GetBoolValue(keyName) || (siteObject && !SettingsKeyInfoProvider.GetBoolValue(siteKeyName)))
-                {
-                    // For site or global settings check site setting separately
-                    if (SiteOrGlobal && SettingsKeyInfoProvider.GetBoolValue(siteKeyName))
-                    {
-                        settingChecked = true;
-                        i++;
-                        continue;
-                    }
-
-                    // If at least one is checked, info error is set later
-                    if (!AtLeastOne)
-                    {
-                        // If setting is global - hide site button
-                        var ski = SettingsKeyInfoProvider.GetSettingsKeyInfo(key);
-                        if ((ski != null) && (!ski.KeyIsGlobal))
-                        {
-                            isAnyKeySite = true;
-                        }
-
-                        // Get text (either from collection of text or from single text property)
-                        String text = (InfoTexts.Count != 0 && InfoTexts.Count > i) ? InfoTexts[i] : InfoText;
-
-                        if (String.IsNullOrEmpty(text) && (ski != null))
-                        {
-                            text = GenerateInfoText(ski);
-                        }
-
-                        if (lblText.Text != "")
-                        {
-                            lblText.Text += "<br />";
-                        }
-
-                        // Add new text to label
-                        lblText.Text += text;
-
-                        // Add this key to collection of disabled keys
-
-                        // Make this info label visible
-                        keyDisabled = !String.IsNullOrEmpty(text);
-
-                        if (!siteObject && !globalObject)
-                        {
-                            showSite = (KeyScope != DisabledModuleScope.Global);
-                            showGlobal = (KeyScope != DisabledModuleScope.Site);
-                        }
-                        else
-                        {
-                            showSite |= siteObject;
-                            showGlobal |= globalObject;
-                        }
-                    }
-                }
-                else
-                {
-                    settingChecked = true;
-                }
-
-                i++;
-            }
-        }
-
-        // If atleastone is set, check if any setting is checked. If no, display warning message
-        if (AtLeastOne && !settingChecked)
-        {
-            keyDisabled = true;
-            lblText.Text = InfoText;
-        }
-
-        // If parent panel is set, show(hide) it 
-        if (ParentPanel != null)
-        {
-            ParentPanel.Visible = keyDisabled;
-        }
-
-        // Show/hide this control if module disabled
-        Visible = keyDisabled;
-
-        // Show site button only if any key is site
-        btnSite.Visible = isAnyKeySite;
-
-        // Set result to property
-        SettingsEnabled = !keyDisabled;
-
-        btnSite.Visible &= showSite;
-        btnGlobal.Visible &= showGlobal;
-
-        return !keyDisabled;
+        btnGlobal.Text = String.IsNullOrEmpty(GlobalButtonText) ? GetString("module.allowglobal") : GlobalButtonText;
+        btnSite.Text = String.IsNullOrEmpty(SiteButtonText) ? GetString("module.allowsite") : SiteButtonText;
     }
 
 
@@ -459,7 +285,9 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
     public bool Check()
     {
         settingsChecked = true;
-        return DisplayErrorText();
+
+        SettingsEnabled = IsModuleEnabledByAppConfigKeys() || IsModuleEnabledBySettingKeys();
+        return SettingsEnabled;
     }
 
 
@@ -467,22 +295,27 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
     {
         if (!settingsChecked)
         {
-            // Display text if some setting is disabled
-            DisplayErrorText();
+            Check();
         }
 
-        if (!MembershipContext.AuthenticatedUser.IsGlobalAdministrator || !ShowButtons)
-        {
-            btnGlobal.Visible = false;
-            btnSite.Visible = false;
-        }
-
-        if (btnGlobal.Visible && btnSite.Visible)
-        {
-            btnGlobal.CssClass = "DisabledModuleButtons";
-        }
+        // Shows or hides disabled module info, depends on SettingEnabled property 
+        DisplayErrorText();
 
         base.OnPreRender(e);
+    }
+
+    #endregion
+
+
+    #region "Private helper methods"
+    
+    /// <summary>
+    /// Generate info text for given setting key
+    /// </summary>
+    /// <param name="ski">Setting key object</param>
+    private String GenerateInfoText(SettingsKeyInfo ski)
+    {
+        return String.Format(GetString(InfoTextResourceString), ResHelper.GetString(ski.KeyDisplayName));
     }
 
 
@@ -495,70 +328,7 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
         // This action is permitted only for global administrators
         if (MembershipContext.AuthenticatedUser.IsGlobalAdministrator)
         {
-            if (!String.IsNullOrEmpty(SettingsKeys))
-            {
-                String[] keys = SettingsKeys.Split(';');
-                foreach (String key in keys)
-                {
-                    if (key != String.Empty)
-                    {
-                        String objectKey = ";" + key + ";";
-                        String siteKeyName = SiteName + "." + key;
-                        bool globalObject = (GlobalObjects.Contains(objectKey) || KeyScope == DisabledModuleScope.Global);
-                        bool siteObject = SiteObjects.Contains(objectKey);
-
-                        // If setting is global or site (or both), set global(site) settings no matter what button (site or global) was clicked
-                        if (globalObject || siteObject)
-                        {
-                            if (globalObject)
-                            {
-                                if (!SettingsKeyInfoProvider.GetBoolValue(key))
-                                {
-                                    SettingsKeyInfoProvider.SetValue(key, true);
-                                }
-                            }
-
-                            if (siteObject)
-                            {
-                                if (!SettingsKeyInfoProvider.GetBoolValue(siteKeyName))
-                                {
-                                    SettingsKeyInfoProvider.SetValue(siteKeyName, true);
-                                }
-                            }
-
-                            continue;
-                        }
-
-                        // Test first if settings is disabled
-                        if (!SettingsKeyInfoProvider.GetBoolValue(siteKeyName))
-                        {
-                            String keyName = isSite ? siteKeyName : key;
-                            try
-                            {
-                                SettingsKeyInfoProvider.SetValue(keyName, true);
-                            }
-                            catch (Exception)
-                            {
-                                if (isSite)
-                                {
-                                    // Site settings does not exists. Save as global then
-                                    SettingsKeyInfoProvider.SetValue(key, true);
-                                }
-                            }
-
-                            // If global enabled and site still disabled - enable it also
-                            if (!isSite && (KeyScope != DisabledModuleScope.Global))
-                            {
-                                // If settings not enabled, inherit from global
-                                if (!SettingsKeyInfoProvider.GetBoolValue(siteKeyName))
-                                {
-                                    SettingsKeyInfoProvider.SetValue(siteKeyName, null);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            SettingsList.ForEach(key => EnableSettingByActualScope(key, isSite));
 
             // Reload UI if necessary
             if (ReloadUIWhenModuleEnabled)
@@ -566,6 +336,230 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
                 URLHelper.Redirect(RequestContext.CurrentURL);
             }
         }
+    }
+
+
+    /// <summary>
+    /// Checks config keys, if there are no config keys to check, false is returned.
+    /// </summary>
+    /// <returns>If all settings are true, true is returned. If one of the settings is false, false is returned.</returns>
+    private bool IsModuleEnabledByAppConfigKeys()
+    {
+        if (AtLeastOne)
+        {
+            return ConfigKeysList.Any(key => ValidationHelper.GetBoolean(SettingsHelper.AppSettings[key], false));
+        }
+
+        return !String.IsNullOrEmpty(ConfigKeys) && !ConfigKeysList.Exists(key => !ValidationHelper.GetBoolean(SettingsHelper.AppSettings[key], false));
+    }
+
+
+    /// <summary>
+    /// Checks all setting keys, if are enabled in actual scope.
+    /// If no settings are specified, true is returned.
+    /// </summary>
+    /// <returns>If no settings are specified, true is returned, otherwise all settings have to be true in actual scope.</returns>
+    private bool IsModuleEnabledBySettingKeys()
+    {
+        if (AtLeastOne)
+        {
+            return SettingsList.Any(key => IsSettingEnabledInActualScope(key));
+        }
+
+        return !SettingsList.Exists(key => !IsSettingEnabledInActualScope(key));
+    }
+
+
+    /// <summary>
+    /// Shows or hides disabled module info, depends on SettingsEnabled property.
+    /// </summary>
+    private void DisplayErrorText()
+    {
+        // If module is disabled, then display disabled module info, otherwise hide
+        if (ParentPanel != null)
+        {
+            ParentPanel.Visible = !SettingsEnabled;
+        }
+        Visible = !SettingsEnabled;
+        lblText.Visible = !SettingsEnabled;
+
+        SetButtonVisibility();
+
+        // If settings enabled, info text is hidden, there is no point in generating info text
+        if (SettingsEnabled)
+        {
+            return;
+        }
+
+        // If InfoText is set ignore everything else
+        if (!String.IsNullOrEmpty(InfoText))
+        { 
+            lblText.Text += InfoText;
+            return;
+        }
+
+        foreach (string key in SettingsList)
+        {
+            // If module disabled for given key, write text about given setting
+            if (!IsSettingEnabledInActualScope(key))
+            {
+                string text = GenerateInfoText(SettingsKeyInfoProvider.GetSettingsKeyInfo(key));
+
+                if (!String.IsNullOrEmpty(lblText.Text))
+                {
+                    lblText.Text += "<br />";
+                }
+
+                // Add new text to label
+                lblText.Text += text;
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// Is setting enabled in actual scope of disabled module info check.
+    /// </summary>
+    /// <param name="key">Key to check.</param>
+    /// <returns>
+    /// Depend on scope, if scope is Both and site setting is true, true is returned, otherwise false.  
+    /// If scope is Site, true is return if site setting is true.
+    /// If scope i Global, true is return if global setting is true.
+    /// If scope is CurrentSiteAndGlobal, current site setting and global setting are true, true is returned.
+    /// If scope is AllSitesAndGlobal, all sites must have site setting true and global setting is true, true is returned.
+    /// </returns>
+    private bool IsSettingEnabledInActualScope(string key)
+    {
+        switch (KeyScope)
+        {
+            case DisabledModuleScope.Both:
+            case DisabledModuleScope.Site: 
+                return SettingsKeyInfoProvider.GetBoolValue(key, SiteName);
+
+            case DisabledModuleScope.Global: 
+                return SettingsKeyInfoProvider.GetBoolValue(key);
+
+            case DisabledModuleScope.CurrentSiteAndGlobal: 
+                return SettingsKeyInfoProvider.GetBoolValue(key, SiteName) && SettingsKeyInfoProvider.GetBoolValue(key);
+
+            case DisabledModuleScope.AllSitesAndGlobal: 
+                return CheckAllSitesSetting(key) && SettingsKeyInfoProvider.GetBoolValue(key);
+        }
+
+        return true;
+    }
+
+
+    /// <summary>
+    /// Enables the setting for actual scope and by which button user has chosen.
+    /// If scope is Both, and global button is pressed then global setting is set and site setting inherits, otherwise only site setting is set.
+    /// If scope is Site, only for current site is setting set.
+    /// If scope is Global, only global setting is set.
+    /// If scope is CurrentSiteAndGlobal, current site's setting and global setting are set.
+    /// If scope is AllSiteAndGlobal, all sites settings and global setting are set.
+    /// </summary>
+    /// <param name="isSite">Site button or global button.</param>
+    /// <param name="key">Setting to enable.</param>
+    private void EnableSettingByActualScope(string key, bool isSite)
+    {
+        // If scope is only global, then set only global setting
+        if (KeyScope == DisabledModuleScope.Global)
+        {
+            SettingsKeyInfoProvider.SetGlobalValue(key, true);
+            return;
+        }
+
+        // If setting is only global setting, set global setting
+        var ski = SettingsKeyInfoProvider.GetSettingsKeyInfo(key);
+        if (ski.KeyIsGlobal)
+        {
+            SettingsKeyInfoProvider.SetGlobalValue(key, true);
+            return;
+        }
+
+        switch (KeyScope)
+        {
+            case DisabledModuleScope.Both:
+                if (isSite)
+                {
+                    SettingsKeyInfoProvider.SetValue(key, SiteName, true);
+                    break;
+                }
+
+                //If global button was pressed, set global setting, and inherit site setting
+                SettingsKeyInfoProvider.SetGlobalValue(key, true);
+                SettingsKeyInfoProvider.SetValue(key, SiteName, null);
+                break;
+
+            case DisabledModuleScope.Site:
+                SettingsKeyInfoProvider.SetValue(key, SiteName, true);
+                break;
+
+            case DisabledModuleScope.CurrentSiteAndGlobal:
+                SettingsKeyInfoProvider.SetGlobalValue(key, true);
+                SettingsKeyInfoProvider.SetValue(key, SiteName, true);
+                break;
+
+            case DisabledModuleScope.AllSitesAndGlobal:
+                SiteInfoProvider.GetSites().ForEachObject(site => SettingsKeyInfoProvider.SetValue(key, SiteName, true));
+                SettingsKeyInfoProvider.SetGlobalValue(key, true);
+                break;
+        }
+    }
+
+
+    /// <summary>
+    /// Sets the button visibility, if SettingsEnabled true, buttons will be hidden, otherwise sets visibility by current KeyScope.
+    /// </summary>
+    private void SetButtonVisibility()
+    {
+        btnSite.Visible = false;
+        btnGlobal.Visible = false;
+
+        if (SettingsEnabled)
+        {
+            return;
+        }
+
+        switch (KeyScope)
+        {
+            case DisabledModuleScope.Global:
+            case DisabledModuleScope.CurrentSiteAndGlobal:
+            case DisabledModuleScope.AllSitesAndGlobal:
+                btnGlobal.Visible = true;
+                break;
+
+            case DisabledModuleScope.Site:
+                btnSite.Visible = true;
+                break;
+
+            case DisabledModuleScope.Both:
+                btnSite.Visible = true;
+                btnGlobal.Visible = true;
+                break;
+        }
+
+        if (!MembershipContext.AuthenticatedUser.IsGlobalAdministrator || !ShowButtons)
+        {
+            btnGlobal.Visible = false;
+            btnSite.Visible = false;
+        }
+
+        if (btnGlobal.Visible && btnSite.Visible)
+        {
+            btnGlobal.CssClass = "DisabledModuleButtons";
+        }
+    }
+
+
+    /// <summary>
+    /// Check site settings of all sites.
+    /// </summary>
+    /// <param name="settingKey">Setting key to be checked for all sites.</param>
+    /// <returns> Return true if all sites have that site setting set true. Otherwise returns false.</returns>
+    private bool CheckAllSitesSetting(string settingKey)
+    {
+        return !SiteInfoProvider.GetSites().Any(site => !SettingsKeyInfoProvider.GetBoolValue(settingKey, site.SiteName));
     }
 
     #endregion
@@ -580,22 +574,41 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
 public enum DisabledModuleScope : int
 {
     /// <summary>
-    /// Both site and global settings are checked
+    /// If global btn is pressed, global setting is saved and site setting inherits.
+    /// If site btn is pressed, only site setting is saved.
+    /// Both buttons are shown.
     /// </summary>
     [EnumStringRepresentation("Both")]
     Both = 0,
 
     /// <summary>
-    /// Only site keys are checked
+    /// Only site button is shown, and enables only current site setting.
     /// </summary>
     [EnumStringRepresentation("Site")]
     Site = 1,
 
     /// <summary>
-    /// Only global keys are checked
+    /// Only global button is shown, and enables only global setting.
     /// </summary>
     [EnumStringRepresentation("Global")]
     Global = 2,
+
+    /// <summary>
+    /// Site setting for current site and global setting is set,
+    /// Only one button is shown in disabled module info.
+    /// This is used e.g. in staging in Objects tab, on All Objects node,
+    /// where you check both current site setting (for site objects) and global setting (for global objects).
+    /// </summary>
+    [EnumStringRepresentation("CurrentSiteAndGlobal")]
+    CurrentSiteAndGlobal = 3,
+
+    /// <summary>
+    /// Site settings for all sites  are set and global setting is set,
+    /// Only one button is shown in disabled module info.
+    /// This is used e.g. in banned IPs, when in dropdownlist is set All.
+    /// </summary>
+    [EnumStringRepresentation("AllSitesAndGlobal")]
+    AllSitesAndGlobal = 4,
 }
 
 #endregion

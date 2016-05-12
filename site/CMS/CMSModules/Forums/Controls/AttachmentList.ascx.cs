@@ -1,10 +1,7 @@
-using System;
+﻿using System;
 using System.Data;
-using System.Collections;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 
 using CMS.ExtendedControls;
 using CMS.Forums;
@@ -185,7 +182,7 @@ public partial class CMSModules_Forums_Controls_AttachmentList : ForumViewer
         if (guid != Guid.Empty)
         {
             // Return attachment url
-            return ResolveUrl("~/CMSModules/Forums/CMSPages/GetForumAttachment.aspx?fileguid=" + guid);
+            return ResolveUrl("~/CMSPages/GetForumAttachment.aspx?fileguid=" + guid);
         }
         else
         {

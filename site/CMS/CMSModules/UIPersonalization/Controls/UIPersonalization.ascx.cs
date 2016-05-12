@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Helpers;
@@ -206,7 +206,7 @@ public partial class CMSModules_UIPersonalization_Controls_UIPersonalization : C
                     ResourceInfo ri = ResourceInfoProvider.GetResourceInfo(selectedModule);
                     if (ri != null)
                     {
-                        selectModule.Value = ri.ResourceId;
+                        selectModule.Value = ri.ResourceID;
                     }
                 }
             }
@@ -272,8 +272,7 @@ public partial class CMSModules_UIPersonalization_Controls_UIPersonalization : C
         if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("CMS.UIPersonalization", CMSAdminControl.PERMISSION_MODIFY))
         {
             treeElem.Enabled = false;
-            lblInfo.Text = String.Format(GetString("general.accessdeniedonpermissionname"), CMSAdminControl.PERMISSION_MODIFY);
-            lblInfo.Visible = true;
+            ShowWarning(String.Format(GetString("general.accessdeniedonpermissionname"), CMSAdminControl.PERMISSION_MODIFY));
         }
 
         ReloadTree();
@@ -380,7 +379,7 @@ public partial class CMSModules_UIPersonalization_Controls_UIPersonalization : C
     /// </summary>
     private void ReloadModules()
     {
-        selectModule.DisplayOnlyForGivenSite = globalRoles ? false : true;
+        selectModule.DisplayOnlyForGivenSite = !globalRoles;
         selectModule.SiteID = globalRoles ? 0 : CurrentSiteID;        
         selectModule.ReloadData(true);
     }

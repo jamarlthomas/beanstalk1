@@ -6,12 +6,9 @@ using CMS;
 using CMS.Base;
 using CMS.DataEngine;
 using CMS.ExtendedControls;
-using CMS.ExtendedControls.ActionsConfig;
 using CMS.Helpers;
 using CMS.Modules;
-using CMS.PortalEngine;
 using CMS.UIControls;
-using CMS.Core;
 
 
 [assembly: RegisterCustomClass("ModuleListControlExtender", typeof(ModuleListControlExtender))]
@@ -28,25 +25,6 @@ public class ModuleListControlExtender : ControlExtender<UniGrid>
     {
         Control.OnAction += OnAction;
         Control.OnExternalDataBound += Control_OnExternalDataBound;
-
-        ((CMSUIPage)Control.Page).LoadComplete += ModuleListControlExtender_LoadComplete;
-    }
-
-
-    /// <summary>
-    /// Inserts a header action
-    /// </summary>
-    /// <param name="sender">Ignored</param>
-    /// <param name="e">Ignored</param>
-    void ModuleListControlExtender_LoadComplete(object sender, EventArgs e)
-    {
-        var goToImport = new HeaderAction()
-        {
-            Text = ResHelper.GetString("Administration-Module_List.ImportData"),
-            RedirectUrl = UIContextHelper.GetElementUrl(ModuleName.CMS, "ImportSiteOrObjects"),
-            ButtonStyle = ButtonStyle.Default,
-        };
-        ((CMSUIPage)Control.Page).AddHeaderAction(goToImport);
     }
 
 
@@ -95,7 +73,7 @@ public class ModuleListControlExtender : ControlExtender<UniGrid>
         {
             int resourceId = ValidationHelper.GetInteger(actionArgument, 0);
 
-            // Check if module has any classes
+            // Check if module has any classes (including page types...)
             var classes = DataClassInfoProvider.GetClasses().Where("ClassResourceID", QueryOperator.Equals, resourceId);
             var settings = SettingsCategoryInfoProvider.GetSettingsCategories().Where("CategoryResourceID", QueryOperator.Equals, resourceId);
             var elements = UIElementInfoProvider.GetUIElements().Where("ElementResourceID", QueryOperator.Equals, resourceId);

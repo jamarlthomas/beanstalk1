@@ -1,12 +1,12 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Validation_CssValidator"
-    Codebehind="CssValidator.ascx.cs" %>
+     Codebehind="CssValidator.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagPrefix="cms" TagName="UniGrid" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 
 <%@ Register Src="~/CMSAdminControls/AsyncLogDialog.ascx" TagName="AsyncLog"
     TagPrefix="cms" %>
 <asp:Panel runat="server" ID="pnlLog" Visible="false">
-    <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+    <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="CSSValidator" />
 </asp:Panel>
 <asp:Literal ID="ltlScript" runat="server" EnableViewState="false" />
 <asp:Panel ID="pnlGrid" runat="server" CssClass="Validation">

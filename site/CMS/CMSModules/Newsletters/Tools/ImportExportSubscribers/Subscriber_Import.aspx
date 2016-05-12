@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Tools_ImportExportSubscribers_Subscriber_Import"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Tools_ImportExportSubscribers_Subscriber_Import"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Tools - Newsletter subscribers"
-    Codebehind="Subscriber_Import.aspx.cs" %>
+     Codebehind="Subscriber_Import.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"
     TagPrefix="cms" %>
@@ -10,7 +10,7 @@
 
 <asp:Content ContentPlaceHolderID="plcBeforeBody" runat="server" ID="cntBeforeBody">
     <asp:Panel runat="server" ID="pnlLog" Visible="false">
-        <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+        <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="Subscribers" />
     </asp:Panel>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="plcContent" ID="content" runat="server">

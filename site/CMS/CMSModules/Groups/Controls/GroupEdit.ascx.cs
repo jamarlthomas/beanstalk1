@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.Community;
@@ -423,7 +423,8 @@ public partial class CMSModules_Groups_Controls_GroupEdit : CMSAdminEditControl
                                             // Update stylesheet id if set
                                             if (selectedSheetID == 0)
                                             {
-                                                node.SetValue("DocumentStylesheetID", -1);
+                                                node.DocumentStylesheetID = 0;
+                                                node.DocumentInheritsStylesheet = true;
                                             }
                                             else
                                             {

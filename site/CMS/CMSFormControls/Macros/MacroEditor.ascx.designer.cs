@@ -18,7 +18,7 @@ public partial class CMSFormControls_Macros_MacroEditor {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSAdminControls_UI_Macros_MacroEditor ucEditor;
+    protected global::CMS.UIControls.MacroEditor ucEditor;
     
     /// <summary>
     /// plcInsertMacro control.

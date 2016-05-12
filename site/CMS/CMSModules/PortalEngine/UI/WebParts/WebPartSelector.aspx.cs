@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.ExtendedControls;
@@ -55,9 +55,6 @@ function Cancel()
 
 		// Set name of selection function
 		selectElem.SelectFunction = "SelectWebPart";
-
-		bool wireframe = QueryHelper.GetBoolean("wireframe", false);
-		selectElem.ShowWireframeOnlyWebparts = wireframe;
 
 		// Set the title and icon
 		string title = GetString("portalengine-webpartselection.title");

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Friends_Controls_Friends_Reject" Codebehind="Friends_Reject.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Friends_Controls_Friends_Reject"  Codebehind="Friends_Reject.ascx.cs" %>
 
 <asp:Panel ID="pnlBody" runat="server">
     <cms:MessagesPlaceholder ID="plcMess" runat="server" />

@@ -1,13 +1,13 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
+using CMS.Base;
 using CMS.ExtendedControls;
 using CMS.ExtendedControls.ActionsConfig;
 using CMS.Forums;
 using CMS.Helpers;
 using CMS.Membership;
-using CMS.Base;
 using CMS.SiteProvider;
 using CMS.UIControls;
 
@@ -15,13 +15,8 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
 {
     #region "Private fields"
 
-    private int mPostId = 0;
-    private int mForumId = 0;
-    private int mReply = 0;
-    private string mListingPost = null;
-    private ForumViewer ThreadMove1 = null;
-    private ForumPostInfo mPostInfo = null;
-    private string listingParameter = null;
+    private ForumViewer mThreadMove;
+    private string mListingParameter;
 
     #endregion
 
@@ -62,14 +57,8 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
     /// </summary>
     public int PostID
     {
-        get
-        {
-            return mPostId;
-        }
-        set
-        {
-            mPostId = value;
-        }
+        get;
+        set;
     }
 
 
@@ -78,14 +67,8 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
     /// </summary>
     public int ForumID
     {
-        get
-        {
-            return mForumId;
-        }
-        set
-        {
-            mForumId = value;
-        }
+        get;
+        set;
     }
 
 
@@ -95,14 +78,8 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
     /// </summary>
     public string ListingPost
     {
-        get
-        {
-            return mListingPost;
-        }
-        set
-        {
-            mListingPost = value;
-        }
+        get;
+        set;
     }
 
 
@@ -111,14 +88,8 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
     /// </summary>
     public int Reply
     {
-        get
-        {
-            return mReply;
-        }
-        set
-        {
-            mReply = value;
-        }
+        get;
+        set;
     }
 
 
@@ -129,12 +100,19 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
     {
         get
         {
-            if ((mPostInfo == null) && (PostID > 0))
-            {
-                mPostInfo = ForumPostInfoProvider.GetForumPostInfo(PostID);
-            }
+            return (ForumPostInfo)EditedObject;
+        }
+    }
 
-            return mPostInfo;
+
+    /// <summary>
+    /// Returns true when new post is being created
+    /// </summary>
+    private bool NewForumPostIsBeingCreated
+    {
+        get
+        {
+            return (ForumID != 0) && (Reply == 0);
         }
     }
 
@@ -143,17 +121,18 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        EnsureEditedObject();
+
         // Show back link if is opened from listing        
         if (!String.IsNullOrEmpty(ListingPost) && (PostInfo != null))
         {
-            listingParameter = "&listingpost=" + HTMLHelper.HTMLEncode(ListingPost);
+            mListingParameter = "&listingpost=" + HTMLHelper.HTMLEncode(ListingPost);
         }
 
-
-        ThreadMove1 = Page.LoadUserControl("~/CMSModules/Forums/Controls/ThreadMove.ascx") as ForumViewer;
-        ThreadMove1.ID = "ctrlThreadMove";
-        ThreadMove1.IsLiveSite = IsLiveSite;
-        plcThreadMove.Controls.Add(ThreadMove1);
+        mThreadMove = Page.LoadUserControl("~/CMSModules/Forums/Controls/ThreadMove.ascx") as ForumViewer;
+        mThreadMove.ID = "ctrlThreadMove";
+        mThreadMove.IsLiveSite = IsLiveSite;
+        plcThreadMove.Controls.Add(mThreadMove);
 
         if (!Visible)
         {
@@ -178,7 +157,7 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
         else
         {
             //New thread            
-            if (ForumID != 0)
+            if (NewForumPostIsBeingCreated)
             {
                 NewThreadTitle.TitleText = GetString("ForumPost_View.NewThreadHeaderCaption");
 
@@ -190,16 +169,16 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
             }
             else
             {
+                // ReSharper disable once PossibleNullReferenceException - edited object is ensured => no null reference is possible
                 ForumInfo fi = ForumInfoProvider.GetForumInfo(PostInfo.PostForumID);
                 if (fi != null)
                 {
                     ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "ForumScripts",
                                                            ScriptHelper.GetScript(" function ReplyToPost(postId)\n" +
                                                                                   "{    if (postId != 0){\n" +
-                                                                                  "location.href='ForumPost_View.aspx?postid=' + postId + '&reply=1&forumId=" + fi.ForumID + listingParameter + "' }}\n"));
+                                                                                  "location.href='ForumPost_View.aspx?postid=' + postId + '&reply=1&forumId=" + fi.ForumID + mListingParameter + "' }}\n"));
                 }
 
-                //Create menu using inserted skmMenu control
                 InitializeMenu();
 
                 ltlScript.Text += ScriptHelper.GetScript(
@@ -216,12 +195,24 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
                 ForumPost1.DisplayOnly = true;
 
 
-                if ((PostInfo != null) && (PostInfo.PostAttachmentCount > 0))
+                if (PostInfo.PostAttachmentCount > 0)
                 {
                     ReloadAttachmentData(PostID);
                 }
             }
         }
+    }
+
+
+    private void EnsureEditedObject()
+    {
+        if (NewForumPostIsBeingCreated)
+        {
+            // New post is being created => we cannot retrieve it via provider
+            return;
+        }
+        
+        EditedObject = ForumPostInfoProvider.GetForumPostInfo(PostID);
     }
 
 
@@ -268,7 +259,7 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
 
                     if (attachmentGuid != Guid.Empty)
                     {
-                        string url = URLHelper.GetAbsoluteUrl("~/CMSModules/Forums/CMSPages/GetForumAttachment.aspx?fileguid=" + attachmentGuid);
+                        string url = URLHelper.GetAbsoluteUrl("~/CMSPages/GetForumAttachment.aspx?fileguid=" + attachmentGuid);
                         string title = ValidationHelper.GetString(row["AttachmentFileName"], "");
 
                         // Create link to post attachment
@@ -309,7 +300,7 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
 
     protected void ForumNewPost1_OnCancelClick(object sender, EventArgs e)
     {
-        URLHelper.Redirect("ForumPost_View.aspx?postid=" + PostID + listingParameter);
+        URLHelper.Redirect("ForumPost_View.aspx?postid=" + PostID + mListingParameter);
     }
 
 
@@ -319,7 +310,7 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
     private void ForumNewPost1_OnInsertPost(object sender, EventArgs e)
     {
         ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_tree'].location.href = 'ForumPost_Tree.aspx?postid=" + PostEdit1.EditPostID + "&forumid=" + ForumID.ToString() + "';");
-        ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?postid=" + PostEdit1.EditPostID + listingParameter + "';");
+        ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?postid=" + PostEdit1.EditPostID + mListingParameter + "';");
     }
 
 
@@ -352,8 +343,8 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
         // Stick thread
         if (PostInfo.PostLevel == 0)
         {
-            ThreadMove1.SetValue("AdminMode", true);
-            ThreadMove1.SetValue("SelectedThreadID", PostInfo.PostId);
+            mThreadMove.SetValue("AdminMode", true);
+            mThreadMove.SetValue("SelectedThreadID", PostInfo.PostId);
 
             actionsElem.AddAction(new HeaderAction()
             {
@@ -430,7 +421,7 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
     /// <param name="e">EventArgs</param>
     protected override void OnPreRender(EventArgs e)
     {
-        if (ValidationHelper.GetBoolean(ThreadMove1.GetValue("TopicMoved"), false))
+        if (ValidationHelper.GetBoolean(mThreadMove.GetValue("TopicMoved"), false))
         {
             ltlScript.Text += ScriptHelper.GetScript("if(parent){ parent.location = parent.location} else {location = location}");
             pnlContent.Visible = false;
@@ -457,7 +448,7 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
             ForumPostInfoProvider.SplitThread(PostInfo);
 
             ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_tree'].location.href = 'ForumPost_Tree.aspx?postid=" + PostInfo.PostId + "&forumid=" + PostInfo.PostForumID + "';");
-            ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?postid=" + PostID + listingParameter + "';");
+            ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?postid=" + PostID + mListingParameter + "';");
         }
     }
 
@@ -484,7 +475,7 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
             }
 
             ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_tree'].location.href = 'ForumPost_Tree.aspx?postid=" + PostInfo.PostId + "&forumid=" + PostInfo.PostForumID + "';");
-            ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?postid=" + PostID + listingParameter + "';");
+            ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?postid=" + PostID + mListingParameter + "';");
         }
     }
 
@@ -505,7 +496,7 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
             ForumPostInfoProvider.SetForumPostInfo(PostInfo);
 
             ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_tree'].location.href = 'ForumPost_Tree.aspx?postid=" + PostInfo.PostId + "&forumid=" + PostInfo.PostForumID + "';");
-            ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?postid=" + PostID + listingParameter + "';");
+            ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?postid=" + PostID + mListingParameter + "';");
         }
     }
 
@@ -526,13 +517,13 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
         {
             //reload post edit frames with actual data
             ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_tree'].location.href = 'ForumPost_Tree.aspx?forumid=" + PostInfo.PostForumID + "';");
-            ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?forumid=" + PostInfo.PostForumID + listingParameter + "';");
+            ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?forumid=" + PostInfo.PostForumID + mListingParameter + "';");
         }
         else
         {
             //reload post edit frames with actual data
             ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_tree'].location.href = 'ForumPost_Tree.aspx?postid=" + PostInfo.PostParentID + "&forumid=" + PostInfo.PostForumID + "';");
-            ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?postid=" + PostInfo.PostParentID + listingParameter + "';");
+            ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?postid=" + PostInfo.PostParentID + mListingParameter + "';");
         }
     }
 
@@ -560,7 +551,7 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
         }
 
         ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_tree'].location.href = 'ForumPost_Tree.aspx?postid=" + PostInfo.PostId + "&forumid=" + PostInfo.PostForumID + "';");
-        ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?postid=" + PostID + listingParameter + "';");
+        ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?postid=" + PostID + mListingParameter + "';");
     }
 
 
@@ -580,7 +571,7 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
             PostInfo.Reject(true);
 
             ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_tree'].location.href = 'ForumPost_Tree.aspx?postid=" + PostInfo.PostId + "&forumid=" + PostInfo.PostForumID + "';");
-            ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?postid=" + PostID + listingParameter + "';");
+            ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?postid=" + PostID + mListingParameter + "';");
         }
     }
 
@@ -601,7 +592,7 @@ public partial class CMSModules_Forums_Controls_Posts_PostView : CMSAdminEditCon
             PostInfo.Approve(MembershipContext.AuthenticatedUser.UserID, true);
 
             ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_tree'].location.href = 'ForumPost_Tree.aspx?postid=" + PostInfo.PostId + "&forumid=" + PostInfo.PostForumID + "';");
-            ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?postid=" + PostID + listingParameter + "';");
+            ltlScript.Text += ScriptHelper.GetScript("parent.frames['posts_edit'].location.href = 'ForumPost_View.aspx?postid=" + PostID + mListingParameter + "';");
         }
     }
 

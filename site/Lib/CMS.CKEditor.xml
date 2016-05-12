@@ -24,11 +24,6 @@
             Renders the control at design-time.
             </summary>
         </member>
-        <member name="M:CMS.CKEditor.CKEditorControl.SetDefaultValues">
-            <summary>
-            Sets default values in the Config.
-            </summary>
-        </member>
         <member name="M:CMS.CKEditor.CKEditorControl.SetDefaultToolbarFromWebConfig">
             <summary>
             Set default toolbar from web config key if it's set
@@ -56,7 +51,7 @@
         </member>
         <member name="M:CMS.CKEditor.CKEditorControl.UpdateConfigRemoveButtons">
             <summary>
-            Updates the RemovePlugins config from its List equivalent.
+            Updates the RemoveButtons config from its List equivalent.
             </summary>
         </member>
         <member name="M:CMS.CKEditor.CKEditorControl.GetControlClientID(System.String)">
@@ -120,6 +115,11 @@
         <member name="P:CMS.CKEditor.CKEditorControl.ObjectTypeRegExp">
             <summary>
             Object type regular expression.
+            </summary>
+        </member>
+        <member name="P:CMS.CKEditor.CKEditorControl.ObjectCodeTypeRegExp">
+            <summary>
+            Regular expression that matches codetype attribute.
             </summary>
         </member>
         <member name="P:CMS.CKEditor.CKEditorControl.ObjectWidthRegExp">
@@ -246,13 +246,6 @@
             
              Default value: 0
              </summary>
-        </member>
-        <member name="P:CMS.CKEditor.CKEditorControl.DefaultToolbar">
-            <summary>
-            Toolbar name for default toolbar
-            
-            Default value: 'Standard'
-            </summary>
         </member>
         <member name="P:CMS.CKEditor.CKEditorControl.AutoGrowMinHeight">
              <summary>
@@ -593,6 +586,7 @@
             A list of additional plugins to be loaded. This setting makes it easier 
             to add new plugins without having to touch plugins setting.
             </summary>
+            <remarks>Contains "CMSPlugins" as the first item by default.</remarks>
         </member>
         <member name="P:CMS.CKEditor.CKEditorControl.FileBrowserBrowseUrl">
             <summary>

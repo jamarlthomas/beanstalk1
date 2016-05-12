@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Donate" Language="C#" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    AutoEventWireup="true" Codebehind="Donate.aspx.cs" Inherits="CMSModules_Ecommerce_CMSPages_Donate"
+    AutoEventWireup="true"  Codebehind="Donate.aspx.cs" Inherits="CMSModules_Ecommerce_CMSPages_Donate"
     Theme="Default" %>
 
 <%@ Register TagPrefix="cms" TagName="DonationProperties" Src="~/CMSModules/Ecommerce/Controls/ProductOptions/DonationProperties.ascx" %>

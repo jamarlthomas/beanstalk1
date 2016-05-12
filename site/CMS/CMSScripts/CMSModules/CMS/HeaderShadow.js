@@ -36,8 +36,14 @@
                 if ($('div.PreviewMenu').height() > 0) {
                     $uiHeader.push($('div.PreviewMenu'));
                 }
+                if ($('div.preview-edit-panel').height() > 0) {
+                    $uiHeader.push($('div.preview-edit-panel'));
+                } 
                 if ($('div#CMSHeaderDiv').height() > 0) {
                     $uiHeader.push($('div#CMSHeaderDiv'));
+                }
+                if ($('div.object-edit-panel').height() > 0) {
+                    $uiHeader.push($('div.object-edit-panel'));
                 }
                 if ($('div.header-container').height() > 0) {
                     $uiHeader.push($('div.header-container'));
@@ -50,6 +56,9 @@
                 }
                 if ($('div.cms-edit-menu').height() > 0) {
                     $uiHeader.push($('div.cms-edit-menu'));
+                }
+                if ($('div.header-actions-container').height() > 0) {
+                    $uiHeader.push($('div.header-actions-container'));
                 }
             }
         },
@@ -98,15 +107,22 @@
             $('.scroll-area,.PageContent,.PreviewBody,.DeviceFrame,.dialog-content').on('scroll', toggleShadow);
 
             // Iframe scroll area - e.g. in Newsletter preview dialog
-            var $iframeScrollArea = $('iframe.scroll-area');
-            $iframeScrollArea.ready(function () {
-                $iframeScrollArea.contents().on('scroll', toggleShadow);
-            });
-            // e.g. for Newsletter preview Prev and Next buttons
-            $iframeScrollArea.load(function () {
-                $iframeScrollArea.contents().on('scroll', toggleShadow);
-                toggleShadow.call($iframeScrollArea.contents());
-            });
+            try {
+                var dummy = $iframeScrollArea.contents();
+
+                var $iframeScrollArea = $('iframe.scroll-area');
+                $iframeScrollArea.ready(function () {
+                    $iframeScrollArea.contents().on('scroll', toggleShadow);
+                });
+                // e.g. for Newsletter preview Prev and Next buttons
+                $iframeScrollArea.load(function () {
+                    $iframeScrollArea.contents().on('scroll', toggleShadow);
+                    toggleShadow.call($iframeScrollArea.contents());
+                });
+            }
+            catch (error) {
+                // the frame might contain content from another domain so scroll events are not available
+            }
 
             $uiHeader = [];
 

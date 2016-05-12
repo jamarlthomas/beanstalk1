@@ -1,5 +1,4 @@
-using System;
-using System.Web.UI;
+﻿using System;
 using System.Data;
 
 using CMS.ExtendedControls;
@@ -27,6 +26,22 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
     #region "Public properties"
 
     /// <summary>
+    /// Gets or sets whether the view is allowed to edit the items
+    /// </summary>
+    public bool AllowEdit
+    {
+        get
+        {
+            return innermedia.AllowEdit;
+        }
+        set
+        {
+            innermedia.AllowEdit = value;
+        }
+    }
+
+
+    /// <summary>
     /// Gets or sets text of the information label.
     /// </summary>
     public string InfoText
@@ -49,11 +64,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
     {
         get
         {
-            if (mConfig == null)
-            {
-                mConfig = new FileSystemDialogConfiguration();
-            }
-            return mConfig;
+            return mConfig ?? (mConfig = new FileSystemDialogConfiguration());
         }
         set
         {
@@ -225,13 +236,15 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
     /// </summary>
     private void SetupControls()
     {
-        InitializeControlScripts();
+        ScriptHelper.RegisterScriptFile(this, "Controls/FileSystemView.js");
 
         // Initialize inner view control
         innermedia.FileSystemPath = StartingPath;
 
+        const string SELECTOR_FOLDER = "~/CMSModules/Content/Controls/Dialogs/Selectors/FileSystemSelector/";
+
         // Set grid definition
-        innermedia.ListViewControl.GridName = Config.ShowFolders ? "~/CMSModules/Content/Controls/Dialogs/Selectors/FileSystemSelector/FolderView.xml" : "~/CMSModules/Content/Controls/Dialogs/Selectors/FileSystemSelector/FileSystemView.xml";
+        innermedia.ListViewControl.GridName = Config.ShowFolders ? SELECTOR_FOLDER + "FolderView.xml" : SELECTOR_FOLDER + "FileSystemView.xml";
 
         // Set inner control binding columns
         innermedia.FileIdColumn = "path";
@@ -246,38 +259,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
         innermedia.Configuration = Config;
         innermedia.ViewMode = ViewMode;
     }
-
-
-    /// <summary>
-    /// Initializes scrips used by the control.
-    /// </summary>
-    private void InitializeControlScripts()
-    {
-        const string script = @"
-        function SetTreeRefreshAction(path) {
-            SetAction('refreshtree', path);
-            RaiseHiddenPostBack();
-        }
-        function SetRefreshAction() {
-            SetAction('refresh', '');
-            RaiseHiddenPostBack();
-        }
-        function SetDeleteAction(argument) {
-            SetAction('delete', argument);
-            RaiseHiddenPostBack();
-        }
-        function SetSelectAction(argument) {
-            SetAction('select', argument);
-            RaiseHiddenPostBack();
-        }
-        function SetParentAction(argument) {
-            SetAction('parentselect', argument);
-            RaiseHiddenPostBack();
-        }";
-
-        ScriptManager.RegisterStartupScript(this, GetType(), "DialogsSelectAction", script, true);
-    }
-
+    
 
     /// <summary>
     /// Loads data from data source property.
@@ -307,7 +289,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
             }
 
             // Display information about current path
-            string info = String.Format(GetString("FileSystemSelector.Info"), path);
+            string info = String.Format(GetString("FileSystemSelector.Info"), HTMLHelper.HTMLEncode(path));
             DisplayListingInfo(info);
         }
     }
@@ -321,7 +303,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
     /// Returns argument set according passed DataRow and flag indicating whether the set is obtained for selected item.
     /// </summary>
     /// <param name="dr">DataRow with all the item data</param>
-    /// <param name="isSelected">Indicates whether the set is required for an selected item</param>
     private string innermedia_GetArgumentSet(DataRow dr)
     {
         // Return required argument set
@@ -340,7 +321,13 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
     private string GetArgumentSet(DataRow dr)
     {
         // Common information for both content & attachments
-        string result = String.Format("{1}{0}{2}{0}{3}", ARG_SEPARATOR, dr[innermedia.FileIdColumn].ToString(), DataHelper.GetSizeString(ValidationHelper.GetLong(dr[innermedia.FileSizeColumn], 0)), dr["isfile"]);
+        string result = String.Format(
+            "{1}{0}{2}{0}{3}", 
+            ARG_SEPARATOR, 
+            dr[innermedia.FileIdColumn], 
+            DataHelper.GetSizeString(ValidationHelper.GetLong(dr[innermedia.FileSizeColumn], 0)), 
+            dr["isfile"]
+        );
 
         return result;
     }

@@ -45,7 +45,7 @@ public partial class CMSWebParts_Membership_Logon_LogonForm {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.LinkButton lnkPasswdRetrieval;
+    protected global::CMS.ExtendedControls.LocalizedLinkButton lnkPasswdRetrieval;
     
     /// <summary>
     /// pnlUpdatePasswordRetrieval control.
@@ -72,7 +72,7 @@ public partial class CMSWebParts_Membership_Logon_LogonForm {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblPasswdRetrieval;
+    protected global::CMS.ExtendedControls.LocalizedLabel lblPasswdRetrieval;
     
     /// <summary>
     /// txtPasswordRetrieval control.
@@ -84,15 +84,6 @@ public partial class CMSWebParts_Membership_Logon_LogonForm {
     protected global::CMS.ExtendedControls.CMSTextBox txtPasswordRetrieval;
     
     /// <summary>
-    /// btnPasswdRetrieval control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.CMSButton btnPasswdRetrieval;
-    
-    /// <summary>
     /// rqValue control.
     /// </summary>
     /// <remarks>
@@ -100,6 +91,15 @@ public partial class CMSWebParts_Membership_Logon_LogonForm {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.CMSRequiredFieldValidator rqValue;
+    
+    /// <summary>
+    /// btnPasswdRetrieval control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedButton btnPasswdRetrieval;
     
     /// <summary>
     /// lblResult control.

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Title="Content personalization variant properties" Inherits="CMSModules_OnlineMarketing_Pages_Content_ContentPersonalizationVariant_Edit" Theme="Default" Codebehind="Edit.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+    Title="Content personalization variant properties" Inherits="CMSModules_OnlineMarketing_Pages_Content_ContentPersonalizationVariant_Edit" Theme="Default"  Codebehind="Edit.aspx.cs" %>
 <%@ Register Src="~/CMSModules/OnlineMarketing/Controls/UI/ContentPersonalizationVariant/Edit.ascx"
     TagName="ContentPersonalizationVariantEdit" TagPrefix="cms" %>
     

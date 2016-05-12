@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.PortalControls;
@@ -156,23 +156,6 @@ public partial class CMSWebParts_CustomTables_CustomTableDataSource : CMSAbstrac
         {
             SetValue("Columns", value);
             srcTables.SelectedColumns = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Enables or disables option to retrieve selected item.
-    /// </summary>
-    [Obsolete("Use property LoadCurrentPageOnly instead")]
-    public bool EnableSelectedItem
-    {
-        get
-        {
-            return LoadCurrentPageOnly;
-        }
-        set
-        {
-            LoadCurrentPageOnly = value;
         }
     }
 

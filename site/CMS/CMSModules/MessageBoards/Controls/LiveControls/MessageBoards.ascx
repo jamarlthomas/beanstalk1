@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MessageBoards_Controls_LiveControls_MessageBoards"
-    Codebehind="MessageBoards.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MessageBoards_Controls_LiveControls_MessageBoards"
+     Codebehind="MessageBoards.ascx.cs" %>
 <%@ Register Src="~/CMSModules/MessageBoards/Controls/LiveControls/Boards.ascx" TagName="Boards"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/MessageBoards/Controls/Messages/MessageList.ascx"

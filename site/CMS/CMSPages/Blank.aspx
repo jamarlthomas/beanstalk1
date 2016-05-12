@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Blank.aspx.cs" Inherits="CMSPages_Blank" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Blank.aspx.cs" Inherits="CMSPages_Blank" %>
 <!DOCTYPE html>
 
 <html>

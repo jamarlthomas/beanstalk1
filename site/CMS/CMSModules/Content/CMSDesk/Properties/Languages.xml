@@ -15,8 +15,8 @@
     <column source="DocumentModifiedWhen" externalsourcename="DocumentModifiedWhen" caption="$general.modified$" wrap="false">
       <tooltip source="DocumentModifiedWhen" externalsourcename="DocumentModifiedWhenTooltip" />
     </column>
-    <column source="VersionNumber" externalsourcename="VersionNumber" caption="$general.version$" wrap="false" />
-    <column source="Published" externalsourcename="Published" caption="$general.published$" wrap="false" />
+    <column source="DocumentLastVersionNumber" externalsourcename="DocumentLastVersionNumber" caption="$general.version$" wrap="false" />
+    <column source="##ALL##" externalsourcename="#published" caption="$general.published$" wrap="false" />
   </columns>
   <pager>
     <key name="ShowFirstLastButtons" value="false" />

@@ -1,6 +1,6 @@
-<%@ Page Language="C#" Theme="Default" AutoEventWireup="true"
+﻿<%@ Page Language="C#" Theme="Default" AutoEventWireup="true"
     Inherits="CMSFormControls_Selectors_SelectFileOrFolder_Footer" EnableEventValidation="false"
-    MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" Codebehind="Footer.aspx.cs" %>
+    MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"  Codebehind="Footer.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Dialogs/General/FileSystemDialogFooter.ascx" TagName="Footer"
     TagPrefix="cms" %>

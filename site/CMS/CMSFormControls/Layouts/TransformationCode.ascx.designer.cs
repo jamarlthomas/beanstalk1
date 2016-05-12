@@ -63,7 +63,7 @@ public partial class CMSFormControls_Layouts_TransformationCode {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSAdminControls_UI_Macros_MacroEditor txtCode;
+    protected global::CMS.UIControls.MacroEditor txtCode;
     
     /// <summary>
     /// plcCssLink control.

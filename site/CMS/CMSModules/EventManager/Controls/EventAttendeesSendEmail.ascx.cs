@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Threading;
 using System.Web.UI.WebControls;
@@ -116,7 +116,10 @@ public partial class CMSModules_EventManager_Controls_EventAttendeesSendEmail : 
         // Disable form if no attendees present or user doesn't have modify permission
         if (MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("cms.eventmanager", "Modify"))
         {
-            DataSet ds = EventAttendeeInfoProvider.GetEventAttendees(EventID, null, null, "AttendeeID", 1);
+            DataSet ds = EventAttendeeInfoProvider.GetEventAttendees(EventID)
+                                                    .Column("AttendeeID")
+                                                    .TopN(1);
+
             if (DataHelper.DataSourceIsEmpty(ds))
             {
                 DisableForm();

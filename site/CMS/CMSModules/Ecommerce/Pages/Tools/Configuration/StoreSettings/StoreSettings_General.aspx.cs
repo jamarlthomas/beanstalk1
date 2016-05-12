@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.Core;
@@ -86,12 +86,12 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Configuration_StoreSetting
     /// </summary>
     private void InitializeControls()
     {
-        CurrentMaster.HeaderActions.AddAction(new SaveAction(this));
+        CurrentMaster.HeaderActions.AddAction(new SaveAction());
         CurrentMaster.HeaderActions.ActionPerformed += StoreSettingsActions_ActionPerformed;
 
         // Assign category, group and site ID
         SettingsGroupViewer.CategoryName = "CMS.ECommerce";
-        SettingsGroupViewer.Where = "CategoryName IN (N'CMS.Ecommerce.UnregisteredCustomers', N'CMS.Ecommerce.Accounts', N'CMS.Ecommerce.Units', N'CMS.Ecommerce.Taxes', N'CMS.Ecommerce.ProductsUI', N'CMS.Ecommerce.ProductProperties', N'CMS.ECommerce.Pages', N'CMS.Ecommerce.Pricing', N'CMS.Ecommerce.Invoice')";
+        SettingsGroupViewer.Where = "CategoryName IN (N'CMS.Ecommerce.UnregisteredCustomers', N'CMS.Ecommerce.Accounts', N'CMS.Ecommerce.Units', N'CMS.Ecommerce.Taxes', N'CMS.Ecommerce.ProductsUI', N'CMS.Ecommerce.ProductProperties', N'CMS.ECommerce.Pages', N'CMS.Ecommerce.Pricing', N'CMS.Ecommerce.Invoice', N'CMS.Ecommerce.ShoppingCart')";
         SettingsGroupViewer.SiteID = (IsMultiStoreConfiguration) ? SiteID : SiteContext.CurrentSiteID;
 
         GetCurrentMainCurrency();

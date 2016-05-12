@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -69,8 +69,8 @@ public partial class CMSModules_Content_Controls_ContentTree : ContentActionsCon
     #region "Properties"
 
     /// <summary>
-    /// If set to TRUE, file type icons are used instead of the class icons for 'cms.file' documents. 
-    /// File type icon corresponds to the extension of the attachment which is included in 'cms.file' document.
+    /// If set to TRUE, file type icons are used instead of the class icons for file type documents. 
+    /// File type icon corresponds to the extension of the attachment which is included in file type document.
     /// </summary>
     public bool UseCMSFileIcons
     {
@@ -332,7 +332,6 @@ public partial class CMSModules_Content_Controls_ContentTree : ContentActionsCon
             if (mMapTreeProvider == null)
             {
                 mMapTreeProvider = new TreeProvider(MembershipContext.AuthenticatedUser);
-                mMapTreeProvider.SelectQueryName = "selecttree";
                 mMapTreeProvider.PreferredCultureCode = Culture;
             }
 
@@ -821,8 +820,11 @@ function MoveNodeAsync(nodeId, targetNodeId, position, copy, link) {
         e.Node.ChildNodes.Clear();
         e.Node.PopulateOnDemand = false;
 
-        int nodeId = ValidationHelper.GetInteger(e.Node.Value, 0);
-        TreeNode node = TreeProvider.SelectSingleNode(nodeId);
+        // Use selected node if same as the one being populated
+        var nodeId = ValidationHelper.GetInteger(e.Node.Value, 0);
+        var selectedNode = SelectedNode;
+        var selectedNodeId = selectedNode != null ? selectedNode.NodeID : 0;
+        var node = nodeId == selectedNodeId ? selectedNode : TreeProvider.SelectSingleNode(nodeId);
 
         // Check explore tree permission for current node
         bool userHasExploreTreePermission = (MembershipContext.AuthenticatedUser.IsAuthorizedPerDocument(node, NodePermissionsEnum.ExploreTree) == AuthorizationResultEnum.Allowed);
@@ -894,9 +896,9 @@ function MoveNodeAsync(nodeId, targetNodeId, position, copy, link) {
 
             string className = ci.ClassName.ToLowerCSafe();
 
-            // Use file type icons for cms.file
+            // Use file type icons for file
             var sb = new StringBuilder();
-            if (UseCMSFileIcons && (className == "cms.file"))
+            if (UseCMSFileIcons && className.EqualsCSafe(SystemDocumentTypes.File, true))
             {
                 string extension = ValidationHelper.GetString(container.GetValue("DocumentType"), string.Empty);
                 string image = UIHelper.GetFileIcon(Page, extension, FontIconSizeEnum.Standard, CMSFileIconSet);
@@ -931,7 +933,7 @@ function MoveNodeAsync(nodeId, targetNodeId, position, copy, link) {
                 }
 
                 // Add icons
-                marks = DocumentHelper.GetDocumentMarks(Page, SiteName, Culture, stepType, sourceNode, true);
+                marks = DocumentUIHelper.GetDocumentMarks(Page, SiteName, Culture, stepType, sourceNode, true);
                 if (!string.IsNullOrEmpty(marks))
                 {
                     marks = string.Format("<span class=\"tn-group\">{0}</span>", marks);
@@ -1147,7 +1149,7 @@ function MoveNodeAsync(nodeId, targetNodeId, position, copy, link) {
                 return;
             }
 
-            if (!targetNode.NodeClassName.EqualsCSafe("CMS.Root", true))
+            if (!targetNode.IsRoot())
             {
                 newParentId = targetNode.NodeParentID;
             }

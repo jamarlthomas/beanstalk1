@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_EmailQueue_SendEmail"
-    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Codebehind="SendEmail.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_EmailQueue_SendEmail"
+    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"  Codebehind="SendEmail.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/AdminControls/Controls/MetaFiles/FileUploader.ascx" TagName="FileUploader" TagPrefix="cms" %>
 

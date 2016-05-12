@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.PortalEngine;
@@ -48,7 +48,7 @@ public partial class CMSModules_DocumentTypes_Pages_Development_DocumentType_Edi
             // Check hash
             if (!QueryHelper.ValidateHash("hash", "objectid"))
             {
-                URLHelper.Redirect(ResolveUrl(string.Format("~/CMSMessages/Error.aspx?title={0}&text={1}", GetString("dialogs.badhashtitle"), GetString("dialogs.badhashtext"))));
+                URLHelper.Redirect(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext"));
             }
         }
         else

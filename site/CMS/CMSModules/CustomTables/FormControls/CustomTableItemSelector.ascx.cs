@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.CustomTables;
 using CMS.FormControls;
@@ -130,7 +130,7 @@ public partial class CMSModules_CustomTables_FormControls_CustomTableItemSelecto
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (StopProcessing)
+        if (StopProcessing || (CustomTable == null))
         {
             uniSelector.StopProcessing = true;
         }

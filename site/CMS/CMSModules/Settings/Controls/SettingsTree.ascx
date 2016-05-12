@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SettingsTree.ascx.cs" Inherits="CMSModules_Settings_Controls_SettingsTree" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SettingsTree.ascx.cs" Inherits="CMSModules_Settings_Controls_SettingsTree" %>
 <%@ Register Src="~/CMSAdminControls/UI/Trees/UniTree.ascx" TagName="UniTree" TagPrefix="cms" %>
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector"
     TagPrefix="cms" %>

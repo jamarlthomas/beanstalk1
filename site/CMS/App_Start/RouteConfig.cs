@@ -10,6 +10,7 @@ using CMS.Mvc.Infrastructure;
 using CMS.Mvc.Infrastructure.Localization;
 using System.Reflection;
 using System.Linq;
+using AttributeRouting.Web.Mvc;
 
 namespace CMS.Mvc
 {
@@ -27,8 +28,8 @@ namespace CMS.Mvc
         {
             SetUpRoutesFromKentico(routes);
             SetUpConstantRoutes(routes);
-           
-            routes.MapMvcAttributeRoutes();
+            routes.MapAttributeRoutes();
+            //routes.MapMvcAttributeRoutes();
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             /*
             routes.MapRoute(

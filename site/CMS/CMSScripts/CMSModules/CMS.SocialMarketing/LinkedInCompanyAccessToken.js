@@ -7,7 +7,7 @@
             
             if (!parameters.companies.length) {
                 if (companyId) {
-                    showMessage(data.msgNoCompanyAccess.replace('{0}', $companyName.val()));
+                    showMessage(data.msgNoCompanyAccess.replace(/\{0\}/g, $companyName.val()));
                 } else {
                     showMessage(data.msgNoCompany);
                 }
@@ -25,7 +25,7 @@
                     }
                 }
                 if (!isUserCompanyAdmin) {
-                	showMessage(data.msgNoCompanyAccess.replace('{0}', $companyName.val()));
+                    showMessage(data.msgNoCompanyAccess.replace(/\{0\}/g, $companyName.val()));
 
                     return;
                 }
@@ -35,7 +35,7 @@
             $tokenSecret.val(parameters.accessTokenSecret);
             $expiration.val(parameters.tokenExpiration);
             $expirationString.val(parameters.tokenExpirationString);
-            $expirationInfo.html(data.msgExpiration.replace('{0}', parameters.tokenExpirationString));
+            $expirationInfo.html(data.msgExpiration.replace(/\{0\}/g, parameters.tokenExpirationString));
             $appId.val(parameters.tokenAppId);
             storeCompanies(parameters.companies);
 
@@ -102,7 +102,7 @@
             }
 
             if ($expirationString.val()) {
-                $expirationInfo.html(data.msgExpiration.replace('{0}', $expirationString.val()));
+                $expirationInfo.html(data.msgExpiration.replace(/\{0\}/g, $expirationString.val()));
             }
         };
 

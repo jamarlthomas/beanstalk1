@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Edit.ascx.cs" Inherits="CMSModules_Workflows_Controls_UI_WorkflowStep_SourcePoint_Edit" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Edit.ascx.cs" Inherits="CMSModules_Workflows_Controls_UI_WorkflowStep_SourcePoint_Edit" %>
 
 <%@ Register Src="~/CMSFormControls/System/LocalizableTextBox.ascx" TagName="LocalizableTextBox"
     TagPrefix="cms" %>

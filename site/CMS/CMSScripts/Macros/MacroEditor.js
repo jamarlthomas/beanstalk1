@@ -31,9 +31,6 @@ var RIGHTCURLY = 125;
 var ALPHANUMERIC_REGEX = '[a-zA-Z0-9_]';
 var MAX_ZINDEX = 2147483647;
 
-// Methods comments hashtable
-var methodComments = new Object();
-
 function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem, mixedMode, editorTopOffset, editorLeftOffset, ascxMode) {
 
     // Local variables
@@ -506,20 +503,19 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
     this.createQuickContextDiv = function (help) {
 
         this.quickContextDiv.innerHTML = help;
-        this.quickContextDiv.className = "AutoCompleteContext";
+        this.quickContextDiv.className = "auto-complete-context";
         this.quickContextDiv.style.position = 'fixed';
 
     };
 
     // Displays quick context help.
     this.showQuickContext = function () {
-        var name = this.hints[this.highlighted];
-        var help;
+        var hint = this.hints[this.highlighted],
+            help;
 
-        if (name) {
-            name = name.split('\n');
-            if (name[1] == 'icon-me-method') {
-                help = methodComments[name[0]];
+        if (hint) {
+            if (hint.icon == 'icon-me-method') {
+                help = hint.comment;
             }
         }
 
@@ -589,7 +585,7 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
     this.createContextDiv = function () {
 
         this.contextDiv.innerHTML = this.context;
-        this.contextDiv.className = "AutoCompleteContext";
+        this.contextDiv.className = "auto-complete-context";
         this.contextDiv.style.position = 'fixed';
 
     };
@@ -630,7 +626,7 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
 
             for (var i = 0; i < this.hints.length; i++) {
                 // Get index
-                var matchIndex = this.hints[i].toLowerCase().indexOf(identifier);
+                var matchIndex = this.hints[i].name.toLowerCase().indexOf(identifier);
 
                 if (matchIndex != -1) {
 
@@ -686,16 +682,19 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
 
     // Method called from callback return function to fill and show the current hints.
     this.fillHints = function (value) {
-        if (value == '' && ascxMode) {
-            this.hints = new Array();
+        this.hints = new Array();
+
+        if ((value == '') && ascxMode) {
             return;
         }
 
         if (value != '') {
-            this.hints = value.split('$');
+            try {
+                this.hints = JSON.parse(value);
+            } catch (e) {
+                // Don't parse when error occurs
+            }
         } else {
-            this.hints = new Array();
-
             // If we did not get any result there is no point showing hint when alphanumerical key is pressed
             this.showHintNextTime = false;
         }
@@ -833,21 +832,16 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
 
             var cursorIndex = -1;
 
-            var hint = this.hints[this.highlighted].split('\n');
-            var hintToUse = hint[0];
+            var hint = this.hints[this.highlighted];
+            var nameToUse = hint.name;
 
             var offset = 0;
-            if (hintToUse) {
+            if (nameToUse) {
                 // Use code snippet when the tab was used to fire the hint usage
-                if ((hint.length > 1) && (hint[2] != '')) {
-                    cursorIndex = hint[2].indexOf('|');
-                    hintToUse = hint[2].replace('|', '');
+                if (hint.snippet) {
+                    cursorIndex = hint.snippet.indexOf('|');
+                    nameToUse = hint.snippet.replace('|', '');
                 }
-            }
-
-            // Remove hidden item suffix if present
-            if (hintToUse.endsWith('%')) {
-                hintToUse = hintToUse.substring(0, hintToUse.length - 1);
             }
 
             // Locate the current identifier
@@ -856,16 +850,22 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
             var pos2 = currentIdentifier[2];
 
             var currCursorLine = this.elem.cursorLine();
-            if (hintToUse[0] == '[') {
+
+            var hidden = nameToUse.endsWith('%');
+            if (hidden) {
+                nameToUse = nameToUse.substring(0, nameToUse.length - 1);
+            }
+
+            if (nameToUse[0] == '[') {
                 pos1 = pos1 - 1;
-                this.replaceRange(hintToUse, currCursorLine, pos1, pos2);
+                this.replaceRange(nameToUse, currCursorLine, pos1, pos2);
             } else {
-                this.replaceRange(hintToUse, currCursorLine, pos1, pos2);
+                this.replaceRange(nameToUse, currCursorLine, pos1, pos2);
             }
 
             var pos;
             if (cursorIndex == -1) {
-                pos = { line: currCursorLine, ch: pos1 + hintToUse.length - offset };
+                pos = { line: currCursorLine, ch: pos1 + nameToUse.length - offset };
 
             } else {
                 pos = { line: currCursorLine, ch: pos1 + cursorIndex - offset };
@@ -973,18 +973,20 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
         this.displayedItems = null;
         this.currentItems = [];
 
+        var lineMetaHintIndex = -1;
+
         // Create an array of LI's for the words.
-        for (var i in this.hints) {
+        for (var i = 0; i < this.hints.length; i++) {
             var hint = this.hints[i];
             var li;
+            var name = hint.name;
 
-            if (hint == '----') {
+            if (name == '----') {
+                lineMetaHintIndex = i;
                 continue;
             }
 
-            var parts = hint.split('\n');
-            var name = parts[0];
-            var type = parts[1];
+            var type = hint.icon;
             if (type == null) {
                 type = '';
             }
@@ -1012,15 +1014,15 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
             textEnvelope.appendChild(a);
 
             if (hidden) {
-                textEnvelope.className = "HiddenProperty";
+                textEnvelope.className = "hidden-property";
             }
 
             if (me.highlighted == i) {
-                var isMethod = type == 'icon-method';
+                var isMethod = (type == 'icon-method');
                 li.className = "selected" + (isMethod ? " icon-method" : " icon-property");
             }
 
-            if ((i > 0) && this.hints[i - 1] == '----') {
+            if ((i > 0) && (this.hints[i - 1].name == '----')) {
                 // Place line in this position
                 li.style.borderTop = '1px solid';
             }
@@ -1031,13 +1033,11 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
         }
 
         // Get rid of line meta hint 
-        var lineMetaHintIndex = this.hints.indexOf('----');
         if (lineMetaHintIndex > -1) {
             // Remove meta hint '----' from collection
             this.hints.splice(lineMetaHintIndex, 1);
         }
-
-
+        
         this.hintsDiv.replaceChild(ul, this.hintsDiv.childNodes[0]);
 
         ul.onmouseup = function (ev) {
@@ -1065,7 +1065,7 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
             return false;
         };
 
-        this.hintsDiv.className = "AutoCompleteHints";
+        this.hintsDiv.className = "auto-complete-hints";
         this.hintsDiv.style.position = 'fixed';
 
     };
@@ -1101,8 +1101,14 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
     this.positionDivsHorizontal = function (scroller, scrollerPos, caretPos) {
         // Get the maximum x position (autocomplete should not be outside the editor)
         var xMax = scrollerPos.x + scroller.offsetWidth - this.hintsDiv.offsetWidth,
-            // Make sure left border of hints div is not more to the left than the left border of the editor and adjust it by offset
-            x = Math.min(caretPos.x - offset, xMax, scrollerPos.x) - (this.leftOffset || 0);
+
+            // Set horizontal position from caret position
+            x = Math.min(caretPos.x - offset, xMax) - (this.leftOffset || 0);
+
+            // Make sure left border of hints div is not more to the left than the left border of the editor
+            if (x < scrollerPos.x) {
+                x = scrollerPos.x;
+            }
 
         return { hintsX: x, contextX: x };
     }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.Core;
@@ -106,7 +106,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
         switch (actionName.ToLowerCSafe())
         {
             case "edit":
-                URLHelper.Redirect(UIContextHelper.GetElementUrl("CMS.Ecommerce", "EditOptionCategory", false, categoryId));
+                URLHelper.Redirect(UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, "EditOptionCategory", false, categoryId));
 
                 break;
 
@@ -125,11 +125,11 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
                     // Check module permissions
                     if (categoryObj.CategoryIsGlobal)
                     {
-                        RedirectToAccessDenied("CMS.Ecommerce", "EcommerceGlobalModify");
+                        RedirectToAccessDenied(ModuleName.ECOMMERCE, EcommercePermissions.ECOMMERCE_MODIFYGLOBAL);
                     }
                     else
                     {
-                        RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyProducts");
+                        RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyProducts");
                     }
                 }
 

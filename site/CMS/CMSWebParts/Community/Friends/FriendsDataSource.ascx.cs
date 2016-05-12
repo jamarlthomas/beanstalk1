@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.PortalControls;
@@ -50,24 +50,6 @@ public partial class CMSWebParts_Community_Friends_FriendsDataSource : CMSAbstra
         {
             SetValue("WhereCondition", value);
             srcFriends.WhereCondition = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Gets or sets UserId.
-    /// </summary>
-    [Obsolete("Use UserName instead")]
-    public int UserID
-    {
-        get
-        {
-            return CurrentUser.UserID;
-        }
-        set
-        {
-            SetValue("UserID", value);
-            srcFriends.UserID = value;
         }
     }
 

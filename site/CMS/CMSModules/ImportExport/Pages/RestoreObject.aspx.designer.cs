@@ -129,15 +129,6 @@ public partial class CMSModules_ImportExport_Pages_RestoreObject {
     protected global::CMS.UIControls.AsyncControl ucAsyncControl;
     
     /// <summary>
-    /// ltlScript control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Literal ltlScript;
-    
-    /// <summary>
     /// btnRestore control.
     /// </summary>
     /// <remarks>

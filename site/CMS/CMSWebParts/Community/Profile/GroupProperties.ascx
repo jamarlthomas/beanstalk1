@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Community_Profile_GroupProperties" Codebehind="~/CMSWebParts/Community/Profile/GroupProperties.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Community_Profile_GroupProperties"  Codebehind="~/CMSWebParts/Community/Profile/GroupProperties.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Groups/Controls/GroupEdit.ascx" TagName="GroupEdit"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/System/PermissionMessage.ascx" TagName="PermissionMessage"

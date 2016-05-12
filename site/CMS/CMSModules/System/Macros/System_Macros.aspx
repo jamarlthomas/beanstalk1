@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_Macros_System_Macros" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="System - Macros" Codebehind="System_Macros.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_System_Macros_System_Macros" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="System - Macros"  Codebehind="System_Macros.aspx.cs" %>
 
 <%@ Register TagPrefix="cms" TagName="AsyncLog" Src="~/CMSAdminControls/AsyncLogDialog.ascx" %>
 
@@ -45,6 +45,6 @@
     </div>
     <%-- Async log --%>
     <asp:Panel ID="pnlAsyncLog" runat="server" Visible="false">
-        <cms:AsyncLog runat="server" ID="ctlAsyncLog" />
+        <cms:AsyncLog runat="server" ID="ctlAsyncLog" ProvideLogContext="true" LogContextNames="Macros" />
     </asp:Panel>
 </asp:Content>

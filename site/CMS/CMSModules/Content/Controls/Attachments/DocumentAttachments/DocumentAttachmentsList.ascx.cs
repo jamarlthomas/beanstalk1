@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -19,10 +19,12 @@ public partial class CMSModules_Content_Controls_Attachments_DocumentAttachments
 {
     #region "Variables"
 
+    private const string CONTENT_FOLDER = "~/CMSModules/Content/";
+
     private string mInnerDivClass = "NewAttachment";
     private int? mFilterLimit;
     private int mUpdateIconPanelWidth = 16;
-
+    
     #endregion
 
 
@@ -416,7 +418,7 @@ public partial class CMSModules_Content_Controls_Attachments_DocumentAttachments
 
 
             #region "Scripts"
-
+            
             // Refresh script
             string script = String.Format(@"
 function RefreshUpdatePanel_{0}(hiddenFieldID, action) {{
@@ -480,8 +482,7 @@ function InitRefresh_{0}(msg, fullRefresh, refreshTree, action)
             newAttachmentElem.InnerLoadingElementClass = InnerLoadingDivClass;
             newAttachmentElem.IsLiveSite = IsLiveSite;
             newAttachmentElem.CheckPermissions = CheckPermissions;
-
-
+            
             // Grid initialization
             gridAttachments.OnExternalDataBound += gridAttachments_OnExternalDataBound;
             gridAttachments.OnDataReload += gridAttachments_OnDataReload;
@@ -527,6 +528,9 @@ function InitRefresh_{0}(msg, fullRefresh, refreshTree, action)
             // Ensure uploader button
             newAttachmentElem.Enabled = Enabled;
 
+            // Check if full refresh is needed
+            newAttachmentElem.FullRefresh = FullRefresh;
+            
             // Hide actions
             gridAttachments.GridView.Columns[0].Visible = !HideActions;
             gridAttachments.GridView.Columns[1].Visible = !HideActions;
@@ -545,6 +549,7 @@ function InitRefresh_{0}(msg, fullRefresh, refreshTree, action)
 
             // Dialog for editing attachment
             StringBuilder sb = new StringBuilder();
+
             sb.AppendLine(String.Format(@"
 function Edit_{0}(attachmentGUID, formGUID, versionHistoryID, parentId, hash, image) {{ 
   var form = '';
@@ -562,8 +567,8 @@ function Edit_{0}(attachmentGUID, formGUID, versionHistoryID, parentId, hash, im
 }}",
                                         ClientID,
                                         (((Node != null) ? String.Format("else{{ form = '&siteid=' + {0}; }}", Node.NodeSiteID) : string.Empty)),
-                                        ResolveUrl((IsLiveSite ? "~/CMSFormControls/LiveSelectors/ImageEditor.aspx" : "~/CMSModules/Content/CMSDesk/Edit/ImageEditor.aspx") + "?attachmentGUID=' + attachmentGUID + '&versionHistoryID=' + versionHistoryID + form + '&clientid=" + ClientID + "&refresh=1&hash=' + hash"),
-                                        AuthenticationHelper.ResolveDialogUrl(String.Format("{0}?attachmentGUID=' + attachmentGUID + '&versionHistoryID=' + versionHistoryID + form + '&clientid={1}&refresh=1&hash=' + hash", (IsLiveSite ? "~/CMSModules/Content/Attachments/CMSPages/MetaDataEditor.aspx" : "~/CMSModules/Content/Attachments/Dialogs/MetaDataEditor.aspx"), ClientID))));
+                                        ResolveUrl((IsLiveSite ? "~/CMSFormControls/LiveSelectors/ImageEditor.aspx" : CONTENT_FOLDER + "CMSDesk/Edit/ImageEditor.aspx") + "?attachmentGUID=' + attachmentGUID + '&versionHistoryID=' + versionHistoryID + form + '&clientid=" + ClientID + "&refresh=1&hash=' + hash"),
+                                        AuthenticationHelper.ResolveDialogUrl(String.Format("{0}?attachmentGUID=' + attachmentGUID + '&versionHistoryID=' + versionHistoryID + form + '&clientid={1}&refresh=1&hash=' + hash", (IsLiveSite ? CONTENT_FOLDER + "Attachments/CMSPages/MetaDataEditor.aspx" : CONTENT_FOLDER + "Attachments/Dialogs/MetaDataEditor.aspx"), ClientID))));
 
             // Register script for editing attachment
             ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "AttachmentEditScripts_" + ClientID, ScriptHelper.GetScript(sb.ToString()));
@@ -840,6 +845,11 @@ function Edit_{0}(attachmentGUID, formGUID, versionHistoryID, parentId, hash, im
     }
 
 
+    /// <summary>
+    /// Performes attachment action and handles workflow if set.
+    /// </summary>
+    /// <param name="actionName">Action name to correct refresh</param>
+    /// <param name="action">Action to perform</param>
     private void PerformAttachmentAction(string actionName, Action action)
     {
         // Store original values
@@ -880,7 +890,7 @@ function Edit_{0}(attachmentGUID, formGUID, versionHistoryID, parentId, hash, im
                                (wasInPublishedStep != Node.IsInPublishStep) || (wasArchived != Node.IsArchived) || (WorkflowManager.GetNodeWorkflow(Node) == null);
 
             // Ensure full page refresh
-            ScriptHelper.RegisterStartupScript(Page, typeof(Page), actionName + "Refresh", ScriptHelper.GetScript(String.Format("InitRefresh_{0}('', {2}, false, '{1}');", ClientID, actionName, fullRefresh ? "true" : "false")));
+            ScriptHelper.RegisterStartupScript(Page, typeof(Page), actionName + "Refresh", ScriptHelper.GetScript(GetInitRefreshScript(actionName, fullRefresh)));
 
             // Clear document manager properties
             DocumentManager.ClearProperties();
@@ -891,6 +901,17 @@ function Edit_{0}(attachmentGUID, formGUID, versionHistoryID, parentId, hash, im
         {
             DocumentSynchronizationHelper.LogDocumentChange(Node, TaskTypeEnum.UpdateDocument, TreeProvider);
         }
+    }
+
+
+    /// <summary>
+    /// Creates script calling for refresh.
+    /// </summary>
+    /// <param name="actionName">Action name</param>
+    /// <param name="fullRefresh">Indicates if full page refresh is requested</param>
+    private string GetInitRefreshScript(string actionName, bool fullRefresh)
+    {
+        return String.Format("InitRefresh_{0}('', {2}, false, '{1}');", ClientID, actionName, fullRefresh ? "true" : "false");
     }
 
 
@@ -935,7 +956,7 @@ function Edit_{0}(attachmentGUID, formGUID, versionHistoryID, parentId, hash, im
 
                     // Add update control
                     // Dynamically load uploader control
-                    var dfuElem = Page.LoadUserControl("~/CMSModules/Content/Controls/Attachments/DirectFileUploader/DirectFileUploader.ascx") as DirectFileUploader;
+                    var dfuElem = Page.LoadUserControl(CONTENT_FOLDER + "Controls/Attachments/DirectFileUploader/DirectFileUploader.ascx") as DirectFileUploader;
 
                     drv = parameter as DataRowView;
 
@@ -1152,6 +1173,7 @@ function Edit_{0}(attachmentGUID, formGUID, versionHistoryID, parentId, hash, im
         dfuElem.IsLiveSite = IsLiveSite;
         dfuElem.UploadMode = MultifileUploaderModeEnum.DirectSingle;
         dfuElem.MaxNumberToUpload = 1;
+        dfuElem.FullRefresh = FullRefresh;
 
         dfuElem.Enabled = Enabled;
     }

@@ -201,33 +201,6 @@ public partial class CMSModules_PortalEngine_Controls_Layout_PlaceholderMenu {
     protected global::CMS.ExtendedControls.ContextMenuItem iSaveAsNew;
     
     /// <summary>
-    /// plcUIWireframe control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.UIControls.UIPlaceHolder plcUIWireframe;
-    
-    /// <summary>
-    /// iSepWireframe control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.ContextMenuSeparator iSepWireframe;
-    
-    /// <summary>
-    /// iWireframe control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.ContextMenuItem iWireframe;
-    
-    /// <summary>
     /// iSepRefresh control.
     /// </summary>
     /// <remarks>

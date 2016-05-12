@@ -1,28 +1,13 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="UniGridMenu.ascx.cs" Inherits="CMSAdminControls_UI_UniGrid_Controls_UniGridMenu" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="UniGridMenu.ascx.cs" Inherits="CMSAdminControls_UI_UniGrid_Controls_UniGridMenu" %>
 <asp:Panel runat="server" ID="pnlUniGridMenu" CssClass="PortalContextMenu WebPartContextMenu"
     EnableViewState="false">
-    <asp:Panel runat="server" ID="pnlExcel" CssClass="Item">
-        <asp:Panel runat="server" ID="pnlExcelPadding" CssClass="ItemPadding">
-            <cms:LocalizedLabel runat="server" ID="lblExcel" CssClass="Name" EnableViewState="false"
-                ResourceString="export.exporttoexcel" />
-        </asp:Panel>
-    </asp:Panel>
-    <asp:Panel runat="server" ID="pnlCSV" CssClass="Item">
-        <asp:Panel runat="server" ID="pnlCSVPadding" CssClass="ItemPadding">
-            <cms:LocalizedLabel runat="server" ID="lblCSV" CssClass="Name" EnableViewState="false"
-                ResourceString="export.exporttocsv" />
-        </asp:Panel>
-    </asp:Panel>
-    <asp:Panel runat="server" ID="pnlXML" CssClass="Item">
-        <asp:Panel runat="server" ID="pnlXMLPadding" CssClass="ItemPadding">
-            <cms:LocalizedLabel runat="server" ID="lblXML" CssClass="Name" EnableViewState="false"
-                ResourceString="export.exporttoxml" />
-        </asp:Panel>
-    </asp:Panel>
-    <asp:Panel runat="server" ID="pnlAdvancedExport" CssClass="item-last">
-        <asp:Panel runat="server" ID="pnlAdvancedExportPadding" CssClass="ItemPadding">
-            <cms:LocalizedLabel runat="server" ID="lblAdvancedExport" CssClass="Name" EnableViewState="false"
-                ResourceString="export.advancedexport" />
-        </asp:Panel>
-    </asp:Panel>
+    <asp:PlaceHolder runat="server" ID="plcExport">
+        <cms:ContextMenuItem runat="server" ID="iExcel" ResourceString="export.exporttoexcel" />
+        <cms:ContextMenuItem runat="server" ID="iCSV" ResourceString="export.exporttocsv" />
+        <cms:ContextMenuItem runat="server" ID="iXML" ResourceString="export.exporttoxml" />
+        <cms:ContextMenuItem runat="server" ID="iAdvanced" ResourceString="export.advancedexport" />
+        <cms:ContextMenuSeparator runat="server" ID="sm1" />
+    </asp:PlaceHolder>
+    <cms:ContextMenuItem runat="server" ID="iFilter" ResourceString="general.showfilter" />
+    <cms:ContextMenuItem runat="server" ID="iReset" ResourceString="general.resetview" />
 </asp:Panel>

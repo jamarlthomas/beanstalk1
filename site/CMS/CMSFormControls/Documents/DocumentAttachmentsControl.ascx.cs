@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.FormControls;
 using CMS.FormEngine;
@@ -100,9 +100,13 @@ public partial class CMSFormControls_Documents_DocumentAttachmentsControl : Form
         // Initialize control
         documentAttachments.Form = Form;
         documentAttachments.CheckPermissions = false;
-        documentAttachments.OnUploadFile += Form.RaiseOnUploadFile;
-        documentAttachments.OnDeleteFile += Form.RaiseOnDeleteFile;
         documentAttachments.AllowChangeOrder = ValidationHelper.GetBoolean(GetValue("changeorder"), true);
+
+        if (Form != null)
+        {
+            documentAttachments.OnUploadFile += Form.RaiseOnUploadFile;
+            documentAttachments.OnDeleteFile += Form.RaiseOnDeleteFile;
+        }
 
         var pageSize = ValidationHelper.GetString(GetValue("pagingsize"), "5,10,25,50,100,##ALL##");
         documentAttachments.PageSize = pageSize;
@@ -138,33 +142,36 @@ public partial class CMSFormControls_Documents_DocumentAttachmentsControl : Form
             documentAttachments.ResizeToMaxSideSize = attachmentsMaxSideSize;
         }
 
-        // Get node
-        TreeNode node = (TreeNode)Form.EditedObject;
-
-        if (Form.IsInsertMode)
+        if (Form != null)
         {
-            documentAttachments.FormGUID = Form.FormGUID;
-            var parent = Form.ParentObject as TreeNode;
-            if (parent != null)
+            // Get node
+            TreeNode node = (TreeNode)Form.EditedObject;
+
+            if (Form.IsInsertMode)
             {
-                documentAttachments.NodeParentNodeID = parent.NodeID;
+                documentAttachments.FormGUID = Form.FormGUID;
+                var parent = Form.ParentObject as TreeNode;
+                if (parent != null)
+                {
+                    documentAttachments.NodeParentNodeID = parent.NodeID;
+                }
+                else if (node != null)
+                {
+                    documentAttachments.NodeParentNodeID = node.NodeParentID;
+                }
+
+                if (node != null)
+                {
+                    documentAttachments.NodeClassName = node.NodeClassName;
+                }
             }
             else if (node != null)
             {
+                // Set appropriate control settings
+                documentAttachments.DocumentID = node.DocumentID;
                 documentAttachments.NodeParentNodeID = node.NodeParentID;
-            }
-
-            if (node != null)
-            {
                 documentAttachments.NodeClassName = node.NodeClassName;
             }
-        }
-        else if (node != null)
-        {
-            // Set appropriate control settings
-            documentAttachments.DocumentID = node.DocumentID;
-            documentAttachments.NodeParentNodeID = node.NodeParentID;
-            documentAttachments.NodeClassName = node.NodeClassName;
         }
 
         // Set control styles

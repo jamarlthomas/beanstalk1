@@ -1,17 +1,16 @@
-using System;
-using System.Web.UI;
+﻿using System;
 using System.Web.UI.WebControls;
 
+using CMS.Base;
 using CMS.Controls;
 using CMS.CustomTables;
+using CMS.DataEngine;
 using CMS.ExtendedControls;
 using CMS.Helpers;
-using CMS.PortalEngine;
-using CMS.Base;
-using CMS.SiteProvider;
 using CMS.Membership;
+using CMS.PortalEngine;
+using CMS.SiteProvider;
 using CMS.UIControls;
-using CMS.DataEngine;
 
 public partial class CMSFormControls_Filters_DocTypeFilter : CMSAbstractBaseFilterControl
 {
@@ -23,7 +22,7 @@ public partial class CMSFormControls_Filters_DocTypeFilter : CMSAbstractBaseFilt
 
     private bool mShowCustomTableClasses = true;
 
-    private bool? mIsSiteManager = null;
+    private bool? mIsSiteManager;
 
     #endregion
 
@@ -110,7 +109,7 @@ public partial class CMSFormControls_Filters_DocTypeFilter : CMSAbstractBaseFilt
                     drpClassType.Items.Add(new ListItem(ResHelper.GetString("queryselection.classtype.customtables"), "customtables"));
                 }
 
-                lblDocType.Text = ResHelper.GetString("queryselection.lbldoctypes");
+                lblDocType.ResourceString = "queryselection.lbldoctypes";
 
                 Initialize();
             }
@@ -119,6 +118,14 @@ public partial class CMSFormControls_Filters_DocTypeFilter : CMSAbstractBaseFilt
 
             WhereCondition = GenerateWhereCondition();
         }
+    }
+
+
+    protected override void OnPreRender(EventArgs e)
+    {
+        base.OnPreRender(e);
+
+        lblDocType.AssociatedControlClientID = uniSelector.InputClientID;
     }
 
 
@@ -190,7 +197,7 @@ public partial class CMSFormControls_Filters_DocTypeFilter : CMSAbstractBaseFilt
             {
                 if (mSelectedClass.ClassIsCustomTable)
                 {
-                    lblDocType.Text = ResHelper.GetString("queryselection.customtable");
+                    lblDocType.ResourceString = "queryselection.customtable";
                     ListItem selectedItem = ControlsHelper.FindItemByValue(drpClassType, "customtables", false);
 
                     // Select item which is already loaded in drop-down list
@@ -231,12 +238,12 @@ public partial class CMSFormControls_Filters_DocTypeFilter : CMSAbstractBaseFilt
     {
         if (drpClassType.SelectedValue == "doctype")
         {
-            lblDocType.Text = ResHelper.GetString("queryselection.lbldoctypes");
+            lblDocType.ResourceString = "queryselection.lbldoctypes";
             uniSelector.WhereCondition = "(ClassIsDocumentType = 1)";
         }
         else
         {
-            lblDocType.Text = ResHelper.GetString("queryselection.customtable");
+            lblDocType.ResourceString = "queryselection.customtable";
             uniSelector.WhereCondition = "(ClassIsCustomTable = 1)";
         }
 
@@ -276,8 +283,8 @@ public partial class CMSFormControls_Filters_DocTypeFilter : CMSAbstractBaseFilt
         {
             mode = ValidationHelper.GetString(filteredControl.GetValue("FilterMode"), "");
             // Set the prefix for the item
-            DataClassInfo ci = DataClassInfoProvider.GetDataClassInfo(classId);
-            filteredControl.SetValue("ItemPrefix", ci.ClassName + ".");
+            var className = DataClassInfoProvider.GetClassName(classId);
+            filteredControl.SetValue("ItemPrefix", className + ".");
         }
 
         switch (mode.ToLowerCSafe())

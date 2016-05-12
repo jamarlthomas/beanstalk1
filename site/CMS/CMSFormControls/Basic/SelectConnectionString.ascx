@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SelectConnectionString.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SelectConnectionString.ascx.cs"
     Inherits="CMSFormControls_Basic_SelectConnectionString" %>
 
 <asp:Panel ID="pnlMain" runat="server">

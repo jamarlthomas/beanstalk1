@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Alias_AliasList.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Alias_AliasList.aspx.cs"
     Inherits="CMSModules_Content_CMSDesk_Properties_Alias_AliasList" Theme="Default"
     MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" %>
 
@@ -20,7 +20,6 @@
                 <Filter Type="text" Source="NodeName" />
             </ug:Column>
             <ug:Column Source="AliasExtensions" Caption="$doc.urls.urlextensions$" Wrap="false" />
-            <ug:Column Source="CampaignDisplayName" Caption="$doc.urls.trackcampaign$" Wrap="false" />
             <ug:Column Source="DocumentCulture" Caption="$general.language$" Wrap="false" CssClass="main-column-100"
                 ExternalSourceName="culture" Sort="AliasCulture" />
         </GridColumns>

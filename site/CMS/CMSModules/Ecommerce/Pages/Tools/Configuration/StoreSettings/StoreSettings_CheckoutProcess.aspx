@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_Configuration_StoreSettings_StoreSettings_CheckoutProcess" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Codebehind="StoreSettings_CheckoutProcess.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_Configuration_StoreSettings_StoreSettings_CheckoutProcess" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"  Codebehind="StoreSettings_CheckoutProcess.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/ECommerce/FormControls/CheckoutProcess.ascx" TagName="CheckoutProcess"
     TagPrefix="cms" %>

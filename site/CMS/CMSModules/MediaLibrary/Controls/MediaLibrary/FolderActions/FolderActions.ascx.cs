@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 
 using CMS.Base;
@@ -7,7 +7,6 @@ using CMS.Helpers;
 using CMS.IO;
 using CMS.Membership;
 using CMS.UIControls;
-
 
 public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions_FolderActions : CMSAdminItemsControl
 {
@@ -22,6 +21,8 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions
     private string mDeleteScript = "";
     private bool mFileSystemActionsEnabled = true;
     private string mLibraryFolderPath = String.Empty;
+
+    private const string MEDIA_LIBRARY_FOLDER = "~/CMSModules/MediaLibrary/";
 
     #endregion
 
@@ -346,6 +347,8 @@ function DisableNewFolderBtn() {
 
         WindowHelper.Add(Identifier, props);
 
+        const string MEDIA_FORMCONTROLS_FOLDER = MEDIA_LIBRARY_FOLDER + "FormControls/";
+
         if (IsLiveSite)
         {
             if (AuthenticationHelper.IsAuthenticated())
@@ -354,12 +357,12 @@ function DisableNewFolderBtn() {
             }
             else
             {
-                NewFolderDialogUrl = "~/CMSModules/MediaLibrary/FormControls/LiveSelectors/InsertImageOrMedia/NewMediaFolder.aspx?identifier=" + Identifier;
+                NewFolderDialogUrl = MEDIA_FORMCONTROLS_FOLDER + "LiveSelectors/InsertImageOrMedia/NewMediaFolder.aspx?identifier=" + Identifier;
             }
         }
         else
         {
-            NewFolderDialogUrl = "~/CMSModules/MediaLibrary/FormControls/Selectors/InsertImageOrMedia/NewMediaFolder.aspx?identifier=" + Identifier;
+            NewFolderDialogUrl = MEDIA_FORMCONTROLS_FOLDER + "Selectors/InsertImageOrMedia/NewMediaFolder.aspx?identifier=" + Identifier;
         }
 
         // Add security hash
@@ -385,8 +388,10 @@ function DisableNewFolderBtn() {
 
     protected override void OnPreRender(EventArgs e)
     {
-        string url = (IsLiveSite) ? "~/CMSModules/MediaLibrary/CMSPages/SelectFolder.aspx" :
-            "~/CMSModules/MediaLibrary/Tools/FolderActions/SelectFolder.aspx";
+        string url = 
+            (IsLiveSite) ? 
+            MEDIA_LIBRARY_FOLDER + "CMSPages/SelectFolder.aspx" :
+            MEDIA_LIBRARY_FOLDER + "Tools/FolderActions/SelectFolder.aspx";
 
         WindowHelper.Remove(Identifier);
 

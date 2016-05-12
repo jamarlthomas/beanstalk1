@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Data;
-using System.Collections;
 using System.Security.Principal;
 using System.Threading;
 
@@ -26,10 +25,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
     protected bool inheritsPermissions = false;
     protected string ipAddress = null;
     protected string eventUrl = null;
-
-    protected static Hashtable mLogs = new Hashtable();
-    protected static Hashtable mErrors = new Hashtable();
-    protected static Hashtable mInfos = new Hashtable();
 
     #endregion
 
@@ -62,29 +57,17 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
 
 
     /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
-
-    /// <summary>
     /// Current Error.
     /// </summary>
     public string CurrentError
     {
         get
         {
-            return ValidationHelper.GetString(mErrors["SyncError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mErrors["SyncError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -96,11 +79,11 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
     {
         get
         {
-            return ValidationHelper.GetString(mInfos["SyncInfo_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Information;
         }
         set
         {
-            mInfos["SyncInfo_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Information = value;
         }
     }
 
@@ -113,7 +96,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
     {
         DocumentManager.OnCheckPermissions += DocumentManager_OnCheckPermissions;
         DocumentManager.OnSaveData += DocumentManager_OnSaveData;
-        
+
         DocumentManager.UseDocumentHelper = false;
 
         securityElem.Node = Node;
@@ -143,7 +126,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
             lnkInheritance.OnClientClick = "return CheckChanges();";
         }
     }
-    
+
 
     protected void DocumentManager_OnCheckPermissions(object sender, SimpleDocumentManagerEventArgs e)
     {
@@ -160,7 +143,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
 
         ipAddress = RequestContext.UserHostAddress;
         eventUrl = RequestContext.RawURL;
-               
+
         if (!RequestHelper.IsCallback())
         {
             pnlLog.Visible = false;
@@ -169,6 +152,11 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
             // Gets the node
             if (Node != null)
             {
+                if (ShowContentOnlyProperties)
+                {
+                    pnlAccessPart.Visible = false;
+                }
+
                 SetPropertyTab(TAB_SECURITY);
 
                 // Check license
@@ -193,7 +181,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
                 ScriptHelper.RegisterDialogScript(this);
 
                 // Check if document inherits permissions and display info
-                inheritsPermissions = AclInfoProvider.DoesNodeInheritPermissions(Node.NodeID);
+                inheritsPermissions = AclInfoProvider.DoesNodeInheritPermissions(Node);
                 lblInheritanceInfo.Text = inheritsPermissions ? GetString("Security.InheritsInfo.Inherits") : GetString("Security.InheritsInfo.DoesNotInherit");
 
                 if (!RequestHelper.IsPostBack())
@@ -223,7 +211,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
 
         ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
         ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-        ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
         ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
 
         pnlPageContent.Enabled = !DocumentManager.ProcessingAction;
@@ -273,11 +260,11 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
         // Set secured radio buttons
         switch (Node.IsSecuredNode)
         {
-            case 0:
+            case false:
                 radNo.Checked = true;
                 break;
 
-            case 1:
+            case true:
                 radYes.Checked = true;
                 break;
 
@@ -338,7 +325,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
     /// <param name="redirect">If true and can't modify the user is redirected to denied page</param>
     /// <param name="currentNode">Current node</param>
     /// <param name="user">Current user</param>    
-    private bool CanModifyPermission(bool redirect, TreeNode currentNode, CurrentUserInfo user)
+    private bool CanModifyPermission(bool redirect, TreeNode currentNode, UserInfo user)
     {
         bool hasPermission = false;
         if (currentNode != null)
@@ -423,7 +410,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
         CheckModifyPermission(true);
 
         // Break permission inheritance and copy parent permissions
-        AclInfoProvider.BreakInherintance(Node, true);
+        AclInfoProvider.BreakInheritance(Node, true);
 
         // Log staging task
         TaskParameters taskParam = new TaskParameters();
@@ -451,7 +438,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
         CheckModifyPermission(true);
 
         // Break permission inheritance and clear permissions
-        AclInfoProvider.BreakInherintance(Node, false);
+        AclInfoProvider.BreakInheritance(Node, false);
 
         // Log staging task and flush cache
         DocumentSynchronizationHelper.LogDocumentChange(Node, TaskTypeEnum.BreakACLInheritance, Node.TreeProvider, SynchronizationInfoProvider.ENABLED_SERVERS, null, Node.TreeProvider.AllowAsyncActions);
@@ -491,13 +478,11 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
         pnlLog.Visible = true;
         pnlPageContent.Visible = false;
         ctlAsyncLog.TitleText = GetString("cmsdesk.restoringpermissioninheritance");
-        CurrentLog.Close();
-        EnsureLog();
+
         CurrentError = string.Empty;
         CurrentInfo = string.Empty;
 
         // Recursively
-        ctlAsyncLog.Parameter = MembershipContext.AuthenticatedUser;
         ctlAsyncLog.RunAsync(ResetNodePermission, WindowsIdentity.GetCurrent());
 
         lblInheritanceInfo.Text = GetString("Security.InheritsInfo.Inherits");
@@ -515,14 +500,11 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
     /// <param name="parameter">Accepts CurrentUserInfo</param>
     protected void ResetNodePermission(object parameter)
     {
-        CurrentUserInfo user = parameter as CurrentUserInfo;
-        if (user != null)
-        {
-            // Add information to log
-            AddLog(GetString("cmsdesk.restoringpermissioninheritance"));
-            TreeProvider tr = new TreeProvider(user);
-            ResetNodePermission(currentSite.SiteName, Node.NodeAliasPath, true, user, tr);
-        }
+        // Add information to log
+        AddLog(GetString("cmsdesk.restoringpermissioninheritance"));
+
+        TreeProvider tr = new TreeProvider();
+        ResetNodePermission(currentSite.SiteName, Node.NodeAliasPath, true, tr.UserInfo, tr);
     }
 
 
@@ -535,7 +517,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
     /// <param name="user">Current user</param>
     /// <param name="tr">Tree provider</param>
     /// <returns>Whether TRUE if no permission conflict has occurred</returns>
-    private bool ResetNodePermission(string siteName, string nodeAliasPath, bool recursive, CurrentUserInfo user, TreeProvider tr)
+    private bool ResetNodePermission(string siteName, string nodeAliasPath, bool recursive, UserInfo user, TreeProvider tr)
     {
         // Check permissions
         bool permissionsResult = false;
@@ -555,7 +537,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
                 if (permissionsResult)
                 {
                     // Break inheritance of a node
-                    if (!AclInfoProvider.DoesNodeInheritPermissions(treeNode.NodeID))
+                    if (!AclInfoProvider.DoesNodeInheritPermissions(treeNode))
                     {
                         // Restore inheritance of a node
                         AclInfoProvider.RestoreInheritance(treeNode);
@@ -590,7 +572,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
                 if (recursive)
                 {
                     // Get child nodes of current node
-                    DataSet ds = DocumentManager.Tree.SelectNodes(siteName, treeNode.NodeAliasPath.TrimEnd('/') + "/%", TreeProvider.ALL_CULTURES, true, null, null, null, 1, false, -1, TreeProvider.SELECTNODES_REQUIRED_COLUMNS + ",NodeAliasPath");
+                    DataSet ds = DocumentManager.Tree.SelectNodes(siteName, treeNode.NodeAliasPath.TrimEnd('/') + "/%", TreeProvider.ALL_CULTURES, true, null, null, null, 1, false, -1, DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS + ",NodeAliasPath");
                     if (!DataHelper.DataSourceIsEmpty(ds))
                     {
                         foreach (DataRow dr in ds.Tables[0].Rows)
@@ -609,8 +591,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state == CMSThread.ABORT_REASON_STOP)
+            if (CMSThread.Stopped(ex))
             {
                 // When canceled
                 CurrentInfo = ResHelper.GetString("cmsdesk.restoringcanceled");
@@ -639,74 +620,77 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
     protected void DocumentManager_OnSaveData(object sender, DocumentManagerEventArgs e)
     {
         TreeNode node = e.Node;
-        
+
         if (node != null)
         {
             string message = null;
             bool clearCache = false;
 
             // Authentication
-            if (!pnlAuth.IsHidden)
+            if (pnlAccessPart.Visible)
             {
-                int isSecuredNode = node.IsSecuredNode;
+                if (!pnlAuth.IsHidden)
+                {
+                    bool? isSecuredNode = node.IsSecuredNode;
 
-                if (radYes.Checked)
-                {
-                    isSecuredNode = 1;
-                }
-                else if (radNo.Checked)
-                {
-                    isSecuredNode = 0;
-                }
-                else if (radParent.Checked)
-                {
-                    isSecuredNode = -1;
-                }
-
-                // Set secured areas settings
-                if (isSecuredNode != node.IsSecuredNode)
-                {
-                    node.IsSecuredNode = isSecuredNode;
-                    clearCache = true;
-                    message += ResHelper.GetAPIString("security.documentaccessauthchanged", "Page authentication settings have been modified.");
-                }
-            }
-
-            // SSL
-            if (!pnlSSL.IsHidden)
-            {
-                int requiresSSL = node.RequiresSSL;
-
-                if (radYesSSL.Checked)
-                {
-                    requiresSSL = 1;
-                }
-                else if (radNoSSL.Checked)
-                {
-                    requiresSSL = 0;
-                }
-                else if (radParentSSL.Checked)
-                {
-                    requiresSSL = -1;
-                }
-                else if (radNeverSSL.Checked)
-                {
-                    requiresSSL = 2;
-                }
-
-                // Set SSL settings
-                if (requiresSSL != node.RequiresSSL)
-                {
-                    node.RequiresSSL = requiresSSL;
-                    clearCache = true;
-                    if (message != null)
+                    if (radYes.Checked)
                     {
-                        message += "<br />";
+                        isSecuredNode = true;
                     }
-                    message += ResHelper.GetAPIString("security.documentaccesssslchanged", "Page SSL settings have been modified.");
+                    else if (radNo.Checked)
+                    {
+                        isSecuredNode = false;
+                    }
+                    else if (radParent.Checked)
+                    {
+                        isSecuredNode = null;
+                    }
+
+                    // Set secured areas settings
+                    if (isSecuredNode != node.IsSecuredNode)
+                    {
+                        node.IsSecuredNode = isSecuredNode;
+                        clearCache = true;
+                        message += ResHelper.GetAPIString("security.documentaccessauthchanged", "Page authentication settings have been modified.");
+                    }
+                }
+
+                // SSL
+                if (!pnlSSL.IsHidden)
+                {
+                    int? requiresSSL = node.RequiresSSL;
+
+                    if (radYesSSL.Checked)
+                    {
+                        requiresSSL = 1;
+                    }
+                    else if (radNoSSL.Checked)
+                    {
+                        requiresSSL = 0;
+                    }
+                    else if (radParentSSL.Checked)
+                    {
+                        requiresSSL = null;
+                    }
+                    else if (radNeverSSL.Checked)
+                    {
+                        requiresSSL = 2;
+                    }
+
+                    // Set SSL settings
+                    if (requiresSSL != node.RequiresSSL)
+                    {
+                        node.RequiresSSL = requiresSSL;
+                        clearCache = true;
+                        if (message != null)
+                        {
+                            message += "<br />";
+                        }
+                        message += ResHelper.GetAPIString("security.documentaccesssslchanged", "Page SSL settings have been modified.");
+                    }
                 }
             }
-            
+
             // Insert information about this event to event log.
             if (DocumentManager.Tree.LogEvents && (message != null))
             {
@@ -724,21 +708,14 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
             securityElem.InvalidateAcls();
         }
     }
-    
+
     #endregion
 
 
     #region "Async processing"
 
-    protected void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
-    }
-
-
     protected void ctlAsyncLog_OnError(object sender, EventArgs e)
     {
-        CurrentLog.Close();
         securityElem.LoadOperators(true);
         securityElem.ErrorLabel.Text = CurrentError;
         securityElem.InfoLabel.Text = CurrentInfo;
@@ -747,7 +724,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
 
     protected void ctlAsyncLog_OnFinished(object sender, EventArgs e)
     {
-        CurrentLog.Close();
         securityElem.LoadOperators(true);
         securityElem.ErrorLabel.Text = CurrentError;
         securityElem.InfoLabel.Text = CurrentInfo;
@@ -756,7 +732,6 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
 
     protected void ctlAsyncLog_OnCancel(object sender, EventArgs e)
     {
-        CurrentLog.Close();
         securityElem.LoadOperators(true);
         securityElem.ErrorLabel.Text = CurrentError;
         securityElem.InfoLabel.Text = CurrentInfo;
@@ -773,8 +748,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
 
@@ -795,17 +769,7 @@ public partial class CMSModules_Content_CMSDesk_Properties_Security : CMSPropert
     /// <param name="errorMessage">Error message</param>
     protected void AddErrorLog(string newLog, string errorMessage)
     {
-        LogContext.AppendLine(newLog);
-    }
-
-
-    /// <summary>
-    /// Ensures the logging context.
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext log = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-        return log;
+        AddLog(newLog);
     }
 
     #endregion

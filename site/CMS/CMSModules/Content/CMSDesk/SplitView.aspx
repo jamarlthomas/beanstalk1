@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_SplitView"
-    Codebehind="SplitView.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_SplitView"
+     Codebehind="SplitView.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/SplitView/Documents/DocumentSplitView.ascx"
     TagName="DocumentSplitView" TagPrefix="cms" %>

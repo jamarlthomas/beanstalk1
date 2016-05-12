@@ -1,14 +1,14 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Tools_Subscribers_Subscriber_Subscriptions"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Newsletters_Tools_Subscribers_Subscriber_Subscriptions"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Newsletter subscribtions"
-    Codebehind="Subscriber_Subscriptions.aspx.cs" %>
+     Codebehind="Subscriber_Subscriptions.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Newsletters/FormControls/NewsletterSelector.ascx"
     TagName="NewsletterSelector" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 
-<asp:Content ID="contentControls" ContentPlaceHolderID="plcBeforeContent" runat="server">
-    <div class="cms-edit-menu">
+<asp:Content ID="cntActions" ContentPlaceHolderID="plcActions" runat="server">
+    <div class="control-group-inline header-actions-container">
         <cms:NewsletterSelector runat="server" ID="selectNewsletter" EnableViewState="False" />
     </div>
 </asp:Content>
@@ -16,13 +16,9 @@
     <cms:CMSUpdatePanel runat="server" ID="pnlUpdate" UpdateMode="Conditional">
         <ContentTemplate>
             <cms:UniGrid ID="unigridNewsletters" runat="server" ShortID="g" OrderBy="NewsletterDisplayName"
-                IsLiveSite="false" Columns="NewsletterID, NewsletterDisplayName, SubscriptionApproved, SubscriptionEnabled"
+                IsLiveSite="false" Columns="NewsletterID, NewsletterDisplayName, SubscriptionApproved"
                 Query="newsletter.subscribernewsletter.selectsubscriptions">
                 <GridActions>
-                    <ug:Action Name="subscribe" ExternalSourceName="subscribe" Caption="$newsletter.renewsubscription$"
-                        FontIconClass="icon-message" FontIconStyle="Allow" Confirmation="$Unigrid.Subscribers.Actions.Subscribe.Confirmation$" />
-                    <ug:Action Name="unsubscribe" ExternalSourceName="unsubscribe" Caption="$newsletter.unsubscribelink$"
-                        FontIconClass="icon-message" FontIconStyle="Critical" Confirmation="$Unigrid.Subscribers.Actions.unsubscribe.Confirmation$" />
                     <ug:Action Name="remove" Caption="$newsletter.deletesubscription$" FontIconClass="icon-bin" FontIconStyle="Critical"
                         Confirmation="$Unigrid.Subscribers.Actions.RemoveSubscription.Confirmation$" />
                     <ug:Action Name="approve" ExternalSourceName="approve" Caption="$newsletter.approvesubscription$"
@@ -35,7 +31,7 @@
                     </ug:Column>
                     <ug:Column Source="##ALL##" ExternalSourceName="status" Caption="$general.status$"
                         CssClass="TableCell" Wrap="false">
-                        <Filter Source="SubscriptionEnabled" Path="~/CMSModules/Newsletters/Controls/SubscriptionStatusFilter.ascx" />
+                        <Filter Source="SubscriptionApproved" Path="~/CMSModules/Newsletters/Controls/SubscriptionStatusFilter.ascx" />
                     </ug:Column>
                     <ug:Column CssClass="filling-column" />
                 </GridColumns>

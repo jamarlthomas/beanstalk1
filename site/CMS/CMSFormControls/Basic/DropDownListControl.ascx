@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="DropDownListControl.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="false"  Codebehind="DropDownListControl.ascx.cs"
     Inherits="CMSFormControls_Basic_DropDownListControl" %>
     <cms:CMSDropDownList ID="dropDownList" runat="server" CssClass="DropDownField" />
 <div class="autocomplete" runat="server" id="autoComplete">

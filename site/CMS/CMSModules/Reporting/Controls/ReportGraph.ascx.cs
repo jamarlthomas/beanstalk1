@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI;
 
@@ -437,6 +437,12 @@ public partial class CMSModules_Reporting_Controls_ReportGraph : AbstractReportC
 
         mErrorOccurred = false;
         DataSet dsGraphData = null;
+
+        // Ensure report item name for caching
+        if (String.IsNullOrEmpty(ReportItemName))
+        {
+            ReportItemName = String.Format("{0};{1}", mReport.ReportName, reportGraph.GraphName);
+        }
 
         // Create graph image                    
         try

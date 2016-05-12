@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -94,14 +94,14 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Customers_Customer_List : 
 
         if (actionName == "edit")
         {
-            URLHelper.Redirect(UIContextHelper.GetElementUrl("CMS.Ecommerce", "EditCustomersProperties", false, id));
+            URLHelper.Redirect(UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, "EditCustomersProperties", false, id));
         }
         else if (actionName == "delete")
         {
             // Check module permissions
             if (!ECommerceContext.IsUserAuthorizedToModifyCustomer())
             {
-                RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyCustomers");
+                RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyCustomers");
                 return;
             }
 

@@ -1,19 +1,13 @@
-using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
+﻿using System;
 
 using CMS.Blogs;
 using CMS.Helpers;
 using CMS.PortalControls;
 using CMS.PortalEngine;
 using CMS.SiteProvider;
+using CMS.DocumentEngine;
 
 using TreeNode = CMS.DocumentEngine.TreeNode;
-using CMS.DocumentEngine;
 
 public partial class CMSWebParts_Blogs_BlogCommentView : CMSAbstractWebPart
 {
@@ -187,41 +181,7 @@ public partial class CMSWebParts_Blogs_BlogCommentView : CMSAbstractWebPart
             commentView.AbuseReportSecurityAccess = value;
         }
     }
-
-
-    /// <summary>
-    /// Indicates whether trackback URL and comments should be displayed.
-    /// </summary>
-    public bool DisplayTrackbacks
-    {
-        get
-        {
-            return ValidationHelper.GetBoolean(GetValue("DisplayTrackbacks"), true);
-        }
-        set
-        {
-            SetValue("DisplayTrackbacks", value);
-            commentView.DisplayTrackbacks = value;
-        }
-    }
-
-
-    /// <summary>
-    /// Gets or sets number of characters after which the trackback URL is automatically wprapped, otherwise it is not wrapped which can break the design when url is too long.
-    /// </summary>
-    public int TrackbackURLSize
-    {
-        get
-        {
-            return ValidationHelper.GetInteger(GetValue("TrackbackURLSize"), 0);
-        }
-        set
-        {
-            SetValue("TrackbackURLSize", value);
-            commentView.TrackbackURLSize = value;
-        }
-    }
-
+    
     #endregion
 
 
@@ -276,14 +236,11 @@ public partial class CMSWebParts_Blogs_BlogCommentView : CMSAbstractWebPart
                 commentView.BlogProperties.EnableUserPictures = EnableUserPictures;
                 commentView.BlogProperties.UserPictureMaxHeight = UserPictureMaxHeight;
                 commentView.BlogProperties.UserPictureMaxWidth = UserPictureMaxWidth;
-                commentView.BlogProperties.EnableTrackbacks = ValidationHelper.GetBoolean(blogNode.GetValue("BlogEnableTrackbacks"), true);
                 commentView.Separator = CommentSeparator;
                 commentView.ReloadPageAfterAction = true;
                 commentView.AbuseReportOwnerID = blogNode.NodeOwner;
                 commentView.AbuseReportRoles = AbuseReportRoles;
                 commentView.AbuseReportSecurityAccess = AbuseReportAccess;
-                commentView.DisplayTrackbacks = DisplayTrackbacks;
-                commentView.TrackbackURLSize = TrackbackURLSize;
             }
         }
     }

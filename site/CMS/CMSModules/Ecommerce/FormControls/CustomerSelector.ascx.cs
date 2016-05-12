@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.FormControls;
 using CMS.Helpers;
@@ -191,17 +191,6 @@ public partial class CMSModules_Ecommerce_FormControls_CustomerSelector : FormEn
             EnsureChildControls();
             return uniSelector;
         }
-    }
-
-
-    /// <summary>
-    /// Prefix for the resource strings which will be used for the strings of the selector.
-    /// Null value of this property is ignored.
-    /// </summary>
-    public string ResourcePrefix
-    {
-        get;
-        set;
     }
 
     #endregion

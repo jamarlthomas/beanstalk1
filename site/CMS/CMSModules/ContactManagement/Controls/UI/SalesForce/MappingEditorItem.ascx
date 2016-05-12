@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="MappingEditorItem.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_SalesForce_MappingEditorItem" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="MappingEditorItem.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_SalesForce_MappingEditorItem" %>
 <%@ Import Namespace="CMS.SalesForce" %>
 
 <div class="form-group">

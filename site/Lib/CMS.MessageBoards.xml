@@ -30,6 +30,11 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.MessageBoards.BoardMessageListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.MessageBoards.BoardMessageListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
@@ -712,12 +717,15 @@
             Initializes the message board handlers
             </summary>
         </member>
+        <member name="M:CMS.MessageBoards.MessageBoardHandlers.ResetRating_Execute(System.Object,CMS.DocumentEngine.DocumentRatingEventArgs)">
+            <summary>
+            Resets rating for all messages of given document
+            </summary>
+        </member>
         <member name="M:CMS.MessageBoards.MessageBoardHandlers.Update_Before(System.Object,CMS.DocumentEngine.DocumentEventArgs)">
             <summary>
             Ensures site change of the board when site of the document changes
             </summary>
-            <param name="sender"></param>
-            <param name="e"></param>
         </member>
         <member name="M:CMS.MessageBoards.MessageBoardHandlers.GetContent_Execute(System.Object,CMS.DocumentEngine.DocumentSearchEventArgs)">
             <summary>
@@ -797,6 +805,16 @@
         <member name="T:CMS.MessageBoards.MessageBoardModule">
             <summary>
             Represents the Message Board module.
+            </summary>
+        </member>
+        <member name="F:CMS.MessageBoards.MessageBoardModule.BOARDS_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for boards.
+            </summary>
+        </member>
+        <member name="F:CMS.MessageBoards.MessageBoardModule.BOARD_SUBSCRIPTION_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for board subscription.
             </summary>
         </member>
         <member name="M:CMS.MessageBoards.MessageBoardModule.#ctor">
@@ -906,6 +924,11 @@
             Creates new board object according provided properties.
             </summary>
             <param name="properties">Board properties applied to created board</param>
+        </member>
+        <member name="M:CMS.MessageBoards.BoardInfo.LoadDefaultData">
+            <summary>
+            Loads the default data to the object.
+            </summary>
         </member>
         <member name="M:CMS.MessageBoards.BoardInfo.RegisterProperties">
             <summary>
@@ -1126,6 +1149,11 @@
             Deletes specified board.
             </summary>
             <param name="infoObj">Board object</param>
+        </member>
+        <member name="M:CMS.MessageBoards.BoardInfoProvider.GetMessageBoards">
+            <summary>
+            Returns message boards object query.
+            </summary>
         </member>
         <member name="M:CMS.MessageBoards.BoardInfoProvider.GetMessageBoards(System.Int32,System.String)">
             <summary>
@@ -1515,6 +1543,11 @@
             </summary>
             <param name="boardMessageId">BoardMessage id</param>
         </member>
+        <member name="M:CMS.MessageBoards.BoardMessageInfoProvider.GetMessages">
+            <summary>
+            Returns messages object query.
+            </summary>
+        </member>
         <member name="M:CMS.MessageBoards.BoardMessageInfoProvider.GetMessages(System.String,System.String)">
             <summary>
             Returns dataset of all messages according to where and order by condition.
@@ -1570,6 +1603,13 @@
             Returns sitename for selected board.
             </summary>
             <param name="boardId">Board id</param>
+        </member>
+        <member name="M:CMS.MessageBoards.BoardMessageInfoProvider.UpdateData(System.String,CMS.DataEngine.WhereCondition)">
+            <summary>
+            Updates data for all records given by where condition
+            </summary>
+            <param name="updateExpression">Update expression, e.g. "Value = Value * 2"</param>
+            <param name="where">Where condition</param>
         </member>
         <member name="P:CMS.MessageBoards.BoardMessageInfoProvider.EnableEmails">
             <summary>

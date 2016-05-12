@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="CMS_UserSettings.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="CMS_UserSettings.ascx.cs"
     Inherits="CMSModules_Objects_FormControls_Cloning_CMS_UserSettings" %>
 
 <%@ Register Src="~/CMSModules/Membership/FormControls/Passwords/PasswordStrength.ascx"

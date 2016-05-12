@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_WebPartProperties_layout_frameset"
-    ValidateRequest="false" Codebehind="WebPartProperties_layout_frameset.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_UI_WebParts_WebPartProperties_layout_frameset"
+    ValidateRequest="false"  Codebehind="WebPartProperties_layout_frameset.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

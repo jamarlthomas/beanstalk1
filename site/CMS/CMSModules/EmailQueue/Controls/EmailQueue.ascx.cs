@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Data;
 using System.Linq;
@@ -30,25 +30,6 @@ public partial class CMSModules_EmailQueue_Controls_EmailQueue : CMSAdminControl
         get
         {
             return gridElem;
-        }
-    }
-
-
-    /// <summary>
-    /// Dialog control identifier.
-    /// </summary>
-    private string Identifier
-    {
-        get
-        {
-            string identifier = hdnIdentifier.Value;
-            if (string.IsNullOrEmpty(identifier))
-            {
-                identifier = Guid.NewGuid().ToString();
-                hdnIdentifier.Value = identifier;
-            }
-
-            return identifier;
         }
     }
 
@@ -144,6 +125,29 @@ function OpenEmailDetail(queryParameters) {{
 
     #endregion
 
+
+    #region "Private methods"
+
+    /// <summary>
+    /// Gets the dialog identifier used for sharing data between windows.
+    /// </summary>
+    /// <returns>Dialog identifier</returns>
+    private Guid GetDialogIdentifier()
+    {
+        Guid identifier;
+
+        // Try parse the identifier as a Guid value
+        if (!Guid.TryParse(hdnIdentifier.Value, out identifier))
+        {
+            // If the identifier value is not a valid Guid value, generates a new Guid
+            identifier = Guid.NewGuid();
+            hdnIdentifier.Value = identifier.ToString();
+        }
+
+        return identifier;
+    }
+
+    #endregion
 
     #region "Unigrid events"
 
@@ -335,9 +339,13 @@ function OpenEmailDetail(queryParameters) {{
         mParameters["where"] = gridElem.WhereCondition;
         mParameters["orderby"] = gridElem.SortDirect;
 
-        WindowHelper.Add(Identifier, mParameters);
+        // Get the dialog identifier
+        Guid dialogIdentifier = GetDialogIdentifier();
 
-        string queryString = "?params=" + Identifier;
+        // Store the dialog identifier with appropriate data in the session
+        WindowHelper.Add(dialogIdentifier.ToString(), mParameters);
+
+        string queryString = "?params=" + dialogIdentifier;
 
         queryString = URLHelper.AddParameterToUrl(queryString, "hash", QueryHelper.GetHash(queryString));
         queryString = URLHelper.AddParameterToUrl(queryString, "emailid", EmailID.ToString());

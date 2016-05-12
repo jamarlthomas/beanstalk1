@@ -231,9 +231,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaPro
             imgVidRefresh.Click += (s, ea) => LoadVideoPreview();
 
             btnSizeRefreshHidden.Click += btnSizeRefreshHidden_Click;
-            btnBehaviorSizeRefreshHidden.Click += btnBehaviorSizeRefreshHidden_Click;
-
-            imgWidthHeightElem.CustomRefreshCode = ControlsHelper.GetPostBackEventReference(btnBehaviorSizeRefreshHidden, "") + ";return false;";
 
             // Display URL txt box if required
             plcUrlTxt.Visible = DisplayUrlTextbox;
@@ -322,13 +319,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaPro
                 LoadImagePreview();
                 break;
         }
-    }
-
-
-    protected void btnBehaviorSizeRefreshHidden_Click(object sender, EventArgs e)
-    {
-        imgWidthHeightElem.Width = DefaultWidth;
-        imgWidthHeightElem.Height = DefaultHeight;
     }
 
     #endregion
@@ -479,11 +469,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaPro
         radImageNone.InputAttributes["onchange"] = postBackRef + "; ensureBehaviorTab(false);";
         radImageSame.InputAttributes["onchange"] = postBackRef + "; ensureBehaviorTab(false);";
         radImageNew.InputAttributes["onchange"] = postBackRef + "; ensureBehaviorTab(false);";
-        radImageLarger.InputAttributes["onchange"] = postBackRef + "; ensureBehaviorTab(false);";
-        imgWidthHeightElem.HeightTextBox.Attributes["onchange"] = postBackRef;
-        imgWidthHeightElem.HeightTextBox.Attributes["onkeydown"] = postBackKeyDownRef;
-        imgWidthHeightElem.WidthTextBox.Attributes["onchange"] = postBackRef;
-        imgWidthHeightElem.WidthTextBox.Attributes["onkeydown"] = postBackKeyDownRef;
 
         string postBackRefWidthHeight = ControlsHelper.GetPostBackEventReference(btnSizeRefreshHidden, "") + ";return false;";
         widthHeightElem.CustomRefreshCode = postBackRefWidthHeight;
@@ -669,8 +654,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaPro
         properties[DialogParameters.IMG_TOOLTIP] = HTMLHelper.HTMLEncode(txtImageAdvTooltip.Text.Trim());
         properties[DialogParameters.IMG_STYLE] = (style != ";" ? HTMLHelper.HTMLEncode(style) : "");
         properties[DialogParameters.IMG_CLASS] = HTMLHelper.HTMLEncode(txtImageAdvClass.Text.Trim());
-        properties[DialogParameters.IMG_MOUSEOVERWIDTH] = "";
-        properties[DialogParameters.IMG_MOUSEOVERHEIGHT] = "";
 
         if (radImageNone.Checked)
         {
@@ -683,12 +666,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaPro
         else if (radImageSame.Checked)
         {
             properties[DialogParameters.IMG_BEHAVIOR] = "_self";
-        }
-        else if (radImageLarger.Checked)
-        {
-            properties[DialogParameters.IMG_BEHAVIOR] = "hover";
-            properties[DialogParameters.IMG_MOUSEOVERWIDTH] = imgWidthHeightElem.Width;
-            properties[DialogParameters.IMG_MOUSEOVERHEIGHT] = imgWidthHeightElem.Height;
         }
         properties[DialogParameters.LAST_TYPE] = MediaTypeEnum.Image;
 
@@ -999,8 +976,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaPro
                 properties[DialogParameters.IMG_ORIGINALHEIGHT] = item.Height;
                 properties[DialogParameters.IMG_WIDTH] = item.Width;
                 properties[DialogParameters.IMG_HEIGHT] = item.Height;
-                properties[DialogParameters.IMG_MOUSEOVERWIDTH] = item.Width;
-                properties[DialogParameters.IMG_MOUSEOVERHEIGHT] = item.Height;
                 properties[DialogParameters.IMG_URL] = item.Url;
                 properties[DialogParameters.IMG_EXT] = item.Extension;
                 ViewState[DialogParameters.IMG_EXT] = item.Extension;
@@ -1110,17 +1085,10 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaPro
                 string imgTarget = ValidationHelper.GetString(properties[DialogParameters.IMG_TARGET], "");
                 string imgBehavior = ValidationHelper.GetString(properties[DialogParameters.IMG_BEHAVIOR], "");
 
-                bool isLink = false;
+                var isLink = false;
                 if (!String.IsNullOrEmpty(imgLink))
                 {
-                    if (imgBehavior == "hover")
-                    {
-                        isLink = true;
-                    }
-                    else
-                    {
-                        isLink = CMSDialogHelper.IsImageLink(url, imgLink, OriginalWidth, OriginalHeight, imgTarget);
-                    }
+                    isLink = CMSDialogHelper.IsImageLink(url, imgLink, OriginalWidth, OriginalHeight, imgTarget);
                 }
 
                 if (tabImageGeneral.Visible)
@@ -1227,7 +1195,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaPro
 
                 if (tabImageBehavior.Visible)
                 {
-                    if ((!isLink) || (imgBehavior == "hover"))
+                    if (!isLink)
                     {
                         // Process target
                         string target = !String.IsNullOrEmpty(imgBehavior) ? imgBehavior : imgTarget;
@@ -1241,35 +1209,10 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaPro
                                 radImageNew.Checked = true;
                                 break;
 
-                            case "hover":
-                                radImageLarger.Checked = true;
-                                break;
-
                             default:
                                 radImageNone.Checked = true;
                                 break;
                         }
-                    }
-
-                    // Process behavior
-                    int imgBehaviorWidth = ValidationHelper.GetInteger(properties[DialogParameters.IMG_MOUSEOVERWIDTH], 0);
-                    int imgBehaviorHeight = ValidationHelper.GetInteger(properties[DialogParameters.IMG_MOUSEOVERHEIGHT], 0);
-                    if (imgBehaviorWidth == 0)
-                    {
-                        imgBehaviorWidth = width;
-                    }
-                    if (imgBehaviorHeight == 0)
-                    {
-                        imgBehaviorHeight = height;
-                    }
-                    if (imgBehaviorWidth > 0)
-                    {
-                        imgWidthHeightElem.Width = imgBehaviorWidth;
-                    }
-
-                    if (imgBehaviorHeight > 0)
-                    {
-                        imgWidthHeightElem.Height = imgBehaviorHeight;
                     }
 
                     // Add image tag for preview
@@ -1502,8 +1445,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaPro
                 string url = CurrentUrl.Trim();
                 url = URLHelper.RemoveParameterFromUrl(url, "width");
                 url = URLHelper.RemoveParameterFromUrl(url, "height");
-                retval[DialogParameters.IMG_MOUSEOVERWIDTH] = "";
-                retval[DialogParameters.IMG_MOUSEOVERHEIGHT] = "";
                 if (radImageNone.Checked)
                 {
                     retval[DialogParameters.IMG_BEHAVIOR] = "";
@@ -1518,15 +1459,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaPro
                     retval[DialogParameters.IMG_BEHAVIOR] = "_self";
                     retval[DialogParameters.IMG_LINK] = url;
                 }
-            }
-            if (radImageLarger.Checked)
-            {
-                // Unresolve URL for Inline control
-                retval[DialogParameters.IMG_URL] = URLHelper.UnResolveUrl(retval[DialogParameters.IMG_URL].ToString(), SystemContext.ApplicationPath);
-                retval[DialogParameters.IMG_BEHAVIOR] = "hover";
-                retval[DialogParameters.IMG_MOUSEOVERWIDTH] = imgWidthHeightElem.Width;
-                retval[DialogParameters.IMG_MOUSEOVERHEIGHT] = imgWidthHeightElem.Height;
-                retval[DialogParameters.OBJECT_TYPE] = "image";
             }
         }
 
@@ -1601,10 +1533,8 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaPro
 
         bool isAudioVideo = (ValidationHelper.GetString(retval[DialogParameters.AV_URL], "") != "");
         bool isFlash = (ValidationHelper.GetString(retval[DialogParameters.FLASH_URL], "") != "");
-        bool isInlineImage = ((ValidationHelper.GetString(retval[DialogParameters.IMG_LINK], "") != "") &&
-                              (ValidationHelper.GetString(retval[DialogParameters.IMG_BEHAVIOR], "") == "hover"));
 
-        if (isAudioVideo || isFlash || isInlineImage)
+        if (isAudioVideo || isFlash)
         {
             CurrentUrl = URLHelper.UnResolveUrl(CurrentUrl, SystemContext.ApplicationPath);
 
@@ -1615,10 +1545,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaPro
             else if (isFlash)
             {
                 retval[DialogParameters.FLASH_URL] = CurrentUrl;
-            }
-            else
-            {
-                retval[DialogParameters.IMG_URL] = CurrentUrl;
             }
         }
 
@@ -1726,8 +1652,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Properties_HTMLMediaPro
 
         pnlTabs.SelectedTabIndex = 0;
 
-        imgWidthHeightElem.Height = 0;
-        imgWidthHeightElem.Width = 0;
         flashWidthHeightElem.Height = 0;
         flashWidthHeightElem.Width = 0;
         vidWidthHeightElem.Height = 0;

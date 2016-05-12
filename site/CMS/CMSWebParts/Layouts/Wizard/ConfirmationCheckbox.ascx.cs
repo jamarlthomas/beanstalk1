@@ -1,21 +1,11 @@
 ﻿using System;
 
 using CMS.ExtendedControls;
-using CMS.GlobalHelper;
-using CMS.SettingsProvider;
 using CMS.PortalControls;
 using CMS.Helpers;
-using CMS.Base;
 
 public partial class CMSWebParts_Layouts_Wizard_ConfirmationCheckbox : CMSAbstractWebPart
 {
-    #region "Variables"
-
-    private static string mCustomError;
-
-    #endregion
-
-
     #region "Page events"
 
     /// <summary>
@@ -49,7 +39,6 @@ public partial class CMSWebParts_Layouts_Wizard_ConfirmationCheckbox : CMSAbstra
         }
         else
         {
-            mCustomError = "";
             pnlError.Visible = false;
         }
     }
@@ -72,13 +61,6 @@ public partial class CMSWebParts_Layouts_Wizard_ConfirmationCheckbox : CMSAbstra
             chkAccept.Text = ValidationHelper.GetString(GetValue("AgreementText"), "");
             // Set the state
             chkAccept.Checked = ValidationHelper.GetBoolean(GetValue("AgreementDefaultState"), false);
-
-            // Display error message
-            if (!string.IsNullOrEmpty(mCustomError) && RequestHelper.IsPostBack())
-            {
-                pnlError.Visible = true;
-                lblError.Text = mCustomError;
-            }
         }
     }
 

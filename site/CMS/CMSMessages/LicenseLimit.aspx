@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSMessages_LicenseLimit"
-    Theme="Default" Codebehind="LicenseLimit.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSMessages_LicenseLimit"
+    Theme="Default"  Codebehind="LicenseLimit.aspx.cs" %>
 <%@ Register src="~/CMSAdminControls/UI/PageElements/PageTitle.ascx" tagname="PageTitle" tagprefix="cms" %>
 
 

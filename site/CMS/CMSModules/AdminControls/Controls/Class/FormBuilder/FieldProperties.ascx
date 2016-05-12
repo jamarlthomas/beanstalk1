@@ -1,5 +1,5 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_AdminControls_Controls_Class_FormBuilder_FieldProperties"
-    Codebehind="FieldProperties.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="false" Inherits="CMSModules_AdminControls_Controls_Class_FormBuilder_FieldProperties"
+     Codebehind="FieldProperties.ascx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/System/LocalizableTextBox.ascx" TagName="LocalizableTextBox"
     TagPrefix="cms" %>

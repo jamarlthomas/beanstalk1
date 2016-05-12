@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.DataEngine;
 using CMS.ExtendedControls;
@@ -98,23 +98,6 @@ public partial class CMSFormControls_Classes_SelectClassNames : FormEngineUserCo
         {
             EnsureChildControls();
             return uniSelector.DropDownSingleSelect;
-        }
-    }
-
-
-    /// <summary>
-    /// Gets or sets the value which determines, whether to display Clear button.
-    /// </summary>
-    [Obsolete("This property is obsolete. Use 'AllowEmpty' property instead.")]
-    public bool DisplayClearButton
-    {
-        get
-        {
-            return AllowEmpty;
-        }
-        set
-        {
-            AllowEmpty = value;
         }
     }
 
@@ -232,22 +215,6 @@ public partial class CMSFormControls_Classes_SelectClassNames : FormEngineUserCo
 
 
     /// <summary>
-    /// If true, wireframe document type is hidden
-    /// </summary>
-    public bool HideWireframe
-    {
-        get
-        {
-            return GetValue("HideWireframe", false);
-        }
-        set
-        {
-            SetValue("HideWireframe", value);
-        }
-    }
-
-
-    /// <summary>
     /// Column name of the object which value should be returned by the selector. 
     /// If NULL, ID column is used.
     /// </summary>
@@ -339,12 +306,6 @@ public partial class CMSFormControls_Classes_SelectClassNames : FormEngineUserCo
         if (ShowOnlySystemTables)
         {
             where = SqlHelper.AddWhereCondition(where, "ClassShowAsSystemTable = 1");
-        }
-
-        // Hide wireframe doc type
-        if (HideWireframe)
-        {
-            where = SqlHelper.AddWhereCondition(where, "ClassName <> 'cms.wireframe'");
         }
 
         // Filter using Site ID

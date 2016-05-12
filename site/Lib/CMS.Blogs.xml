@@ -86,16 +86,6 @@
             Class with blog comment data.
             </summary>
         </member>
-        <member name="F:CMS.Blogs.BlogCommentDetail.mCommentID">
-            <summary>
-            Default ID of the blog comment.
-            </summary>
-        </member>
-        <member name="F:CMS.Blogs.BlogCommentDetail.mCommentsDataRow">
-            <summary>
-            Comment data row.
-            </summary>
-        </member>
         <member name="F:CMS.Blogs.BlogCommentDetail.mShowEditButton">
             <summary>
             Indicates whether the EDIT button would be displayed.
@@ -131,7 +121,7 @@
             Default ID of the abuse report owner.
             </summary>
         </member>
-        <member name="F:CMS.Blogs.BlogCommentDetail.BlogpPoperties">
+        <member name="F:CMS.Blogs.BlogCommentDetail.BlogProperties">
             <summary>
             Object holding information on current blog properties.
             </summary>
@@ -148,14 +138,9 @@
             Event fired when some kind of action related to the blog comment occurs.
             </summary>
         </member>
-        <member name="P:CMS.Blogs.BlogCommentDetail.CommentID">
-             <summary>
-            Comment ID.
-             </summary>
-        </member>
-        <member name="P:CMS.Blogs.BlogCommentDetail.CommentsDataRow">
+        <member name="P:CMS.Blogs.BlogCommentDetail.Comment">
             <summary>
-            DataRow with comments data.
+            Comment data.
             </summary>
         </member>
         <member name="P:CMS.Blogs.BlogCommentDetail.ShowEditButton">
@@ -315,11 +300,6 @@
             Comment post document ID.
             </summary>
         </member>
-        <member name="P:CMS.Blogs.BlogCommentInfo.CommentIsTrackback">
-            <summary>
-            Comment is trackback.
-            </summary>
-        </member>
         <member name="T:CMS.Blogs.BlogCommentInfoProvider">
             <summary>
             Class providing BlogCommentInfo management.
@@ -416,23 +396,21 @@
             <param name="totalRecords">Returns total records</param>
             <param name="siteName">Site name of the blog</param>
         </member>
-        <member name="M:CMS.Blogs.BlogCommentInfoProvider.GetPostComments(System.Int32,System.Boolean,System.Boolean,System.Boolean)">
+        <member name="M:CMS.Blogs.BlogCommentInfoProvider.GetPostComments(System.Int32,System.Boolean,System.Boolean)">
             <summary>
             Returns DataSet with post comments which are not marked as spam.
             </summary>
             <param name="postDocumentId">Post documentID</param>
             <param name="onlyApproved">Indicates if only approved comments should be returned</param>
             <param name="includingSpam">Indicates if comments which are marked as SPAM should be included in the result</param>
-            <param name="includingTrackbacks">Indicates if comments which are marked as trackback comments should be included in the result</param>
         </member>
-        <member name="M:CMS.Blogs.BlogCommentInfoProvider.GetPostCommentsCount(System.Int32,System.Boolean,System.Boolean,System.Boolean)">
+        <member name="M:CMS.Blogs.BlogCommentInfoProvider.GetPostCommentsCount(System.Int32,System.Boolean,System.Boolean)">
             <summary>
             Returns count of the post comments.
             </summary>
             <param name="postDocumentId">Post documentID</param>
             <param name="onlyApproved">Indicates if only approved comments should be included in the count</param>
             <param name="includingSpam">Indicates if comments which are marked as SPAM should be included in the count</param>
-            <param name="includingTrackbacks">Indicates if comments which are marked as trackbacks should be included in the count</param>
         </member>
         <member name="M:CMS.Blogs.BlogCommentInfoProvider.SendNewCommentNotification(CMS.Blogs.BlogCommentInfo,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
@@ -449,14 +427,13 @@
             </summary>
             <param name="documentId">Document ID</param>
         </member>
-        <member name="M:CMS.Blogs.BlogCommentInfoProvider.GetCommentsWhereCondition(System.Int32,System.Boolean,System.Boolean,System.Boolean)">
+        <member name="M:CMS.Blogs.BlogCommentInfoProvider.GetCommentsWhereCondition(System.Int32,System.Boolean,System.Boolean)">
             <summary>
             Returns WHERE condition for the comments selection according to the specified parameters.
             </summary>
             <param name="postDocumentId">Post document ID</param>
             <param name="onlyApproved">Indicates if only approved comments should be included</param>
             <param name="includingSpam">Indicates if comments which are marked as SPAM should be included</param>
-            <param name="includingTrackbacks">Indicates if comments which are marked as trackbacks should be included</param>
         </member>
         <member name="M:CMS.Blogs.BlogCommentInfoProvider.GetCommentSiteName(System.Int32)">
             <summary>
@@ -522,23 +499,21 @@
             <param name="totalRecords">Returns total records</param>
             <param name="siteName">Site name of the blog</param>
         </member>
-        <member name="M:CMS.Blogs.BlogCommentInfoProvider.GetPostCommentsInternal(System.Int32,System.Boolean,System.Boolean,System.Boolean)">
+        <member name="M:CMS.Blogs.BlogCommentInfoProvider.GetPostCommentsInternal(System.Int32,System.Boolean,System.Boolean)">
             <summary>
             Returns DataSet with post comments which are not marked as spam.
             </summary>
             <param name="postDocumentId">Post documentID</param>
             <param name="onlyApproved">Indicates if only approved comments should be returned</param>
             <param name="includingSpam">Indicates if comments which are marked as SPAM should be included in the result</param>
-            <param name="includingTrackbacks">Indicates if comments which are marked as trackback comments should be included in the result</param>
         </member>
-        <member name="M:CMS.Blogs.BlogCommentInfoProvider.GetPostCommentsCountInternal(System.Int32,System.Boolean,System.Boolean,System.Boolean)">
+        <member name="M:CMS.Blogs.BlogCommentInfoProvider.GetPostCommentsCountInternal(System.Int32,System.Boolean,System.Boolean)">
             <summary>
             Returns count of the post comments.
             </summary>
             <param name="postDocumentId">Post document ID</param>
             <param name="onlyApproved">Indicates if only approved comments should be included in the count</param>
             <param name="includingSpam">Indicates if comments which are marked as SPAM should be included in the count</param>
-            <param name="includingTrackbacks">Indicates if comments which are marked as trackbacks should be included in the count</param>
         </member>
         <member name="M:CMS.Blogs.BlogCommentInfoProvider.SendNewCommentNotificationInternal(CMS.Blogs.BlogCommentInfo,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
@@ -592,20 +567,6 @@
             </summary>
             <param name="commentId">Comment id</param>
             <param name="selectOnlyPublished">Select only published</param>
-        </member>
-        <member name="M:CMS.Blogs.BlogHelper.GetBlogPostTrackbackUrl(System.Int32)">
-            <summary>
-            Returns Trackback URL for given post.
-            </summary>
-            <param name="PostDocumentID">ID of blog post</param>
-        </member>
-        <member name="M:CMS.Blogs.BlogHelper.GetBlogPostTrackbackUrl(System.Guid,System.String,System.String)">
-            <summary>
-            Returns trackback URL for given blog post.
-            </summary>
-            <param name="nodeGuid">Blog post node GUID</param>
-            <param name="documentName">Blog post document name</param>
-            <param name="culture">Blog post document culture</param>
         </member>
         <member name="M:CMS.Blogs.BlogHelper.IsUserBlogModerator(System.String,CMS.DocumentEngine.TreeNode)">
             <summary>
@@ -665,6 +626,13 @@
             <param name="groupId">ID of the group document tags belong to</param>
             <param name="tags">String containing all the tags related to the document</param>
             <param name="url">URL of the page displaying other documents of the specified tag</param>
+        </member>
+        <member name="M:CMS.Blogs.BlogHelper.CreateMacroResolver(CMS.DocumentEngine.TreeNode,CMS.DocumentEngine.TreeNode)">
+            <summary>
+            Creates macro resolver
+            </summary>
+            <param name="blog">Blog tree node</param>
+            <param name="blogPost">Blog post tree node</param>
         </member>
         <member name="T:CMS.Blogs.BlogsLiveModelProvider">
             <summary>
@@ -731,14 +699,6 @@
             </summary>
             <param name="postId">Post document id</param>
             <param name="postAliasPath">Post alias path</param>
-        </member>
-        <member name="M:CMS.Blogs.BlogTransformationFunctions.GetBlogCommentsCount(System.Object,System.Object,System.Boolean)">
-            <summary>
-            Returns number of comments of given blog.
-            </summary>
-            <param name="postId">Post document id</param>
-            <param name="postAliasPath">Post alias path</param>
-            <param name="includingTrackbacks">Indicates if trackback comments should be included</param>
         </member>
         <member name="M:CMS.Blogs.BlogTransformationFunctions.GetDocumentTags(System.Object,System.Object,System.String)">
             <summary>
@@ -867,6 +827,28 @@
             <summary>
             Initializes import handlers
             </summary>
+        </member>
+        <member name="M:CMS.Blogs.BlogImport.ProcessMainObject_Before(System.Object,CMS.CMSImportExport.ImportEventArgs)">
+            <summary>
+            Removes not supported fields for Trackbacks from CommentView web part
+            </summary>
+        </member>
+        <member name="M:CMS.Blogs.BlogImport.ProcessMainObject_After(System.Object,CMS.CMSImportExport.ImportEventArgs)">
+            <summary>
+            Removes not supported fields from Blog and Blog post page types.
+            </summary>
+        </member>
+        <member name="M:CMS.Blogs.BlogImport.GetImportData_After(System.Object,CMS.CMSImportExport.ImportGetDataEventArgs)">
+            <summary>
+            Removes old not supported setting keys and form controls for MetaWeblog API and Trackbacks
+            </summary>
+        </member>
+        <member name="M:CMS.Blogs.BlogImport.RemoveFieldsFromFormDefinition(System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            Removes fields from form definition and returns new definition
+            </summary>
+            <param name="formDefinition"></param>
+            <param name="fields">List of fields to remove</param>
         </member>
         <member name="T:CMS.Blogs.ImportSpecialActions">
             <summary>
@@ -1248,6 +1230,17 @@
             <param name="url">Current URL</param>
             <param name="checkViewMode">Indicates if view mode should be checked</param>
         </member>
+        <member name="M:CMS.Blogs.BlogPostSubscriptionInfoProvider.CreateMacroResolver(CMS.Blogs.BlogPostSubscriptionInfo,CMS.DocumentEngine.TreeNode,CMS.DocumentEngine.TreeNode,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Creates and initializes macro resolver.
+            </summary>
+            <param name="blogSubscription">Blog post subscription object</param>
+            <param name="blog">Blog tree node</param>
+            <param name="blogPost">Blog post tree node</param>
+            <param name="siteName">Site name of the blog post</param>
+            <param name="isSubscription">Indicates if resolver is created for subscription</param>
+            <param name="isOptIn">Indicates if resolver is created for double opt-in</param>
+        </member>
         <member name="T:CMS.Blogs.BlogProperties">
             <summary>
             Class providing blog properties.
@@ -1261,11 +1254,6 @@
         <member name="F:CMS.Blogs.BlogProperties.OPEN_COMMENTS_DISABLE">
             <summary>
             Indicates that comments are closed after the blog post is published.
-            </summary>
-        </member>
-        <member name="M:CMS.Blogs.BlogProperties.#ctor">
-            <summary>
-            Empty constructor.
             </summary>
         </member>
         <member name="P:CMS.Blogs.BlogProperties.OpenCommentsFor">
@@ -1338,14 +1326,19 @@
             Indicates whether e-mail is required.
             </summary>
         </member>
-        <member name="P:CMS.Blogs.BlogProperties.EnableTrackbacks">
-            <summary>
-            Indicates if trackbacks are enabled.
-            </summary>
-        </member>
         <member name="T:CMS.Blogs.BlogsModule">
             <summary>
             Represents the Blogs module.
+            </summary>
+        </member>
+        <member name="F:CMS.Blogs.BlogsModule.BLOG_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for blog.
+            </summary>
+        </member>
+        <member name="F:CMS.Blogs.BlogsModule.BLOG_SUBSCRIPTION_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for blog subscription.
             </summary>
         </member>
         <member name="M:CMS.Blogs.BlogsModule.#ctor">
@@ -1433,7 +1426,7 @@
         </member>
         <member name="M:CMS.Blogs.ThreadEmailSender.GetEmailMessage(System.Boolean,System.Boolean,System.Boolean)">
             <summary>
-            Returns initialized e-mail message without recepients and with unresolved macros.
+            Returns initialized e-mail message without recipients and with unresolved macros.
             </summary>
             <param name="toSubscribers">Indicates if notification email should be sent to blog post subscribers</param>
             <param name="toModerators">Indicates if notification email should be sent to blog moderators</param>
@@ -1466,7 +1459,7 @@
         </member>
         <member name="M:CMS.Blogs.ThreadEmailSender.SendToSubscribers">
             <summary>
-            Sends e-mails to blog post subsribers.
+            Sends e-mails to blog post subscribers.
             </summary>
         </member>
         <member name="M:CMS.Blogs.ThreadEmailSender.ResolveEmailMacros(CMS.EmailEngine.EmailMessage)">
@@ -1519,7 +1512,7 @@
             E-mail message to blog owner.
             </summary>
         </member>
-        <member name="P:CMS.Blogs.ThreadEmailSender.Resolver">
+        <member name="P:CMS.Blogs.ThreadEmailSender.OwnerResolver">
             <summary>
             Resolver to use.
             </summary>
@@ -1537,66 +1530,6 @@
         <member name="P:CMS.Blogs.ThreadEmailSender.UnsubscriptionURL">
             <summary>
             Resolved unsubscription URL.
-            </summary>
-        </member>
-        <member name="T:CMS.Blogs.ThreadTrackbackPinger">
-            <summary>
-            Object for asynchronous trackback pinging.
-            </summary>
-        </member>
-        <member name="M:CMS.Blogs.ThreadTrackbackPinger.SendAsync(System.Security.Principal.WindowsIdentity)">
-            <summary>
-            Runs the sender in an asynchronous thread.
-            </summary>
-            <param name="wi">Windows identity</param>
-        </member>
-        <member name="M:CMS.Blogs.ThreadTrackbackPinger.Run">
-            <summary>
-            Assings impersonisation and runs thread.
-            </summary>
-        </member>
-        <member name="M:CMS.Blogs.ThreadTrackbackPinger.ProcessTrackbacks(CMS.DocumentEngine.TreeNode,System.String)">
-            <summary>
-            Processes URLs from blog post.
-            </summary>
-        </member>
-        <member name="M:CMS.Blogs.ThreadTrackbackPinger.SendPing(System.String,CMS.DocumentEngine.TreeNode,System.String)">
-            <summary>
-            Sends pings to specified URLs.
-            </summary>
-        </member>
-        <member name="M:CMS.Blogs.ThreadTrackbackPinger.CreateRequestParameters(CMS.DocumentEngine.TreeNode,System.String)">
-            <summary>
-            Creates HTTP POST parameters.
-            </summary>
-        </member>
-        <member name="M:CMS.Blogs.ThreadTrackbackPinger.ProcessResponse(CMS.DocumentEngine.TreeNode,System.String,System.String)">
-            <summary>
-            Process HTTP POST response.
-            </summary>
-        </member>
-        <member name="M:CMS.Blogs.ThreadTrackbackPinger.ModifyBlogPost(CMS.DocumentEngine.TreeNode,System.Boolean,System.String,System.String)">
-            <summary>
-            Modifies blog post value according to the response.
-            </summary>
-            <param name="blogPost">Blog post tree node</param>
-            <param name="error">Indicates if there was any error during ping</param>
-            <param name="message">Contains error message</param>
-            <param name="targetUrl">Target URL</param>
-        </member>
-        <member name="P:CMS.Blogs.ThreadTrackbackPinger.BlogPostID">
-            <summary>
-            Blog post ID.
-            </summary>
-        </member>
-        <member name="T:CMS.Blogs.TrackbackSender">
-            <summary>
-            Provides an ITask interface to ping trackback URLs.
-            </summary>
-        </member>
-        <member name="M:CMS.Blogs.TrackbackSender.Execute(CMS.Scheduler.TaskInfo)">
-            <summary>
-            Method which executes task.
             </summary>
         </member>
     </members>

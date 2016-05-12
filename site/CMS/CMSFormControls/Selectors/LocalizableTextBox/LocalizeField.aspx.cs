@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 
 using CMS.ExtendedControls;
@@ -69,7 +69,12 @@ public partial class CMSFormControls_Selectors_LocalizableTextBox_LocalizeField 
 
             if (!RequestHelper.IsPostBack())
             {
-                txtNewResource.Text = LocalizationHelper.GetUniqueResStringKey(plainText, resourceKeyPrefix, SystemContext.DevelopmentMode);
+                var newResKey = LocalizationHelper.GetUniqueResStringKey(plainText, resourceKeyPrefix);
+                if (!SystemContext.DevelopmentMode && newResKey.StartsWithCSafe(resourceKeyPrefix, true))
+                {
+                    newResKey = newResKey.Substring(resourceKeyPrefix.Length);
+                }
+                txtNewResource.Text = newResKey;
             }
         }
         else

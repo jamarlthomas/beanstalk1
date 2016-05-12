@@ -8,13 +8,11 @@ using CMS.DocumentEngine;
 using CMS.Helpers;
 using CMS.Base;
 using CMS.UIControls;
-using CMS.PortalControls;
 using CMS.SiteProvider;
 using CMS.Membership;
 using CMS.LicenseProvider;
 using CMS.DataEngine;
 using CMS.Modules;
-using CMS.MacroEngine;
 
 
 public partial class CMSModules_Content_Controls_DocTypeSelection : CMSAbstractNewDocumentControl
@@ -79,46 +77,37 @@ public partial class CMSModules_Content_Controls_DocTypeSelection : CMSAbstractN
         gridClasses.OnBeforeDataReload += gridClasses_OnBeforeDataReload;
         gridClasses.OnAfterRetrieveData += gridClasses_OnAfterRetrieveData;
 
-        if (ConvertDocumentID > 0)
+        if (Scope != null)
         {
-            // Hide extra options
-            plcNewABTestVariant.Visible = false;
-            plcNewLink.Visible = false;
+            // Initialize control by scope settings
+            AllowNewABTest &= Scope.ScopeAllowABVariant;
+            AllowNewLink &= Scope.ScopeAllowLinks;
         }
-        else
+
+        lblNewLink.Text = GetString("content.ui.linkexistingdoc");
+        lnkNewLink.NavigateUrl = "javascript:modalDialog('" + GetLinkDialogUrl(ParentNodeID) + "', 'contentselectnode', '90%', '85%')";
+
+        plcNewABTestVariant.Visible = false;
+
+        if (ParentNode != null)
         {
-            if (Scope != null)
+            // AB test variant settings
+            if (SettingsKeyInfoProvider.GetBoolValue(SiteContext.CurrentSiteName + ".CMSABTestingEnabled")
+                && AllowNewABTest
+                && !IsInDialog
+                && currentUser.IsAuthorizedPerResource("cms.ABTest", "Read")
+                && ModuleEntryManager.IsModuleLoaded(ModuleName.ONLINEMARKETING)
+                && ResourceSiteInfoProvider.IsResourceOnSite("CMS.ABTest", SiteContext.CurrentSiteName)
+                && LicenseHelper.CheckFeature(RequestContext.CurrentDomain, FeatureEnum.ABTesting)
+                && (ParentNode.NodeAliasPath != "/")
+                && !ParentNode.IsFolder())
             {
-                // Initialize control by scope settings
-                AllowNewABTest &= Scope.ScopeAllowABVariant;
-                AllowNewLink &= Scope.ScopeAllowLinks;
-            }
+                string url = URLHelper.AddParameterToUrl(NewVariantUrl, "parentnodeid", ParentNodeID.ToString());
+                url = URLHelper.AddParameterToUrl(url, "parentculture", ParentCulture);
 
-            lblNewLink.Text = GetString("content.ui.linkexistingdoc");
-            lnkNewLink.NavigateUrl = "javascript:modalDialog('" + GetLinkDialogUrl(ParentNodeID) + "', 'contentselectnode', '90%', '85%')";
-
-            plcNewABTestVariant.Visible = false;
-
-            if (ParentNode != null)
-            {
-                // AB test variant settings
-                if (SettingsKeyInfoProvider.GetBoolValue(SiteContext.CurrentSiteName + ".CMSABTestingEnabled")
-                    && AllowNewABTest
-                    && !IsInDialog
-                    && currentUser.IsAuthorizedPerResource("cms.ABTest", "Read")
-                    && ModuleEntryManager.IsModuleLoaded(ModuleName.ONLINEMARKETING)
-                    && ResourceSiteInfoProvider.IsResourceOnSite("CMS.ABTest", SiteContext.CurrentSiteName)
-                    && LicenseHelper.CheckFeature(RequestContext.CurrentDomain, FeatureEnum.ABTesting)
-                    && (ParentNode.NodeAliasPath != "/")
-                    && (ParentNode.NodeClassName != "CMS.Folder"))
-                {
-                    string url = URLHelper.AddParameterToUrl(NewVariantUrl, "parentnodeid", ParentNodeID.ToString());
-                    url = URLHelper.AddParameterToUrl(url, "parentculture", ParentCulture);
-
-                    plcNewABTestVariant.Visible = true;
-                    lblNewVariant.Text = GetString("abtesting.abtestvariant");
-                    lnkNewVariant.NavigateUrl = URLHelper.GetAbsoluteUrl(url);
-                }
+                plcNewABTestVariant.Visible = true;
+                lblNewVariant.Text = GetString("abtesting.abtestvariant");
+                lnkNewVariant.NavigateUrl = URLHelper.GetAbsoluteUrl(url);
             }
         }
     }
@@ -167,11 +156,6 @@ public partial class CMSModules_Content_Controls_DocTypeSelection : CMSAbstractN
                     where = SqlHelper.AddWhereCondition(where, gridClasses.CompleteWhereCondition);
                 }
 
-                if ((ConvertDocumentID > 0) || !PortalHelper.IsWireframingEnabled(SiteContext.CurrentSiteName))
-                {
-                    where = SqlHelper.AddWhereCondition(where, "ClassName <> 'CMS.Wireframe'");
-                }
-
                 // Add extra where condition
                 where = SqlHelper.AddWhereCondition(where, Where);
 
@@ -206,39 +190,18 @@ public partial class CMSModules_Content_Controls_DocTypeSelection : CMSAbstractN
                     for (int i = 0; i < resultTable.Rows.Count; ++i)
                     {
                         DataRow dr = resultTable.Rows[i];
-                        string doc = ValidationHelper.GetString(DataHelper.GetDataRowValue(dr, "ClassName"), string.Empty);
+                        string doc = DataHelper.GetStringValue(dr, "ClassName");
 
                         // Document type is not allowed, remove it from the data set (Extra check for 'CreateSpecific' permission)
                         if (!isAuthorizedToCreateInContent && !currentUser.IsAuthorizedPerClassName(doc, "Create") && (!currentUser.IsAuthorizedPerClassName(doc, "CreateSpecific") || !hasNodeAllowCreate))
                         {
                             rowsToRemove.Add(dr);
                         }
-                        else
+                        // Priority document types
+                        else if (doc.EqualsCSafe(SystemDocumentTypes.MenuItem, true))
                         {
-                            // Priority document types
-                            switch (doc.ToLowerCSafe())
-                            {
-                                case "cms.menuitem":
-                                    // Page (Menu item)
-                                    {
-                                        priorityRows.Add(dr);
-                                        lastPriorityClassName = doc;
-                                    }
-                                    break;
-
-                                case "cms.wireframe":
-                                    // Wireframe document
-                                    if (currentUser.IsAuthorizedPerResource("CMS.Design", "Wireframing"))
-                                    {
-                                        priorityRows.Add(dr);
-                                        lastPriorityClassName = doc;
-                                    }
-                                    else
-                                    {
-                                        rowsToRemove.Add(dr);
-                                    }
-                                    break;
-                            }
+                            priorityRows.Add(dr);
+                            lastPriorityClassName = doc;
                         }
                     }
 
@@ -273,8 +236,8 @@ public partial class CMSModules_Content_Controls_DocTypeSelection : CMSAbstractN
                     }
                     else
                     {
-                        // Show error message
-                        SetErrorMessage(GetString(Scope != null ? "Content.ScopeApplied" : "Content.NoPermissions"));
+                        // Show message
+                        SetInformationMessage(GetString(Scope != null ? "Content.ScopeApplied" : "Content.NoPermissions"));
 
                         gridClasses.Visible = false;
 
@@ -283,10 +246,10 @@ public partial class CMSModules_Content_Controls_DocTypeSelection : CMSAbstractN
                 }
                 else
                 {
-                    if (!gridClasses.FilterIsSet && NoDataAsError)
+                    if (!gridClasses.FilterIsSet)
                     {
-                        // Show error message
-                        SetErrorMessage(NoDataMessage);
+                        // Show message
+                        SetInformationMessage(NoDataMessage);
                     }
                     else
                     {
@@ -296,8 +259,8 @@ public partial class CMSModules_Content_Controls_DocTypeSelection : CMSAbstractN
             }
             else
             {
-                // Show error message
-                SetErrorMessage(GetString("Content.NoPermissions"));
+                // Show message
+                SetInformationMessage(GetString("Content.NoPermissions"));
             }
         }
     }
@@ -342,7 +305,7 @@ public partial class CMSModules_Content_Controls_DocTypeSelection : CMSAbstractN
 
             // Get properties
             string className = ValidationHelper.GetString(drv["ClassName"], string.Empty);
-            string classDisplayName = ResHelper.LocalizeString(MacroResolver.Resolve(ValidationHelper.GetString(drv["ClassDisplayName"], string.Empty)));
+            string classDisplayName = ResHelper.LocalizeString(ValidationHelper.GetString(drv["ClassDisplayName"], string.Empty));
             int classId = ValidationHelper.GetInteger(drv["ClassId"], 0);
             string iconClass = ValidationHelper.GetString(drv["ClassIconClass"], string.Empty);
 
@@ -392,10 +355,9 @@ public partial class CMSModules_Content_Controls_DocTypeSelection : CMSAbstractN
     }
 
 
-    private void SetErrorMessage(string message)
+    private void SetInformationMessage(string message)
     {
-        // Show error message
-        ShowError(message);
+        ShowInformation(message);
 
         headDocumentTypeSelection.Visible = false;
         pnlFooter.Visible = false;

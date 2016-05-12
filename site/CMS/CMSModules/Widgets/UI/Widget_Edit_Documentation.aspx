@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Inherits="CMSModules_Widgets_UI_Widget_Edit_Documentation"
-    Theme="Default" EnableEventValidation="false" Codebehind="Widget_Edit_Documentation.aspx.cs" %>
+    Theme="Default" EnableEventValidation="false"  Codebehind="Widget_Edit_Documentation.aspx.cs" %>
 
 <asp:Content ContentPlaceHolderID="plcContent" ID="content" runat="server">
     <table style="width: 100%">

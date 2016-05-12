@@ -542,6 +542,11 @@
             Updates the object using appropriate provider.
             </summary>
         </member>
+        <member name="M:CMS.Taxonomy.TagGroupInfo.LoadDefaultData">
+            <summary>
+            Loads the object default data
+            </summary>
+        </member>
         <member name="M:CMS.Taxonomy.TagGroupInfo.#ctor">
             <summary>
             Constructor - Creates an empty TagGroupInfo object.
@@ -805,6 +810,16 @@
         <member name="P:CMS.Taxonomy.TagInfo.TagID">
             <summary>
             ID of the tag.
+            </summary>
+        </member>
+        <member name="P:CMS.Taxonomy.TagInfo.TagGUID">
+            <summary>
+            Tag GUID
+            </summary>
+        </member>
+        <member name="P:CMS.Taxonomy.TagInfo.TagCodeName">
+            <summary>
+            Tag code name
             </summary>
         </member>
         <member name="T:CMS.Taxonomy.TagInfoProvider">

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -23,7 +23,6 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
     #region "Private variables & enums"
 
     private readonly List<int> nodeIds = new List<int>();
-    private static readonly Hashtable mErrors = new Hashtable();
     private readonly Dictionary<int, string> list = new Dictionary<int, string>();
     private Hashtable mParameters;
 
@@ -47,19 +46,7 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
 
 
     #region "Properties"
-
-    /// <summary>
-    /// Current log context.
-    /// </summary>
-    public LogContext CurrentLog
-    {
-        get
-        {
-            return EnsureLog();
-        }
-    }
-
-
+    
     /// <summary>
     /// Current Error.
     /// </summary>
@@ -67,11 +54,11 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
     {
         get
         {
-            return ValidationHelper.GetString(mErrors["PublishArchiveError_" + ctlAsyncLog.ProcessGUID], string.Empty);
+            return ctlAsyncLog.ProcessData.Error;
         }
         set
         {
-            mErrors["PublishArchiveError_" + ctlAsyncLog.ProcessGUID] = value;
+            ctlAsyncLog.ProcessData.Error = value;
         }
     }
 
@@ -178,7 +165,6 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
             // Initialize events
             ctlAsyncLog.OnFinished += ctlAsyncLog_OnFinished;
             ctlAsyncLog.OnError += ctlAsyncLog_OnError;
-            ctlAsyncLog.OnRequestLog += ctlAsyncLog_OnRequestLog;
             ctlAsyncLog.OnCancel += ctlAsyncLog_OnCancel;
 
             if (!RequestHelper.IsCallback())
@@ -204,15 +190,12 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
                 }
                 else
                 {
-                    string where = "ClassName <> 'CMS.Root'";
-                    if (!string.IsNullOrEmpty(WhereCondition))
-                    {
-                        where = SqlHelper.AddWhereCondition(where, WhereCondition);
-                    }
-                    string columns = SqlHelper.MergeColumns(TreeProvider.SELECTNODES_REQUIRED_COLUMNS,
+                    var where = new WhereCondition(WhereCondition)
+                        .WhereNotEquals("ClassName", SystemDocumentTypes.Root);
+                    string columns = SqlHelper.MergeColumns(DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS,
                                                                  "NodeParentID, DocumentName,DocumentCheckedOutByUserID");
                     allDocs = tree.SelectNodes(currentSiteName, parentAliasPath.TrimEnd('/') + "/%",
-                                               TreeProvider.ALL_CULTURES, true, DataClassInfoProvider.GetClassName(ClassID), where, "DocumentName", 1, false, 0,
+                                               TreeProvider.ALL_CULTURES, true, DataClassInfoProvider.GetClassName(ClassID), where.ToString(true), "DocumentName", 1, false, 0,
                                                columns);
 
                     if (!DataHelper.DataSourceIsEmpty(allDocs))
@@ -285,7 +268,7 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
 
                     // Create where condition
                     string where = new WhereCondition().WhereIn("NodeID", nodeIds).ToString(true);
-                    string columns = SqlHelper.MergeColumns(TreeProvider.SELECTNODES_REQUIRED_COLUMNS, "NodeParentID, DocumentName,DocumentCheckedOutByUserID");
+                    string columns = SqlHelper.MergeColumns(DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS, "NodeParentID, DocumentName,DocumentCheckedOutByUserID");
 
                     // Select nodes
                     DataSet ds = allDocs ?? tree.SelectNodes(currentSiteName, "/%", TreeProvider.ALL_CULTURES, true, null, where, "DocumentName", TreeProvider.ALL_LEVELS, false, 0, columns);
@@ -293,7 +276,7 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
                     // Enumerate selected documents
                     if (!DataHelper.DataSourceIsEmpty(ds))
                     {
-                        cancelNodeId = ValidationHelper.GetInteger(DataHelper.GetDataRowValue(ds.Tables[0].Rows[0], "NodeParentID"), 0);
+                        cancelNodeId = DataHelper.GetIntValue(ds.Tables[0].Rows[0], "NodeParentID");
 
                         foreach (DataRow dr in ds.Tables[0].Rows)
                         {
@@ -345,10 +328,11 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
         pnlLog.Visible = true;
         pnlContent.Visible = false;
 
-        EnsureLog();
         CurrentError = string.Empty;
 
+        ctlAsyncLog.EnsureLog();
         ctlAsyncLog.Parameter = LocalizationContext.PreferredCultureCode + ";" + SiteContext.CurrentSiteName;
+
         switch (CurrentAction)
         {
             case WorkflowAction.Publish:
@@ -393,7 +377,7 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
 
             // Prepare the where condition
             string where = new WhereCondition().WhereIn("NodeID", workNodes).ToString(true);
-            string columns = SqlHelper.MergeColumns(TreeProvider.SELECTNODES_REQUIRED_COLUMNS, "NodeAliasPath, ClassName, DocumentCulture");
+            string columns = SqlHelper.MergeColumns(DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS, "NodeAliasPath, ClassName, DocumentCulture");
 
             // Get cultures
             string cultureCode = chkAllCultures.Checked ? TreeProvider.ALL_CULTURES : parameters[0];
@@ -431,8 +415,7 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state != CMSThread.ABORT_REASON_STOP)
+            if (!CMSThread.Stopped(ex))
             {
                 // Log error
                 LogExceptionToEventLog(ResHelper.GetString("content.archivefailed", currentCulture), ex);
@@ -501,7 +484,7 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
 
             // Prepare the where condition
             string where = new WhereCondition().WhereIn("NodeID", workNodes).ToString(true);
-            string columns = SqlHelper.MergeColumns(TreeProvider.SELECTNODES_REQUIRED_COLUMNS, "NodeAliasPath, ClassName, DocumentCulture");
+            string columns = SqlHelper.MergeColumns(DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS, "NodeAliasPath, ClassName, DocumentCulture");
 
             // Get cultures
             string cultureCode = chkAllCultures.Checked ? TreeProvider.ALL_CULTURES : parameters[0];
@@ -539,8 +522,7 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
         }
         catch (ThreadAbortException ex)
         {
-            string state = ValidationHelper.GetString(ex.ExceptionState, string.Empty);
-            if (state != CMSThread.ABORT_REASON_STOP)
+            if (!CMSThread.Stopped(ex))
             {
                 // Log error
                 LogExceptionToEventLog(ResHelper.GetString("content.publishfailed", currentCulture), ex);
@@ -793,7 +775,7 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
 
     private static DataSet GetSubDocuments(TreeNode parentNode, TreeProvider tree, string cultureCode, string siteName)
     {
-        string columns = SqlHelper.MergeColumns(TreeProvider.SELECTNODES_REQUIRED_COLUMNS, "NodeAliasPath, ClassName, DocumentCulture");
+        string columns = SqlHelper.MergeColumns(DocumentColumnLists.SELECTNODES_REQUIRED_COLUMNS, "NodeAliasPath, ClassName, DocumentCulture");
         // Get subdocuments
         return tree.SelectNodes(siteName, parentNode.NodeAliasPath + "/%", cultureCode, false, null, null, null, TreeProvider.ALL_LEVELS, false, 0, columns);
     }
@@ -833,11 +815,11 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
         string name = HTMLHelper.HTMLEncode(ValidationHelper.GetString(dr["DocumentName"], string.Empty));
         if (documentCheckedOutByUserID != 0)
         {
-            name += " " + DocumentHelper.GetDocumentMarkImage(Page, DocumentMarkEnum.CheckedOut);
+            name += " " + DocumentUIHelper.GetDocumentMarkImage(Page, DocumentMarkEnum.CheckedOut);
         }
         if (linkedNodeId != 0)
         {
-            name += " " + DocumentHelper.GetDocumentMarkImage(Page, DocumentMarkEnum.Link);
+            name += " " + DocumentUIHelper.GetDocumentMarkImage(Page, DocumentMarkEnum.Link);
         }
         name += "<br />";
         list[nodeId] = name;
@@ -850,8 +832,6 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
         {
             ShowError(CurrentError);
         }
-        // Clear selection
-        CurrentLog.Close();
     }
 
     #endregion
@@ -866,12 +846,6 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
         AddLog(canceledString);
         ShowConfirmation(canceledString);
         HandlePossibleError();
-    }
-
-
-    private void ctlAsyncLog_OnRequestLog(object sender, EventArgs e)
-    {
-        ctlAsyncLog.LogContext = CurrentLog;
     }
 
 
@@ -937,17 +911,7 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
             AddScript("RefreshTree(" + cancelNodeId + ");");
         }
     }
-
-
-    /// <summary>
-    /// Ensures the logging context.
-    /// </summary>
-    protected LogContext EnsureLog()
-    {
-        LogContext log = LogContext.EnsureLog(ctlAsyncLog.ProcessGUID);
-        return log;
-    }
-
+    
 
     /// <summary>
     /// Adds the log information.
@@ -955,8 +919,7 @@ public partial class CMSModules_Content_CMSDesk_PublishArchive : CMSContentPage
     /// <param name="newLog">New log information</param>
     protected void AddLog(string newLog)
     {
-        EnsureLog();
-        LogContext.AppendLine(newLog);
+        ctlAsyncLog.AddLog(newLog);
     }
 
 

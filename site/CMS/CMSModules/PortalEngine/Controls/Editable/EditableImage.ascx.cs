@@ -760,50 +760,11 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableImage : C
             {
                 case ViewModeEnum.Edit:
                 case ViewModeEnum.EditDisabled:
-                    string path = URLHelper.UnResolveUrl(selPath.Value.Trim(), SystemContext.ApplicationPath);
-                    if (!string.IsNullOrEmpty(path))
-                    {
-                        XmlDocument xml = new XmlDocument();
-                        xml.LoadXml("<image></image>");
+                    // Get the path
+                    var altText = selPath.AlternateText;
+                    var imagePath = selPath.Value.Trim();
 
-                        // Add path
-                        XmlNode newNode = xml.CreateElement("property");
-
-                        XmlAttribute attr = xml.CreateAttribute("name");
-                        attr.Value = "imagepath";
-                        newNode.Attributes.Append(attr);
-
-
-                        newNode.InnerText = path;
-                        if (xml.DocumentElement != null)
-                        {
-                            xml.DocumentElement.AppendChild(newNode);
-                        }
-
-
-                        // Image specific alternate text
-                        string altText = selPath.AlternateText;
-                        if (!String.IsNullOrEmpty(altText))
-                        {
-                            // Add alternate text if defined
-                            newNode = xml.CreateElement("property");
-                            attr = xml.CreateAttribute("name");
-                            attr.Value = "alttext";
-                            newNode.Attributes.Append(attr);
-
-                            newNode.InnerText = altText;
-                            if (xml.DocumentElement != null)
-                            {
-                                xml.DocumentElement.AppendChild(newNode);
-                            }
-                        }
-
-                        return xml.OuterXml;
-                    }
-                    else
-                    {
-                        return string.Empty;
-                    }
+                    return CMSEditableImage.GetContentXml(imagePath, altText);
             }
         }
 
@@ -818,8 +779,6 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableImage : C
     {
         if (!StopProcessing)
         {
-            ViewModeEnum viewMode = (PortalContext.ViewMode.IsPreview()) ? ViewModeEnum.Preview : ViewMode;
-
             switch (ViewMode)
             {
                 case ViewModeEnum.Edit:
@@ -842,7 +801,7 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableImage : C
 
 
     /// <summary>
-    /// Returns the value of the given web part property property.
+    /// Returns the value of the given web part property.
     /// </summary>
     /// <param name="propertyName">Property name</param>
     public override object GetValue(string propertyName)

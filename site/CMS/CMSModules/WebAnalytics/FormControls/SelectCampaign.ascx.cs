@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 using CMS.FormControls;
 using CMS.Helpers;
@@ -173,7 +171,7 @@ public partial class CMSModules_WebAnalytics_FormControls_SelectCampaign : FormE
     {
         get
         {
-            return GetValue<bool>("createonunknownname", mCreateOnUnknownName);
+            return GetValue("createonunknownname", mCreateOnUnknownName);
         }
         set
         {
@@ -189,18 +187,6 @@ public partial class CMSModules_WebAnalytics_FormControls_SelectCampaign : FormE
         usCampaign.IsLiveSite = IsLiveSite;
         usCampaign.AllowEditTextBox = true;
         usCampaign.TextBoxSelect.MaxLength = 100;
-
-        if ((SelectionMode == SelectionModeEnum.SingleTextBox) && MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("CMS.WebAnalytics", "managecampaigns"))
-        {
-            usCampaign.EditDialogWindowWidth = 800;
-            usCampaign.EditDialogWindowHeight = 660;
-
-            string url = "~/CMSModules/WebAnalytics/Pages/Tools/Campaign/Tab_General.aspx?campaignName=##ITEMID##&modaldialog=true";
-            usCampaign.EditItemPageUrl = url;
-
-            url = "~/CMSModules/WebAnalytics/Pages/Tools/Campaign/Tab_General.aspx?modaldialog=true";
-            usCampaign.NewItemPageUrl = url;
-        }
 
         if (PostbackOnChange)
         {
@@ -233,7 +219,7 @@ public partial class CMSModules_WebAnalytics_FormControls_SelectCampaign : FormE
     public override bool IsValid()
     {
         String value = ValidationHelper.GetString(usCampaign.Value, String.Empty).Trim();
-        if (value != String.Empty)
+        if (value != String.Empty && value != UniSelector.US_NONE_RECORD.ToString())
         {
             String domain = RequestContext.CurrentDomain;
             if (DataHelper.GetNotEmpty(domain, "") != "")
@@ -275,6 +261,7 @@ public partial class CMSModules_WebAnalytics_FormControls_SelectCampaign : FormE
                 // .. and try to create a new one.
                 ci = new CampaignInfo();
                 ci.CampaignName = value;
+                ci.CampaignUTMCode = value;
                 ci.CampaignDisplayName = value;
                 ci.CampaignEnabled = true;
                 ci.CampaignSiteID = SiteID;

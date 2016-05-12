@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing;
 using System.Web.UI.WebControls;
 
@@ -193,7 +193,7 @@ public partial class CMSAdminControls_UI_Selectors_ScheduleInterval : BaseSchedu
 
 
     /// <summary>
-    /// If true, start time textbox is displayed
+    /// If true, start time text-box is displayed
     /// </summary>
     public bool DisplayStartTime
     {
@@ -226,7 +226,7 @@ public partial class CMSAdminControls_UI_Selectors_ScheduleInterval : BaseSchedu
     {
         base.CreateChildControls();
 
-        // Control init
+        // Control initialization
         StartTime.DateTimeTextBox.ForeColor = Color.Black;
         Quantity.ForeColor = Color.Black;
         FromHours.ForeColor = Color.Black;
@@ -343,25 +343,25 @@ public partial class CMSAdminControls_UI_Selectors_ScheduleInterval : BaseSchedu
         string empty = GetString("ScheduleInterval.ErrorEmpty");
         // 'Every' panel validators
         rfvEvery.ErrorMessage = empty;
-        rvEvery.MinimumValue = "0";
-        rvEvery.MaximumValue = "10000";
+        rvEvery.MinimumValue = QUANTITY_MINIMUM.ToString();
+        rvEvery.MaximumValue = QUANTITY_MAXIMUM.ToString();
         rvEvery.ErrorMessage = error;
         // 'Between' panel validators
         rfvFromHours.ErrorMessage = empty;
-        rvFromHours.MinimumValue = "0";
-        rvFromHours.MaximumValue = "23";
+        rvFromHours.MinimumValue = HOURS_MINIMUM.ToString();
+        rvFromHours.MaximumValue = HOURS_MAXIMUM.ToString();
         rvFromHours.ErrorMessage = error;
         rfvFromMinutes.ErrorMessage = empty;
-        rvFromMinutes.MinimumValue = "0";
-        rvFromMinutes.MaximumValue = "59";
+        rvFromMinutes.MinimumValue = MINUTES_MINIMUM.ToString();
+        rvFromMinutes.MaximumValue = MINUTES_MAXIMUM.ToString();
         rvFromMinutes.ErrorMessage = error;
         rfvToHours.ErrorMessage = empty;
-        rvToHours.MinimumValue = "0";
-        rvToHours.MaximumValue = "23";
+        rvToHours.MinimumValue = HOURS_MINIMUM.ToString();
+        rvToHours.MaximumValue = HOURS_MAXIMUM.ToString();
         rvToHours.ErrorMessage = error;
         rfvToMinutes.ErrorMessage = empty;
-        rvToMinutes.MinimumValue = "0";
-        rvToMinutes.MaximumValue = "59";
+        rvToMinutes.MinimumValue = MINUTES_MINIMUM.ToString();
+        rvToMinutes.MaximumValue = MINUTES_MAXIMUM.ToString();
         rvToMinutes.ErrorMessage = error;
     }
 
@@ -428,14 +428,14 @@ public partial class CMSAdminControls_UI_Selectors_ScheduleInterval : BaseSchedu
                 break;
         }
 
-        // Set default values to textboxes and checkboxlists
+        // Set default values to text boxes and check-box lists
         StartTime.SelectedDateTime = DateTime.Now;
 
-        Quantity.Text = "1";
-        FromHours.Text = "00";
-        FromMinutes.Text = "00";
-        ToHours.Text = "23";
-        ToMinutes.Text = "59";
+        Quantity.Text = QUANTITY_MINIMUM.ToString();
+        FromHours.Text = HOURS_MINIMUM.ToString();
+        FromMinutes.Text = MINUTES_MINIMUM.ToString();
+        ToHours.Text = HOURS_MAXIMUM.ToString();
+        ToMinutes.Text = MINUTES_MAXIMUM.ToString();
 
         MonthDate.SelectedIndex = 0;
         MonthOrder.SelectedIndex = 0;

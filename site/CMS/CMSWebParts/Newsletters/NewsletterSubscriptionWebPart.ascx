@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Newsletters_NewsletterSubscriptionWebPart" Codebehind="~/CMSWebParts/Newsletters/NewsletterSubscriptionWebPart.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Newsletters_NewsletterSubscriptionWebPart"  Codebehind="~/CMSWebParts/Newsletters/NewsletterSubscriptionWebPart.ascx.cs" %>
 <%@ Register Src="~/CMSFormControls/Captcha/SecurityCode.ascx" TagName="SecurityCode" TagPrefix="cms" %>
 <asp:Panel ID="pnlSubscription" runat="server" DefaultButton="btnSubmit" CssClass="Subscription">
     <asp:Label runat="server" ID="lblInfo" CssClass="InfoMessage" EnableViewState="false"

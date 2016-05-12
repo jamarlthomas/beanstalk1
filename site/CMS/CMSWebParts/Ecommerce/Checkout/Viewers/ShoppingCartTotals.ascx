@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Ecommerce_Checkout_Viewers_ShoppingCartTotals" Codebehind="~/CMSWebParts/Ecommerce/Checkout/Viewers/ShoppingCartTotals.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Ecommerce_Checkout_Viewers_ShoppingCartTotals"  Codebehind="~/CMSWebParts/Ecommerce/Checkout/Viewers/ShoppingCartTotals.ascx.cs" %>
 
 <div id="totalViewer" class="TotalViewer" runat="server" visible="False">
     <div class="Label">

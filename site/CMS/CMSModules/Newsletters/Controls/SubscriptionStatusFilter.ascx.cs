@@ -11,7 +11,6 @@ public partial class CMSModules_Newsletters_Controls_SubscriptionStatusFilter : 
     private const string ALL = "all";
     private const string APPROVED = "approved";
     private const string WAITING = "waiting";
-    private const string UNSUBSCRIBED = "unsubscribed";
 
     /// <summary>
     /// Gets or sets the where condition.
@@ -62,7 +61,6 @@ public partial class CMSModules_Newsletters_Controls_SubscriptionStatusFilter : 
         ddlStatusFilter.Items.Add(new ListItem(ResHelper.GetString("general.selectall"), ALL));
         ddlStatusFilter.Items.Add(new ListItem(ResHelper.GetString("general.approved"), APPROVED));
         ddlStatusFilter.Items.Add(new ListItem(ResHelper.GetString("administration.users_header.myapproval"), WAITING));
-        ddlStatusFilter.Items.Add(new ListItem(ResHelper.GetString("newsletterview.headerunsubscribed"), UNSUBSCRIBED));
     }
 
 
@@ -71,14 +69,13 @@ public partial class CMSModules_Newsletters_Controls_SubscriptionStatusFilter : 
     /// </summary>
     private void LoadStyles()
     {
-        if (ddlStatusFilter.Items.Count < 4)
+        if (ddlStatusFilter.Items.Count < 3)
         {
             return;
         }
 
         ddlStatusFilter.Items[1].Attributes.Add("Class", "alert-status-success");
         ddlStatusFilter.Items[2].Attributes.Add("Class", "alert-status-warning");
-        ddlStatusFilter.Items[3].Attributes.Add("Class", "alert-status-error");
     }
 
 
@@ -90,13 +87,10 @@ public partial class CMSModules_Newsletters_Controls_SubscriptionStatusFilter : 
         switch (ddlStatusFilter.SelectedValue)
         {
             case APPROVED:
-                return "(SubscriptionApproved = 1 OR SubscriptionApproved IS NULL) AND (SubscriptionEnabled = 1 OR SubscriptionEnabled IS NULL)";
+                return "(SubscriptionApproved = 1 OR SubscriptionApproved IS NULL)";
 
             case WAITING:
-                return "SubscriptionApproved = 0 AND SubscriptionEnabled = 1";
-
-            case UNSUBSCRIBED:
-                return "SubscriptionEnabled = 0";
+                return "SubscriptionApproved = 0";
 
             default:
                 return null;

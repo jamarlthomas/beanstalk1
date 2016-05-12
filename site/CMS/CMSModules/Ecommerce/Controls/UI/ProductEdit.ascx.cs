@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Web.UI;
 
+using CMS.Core;
 using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.ExtendedControls;
@@ -234,40 +235,6 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
             }
 
             return mProductClass;
-        }
-    }
-
-
-    /// <summary>
-    /// Gets the mappings between the SKU fields and the document fields (key = document field name, value = SKU field name).
-    /// </summary>
-    private StringSafeDictionary<string> SKUMappings
-    {
-        get
-        {
-            if (ProductClass != null)
-            {
-                return ProductClass.SKUMappings;
-            }
-
-            return new StringSafeDictionary<string>();
-        }
-    }
-
-
-    /// <summary>
-    /// Gets the value that indicates if an SKU should be created automatically when the document is created.
-    /// </summary>
-    private bool CreateSKUAutomatically
-    {
-        get
-        {
-            if (ProductClass != null)
-            {
-                return ProductClass.ClassCreateSKU && ProductIsNew && !IsBindSKUAction;
-            }
-
-            return false;
         }
     }
 
@@ -573,7 +540,7 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
         get
         {
             return ProductIsNew && !ProductIsProductOption && !IsInDialog &&
-                (CreateSKUAutomatically || selectSkuBindingElem.AllowCreateNewGlobal || selectSkuBindingElem.AllowUseExisting || selectSkuBindingElem.AllowDoNotCreate) &&
+                (selectSkuBindingElem.AllowCreateNewGlobal || selectSkuBindingElem.AllowUseExisting || selectSkuBindingElem.AllowDoNotCreate) &&
                 (ECommerceSettings.AllowProductsWithoutDocuments(ProductSiteID) || ECommerceSettings.AllowGlobalProducts(ProductSiteID) || AllowDoNoCreateSKU || IsBindSKUAction);
         }
     }
@@ -638,7 +605,7 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
     {
         get
         {
-            return (!CreateSKUAutomatically && (CreateNewSiteSKU || CreateNewGlobalSKU));
+            return (CreateNewSiteSKU || CreateNewGlobalSKU);
         }
     }
 
@@ -904,7 +871,6 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
         string parentCulture = QueryHelper.GetString("parentCulture", null);
         int classId = QueryHelper.GetInteger("classId", 0);
         int sourceDocumentId = QueryHelper.GetInteger("sourceDocumentId", 0);
-        int convertDocumentId = QueryHelper.GetInteger("convertDocumentId", 0);
 
         DocumentManager.ParentNodeID = parentNodeId;
         DocumentManager.NewNodeCultureCode = parentCulture;
@@ -916,13 +882,6 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
         if (sourceDocumentId > 0)
         {
             DocumentManager.SourceDocumentID = sourceDocumentId;
-        }
-        // Convert document
-        else if (convertDocumentId > 0)
-        {
-            DocumentManager.SourceDocumentID = convertDocumentId;
-            FormMode = FormModeEnum.Convert;
-            DocumentManager.Mode = FormModeEnum.Convert;
         }
 
         if ((FormMode == FormModeEnum.Insert) && ((parentNodeId <= 0) || (classId <= 0)))
@@ -1052,22 +1011,8 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
     {
         // Check if user is authorized to create global products
         selectSkuBindingElem.AllowCreateNewGlobal = ECommerceContext.IsUserAuthorizedToModifySKU(true);
-
-        if (CreateSKUAutomatically)
-        {
-            // Create SKU automatically
-            selectSkuBindingElem.AllowCreateNew = selectSkuBindingElem.AllowCreateNewGlobal;
-            selectSkuBindingElem.AllowUseExisting = false;
-            selectSkuBindingElem.AllowDoNotCreate = false;
-            selectSkuBindingElem.InfoText = GetString("com.productedit.createskuautomatically");
-        }
-        else
-        {
-            // Create SKU manually
-            selectSkuBindingElem.AllowUseExisting = Product is TreeNode;
-            selectSkuBindingElem.AllowDoNotCreate = AllowDoNoCreateSKU;
-        }
-
+        selectSkuBindingElem.AllowUseExisting = Product is TreeNode;
+        selectSkuBindingElem.AllowDoNotCreate = AllowDoNoCreateSKU;
         pnlCreateSkuBinding.Visible = ShowCreateSKUBindingPanel;
     }
 
@@ -1187,13 +1132,6 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
                         SetFieldValue(CurrentSKUForms, "SKUName", null);
                         SetFieldValue(CurrentSKUForms, "SKUShortDescription", null);
                         SetFieldValue(CurrentSKUForms, "SKUDescription", null);
-
-                        // Clear the mapped document fields
-                        foreach (DictionaryEntry mapping in SKUMappings)
-                        {
-                            string skuFieldName = Convert.ToString(mapping.Key);
-                            SetFieldValue(CurrentSKUForms, skuFieldName, null);
-                        }
                     };
             }
 
@@ -1288,7 +1226,6 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
         {
             // Save the SKU data before saving to the database
             SaveSKUDataToProduct();
-            SaveSKUDefaultDataToProduct();
         };
 
         // Get default page template from document type
@@ -1318,7 +1255,7 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
             pnlHeaderActions.Visible = true;
             headerActionsElem.StopProcessing = false;
 
-            SaveAction saveAction = new SaveAction(Page);
+            SaveAction saveAction = new SaveAction();
             if ((DocumentManager != null) && DocumentManager.ConfirmChanges)
             {
                 saveAction.OnClientClick = DocumentManager.GetAllowSubmitScript();
@@ -1346,7 +1283,7 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
     /// </summary>
     private void InitCustomProperties()
     {
-        skuCustomForm.Visible = HasAnyCustomSKUFields && !CreateSKUAutomatically;
+        skuCustomForm.Visible = HasAnyCustomSKUFields;
 
         if (!documentForm.StopProcessing)
         {
@@ -1356,7 +1293,7 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
         pnlCustomProperties.Visible = HasAnyCustomPropertiesFields;
 
         string elementName = ProductIsProductOption ? "ProductOptions.Options.CustomFields" : "Products.CustomFields";
-        pnlCustomProperties.Visible &= MembershipContext.AuthenticatedUser.IsAuthorizedPerUIElement("CMS.Ecommerce", elementName);
+        pnlCustomProperties.Visible &= MembershipContext.AuthenticatedUser.IsAuthorizedPerUIElement(ModuleName.ECOMMERCE, elementName);
     }
 
 
@@ -1490,7 +1427,9 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
 
                     // Validate meta files file system permissions
                     string siteName = SiteInfoProvider.GetSiteName(ProductSiteID);
-                    if (!string.IsNullOrEmpty(value) && MetaFileInfoProvider.StoreFilesInFileSystem(siteName))
+                    var filesLocationType = FileHelper.FilesLocationType(siteName);
+
+                    if (!string.IsNullOrEmpty(value) && (filesLocationType != FilesLocationTypeEnum.Database))
                     {
                         string path = MetaFileInfoProvider.GetFilesFolderPath(siteName);
                         if (!DirectoryHelper.CheckPermissions(path))
@@ -1717,9 +1656,8 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
 
         if (UseExistingSKU)
         {
-            // Set existing SKU and synchronize its fields with mapped documents fields
+            // Set existing SKU
             ((SKUTreeNode)Product).NodeSKUID = selectSkuBindingElem.SelectedProduct;
-            ((SKUTreeNode)Product).SynchronizeFields();
 
             CheckDepartmentPermission();
             CheckProductPermissions();
@@ -1756,7 +1694,7 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
             }
             form.SaveData(null);
         }
-        
+
         SaveInventory();
 
         // Fix valid until value
@@ -1825,38 +1763,16 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
             return;
         }
 
-        HideMappedDocumentFields();
         HideDocumentNameField();
     }
 
 
     /// <summary>
-    /// Hides document fields which are mapped to the visible SKU fields.
-    /// </summary>
-    private void HideMappedDocumentFields()
-    {
-        // Hide redundant mappings
-        foreach (DictionaryEntry mapping in SKUMappings)
-        {
-            // Get names of mapped fields
-            string skuField = Convert.ToString(mapping.Key);
-            string docField = Convert.ToString(mapping.Value);
-
-            // Hide document field
-            if (IsSKUFieldVisible(skuField))
-            {
-                HideDocumentField(docField);
-            }
-        }
-    }
-
-
-    /// <summary>
-    /// Hides 'Document name' field if SKU name field (either SKUName field itself or another document field mapped to the SKUName) is already visible.
+    /// Hides 'Document name' field if SKU name field is already visible.
     /// </summary>
     private void HideDocumentNameField()
     {
-        if (IsSKUFieldVisible("SKUName") || IsSKUFieldMappingVisible("SKUName"))
+        if (IsSKUFieldVisible("SKUName"))
         {
             var node = DocumentManager.Node;
             if (node != null)
@@ -1885,7 +1801,7 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
             return true;
         }
 
-        if (CreateSKUAutomatically || DoNotCreateSKU)
+        if (DoNotCreateSKU)
         {
             // All SKU forms are hidden
             return false;
@@ -1897,87 +1813,12 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
 
 
     /// <summary>
-    /// Indicates if the given document field is visible in the CMS form.
-    /// </summary>
-    /// <param name="field">Document field name to check</param>
-    private bool IsDocumentFieldVisible(string field)
-    {
-        return documentForm.IsFieldVisible(field);
-    }
-
-
-    /// <summary>
-    /// Indicates if there is any visible document field (different from 'Document name' field) which is mapped to the given SKU field.
-    /// </summary>
-    /// <param name="field">SKU field to check</param>
-    private bool IsSKUFieldMappingVisible(string field)
-    {
-        var checkField = GetMappedDocumentField(field);
-
-        if (!String.IsNullOrEmpty(checkField))
-        {
-            return IsDocumentFieldVisible(checkField);
-        }
-
-        return false;
-    }
-
-
-    private string GetMappedDocumentField(string field)
-    {
-        string checkField = null;
-
-        foreach (DictionaryEntry mapping in SKUMappings)
-        {
-            // Get names of mapped fields
-            string skuField = Convert.ToString(mapping.Key);
-            string docField = Convert.ToString(mapping.Value);
-
-            if ((docField.ToLowerCSafe() != "documentname") &&
-                (skuField.ToLowerCSafe() == field.ToLowerCSafe()))
-            {
-                checkField = docField;
-                break;
-            }
-        }
-        return checkField;
-    }
-
-
-    /// <summary>
     /// Hides the given document field from CMS form.
     /// </summary>
     /// <param name="field">Document field name</param>
     private void HideDocumentField(string field)
     {
         documentForm.FieldsToHide.Add(field);
-    }
-
-
-    /// <summary>
-    /// Sets department and product type of the SKU if it is being created automatically.
-    /// </summary>
-    private void SaveSKUDefaultDataToProduct()
-    {
-        if (CreateSKUAutomatically)
-        {
-            // Ensure product type
-            string skuType = ProductClass.ClassSKUDefaultProductType;
-            if (string.IsNullOrEmpty(skuType))
-            {
-                skuType = EnumHelper.GetDefaultValue<SKUProductTypeEnum>().ToStringRepresentation();
-            }
-            Product.SetValue("SKUProductType", skuType);
-            Product.SetValue("SKUNeedsShipping", SKUInfoProvider.GetDefaultNeedsShippingFlag(skuType.ToEnum<SKUProductTypeEnum>()));
-            Product.SetValue("SKUTrackInventory", TrackInventoryTypeEnum.ByProduct.ToStringRepresentation());
-
-            // Set product department
-            DepartmentInfo department = DepartmentInfoProvider.GetDepartmentInfo(ProductClass.ClassSKUDefaultDepartmentName, SiteInfoProvider.GetSiteName(ProductSiteID));
-            if (department != null)
-            {
-                Product.SetValue("SKUDepartmentID", department.DepartmentID);
-            }
-        }
     }
 
     #endregion
@@ -2009,7 +1850,7 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductEdit : CMSAdminCont
         bool global = (ProductSiteID <= 0);
         if (!ECommerceContext.IsUserAuthorizedToModifySKU(global))
         {
-            RedirectToAccessDenied("CMS.Ecommerce", global ? "EcommerceGlobalModify" : "EcommerceModify OR ModifyProducts");
+            RedirectToAccessDenied(ModuleName.ECOMMERCE, global ? EcommercePermissions.ECOMMERCE_MODIFYGLOBAL : "EcommerceModify OR ModifyProducts");
         }
     }
 

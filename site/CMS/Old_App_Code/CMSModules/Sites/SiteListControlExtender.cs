@@ -91,21 +91,24 @@ public class SiteListControlExtender : ControlExtender<UniGrid>
         switch (sourceName.ToLowerCSafe())
         {
             case "openlivesite":
-                // Open live site action
-                running = ValidationHelper.GetString(((DataRowView)((GridViewRow)parameter).DataItem).Row["sitestatus"], "").ToUpperCSafe() == SiteInfoProvider.SiteStatusToString(SiteStatusEnum.Running);
-                if (!running)
                 {
-                    var button = ((CMSGridActionButton)sender);
-                    button.Enabled = false;
+                    // Open live site action
+                    DataRowView row = (DataRowView)((GridViewRow)parameter).DataItem;
+                    running = SiteIsRunning(row["SiteStatus"]);
+                    if (!running)
+                    {
+                        var button = ((CMSGridActionButton)sender);
+                        button.Enabled = false;
+                    }
                 }
                 break;
 
             case "sitestatus":
                 // Colorize site status
                 {
-                    DataRowView drv = (DataRowView)parameter;
-                    running = SiteInfoProvider.SiteStatusToEnum(ValidationHelper.GetString(drv["SiteStatus"], "")) == SiteStatusEnum.Running;
-                    bool offline = ValidationHelper.GetBoolean(drv["SiteIsOffline"], false);
+                    DataRowView row = (DataRowView)parameter;
+                    running = SiteIsRunning(row["SiteStatus"]);
+                    bool offline = ValidationHelper.GetBoolean(row["SiteIsOffline"], false);
 
                     if (running)
                     {
@@ -127,22 +130,28 @@ public class SiteListControlExtender : ControlExtender<UniGrid>
             case "culture":
                 // Culture with flag
                 {
-                    DataRowView drv = (DataRowView)parameter;
-                    string siteName = ValidationHelper.GetString(drv["SiteName"], "");
+                    DataRowView row = (DataRowView)parameter;
+                    string siteName = ValidationHelper.GetString(row["SiteName"], "");
                     string cultureCode = CultureHelper.GetDefaultCultureCode(siteName);
                     return UniGridFunctions.DocumentCultureFlag(cultureCode, null, Control.Page);
                 }
 
             case "start":
-                // start action
-                running = ValidationHelper.GetString(((DataRowView)((GridViewRow)parameter).DataItem).Row["sitestatus"], "").ToUpperCSafe() == SiteInfoProvider.SiteStatusToString(SiteStatusEnum.Running);
-                ((CMSGridActionButton)sender).Visible = !running;
+                {
+                    // Start action
+                    DataRowView row = (DataRowView)((GridViewRow)parameter).DataItem;
+                    running = SiteIsRunning(row["SiteStatus"]);
+                    ((CMSGridActionButton)sender).Visible = !running;
+                }
                 break;
 
             case "stop":
-                // stop action
-                running = ValidationHelper.GetString(((DataRowView)((GridViewRow)parameter).DataItem).Row["sitestatus"], "").ToUpperCSafe() == SiteInfoProvider.SiteStatusToString(SiteStatusEnum.Running);
-                ((CMSGridActionButton)sender).Visible = running;
+                {
+                    // Stop action
+                    DataRowView row = (DataRowView)((GridViewRow)parameter).DataItem;
+                    running = SiteIsRunning(row["SiteStatus"]);
+                    ((CMSGridActionButton)sender).Visible = running;
+                }
                 break;
         }
 
@@ -224,5 +233,20 @@ public class SiteListControlExtender : ControlExtender<UniGrid>
                     break;
             }
         }
+    }
+
+
+    /// <summary>
+    /// Returns true when the given site status indicates a running site.
+    /// </summary>
+    private bool SiteIsRunning(object siteStatus)
+    {
+        if (siteStatus == null)
+        {
+            return false;
+        }
+
+        string str = siteStatus.ToString();
+        return str.ToEnum<SiteStatusEnum>() == SiteStatusEnum.Running;
     }
 }

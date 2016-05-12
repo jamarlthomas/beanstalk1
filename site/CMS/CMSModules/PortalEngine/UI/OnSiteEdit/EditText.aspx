@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="EditText.aspx.cs" Inherits="CMSModules_PortalEngine_UI_OnSiteEdit_EditText"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="EditText.aspx.cs" Inherits="CMSModules_PortalEngine_UI_OnSiteEdit_EditText"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="Edit text" %>
 

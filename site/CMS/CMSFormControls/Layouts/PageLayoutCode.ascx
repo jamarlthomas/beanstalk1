@@ -1,8 +1,5 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="PageLayoutCode.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="PageLayoutCode.ascx.cs"
     Inherits="CMSFormControls_Layouts_PageLayoutCode" %>
-
-<%@ Register Src="~/CMSAdminControls/UI/Macros/MacroEditor.ascx" TagName="MacroEditor"
-    TagPrefix="cms" %>
 
 <div class="form-horizontal">
     <asp:Panel runat="server" ID="pnl" CssClass="form-group">

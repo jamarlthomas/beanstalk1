@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="ViewObjectVersion.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="ViewObjectVersion.aspx.cs"
     Inherits="CMSModules_Objects_Dialogs_ViewObjectVersion" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="View Object Version" %>
 

@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_OnlineMarketing_Pages_Content_ABTesting_ABTest_StartABTest"
     Theme="default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Codebehind="StartABTest.aspx.cs" %>
+     Codebehind="StartABTest.aspx.cs" %>
 
 <asp:Content ContentPlaceHolderID="plcContent" runat="server">
     <div class="form-horizontal">
@@ -17,7 +17,7 @@
                     <cms:CMSRadioButton ID="radLater" runat="server" GroupName="Start" AutoPostBack="true"
                         OnCheckedChanged="radGroupStart_CheckedChanged" ResourceString="calendar.later" />
                     <div class="selector-subitem">
-                        <cms:DateTimePicker ID="calendarControl" runat="server" Enabled="false" SupportFolder="~/CMSAdminControls/Calendar" />
+                        <cms:DateTimePicker ID="calendarControl" runat="server" Enabled="false" />
                     </div>
                 </div>
             </div>

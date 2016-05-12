@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="RecycleBinMenu.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="RecycleBinMenu.ascx.cs"
     Inherits="CMSModules_Objects_Controls_RecycleBinMenu" %>
 <asp:Panel runat="server" ID="pnlMessageMenu" CssClass="PortalContextMenu WebPartContextMenu">
     <asp:Panel runat="server" ID="pnlRestoreBindings" CssClass="Item">

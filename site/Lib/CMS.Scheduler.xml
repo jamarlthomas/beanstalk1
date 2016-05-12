@@ -33,6 +33,16 @@
             <param name="th">Translation helper</param>
             <param name="excludedNames">Excluded object names</param>
         </member>
+        <member name="M:CMS.Scheduler.TaskExport.GetExportData_After(System.Object,CMS.CMSImportExport.ExportGetDataEventArgs)">
+            <summary>
+            Removes columns that only have meaning in current local context.
+            </summary>
+            <remarks>
+            Event is called twice:
+                First during Objects selection of Site Export – where there are only certain ID columns present in the dataTable.
+                Second time during export itself – where there are all columns present in the dataTable.
+            </remarks>
+        </member>
         <member name="T:CMS.Scheduler.SchedulerCounters">
             <summary>
             Performance counters for scheduler
@@ -165,6 +175,11 @@
             <param name="taskID">ID of task to execute</param>
             <param name="siteName">Current site name of the execution context</param>
         </member>
+        <member name="M:CMS.Scheduler.SchedulingExecutor.ExecuteTask(CMS.Scheduler.TaskInfo)">
+            <summary>
+            Executes specified task.
+            </summary>
+        </member>
         <member name="M:CMS.Scheduler.SchedulingExecutor.TaskResourceAvailable(CMS.Scheduler.TaskInfo)">
             <summary>
             Checks and returns whether the resource specified by task is available or not.
@@ -172,23 +187,17 @@
             </summary>
             <param name="task">Task to check the resource availability</param>
         </member>
-        <member name="M:CMS.Scheduler.SchedulingExecutor.ExecuteTask(CMS.Scheduler.TaskInfo)">
+        <member name="M:CMS.Scheduler.SchedulingExecutor.PrepareTaskForExecution(CMS.Scheduler.TaskInfo)">
+            <summary>
+            Set task properties in DB so it is not executed by another server and executing server name is known and so forth
+            </summary>
+            <param name="taskInfo">Task to prepare for execution</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingExecutor.ExecuteTaskInternal(CMS.Scheduler.TaskInfo)">
             <summary>
             Executes specified task.
             </summary>
-        </member>
-        <member name="M:CMS.Scheduler.SchedulingExecutor.ExecuteTask(CMS.Scheduler.TaskInfo,System.Object)">
-            <summary>
-            Executes specified task.
-            </summary>
-            <param name="sti">Task to execute</param>
-            <param name="taskInstance">Task instance</param>
-        </member>
-        <member name="M:CMS.Scheduler.SchedulingExecutor.SetNextRunTime(CMS.Scheduler.TaskInfo)">
-            <summary>
-            Sets the next run time for a task. Does not save the task info.
-            </summary>
-            <param name="sti">Task info</param>
+            <param name="taskInfo">Task to execute</param>
         </member>
         <member name="M:CMS.Scheduler.SchedulingExecutor.GetTaskInstance(CMS.Scheduler.TaskInfo)">
             <summary>
@@ -196,7 +205,7 @@
             </summary>
             <param name="sti">Task info</param>
         </member>
-        <member name="M:CMS.Scheduler.SchedulingExecutor.ExecuteTaskInternal(CMS.Scheduler.TaskInfo,System.Object)">
+        <member name="M:CMS.Scheduler.SchedulingExecutor.PerformTaskExecution(CMS.Scheduler.TaskInfo,System.Object)">
             <summary>
             Executes the given task
             </summary>
@@ -209,9 +218,29 @@
             </summary>
             <param name="task">Task implementation</param>
         </member>
+        <member name="M:CMS.Scheduler.SchedulingExecutor.GetOperatingServerNames">
+            <summary>
+            Gets the collection of names of all servers that are positively operating.
+            </summary>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingExecutor.GetRelevantCorruptedTasks">
+            <summary>
+            Returns query of <see cref="T:CMS.Scheduler.TaskInfo"/> objects (scheduled tasks) that
+            were interrupted during their scheduled execution.
+            </summary>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingExecutor.ReInitializeTasks(CMS.DataEngine.ObjectQuery{CMS.Scheduler.TaskInfo})">
+            <summary>
+            Re-initializes given tasks by re-planning their next run time
+            (see <see cref="M:CMS.Scheduler.SchedulingHelper.GetNextTime(CMS.Scheduler.TaskInterval,System.Nullable{System.DateTime},System.Nullable{System.DateTime})"/>).
+            </summary>
+            <remarks>Re-initialization takes place during materialization, not on the method call.</remarks>
+            <param name="corruptedTasks">Query identifying tasks that need to be re-planned.</param>
+            <returns>Enumerable collection of just-in-time re-initialized <see cref="T:CMS.Scheduler.TaskInfo"/>s.</returns>
+        </member>
         <member name="M:CMS.Scheduler.SchedulingExecutor.ReInitCorruptedTasks">
             <summary>
-            Re-init all scheduled task which are corrupted.
+            Re-initialize all scheduled task which are corrupted.
             </summary>
         </member>
         <member name="P:CMS.Scheduler.SchedulingExecutor.ScriptTimeout">
@@ -345,13 +374,40 @@
             If true, running of scheduler is enabled.
             </summary>
         </member>
-        <member name="M:CMS.Scheduler.SchedulingHelper.GetNextTime(System.String,System.DateTime,System.DateTime)">
+        <member name="M:CMS.Scheduler.SchedulingHelper.Clear">
             <summary>
-            Returns date and time when the next scheduling moment occurs based on the current date and time and the scheduling pattern string.
+            Clears the enabled status of the scheduler so it can reload
             </summary>
-            <param name="schedulingPattern">information about task repeating</param>
-            <param name="lastRunTime">Last run time of task</param>
-            <param name="plannedRunTime">Planned run time of task</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.IsExternalTaskTooLate(CMS.Scheduler.TaskInfo,System.Int32,System.Nullable{System.DateTime})">
+            <summary>
+            Returns true if externally handled task did not execute for more than certain amount of times.
+            </summary>
+            <param name="taskInfo">Information about the task</param>
+            <param name="timesToBeTooLate">How many times must not the task run before it is considered too long</param>
+            <param name="currentTime">Date and time to resolve against, if null DateTime.Now is used</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.GetFirstRunTime(CMS.Scheduler.TaskInterval,System.Nullable{System.DateTime})">
+            <summary>
+            Returns date and time when the very first scheduling moment occurs based on the current date and time and the scheduling pattern.
+            </summary>
+            <remarks>
+            This method is intended to handle task planning before its first execution (at the time of its creation or edition).
+            Use <see cref="M:CMS.Scheduler.SchedulingHelper.GetNextTime(CMS.Scheduler.TaskInterval,System.Nullable{System.DateTime},System.Nullable{System.DateTime})"/> whenever there is a chance the task was run already.
+            </remarks>
+            <param name="taskInterval">Information about task repeating</param>
+            <param name="currentTime">Date and time to resolve against, if null DateTime.Now is used</param>
+            <exception cref="T:System.ArgumentNullException">When task interval is null</exception>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.GetNextTime(CMS.Scheduler.TaskInterval,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            Returns date and time when the next scheduling moment occurs based on the current date and time and the scheduling pattern.
+            </summary>
+            <remarks>Use <see cref="M:CMS.Scheduler.SchedulingHelper.GetFirstRunTime(CMS.Scheduler.TaskInterval,System.Nullable{System.DateTime})"/> to obtain correct result when a task was not run yet (at the time of its creation or edition).</remarks>
+            <param name="taskInterval">Information about task repeating</param>
+            <param name="lastPlannedRunTime">Last known planned run time of task, if null taskInterval.StartTime is used</param>
+            <param name="currentTime">Date and time to resolve against, if null DateTime.Now is used</param>
+            <exception cref="T:System.ArgumentNullException">When task interval is null</exception>
         </member>
         <member name="M:CMS.Scheduler.SchedulingHelper.EncodeInterval(CMS.Scheduler.TaskInterval)">
             <summary>
@@ -390,55 +446,237 @@
             </summary>
             <param name="siteName">Site name</param>
         </member>
-        <member name="M:CMS.Scheduler.SchedulingHelper.GetNextTimeInternal(System.DateTime,CMS.Scheduler.TaskInterval,System.DateTime)">
+        <member name="M:CMS.Scheduler.SchedulingHelper.IsAnyTaskRunning">
             <summary>
-            Test if planned run time fits criteria.
+            Returns true if there are any currently running tasks.
             </summary>
-            <param name="plannedRunTime">Planned run time</param>
-            <param name="ti">Task interval criteria</param>        
-            <param name="shiftedTime">Planned run time + interval</param>        
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.GetNearestPeriodOfUnitInPast(System.DateTime,System.DateTime,System.Int32,System.Func{System.DateTime,System.Double,System.DateTime},System.Func{System.TimeSpan,System.Double})">
+            <summary>
+            Returns date and time that is less than one interval before current time provided.
+            </summary>
+            <param name="currentTime">Date and time to resolve against</param>
+            <param name="baseTime">Time to apply task interval on</param>
+            <param name="interval">Number of units that are supposed to be add to base time until current time is reached</param>
+            <param name="unitAdditionDelegate">Method adding interval number to a date and time in appropriate units (e.g. AddMinutes, AddHours, ...)</param>
+            <param name="unitTotalDelegate">Method computing total number of appropriate units in a time span (e.g. TotalMinutes, TotalHours, ...)</param>
+            <exception cref="T:System.ArgumentNullException">When any delegate is null</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">When base time succeeds current time</exception>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.GetNearestPeriodOfUnit(System.DateTime,System.DateTime,System.Int32,System.Func{System.DateTime,System.Double,System.DateTime},System.Func{System.TimeSpan,System.Double},System.Boolean)">
+            <summary>
+            Returns date and time that is less than one interval before or after current time provided.
+            </summary>
+            <param name="currentTime">Date and time to resolve against</param>
+            <param name="baseTime">Time to apply task interval on</param>
+            <param name="interval">Number of units that are supposed to be add to base time until current time is reached</param>
+            <param name="unitAdditionDelegate">Method adding interval number to a date and time in appropriate units (e.g. AddMinutes, AddHours, ...)</param>
+            <param name="unitTotalDelegate">Method computing total number of appropriate units in a time span (e.g. TotalMinutes, TotalHours, ...)</param>
+            <param name="inFuture">Determines whether the time returned should precede or succeed current time</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.GetPeriodDelegates(CMS.Scheduler.TaskInterval,System.DateTime,System.DateTime)">
+            <summary>
+            Gets unit-based (minute-, hour-, day-) delegates for the unit addition and total units counting.
+            </summary>
+            <param name="taskInterval">Information about task repetition</param>
+            <param name="currentTime">Date and time to resolve against</param>
+            <param name="baseTime">Time to apply task repetition criteria on</param>
+            <returns>PeriodUnitDelegates object with addition and total delegates defined</returns>
+            <exception cref="T:System.NotSupportedException">When task interval's period string is not known</exception>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.MoveToNearestPeriod(System.DateTime,CMS.Scheduler.TaskInterval,System.DateTime,System.Boolean)">
+            <summary>
+            Moves given date and time forward or backwards to the nearest period occurrence in future/past.
+            No other aspects of interval are taken into account (e.g. BetweenStart or Days).
+            The time between provided current time and returned time will always be equal or less than the period (in respective units).
+            </summary>
+            <param name="currentTime">Date and time to resolve against</param>
+            <param name="taskInterval">Information about task repetition</param>
+            <param name="baseTime">Time to apply task repetition criteria on</param>
+            <param name="inFuture">Determines whether the time returned should precede or succeed current time</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.MoveToNearestPeriodInPast(System.DateTime,CMS.Scheduler.TaskInterval,System.DateTime)">
+            <summary>
+            Moves given date and time backwards to the nearest period occurrence in past.
+            No other aspects of interval are taken into account (e.g. BetweenStart or Days).
+            The time between provided current time and returned time will always be equal or less than the period (in respective units).
+            </summary>
+            <param name="currentTime">Date and time to resolve against</param>
+            <param name="taskInterval">Information about task repetition</param>
+            <param name="baseTime">Time to apply task repetition criteria on</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.MoveToNearestPeriodInFuture(System.DateTime,CMS.Scheduler.TaskInterval,System.DateTime)">
+            <summary>
+            Moves given date and time forward to the nearest period occurrence in future.
+            No other aspects of interval are taken into account (e.g. BetweenStart or Days).
+            The time between provided current time and returned time will always be equal or less than the period (in respective units).
+            </summary>
+            <param name="currentTime">Date and time to resolve against</param>
+            <param name="taskInterval">Information about task repetition</param>
+            <param name="baseTime">Time to apply task repetition criteria on</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.MoveToNextTimeOfDayInFuture(System.DateTime,CMS.Scheduler.TaskInterval,System.DateTime)">
+            <summary>
+            For periods directly affecting time of day (second, minute, hour), method moves given date and time forward to the nearest period based occurrence in future.
+            For other periods, returns day time of provided date and time (as time of day will never change).
+            </summary>
+            <param name="value">Date and time to shift</param>
+            <param name="taskInterval">Information about task repetition</param>
+            <param name="baseTime">Time to apply task repetition criteria on</param>
+            <exception cref="T:System.NotSupportedException">When task interval's period string is not known</exception>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.IsSpecialMonthAndDayOfYearCase(CMS.Scheduler.TaskInterval)">
+            <summary>
+            Tests if given task interval describes a special Year period case when specific month and day is required.
+            </summary>
+            <param name="taskInterval">Information about task repetition</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.IsSpecialDayOrWeekOfMonthCase(CMS.Scheduler.TaskInterval)">
+            <summary>
+            Tests if given task interval describes a special Week period case when either the nearest specific day of month or the nearest specific day of nth week of month is supposed to be reached.
+            </summary>
+            <param name="taskInterval">Information about task repetition</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.IsSpecialDayInWeekCase(CMS.Scheduler.TaskInterval)">
+            <summary>
+            Tests if given task interval describes a special Week period case when specific number of weeks is supposed to be added and then nearest (single) day of week found.
+            </summary>
+            <param name="taskInterval">Information about task repetition</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.IsBeforeAllowedTimeEnd(System.TimeSpan,CMS.Scheduler.TaskInterval)">
+            <summary>
+            Tests if given date and time's time of day is lower than the upper allowed time threshold.
+            </summary>
+            <param name="value">Date and time to test</param>
+            <param name="taskInterval">Information about task repetition</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.IsWithinAllowedDayTime(System.DateTime,CMS.Scheduler.TaskInterval)">
+            <summary>
+            Tests if given date and time's time of day is within time of day allowed by task interval.
+            If there is no time of day specified in the task interval, true is returned.
+            </summary>
+            <param name="value">Date and time to test</param>
+            <param name="taskInterval">Information about task repetition</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.ShiftIntoAllowedDayTime(System.DateTime,CMS.Scheduler.TaskInterval,System.DateTime)">
+            <summary>
+            Shifts given date and time until time of day is within allowed range.
+            </summary>
+            <param name="value">Date and time to shift</param>
+            <param name="taskInterval">Information about task repetition</param>
+            <param name="baseTime">Time to apply task repetition criteria on</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.IsInAllowedDayOfWeek(System.DateTime,CMS.Scheduler.TaskInterval)">
+            <summary>
+            Tests if given date's day of week is allowed by task interval.
+            </summary>
+            <param name="value">Date and time to test</param>
+            <param name="taskInterval">Information about task repetition</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.ShiftIntoAllowedDayOfWeek(System.DateTime,CMS.Scheduler.TaskInterval)">
+            <summary>
+            Shifts given date and time until day of week is allowed.
+            </summary>
+            <param name="value">Date and time to shift</param>
+            <param name="taskInterval">Information about task repetition</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.ShiftIntoAllowedDayAndTime(System.DateTime,CMS.Scheduler.TaskInterval,System.DateTime)">
+            <summary>
+            Shifts given date and time until both day of week and time of day are allowed.
+            </summary>
+            <param name="value">Date and time to shift</param>
+            <param name="taskInterval">Information about task repetition</param>
+            <param name="baseTime">Time to apply task repetition criteria on</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.GetTotalUnits(CMS.Scheduler.TaskInterval,System.DateTime,System.DateTime)">
+            <summary>
+            Returns total units (seconds, minutes, ... - based on interval object) between two given dates.
+            </summary>
+            <param name="taskInterval">Defines what units will be computed with</param>
+            <param name="laterTime">Supposedly later of the times to make the difference of</param>
+            <param name="earlierTime">Supposedly earlier of the times to make the difference of</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.IsValidSuccessor(System.DateTime,CMS.Scheduler.TaskInterval)">
+            <summary>
+            Determines if the given date and time is based on start time and period provided in task interval or not.
+            </summary>
+            <param name="value">Date and time supposedly based on task interval start time</param>
+            <param name="taskInterval">Information about task repetition</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.MoveToSpecificMonthAndDayOfYearInFuture(System.DateTime,CMS.Scheduler.TaskInterval,System.DateTime)">
+            <summary>
+            Moves given date and time forward to the nearest  month and day of a month as specified in task.
+            Method implies that task interval is set to year period with Order any Day properties specified.
+            </summary>
+            <param name="currentTime">Date and time to resolve against</param>
+            <param name="taskInterval">Information about task repetition</param>
+            <param name="baseTime">Time to apply task repetition criteria on</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.MoveToSpecificDayOfMonthInFuture(System.DateTime,CMS.Scheduler.TaskInterval,System.Int32,System.DateTime)">
+            <summary>
+            Moves given date and time forward to the nearest  day of a month.
+            </summary>
+            <param name="currentTime">Date and time to resolve against</param>
+            <param name="taskInterval">Information about task repetition</param>
+            <param name="dayOfMonth">Desired day of a month</param>
+            <param name="baseTime">Time to apply task repetition criteria on</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.GetWeekInMonthNumber(System.DateTime)">
+            <summary>
+            Gets number of week in the month provided within time.
+            </summary>
+            <param name="time">Time to get number of week from</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.MoveToLastWeekOfMonth(System.DateTime)">
+            <summary>
+            Moves given date and time forward to the last week within month provided.
+            </summary>
+            <param name="timeToMove">Date and time to move forward from</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.MoveToNearestNthWeekOfMonth(System.DateTime,System.Int32)">
+            <summary>
+            Moves given date and time forward to the nearest weekNumberth week of a month. Given month might moved to the following if desired week number precede current week number.
+            </summary>
+            <param name="timeToMove">Date and time to move forward from</param>
+            <param name="weekNumber">Desired number of week in a month (1..4)</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.ExtractDayOfWeekShiftingInterval(CMS.Scheduler.TaskInterval)">
+            <summary>
+            Gets simple task interval that is only meant to allow day-by-day shifting from any given date to (single) allowed day of week specified in provided task interval.
+            </summary>
+            <param name="taskInterval">Source task interval with the Day property specified properly</param>
+            <exception cref="T:System.NotSupportedException">When day parameter of taskInterval cannot be interpreted as a day of week</exception>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.MoveToSpecificWeekDayOfMonthInFuture(System.DateTime,CMS.Scheduler.TaskInterval,System.Int32)">
+            <summary>
+            Moves current date and time forward to the nearest specific day of nth week of month.
+            </summary>
+            <param name="currentTime">Date and time to resolve against</param>
+            <param name="taskInterval">Information about task repetition</param>
+            <param name="weekNumber">Week number in a month</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">When week is not in interval 1..5</exception>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.MoveToSpeficicDayOfWeekInFuture(System.DateTime,CMS.Scheduler.TaskInterval,System.DateTime)">
+            <summary>
+            Moves current date and time forward based on given task interval and base time and further on to the nearest specific day of week.
+            </summary>
+            <param name="currentTime">Date and time to resolve against</param>
+            <param name="taskInterval">Information about task repetition</param>
+            <param name="baseTime">Time to apply task repetition criteria on</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.MoveToSpecificDayOrWeekOfMonthInFuture(System.DateTime,CMS.Scheduler.TaskInterval,System.DateTime)">
+            <summary>
+            Moves current date and time forward to either the nearest specific day of month or the nearest specific day of nth week of month.
+            </summary>
+            <param name="currentTime">Date and time to resolve against</param>
+            <param name="taskInterval">Information about task repetition</param>
+            <param name="baseTime">Time to apply task repetition criteria on</param>
         </member>
         <member name="M:CMS.Scheduler.SchedulingHelper.ConvertDayToNumber(System.String)">
             <summary>
-            Converts day of week from string to number
+            Converts day of week from string to DayOfWeek enum.
             </summary>
             <param name="day">Day name</param>
-        </member>
-        <member name="M:CMS.Scheduler.SchedulingHelper.GetFirstTime(CMS.Scheduler.TaskInterval,System.DateTime,System.DateTime)">
-            <summary>
-            Gets first time in the future for the scheduled task.
-            </summary>
-            <param name="ti">Task interval</param>
-            <param name="nowTime">Current time and date</param>
-            <param name="lastRunTime">Last run time of the task</param>
-        </member>
-        <member name="M:CMS.Scheduler.SchedulingHelper.ShiftToAllowedDay(System.Collections.ArrayList,System.DateTime)">
-            <summary>
-            Finds allowed Day.
-            </summary>
-            <param name="Days">Allowed Days</param>
-            <param name="date">Task next run time date</param>
-        </member>
-        <member name="M:CMS.Scheduler.SchedulingHelper.ShiftToAllowedDayAndTime(CMS.Scheduler.TaskInterval)">
-            <summary>
-            Shifts task start time to allowed day considering allowed time interval.
-            </summary>
-            <param name="ti">Task time information</param>
-        </member>
-        <member name="M:CMS.Scheduler.SchedulingHelper.ShiftToAllowedDay(System.Collections.ArrayList,System.DateTime,System.DateTime)">
-            <summary>
-            Finds allowed Day.
-            </summary>
-            <param name="Days">Allowed Days</param>
-            <param name="date">Task next run time date</param>
-            <param name="BetweenStart">Interval start time</param>
-        </member>
-        <member name="M:CMS.Scheduler.SchedulingHelper.ShiftToAllowedDayNextMonth(CMS.Scheduler.TaskInterval,System.Int32)">
-            <summary>
-            Finds allowed day in next month.
-            </summary>
-            <param name="ti">Task time information</param>
-            <param name="monthCounter">Month counter</param>
         </member>
         <member name="M:CMS.Scheduler.SchedulingHelper.DecodeEvery(System.String)">
             <summary>
@@ -448,15 +686,30 @@
         </member>
         <member name="M:CMS.Scheduler.SchedulingHelper.DecodeTime(System.String)">
             <summary>
-            Returns datetime in english culture format.
+            Returns date and time in English culture format.
             </summary>
             <param name="interval">DateTime string</param>
         </member>
         <member name="M:CMS.Scheduler.SchedulingHelper.DecodeDays(System.String)">
             <summary>
-            Splits days from input string into arraylist.
+            Splits days from input string into DayOfWeek collection.
             </summary>
-            <param name="interval">String with days separated by ','</param>
+            <param name="interval">String with days' names separated by ','</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.GetNextTime(System.String,System.DateTime,System.DateTime)">
+            <summary>
+            Returns date and time when the next scheduling moment occurs based on the current date and time and the scheduling pattern string.
+            </summary>
+            <param name="schedulingPattern">information about task repeating</param>
+            <param name="lastRunTime">Last run time of task</param>
+            <param name="plannedRunTime">Planned run time of task</param>
+        </member>
+        <member name="M:CMS.Scheduler.SchedulingHelper.ShiftToAllowedDayNextMonth(CMS.Scheduler.TaskInterval,System.Int32)">
+            <summary>
+            Finds allowed day in next month.
+            </summary>
+            <param name="taskInterval">Task time information</param>
+            <param name="monthCounter">Month counter</param>
         </member>
         <member name="P:CMS.Scheduler.SchedulingHelper.SchedulerUserName">
             <summary>
@@ -511,6 +764,11 @@
         <member name="P:CMS.Scheduler.SchedulingHelper.ServiceInterval">
             <summary>
             Gets windows service interval (in seconds).
+            </summary>
+        </member>
+        <member name="T:CMS.Scheduler.SchedulingHelper.PeriodUnitDelegates">
+            <summary>
+            Provides delegates to compute total number of units from a TimeSpan and to add units into a DateTime.
             </summary>
         </member>
         <member name="T:CMS.Scheduler.SchedulingTimer">
@@ -931,6 +1189,11 @@
             ID of object associated to this task.
             </summary>
         </member>
+        <member name="P:CMS.Scheduler.TaskInfo.TaskExecutingServerName">
+            <summary>
+            Name of the server executing the task right now (may be empty for single-server scenarios)
+            </summary>
+        </member>
         <member name="P:CMS.Scheduler.TaskInfo.CurrentSiteName">
             <summary>
             Current site name of the execution (stored in memory)
@@ -1000,21 +1263,6 @@
             Creates the tasks for all the web farm servers.
             </summary>
             <param name="task">Task data</param>
-        </member>
-        <member name="M:CMS.Scheduler.TaskInfoProvider.GetAllTasks">
-             <summary>
-            Returns DataSet with information about all tasks.
-             </summary>
-             <returns>DataSet</returns>      
-        </member>
-        <member name="M:CMS.Scheduler.TaskInfoProvider.GetTasks(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Gets all tasks based on parameters.
-            </summary>
-            <param name="where">Where condition</param>
-            <param name="orderBy">Order by</param>
-            <param name="topN">Get top N items</param>
-            <param name="columns">Columns to get</param>
         </member>
         <member name="M:CMS.Scheduler.TaskInfoProvider.GetTasks">
             <summary>
@@ -1126,15 +1374,6 @@
             </summary>
             <param name="task">Task data</param>
         </member>
-        <member name="M:CMS.Scheduler.TaskInfoProvider.GetTasksInternal(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Gets all tasks based on parameters.
-            </summary>
-            <param name="where">Where condition</param>
-            <param name="orderBy">Order by</param>
-            <param name="topN">Get top N items</param>
-            <param name="columns">Columns to get</param>
-        </member>
         <member name="M:CMS.Scheduler.TaskInfoProvider.GetTaskToReInitInternal">
             <summary>
             Returns DataSet with information about tasks which have next runtime NULL.
@@ -1154,6 +1393,30 @@
             <param name="serverName">Server name</param>
             <param name="useExternalService">Indicates if tasks is processed by service. If null, all tasks are fetched.</param>
             <returns>Dataset with information about scheduled tasks</returns>
+        </member>
+        <member name="M:CMS.Scheduler.TaskInfoProvider.GetAllTasks">
+             <summary>
+            Returns DataSet with information about all tasks.
+             </summary>
+             <returns>DataSet</returns>      
+        </member>
+        <member name="M:CMS.Scheduler.TaskInfoProvider.GetTasks(System.String,System.String,System.Int32,System.String)">
+            <summary>
+            Gets all tasks based on parameters.
+            </summary>
+            <param name="where">Where condition</param>
+            <param name="orderBy">Order by</param>
+            <param name="topN">Get top N items</param>
+            <param name="columns">Columns to get</param>
+        </member>
+        <member name="M:CMS.Scheduler.TaskInfoProvider.GetTasksInternal(System.String,System.String,System.Int32,System.String)">
+            <summary>
+            Gets all tasks based on parameters.
+            </summary>
+            <param name="where">Where condition</param>
+            <param name="orderBy">Order by</param>
+            <param name="topN">Get top N items</param>
+            <param name="columns">Columns to get</param>
         </member>
         <member name="P:CMS.Scheduler.TaskInfoProvider.NO_TIME">
             <summary>
@@ -1183,6 +1446,7 @@
         <member name="P:CMS.Scheduler.TaskInterval.UseSpecificTime">
             <summary>
             Indicates whether Time part of StartTime should be used.
+            Used within work-flow only, does not affect algorithm computing next run time
             </summary>
         </member>
         <member name="P:CMS.Scheduler.TaskInterval.Every">
@@ -1275,26 +1539,26 @@
             Deletes expired archived e-mails (manager task).
             </summary>
         </member>
-        <member name="F:CMS.Scheduler.QueueCleaner.DeleteArchivedBatchSize">
+        <member name="F:CMS.Scheduler.QueueCleaner.DELETE_ARCHIVED_BATCH_SIZE">
             <summary>
             Gets the number of archived emails to delete in one batch.
             </summary>
         </member>
         <member name="M:CMS.Scheduler.QueueCleaner.Execute(CMS.Scheduler.TaskInfo)">
             <summary>
-             Removes archived e-mails which are older then specified number of days.
+            Removes archived e-mails which are older then specified number of days.
             </summary>
             <param name="task">Task to process</param>
         </member>
-        <member name="M:CMS.Scheduler.QueueCleaner.SchedulePartialCleaners(System.Int32,System.Int32,System.DateTime,System.DateTime@,System.Boolean)">
+        <member name="M:CMS.Scheduler.QueueCleaner.SchedulePartialCleaners(System.Int32,System.Int32,System.DateTime,System.DateTime@,CMS.Scheduler.TaskInfo)">
             <summary>
             Schedules a batch of partial queue cleaners.
-            </summary>        
+            </summary>
             <param name="siteId">Site ID</param>
             <param name="expiredEmailsCount">Number of expired emails to delete</param>
             <param name="expirationDate">Expiration date for archived emails</param>
             <param name="scheduleTime">Task run time</param>
-            <param name="useExternalService">Indicates if task should be run in external service</param>
+            <param name="parentTask">Parent task info</param>
         </member>
         <member name="T:CMS.Scheduler.QueueSender">
             <summary>

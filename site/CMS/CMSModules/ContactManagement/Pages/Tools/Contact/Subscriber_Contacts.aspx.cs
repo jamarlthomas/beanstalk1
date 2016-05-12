@@ -211,7 +211,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Contact_Subscriber
     /// </summary>
     private static int GetBouncesFromRow(DataRowView rowView)
     {
-        return ValidationHelper.GetInteger(DataHelper.GetDataRowValue(rowView.Row, "ContactBounces"), 0);
+        return DataHelper.GetIntValue(rowView.Row, "ContactBounces");
     }
 
     #endregion

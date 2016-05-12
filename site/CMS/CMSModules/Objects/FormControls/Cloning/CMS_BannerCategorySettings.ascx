@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="CMS_BannerCategorySettings.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="CMS_BannerCategorySettings.ascx.cs"
     Inherits="CMSModules_Objects_FormControls_Cloning_CMS_BannerCategorySettings" %>
 <div class="form-horizontal">
     <div class="form-group">

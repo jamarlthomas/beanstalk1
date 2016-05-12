@@ -1,6 +1,6 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Collections;
 
 using CMS.Helpers;
 using CMS.Base;
@@ -276,43 +276,47 @@ public partial class CMSModules_Categories_Controls_MultipleCategoriesSelector :
 
     private DataSet UniGrid_OnAfterRetrieveData(DataSet ds)
     {
-        if (!DataHelper.DataSourceIsEmpty(ds))
+        if (DataHelper.DataSourceIsEmpty(ds))
         {
-            DataTable table = ds.Tables[0];
-            Hashtable toDelete = new Hashtable();
-
-            // Remove categories having child in the table
-            foreach (DataRow dr in table.Rows)
-            {
-                string namePath = ValidationHelper.GetString(dr["CategoryNamePath"], "");
-                int id = ValidationHelper.GetInteger(dr["CategoryID"], 0);
-
-                // Check if table contains any child
-                foreach (DataRow drChild in table.Rows)
-                {
-                    string childNamePath = ValidationHelper.GetString(drChild["CategoryNamePath"], "");
-                    if (!toDelete.Contains(id) && childNamePath.StartsWithCSafe(namePath + "/"))
-                    {
-                        // Place parent on the black list
-                        toDelete.Add(id, dr);
-
-                        string ids = ValidationHelper.GetString(selectCategory.Value, "");
-                        selectCategory.Value = ids.Replace(id.ToString(), "").Replace(";;", ";");
-
-                        break;
-                    }
-                }
-            }
-
-            // Remove categories from blacklist
-            foreach (DataRow row in toDelete.Values)
-            {
-                row.Delete();
-            }
-
-            // Accept changes
-            ds.AcceptChanges();
+            return ds;
         }
+
+        DataTable table = ds.Tables[0];
+        Dictionary<int, DataRow> toDelete = new Dictionary<int, DataRow>();
+
+        // Remove categories having child in the table
+        foreach (DataRow dr in table.Rows)
+        {
+            string parentNamePath = ValidationHelper.GetString(dr["CategoryNamePath"], "");
+            int parentId = ValidationHelper.GetInteger(dr["CategoryID"], 0);
+
+            // Check if table contains any child
+            foreach (DataRow drChild in table.Rows)
+            {
+                string childNamePath = ValidationHelper.GetString(drChild["CategoryNamePath"], "");
+                if (toDelete.ContainsKey(parentId) || !childNamePath.StartsWithCSafe(parentNamePath + "/"))
+                {
+                    continue;
+                }
+
+                // Place parent on the black list
+                toDelete.Add(parentId, dr);
+
+                string selectedIds = String.Format(";{0};", ValidationHelper.GetString(selectCategory.Value, ""));
+                selectCategory.Value = selectedIds.Replace(";" + parentId + ";", ";");
+
+                break;
+            }
+        }
+
+        // Remove categories from blacklist
+        foreach (DataRow row in toDelete.Values)
+        {
+            row.Delete();
+        }
+
+        // Accept changes
+        ds.AcceptChanges();
 
         return ds;
     }

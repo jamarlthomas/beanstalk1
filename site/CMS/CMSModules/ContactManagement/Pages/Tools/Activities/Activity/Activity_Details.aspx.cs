@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 
 using CMS.Core;
@@ -163,7 +163,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Activities_Activit
         // Init contact detail link
         string contactURL = UIContextHelper.GetElementDialogUrl(ModuleName.ONLINEMARKETING, "EditContact", ai.ActivityActiveContactID, "isSiteManager=" + ContactHelper.IsSiteManager);
         btnContact.Attributes.Add("onClick", ScriptHelper.GetModalDialogScript(contactURL, "ContactDetail"));
-        btnContact.ToolTip = GetString("om.contact.viewdetail");
+        btnContact.ToolTip = GetString("general.edit");
 
         lblDateVal.Text = (ai.ActivityCreated == DateTimeHelper.ZERO_TIME ? GetString("general.na") : HTMLHelper.HTMLEncode(ai.ActivityCreated.ToString()));
 

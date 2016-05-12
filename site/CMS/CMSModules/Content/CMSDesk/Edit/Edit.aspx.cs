@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 
 using CMS.Core;
@@ -134,7 +134,7 @@ public partial class CMSModules_Content_CMSDesk_Edit_Edit : CMSContentPage
         var currentUser = MembershipContext.AuthenticatedUser;
 
         // Check UIProfile
-        if (!currentUser.IsAuthorizedPerUIElement("CMS.Content", new string[] { "EditForm", "Edit" }, SiteContext.CurrentSiteName))
+        if (!currentUser.IsAuthorizedPerUIElement("CMS.Content", new[] { "EditForm", "Edit" }, SiteContext.CurrentSiteName))
         {
             RedirectToUIElementAccessDenied("CMS.Content", "EditForm");
         }
@@ -155,6 +155,12 @@ public partial class CMSModules_Content_CMSDesk_Edit_Edit : CMSContentPage
 
         formElem.OnBeforeDataLoad += formElem_OnBeforeDataLoad;
         formElem.OnAfterDataLoad += formElem_OnAfterDataLoad;
+
+        // Update view mode
+        if (!RequiresDialog)
+        {
+            PortalContext.ViewMode = ViewModeEnum.EditForm;
+        }
 
         // Analyze the action parameter
         switch (Action)
@@ -203,15 +209,6 @@ public partial class CMSModules_Content_CMSDesk_Edit_Edit : CMSContentPage
                         DocumentManager.Mode = FormModeEnum.Insert;
                         DocumentManager.ParentNodeID = ParentNodeID;
                         DocumentManager.NewNodeCultureCode = ParentCulture;
-
-                        // Set up the document conversion
-                        int convertDocumentId = QueryHelper.GetInteger("convertdocumentid", 0);
-                        if (convertDocumentId > 0)
-                        {
-                            DocumentManager.SourceDocumentID = convertDocumentId;
-                            DocumentManager.Mode = FormModeEnum.Convert;
-                        }
-
                         DocumentManager.NewNodeClassID = ClassID;
 
                         // Check allowed document type
@@ -312,12 +309,6 @@ public partial class CMSModules_Content_CMSDesk_Edit_Edit : CMSContentPage
                     }
                     else
                     {
-                        // Update view mode
-                        if (!RequiresDialog)
-                        {
-                            PortalContext.ViewMode = ViewModeEnum.EditForm;
-                        }
-
                         EnableSplitMode = true;
                         DocumentManager.Mode = FormModeEnum.Update;
                         ci = DataClassInfoProvider.GetDataClassInfo(node.NodeClassName);
@@ -328,7 +319,7 @@ public partial class CMSModules_Content_CMSDesk_Edit_Edit : CMSContentPage
                             // Add the document name to the properties header title
                             string nodeName = node.GetDocumentName();
                             // Get name for root document
-                            if (node.NodeClassName.ToLowerCSafe() == "cms.root")
+                            if (node.IsRoot())
                             {
                                 nodeName = SiteContext.CurrentSite.DisplayName;
                             }

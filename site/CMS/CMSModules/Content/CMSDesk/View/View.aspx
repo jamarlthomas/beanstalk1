@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="View.aspx.cs" Inherits="CMSModules_Content_CMSDesk_View_View"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="View.aspx.cs" Inherits="CMSModules_Content_CMSDesk_View_View"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master" Title="View / Validate" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/DeviceView.ascx" TagName="DeviceView"

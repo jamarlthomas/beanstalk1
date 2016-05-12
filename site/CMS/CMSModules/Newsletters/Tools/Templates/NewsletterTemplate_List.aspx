@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Codebehind="NewsletterTemplate_List.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="NewsletterTemplate_List.aspx.cs"
     Inherits="CMSModules_Newsletters_Tools_Templates_NewsletterTemplate_List" Theme="Default"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Tools - Newsletter templates" %>
 

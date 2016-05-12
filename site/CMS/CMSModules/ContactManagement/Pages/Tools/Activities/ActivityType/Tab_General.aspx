@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Tab_General.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Tab_General.aspx.cs"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Activity type properties - General"
     Inherits="CMSModules_ContactManagement_Pages_Tools_Activities_ActivityType_Tab_General" Theme="Default" %>            
     

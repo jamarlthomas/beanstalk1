@@ -34,7 +34,7 @@ public partial class CMSModules_Membership_Pages_Roles_Role_Edit_UI_Editor : CMS
         ResourceInfo ri = ResourceInfoProvider.GetResourceInfo("CMS.WYSIWYGEditor");
         if (ri != null)
         {
-            editElem.ResourceID = ri.ResourceId;
+            editElem.ResourceID = ri.ResourceID;
             editElem.IsLiveSite = false;
             editElem.RoleID = QueryHelper.GetInteger("roleid", 0);
             editElem.HideSiteSelector = true;

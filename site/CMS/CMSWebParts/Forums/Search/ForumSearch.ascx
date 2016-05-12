@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Forums_Search_ForumSearch" Codebehind="~/CMSWebParts/Forums/Search/ForumSearch.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Forums_Search_ForumSearch"  Codebehind="~/CMSWebParts/Forums/Search/ForumSearch.ascx.cs" %>
 <asp:Panel ID="pnlForumSearch" runat="server" DefaultButton="btnGo" CssClass="forum-search">
     <cms:LocalizedLabel ID="lblSearch" runat="server" AssociatedControlID="txtSearch" EnableViewState="false" />
     <cms:CMSTextBox ID="txtSearch" runat="server" />

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="ContactFilter.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="ContactFilter.ascx.cs"
     Inherits="CMSModules_ContactManagement_Filters_ContactFilter" %>
 <cms:LocalizedLabel ID="lblContact" runat="server" DisplayColon="true" ResourceString="om.contact.entersearch" />
 <cms:CMSTextBox ID="txtContact" runat="server" />

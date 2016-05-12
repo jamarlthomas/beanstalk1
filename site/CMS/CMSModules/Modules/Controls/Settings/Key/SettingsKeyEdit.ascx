@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SettingsKeyEdit.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="false"  Codebehind="SettingsKeyEdit.ascx.cs"
     Inherits="CMSModules_Modules_Controls_Settings_Key_SettingsKeyEdit" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/Selectors/LoadGenerationSelector.ascx" TagName="LoadGenerationSelector" TagPrefix="cms" %>
@@ -142,7 +142,7 @@
                                 DisplayColon="true" />
                         </div>
                         <div class="editing-form-value-cell">
-                            <cms:SettingsKeyControlSelector ID="ucSettingsKeyControlSelector" runat="server" />
+                            <cms:SettingsKeyControlSelector ID="ucSettingsKeyControlSelector" runat="server" OnChanged="ucSettingsKeyControlSelector_Changed" />
                         </div>
                     </div>
                 </div>

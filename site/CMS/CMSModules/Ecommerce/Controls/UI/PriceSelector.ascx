@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_UI_PriceSelector"
-    Codebehind="PriceSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_UI_PriceSelector"
+     Codebehind="PriceSelector.ascx.cs" %>
 <%-- Price value --%>
 <cms:CMSTextBox ID="txtPrice" runat="server"  MaxLength="20" CssClass="form-control" />
 <%-- Currency code --%>

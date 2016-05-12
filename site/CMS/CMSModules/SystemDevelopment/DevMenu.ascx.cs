@@ -48,7 +48,12 @@ public partial class CMSModules_SystemDevelopment_DevMenu : CMSUserControl, ICal
             };
 
             // Event log items
-            DataSet ds = EventLogProvider.GetAllEvents(null, "EventTime DESC", 10, "EventTime, EventType, Source, EventCode");
+            DataSet ds = 
+                EventLogProvider.GetEvents()
+                    .OrderByDescending("EventTime")
+                    .TopN(10)
+                    .Columns("EventTime", "EventType", "Source", "EventCode");
+
             foreach (DataRow row in ds.Tables[0].Rows)
             {
                 HeaderAction ev = new HeaderAction

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web;
 using System.Web.UI;
@@ -123,7 +123,7 @@ public partial class CMSWebParts_Viewers_Documents_attachments : CMSAbstractWebP
     {
         get
         {
-            return ValidationHelper.GetString(GetValue("ClassNames"), "CMS.File");
+            return ValidationHelper.GetString(GetValue("ClassNames"), SystemDocumentTypes.File);
         }
         set
         {

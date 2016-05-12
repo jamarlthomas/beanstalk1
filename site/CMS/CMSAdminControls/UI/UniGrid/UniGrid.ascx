@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_UniGrid_UniGrid"
-    Codebehind="UniGrid.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_UI_UniGrid_UniGrid"
+     Codebehind="UniGrid.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/Pager/UIPager.ascx" TagPrefix="cms"
     TagName="UIPager" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/Controls/AdvancedExport.ascx" TagPrefix="cms"

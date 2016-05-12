@@ -42,7 +42,7 @@ public partial class CMSModules_Reporting_LiveDialogs_EditSubscription : CMSLive
         if (subEdit.Save())
         {
             String alert = liveEdit ? String.Empty : "wopener.window.alert(" + ScriptHelper.GetLocalizedString("reportsubscription.subscribed") + ")";
-            ScriptHelper.RegisterStartupScript(Page, typeof(String), "CloseScript", ScriptHelper.GetScript("CloseDialog();" + alert));
+            ScriptHelper.RegisterStartupScript(Page, typeof(String), "CloseScript", ScriptHelper.GetScript("CloseDialog(); if (wopener.refreshCurrentPage != null) { wopener.refreshCurrentPage(); }" + alert));
         }
     }
 

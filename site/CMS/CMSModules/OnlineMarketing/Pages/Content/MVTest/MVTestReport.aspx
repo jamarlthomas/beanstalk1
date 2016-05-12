@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="MVTestReport.aspx.cs" Inherits="CMSModules_OnlineMarketing_Pages_Content_MVTest_MVTestReport"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="MVTestReport.aspx.cs" Inherits="CMSModules_OnlineMarketing_Pages_Content_MVTest_MVTestReport"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="MV test reports"
     EnableEventValidation="false" Theme="Default" %>
 
@@ -14,9 +14,17 @@
     TagName="DisabledModule" %>
 <%@ Register Src="~/CMSModules/WebAnalytics/Controls/ReportHeader.ascx" TagName="ReportHeader"
     TagPrefix="cms" %>
-<asp:Content ID="cntHeader" runat="server" ContentPlaceHolderID="plcBeforeContent">
-    <cms:ReportHeader runat="server" ID="reportHeader" />
+
+<asp:Content ID="cntActions" runat="server" ContentPlaceHolderID="plcActions">
+    <div class="header-actions-container">
+        <cms:ReportHeader runat="server" ID="reportHeader" />
+    </div>
+</asp:Content>
+<asp:Content ID="cntContent" runat="server" ContentPlaceHolderID="plcContent">
     <div class="header-panel">
+        <asp:Panel runat="server" ID="pnlDisabled">
+            <cms:DisabledModule runat="server" ID="ucDisabledModule" />
+        </asp:Panel>
         <cms:GraphPreLoader runat="server" ID="ucGraphPreLoader" />
         <cms:GraphType runat="server" ID="ucGraphType" />
     </div>
@@ -32,11 +40,6 @@
                 AutoPostBack="true" CssClass="PageReportRadioButton" GroupName="Radio" />
         </div>
     </asp:Panel>
-    <asp:Panel runat="server" ID="pnlWarning" CssClass="header-panel">
-        <cms:DisabledModule runat="server" ID="ucDisabledModule" />
-    </asp:Panel>
-</asp:Content>
-<asp:Content ID="Content1" runat="server" ContentPlaceHolderID="plcContent">
     <div class="ReportBody">
         <div class="form-horizontal">
             <div class="form-group">

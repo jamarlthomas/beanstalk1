@@ -74,7 +74,7 @@ public partial class CMSModules_PortalEngine_Controls_WebParts_WebPartEditCSS : 
     private void InitHeaderActions()
     {
         // Save action
-        SaveAction save = new SaveAction(Page);
+        SaveAction save = new SaveAction();
         headerActions.ActionsList.Add(save);
 
         // Preview

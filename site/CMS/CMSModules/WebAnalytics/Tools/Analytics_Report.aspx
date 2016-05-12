@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Analytics_Report.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Analytics_Report.aspx.cs"
     EnableEventValidation="false" Theme="Default" Inherits="CMSModules_WebAnalytics_Tools_Analytics_Report"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 
@@ -10,13 +10,15 @@
     TagName="DisabledModule" %>
 <%@ Register Src="~/CMSModules/WebAnalytics/Controls/ReportHeader.ascx" TagName="ReportHeader"
     TagPrefix="cms" %>
-<asp:Content runat="server" ContentPlaceHolderID="plcBeforeContent">
-    <cms:ReportHeader runat="server" ID="reportHeader" />
-    <asp:Panel runat="server" ID="pnlDisabled" CssClass="header-panel-alert-above-header">
-        <cms:DisabledModule runat="server" ID="ucDisabledModule" />
-    </asp:Panel>
+<asp:Content ID="cntActions" runat="server" ContentPlaceHolderID="plcActions">
+    <div class="control-group-inline header-actions-container">
+        <cms:ReportHeader runat="server" ID="reportHeader" />
+    </div>
 </asp:Content>
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
+    <asp:Panel runat="server" ID="pnlDisabled" CssClass="header-panel-alert">
+        <cms:DisabledModule runat="server" ID="ucDisabledModule" />
+    </asp:Panel>
     <cms:GraphPreLoader runat="server" ID="preloader" />
     <cms:ReportViewer runat="server" ID="ucReportViewer" IsLiveSite="false" />
 </asp:Content>

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_ImportExport_Controls_ImportConfiguration"
-    Codebehind="ImportConfiguration.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_ImportExport_Controls_ImportConfiguration"
+     Codebehind="ImportConfiguration.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Attachments/DirectFileUploader/DirectFileUploader.ascx"
     TagName="DirectFileUploader" TagPrefix="cms" %>

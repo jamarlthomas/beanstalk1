@@ -1,12 +1,11 @@
-using System;
+﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 
-using CMS.Base;
 using CMS.DataEngine;
 using CMS.Helpers;
 using CMS.UIControls;
+
 
 public partial class CMSModules_System_Debug_System_DebugObjects : CMSDebugPage
 {
@@ -48,6 +47,7 @@ public partial class CMSModules_System_Debug_System_DebugObjects : CMSDebugPage
         dt.DefaultView.Sort = "TableName ASC";
 
         gridHashtables.DataSource = dt.DefaultView;
+        totalTableObjects = 0;
         gridHashtables.DataBind();
 
         // Objects
@@ -75,6 +75,7 @@ public partial class CMSModules_System_Debug_System_DebugObjects : CMSDebugPage
             dt.DefaultView.Sort = "ObjectType ASC";
 
             gridObjects.DataSource = dt.DefaultView;
+            totalObjects = 0;
             gridObjects.DataBind();
         }
     }
@@ -90,7 +91,7 @@ public partial class CMSModules_System_Debug_System_DebugObjects : CMSDebugPage
         dt.Columns.Add(new DataColumn("TableName", typeof(string)));
         dt.Columns.Add(new DataColumn("ObjectCount", typeof(int)));
 
-        lock (AbstractProviderDictionary.Dictionaries)
+        lock (AbstractProviderDictionary.Dictionaries.SyncRoot)
         {
             // Hashtables
             foreach (DictionaryEntry item in AbstractProviderDictionary.Dictionaries)

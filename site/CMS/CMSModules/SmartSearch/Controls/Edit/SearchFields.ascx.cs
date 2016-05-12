@@ -1,39 +1,90 @@
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
-using System.Collections;
 
+using CMS.Base;
+using CMS.DataEngine;
+using CMS.ExtendedControls;
 using CMS.FormEngine;
 using CMS.Helpers;
-using CMS.Base;
 using CMS.Search;
 using CMS.UIControls;
-using CMS.ExtendedControls;
-using CMS.DataEngine;
 
 public partial class CMSModules_SmartSearch_Controls_Edit_SearchFields : CMSAdminEditControl
 {
     #region "Private variables"
 
-    private DataClassInfo dci = null;
-    private DataClassInfo document = null;
+    private DataClassInfo dci;
+    private DataClassInfo document;
     private ArrayList attributes = new ArrayList();
-    private FormInfo fi = null;
-    private bool mLoadActualValues = false;
+    private FormInfo fi;
     private bool mAdvancedMode = true;
 
     // Contains item list for 'Title' drop-down list.
-    private string allowedTitles = "DocumentName;DocumentNamePath;DocumentUrlPath;DocumentPageTitle;DocumentPageDescription;DocumentMenuCaption;DocumentCustomData;DocumentTags;NodeAliasPath;NodeName;NodeAlias;NodeCustomData;SKUNumber;SKUName;SKUDescription;SKUImagePath;SKUCustomData";
+    private static readonly ListItem[] ALLOWED_TITLES = new[]
+    {
+        new ListItem("DocumentName"),
+        new ListItem("DocumentNamePath"),
+        new ListItem("DocumentUrlPath"),
+        new ListItem("DocumentPageTitle"),
+        new ListItem("DocumentPageDescription"),
+        new ListItem("DocumentMenuCaption"),
+        new ListItem("DocumentCustomData"),
+        new ListItem("DocumentTags"),
+        new ListItem("NodeAliasPath"),
+        new ListItem("NodeName"),
+        new ListItem("NodeAlias"),
+        new ListItem("NodeCustomData"),
+        new ListItem("SKUNumber"),
+        new ListItem("SKUName"),
+        new ListItem("SKUDescription"),
+        new ListItem("SKUImagePath"),
+        new ListItem("SKUCustomData")
+    };
 
     // Contains item list for 'Content' drop-down list.
-    private string allowedContent = "DocumentName;DocumentNamePath;DocumentUrlPath;DocumentPageTitle;DocumentPageDescription;DocumentMenuCaption;DocumentContent;DocumentCustomData;DocumentTags;NodeAliasPath;NodeName;NodeAlias;NodeCustomData;SKUNumber;SKUName;SKUDescription;SKUImagePath;SKUCustomData";
+    private static readonly ListItem[] ALLOWED_CONTENT = new[]
+    {
+        new ListItem("DocumentName"),
+        new ListItem("DocumentNamePath"),
+        new ListItem("DocumentUrlPath"),
+        new ListItem("DocumentPageTitle"),
+        new ListItem("DocumentPageDescription"),
+        new ListItem("DocumentMenuCaption"),
+        new ListItem("DocumentContent"),
+        new ListItem("DocumentCustomData"),
+        new ListItem("DocumentTags"),
+        new ListItem("NodeAliasPath"),
+        new ListItem("NodeName"),
+        new ListItem("NodeAlias"),
+        new ListItem("NodeCustomData"),
+        new ListItem("SKUNumber"),
+        new ListItem("SKUName"),
+        new ListItem("SKUDescription"),
+        new ListItem("SKUImagePath"),
+        new ListItem("SKUCustomData")
+    };
 
     // Contains item list for 'Image' field
-    private string allowedImage = "DocumentContent;SKUImagePath";
+    private static readonly ListItem[] ALLOWED_IMAGE = new[]
+    {
+        new ListItem("DocumentContent"),
+        new ListItem("SKUImagePath")
+    };
 
     // Contains item list for 'Date' drop-down list.
-    private string allowedDate = "DocumentModifiedWhen;DocumentCreatedWhen;DocumentCheckedOutWhen;DocumentPublishFrom;DocumentPublishTo;SKULastModified;SKUCreated";
+    private static readonly ListItem[] ALLOWED_DATE = new[]
+    {
+        new ListItem("DocumentModifiedWhen"),
+        new ListItem("DocumentCreatedWhen"),
+        new ListItem("DocumentCheckedOutWhen"),
+        new ListItem("DocumentPublishFrom"),
+        new ListItem("DocumentPublishTo"),
+        new ListItem("SKULastModified"),
+        new ListItem("SKUCreated")
+    };
 
     private string mSaveResourceString = "general.changessaved";
     private string mRebuildIndexResourceString = "searchindex.requiresrebuild";
@@ -78,14 +129,8 @@ public partial class CMSModules_SmartSearch_Controls_Edit_SearchFields : CMSAdmi
     /// </summary>
     public bool LoadActualValues
     {
-        get
-        {
-            return mLoadActualValues;
-        }
-        set
-        {
-            mLoadActualValues = value;
-        }
+        get;
+        set;
     }
 
 
@@ -144,11 +189,7 @@ public partial class CMSModules_SmartSearch_Controls_Edit_SearchFields : CMSAdmi
     {
         get
         {
-            if (dci == null)
-            {
-                dci = DataClassInfoProvider.GetDataClassInfo(ItemID);
-            }
-            return dci;
+            return dci ?? (dci = DataClassInfoProvider.GetDataClassInfo(ItemID));
         }
     }
 
@@ -213,7 +254,7 @@ public partial class CMSModules_SmartSearch_Controls_Edit_SearchFields : CMSAdmi
         ClassFields.ReloadData(setAutomatically, true);
 
         // Initialize properties
-        List<IField> itemList = null;
+        List<IDataDefinitionItem> itemList = null;
 
         if (ClassInfo != null)
         {
@@ -263,171 +304,6 @@ public partial class CMSModules_SmartSearch_Controls_Edit_SearchFields : CMSAdmi
         }
     }
 
-
-    /// <summary>
-    /// Reloads drop-down lists with new data.
-    /// </summary>
-    private void ReloadControls()
-    {
-        if ((ClassInfo != null))
-        {
-            #region "Load drop-down list 'Title field'"
-
-            drpTitleField.Items.Clear();
-            string[] array;
-
-            if (!LoadActualValues)
-            {
-                array = allowedTitles.Split(';');
-                foreach (string item in array)
-                {
-                    if (!String.IsNullOrEmpty(item))
-                    {
-                        drpTitleField.Items.Add(new ListItem(item));
-                    }
-                }
-            }
-
-            foreach (object[] item in attributes)
-            {
-                object[] obj = item;
-                drpTitleField.Items.Add(new ListItem(obj[0].ToString()));
-            }
-
-            // Preselect value
-            if (!String.IsNullOrEmpty(ClassInfo.ClassSearchTitleColumn))
-            {
-                drpTitleField.SelectedValue = ClassInfo.ClassSearchTitleColumn;
-            }
-            else
-            {
-                if (!LoadActualValues)
-                {
-                    drpTitleField.SelectedValue = SearchHelper.DEFAULT_SEARCH_TITLE_COLUMN;
-                }
-            }
-
-            #endregion
-
-
-            #region "Load drop-down list 'Content field'"
-
-            drpContentField.Items.Clear();
-
-            if (!LoadActualValues)
-            {
-                array = allowedContent.Split(';');
-                foreach (string item in array)
-                {
-                    if (!String.IsNullOrEmpty(item))
-                    {
-                        drpContentField.Items.Add(new ListItem(item));
-                    }
-                }
-            }
-            else
-            {
-                drpContentField.Items.Add(new ListItem(GetString("general.selectnone"), "0"));
-            }
-
-            foreach (object[] item in attributes)
-            {
-                object[] obj = item;
-                drpContentField.Items.Add(new ListItem(obj[0].ToString()));
-            }
-
-            // Preselect value
-            if (!String.IsNullOrEmpty(ClassInfo.ClassSearchContentColumn))
-            {
-                drpContentField.SelectedValue = ClassInfo.ClassSearchContentColumn;
-            }
-            else
-            {
-                if (!LoadActualValues)
-                {
-                    drpContentField.SelectedValue = SearchHelper.DEFAULT_SEARCH_CONTENT_COLUMN;
-                }
-            }
-
-            #endregion
-
-
-            #region "Load drop-down list 'Image field'"
-
-            drpImageField.Items.Clear();
-
-            drpImageField.Items.Add(new ListItem(GetString("general.selectnone"), "0"));
-
-            if (!LoadActualValues)
-            {
-                array = allowedImage.Split(';');
-                foreach (string item in array)
-                {
-                    if (!String.IsNullOrEmpty(item))
-                    {
-                        drpImageField.Items.Add(new ListItem(item));
-                    }
-                }
-            }
-
-            foreach (object[] item in attributes)
-            {
-                object[] obj = item;
-                drpImageField.Items.Add(new ListItem(obj[0].ToString()));
-            }
-            // Preselect value
-            if (!String.IsNullOrEmpty(ClassInfo.ClassSearchImageColumn))
-            {
-                drpImageField.SelectedValue = ClassInfo.ClassSearchImageColumn;
-            }
-
-            #endregion
-
-
-            #region "Load drop-down list 'Date field'"
-
-            drpDateField.Items.Clear();
-
-            if (!LoadActualValues)
-            {
-                array = allowedDate.Split(';');
-                foreach (string item in array)
-                {
-                    if (!String.IsNullOrEmpty(item))
-                    {
-                        drpDateField.Items.Add(new ListItem(item));
-                    }
-                }
-            }
-            else
-            {
-                drpDateField.Items.Add(new ListItem(GetString("general.selectnone"), "0"));
-            }
-
-            foreach (object[] item in attributes)
-            {
-                object[] obj = item;
-                drpDateField.Items.Add(new ListItem(obj[0].ToString()));
-            }
-
-            // Preselect value
-            if (!String.IsNullOrEmpty(ClassInfo.ClassSearchCreationDateColumn))
-            {
-                drpDateField.SelectedValue = ClassInfo.ClassSearchCreationDateColumn;
-            }
-            else
-            {
-                if (!LoadActualValues)
-                {
-                    drpDateField.SelectedValue = SearchHelper.DEFAULT_SEARCH_CREATION_DATE_COLUMN;
-                }
-            }
-
-            #endregion
-        }
-    }
-
-
     /// <summary>
     /// Enables or disables search for current class.
     /// </summary>
@@ -462,6 +338,101 @@ public partial class CMSModules_SmartSearch_Controls_Edit_SearchFields : CMSAdmi
     public void SaveData()
     {
         ClassFields.SaveData();
+    }
+
+    /// <summary>
+    /// Reloads drop-down lists with new data.
+    /// </summary>
+    private void ReloadControls()
+    {
+        if ((ClassInfo == null))
+        {
+            return;
+        }
+
+        // Load drop-down list 'Title field'
+        LoadAndPreselectListControl(drpTitleField, ALLOWED_TITLES, false, attributes, ClassInfo.ClassSearchTitleColumn, SearchHelper.DEFAULT_SEARCH_TITLE_COLUMN);
+
+        // Load drop-down list 'Content field'
+        LoadAndPreselectListControl(drpContentField, ALLOWED_CONTENT, true, attributes, ClassInfo.ClassSearchContentColumn, SearchHelper.DEFAULT_SEARCH_CONTENT_COLUMN);
+
+        // Load drop-down list 'Image field'
+        LoadAndPreselectListControl(drpImageField, PrependNoneOption(ALLOWED_IMAGE), true, attributes, ClassInfo.ClassSearchImageColumn);
+
+        // "Load drop-down list 'Date field'
+        LoadAndPreselectListControl(drpDateField, ALLOWED_DATE, true, attributes, ClassInfo.ClassSearchCreationDateColumn, SearchHelper.DEFAULT_SEARCH_CREATION_DATE_COLUMN);
+    }
+
+
+    /// <summary>
+    /// Loads data into given <paramref name="listControl"/> and tries to preselect value according to <paramref name="valueToSelect"/> or <paramref name="defaultValueToSelect"/>.
+    /// </summary>
+    /// <param name="listControl">List control</param>
+    /// <param name="defaultData">First data source to be loaded; only if <see cref="LoadActualValues"/> is false</param>
+    /// <param name="allowNoneOption">Indicates if "(none)" option can be loaded if <see cref="LoadActualValues"/> is true</param>
+    /// <param name="fieldsData">Fields data source which is always loaded</param>
+    /// <param name="valueToSelect">Value that is preselected in the <paramref name="listControl"/> if it is not empty</param>
+    /// <param name="defaultValueToSelect">Value that is preselected if <paramref name="valueToSelect"/> is empty or is not among loaded items and <see cref="LoadActualValues"/> is false</param>
+    /// <remarks>Any items present in <paramref name="listControl"/> are removed.</remarks>
+    private void LoadAndPreselectListControl(ListControl listControl, IEnumerable<ListItem> defaultData, bool allowNoneOption, IEnumerable fieldsData, string valueToSelect, string defaultValueToSelect = null)
+    {
+        // Clear current items
+        listControl.Items.Clear();
+
+        // Load new items
+        if (!LoadActualValues)
+        {
+            foreach (var item in defaultData)
+            {
+                listControl.Items.Add(item);
+            }
+        }
+        else if (allowNoneOption)
+        {
+            listControl.Items.Add(GetNoneOption());
+        }
+
+        foreach (object[] item in fieldsData)
+        {
+            listControl.Items.Add(new ListItem(item[0].ToString()));
+        }
+
+        // Preselect value
+        if (!String.IsNullOrEmpty(valueToSelect) && (listControl.Items.FindByValue(valueToSelect) != null))
+        {
+            listControl.SelectedValue = valueToSelect;
+        }
+        else
+        {
+            if (!LoadActualValues && !String.IsNullOrEmpty(defaultValueToSelect))
+            {
+                listControl.SelectedValue = defaultValueToSelect;
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// Returns new <see cref="ListItem"/> for none option
+    /// using general resource string for none options and zero as item's value.
+    /// </summary>
+    private ListItem GetNoneOption()
+    {
+        return new ListItem(GetString("general.selectnone"), "0");
+    }
+
+
+    /// <summary>
+    /// Prepends given collection of options with none-option retrieved from <see cref="GetNoneOption"/> method.
+    /// </summary>
+    /// <param name="options">Collection to be prepended with none-option.</param>
+    /// <returns>Collection of none-option followed by all items from the <paramref name="options"/>.</returns>
+    private IEnumerable<ListItem> PrependNoneOption(IEnumerable<ListItem> options)
+    {
+        return Enumerable
+            .Empty<ListItem>()
+            .Union(new[] { GetNoneOption() })
+            .Union(options);
     }
 
     #endregion
@@ -504,15 +475,9 @@ public partial class CMSModules_SmartSearch_Controls_Edit_SearchFields : CMSAdmi
                 // Save advanced information only in advanced mode
                 ClassInfo.ClassSearchTitleColumn = drpTitleField.SelectedValue;
                 ClassInfo.ClassSearchContentColumn = drpContentField.SelectedValue;
-                if (drpImageField.SelectedValue != "0")
-                {
-                    ClassInfo.ClassSearchImageColumn = drpImageField.SelectedValue;
-                }
-                else
-                {
-                    ClassInfo.ClassSearchImageColumn = DBNull.Value.ToString();
-                }
+                ClassInfo.ClassSearchImageColumn = (drpImageField.SelectedValue != "0") ? drpImageField.SelectedValue : DBNull.Value.ToString();
                 ClassInfo.ClassSearchCreationDateColumn = drpDateField.SelectedValue;
+
                 DataClassInfoProvider.SetDataClassInfo(ClassInfo);
             }
 

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSModules/EventManager/Controls/EventAttendees.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSModules/EventManager/Controls/EventAttendees.ascx.cs"
     Inherits="CMSModules_EventManager_Controls_EventAttendees" %>
 <%@ Register Src="~/CMSModules/EventManager/Controls/EventAttendees_Edit.ascx" TagName="AttendeesEdit"
     TagPrefix="cms" %>

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="True" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Title="Conversion properties" Inherits="CMSModules_WebAnalytics_Pages_Tools_Conversion_Edit" Theme="Default" Codebehind="Edit.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="True" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+    Title="Conversion properties" Inherits="CMSModules_WebAnalytics_Pages_Tools_Conversion_Edit" Theme="Default"  Codebehind="Edit.aspx.cs" %>
 <%@ Register Src="~/CMSModules/WebAnalytics/Controls/UI/Conversion/Edit.ascx"
     TagName="ConversionEdit" TagPrefix="cms" %>
     

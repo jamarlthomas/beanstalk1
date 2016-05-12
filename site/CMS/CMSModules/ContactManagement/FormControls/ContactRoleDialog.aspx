@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="True" Inherits="CMSModules_ContactManagement_FormControls_ContactRoleDialog"
     Title="Contact role" EnableEventValidation="false" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
-    Theme="Default" Codebehind="ContactRoleDialog.aspx.cs" %>
+    Theme="Default"  Codebehind="ContactRoleDialog.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>

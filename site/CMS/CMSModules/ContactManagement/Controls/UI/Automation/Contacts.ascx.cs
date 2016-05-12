@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
 using CMS.Automation;
 using CMS.Core;
+using CMS.DataEngine;
 using CMS.PortalEngine;
 using CMS.UIControls;
 using CMS.Base;
@@ -105,6 +106,15 @@ public partial class CMSModules_ContactManagement_Controls_UI_Automation_Contact
             "function Refresh() {" +
             "__doPostBack('" + this.ClientID + @"', '');" +
             "}"));
+
+        // Hide filtered fields that are on separated database, since the query that the filter
+        // returns couldn't be executed anyways
+        if (SqlInstallationHelper.DatabaseIsSeparated())
+        {
+            listElem.FilterForm.FieldsToHide.Add("ContactLastName");
+            listElem.FilterForm.FieldsToHide.Add("ContactFirstName");
+            listElem.FilterForm.FieldsToHide.Add("ContactEmail");
+        }
     }
 
 

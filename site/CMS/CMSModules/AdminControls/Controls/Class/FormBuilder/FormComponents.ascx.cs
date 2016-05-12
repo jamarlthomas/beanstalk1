@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Text;
+using System.Web.Caching;
 using System.Web.UI;
 
 using CMS.DataEngine;
@@ -9,6 +10,9 @@ using CMS.UIControls;
 
 public partial class CMSModules_AdminControls_Controls_Class_FormBuilder_FormComponents : CMSUserControl
 {
+    private const string CACHE_KEY = "FormBuilderComponents";
+
+
     protected override void OnLoad(EventArgs e)
     {
         base.OnLoad(e);
@@ -19,25 +23,37 @@ public partial class CMSModules_AdminControls_Controls_Class_FormBuilder_FormCom
 
     private void FillPanelWithComponents()
     {
-        var controls = FormUserControlInfoProvider.GetFormUserControls("UserControlShowInBizForms = 1 AND UserControlPriority = 100", null);
-        StringBuilder content = new StringBuilder();
+        string value;
 
-        foreach (var control in controls)
+        // Try to retrieve data from the cache
+        if (!CacheHelper.TryGetItem(CACHE_KEY, out value))
         {
-            string iconUrl;
-            if (control.UserControlThumbnailGUID == Guid.Empty)
+            var controls = FormUserControlInfoProvider.GetFormUserControls("UserControlDisplayName,UserControlCodeName,UserControlDescription,UserControlThumbnailGUID", "UserControlShowInBizForms = 1 AND UserControlPriority = 100", "UserControlDisplayName");
+            StringBuilder content = new StringBuilder();
+
+            foreach (var control in controls)
             {
-                iconUrl = GetImageUrl("CMSModules/CMS_FormEngine/custom.png");
-            }
-            else
-            {
-                iconUrl = ResolveUrl(MetaFileURLProvider.GetMetaFileUrl(control.UserControlThumbnailGUID, "icon"));
+                string iconUrl;
+                if (control.UserControlThumbnailGUID == Guid.Empty)
+                {
+                    iconUrl = GetImageUrl("CMSModules/CMS_FormEngine/custom.png");
+                }
+                else
+                {
+                    iconUrl = ResolveUrl(MetaFileURLProvider.GetMetaFileUrl(control.UserControlThumbnailGUID, "icon"));
+                }
+
+                content.AppendFormat("<div title=\"{0}\"><div class=\"form-component component_{1}\" ondblclick=\"FormBuilder.addNewField('{1}','',-1);FormBuilder.scrollPosition=9999;FormBuilder.showSavingInfo();\"><span class=\"component-label\">{2}</span><img src=\"{3}\" alt=\"{1}\" /></div></div>",
+                    ResHelper.LocalizeString(control.UserControlDescription), control.UserControlCodeName, control.UserControlDisplayName, iconUrl);
             }
 
-            content.AppendFormat("<div title=\"{0}\"><div class=\"form-component component_{1}\" ondblclick=\"FormBuilder.addNewField('{1}','',-1);FormBuilder.scrollPosition=9999;\"><span class=\"component-label\">{2}</span><img src=\"{3}\" alt=\"{1}\" /></div></div>",
-                ResHelper.LocalizeString(control.UserControlDescription), control.UserControlCodeName, control.UserControlDisplayName, iconUrl);
+            value = content.ToString();
+
+            var dependency = CacheHelper.GetCacheDependency(FormUserControlInfo.OBJECT_TYPE + "|all");
+
+            CacheHelper.Add(CACHE_KEY, value, dependency, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(5));
         }
 
-        pnlFormComponents.Controls.Add(new LiteralControl(content.ToString()));
+        pnlFormComponents.Controls.Add(new LiteralControl(value));
     }
 }

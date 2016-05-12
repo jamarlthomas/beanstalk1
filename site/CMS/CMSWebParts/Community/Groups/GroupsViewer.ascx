@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_Community_Groups_GroupsViewer" Codebehind="~/CMSWebParts/Community/Groups/GroupsViewer.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSWebParts_Community_Groups_GroupsViewer"  Codebehind="~/CMSWebParts/Community/Groups/GroupsViewer.ascx.cs" %>
 <%@ Register Src="~/CMSWebparts/Community/Groups/GroupsFilter_files/GroupsFilterControl.ascx"
     TagName="GroupsFilterControl" TagPrefix="cms" %>
 <%@ Register TagPrefix="cms" Namespace="CMS.Community" Assembly="CMS.Community" %>

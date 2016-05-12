@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Membership_Registration_WindowsLiveID"
-    Codebehind="~/CMSWebParts/Membership/Registration/WindowsLiveID.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Membership_Registration_WindowsLiveID"
+     Codebehind="~/CMSWebParts/Membership/Registration/WindowsLiveID.ascx.cs" %>
 <asp:Label ID="lblError" runat="server" CssClass="ErrorLabel" Visible="false" EnableViewState="false" />
 <asp:HyperLink ID="lnkSignIn" runat="server" Visible="false" EnableViewState="false"
     Style="cursor: pointer;" />

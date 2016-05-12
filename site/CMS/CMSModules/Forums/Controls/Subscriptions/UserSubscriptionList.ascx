@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="UserSubscriptionList.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="UserSubscriptionList.ascx.cs"
     Inherits="CMSModules_Forums_Controls_Subscriptions_UserSubscriptionList" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>

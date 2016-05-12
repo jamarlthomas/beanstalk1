@@ -1,7 +1,7 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_Tools_ReportTable_Edit"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_Tools_ReportTable_Edit"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="ReportTable Edit" ValidateRequest="false" EnableEventValidation="false"
-    Codebehind="~/CMSModules/Reporting/Tools/ReportTable_Edit.aspx.cs" %>
+     Codebehind="~/CMSModules/Reporting/Tools/ReportTable_Edit.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/System/LocalizableTextBox.ascx" TagName="LocalizableTextBox"
     TagPrefix="cms" %>

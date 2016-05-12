@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_Suppliers_Supplier_List"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_Suppliers_Supplier_List"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Supplier - list"
-    Codebehind="Supplier_List.aspx.cs" %>
+     Codebehind="Supplier_List.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>

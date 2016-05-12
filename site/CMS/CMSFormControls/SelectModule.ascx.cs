@@ -1,14 +1,9 @@
-using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
+﻿using System;
 
 using CMS.ExtendedControls;
 using CMS.FormControls;
 using CMS.Membership;
+using CMS.Modules;
 using CMS.SiteProvider;
 using CMS.UIControls;
 using CMS.Helpers;
@@ -20,6 +15,7 @@ public partial class CMSFormControls_SelectModule : FormEngineUserControl
     #region "Variables"
 
     private int mSiteID = 0;
+    private ResourceInfo mSelectedModule;
 
     #endregion
 
@@ -90,6 +86,7 @@ public partial class CMSFormControls_SelectModule : FormEngineUserControl
                 pnlUpdate.LoadContainer();
             }
             uniSelector.Value = value;
+            mSelectedModule = null;
         }
     }
 
@@ -175,7 +172,7 @@ public partial class CMSFormControls_SelectModule : FormEngineUserControl
 
 
     /// <summary>
-    /// If true, displays all modules. If false, displayes only modules with some UI Elements.
+    /// If true, displays all modules. If false, displays only modules with some UI Elements.
     /// </summary>
     public bool DisplayAllModules
     {
@@ -187,6 +184,17 @@ public partial class CMSFormControls_SelectModule : FormEngineUserControl
         {
             SetValue("DisplayAllModules", value);
         }
+    }
+
+
+
+    /// <summary>
+    /// If true, the selector works in filter mode and ignores development mode.
+    /// </summary>
+    public bool FilterMode
+    {
+        get;
+        set;
     }
 
 
@@ -255,6 +263,18 @@ public partial class CMSFormControls_SelectModule : FormEngineUserControl
         }
     }
 
+
+    /// <summary>
+    /// Selected/assigned module or null if none is selected.
+    /// </summary>
+    private ResourceInfo SelectedModule
+    {
+        get
+        {
+            return mSelectedModule ?? (mSelectedModule = ResourceInfoProvider.GetResourceInfo(ValidationHelper.GetInteger(Value, 0)));
+        }
+    }
+
     #endregion
 
 
@@ -268,6 +288,12 @@ public partial class CMSFormControls_SelectModule : FormEngineUserControl
         else
         {
             ReloadData(false);
+        }
+
+        if (!FilterMode && (SelectedModule != null) && !SelectedModule.ResourceIsInDevelopment)
+        {
+            // Disable the control handling the module assignment
+            Enabled = false;
         }
     }
 
@@ -291,7 +317,7 @@ public partial class CMSFormControls_SelectModule : FormEngineUserControl
         if (forcedReload)
         {
             uniSelector.Reload(true);
-        }
+       } 
     }
 
 
@@ -300,13 +326,20 @@ public partial class CMSFormControls_SelectModule : FormEngineUserControl
     /// </summary>
     private string GetProperWhereCondition()
     {
+        // Check module development only when is not in filter mode
+        if (!FilterMode && (SelectedModule != null) && !SelectedModule.ResourceIsInDevelopment)
+        {
+            // Load just the selected module
+            return "ResourceID = " + Value;
+        }
+
         string where = "";
 
         if (!DisplayAllModules)
         {
             if (MembershipContext.AuthenticatedUser.CheckPrivilegeLevel(UserPrivilegeLevelEnum.GlobalAdmin))
             {
-                where = "(ResourceID IN (SELECT ElementResourceID FROM CMS_UIElement)) AND NOT ResourceName = 'CMS.WYSIWYGEditor'";
+                where = "(ResourceID IN (SELECT DISTINCT ElementResourceID FROM CMS_UIElement)) AND NOT ResourceName = 'CMS.WYSIWYGEditor'";
             }
             else
             {

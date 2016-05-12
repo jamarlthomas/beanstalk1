@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Product_Edit_Variant_Edit.aspx.cs"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Product_Edit_Variant_Edit.aspx.cs"
     Inherits="CMSModules_Ecommerce_Pages_Tools_Products_Product_Edit_Variant_Edit"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Title="Variant properties" %>
 

@@ -1,7 +1,8 @@
-using System;
-using System.Data;
+﻿using System;
 
+using CMS.DataEngine;
 using CMS.ExtendedControls.ActionsConfig;
+using CMS.FormEngine;
 using CMS.Helpers;
 using CMS.OnlineForms;
 using CMS.PortalEngine;
@@ -31,14 +32,37 @@ public partial class CMSModules_BizForms_Tools_BizForm_List : CMSBizFormPage
         }
 
         UniGridBizForms.OnAction += UniGridBizForms_OnAction;
-        UniGridBizForms.OnAfterRetrieveData += uniGrid_OnAfterRetrieveData;
         UniGridBizForms.HideControlForZeroRows = false;
         UniGridBizForms.ZeroRowsText = GetString("general.nodatafound");
-        UniGridBizForms.WhereCondition = "FormSiteID = " + SiteContext.CurrentSiteID;
+        UniGridBizForms.WhereCondition = GetUniGridWhereCondition();
 
         PageTitle.TitleText = GetString("BizFormList.TitleText");
 
         InitHeaderActions();
+    }
+
+
+    private string GetUniGridWhereCondition()
+    {
+        // Global administrators can see all forms. 
+        if (currentUser.IsGlobalAdministrator)
+        {
+            return "FormSiteID = " + SiteContext.CurrentSiteID;
+        }
+
+        var bizFormsAvailableForUser = BizFormInfoProvider.GetBizForms()
+                                                          .Column("CMS_Form.FormID")
+                                                          .OnSite(SiteContext.CurrentSiteID)
+                                                          .Distinct()
+                                                          .Source(s => s.LeftJoin<BizFormRoleInfo>("FormID", "FormID"))
+                                                          .Where(new WhereCondition()
+                                                              .WhereIn("RoleID", UserRoleInfoProvider.GetUserRoles().Column("RoleID").WhereEquals("UserID", currentUser.UserID))
+                                                              .Or()
+                                                              .WhereNull("FormAccess")
+                                                              .Or()
+                                                              .WhereEquals("FormAccess", (int)FormAccessEnum.AllBizFormUsers));
+
+        return new WhereCondition().WhereIn("CMS_Form.FormID", bizFormsAvailableForUser).ToString(true);
     }
 
 
@@ -52,29 +76,6 @@ public partial class CMSModules_BizForms_Tools_BizForm_List : CMSBizFormPage
             ResourceName = "cms.form",
             Permission = "CreateForm"
         });
-    }
-
-
-    private DataSet uniGrid_OnAfterRetrieveData(DataSet ds)
-    {
-        if (!DataHelper.DataSourceIsEmpty(ds))
-        {
-            int i = 0;
-            while (i < ds.Tables[0].Rows.Count)
-            {
-                BizFormInfo form = new BizFormInfo(ds.Tables[0].Rows[i]);
-                if (!form.IsFormAllowedForUser(currentUser, SiteContext.CurrentSiteName))
-                {
-                    ds.Tables[0].Rows.RemoveAt(i);
-                }
-                else
-                {
-                    i++;
-                }
-            }
-        }
-
-        return ds;
     }
 
 
@@ -92,7 +93,6 @@ public partial class CMSModules_BizForms_Tools_BizForm_List : CMSBizFormPage
                 RedirectToAccessDenied("cms.form", "DeleteFormAndData");
             }
 
-            // Delete Bizform
             BizFormInfoProvider.DeleteBizFormInfo(ValidationHelper.GetInteger(actionArgument, 0));
         }
     }

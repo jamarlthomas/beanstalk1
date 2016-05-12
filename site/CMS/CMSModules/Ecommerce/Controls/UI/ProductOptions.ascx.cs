@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Web.UI.WebControls;
 
+using CMS.Core;
 using CMS.DataEngine;
 using CMS.Ecommerce;
 using CMS.Helpers;
@@ -256,7 +257,7 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductOptions : CMSAdminC
                     }
 
                     var query = QueryHelper.BuildQuery("siteId", category.CategorySiteID.ToString(), "productId", ProductID.ToString());
-                    string redirectUrl = UIContextHelper.GetElementDialogUrl("CMS.Ecommerce", "EditProductOptionCategory", category.CategoryID, query);
+                    string redirectUrl = UIContextHelper.GetElementDialogUrl(ModuleName.ECOMMERCE, "EditProductOptionCategory", category.CategoryID, query);
                     btn.OnClientClick = "modalDialog('" + redirectUrl + "','categoryEdit', '1000', '800');";
                 }
                 break;
@@ -277,7 +278,7 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductOptions : CMSAdminC
                     {
                         var query = QueryHelper.BuildQuery("productId", ProductID.ToString());
                         // URL of allowed option selector pop-up
-                        string urlSelect = UIContextHelper.GetElementDialogUrl("CMS.Ecommerce", "ProductOptions.SelectOptions", category.CategoryID, query);
+                        string urlSelect = UIContextHelper.GetElementDialogUrl(ModuleName.ECOMMERCE, "ProductOptions.SelectOptions", category.CategoryID, query);
 
                         // Open allowed options selection dialog
                         btnSelect.OnClientClick = ScriptHelper.GetModalDialogScript( urlSelect, "selectoptions", 1000, 650);

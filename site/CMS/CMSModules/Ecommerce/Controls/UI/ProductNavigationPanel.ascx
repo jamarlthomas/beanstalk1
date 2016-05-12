@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="ProductNavigationPanel.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="ProductNavigationPanel.ascx.cs"
     Inherits="CMSModules_Ecommerce_Controls_UI_ProductNavigationPanel" %>
 <cms:UILayout runat="server" ID="layoutElem">
     <Panes>

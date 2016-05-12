@@ -1,6 +1,6 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
     AutoEventWireup="true" EnableEventValidation="false" Inherits="CMSFormControls_Selectors_QuicklyInsertImage_Default"
-    Codebehind="Default.aspx.cs" %>
+     Codebehind="Default.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/Attachments/DirectFileUploader/DirectFileUploaderControl.ascx"
     TagName="DirectFileUploaderControl" TagPrefix="cms" %>

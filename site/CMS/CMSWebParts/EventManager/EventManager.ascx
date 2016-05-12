@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSWebParts_EventManager_EventManager" Codebehind="~/CMSWebParts/EventManager/EventManager.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_EventManager_EventManager"  Codebehind="~/CMSWebParts/EventManager/EventManager.ascx.cs" %>
+<%@ Register Src="~/CMSFormControls/Inputs/InternationalPhone.ascx" TagPrefix="cms" TagName="PhoneBox" %>
 <asp:Label runat="server" ID="lblInfo" CssClass="EventManagerInfo" Visible="false"
     EnableViewState="false" />
 <asp:Panel runat="server" ID="pnlControl">
@@ -47,7 +47,7 @@
                                 EnableViewState="false" AssociatedControlID="txtPhone" ResourceString="eventmanager.phone" />
                         </div>
                         <div class="editing-form-value-cell">
-                            <cms:CMSTextBox runat="server" ID="txtPhone" EnableViewState="false" MaxLength="50" />
+                            <cms:PhoneBox runat="server" ID="txtPhone" EnableViewState="false"/>
                         </div>
                     </div>
                 </asp:PlaceHolder>

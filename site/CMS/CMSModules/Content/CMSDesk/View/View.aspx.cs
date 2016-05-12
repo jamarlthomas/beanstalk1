@@ -5,6 +5,7 @@ using CMS.Helpers;
 using CMS.PortalEngine;
 using CMS.UIControls;
 using CMS.Base;
+using CMS.Membership;
 
 public partial class CMSModules_Content_CMSDesk_View_View : CMSContentPage
 {
@@ -50,9 +51,6 @@ public partial class CMSModules_Content_CMSDesk_View_View : CMSContentPage
         ScriptHelper.RegisterJQuery(Page);
         ScriptHelper.RegisterModule(Page, "CMS/HeaderShadow");
 
-        ucView.ViewPage = DocumentUIHelper.GetViewPageUrl();
-        ucView.RotateDevice = ValidationHelper.GetBoolean(CookieHelper.GetValue(CookieName.CurrentDeviceProfileRotate), false);
-
         // Setup Edit menu
         bool preview = PortalContext.ViewMode.IsPreview();
 
@@ -68,9 +66,8 @@ public partial class CMSModules_Content_CMSDesk_View_View : CMSContentPage
         editMenu.UseSmallIcons = true;
         editMenu.IsLiveSite = false;
 
-        // Bind external buttons (i.e. Persona selector)
-        var extensionTarget = editMenu as IExtensibleEditMenu;
-        extensionTarget.InitializeExtenders("Content");
+        ucView.ViewPage = DocumentUIHelper.GetViewPageUrl();
+        ucView.RotateDevice = ValidationHelper.GetBoolean(CookieHelper.GetValue(CookieName.CurrentDeviceProfileRotate), false);
 
         const string deviceRotateScript = @"
 $cmsj(document).ready(function () {
@@ -82,7 +79,17 @@ $cmsj(document).ready(function () {
     }
 });";
 
-        ScriptHelper.RegisterStartupScript(this, typeof(String), "deviceRotateScript", deviceRotateScript, true);
+        ScriptHelper.RegisterStartupScript(this, typeof(string), "deviceRotateScript", deviceRotateScript, true);
+
+        // Bind external buttons (i.e. Persona selector)
+        var extensionTarget = editMenu as IExtensibleEditMenu;
+        extensionTarget.InitializeExtenders("Content");
+
+        if (Node.NodeIsContentOnly)
+        {
+            // Preview link is not valid after going through workflow because DocumentWorkflowCycleGUID has changed
+            DocumentManager.OnAfterAction += (obj, args) => { ucView.ViewPage = Node.GetPreviewLink(MembershipContext.AuthenticatedUser.UserName); };
+        }
     }
 
     #endregion

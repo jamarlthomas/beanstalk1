@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Controls_Users_UserFilter"
-    Codebehind="UserFilter.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Controls_Users_UserFilter"
+     Codebehind="UserFilter.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/Membership/FormControls/Roles/selectrole.ascx" TagName="SelectRole"
     TagPrefix="uc1" %>

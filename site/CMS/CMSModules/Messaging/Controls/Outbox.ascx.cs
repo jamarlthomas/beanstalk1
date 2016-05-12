@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -577,7 +577,7 @@ public partial class CMSModules_Messaging_Controls_Outbox : CMSUserControl
 
             ShowConfirmation(resultMessage);
 
-            outboxGrid.ResetSelection();
+            outboxGrid.ResetSelection(doPostback: false);
             outboxGrid.ReloadData();
         }
     }
@@ -661,7 +661,7 @@ public partial class CMSModules_Messaging_Controls_Outbox : CMSUserControl
             // Mark read message
             if (MarkReadMessage)
             {
-                DateTime messageRead = ValidationHelper.GetDateTime(DataHelper.GetDataRowValue(rowView.Row, "MessageRead"), DateTimeHelper.ZERO_TIME);
+                DateTime messageRead = DataHelper.GetDateTimeValue(rowView.Row, "MessageRead", DateTimeHelper.ZERO_TIME);
                 if (messageRead == DateTimeHelper.ZERO_TIME)
                 {
                     e.Row.CssClass += " Unread";

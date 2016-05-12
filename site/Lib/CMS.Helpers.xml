@@ -4,6 +4,21 @@
         <name>CMS.Helpers</name>
     </assembly>
     <members>
+        <member name="T:CMS.Helpers.Internal.AngularVersionEnum">
+            <summary>
+            Provides access to the all versions of angular currently supported by the CMS.
+            </summary>
+        </member>
+        <member name="F:CMS.Helpers.Internal.AngularVersionEnum.Version_1_2_20">
+            <summary>
+            Legacy version.
+            </summary>
+        </member>
+        <member name="F:CMS.Helpers.Internal.AngularVersionEnum.Version_1_4_5">
+            <summary>
+            Angular version 1.4.5.
+            </summary>
+        </member>
         <member name="T:CMS.Helpers.CacheDebug">
             <summary>
             Cache debug methods
@@ -103,31 +118,6 @@
             Dependency callback
             </summary>
         </member>
-        <member name="T:CMS.Helpers.PageHelper">
-            <summary>
-            Provides helper methods for current page events and settings
-            </summary>
-        </member>
-        <member name="P:CMS.Helpers.PageHelper.CurrentPage">
-            <summary>
-            Current System.Web.UI.Page instance
-            </summary>
-        </member>
-        <member name="E:CMS.Helpers.PageHelper.BeforeInitComplete">
-            <summary>
-            Occurs when page initialization is complete (prioritized events). Precedes <see cref="E:CMS.Helpers.PageContext.InitComplete"/>.
-            </summary>
-        </member>
-        <member name="E:CMS.Helpers.PageHelper.InitComplete">
-            <summary>
-            Occurs when page initialization is complete.
-            </summary>
-        </member>
-        <member name="E:CMS.Helpers.PageHelper.PreRender">
-            <summary>
-             Occurs in page pre-render phase.
-            </summary>
-        </member>
         <member name="T:CMS.Helpers.RequestContext">
             <summary>
             Request context properties
@@ -141,6 +131,11 @@
         <member name="M:CMS.Helpers.RequestContext.ClearCachedUrlValues">
             <summary>
             Clears the cached values related to URL of the request
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.RequestContext.CloneForNewThread">
+            <summary>
+            Clones the object for new thread
             </summary>
         </member>
         <member name="P:CMS.Helpers.RequestContext.LogCurrentError">
@@ -158,9 +153,19 @@
             Returns current request URL rewriting status.
             </summary>
         </member>
+        <member name="P:CMS.Helpers.RequestContext.IsContentPage">
+            <summary>
+            Indicates that the current request is a request to the content page.
+            </summary>
+        </member>
         <member name="P:CMS.Helpers.RequestContext.UseGZip">
             <summary>
             If true, the filter uses GZip compression on output.
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.RequestContext.ResponseIsCompressed">
+            <summary>
+            Indicates whether the current response contains compressed data.
             </summary>
         </member>
         <member name="P:CMS.Helpers.RequestContext.LogPageHit">
@@ -354,12 +359,13 @@
             Class that manages registering angular modules for request.
             </summary>
         </member>
-        <member name="M:CMS.Helpers.AngularContext.RegisterAngularModule(System.String,System.Object)">
+        <member name="M:CMS.Helpers.AngularContext.RegisterAngularModule(System.String,System.Object,CMS.Helpers.Internal.AngularVersionEnum)">
             <summary>
             Renders JavaScript code to start a client-side angular module.
             </summary>
             <param name="moduleID">The full name of the client-side module to register.</param>
             <param name="parameters">An object that contains the named parameters to set for the module.</param>
+            <param name="angularVersion">Version of the Angular to be used for the module</param>
         </member>
         <member name="P:CMS.Helpers.AngularContext.RegisteredModules">
             <summary>
@@ -368,6 +374,12 @@
             Value represents all the parameters of the module.
             
             Returns null if no module is registered.
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.AngularContext.AngularVersion">
+            <summary>
+            Specifies which one of supported angular versions should be used for the module.
+            Only one version of angular can be loaded at time.
             </summary>
         </member>
         <member name="T:CMS.Helpers.PersistentStorageManager">
@@ -464,8 +476,7 @@
             </summary>
             <param name="key">Object key</param>
             <returns>Path for the specified key, or null if <see cref="P:CMS.Helpers.PersistentStorageManager.PersistentDirectory"/> is null.</returns>
-            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="key"/> is null.</exception>
-            <exception cref="T:System.ArgumentException">Thrown when <paramref name="key"/> does not produce a valid path for persistent storage.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when <paramref name="key"/> is null or empty string.</exception>
         </member>
         <member name="M:CMS.Helpers.PersistentStorageManager.GetKey(System.String)">
             <summary>
@@ -475,11 +486,6 @@
             <returns>Key for the file name.</returns>
             <exception cref="T:System.ArgumentNullException">Thrown when file name is null.</exception>
             <exception cref="T:System.ArgumentException">Thrown when file name does not contain extension <see cref="F:CMS.Helpers.PersistentStorageManager.PERSISTENT_ITEM_FILE_EXTENSION"/>.</exception>
-        </member>
-        <member name="P:CMS.Helpers.PersistentStorageManager.LastError">
-            <summary>
-            Last provider error.
-            </summary>
         </member>
         <member name="P:CMS.Helpers.PersistentStorageManager.PersistentDirectory">
             <summary>
@@ -500,6 +506,26 @@
         <member name="P:CMS.Helpers.PersistentStorageManager.ItemLockObjectsKeyPrefix">
             <summary>
             Gets prefix used for unique identification of storage item locks.
+            </summary>
+        </member>
+        <member name="T:CMS.Helpers.FilesLocationTypeEnum">
+            <summary>
+            Enumeration for Files location type setting key.
+            </summary>
+        </member>
+        <member name="F:CMS.Helpers.FilesLocationTypeEnum.Database">
+            <summary>
+            Database
+            </summary>
+        </member>
+        <member name="F:CMS.Helpers.FilesLocationTypeEnum.FileSystem">
+            <summary>
+            File system
+            </summary>
+        </member>
+        <member name="F:CMS.Helpers.FilesLocationTypeEnum.Both">
+            <summary>
+            Database and file system.
             </summary>
         </member>
         <member name="T:CMS.Helpers.AbstractOutputFile">
@@ -803,11 +829,11 @@
             Range end constant
             </summary>
         </member>
-        <member name="M:CMS.Helpers.ResponseDataSender.#ctor(System.Web.HttpContext)">
+        <member name="M:CMS.Helpers.ResponseDataSender.#ctor(System.Web.HttpContextBase)">
             <summary>
             Creates a new ResponseDataSender instance.
             </summary>
-            <param name="context">Http context that will be used for sending a data.</param>
+            <param name="context">HTTP context that will be used for sending a data.</param>
         </member>
         <member name="M:CMS.Helpers.ResponseDataSender.WriteFile(System.String,System.Boolean)">
             <summary>
@@ -815,6 +841,7 @@
             </summary>
             <param name="filepath">File path</param>
             <param name="returnOutputData">If true, output data is returned</param>
+            <returns>Returns streamed binary data if requested by <paramref name="returnOutputData"/>. Binary data are never returned for range requests.</returns>
         </member>
         <member name="M:CMS.Helpers.ResponseDataSender.WriteBytes(System.Byte[])">
             <summary>
@@ -822,7 +849,7 @@
             </summary>
             <param name="data">Data to write</param>
         </member>
-        <member name="M:CMS.Helpers.ResponseDataSender.GetRange(System.Int64,System.Web.HttpContext)">
+        <member name="M:CMS.Helpers.ResponseDataSender.GetRange(System.Int64,System.Web.HttpContextBase)">
             <summary>
             Parses the range header from the request.
             </summary>
@@ -945,12 +972,12 @@
         </member>
         <member name="P:CMS.Helpers.HashSettings.CustomSalt">
             <summary>
-            Custom salt string.
+            Custom salt string. If not specified then default salt <see cref="P:CMS.Helpers.ValidationHelper.HashStringSalt"/> is used. 
             </summary>
         </member>
         <member name="P:CMS.Helpers.HashSettings.HashSalt">
             <summary>
-            Hash salt string. This salt represent the place from where the method is called.
+            Additional hash salt for specific context.
             </summary>
         </member>
         <member name="T:CMS.Helpers.Trackable`1">
@@ -968,6 +995,11 @@
             If true, the tracking of this type is enabled. Default false, configurable with web.config key CMSTrack[TypeName].
             </summary>
         </member>
+        <member name="M:CMS.Helpers.Trackable`1.#cctor">
+            <summary>
+            Static constructor
+            </summary>
+        </member>
         <member name="M:CMS.Helpers.Trackable`1.#ctor">
             <summary>
             Constructor
@@ -975,7 +1007,7 @@
         </member>
         <member name="M:CMS.Helpers.Trackable`1.TrackAllOpen(System.String)">
             <summary>
-            Tracks all open trackable objects of this type
+            Tracks all open trackable objects of this type. Only tracks the section if the tracking of current object is enabled. 
             </summary>
             <param name="reason">Track reason</param>
         </member>
@@ -1102,6 +1134,22 @@
             </summary>
             <returns>URL pattern for product documentation search</returns>
         </member>
+        <member name="T:CMS.Helpers.EnumCategoryAttribute">
+            <summary>
+            Allows to differentiate enum's members to categories.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.EnumCategoryAttribute.#ctor(System.String)">
+            <summary>
+            Specifies the category for an enum field.
+            </summary>
+            <param name="category">Category of the attributed enum field</param>
+        </member>
+        <member name="P:CMS.Helpers.EnumCategoryAttribute.Category">
+            <summary>
+            Gets the category.
+            </summary>
+        </member>
         <member name="T:CMS.Helpers.FontIconSizeEnum">
             <summary>
             Font icon size enumeration.
@@ -1160,11 +1208,6 @@
         <member name="F:CMS.Helpers.ComponentEvents.PREVIOUS">
             <summary>
             Previous event.
-            </summary>
-        </member>
-        <member name="F:CMS.Helpers.ComponentEvents.BACK">
-            <summary>
-            Back event.
             </summary>
         </member>
         <member name="F:CMS.Helpers.ComponentEvents.FINISH">
@@ -1297,6 +1340,11 @@
             Events that are fired and survive within current request.
             </summary>
         </member>
+        <member name="T:CMS.Helpers.IGetAttachmentHandler">
+            <summary>
+            Represents the contract that Kentico requires when processing HTTP requests for attachments.
+            </summary>
+        </member>
         <member name="T:CMS.Helpers.JsonConverters.URLConverter">
             <summary>
             JSON converter for string representing URL (Ensures URL resolving.)
@@ -1401,6 +1449,579 @@
             Key-value collection of all registered HTML identifiers. The value is a flag indicating whether the given HTML ID represented by key is registered.
             </summary>
         </member>
+        <member name="T:CMS.Helpers.FormattedXmlWriter">
+            <summary>
+            Custom XML writer to nicely format the document
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.GetInfiniteIndent(System.String)">
+            <summary>
+            Returns infinite collections of indent strings
+            </summary>
+            <remarks>This collection will never stop yielding next items, thus should only be used to obtain finite number of its items</remarks>
+            <param name="indentChars">The character string to use when indenting. This can be set to any string value. However, to ensure valid XML, you should specify only valid white space characters, such as space characters, tabs, carriage returns, or line feeds. The default is two spaces.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.EnsureSettings(System.Xml.XmlWriterSettings)">
+            <summary>
+            Ensures not-null XmlWriterSettings object is returned. If null settings are provided, result of <see cref="M:CMS.Helpers.FormattedXmlWriter.GetDefaultSettings"/> method is used.
+            </summary>
+            <param name="settings">Provided settings</param>
+            <returns>XmlWriterSettings object, never null</returns>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.IsSingleLine(System.String)">
+            <summary>
+            Returns true if provided text contains no line characters
+            </summary>
+            <param name="text">Text to check</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.GetDefaultSettings">
+            <summary>
+            Gets the default writer settings
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.#ctor(System.Text.StringBuilder,System.Xml.XmlWriterSettings)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="stringBuilder">Output string builder</param>
+            <param name="settings">XML Writer settings</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.#ctor(System.IO.Stream,System.Xml.XmlWriterSettings)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="stream">Output stream</param>
+            <param name="settings">XML Writer settings</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.IncreaseIndent">
+            <summary>
+            Based on settings increases current indention level.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.DecreaseIndent">
+            <summary>
+            Based on settings decreases current indention level.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteIndent">
+            <summary>
+            Writes out the current indentation.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteNewLine">
+            <summary>
+            Writes out a new line.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteCDataIndentEnd">
+            <summary>
+            Writes out the current indentation at the end of a CData block.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteCData(System.String)">
+            <summary>
+            Writes out a <![CDATA[...]]> block containing the specified text.
+            </summary>
+            <param name="text">The text to place inside the CDATA block.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteStartElement(System.String,System.String,System.String)">
+            <summary>
+            Writes the specified start tag and associates it with the given name space and prefix.
+            </summary>
+            <param name="prefix">The name space prefix of the element.</param>
+            <param name="localName">The local name of the element.</param>
+            <param name="namespace">The name space URI to associate with the element.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteEndElement">
+            <summary>
+            Closes one element and pops the corresponding name space scope.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteFullEndElement">
+            <summary>
+            Closes one element and pops the corresponding name space scope.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteStartDocument">
+            <summary>
+            Writes the XML declaration with the version
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteStartDocument(System.Boolean)">
+            <summary>
+            Writes the XML declaration with the version "1.0" and the standalone attribute.
+            </summary>
+            <param name="standalone">If true, it writes "standalone=yes"; if false, it writes "standalone=no"</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteEndDocument">
+            <summary>
+            Closes any open elements or attributes and puts the writer back in the Start state.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteDocType(System.String,System.String,System.String,System.String)">
+            <summary>
+            Writes an element with the specified local name and value.
+            </summary>
+            <param name="name">The name of the DOCTYPE. This must be non-empty.</param>
+            <param name="publicId">If non-null it also writes PUBLIC "publicId" "systemId" where publicId and systemId are replaced with the value of the given arguments.</param>
+            <param name="systemId">If publicId is null and systemId is non-null it writes SYSTEM "systemId" where publicId is replaced with the value of this argument.</param>
+            <param name="subset">If non-null it writes [subset] where subset is replaced with the value of this argument.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteStartAttribute(System.String,System.String,System.String)">
+            <summary>
+            Writes the start of an attribute with the specified prefix, local name, and name space URI.
+            </summary>
+            <param name="prefix">Name space prefix of the attribute.</param>
+            <param name="localName">LocalName of the attribute.</param>
+            <param name="namespace">Name space URI of the attribute</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteEndAttribute">
+            <summary>
+            Closes the previous System.Xml.XmlWriter.WriteStartAttribute(System.String,System.String) call.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteComment(System.String)">
+            <summary>
+            Writes out a comment <!--...--> containing the specified text.
+            </summary>
+            <param name="text">Text to place inside the comment.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteProcessingInstruction(System.String,System.String)">
+            <summary>
+            Writes out a processing instruction with a space between the name and text as follows: <?name text?>.
+            </summary>
+            <param name="name">The name of the processing instruction.</param>
+            <param name="text">The text to include in the processing instruction.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteEntityRef(System.String)">
+            <summary>
+            Writes out an entity reference as &amp;name;.
+            </summary>
+            <param name="name">The name of the entity reference.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteCharEntity(System.Char)">
+            <summary>
+            Forces the generation of a character entity for the specified Unicode character value.
+            </summary>
+            <param name="character">The Unicode character for which to generate a character entity.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteWhitespace(System.String)">
+            <summary>
+            Writes out the given white space.
+            </summary>
+            <param name="whiteSpace">The string of white space characters.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteString(System.String)">
+            <summary>
+            Writes the given text content.
+            </summary>
+            <param name="text">The string of white space characters.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteSurrogateCharEntity(System.Char,System.Char)">
+            <summary>
+            Generates and writes the surrogate character entity for the surrogate character pair.
+            </summary>
+            <param name="lowChar">The low surrogate. This must be a value between 0xDC00 and 0xDFFF.</param>
+            <param name="highChar">The high surrogate. This must be a value between 0xD800 and 0xDBFF.</param>
+            <exception cref="T:System.ArgumentException">An invalid surrogate character pair was passed.</exception>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteChars(System.Char[],System.Int32,System.Int32)">
+            <summary>
+            Writes text one buffer at a time.
+            </summary>
+            <param name="buffer">Character array containing the text to write.</param>
+            <param name="index">The position in the buffer indicating the start of the text to write.</param>
+            <param name="count">The number of characters to write.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteRaw(System.Char[],System.Int32,System.Int32)">
+            <summary>
+            Writes raw markup manually from a character buffer.
+            </summary>
+            <param name="buffer">Character array containing the text to write.</param>
+            <param name="index">The position within the buffer indicating the start of the text to write.</param>
+            <param name="count">The number of characters to write.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteRaw(System.String)">
+            <summary>
+            Writes raw markup manually from a string.
+            </summary>
+            <param name="data">String containing the text to write.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteBase64(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Encodes the specified binary bytes as Base64 and writes out the resulting text.
+            </summary>
+            <param name="buffer">Byte array to encode.</param>
+            <param name="index">The position in the buffer indicating the start of the bytes to write.</param>
+            <param name="count">The number of bytes to write.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.Close">
+            <summary>
+            Closes this stream and the underlying stream.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.Flush">
+            <summary>
+            Flushes whatever is in the buffer to the underlying streams and also flushes the underlying stream.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.LookupPrefix(System.String)">
+            <summary>
+            Returns the closest prefix defined in the current name space scope for the name space URI.
+            </summary>
+            <param name="namespace">The name space URI whose prefix you want to find.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteAttributes(System.Xml.XmlReader,System.Boolean)">
+            <summary>
+            When overridden in a derived class, writes out all the attributes found at the current position in the XmlReader.
+            </summary>
+            <param name="reader">The <see cref="T:System.Xml.XmlReader"/> from which to copy the attributes.</param>
+            <param name="copyDefaultAttributes">If true copy the default attributes from the <see cref="T:System.Xml.XmlReader"/>; otherwise, false.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteBinHex(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            When overridden in a derived class, encodes the specified binary bytes as BinHex and writes out the resulting text.
+            </summary>
+            <param name="buffer">Byte array to encode.</param>
+            <param name="index">The position in the buffer indicating the start of the bytes to write.</param>
+            <param name="count">The number of bytes to write.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteName(System.String)">
+            <summary>
+            When overridden in a derived class, writes out the specified name, ensuring it is a valid name according to the W3C XML 1.0 recommendation (<a href="http://www.w3.org/TR/1998/REC-xml-19980210#NT-Name">http://www.w3.org/TR/1998/REC-xml-19980210#NT-Name</a>).
+            </summary>
+            <param name="name">The name to write.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteNmToken(System.String)">
+            <summary>
+            When overridden in a derived class, writes out the specified name, ensuring it is a valid NmToken according to the W3C XML 1.0 recommendation (<a href="http://www.w3.org/TR/1998/REC-xml-19980210#NT-Name">http://www.w3.org/TR/1998/REC-xml-19980210#NT-Name</a>).
+            </summary>
+            <param name="name">The name to write.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteNode(System.Xml.XPath.XPathNavigator,System.Boolean)">
+            <summary>
+            Copies everything from the <see cref="T:System.Xml.XPath.XPathNavigator"/> object to the writer. The position of the <see cref="T:System.Xml.XPath.XPathNavigator"/> remains unchanged.
+            </summary>
+            <param name="navigator">The <see cref="T:System.Xml.XPath.XPathNavigator"/> to read from.</param>
+            <param name="copyDefaultAttributes">If true copy the default attributes from the <see cref="T:System.Xml.XmlReader"/>; otherwise, false.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteNode(System.Xml.XmlReader,System.Boolean)">
+            <summary>
+            When overridden in a derived class, copies everything from the reader to the writer and moves the reader to the start of the next sibling.
+            </summary>
+            <param name="reader">The <see cref="T:System.Xml.XmlReader"/> to read from.</param>
+            <param name="copyDefaultAttributes">If true copy the default attributes from the <see cref="T:System.Xml.XmlReader"/>; otherwise, false.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteQualifiedName(System.String,System.String)">
+            <summary>
+            When overridden in a derived class, writes out the name-space-qualified name. This method looks up the prefix that is in scope for the given name space.
+            </summary>
+            <param name="localName">The local name to write.</param>
+            <param name="namespace">The name space URI for the name.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteValue(System.DateTime)">
+            <summary>
+            Writes a <see cref="T:System.DateTime"/> value.
+            </summary>
+            <param name="value">The <see cref="T:System.DateTime"/> value to write.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteValue(System.Boolean)">
+            <summary>
+            Writes a <see cref="T:System.Boolean"/> value.
+            </summary>
+            <param name="value">The <see cref="T:System.Boolean"/> value to write.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteValue(System.Decimal)">
+            <summary>
+            Writes a <see cref="T:System.Decimal"/> value.
+            </summary>
+            <param name="value">The <see cref="T:System.Decimal"/> value to write.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteValue(System.Double)">
+            <summary>
+            Writes a <see cref="T:System.Double"/> value.
+            </summary>
+            <param name="value">The <see cref="T:System.Double"/> value to write.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteValue(System.Single)">
+            <summary>
+            Writes a single-precision floating-point number.
+            </summary>
+            <param name="value">The <see cref="T:System.Single"/> value to write.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteValue(System.Int32)">
+            <summary>
+            Writes an <see cref="T:System.Int32"/> value.
+            </summary>
+            <param name="value">The <see cref="T:System.Int32"/> value to write.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteValue(System.Int64)">
+            <summary>
+            Writes an <see cref="T:System.Int64"/> value.
+            </summary>
+            <param name="value">The <see cref="T:System.Int64"/> value to write.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteValue(System.Object)">
+            <summary>
+            Writes the object value.
+            </summary>
+            <param name="value">The object value to write.</param>
+        </member>
+        <member name="M:CMS.Helpers.FormattedXmlWriter.WriteValue(System.String)">
+            <summary>
+            Writes a <see cref="T:System.String"/> value.
+            </summary>
+            <param name="value">The <see cref="T:System.String"/> value to write.</param>
+        </member>
+        <member name="P:CMS.Helpers.FormattedXmlWriter.IndentCData">
+            <summary>
+            If true, the CDATA elements are automatically indented to their own line
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.FormattedXmlWriter.Settings">
+            <summary>
+            Specifies a set of features to support on the System.Xml.XmlWriter object created by the Overload:System.Xml.XmlWriter.Create method.
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.FormattedXmlWriter.WriteState">
+            <summary>
+            Gets the state of the writer.
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.FormattedXmlWriter.XmlLang">
+            <summary>
+            When overridden in a derived class, gets the current xml:lang scope.
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.FormattedXmlWriter.XmlSpace">
+            <summary>
+            When overridden in a derived class, gets an XmlSpace representing the current xml:space scope.
+            </summary>
+        </member>
+        <member name="T:CMS.Helpers.XmlData">
+            <summary>
+            XML data container.
+            </summary>
+        </member>
+        <member name="F:CMS.Helpers.XmlData.mData">
+            <summary>
+            Collection of the data contents.
+            </summary>
+        </member>
+        <member name="F:CMS.Helpers.XmlData.mMacros">
+            <summary>
+            Collection of the macros.
+            </summary>
+        </member>
+        <member name="F:CMS.Helpers.XmlData.mXmlRootName">
+            <summary>
+            Default xml root element name.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.XmlData.ConvertToHashtable">
+            <summary>
+            Converts XML data to Hashtable.
+            </summary>        
+        </member>
+        <member name="M:CMS.Helpers.XmlData.TryGetValue(System.String,System.Object@)">
+            <summary>
+            Returns value of column.
+            </summary>
+            <param name="columnName">Column name</param>
+            <param name="value">Returns the value</param>
+            <returns>Returns true if the operation was successful (the value was present)</returns>
+        </member>
+        <member name="M:CMS.Helpers.XmlData.GetValue(System.String)">
+            <summary>
+            Returns value of column.
+            </summary>
+            <param name="columnName">Column name</param>
+        </member>
+        <member name="M:CMS.Helpers.XmlData.SetValue(System.String,System.Object)">
+            <summary>
+            Sets value of column.
+            </summary>
+            <param name="columnName">Column name</param>
+            <param name="value">Column value</param> 
+        </member>
+        <member name="M:CMS.Helpers.XmlData.ContainsColumn(System.String)">
+            <summary>
+            Returns true if the object contains specified column.
+            </summary>
+            <param name="columnName">Column name</param>
+        </member>
+        <member name="M:CMS.Helpers.XmlData.LoadData(System.String)">
+            <summary>
+            Loads the XML to the content table.
+            </summary>
+            <param name="data">Content XML to load</param>
+        </member>
+        <member name="M:CMS.Helpers.XmlData.LoadFromXmlElement(System.Xml.XmlElement)">
+            <summary>
+            Loads the data from the given XML element
+            </summary>
+            <param name="element">XML element</param>
+        </member>
+        <member name="M:CMS.Helpers.XmlData.GetData">
+            <summary>
+            Returns the XML code of the data.
+            </summary>
+            <remarks>Data are represented as a string values</remarks>
+        </member>
+        <member name="M:CMS.Helpers.XmlData.GetXmlElement(System.Xml.XmlDocument)">
+            <summary>
+            Gets the XML element for the data
+            </summary>
+            <param name="document">Parent XML document</param>
+        </member>
+        <member name="M:CMS.Helpers.XmlData.Clear">
+            <summary>
+            Clears the custom data.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.XmlData.Clone">
+            <summary>
+            Returns the cloned object.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.XmlData.Remove(System.String)">
+            <summary>
+            Removes element with specified key from collection
+            </summary>
+            <param name="key">Key to remove</param>
+        </member>
+        <member name="M:CMS.Helpers.XmlData.ToString">
+            <summary>
+            Returns xml as a string.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.XmlData.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Gets object data.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.XmlData.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor for deserialization.
+            </summary>
+            <param name="info">Serialization info</param>
+            <param name="context">Streaming context</param>
+        </member>
+        <member name="M:CMS.Helpers.XmlData.#ctor">
+            <summary>
+            Constructor - creates empty XmlData object.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.XmlData.#ctor(System.String)">
+            <summary>
+            Constructor with root element name specification.
+            </summary>
+            <param name="rootName">Root element name</param>
+        </member>
+        <member name="P:CMS.Helpers.XmlData.Value">
+            <summary>
+            Single value of the custom data. If set, overrides the data collection.
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.XmlData.XmlRootName">
+            <summary>
+            Gets name of xml root element.
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.XmlData.ColumnNames">
+            <summary>
+            Column names.
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.XmlData.ExcludedColumns">
+            <summary>
+            List of excluded column name prefixes (delimited by ';'). Columns starting with these won't be loaded to collection.
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.XmlData.MacroTable">
+            <summary>
+            Macro table
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.XmlData.Item(System.String)">
+            <summary>
+            Gets or sets the value of the column.
+            </summary>
+            <param name="key">Column name</param>
+        </member>
+        <member name="P:CMS.Helpers.XmlData.AllowMacros">
+            <summary>
+            Indicates if macro values are allowed
+            </summary>
+        </member>
+        <member name="T:CMS.Helpers.XmlExtensions">
+            <summary>
+            Extension methods for <see cref="N:System.Xml"/> classes.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.XmlExtensions.ToFormattedXmlString(System.Xml.XmlDocument,System.Boolean)">
+            <summary>
+            Returns formatted XML content.
+            </summary>
+            <remarks>
+            Ensures indentation and line breaking after each element.
+            </remarks>
+            <param name="document">XML document</param>
+            <param name="omitXmlDeclaration">If true, the XML declaration is not included into the output</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="document"/> is null.</exception>
+        </member>
+        <member name="M:CMS.Helpers.XmlExtensions.WriteFormattedXmlToStream(System.Xml.XmlDocument,System.IO.Stream,System.Boolean)">
+            <summary>
+            Writes formatted XML content to given stream.
+            </summary>
+            <remarks>
+            Ensures indentation and line breaking after each element.
+            </remarks>
+            <param name="document">XML document</param>
+            <param name="stream">The stream to write to.</param>
+            <param name="omitXmlDeclaration">If true, the XML declaration is not included into the output.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="document"/> is null.</exception>
+        </member>
+        <member name="M:CMS.Helpers.XmlExtensions.AddAttributes(System.Xml.XmlElement,System.Collections.IDictionary,System.Boolean)">
+            <summary>
+            Adds the given list of attributes to the XML node. Adds the attributes in alphabetic order to maintain stability of order.
+            </summary>
+            <param name="node">XML node to add attributes to.</param>
+            <param name="attributes">Attributes to be added.</param>
+            <param name="removeEmptyEntries">If true, only attributes with non-empty value are added to the element.</param>
+            <exception cref="T:System.ArgumentException">Some key of <paramref name="attributes"/> is an empty string.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="node"/> is null.</exception>
+            <exception cref="T:System.InvalidOperationException">Keys of <paramref name="attributes"/> cannot be ordered.</exception>
+            <exception cref="T:System.Xml.XmlException">Some key of <paramref name="attributes"/> contains characters not suitable for an XML attribute name.</exception>
+        </member>
+        <member name="M:CMS.Helpers.XmlExtensions.AddChildElements(System.Xml.XmlElement,System.Collections.IDictionary,System.String,System.Action{System.Xml.XmlElement,System.String,System.Object},System.Boolean)">
+            <summary>
+            Adds the collection of values into the XML element, each value as a nested element. Ensures the alphabetic order of the values in the element.
+            </summary>
+            <param name="node">Parent XML element.</param>
+            <param name="values">Collection of element values.</param>
+            <param name="elementName">If set, the elements are added with the given name and the key is stored in attribute name. Key is used for the element name otherwise.</param>
+            <param name="transform">Function allowing to modify the added element that has three parameters - XML element to modify, string key and value from the collection <paramref name="values"/>.</param>
+            <param name="removeEmptyEntries">If true, only elements with non-empty value are added to the parent element <paramref name="node"/>.</param>
+            <exception cref="T:System.ArgumentException"><paramref name="elementName"/> was not supplied and some keys of <paramref name="values"/> are an empty string.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="node"/> is null.</exception>
+            <exception cref="T:System.InvalidOperationException">Keys of <paramref name="values"/> cannot be ordered or <paramref name="node"/> is missing owner document.</exception>
+            <exception cref="T:System.Xml.XmlException"><paramref name="elementName"/> was not supplied and some keys of <paramref name="values"/> contain characters not suitable for an XML element name.</exception>
+        </member>
+        <member name="M:CMS.Helpers.XmlExtensions.AppendCData(System.Xml.XmlElement,System.String)">
+            <summary>
+            Appends CDATA sections to the XML element based on the input text. If the text already contains CDATA tags, the text is split into corresponding number of CDATA sections in place of the CDATA end tags.
+            </summary>
+            <param name="node">Parent XML node</param>
+            <param name="text">Input text</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="node"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="text"/> is null.</exception>
+        </member>
+        <member name="P:CMS.Helpers.XmlExtensions.CDataEndTagRegExp">
+            <summary>
+            Regular expression to match CDATA end tag.
+            </summary>
+        </member>
         <member name="T:CMS.Helpers.IconParameters">
             <summary>
             Container class used in situations when you need to display icon
@@ -1433,6 +2054,16 @@
             Pre-initializes the handlers
             </summary>
         </member>
+        <member name="M:CMS.Helpers.HelpersHandlers.RegisterManagedCompilationPath(System.Object,System.EventArgs)">
+            <summary>
+             Register managed compilation folder
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.HelpersHandlers.InitStorage(System.Object,System.EventArgs)">
+            <summary>
+            Init zipped files &amp; folders
+            </summary>
+        </member>
         <member name="M:CMS.Helpers.HelpersHandlers.Init">
             <summary>
             Initialize the handlers
@@ -1445,7 +2076,7 @@
         </member>
         <member name="M:CMS.Helpers.HelpersHandlers.HandleClickjacking(System.Object,System.EventArgs)">
             <summary>
-            Handles click jacking in cuurrent request
+            Handles click jacking in current request
             </summary>
         </member>
         <member name="M:CMS.Helpers.HelpersHandlers.BeginRequest(System.Object,System.EventArgs)">
@@ -1458,29 +2089,14 @@
             Actions executed when the request is finalized
             </summary>
         </member>
-        <member name="M:CMS.Helpers.HelpersHandlers.FinalizeRequest(System.Object,System.EventArgs)">
+        <member name="M:CMS.Helpers.HelpersHandlers.DecrementPendingRequests(System.Object,System.EventArgs)">
             <summary>
             Actions executed when the request is finalized
             </summary>
         </member>
-        <member name="M:CMS.Helpers.HelpersHandlers.FinalizeThread(System.Object,CMS.Base.ThreadEventArgs)">
-            <summary>
-            Actions executed when the thread is finalized
-            </summary>
-        </member>
-        <member name="M:CMS.Helpers.HelpersHandlers.RunQueuedWorkers">
-            <summary>
-            Runs all currently queued workers
-            </summary>
-        </member>
-        <member name="M:CMS.Helpers.HelpersHandlers.InitRequestTimeout(System.Object,System.EventArgs)">
+        <member name="M:CMS.Helpers.HelpersHandlers.InitSessionTimeout(System.Object,System.EventArgs)">
             <summary>
             Initializes the session timeout
-            </summary>
-        </member>
-        <member name="M:CMS.Helpers.HelpersHandlers.EnsureSourceItems(System.Object,System.EventArgs)">
-            <summary>
-            Fires when the thread initializes
             </summary>
         </member>
         <member name="T:CMS.Base.AzureHelper">
@@ -1626,7 +2242,9 @@
         </member>
         <member name="P:CMS.Helpers.CacheSettings.CacheDependency">
             <summary>
-            Cache dependency.
+            Cache dependency to use for the cache item. When GetCacheDependency is set and this property is not set explicitly, the value is retrieved by calling the delegate in GetCacheDependency property.
+            Use setter of this property only in the data loading code of the cached code block to avoid unnecessary initialization of the dependencies.
+            Use delegate property GetCacheDependency to provide cache dependencies in a more efficient way only when the system really needs them.
             </summary>
         </member>
         <member name="P:CMS.Helpers.CacheSettings.CacheItemName">
@@ -1652,6 +2270,11 @@
         <member name="P:CMS.Helpers.CacheSettings.AllowProgressiveCaching">
             <summary>
             If true, progressive caching is enabled, meaning that two threads accessing the same code share the result of an internal operation
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.CacheSettings.GetCacheDependency">
+            <summary>
+            Function to dynamically get the cache dependenc
             </summary>
         </member>
         <member name="T:CMS.Helpers.CacheSynchronization">
@@ -1684,6 +2307,11 @@
             </summary>
             <param name="originalKey">Original key</param>
             <param name="caseSensitive">Case sensitive</param>
+        </member>
+        <member name="M:CMS.Helpers.CacheSynchronization.LogClearFullPageCacheTask">
+            <summary>
+            Logs the web farm task for clear full page cache operation
+            </summary>
         </member>
         <member name="P:CMS.Helpers.CacheSynchronization.SynchronizeCache">
             <summary>
@@ -1966,12 +2594,12 @@
         </member>
         <member name="M:CMS.Helpers.PersistentCacheItem`1.#ctor">
             <summary>
-            Constructor
+            Initializes a new instance of the <see cref="T:CMS.Helpers.PersistentCacheItem`1"/> class.
             </summary>
         </member>
         <member name="M:CMS.Helpers.PersistentCacheItem`1.#ctor(System.String,`0,CMS.Helpers.CMSCacheDependency,System.Int32,System.DateTime,System.DateTime,System.String)">
             <summary>
-            Constructor
+            Initializes a new instance of the <see cref="T:CMS.Helpers.PersistentCacheItem`1"/> class.
             </summary>
             <param name="cacheKey">Cache key</param>
             <param name="data">Data to cache</param>
@@ -3083,6 +3711,11 @@
             Current device profile name
             </summary>
         </member>
+        <member name="F:CMS.Helpers.CookieName.CsrfCookie">
+            <summary>
+            CSRF cookie used to store CSRF token
+            </summary>
+        </member>
         <member name="F:CMS.Helpers.CookieName.FormState">
             <summary>
             Form state
@@ -3191,6 +3824,11 @@
         <member name="F:CMS.Helpers.CookieName.Campaign">
             <summary>
             Campaign
+            </summary>
+        </member>
+        <member name="F:CMS.Helpers.CookieName.Source">
+            <summary>
+            Source
             </summary>
         </member>
         <member name="F:CMS.Helpers.CookieName.UrlReferrer">
@@ -3325,6 +3963,11 @@
             Raised on original init complete event
             </summary>
         </member>
+        <member name="M:CMS.Helpers.PageContext.Reset">
+            <summary>
+            Resets the PageContext to default state.
+            </summary>
+        </member>
         <member name="P:CMS.Helpers.PageContext.PreRenderRaised">
             <summary>
             Indicates whether PreRender raised
@@ -3390,12 +4033,18 @@
             Helper instance
             </summary>
         </member>
-        <member name="M:CMS.Helpers.AbstractStockHelper`1.Add(System.String,System.Object)">
+        <member name="M:CMS.Helpers.AbstractStockHelper`1.#cctor">
+            <summary>
+            Static constructor
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.AbstractStockHelper`1.Add(System.String,System.Object,System.Boolean)">
             <summary>
             Add item.
             </summary>
             <param name="key">Key to add</param>
             <param name="value">Value to add</param>
+            <param name="caseSensitive">If true, the key is case sensitive</param>
         </member>
         <member name="M:CMS.Helpers.AbstractStockHelper`1.Remove(System.String)">
             <summary>
@@ -3414,14 +4063,6 @@
             Returns object which matches by key.
             </summary>
             <param name="key">Object key</param>
-        </member>
-        <member name="M:CMS.Helpers.AbstractStockHelper`1.Add(System.String,System.Object,System.Boolean)">
-            <summary>
-            Add item.
-            </summary>
-            <param name="key">Key to add</param>
-            <param name="value">Value to add</param>
-            <param name="caseSensitive">If true, the key is case sensitive</param>
         </member>
         <member name="M:CMS.Helpers.AbstractStockHelper`1.Remove(System.String,System.Boolean)">
             <summary>
@@ -3466,9 +4107,9 @@
             <param name="key">Storage key</param>
             <param name="caseSensitive">If true, the key is case sensitive</param>
         </member>
-        <member name="M:CMS.Helpers.AbstractStockHelper`1.Add(System.String,System.String,System.Object,System.Boolean)">
+        <member name="M:CMS.Helpers.AbstractStockHelper`1.AddToStorage(System.String,System.String,System.Object,System.Boolean)">
             <summary>
-            Add item.
+            Adds item to specific storage specified by <paramref name="storageKey"/>.
             </summary>
             <param name="storageKey">Storage key</param>
             <param name="key">Key to add</param>
@@ -3559,19 +4200,14 @@
             Custom handler.
             </summary>
         </member>
-        <member name="F:CMS.Helpers.RequestStatusEnum.GetFile">
+        <member name="F:CMS.Helpers.RequestStatusEnum.GetFileHandler">
             <summary>
-            Gets file script.
+            Url path is processed by CMS handlers (GetAttachmentHandler, GetMetafileHandler, GetMediaHandler etc.)
             </summary>
         </member>
         <member name="F:CMS.Helpers.RequestStatusEnum.SystemPage">
             <summary>
             System page.
-            </summary>
-        </member>
-        <member name="F:CMS.Helpers.RequestStatusEnum.TrackbackPage">
-            <summary>
-            Blog post trackback page.
             </summary>
         </member>
         <member name="F:CMS.Helpers.RequestStatusEnum.GetProduct">
@@ -3741,7 +4377,7 @@
         </member>
         <member name="P:CMS.Helpers.VirtualContext.VirtualContextPrefix">
             <summary>
-            Default URL prefix for the pages virtual context. Default value is "/cms/context/"
+            Default URL prefix for the pages virtual context. Default value is "/cmsctx/"
             </summary>
         </member>
         <member name="P:CMS.Helpers.VirtualContext.VirtualContextSeparator">
@@ -4136,12 +4772,6 @@
             </summary>
             <param name="applicationGuid">Application GUID</param>
         </member>
-        <member name="M:CMS.Helpers.SystemHelper.GetWinAppName(System.String)">
-            <summary>
-            Returns prefix for all Kentico WinApps.
-            </summary>
-            <param name="applicationName">Name of the application</param>
-        </member>
         <member name="M:CMS.Helpers.SystemHelper.RestartApplication(System.String)">
             <summary>
             Tries to restart application and returns if restart was successful.
@@ -4253,6 +4883,41 @@
             </summary>
             <param name="code">Code to generate by the QR code</param>
             <param name="qrCodeSettings">QR code settings</param>
+        </member>
+        <member name="T:CMS.Helpers.QRCodeGenerator">
+            <summary>
+            QR Code generator
+            </summary>
+        </member>
+        <member name="F:CMS.Helpers.QRCodeGenerator.mQRVersionsSupported">
+            <summary>
+            List of QR code versions that are supported by the system
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.QRCodeGenerator.GenerateQRCode(System.String,CMS.Helpers.QRCodeSettings)">
+            <summary>
+            Generates the QR code as an image using the given parameters
+            </summary>
+            <param name="code">Code to generate by the QR code</param>
+            <param name="qrCodeSettings">QR code settings</param>
+        </member>
+        <member name="M:CMS.Helpers.QRCodeGenerator.GetEncoding(System.String)">
+            <summary>
+            Gets the encoding settings from the given parameter
+            </summary>
+            <param name="encoding">Encoding parameter</param>
+        </member>
+        <member name="M:CMS.Helpers.QRCodeGenerator.GetErrorCorrection(System.String)">
+            <summary>
+            Gets the error correction settings from the given parameter
+            </summary>
+            <param name="correction">Correction parameter</param>
+        </member>
+        <member name="M:CMS.Helpers.QRCodeGenerator.QRVersionSupported(System.Int32)">
+            <summary>
+            Returns true if the given QR code version if supported
+            </summary>
+            <param name="version">Version to check</param>
         </member>
         <member name="T:CMS.Helpers.QRCodeSettings">
             <summary>
@@ -4402,6 +5067,72 @@
             Cut at the start of the text
             </summary>
         </member>
+        <member name="T:CMS.Helpers.TextNormalizationSettings">
+            <summary>
+            Normalization settings for text comparison
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.TextNormalizationSettings.NormalizeLineEndings">
+            <summary>
+            If true, line endings in the given text are normalized
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.TextNormalizationSettings.NormalizeWhiteSpaces">
+            <summary>
+            If true, all whitespaces in the given text are normalized
+            </summary>
+        </member>
+        <member name="T:CMS.Helpers.CacheTasks">
+            <summary>
+            Web farm synchronization for cache
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.CacheTasks.Init">
+            <summary>
+            Initializes the tasks
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.CacheTasks.ClearFullPageCache(System.String,System.String[],CMS.Core.BinaryData)">
+            <summary>
+            Clears the full page cache
+            </summary>
+            <param name="target">Task target</param>
+            <param name="data">Task data</param>
+            <param name="binaryData">Task binary data</param>
+        </member>
+        <member name="M:CMS.Helpers.CacheTasks.TouchCacheItem(System.String,System.String[],CMS.Core.BinaryData)">
+            <summary>
+            Touches cache item
+            </summary>
+            <param name="target">Task target</param>
+            <param name="data">Task data</param>
+            <param name="binaryData">Task binary data</param>
+        </member>
+        <member name="M:CMS.Helpers.CacheTasks.ClearCacheItems(System.String,System.String[],CMS.Core.BinaryData)">
+            <summary>
+            Clears cache items
+            </summary>
+            <param name="target">Task target</param>
+            <param name="data">Task data</param>
+            <param name="binaryData">Task binary data</param>
+        </member>
+        <member name="M:CMS.Helpers.CacheTasks.RemoveCacheItem(System.String,System.String[],CMS.Core.BinaryData)">
+            <summary>
+            Removes cache item
+            </summary>
+            <param name="target">Task target</param>
+            <param name="data">Task data</param>
+            <param name="binaryData">Task binary data</param>
+        </member>
+        <member name="M:CMS.Helpers.CacheTasks.RemovePersistentStorageCacheKey(System.String,System.String[],CMS.Core.BinaryData)">
+            <summary>
+            Removes key from <see cref="T:CMS.Helpers.PersistentStorageHelper"/> internal cache, so the next request for value
+            of given key will be taken from file system. 
+            </summary>
+            <param name="target">Task target</param>
+            <param name="data">Task data</param>
+            <param name="binaryData">Task binary data</param>
+        </member>
         <member name="T:CMS.Helpers.CacheTaskType">
             <summary>
             Web farm task types for Cache operations
@@ -4422,38 +5153,46 @@
             Remove system cached item.
             </summary>
         </member>
+        <member name="F:CMS.Helpers.CacheTaskType.ClearFullPageCache">
+            <summary>
+            Clear full page cache
+            </summary>
+        </member>
+        <member name="F:CMS.Helpers.CacheTaskType.RemovePersistentStorageKey">
+            <summary>
+            Clear full page cache
+            </summary>
+        </member>
         <member name="T:CMS.Helpers.WebFarmHelper">
             <summary>
             Web farm helper
             </summary>
         </member>
-        <member name="M:CMS.Helpers.WebFarmHelper.NotifyServers">
+        <member name="M:CMS.Helpers.WebFarmHelper.RegisterTask(CMS.Core.WebFarmTask)">
             <summary>
-            Notifies other servers that some changes occurred
+            Registers the given web farm task.
             </summary>
+            <param name="task">Web farm task.</param>
         </member>
-        <member name="M:CMS.Helpers.WebFarmHelper.RegisterTask(System.String,System.Action{System.String,System.String,CMS.Core.BinaryData},System.Func{System.Boolean})">
-            <summary>
-            Registers the given web farm task
-            </summary>
-            <param name="taskType">Task type</param>
-            <param name="execute">Method executed to perform the task</param>
-            <param name="condition">Condition under which the task is synchronized</param>
-        </member>
-        <member name="M:CMS.Helpers.WebFarmHelper.CreateTask(System.String,System.String,System.String,CMS.Core.BinaryData)">
+        <member name="M:CMS.Helpers.WebFarmHelper.CreateTask(System.String,System.String,System.String[])">
             <summary>
             Creates task.
             </summary>
             <param name="taskType">Task type</param>
             <param name="taskTarget">Target</param>
             <param name="taskTextData">Task text data (such as code name, ID etc.)</param>
-            <param name="taskBinaryData">Task binary data (for attachments etc.)</param>
             <returns>Returns true if the task was created (web farm is set up and task was allowed)</returns>
         </member>
-        <member name="M:CMS.Helpers.WebFarmHelper.GetEnabledServerNames">
+        <member name="M:CMS.Helpers.WebFarmHelper.CreateIOTask(System.String,System.String,CMS.Core.BinaryData,System.String,System.String[])">
             <summary>
-            Gets the list of names of servers to be updated. Current server is excluded.
+            Creates task.
             </summary>
+            <param name="taskType">Task type</param>
+            <param name="taskFilePath">Task file path.</param>
+            <param name="taskBinaryData">Task binary data.</param>
+            <param name="taskTarget">Target</param>
+            <param name="taskTextData">Task text data (such as code name, ID etc.)</param>
+            <returns>Returns true if the task was created (web farm is set up and task was allowed)</returns>
         </member>
         <member name="M:CMS.Helpers.WebFarmHelper.GetServerNamesToUpdate">
             <summary>
@@ -4530,12 +5269,11 @@
             </summary>
             <param name="data">Content XML to load</param>
         </member>
-        <member name="M:CMS.Helpers.ContainerCustomData.LoadData(System.String,System.Xml.XmlDocument@)">
+        <member name="M:CMS.Helpers.ContainerCustomData.Remove(System.String)">
             <summary>
-            Loads the XML to the content table.
+            Removes element with specified key from collection
             </summary>
-            <param name="data">Content XML to load</param>
-            <param name="xml">Xml document on output</param>
+            <param name="key">Key to remove</param>
         </member>
         <member name="M:CMS.Helpers.ContainerCustomData.SaveToDataContainer">
             <summary>
@@ -4650,32 +5388,32 @@
             <param name="name">Display name</param>
             <param name="replacement">Replacement string for invalid characters</param>
         </member>
-        <member name="T:CMS.Base.FileSizeUnitsEnum">
+        <member name="T:CMS.Helpers.FileSizeUnitsEnum">
             <summary>
             Enumeration for file size units.
             </summary>
         </member>
-        <member name="F:CMS.Base.FileSizeUnitsEnum.B">
+        <member name="F:CMS.Helpers.FileSizeUnitsEnum.B">
             <summary>
             Bytes.
             </summary>
         </member>
-        <member name="F:CMS.Base.FileSizeUnitsEnum.kB">
+        <member name="F:CMS.Helpers.FileSizeUnitsEnum.kB">
             <summary>
             Kilobytes.
             </summary>
         </member>
-        <member name="F:CMS.Base.FileSizeUnitsEnum.MB">
+        <member name="F:CMS.Helpers.FileSizeUnitsEnum.MB">
             <summary>
             Megabytes.
             </summary>
         </member>
-        <member name="F:CMS.Base.FileSizeUnitsEnum.GB">
+        <member name="F:CMS.Helpers.FileSizeUnitsEnum.GB">
             <summary>
             Gigabytes.
             </summary>
         </member>
-        <member name="F:CMS.Base.FileSizeUnitsEnum.Automatic">
+        <member name="F:CMS.Helpers.FileSizeUnitsEnum.Automatic">
             <summary>
             Automatic units changing.
             </summary>
@@ -4979,18 +5717,29 @@
             automatically removed.
             </summary>
         </member>
+        <member name="M:CMS.Helpers.CMSCacheDependency.CreateCacheDependency">
+            <summary>
+            Creates <see cref="P:CMS.Helpers.CMSCacheDependency.CacheDependency"/> with available <see cref="P:CMS.Helpers.CMSCacheDependency.FileNames"/> and <see cref="P:CMS.Helpers.CMSCacheDependency.CacheKeys"/>.
+            </summary>
+            <remarks>
+            TMethod handles external storages that does not support file monitoring for cache dependency flushing.
+            We decided not to support file cache flushing on external storages, because any other workaround would be too expensive.
+            If you find you need to handle this problem, please ensure that the file is being flushed through a cache key.
+            </remarks>
+            <exception cref="T:System.Web.HttpException">Thrown when cache dependency cannot be created (e.g. file path is pointing to the not existing file in file system)</exception>
+        </member>
         <member name="M:CMS.Helpers.CMSCacheDependency.#ctor">
             <summary>
-            Constructor
+            Initializes a new instance of the <see cref="T:CMS.Helpers.CMSCacheDependency"/> class that monitors a file or directory for change.
             </summary>
         </member>
         <member name="M:CMS.Helpers.CMSCacheDependency.#ctor(System.String[],System.String[],System.DateTime)">
             <summary>
             Initializes a new instance of the <see cref="T:CMS.Helpers.CMSCacheDependency"/> class that monitors a file or directory for change.
             </summary>
-            <param name="filenames">File names</param>
-            <param name="cachekeys">Cache keys</param>
-            <param name="start">The date and time against which to check the last modified date of the objects passed in the file names and cache key arrays</param>
+            <param name="filenames">Sets <see cref="P:CMS.Helpers.CMSCacheDependency.FileNames"/> collection.</param>
+            <param name="cachekeys">Sets <see cref="P:CMS.Helpers.CMSCacheDependency.CacheKeys"/> collection.</param>
+            <param name="start">Sets <see cref="P:CMS.Helpers.CMSCacheDependency.Start"/> date time against which to check the last modified date of the objects passed in the file names and cache key arrays.</param>
         </member>
         <member name="M:CMS.Helpers.CMSCacheDependency.EnsureDummyKeys">
             <summary>
@@ -5014,8 +5763,11 @@
         </member>
         <member name="P:CMS.Helpers.CMSCacheDependency.FileNames">
             <summary>
-            Gets the file names of the dependency.
+            Collection of file full paths used for cache dependency.
             </summary>
+            <remarks>
+            Paths pointing to the external storage are ignored and not used for cache dependency.
+            </remarks>
         </member>
         <member name="P:CMS.Helpers.CMSCacheDependency.CacheDependency">
             <summary>
@@ -5032,19 +5784,9 @@
             Uses no transformation.
             </summary>
         </member>
-        <member name="F:CMS.Helpers.ContentCodingEnum.COMPRESS">
-            <summary>
-            Compatible with UNIX file compression program "compress". This format is an adaptive Lempel-Ziv-Welch coding (LZW).
-            </summary>
-        </member>
         <member name="F:CMS.Helpers.ContentCodingEnum.DEFLATE">
             <summary>
             The "zlib" format defined in RFC 1950 [31] in combination with the "deflate" compression mechanism described in RFC 1951.
-            </summary>
-        </member>
-        <member name="F:CMS.Helpers.ContentCodingEnum.GZIP">
-            <summary>
-            GNU zip as described in RFC 1952. This format is a Lempel-Ziv coding (LZ77) with a 32 bit CRC.
             </summary>
         </member>
         <member name="T:CMS.Helpers.ContextHelper">
@@ -5210,6 +5952,27 @@
             Gets the browser string from current request.
             </summary>
         </member>
+        <member name="M:CMS.Helpers.BrowserHelper.GetRendererVersion(System.String,System.String)">
+            <summary>
+            Returns version based on rendering engine rather then on version declared by the browser itself for supported browsers. 
+            If browser or its rendering engine version is not supported, <c>null</c> is returned.
+            </summary>
+            <param name="browser">Browser string that was sent by the browser in the User-Agent request header.</param>
+            <param name="userAgent">Complete user-agent string of the client.</param>
+        </member>
+        <member name="M:CMS.Helpers.BrowserHelper.GetInternetExplorerVersionFromRendererVersion(System.String)">
+            <summary>
+            Gets version of Internet explorer from the rendering engine version. According to the server configuration, when browsing intranet sites
+            Internet explorer automatically switches to the compatible mode, which is in general lower version of the browser. This is suitable for
+            rendering but not for analytics, therefore real version has to be obtained based on the <paramref name="userAgent"/> string specifying version of the Trident 
+            rendering engine. Version cannot be obtained using .NET browser capabilities object. 
+            </summary>
+            <remarks>
+            More information can be found on MSDN: https://msdn.microsoft.com/en-us/library/ms537503(v=vs.85).aspx.
+            </remarks>
+            <param name="userAgent">Browser user agent, that will be used for obtaining version of Trident rendering engine</param>
+            <returns>Version obtained from given <paramref name="userAgent"/>. If no version can be determined, returns <c>null</c>.</returns>
+        </member>
         <member name="M:CMS.Helpers.BrowserHelper.GetMajorVersion">
             <summary>
             Gets browser major version.
@@ -5348,6 +6111,14 @@
             Returns the default enum value, if it is specified using the <see cref="T:CMS.Helpers.EnumDefaultValueAttribute"/>.
             Otherwise returns the first declared enum value.
             </returns>
+        </member>
+        <member name="M:CMS.Helpers.EnumHelper.GetEnumsByCategories(System.Type,System.Collections.Generic.List{System.String})">
+            <summary>
+            Gets enums with category attribute, which have given category name.
+            </summary>
+            <param name="enumType">Enum type</param>
+            <param name="categories">Categories</param>
+            <returns>Return enums with category attribute, with given category name.</returns>
         </member>
         <member name="T:CMS.Helpers.EnumStringRepresentationAttribute">
             <summary>
@@ -5579,11 +6350,6 @@
             Document is waiting for translation (from external translation service).
             </summary>
         </member>
-        <member name="F:CMS.Helpers.DocumentMarkEnum.Wireframe">
-            <summary>
-            Document has a wireframe
-            </summary>
-        </member>
         <member name="T:CMS.Helpers.ExcludedSystemEnum">
             <summary>
             Enumeration for excluded pages by the system.
@@ -5609,9 +6375,9 @@
             Administration page.
             </summary>
         </member>
-        <member name="F:CMS.Helpers.ExcludedSystemEnum.GetFilePage">
+        <member name="F:CMS.Helpers.ExcludedSystemEnum.GetFileHandler">
             <summary>
-            GetFile page.
+            Request is processed by CMS handlers (GetAttachmentHandler, GetMetafileHandler, GetMediaHandler etc.)
             </summary>
         </member>
         <member name="F:CMS.Helpers.ExcludedSystemEnum.PortalTemplate">
@@ -5622,16 +6388,6 @@
         <member name="F:CMS.Helpers.ExcludedSystemEnum.LogonPage">
             <summary>
             Logon page.
-            </summary>
-        </member>
-        <member name="F:CMS.Helpers.ExcludedSystemEnum.TrackbackPage">
-            <summary>
-            Trackback page.
-            </summary>
-        </member>
-        <member name="F:CMS.Helpers.ExcludedSystemEnum.Handler404">
-            <summary>
-            Handler 404.
             </summary>
         </member>
         <member name="F:CMS.Helpers.ExcludedSystemEnum.CMSDialog">
@@ -6846,7 +7602,7 @@
             <param name="x">X coordinate of the image in the target</param>
             <param name="y">Y coordinate of the image in the target</param>
             <param name="height">Height of the image in the target</param>
-            <param name="width">Witdh of the image in the target</param>
+            <param name="width">Width of the image in the target</param>
         </member>
         <member name="M:CMS.Helpers.ImageHelper.FlipImage(CMS.Helpers.ImageHelper.ImageFlipEnum)">
             <summary>
@@ -7022,12 +7778,6 @@
             </summary>
             <param name="mimetype">Mime type of image</param>
             <returns>True if mimetype starts with 'image/'</returns>
-        </member>
-        <member name="M:CMS.Helpers.ImageHelper.IsFlash(System.String)">
-            <summary>
-            Determines whether it is a flash extension or not.
-            </summary>
-            <param name="extension">File extension to check</param>
         </member>
         <member name="M:CMS.Helpers.ImageHelper.IsHtml(System.String)">
             <summary>
@@ -8120,6 +8870,11 @@
             Access denied page for administration
             </summary>
         </member>
+        <member name="F:CMS.Helpers.UIHelper.ERROR_PAGE">
+            <summary>
+            General error page
+            </summary>
+        </member>
         <member name="F:CMS.Helpers.UIHelper.UNIGRID_ICONS">
             <summary>
             UniGrid icons
@@ -8413,6 +9168,16 @@
             </summary>
             <param name="resourceString">Resource string to display</param>
         </member>
+        <member name="M:CMS.Helpers.UIHelper.GetErrorPageUrl(System.String,System.String,System.Boolean,System.String)">
+            <summary>
+            Gets URL for the error page which displays specified message.
+            </summary>
+            <param name="titleResourceString">Resource string used as a title</param>
+            <param name="textResourceString">Resource string used as a text</param>
+            <param name="isDialog">Set to true if the error page should be displayed in the dialog</param>
+            <param name="pageUrl">Custom page URL to be used</param>
+            <returns>URL for the error page</returns>
+        </member>
         <member name="P:CMS.Helpers.UIHelper.AllowUpdateProgress">
             <summary>
             If true, progress script is allowed on page.
@@ -8449,36 +9214,6 @@
             </summary>
         </member>
         <member name="P:CMS.Helpers.URLParameters.Height">
-            <summary>
-            Height of selection item.
-            </summary>
-        </member>
-        <member name="T:CMS.Helpers.Media.URLParameters">
-            <summary>
-            Class providing url parameters.
-            </summary>
-        </member>
-        <member name="P:CMS.Helpers.Media.URLParameters.Url">
-            <summary>
-            Url for selected item.
-            </summary>
-        </member>
-        <member name="P:CMS.Helpers.Media.URLParameters.Guid">
-            <summary>
-            Guid of selected item.
-            </summary>
-        </member>
-        <member name="P:CMS.Helpers.Media.URLParameters.Extension">
-            <summary>
-            Extension of selected item.
-            </summary>
-        </member>
-        <member name="P:CMS.Helpers.Media.URLParameters.Width">
-            <summary>
-            Width of selected item.
-            </summary>
-        </member>
-        <member name="P:CMS.Helpers.Media.URLParameters.Height">
             <summary>
             Height of selection item.
             </summary>
@@ -8659,7 +9394,7 @@
         </member>
         <member name="T:CMS.Helpers.CacheHelper">
             <summary>
-            Cache helper. Overridable helper
+            Provides helper methods for caching.
             </summary>
         </member>
         <member name="F:CMS.Helpers.CacheHelper.PAGEINFO_KEY">
@@ -8687,11 +9422,6 @@
             Partial cache key.
             </summary>
         </member>
-        <member name="F:CMS.Helpers.CacheHelper.URLREWRITING_KEY">
-            <summary>
-            URL Rewriting cache key.
-            </summary>
-        </member>
         <member name="F:CMS.Helpers.CacheHelper.NO_CACHE_DEPENDENCIES">
             <summary>
             No cache dependencies constant.
@@ -8712,9 +9442,14 @@
             Cache item separator.
             </summary>
         </member>
-        <member name="F:CMS.Helpers.CacheHelper.mProgressiveCaching">
+        <member name="F:CMS.Helpers.CacheHelper.mDefaultDependenciesRegex">
             <summary>
-            If true, progressive caching is enabled, meaning that two threads accessing the same code share the result of an internal operation
+            Identifies default cache dependencies macro in string of cache dependencies
+            </summary>
+        </member>
+        <member name="F:CMS.Helpers.CacheHelper.API_CACHE_MINUTES">
+            <summary>
+            Cache minutes for caching the system data in API. 1 hour by default
             </summary>
         </member>
         <member name="F:CMS.Helpers.CacheHelper.CacheItemPriority">
@@ -8722,49 +9457,9 @@
             Cache item priority.
             </summary>
         </member>
-        <member name="F:CMS.Helpers.CacheHelper.mCacheURLRewritingMinutes">
+        <member name="F:CMS.Helpers.CacheHelper.mProgressiveCaching">
             <summary>
-            Cache URL rewriting minutes.
-            </summary>
-        </member>
-        <member name="F:CMS.Helpers.CacheHelper.mTrackCacheDependencies">
-            <summary>
-            Track cache dependencies for output filter cache.
-            </summary>
-        </member>
-        <member name="F:CMS.Helpers.CacheHelper.mAlwaysCacheFiles">
-            <summary>
-            Determines if files are always cached on client, even outside the live site.
-            </summary>
-        </member>
-        <member name="F:CMS.Helpers.CacheHelper.mAlwaysCacheResources">
-            <summary>
-            Determines if resources are always cached on client, even outside the live site.
-            </summary>
-        </member>
-        <member name="F:CMS.Helpers.CacheHelper.mPhysicalFilesCacheMinutes">
-            <summary>
-            Determines the expiration time for cached physical files (JS/CSS resources).
-            </summary>
-        </member>
-        <member name="F:CMS.Helpers.CacheHelper.mAllowCacheByUserName">
-            <summary>
-            If true, the cache allows separate keys by user name.
-            </summary>
-        </member>
-        <member name="F:CMS.Helpers.CacheHelper.mAllowCacheByCulture">
-            <summary>
-            If true, the cache allows separate keys by culture.
-            </summary>
-        </member>
-        <member name="F:CMS.Helpers.CacheHelper.fileLock">
-            <summary>
-            File access lock object
-            </summary>
-        </member>
-        <member name="F:CMS.Helpers.CacheHelper.mPersistentDirectory">
-            <summary>
-            Persistent data directory.
+            If true, progressive caching is enabled, meaning that two threads accessing the same code share the result of an internal operation
             </summary>
         </member>
         <member name="M:CMS.Helpers.CacheHelper.CacheMinutes(System.String)">
@@ -8997,7 +9692,7 @@
         </member>
         <member name="M:CMS.Helpers.CacheHelper.ClearCache(System.String,System.Boolean,System.Boolean)">
             <summary>
-            Clears the cache content starting with given string
+            Clears the cache content starting with given string. Clears also full page cache (including persistent) when called on website.
             </summary>
             <param name="startsWith">If null, removes all cache items, if set, remove only items starting with given string</param>
             <param name="caseSensitive">Case sensitivity indicator.</param>
@@ -9008,10 +9703,11 @@
             Clear the CSS cache
             </summary>
         </member>
-        <member name="M:CMS.Helpers.CacheHelper.ClearFullPageCache">
+        <member name="M:CMS.Helpers.CacheHelper.ClearFullPageCache(System.Boolean)">
             <summary>
             Clear the full page cache (output cache) of the pages.
             </summary>
+            <param name="logTask">If true, web farm task is logged for this operation</param>
         </member>
         <member name="M:CMS.Helpers.CacheHelper.ClearPageInfoCache(System.String)">
             <summary>
@@ -9037,11 +9733,6 @@
         <member name="M:CMS.Helpers.CacheHelper.ClearPartialCache">
             <summary>
             Clear the partial cache (output cache) of the controls.
-            </summary>
-        </member>
-        <member name="M:CMS.Helpers.CacheHelper.ClearURLRewritingCache">
-            <summary>
-            Clears the cache of the URL rewriting.
             </summary>
         </member>
         <member name="M:CMS.Helpers.CacheHelper.RemoveDependencyCallback(System.String)">
@@ -9127,7 +9818,11 @@
         </member>
         <member name="M:CMS.Helpers.CacheHelper.GetCacheDependencies(System.Object,System.String)">
             <summary>
-            Processes the dependencies string and returns default dependencies if the source is null or NO_CACHE_DEPENDENCY constant.
+            Processes the dependencies string. Returns default dependencies if the source is null or empty. 
+            If source is NO_CACHE_DEPENDENCY constant, then method also returns this constant. 
+            When source is specified and contains DEFAULT_CACHE_DEPENDENCIES constant, then this constant
+            indicates that default dependencies should be appended to the source. The DEFAULT_CACHE_DEPENDENCIES also remains
+            in the string so other processes can insert their default dependencies.
             </summary>
             <param name="dependencies">Source dependencies</param>
             <param name="defaultDependencies">Default dependencies</param>
@@ -9376,19 +10071,15 @@
             </summary>
             <param name="cacheKey">Full cache key</param>
         </member>
-        <member name="M:CMS.Helpers.CacheHelper.ClearFullPageCacheInternal">
+        <member name="M:CMS.Helpers.CacheHelper.ClearFullPageCacheInternal(System.Boolean)">
             <summary>
             Clear the full page cache (output cache) of the pages.
             </summary>
+            <param name="logTask">If true, web farm task is logged for this operation</param>
         </member>
         <member name="M:CMS.Helpers.CacheHelper.ClearFullPageCacheFilesInternal">
             <summary>
             Deletes all files in persistent file system cache (extension of output cache)
-            </summary>
-        </member>
-        <member name="P:CMS.Helpers.CacheHelper.ApplicationTerminating">
-            <summary>
-            Returns true if the application is terminating
             </summary>
         </member>
         <member name="P:CMS.Helpers.CacheHelper.ProgressiveCaching">
@@ -9431,11 +10122,6 @@
             Expired items count (removed by the system for expiration reasons).
             </summary>
         </member>
-        <member name="P:CMS.Helpers.CacheHelper.CacheURLRewritingMinutes">
-            <summary>
-            Cache URL rewriting minutes.
-            </summary>
-        </member>
         <member name="P:CMS.Helpers.CacheHelper.CurrentRequestDependencyList">
             <summary>
             Current request dependency list, if set the list is used for the cache dependencies of the page output.
@@ -9459,6 +10145,11 @@
         <member name="P:CMS.Helpers.CacheHelper.BaseCacheKey">
             <summary>
             Returns the base cache key (created with all parameters considered to be valid for proper caching).
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.CacheHelper.DefaultDependenciesRegex">
+            <summary>
+            Identifies default cache dependencies macro in string of cache dependencies
             </summary>
         </member>
         <member name="P:CMS.Helpers.CacheHelper.PersistentDirectoryInternal">
@@ -9546,6 +10237,17 @@
             <param name="path">Cookie virtual path</param>
             <param name="expires">Expiration time</param>
             <param name="httpOnly">Defines httpOnly flag.</param>
+        </member>
+        <member name="M:CMS.Helpers.CookieHelper.SetValue(System.String,System.String,System.String,System.DateTime,System.Nullable{System.Boolean},System.String)">
+            <summary>
+            Sets the cookie.
+            </summary>
+            <param name="name">Cookie name</param>
+            <param name="value">Cookie value</param>
+            <param name="path">Cookie virtual path</param>
+            <param name="expires">Expiration time</param>
+            <param name="httpOnly">Defines httpOnly flag.</param>
+            <param name="domain">Domain to associate the cookie with.</param>
         </member>
         <member name="M:CMS.Helpers.CookieHelper.ChangeCookieExpiration(System.String,System.DateTime,System.Boolean)">
             <summary>
@@ -9690,7 +10392,7 @@
             </summary>
             <param name="name">Cookie name</param>
         </member>
-        <member name="M:CMS.Helpers.CookieHelper.SetValueInternal(System.String,System.String,System.String@,System.DateTime,System.Nullable{System.Boolean})">
+        <member name="M:CMS.Helpers.CookieHelper.SetValueInternal(System.String,System.String,System.String@,System.DateTime,System.Nullable{System.Boolean},System.String)">
             <summary>
             Sets the cookie.
             </summary>
@@ -9699,8 +10401,9 @@
             <param name="path">Cookie virtual path</param>
             <param name="expires">Expiration time</param>
             <param name="httpOnly">Defines httpOnly flag.</param>
+            <param name="domain">Domain to associate the cookie with.</param>
         </member>
-        <member name="M:CMS.Helpers.CookieHelper.SetCookieValues(System.Web.HttpCookie,System.String,System.String@,System.DateTime,System.Nullable{System.Boolean})">
+        <member name="M:CMS.Helpers.CookieHelper.SetCookieValues(System.Web.HttpCookie,System.String,System.String@,System.DateTime,System.Nullable{System.Boolean},System.String)">
             <summary>
             Sets the cookie values
             </summary>
@@ -9709,6 +10412,7 @@
             <param name="path">Cookie virtual path</param>
             <param name="expires">Expiration time</param>
             <param name="httpOnly">Defines httpOnly flag.</param>
+            <param name="domain">Domain to associate the cookie with.</param>
         </member>
         <member name="M:CMS.Helpers.CookieHelper.GetValueInternal(System.String,System.Boolean,System.Boolean)">
             <summary>
@@ -9729,11 +10433,6 @@
             Removes the cookie from the client side.
             </summary>
             <param name="name">Cookie name to remove</param>
-        </member>
-        <member name="M:CMS.Helpers.CookieHelper.RefreshCookieHeaders">
-            <summary>
-            Clears the cookie headers in the response
-            </summary>
         </member>
         <member name="M:CMS.Helpers.CookieHelper.ChangeCookieExpirationInternal(System.String,System.DateTime,System.Boolean)">
             <summary>
@@ -9798,11 +10497,6 @@
         <member name="P:CMS.Helpers.CookieHelper.AllowCookies">
             <summary>
             If true, the cookies are allowed to be used.
-            </summary>
-        </member>
-        <member name="P:CMS.Helpers.CookieHelper.SetCookieDomain">
-            <summary>
-            If true, cookie domain is set explicitly.
             </summary>
         </member>
         <member name="P:CMS.Helpers.CookieHelper.RequestCookiesCollection">
@@ -9900,20 +10594,6 @@
             </summary>
             <param name="guid">File GUID</param>
             <param name="extension">File extension</param>
-        </member>
-        <member name="M:CMS.Helpers.AttachmentHelper.UseSiteSpecificCustomFolder(System.String)">
-            <summary>
-            Indicates if site specific custom folder should be used for storing files.
-            </summary>
-            <param name="siteName">Site name</param>
-            <returns>True if custom folder is used, otherwise false</returns>
-        </member>
-        <member name="M:CMS.Helpers.AttachmentHelper.FilesFolder(System.String)">
-            <summary>
-            Gets custom file folder path.
-            </summary>
-            <param name="siteName">Site name</param>
-            <returns>Value of custom file folder</returns>
         </member>
         <member name="P:CMS.Helpers.AttachmentHelper.ScriptTimeout">
             <summary>
@@ -10095,12 +10775,6 @@
         <member name="M:CMS.Helpers.CSSHelper.RegisterWidgetsMode(System.Web.UI.Page)">
             <summary>
             Registers the widgets mode CSS.
-            </summary>
-            <param name="page">Page</param>
-        </member>
-        <member name="M:CMS.Helpers.CSSHelper.RegisterWireframesMode(System.Web.UI.Page)">
-            <summary>
-            Registers the wireframe mode CSS.
             </summary>
             <param name="page">Page</param>
         </member>
@@ -10390,16 +11064,31 @@
             <param name="defaultValue">Default value to use if header not found</param>
             <returns>Header value or default value if not found</returns>
         </member>
-        <member name="M:CMS.Helpers.RequestHelper.Respond404">
-            <summary>
-            Sets the 404 status (Not found) and ends the response.
-            </summary>
-        </member>
         <member name="M:CMS.Helpers.RequestHelper.Respond400(System.String)">
             <summary>
-            Sets the 400 status (Bad request) and ends the response.
+            Sets the 400 status (Bad Request) and ends the response.
             </summary>
             <param name="explanationMessage">The optional message to include in the response.</param>
+        </member>
+        <member name="M:CMS.Helpers.RequestHelper.Respond403">
+            <summary>
+            Sets the 403 status (Forbidden) and ends the response.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.RequestHelper.Respond404">
+            <summary>
+            Sets the 404 status (Not Found) and ends the response.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.RequestHelper.Respond500">
+            <summary>
+            Sets the 500 status (Internal Server Error) and ends the response.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.RequestHelper.Respond503">
+            <summary>
+            Sets the 503 status (Service Unavailable) and ends the response.
+            </summary>
         </member>
         <member name="M:CMS.Helpers.RequestHelper.EndResponse">
             <summary>
@@ -10732,6 +11421,15 @@
             File helper methods.
             </summary>
         </member>
+        <member name="M:CMS.Helpers.FileHelper.IsTextFileExtension(System.String)">
+            <summary>
+            Returns true if the given file extension represents a text file.
+            </summary>
+            <param name="extension">Extension to check, can be in both format with and without dot (.jpg, jpg).</param>
+            <remarks>
+            This method contains only limited set of extensions used by system and should not be used in custom code.
+            </remarks>
+        </member>
         <member name="M:CMS.Helpers.FileHelper.GetLiveFilePath(System.String)">
             <summary>
             Gets the live path for the given file
@@ -10883,6 +11581,26 @@
             </summary>
             <param name="dirPath">Directory path (relative with ~/ or absolute)</param>
         </member>
+        <member name="M:CMS.Helpers.FileHelper.UseSiteSpecificCustomFolder(System.String)">
+            <summary>
+            Indicates if site specific custom folder should be used for storing files.
+            </summary>
+            <param name="siteName">Site name</param>
+            <returns>True if custom folder is used, otherwise false</returns>
+        </member>
+        <member name="M:CMS.Helpers.FileHelper.FilesFolder(System.String)">
+            <summary>
+            Gets custom file folder path.
+            </summary>
+            <param name="siteName">Site name</param>
+            <returns>Value of custom file folder</returns>
+        </member>
+        <member name="M:CMS.Helpers.FileHelper.FilesLocationType(System.String)">
+            <summary>
+            Gets the files location type.
+            </summary>
+            <param name="siteName">Site name</param>
+        </member>
         <member name="T:CMS.Helpers.HTTPHelper">
             <summary>
             Provides the methods for the safe access to the HTTPContext.Current.
@@ -10897,7 +11615,7 @@
             <summary>
             Sets the file disposition to the output
             </summary>
-            <param name="fileName">File name</param>
+            <param name="fileName">File name (e.g. image.png)</param>
             <param name="extension">File extension</param>
         </member>
         <member name="M:CMS.Helpers.HTTPHelper.IsDispositionInline(System.String)">
@@ -10948,11 +11666,6 @@
             Default culture.
             </summary>
         </member>
-        <member name="F:CMS.Helpers.CultureHelper.mDefaultUICultureCode">
-            <summary>
-            Default UI culture code (e.g., "en-US").
-            </summary>
-        </member>
         <member name="F:CMS.Helpers.CultureHelper.mFacebookCultures">
             <summary>
             List of cultures which are supported by facebook separated by semicolon.
@@ -10961,6 +11674,11 @@
         <member name="F:CMS.Helpers.CultureHelper.lockObject">
             <summary>
             Object for locking the context
+            </summary>
+        </member>
+        <member name="F:CMS.Helpers.CultureHelper.mDefaultUICultureCode">
+            <summary>
+            Default UI culture code (e.g., "en-US").
             </summary>
         </member>
         <member name="M:CMS.Helpers.CultureHelper.GetCultureInfo(System.String,System.Boolean)">
@@ -11087,6 +11805,11 @@
         <member name="P:CMS.Helpers.CultureHelper.FacebookCultures">
             <summary>
             List of cultures which are supported by facebook separated by semicolon.
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.CultureHelper.DefaultUICultureCodeInternal">
+            <summary>
+            Returns default UI culture code.
             </summary>
         </member>
         <member name="T:CMS.Helpers.DataHelper">
@@ -11312,7 +12035,7 @@
             Returns the string for the specified file size.
             </summary>
         </member>
-        <member name="M:CMS.Helpers.DataHelper.GetSizeString(System.Int64,CMS.Base.FileSizeUnitsEnum)">
+        <member name="M:CMS.Helpers.DataHelper.GetSizeString(System.Int64,CMS.Helpers.FileSizeUnitsEnum)">
             <summary>
             Returns the string for the specified file size.
             </summary>
@@ -11375,6 +12098,13 @@
             Deletes the table rows matching the given where condition.
             </summary>
             <param name="ds">DataSet with the data</param>
+            <param name="where">Where condition</param>
+        </member>
+        <member name="M:CMS.Helpers.DataHelper.KeepOnlyRows(System.Data.DataTable,System.String)">
+            <summary>
+            Keeps only table rows matching the given where condition.
+            </summary>
+            <param name="dt">Data table</param>
             <param name="where">Where condition</param>
         </member>
         <member name="M:CMS.Helpers.DataHelper.DeleteRows(System.Data.DataTable,System.String)">
@@ -11927,6 +12657,33 @@
             <param name="dt">Source data table</param>
             <param name="columnName">Column name</param>
         </member>
+        <member name="M:CMS.Helpers.DataHelper.RecomputeChildCount(System.Data.DataTable,System.String,System.String,System.Data.DataTable,System.String)">
+            <summary>
+            Re-computes count of child objects in <paramref name="parentObjects"/> data table's <paramref name="childCountColumn"/> column.
+            </summary>
+            <param name="parentObjects">Data table containing parent objects.</param>
+            <param name="idColumn">Identity column name in <paramref name="parentObjects"/> table which the child objects reference.</param>
+            <param name="childCountColumn">Child count column name where the computed child objects count is stored.</param>
+            <param name="childObjects">Data table containing child objects.</param>
+            <param name="parentIdColumn">Foreign key column name in <paramref name="childObjects"/> table which references the parent.</param>
+        </member>
+        <member name="M:CMS.Helpers.DataHelper.GetValuesFrequency(System.Data.DataTable,System.String)">
+            <summary>
+            Gets frequency of values in specified data table's column.
+            </summary>
+            <param name="dt">Data table.</param>
+            <param name="columnName">Name of column for which the frequency is determined.</param>
+            <returns>Pairs of (value, occurrences count) in <paramref name="dt"/>'s column named <paramref name="columnName"/>.</returns>
+        </member>
+        <member name="M:CMS.Helpers.DataHelper.GetValuesFrequency``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Object})">
+            <summary>
+            Gets frequency of values in data collection.
+            </summary>
+            <typeparam name="TDataContainer">Data container (e.g. DataRow, AbstractInfo).</typeparam>
+            <param name="dataCollection">Enumerable collection of data.</param>
+            <param name="valueSelector">Function selecting item (value) within TDataContainer.</param>
+            <returns>Pairs of (value, occurrences count) in <paramref name="dataCollection"/>.</returns>
+        </member>
         <member name="M:CMS.Helpers.DataHelper.RestrictRows(System.Data.DataSet,System.Int32)">
             <summary>
             Restricts the number of rows to the top N items.
@@ -11944,12 +12701,21 @@
             <param name="totalRecords">Returns the total number of available records</param>
             <returns>Returns the same DataSet object</returns>
         </member>
-        <member name="M:CMS.Helpers.DataHelper.ForEachRow(System.Data.DataSet,System.Action{System.Data.DataRow})">
+        <member name="M:CMS.Helpers.DataHelper.ForEachRow(System.Data.DataSet,System.Action{System.Data.DataRow},System.Func{System.Data.DataRow,System.Boolean})">
             <summary>
             Executes the given action for each row in the given DataSet
             </summary>
             <param name="ds">DataSet with the data</param>
             <param name="rowAction">Row action</param>
+            <param name="rowCondition">Row condition to filter rows</param>
+        </member>
+        <member name="M:CMS.Helpers.DataHelper.ForEachRow(System.Data.DataTable,System.Action{System.Data.DataRow},System.Func{System.Data.DataRow,System.Boolean})">
+            <summary>
+            Executes the given action for each row in the given DataSet
+            </summary>
+            <param name="dt">Table with the data</param>
+            <param name="rowAction">Row action</param>
+            <param name="rowCondition">Row condition to filter rows</param>
         </member>
         <member name="M:CMS.Helpers.DataHelper.Union(System.Data.DataSet,System.Data.DataSet,System.String)">
             <summary>
@@ -11993,17 +12759,17 @@
         </member>
         <member name="F:CMS.Helpers.EncryptionHelper.ENCRYPT_PREFIX">
             <summary>
-            Prefix used in enrypt/decrypt methods to identify encrypted data.
+            Prefix used in encrypt/decrypt methods to identify encrypted data.
             </summary>
         </member>
-        <member name="F:CMS.Helpers.EncryptionHelper.key">
+        <member name="F:CMS.Helpers.EncryptionHelper.KEY">
             <summary>
-            Key used for data encryption in EncryptData() method.
+            Key used for data encryption in <see cref="M:CMS.Helpers.EncryptionHelper.EncryptData(System.String)"/> and <see cref="M:CMS.Helpers.EncryptionHelper.DecryptData(System.String)"/> methods.
             </summary>
         </member>
-        <member name="F:CMS.Helpers.EncryptionHelper.iv">
+        <member name="F:CMS.Helpers.EncryptionHelper.IV">
             <summary>
-            Init vector used for data encryption in EncryptData() method.
+            Init vector used for data encryption in <see cref="M:CMS.Helpers.EncryptionHelper.EncryptData(System.String)"/> and <see cref="M:CMS.Helpers.EncryptionHelper.DecryptData(System.String)"/> methods.
             </summary>
         </member>
         <member name="M:CMS.Helpers.EncryptionHelper.VerifyRSA(System.String,System.String)">
@@ -12021,15 +12787,27 @@
         </member>
         <member name="M:CMS.Helpers.EncryptionHelper.EncryptData(System.String)">
             <summary>
-            Encrypts data using symetric cryptography. Data can by decrypted by calling DecryptPassword method. If empty string is on input method returns it.
+            Encrypts data using symmetric cryptography. Data can by decrypted by calling <see cref="M:CMS.Helpers.EncryptionHelper.DecryptData(System.String)"/> method. If null or empty string is on input, method returns it.
+            The encrypted data is returned as a base 64 string.
             </summary>
-            <param name="data">Data to encrypt.</param>
+            <param name="plainString">Data to encrypt.</param>
         </member>
         <member name="M:CMS.Helpers.EncryptionHelper.DecryptData(System.String)">
             <summary>
-            Decrypts data crypted by EncryptPassword() method.
+            Decrypts data encrypted by <see cref="M:CMS.Helpers.EncryptionHelper.EncryptData(System.String)"/> method.
+            The input string is returned as is, if it is null or empty string or it was not encrypted using <see cref="M:CMS.Helpers.EncryptionHelper.EncryptData(System.String)"/> method.
             </summary>
-            <param name="crypted">Crypted data.</param>
+            <param name="encryptedString">Encrypted data as a base 64 string.</param>
+        </member>
+        <member name="M:CMS.Helpers.EncryptionHelper.EncryptDataCore(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Encrypts data using symmetric cryptography.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.EncryptionHelper.DecryptDataCore(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Decrypts data using symmetric cryptography.
+            </summary>
         </member>
         <member name="P:CMS.Helpers.EncryptionHelper.CheckVersionKey">
             <summary>
@@ -12066,19 +12844,9 @@
             If true, quick mode is used for resolving of the URLs.
             </summary>
         </member>
-        <member name="F:CMS.Helpers.HTMLHelper.mHandler404Page">
-            <summary>
-            Handler 404 page name.
-            </summary>
-        </member>
         <member name="F:CMS.Helpers.HTMLHelper.mUseExtensionOnPostback">
             <summary>
             Use extension on postback?
-            </summary>
-        </member>
-        <member name="F:CMS.Helpers.HTMLHelper.mUnresolveRegEx">
-            <summary>
-            Hash table of regular expressions to unresolve content.
             </summary>
         </member>
         <member name="F:CMS.Helpers.HTMLHelper.mLocalUrlRegEx">
@@ -12284,12 +13052,12 @@
         </member>
         <member name="M:CMS.Helpers.HTMLHelper.UnResolveUrls(System.String,System.String)">
             <summary>
-            Unresolve relative url if is use in "src" or "href".
+            Unresolve relative URI if used in "src=" or "href=" or "background=" or "url(".
             </summary>
             <param name="mHtml">HTML code</param>
             <param name="applicationPath">Application path</param>
         </member>
-        <member name="M:CMS.Helpers.HTMLHelper.UnResolveUrl(System.Text.RegularExpressions.Match)">
+        <member name="M:CMS.Helpers.HTMLHelper.UnResolveUri(System.Text.RegularExpressions.Match)">
             <summary>
             Unresolves the given URL
             </summary>
@@ -12473,18 +13241,6 @@
             </summary>
             <param name="inputText">Input text to encode</param>
         </member>
-        <member name="M:CMS.Helpers.HTMLHelper.EncodeQuotes(System.String)">
-            <summary>
-            Replace quote characters (double or simple) with HTML encode entity (&quot;/&#34;)
-            </summary>
-            <param name="inputText">Input text</param>
-        </member>
-        <member name="M:CMS.Helpers.HTMLHelper.EncodeAngleBrackets(System.String)">
-            <summary>
-            Replace angle brackets with HTML encode entity (&lt;/&gt;)
-            </summary>
-            <param name="inputText">Input text</param>
-        </member>
         <member name="M:CMS.Helpers.HTMLHelper.EncodeMatch(System.Text.RegularExpressions.Match)">
             <summary>
             Matching function.
@@ -12496,12 +13252,6 @@
             HTML encoding function. HTML encodes given text and replaces standard line breaks with br tag.
             </summary>
             <param name="inputText">Input text to encode</param>
-        </member>
-        <member name="M:CMS.Helpers.HTMLHelper.EncodeLinkReference(System.String)">
-            <summary>
-            Encodes URL in order to be used as href parameter in link.
-            </summary>
-            <param name="url">URL to encode.</param>
         </member>
         <member name="M:CMS.Helpers.HTMLHelper.EncodeForHtmlAttribute(System.String)">
             <summary>
@@ -12664,18 +13414,17 @@
             <param name="lowerTagName">Lower tag name</param>
             <param name="innerText">Inner tag text</param>
         </member>
-        <member name="M:CMS.Helpers.HTMLHelper.GetCSSFileLink(System.String)">
-            <summary>
-            Returns the HTML code for the CSS style link.
-            </summary>
-            <param name="url">CSS file URL</param>
-        </member>
         <member name="P:CMS.Helpers.HTMLHelper.QuickResolveUrls">
             <summary>
             If true, quick mode is used for resolving of the URLs.
             </summary>
         </member>
         <member name="P:CMS.Helpers.HTMLHelper.UseExtensionOnPostback">
+            <summary>
+            Use extension on postback?
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.HTMLHelper.UseExtensionOnPostbackInternal">
             <summary>
             Use extension on postback?
             </summary>
@@ -12805,34 +13554,12 @@
             Mime type helper.
             </summary>
         </member>
-        <member name="F:CMS.Helpers.MimeTypeHelper.mMimetypeToExtension">
-            <summary>
-            Table to convert mimetype to extension.
-            </summary>
-        </member>
-        <member name="F:CMS.Helpers.MimeTypeHelper.mExtensionToMimeType">
-            <summary>
-            Table to convert extension to mimetype.
-            </summary>
-        </member>
-        <member name="M:CMS.Helpers.MimeTypeHelper.GetExtension(System.String)">
-            <summary>
-            Gets the extension by mime type.
-            </summary>
-            <param name="mimetype">Mimetype</param>
-        </member>
         <member name="M:CMS.Helpers.MimeTypeHelper.GetExtension(System.String,System.String)">
             <summary>
             Gets the extension by mime type.
             </summary>
             <param name="mimetype">Mimetype</param>
             <param name="defaultValue">Default value when extension is not found</param>
-        </member>
-        <member name="M:CMS.Helpers.MimeTypeHelper.GetMimetype(System.String)">
-            <summary>
-            Gets the mimetype by extension.
-            </summary>
-            <param name="extension">Extension</param>
         </member>
         <member name="M:CMS.Helpers.MimeTypeHelper.GetMimetype(System.String,System.String)">
             <summary>
@@ -12900,49 +13627,26 @@
             </summary>
             <param name="key">Persistent item key</param>
         </member>
-        <member name="M:CMS.Helpers.PersistentStorageHelper.DeleteExpiredFiles">
+        <member name="M:CMS.Helpers.PersistentStorageHelper.RemoveKeyFromInternalCache(System.String)">
             <summary>
-            Deletes the expired files.
+            Removes a key from <see cref="T:CMS.Helpers.PersistentStorageHelper"/> internal cache, so the next request for value
+            of given key will be taken from file system.
             </summary>
-        </member>
-        <member name="M:CMS.Helpers.PersistentStorageHelper.GetFilePath(System.String)">
-            <summary>
-            Gets the file path for specified key.
-            </summary>
-            <param name="key">Object key</param>
-        </member>
-        <member name="M:CMS.Helpers.PersistentStorageHelper.DeleteFile(System.String)">
-            <summary>
-            Deletes the file for specified key.
-            </summary>
-            <param name="key">Object key</param>
-        </member>
-        <member name="M:CMS.Helpers.PersistentStorageHelper.GetValueFromFile(System.String)">
-            <summary>
-            Gets the value from specified file.
-            </summary>
-            <param name="key">Value key</param>
-        </member>
-        <member name="M:CMS.Helpers.PersistentStorageHelper.SaveValueToFile(System.String,System.Object)">
-            <summary>
-            Saves the value to file.
-            </summary>
-            <param name="key">Value key</param>
-            <param name="value">Object</param>
+            <param name="key">Persistent item key</param>
         </member>
         <member name="P:CMS.Helpers.PersistentStorageHelper.PersistentDirectory">
             <summary>
             Persistent data directory.
             </summary>
         </member>
-        <member name="P:CMS.Helpers.PersistentStorageHelper.LastError">
-            <summary>
-            Last provider error.
-            </summary>
-        </member>
         <member name="T:CMS.Helpers.QueryHelper">
             <summary>
             QueryString helper methods.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.QueryHelper.GetParameterString">
+            <summary>
+            Returns the string representing all variable request parameters (query string and route data)
             </summary>
         </member>
         <member name="M:CMS.Helpers.QueryHelper.ToString">
@@ -13015,13 +13719,6 @@
             <param name="name">Query parameter</param>
             <param name="defaultValue">Default value</param>
         </member>
-        <member name="M:CMS.Helpers.QueryHelper.GetSQLSafeText(System.String,System.String)">
-            <summary>
-            Returns the value of the specified query string parameter, with dangerous SQL characters (' or patterns) encoded. Returns the default value if the parameter is not present in the URL.
-            </summary>
-            <param name="name">Query parameter.</param>
-            <param name="defaultValue">Default value.</param>
-        </member>
         <member name="M:CMS.Helpers.QueryHelper.GetGuid(System.String,System.Guid)">
             <summary>
             Returns the GUID representation of a query parameter or default value
@@ -13052,18 +13749,6 @@
             <param name="userSpecific">Indicates if the hash string is bound to current user</param>
             <returns>SHA256 hash of query string</returns>
         </member>
-        <member name="M:CMS.Helpers.QueryHelper.ValidateHash(System.String,System.String,System.Boolean,System.Boolean,System.Boolean,System.String)">
-            <summary>
-            Validates given QueryString against hash.
-            </summary>
-            <param name="name">Name of hash parameter in query string</param>
-            <param name="excludedParameters">Parameters to exclude from hash validation. Multiple names separated by ';'.</param>
-            <param name="userSpecific">Indicates if the hash string is bound to current user</param>
-            <param name="redirect">Indicates whether or not should the method redirect</param>
-            <param name="validateWithoutExcludedParameters">Indicates if the query string is validated without the excluded parameters if validation with excluded parameters fails</param>
-            <param name="hashSalt">Salt added to hash count (this hash is not replacing custom salt).</param>
-            <returns>True if query string is valid.</returns>
-        </member>
         <member name="M:CMS.Helpers.QueryHelper.ValidateHash(System.String,System.String,CMS.Helpers.HashSettings,System.Boolean)">
             <summary>
             Validates given QueryString against hash.
@@ -13089,17 +13774,6 @@
             <param name="value">Value to validate</param>
             <param name="hash">Hash value</param>
             <param name="settings">Hash settings</param>
-            <returns>True if hash is valid.</returns>
-        </member>
-        <member name="M:CMS.Helpers.QueryHelper.ValidateHashString(System.String,System.String,System.Boolean,System.Boolean,System.String)">
-            <summary>
-            Validates given value against hash.
-            </summary>
-            <param name="value">Value to validate</param>
-            <param name="hash">Hash value</param>
-            <param name="userSpecific">Indicates if the hash string is bound to current user</param>
-            <param name="redirect">Indicates whether or not should the method redirect</param>
-            <param name="hashSalt">Salt added to hash count (this hash is not replacing custom salt).</param>
             <returns>True if hash is valid.</returns>
         </member>
         <member name="M:CMS.Helpers.QueryHelper.GetValue(System.String)">
@@ -13142,6 +13816,11 @@
         <member name="P:CMS.Helpers.QueryHelper.QueryString">
             <summary>
             Query string
+            </summary>
+        </member>
+        <member name="P:CMS.Helpers.QueryHelper.RouteValues">
+            <summary>
+            Route data
             </summary>
         </member>
         <member name="P:CMS.Helpers.QueryHelper.EncodedQueryString">
@@ -13299,16 +13978,6 @@
             Script registration key for jQuery JavaScript library.
             </summary>
         </member>
-        <member name="F:CMS.Helpers.ScriptHelper.SILVERLIGHT_KEY">
-            <summary>
-            Script registration key for Silverlight script.
-            </summary>
-        </member>
-        <member name="F:CMS.Helpers.ScriptHelper.SILVERLIGHT_FILENAME">
-            <summary>
-            Silverlight script file
-            </summary>
-        </member>
         <member name="F:CMS.Helpers.ScriptHelper.JQUERY_FILENAME">
             <summary>
             Filename of jquery library
@@ -13354,11 +14023,6 @@
             If true, progress script is allowed on pages.
             </summary>
         </member>
-        <member name="F:CMS.Helpers.ScriptHelper.mJQuerySpecChars">
-            <summary>
-            Sets of characters that need to be replaced while intended to be used with jQuery selectors.
-            </summary>
-        </member>
         <member name="M:CMS.Helpers.ScriptHelper.ResetScrollPosition(System.Web.UI.Page)">
             <summary>
             Reset scroll positions for current request if MaintainScrollPositionOnPostback is enabled
@@ -13386,14 +14050,7 @@
             <param name="message">Message to display</param>
             <param name="addScriptTags">True to enclose the script block in script and /script tags, otherwise false</param>
         </member>
-        <member name="M:CMS.Helpers.ScriptHelper.GetIncludeScript(System.String)">
-            <summary>
-            Builds an HTML script tag that can be used to include external script given its URL.
-            </summary>
-            <param name="url">URL of the script file</param>
-            <returns>Script tag that references external URL</returns>
-        </member>
-        <member name="M:CMS.Helpers.ScriptHelper.GetIncludeScript(System.String,System.Boolean)">
+        <member name="M:CMS.Helpers.ScriptHelper.GetScriptTag(System.String,System.Boolean)">
             <summary>
             Builds an HTML script tag that can be used to include external script given its URL.
             Allows to explicitly disable script minification.
@@ -13410,19 +14067,21 @@
         </member>
         <member name="M:CMS.Helpers.ScriptHelper.GetScriptUrl(System.String,System.Boolean)">
             <summary>
-            Gets the URL used to retrieve external script file.
-            Allows to explicitly disable script minification.
+            Gets the URL used to retrieve an external script file.
+            Allows to explicitly disable script minification (does not apply
+            if external storage is used or the file is in zip).
             </summary>
-            <param name="url">URL to the script file</param>
+            <param name="path">Path to the script file</param>
             <param name="minify">True if minification should be used, otherwise false</param>
             <returns>URL to script file</returns>
         </member>
-        <member name="M:CMS.Helpers.ScriptHelper.GetRedirectScript(System.String,System.Boolean)">
+        <member name="M:CMS.Helpers.ScriptHelper.IsGetResourceUsable(System.String)">
             <summary>
-            Returns a script block that handles page redirection.
+            Checks if URL request can be transformed to GetResource.ashx format.
+            If path contains question mark then it is not a path to file but URL and it should not be handled by GetResource.ashx 
+            If path ends with .ashx it is already URL and it should not be handled by GetResource.ashx 
             </summary>
-            <param name="url">URL of the page the user should be redirected to</param>
-            <param name="newWindowInCMSDesk">True, if requested page should be opened in a new window when user is in CMSDesk, otherwise the page is opened in the current window</param>
+            <param name="path">Path to file or URL.</param>
         </member>
         <member name="M:CMS.Helpers.ScriptHelper.GetString(System.String)">
             <summary>
@@ -13868,24 +14527,6 @@
             </summary>
             <param name="page">Page to register.</param>
         </member>
-        <member name="M:CMS.Helpers.ScriptHelper.RegisterSKMenu(System.Web.UI.Page)">
-            <summary>
-            Ensures registration of SKMenu JavaScript support.
-            </summary>
-            <param name="page">Page to register</param>
-        </member>
-        <member name="M:CMS.Helpers.ScriptHelper.RegisterSilverlight(System.Web.UI.Page)">
-            <summary>
-            Registers Silverlight's support script.
-            (http://code.msdn.microsoft.com/silverlightjs)
-            </summary>
-            <param name="page">Page to register</param>
-        </member>
-        <member name="M:CMS.Helpers.ScriptHelper.IsSilverlightRegistered">
-            <summary>
-            Returns true if silverlight script is registered
-            </summary>
-        </member>
         <member name="M:CMS.Helpers.ScriptHelper.RegisterFlatResize(System.Web.UI.Page)">
             <summary>
             Ensures registration of script which causes correct resizing of uni flat selectors.
@@ -14072,30 +14713,6 @@
             <param name="url">URL or name of the script file</param>
             <returns>URL to the script file</returns>
         </member>
-        <member name="M:CMS.Helpers.ScriptHelper.RegisterSKMenu(System.Web.UI.Page,System.String)">
-            <summary>
-            Ensures registration of SKMenu JavaScript support.
-            </summary>
-            <param name="page">Page to register</param>
-            <param name="path">Relative path</param>
-        </member>
-        <member name="M:CMS.Helpers.ScriptHelper.EscapeJQueryCharacters(System.String)">
-            <summary>
-            Escapes the given string for usage in the jQuery selectors. All meta-characters are escaped using '\'.
-            </summary>
-            <param name="text">Text to escape</param>
-        </member>
-        <member name="M:CMS.Helpers.ScriptHelper.EscapeHTMLString(System.String)">
-            <summary>
-            Escapes the given HTML string for usage in the JavaScript string constant.
-            </summary>
-            <param name="text">Text to escape</param>
-        </member>
-        <member name="F:CMS.Helpers.ScriptHelper.CamelCaseSerializerSettings">
-            <summary>
-            The naming convention used for serialization of module parameters.
-            </summary>
-        </member>
         <member name="M:CMS.Helpers.ScriptHelper.RegisterModule(System.Web.UI.Control,System.String,System.Object)">
             <summary>
             Renders JavaScript code to start a client-side module.
@@ -14108,21 +14725,13 @@
             <param name="moduleId">The full name of the client-side module to register.</param>
             <param name="parameters">An object that contains the named parameters to set for the module.</param>
         </member>
-        <member name="M:CMS.Helpers.ScriptHelper.RegisterAngularModule(System.String,System.Object)">
+        <member name="M:CMS.Helpers.ScriptHelper.RegisterAngularModule(System.String,System.Object,CMS.Helpers.Internal.AngularVersionEnum)">
             <summary>
             Registers Angular module which will be rendered to start a client-side angular module.
             </summary>
             <param name="moduleID">The full name of the client-side module to register.</param>
             <param name="parameters">An object that contains the named parameters to set for the module.</param>
-        </member>
-        <member name="M:CMS.Helpers.ScriptHelper.RegisterAngularApplication(System.Web.UI.Control,System.String,System.Object)">
-            <summary>
-            Renders JavaScript code to start a client-side application.
-            There can be only one angular application on each ASPX page.
-            </summary>
-            <param name="control">The control that will be used to register JavaScript code.</param>
-            <param name="moduleID">The full name of the client-side module to register.</param>
-            <param name="parameters">An object that contains the named parameters to set for the module.</param>
+            <param name="angularVersion">Version of the Angular to be used for the module</param>
         </member>
         <member name="M:CMS.Helpers.ScriptHelper.RenderAngularModulesScript(System.Web.UI.Page)">
             <summary>
@@ -14130,14 +14739,11 @@
             </summary>
             <param name="page">The page that the modules will be started on.</param>
         </member>
-        <member name="M:CMS.Helpers.ScriptHelper.JsonSerializeObject(System.Object,Newtonsoft.Json.Formatting,Newtonsoft.Json.JsonSerializerSettings)">
+        <member name="M:CMS.Helpers.ScriptHelper.JsonSerializeObject(System.Object)">
             <summary>
-            Serializes the specified object to a JSON string using formatting and <see cref="T:Newtonsoft.Json.JsonSerializerSettings"/>.
+            Serializes the specified object to a JSON string using default formatting
             </summary>
             <param name="value">The object to serialize.</param>
-            <param name="formatting">Indicates how the output is formatted.</param>
-            <param name="settings">The <see cref="T:Newtonsoft.Json.JsonSerializerSettings"/> used to serialize the object.
-            If this is null, default serialization settings will be is used.</param>
             <remarks>
             We have to use this method because of breaking change in code (Newtonsoft.Json), causing runtime error due to not-accessible methods
             </remarks>
@@ -14237,6 +14843,31 @@
             Script for centralized retrieving of 'top' frame.
             </summary>
         </member>
+        <member name="T:CMS.Helpers.ScriptHelper.NewtonsoftJsonSerializer">
+            <summary>
+            Newtonsoft.JSON wrapper
+            </summary>
+            <remarks>
+            Allows to remove Newtonsoft.JSON references from static signatures.
+            </remarks>
+        </member>
+        <member name="F:CMS.Helpers.ScriptHelper.NewtonsoftJsonSerializer.CamelCaseSerializerSettings">
+            <summary>
+            The naming convention used for serialization of module parameters.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.ScriptHelper.NewtonsoftJsonSerializer.SerializeObject(System.Object)">
+            <summary>
+            Serializes the specified object to a JSON string using formatting and <see cref="T:Newtonsoft.Json.JsonSerializerSettings"/>.
+            </summary>
+            <param name="value">The object to serialize.</param>
+            <remarks>
+            We have to use this method because of breaking change in code (Newtonsoft.Json), causing runtime error due to not-accessible methods
+            </remarks>
+            <returns>
+            A JSON string representation of the object.
+            </returns>
+        </member>
         <member name="T:CMS.Helpers.SessionHelper">
             <summary>
             Session management.
@@ -14325,13 +14956,33 @@
             Newline symbol.
             </summary>
         </member>
-        <member name="M:CMS.Helpers.TextHelper.ContentEquals(System.String@,System.String@,System.Boolean)">
+        <member name="M:CMS.Helpers.TextHelper.SplitByString(System.String,System.String,System.Int32)">
+            <summary>
+            Splits the given string by a defined string separator
+            </summary>
+            <param name="text">Text to split</param>
+            <param name="separator">Separator</param>
+            <param name="minItems">If defined, the output array is filled with empty (null) items up to the given count</param>
+        </member>
+        <member name="M:CMS.Helpers.TextHelper.ContentEquals(System.String@,System.String@,System.Boolean,System.Boolean)">
             <summary>
             Checks if two text contents are equal. Ignores extra white spaces, and is case insensitive.
             </summary>
             <param name="text1">First text</param>
             <param name="text2">Second text</param>
             <param name="returnDifference">If true, the difference (remainders that don't match) are returned through original values</param>
+            <param name="normalizeWhiteSpaces">If true, the input texts are normalized to avoid mismatch on whitespaces</param>
+            <exception cref="T:System.ArgumentNullException">When text paramater is null</exception>
+        </member>
+        <member name="M:CMS.Helpers.TextHelper.ContentEquals(System.String@,System.String@,System.Boolean,CMS.Helpers.TextNormalizationSettings)">
+            <summary>
+            Checks if two text contents are equal. Ignores extra white spaces, and is case insensitive.
+            </summary>
+            <param name="text1">First text</param>
+            <param name="text2">Second text</param>
+            <param name="returnDifference">If true, the difference (remainders that don't match) are returned through original values</param>
+            <param name="settings">If true, the input texts are normalized to avoid mismatch on whitespaces</param>
+            <exception cref="T:System.ArgumentNullException">When text paramater is null</exception>
         </member>
         <member name="M:CMS.Helpers.TextHelper.RemoveDiacritics(System.String)">
             <summary>
@@ -14672,11 +15323,6 @@
             Characters that are forbidden to use for the Alias names and file system names.
             </summary>
         </member>
-        <member name="F:CMS.Helpers.URLHelper.mAllowedURLPathValues">
-            <summary>
-            Characters which are allowed for the URL path only.
-            </summary>
-        </member>
         <member name="F:CMS.Helpers.URLHelper.mLanguageParameterName">
             <summary>
             Language query parameter name.
@@ -14771,12 +15417,15 @@
             <param name="siteName">Site name</param>
             <param name="extensionIncluded">Indicates if given fileName contains extension</param>
         </member>
-        <member name="M:CMS.Helpers.URLHelper.GetSafeUrlPart(System.String,System.String)">
+        <member name="M:CMS.Helpers.URLHelper.GetSafeUrlPart(System.String,System.String,System.Boolean,System.Boolean,System.String)">
             <summary>
-            Returns the safe part of URL. This method doesn't proceed complete URL it handles only part of URL.
+            Returns the safe part of URL. This method doesn't process complete URL it handles only part of URL.
             </summary>
-            <param name="url">String with URL part which may contain URL-unsafe characters. Enter only part of URL without any '/' characters</param>
+            <param name="part">String with URL part which may contain URL-unsafe characters. Enter only part of URL without any '/' characters</param>
             <param name="siteName">Site name from where forbidden characters should be taken</param>
+            <param name="removeDiacritics">Indicates if diacritics should be removed from the URL part</param>
+            <param name="limitReplacements">Indicates if replacements should be aggregated into single replacement character if found multiple invalid characters in row</param>
+            <param name="additionalAllowedCharacters">Additional allowed characters for the URL part</param>
         </member>
         <member name="M:CMS.Helpers.URLHelper.LimitURLReplacements(System.String,System.Char)">
             <summary>
@@ -14784,13 +15433,6 @@
             </summary>
             <param name="url">Input URL path</param>
             <param name="replacement">Replacement character</param>
-        </member>
-        <member name="M:CMS.Helpers.URLHelper.EncodeQueryString(System.String)">
-            <summary>
-            Encodes QueryString part of URL with HTML encode.
-            </summary>
-            <param name="url">URL to be encoded</param>
-            <returns>URL with encoded query string</returns>
         </member>
         <member name="M:CMS.Helpers.URLHelper.DomainMatch(System.String,System.String,System.Boolean)">
             <summary>
@@ -14861,12 +15503,6 @@
             <param name="domainName">Domain name</param>
         </member>
         <member name="M:CMS.Helpers.URLHelper.GetAbsoluteUrl(System.String)">
-            <summary>
-            Returns the absolute URL (including port) representation for the given relative URL, uses current domain and application path.
-            </summary>
-            <param name="relativeUrl">Relative URL to translate</param>
-        </member>
-        <member name="M:CMS.Helpers.URLHelper.GetAbsoluteUrlWithPort(System.String)">
             <summary>
             Returns the absolute URL (including port) representation for the given relative URL, uses current domain and application path.
             </summary>
@@ -14981,6 +15617,16 @@
             </summary>
             <param name="relativePath">Page relative path</param>
             <param name="checkPhysicalPath">Indicates whether physical path should be checked. Returns Physical path type</param>
+        </member>
+        <member name="M:CMS.Helpers.URLHelper.GetExcludedStateForFileSpecificUrls(System.String,System.Boolean@)">
+            <summary>
+            Returns <see cref="T:CMS.Helpers.ExcludedSystemEnum"/> for relative path related to the file handled by the GetFileHandler.
+            </summary>
+            <param name="relativePath">Relative path</param>
+            <param name="checkedPredicate">Indicates whether the path was already evaluated and if not process the method and cahnge the checked state.</param>
+            <returns>
+            Returns <see cref="F:CMS.Helpers.ExcludedSystemEnum.Unknown"/> if path does not match; otherwise specific enum type.
+            </returns>
         </member>
         <member name="M:CMS.Helpers.URLHelper.IsSystemPath(System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
@@ -15125,11 +15771,10 @@
         </member>
         <member name="M:CMS.Helpers.URLHelper.ResolveClientUrl(System.String,System.String)">
             <summary>
-            Resolves a client relative URL to the absolute form.
+            Resolves and combine client URL with base URL.
             </summary>
-            <param name="baseUrl">Base URL in absolute form</param>
-            <param name="relativeUrl">Client relative URL</param>
-            <returns>Absolute URL</returns>
+            <param name="baseUrl">Base URL.</param>
+            <param name="relativeUrl">Client URL.</param>
         </member>
         <member name="M:CMS.Helpers.URLHelper.GetUrlExtension(System.String)">
             <summary>
@@ -15173,18 +15818,6 @@
             Trim www if input text starts with it.
             </summary>
         </member>
-        <member name="M:CMS.Helpers.URLHelper.IsHandler(System.String)">
-            <summary>
-            Checks if page is error handler.
-            </summary>
-            <param name="relativePath">Relative path</param>
-        </member>
-        <member name="M:CMS.Helpers.URLHelper.GetHandledUrl(System.String)">
-            <summary>
-            Returns the URL handled by handler404 page.
-            </summary>
-            <param name="url">Raw URL</param>
-        </member>
         <member name="M:CMS.Helpers.URLHelper.UpdateParameterInUrl(System.String,System.String,System.String)">
             <summary>
             Update parameter in specified URL.
@@ -15225,20 +15858,6 @@
             Refreshes the current page by doing a redirect to self
             </summary>
         </member>
-        <member name="M:CMS.Helpers.URLHelper.Redirect(System.String,System.Boolean,System.String)">
-            <summary>
-            Redirects the response using specified URL.
-            </summary>
-            <param name="url">URL for redirection</param>
-            <param name="allowPermanent">If true, permanent redirection (301) is allowed instead of regular redirection (302)</param>
-            <param name="siteName">Site name</param>
-        </member>
-        <member name="M:CMS.Helpers.URLHelper.PermanentRedirect(System.String)">
-            <summary>
-            Redirects the response using specified URL using permanent redirection using 301.
-            </summary>
-            <param name="url">URL for redirection</param>
-        </member>
         <member name="M:CMS.Helpers.URLHelper.UsePermanentRedirect(System.String)">
             <summary>
             If true, permanent redirection (301) is used instead of regular (302) redirection.
@@ -15264,11 +15883,15 @@
             <param name="url">URL for redirection</param>
             <param name="siteName">Site name</param>
         </member>
-        <member name="M:CMS.Helpers.URLHelper.ResponseRedirect(System.String)">
+        <member name="M:CMS.Helpers.URLHelper.ResponseRedirect(System.String,System.Boolean)">
             <summary>
             Redirects the response using specified URL using standard redirection with Response.Redirect.
             </summary>
             <param name="url">URL for redirection</param>
+            <param name="endResponse">True to terminate the current process</param>
+            <remarks>If calling this method with endResponse = false and the server
+            redirect is performed, the request can be  ended using 
+            HttpApplication.CompleteRequest() method.</remarks>
         </member>
         <member name="M:CMS.Helpers.URLHelper.ClientRedirect(System.String)">
             <summary>
@@ -15276,11 +15899,14 @@
             </summary>
             <param name="url">URL to be redirected to.</param>
         </member>
-        <member name="M:CMS.Helpers.URLHelper.ServerRedirect(System.String)">
+        <member name="M:CMS.Helpers.URLHelper.ServerRedirect(System.String,System.Boolean)">
             <summary>
             Performs server redirect.
             </summary>
             <param name="url">URL to be redirected to.</param>
+            <param name="endResponse">True to terminate the current process</param>
+            <remarks>If calling this method with endResponse = false, the request can be
+            ended using HttpApplication.CompleteRequest() method.</remarks>
         </member>
         <member name="M:CMS.Helpers.URLHelper.ResolveRedirectUrl(System.String)">
             <summary>
@@ -15370,6 +15996,13 @@
             </summary>
             <param name="url">URL to replace special characters</param>
         </member>
+        <member name="M:CMS.Helpers.URLHelper.IsLocalUrl(System.String,System.String)">
+            <summary>
+            Returns true if the given URL is located on current server.
+            </summary>
+            <param name="url">URL to check.</param>
+            <param name="currentDomain">Current server domain.</param>
+        </member>
         <member name="M:CMS.Helpers.URLHelper.MakeLinksAbsolute(System.String,System.String)">
             <summary>
             Returns the absolute representation of the HTML links (image paths ...).
@@ -15407,9 +16040,9 @@
             </summary>
             <param name="relativeUrl">Relative URL to convert to absolute</param>
         </member>
-        <member name="E:CMS.Helpers.URLHelper.OnBeforeGetSafeUrlPath">
+        <member name="E:CMS.Helpers.URLHelper.OnBeforeGetSafeUrlPart">
             <summary>
-            Occurs when the GetSafeUtlPath method is called, returns false if original method should not be used.
+            Occurs when the GetSafeUrlPart method is called, returns false if the original method ensuring safe URL part should not be used.
             </summary>
         </member>
         <member name="P:CMS.Helpers.URLHelper.ProtocolRegex">
@@ -15441,11 +16074,6 @@
         <member name="P:CMS.Helpers.URLHelper.ParamRegEx">
             <summary>
             Parameter regular expression [name] -> [RegEx]
-            </summary>
-        </member>
-        <member name="P:CMS.Helpers.URLHelper.AllowedURLPathValues">
-            <summary>
-            Returns string containing allowed characters that cant be used in URL path.
             </summary>
         </member>
         <member name="P:CMS.Helpers.URLHelper.RegExMakeLinksAbsolute">
@@ -15494,11 +16122,11 @@
             </summary>
             <param name="path">Original path</param>
         </member>
-        <member name="T:CMS.Helpers.URLHelper.OnBeforeGetSafeUrlPathEventHandler">
+        <member name="T:CMS.Helpers.URLHelper.OnBeforeGetSafeUrlPartEventHandler">
             <summary>
-            Represents the method that will handle an event that should be called before get safe URL path method
+            Method handling an event fired for all parts of the URL (splitted by '/' character) to get a safe URL (without forbidden characters)
             </summary>
-            <param name="url">Input URL</param>
+            <param name="part">Part of the URL without </param>
             <param name="siteName">Site name</param>
             <param name="e">EventArgs</param>
             <returns>Returns false if original method should not be used.</returns>
@@ -16195,15 +16823,6 @@
             <param name="value">Value to hash</param>
             <param name="settings">Hash settings</param>
         </member>
-        <member name="M:CMS.Helpers.ValidationHelper.GetHashString(System.String,System.Boolean,System.String,System.String)">
-            <summary>
-            Gets the SHA2 hash for the given value (salt unique to certain user session and database is added).
-            </summary>
-            <param name="value">Value to hash</param>
-            <param name="userSpecific">Indicates if the hash string should be bound to current user</param>
-            <param name="customSalt">Custom salt which is shared across all method callings.</param>
-            <param name="hashSalt">Hash salt string. This salt unique per method call, it represents the place from where the method is called.</param>
-        </member>
         <member name="M:CMS.Helpers.ValidationHelper.ValidateHash(System.String,System.String,CMS.Helpers.HashSettings)">
             <summary>
             Validates the hash for the given value.
@@ -16211,17 +16830,6 @@
             <param name="value">Value</param>
             <param name="hash">Hash</param>
             <param name="settings">Hash settings</param>
-        </member>
-        <member name="M:CMS.Helpers.ValidationHelper.ValidateHash(System.String,System.String,System.Boolean,System.Boolean,System.String,System.String)">
-            <summary>
-            Validates the hash for the given value.
-            </summary>
-            <param name="value">Value</param>
-            <param name="hash">Hash</param>
-            <param name="userSpecific">Indicates if the hash string is bound to current user</param>
-            <param name="redirect">Whether or not should method redirect.</param>
-            <param name="customSalt">Custom salt string.</param>
-            <param name="hashSalt">Hash salt string. This salt represent the place from where the method is called.</param>
         </member>
         <member name="M:CMS.Helpers.ValidationHelper.RedirectToBadHash">
             <summary>
@@ -16529,13 +17137,6 @@
             <param name="source">Control to validate</param>
             <param name="errorMessage">It is returned when control's value is not identifier</param>
         </member>
-        <member name="M:CMS.Helpers.Validator.IsIdentificator(System.Object,System.String)">
-            <summary>
-            Determines whether source control's value is identifier.
-            </summary>
-            <param name="source">Control to validate</param>
-            <param name="errorMessage">It is returned when control's value is not identifier</param>
-        </member>
         <member name="M:CMS.Helpers.Validator.IsCodeName(System.Object,System.String,System.Boolean)">
             <summary>
             Determines whether source control's value is code name.
@@ -16623,13 +17224,6 @@
             </summary>
             <param name="attribute">Node attributes collection</param>
         </member>
-        <member name="M:CMS.Helpers.XmlHelper.SetXmlNodeAttributes(System.Xml.XmlNode,System.String[0:,0:])">
-            <summary>
-            Sets (updates or inserts) xml attributes to specified xml node.
-            </summary>
-            <param name="node">Xml node</param>
-            <param name="attributes">Array of attributes (0 - name, 1 - value]) to set</param>
-        </member>
         <member name="M:CMS.Helpers.XmlHelper.SetXmlNodeAttributes(System.Xml.XmlNode,System.String[0:,0:],System.Boolean)">
             <summary>
             Sets (updates or inserts) xml attributes to specified xml node.
@@ -16690,9 +17284,9 @@
             Salt for CMSMessages/Redirect.aspx
             </summary>
         </member>
-        <member name="F:CMS.Helpers.HashValidationSalts.GETIMAGEVERSION_PAGE">
+        <member name="F:CMS.Helpers.HashValidationSalts.GET_IMAGE_VERSION">
             <summary>
-            Salt for CMSAdminControls/ImageEditor/GetImageVersion.aspx.cs
+            Salt for request on handler running under page CMSPages/GetImageVersion.aspx
             </summary>
         </member>
         <member name="T:CMS.Helpers.OptInApprovalResultEnum">
@@ -16817,7 +17411,7 @@
         </member>
         <member name="M:CMS.Helpers.SecurityHelper.EnsureCertificateSecurity">
             <summary>
-            If some module allows acceptation of untrusted or expired certificate, this method register certificate validation callback.
+            If some module allows acceptation of untrusted or expired certificate, this method registers certificate validation callback.
             </summary>
         </member>
         <member name="M:CMS.Helpers.SecurityHelper.ValidateCertificate(System.Object,System.Security.Cryptography.X509Certificates.X509Certificate,System.Security.Cryptography.X509Certificates.X509Chain,System.Net.Security.SslPolicyErrors)">
@@ -16949,44 +17543,6 @@
             Returns whether ScreenLock feature is enabled for given site.
             </summary>
             <param name="sitename">Site name.</param>
-        </member>
-        <member name="M:CMS.Helpers.SecurityHelper.GetSafeQueryString(System.String)">
-            <summary>
-            Returns safe sql query string - escapes apostrophes and escapes wildcard characters _, %, [].
-            </summary>
-            <param name="input">String to escape</param>
-        </member>
-        <member name="M:CMS.Helpers.SecurityHelper.GetSafeQueryString(System.String,System.Boolean)">
-            <summary>
-            Returns safe sql query string - escapes apostrophes and optionally escapes wildcard characters _, %, [].
-            </summary>
-            <param name="input">String to escape</param>
-            <param name="escapeWildcards">Determines whether the wildcards characters should be escaped</param>    
-        </member>
-        <member name="M:CMS.Helpers.SecurityHelper.GetSafeQueryStringInternal(System.String,System.Boolean)">
-            <summary>
-            Returns safe sql query string - escapes apostrophes and optionally escapes wildcard characters _, %, [].
-            </summary>
-            <param name="input">String to escape</param>
-            <param name="escapeWildcards">Determines whether the wildcards characters should be escaped</param>  
-        </member>
-        <member name="M:CMS.Helpers.SecurityHelper.EscapeLikeQueryPatterns(System.String,System.Boolean,System.Boolean,System.Boolean)">
-            <summary>
-            Escapes characters for query which use LIKE pattern.
-            </summary>
-            <param name="input">Input text</param>
-            <param name="escapeUnderScore">Indicates whether underscore character should be escaped</param>
-            <param name="escapePercentage">Indicates whether percentage character should be escaped</param>
-            <param name="escapeSquareBrackets">Indicates whether square brackets characters should be escaped</param>
-        </member>
-        <member name="M:CMS.Helpers.SecurityHelper.EscapeLikeQueryPatternsInternal(System.String,System.Boolean,System.Boolean,System.Boolean)">
-            <summary>
-            Escapes characters for query which use LIKE pattern.
-            </summary>
-            <param name="input">Input text</param>
-            <param name="escapeUnderScore">Indicates whether underscore character should be escaped</param>
-            <param name="escapePercentage">Indicates whether percentage character should be escaped</param>
-            <param name="escapeSquareBrackets">Indicates whether square brackets characters should be escaped</param>
         </member>
         <member name="M:CMS.Helpers.SecurityHelper.HandleClickjacking">
             <summary>

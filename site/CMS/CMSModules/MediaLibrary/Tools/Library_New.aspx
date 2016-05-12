@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
   MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Media library - New library"
-  Inherits="CMSModules_MediaLibrary_Tools_Library_New" Theme="Default" Codebehind="Library_New.aspx.cs" %>
+  Inherits="CMSModules_MediaLibrary_Tools_Library_New" Theme="Default"  Codebehind="Library_New.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/UI/MediaLibraryEdit.ascx" TagName="LibraryEdit"
     TagPrefix="cms" %>

@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Linq;
+using System.Web.UI.WebControls;
+using System.Data;
 
 using CMS;
 using CMS.ExtendedControls;
@@ -7,8 +8,7 @@ using CMS.UIControls;
 using CMS.Helpers;
 using CMS.DataEngine;
 using CMS.Modules;
-
-using UniGridAction = CMS.UIControls.UniGridConfig.Action;
+using CMS.Base;
 
 [assembly: RegisterCustomClass("QueriesGridExtender", typeof(QueriesGridExtender))]
 
@@ -19,7 +19,7 @@ public class QueriesGridExtender : ControlExtender<UniGrid>
 {
     // fields
     private CMSUIPage mPage;
-    private bool? mQueriesCanBeDeleted;
+    private bool? mQueriesCanBeModified;
 
 
     /// <summary>
@@ -38,11 +38,11 @@ public class QueriesGridExtender : ControlExtender<UniGrid>
     /// <summary>
     /// Gets whether queries in the current UIContext can be deleted, cloned, created or modified.
     /// </summary>
-    private bool QueriesCanBeDeleted
+    private bool QueriesCanBeModified
     {
         get
         {
-            if (!mQueriesCanBeDeleted.HasValue)
+            if (!mQueriesCanBeModified.HasValue)
             {
                 DataClassInfo classInfo = ((DataClassInfo)Page.EditedObjectParent);
                 bool result = classInfo.ClassShowAsSystemTable;
@@ -51,9 +51,9 @@ public class QueriesGridExtender : ControlExtender<UniGrid>
                     ResourceInfo resourceInfo = ResourceInfoProvider.GetResourceInfo(classInfo.ClassResourceID);
                     result = resourceInfo.IsEditable;
                 }
-                mQueriesCanBeDeleted = result;
+                mQueriesCanBeModified = result;
             }
-            return mQueriesCanBeDeleted.Value;
+            return mQueriesCanBeModified.Value;
         }
     }
 
@@ -66,7 +66,7 @@ public class QueriesGridExtender : ControlExtender<UniGrid>
         Control.OnExternalDataBound += Control_OnExternalDataBound;
         Control.OnAction += Control_OnAction;
 
-        Control.ShowObjectMenu = QueriesCanBeDeleted;
+        Control.ShowObjectMenu = QueriesCanBeModified;
     }
 
 
@@ -80,7 +80,7 @@ public class QueriesGridExtender : ControlExtender<UniGrid>
         switch (actionName)
         {
             case "delete":
-                if (QueriesCanBeDeleted)
+                if (QueriesCanBeModified)
                 {
                     QueryInfo queryInfo = QueryInfoProvider.GetQueryInfo(ValidationHelper.GetInteger(actionArgument, 0));
                     DataClassInfo classInfo = ((DataClassInfo)Page.EditedObjectParent);
@@ -118,16 +118,47 @@ public class QueriesGridExtender : ControlExtender<UniGrid>
                 CMSGridActionButton gridButton = sender as CMSGridActionButton;
                 if (gridButton != null)
                 {
-                    gridButton.Enabled = QueriesCanBeDeleted;
-                    if (!QueriesCanBeDeleted)
+                    bool queryCanBeDeleted = CheckIfQueryCanBeModified(parameter);
+
+                    gridButton.Enabled = queryCanBeDeleted;
+                    if (!queryCanBeDeleted)
                     {
                         gridButton.OnClientClick = String.Empty;
                     }
                 }
 
                 return gridButton;
+
+            case "#objectmenu":
+                // Hide object menu for queries which are not customized
+                if (!CheckIfQueryCanBeModified(parameter))
+                {
+                    ((CMSGridActionButton)sender).Visible = false;
+                }
+                break;
         }
 
         return null;
+    }
+
+
+    /// <summary>
+    /// Checks if query can be modified.
+    /// </summary>
+    /// <param name="parameter">Data from grid</param>
+    private bool CheckIfQueryCanBeModified(object parameter)
+    {
+        if (SystemContext.DevelopmentMode)
+        {
+            // In development mode all queries can be modified
+            return true;
+        }
+
+        var gvr = (GridViewRow)parameter;
+        var drv = (DataRowView)gvr.DataItem;
+        var isCustom = ValidationHelper.GetBoolean(drv["QueryIsCustom"], false);
+
+        // Only custom queries in system table can be deleted
+        return (QueriesCanBeModified && isCustom);
     }
 }

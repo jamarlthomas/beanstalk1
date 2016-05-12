@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_Menu"
-    Theme="Default" Codebehind="Menu.aspx.cs" MaintainScrollPositionOnPostback="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_Menu"
+    Theme="Default" CodeBehind="Menu.aspx.cs" MaintainScrollPositionOnPostback="true"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/editmenu.ascx" TagName="editmenu"
@@ -145,24 +145,26 @@
                                 <cms:CMSCheckBox ID="chkExcludeFromSearch" runat="server" />
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="editing-form-label-cell">
-                                <cms:LocalizedLabel CssClass="control-label" ID="lblSitemapChange" runat="server" EnableViewState="false"
-                                    ResourceString="generalsitemap.change" DisplayColon="true" AssociatedControlID="drpChange" />
+                        <asp:PlaceHolder ID="plcAdvancedSearch" runat="server">
+                            <div class="form-group">
+                                <div class="editing-form-label-cell">
+                                    <cms:LocalizedLabel CssClass="control-label" ID="lblSitemapChange" runat="server" EnableViewState="false"
+                                        ResourceString="generalsitemap.change" DisplayColon="true" AssociatedControlID="drpChange" />
+                                </div>
+                                <div class="editing-form-value-cell">
+                                    <cms:CMSDropDownList runat="server" ID="drpChange" CssClass="DropDownFieldSmall" />
+                                </div>
                             </div>
-                            <div class="editing-form-value-cell">
-                                <cms:CMSDropDownList runat="server" ID="drpChange" CssClass="DropDownFieldSmall" />
+                            <div class="form-group">
+                                <div class="editing-form-label-cell">
+                                    <cms:LocalizedLabel CssClass="control-label" ID="lblSitemapPriority" runat="server" EnableViewState="false"
+                                        ResourceString="generalsitemap.priority" DisplayColon="true" AssociatedControlID="drpPriority" />
+                                </div>
+                                <div class="editing-form-value-cell">
+                                    <cms:CMSDropDownList runat="server" ID="drpPriority" CssClass="DropDownFieldSmall" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="editing-form-label-cell">
-                                <cms:LocalizedLabel CssClass="control-label" ID="lblSitemapPriority" runat="server" EnableViewState="false"
-                                    ResourceString="generalsitemap.priority" DisplayColon="true" AssociatedControlID="drpPriority" />
-                            </div>
-                            <div class="editing-form-value-cell">
-                                <cms:CMSDropDownList runat="server" ID="drpPriority" CssClass="DropDownFieldSmall" />
-                            </div>
-                        </div>
+                        </asp:PlaceHolder>
                     </div>
                 </asp:Panel>
                 <br />
@@ -217,60 +219,6 @@
                             </div>
                             <div class="editing-form-value-cell">
                                 <cms:CMSTextBox ID="txtMenuItemRightImage" runat="server" MaxLength="200" />
-                            </div>
-                        </div>
-                    </div>
-                    <%-- Menu item mouse over --%>
-                    <cms:LocalizedHeading runat="server" ID="headMenuItemDesignOnMouseOver" Level="5" ResourceString="MenuProperties.MouseOver" EnableViewState="false" />
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <div class="editing-form-label-cell">
-                                <cms:LocalizedLabel CssClass="control-label" ID="lblMenuItemStyleMouseOverr" runat="server" EnableViewState="false"
-                                    ResourceString="MenuProperties.Style" AssociatedControlID="txtMenuItemStyleMouseOver" />
-                            </div>
-                            <div class="editing-form-value-cell">
-                                <cms:CMSTextBox ID="txtMenuItemStyleMouseOver" runat="server"
-                                    MaxLength="50" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="editing-form-label-cell">
-                                <cms:LocalizedLabel CssClass="control-label" ID="lblCssClassMouseOver" runat="server" EnableViewState="false"
-                                    ResourceString="MenuProperties.CssClass" AssociatedControlID="txtCssClassMouseOver" />
-                            </div>
-                            <div class="editing-form-value-cell">
-                                <cms:CMSTextBox ID="txtCssClassMouseOver" runat="server"
-                                    MaxLength="100" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="editing-form-label-cell">
-                                <cms:LocalizedLabel CssClass="control-label" ID="lblMenuItemLeftmageMouseOver" runat="server" EnableViewState="false"
-                                    ResourceString="MenuProperties.LeftImage" AssociatedControlID="txtMenuItemLeftImageMouseOver" />
-                            </div>
-                            <div class="editing-form-value-cell">
-                                <cms:CMSTextBox ID="txtMenuItemLeftImageMouseOver" runat="server"
-                                    MaxLength="200" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="editing-form-label-cell">
-                                <cms:LocalizedLabel CssClass="control-label" ID="lblMenuItemImageMouseOver" runat="server" EnableViewState="false"
-                                    ResourceString="MenuProperties.Image" AssociatedControlID="txtMenuItemImageMouseOver" />
-                            </div>
-                            <div class="editing-form-value-cell">
-                                <cms:CMSTextBox ID="txtMenuItemImageMouseOver" runat="server"
-                                    MaxLength="200" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="editing-form-label-cell">
-                                <cms:LocalizedLabel CssClass="control-label" ID="lblMenuItemRightImageMouseOver" runat="server" EnableViewState="false"
-                                    ResourceString="MenuProperties.RightImage" AssociatedControlID="txtMenuItemRightImageMouseOver" />
-                            </div>
-                            <div class="editing-form-value-cell">
-                                <cms:CMSTextBox ID="txtMenuItemRightImageMouseOver" runat="server"
-                                    MaxLength="200" />
                             </div>
                         </div>
                     </div>

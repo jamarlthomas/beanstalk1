@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_AdminControls_Controls_Class_NewClassWizard"
-    Codebehind="NewClassWizard.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_AdminControls_Controls_Class_NewClassWizard"
+    CodeBehind="NewClassWizard.ascx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/System/LocalizableTextBox.ascx" TagName="LocalizableTextBox"
     TagPrefix="cms" %>
@@ -49,7 +49,7 @@
                             <%-- Step 1 --%>
                             <asp:WizardStep ID="wzdStep1" runat="server" AllowReturn="false">
                                 <asp:Panel ID="pnlWzdStep1" runat="server" CssClass="GlobalWizardStep">
-                                    <cms:MessagesPlaceHolder runat="server" ID="pnlMessages1"/>
+                                    <cms:MessagesPlaceHolder runat="server" ID="pnlMessages1" />
                                     <div class="form-horizontal">
                                         <div class="form-group">
                                             <div class="editing-form-label-cell">
@@ -94,7 +94,7 @@
                             <%-- Step 2 --%>
                             <asp:WizardStep ID="wzdStep2" runat="server" AllowReturn="false">
                                 <asp:Panel ID="pnlWzdStep2" runat="server" CssClass="GlobalWizardStep">
-                                   <cms:MessagesPlaceHolder runat="server" ID="pnlMessages2"/>
+                                    <cms:MessagesPlaceHolder runat="server" ID="pnlMessages2" />
                                     <div class="form-horizontal">
                                         <div class="radio-list-vertical">
                                             <cms:CMSRadioButton ID="radCustom" runat="server" Checked="True" GroupName="DocType" />
@@ -136,6 +136,14 @@
                                                             <cms:SelectClass ID="selInherits" runat="server" DisplayNoneValue="true" />
                                                         </div>
                                                     </div>
+                                                    <div class="form-group">
+                                                        <div class="editing-form-label-cell">
+                                                            <cms:LocalizedLabel CssClass="control-label" runat="server" ID="lblContentOnly" EnableViewState="false" ResourceString="DocumentType.ContentOnly" DisplayColon="true" AssociatedControlID="chbContentOnly" />
+                                                        </div>
+                                                        <div class="editing-form-value-cell">
+                                                            <cms:CMSCheckBox ID="chbContentOnly" runat="server" Checked="False" />
+                                                        </div>
+                                                    </div>
                                                 </asp:PlaceHolder>
                                                 <asp:PlaceHolder ID="plcMNClassOptions" runat="server" Visible="false">
                                                     <div class="form-group">
@@ -144,6 +152,22 @@
                                                         </div>
                                                         <div class="editing-form-value-cell">
                                                             <cms:CMSCheckBox ID="chbIsMNTable" runat="server" Checked="False" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="editing-form-label-cell">
+                                                            <asp:Label CssClass="control-label" ID="lblClassGuid" runat="server" AssociatedControlID="chkClassGuid" />
+                                                        </div>
+                                                        <div class="editing-form-value-cell">
+                                                            <cms:CMSCheckBox ID="chkClassGuid" runat="server" Checked="true" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="editing-form-label-cell">
+                                                            <asp:Label CssClass="control-label" ID="lblClassLastModified" runat="server" AssociatedControlID="chkClassLastModified" />
+                                                        </div>
+                                                        <div class="editing-form-value-cell">
+                                                            <cms:CMSCheckBox ID="chkClassLastModified" runat="server" Checked="true" />
                                                         </div>
                                                     </div>
                                                 </asp:PlaceHolder>
@@ -237,7 +261,7 @@
                             <%-- Step 6 --%>
                             <asp:WizardStep ID="wzdStep6" runat="server" AllowReturn="false">
                                 <asp:Panel ID="pnlWzdStep6" runat="server" CssClass="GlobalWizardStep">
-                                     <cms:MessagesPlaceHolder runat="server" ID="pnlMessages6"/>
+                                    <cms:MessagesPlaceHolder runat="server" ID="pnlMessages6" />
                                     <cms:UniSelector ID="usSites" runat="server" IsLiveSite="false" ObjectType="cms.site"
                                         SelectionMode="Multiple" ResourcePrefix="sitesselect" />
                                 </asp:Panel>
@@ -248,11 +272,8 @@
                                     <cms:LocalizedHeading runat="server" ID="headInfoStep7" Level="3" EnableViewState="false" ResourceString="documenttype_new_step8.info" />
                                     <asp:Label runat="server" ID="lblDocumentCreated" CssClass="WizardFinishedStep" />
                                     <asp:Label runat="server" ID="lblTableCreated" CssClass="WizardFinishedStep" />
-                                    <asp:Label runat="server" ID="lblEditingFormCreated" CssClass="WizardFinishedStep" />
                                     <asp:Label runat="server" ID="lblChildTypesAdded" CssClass="WizardFinishedStep" />
                                     <asp:Label runat="server" ID="lblSitesSelected" CssClass="WizardFinishedStep" />
-                                    <asp:Label runat="server" ID="lblQueryCreated" CssClass="WizardFinishedStep" />
-                                    <asp:Label runat="server" ID="lblTransformationCreated" CssClass="WizardFinishedStep" />
                                     <asp:Label runat="server" ID="lblPermissionNameCreated" CssClass="WizardFinishedStep" />
                                     <asp:Label runat="server" ID="lblDefaultIconCreated" CssClass="WizardFinishedStep" />
                                     <asp:Label runat="server" ID="lblSearchSpecificationCreated" CssClass="WizardFinishedStep" />

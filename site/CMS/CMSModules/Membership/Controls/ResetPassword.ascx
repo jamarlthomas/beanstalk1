@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Membership_Controls_ResetPassword" Codebehind="ResetPassword.ascx.cs" %>
+    Inherits="CMSModules_Membership_Controls_ResetPassword"  Codebehind="ResetPassword.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/Membership/FormControls/Passwords/PasswordStrength.ascx"
     TagName="PasswordStrength" TagPrefix="cms" %>
@@ -30,8 +30,8 @@
         </div>
         <div class="form-group">
             <div class="editing-form-value-cell editing-form-value-cell-offset">
-                <cms:CMSButton runat="server" ID="btnReset" EnableViewState="false" ButtonStyle="Primary"
-                    OnClick="btnReset_Click" ValidationGroup="PasswordReset" />
+                <cms:LocalizedButton runat="server" ID="btnReset" EnableViewState="false" ButtonStyle="Primary"
+                    OnClick="btnReset_Click" ValidationGroup="PasswordReset" ResourceString="general.reset" />
             </div>
         </div>
     </div>

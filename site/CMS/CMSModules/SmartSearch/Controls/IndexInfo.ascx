@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="IndexInfo.ascx.cs" Inherits="CMSModules_SmartSearch_Controls_IndexInfo" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="IndexInfo.ascx.cs" Inherits="CMSModules_SmartSearch_Controls_IndexInfo" %>
 
 <asp:Panel ID="pnlInfo" runat="server" CssClass="form-horizontal">
     <cms:LocalizedHeading runat="server" ID="headElem" ResourceString="srch.index.info" Level="4" CssClass="editing-form-category-caption" />

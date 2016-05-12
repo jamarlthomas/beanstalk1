@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="Comment" Language="C#" Theme="Default" MasterPageFile="~/CMSMasterPages/LiveSite/Dialogs/ModalDialogPage.master"
     AutoEventWireup="true" EnableEventValidation="false" Inherits="CMSModules_Workflows_CMSPages_Comment"
-    Codebehind="Comment.aspx.cs" %>
+     Codebehind="Comment.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Workflows/Controls/UI/Comment.ascx" TagName="Comment"
     TagPrefix="cms" %>

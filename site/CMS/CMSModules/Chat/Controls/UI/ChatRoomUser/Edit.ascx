@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Edit.ascx.cs" Inherits="CMSModules_Chat_Controls_UI_ChatRoomUser_Edit" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Edit.ascx.cs" Inherits="CMSModules_Chat_Controls_UI_ChatRoomUser_Edit" %>
 
 <%@ Register Src="~/CMSModules/Membership/FormControls/Users/selectuser.ascx" TagName="UserSelector" TagPrefix="cms" %>
 <%@ Register Src="~/CMSFormControls/Basic/DropDownListControl.ascx" TagName="DropDownList" TagPrefix="cms" %>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Base;
@@ -93,7 +93,10 @@ public partial class CMSFormControls_ChangeStylesheetLanguage : FormEngineUserCo
     {
         base.OnInit(e);
 
-        Form.OnAfterSave += Form_OnAfterSave;
+        if (Form != null)
+        {
+            Form.OnAfterSave += Form_OnAfterSave;
+        }
     }
 
 
@@ -164,18 +167,22 @@ public partial class CMSFormControls_ChangeStylesheetLanguage : FormEngineUserCo
         if (!RequestHelper.IsPostBack())
         {
             SetupControls();
-            if (Form.IsInsertMode)
+
+            if (Form != null)
             {
-                // Show only drop-down list in insert mode
-                btnChange.Visible = false;
-                plcLanguage.Visible = false;
-                plcSelect.Visible = true;
-            }
-            else
-            {
-                // Show label with button in edit mode
-                plcLanguage.Visible = true;
-                plcSelect.Visible = false;
+                if (Form.IsInsertMode)
+                {
+                    // Show only drop-down list in insert mode
+                    btnChange.Visible = false;
+                    plcLanguage.Visible = false;
+                    plcSelect.Visible = true;
+                }
+                else
+                {
+                    // Show label with button in edit mode
+                    plcLanguage.Visible = true;
+                    plcSelect.Visible = false;
+                }
             }
         }
     }

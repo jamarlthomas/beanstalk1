@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_EventLog_EventLog"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_EventLog_EventLog"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Event log"
-    Theme="Default" Codebehind="EventLog.aspx.cs" %>
+    Theme="Default"  Codebehind="EventLog.aspx.cs" %>
 
 <%@ Register Src="~/CMSFormControls/Sites/SiteSelector.ascx" TagName="SiteSelector"
     TagPrefix="cms" %>
@@ -8,8 +8,8 @@
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/Basic/DisabledModuleInfo.ascx" TagPrefix="cms" TagName="DisabledModuleInfo" %>
 
-<asp:Content ID="cntSites" ContentPlaceHolderID="plcBeforeActions" runat="server">
-    <asp:Panel ID="pnlSites" runat="server" CssClass="header-actions-site-selector-block">
+<asp:Content ID="cntSiteSelector" ContentPlaceHolderID="plcSiteSelector" runat="server">
+    <asp:Panel ID="pnlSites" runat="server">
         <div class="form-horizontal form-filter">
             <div class="form-group">
                 <div class="filter-form-label-cell">

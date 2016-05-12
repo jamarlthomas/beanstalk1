@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartCheckRegistration"
-    Codebehind="ShoppingCartCheckRegistration.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartCheckRegistration"
+     Codebehind="ShoppingCartCheckRegistration.ascx.cs" %>
 <%@ Register Src="~/CMSModules/Membership/FormControls/Passwords/PasswordStrength.ascx"
     TagName="PasswordStrength" TagPrefix="cms" %>
 

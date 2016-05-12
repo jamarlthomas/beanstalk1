@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Tab_Subsidiaries.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_Account_Tab_Subsidiaries"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Tab_Subsidiaries.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_Account_Tab_Subsidiaries"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Account properties - Braches"
     Theme="Default" %>
 

@@ -1,36 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
+﻿using System;
 
 using CMS.Blogs;
 using CMS.Helpers;
-using CMS.PortalEngine;
-using CMS.Base;
 using CMS.SiteProvider;
 using CMS.Membership;
 using CMS.DocumentEngine;
+using CMS.Protection;
 using CMS.UIControls;
 using CMS.WebAnalytics;
-using CMS.WorkflowEngine;
 
 using TreeNode = CMS.DocumentEngine.TreeNode;
-using CMS.Protection;
 
 public partial class CMSModules_Blogs_Controls_NewSubscription : CMSUserControl
 {
-    #region "Private variables"
-
-    private BlogProperties mBlogProperties = null;
-    private int mDocumentId = 0;
-
-    #endregion
-
-
     #region "Public properties"
 
     /// <summary>
@@ -38,19 +20,13 @@ public partial class CMSModules_Blogs_Controls_NewSubscription : CMSUserControl
     /// </summary>
     public int DocumentID
     {
-        get
-        {
-            return mDocumentId;
-        }
-        set
-        {
-            mDocumentId = value;
-        }
+        get;
+        set;
     }
 
 
     /// <summary>
-    /// Gets or sets docuemnt node ID.
+    /// Gets or sets document node ID.
     /// </summary>
     public int NodeID
     {
@@ -74,14 +50,8 @@ public partial class CMSModules_Blogs_Controls_NewSubscription : CMSUserControl
     /// </summary>
     public BlogProperties BlogProperties
     {
-        get
-        {
-            return mBlogProperties;
-        }
-        set
-        {
-            mBlogProperties = value;
-        }
+        get;
+        set;
     }
 
     #endregion
@@ -149,7 +119,7 @@ public partial class CMSModules_Blogs_Controls_NewSubscription : CMSUserControl
             {
                 BlogPostSubscriptionInfo bpsi = BlogPostSubscriptionInfoProvider.GetBlogPostSubscriptionInfo(email, DocumentID);
 
-                // Check for duplicit subscriptions
+                // Check for duplicity of subscriptions
                 if ((bpsi == null) || !bpsi.SubscriptionApproved)
                 {
                     bpsi = new BlogPostSubscriptionInfo();
@@ -180,10 +150,9 @@ public partial class CMSModules_Blogs_Controls_NewSubscription : CMSUserControl
                         }
 
                     }
+                    
                     // Clear form after successful subscription
                     txtEmail.Text = "";
-
-
                 }
                 else
                 {
@@ -196,11 +165,13 @@ public partial class CMSModules_Blogs_Controls_NewSubscription : CMSUserControl
             }
         }
 
-        if (result != String.Empty)
+        if (result == String.Empty)
         {
-            lblError.Visible = true;
-            lblError.Text = result;
+            return;
         }
+
+        lblError.Visible = true;
+        lblError.Text = result;
     }
 
     #endregion

@@ -214,7 +214,6 @@ public partial class CMSModules_Content_Controls_Dialogs_YouTube_YouTubeProperti
         chkAutoplay.InputAttributes["onclick"] = postBackRef;
         chkFullScreen.InputAttributes["onclick"] = postBackRef;
         chkIncludeRelated.InputAttributes["onclick"] = postBackRef;
-        chkLoop.InputAttributes["onclick"] = postBackRef;
     }
 
     #endregion
@@ -232,7 +231,6 @@ public partial class CMSModules_Content_Controls_Dialogs_YouTube_YouTubeProperti
         {
             bool autoplay = ValidationHelper.GetBoolean(properties[DialogParameters.YOUTUBE_AUTOPLAY], false);
             bool fullScreen = ValidationHelper.GetBoolean(properties[DialogParameters.YOUTUBE_FS], false);
-            bool loop = ValidationHelper.GetBoolean(properties[DialogParameters.YOUTUBE_LOOP], false);
             bool relatedVideos = ValidationHelper.GetBoolean(properties[DialogParameters.YOUTUBE_REL], false);
             string url = ValidationHelper.GetString(properties[DialogParameters.YOUTUBE_URL], "");
             int width = ValidationHelper.GetInteger(properties[DialogParameters.YOUTUBE_WIDTH], 425);
@@ -244,7 +242,6 @@ public partial class CMSModules_Content_Controls_Dialogs_YouTube_YouTubeProperti
             chkAutoplay.Checked = autoplay;
             chkFullScreen.Checked = fullScreen;
             chkIncludeRelated.Checked = relatedVideos;
-            chkLoop.Checked = loop;
             txtLinkText.Text = url;
             sizeElem.Width = width;
             sizeElem.Height = height;
@@ -264,7 +261,6 @@ public partial class CMSModules_Content_Controls_Dialogs_YouTube_YouTubeProperti
         retval[DialogParameters.YOUTUBE_AUTOPLAY] = chkAutoplay.Checked;
         retval[DialogParameters.YOUTUBE_FS] = chkFullScreen.Checked;
         retval[DialogParameters.YOUTUBE_HEIGHT] = sizeElem.Height;
-        retval[DialogParameters.YOUTUBE_LOOP] = chkLoop.Checked;
         retval[DialogParameters.YOUTUBE_REL] = chkIncludeRelated.Checked;
         retval[DialogParameters.YOUTUBE_URL] = txtLinkText.Text.Trim();
         retval[DialogParameters.YOUTUBE_WIDTH] = sizeElem.Width;
@@ -283,7 +279,6 @@ public partial class CMSModules_Content_Controls_Dialogs_YouTube_YouTubeProperti
         sizeElem.Width = 264;
 
         chkAutoplay.Checked = false;
-        chkLoop.Checked = false;
         chkIncludeRelated.Checked = true;
         chkFullScreen.Checked = true;
 

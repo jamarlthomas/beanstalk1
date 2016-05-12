@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSWebParts/Newsletters/CustomSubscriptionForm.ascx.cs" Inherits="CMSWebParts_Newsletters_CustomSubscriptionForm" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSWebParts/Newsletters/CustomSubscriptionForm.ascx.cs" Inherits="CMSWebParts_Newsletters_CustomSubscriptionForm" %>
 <%@ Register Src="~/CMSFormControls/Captcha/SecurityCode.ascx" TagName="SecurityCode" TagPrefix="cms" %>
 <asp:Label ID="lblError" runat="server" EnableViewState="false" Visible="false" />
 <asp:Label ID="lblInfo" runat="server" EnableViewState="false" Visible="false" />

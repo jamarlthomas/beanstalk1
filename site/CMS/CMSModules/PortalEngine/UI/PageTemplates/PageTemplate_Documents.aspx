@@ -1,6 +1,6 @@
-<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
+﻿<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
     Inherits="CMSModules_PortalEngine_UI_PageTemplates_PageTemplate_Documents" Title="Page Template Edit - Pages"
-    Theme="Default" Codebehind="PageTemplate_Documents.aspx.cs" %>
+    Theme="Default"  Codebehind="PageTemplate_Documents.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/AdminControls/Controls/Documents/Documents.ascx" TagName="Documents"
     TagPrefix="cms" %>

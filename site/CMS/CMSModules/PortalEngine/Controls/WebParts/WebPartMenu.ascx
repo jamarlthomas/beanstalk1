@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_Controls_WebParts_WebPartMenu"
-    Codebehind="WebPartMenu.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_PortalEngine_Controls_WebParts_WebPartMenu"
+     Codebehind="WebPartMenu.ascx.cs" %>
 <cms:ContextMenu runat="server" ID="menuMoveTo" MenuID="moveToMenu" VerticalPosition="Bottom"
     HorizontalPosition="Left" OffsetX="25" ActiveItemCssClass="ItemSelected" MenuLevel="1"
     ShowMenuOnMouseOver="true" MouseButton="Both">

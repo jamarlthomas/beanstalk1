@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Collections;
 using System.Web.UI;
@@ -189,7 +189,7 @@ public partial class CMSModules_Widgets_Controls_WidgetSecurity : CMSAdminEditCo
             {
                 // Retrive permission matrix data
                 QueryDataParameters parameters = new QueryDataParameters();
-                parameters.Add("@ID", ResWidget.ResourceId);
+                parameters.Add("@ID", ResWidget.ResourceID);
                 parameters.Add("@WidgetID", WidgetID);
                 parameters.Add("@SiteID", siteId);
 
@@ -243,7 +243,7 @@ public partial class CMSModules_Widgets_Controls_WidgetSecurity : CMSAdminEditCo
         if ((ResWidget != null) && (WidgetInfo != null))
         {
             // Get permissions for the current widget resource                       
-            DataSet permissions = PermissionNameInfoProvider.GetResourcePermissions(ResWidget.ResourceId);
+            DataSet permissions = PermissionNameInfoProvider.GetResourcePermissions(ResWidget.ResourceID);
             if (DataHelper.DataSourceIsEmpty(permissions))
             {
                 lblInfo.Text = GetString("general.emptymatrix");

@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_Products_Product_New"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_Products_Product_New"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default" Title="Product properties"
-    Codebehind="Product_New.aspx.cs" %>
+     Codebehind="Product_New.aspx.cs" %>
 
 <%@ Register TagPrefix="cms" TagName="DocTypeSelection" Src="~/CMSModules/Content/Controls/DocTypeSelection.ascx" %>
 <%@ Register TagPrefix="cms" TagName="ProductEdit" Src="~/CMSModules/Ecommerce/Controls/UI/ProductEdit.ascx" %>

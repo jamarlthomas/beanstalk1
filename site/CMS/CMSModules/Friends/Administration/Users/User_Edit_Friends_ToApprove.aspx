@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Theme="default" Inherits="CMSModules_Friends_Administration_Users_User_Edit_Friends_ToApprove"
-    Codebehind="User_Edit_Friends_ToApprove.aspx.cs" %>
+     Codebehind="User_Edit_Friends_ToApprove.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Friends/Controls/FriendsToApprovalList.ascx" TagName="FriendsListToApprove"
     TagPrefix="cms" %>

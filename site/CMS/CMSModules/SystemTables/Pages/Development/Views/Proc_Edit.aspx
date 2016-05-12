@@ -1,5 +1,5 @@
-<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true" Inherits="CMSModules_SystemTables_Pages_Development_Views_Proc_Edit"
-    Title="Class - Edit - Query" Theme="Default" Codebehind="Proc_Edit.aspx.cs" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true" Inherits="CMSModules_SystemTables_Pages_Development_Views_Proc_Edit"
+    Title="Class - Edit - Query" Theme="Default"  Codebehind="Proc_Edit.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/SystemTables/Controls/Views/SQLEdit.ascx" TagName="SQLEdit" TagPrefix="cms" %>
 

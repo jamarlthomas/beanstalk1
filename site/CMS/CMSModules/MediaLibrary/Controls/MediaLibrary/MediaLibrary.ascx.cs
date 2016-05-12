@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -40,6 +40,8 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaLibrary 
     private string mSortColumns = "FileName";
 
     private string mCurrentAction;
+
+    private const string MEDIA_LIBRARY_FOLDER = "~/CMSModules/MediaLibrary/";
 
     #endregion
 
@@ -1234,9 +1236,20 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaLibrary 
     /// <param name="libraryID">Media library ID.</param>
     private DirectoryInfo GetMediaLibraryDirectoryInfo(string libraryFolderPath, int libraryID)
     {
-        string path = MediaLibraryInfoProvider.GetMediaLibraryFolderPath(libraryID);
+        string path = DirectoryHelper.CombinePath(MediaLibraryInfoProvider.GetMediaLibraryFolderPath(libraryID), libraryFolderPath);
+        DirectoryInfo directoryInfo = null;
 
-        return DirectoryInfo.New(DirectoryHelper.CombinePath(path, libraryFolderPath));
+        try
+        {
+            directoryInfo = DirectoryInfo.New(path);
+        }
+        catch(Exception ex)
+        {
+            EventLogProvider.LogException("Media library", "LOADDIRECTORY", ex);
+            ShowError(GetString("media.error.loadingdata"));
+        }
+
+        return directoryInfo;
     }
 
     #endregion
@@ -1395,7 +1408,7 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaLibrary 
     private void InitializeDesignScripts()
     {
         ScriptHelper.RegisterJQuery(Page);
-        ScriptHelper.RegisterScriptFile(Page, "~/CMSModules/MediaLibrary/Controls/MediaLibrary/MediaLibrary.js");
+        ScriptHelper.RegisterScriptFile(Page, MEDIA_LIBRARY_FOLDER + "Controls/MediaLibrary/MediaLibrary.js");
 
         CMSDialogHelper.RegisterDialogHelper(Page);
 
@@ -1417,7 +1430,6 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaLibrary 
 
         folderActions.LibraryFolderPath = libraryFolderPath;
 
-        menuElem.Visible = true;
         menuElem.DisplayMode = DisplayMode;
         menuElem.IsCopyMoveLinkDialog = IsCopyMoveLinkDialog;
         menuElem.IsLiveSite = IsLiveSite;
@@ -1428,13 +1440,13 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaLibrary 
         menuElem.ResizeToWidth = AutoResizeWidth;
         menuElem.IsLiveSite = IsLiveSite;
         menuElem.UpdateViewMenu();
-        
+
         folderActions.Update();
 
         plcFolderActions.Visible = !IsCopyMoveLinkDialog;
     }
 
-  
+
     /// <summary>
     /// Initializes control used to perform copy/move action.
     /// </summary>
@@ -1640,6 +1652,9 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaLibrary 
     /// <param name="display">Indicates whether the content of folder should be displayed</param>
     private void HandleFolderAction(string folderPath, bool isNewFolder, bool displayNormal, bool select, bool display)
     {
+        // Always show menu when some folder action is required
+        menuElem.Visible = true;
+
         // Update information on currently selected folder path
         FolderPath = GetFilePath(folderPath);
 
@@ -2415,6 +2430,10 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaLibrary 
                 case "importcancel":
                     DisplayFolderProperties();
                     DisplayNormal();
+
+                    // Show menu after import was done or cancelled
+                    menuElem.Visible = true;
+                    pnlUpdateMenu.Update();
                     break;
 
                 case "reloaddata":
@@ -2581,10 +2600,10 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaLibrary 
     /// </summary>
     private string GetCopyMoveDialogUrl()
     {
-        string result = "~/CMSModules/MediaLibrary/CMSPages/SelectFolder.aspx";
+        string result = MEDIA_LIBRARY_FOLDER + "CMSPages/SelectFolder.aspx";
         if (!IsLiveSite)
         {
-            result = "~/CMSModules/MediaLibrary/Tools/FolderActions/SelectFolder.aspx";
+            result = MEDIA_LIBRARY_FOLDER + "Tools/FolderActions/SelectFolder.aspx";
         }
 
         return result;

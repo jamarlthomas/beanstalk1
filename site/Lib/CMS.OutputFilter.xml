@@ -9,16 +9,6 @@
             Cached output container.
             </summary>
         </member>
-        <member name="M:CMS.OutputFilter.CachedOutput.LoadHeaders">
-            <summary>
-            Loads the current response headers.
-            </summary>
-        </member>
-        <member name="M:CMS.OutputFilter.CachedOutput.SetHeaders">
-            <summary>
-            Sets the current response headers.
-            </summary>
-        </member>
         <member name="M:CMS.OutputFilter.CachedOutput.#ctor">
             <summary>
             CMSCachedOutput constructor
@@ -106,16 +96,6 @@
             Headers collection.
             </summary>
         </member>
-        <member name="P:CMS.OutputFilter.CachedOutput.DocumentCampaign">
-            <summary>
-            Document campaign.
-            </summary>
-        </member>
-        <member name="P:CMS.OutputFilter.CachedOutput.DocumentAliasCampaign">
-            <summary>
-            Campaign for alias document.
-            </summary>
-        </member>
         <member name="P:CMS.OutputFilter.CachedOutput.DocumentTrackConversionName">
             <summary>
             Document conversion name - Reflects the "DocumentTrackConversionName" data column.
@@ -159,6 +139,11 @@
         <member name="P:CMS.OutputFilter.CachedOutput.CacheDependencies">
             <summary>
             List of the item cache dependencies
+            </summary>
+        </member>
+        <member name="P:CMS.OutputFilter.CachedOutput.URL">
+            <summary>
+            URL address of cached page - contains final URL address which reflects rewrite settings
             </summary>
         </member>
         <member name="P:CMS.OutputFilter.CachedOutput.Item(System.String)">
@@ -241,11 +226,6 @@
             True if the output contains some substitutions.
             </summary>
         </member>
-        <member name="F:CMS.OutputFilter.OutputData.mEncoding">
-            <summary>
-            Encoding
-            </summary>
-        </member>
         <member name="M:CMS.OutputFilter.OutputData.#ctor">
             <summary>
             Constructor
@@ -273,11 +253,6 @@
             Gets the data for given HTML.
             </summary>
             <param name="html">Output HTML</param>
-        </member>
-        <member name="P:CMS.OutputFilter.OutputData.EncodingName">
-            <summary>
-            Output encoding name
-            </summary>
         </member>
         <member name="P:CMS.OutputFilter.OutputData.HasDebugInformation">
             <summary>
@@ -349,11 +324,6 @@
             When true, the request is completed, when false, the Request.End is called.
             </summary>
         </member>
-        <member name="F:CMS.OutputFilter.ResponseOutputFilter.mOutputEncoding">
-            <summary>
-            Output encoding.
-            </summary>
-        </member>
         <member name="F:CMS.OutputFilter.ResponseOutputFilter.mResponseStream">
             <summary>
             Response stream.
@@ -372,6 +342,11 @@
         <member name="F:CMS.OutputFilter.ResponseOutputFilter.mEncoding">
             <summary>
             Encoding for the current filter
+            </summary>
+        </member>
+        <member name="F:CMS.OutputFilter.ResponseOutputFilter.SubstitutionPattern">
+            <summary>
+            Substitution pattern used for searching output cache substitutions.
             </summary>
         </member>
         <member name="M:CMS.OutputFilter.ResponseOutputFilter.GetExcludedXHTMLResolveUrls(System.String)">
@@ -507,11 +482,6 @@
             Handles the write event.
             </summary>
         </member>
-        <member name="M:CMS.OutputFilter.ResponseOutputFilter.GetResponseEncoding">
-            <summary>
-            Gets the encoding for current request
-            </summary>
-        </member>
         <member name="M:CMS.OutputFilter.ResponseOutputFilter.GetFilterRelativePath">
             <summary>
             Gets document's relative path used in output filters.
@@ -536,13 +506,6 @@
             </summary>
             <param name="html">Output HTML</param>
             <returns>Returns true if something was resolved</returns>
-        </member>
-        <member name="M:CMS.OutputFilter.ResponseOutputFilter.ResolveSubstitution(System.String,System.Boolean@)">
-            <summary>
-            Resolves the substitution.
-            </summary>
-            <param name="expression">Expression to resolve</param>
-            <param name="match">Returns true if matched</param>
         </member>
         <member name="M:CMS.OutputFilter.ResponseOutputFilter.ResolveSubstitutionInternal(System.String,System.Boolean@)">
             <summary>
@@ -569,11 +532,6 @@
         <member name="E:CMS.OutputFilter.ResponseOutputFilter.OnFilterCreated">
             <summary>
             Fires after the filter has been created.
-            </summary>
-        </member>
-        <member name="P:CMS.OutputFilter.ResponseOutputFilter.OutputEncoding">
-            <summary>
-            Output encoding.
             </summary>
         </member>
         <member name="P:CMS.OutputFilter.ResponseOutputFilter.UseOutputFilterCache">
@@ -757,19 +715,6 @@
             <param name="siteName">Site name</param>
             <param name="currentPage">Current page info</param>
             <param name="response">Response object</param>
-        </member>
-        <member name="M:CMS.OutputFilter.OutputHelper.AddNoClientCacheParameters(CMS.OutputFilter.ResponseOutputFilter,System.String@)">
-            <summary>
-            Adds the parameter to disable client cache to the URLs of the page HTML code.
-            </summary>
-            <param name="filter">Filter object</param>
-            <param name="finalHtml">Page HTML code</param>
-        </member>
-        <member name="M:CMS.OutputFilter.OutputHelper.AddNoClientCacheParameter(System.Text.RegularExpressions.Match)">
-            <summary>
-            Adds the parameter to disable client cache to the URLs of the page HTML code. Applies only on URLs with querystring or .aspx pages, except for .axd requests.
-            </summary>
-            <param name="m">Parameter match</param>
         </member>
         <member name="M:CMS.OutputFilter.OutputHelper.AddToCache(CMS.OutputFilter.CachedOutput,CMS.Helpers.CMSCacheDependency)">
             <summary>
@@ -1026,6 +971,11 @@
             Initializes the handlers
             </summary>
         </member>
+        <member name="M:CMS.OutputFilter.OutputFilterHandlers.BeforeSendCacheOutput(System.Object,CMS.OutputFilter.OutputCacheEventArgs)">
+            <summary>
+            Checks whether current URL is in correct case form. If not then redirects to correct one.
+            </summary>
+        </member>
         <member name="M:CMS.OutputFilter.OutputFilterHandlers.RestoreResponseCookies(System.Object,System.EventArgs)">
             <summary>
             Restores response cookies for current request if the output was sent from cache
@@ -1041,9 +991,26 @@
             Gets the variable part of the output cache for the given custom string
             </summary>
         </member>
-        <member name="M:CMS.OutputFilter.OutputFilterHandlers.ClearOutputCacheItems(System.Object,CMS.DataEngine.SettingsKeyChangedEventArgs)">
+        <member name="M:CMS.OutputFilter.OutputFilterHandlers.HandleOutputCache(System.Object,CMS.DataEngine.SettingsKeyChangedEventArgs)">
             <summary>
             Settings key changed handler
+            </summary>
+        </member>
+        <member name="M:CMS.OutputFilter.OutputFilterHandlers.ClearOutputCache(System.String)">
+            <summary>
+            Clears output cache if related settings key changed
+            </summary>
+            <param name="keyName">Setting key name</param>
+        </member>
+        <member name="M:CMS.OutputFilter.OutputFilterHandlers.ClearOutputCacheItems(System.String)">
+            <summary>
+            Clears output cache items when appropriate settings key changed
+            </summary>
+            <param name="keyName"></param>
+        </member>
+        <member name="M:CMS.OutputFilter.OutputFilterHandlers.IsCaseRedirectRequired(System.String)">
+            <summary>
+            Returns true if case redirect is required - if redirect case rules are defined in settings
             </summary>
         </member>
         <member name="T:CMS.OutputFilter.OutputModule">

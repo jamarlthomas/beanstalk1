@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 using CMS.DataCom;
@@ -102,8 +103,12 @@ public partial class CMSModules_ContactManagement_Controls_UI_DataCom_ContactMap
     private Panel CreateMappingPanel(FormInfo formInfo, EntityInfo entityInfo, EntityMapping mapping)
     {
         Panel mappingPanel = new Panel { CssClass = "mapping"};
-        mappingPanel.Controls.Add(CreateHeaderPanel());
-        foreach (IField formItem in formInfo.ItemsList)
+        HtmlTable mappingTable = new HtmlTable();
+        
+        mappingTable.Controls.Add(CreateHeaderPanel());
+        mappingPanel.Controls.Add(mappingTable);
+
+        foreach (IDataDefinitionItem formItem in formInfo.ItemsList)
         {
             FormFieldInfo formField = formItem as FormFieldInfo;
             if (formField != null)
@@ -114,16 +119,17 @@ public partial class CMSModules_ContactManagement_Controls_UI_DataCom_ContactMap
                     EntityAttributeInfo entityAttribute = entityInfo.GetAttributeInfo(mappingItem.EntityAttributeName);
                     if (entityAttribute != null)
                     {
-                        Panel row = new Panel { CssClass = "control-group-inline" };
-                        mappingPanel.Controls.Add(row);
+                        HtmlTableRow row = new HtmlTableRow();
+                        mappingTable.Controls.Add(row);
                         
-                        Panel formFieldPanel = new Panel { CssClass = "input-width-60 cms-form-group-text" };
-                        row.Controls.Add(formFieldPanel);
-                        formFieldPanel.Controls.Add(new Literal { Text = ResHelper.LocalizeString(formField.GetDisplayName(MacroContext.CurrentResolver)) });
+                        HtmlTableCell formFieldCell = new HtmlTableCell();
+                        formFieldCell.Controls.Add(new Literal { Text = ResHelper.LocalizeString(formField.GetDisplayName(MacroContext.CurrentResolver)) });
 
-                        Panel entityAttributePanel = new Panel { CssClass = "input-width-60 cms-form-group-text" };
-                        row.Controls.Add(entityAttributePanel);
-                        entityAttributePanel.Controls.Add(new Literal { Text = ResHelper.LocalizeString(entityAttribute.DisplayName) });
+                        HtmlTableCell entityAttributeCell = new HtmlTableCell();
+                        entityAttributeCell.Controls.Add(new Literal { Text = ResHelper.LocalizeString(entityAttribute.DisplayName) });
+
+                        row.Controls.Add(formFieldCell);
+                        row.Controls.Add(entityAttributeCell);
                     }
                 }
             }
@@ -137,17 +143,18 @@ public partial class CMSModules_ContactManagement_Controls_UI_DataCom_ContactMap
     /// Creates a header for the mapping with Data.com contact mapping details, and returns it.
     /// </summary>
     /// <returns>A header for the mapping with Data.com contact mapping details.</returns>
-    private Panel CreateHeaderPanel()
+    private HtmlTableRow CreateHeaderPanel()
     {
-        Panel row = new Panel { CssClass = "control-group-inline" };
+        HtmlTableRow row = new HtmlTableRow();
+        
+        HtmlTableCell sourceCell = new HtmlTableCell();
+        sourceCell.Controls.Add(new Literal { Text = "<strong>" + GetString("datacom.kenticocms") + "</strong>" });
 
-        Panel sourcePanel = new Panel { CssClass = "input-width-60 cms-form-group-text" };
-        row.Controls.Add(sourcePanel);
-        sourcePanel.Controls.Add(new Literal { Text = "<strong>" + GetString("datacom.kenticocms") + "</strong>" });
+        HtmlTableCell destinationCell = new HtmlTableCell();
+        destinationCell.Controls.Add(new Literal { Text = "<strong>" + GetString("datacom.datacom") + "</strong>" });
 
-        Panel destinationPanel = new Panel { CssClass = "input-width-60 cms-form-group-text" };
-        row.Controls.Add(destinationPanel);
-        destinationPanel.Controls.Add(new Literal { Text = "<strong>" + GetString("datacom.datacom") + "</strong>" });
+        row.Controls.Add(sourceCell);
+        row.Controls.Add(destinationCell);
 
         return row;
     }

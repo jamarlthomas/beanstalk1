@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Layouts_Flat_Thread" Codebehind="Thread.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Controls_Layouts_Flat_Thread"  Codebehind="Thread.ascx.cs" %>
 <%@ Import Namespace="CMS.DataEngine" %>
 <%@ Import Namespace="CMS.Globalization" %>
 <%@ Import Namespace="CMS.Membership" %>

@@ -106,7 +106,7 @@ public partial class CMSModules_Content_Controls_MasterPage : CMSPreviewControl
         {
             if (node != null)
             {
-                DocumentContext.CurrentPageInfo = PageInfoProvider.GetPageInfo(SiteContext.CurrentSiteName, node.NodeAliasPath, node.DocumentCulture, null, false);
+                DocumentContext.CurrentPageInfo = PageInfoProvider.GetPageInfo(node.NodeSiteName, node.NodeAliasPath, node.DocumentCulture, null, node.NodeID, false);
 
                 // Title
                 string title = DocumentContext.CurrentTitle;
@@ -189,7 +189,7 @@ public partial class CMSModules_Content_Controls_MasterPage : CMSPreviewControl
         LoadData();
 
         // Add save action
-        SaveAction save = new SaveAction(Page);
+        SaveAction save = new SaveAction();
         save.CommandArgument = ComponentEvents.SAVE_DATA;
         save.CommandName = ComponentEvents.SAVE_DATA;
 

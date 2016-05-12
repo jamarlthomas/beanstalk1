@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Newsletters_FormControls_NewsletterIssueSelector" Codebehind="NewsletterIssueSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Newsletters_FormControls_NewsletterIssueSelector"  Codebehind="NewsletterIssueSelector.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector" TagPrefix="cms" %>
 
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">

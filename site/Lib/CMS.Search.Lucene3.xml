@@ -237,16 +237,6 @@
             Maximal value of double value.
             </summary>
         </member>
-        <member name="F:CMS.Search.Lucene3.LuceneSearchValueConverter.mIntReplacerRegex">
-            <summary>
-            Integer value replacer. Replaces integer values in following format (int)123.
-            </summary>
-        </member>
-        <member name="F:CMS.Search.Lucene3.LuceneSearchValueConverter.mDoubleReplacerRegex">
-            <summary>
-            Double value replacer.  Replaces double values in following format (double)123.456.
-            </summary>
-        </member>
         <member name="M:CMS.Search.Lucene3.LuceneSearchValueConverter.IntToString(System.Int32)">
             <summary>
             Returns string representation of the integer value. Returned value has always uniform format.
@@ -271,6 +261,18 @@
             </summary>
             <param name="value">String representation of double</param>
         </member>
+        <member name="M:CMS.Search.Lucene3.LuceneSearchValueConverter.DecimalToString(System.Decimal)">
+            <summary>
+            Returns string representation of the decimal value.
+            </summary>
+            <param name="value">Decimal value</param>
+        </member>
+        <member name="M:CMS.Search.Lucene3.LuceneSearchValueConverter.StringToDecimal(System.String)">
+            <summary>
+            Converts search string to the decimal value.
+            </summary>
+            <param name="value">String representation of decimal</param>
+        </member>
         <member name="M:CMS.Search.Lucene3.LuceneSearchValueConverter.StringToDate(System.String)">
             <summary>
             Converts the string representation of the date time from searched document to a date time
@@ -283,12 +285,23 @@
             </summary>
             <param name="input">Input date</param>
         </member>
+        <member name="M:CMS.Search.Lucene3.LuceneSearchValueConverter.EnsureNegativeDecimal(System.Text.StringBuilder)">
+            <summary>
+            Converts string representation of negative decimal number to comparable format. (123.4 -> 876.5)
+            </summary>
+            <param name="builder">String builder with representation of decimal (without sign value)</param>
+        </member>
         <member name="P:CMS.Search.Lucene3.LuceneSearchValueConverter.IntReplacerRegex">
             <summary>
-            Gets the integer replacer regular expression.
+            Gets the integer replacer regular expression. Replaces integer values in following format (int)123.
             </summary>
         </member>
         <member name="P:CMS.Search.Lucene3.LuceneSearchValueConverter.DoubleReplacerRegex">
+            <summary>
+            Gets the double replacer regular expression. Replaces double values in following format (double)123.456.
+            </summary>
+        </member>
+        <member name="P:CMS.Search.Lucene3.LuceneSearchValueConverter.DecimalReplacerRegex">
             <summary>
             Gets the double replacer regular expression.
             </summary>
@@ -663,6 +676,7 @@
             <summary>
             Represents Lucene search document
             </summary>
+            <remarks>This class is strongly tied with the current Lucene.Net library (version 3.0.3). We do not recommend using the class except for special cases.</remarks>
         </member>
         <member name="M:CMS.Search.Lucene3.LuceneSearchDocument.#ctor">
             <summary>

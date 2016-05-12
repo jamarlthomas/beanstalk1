@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="LogicCaptcha.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="LogicCaptcha.ascx.cs"
     Inherits="CMSFormControls_Captcha_LogicCaptcha" %>
 <div>
     <cms:LocalizedLabel ID="lblSecurityCode" runat="server" EnableViewState="false" Visible="false" CssClass="control-label" />

@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_Configuration_InvoiceTemplate_InvoiceTemplate_Edit"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Ecommerce_Pages_Tools_Configuration_InvoiceTemplate_InvoiceTemplate_Edit"
     Theme="Default" ValidateRequest="false" EnableEventValidation="false" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Title="E-commerce Configuration - Invoice template" Codebehind="InvoiceTemplate_Edit.aspx.cs" %>
+    Title="E-commerce Configuration - Invoice template"  Codebehind="InvoiceTemplate_Edit.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/AdminControls/Controls/MetaFiles/FileList.ascx" TagName="FileList"
     TagPrefix="cms" %>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -306,9 +306,6 @@ function ConfirmDelete() {{
 
             pnlGrid.Visible = true;
             pnlAttachmentList.CssClass = "AttachmentsList SingleAttachment";
-
-            // Hide update column if modify not enabled
-            gridFile.GridColumns.Columns[0].Visible = AllowModify;
         }
         else
         {
@@ -434,10 +431,8 @@ function ConfirmDelete() {{
                 if (sender is CMSGridActionButton)
                 {
                     CMSGridActionButton btnDelete = ((CMSGridActionButton)sender);
-                    if (!AllowModify)
-                    {
-                        btnDelete.Enabled = false;
-                    }
+                    btnDelete.Enabled = AllowModify;
+                    
                 }
                 break;
 
@@ -615,10 +610,10 @@ function ConfirmDelete() {{
 
         SetupControls();
 
-        if (!AllowModify)
+        // Hide update column if modify is not enabled
+        if (gridFile.NamedColumns.ContainsKey("Update"))
         {
-            // Hide the update column
-            gridFile.GridView.Columns[1].Visible = false;
+            gridFile.NamedColumns["Update"].Visible = AllowModify;
         }
 
         if (!string.IsNullOrEmpty(baseUrl))

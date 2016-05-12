@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_IntranetPortal_Controls_EmployeesFilterControl" Codebehind="~/CMSModules/IntranetPortal/Controls/EmployeesFilterControl.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_IntranetPortal_Controls_EmployeesFilterControl"  Codebehind="~/CMSModules/IntranetPortal/Controls/EmployeesFilterControl.ascx.cs" %>
 <asp:Panel CssClass="Filter" DefaultButton="btnSelect" runat="server" ID="pnlUsersFilter">
     <div class="form-horizontal form-filter form-filter-employees">
         <div class="form-group">

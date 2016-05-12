@@ -211,11 +211,10 @@
             <param name="result">Cloning result</param>
             <param name="originalObject">Original source BaseInfo (object being cloned)</param>
         </member>
-        <member name="M:CMS.PortalEngine.CssStylesheetInfo.GetExternalColumnExtension(System.String)">
+        <member name="M:CMS.PortalEngine.CssStylesheetInfo.GetExternalColumnExtension">
             <summary>
             The method retrieves the file extension of the stylesheet.
             </summary>
-            <param name="columnName">External column name</param>
             <returns>Returns the file extension as string</returns>
         </member>
         <member name="P:CMS.PortalEngine.CssStylesheetInfo.StylesheetID">
@@ -258,6 +257,11 @@
             The stylesheet dynamic code.
             </summary>
         </member>
+        <member name="P:CMS.PortalEngine.CssStylesheetInfo.StylesheetDynamicCodeInternal">
+            <summary>
+            The stylesheet dynamic code straight from the data class without external column mapping.
+            </summary>
+        </member>
         <member name="P:CMS.PortalEngine.CssStylesheetInfo.StylesheetDynamicLanguage">
             <summary>
             The stylesheet dynamic language.
@@ -270,10 +274,10 @@
         </member>
         <member name="T:CMS.PortalEngine.CssStylesheetInfoProvider">
             <summary>
-            Provides access to information about cssstylesheet.
+            Provides access to information about CSS Stylesheet.
             </summary>
         </member>
-        <member name="F:CMS.PortalEngine.CssStylesheetInfoProvider.mCSSStylesheetsDirectory">
+        <member name="F:CMS.PortalEngine.CssStylesheetInfoProvider.CSS_STYLESHEETS_DIRECTORY">
             <summary>
             CSS stylesheet directory path.
             </summary>
@@ -349,9 +353,9 @@
         </member>
         <member name="M:CMS.PortalEngine.CssStylesheetInfoProvider.GetCSSStylesheetName(System.String)">
             <summary>
-            Returns full cssstylesheet name from the given virtual cssstylesheet path.
+            Returns full CSS stylesheet name from the given virtual CSS stylesheet path.
             </summary>
-            <param name="url">Virtual cssstylesheet path</param>
+            <param name="url">Virtual CSS stylesheet path</param>
         </member>
         <member name="M:CMS.PortalEngine.CssStylesheetInfoProvider.RegisterCssPreprocessor(System.String,System.String,System.String,System.Func{CMS.PortalEngine.CssEventArgs,System.String},System.Action{System.Web.UI.Page},System.Func{System.String,System.String})">
             <summary>
@@ -552,7 +556,7 @@
             Wrapper for the CSS object property
             </summary>
         </member>
-        <member name="M:CMS.PortalEngine.CSSWrapper.#ctor(CMS.DataEngine.InfoObjectCollection,System.String)">
+        <member name="M:CMS.PortalEngine.CSSWrapper.#ctor(CMS.DataEngine.IInfoObjectCollection{CMS.DataEngine.BaseInfo},System.String)">
             <summary>
             Constructor
             </summary>
@@ -570,11 +574,6 @@
             Gets the object name for the given object
             </summary>
             <param name="obj">Object for which to get the name</param>
-        </member>
-        <member name="P:CMS.PortalEngine.CSSWrapper.Collection">
-            <summary>
-            Collection to wrap
-            </summary>
         </member>
         <member name="P:CMS.PortalEngine.CSSWrapper.ItemsHaveNames">
             <summary>
@@ -701,14 +700,9 @@
             The company who manufactured the hardware. Some devices (such as PCs) don't reveal this information and will return 'Unknown'.
             </summary>
         </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.HardwareModel">
-            <summary>
-            The model name or number used primarily by the hardware vendor to identify the device. This is not always the name the device is most often known as. You should also use HardwareName for a list of popular device names.
-            </summary>
-        </member>
         <member name="P:CMS.PortalEngine.CurrentDeviceInfo.HardwareName">
             <summary>
-            A list of marketing names associated with the device, seperated by a '|'. A device may be known by many names depending on region or network. Likewise, a device may not have a marketing name at all, leaving this empty. This property should be used in tandem with HardwareModel.
+            A list of marketing names associated with the device, separated by a '|'. A device may be known by many names depending on region or network. Likewise, a device may not have a marketing name at all, leaving this empty. This property should be used in tandem with HardwareModel.
             </summary>
         </member>
         <member name="P:CMS.PortalEngine.CurrentDeviceInfo.IsCrawler">
@@ -739,109 +733,6 @@
         <member name="P:CMS.PortalEngine.CurrentDeviceInfo.MaxScreenSize">
             <summary>
             Returns max side size of screen size.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.BitsPerPixel">
-            <summary>
-            The number of data bits per pixel.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.SupportedBearers">
-            <summary>
-            List of the bearers supported by the device.
-            
-            Possible values:
-            1xRTT, 3GPP, CDMA, CSD, Desktop Passthrough, EDGE, EVDO, GPRS, GSM, HSCSD, HSDPA, HSPA, HSPA+, HSUPA, iDEN, LTE, NoneSupported, SMS, UMTS, Unknown, USB, USSD, WCDMA, WiFi, WiMAX
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.HasCamera">
-            <summary>
-            Indicates if the device has a camera.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.HasKeypad">
-            <summary>
-            Indicates if the device has a physical numeric keypad.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.HasQwertyPad">
-            <summary>
-            Indicates if the device has a physical qwerty keyboard.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.HasTouchScreen">
-            <summary>
-            Indicates if the device has a touchscreen.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.HasTrackPad">
-            <summary>
-            Indicates if the device has a track pad or ball. eg - Nexus One, Blackberry Curve
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.HasVirtualQwerty">
-            <summary>
-            Indicates if the device has a virtual on-screen qwerty pad.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.PlatformVendor">
-            <summary>
-            The company who created the OS.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.PlatformName">
-            <summary>
-            The name of the software platform (operating system) the device is using.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.PlatformVersion">
-            <summary>
-            The version of the software platform.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.BrowserVendor">
-            <summary>
-            The company who created the browser.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.BrowserName">
-            <summary>
-            The name of the browser. Many mobile browsers come default with the OS. Unless specifically named, these browsers are named after the accompanying OS.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.BrowserVersion">
-            <summary>
-            The version number of the browser.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.HtmlVersion">
-            <summary>
-            Latest version of HyperText Markup Language (HTML) supported by the browser. May return 'Unknown'.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.Javascript">
-            <summary>
-            Indicates if the browser supports Javascript.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.CookiesCapable">
-            <summary>
-            Indicates if the browser supports http cookies.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.LayoutEngine">
-            <summary>
-            The underlying technology behind the web browser.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.CcppAccept">
-            <summary>
-            Stands for Composite Capability/Preference Profiles. Lists MIME types known to be supported. 3rd party applications may enable other MIME types to be supported which are not listed.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.CurrentDeviceInfo.StreamingAccept">
-            <summary>
-            A list of MIME types the device can accept to stream. 3rd party applications may enable other MIME types to be supported which are not listed.
             </summary>
         </member>
         <member name="P:CMS.PortalEngine.CurrentDeviceInfo.HasPremiumInformation">
@@ -890,6 +781,12 @@
             Returns true if device profile are available in current domain license.
             </summary>
         </member>
+        <member name="P:CMS.PortalEngine.DeviceContext.FiftyOneDegreesEnabled">
+            <summary>
+            Gets a value indicating whether the FiftyOne Degrees library can be used for device recognition.
+            FiftyOne Degrees library is disabled automatically in an external application.
+            </summary>
+        </member>
         <member name="P:CMS.PortalEngine.DeviceContext.CurrentDeviceProfile">
             <summary>
             Returns current device profile info.
@@ -929,11 +826,6 @@
             <param name="columnName">Property name</param>
             <param name="value">Property value</param>
         </member>
-        <member name="P:CMS.PortalEngine.DeviceDataContainer.Dictionary">
-            <summary>
-            Data as a dictionary.
-            </summary>
-        </member>
         <member name="P:CMS.PortalEngine.DeviceDataContainer.Item(System.String)">
             <summary>
             Indexer for accessing data.
@@ -966,14 +858,14 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.PortalEngine.DeviceInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.PortalEngine.DeviceInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.DeviceInfo.ColumnNames">
-            <summary>
-            Column names.
             </summary>
         </member>
         <member name="T:CMS.PortalEngine.DeviceInfoDataSet">
@@ -1041,11 +933,10 @@
             Device layout virtual file object
             </summary>
         </member>
-        <member name="M:CMS.PortalEngine.DeviceLayoutVirtualFileObject.#ctor(System.String,CMS.PortalEngine.PageTemplateDeviceLayoutInfo)">
+        <member name="M:CMS.PortalEngine.DeviceLayoutVirtualFileObject.#ctor(CMS.PortalEngine.PageTemplateDeviceLayoutInfo)">
             <summary>
             Constructor
             </summary>
-            <param name="virtualPath">Virtual path</param>
             <param name="currentObject">Object instance</param>
         </member>
         <member name="M:CMS.PortalEngine.DeviceLayoutVirtualFileObject.GetVirtualFileObject(System.String)">
@@ -1085,11 +976,6 @@
         <member name="P:CMS.PortalEngine.DeviceLayoutVirtualFileObject.PhysicalFilePath">
             <summary>
             Gets the physical file path if exists
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.DeviceLayoutVirtualFileObject.VirtualPath">
-            <summary>
-            Current object virtual path
             </summary>
         </member>
         <member name="P:CMS.PortalEngine.DeviceLayoutVirtualFileObject.CurrentObject">
@@ -1594,7 +1480,7 @@
         </member>
         <member name="T:CMS.PortalEngine.WebPartLoadVariantsArgs">
             <summary>
-            Argument classs for events raised for load variants
+            Argument class for events raised for load variants
             </summary>
         </member>
         <member name="P:CMS.PortalEngine.WebPartLoadVariantsArgs.ForceLoad">
@@ -2070,6 +1956,118 @@
             </summary>
             <param name="infoObj">InlineControlSite object</param>
         </member>
+        <member name="T:CMS.PortalEngine.EditableItems">
+            <summary>
+            Editable items container.
+            </summary>
+        </member>
+        <member name="F:CMS.PortalEngine.EditableItems.mEditableRegions">
+            <summary>
+            Collection of the editable regions contents.
+            </summary>
+        </member>
+        <member name="F:CMS.PortalEngine.EditableItems.mEditableWebParts">
+            <summary>
+            Collection of the editable web parts contents.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.EditableItems.LoadFromXmlElement(System.Xml.XmlElement)">
+            <summary>
+            Loads the data from the given XML element
+            </summary>
+            <param name="element">XML element</param>
+        </member>
+        <member name="M:CMS.PortalEngine.EditableItems.GetXmlElement(System.Xml.XmlDocument)">
+            <summary>
+            Gets the XML element for the data
+            </summary>
+            <param name="doc">Parent XML document</param>
+        </member>
+        <member name="M:CMS.PortalEngine.EditableItems.LoadContentXml(System.String)">
+            <summary>
+            Loads the content XML to the content table.
+            </summary>
+            <param name="contentXml">Content XML to load</param>
+        </member>
+        <member name="M:CMS.PortalEngine.EditableItems.LoadEditableItems(CMS.Base.MultiKeyDictionary{System.String},System.Xml.XmlElement,System.String)">
+            <summary>
+            Fills editable items dictionary from xml document for specific element
+            </summary>
+            <param name="items">Items collection</param>
+            <param name="xmlElement">Source Xml element</param>
+            <param name="elementName">Element name</param>
+        </member>
+        <member name="M:CMS.PortalEngine.EditableItems.GetContentXml">
+            <summary>
+            Returns the xml code of the document contents (Editable regions, web parts).
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.EditableItems.SetItemsXml(CMS.Base.MultiKeyDictionary{System.String},System.Xml.XmlDocument,System.String)">
+            <summary>
+            Sets the items to the xml document under the specific node defined by element name
+            </summary>
+            <param name="items">Editable items list</param>
+            <param name="xml">XML document</param>
+            <param name="elementName">Xml element name</param>
+        </member>
+        <member name="M:CMS.PortalEngine.EditableItems.Clone">
+            <summary>
+            Returns the cloned object.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.EditableItems.GetValue(System.String)">
+            <summary>
+            Gets the value of specific field.
+            </summary>
+            <param name="columnName">Column name</param>
+        </member>
+        <member name="M:CMS.PortalEngine.EditableItems.SetValue(System.String,System.Object)">
+            <summary>
+            Sets the value of specific field.
+            </summary>
+            <param name="columnName">Column name</param>
+            <param name="value">New value</param>
+        </member>
+        <member name="M:CMS.PortalEngine.EditableItems.TryGetValue(System.String,System.Object@)">
+            <summary>
+            Tries to get the value of specific column.
+            </summary>
+            <param name="columnName">Column name</param>
+            <param name="value">Returns value</param>
+        </member>
+        <member name="M:CMS.PortalEngine.EditableItems.ContainsColumn(System.String)">
+            <summary>
+            Returns true if the structure contains specific column.
+            </summary>
+            <param name="columnName">Column name</param>
+        </member>
+        <member name="P:CMS.PortalEngine.EditableItems.EditableRegions">
+            <summary>
+            Editable regions contained within the document.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalEngine.EditableItems.EditableWebParts">
+            <summary>
+            Editable WebParts contained within the document.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalEngine.EditableItems.Item(System.String)">
+            <summary>
+            Returns the editable value.
+            </summary>
+            <param name="controlId">Control ID</param>
+        </member>
+        <member name="P:CMS.PortalEngine.EditableItems.CMS#Base#ISimpleDataContainer#Item(System.String)">
+            <summary>
+            Gets or sets the field value.
+            </summary>
+            <param name="columnName">Column name</param>
+        </member>
+        <member name="P:CMS.PortalEngine.EditableItems.ColumnNames">
+            <summary>
+            Returns the available column names.
+            </summary>
+        </member>
         <member name="T:CMS.PortalEngine.PageTemplateInstance">
             <summary>
             Class holding the page template structure information.
@@ -2085,13 +2083,30 @@
             Web parts XML.
             </summary>
         </member>
+        <member name="M:CMS.PortalEngine.PageTemplateInstance.#ctor">
+            <summary>
+            Empty constructor
+            </summary>
+        </member>
         <member name="M:CMS.PortalEngine.PageTemplateInstance.#ctor(System.String)">
             <summary>
-            Constructor.
+            Constructor
             </summary>
             <param name="webPartsXml">Web parts XML</param>
         </member>
+        <member name="M:CMS.PortalEngine.PageTemplateInstance.LoadFromXmlElement(System.Xml.XmlElement)">
+            <summary>
+            Loads the data from the given XML element
+            </summary>
+            <param name="element">XML element</param>
+        </member>
         <member name="M:CMS.PortalEngine.PageTemplateInstance.LoadZones(System.String)">
+            <summary>
+            Reloads the zones and webparts info.
+            </summary>
+            <param name="webPartsXml">Web parts XML</param>
+        </member>
+        <member name="M:CMS.PortalEngine.PageTemplateInstance.LoadFromXml(System.String)">
             <summary>
             Reloads the zones and webparts info.
             </summary>
@@ -2103,6 +2118,19 @@
             </summary>
             <param name="forceLoad">Indicates if already loaded variants should be reloaded</param>
             <param name="variantMode">Specifies which variants should be loaded (MVT/ContentPersonalization/None - means both MVT+CP variants should try to load)</param>
+        </member>
+        <member name="M:CMS.PortalEngine.PageTemplateInstance.GetXmlElement(System.Xml.XmlDocument)">
+            <summary>
+            Gets the XML element for the data
+            </summary>
+            <param name="doc">Parent XML document</param>
+        </member>
+        <member name="M:CMS.PortalEngine.PageTemplateInstance.GetXmlElement(System.Xml.XmlDocument,CMS.PortalEngine.WidgetZoneTypeEnum)">
+            <summary>
+            Gets the XML element for the data
+            </summary>
+            <param name="doc">Parent XML document</param>
+            <param name="zoneType">Zone type to output</param>
         </member>
         <member name="M:CMS.PortalEngine.PageTemplateInstance.GetZonesXML(CMS.PortalEngine.WidgetZoneTypeEnum)">
             <summary>
@@ -2658,14 +2686,14 @@
             Provides access to information about layout.
             </summary>
         </member>
+        <member name="F:CMS.PortalEngine.LayoutInfoProvider.LAYOUTS_DIRECTORY">
+            <summary>
+            Layouts directory.
+            </summary>
+        </member>
         <member name="F:CMS.PortalEngine.LayoutInfoProvider.mDefaultNamespaces">
             <summary>
             List of default layout namespaces
-            </summary>
-        </member>
-        <member name="F:CMS.PortalEngine.LayoutInfoProvider.mLayoutsDirectory">
-            <summary>
-            Layouts directory.
             </summary>
         </member>
         <member name="M:CMS.PortalEngine.LayoutInfoProvider.#ctor">
@@ -2906,6 +2934,11 @@
         <member name="P:CMS.PortalEngine.DeviceProfileInfo.ProfilePreviewHeight">
             <summary>
             Device profile preview height in pixels.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalEngine.DeviceProfileInfo.ProfileGUID">
+            <summary>
+            Device profile Guid.
             </summary>
         </member>
         <member name="P:CMS.PortalEngine.DeviceProfileInfo.UsesExternalStorage">
@@ -3228,11 +3261,10 @@
             Layout virtual file object
             </summary>
         </member>
-        <member name="M:CMS.PortalEngine.LayoutVirtualFileObject.#ctor(System.String,CMS.PortalEngine.LayoutInfo)">
+        <member name="M:CMS.PortalEngine.LayoutVirtualFileObject.#ctor(CMS.PortalEngine.LayoutInfo)">
             <summary>
             Constructor
             </summary>
-            <param name="virtualPath">Virtual path</param>
             <param name="currentObject">Object instance</param>
         </member>
         <member name="M:CMS.PortalEngine.LayoutVirtualFileObject.GetVirtualFileObject(System.String)">
@@ -3261,14 +3293,24 @@
             Gets the physical file path if exists
             </summary>
         </member>
-        <member name="P:CMS.PortalEngine.LayoutVirtualFileObject.VirtualPath">
-            <summary>
-            Current object virtual path
-            </summary>
-        </member>
         <member name="P:CMS.PortalEngine.LayoutVirtualFileObject.CurrentObject">
             <summary>
             Current object instance
+            </summary>
+        </member>
+        <member name="T:CMS.PortalEngine.WebPartInfoMethods">
+            <summary>
+            Macro methods for class WebPartInfo
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.WebPartInfoMethods.GetUsageObjectTypes(CMS.MacroEngine.EvaluationContext,System.Object[])">
+            <summary>
+            Macro method for method GetUsageObjectTypes
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.WebPartInfoMethods.GetUsages(CMS.MacroEngine.EvaluationContext,System.Object[])">
+            <summary>
+            Macro method for method GetUsages
             </summary>
         </member>
         <member name="T:CMS.PortalEngine.ModuleUsageTracking.PortalEngineUsageDataSource">
@@ -3414,11 +3456,6 @@
             </summary>
             <param name="settings">Site import settings</param>
         </member>
-        <member name="P:CMS.PortalEngine.PageTemplateImport.PageTemplateCategoryRootId">
-            <summary>
-            Gets ID of the root page template category.
-            </summary>
-        </member>
         <member name="T:CMS.PortalEngine.WebPartExport">
             <summary>
             Handles special actions during the Web part export process.
@@ -3446,14 +3483,15 @@
             Handles special actions during the Web part import process.
             </summary>
         </member>
+        <member name="F:CMS.PortalEngine.WebPartImport.ObsoleteWebpartGUIDs">
+            <summary>
+            List of obsolete webpart GUIDs. For web parts in this list we don't import 
+            files from earlier versions to prevent API changes conflicts.
+            </summary>
+        </member>
         <member name="M:CMS.PortalEngine.WebPartImport.Init">
             <summary>
             Initializes import handlers
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.WebPartImport.WebPartCategoryRootId">
-            <summary>
-            Gets ID of the root web part category.
             </summary>
         </member>
         <member name="T:CMS.PortalEngine.WidgetExport">
@@ -3464,6 +3502,38 @@
         <member name="M:CMS.PortalEngine.WidgetExport.Init">
             <summary>
             Initializes export handlers
+            </summary>
+        </member>
+        <member name="T:CMS.PortalEngine.PortalHandlers">
+            <summary>
+            Event handlers for portal engine module
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.PortalHandlers.Init">
+            <summary>
+            Initializes the handlers
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.PortalHandlers.UpdateSession_Before(System.Object,CMS.Base.CMSEventArgs)">
+            <summary>
+            Checks if the session can be updated
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.PortalHandlers.SignOut_After(System.Object,CMS.Membership.SignOutEventArgs)">
+            <summary>
+            Ensures LiveSite mode after SignOut
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.PortalHandlers.ResolveSubstitutionMacro_Execute(System.Object,CMS.Localization.LocalizationEventArgs)">
+            <summary>
+            Replaces special macros contained in resource string with navigation path to the given UI element.
+            </summary>
+            <param name="sender">Event argument</param>
+            <param name="e">Sender object</param>
+        </member>
+        <member name="M:CMS.PortalEngine.PortalHandlers.ClearDeviceCache(System.Object,CMS.DataEngine.SettingsKeyChangedEventArgs)">
+            <summary>
+            Settings key changed handler
             </summary>
         </member>
         <member name="T:CMS.PortalEngine.PortalModuleMetadata">
@@ -3548,6 +3618,89 @@
             Global application check failed
             </summary>
         </member>
+        <member name="T:CMS.PortalEngine.Internal.IUILinkProvider">
+            <summary>
+            Provides methods for generating links to access single objects within the module. (e.g. single Site).
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.Internal.IUILinkProvider.GetSingleObjectLink(CMS.Modules.UIElementInfo,CMS.PortalEngine.ObjectDetailLinkParameters)">
+            <summary>
+            Gets link to the single object if supported by the current state of UI elements.
+            Can return link to the object creation if object identifier in <see cref="T:CMS.PortalEngine.ObjectDetailLinkParameters"/> is left empty.
+            Leaving out the <see cref="T:CMS.PortalEngine.ObjectDetailLinkParameters"/> to null will return simple link for the object creation.
+            </summary>
+            <example>
+            Following example shows how to obtain link to access single site.
+            <code>
+            var siteEditElement = UIElementInfoProvider.GetUIElementInfo("CMS", "EditSiteProperties");
+            
+            var retriever = <see cref="M:CMS.Core.Service`1.Entry"/>;
+            
+            string link = retriever.GetSingleObjectLink(siteEditElement, new ObjectDetailLinkParemeters {
+                ObjectIdentifier = "siteName",
+                AllowNavigationToListing = true
+            });
+            </code>
+            </example>
+            <param name="detailElement">UI element displaying the object detail</param>
+            <param name="parameters">Additional parameters</param>
+            <returns>Link to single object defined in <paramref name="detailElement"/> and <paramref name="parameters"/>.</returns>
+        </member>
+        <member name="M:CMS.PortalEngine.Internal.IUILinkProvider.GetSingleObjectLink(System.String,System.String,CMS.PortalEngine.ObjectDetailLinkParameters)">
+            <summary>
+            Gets link to the single object if supported by the current state of UI elements.<br/>
+            Can return link to the object creation if object identifier in <see cref="T:CMS.PortalEngine.ObjectDetailLinkParameters"/> is left empty.
+            Leaving out the <see cref="T:CMS.PortalEngine.ObjectDetailLinkParameters"/> to null will return simple link for the object creation.
+            </summary>
+            /// <example>
+            Following example shows how to obtain link to access single site.
+            <code>
+            var retriever = <see cref="M:CMS.Core.Service`1.Entry"/>;
+            
+            string link = retriever.GetSingleObjectLink("CMS", "EditSiteProperties" new ObjectDetailLinkParemeters {
+                ObjectIdentifier = "siteName",
+                AllowNavigationToListing = true
+            });
+            </code>
+            </example>
+            <param name="moduleName">Module name</param>
+            <param name="elementDetailName">Object detail element name</param>
+            <param name="parameters">Additional parameters</param>
+            <returns>Link to single object defined in <paramref name="moduleName"/>, <paramref name="elementDetailName"/> and <paramref name="parameters"/>.</returns>
+        </member>
+        <member name="T:CMS.PortalEngine.ObjectDetailLinkParameters">
+            <summary>
+            Object detail link parameters.
+            </summary>
+            <remarks>
+            Use when creating link to the object detail.
+            </remarks>
+        </member>
+        <member name="P:CMS.PortalEngine.ObjectDetailLinkParameters.ObjectIdentifier">
+            <summary>
+            Object id or object name. Can be left empty for object creation to be shown.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalEngine.ObjectDetailLinkParameters.ParentTabName">
+            <summary>
+            Name of the parent tab name. Will be selected when navigating back in tabs.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalEngine.ObjectDetailLinkParameters.AllowNavigationToListing">
+            <summary>
+            Navigation to the parent tabs will be possible if enabled.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalEngine.ObjectDetailLinkParameters.TabName">
+            <summary>
+            Name of the tab. Can be used to navigate to an individual tab.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalEngine.ObjectDetailLinkParameters.ParentObjectIdentifier">
+            <summary>
+            Parent id or parent name.
+            </summary>
+        </member>
         <member name="T:CMS.PortalEngine.GetDocLinkHandler">
             <summary>
             <para>
@@ -3569,6 +3722,13 @@
             </summary>
             <param name="context"></param>
         </member>
+        <member name="M:CMS.PortalEngine.GetDocLinkHandler.IsAbsoluteUrl(System.String)">
+            <summary>
+            Returns true if <paramref name="url"/> is an absolute URL.
+            </summary>
+            <param name="url">URL to be validated.</param>
+            <returns>True if URL is absolute, false otherwise.</returns>
+        </member>
         <member name="P:CMS.PortalEngine.GetDocLinkHandler.PermanentLink">
             <summary>
             Gets the permanent link from URL query string.
@@ -3589,6 +3749,36 @@
             <summary>
             Control's UI context object
             </summary>
+        </member>
+        <member name="T:CMS.PortalEngine.UILinkProvider">
+            <summary>
+            Provides methods for generating links to access single objects within the module. (e.g. single Site).
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.UILinkProvider.GetSingleObjectLink(CMS.Modules.UIElementInfo,CMS.PortalEngine.ObjectDetailLinkParameters)">
+            <summary>
+            Gets link to the single object if supported by the current state of UI elements.
+            Can return link to the object creation if object identifier in <see cref="T:CMS.PortalEngine.ObjectDetailLinkParameters"/> is left empty.
+            Leaving out the <see cref="T:CMS.PortalEngine.ObjectDetailLinkParameters"/> will return simple link for the object creation.
+            </summary>
+            <param name="detailElement">UI element displaying the object detail</param>
+            <param name="parameters">Additional parameters</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="detailElement"/> is null</exception>
+            <returns>Link to single object defined in <paramref name="detailElement"/> and <paramref name="parameters"/>.</returns>
+        </member>
+        <member name="M:CMS.PortalEngine.UILinkProvider.GetSingleObjectLink(System.String,System.String,CMS.PortalEngine.ObjectDetailLinkParameters)">
+            <summary>
+            Gets link to the single object if supported by the current state of UI elements.<br/>
+            Can return link to the object creation if object identifier in <see cref="T:CMS.PortalEngine.ObjectDetailLinkParameters"/> is left empty.
+            Leaving out the <see cref="T:CMS.PortalEngine.ObjectDetailLinkParameters"/> will return simple link for the object creation.
+            </summary>
+            <param name="moduleName">Module name</param>
+            <param name="elementDetailName">Object detail element name</param>
+            <param name="parameters">Additional parameters</param>
+            <exception cref="T:System.ArgumentException">
+            <paramref name="moduleName"/> is empty -or- <paramref name="elementDetailName"/> is empty -or- UI element with given <paramref name="moduleName"/> and <paramref name="elementDetailName"/> does not exist
+            </exception>
+            <returns>Link to single object defined in <paramref name="moduleName"/>, <paramref name="elementDetailName"/> and <paramref name="parameters"/>.</returns>
         </member>
         <member name="T:CMS.PortalEngine.UIContext">
             <summary>
@@ -3689,7 +3879,7 @@
         </member>
         <member name="P:CMS.PortalEngine.UIContext.LoadDataFromParent">
             <summary>
-            Indicates whether data sould be loaded from parent context
+            Indicates whether data should be loaded from parent context
             </summary>
         </member>
         <member name="P:CMS.PortalEngine.UIContext.Data">
@@ -3819,7 +4009,7 @@
         </member>
         <member name="M:CMS.PortalEngine.UIContextData.#ctor">
             <summary>
-            Constructor. Sets exluded columns property.
+            Constructor. Sets excluded columns property.
             </summary>
         </member>
         <member name="M:CMS.PortalEngine.UIContextData.Clone">
@@ -3917,6 +4107,12 @@
             </summary>
             <param name="page">Current page</param>
         </member>
+        <member name="M:CMS.PortalEngine.UIContextHelper.GetPageEditLink(System.Int32)">
+            <summary>
+            Get the direct link for page identified by given node ID.
+            </summary>
+            <param name="nodeId">Node ID.</param>
+        </member>
         <member name="M:CMS.PortalEngine.UIContextHelper.GetApplicationUrl(System.String,System.String,System.String)">
             <summary>
             Returns application URL for application specified by module name and element name
@@ -3952,14 +4148,14 @@
         </member>
         <member name="M:CMS.PortalEngine.UIContextHelper.GetElementUrl(CMS.Modules.UIElementInfo,CMS.PortalEngine.UIContext)">
             <summary>
-            Returns element's url based on elements type
+            Returns element's URL based on elements type
             </summary>
             <param name="ui">UI element info object</param>
             <param name="context">Control's UI context</param>
         </member>
         <member name="M:CMS.PortalEngine.UIContextHelper.GetElementUrl(System.String,System.String,CMS.PortalEngine.UIContext)">
             <summary>
-            Returns element's url based on element's type
+            Returns element's URL based on element's type
             </summary>
             <param name="moduleName">Element's module</param>
             <param name="elementName">Element's name</param>
@@ -3970,7 +4166,7 @@
             Returns element's URL
             </summary>
             <param name="ui">UI element info.</param>
-            <param name="displayTitle">Indicates whether append displaytitle to result URL.</param>
+            <param name="displayTitle">Indicates whether append display title to result URL.</param>
             <param name="objectId">Indicates whether append object ID to URL.</param>
             <param name="additionalQuery">Additional query to append to URL</param>
         </member>
@@ -3980,17 +4176,17 @@
             </summary>
             <param name="moduleName">Module name</param>
             <param name="elementName">Element name</param>
-            <param name="displayTitle">Indicates whether append displaytitle to result URL.</param>
+            <param name="displayTitle">Indicates whether append display title to result URL.</param>
             <param name="objectId">Indicates whether append object ID to URL.</param>
             <param name="additionalQuery">Additional query to append to URL</param>
         </member>
         <member name="M:CMS.PortalEngine.UIContextHelper.HandleUrlQueryString(System.String,CMS.PortalEngine.UIContext,CMS.Modules.UIElementInfo)">
             <summary>
-            Manages common properties of element's url
+            Manages common properties of element's URL
             </summary>
-            <param name="url">Element's url</param> 
+            <param name="url">Element's URL</param> 
             <param name="context">Context to use</param>
-            <param name="elem">Target ui element</param>
+            <param name="elem">Target UI element</param>
         </member>
         <member name="M:CMS.PortalEngine.UIContextHelper.GetElementDialogUrl(System.String,System.String,System.Int32,System.String)">
             <summary>
@@ -4050,7 +4246,7 @@
             <summary>
             Returns object's breadcrumbs text.
             </summary>
-            <param name="context">Current ui context</param>
+            <param name="context">Current UI context</param>
             <param name="obj">Current object</param>
         </member>
         <member name="M:CMS.PortalEngine.UIContextHelper.GetTitleText(CMS.PortalEngine.UIContext)">
@@ -4061,7 +4257,7 @@
         </member>
         <member name="M:CMS.PortalEngine.UIContextHelper.EnsureBootstrapBodyClass(System.String@,CMS.PortalEngine.ViewModeEnum,System.Web.UI.Page)">
             <summary>
-            Ensures the bootstrap css class for specified body css class string if it is allowed for view mode.
+            Ensures the bootstrap CSS class for specified body CSS class string if it is allowed for view mode.
             </summary>
             <param name="bodyClass">The body class.</param>
             <param name="viewMode">The view mode.</param>
@@ -4103,7 +4299,7 @@
         </member>
         <member name="M:CMS.PortalEngine.UIContextHelper.CheckElementAccess(CMS.Modules.UIElementInfo,CMS.MacroEngine.MacroResolver,System.Boolean)">
             <summary>
-            Checks permission and access condition condition for single UI element. 
+            Checks permission and access condition for single UI element. 
             If element's ElementCheckModuleReadPermission property and <paramref name="automaticReadCheck"/> are set, read permission for element's module is also checked.
             </summary>
             <param name="element">Element info</param>
@@ -4141,9 +4337,9 @@
         </member>
         <member name="M:CMS.PortalEngine.UIContextHelper.CorrectChildParentRelations(System.String,CMS.Modules.UIElementInfo,CMS.PortalEngine.UIContext,System.String)">
             <summary>
-            Appends URL suffix to element's url. Replace objectID for parentobjectID if object types are different (parent-child)
+            Appends URL suffix to element's URL. Replace objectID for parentobjectID if object types are different (parent-child)
             </summary>
-            <param name="url">Url to correct</param>
+            <param name="url">URL to correct</param>
             <param name="ui">Child UI element</param>
             <param name="context">Control's UI context</param>
             <param name="action">Action parameter set usually by URL</param>
@@ -4161,26 +4357,6 @@
             If provided element doesn't have an application, empty string is returned.
             </summary>
             <param name="uiElement">UI element info object</param>
-        </member>
-        <member name="M:CMS.PortalEngine.UIContextHelper.GetDocumentationRootUrl">
-            <summary>
-            Gets URL for product documentation root.
-            </summary>
-            <returns>URL for product documentation root.</returns>
-        </member>
-        <member name="M:CMS.PortalEngine.UIContextHelper.GetDocumentationTopicUrl(System.String)">
-            <summary>
-            Gets URL for product documentation topic. Topic is either a topic ID, or an absolute URL.
-            </summary>
-            <param name="topic">Topic identifier or permanent link to documentation topic.</param>
-            <returns>URL for product documentation topic</returns>
-        </member>
-        <member name="M:CMS.PortalEngine.UIContextHelper.GetDocumentationSearchUrlPattern">
-            <summary>
-            Gets URL pattern for product documentation search.
-            Pass searched text as 0th substitution.
-            </summary>
-            <returns>URL pattern for product documentation search</returns>
         </member>
         <member name="M:CMS.PortalEngine.UIContextHelper.GetResourceUIElementLink(System.String,System.String)">
             <summary>
@@ -4276,14 +4452,14 @@
             Lock for hashtable.
             </summary>
         </member>
-        <member name="F:CMS.PortalEngine.PortalFormHelper.positionInfosWebParts">
+        <member name="F:CMS.PortalEngine.PortalFormHelper.mPositionInfosWebParts">
             <summary>
             Cached Before/After FormInfos for web parts.
             </summary>
         </member>
-        <member name="F:CMS.PortalEngine.PortalFormHelper.positionInfosWidgets">
+        <member name="F:CMS.PortalEngine.PortalFormHelper.mWidgetPartialFormInfos">
             <summary>
-            Cached Before/After FormInfos for widgets.
+            Cached partial FormInfos for widgets.
             </summary>
         </member>
         <member name="F:CMS.PortalEngine.PortalFormHelper.mWebPartFormInfos">
@@ -4296,7 +4472,7 @@
             Cached widget FormInfo objects.
             </summary>
         </member>
-        <member name="F:CMS.PortalEngine.PortalFormHelper.uiTemplateDefaultProperties">
+        <member name="F:CMS.PortalEngine.PortalFormHelper.mUiTemplateDefaultProperties">
             <summary>
             Cached Before/After FormInfo for UI page templates' properties.
             </summary>
@@ -4328,19 +4504,18 @@
             <param name="beforeDefinition">FormInfo for Before definition of the web part</param>
             <param name="afterDefinition">FormInfo for After definition of the web part</param>
             <param name="clone">When returned FormInfo is used only for reading then cloning can be set to FALSE</param>
-            <param name="defaultValues">XML definitions with overriden system default values</param> 
+            <param name="defaultValues">XML definitions with overridden system default values</param> 
             <returns>Returns FormInfo object</returns>
         </member>
-        <member name="M:CMS.PortalEngine.PortalFormHelper.GetWidgetFormInfo(System.String,System.String,System.String,CMS.FormEngine.FormInfo,System.Boolean,System.String)">
+        <member name="M:CMS.PortalEngine.PortalFormHelper.GetWidgetFormInfo(System.String,CMS.PortalEngine.WidgetZoneTypeEnum,System.String,System.Boolean,System.String)">
             <summary>
             Returns cached and merged FormInfo for widgets.
             </summary>
             <param name="widgetName">Name of the widget</param>
             <param name="zoneType">Type of the zone where widget is placed</param>
-            <param name="widgetProperties">Widget properties</param>
-            <param name="zoneTypeDefinition">FormInfo for Before or After section</param>
+            <param name="widgetPropertiesFormDefinition">Widget properties form definition</param>
             <param name="clone">When returned FormInfo is used only for reading then cloning can be set to FALSE</param>
-            <param name="defaultValues">XML definitions with overridden system default values</param> 
+            <param name="defaultValuesFormDefinition">Form definition with overridden system default values</param> 
             <returns>Returns FormInfo object</returns>
         </member>
         <member name="M:CMS.PortalEngine.PortalFormHelper.GetWebPartProperties(CMS.PortalEngine.WebPartTypeEnum,CMS.PortalEngine.PropertiesPosition)">
@@ -4369,11 +4544,10 @@
             <param name="folder">Folder with the properties</param>
             <param name="fileName">File name</param>
         </member>
-        <member name="M:CMS.PortalEngine.PortalFormHelper.GetPropertiesBasePath(System.String)">
+        <member name="M:CMS.PortalEngine.PortalFormHelper.GetPropertiesBasePath">
             <summary>
             Gets the base path for the default web part properties
             </summary>
-            <param name="folder">Property folder</param>
         </member>
         <member name="M:CMS.PortalEngine.PortalFormHelper.GetPositionFormInfo(CMS.PortalEngine.WebPartTypeEnum,CMS.PortalEngine.PropertiesPosition)">
             <summary>
@@ -4388,13 +4562,6 @@
             Returns general FormInfo pro UI templates (stored in XML file)
             </summary>
             <param name="position">Requested form info position</param>
-        </member>
-        <member name="M:CMS.PortalEngine.PortalFormHelper.GetPositionFormInfo(CMS.PortalEngine.WidgetZoneTypeEnum)">
-            <summary>
-            Returns FormInfo for widget.
-            </summary>
-            <param name="type">WidgetType</param>
-            <returns>Before/After FormInfo for widget</returns>
         </member>
         <member name="M:CMS.PortalEngine.PortalFormHelper.GetDefaultWebPartProperties(CMS.PortalEngine.WebPartInfo)">
             <summary>
@@ -4647,7 +4814,7 @@
             </summary>
             <param name="templateDevicelayoutId">Device layout ID.</param>        
         </member>
-        <member name="M:CMS.PortalEngine.PageTemplateDeviceLayoutInfoProvider.SettTemplateDeviceLayoutInfoInternal(CMS.PortalEngine.PageTemplateDeviceLayoutInfo)">
+        <member name="M:CMS.PortalEngine.PageTemplateDeviceLayoutInfoProvider.SetTemplateDeviceLayoutInfoInternal(CMS.PortalEngine.PageTemplateDeviceLayoutInfo)">
             <summary>
             Sets (updates or inserts) specified template device layout info.
             </summary>
@@ -4686,7 +4853,7 @@
             Returns web part layout info for specified path
             </summary>
             <param name="path">Path</param>
-            <param name="isAdHoc">Indicates whether current object has binding on adhoc template</param>
+            <param name="isAdHoc">Indicates whether current object has binding on ad-hoc template</param>
         </member>
         <member name="M:CMS.PortalEngine.PageTemplateDeviceLayoutInfoProvider.GetDeviceLayoutName(System.String,System.Boolean,System.Collections.Generic.List{System.String}@)">
             <summary>
@@ -4757,6 +4924,11 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.PortalEngine.PageTemplateListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.PortalEngine.PageTemplateListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
@@ -4767,11 +4939,10 @@
             Page template layout virtual file object
             </summary>
         </member>
-        <member name="M:CMS.PortalEngine.PageTemplateVirtualFileObject.#ctor(System.String,CMS.PortalEngine.PageTemplateInfo)">
+        <member name="M:CMS.PortalEngine.PageTemplateVirtualFileObject.#ctor(CMS.PortalEngine.PageTemplateInfo)">
             <summary>
             Constructor
             </summary>
-            <param name="virtualPath">Virtual path</param>
             <param name="currentObject">Object instance</param>
         </member>
         <member name="M:CMS.PortalEngine.PageTemplateVirtualFileObject.GetVirtualFileObject(System.String)">
@@ -4811,11 +4982,6 @@
         <member name="P:CMS.PortalEngine.PageTemplateVirtualFileObject.PhysicalFilePath">
             <summary>
             Gets the physical file path if exists
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.PageTemplateVirtualFileObject.VirtualPath">
-            <summary>
-            Current object virtual path
             </summary>
         </member>
         <member name="P:CMS.PortalEngine.PageTemplateVirtualFileObject.CurrentObject">
@@ -4968,18 +5134,6 @@
             <param name="level">Level</param>  
             <param name="siteName">Site name</param>
         </member>
-        <member name="M:CMS.PortalEngine.PageTemplateScopeInfoProvider.GetScopeWhereCondition(System.String,System.String,System.String,System.Int32,System.String,System.String,System.String)">
-            <summary>
-            Returns where condition for template scope.
-            </summary>
-            <param name="path">Page template path</param>
-            <param name="cultureCode">Culture code</param>
-            <param name="classNames">Class names separated by semicolon</param>
-            <param name="level">Scope level</param>
-            <param name="tableName">Table name</param>
-            <param name="templateIdColumnName">ID column name</param>
-            <param name="siteName">Site name</param>
-        </member>
         <member name="M:CMS.PortalEngine.PageTemplateScopeInfoProvider.GetScopeWhereCondition(System.String,System.String,System.String,System.Int32,System.String,System.String)">
             <summary>
             Returns where condition for template scope.
@@ -5084,13 +5238,6 @@
             Excludes set of hidden system keys from synchronization.
             </summary>
         </member>
-        <member name="M:CMS.PortalEngine.PortalModule.ResolveSubstitutionMacro_Execute(System.Object,CMS.Localization.LocalizationEventArgs)">
-            <summary>
-            Replaces special macros contained in resource string with navigation path to the given UI element.
-            </summary>
-            <param name="sender">Event argument</param>
-            <param name="e">Sender object</param>
-        </member>
         <member name="M:CMS.PortalEngine.PortalModule.InitImportExport">
             <summary>
             Initializes import/export handlers
@@ -5106,11 +5253,6 @@
             Registers macro methods.
             </summary>
         </member>
-        <member name="M:CMS.PortalEngine.PortalModule.ApiExamplesAvailable(System.Object[])">
-            <summary>
-            Returns true if APIExamples folder is available
-            </summary>
-        </member>
         <member name="M:CMS.PortalEngine.PortalModule.CssPreprocessorsDatasourceOptions(System.Object[])">
             <summary>
             The implementation of CssPreprocessorsDatasourceOptions macro method. Return list of value;name separated by EOL character.
@@ -5119,11 +5261,6 @@
         <member name="M:CMS.PortalEngine.PortalModule.CssPreprocessorDisplayName(System.Object[])">
             <summary>
             The implementation of CssPreprocessorName macro method. Returns string that represents the display name of CSS preprocessor given by an argument.
-            </summary>
-        </member>
-        <member name="M:CMS.PortalEngine.PortalModule.UpdateSession_Before(System.Object,CMS.Base.CMSEventArgs)">
-            <summary>
-            Checks if the session can be updated
             </summary>
         </member>
         <member name="M:CMS.PortalEngine.PortalModule.RegisterVirtualPaths">
@@ -5142,11 +5279,6 @@
             Clears the module hashtables.
             </summary>
             <param name="logTasks">If true, web farm tasks are logged</param>
-        </member>
-        <member name="M:CMS.PortalEngine.PortalModule.SignOut_After(System.Object,CMS.Membership.SignOutEventArgs)">
-            <summary>
-            Ensures LiveSite mode after SignOut
-            </summary>
         </member>
         <member name="T:CMS.PortalEngine.DefaultTransformationTypeEnum">
             <summary>
@@ -5329,11 +5461,6 @@
             Transformation CSS.
             </summary>
         </member>
-        <member name="P:CMS.PortalEngine.TransformationInfo.TransformationIsCustom">
-            <summary>
-            Transformation is custom flag.
-            </summary>
-        </member>
         <member name="P:CMS.PortalEngine.TransformationInfo.TransformationType">
             <summary>
             Transformation type.
@@ -5486,22 +5613,29 @@
         </member>
         <member name="M:CMS.PortalEngine.TransformationInfoProvider.GenerateTransformationCode(System.String,CMS.PortalEngine.TransformationTypeEnum,System.String)">
             <summary>
-            Generates transformation code.
+            Generates default transformation code.
             </summary>
             <param name="tableSchema">Table schema</param>
-            <param name="transformationType">Transformation type: Ascx or Xslt</param>
+            <param name="transformationType">Transformation type: ASCX or XSLT</param>
             <param name="className">Class name</param>
-            <returns>Transformation code as a string or "".</returns>
+            <returns>Transformation code as a string or ""</returns>
         </member>
         <member name="M:CMS.PortalEngine.TransformationInfoProvider.GenerateTransformationCode(System.String,CMS.PortalEngine.TransformationTypeEnum,System.String,CMS.PortalEngine.DefaultTransformationTypeEnum)">
             <summary>
-            Generates transformation code.
+            Generates default transformation code.
             </summary>
             <param name="tableSchema">Table schema</param>
-            <param name="transformationType">Transformation type: Ascx or Xslt</param>
+            <param name="transformationType">Transformation type: ASCX or XSLT</param>
             <param name="className">Class name</param>
             <param name="defaultTransformationType">Default transformation type: Default, RSS, Atom or XML</param>
-            <returns>Transformation code as a string or ""</returns>
+        </member>
+        <member name="M:CMS.PortalEngine.TransformationInfoProvider.GenerateTransformationCode(System.String,CMS.PortalEngine.TransformationTypeEnum,CMS.PortalEngine.DefaultTransformationTypeEnum)">
+            <summary>
+            Generates the default transformation code for given class.
+            </summary>
+            <param name="className">Class name</param>
+            <param name="transformationType">Type of the transformation to be generated.</param>
+            <param name="defaultTransformationType">Default transformation type for the ASCX transformation.</param>
         </member>
         <member name="M:CMS.PortalEngine.TransformationInfoProvider.GetEditDeleteCode(System.Boolean,System.Boolean)">
             <summary>
@@ -5534,18 +5668,6 @@
             <param name="code">Code</param>
             <param name="useInternal">If true, internal directives are used</param>
             <param name="mode">Indicates which mode for 'edit/delete buttons' should be used</param>
-        </member>
-        <member name="M:CMS.PortalEngine.TransformationInfoProvider.GetTransformationTypeEnum(System.String)">
-            <summary>
-            Gets the transformation type enumeration for the given string value.
-            </summary>
-            <param name="type">Transformation type</param>
-        </member>
-        <member name="M:CMS.PortalEngine.TransformationInfoProvider.GetTransformationTypeCode(CMS.PortalEngine.TransformationTypeEnum)">
-            <summary>
-            Gets the transformation type code for the given enum value.
-            </summary>
-            <param name="type">Transformation type</param>
         </member>
         <member name="M:CMS.PortalEngine.TransformationInfoProvider.RemoveFirstPart(System.String,System.String)">
             <summary>
@@ -5646,7 +5768,7 @@
             <summary>
             Returns default Atom transformation.
             </summary>
-            <param name="classInfo">Class</param>
+            <param name="classInfo">Class info</param>
             <returns>Atom transformation</returns>
         </member>
         <member name="M:CMS.PortalEngine.TransformationInfoProvider.GetXMLTransformation(System.String,System.String)">
@@ -5725,11 +5847,6 @@
         <member name="F:CMS.PortalEngine.TransformationTypeEnum.Html">
             <summary>
             Html transformation (with resolved macros and WYSIWYG editing).
-            </summary>
-        </member>
-        <member name="F:CMS.PortalEngine.TransformationTypeEnum.Xaml">
-            <summary>
-            XAML transformation (for Silverlight controls).
             </summary>
         </member>
         <member name="F:CMS.PortalEngine.TransformationTypeEnum.jQuery">
@@ -5832,7 +5949,7 @@
         </member>
         <member name="P:CMS.PortalEngine.VariantSettings.Enabled">
             <summary>
-            Indicatesd whether the variant is enabled
+            Indicates whether the variant is enabled
             </summary>
         </member>
         <member name="P:CMS.PortalEngine.VariantSettings.Condition">
@@ -5847,7 +5964,7 @@
         </member>
         <member name="P:CMS.PortalEngine.VariantSettings.InstanceGuid">
             <summary>
-            The web part instance GUID (Guid.Empy for zone variant)
+            The web part instance GUID (Guid.Empty for zone variant)
             </summary>
         </member>
         <member name="P:CMS.PortalEngine.VariantSettings.PageTemplateID">
@@ -5925,12 +6042,6 @@
             </summary>
             <param name="viewMode">View mode to check</param>
             <param name="includeEditDisabled">if set to <c>true</c> returns <c>true</c> for EditDisabled as well.</param>
-        </member>
-        <member name="M:CMS.PortalEngine.ViewModeExtensions.IsWireframe(CMS.PortalEngine.ViewModeEnum)">
-            <summary>
-            Returns true if the view mode is wireframe view mode
-            </summary>
-            <param name="viewMode">View mode to check</param>
         </member>
         <member name="M:CMS.PortalEngine.ViewModeExtensions.IsLiveSite(CMS.PortalEngine.ViewModeEnum)">
             <summary>
@@ -6182,11 +6293,6 @@
             On-Site edit mode
             </summary>
         </member>
-        <member name="F:CMS.PortalEngine.ViewModeEnum.Wireframe">
-            <summary>
-            Wireframe mode.
-            </summary>
-        </member>
         <member name="F:CMS.PortalEngine.ViewModeEnum.Listing">
             <summary>
             Listing mode.
@@ -6327,22 +6433,17 @@
         </member>
         <member name="P:CMS.PortalEngine.PageTemplateCategoryInfo.CategoryChildCount">
             <summary>
-            Gets or sets category children count.
+            Gets or sets count of child page template categories.
             </summary>
         </member>
         <member name="P:CMS.PortalEngine.PageTemplateCategoryInfo.CategoryTemplateChildCount">
             <summary>
-            Gets or sets category template children count.
+            Gets or sets count of child page templates.
             </summary>
         </member>
         <member name="P:CMS.PortalEngine.PageTemplateCategoryInfo.CategoryPath">
             <summary>
             Gets or sets category path.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.PageTemplateCategoryInfo.CategoryOrder">
-            <summary>
-            Gets or sets category order.
             </summary>
         </member>
         <member name="P:CMS.PortalEngine.PageTemplateCategoryInfo.CategoryLevel">
@@ -6436,13 +6537,6 @@
             Returns list of all template categories with template allowed for specified site.
             </summary>
             <param name="siteId">Site ID</param>
-        </member>
-        <member name="M:CMS.PortalEngine.PageTemplateCategoryInfoProvider.PageTemplateCategoryExists(System.String)">
-            <summary>
-            Check whether page template category with given display name already exists.
-            </summary>
-            <param name="displayName">Display name of category to check</param>
-            <returns>Returns true if page template category with given display name already exists</returns>
         </member>
         <member name="M:CMS.PortalEngine.PageTemplateCategoryInfoProvider.UpdateCategoryChildCount(System.Int32,System.Int32)">
             <summary>
@@ -6548,13 +6642,6 @@
             Returns list of all template categories with template allowed for specified site.
             </summary>
             <param name="siteId">Site ID</param>
-        </member>
-        <member name="M:CMS.PortalEngine.PageTemplateCategoryInfoProvider.PageTemplateCategoryExistsInternal(System.String)">
-            <summary>
-            Check whether page template category with given display name already exists.
-            </summary>
-            <param name="displayName">Display name of category to check</param>
-            <returns>Returns true if page template category with given display name already exists</returns>
         </member>
         <member name="M:CMS.PortalEngine.PageTemplateCategoryInfoProvider.GetCategoryPathInternal(System.Int32)">
             <summary>
@@ -6697,7 +6784,7 @@
             <param name="userInfo">UserInfo object</param>
             <param name="exceptionOnFailure">If true, PermissionCheckException is thrown whenever a permission check fails</param>
         </member>
-        <member name="M:CMS.PortalEngine.PageTemplateInfo.GetChildWhereCondition(System.String,System.String)">
+        <member name="M:CMS.PortalEngine.PageTemplateInfo.GetChildWhereCondition(CMS.DataEngine.WhereCondition,System.String)">
             <summary>
             Gets the child object where condition.
             </summary>
@@ -6942,17 +7029,17 @@
             ID from which start the virtual page templates for web parts
             </summary>
         </member>
-        <member name="F:CMS.PortalEngine.PageTemplateInfoProvider.mTemplateLayoutsDirectory">
+        <member name="F:CMS.PortalEngine.PageTemplateInfoProvider.TEMPLATE_LAYOUTS_DIRECTORY">
             <summary>
             Template layouts directory.
             </summary>
         </member>
-        <member name="F:CMS.PortalEngine.PageTemplateInfoProvider.mAdhocTemplateLayoutsDirectory">
+        <member name="F:CMS.PortalEngine.PageTemplateInfoProvider.ADHOC_TEMPLATE_LAYOUTS_DIRECTORY">
             <summary>
             Ad-hoc template layouts directory.
             </summary>
         </member>
-        <member name="F:CMS.PortalEngine.PageTemplateInfoProvider.mTemplatesDirectory">
+        <member name="F:CMS.PortalEngine.PageTemplateInfoProvider.TEMPLATES_DIRECTORY">
             <summary>
             Template layouts directory.
             </summary>
@@ -7425,11 +7512,6 @@
             If is set to value greater than zero then only allowed templates will be shown in page template tree.
             </summary>
         </member>
-        <member name="M:CMS.PortalEngine.PageTemplateTreeProvider.#ctor">
-            <summary>
-            Constructor.
-            </summary>
-        </member>
         <member name="M:CMS.PortalEngine.PageTemplateTreeProvider.GetRootNodeCore">
             <summary>
             Returns the the root sitemap node.
@@ -7516,11 +7598,10 @@
             Layout virtual file object
             </summary>
         </member>
-        <member name="M:CMS.PortalEngine.WebPartLayoutVirtualFileObject.#ctor(System.String,CMS.PortalEngine.WebPartLayoutInfo)">
+        <member name="M:CMS.PortalEngine.WebPartLayoutVirtualFileObject.#ctor(CMS.PortalEngine.WebPartLayoutInfo)">
             <summary>
             Constructor
             </summary>
-            <param name="virtualPath">Virtual path</param>
             <param name="currentObject">Object instance</param>
         </member>
         <member name="M:CMS.PortalEngine.WebPartLayoutVirtualFileObject.GetVirtualFileObject(System.String)">
@@ -7547,11 +7628,6 @@
         <member name="P:CMS.PortalEngine.WebPartLayoutVirtualFileObject.PhysicalFilePath">
             <summary>
             Gets the physical file path if exists
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.WebPartLayoutVirtualFileObject.VirtualPath">
-            <summary>
-            Current object virtual path
             </summary>
         </member>
         <member name="P:CMS.PortalEngine.WebPartLayoutVirtualFileObject.CurrentObject">
@@ -7703,6 +7779,11 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.PortalEngine.WebPartListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.PortalEngine.WebPartListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
@@ -7764,6 +7845,11 @@
             Constructor - Creates a new WidgetCategoryListInfo object from the given DataRow.
             </summary>
             <param name="dr">DataRow with the object data</param>
+        </member>
+        <member name="M:CMS.PortalEngine.WidgetListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
         </member>
         <member name="M:CMS.PortalEngine.WidgetListInfo.GetDataQueryInternal">
             <summary>
@@ -8115,11 +8201,6 @@
             <param name="wci">WidgetCategoryInfo</param>
             <param name="keepSourceData">If true, source data are kept in the object</param>
         </member>
-        <member name="M:CMS.PortalEngine.WidgetCategoryInfo.RemoveObjectDependencies(System.Boolean,System.Boolean)">
-            <summary>
-            Removes dependencies of given widget category.
-            </summary>
-        </member>
         <member name="P:CMS.PortalEngine.WidgetCategoryInfo.WidgetCategoryID">
             <summary>
             Widget category ID.
@@ -8225,11 +8306,6 @@
             Widget only.
             </summary>
         </member>
-        <member name="F:CMS.PortalEngine.WebPartTypeEnum.Wireframe">
-            <summary>
-            Wireframe sketch.
-            </summary>
-        </member>
         <member name="F:CMS.PortalEngine.WebPartTypeEnum.UI">
             <summary>
             User interface
@@ -8275,11 +8351,6 @@
             Constructor, creates an empty LayoutInfo object from the given DataRow data.
             </summary>
             <param name="dr">Datarow with the class info data</param>
-        </member>
-        <member name="M:CMS.PortalEngine.WebPartCategoryInfo.RemoveObjectDependencies(System.Boolean,System.Boolean)">
-            <summary>
-            Removes object dependencies.
-            </summary>
         </member>
         <member name="P:CMS.PortalEngine.WebPartCategoryInfo.CategoryID">
             <summary>
@@ -8398,13 +8469,6 @@
             </summary>
             <param name="categoryId">Layout id to delete</param>
         </member>
-        <member name="M:CMS.PortalEngine.WebPartCategoryInfoProvider.WebPartCategoryExists(System.String)">
-            <summary>
-            Check whether web part category with given name already exists.
-            </summary>
-            <param name="name">Web part category name to check</param>
-            <returns>Returns true if web part category name already exists</returns>
-        </member>
         <member name="M:CMS.PortalEngine.WebPartCategoryInfoProvider.GetCategoryPath(System.Int32)">
             <summary>
             Returns the DataSet of all the categories on the path to the given category.
@@ -8493,13 +8557,6 @@
             Delete specified WebPartCategory.
             </summary>
             <param name="webPartCategoryInfo">WebPartCategory object</param>
-        </member>
-        <member name="M:CMS.PortalEngine.WebPartCategoryInfoProvider.WebPartCategoryExistsInternal(System.String)">
-            <summary>
-            Check whether web part category with given name already exists.
-            </summary>
-            <param name="name">Web part category name to check</param>
-            <returns>Returns true if web part category name already exists</returns>
         </member>
         <member name="M:CMS.PortalEngine.WebPartCategoryInfoProvider.GetCategoryPathInternal(System.Int32)">
             <summary>
@@ -8671,7 +8728,7 @@
             <summary>
             Returns the WebPartContainerInfo structure for the specified webPartContainer.
             </summary>
-            <param name="containerName">Name of webpartcontainer</param>
+            <param name="containerName">Name of webpart container</param>
         </member>
         <member name="M:CMS.PortalEngine.WebPartContainerInfoProvider.GetWebPartContainerInfo(System.Int32)">
             <summary>
@@ -9035,6 +9092,38 @@
             Loads the default data to the object.
             </summary>
         </member>
+        <member name="M:CMS.PortalEngine.WebPartInfo.GetUsageObjectTypes">
+            <summary>
+            Gets the list of object types that may use the web part
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.WebPartInfo.GetUsages">
+            <summary>
+            Gets the objects using the web part as a query with result columns ObjectType, ObjectID.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.WebPartInfo.GetWebPartChildCondition(System.String)">
+            <summary>
+            Creates where condition to find current web part as a parent (usable for inherited web parts and widgets)
+            </summary>
+            <param name="columnName">Parent ID column name</param>
+        </member>
+        <member name="M:CMS.PortalEngine.WebPartInfo.GetWebPartSearchCondition(System.String,System.String)">
+            <summary>
+            Creates where condition to find current web part in form definition (usable for page template, MVT variants and CP variants)
+            </summary>
+            <param name="columnName">Web part definition column name</param>
+            <param name="searchPattern">Search pattern</param>
+        </member>
+        <member name="M:CMS.PortalEngine.WebPartInfo.AddTypeToUsageQuery(CMS.DataEngine.MultiObjectQuery,System.String,System.String,CMS.DataEngine.IWhereCondition)">
+            <summary>
+            Adds type to query to get all usages of current web part
+            </summary>
+            <param name="query">Multi object query</param>
+            <param name="objectType">Object type to add to search in</param>
+            <param name="idColumn">ID column name of the object</param>
+            <param name="condition">Condition how to find the current web part</param>
+        </member>
         <member name="P:CMS.PortalEngine.WebPartInfo.WebPartID">
             <summary>
             The WebPart ID.
@@ -9108,11 +9197,6 @@
         <member name="P:CMS.PortalEngine.WebPartInfo.WebPartLoadGeneration">
             <summary>
             Gets or sets the webpart load generation.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalEngine.WebPartInfo.WebPartLastSelection">
-            <summary>
-            Gets or sets webpart last selection.
             </summary>
         </member>
         <member name="P:CMS.PortalEngine.WebPartInfo.WebPartResourceID">
@@ -9352,12 +9436,6 @@
             Modifies properties format and excludes inherited properties to the separate location.
             </summary>
             <param name="allProperties">Parameter that may include inherited and system properties</param>
-        </member>
-        <member name="M:CMS.PortalEngine.WebPartInfoProvider.UpdateInheritedWebPartProperties">
-            <summary>
-            CAUTION: This methods is only for special cases! It is called after upgrade to v8 and import of webparts from older versions.
-            Modifies storage format of properties and system properties of inherited webparts.
-            </summary>
         </member>
         <member name="M:CMS.PortalEngine.WebPartInfoProvider.ModifyProperties(System.String@,System.String@,System.Int32)">
             <summary>
@@ -10034,12 +10112,11 @@
             Removes all web parts from the schema.
             </summary>
         </member>
-        <member name="M:CMS.PortalEngine.WebPartZoneInstance.RemoveWebPart(CMS.PortalEngine.WebPartInstance,System.Boolean)">
+        <member name="M:CMS.PortalEngine.WebPartZoneInstance.RemoveWebPart(CMS.PortalEngine.WebPartInstance)">
             <summary>
             Removes the web part instance from the schema.
             </summary>
             <param name="webPart">Web part</param>
-            <param name="removeNestedZones">If true, the nested zones of the web part are removed as well</param>
         </member>
         <member name="M:CMS.PortalEngine.WebPartZoneInstance.RemoveWebPart(System.String)">
             <summary>
@@ -10085,12 +10162,6 @@
             </summary>
             <param name="cloneWebParts">If true, the web parts are cloned within the zone</param>
             <param name="copyMacroTable">Indicates whether macro values should be cloned</param>
-        </member>
-        <member name="M:CMS.PortalEngine.WebPartZoneInstance.LoadProperties(System.Data.DataRow)">
-            <summary>
-            Loads default values from specified DataRow to the zone properties.
-            </summary>
-            <param name="dr">Datarow with properties default values</param>
         </member>
         <member name="M:CMS.PortalEngine.WebPartZoneInstance.LoadProperties(CMS.PortalEngine.WebPartZoneInstance)">
             <summary>
@@ -10202,6 +10273,11 @@
             Object type
             </summary>
         </member>
+        <member name="F:CMS.PortalEngine.WidgetInfo.GROUPPAGESLIST">
+            <summary>
+            Community group page list
+            </summary>
+        </member>
         <member name="F:CMS.PortalEngine.WidgetInfo.TYPEINFO">
             <summary>
             Type information.
@@ -10252,6 +10328,36 @@
             <summary>
             Loads the default object data
             </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.WidgetInfo.GetUsageObjectTypes">
+            <summary>
+            Gets the list of object types that may use the widget
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.WidgetInfo.GetUsages">
+            <summary>
+            Gets the objects using the widget as a query with result columns ObjectType, ObjectID, Source, ItemID and ItemObjectType.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.WidgetInfo.GetWidgetSearchCondition(System.String,System.String,System.String)">
+            <summary>
+            Creates where condition to find current widget in form definition (usable for page template, MVT variants and CP variants)
+            </summary>
+            <param name="columnName">Widget definition column name</param>
+            <param name="name">Widget name</param>
+            <param name="webPartXmlLocation">Location where web part nodes can be found in XML</param>
+        </member>
+        <member name="M:CMS.PortalEngine.WidgetInfo.AddTypeToUsageQuery(CMS.DataEngine.MultiObjectQuery,System.String,System.String,CMS.DataEngine.IWhereCondition,System.String,System.String,System.String)">
+            <summary>
+            Adds type to query to get all usages of current widget
+            </summary>
+            <param name="query">Multi object query</param>
+            <param name="objectType">Object type to add to search in</param>
+            <param name="idColumn">ID column name of the object</param>
+            <param name="condition">Condition how to find the current widget</param>
+            <param name="source">Text information about the source</param>
+            <param name="itemId">ID of the additional object</param>
+            <param name="itemObjectType">Object type of the additional object</param>
         </member>
         <member name="P:CMS.PortalEngine.WidgetInfo.WidgetID">
             <summary>
@@ -10546,6 +10652,21 @@
         <member name="F:CMS.PortalEngine.WidgetZoneTypeEnum.Dashboard">
             <summary>
             Dashboard.
+            </summary>
+        </member>
+        <member name="T:CMS.PortalEngine.WidgetInfoMethods">
+            <summary>
+            Macro methods for class WidgetInfo
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.WidgetInfoMethods.GetUsageObjectTypes(CMS.MacroEngine.EvaluationContext,System.Object[])">
+            <summary>
+            Macro method for method GetUsageObjectTypes
+            </summary>
+        </member>
+        <member name="M:CMS.PortalEngine.WidgetInfoMethods.GetUsages(CMS.MacroEngine.EvaluationContext,System.Object[])">
+            <summary>
+            Macro method for method GetUsages
             </summary>
         </member>
     </members>

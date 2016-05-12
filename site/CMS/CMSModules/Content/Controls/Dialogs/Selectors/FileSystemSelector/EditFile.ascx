@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="EditFile.ascx.cs" Inherits="CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSelector_EditFile" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="EditFile.ascx.cs" Inherits="CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSelector_EditFile" %>
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" TagName="HeaderActions"
     TagPrefix="cms" %>
 <cms:CMSUpdatePanel runat="server" ID="pnlUpdate">

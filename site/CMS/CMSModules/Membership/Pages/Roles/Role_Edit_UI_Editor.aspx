@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
-    AutoEventWireup="true" Codebehind="Role_Edit_UI_Editor.aspx.cs" Inherits="CMSModules_Membership_Pages_Roles_Role_Edit_UI_Editor"
+    AutoEventWireup="true"  Codebehind="Role_Edit_UI_Editor.aspx.cs" Inherits="CMSModules_Membership_Pages_Roles_Role_Edit_UI_Editor"
     Theme="Default" %>
 
 <%@ Register Src="~/CMSModules/UIPersonalization/Controls/UIPersonalization.ascx"

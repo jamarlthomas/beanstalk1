@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="ViewObjectVersion.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="ViewObjectVersion.ascx.cs"
     Inherits="CMSModules_Objects_Controls_Versioning_ViewObjectVersion" %>
 <%@ Register Src="~/CMSModules/Objects/Controls/ViewObjectDataSet.ascx" TagName="ViewDataSet"
     TagPrefix="cms" %>

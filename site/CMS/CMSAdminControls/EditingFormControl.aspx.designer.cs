@@ -27,7 +27,7 @@ public partial class CMSAdminControls_EditingFormControl {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSAdminControls_UI_Macros_MacroEditor macroEditor;
+    protected global::CMS.UIControls.MacroEditor macroEditor;
     
     /// <summary>
     /// ltlScript control.

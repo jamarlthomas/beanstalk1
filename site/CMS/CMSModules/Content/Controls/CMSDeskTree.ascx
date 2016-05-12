@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="CMSDeskTree.ascx.cs" Inherits="CMSModules_Content_Controls_CMSDeskTree" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="CMSDeskTree.ascx.cs" Inherits="CMSModules_Content_Controls_CMSDeskTree" %>
 <%@ Register TagPrefix="cms" TagName="ContentTree" Src="~/CMSModules/Content/Controls/ContentTree.ascx" %>
 <%@ Register TagPrefix="cms" TagName="RefreshIcon" Src="~/CMSModules/Content/Controls/RefreshIcon.ascx" %>
 <cms:ContextMenuContainer runat="server" ID="menuCont" MenuID="nodeMenu" OffsetX="10"

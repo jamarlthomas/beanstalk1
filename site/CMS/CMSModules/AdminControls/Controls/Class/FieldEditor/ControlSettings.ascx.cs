@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Data;
 using System.Linq;
 
 using CMS.Base;
+using CMS.DataEngine;
 using CMS.FormControls;
 using CMS.FormEngine;
 using CMS.SiteProvider;
@@ -97,7 +98,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Control
 
 
     /// <summary>
-    /// Determines whether to allow mode switching (simple <-> advanced).
+    /// Determines whether to allow mode switching (simple - advanced).
     /// </summary>
     public bool AllowModeSwitch
     {
@@ -120,12 +121,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Control
         get
         {
             // Ensure table
-            if (mMacros == null)
-            {
-                mMacros = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
-            }
-
-            return mMacros;
+            return mMacros ?? (mMacros = new Hashtable(StringComparer.InvariantCultureIgnoreCase));
         }
         set
         {
@@ -292,7 +288,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Control
     /// <param name="loadDefaultValues">Indicates if data container should be initialized with form control's default data</param>
     private DataRowContainer GetData(bool loadDefaultValues)
     {
-        DataRowContainer result = new DataRowContainer(FormInfo.GetDataRow());
+        DataRowContainer result = new DataRowContainer(FormInfo.GetDataRow(loadDefaultValues));
 
         if (loadDefaultValues)
         {
@@ -308,10 +304,11 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Control
                 if (result.ContainsColumn(columnName))
                 {
                     object value = Settings[columnName];
+                    var settingField = FormInfo.GetFormField(columnName);
 
-                    if (!String.IsNullOrEmpty(Convert.ToString(value)) && IsDataTypeValid(value, FormInfo.GetFormField(columnName)))
+                    if (!String.IsNullOrEmpty(Convert.ToString(value)) && IsDataTypeValid(value, settingField))
                     {
-                        result[columnName] = value;
+                        result[columnName] = DataTypeManager.ConvertToSystemType(TypeEnum.Field, settingField.DataType, value, SystemContext.EnglishCulture);
                     }
                 }
             }
@@ -329,7 +326,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Control
     {
         if (settingField != null)
         {
-            var checkType = new DataTypeIntegrity(value, settingField.DataType);
+            var checkType = new DataTypeIntegrity(value, settingField.DataType, SystemContext.EnglishCulture);
             return String.IsNullOrEmpty(checkType.ValidateDataType());
         }
 

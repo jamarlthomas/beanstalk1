@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web.UI.WebControls;
 
@@ -296,7 +296,7 @@ public partial class CMSModules_Groups_FormControls_GroupPictureEdit : FormEngin
             sizeParams += "&width=" + MaxPictureWidth + "&height=" + MaxPictureHeight;
         }
 
-        string getAvatarPath = ResolveUrl("~/CMSModules/Avatars/CMSPages/GetAvatar.aspx");
+        string getAvatarPath = ResolveUrl("~/CMSPages/GetAvatar.aspx");
         // Create id for div with selected image preview
         divId = ClientID + "imgDiv";
 

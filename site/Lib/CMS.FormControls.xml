@@ -130,6 +130,11 @@
             Gets or sets state enable.
             </summary>
         </member>
+        <member name="P:CMS.FormControls.FormControl.SupportsDisabledAttribute">
+            <summary>
+            Gets a value that indicates whether the control should set the disabled attribute of the rendered HTML element to "disabled" when the control's <see cref="P:System.Web.UI.WebControls.WebControl.IsEnabled" /> property is false.
+            </summary>
+        </member>
         <member name="P:CMS.FormControls.FormControl.Text">
             <summary>
             Gets or sets value converted to string
@@ -438,6 +443,13 @@
             CSS class for the form button panel.
             </summary>
         </member>
+        <member name="F:CMS.FormControls.BasicForm.mErrorMessagePrefix">
+            <summary>
+            Prefix for the default validation error message.
+            Concatenated with ".errorvalidationerror" resource string.
+            If not found, general prefix is used.
+            </summary>
+        </member>
         <member name="F:CMS.FormControls.BasicForm.mValidationErrorMessage">
             <summary>
             Validation error message
@@ -586,10 +598,11 @@
             Connects associated controls (labels and inputs) together, for accessibility and other reasons.
             </summary>
         </member>
-        <member name="M:CMS.FormControls.BasicForm.HandleFieldsValues">
+        <member name="M:CMS.FormControls.BasicForm.HandleFieldsValues(System.Boolean)">
             <summary>
-            Initializes default values for invisible fields.
+            Initializes values for invisible fields.
             </summary>
+            <param name="useDefaultValue">Determines whether fields should be loaded with their default values or with the actual ones</param>
         </member>
         <member name="M:CMS.FormControls.BasicForm.SaveDataInternal">
             <summary>
@@ -786,6 +799,12 @@
             </summary>
             <param name="field">Form field info object</param>
         </member>
+        <member name="M:CMS.FormControls.BasicForm.RegisterControlWithDependencies(CMS.FormControls.FormEngineUserControl)">
+            <summary>
+            Registers a form control which has some dependencies so they can be informed on the main control change.
+            </summary>
+            <param name="control">Control with dependencies</param>
+        </member>
         <member name="M:CMS.FormControls.BasicForm.StringToFormTypeEnum(System.String)">
             <summary>
             Returns the enumeration representation of the form type.
@@ -958,6 +977,11 @@
             Occurs when an attachment is retrieved.
             </summary>
         </member>
+        <member name="E:CMS.FormControls.BasicForm.ControlWithDependenciesChanged">
+            <summary>
+            Fired on the change of a form control which has some dependencies.
+            </summary>
+        </member>
         <member name="P:CMS.FormControls.BasicForm.LayoutTemplate">
             <summary>
             Layout template, if set, the given layout is used.
@@ -1012,6 +1036,12 @@
         <member name="P:CMS.FormControls.BasicForm.ShowValidationErrorMessage">
             <summary>
             Indicates if error message should be displayed after validation failed.
+            </summary>
+        </member>
+        <member name="P:CMS.FormControls.BasicForm.DefaultValidationErrorMessage">
+            <summary>
+            Default validation error message.
+            Shown when <see cref="P:CMS.FormControls.BasicForm.ValidationErrorMessage"/> is not set manually.
             </summary>
         </member>
         <member name="P:CMS.FormControls.BasicForm.ValidationErrorMessage">
@@ -1308,7 +1338,7 @@
         </member>
         <member name="P:CMS.FormControls.BasicForm.IsSimpleMode">
             <summary>
-            Sets simple/advanced mode of basicform.
+            Returns if the form is in simple or advanced mode. Depends on <see cref="P:CMS.FormControls.BasicForm.AllowModeSwitch"/> property.
             </summary>
         </member>
         <member name="P:CMS.FormControls.BasicForm.Layout">
@@ -1701,11 +1731,22 @@
             Changed handler.
             </summary>
         </member>
+        <member name="M:CMS.FormControls.FormEngineUserControl.Form_ControlWithDependenciesChanged(System.Object,System.EventArgs)">
+            <summary>
+            Another form control, which has some dependencies, has changed.
+            </summary>
+        </member>
         <member name="M:CMS.FormControls.FormEngineUserControl.LoadControlValue(System.Object)">
             <summary>
             Loads control value.
             </summary>
             <param name="value">Value to load</param>
+        </member>
+        <member name="M:CMS.FormControls.FormEngineUserControl.GetValue(System.String)">
+            <summary>
+            Returns the value of the given property.
+            </summary>
+            <param name="propertyName">Property name</param>
         </member>
         <member name="M:CMS.FormControls.FormEngineUserControl.SetValue(System.String,System.Object)">
             <summary>
@@ -1713,6 +1754,14 @@
             </summary>
             <param name="propertyName">Property name to set</param>
             <param name="value">New property value</param>
+        </member>
+        <member name="M:CMS.FormControls.FormEngineUserControl.SetValue(System.String,System.Object,System.Boolean)">
+            <summary>
+            Sets the property value of the control, setting the value affects only local property value.
+            </summary>
+            <param name="propertyName">Property name to set</param>
+            <param name="value">New property value</param>
+            <param name="isMacro">If true, the property value is a macro</param>
         </member>
         <member name="M:CMS.FormControls.FormEngineUserControl.GetOtherValues">
             <summary>
@@ -1779,6 +1828,12 @@
             <summary>
             Loads control with values in FormFieldInfo.
             </summary>
+        </member>
+        <member name="M:CMS.FormControls.FormEngineUserControl.ApplyStyles(CMS.FormEngine.FormFieldInfo)">
+            <summary>
+            Applies control styles from the given form info
+            </summary>
+            <param name="ffi">Form field info</param>
         </member>
         <member name="M:CMS.FormControls.FormEngineUserControl.CheckLength(System.Int32,System.Int32,System.Int32,System.String@,System.String)">
             <summary>
@@ -1852,12 +1907,10 @@
             </summary>
             <param name="value">Value to process</param>
         </member>
-        <member name="M:CMS.FormControls.FormEngineUserControl.IsFileTypeAllowed(System.String,System.String)">
+        <member name="M:CMS.FormControls.FormEngineUserControl.ReloadControl">
             <summary>
-            Checks if specified file type is allowed to be uploaded.
+            Virtual method that can be used in specific form control to reload its content. It is called after the change of another form control which has some dependencies.
             </summary>
-            <param name="type">File type, e.g. 'jpg' or '.jpg'</param>
-            <param name="allowedTypes">Allowed file types from form field info definition</param>
         </member>
         <member name="M:CMS.FormControls.FormEngineUserControl.CreateContextResolver(CMS.MacroEngine.MacroResolver,System.Boolean)">
             <summary>
@@ -2000,7 +2053,7 @@
         </member>
         <member name="P:CMS.FormControls.FormEngineUserControl.Field">
             <summary>
-            Field name to which the field belongs. This property is only supported in templated form.
+            Field name to which the field belongs.
             </summary>
         </member>
         <member name="P:CMS.FormControls.FormEngineUserControl.CheckUnique">
@@ -2046,6 +2099,11 @@
         <member name="P:CMS.FormControls.FormEngineUserControl.DefaultProperties">
             <summary>
             Control properties
+            </summary>
+        </member>
+        <member name="P:CMS.FormControls.FormEngineUserControl.ResourcePrefix">
+            <summary>
+            Gets or sets resource prefix for custom texts.
             </summary>
         </member>
         <member name="M:CMS.FormControls.FilterFormControlWrapper.#ctor(CMS.FormControls.IFilterControl)">
@@ -2142,6 +2200,36 @@
         <member name="P:CMS.FormControls.FormControlMacroContainer.Info">
             <summary>
             Corresponding field info
+            </summary>
+        </member>
+        <member name="T:CMS.FormControls.FormEngineVisibilityControl">
+            <summary>
+            Common class for custom user controls used in forms for selection of field visibility types.
+            </summary>
+        </member>
+        <member name="M:CMS.FormControls.FormEngineVisibilityControl.CreateChildControls">
+            <summary>
+            Reloads data on CreateChildControls event.
+            </summary>
+        </member>
+        <member name="M:CMS.FormControls.FormEngineVisibilityControl.ReloadData">
+            <summary>
+            Loads the child controls at run-time.
+            </summary>
+        </member>
+        <member name="P:CMS.FormControls.FormEngineVisibilityControl.Enabled">
+            <summary>
+            Gets or sets the enabled state of the control.
+            </summary>
+        </member>
+        <member name="P:CMS.FormControls.FormEngineVisibilityControl.Value">
+            <summary>
+            Gets or sets field value.
+            </summary>
+        </member>
+        <member name="P:CMS.FormControls.FormEngineVisibilityControl.VisibilityControl">
+            <summary>
+            List-type control that should be used for field visibility type selection.
             </summary>
         </member>
         <member name="T:CMS.FormControls.LocalizableFormEngineUserControl">
@@ -2442,7 +2530,7 @@
             <param name="ffi">Field info</param>
             <param name="addTooltip">Indicates if tooltip will be added to the label</param>
         </member>
-        <member name="M:CMS.FormControls.AbstractLayout.AddControlToPanel(System.Web.UI.Control,CMS.DataEngine.IField)">
+        <member name="M:CMS.FormControls.AbstractLayout.AddControlToPanel(System.Web.UI.Control,CMS.DataEngine.IDataDefinitionItem)">
             <summary>
             Adds control to form panel.
             </summary>
@@ -2685,7 +2773,7 @@
             </summary>
             <param name="args">Form field settings</param>
         </member>
-        <member name="M:CMS.FormControls.DivDefaultLayout.AddControl(System.Web.UI.Control,CMS.DataEngine.IField,System.Web.UI.UpdatePanel)">
+        <member name="M:CMS.FormControls.DivDefaultLayout.AddControl(System.Web.UI.Control,CMS.DataEngine.IDataDefinitionItem,System.Web.UI.UpdatePanel)">
             <summary>
             Adds control to update panel in design mode or directly to the panel otherwise.
             </summary>
@@ -3172,11 +3260,6 @@
             Raises the post back event.
             </summary>
             <param name="eventArgument">Event argument</param>
-        </member>
-        <member name="M:CMS.FormControls.CMSDocumentManager.RemoveWireframe">
-            <summary>
-            Removes the wireframe from current document
-            </summary>
         </member>
         <member name="M:CMS.FormControls.CMSDocumentManager.UpdateDocument(System.Boolean)">
             <summary>
@@ -3720,6 +3803,11 @@
             </summary>
             <param name="forceReload">Indicates if data reload should be forced</param>
         </member>
+        <member name="M:CMS.FormControls.AttachmentsControl.CheckFullRefresh">
+            <summary>
+            Checks if full refresh is needed.
+            </summary>
+        </member>
         <member name="P:CMS.FormControls.AttachmentsControl.SiteName">
             <summary>
             Site name.
@@ -3875,6 +3963,11 @@
             Indicates if workflow is used.
             </summary>
         </member>
+        <member name="P:CMS.FormControls.AttachmentsControl.FullRefresh">
+            <summary>
+            Indicates if full refresh is needed after upload. Can be used first on OnPreRender event because accessing to this property sooner may assign incorrect value.
+            </summary>
+        </member>
         <member name="E:CMS.FormControls.AttachmentsControl.OnCheckPermissions">
             <summary>
             On check permissions event.
@@ -3984,7 +4077,7 @@
         </member>
         <member name="T:CMS.FormControls.FormErrorMessageLabel">
             <summary>
-            Form error message label.
+            Form error message label for the whole form.
             </summary>
         </member>
         <member name="M:CMS.FormControls.FormErrorMessageLabel.#ctor">
@@ -3994,7 +4087,7 @@
         </member>
         <member name="T:CMS.FormControls.FormInfoMessageLabel">
             <summary>
-            Form info message label.
+            Form info message label for the whole form.
             </summary>
         </member>
         <member name="M:CMS.FormControls.FormInfoMessageLabel.#ctor">
@@ -4066,19 +4159,21 @@
             Provides check if given value matches field's data type.
             </summary>
         </member>
-        <member name="M:CMS.FormControls.DataTypeIntegrity.#ctor(System.Object,CMS.FormEngine.FormFieldInfo)">
+        <member name="M:CMS.FormControls.DataTypeIntegrity.#ctor(System.Object,CMS.FormEngine.FormFieldInfo,System.Globalization.CultureInfo)">
             <summary>
             Constructor.
             </summary>
             <param name="value">Control's value</param>
             <param name="ffi">Field info</param>
+            <param name="culture">Allows to specify culture that will be used for culture dependent data types, e.g. double, date-time. Current culture is used if not set.</param>
         </member>
-        <member name="M:CMS.FormControls.DataTypeIntegrity.#ctor(System.Object,System.String)">
+        <member name="M:CMS.FormControls.DataTypeIntegrity.#ctor(System.Object,System.String,System.Globalization.CultureInfo)">
             <summary>
             Constructor.
             </summary>
             <param name="value">Control's value</param>
             <param name="dataType">Field data type</param>
+            <param name="culture">Allows to specify culture that will be used for culture dependent data types, e.g. double, date-time. Current culture is used if not set.</param>
         </member>
         <member name="M:CMS.FormControls.DataTypeIntegrity.ValidateDataType">
             <summary>
@@ -4170,28 +4265,8 @@
         </member>
         <member name="M:CMS.FormControls.FormControlValidation.ValidateTextFieldLength">
             <summary>
-            Checks if text field's content is not longer than maximum field size.
+            Checks if text field's content is not longer than maximum field size (FormFieldInfo.Size may be database related).
             </summary>
-        </member>
-        <member name="M:CMS.FormControls.FormControlValidation.GetTextLength(System.String)">
-            <summary>
-            Returns length of the text to be checked for proper length.
-            </summary>
-            <param name="text">Text containing macros</param>
-        </member>
-        <member name="M:CMS.FormControls.FormControlValidation.CheckSize">
-            <summary>
-            Checks max length depending on FormFieldInfo.Size (which is database related).
-            </summary>
-        </member>
-        <member name="M:CMS.FormControls.FormControlValidation.CheckMinMaxLength(System.Int32,System.Int32,System.Int32)">
-            <summary>
-            Checks if field value's length is not shorter or longer than specified borders.
-            </summary>
-            <param name="minControlSize">Minimal size</param>
-            <param name="maxControlSize">Maximal size</param>
-            <param name="textLength">Text length</param>
-            <returns>True if field value is not shorter or longer than specified min/max borders.</returns>
         </member>
         <member name="M:CMS.FormControls.FormControlValidation.CheckDataTypeIntegrity">
             <summary>
@@ -4316,7 +4391,7 @@
         </member>
         <member name="F:CMS.FormControls.FormField.mDisplayColon">
             <summary>
-            Indicates if colon (:) should be displayed behind the field label. False by default.
+            Indicates if colon (:) should be displayed behind the field label.
             </summary>
         </member>
         <member name="M:CMS.FormControls.FormField.OnInit(System.EventArgs)">
@@ -4405,7 +4480,8 @@
         </member>
         <member name="P:CMS.FormControls.FormField.DisplayColon">
             <summary>
-            Indicates if colon (:) should be displayed behind the field label. False by default.
+            Indicates if colon (:) should be displayed behind the field label.
+            If Form is set then Form.UseColonBehindLabel is used as default value, otherwise false.
             </summary>
         </member>
         <member name="P:CMS.FormControls.FormField.ShowRequiredMark">
@@ -4532,12 +4608,12 @@
         </member>
         <member name="T:CMS.FormControls.FormErrorLabel">
             <summary>
-            Form error label.
+            Form error label for a specific form field.
             </summary>
         </member>
         <member name="T:CMS.FormControls.FormLabel">
             <summary>
-            Form label control for form field.
+            Form label control for a specific form field.
             </summary>
         </member>
         <member name="M:CMS.FormControls.FormLabel.#ctor">
@@ -4545,9 +4621,49 @@
             Constructor.
             </summary>
         </member>
+        <member name="M:CMS.FormControls.FormLabel.CreateChildControls">
+            <summary>
+            Override for CreateChildControls method.
+            </summary>
+        </member>
+        <member name="M:CMS.FormControls.FormLabel.SetupControl">
+            <summary>
+            Configures label control with parent settings if allowed.
+            </summary>
+        </member>
         <member name="P:CMS.FormControls.FormLabel.Field">
             <summary>
             Field name for which the label applies. This property is only supported in templated form.
+            </summary>
+        </member>
+        <member name="P:CMS.FormControls.FormLabel.CssClass">
+            <summary>
+            Label's CSS class.
+            </summary>
+        </member>
+        <member name="P:CMS.FormControls.FormLabel.ShowRequiredMark">
+            <summary>
+            Indicates if required mark (* by default) should be displayed at the end of the text. False by default.
+            </summary>
+        </member>
+        <member name="P:CMS.FormControls.FormLabel.DisplayColon">
+            <summary>
+            Display colon at the end of the text.
+            </summary>
+        </member>
+        <member name="P:CMS.FormControls.FormLabel.Form">
+            <summary>
+            Form where the control is used.
+            </summary>
+        </member>
+        <member name="P:CMS.FormControls.FormLabel.FormFieldInfo">
+            <summary>
+            Field definition if the label is connected with a field.
+            </summary>
+        </member>
+        <member name="P:CMS.FormControls.FormLabel.UseFFI">
+            <summary>
+            Indicates if control should load properties from FormFieldInfo. True by default.
             </summary>
         </member>
         <member name="M:CMS.FormControls.FormErrorLabel.#ctor">
@@ -4650,6 +4766,13 @@
             Form engine specific for CMS. It displays the given form.
             </summary>
         </member>
+        <member name="F:CMS.FormControls.CMSForm.mErrorMessagePrefix">
+            <summary>
+            Prefix for the default validation error message.
+            Concatenated with ".errorvalidationerror" resource string.
+            If not found, general prefix is used.
+            </summary>
+        </member>
         <member name="F:CMS.FormControls.CMSForm.mDefaultPageTemplateID">
             <summary>
             Default page template ID.
@@ -4658,16 +4781,6 @@
         <member name="F:CMS.FormControls.CMSForm.mOwnerID">
             <summary>
             Owner ID.
-            </summary>
-        </member>
-        <member name="F:CMS.FormControls.CMSForm.lblError">
-            <summary>
-            Error label.
-            </summary>
-        </member>
-        <member name="F:CMS.FormControls.CMSForm.lblInfo">
-            <summary>
-            Info label.
             </summary>
         </member>
         <member name="F:CMS.FormControls.CMSForm.uploadFiles">
@@ -4835,11 +4948,6 @@
             Optional DocumentId of the document that should be used as a template with default values.
             </summary>
         </member>
-        <member name="P:CMS.FormControls.CMSForm.NodeId">
-            <summary>
-            Specifies together with CultureCode edited node.
-            </summary>
-        </member>
         <member name="P:CMS.FormControls.CMSForm.NodeID">
             <summary>
             Specifies together with CultureCode edited node.
@@ -4945,6 +5053,13 @@
             Control to edit custom table record.
             </summary>
         </member>
+        <member name="F:CMS.FormControls.CustomTableForm.mErrorMessagePrefix">
+            <summary>
+            Prefix for the default validation error message.
+            Concatenated with ".errorvalidationerror" resource string.
+            If not found, general prefix is used.
+            </summary>
+        </member>
         <member name="M:CMS.FormControls.CustomTableForm.OnPreRender(System.EventArgs)">
             <summary>
             OnPreRender event handler
@@ -5026,6 +5141,13 @@
         <member name="T:CMS.FormControls.DataForm">
             <summary>
             Common form control to edit the data.
+            </summary>
+        </member>
+        <member name="F:CMS.FormControls.DataForm.mErrorMessagePrefix">
+            <summary>
+            Prefix for the default validation error message.
+            Concatenated with ".errorvalidationerror" resource string.
+            If not found, general prefix is used.
             </summary>
         </member>
         <member name="F:CMS.FormControls.DataForm.uploadFiles">
@@ -5658,16 +5780,6 @@
             Gets or sets name of form control that failed to load.
             </summary>
         </member>
-        <member name="T:CMS.FormControls.FormRequiredValidator">
-            <summary>
-            Required validator for the form.
-            </summary>
-        </member>
-        <member name="P:CMS.FormControls.FormRequiredValidator.Field">
-            <summary>
-            Field name for which the validator applies.
-            </summary>
-        </member>
         <member name="T:CMS.FormControls.ControlRegistrationEventArgs">
             <summary>
             Custom event arguments used for control registration in BasicForm.
@@ -5996,13 +6108,6 @@
             </summary>
             <param name="child">Control to be registered</param>
         </member>
-        <member name="M:CMS.FormControls.LayoutTemplate.RegisterRequiredValidator(CMS.FormControls.FormRequiredValidator,System.String)">
-            <summary>
-            Registers field's "required" validator into BasicForm.
-            </summary>
-            <param name="child">Control to be registered</param>
-            <param name="fieldName">Field name</param>
-        </member>
         <member name="M:CMS.FormControls.LayoutTemplate.RegisterSubmitButton(CMS.FormControls.FormSubmitButton,System.String)">
             <summary>
             Registers BasicForm's submit button.
@@ -6169,6 +6274,13 @@
         <member name="T:CMS.FormControls.UIForm">
             <summary>
             Form control for the admin UI.
+            </summary>
+        </member>
+        <member name="F:CMS.FormControls.UIForm.mErrorMessagePrefix">
+            <summary>
+            Prefix for the default validation error message.
+            Concatenated with ".errorvalidationerror" resource string.
+            If not found, general prefix is used.
             </summary>
         </member>
         <member name="M:CMS.FormControls.UIForm.#ctor">
@@ -6341,6 +6453,11 @@
         <member name="P:CMS.FormControls.UIForm.FormDefaultStyle">
             <summary>
             Default form specific style configuration.
+            </summary>
+        </member>
+        <member name="P:CMS.FormControls.UIForm.DefaultValidationErrorMessage">
+            <summary>
+            Default validation error message.
             </summary>
         </member>
         <member name="T:CMS.FormControls.CMSObjectManager">
@@ -7029,7 +7146,7 @@
             Initializes the tasks for form resolvers synchronization
             </summary>
         </member>
-        <member name="M:CMS.FormControls.FormControlsSynchronization.ClearFormResolvers(System.String,System.String,CMS.Core.BinaryData)">
+        <member name="M:CMS.FormControls.FormControlsSynchronization.ClearFormResolvers(System.String,System.String[],CMS.Core.BinaryData)">
             <summary>
             Clears the BizForm items
             </summary>

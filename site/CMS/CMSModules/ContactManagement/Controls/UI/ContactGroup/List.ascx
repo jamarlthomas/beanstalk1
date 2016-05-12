@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="List.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_ContactGroup_List" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="List.ascx.cs" Inherits="CMSModules_ContactManagement_Controls_UI_ContactGroup_List" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server" UpdateMode="Conditional">

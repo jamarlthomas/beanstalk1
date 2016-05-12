@@ -1,21 +1,15 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Collections;
 using System.Data;
 
 using CMS.FormControls;
-using CMS.FormEngine;
 using CMS.Helpers;
-using CMS.Base;
 using CMS.DocumentEngine;
 using CMS.ExtendedControls;
 using CMS.SiteProvider;
+using CMS.Membership;
 
 using TreeNode = CMS.DocumentEngine.TreeNode;
-using CMS.Membership;
 
 public partial class CMSModules_Departments_FormControls_DepartmentRolesSelector : ReadOnlyFormEngineUserControl
 {
@@ -23,8 +17,7 @@ public partial class CMSModules_Departments_FormControls_DepartmentRolesSelector
 
     private bool mAllowEmpty = true;
     private NodePermissionsEnum mPermission = NodePermissionsEnum.Read;
-    private bool mInheritParentPermissions = false;
-    private TreeNode mEditedNode = null;
+    private TreeNode mEditedNode;
 
     #endregion
 
@@ -63,7 +56,7 @@ public partial class CMSModules_Departments_FormControls_DepartmentRolesSelector
             usRoles.Enabled = value;
         }
     }
-    
+
 
     /// <summary>
     /// Gets or sets if live iste property.
@@ -89,14 +82,8 @@ public partial class CMSModules_Departments_FormControls_DepartmentRolesSelector
     /// </summary>
     public bool InheritParentPermissions
     {
-        get
-        {
-            return mInheritParentPermissions;
-        }
-        set
-        {
-            mInheritParentPermissions = value;
-        }
+        get;
+        set;
     }
 
 
@@ -123,11 +110,7 @@ public partial class CMSModules_Departments_FormControls_DepartmentRolesSelector
     {
         get
         {
-            if (mEditedNode == null)
-            {
-                mEditedNode = Form.EditedObject as TreeNode;
-            }
-            return mEditedNode;
+            return mEditedNode ?? (mEditedNode = Form.EditedObject as TreeNode);
         }
     }
 
@@ -141,11 +124,16 @@ public partial class CMSModules_Departments_FormControls_DepartmentRolesSelector
     /// </summary>    
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Form == null)
+        {
+            return;
+        }
+
         // Check if node updated and role permissions should be loaded
         if (!usRoles.HasValue && (Form.Mode != FormModeEnum.Insert))
         {
             // Check if node has own ACL
-            if (AclInfoProvider.HasOwnAcl(EditedNode))
+            if (EditedNode.NodeIsACLOwner)
             {
                 DataSet dsRoles = AclItemInfoProvider.GetAllowedRoles(ValidationHelper.GetInteger(EditedNode.GetValue("NodeACLID"), 0), Permission, "RoleID");
                 if (!DataHelper.DataSourceIsEmpty(dsRoles))
@@ -175,11 +163,11 @@ public partial class CMSModules_Departments_FormControls_DepartmentRolesSelector
 
         // Set uniselector properties
         usRoles.ReturnColumnName = "RoleID";
-        usRoles.WhereCondition = "(SiteID = " + SiteContext.CurrentSiteID.ToString() + ") AND (RoleGroupID IS NULL)";
+        usRoles.WhereCondition = "(SiteID = " + SiteContext.CurrentSiteID + ") AND (RoleGroupID IS NULL)";
 
         if (forceReload)
         {
-            usRoles.Reload(forceReload);
+            usRoles.Reload(true);
         }
     }
 
@@ -214,16 +202,17 @@ public partial class CMSModules_Departments_FormControls_DepartmentRolesSelector
         else
         {
             // If node has already own ACL don't leave permissions, otherwise break inheritance
-            if (!AclInfoProvider.HasOwnAcl(EditedNode))
+            if (!EditedNode.NodeIsACLOwner)
             {
-                AclInfoProvider.BreakInherintance(EditedNode, false);
+                AclInfoProvider.BreakInheritance(EditedNode, false);
             }
         }
 
-        int aclId = ValidationHelper.GetInteger(EditedNode.GetValue("NodeACLID"), 0);
-
         // Get original ACLItems
-        DataSet ds = AclItemInfoProvider.GetAclItems(EditedNode.NodeID, "Operator LIKE N'R%' AND ACLID = " + aclId, null, 0, "Operator, Allowed, Denied");
+        DataSet ds = AclItemInfoProvider.GetACLItemsAndOperators(EditedNode.NodeID)
+                                            .WhereStartsWith("Operator", "R")
+                                            .WhereEquals("ACLID", EditedNode.NodeACLID)
+                                            .Columns("Operator", "Allowed", "Denied");
 
         // Change original values
         if (!DataHelper.DataSourceIsEmpty(ds))
@@ -255,16 +244,18 @@ public partial class CMSModules_Departments_FormControls_DepartmentRolesSelector
             }
         }
 
-        // Create ACL items for new roles
-        if (roleIds.Trim(';') != "")
+
+        if (roleIds.Trim(';') == "")
         {
-            // Process rest of the roles
-            string[] roles = roleIds.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string role in roles)
-            {
-                RoleInfo ri = RoleInfoProvider.GetRoleInfo(int.Parse(role));
-                AclItemInfoProvider.SetRolePermissions(EditedNode, 1, 0, ri);
-            }
+            return;
+        }
+
+        // Create ACL items for new roles
+        string[] roles = roleIds.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+        foreach (string role in roles)
+        {
+            RoleInfo ri = RoleInfoProvider.GetRoleInfo(int.Parse(role));
+            AclItemInfoProvider.SetRolePermissions(EditedNode, 1, 0, ri);
         }
     }
 

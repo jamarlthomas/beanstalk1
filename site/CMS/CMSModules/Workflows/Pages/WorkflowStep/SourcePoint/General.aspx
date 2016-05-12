@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Theme="Default" Codebehind="General.aspx.cs" Inherits="CMSModules_Workflows_Pages_WorkflowStep_SourcePoint_General"
+    Theme="Default"  Codebehind="General.aspx.cs" Inherits="CMSModules_Workflows_Pages_WorkflowStep_SourcePoint_General"
     Title="Workflows - Step Edit" EnableEventValidation="false" %>
 
 <%@ Register Src="~/CMSModules/Workflows/Controls/UI/WorkflowStep/SourcePoint/Edit.ascx"

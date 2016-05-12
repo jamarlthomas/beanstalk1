@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="NewPage.ascx.cs" Inherits="CMSModules_OnlineMarketing_Controls_UI_ABVariant_NewPage" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="NewPage.ascx.cs" Inherits="CMSModules_OnlineMarketing_Controls_UI_ABVariant_NewPage" %>
 <%@ Register Src="~/CMSModules/Content/FormControls/Documents/SelectPath.ascx"
     TagName="SelectPath" TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="EmailQueue.ascx.cs" Inherits="CMSModules_EmailQueue_Controls_EmailQueue" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="EmailQueue.ascx.cs" Inherits="CMSModules_EmailQueue_Controls_EmailQueue" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>

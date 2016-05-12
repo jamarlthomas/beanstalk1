@@ -1,7 +1,9 @@
-using System.Web.UI.WebControls;
+﻿using System.Web.UI.WebControls;
 
 using CMS.FormControls;
 using CMS.Helpers;
+using CMS.WebServices;
+
 
 public partial class CMSModules_REST_FormControls_SelectRESTAuthentication : FormEngineUserControl
 {
@@ -77,8 +79,8 @@ public partial class CMSModules_REST_FormControls_SelectRESTAuthentication : For
     {
         if (drpSelectAuthentication.Items.Count == 0)
         {
-            drpSelectAuthentication.Items.Add(new ListItem(GetString("rest.basicauthentication"), "basic"));
-            drpSelectAuthentication.Items.Add(new ListItem(GetString("rest.formsauthentication"), "forms"));
+            drpSelectAuthentication.Items.Add(new ListItem(GetString("rest.basicauthentication"), RESTSecurityInvoker.BASIC_AUTHENTICATION_TYPE));
+            drpSelectAuthentication.Items.Add(new ListItem(GetString("rest.formsauthentication"), RESTSecurityInvoker.FORMS_AUTHENTICATION_TYPE));
         }
 
         // Preselect value

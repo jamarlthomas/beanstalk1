@@ -9,11 +9,10 @@ cmsdefine([], function () {
             return {
                 restrict: 'A',
                 scope: {
-                    fileStream: '=',
                     contactFieldsMapping: '=',
                     csvColumn: '=',
                 },
-                templateUrl: 'attributeMappingControlTemplate.html',
+                templateUrl: 'attributeMappingControlDirectiveTemplate.html',
                 controller: Controller
             };
         };

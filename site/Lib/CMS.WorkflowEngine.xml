@@ -2495,6 +2495,11 @@
             Represents the Workflow module.
             </summary>
         </member>
+        <member name="F:CMS.WorkflowEngine.WorkflowModule.WORKFLOW_EMAIL_TEMPLATE_TYPE_NAME">
+            <summary>
+            Name of email template type for workflow.
+            </summary>
+        </member>
         <member name="M:CMS.WorkflowEngine.WorkflowModule.#ctor">
             <summary>
             Default constructor
@@ -3994,15 +3999,6 @@
             </summary>
             <param name="workflowId">Workflow ID</param>
         </member>
-        <member name="M:CMS.WorkflowEngine.WorkflowStepInfoProvider.GetWorkflowSteps(System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Returns the DataSet of all the workflow steps with where condition and order by clause applied.
-            </summary>
-            <param name="where">Where condition</param>]
-            <param name="orderBy">Order by clause</param>
-            <param name="topN">Top N records</param>
-            <param name="columns">Columns to get</param>
-        </member>
         <member name="M:CMS.WorkflowEngine.WorkflowStepInfoProvider.GetWorkflowSteps">
             <summary>
             Returns the query for all workflow steps.
@@ -4256,26 +4252,12 @@
             <param name="user">User info</param>
             <param name="site">Site identifier</param>
         </member>
-        <member name="M:CMS.WorkflowEngine.WorkflowStepInfoProvider.GetAutomationPendingStepsWhereCondition(CMS.Membership.UserInfo,System.String)">
-            <summary>
-            Gets complete where condition for pending steps from automation processes.
-            </summary>
-            <param name="user">User info</param>
-            <param name="siteName">Site name</param>
-        </member>
         <member name="M:CMS.WorkflowEngine.WorkflowStepInfoProvider.GetWorkflowPendingStepsWhereCondition(CMS.Membership.UserInfo,CMS.DataEngine.SiteInfoIdentifier)">
             <summary>
             Gets complete where condition for pending steps from workflow.
             </summary>
             <param name="user">User info</param>
             <param name="site">Site identifier</param>
-        </member>
-        <member name="M:CMS.WorkflowEngine.WorkflowStepInfoProvider.GetWorkflowPendingStepsWhereCondition(CMS.Membership.UserInfo,System.String)">
-            <summary>
-            Gets complete where condition for pending steps from workflow.
-            </summary>
-            <param name="user">User info</param>
-            <param name="siteName">Site name</param>
         </member>
         <member name="M:CMS.WorkflowEngine.WorkflowStepInfoProvider.CanUserManageWorkflowInternal(CMS.Membership.UserInfo,System.String)">
             <summary>

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="PendingContacts.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Inherits="CMSModules_ContactManagement_Pages_Tools_PendingContacts_MyPendingContacts_PendingContacts" Theme="Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="PendingContacts.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Inherits="CMSModules_ContactManagement_Pages_Tools_PendingContacts_MyPendingContacts_PendingContacts" Theme="Default" %>
 
 <%@ Register Src="~/CMSModules/ContactManagement/Controls/UI/Automation/PendingContacts.ascx" TagName="PendingContacts" TagPrefix="cms" %>
 <asp:Content ID="cntControls" runat="server" ContentPlaceHolderID="plcSiteSelector">
@@ -7,7 +7,7 @@
             <div class="filter-form-label-cell">
                 <cms:LocalizedLabel runat="server" ID="lblSite" EnableViewState="false" DisplayColon="true" ResourceString="General.Site" CssClass="control-label" />
             </div>
-            <div class="filter-form-value-cell">
+            <div class="filter-form-value-cell-wide">
                 <cms:SiteOrGlobalSelector ID="siteOrGlobalSelector" ShortID="sg" runat="server" ShowSiteAndGlobal="false" PostbackOnDropDownChange="True" />
             </div>
         </div>

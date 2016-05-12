@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.UI.WebControls;
 
+using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.FormControls;
 using CMS.Helpers;
@@ -9,7 +10,7 @@ public partial class CMSFormControls_Filters_BooleanFilter : FormEngineUserContr
 {
     #region "Variables"
 
-    private string selectedValue = string.Empty;
+    private string mSelectedValue = string.Empty;
 
     #endregion
 
@@ -23,26 +24,20 @@ public partial class CMSFormControls_Filters_BooleanFilter : FormEngineUserContr
     {
         get
         {
-            if (!String.IsNullOrEmpty(drpConditionValue.SelectedValue))
-            {
-                return drpConditionValue.SelectedValue;
-            }
-            else
-            {
-                return DBNull.Value;
-            }
+            return drpConditionValue.SelectedValue;
         }
         set
         {
             if (ValidationHelper.IsBoolean(value))
             {
-                selectedValue = ValidationHelper.GetBoolean(value, false) ? "1" : "0";
+                mSelectedValue = ValidationHelper.GetBoolean(value, false) ? "1" : "0";
             }
             else
             {
-                selectedValue = string.Empty;
+                mSelectedValue = string.Empty;
             }
-            drpConditionValue.SelectedValue = selectedValue;
+
+            drpConditionValue.SelectedValue = mSelectedValue;
         }
     }
     
@@ -51,15 +46,17 @@ public partial class CMSFormControls_Filters_BooleanFilter : FormEngineUserContr
 
     #region "Methods"
 
-    protected void Page_Load(object sender, EventArgs e)
+    protected override void CreateChildControls()
     {
+        base.CreateChildControls();
+
         CheckFieldEmptiness = false;
         InitFilterDropDown();
     }
 
 
     /// <summary>
-    /// Initializes filter dropdown list.
+    /// Initializes filter drop-down list.
     /// </summary>
     private void InitFilterDropDown()
     {
@@ -68,7 +65,7 @@ public partial class CMSFormControls_Filters_BooleanFilter : FormEngineUserContr
             drpConditionValue.Items.Add(new ListItem(GetString("general.selectall"), string.Empty));
             drpConditionValue.Items.Add(new ListItem(GetString("general.yes"), "1"));
             drpConditionValue.Items.Add(new ListItem(GetString("general.no"), "0"));
-            drpConditionValue.SelectedValue = selectedValue;
+            drpConditionValue.SelectedValue = mSelectedValue;
         }
     }
 
@@ -78,6 +75,8 @@ public partial class CMSFormControls_Filters_BooleanFilter : FormEngineUserContr
     /// </summary>
     public override string GetWhereCondition()
     {
+        EnsureChildControls();
+
         string tempVal = ValidationHelper.GetString(Value, null);
 
         // Only boolean value
@@ -86,16 +85,18 @@ public partial class CMSFormControls_Filters_BooleanFilter : FormEngineUserContr
             return null;
         }
 
+        bool value = ValidationHelper.GetBoolean(tempVal, false);
+
         if (String.IsNullOrEmpty(WhereConditionFormat))
         {
-            WhereConditionFormat = "[{0}] {2} {1}";
+            // Return default where condition
+            return new WhereCondition(FieldInfo.Name, QueryOperator.Equals, value).ToString(true);
         }
 
         try
         {
-            string value = ValidationHelper.GetBoolean(tempVal, false) ? "1" : "0";
-            // Format where condition
-            return string.Format(WhereConditionFormat, FieldInfo.Name, value, "=");
+            // Return custom where condition
+            return String.Format(WhereConditionFormat, FieldInfo.Name, value ? "1" : "0", "=");
         }
         catch (Exception ex)
         {

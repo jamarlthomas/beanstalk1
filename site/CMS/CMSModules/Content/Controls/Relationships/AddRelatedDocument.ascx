@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="AddRelatedDocument.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="AddRelatedDocument.ascx.cs"
     Inherits="CMSModules_Content_Controls_Relationships_AddRelatedDocument" %>
 
 <%@ Register Src="~/CMSModules/Content/FormControls/Relationships/selectRelationshipNames.ascx"
@@ -30,7 +30,7 @@
                     <ContentTemplate>
                         <asp:Label ID="lblRelName" runat="server" CssClass="form-control-text" />
                         <cms:RelationshipNameSelector ID="relNameSelector" runat="server" ReturnColumnName="RelationshipNameID"
-                            AllowedForObjects="false" />
+                            AllowedForObjects="false" HideAdHocRelationshipNames="true" />
                     </ContentTemplate>
                 </cms:CMSUpdatePanel>
             </div>

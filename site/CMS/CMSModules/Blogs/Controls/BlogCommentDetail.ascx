@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Blogs_Controls_BlogCommentDetail" Codebehind="BlogCommentDetail.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Blogs_Controls_BlogCommentDetail" CodeBehind="BlogCommentDetail.ascx.cs" %>
 <%@ Reference Control="~/CMSAdminControls/UI/UserPicture.ascx" %>
 <%@ Reference Control="~/CMSModules/AbuseReport/Controls/InlineAbuseReport.ascx" %>
 <div class="CommentDetail">
@@ -27,14 +27,10 @@
         <tr>
             <td align="right">
                 <div class="buttonpedding">
-                    <asp:LinkButton ID="lnkEdit" Visible="false" runat="server" EnableViewState="false"
-                        CssClass="CommentAction" />
-                    <asp:LinkButton ID="lnkDelete" Visible="false" runat="server" CssClass="CommentAction"
-                        OnClick="lnkDelete_Click" EnableViewState="false" OnClientClick="return ConfirmDelete();" />
-                    <asp:LinkButton ID="lnkApprove" Visible="false" runat="server" CssClass="CommentAction"
-                        OnClick="lnkApprove_Click" EnableViewState="false" />
-                    <asp:LinkButton ID="lnkReject" Visible="false" runat="server" CssClass="CommentAction"
-                        OnClick="lnkReject_Click" EnableViewState="false" />
+                    <asp:LinkButton ID="lnkEdit" Visible="false" runat="server" CssClass="CommentAction" EnableViewState="false" />
+                    <asp:LinkButton ID="lnkDelete" Visible="false" runat="server" CssClass="CommentAction" EnableViewState="false" />
+                    <asp:LinkButton ID="lnkApprove" Visible="false" runat="server" CssClass="CommentAction" EnableViewState="false" />
+                    <asp:LinkButton ID="lnkReject" Visible="false" runat="server" CssClass="CommentAction" EnableViewState="false" />
                     <asp:PlaceHolder runat="server" ID="plcInlineAbuseReport"></asp:PlaceHolder>
                 </div>
             </td>

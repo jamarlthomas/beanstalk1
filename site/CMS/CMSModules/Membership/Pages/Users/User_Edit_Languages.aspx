@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_Membership_Pages_Users_User_Edit_Languages" ValidateRequest="false"
-    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="User Edit - Languages" Codebehind="User_Edit_Languages.aspx.cs" %>
+    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="User Edit - Languages"  Codebehind="User_Edit_Languages.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector" TagPrefix="cms" %>
 

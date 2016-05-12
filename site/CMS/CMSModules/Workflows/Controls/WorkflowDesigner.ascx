@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="WorkflowDesigner.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="WorkflowDesigner.ascx.cs"
     Inherits="CMSModules_Workflows_Controls_WorkflowDesigner" %>
 
 <%@ Register TagPrefix="cms" Namespace="CMS.UIControls" Assembly="CMS.UIControls" %>

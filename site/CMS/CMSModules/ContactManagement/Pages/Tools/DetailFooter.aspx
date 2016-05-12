@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="DetailFooter.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_DetailFooter"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="DetailFooter.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_DetailFooter"
     Theme="Default" %>
 
 <!DOCTYPE html>

@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="General.ascx.cs" Inherits="CMSModules_CssStyleSheets_Controls_General" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="General.ascx.cs" Inherits="CMSModules_CssStyleSheets_Controls_General" %>
 <%@ Register Src="~/CMSModules/Objects/Controls/Locking/ObjectEditPanel.ascx" TagName="ObjectEditPanel"
     TagPrefix="cms" %>
 

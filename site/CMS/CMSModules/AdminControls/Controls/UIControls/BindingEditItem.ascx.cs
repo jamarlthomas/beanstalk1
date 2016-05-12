@@ -1,8 +1,7 @@
-using System;
-using System.Data;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
-using CMS.Core;
 using CMS.Helpers;
 using CMS.Base;
 using CMS.SiteProvider;
@@ -14,12 +13,27 @@ public partial class CMSModules_AdminControls_Controls_UIControls_BindingEditIte
     #region "Variables"
 
     private string mCurrentValues;
-    private BaseInfo obj, objProvider, objTarget;
 
     #endregion
 
 
     #region "Properties"
+
+    /// <summary>
+    /// Indicates whether localized filtering should be used in selection dialog.
+    /// </summary>
+    public bool AllowLocalizedFilteringInSelectionDialog
+    {
+        get
+        {
+            return GetBoolContextValue("AllowLocalizedFilteringInSelectionDialog", editElem.AllowLocalizedFilteringInSelectionDialog);
+        }
+        set
+        {
+            SetValue("AllowLocalizedFilteringInSelectionDialog", value);
+        }
+    }
+
 
     /// <summary>
     /// Current values
@@ -52,11 +66,11 @@ public partial class CMSModules_AdminControls_Controls_UIControls_BindingEditIte
     /// <summary>
     /// Resource prefix for multi uni selector
     /// </summary>
-    public String ResourcePrefix
+    public override String ResourcePrefix
     {
         get
         {
-            return GetStringContextValue("ResourcePrefix");
+            return GetStringContextValue("ResourcePrefix", base.ResourcePrefix);
         }
         set
         {
@@ -66,7 +80,7 @@ public partial class CMSModules_AdminControls_Controls_UIControls_BindingEditIte
 
 
     /// <summary>
-    /// Object type for M:N relationship (f.e. MembershipRole)
+    /// The latter object type in M:N relationship
     /// </summary>
     public String TargetObjectType
     {
@@ -157,46 +171,41 @@ public partial class CMSModules_AdminControls_Controls_UIControls_BindingEditIte
         {
             editElem.OnSelectionChanged += editElem_OnSelectionChanged;
 
-            // Create object types (BaseInfo)
-            obj = ModuleManager.GetObject(ObjectType);
-            objProvider = ModuleManager.GetObject(BindingObjectType);
+            var bindingInfo = ModuleManager.GetObject(BindingObjectType);
 
-            // Automatic compute target object type
+            // Do not continue if binding object is not defined
+            if (bindingInfo == null)
+            {
+                ShowError(GetString("ui.editing.nobindingobjecttype"));
+                return;
+            }
+
+            var bindingTypeInfo = bindingInfo.TypeInfo;
+
             if (String.IsNullOrEmpty(TargetObjectType))
             {
-                var providerTypeInfo = objProvider.TypeInfo;
-                
-                // Search for parent in TYPEINFO
-                var parent = providerTypeInfo.ParentObjectType;
-                if ((parent != String.Empty) && (parent != ObjectType))
+                TargetObjectType = GetTargetObjectType(bindingTypeInfo);
+            }
+
+            // Do not continue if target object is not defined
+            if (ModuleManager.GetReadOnlyObject(TargetObjectType) == null)
+            {
+                ShowError(GetString("ui.editing.notargetobjecttype"));
+                return;
+            }
+
+            // Set binding properties based on parent edited object if available
+            var editedObject = (BaseInfo)editElem.EditedObject;
+            if (editedObject != null)
+            {
+                if (bindingTypeInfo.ParentObjectType.EqualsCSafe(editedObject.TypeInfo.ObjectType, true))
                 {
-                    // If parent is different from control's object type use it.
-                    TargetObjectType = parent;
-                }
-                else
-                {
-                    // Otherwise search in site object
-                    var siteObject = providerTypeInfo.SiteIDColumn;
-                    if ((siteObject != String.Empty) && (siteObject != ObjectTypeInfo.COLUMN_NAME_UNKNOWN))
-                    {
-                        TargetObjectType = SiteInfo.OBJECT_TYPE;
-                    }
-                    else
-                    {
-                        // If site object not specified use bindings. Find first binding dependency and use it's object type
-                        var od = providerTypeInfo.ObjectDependencies.FirstOrDefault(x => x.DependencyType == ObjectDependencyEnum.Binding);
-                        if (od != null)
-                        {
-                            TargetObjectType = od.DependencyObjectType;
-                        }
-                    }
+                    bindingInfo.SetValue(bindingTypeInfo.ParentIDColumn, editedObject.Generalized.ObjectID);
                 }
             }
 
-            objTarget = ModuleManager.GetObject(TargetObjectType);
-
             //Check view permission
-            if (!CheckViewPermissions(objProvider))
+            if (!CheckViewPermissions(bindingInfo))
             {
                 editElem.StopProcessing = true;
                 editElem.Visible = false;
@@ -204,22 +213,17 @@ public partial class CMSModules_AdminControls_Controls_UIControls_BindingEditIte
             }
 
             // Check edit permissions
-            if (!CheckEditPermissions(objProvider))
+            if (!CheckEditPermissions(bindingInfo))
             {
                 editElem.Enabled = false;
                 ShowError(GetString("ui.notauthorizemodified"));
-            }
-
-            // Validate input data
-            if (!ValidateInputData())
-            {
-                return;
             }
 
             // Set uni selector
             editElem.ObjectType = TargetObjectType;
             editElem.ResourcePrefix = ResourcePrefix;
             editElem.WhereCondition = DialogWhereCondition;
+            editElem.AllowLocalizedFilteringInSelectionDialog = AllowLocalizedFilteringInSelectionDialog;
 
             if (!RequestHelper.IsPostBack())
             {
@@ -235,109 +239,84 @@ public partial class CMSModules_AdminControls_Controls_UIControls_BindingEditIte
     /// </summary>
     private string GetCurrentValues()
     {
+        var bindingTargetIdColumn = ObjectTypeManager.GetTypeInfo(TargetObjectType).IDColumn;
+
         // Get all items based on where condition
-        DataSet ds = objProvider.Generalized.GetDataQuery(true, s => s.Where(WhereCondition).Column(objTarget.TypeInfo.IDColumn), false).Result;
+        var targetIds = ModuleManager.GetReadOnlyObject(BindingObjectType)
+                                     .Generalized
+                                     .GetDataQuery(true, s => s.Where(WhereCondition).Column(bindingTargetIdColumn), false)
+                                     .Select(row => row[bindingTargetIdColumn]);
 
-        if (!DataHelper.DataSourceIsEmpty(ds))
-        {
-            return TextHelper.Join(";", DataHelper.GetStringValues(ds.Tables[0], objTarget.TypeInfo.IDColumn));
-        }
-
-        return "";
+        return TextHelper.Join(";", targetIds);
     }
 
 
-    /// <summary>
-    /// Validates input data based on ui element settings
-    /// </summary>
-    private bool ValidateInputData()
+    private string GetTargetObjectType(ObjectTypeInfo bindingTypeInfo)
     {
-        if (objTarget == null)
+        // Search for parent in TYPEINFO
+        var parent = bindingTypeInfo.ParentObjectType;
+        if (!String.IsNullOrEmpty(parent) && (parent != ObjectType))
         {
-            ShowError(GetString("ui.editing.notargetobjecttype"));
-            return false;
+            // If parent is different from control's object type use it.
+            return parent;
         }
 
-        if (objProvider == null)
+        // Otherwise search in site object
+        var siteObject = bindingTypeInfo.SiteIDColumn;
+        if (!String.IsNullOrEmpty(siteObject) && (siteObject != ObjectTypeInfo.COLUMN_NAME_UNKNOWN))
         {
-            ShowError(GetString("ui.editing.nobindingobjecttype"));
-            return false;
+            return SiteInfo.OBJECT_TYPE;
         }
 
-        return true;
+        // If site object not specified use bindings. Find first binding dependency and use it's object type
+        var dependency = bindingTypeInfo.ObjectDependencies.FirstOrDefault(x => x.DependencyType == ObjectDependencyEnum.Binding);
+        if (dependency != null)
+        {
+            return dependency.DependencyObjectType;
+        }
+
+        return null;
     }
 
 
-    protected void editElem_OnSelectionChanged(object sender, EventArgs ea)
+    private void editElem_OnSelectionChanged(object sender, EventArgs ea)
     {
         SaveData();
     }
 
-
+    
     /// <summary>
-    /// Returns binding column names for binding object type.
+    /// Returns binding column name for binding object type.
     /// 1. Try to search ParentObjectType (there should be first binding column name). 
     /// 2. Search for site ID column. In site bindings you will find column name for site.
     /// 3. If one of the columns is still not found, search all object's dependencies.
     /// </summary>
-    public Tuple<String, String> GetBindingColumnNames()
+    private string GetObjectDependencyColumn(string dependencyObjectType)
     {
-        String objCol = String.Empty,
-            targetCol = String.Empty;
-
-        GeneralizedInfo providerInfo = objProvider.Generalized;
-
-        var providerTypeInfo = providerInfo.TypeInfo;
-
-        var objTypeInfo = obj.TypeInfo;
-        var targetTypeInfo = objTarget.TypeInfo;
+        var bindingTypeInfo = ObjectTypeManager.GetTypeInfo(BindingObjectType);
 
         // 1. ParentObjectType
-        if (providerInfo.ParentObjectType.EqualsCSafe(objTypeInfo.ObjectType, true))
+        if (bindingTypeInfo.ParentObjectType.EqualsCSafe(dependencyObjectType, true))
         {
-            objCol = providerTypeInfo.ParentIDColumn;
-        }
-        else if (providerInfo.ParentObjectType.EqualsCSafe(targetTypeInfo.ObjectType, true))
-        {
-            targetCol = providerTypeInfo.ParentIDColumn;
+            return bindingTypeInfo.ParentIDColumn;
         }
 
         // 2. Site bindings
-        if (providerTypeInfo.SiteIDColumn != ObjectTypeInfo.COLUMN_NAME_UNKNOWN)
+        if ((bindingTypeInfo.SiteIDColumn != ObjectTypeInfo.COLUMN_NAME_UNKNOWN) && dependencyObjectType.EqualsCSafe(PredefinedObjectType.SITE, true))
         {
-            if (String.IsNullOrEmpty(objCol) && objTypeInfo.ObjectType.EqualsCSafe(ModuleName.SITE, true))
-            {
-                objCol = providerTypeInfo.SiteIDColumn;
-            }
-
-            if (String.IsNullOrEmpty(targetCol) && targetTypeInfo.ObjectType.EqualsCSafe(ModuleName.SITE, true))
-            {
-                targetCol = providerTypeInfo.SiteIDColumn;
-            }
+            return bindingTypeInfo.SiteIDColumn;
         }
 
         // 3. Object's dependencies
-        if (!String.IsNullOrEmpty(targetCol) || !String.IsNullOrEmpty(objCol))
+        if (bindingTypeInfo.DependsOn != null)
         {
-            // Check all object's dependencies
-            if (providerTypeInfo.DependsOn != null)
-            {
-                foreach (ObjectDependency od in providerTypeInfo.DependsOn)
-                {
-                    if (od.DependencyObjectType.EqualsCSafe(objTypeInfo.ObjectType, true))
-                    {
-                        objCol = od.DependencyColumn;
-                    }
-
-                    if (od.DependencyObjectType.EqualsCSafe(targetTypeInfo.ObjectType, true))
-                    {
-                        targetCol = od.DependencyColumn;
-                    }
-                }
-            }
+            return bindingTypeInfo.DependsOn
+                                  .Where(d => d.DependencyObjectType.EqualsCSafe(dependencyObjectType, true))
+                                  .Select(d => d.DependencyColumn)
+                                  .FirstOrDefault();
         }
 
-        return new Tuple<String, String>(objCol, targetCol);
+        return null;
     }
 
 
@@ -352,90 +331,91 @@ public partial class CMSModules_AdminControls_Controls_UIControls_BindingEditIte
             return;
         }
 
-        // Remove old items
         string newValues = ValidationHelper.GetString(editElem.Value, null);
-        string deletedItems = DataHelper.GetNewItemsInList(newValues, CurrentValues);
-        string addedItems = DataHelper.GetNewItemsInList(CurrentValues, newValues);
 
-        if (!String.IsNullOrEmpty(deletedItems) || !String.IsNullOrEmpty(addedItems))
+        bool saved = false;
+
+        // Find column names for both binding
+        string objCol = GetObjectDependencyColumn(ObjectType);
+        string targetCol = GetObjectDependencyColumn(TargetObjectType);
+
+        if (!String.IsNullOrEmpty(targetCol) && !String.IsNullOrEmpty(objCol))
         {
-            bool saved = false;
-
-            // Find column names for both binding
-            Tuple<String, String> columns = GetBindingColumnNames();
-            String objCol = columns.Item1;
-            String targetCol = columns.Item2;
-
-            if (!String.IsNullOrEmpty(targetCol) && !String.IsNullOrEmpty(objCol))
+            string deletedItems = DataHelper.GetNewItemsInList(newValues, CurrentValues);
+            var bindingsToDelete = GetBindings(deletedItems, objCol, targetCol, false);
+            foreach (var bi in bindingsToDelete)
             {
-                if (!String.IsNullOrEmpty(deletedItems))
+                bi.Delete();
+
+                saved = true;
+            }
+
+            string addedItems = DataHelper.GetNewItemsInList(CurrentValues, newValues);
+            var bindingsToAdd = GetBindings(addedItems, objCol, targetCol, true);
+            foreach (var bi in bindingsToAdd)
+            {
+                bi.Insert();
+
+                saved = true;
+            }
+
+            if (saved)
+            {
+                ObjectTypeManager.GetTypeInfo(ObjectType)
+                                 .InvalidateAllObjects();
+
+                ShowChangesSaved();
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// Returns binding info objects for each changed item.
+    /// </summary>
+    /// <param name="changedItems">Comma separated list of changed IDs</param>
+    /// <param name="parentColumn">Parent ID column in the binding object</param>
+    /// <param name="targetColumn">Other related object ID column in the binding object</param>
+    /// <param name="create">If true, bindings will not be retrieved from database. Otherwise only if the binding has own ID column.</param>
+    private IEnumerable<BaseInfo> GetBindings(string changedItems, string parentColumn, string targetColumn, bool create)
+    {
+        var bindingsToProcess = Enumerable.Empty<BaseInfo>();
+
+        if (!String.IsNullOrEmpty(changedItems))
+        {
+            var items = changedItems.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            if (items.Any())
+            {
+                var bindingTypeInfo = ObjectTypeManager.GetTypeInfo(BindingObjectType);
+
+                if (create || bindingTypeInfo.IDColumn == ObjectTypeInfo.COLUMN_NAME_UNKNOWN)
                 {
-                    string[] newItems = deletedItems.Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (newItems.Length > 0)
-                    {
-                        // If provider object has object ID column, retrieve all changed objects by single query
-                        var providerTypeInfo = objProvider.TypeInfo;
-                        if (providerTypeInfo.IDColumn != ObjectTypeInfo.COLUMN_NAME_UNKNOWN)
-                        {
-                            // For each retrieved object, create BaseInfo and delete it
-                            var q = objProvider.Generalized.GetDataQuery(false, s => s
-                                .WhereEquals(objCol, ObjectID)
-                                .WhereIn(targetCol, newItems.ToList())
-                                , false
-                            );
-
-                            DataSet ds = q.Result;
-                            if (!DataHelper.DataSourceIsEmpty(ds))
-                            {
-                                foreach (DataRow dr in ds.Tables[0].Rows)
-                                {
-                                    // Load base info based on datarow
-                                    BaseInfo bi = ModuleManager.GetObject(dr, providerTypeInfo.ObjectType);
-                                    bi.Delete();
-
-                                    saved = true;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            foreach (string item in newItems)
-                            {
-                                int bindingObjectID = ValidationHelper.GetInteger(item, 0);
-
-                                objProvider.SetValue(objCol, ObjectID);
-                                objProvider.SetValue(targetCol, bindingObjectID);
-                                objProvider.Delete();
-
-                                saved = true;
-                            }
-                        }
-                    }
+                    bindingsToProcess = CreateBindings(items, parentColumn, targetColumn);
                 }
-
-                // Add new items
-                if (!String.IsNullOrEmpty(addedItems))
+                else 
                 {
-                    string[] newItems = addedItems.Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                    
-                    // Add all new items to site
-                    foreach (string item in newItems)
-                    {
-                        int bindingObjectID = ValidationHelper.GetInteger(item, 0);
-
-                        objProvider.SetValue(objCol, ObjectID);
-                        objProvider.SetValue(targetCol, bindingObjectID);
-                        objProvider.Insert();
-                        saved = true;
-                    }
-                }
-
-                if (saved)
-                {
-                    obj.TypeInfo.InvalidateAllObjects();
-                    ShowChangesSaved();
+                    // If binding has object ID column, retrieve all changed objects by single query
+                    bindingsToProcess = new ObjectQuery(BindingObjectType, false)
+                        .WhereEquals(parentColumn, ObjectID)
+                        .WhereIn(targetColumn, items);
                 }
             }
+        }
+
+        return bindingsToProcess;
+    }
+
+
+    private IEnumerable<BaseInfo> CreateBindings(IEnumerable<string> targetIds, string parentColumn, string targetColumn)
+    {
+        foreach(var item in targetIds)
+        {
+            var bi = ModuleManager.GetObject(BindingObjectType);
+
+            bi.SetValue(parentColumn, ObjectID);
+            bi.SetValue(targetColumn, ValidationHelper.GetInteger(item, 0));
+
+            yield return bi;
         }
     }
 

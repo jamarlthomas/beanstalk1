@@ -1,13 +1,13 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_View_Listing"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_View_Listing"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Content - Listing"
-    Codebehind="Listing.aspx.cs" %>
+     Codebehind="Listing.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Content/Controls/DocumentList.ascx" TagName="DocumentList"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSFormControls/Classes/SelectClass.ascx" TagPrefix="cms" TagName="SelectClass" %>
 
-<asp:Content ID="cntControls" runat="server" ContentPlaceHolderID="plcBeforeActions">
-    <div class="form-horizontal form-filter selector-right">
+<asp:Content ID="cntSiteSelector" runat="server" ContentPlaceHolderID="plcSiteSelector">
+    <div class="form-horizontal form-filter">
         <div class="form-group">
             <div class="filter-form-label-cell">
                 <cms:LocalizedLabel runat="server" ID="lblDocType" EnableViewState="false" DisplayColon="true" ResourceString="General.DocumentType" CssClass="control-label" />

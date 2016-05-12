@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -776,7 +776,7 @@ public partial class CMSModules_Membership_FormControls_Avatars_UserPictureEdit 
         }
 
         // JavaScript which creates selected image preview and saves image guid  to hidden field
-        string getAvatarPath = ResolveUrl("~/CMSModules/Avatars/CMSPages/GetAvatar.aspx");
+        string getAvatarPath = ResolveUrl("~/CMSPages/GetAvatar.aspx");
 
         StringBuilder sbScript = new StringBuilder();
         sbScript.Append(@"

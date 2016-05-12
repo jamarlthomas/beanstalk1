@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 
 using CMS.Helpers;
@@ -50,10 +50,11 @@ public partial class CMSModules_OnlineMarketing_Dialogs_ContentPersonalizationVa
         // Set the ParentObject manually tor inherited templates
         if (editElem.UIFormControl.ParentObject == null)
         {
-            string aliasPath = QueryHelper.GetString("aliaspath", string.Empty);
+            var aliasPath = QueryHelper.GetString("aliaspath", string.Empty);
+            var siteName = SiteContext.CurrentSiteName;
 
             // Get page info for the given document
-            PageInfo pi = PageInfoProvider.GetPageInfo(SiteContext.CurrentSiteName, aliasPath, LocalizationContext.PreferredCultureCode, null, SiteContext.CurrentSite.CombineWithDefaultCulture);
+            PageInfo pi = PageInfoProvider.GetPageInfo(siteName, aliasPath, LocalizationContext.PreferredCultureCode, null, SiteInfoProvider.CombineWithDefaultCulture(siteName));
             if (pi != null)
             {
                 editElem.UIFormControl.ParentObject = pi.UsedPageTemplateInfo;
@@ -64,9 +65,9 @@ public partial class CMSModules_OnlineMarketing_Dialogs_ContentPersonalizationVa
         variantType = VariantTypeFunctions.GetVariantTypeEnum(QueryHelper.GetString("varianttype", string.Empty));
 
         base.OnInit(e);
-
+        
         // Check permissions and redirect
-        OnlineMarketingContext.CheckPermissions(variantType);
+        VariantPermissionsChecker.CheckPermissions(variantType);
 
         // Get the alias path of the current node
         if (Node == null)

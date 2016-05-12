@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="VersionListMenu.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="VersionListMenu.ascx.cs"
     Inherits="CMSModules_Objects_Controls_Versioning_VersionListMenu" %>
 <%@ Register TagPrefix="cms" Namespace="CMS.UIControls" Assembly="CMS.UIControls" %>
 <asp:Panel runat="server" ID="pnlMessageMenu" CssClass="PortalContextMenu WebPartContextMenu">

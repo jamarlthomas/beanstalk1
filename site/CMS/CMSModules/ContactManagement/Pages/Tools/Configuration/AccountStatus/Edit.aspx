@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Edit.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Edit.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Title="Account status edit" Inherits="CMSModules_ContactManagement_Pages_Tools_Configuration_AccountStatus_Edit"
     Theme="Default" %>
 

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_Template"
-    Theme="Default" Codebehind="Template.aspx.cs" MaintainScrollPositionOnPostback="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_Template"
+    Theme="Default"  CodeBehind="Template.aspx.cs" MaintainScrollPositionOnPostback="true"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 
 <%@ Register Src="~/CMSModules/PortalEngine/FormControls/PageTemplates/PageTemplateLevels.ascx"

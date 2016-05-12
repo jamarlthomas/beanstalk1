@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Data;
-using System.Web.Script.Serialization;
 using System.Web.UI;
 
 using CMS.Controls;
+using CMS.Core;
 using CMS.DocumentEngine;
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -1377,22 +1377,17 @@ public partial class CMSModules_SmartSearch_Controls_SearchResults : CMSUserCont
                 // Check if search action was fired really on the live site
                 if (PortalContext.ViewMode.IsLiveSite() && (DocumentContext.CurrentPageInfo != null))
                 {
-                    if (AnalyticsHelper.JavascriptLoggingEnabled(siteName))
+                    if (AnalyticsHelper.AnalyticsEnabled(siteName))
                     {
-                        var pageInfo = DocumentContext.CurrentPageInfo;
-                        ScriptHelper.RegisterWebServiceCallFunction(Page);
-                        string script = "WebServiceCall('" + URLHelper.GetAbsoluteUrl("~/CMSPages/WebAnalyticsService.asmx") +
-                                         "','LogSearch', '{\"keyword\":" +
-                            // Serialize raw search text to encode '<' and similar characters, then escape '\'
-                                         new JavaScriptSerializer().Serialize(searchText).Replace(@"\", @"\\") +
-                                         ", \"pageGUID\":\"" + pageInfo.DocumentGUID + "\"" +
-                                         ", \"pageSiteId\":\"" + pageInfo.NodeSiteID + "\"}')";
-                        ScriptHelper.RegisterStartupScript(Page, typeof(string), "logSearch", script, true);
-                    }
-                    else
-                    {
-                        // Log on site keywords
-                        AnalyticsHelper.LogOnSiteSearchKeywords(siteName, DocumentContext.CurrentAliasPath, culture, searchText, 0, 1);
+                        if (AnalyticsHelper.JavascriptLoggingEnabled(siteName))
+                        {
+                            WebAnalyticsServiceScriptsRenderer.RegisterLogSearchCall(Page, DocumentContext.CurrentPageInfo, searchText);
+                        }
+                        else
+                        {
+                            // Log on site keywords
+                            AnalyticsHelper.LogOnSiteSearchKeywords(siteName, DocumentContext.CurrentAliasPath, culture, searchText, 0, 1);
+                        }
                     }
                 }
 
@@ -1475,7 +1470,6 @@ public partial class CMSModules_SmartSearch_Controls_SearchResults : CMSUserCont
                 DataSet results = SearchHelper.Search(parameters);
 
                 int numberOfResults = parameters.NumberOfResults;
-
                 if ((MaxResults > 0) && (numberOfResults > MaxResults))
                 {
                     numberOfResults = MaxResults;
@@ -1493,7 +1487,7 @@ public partial class CMSModules_SmartSearch_Controls_SearchResults : CMSUserCont
                     OnPageBinding(this, null);
                 }
 
-                // Show now results found ?
+                // Show no results found ?
                 if (numberOfResults == 0)
                 {
                     if (ShowParsingErrors)
@@ -1541,7 +1535,7 @@ public partial class CMSModules_SmartSearch_Controls_SearchResults : CMSUserCont
     {
         FilterSearchCondition += " " + searchCondition;
         FilterSearchSort += " " + searchSort;
-        mResetPager = filterPostback;
+        mResetPager |= filterPostback;
     }
 
 

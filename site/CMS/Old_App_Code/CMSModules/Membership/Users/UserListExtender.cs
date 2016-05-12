@@ -9,6 +9,7 @@ using CMS.DataEngine;
 using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.Membership;
+using CMS.SiteProvider;
 using CMS.UIControls;
 
 
@@ -186,20 +187,18 @@ public class UserListExtender : ControlExtender<UniGrid>
     {
         if (actionName == "delete")
         {
-            // Check "modify" permission
-            if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("CMS.Users", "Modify"))
-            {
-                CMSPage.RedirectToAccessDenied("CMS.Users", "Modify");
-            }
-
             try
             {
                 int userId = Convert.ToInt32(actionArgument);
                 UserInfo delUser = UserInfoProvider.GetUserInfo(userId);
-                var CurrentUserObj = MembershipContext.AuthenticatedUser;
 
                 if (delUser != null)
                 {
+                    if (!delUser.CheckPermissions(PermissionsEnum.Delete, SiteContext.CurrentSiteName, CurrentUserObj))
+                    {
+                        CMSPage.RedirectToAccessDenied("CMS.Users", "Modify");
+                    }
+
                     // Global administrator account could be deleted only by global administrator
                     if (delUser.IsGlobalAdministrator && !CurrentUserObj.CheckPrivilegeLevel(UserPrivilegeLevelEnum.GlobalAdmin))
                     {

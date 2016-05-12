@@ -12,15 +12,6 @@
 public partial class CMSAdminControls_UI_UniSelector_UniSelector {
     
     /// <summary>
-    /// ltlContentBefore control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Literal ltlContentBefore;
-    
-    /// <summary>
     /// lblStatus control.
     /// </summary>
     /// <remarks>
@@ -244,15 +235,6 @@ public partial class CMSAdminControls_UI_UniSelector_UniSelector {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::CMS.ExtendedControls.LocalizedLabel lblDisabledAddButtonExplanationText;
-    
-    /// <summary>
-    /// ltlContentAfter control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Literal ltlContentAfter;
     
     /// <summary>
     /// hdnDialogSelect control.

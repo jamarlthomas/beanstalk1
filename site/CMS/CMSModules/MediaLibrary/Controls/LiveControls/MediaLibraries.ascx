@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_MediaLibrary_Controls_LiveControls_MediaLibraries" Codebehind="MediaLibraries.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_MediaLibrary_Controls_LiveControls_MediaLibraries"  Codebehind="MediaLibraries.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/UI/PageElements/HeaderActions.ascx" TagName="HeaderActions" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/UI/MediaLibraryList.ascx" TagName="LibraryList"
     TagPrefix="cms" %>

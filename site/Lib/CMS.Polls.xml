@@ -45,6 +45,11 @@
             </summary>
             <param name="dr">DataRow with the object data</param>
         </member>
+        <member name="M:CMS.Polls.PollListInfo.GetColumnNames">
+            <summary>
+            Gets the default list of column names for this class
+            </summary>
+        </member>
         <member name="M:CMS.Polls.PollListInfo.GetDataQueryInternal">
             <summary>
             Gets the data query for this object type
@@ -606,12 +611,6 @@
             </summary>
             <param name="pollId">Poll id</param>
         </member>
-        <member name="M:CMS.Polls.PollInfoProvider.GetPollInfo(System.String)">
-            <summary>
-            Returns the PollInfo structure specified by PollCodeName.
-            </summary>
-            <param name="pollCodeName">Poll code name (leading period denotes global poll)</param>
-        </member>
         <member name="M:CMS.Polls.PollInfoProvider.GetPollInfo(System.String,System.Int32)">
             <summary>
             Returns the PollInfo structure specified by PollCodeName and SiteID.
@@ -645,12 +644,6 @@
             <param name="topN">TOP N condition</param>
             <param name="columns">Selected columns</param>
         </member>
-        <member name="M:CMS.Polls.PollInfoProvider.GetPolls(System.Int32)">
-            <summary>
-            Returns the Dataset structure of all polls of the specified site.
-            </summary>
-            <param name="siteId">Site ID</param>
-        </member>
         <member name="M:CMS.Polls.PollInfoProvider.GetPolls(System.Int32,System.Int32,System.String)">
             <summary>
             Returns the Dataset structure of all polls of the specified site.
@@ -658,12 +651,6 @@
             <param name="siteId">Site ID</param>
             <param name="topN">TOP N condition</param>
             <param name="columns">Columns restriction</param>
-        </member>
-        <member name="M:CMS.Polls.PollInfoProvider.GetPolls(System.String)">
-            <summary>
-            Returns the Dataset structure of all polls of the specified site.
-            </summary>
-            <param name="siteName">Site name</param>
         </member>
         <member name="M:CMS.Polls.PollInfoProvider.GetPolls(System.String,System.Int32,System.String)">
             <summary>
@@ -819,16 +806,6 @@
             Remove from hash table.
             </summary>
             <param name="dataText">Data text</param>
-        </member>
-        <member name="M:CMS.Polls.PollInfoProvider.GetGlobalPolls(System.Int32,System.String,System.String,System.Int32,System.String)">
-            <summary>
-            Returns all global polls bound to site.
-            </summary>
-            <param name="siteId">Site ID</param>
-            <param name="where">Where condition</param>
-            <param name="orderBy">Order By</param>
-            <param name="topN">TOP N</param>
-            <param name="columns">Columns restriction</param>
         </member>
         <member name="M:CMS.Polls.PollInfoProvider.GetPollInternal(System.Guid)">
             <summary>

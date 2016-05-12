@@ -48,6 +48,14 @@
             </summary>
             <param name="objectType">Object type string</param>
         </member>
+        <member name="M:CMS.ModuleUsageTracking.ObjectCountDataSource.GetTrackedObjectsTables">
+            <summary>
+            Returns dictionary containing table name (key) for each tracked object type (value).
+            </summary>
+            <remarks>
+            Unknown object types or types without table are left out.
+            </remarks>
+        </member>
         <member name="P:CMS.ModuleUsageTracking.ObjectCountDataSource.Name">
             <summary>
             Name of the object count data source.

@@ -151,22 +151,6 @@ public partial class CMSFormControls_System_MultiObjectBindingControl : FormEngi
 
 
     /// <summary>
-    /// Uni selector resource prefix.
-    /// </summary>
-    public string ResourcePrefix
-    {
-        get
-        {
-            return ValidationHelper.GetString(GetValue("ResourcePrefix"), string.Empty);
-        }
-        set
-        {
-            SetValue("ResourcePrefix", value);
-        }
-    }
-
-
-    /// <summary>
     /// Uni selector display name format.
     /// </summary>
     public string DisplayNameFormat

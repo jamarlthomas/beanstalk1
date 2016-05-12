@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Codebehind="Ecommerce_ExchangeTableSettings.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="Ecommerce_ExchangeTableSettings.ascx.cs"
     Inherits="CMSModules_Ecommerce_FormControls_Cloning_Ecommerce_ExchangeTableSettings" %>
 
 <div class="form-horizontal">

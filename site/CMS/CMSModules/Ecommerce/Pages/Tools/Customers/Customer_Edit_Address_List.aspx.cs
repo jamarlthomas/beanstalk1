@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Core;
 using CMS.Ecommerce;
@@ -74,7 +74,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_Customers_Customer_Edit_Ad
         {
             if (!ECommerceContext.IsUserAuthorizedToModifyCustomer())
             {
-                RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyCustomers");
+                RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyCustomers");
             }
 
             var address = AddressInfoProvider.GetAddressInfo(addressId);

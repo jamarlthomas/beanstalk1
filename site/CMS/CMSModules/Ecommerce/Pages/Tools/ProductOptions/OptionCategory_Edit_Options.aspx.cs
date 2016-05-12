@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
+using CMS.Core;
 using CMS.Ecommerce;
 using CMS.Helpers;
 using CMS.Base;
@@ -36,12 +37,12 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
         if (parentProductId <= 0)
         {
             // UIElement from option category list
-            CheckUIElementAccessHierarchical("CMS.Ecommerce", "ProductOptions.Options");
+            CheckUIElementAccessHierarchical(ModuleName.ECOMMERCE, "ProductOptions.Options");
         }
         else
         {
             // UIElement from product edit
-            CheckUIElementAccessHierarchical("CMS.Ecommerce", "Products.ProductOptions.Options");
+            CheckUIElementAccessHierarchical(ModuleName.ECOMMERCE, "Products.ProductOptions.Options");
         }
 
         // Hide/rename columns before loading data 
@@ -303,7 +304,7 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
                 // Show product tabs for type Products, otherwise show only general tab
                 {
                     string url = (categoryObj.CategoryType == OptionCategoryTypeEnum.Products) ?
-                        UIContextHelper.GetElementUrl("CMS.ECommerce", "ProductOptions.Options.Edit") :
+                        UIContextHelper.GetElementUrl(ModuleName.ECOMMERCE, "ProductOptions.Options.Edit") :
                         "~/CMSModules/Ecommerce/Pages/Tools/Products/Product_Edit_General.aspx";
 
                     url = URLHelper.AddParameterToUrl(url, "displaytitle", "false");
@@ -387,11 +388,11 @@ public partial class CMSModules_Ecommerce_Pages_Tools_ProductOptions_OptionCateg
         {
             if (global)
             {
-                RedirectToAccessDenied("CMS.Ecommerce", "EcommerceGlobalModify");
+                RedirectToAccessDenied(ModuleName.ECOMMERCE, EcommercePermissions.ECOMMERCE_MODIFYGLOBAL);
             }
             else
             {
-                RedirectToAccessDenied("CMS.Ecommerce", "EcommerceModify OR ModifyProducts");
+                RedirectToAccessDenied(ModuleName.ECOMMERCE, "EcommerceModify OR ModifyProducts");
             }
         }
     }

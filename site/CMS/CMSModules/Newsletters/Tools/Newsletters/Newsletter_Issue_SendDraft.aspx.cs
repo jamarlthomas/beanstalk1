@@ -5,7 +5,6 @@ using CMS.Helpers;
 using CMS.LicenseProvider;
 using CMS.Newsletters;
 using CMS.SiteProvider;
-using CMS.Membership;
 using CMS.UIControls;
 using CMS.DataEngine;
 using CMS.Modules;
@@ -81,8 +80,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Issue_S
         }
         else
         {
-            IssueSender issueSender = new IssueSender((IssueInfo)EditedObject);
-            issueSender.SendAsync(txtSendDraft.Text.Trim());
+            Service<IIssueSender>.Entry().SendAsync((IssueInfo)EditedObject, txtSendDraft.Text.Trim());
 
             // Close the dialog
             ScriptHelper.RegisterStartupScript(this, GetType(), "ClosePage", "if (CloseDialog) { CloseDialog(); }", true);

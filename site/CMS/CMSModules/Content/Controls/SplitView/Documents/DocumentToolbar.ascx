@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="DocumentToolbar.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="DocumentToolbar.ascx.cs"
     Inherits="CMSModules_Content_Controls_SplitView_Documents_DocumentToolbar" %>
 <asp:Panel ID="pnlMain" CssClass="SplitToolbar Vertical" runat="server">
     <div class="LeftAlign">

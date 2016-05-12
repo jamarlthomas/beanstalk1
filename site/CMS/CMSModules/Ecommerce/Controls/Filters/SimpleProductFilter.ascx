@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="SimpleProductFilter.ascx.cs" Inherits="CMSModules_Ecommerce_Controls_Filters_SimpleProductFilter" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="SimpleProductFilter.ascx.cs" Inherits="CMSModules_Ecommerce_Controls_Filters_SimpleProductFilter" %>
 <asp:Panel ID="pnlFilter" runat="server" DefaultButton="btnShow">
     <div class="form-horizontal form-filter">
         <div class="form-group">

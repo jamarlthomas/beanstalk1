@@ -96,7 +96,7 @@
         </member>
         <member name="M:CMS.EcommerceProvider.CheckoutProcessInfo.GetCheckoutProcessStepNode(System.String)">
             <summary>
-            Returns checkout step node according to the speicified step name.
+            Returns checkout step node according to the specified step name.
             </summary>
             <param name="stepName">Checkout step name</param>
         </member>
@@ -160,7 +160,7 @@
         </member>
         <member name="M:CMS.EcommerceProvider.CheckoutProcessInfo.#ctor(System.String)">
             <summary>
-            Constructor - loades checkout process xml definition.
+            Constructor - loads checkout process xml definition.
             </summary>
             <param name="definition">Checkout process xml definition</param>
         </member>
@@ -343,6 +343,9 @@
             <summary>
             Checks whether specified user is authorized to finish payment.
             </summary>
+            <param name="user">User attempting to finish payment.</param>
+            <param name="cart">Cart to be paid for.</param>
+            <param name="internalOrder">Indicates if payment is done from administration by store admin in the name of customer.</param>
         </member>
         <member name="M:CMS.EcommerceProvider.CMSPaymentGatewayProvider.GetPaymentGatewayProvider(System.Int32)">
             <summary>
@@ -506,6 +509,9 @@
             <summary>
             Checks whether specified user is authorized to finish payment, if he is not authorized sets corresponding payment gateway error message.
             </summary>
+            <param name="user">User attempting to finish payment.</param>
+            <param name="cart">Cart to be paid for.</param>
+            <param name="internalOrder">Indicates if payment is done from administration by store admin in the name of customer.</param>
         </member>
         <member name="P:CMS.EcommerceProvider.CMSCreditPaymentProvider.MainCurrencyObj">
             <summary>
@@ -623,6 +629,13 @@
             Compares payment data (seller email, total price, payment currency) to order data and returns appropriate error message if data don't match, otherwise returns empty string.
             </summary>
             <param name="collection">Name-Value collection with the payment data that were posted to the merchant by PayPal</param>
+        </member>
+        <member name="M:CMS.EcommerceProvider.CMSPayPalProvider.RoundPriceToTwoDecimalDigits(System.Double)">
+            <summary>
+            PayPal allows only two decimal places in number
+            </summary>
+            <param name="orderPrice"></param>
+            <returns></returns>
         </member>
         <member name="T:CMS.EcommerceProvider.CreditPaymentForm">
             <summary>

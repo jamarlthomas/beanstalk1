@@ -471,20 +471,22 @@
             <param name="info">Info object which was created/updated/deleted</param>
             <param name="settings">Export settings</param>
         </member>
-        <member name="M:CMS.WebServices.BaseRESTService.SetObjectInternal(CMS.DataEngine.GeneralizedInfo,System.IO.Stream,System.Boolean,System.String)">
+        <member name="M:CMS.WebServices.BaseRESTService.SetObjectInternal(CMS.DataEngine.GeneralizedInfo,System.String,System.IO.Stream,System.Boolean,System.String)">
             <summary>
             Deletes given objects and returns it as a result.
             </summary>
             <param name="info">Info object to update/create</param>
+            <param name="objectType">Type of the object. Used for security check in case of non-existing object.</param>
             <param name="stream">Data of the object</param>
             <param name="isCreate">If true new object will be created</param>
             <param name="siteName">Name of the site to which the object will be assigned (if null, original setting from stream data is preserved)</param>
         </member>
-        <member name="M:CMS.WebServices.BaseRESTService.DeleteObjectInternal(CMS.DataEngine.GeneralizedInfo)">
+        <member name="M:CMS.WebServices.BaseRESTService.DeleteObjectInternal(CMS.DataEngine.GeneralizedInfo,System.String)">
             <summary>
             Deletes given objects and returns it as a result.
             </summary>
             <param name="info">GeneralizedInfo to delete</param>
+            <param name="objectType">Type of the object. Used for security check in case of non-existing object.</param>
         </member>
         <member name="M:CMS.WebServices.BaseRESTService.ToODATA(System.Data.DataSet,CMS.DataEngine.ExportObjectSettings,System.String,System.String,System.String,System.Uri,System.String,System.String,System.String,System.String,System.String)">
             <summary>
@@ -642,19 +644,17 @@
             </summary>
             <param name="description">Description for the Not found status</param>
         </member>
+        <member name="M:CMS.WebServices.BaseRESTService.ReturnSiteNotFoundStatus">
+            <summary>
+            Sets the response status to Not found with a comment that the site does not exist.
+            </summary>
+        </member>
         <member name="M:CMS.WebServices.BaseRESTService.IsAuthorizedForObject(System.String,System.String,CMS.DataEngine.PermissionsEnum)">
             <summary>
             Returns true if current user is granted with specified permission to process operation on the given objecttype.
             </summary>
             <param name="objectType">Object type of an object</param>
             <param name="objectSite">Site the object belongs to</param>
-            <param name="permission">Permission type</param>
-        </member>
-        <member name="M:CMS.WebServices.BaseRESTService.IsAuthorizedForObject(CMS.DataEngine.BaseInfo,CMS.DataEngine.PermissionsEnum)">
-            <summary>
-            Returns true if current user is granted with specified permission to process operation on the given objecttype.
-            </summary>
-            <param name="obj">Object to be checked</param>
             <param name="permission">Permission type</param>
         </member>
         <member name="M:CMS.WebServices.BaseRESTService.IsAuthorizedForObject(CMS.DataEngine.BaseInfo,CMS.DataEngine.PermissionsEnum,System.String)">
@@ -764,7 +764,7 @@
             <summary>
             Not needed. Does nothing.
             </summary>
-            <param name="error">Excpetion</param>
+            <param name="error">Exception</param>
             <param name="version">Message version</param>
             <param name="fault">Fault message</param>
         </member>
@@ -880,24 +880,6 @@
             Column names.
             </summary>
         </member>
-        <member name="T:CMS.WebServices.ServiceResolver">
-            <summary>
-            Class to resolve the macros in the context of WCF service (REST for example).
-            Handles querystring and cookies macros in a WCS service specific way.
-            </summary>
-        </member>
-        <member name="M:CMS.WebServices.ServiceResolver.#ctor">
-            <summary>
-            Creates new instance of ServiceResolver.
-            </summary>
-        </member>
-        <member name="M:CMS.WebServices.ServiceResolver.CheckDataSources(System.String,CMS.MacroEngine.EvaluationContext)">
-            <summary>
-            Checks all the data sources for the value (at first, it checks if it's not special value).
-            </summary>
-            <param name="expression">Expression</param>
-            <param name="context">Evaluation context</param>
-        </member>
         <member name="T:CMS.WebServices.RESTSecurityInvoker">
             <summary>
             Security handler over the REST requests
@@ -906,6 +888,16 @@
         <member name="F:CMS.WebServices.RESTSecurityInvoker.HASH_AUTHENTICATED_USERNAME">
             <summary>
             Constant to identify the hash authentication requirement 
+            </summary>
+        </member>
+        <member name="F:CMS.WebServices.RESTSecurityInvoker.BASIC_AUTHENTICATION_TYPE">
+            <summary>
+            Basic authentication
+            </summary>
+        </member>
+        <member name="F:CMS.WebServices.RESTSecurityInvoker.FORMS_AUTHENTICATION_TYPE">
+            <summary>
+            Forms authentication
             </summary>
         </member>
         <member name="M:CMS.WebServices.RESTSecurityInvoker.ApplyDispatchBehavior(System.ServiceModel.Description.OperationDescription,System.ServiceModel.Dispatcher.DispatchOperation)">
@@ -1000,7 +992,7 @@
         </member>
         <member name="M:CMS.WebServices.RESTSecurityInvoker.AuthenticateUserForms">
             <summary>
-            Authenticates the user from the authentication cookie. If everything is ok returns name of the authenticated user. Otherwise returns null;
+            Authenticates the user from the authentication cookie. If everything is ok returns name of the authenticated user. Otherwise returns null.
             </summary>
         </member>
         <member name="M:CMS.WebServices.RESTSecurityInvoker.AuthenticateUserBasic">
@@ -1017,6 +1009,38 @@
         <member name="M:CMS.WebServices.RESTSecurityInvoker.OperationIsAllowed">
             <summary>
             Check the read-only settings for object/document operations.
+            </summary>
+        </member>
+        <member name="M:CMS.WebServices.RESTSecurityInvoker.GetAuthenticatedUserNameInternal(System.Boolean,System.String)">
+            <summary>
+            Returns name of authenticated user.
+            </summary>
+            <param name="checkHash">If true, hash is checked and has higher priority than authentication</param>
+            <param name="authenticationType">Authentication type</param>
+        </member>
+        <member name="M:CMS.WebServices.RESTSecurityInvoker.CheckHashInternal">
+            <summary>
+            Checks hash parameter. Returns true if the parameter matches the requested URL. For request different from GET returns alsways false.
+            </summary>
+        </member>
+        <member name="M:CMS.WebServices.RESTSecurityInvoker.AuthenticateUserBasicInternal">
+            <summary>
+            Authenticates the user using basic authentication.
+            </summary>
+        </member>
+        <member name="M:CMS.WebServices.RESTSecurityInvoker.AuthenticateUserFormsInternal">
+            <summary>
+            Authenticates the user from the authentication cookie. If everything is ok returns name of the authenticated user. Otherwise returns null.
+            </summary>
+        </member>
+        <member name="M:CMS.WebServices.RESTSecurityInvoker.AuthenticateMembershipContextUserInternal">
+            <summary>
+            Authenticates the user from MembershipContext. If everything is ok returns name of the authenticated user. Otherwise returns null.
+            </summary>
+        </member>
+        <member name="P:CMS.WebServices.RESTSecurityInvoker.InternalImplementation">
+            <summary>
+            Singleton instance used to access override-able non-static fields. 
             </summary>
         </member>
         <member name="P:CMS.WebServices.RESTSecurityInvoker.IncomingRequest">

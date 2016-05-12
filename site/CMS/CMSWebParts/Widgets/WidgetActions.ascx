@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Widgets_WidgetActions"
-    Codebehind="~/CMSWebParts/Widgets/WidgetActions.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Widgets_WidgetActions"
+     Codebehind="~/CMSWebParts/Widgets/WidgetActions.ascx.cs" %>
 <asp:Panel runat="server" ID="pnlWidgetActions">
     <div class="cms-bootstrap">
         <asp:Panel runat="server" CssClass="btn-actions" ID="pnlActions">

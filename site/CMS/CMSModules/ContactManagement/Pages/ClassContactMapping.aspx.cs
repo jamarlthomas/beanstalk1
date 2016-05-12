@@ -48,7 +48,7 @@ public partial class CMSModules_ContactManagement_Pages_ClassContactMapping : Gl
         LicenseHelper.CheckFeatureAndRedirect(RequestContext.CurrentDomain, FeatureEnum.ContactManagement);
 
         // Init header actions
-        CurrentMaster.HeaderActions.ActionsList.Add(new SaveAction(Page));
+        CurrentMaster.HeaderActions.ActionsList.Add(new SaveAction());
 
         // Register event for save action
         ComponentEvents.RequestEvents.RegisterForEvent(ComponentEvents.SAVE, SaveButton_Click);

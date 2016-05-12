@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Tools_Posts_ForumPost_Frameset"
-    Codebehind="ForumPost_Frameset.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Forums_Tools_Posts_ForumPost_Frameset"
+     Codebehind="ForumPost_Frameset.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

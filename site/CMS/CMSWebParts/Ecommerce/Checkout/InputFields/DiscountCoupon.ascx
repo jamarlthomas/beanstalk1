@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Ecommerce_Checkout_InputFields_DiscountCoupon" Codebehind="~/CMSWebParts/Ecommerce/Checkout/InputFields/DiscountCoupon.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_Ecommerce_Checkout_InputFields_DiscountCoupon"  Codebehind="~/CMSWebParts/Ecommerce/Checkout/InputFields/DiscountCoupon.ascx.cs" %>
 <asp:Panel runat="server" ID="pnlDsicountCoupon" DefaultButton="btnUpdate">
     <cms:CMSTextBox runat="server" ID="txtCouponField" autocomplete="off"/>
     <cms:CMSButton runat="server" ID="btnUpdate" OnClick="btnUpdate_Click" Visible="false" ButtonStyle="Primary" />

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_Controls_ReportValue"
-    Codebehind="ReportValue.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_Reporting_Controls_ReportValue"
+     Codebehind="ReportValue.ascx.cs" %>
 <cms:ContextMenuContainer runat="server" ID="menuCont" MenuID="">
     <asp:Literal ID="lblValue" runat="server" />
     <asp:Label runat="server" ID="lblError" EnableViewState="false" CssClass="InlineControlError"

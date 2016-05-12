@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="True" Codebehind="TemplateSelection.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="True"  Codebehind="TemplateSelection.ascx.cs"
     Inherits="CMSModules_Content_CMSDesk_New_TemplateSelection" %>
 <%@ Register Src="~/CMSModules/PortalEngine/Controls/Layout/PageTemplateSelector.ascx"
     TagName="PageTemplateSelector" TagPrefix="cms" %>

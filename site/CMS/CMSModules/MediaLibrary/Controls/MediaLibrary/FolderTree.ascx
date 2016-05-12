@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_FolderTree"
-    Codebehind="FolderTree.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_FolderTree"
+     Codebehind="FolderTree.ascx.cs" %>
 <asp:Label runat="server" ID="lblError" ForeColor="Red" EnableViewState="false" />
 <div class="ContentTree MediaLibraryTree">
     <cms:uitreeview id="treeElem" runat="server" showlines="true" showexpandcollapse="true" shortid="t">

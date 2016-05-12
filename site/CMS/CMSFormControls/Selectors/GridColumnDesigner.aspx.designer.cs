@@ -99,7 +99,7 @@ public partial class CMSFormControls_Selectors_GridColumnDesigner {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblProperties;
+    protected global::CMS.ExtendedControls.LocalizedLabel lblProperties;
     
     /// <summary>
     /// lblHeaderText control.
@@ -108,7 +108,7 @@ public partial class CMSFormControls_Selectors_GridColumnDesigner {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblHeaderText;
+    protected global::CMS.ExtendedControls.LocalizedLabel lblHeaderText;
     
     /// <summary>
     /// txtHeaderText control.
@@ -126,7 +126,7 @@ public partial class CMSFormControls_Selectors_GridColumnDesigner {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblDisplayAsLink;
+    protected global::CMS.ExtendedControls.LocalizedLabel lblDisplayAsLink;
     
     /// <summary>
     /// chkDisplayAsLink control.
@@ -144,7 +144,7 @@ public partial class CMSFormControls_Selectors_GridColumnDesigner {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSButton btnOk;
+    protected global::CMS.ExtendedControls.LocalizedButton btnOk;
     
     /// <summary>
     /// btnClose control.
@@ -153,23 +153,5 @@ public partial class CMSFormControls_Selectors_GridColumnDesigner {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSButton btnClose;
-    
-    /// <summary>
-    /// ltlOk control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Literal ltlOk;
-    
-    /// <summary>
-    /// ltlLoad control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Literal ltlLoad;
+    protected global::CMS.ExtendedControls.LocalizedButton btnClose;
 }

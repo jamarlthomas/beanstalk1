@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Debug_RequestLog"
-    Codebehind="RequestLog.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSAdminControls_Debug_RequestLog"
+     Codebehind="RequestLog.ascx.cs" %>
 <%@ Register Src="ValuesTable.ascx" TagName="ValuesTable" TagPrefix="cms" %>
 
 <cms:UIGridView runat="server" ID="gridCache" ShowFooter="true" AutoGenerateColumns="false">

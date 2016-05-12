@@ -1,20 +1,12 @@
-using System;
-using System.Data;
-using System.Collections;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
+﻿using System;
 
 using CMS.Community;
 using CMS.Helpers;
-using CMS.LicenseProvider;
 using CMS.Base;
 using CMS.SiteProvider;
 using CMS.Membership;
 using CMS.UIControls;
 using CMS.Controls.Configuration;
-using CMS.DataEngine;
 using CMS.Modules;
 
 public partial class CMSModules_Groups_Controls_GroupProfile : CMSAdminEditControl
@@ -32,7 +24,6 @@ public partial class CMSModules_Groups_Controls_GroupProfile : CMSAdminEditContr
     private bool mShowMediaTab = true;
     private bool mShowMessageBoardsTab = true;
     private bool mShowPollsTab = true;
-    private bool mShowProjectTab = false;
 
     private int generalTabIndex = 0;
     private int securityTabIndex = 0;
@@ -43,7 +34,6 @@ public partial class CMSModules_Groups_Controls_GroupProfile : CMSAdminEditContr
     private int mediaTabIndex = -1;
     private int messageBoardsTabIndex = -1;
     private int pollsTabIndex = -1;
-    private int projectTabIndex = -1;
 
     private bool mHideWhenGroupIsNotSupplied = false;
     private GroupInfo gi = null;
@@ -265,22 +255,6 @@ public partial class CMSModules_Groups_Controls_GroupProfile : CMSAdminEditContr
 
 
     /// <summary>
-    /// Gets or sets the value which determines whether to show the projects tab.
-    /// </summary>
-    public bool ShowProjectsTab
-    {
-        get
-        {
-            return mShowProjectTab;
-        }
-        set
-        {
-            mShowProjectTab = value;
-        }
-    }
-
-
-    /// <summary>
     /// Gets or sets switch to display appropriate controls.
     /// </summary>
     public string SelectedPage
@@ -482,31 +456,6 @@ public partial class CMSModules_Groups_Controls_GroupProfile : CMSAdminEditContr
             i++;
         }
 
-        // Show projects tab
-        if (ShowProjectsTab)
-        {
-            // Check whether license for project management is available
-            // if no hide project management tab
-            if (LicenseHelper.CheckFeature(RequestContext.CurrentDomain, FeatureEnum.ProjectManagement))
-            {
-                // Check site availability
-                if (ResourceSiteInfoProvider.IsResourceOnSite("CMS.ProjectManagement", SiteContext.CurrentSiteName))
-                {
-                    tabMenu.AddTab(new TabItem()
-                    {
-                        Text = GetString("pm.project.list"),
-                        RedirectUrl = URLHelper.AddParameterToUrl(absoluteUri, "tab", "projects"),
-                    });
-                    if (String.IsNullOrEmpty(defaultTab))
-                    {
-                        defaultTab = "projects";
-                    }
-
-                    projectTabIndex = i;
-                }
-            }
-        }
-
         #endregion
 
 
@@ -700,28 +649,6 @@ public partial class CMSModules_Groups_Controls_GroupProfile : CMSAdminEditContr
                             ctrl.DisplayMode = ControlDisplayModeEnum.Simple;
                             ctrl.OnCheckPermissions += new CheckPermissionsEventHandler(ctrl_OnCheckPermissions);
 
-                            pnlContent.Controls.Add(ctrl);
-                        }
-                    }
-                }
-                break;
-
-            case "projects":
-                if (projectTabIndex >= 0)
-                {
-                    tabMenu.SelectedTab = projectTabIndex;
-
-                    // Show projects content
-                    if (ShowProjectsTab)
-                    {
-                        ctrl = this.LoadUserControl("~/CMSModules/ProjectManagement/Controls/LiveControls/GroupProjects.ascx") as CMSAdminControl;
-                        ctrl.ID = "projectElem";
-                        if (ctrl != null)
-                        {
-                            ctrl.SetValue("CommunityGroupID", gi.GroupID);
-                            ctrl.SetValue("IsLiveSite", IsLiveSite);
-                            ctrl.DisplayMode = ControlDisplayModeEnum.Simple;
-                            ctrl.OnCheckPermissions += new CheckPermissionsEventHandler(ctrl_OnCheckPermissions);
                             pnlContent.Controls.Add(ctrl);
                         }
                     }

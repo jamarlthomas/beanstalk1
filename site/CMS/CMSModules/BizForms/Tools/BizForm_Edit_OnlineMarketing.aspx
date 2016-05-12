@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Codebehind="BizForm_Edit_OnlineMarketing.aspx.cs" Inherits="CMSModules_BizForms_Tools_BizForm_Edit_OnlineMarketing"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="BizForm_Edit_OnlineMarketing.aspx.cs" Inherits="CMSModules_BizForms_Tools_BizForm_Edit_OnlineMarketing"
     MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Form properties - On-line marketing" Theme="Default" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">

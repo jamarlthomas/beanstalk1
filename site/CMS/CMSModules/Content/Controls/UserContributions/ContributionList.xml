@@ -6,7 +6,7 @@
   </actions>
   <columns>
     <column source="DocumentName" caption="$general.documentname$" wrap="false" />
-    <column source="Published" externalsourcename="Published" caption="$general.published$" wrap="false" />
+    <column source="##ALL##" externalsourcename="#published" caption="$general.published$" wrap="false" />
     <column source="DocumentModifiedWhen" externalsourcename="DocumentModifiedWhen" caption="$Contribution.Columns.ModifiedWhen$" wrap="false">
       <tooltip source="DocumentModifiedWhen" externalsourcename="documentmodifiedwhentooltip" />
     </column>

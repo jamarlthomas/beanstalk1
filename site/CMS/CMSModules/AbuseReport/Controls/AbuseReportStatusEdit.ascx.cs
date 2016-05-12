@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 
@@ -121,10 +121,7 @@ public partial class CMSModules_AbuseReport_Controls_AbuseReportStatusEdit : CMS
 
         // Check that text area is not empty
         txtCommentValue.Text = txtCommentValue.Text.Trim();
-        if (txtCommentValue.Text.Length > 1000)
-        {
-            txtCommentValue.Text = txtCommentValue.Text.Substring(0, 1000);
-        }
+        txtCommentValue.Text = TextHelper.LimitLength(txtCommentValue.Text, txtCommentValue.MaxLength);
 
         if (txtCommentValue.Text.Length > 0)
         {
@@ -219,22 +216,38 @@ public partial class CMSModules_AbuseReport_Controls_AbuseReportStatusEdit : CMS
                 // Set other parameters
                 lblReportedWhenValue.Text = CurrentReport.ReportWhen.ToString();
 
+                CMSPage page = Page as CMSPage;
+
                 if ((CurrentReport.ReportObjectID > 0) && (!string.IsNullOrEmpty(CurrentReport.ReportObjectType)) && AbuseReportInfoProvider.IsObjectTypeSupported(CurrentReport.ReportObjectType))
                 {
+                    // Add Object details button
                     string detailUrl = "~/CMSModules/AbuseReport/AbuseReport_ObjectDetails.aspx" + query;
                     detailUrl = URLHelper.AddParameterToUrl(detailUrl, "hash", QueryHelper.GetHash(detailUrl));
+                    var onClientClickScript = ScriptHelper.GetModalDialogScript(URLHelper.ResolveUrl(detailUrl), "objectdetails", 960, 600);
 
-                    var headerActions = ((CMSPage)Page).HeaderActions;
-                    headerActions.AddAction(new HeaderAction
+                    if (page != null)
                     {
-                        Text = GetString("abuse.details"),
-                        OnClientClick = ScriptHelper.GetModalDialogScript(URLHelper.ResolveUrl(detailUrl), "objectdetails", 960, 600),
-                        ButtonStyle = ButtonStyle.Default
-                    });
+                        var headerActions = page.HeaderActions;
+                        headerActions.AddAction(new HeaderAction
+                        {
+                            Text = GetString("abuse.details"),
+                            OnClientClick = onClientClickScript,
+                            ButtonStyle = ButtonStyle.Default
+                        });
+                        btnObjectDetails.Visible = false;
+                    }
+                    else
+                    {
+                        btnObjectDetails.OnClientClick = onClientClickScript;
+                        ScriptHelper.RegisterDialogScript(Page);
+                    }
+                }
+                else
+                {
+                    btnObjectDetails.Visible = false; 
                 }
 
                 Control postback = ControlsHelper.GetPostBackControl(Page);
-                CMSPage page = Page as CMSPage;
 
                 // Not post-back not caused by OK button or Save action in header
                 if ((postback != btnOk) && ((page == null) || (postback != page.HeaderActions)))

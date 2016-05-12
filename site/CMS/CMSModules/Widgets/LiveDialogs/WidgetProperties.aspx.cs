@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.Helpers;
 using CMS.Localization;
@@ -28,15 +28,8 @@ public partial class CMSModules_Widgets_LiveDialogs_WidgetProperties : CMSWidget
         if ((widgetId != string.Empty) && (aliasPath != string.Empty))
         {
             // Get page info
-            PageInfo pi = null;
-            try
-            {
-                pi = PageInfoProvider.GetPageInfo(SiteContext.CurrentSiteName, aliasPath, LocalizationContext.PreferredCultureCode, null, SiteContext.CurrentSite.CombineWithDefaultCulture);
-            }
-            catch (PageNotFoundException)
-            {
-                // Do not throw exception if page info not found (e.g. bad alias path)
-            }
+            var siteName = SiteContext.CurrentSiteName;
+            PageInfo pi = PageInfoProvider.GetPageInfo(siteName, aliasPath, LocalizationContext.PreferredCultureCode, null, SiteInfoProvider.CombineWithDefaultCulture(siteName));
 
             if (pi == null)
             {

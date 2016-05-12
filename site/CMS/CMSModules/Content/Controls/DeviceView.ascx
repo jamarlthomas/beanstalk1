@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="DeviceView.ascx.cs" Inherits="CMSModules_Content_Controls_DeviceView" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="DeviceView.ascx.cs" Inherits="CMSModules_Content_Controls_DeviceView" %>
 <cms:CMSPanel ID="pnlDevice" runat="server" ShortID="pd" CssClass="DeviceFrame">
     <cms:CMSPanel ID="pnlTop" runat="server" ShortID="pt" CssClass="TopLine">
         <div class="LeftPiece">
@@ -13,8 +13,8 @@
         </cms:CMSPanel>
         <cms:CMSPanel ID="pnlCenter" runat="server" ShortID="pc" CssClass="CenterPiece">
             <div class="CenterPanel">
-                <iframe width="100%" height="100%" id="pageview" name="pageview" scrolling="<%=framescroll%>"
-                    frameborder="0" src="<%=mViewPage%>" class="ContentFrame scroll-area"></iframe>
+                <iframe width="100%" height="100%" id="pageview" name="pageview" scrolling="<%=FrameScroll%>"
+                    frameborder="0" src="<%=ViewPageSource%>" class="ContentFrame scroll-area"></iframe>
             </div>
         </cms:CMSPanel>
         <cms:CMSPanel ID="pnlRight" runat="server" ShortID="pr" CssClass="RightPiece">

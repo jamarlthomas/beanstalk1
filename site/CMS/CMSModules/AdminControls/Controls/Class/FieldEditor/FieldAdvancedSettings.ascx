@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="FieldAdvancedSettings.ascx.cs" Inherits="CMSModules_AdminControls_Controls_Class_FieldEditor_FieldAdvancedSettings" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="FieldAdvancedSettings.ascx.cs" Inherits="CMSModules_AdminControls_Controls_Class_FieldEditor_FieldAdvancedSettings" %>
 <%@ Register TagPrefix="cms" TagName="ConditionBuilder" Src="~/CMSFormControls/Macros/ConditionBuilder.ascx" %>
 <cms:LocalizedHeading runat="server" Level="4" ResourceString="templatedesigner.section.fieldadvancedsettings"></cms:LocalizedHeading>
 <asp:Panel ID="pnlFieldAdvancedSettings" runat="server" CssClass="FieldAdvancedSettings FieldPanel">

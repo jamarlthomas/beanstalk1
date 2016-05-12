@@ -1,23 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
-using CMS.Base;
 using CMS.DataEngine;
 using CMS.FormControls;
 using CMS.FormEngine;
 
 public partial class CMSModules_FormControls_FormControls_FormControlSelector : FormEngineUserControl
 {
-
     #region "Private variables"
 
     private bool showInheritedControls = true;
-
-    /// <summary>
-    /// Gets field data types that are not supported by any form control.
-    /// </summary>
-    private readonly static List<string> deniedFormControlDataTypes = new List<string> { FieldDataType.Binary };
 
     #endregion
 
@@ -122,7 +114,7 @@ public partial class CMSModules_FormControls_FormControls_FormControlSelector : 
                 FormUserControlInfo control = FormUserControlInfoProvider.GetFormUserControlInfo(value.ToString());
                 if (control != null)
                 {
-                    uniSelector.SpecialFields.Add(new SpecialField() { Text = control.UserControlDisplayName, Value = value.ToString() });
+                    uniSelector.SpecialFields.Add(new SpecialField { Text = control.UserControlDisplayName, Value = value.ToString() });
                 }
             }
         }
@@ -208,25 +200,18 @@ public partial class CMSModules_FormControls_FormControls_FormControlSelector : 
     /// </summary>
     private void AddWhereConditions()
     {
-        if (deniedFormControlDataTypes.Any(d => d.EqualsCSafe(DataType, true)))
+        uniSelector.WhereCondition = WhereCondition;
+
+        // Set conditions
+        if (!ShowInheritedControls)
         {
-            uniSelector.WhereCondition = SqlHelper.NO_DATA_WHERE;
+            // Show only not inherited controls
+            uniSelector.WhereCondition = SqlHelper.AddWhereCondition(uniSelector.WhereCondition, "UserControlParentID IS NULL");
         }
-        else
+
+        if (!String.IsNullOrEmpty(DataType))
         {
-            uniSelector.WhereCondition = WhereCondition;
-
-            // Set conditions
-            if (!ShowInheritedControls)
-            {
-                // Show only not inherited controls
-                uniSelector.WhereCondition = SqlHelper.AddWhereCondition(uniSelector.WhereCondition, "UserControlParentID IS NULL");
-            }
-
-            if (!String.IsNullOrEmpty(DataType))
-            {
-                uniSelector.WhereCondition = SqlHelper.AddWhereCondition(uniSelector.WhereCondition, FormHelper.GetDataTypeWhereCondition(DataType));
-            }
+            uniSelector.WhereCondition = SqlHelper.AddWhereCondition(uniSelector.WhereCondition, FormHelper.GetDataTypeWhereCondition(DataType));
         }
     }
 

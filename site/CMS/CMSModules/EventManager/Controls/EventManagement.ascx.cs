@@ -1,11 +1,10 @@
-using System;
+﻿using System;
 using System.Data;
 
 using CMS.EventManager;
 using CMS.Helpers;
 using CMS.UIControls;
 using CMS.ExtendedControls;
-using CMS.Controls.Configuration;
 
 public partial class CMSModules_EventManager_Controls_EventManagement : CMSAdminControl
 {
@@ -135,20 +134,20 @@ public partial class CMSModules_EventManager_Controls_EventManagement : CMSAdmin
         eventList.UsePostBack = true;
 
         // Tabs creation
-        tabControlElem.AddTab(new UITabItem()
+        tabControlElem.AddTab(new UITabItem
         {
             Text = GetString("Events_Attendee_List.General"),
             OnClientClick = "",
         });
-        tabControlElem.AddTab(new UITabItem()
+        tabControlElem.AddTab(new UITabItem
         {
             Text = GetString("Events_Edit.SendEmail"),
             OnClientClick = "",
         });
             
         tabControlElem.UsePostback = true;
-        attendeesList.OnCheckPermissions += new CheckPermissionsEventHandler(attendeesList_OnCheckPermissions);
-        emailSender.OnCheckPermissions += new CheckPermissionsEventHandler(attendeesList_OnCheckPermissions);
+        attendeesList.OnCheckPermissions += attendeesList_OnCheckPermissions;
+        emailSender.OnCheckPermissions += attendeesList_OnCheckPermissions;
     }
 
 
@@ -209,7 +208,7 @@ public partial class CMSModules_EventManager_Controls_EventManagement : CMSAdmin
         string eventCapacity = "0";
         string eventTitle = "";
         string registeredAttendees = null;
-        string eventBreadcrumbsText = "";
+        string eventBreadcrumbsText;
 
         ucBreadcrumbs.Items.Clear();
 
@@ -218,7 +217,7 @@ public partial class CMSModules_EventManager_Controls_EventManagement : CMSAdmin
             OnClientClick = ControlsHelper.GetPostBackEventReference(lnkBackHidden) + "; return false;"
         });
 
-        DataSet ds = EventProvider.GetEvent(eventList.SelectedEventID, "EventCapacity, EventName, AttendeesCount");
+        DataSet ds = EventProvider.GetEvent(eventList.SelectedEventID, null, "EventCapacity, EventName, AttendeesCount");
         if (!DataHelper.DataSourceIsEmpty(ds))
         {
             eventCapacity = ValidationHelper.GetInteger(ds.Tables[0].Rows[0]["EventCapacity"], 0).ToString();

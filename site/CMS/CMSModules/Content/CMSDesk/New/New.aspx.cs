@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 
 using CMS.Core;
+using CMS.DataEngine;
 using CMS.Helpers;
 using CMS.Localization;
 using CMS.UIControls;
@@ -10,7 +11,10 @@ public partial class CMSModules_Content_CMSDesk_New_New : CMSContentPage
 {
     #region "Variables"
 
-    CMSAbstractNewDocumentControl ctrl = null;
+    CMSAbstractNewDocumentControl ctrl;
+
+    private const string CONTENT_FOLDER = "~/CMSModules/Content/";
+    private const string CONTENT_CMSDESK_FOLDER = CONTENT_FOLDER + "CMSDesk/";
 
     #endregion
 
@@ -19,7 +23,7 @@ public partial class CMSModules_Content_CMSDesk_New_New : CMSContentPage
 
     protected override void CreateChildControls()
     {
-        ctrl = LoadUserControl("~/CMSModules/Content/Controls/DocTypeSelection.ascx") as CMSAbstractNewDocumentControl;
+        ctrl = LoadUserControl(CONTENT_FOLDER + "Controls/DocTypeSelection.ascx") as CMSAbstractNewDocumentControl;
 
         if (ctrl == null)
         {
@@ -58,7 +62,7 @@ public partial class CMSModules_Content_CMSDesk_New_New : CMSContentPage
 
         EnsureChildControls();
 
-        ctrl.SelectionUrl = URLHelper.AppendQuery(ResolveUrl("~/CMSModules/Content/CMSDesk/Edit/Edit.aspx"), RequestContext.CurrentQueryString);
+        ctrl.SelectionUrl = URLHelper.AppendQuery(ResolveUrl(CONTENT_CMSDESK_FOLDER + "Edit/Edit.aspx"), RequestContext.CurrentQueryString);
 
         // Create new document by default
         if (string.IsNullOrEmpty(QueryHelper.GetString("action", null)))
@@ -78,14 +82,13 @@ public partial class CMSModules_Content_CMSDesk_New_New : CMSContentPage
         ctrl.ParentNodeID = QueryHelper.GetInteger("parentnodeid", 0);
         ctrl.ParentCulture = parentCulture;
 
-        // Handle conversion
-        int convertDocumentId = QueryHelper.GetInteger("convertdocumentid", 0);
-        if (convertDocumentId > 0)
+        if (QueryHelper.GetBoolean("hidecontentonly", false))
         {
-            ctrl.ConvertDocumentID = convertDocumentId;
-
-            SetTitle(GetString("Content.ConvertTitle"));
-            ShowInformation(GetString("Convert.ConvertInfo"));
+            ctrl.Where = new WhereCondition(ctrl.Where)
+				.WhereFalse("ClassIsContentOnly")
+				.Or()
+                .WhereNull("ClassIsContentOnly")
+				.ToString(true);
         }
     }
 
@@ -93,7 +96,7 @@ public partial class CMSModules_Content_CMSDesk_New_New : CMSContentPage
     protected void Page_Load(object sender, EventArgs e)
     {
         // Register script
-        ScriptHelper.RegisterScriptFile(this, "~/CMSModules/Content/CMSDesk/New/New.js");
+        ScriptHelper.RegisterScriptFile(this, CONTENT_CMSDESK_FOLDER + "New/New.js");
 
         EnsureDocumentBreadcrumbs(PageBreadcrumbs, action: PageTitle.TitleText);
     }

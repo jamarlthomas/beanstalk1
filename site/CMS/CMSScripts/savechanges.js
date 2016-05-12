@@ -39,7 +39,8 @@ var CMSContentManager = {
         if ($cmsj.param && $cmsj.param.querystring) {
             url = $cmsj.param.querystring(url, "cmscontentchanged=" + this._contentChanged());
             if (!this._contentChanged()) {
-                url = url.replace(/\?cmscontentchanged=([^&]*)$/gi, '');
+                // Remove cmscontentchanged from URL and preserve & or ? correctly
+                url = url.replace(/((&)|(\?))cmscontentchanged=([^&]*)(&)?/gi, '$3$2');
             }
         }
 
@@ -126,7 +127,7 @@ var CMSContentManager = {
         formChildren.each(function (index) {
             var elem = $cmsj(this);
             if (CMSContentManager.allowChanged(elem.attr("id"))) {
-                elem.bind('change', function (event) {
+                elem.bind('change paste', function (event) {
                     CMSContentManager.fieldChanged(event.target);
                 });
 

@@ -1,5 +1,5 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_AdminControls_Controls_Class_FormBuilder_FormBuilder"
-    Codebehind="FormBuilder.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="false" Inherits="CMSModules_AdminControls_Controls_Class_FormBuilder_FormBuilder"
+     Codebehind="FormBuilder.ascx.cs" %>
 
 <%@ Register Src="~/CMSModules/AdminControls/Controls/Class/FormBuilder/Settings.ascx" TagName="Settings"
     TagPrefix="cms" %>
@@ -19,5 +19,6 @@
             </div>
         </ContentTemplate>
     </cms:CMSUpdatePanel>
+    <span id="lblSaveInfo" class="form-builder-info" style="display:none"></span>
     <cms:Settings runat="server" ID="pnlSettings" />
 </asp:Panel>

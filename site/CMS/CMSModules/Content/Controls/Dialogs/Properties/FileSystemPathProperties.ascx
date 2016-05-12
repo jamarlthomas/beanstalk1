@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Content_Controls_Dialogs_Properties_FileSystemPathProperties" Codebehind="FileSystemPathProperties.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Content_Controls_Dialogs_Properties_FileSystemPathProperties"  Codebehind="FileSystemPathProperties.ascx.cs" %>
 
 <div class="DialogInfoArea">
     <asp:Literal ID="ltlScript" runat="server" EnableViewState="false" />

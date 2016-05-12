@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="~/CMSModules/AbuseReport/Controls/AbuseReportStatusEdit.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="~/CMSModules/AbuseReport/Controls/AbuseReportStatusEdit.ascx.cs"
     Inherits="CMSModules_AbuseReport_Controls_AbuseReportStatusEdit" %>
 <cms:MessagesPlaceHolder ID="plcMess" runat="server" />
 <div class="form-horizontal">
@@ -98,6 +98,7 @@
     <div class="form-group">
         <div class="editing-form-value-cell editing-form-value-cell-offset">
             <cms:FormSubmitButton ID="btnOk" runat="server" ValidationGroup="RequiredAbuse" EnableViewState="false" />
+            <cms:LocalizedButton ID="btnObjectDetails" runat="server" EnableViewState="false" ResourceString="abuse.details" ButtonStyle="Default" />
         </div>
     </div>
 </div>

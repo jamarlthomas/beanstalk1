@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_SelectFolder" Codebehind="SelectFolder.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_SelectFolder"  Codebehind="SelectFolder.ascx.cs" %>
 <%@ Register src="~/CMSAdminControls/UI/PageElements/PageTitle.ascx" tagname="PageTitle" tagprefix="cms" %>
 <%@ Register Src="~/CMSModules/MediaLibrary/Controls/MediaLibrary/MediaLibrary.ascx"
     TagName="MediaLibrary" TagPrefix="cms" %>

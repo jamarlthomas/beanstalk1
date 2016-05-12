@@ -1,5 +1,5 @@
-<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
-    Inherits="CMSModules_SystemTables_Pages_Development_Views_Proc_List" Title="Classes - List" Theme="Default" Codebehind="Proc_List.aspx.cs" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
+    Inherits="CMSModules_SystemTables_Pages_Development_Views_Proc_List" Title="Classes - List" Theme="Default"  Codebehind="Proc_List.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/SystemTables/Controls/Views/SQLList.ascx" TagName="SQLList" TagPrefix="cms" %>
     

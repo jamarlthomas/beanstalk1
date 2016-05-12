@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Globalization;
 using System.Web.UI.WebControls;
@@ -11,7 +11,6 @@ using CMS.Helpers;
 using CMS.Helpers.Markup;
 using CMS.Membership;
 using CMS.Newsletters;
-using CMS.SiteProvider;
 using CMS.UIControls;
 
 [EditedObject(SubscriberInfo.OBJECT_TYPE, "objectid")]
@@ -21,12 +20,11 @@ public partial class CMSModules_Newsletters_Tools_Subscribers_Subscriber_Subscri
     #region "Constants and variables"
 
     private const string SELECT = "SELECT";
-    private const string UNSUBSCRIBE = "UNSUBSCRIBE";
-    private const string SUBSCRIBE = "SUBSCRIBE";
     private const string APPROVE = "APPROVE";
     private const string REMOVE = "REMOVE";
-    private int mSubscriberId;
+    private int mSubscriberID;
     private bool mIsMultipleSubscriber;
+    private readonly ISubscriptionService mSubscriptionService = Service<ISubscriptionService>.Entry();
 
     #endregion
 
@@ -46,7 +44,7 @@ public partial class CMSModules_Newsletters_Tools_Subscribers_Subscriber_Subscri
             RedirectToAccessDenied(subscriber.TypeInfo.ModuleName, "ManageSubscribers");
         }
 
-        mSubscriberId = subscriber.SubscriberID;
+        mSubscriberID = subscriber.SubscriberID;
 
         // Check if it is role or contact group subscriber
         mIsMultipleSubscriber = (subscriber.SubscriberRelatedID > 0) && (subscriber.SubscriberType != null) &&
@@ -63,7 +61,7 @@ public partial class CMSModules_Newsletters_Tools_Subscribers_Subscriber_Subscri
         selectNewsletter.IsLiveSite = false;
 
         // Initialize unigrid
-        unigridNewsletters.WhereCondition = "SubscriberID = " + mSubscriberId.ToString(CultureInfo.InvariantCulture);
+        unigridNewsletters.WhereCondition = "SubscriberID = " + mSubscriberID.ToString(CultureInfo.InvariantCulture);
         unigridNewsletters.OnAction += unigridNewsletters_OnAction;
         unigridNewsletters.OnExternalDataBound += unigridNewsletters_OnExternalDataBound;
 
@@ -71,10 +69,8 @@ public partial class CMSModules_Newsletters_Tools_Subscribers_Subscriber_Subscri
         if (drpActions.Items.Count == 0)
         {
             drpActions.Items.Add(new ListItem(GetString("general.selectaction"), SELECT));
-            drpActions.Items.Add(new ListItem(GetString("newsletter.unsubscribelink"), UNSUBSCRIBE));
-            drpActions.Items.Add(new ListItem(GetString("newsletter.renewsubscription"), SUBSCRIBE));
             drpActions.Items.Add(new ListItem(GetString("newsletter.approvesubscription"), APPROVE));
-            drpActions.Items.Add(new ListItem(GetString("newsletter.deletesubscription"), REMOVE));
+            drpActions.Items.Add(new ListItem(GetString("newsletter.deletesubscriptions"), REMOVE));
         }
     }
 
@@ -104,20 +100,22 @@ public partial class CMSModules_Newsletters_Tools_Subscribers_Subscriber_Subscri
         // Get new items from selector
         string newValues = ValidationHelper.GetString(selectNewsletter.Value, null);
         string[] newItems = newValues.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-        
+
         // Get all selected newsletters
         foreach (string item in newItems)
         {
             int newsletterId = ValidationHelper.GetInteger(item, 0);
 
-            // Get subscription
-            SubscriberNewsletterInfo subscription = SubscriberNewsletterInfoProvider.GetSubscriberNewsletterInfo(mSubscriberId, newsletterId);
-
-            // If not already subscribed
-            if (subscription == null)
+            if (!mSubscriptionService.IsSubscribed(mSubscriberID, newsletterId))
             {
-                // Send confirmation only when subscriber is not Role or CG type and only when Double opt-in is enabled.
-                SubscriberInfoProvider.Subscribe(mSubscriberId, newsletterId, DateTime.Now, chkSendConfirmation.Checked, !mIsMultipleSubscriber && chkRequireOptIn.Checked);
+                var subscribeSettings = new SubscribeSettings()
+                {
+                    SendConfirmationEmail = chkSendConfirmation.Checked,
+                    RequireOptIn = !mIsMultipleSubscriber && chkRequireOptIn.Checked,
+                    RemoveAlsoUnsubscriptionFromAllNewsletters = false,
+                };
+
+                mSubscriptionService.Subscribe(mSubscriberID, newsletterId, subscribeSettings);
             }
         }
 
@@ -134,21 +132,10 @@ public partial class CMSModules_Newsletters_Tools_Subscribers_Subscriber_Subscri
     {
         switch (sourceName.ToUpperInvariant())
         {
-            case SUBSCRIBE:
-                ((CMSGridActionButton)sender).Visible = !ValidationHelper.GetBoolean(((DataRowView)((GridViewRow)parameter).DataItem).Row["SubscriptionEnabled"], true);
-                break;
-
-            case UNSUBSCRIBE:
-                ((CMSGridActionButton)sender).Visible = ValidationHelper.GetBoolean(((DataRowView)((GridViewRow)parameter).DataItem).Row["SubscriptionEnabled"], true);
-                break;
-
             case APPROVE:
-                bool approved = ValidationHelper.GetBoolean(((DataRowView)((GridViewRow)parameter).DataItem).Row["SubscriptionApproved"], false);
-                if (approved || !ValidationHelper.GetBoolean(((DataRowView)((GridViewRow)parameter).DataItem).Row["SubscriptionEnabled"], true))
-                {
-                    CMSGridActionButton button = ((CMSGridActionButton)sender);
-                    button.Visible = false;
-                }
+                bool approved = ValidationHelper.GetBoolean(((DataRowView)((GridViewRow)parameter).DataItem).Row["SubscriptionApproved"], true);
+                var button = ((CMSGridActionButton)sender);
+                button.Visible = !approved;
                 break;
 
             case "STATUS":
@@ -176,7 +163,7 @@ public partial class CMSModules_Newsletters_Tools_Subscribers_Subscriber_Subscri
             ShowError(GetString("newsletter.erroronactiononsubscriber"));
             return;
         }
-        
+
         DoSubscriberAction(newsletter, actionName);
     }
 
@@ -186,24 +173,22 @@ public partial class CMSModules_Newsletters_Tools_Subscribers_Subscriber_Subscri
     /// </summary>
     private FormattedText GetSubscriptionStatus(DataRowView rowView)
     {
-        bool enabled = ValidationHelper.GetBoolean(DataHelper.GetDataRowValue(rowView.Row, "SubscriptionEnabled"), true);
-        if (!enabled)
+        var newsletterID = DataHelper.GetIntValue(rowView.Row, "NewsletterID");
+
+        var subscribed = mSubscriptionService.IsSubscribed(mSubscriberID, newsletterID);
+
+        if (!subscribed)
         {
-            return new FormattedText(GetString("newsletterview.headerunsubscribed"))
-                .ColorRed();
+            return new FormattedText(GetString("newsletterview.headerunsubscribed")).ColorRed();
         }
 
-        bool approved = ValidationHelper.GetBoolean(DataHelper.GetDataRowValue(rowView.Row, "SubscriptionApproved"), false);
+        bool approved = DataHelper.GetBoolValue(rowView.Row, "SubscriptionApproved", true);
         if (approved)
         {
-            return new FormattedText(ResHelper.GetString("general.approved"))
-                .ColorGreen();
+            return new FormattedText(GetString("general.approved")).ColorGreen();
         }
-        else
-        {
-            return new FormattedText(GetString("administration.users_header.myapproval"))
-                .ColorOrange();
-        }
+
+        return new FormattedText(GetString("administration.users_header.myapproval")).ColorOrange();
     }
 
 
@@ -250,45 +235,25 @@ public partial class CMSModules_Newsletters_Tools_Subscribers_Subscriber_Subscri
     /// <param name="actionName">Name of action</param>
     private void DoSubscriberAction(NewsletterInfo newsletter, string actionName)
     {
-        switch (actionName.ToUpperInvariant())
+        try
         {
-            // Renew subscription
-            case SUBSCRIBE:
-                var subscriberNewsletterInfo = SubscriberNewsletterInfoProvider.GetSubscriberNewsletterInfo(mSubscriberId, newsletter.NewsletterID);
-                if (subscriberNewsletterInfo.SubscriptionEnabled)
-                {
-                    return;
-                }
+            var subscriber = SubscriberInfoProvider.GetSubscriberInfo(mSubscriberID);
 
-                bool requireDoubleOptIn = chkRequireOptIn.Checked && newsletter.NewsletterEnableOptIn;
+            switch (actionName.ToUpperInvariant())
+            {
+                case REMOVE:
+                    mSubscriptionService.RemoveSubscription(subscriber.SubscriberID, newsletter.NewsletterID, chkSendConfirmation.Checked);
+                    break;
 
-                SubscriberInfoProvider.RenewSubscription(mSubscriberId, newsletter.NewsletterID, chkSendConfirmation.Checked && !requireDoubleOptIn);
-
-                bool approved = true;
-                // Check if double opt-in is enabled and if confirmation e-mail checkbox was checked
-                if (requireDoubleOptIn)
-                {
-                    IssueInfoProvider.SendDoubleOptInEmail(mSubscriberId, newsletter.NewsletterID);
-                    approved = false;
-                }
-
-                SubscriberNewsletterInfoProvider.SetApprovalStatus(mSubscriberId, newsletter.NewsletterID, approved);
-                break;
-
-            // Unsubscribe
-            case UNSUBSCRIBE:
-                SubscriberInfoProvider.Unsubscribe(mSubscriberId, newsletter.NewsletterID, chkSendConfirmation.Checked);
-                break;
-
-            // Remove subscription
-            case REMOVE:
-                SubscriberInfoProvider.DeleteSubscription(mSubscriberId, newsletter.NewsletterID, chkSendConfirmation.Checked);
-                break;
-
-            // Approve subscription
-            case APPROVE:
-                SubscriberNewsletterInfoProvider.ApproveSubscription(mSubscriberId, newsletter.NewsletterID);
-                break;
+                case APPROVE:
+                    SubscriberNewsletterInfoProvider.ApproveSubscription(mSubscriberID, newsletter.NewsletterID);
+                    break;
+            }
+        }
+        // Exception might be thrown when one of the object does not exist, especially when newsletter gets deleted before refreshing this page.
+        catch (Exception exception)
+        {
+            LogAndShowError("Subscriber subscriptions", "NEWSLETTERS", exception);
         }
     }
 }

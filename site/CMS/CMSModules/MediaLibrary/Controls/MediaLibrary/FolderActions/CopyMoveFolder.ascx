@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions_CopyMoveFolder_Control"
-    Codebehind="CopyMoveFolder.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions_CopyMoveFolder_Control"
+     Codebehind="CopyMoveFolder.ascx.cs" %>
 <asp:PlaceHolder ID="plcPropContent" runat="server">
     <div style="width: 100%; height: 320px; position: relative;" id="iframeDiv">
         <iframe id="innerFrame" runat="server" frameborder="0" scrolling="no" marginheight="0"

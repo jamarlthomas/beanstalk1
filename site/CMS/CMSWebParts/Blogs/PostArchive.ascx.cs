@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
@@ -157,7 +157,7 @@ public partial class CMSWebParts_Blogs_PostArchive : CMSAbstractWebPart
         bool selectOnlyPublished = (PageManager.ViewMode.IsLiveSite());
 
         // Get month NodeID        
-        int parentId = ValidationHelper.GetInteger((DataHelper.GetDataRowValue(((DataRowView)e.Item.DataItem).Row, "NodeID")), 0);
+        int parentId = DataHelper.GetIntValue(((DataRowView)e.Item.DataItem).Row, "NodeID");
 
         TreeProvider tree = new TreeProvider(MembershipContext.AuthenticatedUser);
 

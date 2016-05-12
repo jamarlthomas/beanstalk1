@@ -153,6 +153,11 @@
             Returns E-tag from blob.
             </summary>
         </member>
+        <member name="P:CMS.AzureStorage.BlobInfo.Length">
+            <summary>
+            Returns length of the blob in bytes.
+            </summary>
+        </member>
         <member name="T:CMS.AzureStorage.BlobInfoProvider">
             <summary>
             Class providing data from Azure blob storage.
@@ -606,29 +611,18 @@
             </summary>
             <param name="path">Path to directory</param>
         </member>
-        <member name="M:CMS.AzureStorage.DirectoryInfo.CreateSubdirectory(System.String)">
+        <member name="M:CMS.AzureStorage.DirectoryInfo.CreateSubdirectoryInternal(System.String)">
             <summary>
             Creates subdirectory.
             </summary>
             <param name="subdir">Subdirectory to create.</param>
         </member>
-        <member name="M:CMS.AzureStorage.DirectoryInfo.Delete">
+        <member name="M:CMS.AzureStorage.DirectoryInfo.DeleteInternal">
             <summary>
             Deletes directory.
             </summary>
         </member>
-        <member name="M:CMS.AzureStorage.DirectoryInfo.GetDirectories">
-            <summary>
-            Returns the subdirectories of the current directory.
-            </summary>        
-        </member>
-        <member name="M:CMS.AzureStorage.DirectoryInfo.GetDirectories(System.String)">
-            <summary>
-            Returns the subdirectories of the current directory.
-            </summary>
-            <param name="searchPattern">Search pattern.</param>        
-        </member>
-        <member name="M:CMS.AzureStorage.DirectoryInfo.GetDirectories(System.String,CMS.IO.SearchOption)">
+        <member name="M:CMS.AzureStorage.DirectoryInfo.GetDirectoriesInternal(System.String,CMS.IO.SearchOption)">
             <summary>
             Returns an array of directories in the current DirectoryInfo matching the given search criteria and using a value
             to determine whether to search subdirectories.
@@ -636,18 +630,7 @@
             <param name="searchPattern">Search pattern.</param>
             <param name="searchOption">Specifies whether to search the current directory, or the current directory and all subdirectories.</param>
         </member>
-        <member name="M:CMS.AzureStorage.DirectoryInfo.GetFiles">
-            <summary>
-            Returns files of the current directory.
-            </summary>        
-        </member>
-        <member name="M:CMS.AzureStorage.DirectoryInfo.GetFiles(System.String)">
-            <summary>
-            Returns files of the current directory.
-            </summary>
-            <param name="searchPattern">Search pattern.</param>        
-        </member>
-        <member name="M:CMS.AzureStorage.DirectoryInfo.GetFiles(System.String,CMS.IO.SearchOption)">
+        <member name="M:CMS.AzureStorage.DirectoryInfo.GetFilesInternal(System.String,CMS.IO.SearchOption)">
             <summary>
             Returns files of the current directory.
             </summary>
@@ -877,41 +860,35 @@
             </summary>
             <param name="filename">File name.</param>
         </member>
-        <member name="M:CMS.AzureStorage.FileInfo.CreateText">
+        <member name="M:CMS.AzureStorage.FileInfo.CreateTextInternal">
             <summary>
             Creates or opens a file for writing UTF-8 encoded text.
             </summary> 
         </member>
-        <member name="M:CMS.AzureStorage.FileInfo.Delete">
+        <member name="M:CMS.AzureStorage.FileInfo.DeleteInternal">
             <summary>
             Deletes file.
             </summary>
         </member>
-        <member name="M:CMS.AzureStorage.FileInfo.OpenRead">
+        <member name="M:CMS.AzureStorage.FileInfo.OpenReadInternal">
             <summary>
             Creates a read-only ICMSFileStream.
             </summary> 
         </member>
-        <member name="M:CMS.AzureStorage.FileInfo.CopyTo(System.String)">
-            <summary>
-            Copies current file to destination. 
-            </summary>
-            <param name="destFileName">Destination file name.</param>
-        </member>
-        <member name="M:CMS.AzureStorage.FileInfo.CopyTo(System.String,System.Boolean)">
+        <member name="M:CMS.AzureStorage.FileInfo.CopyToInternal(System.String,System.Boolean)">
             <summary>
             Copies current file to destination. 
             </summary>
             <param name="destFileName">Destination file name.</param>
             <param name="overwrite">Indicates if existing file should be overwritten</param>        
         </member>
-        <member name="M:CMS.AzureStorage.FileInfo.MoveTo(System.String)">
+        <member name="M:CMS.AzureStorage.FileInfo.MoveToInternal(System.String)">
             <summary>
             Moves an existing file to a new file.
             </summary>
             <param name="destFileName">Destination file name.</param>        
         </member>
-        <member name="M:CMS.AzureStorage.FileInfo.OpenText">
+        <member name="M:CMS.AzureStorage.FileInfo.OpenTextInternal">
             <summary>
             Creates a StreamReader with UTF8 encoding that reads from an existing text file.
             </summary>   
@@ -1080,6 +1057,12 @@
             Initializes the stream
             </summary>
         </member>
+        <member name="P:CMS.AzureStorage.FileStream.CanSeek">
+            <summary>
+            Gets a value indicating whether the current stream supports seeking.
+            </summary>
+            <returns>True if the stream supports seeking, false otherwise.</returns>
+        </member>
         <member name="P:CMS.AzureStorage.FileStream.Length">
             <summary>
             Length of stream.
@@ -1172,35 +1155,41 @@
             Initializes queue object.
             </summary>
         </member>
-        <member name="T:CMS.AzureStorage.QueueWebFarmUpdater">
+        <member name="T:CMS.AzureStorage.AzureStorageCacheCleaner">
             <summary>
-            Microsoft Azure queue storage web farm updater implementation.
+            Cleans Azure Temp and Cache folders on local file system.
             </summary>
         </member>
-        <member name="M:CMS.AzureStorage.QueueWebFarmUpdater.#ctor">
+        <member name="M:CMS.AzureStorage.AzureStorageCacheCleaner.Execute(CMS.Scheduler.TaskInfo)">
             <summary>
-            Creates new instance of QueueWebfarm updater.
+            Executes task.
+            </summary>
+            <param name="task">TaskInfo</param>
+        </member>
+        <member name="M:CMS.AzureStorage.AzureStorageCacheCleaner.IsFileExcluded(System.String)">
+            <summary>
+            Checks if the file should be excluded from the deletion.
+            </summary>
+            <param name="path">Full path to the file.</param>
+        </member>
+        <member name="P:CMS.AzureStorage.AzureStorageCacheCleaner.Threshold">
+            <summary>
+            The limit in bytes. The scheduled task starts to delete files after reaching this limit.
             </summary>
         </member>
-        <member name="M:CMS.AzureStorage.QueueWebFarmUpdater.RunReceiveThread">
+        <member name="P:CMS.AzureStorage.AzureStorageCacheCleaner.KeepLimit">
             <summary>
-            Starts receive thread.
+            How many bytes should be kept on the disk after the cleanup.
             </summary>
         </member>
-        <member name="M:CMS.AzureStorage.QueueWebFarmUpdater.Notify(System.String)">
+        <member name="P:CMS.AzureStorage.AzureStorageCacheCleaner.ExcludedPaths">
             <summary>
-            Notifies other servers in web farm about synchronization.
-            </summary>
-            <param name="url">Server URL with web farm updater page.</param>
-        </member>
-        <member name="P:CMS.AzureStorage.QueueWebFarmUpdater.LastUpdateDateTime">
-            <summary>
-            Gets or sets time when current instance was updated for the last time.
+            Paths that are excluded from the deletion.
             </summary>
         </member>
-        <member name="P:CMS.AzureStorage.QueueWebFarmUpdater.LastNotificationSentDateTime">
+        <member name="P:CMS.AzureStorage.AzureStorageCacheCleaner.DirsToSearch">
             <summary>
-            Gets or sets time when current instance sent notification for the last time.
+            Directories that are guarded by this scheduled task.
             </summary>
         </member>
     </members>

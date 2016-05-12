@@ -9,6 +9,13 @@
             Basic bizform engine independent on CMS.
             </summary>
         </member>
+        <member name="F:CMS.OnlineForms.BizForm.mErrorMessagePrefix">
+            <summary>
+            Prefix for the default validation error message.
+            Concatenated with ".errorvalidationerror" resource string.
+            If not found, general prefix is used.
+            </summary>
+        </member>
         <member name="F:CMS.OnlineForms.BizForm.uploadFiles">
             <summary>
             List of files (controls) to upload files.
@@ -298,7 +305,9 @@
         </member>
         <member name="T:CMS.OnlineForms.BizFormInfo">
             <summary>
-            BizFormInfo data container class.
+            <see cref="T:CMS.OnlineForms.BizFormInfo"/> stores information about General, Autoresponder, Email notification and similar tabs. 
+            <see cref="T:CMS.OnlineForms.FormClassInfo"/> stores the structure of the form. That means for example form definition (Fields tab) and search fields settings.
+            <see cref="T:CMS.OnlineForms.BizFormItem"/> stores the data that visitors fill on the website.
             </summary>
         </member>
         <member name="F:CMS.OnlineForms.BizFormInfo.OBJECT_TYPE">
@@ -632,7 +641,7 @@
             </summary>
             <param name="siteID">Site ID</param>
         </member>
-        <member name="M:CMS.OnlineForms.BizFormInfoProvider.CreateBizFormDataClass(System.String,System.String,System.String,System.String)">
+        <member name="M:CMS.OnlineForms.BizFormInfoProvider.CreateBizFormDataClass(System.String,System.String,System.String,System.String,System.Collections.Generic.List{CMS.FormEngine.FormFieldInfo})">
             <summary>
             Creates bizform data class definition based on the given parameters.
             </summary>
@@ -640,6 +649,14 @@
             <param name="displayName">Form display name</param>
             <param name="tableName">Form table name</param>
             <param name="primaryKeyName">Table primary key column name</param>
+            <param name="fields">List of additional fields</param>
+        </member>
+        <member name="M:CMS.OnlineForms.BizFormInfoProvider.GetDefinitionXML(System.String,System.Collections.Generic.IEnumerable{CMS.FormEngine.FormFieldInfo})">
+            <summary>
+            Gets form definition XML for given primary key and custom fields
+            </summary>
+            <param name="primaryKeyName">Primary key name</param>
+            <param name="fields">Custom fields</param>
         </member>
         <member name="M:CMS.OnlineForms.BizFormInfoProvider.GetTimeField(System.String,System.String)">
             <summary>
@@ -832,7 +849,19 @@
         </member>
         <member name="T:CMS.OnlineForms.FormClassInfo">
             <summary>
-            Specialized class for the form class info
+            <see cref="T:CMS.OnlineForms.BizFormInfo"/> stores information about General, Autoresponder, Email notification and similar tabs. 
+            <see cref="T:CMS.OnlineForms.FormClassInfo"/> stores the structure of the form. That means for example form definition (Fields tab) and search fields settings.
+            <see cref="T:CMS.OnlineForms.BizFormItem"/> stores the data that visitors fill on the website.
+            </summary>
+        </member>
+        <member name="F:CMS.OnlineForms.FormClassInfo.OBJECT_TYPE_FORM">
+            <summary>
+            Object type for form
+            </summary>
+        </member>
+        <member name="F:CMS.OnlineForms.FormClassInfo.TYPEINFOFORM">
+            <summary>
+            Type information for forms.
             </summary>
         </member>
         <member name="M:CMS.OnlineForms.FormClassInfo.#ctor">
@@ -902,17 +931,17 @@
             Initializes the tasks for forms synchronization
             </summary>
         </member>
-        <member name="M:CMS.OnlineForms.FormSynchronization.CheckSynchronizeBizFormFiles">
+        <member name="M:CMS.OnlineForms.FormSynchronization.CheckSynchronizeBizFormFiles(CMS.Core.IWebFarmTask)">
             <summary>
             Returns true if the synchronization of the BizForm files is allowed
             </summary>
         </member>
-        <member name="M:CMS.OnlineForms.FormSynchronization.CheckSynchronizeDeleteBizFormFiles">
+        <member name="M:CMS.OnlineForms.FormSynchronization.CheckSynchronizeDeleteBizFormFiles(CMS.Core.IWebFarmTask)">
             <summary>
             Returns true if the synchronization of the deletion of the BizForm files is allowed
             </summary>
         </member>
-        <member name="M:CMS.OnlineForms.FormSynchronization.UpdateBizFormFile(System.String,System.String,CMS.Core.BinaryData)">
+        <member name="M:CMS.OnlineForms.FormSynchronization.UpdateBizFormFile(System.String,System.String[],CMS.Core.BinaryData)">
             <summary>
             Updates the BizForm file
             </summary>
@@ -920,7 +949,7 @@
             <param name="data">Task data</param>
             <param name="binaryData">Task binary data</param>
         </member>
-        <member name="M:CMS.OnlineForms.FormSynchronization.DeleteBizFormFile(System.String,System.String,CMS.Core.BinaryData)">
+        <member name="M:CMS.OnlineForms.FormSynchronization.DeleteBizFormFile(System.String,System.String[],CMS.Core.BinaryData)">
             <summary>
             Deletes the BizForm file
             </summary>
@@ -928,7 +957,7 @@
             <param name="data">Task data</param>
             <param name="binaryData">Task binary data</param>
         </member>
-        <member name="M:CMS.OnlineForms.FormSynchronization.ClearBizFormTypeInfo(System.String,System.String,CMS.Core.BinaryData)">
+        <member name="M:CMS.OnlineForms.FormSynchronization.ClearBizFormTypeInfo(System.String,System.String[],CMS.Core.BinaryData)">
             <summary>
             Clears the BizForm item type info
             </summary>
@@ -936,7 +965,7 @@
             <param name="data">Task data</param>
             <param name="binaryData">Task binary data</param>
         </member>
-        <member name="M:CMS.OnlineForms.FormSynchronization.InvalidateBizFormTypeInfo(System.String,System.String,CMS.Core.BinaryData)">
+        <member name="M:CMS.OnlineForms.FormSynchronization.InvalidateBizFormTypeInfo(System.String,System.String[],CMS.Core.BinaryData)">
             <summary>
             Invalidates the BizForm item type info
             </summary>
@@ -1035,7 +1064,9 @@
         </member>
         <member name="T:CMS.OnlineForms.BizFormItem">
             <summary>
-            Class providing access to BizForm data.
+            <see cref="P:CMS.OnlineForms.BizFormItem.BizFormInfo"/> stores information about General, Autoresponder, Email notification and similar tabs. 
+            <see cref="T:CMS.OnlineForms.FormClassInfo"/> stores the structure of the form. That means for example form definition (Fields tab) and search fields settings.
+            <see cref="T:CMS.OnlineForms.BizFormItem"/> stores the data that visitors fill on the website.
             </summary>
         </member>
         <member name="M:CMS.OnlineForms.BizFormItem.DeleteObject">
@@ -1086,6 +1117,12 @@
             <param name="className">Class name of the document</param>
             <param name="dr">Data row with the data</param>
         </member>
+        <member name="M:CMS.OnlineForms.BizFormItem.NewObject(CMS.DataEngine.LoadDataSettings)">
+            <summary>
+            Creates a new object from the given DataRow
+            </summary>
+            <param name="settings">Data settings</param>
+        </member>
         <member name="M:CMS.OnlineForms.BizFormItem.New(System.String,System.Data.DataRow)">
             <summary>
             Creates new BizFormItem instance which must inherit the BizFormItem class.
@@ -1118,7 +1155,7 @@
             Initializes the object created with default constructor. Use it to load existing item from data row.
             </summary>
             <param name="className">Class name</param>
-            <param name="dataRow">Data row containing all page data</param>
+            <param name="dr">Data row containing all page data</param>
         </member>
         <member name="M:CMS.OnlineForms.BizFormItem.Initialize(System.String,CMS.Base.IDataContainer)">
             <summary>
@@ -1585,7 +1622,7 @@
             </summary>
             <param name="objectType">Object type</param>
         </member>
-        <member name="M:CMS.OnlineForms.OnlineFormsModule.AbstractProvider_LoadProvider(System.String,CMS.DataEngine.AbstractProvider@)">
+        <member name="M:CMS.OnlineForms.OnlineFormsModule.AbstractProvider_LoadProvider(System.Object,CMS.DataEngine.LoadProviderEventArgs)">
             <summary>
             Ensures provider for the BizForm items
             </summary>

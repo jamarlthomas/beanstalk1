@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Staging_Tools_Data_Tasks"
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Staging_Tools_Data_Tasks"
     Title="Tasks - Data" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Theme="Default"
-    Codebehind="Tasks.aspx.cs" %>
+     Codebehind="Tasks.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Staging/FormControls/ServerSelector.ascx" TagName="ServerSelector"
     TagPrefix="cms" %>
@@ -11,10 +11,8 @@
 <%@ Register Src="~/CMSAdminControls/Basic/DisabledModuleInfo.ascx" TagPrefix="cms"
     TagName="DisabledModule" %>
 
-<asp:Content ID="cntHeader" runat="server" ContentPlaceHolderID="plcActions">
-    <cms:LocalizedButton ID="btnComplete" runat="server" OnClientClick="return CompleteSync();"
-        EnableViewState="false" ButtonStyle="Primary" ResourceString="Tasks.CompleteSync" />
-    <div class="form-horizontal form-filter server-selector">
+<asp:Content ID="cntHeader" runat="server" ContentPlaceHolderID="plcSiteSelector">
+    <div class="form-horizontal form-filter">
         <div class="form-group">
             <div class="filter-form-label-cell">
                 <cms:LocalizedLabel CssClass="control-label" ID="lblServers" runat="server" EnableViewState="false" ResourceString="Tasks.SelectServer" />
@@ -29,17 +27,17 @@
     <cms:CMSUpdatePanel ID="pnlUpdate" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
             <asp:Panel runat="server" ID="pnlLog" Visible="false">
-                <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+                <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="Synchronization" />
             </asp:Panel>
             <asp:Panel runat="server" ID="pnlNotLogged">
                 <cms:DisabledModule runat="server" ID="ucDisabledModule" />
             </asp:Panel>
             <asp:PlaceHolder ID="plcContent" runat="server">
-                <cms:UniGrid ID="gridTasks" runat="server" GridName="~/CMSModules/Staging/Tools/Data/Tasks.xml"
-                    DelayedReload="false" OrderBy="TaskTime, TaskID" ExportFileName="staging_task" />
+                <cms:UniGrid ID="gridTasks" runat="server" GridName="~/CMSModules/Staging/Tools/AllTasks/Tasks.xml"
+                    OrderBy="TaskTime, TaskID" ExportFileName="staging_task" />
                 <br />
-                <asp:Panel ID="pnlFooter" runat="server" Style="clear: both;">
-                    <table style="width: 100%;">
+                <asp:Panel ID="pnlFooter" runat="server" CssClass="Clear">
+                    <table class="Table100">
                         <tr>
                             <td>
                                 <cms:LocalizedButton runat="server" ID="btnSyncSelected" ButtonStyle="Default" OnClick="btnSyncSelected_Click"

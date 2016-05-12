@@ -1,6 +1,6 @@
-<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
+﻿<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
     Inherits="CMSModules_DocumentTypes_Pages_Development_DocumentType_Edit_Documents"
-    Title="Page Type Edit - Pages" Theme="Default" Codebehind="DocumentType_Edit_Documents.aspx.cs" %>
+    Title="Page Type Edit - Pages" Theme="Default"  Codebehind="DocumentType_Edit_Documents.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/AdminControls/Controls/Documents/Documents.ascx" TagName="Documents"
     TagPrefix="cms" %>

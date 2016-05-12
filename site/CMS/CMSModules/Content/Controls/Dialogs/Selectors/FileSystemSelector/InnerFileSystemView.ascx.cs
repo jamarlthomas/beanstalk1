@@ -1,11 +1,10 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 
-using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -29,10 +28,9 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
     private string mFileSizeColumn = "size";
 
     private string mSearchText = string.Empty;
-    private string mImagesPath = string.Empty;
     private string mFullStartingPath = string.Empty;
 
-    private bool editAllowed;
+    private bool? mAllowEdit;
 
     private DialogViewModeEnum mViewMode = DialogViewModeEnum.ListView;
 
@@ -40,6 +38,27 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
 
 
     #region "Properties"
+
+    /// <summary>
+    /// Gets or sets whether the view is allowed to edit the items
+    /// </summary>
+    public bool AllowEdit
+    {
+        get
+        {
+            if (mAllowEdit == null)
+            {
+                mAllowEdit = MembershipContext.AuthenticatedUser.IsGlobalAdministrator;
+            }
+
+            return mAllowEdit.Value;
+        }
+        set
+        {
+            mAllowEdit = value;
+        }
+    }
+
 
     /// <summary>
     /// Switch between folders and files mode.
@@ -68,22 +87,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
     {
         get;
         set;
-    }
-
-
-    /// <summary>
-    /// Image relative path.
-    /// </summary>
-    private string ImagesPath
-    {
-        get
-        {
-            if (mImagesPath == string.Empty)
-            {
-                mImagesPath = GetImageUrl("Design/Controls/UniGrid/Actions/", IsLiveSite, true);
-            }
-            return mImagesPath;
-        }
     }
 
 
@@ -548,8 +551,6 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_FileSystemSel
     /// <param name="e">Event argument set</param>
     protected void Page_Load(object sender, EventArgs e)
     {
-        editAllowed = MembershipContext.AuthenticatedUser.IsGlobalAdministrator;
-
         Visible = !StopProcessing;
         if (!StopProcessing)
         {
@@ -1125,44 +1126,51 @@ function ClearColorizedRow()
         // Initializing variables
         object result = null;
 
-        string argument = string.Empty;
-        string ext = string.Empty;
+        string argument;
+        string ext;
+
+        CMSGridActionButton btn;
+        DataRowView drv;
+        GridViewRow gvr;
 
         switch (sourceName.ToLowerCSafe())
         {
             // Select event
             case "select":
-                GridViewRow gvr = (parameter as GridViewRow);
-                DataRowView drv = (DataRowView)gvr.DataItem;
-                CMSGridActionButton btn = ((CMSGridActionButton)sender);
-
-                // Get item extension
-                ext = drv[FileExtensionColumn].ToString().Trim('.');
-                bool isSelectable = IsItemSelectable(ValidationHelper.GetBoolean(drv["isfile"], true));
-
-                // Check if item is selectable, if not remove select action button
-                if (!isSelectable)
                 {
-                    btn.ToolTip = "";
-                    btn.Enabled = false;
-                }
-                else
-                {
-                    argument = RaiseOnGetArgumentSet(drv.Row);
+                    gvr = (GridViewRow)parameter;
+                    drv = (DataRowView)gvr.DataItem;
+                    btn = (CMSGridActionButton)sender;
 
-                    // Initialize command
-                    btn.OnClientClick = GetSelectScript(drv, argument);
+                    // Get item extension
+                    bool isSelectable = IsItemSelectable(ValidationHelper.GetBoolean(drv["isfile"], true));
 
-                    result = btn;
+                    // Check if item is selectable, if not remove select action button
+                    if (!isSelectable)
+                    {
+                        btn.ToolTip = "";
+                        btn.Enabled = false;
+                    }
+                    else
+                    {
+                        argument = RaiseOnGetArgumentSet(drv.Row);
+
+                        // Initialize command
+                        btn.OnClientClick = GetSelectScript(drv, argument);
+
+                        result = btn;
+                    }
+                    break;
                 }
-                break;
 
             // Select subdocs event
             case "selectsubdocs":
                 btn = sender as CMSGridActionButton;
                 if (btn != null)
                 {
-                    drv = (DataRowView)(parameter as GridViewRow).DataItem;
+                    gvr = (GridViewRow)parameter;
+                    drv = (DataRowView)gvr.DataItem;
+
                     string nodeId = ValidationHelper.GetString(drv[FileIdColumn], "");
                     int childCount = ValidationHelper.GetInteger(drv["childscount"], 0);
 
@@ -1194,9 +1202,10 @@ function ClearColorizedRow()
                     btn = sender as CMSGridActionButton;
                     if (btn != null)
                     {
-                        if (editAllowed && Configuration.AllowManage)
+                        if (AllowEdit && Configuration.AllowManage)
                         {
-                            drv = (DataRowView)(parameter as GridViewRow).DataItem;
+                            gvr = (GridViewRow)parameter;
+                            drv = (DataRowView)gvr.DataItem;
 
                             ext = drv[FileExtensionColumn].ToString();
                             string path = drv["Path"].ToString();
@@ -1222,7 +1231,7 @@ function ClearColorizedRow()
                 {
                     btn = ((CMSGridActionButton)sender);
 
-                    if (editAllowed && Configuration.AllowManage)
+                    if (AllowEdit && Configuration.AllowManage)
                     {
                         gvr = (parameter as GridViewRow);
                         drv = (DataRowView)gvr.DataItem;
@@ -1361,32 +1370,27 @@ function ClearColorizedRow()
 
         WindowHelper.Add(fileIdentifier, props);
 
+        const string CONTENT_FOLDER = "~/CMSModules/Content/";
+
         if (ImageHelper.IsSupportedByImageEditor(ext))
         {
             // Image editing (image editor)
             string parameters = String.Format("?identifier={0}&refresh=1", fileIdentifier);
             string validationHash = QueryHelper.GetHash(parameters);
-            string url = URLHelper.ResolveUrl("~/CMSModules/Content/CMSDesk/Edit/ImageEditor.aspx") + parameters + "&hash=" + validationHash;
+            string url = URLHelper.ResolveUrl(CONTENT_FOLDER + "CMSDesk/Edit/ImageEditor.aspx") + parameters + "&hash=" + validationHash;
 
             return String.Format("modalDialog({0}, 'imageeditor', 905, 670); return false;", ScriptHelper.GetString(url));
         }
 
         // Text file editing
-        switch (ext.TrimStart('.').ToLowerCSafe())
+        if (FileHelper.IsTextFileExtension(ext))
         {
-            case "css":
-            case "skin":
-            case "txt":
-            case "xml":
-            case "js":
-                {
-                    // Prepare parameters
-                    string parameters = String.Format("?identifier={0}", fileIdentifier);
-                    string validationHash = QueryHelper.GetHash(parameters);
-                    string url = URLHelper.ResolveUrl("~/CMSModules/Content/Controls/Dialogs/Selectors/FileSystemSelector/EditTextFile.aspx") + parameters + "&hash=" + validationHash;
+            // Prepare parameters
+            string parameters = String.Format("?identifier={0}", fileIdentifier);
+            string validationHash = QueryHelper.GetHash(parameters);
+            string url = URLHelper.ResolveUrl(CONTENT_FOLDER + "Controls/Dialogs/Selectors/FileSystemSelector/EditTextFile.aspx") + parameters + "&hash=" + validationHash;
 
-                    return String.Format("modalDialog({0}, 'texteditor', 905, 688); return false;", ScriptHelper.GetString(url));
-                }
+            return String.Format("modalDialog({0}, 'texteditor', 905, 688); return false;", ScriptHelper.GetString(url));
         }
 
         return null;

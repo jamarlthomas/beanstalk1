@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_Alias_Edit"
-    Theme="Default" Codebehind="Alias_Edit.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Content_CMSDesk_Properties_Alias_Edit"
+    Theme="Default"  Codebehind="Alias_Edit.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" %>
 
 <%@ Register Src="~/CMSFormControls/Cultures/SiteCultureSelector.ascx" TagName="SiteCultureSelector"
     TagPrefix="cms" %>
@@ -34,14 +34,6 @@
             </div>
             <div class="editing-form-value-cell">
                 <cms:CMSTextBox ID="txtURLExtensions" runat="server" MaxLength="100" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="editing-form-label-cell">
-                <asp:Label CssClass="control-label" ID="lblTrackCampaign" runat="server" AssociatedControlID="usSelectCampaign"/>
-            </div>
-            <div class="editing-form-value-cell">
-                <cms:SelectCampaign runat="server" ID="usSelectCampaign" IsLiveSite="false" SelectionMode="SingleTextBox" />
             </div>
         </div>
         <asp:PlaceHolder runat="server" ID="pnlUrlInfo">

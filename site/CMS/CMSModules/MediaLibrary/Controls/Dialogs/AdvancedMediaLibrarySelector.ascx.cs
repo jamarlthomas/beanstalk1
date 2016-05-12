@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -128,22 +128,6 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_AdvancedMediaLibra
         }
     }
 
-
-    /// <summary>
-    /// Name of the global library.
-    /// </summary>
-    [Obsolete("This property is obsolete. Use GlobalLibraryName property instead.")]
-    public string GlobalLibaryName
-    {
-        get
-        {
-            return mGlobalLibraryName;
-        }
-        set
-        {
-            mGlobalLibraryName = value;
-        }
-    }
 
     /// <summary>
     /// Name of the global library.
@@ -442,7 +426,7 @@ public partial class CMSModules_MediaLibrary_Controls_Dialogs_AdvancedMediaLibra
     /// </summary>
     private string GetSitesWhere()
     {
-        WhereCondition condition = new WhereCondition().WhereEquals("SiteStatus", "RUNNING");
+        WhereCondition condition = new WhereCondition().WhereEquals("SiteStatus", SiteStatusEnum.Running.ToStringRepresentation());
 
         // If not global admin display only related sites
         if (!MembershipContext.AuthenticatedUser.IsGlobalAdministrator)

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Codebehind="Subscribers.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="Subscribers.aspx.cs" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
     Title="Contact properties" Inherits="CMSModules_ContactManagement_Pages_Tools_Contact_Membership_Subscribers"
     Theme="Default" %>
 
@@ -6,12 +6,9 @@
 <%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 <%@ Register Src="~/CMSModules/Newsletters/FormControls/NewsletterSubscriberSelector.ascx"
     TagName="SelectSubscriber" TagPrefix="cms" %>
-<asp:Content ID="contentControls" ContentPlaceHolderID="plcActions" runat="server">
-    <div class="PageHeaderItem">
+<asp:Content ID="cntActions" ContentPlaceHolderID="plcActions" runat="server">
+    <div class="control-group-inline header-actions-container">
         <cms:SelectSubscriber runat="server" ID="selectSubscriber" />
-    </div>
-    <div class="ClearBoth">
-        &nbsp;
     </div>
 </asp:Content>
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">

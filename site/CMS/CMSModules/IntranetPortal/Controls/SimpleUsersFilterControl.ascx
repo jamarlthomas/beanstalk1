@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_IntranetPortal_Controls_SimpleUsersFilterControl" Codebehind="~/CMSModules/IntranetPortal/Controls/SimpleUsersFilterControl.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_IntranetPortal_Controls_SimpleUsersFilterControl"  Codebehind="~/CMSModules/IntranetPortal/Controls/SimpleUsersFilterControl.ascx.cs" %>
 <asp:Panel CssClass="Filter" DefaultButton="btnSelect" runat="server" ID="pnlUsersFilter">
     <span class="FilterSearch">
         <cms:LocalizedLabel ID="lblValue" runat="server" EnableViewState="false" AssociatedControlID="txtValue"

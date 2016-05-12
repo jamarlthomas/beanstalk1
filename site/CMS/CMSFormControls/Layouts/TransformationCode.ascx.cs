@@ -31,9 +31,10 @@ public partial class CMSFormControls_Layouts_TransformationCode : FormEngineUser
 
     #region "Variables"
 
-    readonly int transformationID = QueryHelper.GetInteger("transformationid", 0);
-    TransformationInfo ti;
-    CurrentUserInfo user;
+    private readonly int transformationID = QueryHelper.GetInteger("transformationid", 0);
+    private TransformationInfo transformationInfo;
+    private CurrentUserInfo user;
+    private bool? mAscxEditAllowed;
 
     #endregion
 
@@ -100,6 +101,12 @@ public partial class CMSFormControls_Layouts_TransformationCode : FormEngineUser
     {
         get
         {
+            if (IsAscx && !AscxEditAllowed)
+            {
+                // Ignore value from user input to avoid a forgery
+                return transformationInfo.TransformationCode;
+            }
+
             return (txtCode.Visible) ? txtCode.Text : tbWysiwyg.ResolvedValue;
         }
     }
@@ -124,7 +131,7 @@ public partial class CMSFormControls_Layouts_TransformationCode : FormEngineUser
     {
         get
         {
-            return TransformationInfoProvider.GetTransformationTypeEnum(drpType.SelectedValue.ToLowerCSafe());
+            return drpType.SelectedValue.ToLowerCSafe().ToEnum<TransformationTypeEnum>();
         }
     }
 
@@ -156,11 +163,28 @@ public partial class CMSFormControls_Layouts_TransformationCode : FormEngineUser
         }
     }
 
+
+    /// <summary>
+    /// Returns true if currently authenticated user is authorized to edit ASCX code.
+    /// </summary>
+    private bool AscxEditAllowed
+    {
+        get
+        {
+            if (mAscxEditAllowed == null)
+            {
+                mAscxEditAllowed = user.IsAuthorizedPerResource("CMS.Design", "EditCode");
+            }
+
+            return mAscxEditAllowed.Value;
+        }
+    }
+
     #endregion
 
 
     #region "Methods"
-    
+
     /// <summary>
     /// Loads the other fields values to the state of the form control
     /// </summary>
@@ -180,19 +204,18 @@ public partial class CMSFormControls_Layouts_TransformationCode : FormEngineUser
         values[0, 1] = TransformationCode;
         values[1, 0] = "TransformationType";
 
-        String type = (drpType.SelectedValue == null ? TransformationTypeEnum.Ascx.ToString() : drpType.SelectedValue.ToLowerCSafe());
+        String type = (drpType.SelectedValue == null ? TransformationTypeEnum.Ascx.ToStringRepresentation() : drpType.SelectedValue.ToLowerCSafe());
 
-        // For users not authorized to change ascx, do not allow to change transf. type
-        if (!MembershipContext.AuthenticatedUser.IsAuthorizedPerResource("cms.design", "editcode"))
+        // Ignore currently selected value for transformation type if the type equaled 'ASCX' originally and current user doesn't have permission to edit ASCX code.
+        if (IsAscx && !AscxEditAllowed)
         {
-            TransformationInfo transInfo = UIContext.EditedObject as TransformationInfo;
-            if ((transInfo != null) && (type == "ascx"))
+            if ((transformationInfo != null) && (transformationID > 0) && (transformationInfo.TransformationType == TransformationTypeEnum.Ascx))
             {
-                type = transInfo.TransformationType.ToString();
+                type = TransformationTypeEnum.Ascx.ToStringRepresentation();
             }
         }
-        values[1, 1] = type;
 
+        values[1, 1] = type;
         values[2, 0] = "TransformationCSS";
         values[2, 1] = txtCSS.Text;
         return values;
@@ -275,8 +298,6 @@ function GenerateDefaultCode(type){
         txtCode.ReadOnly = !Enabled;
         tbWysiwyg.Enabled = Enabled;
 
-        lblDirectives.Visible = IsAscx;
-
         // Check whether virtual objects are allowed
         if (!SettingsKeyInfoProvider.VirtualObjectsAllowed)
         {
@@ -291,27 +312,27 @@ function GenerateDefaultCode(type){
     {
         base.OnInit(e);
 
-        ti = UIContext.EditedObject as TransformationInfo;
+        transformationInfo = UIContext.EditedObject as TransformationInfo;
         user = MembershipContext.AuthenticatedUser;
 
         if (!RequestHelper.IsPostBack())
         {
             DropDownListInit();
 
-            if (ti != null)
+            if (transformationInfo != null)
             {
                 // Fills form with transformation information
-                drpType.SelectedValue = ti.TransformationType.ToString();
-                txtCSS.Text = ti.TransformationCSS;
+                drpType.SelectedValue = transformationInfo.TransformationType.ToStringRepresentation();
+                txtCSS.Text = transformationInfo.TransformationCSS;
 
-                if (ti.TransformationType == TransformationTypeEnum.Html)
+                if (transformationInfo.TransformationType == TransformationTypeEnum.Html)
                 {
-                    tbWysiwyg.ResolvedValue = ti.TransformationCode;
+                    tbWysiwyg.ResolvedValue = transformationInfo.TransformationCode;
                     tbWysiwyg.Visible = true;
                 }
                 else
                 {
-                    txtCode.Text = ti.TransformationCode;
+                    txtCode.Text = transformationInfo.TransformationCode;
                     txtCode.Visible = true;
                 }
             }
@@ -382,38 +403,27 @@ function GenerateDefaultCode(type){
     }
 
 
-
-
-    public void GenerateDefaultTransformation(DefaultTransformationTypeEnum transformCode)
+    private void GenerateDefaultTransformation(DefaultTransformationTypeEnum transformCode)
     {
         if (String.IsNullOrEmpty(ClassName))
         {
             ClassName = DataClassInfoProvider.GetClassName(ClassID);
         }
 
-        // Gets Xml schema of the document type
-        DataClassInfo dci = DataClassInfoProvider.GetDataClassInfo(ClassName);
-        string formDef = string.Empty;
-        if (dci != null)
-        {
-            formDef = dci.ClassFormDefinition;
-        }
-
-        // Gets transformation type
-        TransformationTypeEnum transformType = TransformationInfoProvider.GetTransformationTypeEnum(drpType.SelectedValue);
+        var code = TransformationInfoProvider.GenerateTransformationCode(ClassName, TransformationType, transformCode);
 
         // Writes the result to the text box
-        if (transformType == TransformationTypeEnum.Html)
+        if (TransformationType == TransformationTypeEnum.Html)
         {
             txtCode.Visible = false;
             tbWysiwyg.Visible = true;
-            tbWysiwyg.ResolvedValue = TransformationInfoProvider.GenerateTransformationCode(formDef, transformType, ClassName, transformCode);
+            tbWysiwyg.ResolvedValue = code;
         }
         else
         {
             tbWysiwyg.Visible = false;
             txtCode.Visible = true;
-            txtCode.Text = TransformationInfoProvider.GenerateTransformationCode(formDef, transformType, ClassName, transformCode);
+            txtCode.Text = code;
         }
     }
 
@@ -428,10 +438,9 @@ function GenerateDefaultCode(type){
             txtCode.Editor.Language = LanguageEnum.ASPNET;
 
             // Check the edit code permission
-            if (!user.IsAuthorizedPerResource("CMS.Design", "EditCode"))
+            if (!AscxEditAllowed)
             {
                 txtCode.Editor.Enabled = false;
-                lblDirectives.Visible = false;
             }
         }
         else
@@ -453,7 +462,7 @@ function GenerateDefaultCode(type){
         }
 
         // Check the edit code permission
-        if (!user.IsAuthorizedPerResource("CMS.Design", "EditCode"))
+        if (!AscxEditAllowed)
         {
             ShowWarning(GetString("EditCode.NotAllowed"));
         }
@@ -465,21 +474,25 @@ function GenerateDefaultCode(type){
         // Get the current code
         string code = TransformationCode;
 
-        switch (drpType.SelectedValue.ToLowerCSafe())
+        switch (TransformationType)
         {
-            case "ascx":
-                // Convert to ASCX syntax
-                if (CMSString.Equals(drpType.SelectedValue, "ascx", true))
-                {
-                    code = MacroSecurityProcessor.RemoveSecurityParameters(code, false, null);
+            case TransformationTypeEnum.Ascx:
 
-                    code = code.Replace("{% Register", "<%@ Register").Replace("{%", "<%#").Replace("%}", "%>");
+                if (!AscxEditAllowed)
+                {
+                    // Ignore type change and reset transformation type selector
+                    drpType.SelectedValue = transformationInfo.TransformationType.ToStringRepresentation();
+                    ShowWarning(GetString("EditCode.NotAllowed"));
+                    break;
                 }
 
+                // Convert to ASCX syntax
+                code = MacroSecurityProcessor.RemoveSecurityParameters(code, false, null);
+                code = code.Replace("{% Register", "<%@ Register").Replace("{%", "<%#").Replace("%}", "%>");
                 ShowMessage();
                 break;
 
-            case "xslt":
+            case TransformationTypeEnum.Xslt:
                 // No transformation
                 break;
 
@@ -490,7 +503,7 @@ function GenerateDefaultCode(type){
         }
 
         // Move the content if necessary
-        if (CMSString.Equals(drpType.SelectedValue, "html", true))
+        if (TransformationType == TransformationTypeEnum.Html)
         {
             // Move from text to WYSIWYG
             if (txtCode.Visible)
@@ -530,15 +543,11 @@ function GenerateDefaultCode(type){
     /// </summary>
     private void DropDownListInit()
     {
-        // Initialize
-        if ((transformationID > 0) || !String.IsNullOrEmpty(TransformationName) || user.IsAuthorizedPerResource("CMS.Design", "EditCode"))
-        {
-            drpType.Items.Add(new ListItem(GetString("TransformationType.Ascx"), TransformationTypeEnum.Ascx.ToString()));
-        }
-        drpType.Items.Add(new ListItem(GetString("TransformationType.Text"), TransformationTypeEnum.Text.ToString()));
-        drpType.Items.Add(new ListItem(GetString("TransformationType.Html"), TransformationTypeEnum.Html.ToString()));
-        drpType.Items.Add(new ListItem(GetString("TransformationType.Xslt"), TransformationTypeEnum.Xslt.ToString()));
-        drpType.Items.Add(new ListItem(GetString("TransformationType.jQuery"), TransformationTypeEnum.jQuery.ToString()));
+        drpType.Items.Add(new ListItem(TransformationTypeEnum.Ascx.ToLocalizedString("TransformationType"), TransformationTypeEnum.Ascx.ToStringRepresentation()));
+        drpType.Items.Add(new ListItem(TransformationTypeEnum.Text.ToLocalizedString("TransformationType"), TransformationTypeEnum.Text.ToStringRepresentation()));
+        drpType.Items.Add(new ListItem(TransformationTypeEnum.Html.ToLocalizedString("TransformationType"), TransformationTypeEnum.Html.ToStringRepresentation()));
+        drpType.Items.Add(new ListItem(TransformationTypeEnum.Xslt.ToLocalizedString("TransformationType"), TransformationTypeEnum.Xslt.ToStringRepresentation()));
+        drpType.Items.Add(new ListItem(TransformationTypeEnum.jQuery.ToLocalizedString("TransformationType"), TransformationTypeEnum.jQuery.ToStringRepresentation()));
     }
 
     #endregion

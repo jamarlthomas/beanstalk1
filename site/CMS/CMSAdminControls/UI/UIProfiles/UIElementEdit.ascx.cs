@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Web.UI.WebControls;
+
 using CMS.Base;
 using CMS.Core;
 using CMS.ExtendedControls.ActionsConfig;
@@ -16,9 +17,9 @@ public partial class CMSAdminControls_UI_UIProfiles_UIElementEdit : CMSUserContr
     #region "Variables"
 
     private ResourceInfo mCurrentResourceInfo;
-    private UIElementInfo elemInfo = null;
-    private bool refreshTree = false;
-    private bool isNew = false;
+    private UIElementInfo elemInfo;
+    private bool refreshTree;
+    private bool isNew;
 
     #endregion
 
@@ -414,7 +415,7 @@ if (p != null)
         treeUrl
         );
 
-        ltlScript.Text = ScriptHelper.GetScript(sb.ToString());
+        ScriptHelper.RegisterStartupScript(Page, GetType(), "RefreshUIElementsTree", ScriptHelper.GetScript(sb.ToString()));
     }
 
 

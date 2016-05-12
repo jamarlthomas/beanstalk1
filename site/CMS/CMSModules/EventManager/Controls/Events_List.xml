@@ -28,7 +28,7 @@
     </column>
     <column cssclass="filling-column" />
   </columns>
-  <objecttype name="cms.bookingeventlist" />
+  <objecttype name="cms.bookingeventlist" columns="NodeID, DocumentName, DocumentNamePath, NodeSiteID, DocumentCulture, EventDate, EventEndDate, EventCapacity, AttendeesCount, EventOpenFrom, EventOpenTo" />
   <options>
     <key name="DisplayFilter" value="true" />
   </options>

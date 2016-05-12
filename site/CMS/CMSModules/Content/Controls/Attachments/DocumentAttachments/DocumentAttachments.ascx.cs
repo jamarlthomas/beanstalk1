@@ -1,16 +1,15 @@
-using System;
+﻿using System;
 
 using CMS.Controls;
 using CMS.Helpers;
 using CMS.DocumentEngine;
-using CMS.MacroEngine;
 using CMS.UIControls;
 
 public partial class CMSModules_Content_Controls_Attachments_DocumentAttachments_DocumentAttachments : CMSUserControl
 {
     #region "Variables"
 
-    private string mPath = null;
+    private string mPath;
 
     #endregion
 
@@ -705,7 +704,7 @@ public partial class CMSModules_Content_Controls_Attachments_DocumentAttachments
         set
         {
             mPath = value;
-            ucDataSource.Path = MacroResolver.ResolveCurrentPath(value);
+            ucDataSource.Path = value;
         }
     }
 

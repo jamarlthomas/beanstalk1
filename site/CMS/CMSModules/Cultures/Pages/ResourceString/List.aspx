@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_Cultures_Pages_ResourceString_List" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Theme="Default" Codebehind="List.aspx.cs" %>
+    Theme="Default"  Codebehind="List.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector"
     TagPrefix="cms" %>

@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Widgets_Dialogs_WidgetProperties_Properties_Frameset"
-    EnableEventValidation="false" ValidateRequest="false" Codebehind="WidgetProperties_Properties_Frameset.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Widgets_Dialogs_WidgetProperties_Properties_Frameset"
+    EnableEventValidation="false" ValidateRequest="false"  Codebehind="WidgetProperties_Properties_Frameset.aspx.cs" %>
 
 <!DOCTYPE html>
 <html>

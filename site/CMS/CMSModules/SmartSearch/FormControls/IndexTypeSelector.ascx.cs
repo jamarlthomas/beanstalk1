@@ -1,6 +1,7 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using CMS.Core;
+using CMS.CustomTables;
 using CMS.DocumentEngine;
 using CMS.FormControls;
 using CMS.Helpers;
@@ -58,7 +59,7 @@ public partial class CMSModules_SmartSearch_FormControls_IndexTypeSelector : For
         {
             { GetString("smartsearch.indextype." + TreeNode.OBJECT_TYPE), TreeNode.OBJECT_TYPE },
             { GetString("smartsearch.indextype." + UserInfo.OBJECT_TYPE), UserInfo.OBJECT_TYPE },
-            { GetString("smartsearch.indextype." + DataClassInfo.OBJECT_TYPE_CUSTOMTABLE), DataClassInfo.OBJECT_TYPE_CUSTOMTABLE },
+            { GetString("smartsearch.indextype." + CustomTableInfo.OBJECT_TYPE_CUSTOMTABLE), CustomTableInfo.OBJECT_TYPE_CUSTOMTABLE },
             { GetString("smartsearch.indextype." + SearchHelper.CUSTOM_SEARCH_INDEX), SearchHelper.CUSTOM_SEARCH_INDEX },
             { GetString("smartsearch.indextype." + SearchHelper.DOCUMENTS_CRAWLER_INDEX), SearchHelper.DOCUMENTS_CRAWLER_INDEX },
             { GetString("smartsearch.indextype." + SearchHelper.GENERALINDEX), SearchHelper.GENERALINDEX },

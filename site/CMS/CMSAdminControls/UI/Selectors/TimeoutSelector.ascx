@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="TimeoutSelector.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="TimeoutSelector.ascx.cs"
     Inherits="CMSAdminControls_UI_Selectors_TimeoutSelector" %>
 
 <%@ Register Src="~/CMSFormControls/Basic/TimeControl.ascx" TagName="TimeControl" TagPrefix="cms" %>
@@ -60,8 +60,7 @@
         <cms:LocalizedLabel ID="lblDate" runat="server" ResourceString="general.date" DisplayColon="true" CssClass="control-label" />
     </div>
     <div class="editing-form-value-cell">
-        <cms:DateTimePicker ID="dateTimePicker" runat="server" SupportFolder="~/CMSAdminControls/Calendar"
-            EditTime="false" />
+        <cms:DateTimePicker ID="dateTimePicker" runat="server" EditTime="false" />
         <asp:PlaceHolder ID="plcSpecificTime" runat="server">
             <div class="control-group-inline">
                 <cms:CMSCheckBox ID="cbSpecificTime" runat="server" ResourceString="timeoutselector.inspecifictime"

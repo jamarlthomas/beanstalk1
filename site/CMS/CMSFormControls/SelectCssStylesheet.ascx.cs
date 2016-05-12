@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web;
 
 using CMS.DataEngine;
@@ -8,14 +8,13 @@ using CMS.Membership;
 using CMS.Base;
 using CMS.SiteProvider;
 using CMS.UIControls;
-using CMS.FormEngine;
 using CMS.ExtendedControls;
 
 public partial class CMSFormControls_SelectCssStylesheet : FormEngineUserControl
 {
     #region "Private variables"
 
-    private int mSiteId = 0;
+    private int mSiteId;
     private bool mAllowEditButtons = true;
 
     #endregion
@@ -48,24 +47,7 @@ public partial class CMSFormControls_SelectCssStylesheet : FormEngineUserControl
         get;
         set;
     }
-
-
-    /// <summary>
-    /// Indicates whether "(default)" record should be added to the dropdown list.
-    /// </summary>
-    [Obsolete("This property is obsolete. Please use AddDefaultRecord instead.")]
-    public bool AddNoneRecord
-    {
-        get
-        {
-            return AddDefaultRecord;
-        }
-        set
-        {
-            AddDefaultRecord = value;
-        }
-    }
-
+    
 
     /// <summary>
     /// Indicates whether "(default)" record should be added to the dropdown list.
@@ -310,7 +292,7 @@ public partial class CMSFormControls_SelectCssStylesheet : FormEngineUserControl
 
         // Check if user can edit the stylesheet
         var currentUser = MembershipContext.AuthenticatedUser;
-        bool uiElement = currentUser.IsAuthorizedPerUIElement("CMS.Content", new string[] { "Properties", "Properties.General", "General.Design" }, SiteContext.CurrentSiteName);
+        bool uiElement = currentUser.IsAuthorizedPerUIElement("CMS.Content", new[] { "Properties", "Properties.General", "General.Design" }, SiteContext.CurrentSiteName);
 
         if (AllowEditButtons && uiElement && ReturnColumnName.EqualsCSafe("StylesheetID", true))
         {

@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSModules_Avatars_AvatarFilter" Codebehind="AvatarFilter.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSModules_Avatars_AvatarFilter"  Codebehind="AvatarFilter.ascx.cs" %>
 <asp:Panel runat="server" ID="pnlFilter" DefaultButton="btnSearch">
   <div class="form-horizontal form-filter">
         <div class="form-group">

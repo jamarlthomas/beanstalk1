@@ -302,34 +302,29 @@ public partial class CMSModules_Notifications_Controls_NotificationSubscription_
                             nsi.SubscriptionTemplateID = nsiTemplate.SubscriptionTemplateID;
                         }
 
-                        // Check uniqueness (create only unique subscriptions)
-                        string where = "SubscriptionEventSource = '" + SqlHelper.GetSafeQueryString(nsi.SubscriptionEventSource, false) + "' AND " +
-                                       "SubscriptionEventCode = '" + SqlHelper.GetSafeQueryString(nsi.SubscriptionEventCode, false) + "' AND " +
-                                       "SubscriptionTarget = '" + SqlHelper.GetSafeQueryString(nsi.SubscriptionTarget, false) + "' AND " +
-                                       "SubscriptionEventObjectID = " + nsi.SubscriptionEventObjectID + " AND " +
-                                       "SubscriptionGatewayID = " + nsi.SubscriptionGatewayID + " AND " +
-                                       // Notification event data support wildcard parameters due to AliasPath value
-                                       "SubscriptionEventData1 LIKE '" + SqlHelper.EscapeQuotes(nsi.SubscriptionEventData1) + "' AND " +
-                                       "SubscriptionEventData2 LIKE '" + SqlHelper.EscapeQuotes(nsi.SubscriptionEventData2) + "' AND ";
-
-                        if (nsi.SubscriptionSiteID > 0)
-                        {
-                            where += "SubscriptionSiteID = " + nsi.SubscriptionSiteID;
-                        }
-                        else
-                        {
-                            where += "SubscriptionSiteID IS NULL";
-                        }
-
-                        // Only if subscription is unique and if the template is set, put it into the list
-                        if (!DataHelper.DataSourceIsEmpty(NotificationSubscriptionInfoProvider.GetSubscriptions(@where, null)))
-                        {
-                            uniquenessFailed = true;
-                            break;
-                        }
-                        else if (nsi.SubscriptionTemplateID <= 0)
+                        // Check whether template is set
+                        if (nsi.SubscriptionTemplateID <= 0)
                         {
                             templateFailed = true;
+                            break;
+                        }
+
+                        // Check uniqueness (create only unique subscriptions)
+                        var additionalWhere = new WhereCondition()
+                            .WhereEquals("SubscriptionTarget", nsi.SubscriptionTarget)
+                            .WhereEquals("SubscriptionGatewayID", nsi.SubscriptionGatewayID);
+
+                        var whereConditionObj = NotificationSubscriptionInfoProvider.GetWhereConditionObject(nsi.SubscriptionEventSource, nsi.SubscriptionEventCode, nsi.SubscriptionEventObjectID, nsi.SubscriptionEventData1, nsi.SubscriptionEventData2, nsi.SubscriptionSiteID, additionalWhere);
+
+                        bool subscriptionExists = NotificationSubscriptionInfoProvider.GetNotificationSubscriptions()
+                            .Where(whereConditionObj)
+                            .TopN(1)
+                            .HasResults();
+
+                        // Only if subscription is unique put it into the list
+                        if (subscriptionExists)
+                        {
+                            uniquenessFailed = true;
                             break;
                         }
                         else
@@ -348,7 +343,7 @@ public partial class CMSModules_Notifications_Controls_NotificationSubscription_
                     }
                     else
                     {
-                        // Save vaild subscriptions into the DB
+                        // Save valid subscriptions into the DB
                         foreach (NotificationSubscriptionInfo nsi in infos)
                         {
                             NotificationSubscriptionInfoProvider.SetNotificationSubscriptionInfo(nsi);

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using CMS.UIControls;
 
@@ -15,7 +15,7 @@ public partial class CMSModules_OnlineMarketing_Pages_Content_ABTesting_ABTest_T
 
         // Set disabled module info
         ucDisabledModule.SettingsKeys = "CMSAnalyticsEnabled;CMSABTestingEnabled";
-
+        
         base.OnInit(e);
     }
 

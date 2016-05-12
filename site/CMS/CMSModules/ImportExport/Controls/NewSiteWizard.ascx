@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_ImportExport_Controls_NewSiteWizard"
-    Codebehind="NewSiteWizard.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSModules_ImportExport_Controls_NewSiteWizard"
+     Codebehind="NewSiteWizard.ascx.cs" %>
 <%@ Register Src="~/CMSAdminControls/Wizard/Header.ascx" TagName="WizardHeader" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/ImportExport/Controls/ImportPanel.ascx" TagName="ImportPanel"
     TagPrefix="cms" %>
@@ -19,26 +19,8 @@
 
 <script type="text/javascript">
     //<![CDATA[      
-    var importTimerId = 0;
     var timerSelectionId = 0;
-
-    // Start timer function
-    function StartImportStateTimer() {
-        importTimerId = setInterval("GetImportState(false)", 500);
-    }
-
-    // End timer function
-    function StopImportStateTimer(hideWindow) {
-        if (importTimerId) {
-            clearInterval(importTimerId);
-            importTimerId = 0;
-
-            if (window.HideActivity) {
-                window.HideActivity();
-            }
-        }
-    }
-
+    
     // End timer function
     function StopSelectionTimer() {
         if (timerSelectionId) {
@@ -172,7 +154,7 @@
                                 <asp:WizardStep ID="wzdStepProgress" runat="server" AllowReturn="False" StepType="Step"
                                     EnableViewState="true">
                                     <div class="GlobalWizardStep" style="height: <%=PanelHeight%>px">
-                                        <asp:Label ID="lblProgress" runat="Server" CssClass="WizardLog" EnableViewState="false" />
+                                        <cms:AsyncControl ID="ctlAsyncImport" runat="server" LogContextNames="Import" ProvideLogContext="true" PostbackOnError="false" FinishClientCallback="Finished" />
                                     </div>
                                 </asp:WizardStep>
                                 <asp:WizardStep ID="wzdStepMasterTemplate" runat="server" AllowReturn="False" StepType="Step"
@@ -195,22 +177,10 @@
         </table>
     </div>
     <asp:Panel ID="pnlError" runat="server" CssClass="GlobalWizard">
-        <div class="alert-error alert">
-            <span class="alert-icon">
-                <i class="icon-times-circle"></i>
-                <span class="sr-only"><%= GetString("general.error") %></span>
-            </span>
-            <asp:Label ID="lblError" runat="server" CssClass="alert-label" EnableViewState="false" />
-        </div>
+        <cms:AlertLabel runat="server" ID="lblError" AlertType="Error" Visible="true" />
     </asp:Panel>
     <asp:Panel ID="pnlWarning" runat="server" CssClass="GlobalWizard">
-        <div class="alert-warning alert" style="display:block; ">
-            <span class="alert-icon">
-                <i class="icon-exclamation-triangle"></i>
-                <span class="sr-only"><%= GetString("general.warning") %></span>
-            </span>
-            <asp:Label ID="lblWarning" runat="server" CssClass="alert-label" EnableViewState="false" />
-        </div>
+        <cms:AlertLabel runat="server" ID="lblWarning" AlertType="Warning" Visible="true" />
     </asp:Panel>
 </asp:Panel>
 <br />
@@ -220,5 +190,4 @@
 </asp:Panel>
 <asp:HiddenField ID="hdnState" runat="server" />
 <asp:Literal ID="ltlScriptAfter" runat="server" EnableViewState="false" />
-<cms:AsyncControl ID="ctrlAsync" runat="server" />
-<cms:AsyncControl ID="ctrlImport" runat="server" />
+<cms:AsyncControl ID="ctrlAsyncSelection" runat="server" />

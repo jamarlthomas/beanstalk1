@@ -1,1 +1,1 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="PreviewButtons.ascx.cs" Inherits="CMSModules_DocumentTypes_Controls_PreviewButtons" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="PreviewButtons.ascx.cs" Inherits="CMSModules_DocumentTypes_Controls_PreviewButtons" %>

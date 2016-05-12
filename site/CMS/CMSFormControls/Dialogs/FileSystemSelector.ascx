@@ -1,5 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true"
-    Inherits="CMSFormControls_Dialogs_FileSystemSelector" Codebehind="FileSystemSelector.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true"
+    Inherits="CMSFormControls_Dialogs_FileSystemSelector"  Codebehind="FileSystemSelector.ascx.cs" %>
 
 <asp:Panel ID="pnlForm" runat="server" CssClass="control-group-inline">
     <cms:CMSTextBox ID="txtPath" runat="server" />

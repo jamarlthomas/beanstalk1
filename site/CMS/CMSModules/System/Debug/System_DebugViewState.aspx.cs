@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Data;
 
+using CMS.Base;
 using CMS.Controls;
 using CMS.Helpers;
 using CMS.UIControls;
@@ -27,6 +28,8 @@ public partial class CMSModules_System_Debug_System_DebugViewState : CMSDebugPag
 
             var logs = ViewStateDebug.Settings.LastLogs;
 
+            RequestLog lastLog = null;
+
             for (int i = logs.Count - 1; i >= 0; i--)
             {
                 try
@@ -42,11 +45,14 @@ public partial class CMSModules_System_Debug_System_DebugViewState : CMSDebugPag
                             // Load the control
                             ViewStateLog logCtrl = (ViewStateLog)LoadLogControl(log, "~/CMSAdminControls/Debug/ViewState.ascx", i);
 
+                            logCtrl.PreviousLog = lastLog;
                             logCtrl.DisplayTotalSize = false;
                             logCtrl.DisplayOnlyDirty = chkOnlyDirty.Checked;
 
                             // Add to the output
                             plcLogs.Controls.Add(logCtrl);
+
+                            lastLog = log;
                         }
                     }
                 }

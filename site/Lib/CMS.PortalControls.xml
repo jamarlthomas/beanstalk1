@@ -4,383 +4,49 @@
         <name>CMS.PortalControls</name>
     </assembly>
     <members>
-        <member name="T:CMS.PortalControls.CMSPageManager">
+        <member name="T:CMS.PortalControls.CMSAccordion">
             <summary>
-            Page manager for editable regions.
+            CMSAccordion control extends the original <see cref="T:AjaxControlToolkit.Accordion"/> control with short ID support.
             </summary>
         </member>
-        <member name="T:CMS.PortalControls.CMSPortalManager">
+        <member name="M:CMS.PortalControls.CMSAccordion.OnInit(System.EventArgs)">
             <summary>
-            Portal page manager.
+            Raises the <see cref="E:Init" /> event.
             </summary>
         </member>
-        <member name="F:CMS.PortalControls.CMSPortalManager.PORTALENGINE_WIDGETSPATH">
+        <member name="P:CMS.PortalControls.CMSAccordion.ShortID">
             <summary>
-            Paths to controls in portal engine module.
+            Short ID of the control.
             </summary>
         </member>
-        <member name="F:CMS.PortalControls.CMSPortalManager.mCMSEditableControls">
+        <member name="T:CMS.PortalControls.CMSAccordionPane">
             <summary>
-            Collection of the page editable regions.
+            CMSAccordionPane control extends the original <see cref="T:AjaxControlToolkit.AccordionPane"/> control with short ID and portal engine support.
             </summary>
         </member>
-        <member name="F:CMS.PortalControls.CMSPortalManager.mCMSPagePlaceholders">
-            <summary>
-            Collection of all the base level page placeholders.
-            </summary>
-        </member>
-        <member name="F:CMS.PortalControls.CMSPortalManager.mAllPagePlaceholders">
-            <summary>
-            Collection of all the page placeholders.
-            </summary>
-        </member>
-        <member name="F:CMS.PortalControls.CMSPortalManager.mPlaceholderMenuControl">
-            <summary>
-            Page placeholder menu inner control.
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.RegisterPagePlaceHolder(CMS.PortalControls.CMSPagePlaceholder)">
-            <summary>
-            Register base placeholder 
-            </summary>
-            <param name="plc">Placeholder instance</param>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.CreateChildControls">
-            <summary>
-            Child control creation.
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.CreatePersonalizationMenu">
-            <summary>
-            Creates the content personalization context menu
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.CreateWidgetVariantMenu">
-            <summary>
-            Adds the context menu for widget variants
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.CreateMessagesPlaceholder">
-            <summary>
-            Creates the messages placeholder control
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.CreateContextMenus(CMS.PortalEngine.ViewModeEnum)">
-            <summary>
-            Creates the context menu controls
-            </summary>
-            <param name="viewMode">View mode</param>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.#ctor">
-            <summary>
-            Constructor.
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.CMSPortalManager_PreRender(System.Object,System.EventArgs)">
-            <summary>
-            PreRender event handler.
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Render action.
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.CMSPortalManager_Init(System.Object,System.EventArgs)">
+        <member name="M:CMS.PortalControls.CMSAccordionPane.OnInit(System.EventArgs)">
             <summary>
             Init event handler.
             </summary>
         </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.EnsureUIContextUIElement(CMS.PortalEngine.ViewModeEnum)">
+        <member name="M:CMS.PortalControls.CMSAccordionPane.OnPreRender(System.EventArgs)">
             <summary>
-            Ensures UI element name/Resource name for edit/design/wireframe
-            </summary>
-            <param name="viewMode">View mode</param>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.PageHelper_InitComplete(System.Object,System.EventArgs)">
-            <summary>
-            Init complete event handler
+            PreRender event handler
             </summary>
         </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.RefreshPage">
+        <member name="M:CMS.PortalControls.CMSAccordionPane.Page_PreRenderComplete(System.Object,System.EventArgs)">
             <summary>
-            Refreshes current page by redirecting it to the same URL.
+            PreRender complete event handler
             </summary>
         </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.LoadDocumentContent">
+        <member name="P:CMS.PortalControls.CMSAccordionPane.ShortID">
             <summary>
-            Loads the content of the document. Loads the correct workflow version of document content and editor widgets.
+            Short ID of the control.
             </summary>
         </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.LoadPage(System.Boolean)">
+        <member name="P:CMS.PortalControls.CMSAccordionPane.WebPartZone">
             <summary>
-            Loads the pages structure.
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.IsAuthorizedPerDocument(CMS.DocumentEngine.TreeNode,CMS.PortalEngine.ViewModeEnum)">
-            <summary>
-            Returns true if current user is allowed to read and modify specified node
-            </summary>
-            <param name="node">Current node</param>
-            <param name="viewMode">Current view mode</param>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.ProcessContent">
-            <summary>
-            Processes current page content (workflow, authorization, information).
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.FindAllPlaceholders(System.String)">
-            <summary>
-            Returns the list of all the page placeholders using the given alias path.
-            </summary>
-            <param name="aliasPath">Alias path</param>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.EnsureNotLoadedZones(System.Collections.Generic.List{CMS.PortalEngine.WebPartZoneInstance})">
-            <summary>
-            Ensures the list of the zones that were not yet loaded.
-            </summary>
-            <param name="zones">List of zones</param>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.MarkZoneLoaded(CMS.PortalEngine.WebPartZoneInstance)">
-            <summary>
-            Marks the given zone as loaded.
-            </summary>
-            <param name="zone">Zone to mark</param>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.EnsureSplitModeScript(CMS.PortalEngine.ViewModeEnum)">
-            <summary>
-            Ensures js script for split mode.
-            </summary>
-            <param name="viewMode">View mode</param>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.GetPageInfoForEditing(System.String)">
-            <summary>
-            Gets the page info within current structure for specific alias path.
-            </summary>
-            <param name="aliasPath">Alias path</param>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.GetTemplateInstanceForEditing(CMS.DocumentEngine.PageInfo)">
-            <summary>
-            Gets the template instance for editing changes.
-            </summary>
-            <param name="pi">Page info</param>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.SaveTemplateChanges(CMS.DocumentEngine.PageInfo,CMS.PortalEngine.PageTemplateInstance,CMS.PortalEngine.WidgetZoneTypeEnum,CMS.PortalEngine.ViewModeEnum,CMS.DocumentEngine.TreeProvider)">
-            <summary>
-            Saves the changes to the widget zone.
-            </summary>
-            <param name="pi">Page info</param>
-            <param name="instance">Template instance with the new data</param>
-            <param name="zoneType">Zone type</param>
-            <param name="viewMode">View mode</param>
-            <param name="tp">Tree provider</param>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.SaveZoneChanges(CMS.DocumentEngine.PageInfo,CMS.PortalEngine.PageTemplateInstance,CMS.PortalEngine.WebPartZoneInstance,System.Boolean)">
-            <summary>
-            Saves the changes to the zone
-            </summary>
-            <param name="pi">Page info</param>
-            <param name="pti">Page template instance</param>
-            <param name="zone">Zone instance</param>
-            <param name="refresh">Refresh after saving the changes</param>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.Validate">
-            <summary>
-            Returns true if entered data is valid. If data is invalid, it returns false and displays an error message.
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.GetSpellCheckFields">
-            <summary>
-            Returns the list of the field IDs (Client IDs of the inner controls) that should be spell checked.
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.ClearCache">
-            <summary>
-            Clears the cached items on a page.
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.ReloadData">
-            <summary>
-            Causes reloading the data, override to implement the data reloading procedure.
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSPortalManager.SetMainPagePlaceholder(CMS.PortalControls.CMSPagePlaceholder)">
-            <summary>
-            Sets the main (root) page placeholder.
-            </summary>
-            <param name="placeholder">Placeholder to set</param>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.DocumentWizardManager">
-            <summary>
-            Gets or sets the document wizard manager
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.ReloadViewMode">
-            <summary>
-            Gets the value that indicates whether view mode should be reloaded for child controls
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.CurrentUser">
-            <summary>
-            Current user
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.UserCulture">
-            <summary>
-            Gets the preferred UI culture (HTML encoded due to XSS) for current user
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.AdditionalDesignMessage">
-            <summary>
-            Gets or sets the custom message which should be displayed in design mode
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.CurrentMessagesPlaceholder">
-            <summary>
-            Messages placeholder
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.RequiresWebPartManagement">
-            <summary>
-            Returns true if the web part management support is required.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.IsRequestAsync">
-            <summary>
-            Indicates whether current request is requested by action manager in async mode
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.PageChanged">
-            <summary>
-            Returns true if the page structure changed.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.CheckPermissions">
-            <summary>
-            Allows you to specify whether to check permissions of the current user. If the value is 'false' (default value) no permissions are checked. Otherwise, only nodes for which the user has read permission are displayed.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.CacheMinutes">
-            <summary>
-            Number of minutes the retrieved content is cached for. Zero indicates that the content will not be cached.
-            </summary>
-            <remarks>
-            This parameter allows you to set up caching of content so that it's not retrieved from the database each time a user requests the page.
-            </remarks>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.IsAuthorized">
-            <summary>
-            Returns true if the user is authorized for current document.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.HierarchyPageInfo">
-            <summary>
-            Hierarchy page info
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.CurrentEditMenu">
-            <summary>
-            Gets the current edit menu if available
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.CurrentObjectEditMenu">
-            <summary>
-            Gets the current object edit menu if available
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.PreserveContent">
-            <summary>
-            Allows you to specify whether the content of non-existing or not visible regions should be preserved when the content is saved.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.TreeProvider">
-            <summary>
-            Tree provider instance used to access data. If no TreeProvider is assigned, a new TreeProvider instance is created.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.DocumentManager">
-            <summary>
-            Document manager
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.SiteName">
-            <summary>
-            Current site name.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.PageAliasPath">
-            <summary>
-            Current site alias path.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.ViewMode">
-            <summary>
-            Current page mode.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.CMSEditableControls">
-            <summary>
-            Returns the array of the editable controls.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.CMSPagePlaceholders">
-            <summary>
-            Returns the collection of all the base level page placeholders.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.AllPagePlaceholders">
-            <summary>
-            Returns the collection of all the page placeholders.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.CurrentPlaceholder">
-            <summary>
-            Returns the Placeholder of the current page.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.HighlightDropableAreas">
-            <summary>
-            Droppable areas are highlighted when widget dragged.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.ActivateZoneBorder">
-            <summary>
-            If true zone border can be activated (+add widget button).
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.CurrentNode">
-            <summary>
-            Returns currently edited document if it is available in the given context.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.CurrentPageInfo">
-            <summary>
-            Returns currently processed page info, if it is available in the given context.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.PageTemplate">
-            <summary>
-            Gets the page template of the current page.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.UseObjectLocking">
-            <summary>
-            Gets a value that indicates if the object locking is used.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.PlaceholderMenuControl">
-            <summary>
-            Placeholder menu inner control.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.ShowPanel">
-            <summary>
-            Indicates if panel with management controls should be shown
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSPortalManager.TagKey">
-            <summary>
-            Generate div tag key by default due to HTML validity
+            Web part zone covered by this pane
             </summary>
         </member>
         <member name="T:CMS.PortalControls.CMSConditionalLayout">
@@ -421,6 +87,11 @@
         <member name="M:CMS.PortalControls.CMSConditionalLayout.OnLoad(System.EventArgs)">
             <summary>
             Load event handler
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSConditionalLayout.DataBind">
+            <summary>
+            Binds a data source to the invoked server control and all its child controls.
             </summary>
         </member>
         <member name="P:CMS.PortalControls.CMSConditionalLayout.PagePlaceholder">
@@ -525,7 +196,7 @@
         </member>
         <member name="T:CMS.PortalControls.CMSTabPanel">
             <summary>
-            Tab panel
+            CMSTabPanel control extends the original <see cref="T:AjaxControlToolkit.TabPanel"/> control with short ID and portal engine support.
             </summary>
         </member>
         <member name="M:CMS.PortalControls.CMSTabPanel.OnPreRender(System.EventArgs)">
@@ -842,196 +513,6 @@
             The dialog footer zone, uses a fixed positioning and is placed at the bottom of the page. This zone is displayed only in dialogs.
             </summary>
         </member>
-        <member name="T:CMS.PortalControls.EditableWebPartColor">
-            <summary>
-            Web part color control
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartColor.#ctor">
-            <summary>
-            Constructor
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartColor.OnPreRender(System.EventArgs)">
-            <summary>
-            PreRender event handler
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartColor.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Renders the control
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartColor.PropertyName">
-            <summary>
-            Name of the color property
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartColor.Color">
-            <summary>
-            Actual color
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartColor.CssClass">
-            <summary>
-            Css class of the item
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartColor.TargetElementID">
-            <summary>
-            ID of the target element that should receive the same color
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartColor.CssStyle">
-            <summary>
-            CSS style to add to the element
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartColor.ParentWebPart">
-            <summary>
-            Parent web part
-            </summary>
-        </member>
-        <member name="T:CMS.PortalControls.EditableToggleWebPartImage">
-            <summary>
-            Editable toggle web part image control
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.EditableToggleWebPartImage.#ctor">
-            <summary>
-            Constructor
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.EditableToggleWebPartImage.OnPreRender(System.EventArgs)">
-            <summary>
-            PreRender event handler
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableToggleWebPartImage.TrueImageUrl">
-            <summary>
-            True image URL
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableToggleWebPartImage.FalseImageUrl">
-            <summary>
-            False image URL
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableToggleWebPartImage.ParentWebPart">
-            <summary>
-            Parent web part
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableToggleWebPartImage.PropertyName">
-            <summary>
-            Property name
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableToggleWebPartImage.Value">
-            <summary>
-            Value of the web part
-            </summary>
-        </member>
-        <member name="T:CMS.PortalControls.EditableWebPartImage">
-            <summary>
-            Editable web part image control
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartImage.#ctor">
-            <summary>
-            Constructor
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartImage.GetDialogURL">
-            <summary>
-            Returns query string which will be passed to the CMS dialogs (Insert image or media/Insert link).
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartImage.OnPreRender(System.EventArgs)">
-            <summary>
-            PreRender event handler
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartImage.ParentWebPart">
-            <summary>
-            Parent web part
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartImage.PropertyName">
-            <summary>
-            Property name
-            </summary>
-        </member>
-        <member name="T:CMS.PortalControls.WebPartResizer">
-            <summary>
-            Web part resizer control
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.WebPartResizer.#ctor">
-            <summary>
-            Constructor
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.WebPartResizer.OnPreRender(System.EventArgs)">
-            <summary>
-            PreRender event handler
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.WebPartResizer.HeightPropertyName">
-            <summary>
-            Name of the height property
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.WebPartResizer.WidthPropertyName">
-            <summary>
-            Name of the width property
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.WebPartResizer.BoxedImageID">
-            <summary>
-            ID of the image that is boxed within the resized element
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.WebPartResizer.ResizedElementID">
-            <summary>
-            ID of the resized element relative to the web part client ID
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.WebPartResizer.RenderEnvelope">
-            <summary>
-            If true, the resizer renders an envelope
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.WebPartResizer.Inverted">
-            <summary>
-            If true, the resizer provides inverted resizing in X-axis
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.WebPartResizer.InfoElementID">
-            <summary>
-            ID of the element over which to display the information block
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.WebPartResizer.ImageUrl">
-            <summary>
-            Resizer image URL
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.WebPartResizer.ParentWebPart">
-            <summary>
-            Parent web part
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.WebPartResizer.HorizontalOnly">
-            <summary>
-            If true, the resizer is horizontal only
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.WebPartResizer.VerticalOnly">
-            <summary>
-            If true, the resizer is vertical only
-            </summary>
-        </member>
         <member name="T:CMS.PortalControls.HeaderPanel">
             <summary>
             Portal manager header panel.
@@ -1093,11 +574,10 @@
             </summary>
             <param name="viewMode">View mode</param>
         </member>
-        <member name="M:CMS.PortalControls.HeaderPanel.CreateEditMenu(CMS.DocumentEngine.PageInfo,System.Boolean,CMS.PortalEngine.ViewModeEnum)">
+        <member name="M:CMS.PortalControls.HeaderPanel.CreateEditMenu(System.Boolean,CMS.PortalEngine.ViewModeEnum)">
             <summary>
             Adds the edit menu control
             </summary>
-            <param name="pi">Page info</param>
             <param name="isPreview">Flag whether the preview mode is forced</param>
             <param name="viewMode">View mode</param>
         </member>
@@ -1497,11 +977,6 @@
             Web part instance.
             </summary>
         </member>
-        <member name="F:CMS.PortalControls.CMSAbstractWebPart.mUpdatePanel">
-            <summary>
-            Update panel.
-            </summary>
-        </member>
         <member name="F:CMS.PortalControls.CMSAbstractWebPart.mParentZone">
             <summary>
             Parent web part zone.
@@ -1819,13 +1294,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CMS.PortalControls.CMSAbstractWebPart.GetWireframeText(System.String,System.Boolean)">
-            <summary>
-            Ensures that the given text is not empty
-            </summary>
-            <param name="text">Original text</param>
-            <param name="htmlText">If true, the given text is HTML</param>
-        </member>
         <member name="M:CMS.PortalControls.CMSAbstractWebPart.GetBothResizerScript(System.String,System.String,System.String,System.Boolean,System.String)">
             <summary>
             Gets the script for horizontal resizer.
@@ -1861,11 +1329,6 @@
             </summary>
             <param name="columnName">Column name</param>
             <param name="colsCount">Number of available columns in the database</param>
-        </member>
-        <member name="M:CMS.PortalControls.CMSAbstractWebPart.RenderToString(CMS.PortalControls.CMSAbstractWebPart,System.Web.UI.HtmlTextWriter,System.Boolean,System.Boolean,CMS.MacroEngine.MacroResolver)">
-            <summary>
-            Renders web part to string
-            </summary>
         </member>
         <member name="M:CMS.PortalControls.CMSAbstractWebPart.RenderInternal(CMS.PortalControls.CMSAbstractWebPart,System.Web.UI.HtmlTextWriter)">
             <summary>
@@ -1911,20 +1374,13 @@
             Returns true if preview anchor to be generated
             </summary>
         </member>
-        <member name="M:CMS.PortalControls.CMSAbstractWebPart.RenderWireframeStart(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Renders the start of the wireframe. Returns the string representing the end of the wireframe
-            </summary>
-            <param name="writer">HTML writer for the output</param>
-        </member>
-        <member name="M:CMS.PortalControls.CMSAbstractWebPart.RenderContainerStart(System.Web.UI.HtmlTextWriter,System.Boolean,CMS.PortalEngine.ViewModeEnum,System.Boolean,System.Boolean)">
+        <member name="M:CMS.PortalControls.CMSAbstractWebPart.RenderContainerStart(System.Web.UI.HtmlTextWriter,System.Boolean,CMS.PortalEngine.ViewModeEnum,System.Boolean)">
             <summary>
             Renders the start of the container. Returns the string representing the end of the container
             </summary>
             <param name="writer">HTML writer for the output</param>
             <param name="renderActive">Render as active element</param>
             <param name="viewMode">View mode</param>
-            <param name="wireframe">Wireframe</param>
             <param name="layout">Layout web part</param>
         </member>
         <member name="M:CMS.PortalControls.CMSAbstractWebPart.GetOuterContainerStyle(System.String@)">
@@ -1959,22 +1415,16 @@
             </summary>
             <param name="writer">HTML writer for the output</param>
         </member>
-        <member name="M:CMS.PortalControls.CMSAbstractWebPart.RenderBorderStart(System.Web.UI.HtmlTextWriter,System.Boolean,System.Boolean)">
+        <member name="M:CMS.PortalControls.CMSAbstractWebPart.RenderBorderStart(System.Web.UI.HtmlTextWriter,System.Boolean)">
             <summary>
             Renders the start of the border
             </summary>
             <param name="writer">HTML writer for the output</param>
-            <param name="wireframe">True if the web part is wireframe</param>
             <param name="designMode">True if the view mode is design</param>
         </member>
         <member name="P:CMS.PortalControls.CMSAbstractWebPart.DocumentWizardManager">
             <summary>
             Gets or sets current document wizard manager
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSAbstractWebPart.CurrentResolvedProperty">
-            <summary>
-            Keeps the name of the currently processed property in macro resolver
             </summary>
         </member>
         <member name="P:CMS.PortalControls.CMSAbstractWebPart.VariantControlsPlaceHolder">
@@ -2004,6 +1454,11 @@
             </summary>
             <param name="propertyName">Property name</param>
         </member>
+        <member name="P:CMS.PortalControls.CMSAbstractWebPart.ResourcePrefix">
+            <summary>
+            Prefix for the resource strings which are used for the localization.
+            </summary>
+        </member>
         <member name="P:CMS.PortalControls.CMSAbstractWebPart.WebPartID">
             <summary>
             Returns the Web part ID as registered in design mode
@@ -2027,11 +1482,6 @@
         <member name="P:CMS.PortalControls.CMSAbstractWebPart.RenderEnvelope">
             <summary>
             If true, the web part renders div with web part client ID around it.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSAbstractWebPart.SimpleRender">
-            <summary>
-            If true, the web part renders as simple as possible
             </summary>
         </member>
         <member name="P:CMS.PortalControls.CMSAbstractWebPart.RelatedData">
@@ -2177,11 +1627,6 @@
         <member name="P:CMS.PortalControls.CMSAbstractWebPart.IsWidget">
             <summary>
             Returns true if the web part is widget.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSAbstractWebPart.IsWireframe">
-            <summary>
-            Returns true if the web part represents wireframe
             </summary>
         </member>
         <member name="P:CMS.PortalControls.CMSAbstractWebPart.IsDesign">
@@ -2370,16 +1815,6 @@
             Returns true if the container should be hidden on current page (hide container on subpages in effect).
             </summary>
         </member>
-        <member name="P:CMS.PortalControls.CMSAbstractWebPart.UseContainer">
-            <summary>
-            Flag if the container should be used for the wireframe web part.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSAbstractWebPart.Comments">
-            <summary>
-            Comments.
-            </summary>
-        </member>
         <member name="P:CMS.PortalControls.CMSAbstractWebPart.EnableOutputFilter">
             <summary>
             Enable output filter
@@ -2553,14 +1988,14 @@
             Ensures default text with dependence on current view mode
             </summary>
         </member>
+        <member name="M:CMS.PortalControls.ViewModeInfoPanel.GetCloseLink">
+            <summary>
+            Gets the close link URL
+            </summary>
+        </member>
         <member name="M:CMS.PortalControls.ViewModeInfoPanel.RegisterHideInfoScript">
             <summary>
             Registers the script which hides the info panel if page is displayed within CMS desk
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.ViewModeInfoPanel.btnClosePreview_Click(System.Object,System.EventArgs)">
-            <summary>
-            Close preview/safe mode.
             </summary>
         </member>
         <member name="P:CMS.PortalControls.ViewModeInfoPanel.UserCulture">
@@ -2568,19 +2003,9 @@
             Gets the preferred UI culture (HTML encoded due to XSS) for current user
             </summary>
         </member>
-        <member name="P:CMS.PortalControls.ViewModeInfoPanel.LeadingText">
+        <member name="P:CMS.PortalControls.ViewModeInfoPanel.PreviewText">
             <summary>
-            Leading text
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.ViewModeInfoPanel.TrailingText">
-            <summary>
-            Trailing text
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.ViewModeInfoPanel.AllowClose">
-            <summary>
-            Indicates whether close button should be displayed
+            Preview text
             </summary>
         </member>
         <member name="P:CMS.PortalControls.ViewModeInfoPanel.PortalManager">
@@ -2939,57 +2364,6 @@
             Widgets only.
             </summary>
         </member>
-        <member name="T:CMS.PortalControls.CMSAbstractLanguageWebPart">
-            <summary>
-            Base class for language selection web parts
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSAbstractLanguageWebPart.GetCurrentCacheItemName(System.String,CMS.DocumentEngine.PageInfo)">
-            <summary>
-            Returns current cache item name
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSAbstractLanguageWebPart.GetCultures">
-            <summary>
-            Returns 3 dimensional string array: URL, culture-code, culture name
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSAbstractLanguageWebPart.ClearCache">
-            <summary>
-            Clears the cached items.
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSAbstractLanguageWebPart.GetDefaultCacheDependendencies">
-            <summary>
-            Gets the default cache dependencies.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSAbstractLanguageWebPart.UseURLsWithLangPrefix">
-            <summary>
-            Gets or sets the value that indicates whether the URLs to the specific documents should be generate with language prefix.
-            This property is usable only if language prefix for URLs is enabled.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSAbstractLanguageWebPart.UseCultureSpecificURLs">
-            <summary>
-            Gets or sets the value that indicates whether URLs should be generated for specific culture prefix or URL path
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSAbstractLanguageWebPart.HideCurrentCulture">
-            <summary>
-            Gets or sets the value that indicates whether the link for current culture should be hidden.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSAbstractLanguageWebPart.HideUnavailableCultures">
-            <summary>
-            Gets or sets the value that indicates whether the links to the existing culture versions should be displayed.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSAbstractLanguageWebPart.CacheByQueryStringParameters">
-            <summary>
-            Semicolon separated list of query string parameter keys whose are a part of cache item name.
-            </summary>
-        </member>
         <member name="T:CMS.PortalControls.CMSAbstractLayoutWebPart">
             <summary>
             Layout web part containing further zones.
@@ -3213,11 +2587,6 @@
         <member name="T:CMS.PortalControls.CMSAbstractEditableWebPart">
             <summary>
             Abstract class for the editable web parts (web parts that needs to store the content within the document content).
-            </summary>
-        </member>
-        <member name="F:CMS.PortalControls.CMSAbstractEditableWebPart.mEmptyContent">
-            <summary>
-            Indicates whether the control contains any editable content
             </summary>
         </member>
         <member name="M:CMS.PortalControls.CMSAbstractEditableWebPart.OnContentLoaded">
@@ -3744,6 +3113,380 @@
             Portal manager for the page.
             </summary>
         </member>
+        <member name="T:CMS.PortalControls.CMSPortalManager">
+            <summary>
+            Portal page manager.
+            </summary>
+        </member>
+        <member name="F:CMS.PortalControls.CMSPortalManager.PORTALENGINE_WIDGETSPATH">
+            <summary>
+            Paths to controls in portal engine module.
+            </summary>
+        </member>
+        <member name="F:CMS.PortalControls.CMSPortalManager.mCMSEditableControls">
+            <summary>
+            Collection of the page editable regions.
+            </summary>
+        </member>
+        <member name="F:CMS.PortalControls.CMSPortalManager.mCMSPagePlaceholders">
+            <summary>
+            Collection of all the base level page placeholders.
+            </summary>
+        </member>
+        <member name="F:CMS.PortalControls.CMSPortalManager.mAllPagePlaceholders">
+            <summary>
+            Collection of all the page placeholders.
+            </summary>
+        </member>
+        <member name="F:CMS.PortalControls.CMSPortalManager.mPlaceholderMenuControl">
+            <summary>
+            Page placeholder menu inner control.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.RegisterPagePlaceHolder(CMS.PortalControls.CMSPagePlaceholder)">
+            <summary>
+            Register base placeholder 
+            </summary>
+            <param name="plc">Placeholder instance</param>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.CreateChildControls">
+            <summary>
+            Child control creation.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.CreatePersonalizationMenu">
+            <summary>
+            Creates the content personalization context menu
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.CreateWidgetVariantMenu">
+            <summary>
+            Adds the context menu for widget variants
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.CreateMessagesPlaceholder">
+            <summary>
+            Creates the messages placeholder control
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.CreateContextMenus(CMS.PortalEngine.ViewModeEnum)">
+            <summary>
+            Creates the context menu controls
+            </summary>
+            <param name="viewMode">View mode</param>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.CMSPortalManager_PreRender(System.Object,System.EventArgs)">
+            <summary>
+            PreRender event handler.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Render action.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.CMSPortalManager_Init(System.Object,System.EventArgs)">
+            <summary>
+            Init event handler.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.EnsureUIContextUIElement(CMS.PortalEngine.ViewModeEnum)">
+            <summary>
+            Supplies correct UI element name and resource name to UIContext if view mode is Edit or Design.
+            </summary>
+            <param name="viewMode">View mode</param>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.PageHelper_InitComplete(System.Object,System.EventArgs)">
+            <summary>
+            Init complete event handler
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.RefreshPage">
+            <summary>
+            Refreshes current page by redirecting it to the same URL.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.LoadDocumentContent">
+            <summary>
+            Loads the content of the document. Loads the correct workflow version of document content and editor widgets.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.LoadPage(System.Boolean)">
+            <summary>
+            Loads the pages structure.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.IsAuthorizedPerDocument(CMS.DocumentEngine.TreeNode,CMS.PortalEngine.ViewModeEnum)">
+            <summary>
+            Returns true if current user is allowed to read and modify specified node
+            </summary>
+            <param name="node">Current node</param>
+            <param name="viewMode">Current view mode</param>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.ProcessContent">
+            <summary>
+            Processes current page content (workflow, authorization, information).
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.FindAllPlaceholders(System.String)">
+            <summary>
+            Returns the list of all the page placeholders using the given alias path.
+            </summary>
+            <param name="aliasPath">Alias path</param>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.EnsureNotLoadedZones(System.Collections.Generic.List{CMS.PortalEngine.WebPartZoneInstance})">
+            <summary>
+            Ensures the list of the zones that were not yet loaded.
+            </summary>
+            <param name="zones">List of zones</param>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.MarkZoneLoaded(CMS.PortalEngine.WebPartZoneInstance)">
+            <summary>
+            Marks the given zone as loaded.
+            </summary>
+            <param name="zone">Zone to mark</param>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.EnsureSplitModeScript(CMS.PortalEngine.ViewModeEnum)">
+            <summary>
+            Ensures registering client script for split mode for appropriate view mode.
+            </summary>
+            <param name="viewMode">View mode</param>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.GetPageInfoForEditing(System.String)">
+            <summary>
+            Gets the page info within current structure for specific alias path.
+            </summary>
+            <param name="aliasPath">Alias path</param>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.GetTemplateInstanceForEditing(CMS.DocumentEngine.PageInfo)">
+            <summary>
+            Gets the template instance for editing changes.
+            </summary>
+            <param name="pi">Page info</param>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.SaveTemplateChanges(CMS.DocumentEngine.PageInfo,CMS.PortalEngine.PageTemplateInstance,CMS.PortalEngine.WidgetZoneTypeEnum,CMS.PortalEngine.ViewModeEnum,CMS.DocumentEngine.TreeProvider)">
+            <summary>
+            Saves the changes to the widget zone.
+            </summary>
+            <param name="pi">Page info</param>
+            <param name="instance">Template instance with the new data</param>
+            <param name="zoneType">Zone type</param>
+            <param name="viewMode">View mode</param>
+            <param name="tp">Tree provider</param>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.SaveZoneChanges(CMS.DocumentEngine.PageInfo,CMS.PortalEngine.PageTemplateInstance,CMS.PortalEngine.WebPartZoneInstance,System.Boolean)">
+            <summary>
+            Saves the changes to the zone
+            </summary>
+            <param name="pi">Page info</param>
+            <param name="pti">Page template instance</param>
+            <param name="zone">Zone instance</param>
+            <param name="refresh">Refresh after saving the changes</param>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.Validate">
+            <summary>
+            Returns true if entered data is valid. If data is invalid, it returns false and displays an error message.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.GetSpellCheckFields">
+            <summary>
+            Returns the list of the field IDs (Client IDs of the inner controls) that should be spell checked.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.ClearCache">
+            <summary>
+            Clears the cached items on a page.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.ReloadData">
+            <summary>
+            Causes reloading the data, override to implement the data reloading procedure.
+            </summary>
+        </member>
+        <member name="M:CMS.PortalControls.CMSPortalManager.SetMainPagePlaceholder(CMS.PortalControls.CMSPagePlaceholder)">
+            <summary>
+            Sets the main (root) page placeholder.
+            </summary>
+            <param name="placeholder">Placeholder to set</param>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.DocumentWizardManager">
+            <summary>
+            Gets or sets the document wizard manager
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.ReloadViewMode">
+            <summary>
+            Gets the value that indicates whether view mode should be reloaded for child controls
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.CurrentUser">
+            <summary>
+            Current user
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.UserCulture">
+            <summary>
+            Gets the preferred UI culture (HTML encoded due to XSS) for current user
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.AdditionalDesignMessage">
+            <summary>
+            Gets or sets the custom message which should be displayed in design mode
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.CurrentMessagesPlaceholder">
+            <summary>
+            Messages placeholder
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.RequiresWebPartManagement">
+            <summary>
+            Returns true if the web part management support is required.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.IsRequestAsync">
+            <summary>
+            Indicates whether current request is requested by action manager in async mode
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.PageChanged">
+            <summary>
+            Returns true if the page structure changed.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.CheckPermissions">
+            <summary>
+            Allows you to specify whether to check permissions of the current user. If the value is 'false' (default value) no permissions are checked. Otherwise, only nodes for which the user has read permission are displayed.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.CacheMinutes">
+            <summary>
+            Number of minutes the retrieved content is cached for. Zero indicates that the content will not be cached.
+            </summary>
+            <remarks>
+            This parameter allows you to set up caching of content so that it's not retrieved from the database each time a user requests the page.
+            </remarks>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.IsAuthorized">
+            <summary>
+            Returns true if the user is authorized for current document.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.HierarchyPageInfo">
+            <summary>
+            Hierarchy page info
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.CurrentEditMenu">
+            <summary>
+            Gets the current edit menu if available
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.CurrentObjectEditMenu">
+            <summary>
+            Gets the current object edit menu if available
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.PreserveContent">
+            <summary>
+            Allows you to specify whether the content of non-existing or not visible regions should be preserved when the content is saved.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.TreeProvider">
+            <summary>
+            Tree provider instance used to access data. If no TreeProvider is assigned, a new TreeProvider instance is created.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.DocumentManager">
+            <summary>
+            Document manager
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.SiteName">
+            <summary>
+            Current site name.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.PageAliasPath">
+            <summary>
+            Current site alias path.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.ViewMode">
+            <summary>
+            Current page mode.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.CMSEditableControls">
+            <summary>
+            Returns the array of the editable controls.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.CMSPagePlaceholders">
+            <summary>
+            Returns the collection of all the base level page placeholders.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.AllPagePlaceholders">
+            <summary>
+            Returns the collection of all the page placeholders.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.CurrentPlaceholder">
+            <summary>
+            Returns the Placeholder of the current page.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.HighlightDropableAreas">
+            <summary>
+            Droppable areas are highlighted when widget dragged.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.ActivateZoneBorder">
+            <summary>
+            If true zone border can be activated (+add widget button).
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.CurrentNode">
+            <summary>
+            Returns currently edited document if it is available in the given context.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.CurrentPageInfo">
+            <summary>
+            Returns currently processed page info, if it is available in the given context.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.PageTemplate">
+            <summary>
+            Gets the page template of the current page.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.UseObjectLocking">
+            <summary>
+            Gets a value that indicates if the object locking is used.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.PlaceholderMenuControl">
+            <summary>
+            Placeholder menu inner control.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.ShowPanel">
+            <summary>
+            Indicates if panel with management controls should be shown
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSPortalManager.TagKey">
+            <summary>
+            Generate div tag key by default due to HTML validity
+            </summary>
+        </member>
         <member name="T:CMS.PortalControls.CMSWebPartZone">
             <summary>
             Web part zone control.
@@ -3904,28 +3647,25 @@
             Returns true if preview anchor to be generated
             </summary>
         </member>
-        <member name="M:CMS.PortalControls.CMSWebPartZone.DesignRender(System.Web.UI.HtmlTextWriter,CMS.PortalEngine.ViewModeEnum)">
+        <member name="M:CMS.PortalControls.CMSWebPartZone.RenderZoneWithHeader(System.Web.UI.HtmlTextWriter)">
             <summary>
             Renders the zone in the design mode
             </summary>
             <param name="writer">HTML writer for output</param>
-            <param name="viewMode">View mode</param>
         </member>
-        <member name="M:CMS.PortalControls.CMSWebPartZone.RenderBorderStart(System.Web.UI.HtmlTextWriter,CMS.PortalEngine.ViewModeEnum)">
+        <member name="M:CMS.PortalControls.CMSWebPartZone.RenderBorderStart(System.Web.UI.HtmlTextWriter)">
             <summary>
             Renders the start of the zone border
             </summary>
             <param name="writer">Writer for the output</param>
-            <param name="viewMode">View mode</param>
         </member>
-        <member name="M:CMS.PortalControls.CMSWebPartZone.RenderContainerStart(System.Web.UI.HtmlTextWriter,CMS.PortalEngine.ViewModeEnum)">
+        <member name="M:CMS.PortalControls.CMSWebPartZone.RenderContainerStart(System.Web.UI.HtmlTextWriter)">
             <summary>
             Renders the start of the zone container
             </summary>
             <param name="writer">Writer for the output</param>
-            <param name="viewMode">View mode</param>
         </member>
-        <member name="M:CMS.PortalControls.CMSWebPartZone.StandardRender(System.Web.UI.HtmlTextWriter)">
+        <member name="M:CMS.PortalControls.CMSWebPartZone.RenderZoneContent(System.Web.UI.HtmlTextWriter)">
             <summary>
             Renders the zone in a standard way
             </summary>
@@ -3967,11 +3707,6 @@
             Constructor.
             </summary>
         </member>
-        <member name="M:CMS.PortalControls.CMSWebPartZone.ReloadControls">
-            <summary>
-            Reloads the zone controls.
-            </summary>
-        </member>
         <member name="M:CMS.PortalControls.CMSWebPartZone.EnsureWebPartsContainer">
             <summary>
             Creates the container where all web parts will be loaded into. 
@@ -3989,11 +3724,6 @@
             Sets up the drag and drop extender
             </summary>
             <param name="widgetGroup">Widget group name</param>
-        </member>
-        <member name="M:CMS.PortalControls.CMSWebPartZone.LoadSimpleHeader">
-            <summary>
-            Loads the simple header of the zone
-            </summary>
         </member>
         <member name="M:CMS.PortalControls.CMSWebPartZone.CreateNewWigdetScript(System.String,System.Int32,System.String)">
             <summary>
@@ -4115,11 +3845,6 @@
         <member name="M:CMS.PortalControls.CMSWebPartZone.ClearCache">
             <summary>
             Clears the caches of all the web parts.
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSWebPartZone.RequiresWebPartManagement">
-            <summary>
-            Returns true if the web part management support is required.
             </summary>
         </member>
         <member name="M:CMS.PortalControls.CMSWebPartZone.GetValue(System.String)">
@@ -4387,16 +4112,6 @@
             True if the zone is generated by web part layout.
             </summary>
         </member>
-        <member name="P:CMS.PortalControls.CMSWebPartZone.SimpleRender">
-            <summary>
-            If true, the zone is rendered in a simple mode
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSWebPartZone.DisplayHeader">
-            <summary>
-            If true, the web part zone displays header in design mode
-            </summary>
-        </member>
         <member name="P:CMS.PortalControls.CMSWebPartZone.HideOnCurrentPage">
             <summary>
             Returns true if the control should be hidden on current page (hide control on subpages in effect).
@@ -4450,11 +4165,6 @@
         <member name="P:CMS.PortalControls.CMSWebPartZone.ViewMode">
             <summary>
             Page mode of the current zone.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.CMSWebPartZone.Wireframe">
-            <summary>
-            If set to true, the zone is set to free layout adjusting to parent and simple rendering mode for wireframe purposes
             </summary>
         </member>
         <member name="P:CMS.PortalControls.CMSWebPartZone.IsVariant">
@@ -4512,6 +4222,16 @@
             Indicates whether the web part management support is required.
             </summary>
         </member>
+        <member name="P:CMS.PortalControls.CMSWebPartZone.ZoneHeaderVisible">
+            <summary>
+            Indicates whether the zone should render its header. Based on the view mode and zone type.
+            </summary>
+        </member>
+        <member name="P:CMS.PortalControls.CMSWebPartZone.ZoneIsVisible">
+            <summary>
+            Indicates whether the zone should render its content. Based on the visibility settings and view mode.
+            </summary>
+        </member>
         <member name="P:CMS.PortalControls.CMSWebPartZone.TagKey">
             <summary>
             Overrides the generation of the SPAN tag with custom tag.
@@ -4525,285 +4245,6 @@
         <member name="P:CMS.PortalControls.CMSWebPartZone.CustomTimeZone">
             <summary>
             Returns custom time zone info.
-            </summary>
-        </member>
-        <member name="T:CMS.PortalControls.EditablePropertyTypeEnum">
-            <summary>
-            Determines what type of property the editable property is
-            </summary>
-        </member>
-        <member name="F:CMS.PortalControls.EditablePropertyTypeEnum.TextBox">
-            <summary>
-            Single-line textbox.
-            </summary>
-        </member>
-        <member name="F:CMS.PortalControls.EditablePropertyTypeEnum.TextArea">
-            <summary>
-            Multi-line textbox.
-            </summary>
-        </member>
-        <member name="F:CMS.PortalControls.EditablePropertyTypeEnum.FormControl">
-            <summary>
-            General form control
-            </summary>
-        </member>
-        <member name="F:CMS.PortalControls.EditablePropertyTypeEnum.Image">
-            <summary>
-            Image
-            </summary>
-        </member>
-        <member name="F:CMS.PortalControls.EditablePropertyTypeEnum.Color">
-            <summary>
-            Color
-            </summary>
-        </member>
-        <member name="T:CMS.PortalControls.EditableWebPartList">
-            <summary>
-            Editable web part label control
-            </summary>
-        </member>
-        <member name="F:CMS.PortalControls.EditableWebPartList.randRegEx">
-            <summary>
-            Regular expression for random expression
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartList.#ctor">
-            <summary>
-            Constructor
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartList.OnPreRender(System.EventArgs)">
-            <summary>
-            PreRender event handler
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartList.Render(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Renders the control
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartList.GetItemCode(System.String,System.Collections.Generic.List{System.String},System.String,System.String)">
-            <summary>
-            Renders a single item and returns its code
-            </summary>
-            <param name="format">Item format</param>
-            <param name="selItems">List of selected items</param>
-            <param name="item">Item text</param>
-            <param name="itemClass">Item class</param>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartList.RandomNumber(System.Text.RegularExpressions.Match)">
-            <summary>
-            Returns the random number according to the match
-            </summary>
-            <param name="m">Match</param>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartList.ParentWebPart">
-            <summary>
-            Parent web part
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartList.PropertyName">
-            <summary>
-            Property name
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartList.ItemFormat">
-            <summary>
-            Item format string. 
-            {0} represents the item text.
-            {1} represents selected item text for selected item.
-            {2} represents the item class in format Item[index].
-            {3} represents the non-formatted encoded item value.
-            {4} represents the item value with formatting removed.
-            Default value is "{0}"
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartList.ItemSeparator">
-            <summary>
-            Separator that will be placed between each two items
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartList.SubItemFormat">
-            <summary>
-            Sub-item format string, when set, the lines of text are split by comma, and each of the line items is rendered with this format. {0} represents the item text. Default value is ""
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartList.SelectedItems">
-            <summary>
-            Selected items
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartList.SelectedItemText">
-            <summary>
-            Text that is presented as parameter {1} for selected item
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartList.CssClass">
-            <summary>
-            Css class of the item
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartList.CssStyle">
-            <summary>
-            Css style of the item
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartList.Attributes">
-            <summary>
-            Extra attributes
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartList.Type">
-            <summary>
-            If true, the property is multiline (editable with textbox)
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartList.RenderAsTag">
-            <summary>
-            Renders the item as the specified tag, default value is "div"
-            </summary>
-        </member>
-        <member name="T:CMS.PortalControls.EditableWebPartProperty">
-            <summary>
-            Editable web part label control
-            </summary>
-        </member>
-        <member name="F:CMS.PortalControls.EditableWebPartProperty.mReplacements">
-            <summary>
-            Replacements of the items.
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartProperty.#ctor">
-            <summary>
-            Constructor
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartProperty.GetDialogURL(System.String,System.String)">
-            <summary>
-            Returns the URL of the editing dialog for a general property
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartProperty.GetHTMLCode(System.String,CMS.PortalControls.CMSAbstractWebPart,System.String,System.Int32,CMS.PortalControls.EditablePropertyTypeEnum,System.String,System.String,System.String,System.String,System.Boolean)">
-            <summary>
-            Gets the HTML code of the editable property
-            </summary>
-            <param name="elementId">Element ID</param>
-            <param name="parentWebPart">Parent web part</param>
-            <param name="propertyName">Property name</param>
-            <param name="lineNumber">Line number to edit</param>
-            <param name="type">Property type</param>
-            <param name="value">Property value</param>
-            <param name="cssClass">CSS class</param>
-            <param name="style">Style</param>
-            <param name="formControlName">Form control name</param>
-            <param name="encode">Flag whether the property should be encoded or not</param>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartProperty.OnPreRender(System.EventArgs)">
-            <summary>
-            PreRender event handler
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartProperty.GenerateSpaces(System.Text.RegularExpressions.Match)">
-            <summary>
-            Generates spaces
-            </summary>
-            <param name="m">RegEx match</param>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartProperty.ApplyReplacements(System.String,System.Boolean)">
-            <summary>
-            Applies the replacements to the given text
-            </summary>
-            <param name="text">Text to modify</param>
-            <param name="removeFormatting">It true, the formatting is removed instead of applied</param>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartProperty.GetIconRe(System.String)">
-            <summary>
-            Gets the code for the icon regular expression
-            </summary>
-            <param name="ch">Icon character</param>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartProperty.GetIconCode(System.String)">
-            <summary>
-            Gets the code for the icon code
-            </summary>
-            <param name="cls">Icon class</param>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartProperty.GetBracketRe(System.String)">
-            <summary>
-            Gets the code for the bracket regular expression
-            </summary>
-            <param name="ch">Bracket character</param>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartProperty.GetBracketsCode(System.String)">
-            <summary>
-            Gets the code for the bracket code
-            </summary>
-            <param name="cls">Bracket class</param>
-        </member>
-        <member name="M:CMS.PortalControls.EditableWebPartProperty.GetReplacements">
-            <summary>
-            Creates the replacements array for text transformations. NOTE: When updating, update also the list in file layout.js
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartProperty.Replacements">
-            <summary>
-            Replacements of the items. NOTE: When updating, update also the list in file layout.js
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartProperty.ParentWebPart">
-            <summary>
-            Parent web part
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartProperty.PropertyName">
-            <summary>
-            Property name
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartProperty.LineNumber">
-            <summary>
-            Line number in the web part property that the value corresponds, indexed from 1 (only this line is replaced by the new value upon editing). If 0 or less, the whole property is replaced.
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartProperty.Type">
-            <summary>
-            If true, the property is multiline (editable with textbox)
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartProperty.FormControl">
-            <summary>
-            Code name of the form control used for editing of the property
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartProperty.CssClass">
-            <summary>
-            CSS class
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartProperty.Style">
-            <summary>
-            Style
-            </summary>
-        </member>
-        <member name="P:CMS.PortalControls.EditableWebPartProperty.Encode">
-            <summary>
-            If true (default), the property text is encode
-            </summary>
-        </member>
-        <member name="T:CMS.PortalControls.CMSAbstractWireframeWebPart">
-            <summary>
-            Base class from wireframe web parts
-            </summary>
-        </member>
-        <member name="M:CMS.PortalControls.CMSAbstractWireframeWebPart.GetSettingValue(System.String)">
-            <summary>
-            Returns the value of the given web part property property. If the value is not saved in web part instance, value is loaded from web part default value.
-            </summary>
-            <param name="propertyName">Property name</param>
-        </member>
-        <member name="P:CMS.PortalControls.CMSAbstractWireframeWebPart.ControlType">
-            <summary>
-            Gets or sets the control type
             </summary>
         </member>
         <member name="T:CMS.PortalControls.WebPartAccessDenied">
@@ -5151,11 +4592,6 @@
             Registers the layouts script
             </summary>
             <param name="page">Page for which register the script</param>
-        </member>
-        <member name="M:CMS.PortalControls.PortalHelper.IsWireframingEnabled(System.String)">
-            <summary>
-            Gets the value that indicates whether wireframing is enabled for specific site name
-            </summary>
         </member>
         <member name="M:CMS.PortalControls.PortalHelper.IsOnSiteEditingEnabled(System.String)">
             <summary>

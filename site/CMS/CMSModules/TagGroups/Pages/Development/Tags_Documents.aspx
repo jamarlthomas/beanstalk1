@@ -1,6 +1,6 @@
-<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
+﻿<%@ Page Language="C#" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" AutoEventWireup="true"
     Inherits="CMSModules_TagGroups_Pages_Development_Tags_Documents" Title="Tag group - Tags pages"
-    Theme="Default" Codebehind="Tags_Documents.aspx.cs" %>
+    Theme="Default"  Codebehind="Tags_Documents.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/AdminControls/Controls/Documents/Documents.ascx" TagName="Documents"
     TagPrefix="cms" %>

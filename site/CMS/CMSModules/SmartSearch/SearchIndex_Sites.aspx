@@ -1,6 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true"
+﻿<%@ Page Language="C#" AutoEventWireup="true"
     Inherits="CMSModules_SmartSearch_SearchIndex_Sites" Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
-    Title="Search Index - Sites List" Codebehind="SearchIndex_Sites.aspx.cs" %>
+    Title="Search Index - Sites List"  Codebehind="SearchIndex_Sites.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagName="UniSelector" TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/Basic/DisabledModuleInfo.ascx" TagPrefix="cms"

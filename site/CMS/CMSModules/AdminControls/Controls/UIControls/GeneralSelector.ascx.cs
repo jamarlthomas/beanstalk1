@@ -238,15 +238,15 @@ public partial class CMSModules_AdminControls_Controls_UIControls_GeneralSelecto
     ///  Base where condition for the objects selection. Applies to all Base multiple selection grid, 
     ///  dropdownlist, single and multiple selection dialogs.
     /// </summary>
-    public String SelectorWhereCondition
+    public String WhereCondition
     {
         get
         {
-            return GetStringContextValue("SelectorWhereCondition", null);
+            return GetStringContextValue("WhereCondition", null);
         }
         set
         {
-            SetValue("SelectorWhereCondition", value);
+            SetValue("WhereCondition", value);
         }
     }
 
@@ -271,11 +271,11 @@ public partial class CMSModules_AdminControls_Controls_UIControls_GeneralSelecto
     /// If there is a multi-selection enabled, the returned values are separated by this separator. 
     /// Default is semicolon ";".
     /// </summary>
-    public String ValuesSeparator
+    public char ValuesSeparator
     {
         get
         {
-            return GetStringContextValue("ValuesSeparator", ";");
+            return ValidationHelper.GetValue(GetStringContextValue("ValuesSeparator", null), ';');
         }
         set
         {
@@ -416,22 +416,6 @@ public partial class CMSModules_AdminControls_Controls_UIControls_GeneralSelecto
         set
         {
             SetValue("AllowEditTextBox", value);
-        }
-    }
-
-
-    /// <summary>
-    /// If true, the textbox mode works with the return value and allows editing of the value.
-    /// </summary>
-    public String ResourcePrefix
-    {
-        get
-        {
-            return ValidationHelper.GetString(GetValue("ResourcePrefix"), null);
-        }
-        set
-        {
-            SetValue("ResourcePrefix", value);
         }
     }
 
@@ -854,16 +838,13 @@ public partial class CMSModules_AdminControls_Controls_UIControls_GeneralSelecto
         }
         else
         {
-            // Fix label vertical height
-            lblText.Style.Add("line-height", "22px");
-
             selectorElem.ObjectType = SelectorObjectType;
             selectorElem.ReturnColumnName = ReturnColumnName;
             selectorElem.ObjectSiteName = ObjectSiteName;
             selectorElem.DisplayNameFormat = DisplayNameFormat;
             selectorElem.SelectionMode = SelectionMode;
             selectorElem.AdditionalColumns = AdditionalColumns;
-            selectorElem.WhereCondition = SelectorWhereCondition;
+            selectorElem.WhereCondition = WhereCondition;
             selectorElem.EnabledColumnName = EnabledColumnName;
             selectorElem.ValuesSeparator = ValuesSeparator;
             selectorElem.AllowEditTextBox = AllowEditTextBox;
@@ -906,18 +887,11 @@ public partial class CMSModules_AdminControls_Controls_UIControls_GeneralSelecto
             if (PostbackOnChange)
             {
                 selectorElem.DropDownSingleSelect.AutoPostBack = true;
-                selectorElem.OnSelectionChanged += new EventHandler(selectorElem_OnSelectionChanged);
             }
 
             lblText.Text = GetString(SelectorLabel);
             lblText.Visible = !String.IsNullOrEmpty(SelectorLabel);
         }
-    }
-
-
-    void selectorElem_OnSelectionChanged(object sender, EventArgs e)
-    {
-
     }
 
 

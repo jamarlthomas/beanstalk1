@@ -92,7 +92,7 @@ public partial class CMSFormControls_Selectors_InsertImageOrMedia_Tabs_Media : C
         {
             linkMedia.StopProcessing = true;
             linkMedia.Visible = false;
-            string url = ResolveUrl("~/CMSMessages/Error.aspx?title=" + GetString("dialogs.badhashtitle") + "&text=" + GetString("dialogs.badhashtext") + "&cancel=1");
+            string url = ResolveUrl(UIHelper.GetErrorPageUrl("dialogs.badhashtitle", "dialogs.badhashtext", true));
             ltlScript.Text = ScriptHelper.GetScript("if (window.parent != null) { window.parent.location = '" + url + "' }");
         }
     }

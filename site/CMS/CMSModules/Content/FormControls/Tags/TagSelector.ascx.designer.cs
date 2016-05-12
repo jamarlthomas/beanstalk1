@@ -64,4 +64,13 @@ public partial class CMSModules_Content_FormControls_Tags_TagSelector {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Button btnHidden;
+    
+    /// <summary>
+    /// hdnDialogIdentifier control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.HiddenField hdnDialogIdentifier;
 }

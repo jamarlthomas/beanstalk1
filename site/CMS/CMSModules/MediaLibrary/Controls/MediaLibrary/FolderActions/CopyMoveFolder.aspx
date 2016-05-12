@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Theme="Default" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions_CopyMoveFolder"
-    Codebehind="CopyMoveFolder.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Theme="Default" Inherits="CMSModules_MediaLibrary_Controls_MediaLibrary_FolderActions_CopyMoveFolder"
+     Codebehind="CopyMoveFolder.aspx.cs" %>
 
 <%@ Register Src="~/CMSAdminControls/AsyncLogDialog.ascx" TagName="AsyncLog"
     TagPrefix="cms" %>
@@ -68,9 +68,8 @@
 <body class="<%=mBodyClass%>">
     <form id="form1" runat="server">
         <div>
-            <cms:FileSystemDataSource ID="fileSystemDataSource" runat="server" />
             <asp:Panel runat="server" ID="pnlLog" Visible="false">
-                <cms:AsyncLog ID="ctlAsyncLog" runat="server" />
+                <cms:AsyncLog ID="ctlAsyncLog" runat="server" ProvideLogContext="true" LogContextNames="MediaLibrary" />
             </asp:Panel>
             <div id="ContentDiv">
                 <asp:Panel runat="server" ID="pnlEmpty" Visible="true" CssClass="DialogInfoArea">

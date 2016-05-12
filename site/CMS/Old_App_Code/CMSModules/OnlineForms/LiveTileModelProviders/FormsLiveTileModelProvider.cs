@@ -33,6 +33,13 @@ namespace CMS.OnlineForms
 
             return CacheHelper.Cache(() =>
             {
+                // If site has more than 1 form on lower license, BizFormItemProvider.GetItems method returns null which results in exception
+                // Standard license check
+                if (!BizFormItemProvider.LicenseVersionCheck(RequestContext.CurrentDomain, ObjectActionEnum.Edit))
+                {
+                    return null;
+                }
+
                 var formsClassNames = BizFormInfoProvider.GetBizForms()
                                                          .OnSite(liveTileContext.SiteInfo.SiteID)
                                                          .Source(s => s.Join<DataClassInfo>("FormClassID", "ClassID"))

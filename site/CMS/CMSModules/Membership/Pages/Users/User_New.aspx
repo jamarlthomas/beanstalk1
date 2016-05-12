@@ -1,5 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Pages_Users_User_New"
-    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Users - New User" Codebehind="User_New.aspx.cs" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Inherits="CMSModules_Membership_Pages_Users_User_New"
+    Theme="Default" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master" Title="Users - New User"  Codebehind="User_New.aspx.cs" %>
 
 <%@ Register Src="~/CMSModules/Membership/FormControls/Users/UserName.ascx" TagName="UserName" TagPrefix="cms" %>
 <%@ Register Src="~/CMSModules/Membership/FormControls/Passwords/PasswordStrength.ascx" TagName="PasswordStrength"

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Web.UI.WebControls;
 
 using CMS.Core;
@@ -94,8 +94,10 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Configu
         txtNewsletterDynamicURL.StatusErrorMessage = GetString("general.pagenotfound");
         
         // Register save button
-        CurrentMaster.HeaderActions.AddAction(new SaveAction(this));
+        CurrentMaster.HeaderActions.AddAction(new SaveAction());
         CurrentMaster.HeaderActions.ActionPerformed += HeaderActions_ActionPerformed;
+
+        InitializeTooltips();
 
         // Load newsletter configuration
         LoadData();
@@ -297,7 +299,8 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Configu
                     return;
                 }
 
-                if (!DataTypeManager.IsValidDate(SchedulingHelper.DecodeInterval(scheduledInterval).StartTime))
+                TaskInterval taskInterval = SchedulingHelper.DecodeInterval(scheduledInterval);
+                if (!DataTypeManager.IsValidDate(taskInterval.StartTime))
                 {
                     ShowError(GetString("Newsletter.IncorrectDate"));
                     return;
@@ -311,7 +314,7 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Configu
                 {
                     // Scheduled task either doesn't exist or was updated to new interval
                     task.TaskInterval = scheduledInterval;
-                    task.TaskNextRunTime = SchedulingHelper.GetNextTime(task.TaskInterval, new DateTime(), new DateTime());
+                    task.TaskNextRunTime = SchedulingHelper.GetFirstRunTime(taskInterval, task.TaskNextRunTime);
                     task.TaskDisplayName = GetString("DynamicNewsletter.TaskName") + newsletterObj.NewsletterDisplayName;
                     task.TaskName = "DynamicNewsletter_" + newsletterObj.NewsletterName;
                     // Set task for processing in external service
@@ -394,7 +397,6 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Configu
         txtNewsletterBaseUrl.Text = newsletter.NewsletterBaseUrl;
         txtNewsletterUnsubscribeUrl.Text = newsletter.NewsletterUnsubscribeUrl;
         txtDraftEmails.Text = newsletter.NewsletterDraftEmails;
-        chkUseEmailQueue.Checked = newsletter.NewsletterUseEmailQueue;
         chkEnableResending.Checked = newsletter.NewsletterEnableResending;
 
         subscriptionTemplate.Value = newsletter.NewsletterSubscriptionTemplateID.ToString();
@@ -448,7 +450,6 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Configu
         newsletterObj.NewsletterBaseUrl = txtNewsletterBaseUrl.Text.Trim();
         newsletterObj.NewsletterUnsubscribeUrl = txtNewsletterUnsubscribeUrl.Text.Trim();
         newsletterObj.NewsletterDraftEmails = txtDraftEmails.Text;
-        newsletterObj.NewsletterUseEmailQueue = chkUseEmailQueue.Checked;
         newsletterObj.NewsletterEnableResending = chkEnableResending.Checked;
         newsletterObj.NewsletterTrackOpenEmails = TrackingEnabled && chkTrackOpenedEmails.Checked;
         newsletterObj.NewsletterTrackClickedLinks = TrackingEnabled && chkTrackClickedLinks.Checked;
@@ -483,8 +484,41 @@ public partial class CMSModules_Newsletters_Tools_Newsletters_Newsletter_Configu
                        TaskLastResult = string.Empty,
                        TaskSiteID = SiteContext.CurrentSiteID,
                        TaskData = newsletterObj.NewsletterGUID.ToString(),
-                       TaskType = ScheduledTaskTypeEnum.System
+                       TaskType = ScheduledTaskTypeEnum.System,
+                       TaskNextRunTime = TaskInfoProvider.NO_TIME
                    };
+    }
+
+
+    /// <summary>
+    /// Initializes tooltips and help icons text.
+    /// </summary>
+    private void InitializeTooltips()
+    {
+        pnlNewsletterDisplayName.ToolTip = lblNewsletterDisplayName.ToolTip = GetString("newsletter_edit.newsletterdisplayname.description");
+        pnlNewsletterName.ToolTip = lblNewsletterName.ToolTip = GetString("newsletter_edit.newslettername.description");       
+        pnlNewsletterSenderName.ToolTip = lblNewsletterSenderName.ToolTip = GetString("newsletter_edit.newslettersendername.description");
+        pnlNewsletterSenderEmail.ToolTip = lblNewsletterSenderEmail.ToolTip = GetString("newsletter_edit.newslettersenderemail.description");  
+        pnlNewsletterDraftEmails.ToolTip = lblDraftEmails.ToolTip = GetString("newsletter_edit.newsletterdraftemails.description");
+        pnlNewsletterEnableResending.ToolTip = lblEnableResending.ToolTip = GetString("newsletter_edit.newsletterenableresending.description");
+        pnlNewsletterIssueTemplate.ToolTip = lblIssueTemplate.ToolTip = GetString("newsletter_edit.newslettertemplate.description");
+        pnlNewsletterDynamicSubject.ToolTip = lblSubject.ToolTip = GetString("newsletter_edit.newsletterdynamicsubject.description");
+        pnlNewsletterDynamicUrl.ToolTip = lblNewsletterDynamicURL.ToolTip = GetString("newsletter_edit.newsletterdynamicurl.description");
+        pnlNewsletterDynamicScheduler.ToolTip = lblSchedule.ToolTip = GetString("newsletter_edit.newsletterdynamicscheduledtask.description");
+        pnlNewsletterTrackOpenedEmails.ToolTip = lblTrackOpenedEmails.ToolTip = GetString("newsletter_edit.newslettertrackopenedemails.description");
+        pnlNewsletterTrackClickedLinks.ToolTip = lblTrackClickedLinks.ToolTip = GetString("newsletter_edit.newslettertrackclickedlinks.description");
+        pnlNewsletterLogActivities.ToolTip = lblLogActivity.ToolTip = GetString("newsletter_edit.newsletterlogactivities.description");       
+        pnlNewsletterOptInTemplate.ToolTip = lblOptInTemplate.ToolTip = GetString("newsletter_edit.newsletteroptintemplate.description");
+        pnlNewsletterOptInApprovalUrl.ToolTip = lblOptInURL.ToolTip = GetString("newsletter_edit.newsletteroptinurl.description");
+        pnlNewsletterOptInSendConfirmation.ToolTip = lblSendOptInConfirmation.ToolTip = GetString("newsletter_edit.newsletteroptinsendconfirmation.description");
+
+        pnlNewsletterSubscriptionTemplate.ToolTip = lblSubscriptionTemplate.ToolTip = iconHelpSubscriptionTemplate.ToolTip = lblScreenReaderSubscriptionTemplate.Text = GetString("newsletter_edit.newslettersubscriptiontemplate.description");
+        pnlNewsletterUnsubscriptionTemplate.ToolTip = lblUnsubscriptionTemplate.ToolTip = iconHelpUnsubscriptionTemplate.ToolTip = lblScreenReaderUnsubscriptionTemplate.Text = GetString("newsletter_edit.newsletterunsubscriptiontemplate.description");
+        pnlNewsletterBaseUrl.ToolTip = lblNewsletterBaseUrl.ToolTip = iconHelpBaseUrl.ToolTip = lblScreenReaderBaseUrl.Text = GetString("newsletter_edit.newsletterbaseurl.description");
+        pnlNewsletterUnsubscriptionUrl.ToolTip = lblNewsletterUnsubscribeUrl.ToolTip = iconHelpUnsubscribeUrl.ToolTip = lblScreenReaderUnsubscribeUrl.Text = GetString("newsletter_edit.newsletterunsubscribeurl.description");
+        pnlNewsletterEnableOptIn.ToolTip = lblEnableOptIn.ToolTip = iconHelpEnableOptIn.ToolTip = lblScreenReaderEnableOptIn.Text = GetString("newsletter_edit.newsletterenableoptin.description");
+
+        ScriptHelper.RegisterBootstrapTooltip(Page, ".info-icon > i");
     }
 
     #endregion

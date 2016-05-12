@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Codebehind="MappingEditor.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_SalesForce_MappingEditor" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" EnableEventValidation="false" Theme="Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"  Codebehind="MappingEditor.aspx.cs" Inherits="CMSModules_ContactManagement_Pages_Tools_SalesForce_MappingEditor" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master" EnableEventValidation="false" Theme="Default" %>
 
 <%@ Register TagPrefix="cms" TagName="SalesForceError" Src="~/CMSModules/ContactManagement/Controls/UI/SalesForce/Error.ascx" %>
 <%@ Import Namespace="CMS.SalesForce" %>
@@ -75,7 +75,7 @@
                 comboElement = $cmsj(comboElement);
                 comboElement.parent().parent().find("i").hide().filter(".Warning" + comboElement.val()).show();
             };
-            var comboElements = $cmsj("select.SourceDropDownList");
+            var comboElements = $cmsj("[id*='SourceDropDownList']");
             comboElements.each(function (index, comboElement) {
                 displayWarnings(comboElement);
             });

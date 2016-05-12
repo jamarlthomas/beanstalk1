@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_Classes_SelectClass" Codebehind="SelectClass.ascx.cs" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSFormControls_Classes_SelectClass"  Codebehind="SelectClass.ascx.cs" %>
 <%@ Register src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" tagname="UniSelector" tagprefix="cms" %>
 
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">

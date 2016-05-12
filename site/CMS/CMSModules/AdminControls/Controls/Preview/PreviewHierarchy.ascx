@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Codebehind="PreviewHierarchy.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true"  Codebehind="PreviewHierarchy.ascx.cs"
     Inherits="CMSModules_AdminControls_Controls_Preview_PreviewHierarchy" %>
 
 <script type="text/javascript">

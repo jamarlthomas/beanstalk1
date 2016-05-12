@@ -10,26 +10,6 @@
             Several members have to be implemented in order to achieve desired functionality.
             </summary>
         </member>
-        <member name="F:CMS.SynchronizationEngine.BaseIntegrationConnector.internalTranslations">
-            <summary>
-            ID translation table [className.ToLowerCSafe()] -> Hashtable [OldID -> NewID]
-            </summary>
-        </member>
-        <member name="F:CMS.SynchronizationEngine.BaseIntegrationConnector.externalTranslations">
-            <summary>
-            ID translation table [className.ToLowerCSafe()] -> Hashtable [ID -> "codename|sitename|parentid"]
-            </summary>
-        </member>
-        <member name="F:CMS.SynchronizationEngine.BaseIntegrationConnector.mSyncManager">
-            <summary>
-            SyncManager instance.
-            </summary>
-        </member>
-        <member name="F:CMS.SynchronizationEngine.BaseIntegrationConnector.mClearTranslationsAfterProcessing">
-            <summary>
-            Says whether to clear cached translation information.
-            </summary>
-        </member>
         <member name="M:CMS.SynchronizationEngine.BaseIntegrationConnector.ProcessExternalTask(System.Object,CMS.Synchronization.IntegrationProcessTypeEnum,CMS.DataEngine.TaskTypeEnum,CMS.Synchronization.TaskDataTypeEnum,System.String)">
             <summary>
             Processes incoming task.
@@ -815,11 +795,6 @@
             Helper class for synchronization methods.
             </summary>
         </member>
-        <member name="F:CMS.Synchronization.SyncManager.mAdministratorId">
-            <summary>
-            Administrator user ID.
-            </summary>
-        </member>
         <member name="M:CMS.Synchronization.SyncManager.ProcessTask(CMS.DataEngine.TaskTypeEnum,System.String,System.String,System.String)">
             <summary>
             Processes the given task.
@@ -847,6 +822,14 @@
             <param name="taskObjectType">Task object type</param>
             <param name="taskData">Document/object data for the synchronization task</param>
             <param name="taskBinaryData">Binary data for the synchronization task</param>
+            <param name="processChildren">Indicates if also child objects should be processed</param>
+            <param name="handler">Synchronization handler</param>
+        </member>
+        <member name="M:CMS.Synchronization.SyncManager.ProcessTask(CMS.Synchronization.IStagingTaskData,System.Boolean,CMS.Synchronization.StagingSynchronizationHandler)">
+            <summary>
+            Processes the given task.
+            </summary>
+            <param name="stagingTaskData">StagingTaskData that encapsulates staging task</param>
             <param name="processChildren">Indicates if also child objects should be processed</param>
             <param name="handler">Synchronization handler</param>
         </member>
@@ -890,11 +873,19 @@
             <param name="logTasks">Indicates if synchronization tasks should be logged</param>
             <returns>Returns last processed object</returns>
         </member>
-        <member name="M:CMS.Synchronization.SyncManager.IsObjectPostProcess(CMS.DataEngine.BaseInfo)">
+        <member name="M:CMS.Synchronization.SyncManager.GetObject(System.Data.DataRow,System.String)">
+            <summary>
+            Creates a new object instance from the given data row
+            </summary>
+            <param name="dr">Data row</param>
+            <param name="objectType">Object type</param>
+        </member>
+        <member name="M:CMS.Synchronization.SyncManager.IsObjectPostProcess(CMS.DataEngine.BaseInfo,System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Indicates if the object supports post processing
             </summary>
             <param name="infoObj">Info object</param>
+            <param name="failedTranslationColumnNames">Collection of column names whose values could not be translated.</param>
         </member>
         <member name="M:CMS.Synchronization.SyncManager.UpdateObject``1(``0@,System.Data.DataSet,CMS.DataEngine.TranslationHelper,System.Boolean,System.Data.DataSet,System.Boolean,System.Collections.Generic.List{CMS.DataEngine.GeneralizedInfo})">
             <summary>
@@ -919,6 +910,21 @@
             <param name="binaryData">DataSet with binary data</param>
             <param name="addToSite">If true, assigns the object to the site</param>
             <param name="postProcessList">List of objects which should be processed after finishing of main objects</param>
+        </member>
+        <member name="M:CMS.Synchronization.SyncManager.ResetSpecialFields(CMS.DataEngine.GeneralizedInfo)">
+            <summary>
+            Resets special fields to their default values
+            </summary>
+        </member>
+        <member name="M:CMS.Synchronization.SyncManager.PreserveSpecialFieldsFromExisting(CMS.DataEngine.GeneralizedInfo,CMS.DataEngine.GeneralizedInfo)">
+            <summary>
+            Applies the data from the existing object that should be preserved
+            </summary>
+        </member>
+        <member name="M:CMS.Synchronization.SyncManager.PrepareSiteInfo(CMS.SiteProvider.SiteInfo)">
+            <summary>
+            Prepares site info for the import process by applying the existing values that should be preserved
+            </summary>
         </member>
         <member name="M:CMS.Synchronization.SyncManager.CopyData(CMS.DataEngine.BaseInfo,CMS.DataEngine.BaseInfo)">
             <summary>
@@ -972,6 +978,19 @@
             <param name="documentDS">Document data</param>
             <param name="safeClassName">Class name of document in safe format</param>
             <param name="processChildren">Indicates if also child objects should be processed</param>
+        </member>
+        <member name="M:CMS.Synchronization.SyncManager.UpdateWidgetPersonalizationVariants(System.Data.DataSet,CMS.DocumentEngine.TreeNode,CMS.DataEngine.TranslationHelper)">
+            <summary>
+            Updates widget personalization variants.
+            </summary>
+            <remarks>
+            Compares existing document personalization variants given as children of <paramref name="currentNode"/> with the staged ones obtained from
+            <paramref name="documentDS"/> and removes those no longer existing in <paramref name="documentDS"/>.
+            Updating and creating new variants is performed using <see cref="M:CMS.Synchronization.SyncManager.UpdateObject(System.Data.DataSet,System.Data.DataSet,System.String,CMS.DataEngine.TranslationHelper,System.Boolean,System.Boolean)"/> method.
+            </remarks>
+            <param name="documentDS">Dataset containing currently staged document</param>
+            <param name="currentNode">Refers to current node corresponding to the document given in <paramref name="documentDS"/></param>
+            <param name="translationHelper">Class to provide objects translation interface ID - CodeName</param>
         </member>
         <member name="M:CMS.Synchronization.SyncManager.PublishDocument(System.Data.DataSet,System.String)">
             <summary>
@@ -1105,14 +1124,11 @@
             <param name="className">Document class name (optional)</param>
             <param name="taskObjectType">Task object type (optional)</param>
         </member>
-        <member name="M:CMS.Synchronization.SyncManager.ProcessTaskInternal(CMS.DataEngine.TaskTypeEnum,System.String,System.String,System.String,System.Boolean,CMS.Synchronization.StagingSynchronizationHandler)">
+        <member name="M:CMS.Synchronization.SyncManager.ProcessTaskInternal(CMS.Synchronization.IStagingTaskData,System.Boolean,CMS.Synchronization.StagingSynchronizationHandler)">
             <summary>
             Processes the given task.
             </summary>
-            <param name="taskType">Type of the task</param>
-            <param name="taskObjectType">Task object type</param>
-            <param name="taskData">Document/object data for the synchronization task</param>
-            <param name="taskBinaryData">Binary data for the synchronization task</param>
+            <param name="stagingTaskData">StagingTaskData for processing</param>
             <param name="processChildren">Indicates if also child objects should be processed</param>
             <param name="handler">Synchronization handler</param>
         </member>
@@ -1134,6 +1150,27 @@
             <summary>
             Removes excluded column values from the given object.
             </summary>
+        </member>
+        <member name="M:CMS.Synchronization.SyncManager.TryGetUserSynchronizator(System.Guid,System.String)">
+            <summary>
+            Gets UserID under which the task processing will be executed.
+            If user with given GUID or Username does not exists or is disabled, zero is returned, else UserID is returned.
+            </summary>
+            <param name="userGuid">Guid that belongs to user who has started the synchronization process on source server</param>
+            <param name="username">Username that belongs to user who has started the synchronization process on source server</param>
+        </member>
+        <member name="M:CMS.Synchronization.SyncManager.GetTaskGroupsFromSentTasks(System.Collections.Generic.IEnumerable{CMS.Synchronization.TaskGroupInfo})">
+            <summary>
+            Create task groups from data sent from source server when synchronizing changes.
+            </summary>
+        </member>
+        <member name="M:CMS.Synchronization.SyncManager.FilterRedundantExistingTaskGroups(System.Collections.Generic.IEnumerable{CMS.Synchronization.TaskGroupInfo},System.Collections.Generic.List{CMS.Synchronization.TaskGroupInfo})">
+            <summary>
+            When synchronizing changes with task groups, which code names were changed on source, but they already exists in target with the same code name
+            then some redundant task groups occur between existing task groups (SQL Select in <see cref="M:CMS.Synchronization.SyncManager.GetTaskGroupsFromSentTasks(System.Collections.Generic.IEnumerable{CMS.Synchronization.TaskGroupInfo})"/> method), that need to be filtered.
+            </summary>
+            <param name="sentTaskGroups">Task groups sent from source environment</param>
+            <param name="existingTaskGroups">Task groups from current environment which has the same code name or guid as the sent task groups</param>
         </member>
         <member name="P:CMS.Synchronization.SyncManager.AdministratorId">
             <summary>
@@ -1172,7 +1209,7 @@
         </member>
         <member name="P:CMS.Synchronization.SyncManager.UseAutomaticOrdering">
             <summary>
-             Indicates if automatic ordering for documents should be used on target server.
+            Indicates if automatic ordering for documents should be used on target server.
             </summary>
         </member>
         <member name="P:CMS.Synchronization.SyncManager.OperationType">
@@ -1200,9 +1237,9 @@
             Gets site ID for translation.
             </summary>
         </member>
-        <member name="P:CMS.Synchronization.SyncManager.CurrentUser">
+        <member name="P:CMS.Synchronization.SyncManager.AdministratorUser">
             <summary>
-            Current user.
+            Gets the default administrator use based on <see cref="P:CMS.Synchronization.SyncManager.AdministratorId"/>
             </summary>
         </member>
         <member name="T:CMS.Synchronization.SynchronizationEngineModule">

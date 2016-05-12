@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Data;
 using System.Collections;
 using System.Web;
@@ -73,7 +73,7 @@ public partial class CMSWebParts_Community_Polls_GroupPoll : CMSAbstractWebPart
 
 
     /// <summary>
-    /// Gets or sets the type of the representation of the answers’ count in the graph.
+    /// Gets or sets the type of the representation of the answersï¿½ count in the graph.
     /// </summary>
     public CountTypeEnum CountType
     {
@@ -306,7 +306,7 @@ public partial class CMSWebParts_Community_Polls_GroupPoll : CMSAbstractWebPart
         {
             string siteName = SiteContext.CurrentSiteName;
 
-            if (AnalyticsHelper.AnalyticsEnabled(siteName) && AnalyticsHelper.TrackConversionsEnabled(siteName) && !AnalyticsHelper.IsIPExcluded(siteName, RequestContext.UserHostAddress))
+            if (AnalyticsHelper.AnalyticsEnabled(siteName) && !AnalyticsHelper.IsIPExcluded(siteName, RequestContext.UserHostAddress))
             {
                 HitLogProvider.LogConversions(siteName, LocalizationContext.PreferredCultureCode, TrackConversionName, 0, ConversionValue);
             }
