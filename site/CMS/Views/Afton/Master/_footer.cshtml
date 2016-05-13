@@ -1,11 +1,14 @@
 ﻿@using CMS.DocumentEngine.Types
+@using CMS.Helpers
 @using CMS.Mvc.ViewModels.Master
 @model FooterViewModel
 <div id="footerC">
 
     <footer>
         <div id="btmC">
-            <div id="btmLogoC"><img src="@Url.Content("~/images/btm-logo.png")" /></div>
+            <div id="btmLogoC">
+                <img src="@Url.Content("~/images/btm-logo.png")" />
+            </div>
             @foreach (var item in Model.FooterNavCategories)
             {
                 <div class="btmNavCol">
@@ -20,7 +23,7 @@
             }
         </div>
         <div id="btmContactBtn" style="display:none;">
-            <a href="@Url.Content("~/"+ ContactPage.RoutePath)">Contact</a>
+            <a href="@Url.Content("~/"+ ContactPage.RoutePath)">@ResHelper.GetString("master_footer_ContactButton")</a>
         </div>
         <div id="disclaimer">
             &copy;<span id="dateYear"></span> Afton Chemical <span class="divider">|</span><a href="#">Legal Notice</a><span class="divider">|</span><a href="#">Privacy & Terms</a><span class="divider">|</span><a href="#">Site Map</a>

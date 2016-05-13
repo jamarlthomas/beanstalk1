@@ -1,4 +1,5 @@
-﻿@using CMS.Mvc.ViewModels.Master
+﻿@using CMS.Helpers
+@using CMS.Mvc.ViewModels.Master
 @model MasterViewModel
 <div id="mobileNavC1">
     <div id="mobileNavC">
@@ -50,8 +51,8 @@
         <div id="search">
             @using (Html.BeginForm("Index", "GlobalSearch", FormMethod.Get))
             {
-                <input type="text" placeholder="Search Term..." value="@(Model.GlobalSearchQuery ?? string.Empty)" name="query">
-                <div id="searchDir">Press Enter to Search</div>
+                <input type="text" placeholder=@ResHelper.GetString("master_header_SearchPlaceHolder") value="@(Model.GlobalSearchQuery ?? string.Empty)" name="query">
+                <div id="searchDir">@ResHelper.GetString("master_header_SearchTooltip")</div>
                 <div id="closeSearch">
                     <a href="#">
                         <img src="@Url.Content("~/images/searchClose.png")" alt="" />
@@ -63,8 +64,8 @@
     <div id="topHeader">
         <header>
             <a href="/">
-                <img src="@Url.Content("~/images/logo.gif")" id="dLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions" />
-                <img src="@Url.Content("~/images/logo-mobile.gif")" id="mLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions" style="display: none;" />
+                <img src="@Url.Content("~/images/logo.gif")" id="dLogo" alt=@ResHelper.GetString("master_header_LogoTitle") title=@ResHelper.GetString("master_header_LogoTitle") />
+                <img src="@Url.Content("~/images/logo-mobile.gif")" id="mLogo" alt=@ResHelper.GetString("master_header_LogoTitle") title=@ResHelper.GetString("master_header_LogoTitle") style="display: none;" />
             </a>
             <a href="#" id="mobileBtn" style="display: none;">
                 <img src="@Url.Content("~/images/mobileBtn.gif")" />
@@ -77,14 +78,13 @@
                     <li>
                         <a href="#" id="selLang" data-lang="@Model.SelectedCulture">@Model.SelectedCulture</a><span class="icon-language"></span>
                         <ul id="langDropDown" style="display: none;">
-                            <li id="English"><a href="#">English</a></li>
-                            <li id="简体中文"><a href="#">简体中文</a></li>
-                            <li id="German"><a href="#">German</a></li>
-                            <li id="日本語"><a href="#">日本語</a></li>
-                            <li id="Русский"><a href="#">Русский</a></li>
-                            <li id="Español"><a href="#">Español</a></li>
-                            <li id="Português"><a href="#">Português</a></li>
-                            <li id="French"><a href="#">French</a></li>
+                            @foreach (CultureLinkViewModel cultureLink in Model.AvailableCultures.Where(c => c.Title != Model.SelectedCulture))
+                            {
+                                <li id=@cultureLink.CultureId>
+                                    <a href=@cultureLink.Reference>@cultureLink.Title</a>
+                                </li>
+                            }
+
                         </ul>
                     </li>
                 </ul>
@@ -126,8 +126,9 @@
                     @foreach (var thumbnailedItem in item.ThumbnailedMenuItems)
                     {
                         <a href="@Url.Content("~/" + thumbnailedItem.Reference ?? "")" class="photoLink">
-                            @if (!string.IsNullOrEmpty(thumbnailedItem.Image)) { 
-                                <img src="@Url.Content(thumbnailedItem.Image ?? "")">
+                            @if (!string.IsNullOrEmpty(thumbnailedItem.Image))
+                            {
+                                <img src="@Url.Content(thumbnailedItem.Image ?? "")" />
                             }
                             <div class="photoLinkRt">
                                 <div class="mHeader">@thumbnailedItem.Title</div>
@@ -156,6 +157,8 @@
 </div>
 <div id="stickyFooterC">
     <div id="stickyFooter">
-        <div id="stickyFoot"><a href="@Url.Content("~/"+ CMS.DocumentEngine.Types.ContactPage.RoutePath)">Contact</a></div>
+        <div id="stickyFoot">
+            <a href="@Url.Content("~/"+ CMS.DocumentEngine.Types.ContactPage.RoutePath)">@ResHelper.GetString("master_header_StickyFooterButton")</a>
+        </div>
     </div>
 </div>

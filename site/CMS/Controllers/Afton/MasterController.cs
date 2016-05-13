@@ -21,6 +21,7 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly IMegaMenuThumbnailedItemProvider _megaMenuThumbnailedItemProvider;
         private readonly IPagesMenuItemProvider _pagesMenuItemProvider;
         private readonly ITreeNodesProvider _treeNodesProvider;
+        private readonly ILocalizationProvider _localizationProvider;
 
         public MasterController(IContentMenuItemProvider contentMenuItemProvider,
             IPagesMenuItemProvider pagesMenuItemProvider,
@@ -48,6 +49,7 @@ namespace CMS.Mvc.Controllers.Afton
             _footerNavItemProvider = new FooterNavItemProvider();
             _megaMenuSubLinkItemProvider = new MegaMenuSubLinkItemProvider();
             _treeNodesProvider = new TreeNodesProvider();
+            _localizationProvider = new LocalizationProvider();
         }
 
         [ChildActionOnly]
@@ -87,7 +89,8 @@ namespace CMS.Mvc.Controllers.Afton
                 result.Reference = GetLinkByGuid(UtilsHelper.ParseGuids(s.Reference).Last());
                 return result;
             }).ToList();
-
+            List<Localization.CultureInfo> cultures = _localizationProvider.GetAvailableCultures();
+            model.AvailableCultures = MapData<Localization.CultureInfo, CultureLinkViewModel>(cultures);
             return PartialView("~/Views/Afton/Master/_header.cshtml", model);
         }
 

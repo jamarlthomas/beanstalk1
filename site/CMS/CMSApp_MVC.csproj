@@ -229,6 +229,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
     <Compile Include="Controllers\Afton\GenericController.cs" />
+    <Compile Include="Modules\CultureSwitcherModule.cs" />
+    <Compile Include="Providers\LocalizationProvider.cs" />
+    <Compile Include="Interfaces\ILocalizationProvider.cs" />
     <Compile Include="Controllers\Afton\LogisticsAndSupplyFolderController.cs" />
     <Compile Include="Interfaces\IMegaMenuSubLinkItemProvider.cs" />
     <Compile Include="Models\Afton\LogisticsAndSupply\LogisticsAndSupply.cs" />
@@ -256,6 +259,7 @@
     <Compile Include="Controllers\Afton\FAQController.cs" />
     <Compile Include="Controllers\Afton\GenericBaseController.cs" />
     <Compile Include="Controllers\Afton\LogisticsAndSupplyController.cs" />
+    <Compile Include="ViewModels\Master\CultureLinkViewModel.cs" />
     <Compile Include="ViewModels\Shared\DownloadWidget\DownloadButtonSectionViewModel.cs" />
     <Compile Include="ViewModels\Generic\GenericPageViewModel.cs" />
     <Compile Include="Providers\GenericProvider.cs" />
@@ -803,6 +807,10 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
       <Project>{b65e6a8f-0c74-42ff-aabe-74b85e8e2758}</Project>
       <Name>Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="CMSApp_AppCode.csproj">
+      <Project>{92B0A977-72C4-4616-9E24-6D851212A82D}</Project>
+      <Name>CMSApp_AppCode</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

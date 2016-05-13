@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace CMS.Mvc.ViewModels.Master
 {
@@ -13,5 +9,7 @@ namespace CMS.Mvc.ViewModels.Master
         public string SelectedCulture { get; set; }
         public string Title { get; set; }
         public string GlobalSearchQuery { get; set; }
+
+        public IEnumerable<CultureLinkViewModel> AvailableCultures { get; set; }
     }
 }

@@ -5011,7 +5011,6 @@
     </Compile>
     <Compile Include="CMSAdminControls\UI\Development\GeneratedCodePreview.ascx.cs">
       <DependentUpon>GeneratedCodePreview.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSAdminControls\UI\Development\GeneratedCodePreview.ascx.designer.cs">
       <DependentUpon>GeneratedCodePreview.ascx</DependentUpon>
@@ -5381,7 +5380,6 @@
     </Compile>
     <Compile Include="CMSFormControls\Filters\ParentFilter.ascx.cs">
       <DependentUpon>ParentFilter.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSFormControls\Filters\ParentFilter.ascx.designer.cs">
       <DependentUpon>ParentFilter.ascx</DependentUpon>
@@ -5542,7 +5540,6 @@
     </Compile>
     <Compile Include="CMSModules\Personas\Pages\SampleDataGenerator\Generator.aspx.cs">
       <DependentUpon>Generator.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Personas\Pages\SampleDataGenerator\Generator.aspx.designer.cs">
       <DependentUpon>Generator.aspx</DependentUpon>
@@ -5857,7 +5854,6 @@
     </Compile>
     <Compile Include="CMSModules\Membership\Pages\Roles\Role_Edit_Permissions_Default.aspx.cs">
       <DependentUpon>Role_Edit_Permissions_Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Membership\Pages\Roles\Role_Edit_Permissions_Default.aspx.designer.cs">
       <DependentUpon>Role_Edit_Permissions_Default.aspx</DependentUpon>
@@ -6060,7 +6056,6 @@
     </Compile>
     <Compile Include="CMSInstall\Controls\WizardSteps\SiteProgress.ascx.cs">
       <DependentUpon>SiteProgress.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSInstall\Controls\WizardSteps\SiteProgress.ascx.designer.cs">
       <DependentUpon>SiteProgress.ascx</DependentUpon>
@@ -6088,7 +6083,6 @@
     </Compile>
     <Compile Include="CMSInstall\Controls\WizardSteps\DBProgress.ascx.cs">
       <DependentUpon>DBProgress.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSInstall\Controls\WizardSteps\DBProgress.ascx.designer.cs">
       <DependentUpon>DBProgress.ascx</DependentUpon>
@@ -7535,7 +7529,6 @@
     </Compile>
     <Compile Include="CMSAdminControls\ImageEditor\GetImageVersion.aspx.cs">
       <DependentUpon>GetImageVersion.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSAdminControls\ImageEditor\GetImageVersion.aspx.designer.cs">
       <DependentUpon>GetImageVersion.aspx</DependentUpon>
@@ -7592,7 +7585,6 @@
     </Compile>
     <Compile Include="CMSAdminControls\Silverlight\MultiFileUploader\MultiFileUploader.ascx.cs">
       <DependentUpon>MultiFileUploader.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSAdminControls\Silverlight\MultiFileUploader\MultiFileUploader.ascx.designer.cs">
       <DependentUpon>MultiFileUploader.ascx</DependentUpon>
@@ -7987,14 +7979,12 @@
     </Compile>
     <Compile Include="CMSModules\Content\CMSDesk\Properties\CreateWireframe.aspx.cs">
       <DependentUpon>CreateWireframe.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Content\CMSDesk\Properties\CreateWireframe.aspx.designer.cs">
       <DependentUpon>CreateWireframe.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\Content\CMSDesk\Properties\Wireframe.aspx.cs">
       <DependentUpon>Wireframe.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Content\CMSDesk\Properties\Wireframe.aspx.designer.cs">
       <DependentUpon>Wireframe.aspx</DependentUpon>
@@ -8022,7 +8012,6 @@
     </Compile>
     <Compile Include="CMSModules\Content\Controls\Wireframe.ascx.cs">
       <DependentUpon>Wireframe.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Content\Controls\Wireframe.ascx.designer.cs">
       <DependentUpon>Wireframe.ascx</DependentUpon>
@@ -8260,7 +8249,6 @@
     </Compile>
     <Compile Include="CMSModules\PortalEngine\UI\WebParts\EditProperty.aspx.cs">
       <DependentUpon>EditProperty.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\PortalEngine\UI\WebParts\EditProperty.aspx.designer.cs">
       <DependentUpon>EditProperty.aspx</DependentUpon>
@@ -8288,7 +8276,6 @@
     </Compile>
     <Compile Include="CMSModules\Ecommerce\Pages\Tools\Reports\SampleData_Generator.aspx.cs">
       <DependentUpon>SampleData_Generator.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Ecommerce\Pages\Tools\Reports\SampleData_Generator.aspx.designer.cs">
       <DependentUpon>SampleData_Generator.aspx</DependentUpon>
@@ -8449,35 +8436,30 @@
     </Compile>
     <Compile Include="CMSModules\SocialMedia\Controls\Facebook\Error.ascx.cs">
       <DependentUpon>Error.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\SocialMedia\Controls\Facebook\Error.ascx.designer.cs">
       <DependentUpon>Error.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\SocialMedia\Controls\Facebook\Mapping.ascx.cs">
       <DependentUpon>Mapping.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\SocialMedia\Controls\Facebook\Mapping.ascx.designer.cs">
       <DependentUpon>Mapping.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\SocialMedia\Controls\Facebook\MappingEditorItem.ascx.cs">
       <DependentUpon>MappingEditorItem.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\SocialMedia\Controls\Facebook\MappingEditorItem.ascx.designer.cs">
       <DependentUpon>MappingEditorItem.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\SocialMedia\FormControls\Facebook\Mapping.ascx.cs">
       <DependentUpon>Mapping.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\SocialMedia\FormControls\Facebook\Mapping.ascx.designer.cs">
       <DependentUpon>Mapping.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\SocialMedia\Pages\Facebook\MappingEditor.aspx.cs">
       <DependentUpon>MappingEditor.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\SocialMedia\Pages\Facebook\MappingEditor.aspx.designer.cs">
       <DependentUpon>MappingEditor.aspx</DependentUpon>
@@ -8967,7 +8949,6 @@
     </Compile>
     <Compile Include="CMSModules\Ecommerce\FormControls\SelectBundleItems.ascx.cs">
       <DependentUpon>SelectBundleItems.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Ecommerce\FormControls\SelectBundleItems.ascx.designer.cs">
       <DependentUpon>SelectBundleItems.ascx</DependentUpon>
@@ -9152,7 +9133,6 @@
     </Compile>
     <Compile Include="CMSAdminControls\UI\Macros\MacroEditor.ascx.cs">
       <DependentUpon>MacroEditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSAdminControls\UI\Macros\MacroEditor.ascx.designer.cs">
       <DependentUpon>MacroEditor.ascx</DependentUpon>
@@ -11042,7 +11022,6 @@
     </Compile>
     <Compile Include="CMSModules\Settings\FormControls\ContactForVisitor.ascx.cs">
       <DependentUpon>ContactForVisitor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Settings\FormControls\ContactForVisitor.ascx.designer.cs">
       <DependentUpon>ContactForVisitor.ascx</DependentUpon>
@@ -11189,7 +11168,6 @@
     </Compile>
     <Compile Include="CMSModules\WebFarm\Pages\WebFarm_AnonymousTask_List.aspx.cs">
       <DependentUpon>WebFarm_AnonymousTask_List.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\WebFarm\Pages\WebFarm_AnonymousTask_List.aspx.designer.cs">
       <DependentUpon>WebFarm_AnonymousTask_List.aspx</DependentUpon>
@@ -11392,14 +11370,12 @@
     </Compile>
     <Compile Include="CMSPages\GetAmazonFile.aspx.cs">
       <DependentUpon>GetAmazonFile.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSPages\GetAmazonFile.aspx.designer.cs">
       <DependentUpon>GetAmazonFile.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSPages\GetAzureFile.aspx.cs">
       <DependentUpon>GetAzureFile.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSPages\GetAzureFile.aspx.designer.cs">
       <DependentUpon>GetAzureFile.aspx</DependentUpon>
@@ -11476,7 +11452,6 @@
     </Compile>
     <Compile Include="CMSModules\FileImport\Tools\ImportFromComputer.aspx.cs">
       <DependentUpon>ImportFromComputer.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\FileImport\Tools\ImportFromComputer.aspx.designer.cs">
       <DependentUpon>ImportFromComputer.aspx</DependentUpon>
@@ -11518,21 +11493,18 @@
     </Compile>
     <Compile Include="CMSModules\Groups\Tools\ProjectManagement\ProjectTask\Edit.aspx.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Groups\Tools\ProjectManagement\ProjectTask\Edit.aspx.designer.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\Groups\Tools\ProjectManagement\ProjectTask\List.aspx.cs">
       <DependentUpon>List.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Groups\Tools\ProjectManagement\ProjectTask\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\Groups\Tools\ProjectManagement\Project\Security.aspx.cs">
       <DependentUpon>Security.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Groups\Tools\ProjectManagement\Project\Security.aspx.designer.cs">
       <DependentUpon>Security.aspx</DependentUpon>
@@ -12263,28 +12235,24 @@
     </Compile>
     <Compile Include="CMSModules\DocumentLibrary\Controls\CopyDocument.ascx.cs">
       <DependentUpon>CopyDocument.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\DocumentLibrary\Controls\CopyDocument.ascx.designer.cs">
       <DependentUpon>CopyDocument.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\DocumentLibrary\Controls\DeleteDocument.ascx.cs">
       <DependentUpon>DeleteDocument.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\DocumentLibrary\Controls\DeleteDocument.ascx.designer.cs">
       <DependentUpon>DeleteDocument.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\DocumentLibrary\Controls\DocumentLibrary.ascx.cs">
       <DependentUpon>DocumentLibrary.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\DocumentLibrary\Controls\DocumentLibrary.ascx.designer.cs">
       <DependentUpon>DocumentLibrary.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\DocumentLibrary\Controls\LibraryContextMenu.ascx.cs">
       <DependentUpon>LibraryContextMenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\DocumentLibrary\Controls\LibraryContextMenu.ascx.designer.cs">
       <DependentUpon>LibraryContextMenu.ascx</DependentUpon>
@@ -14993,196 +14961,168 @@
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\LiveControls\GroupProjectEdit.ascx.cs">
       <DependentUpon>GroupProjectEdit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\LiveControls\GroupProjectEdit.ascx.designer.cs">
       <DependentUpon>GroupProjectEdit.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\LiveControls\GroupProjects.ascx.cs">
       <DependentUpon>GroupProjects.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\LiveControls\GroupProjects.ascx.designer.cs">
       <DependentUpon>GroupProjects.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\LiveControls\GroupTaskEdit.ascx.cs">
       <DependentUpon>GroupTaskEdit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\LiveControls\GroupTaskEdit.ascx.designer.cs">
       <DependentUpon>GroupTaskEdit.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\LiveControls\ProjectList.ascx.cs">
       <DependentUpon>ProjectList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\LiveControls\ProjectList.ascx.designer.cs">
       <DependentUpon>ProjectList.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\LiveControls\ProjectListEdit.ascx.cs">
       <DependentUpon>ProjectListEdit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\LiveControls\ProjectListEdit.ascx.designer.cs">
       <DependentUpon>ProjectListEdit.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\LiveControls\Tasks.ascx.cs">
       <DependentUpon>Tasks.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\LiveControls\Tasks.ascx.designer.cs">
       <DependentUpon>Tasks.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\ProjectStatus\Edit.ascx.cs">
       <DependentUpon>Edit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\ProjectStatus\Edit.ascx.designer.cs">
       <DependentUpon>Edit.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\ProjectStatus\List.ascx.cs">
       <DependentUpon>List.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\ProjectStatus\List.ascx.designer.cs">
       <DependentUpon>List.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\ProjectTaskPriority\Edit.ascx.cs">
       <DependentUpon>Edit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\ProjectTaskPriority\Edit.ascx.designer.cs">
       <DependentUpon>Edit.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\ProjectTaskPriority\List.ascx.cs">
       <DependentUpon>List.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\ProjectTaskPriority\List.ascx.designer.cs">
       <DependentUpon>List.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\ProjectTaskStatus\Edit.ascx.cs">
       <DependentUpon>Edit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\ProjectTaskStatus\Edit.ascx.designer.cs">
       <DependentUpon>Edit.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\ProjectTaskStatus\List.ascx.cs">
       <DependentUpon>List.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\ProjectTaskStatus\List.ascx.designer.cs">
       <DependentUpon>List.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\ProjectTask\Edit.ascx.cs">
       <DependentUpon>Edit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\ProjectTask\Edit.ascx.designer.cs">
       <DependentUpon>Edit.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\ProjectTask\List.ascx.cs">
       <DependentUpon>List.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\ProjectTask\List.ascx.designer.cs">
       <DependentUpon>List.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\Project\Edit.ascx.cs">
       <DependentUpon>Edit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\Project\Edit.ascx.designer.cs">
       <DependentUpon>Edit.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\Project\List.ascx.cs">
       <DependentUpon>List.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\Project\List.ascx.designer.cs">
       <DependentUpon>List.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\Project\Security.ascx.cs">
       <DependentUpon>Security.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Controls\UI\Project\Security.ascx.designer.cs">
       <DependentUpon>Security.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\FormControls\SelectProject.ascx.cs">
       <DependentUpon>SelectProject.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\FormControls\SelectProject.ascx.designer.cs">
       <DependentUpon>SelectProject.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\MyProjectsAndTasks\MyProjects_MyProjects.aspx.cs">
       <DependentUpon>MyProjects_MyProjects.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\MyProjectsAndTasks\MyProjects_MyProjects.aspx.designer.cs">
       <DependentUpon>MyProjects_MyProjects.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\MyProjectsAndTasks\MyProjects_ProjectEdit.aspx.cs">
       <DependentUpon>MyProjects_ProjectEdit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\MyProjectsAndTasks\MyProjects_ProjectEdit.aspx.designer.cs">
       <DependentUpon>MyProjects_ProjectEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\MyProjectsAndTasks\MyProjects_TaskEdit.aspx.cs">
       <DependentUpon>MyProjects_TaskEdit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\MyProjectsAndTasks\MyProjects_TaskEdit.aspx.designer.cs">
       <DependentUpon>MyProjects_TaskEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\MyProjectsAndTasks\MyProjects_TasksAssignedToMe.aspx.cs">
       <DependentUpon>MyProjects_TasksAssignedToMe.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\MyProjectsAndTasks\MyProjects_TasksAssignedToMe.aspx.designer.cs">
       <DependentUpon>MyProjects_TasksAssignedToMe.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\MyProjectsAndTasks\MyProjects_TasksOwnedByMe.aspx.cs">
       <DependentUpon>MyProjects_TasksOwnedByMe.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\MyProjectsAndTasks\MyProjects_TasksOwnedByMe.aspx.designer.cs">
       <DependentUpon>MyProjects_TasksOwnedByMe.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Pages\Tools\ProjectTask\Edit.aspx.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Pages\Tools\ProjectTask\Edit.aspx.designer.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Pages\Tools\ProjectTask\List.aspx.cs">
       <DependentUpon>List.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Pages\Tools\ProjectTask\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Pages\Tools\Project\Edit.aspx.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Pages\Tools\Project\Edit.aspx.designer.cs">
       <DependentUpon>Edit.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Pages\Tools\Project\List.aspx.cs">
       <DependentUpon>List.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Pages\Tools\Project\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Pages\Tools\Project\Security.aspx.cs">
       <DependentUpon>Security.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\ProjectManagement\Pages\Tools\Project\Security.aspx.designer.cs">
       <DependentUpon>Security.aspx</DependentUpon>
@@ -15699,14 +15639,12 @@
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Controls\UI\Campaign\Edit.ascx.cs">
       <DependentUpon>Edit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Controls\UI\Campaign\Edit.ascx.designer.cs">
       <DependentUpon>Edit.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Controls\UI\Campaign\List.ascx.cs">
       <DependentUpon>List.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Controls\UI\Campaign\List.ascx.designer.cs">
       <DependentUpon>List.ascx</DependentUpon>
@@ -15748,21 +15686,18 @@
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Pages\Tools\Campaign\CampaignFrameset.aspx.cs">
       <DependentUpon>CampaignFrameset.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Pages\Tools\Campaign\CampaignFrameset.aspx.designer.cs">
       <DependentUpon>CampaignFrameset.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Pages\Tools\Campaign\CampaignGoals.aspx.cs">
       <DependentUpon>CampaignGoals.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Pages\Tools\Campaign\CampaignGoals.aspx.designer.cs">
       <DependentUpon>CampaignGoals.aspx</DependentUpon>
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Pages\Tools\Campaign\CampaignHeader.aspx.cs">
       <DependentUpon>CampaignHeader.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Pages\Tools\Campaign\CampaignHeader.aspx.designer.cs">
       <DependentUpon>CampaignHeader.aspx</DependentUpon>
@@ -15776,7 +15711,6 @@
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Pages\Tools\Campaign\New.aspx.cs">
       <DependentUpon>New.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Pages\Tools\Campaign\New.aspx.designer.cs">
       <DependentUpon>New.aspx</DependentUpon>
@@ -15797,7 +15731,6 @@
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Pages\Tools\Campaign\Tab_Conversions.aspx.cs">
       <DependentUpon>Tab_Conversions.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Pages\Tools\Campaign\Tab_Conversions.aspx.designer.cs">
       <DependentUpon>Tab_Conversions.aspx</DependentUpon>
@@ -15811,7 +15744,6 @@
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Pages\Tools\Campaign\Tab_Goals.aspx.cs">
       <DependentUpon>Tab_Goals.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Pages\Tools\Campaign\Tab_Goals.aspx.designer.cs">
       <DependentUpon>Tab_Goals.aspx</DependentUpon>
@@ -15832,7 +15764,6 @@
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Pages\Tools\Conversion\Tab_Campaigns.aspx.cs">
       <DependentUpon>Tab_Campaigns.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Pages\Tools\Conversion\Tab_Campaigns.aspx.designer.cs">
       <DependentUpon>Tab_Campaigns.aspx</DependentUpon>
@@ -15849,7 +15780,6 @@
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Tools\Analytics_DataManagement.aspx.cs">
       <DependentUpon>Analytics_DataManagement.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Tools\Analytics_DataManagement.aspx.designer.cs">
       <DependentUpon>Analytics_DataManagement.aspx</DependentUpon>
@@ -16096,7 +16026,6 @@
     </Compile>
     <Compile Include="CMSModules\Membership\Pages\Roles\Role_Edit_Permissions_Header.aspx.cs">
       <DependentUpon>Role_Edit_Permissions_Header.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Membership\Pages\Roles\Role_Edit_Permissions_Header.aspx.designer.cs">
       <DependentUpon>Role_Edit_Permissions_Header.aspx</DependentUpon>
@@ -16712,46 +16641,39 @@
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Facebook\FacebookFacepile.ascx.cs">
       <DependentUpon>FacebookFacepile.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Facebook\FacebookFacepile.ascx.designer.cs">
       <DependentUpon>FacebookFacepile.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Facebook\FacebookLikeButton.ascx.cs">
       <DependentUpon>FacebookLikeButton.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Facebook\FacebookLikeButton.ascx.designer.cs">
       <DependentUpon>FacebookLikeButton.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Facebook\FacebookSendButton.ascx.cs">
       <DependentUpon>FacebookSendButton.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Facebook\FacebookActivityFeed.ascx.cs">
       <DependentUpon>FacebookActivityFeed.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Facebook\FacebookActivityFeed.ascx.designer.cs">
       <DependentUpon>FacebookActivityFeed.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Facebook\FacebookComments.ascx.cs">
       <DependentUpon>FacebookComments.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Facebook\FacebookComments.ascx.designer.cs">
       <DependentUpon>FacebookComments.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Facebook\FacebookLikeBox.ascx.cs">
       <DependentUpon>FacebookLikeBox.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Facebook\FacebookLikeBox.ascx.designer.cs">
       <DependentUpon>FacebookLikeBox.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Facebook\FacebookRecommendations.ascx.cs">
       <DependentUpon>FacebookRecommendations.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Facebook\FacebookRecommendations.ascx.designer.cs">
       <DependentUpon>FacebookRecommendations.ascx</DependentUpon>
@@ -16761,70 +16683,60 @@
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\GooglePlus\GooglePlusActivityFeed.ascx.cs">
       <DependentUpon>GooglePlusActivityFeed.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\GooglePlus\GooglePlusActivityFeed.ascx.designer.cs">
       <DependentUpon>GooglePlusActivityFeed.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\GooglePlus\GooglePlusBadge.ascx.cs">
       <DependentUpon>GooglePlusBadge.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\GooglePlus\GooglePlusBadge.ascx.designer.cs">
       <DependentUpon>GooglePlusBadge.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\GooglePlus\GooglePlusButton.ascx.cs">
       <DependentUpon>GooglePlusButton.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\GooglePlus\GooglePlusButton.ascx.designer.cs">
       <DependentUpon>GooglePlusButton.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\LinkedIn\LinkedInCompanyInsider.ascx.cs">
       <DependentUpon>LinkedInCompanyInsider.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\LinkedIn\LinkedInCompanyInsider.ascx.designer.cs">
       <DependentUpon>LinkedInCompanyInsider.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\LinkedIn\LinkedInCompanyProfile.ascx.cs">
       <DependentUpon>LinkedInCompanyProfile.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\LinkedIn\LinkedInCompanyProfile.ascx.designer.cs">
       <DependentUpon>LinkedInCompanyProfile.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\LinkedIn\LinkedInMemberProfile.ascx.cs">
       <DependentUpon>LinkedInMemberProfile.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\LinkedIn\LinkedInMemberProfile.ascx.designer.cs">
       <DependentUpon>LinkedInMemberProfile.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\LinkedIn\LinkedInRecommendButton.ascx.cs">
       <DependentUpon>LinkedInRecommendButton.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\LinkedIn\LinkedInRecommendButton.ascx.designer.cs">
       <DependentUpon>LinkedInRecommendButton.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\LinkedIn\LinkedInShareButton.ascx.cs">
       <DependentUpon>LinkedInShareButton.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\LinkedIn\LinkedInShareButton.ascx.designer.cs">
       <DependentUpon>LinkedInShareButton.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Pinterest\PinterestFollowButton.ascx.cs">
       <DependentUpon>PinterestFollowButton.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Pinterest\PinterestFollowButton.ascx.designer.cs">
       <DependentUpon>PinterestFollowButton.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Pinterest\PinterestPinItButton.ascx.cs">
       <DependentUpon>PinterestPinItButton.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Pinterest\PinterestPinItButton.ascx.designer.cs">
       <DependentUpon>PinterestPinItButton.ascx</DependentUpon>
@@ -16834,21 +16746,18 @@
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Twitter\TwitterFeed.ascx.cs">
       <DependentUpon>TwitterFeed.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Twitter\TwitterFeed.ascx.designer.cs">
       <DependentUpon>TwitterFeed.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Twitter\TwitterFollowButton.ascx.cs">
       <DependentUpon>TwitterFollowButton.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Twitter\TwitterFollowButton.ascx.designer.cs">
       <DependentUpon>TwitterFollowButton.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Twitter\TwitterTweetButton.ascx.cs">
       <DependentUpon>TwitterTweetButton.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\Twitter\TwitterTweetButton.ascx.designer.cs">
       <DependentUpon>TwitterTweetButton.ascx</DependentUpon>
@@ -17083,14 +16992,12 @@
     </Compile>
     <Compile Include="CMSWebParts\DocumentLibrary\DocumentLibrary.ascx.cs">
       <DependentUpon>DocumentLibrary.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\DocumentLibrary\DocumentLibrary.ascx.designer.cs">
       <DependentUpon>DocumentLibrary.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Community\DocumentLibrary\GroupDocumentLibrary.ascx.cs">
       <DependentUpon>GroupDocumentLibrary.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Community\DocumentLibrary\GroupDocumentLibrary.ascx.designer.cs">
       <DependentUpon>GroupDocumentLibrary.ascx</DependentUpon>
@@ -17195,7 +17102,6 @@
     </Compile>
     <Compile Include="CMSWebParts\Ecommerce\EcommerceSettingsChecker.ascx.cs">
       <DependentUpon>EcommerceSettingsChecker.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Ecommerce\EcommerceSettingsChecker.ascx.designer.cs">
       <DependentUpon>EcommerceSettingsChecker.ascx</DependentUpon>
@@ -17463,7 +17369,6 @@
     </Compile>
     <Compile Include="CMSWebParts\Localization\languageselectiondropdown.ascx.cs">
       <DependentUpon>languageselectiondropdown.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Localization\languageselectiondropdown.ascx.designer.cs">
       <DependentUpon>languageselectiondropdown.ascx</DependentUpon>
@@ -17908,42 +17813,36 @@
     </Compile>
     <Compile Include="CMSWebParts\ProjectManagement\MyProjects.ascx.cs">
       <DependentUpon>MyProjects.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\ProjectManagement\MyProjects.ascx.designer.cs">
       <DependentUpon>MyProjects.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\ProjectManagement\ProjectList.ascx.cs">
       <DependentUpon>ProjectList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\ProjectManagement\ProjectList.ascx.designer.cs">
       <DependentUpon>ProjectList.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\ProjectManagement\ProjectTasks.ascx.cs">
       <DependentUpon>ProjectTasks.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\ProjectManagement\ProjectTasks.ascx.designer.cs">
       <DependentUpon>ProjectTasks.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\ProjectManagement\TaskInfoPanel.ascx.cs">
       <DependentUpon>TaskInfoPanel.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\ProjectManagement\TaskInfoPanel.ascx.designer.cs">
       <DependentUpon>TaskInfoPanel.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\ProjectManagement\TasksAssignedToMe.ascx.cs">
       <DependentUpon>TasksAssignedToMe.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\ProjectManagement\TasksAssignedToMe.ascx.designer.cs">
       <DependentUpon>TasksAssignedToMe.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\ProjectManagement\TasksCreatedByMe.ascx.cs">
       <DependentUpon>TasksCreatedByMe.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\ProjectManagement\TasksCreatedByMe.ascx.designer.cs">
       <DependentUpon>TasksCreatedByMe.ascx</DependentUpon>
@@ -18286,7 +18185,6 @@
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Components\Icon.ascx.cs">
       <DependentUpon>Icon.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Components\Icon.ascx.designer.cs">
       <DependentUpon>Icon.ascx</DependentUpon>
@@ -18296,116 +18194,99 @@
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Components\Rectangle.ascx.cs">
       <DependentUpon>Rectangle.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Components\Rectangle.ascx.designer.cs">
       <DependentUpon>Rectangle.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Components\Slider.ascx.cs">
       <DependentUpon>Slider.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Components\Slider.ascx.designer.cs">
       <DependentUpon>Slider.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Components\WYSIWYG.ascx.cs">
       <DependentUpon>WYSIWYG.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Components\WYSIWYG.ascx.designer.cs">
       <DependentUpon>WYSIWYG.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Forms\CheckBox.ascx.cs">
       <DependentUpon>CheckBox.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Forms\CheckBox.ascx.designer.cs">
       <DependentUpon>CheckBox.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Components\Dialog.ascx.cs">
       <DependentUpon>Dialog.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Components\Dialog.ascx.designer.cs">
       <DependentUpon>Dialog.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Components\Image.ascx.cs">
       <DependentUpon>Image.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Forms\CheckBoxList.ascx.cs">
       <DependentUpon>CheckBoxList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Forms\CheckBoxList.ascx.designer.cs">
       <DependentUpon>CheckBoxList.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Forms\ColorPicker.ascx.cs">
       <DependentUpon>ColorPicker.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Forms\ColorPicker.ascx.designer.cs">
       <DependentUpon>ColorPicker.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Forms\MultilineButton.ascx.cs">
       <DependentUpon>MultilineButton.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Forms\MultilineButton.ascx.designer.cs">
       <DependentUpon>MultilineButton.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Layouts\Accordion.ascx.cs">
       <DependentUpon>Accordion.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Layouts\Accordion.ascx.designer.cs">
       <DependentUpon>Accordion.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Layouts\Area.ascx.cs">
       <DependentUpon>Area.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Layouts\Area.ascx.designer.cs">
       <DependentUpon>Area.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Layouts\NextLevel.ascx.cs">
       <DependentUpon>NextLevel.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Layouts\NextLevel.ascx.designer.cs">
       <DependentUpon>NextLevel.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Layouts\Tabs.ascx.cs">
       <DependentUpon>Tabs.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Layouts\Tabs.ascx.designer.cs">
       <DependentUpon>Tabs.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Text\Note.ascx.cs">
       <DependentUpon>Note.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Text\Note.ascx.designer.cs">
       <DependentUpon>Note.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Text\Paragraph.ascx.cs">
       <DependentUpon>Paragraph.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\Text\Paragraph.ascx.designer.cs">
       <DependentUpon>Paragraph.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\WireframeComponent.ascx.cs">
       <DependentUpon>WireframeComponent.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\WireframeComponent.ascx.designer.cs">
       <DependentUpon>WireframeComponent.ascx</DependentUpon>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\WireframeListComponent.ascx.cs">
       <DependentUpon>WireframeListComponent.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Wireframe\WireframeListComponent.ascx.designer.cs">
       <DependentUpon>WireframeListComponent.ascx</DependentUpon>
@@ -19247,7 +19128,6 @@
     </Compile>
     <Compile Include="CMSModules\Avatars\CMSPages\GetAvatar.aspx.cs">
       <DependentUpon>GetAvatar.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Avatars\CMSPages\PublicAvatarsGallery.aspx.cs">
       <DependentUpon>PublicAvatarsGallery.aspx</DependentUpon>
@@ -19291,7 +19171,6 @@
     </Compile>
     <Compile Include="CMSModules\BizForms\CMSPages\GetBizFormFile.aspx.cs">
       <DependentUpon>GetBizFormFile.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\BizForms\FormControls\SelectBizForm.ascx.cs">
       <DependentUpon>SelectBizForm.ascx</DependentUpon>
@@ -19371,7 +19250,6 @@
     </Compile>
     <Compile Include="CMSModules\Blogs\CMSPages\Trackback.aspx.cs">
       <DependentUpon>Trackback.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Blogs\CMSPages\Unsubscribe.aspx.cs">
       <DependentUpon>Unsubscribe.aspx</DependentUpon>
@@ -19415,11 +19293,9 @@
     </Compile>
     <Compile Include="CMSModules\Blogs\FormControls\NotPingedUrls.ascx.cs">
       <DependentUpon>NotPingedUrls.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Blogs\FormControls\PingedUrls.ascx.cs">
       <DependentUpon>PingedUrls.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Blogs\MyBlogs\MyBlogs_Blogs_List.aspx.cs">
       <DependentUpon>MyBlogs_Blogs_List.aspx</DependentUpon>
@@ -19939,7 +19815,6 @@
     </Compile>
     <Compile Include="CMSModules\Ecommerce\Controls\Filters\ProductFilter.ascx.cs">
       <DependentUpon>ProductFilter.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Ecommerce\Controls\MyDetails\MyAddresses.ascx.cs">
       <DependentUpon>MyAddresses.ascx</DependentUpon>
@@ -20107,7 +19982,6 @@
     </Compile>
     <Compile Include="CMSModules\Ecommerce\Pages\Tools\Configuration\Departments\Department_TaxClass.aspx.cs">
       <DependentUpon>Department_TaxClass.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Ecommerce\Pages\Tools\Configuration\Departments\Department_Users.aspx.cs">
       <DependentUpon>Department_Users.aspx</DependentUpon>
@@ -20347,11 +20221,9 @@
     </Compile>
     <Compile Include="CMSModules\FileImport\Tools\ImportFromServer.aspx.cs">
       <DependentUpon>ImportFromServer.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Forums\CMSPages\GetForumAttachment.aspx.cs">
       <DependentUpon>GetForumAttachment.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Forums\CMSPages\Unsubscribe.aspx.cs">
       <DependentUpon>Unsubscribe.aspx</DependentUpon>
@@ -21639,7 +21511,6 @@
     </Compile>
     <Compile Include="CMSModules\Newsletters\CMSPages\GetCSS.aspx.cs">
       <DependentUpon>GetCSS.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\Newsletters\CMSPages\GetNewsletterIssue.aspx.cs">
       <DependentUpon>GetNewsletterIssue.aspx</DependentUpon>
@@ -22147,7 +22018,6 @@
     </Compile>
     <Compile Include="CMSModules\SharePoint\CMSPages\GetSharePointFile.aspx.cs">
       <DependentUpon>GetSharePointFile.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\SmartSearch\Controls\Edit\ClassFields.ascx.cs">
       <DependentUpon>ClassFields.ascx</DependentUpon>
@@ -22291,7 +22161,6 @@
     </Compile>
     <Compile Include="CMSModules\Reporting\WebAnalytics\Analytics_ManageData.aspx.cs">
       <DependentUpon>Analytics_ManageData.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\WebAnalytics\Tools\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -22391,7 +22260,6 @@
     </Compile>
     <Compile Include="CMSPages\BlogRss.aspx.cs">
       <DependentUpon>BlogRss.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSPages\Dialogs\CaptchaImage.aspx.cs">
       <DependentUpon>CaptchaImage.aspx</DependentUpon>
@@ -22403,23 +22271,18 @@
     </Compile>
     <Compile Include="CMSPages\GetCMSVersion.aspx.cs">
       <DependentUpon>GetCMSVersion.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSPages\GetCSS.aspx.cs">
       <DependentUpon>GetCSS.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSPages\GetFile.aspx.cs">
       <DependentUpon>GetFile.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSPages\MediaLibrary\GetMediaFile.aspx.cs">
       <DependentUpon>GetMediaFile.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSPages\GetMetaFile.aspx.cs">
       <DependentUpon>GetMetaFile.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSPages\Ecommerce\GetProduct.aspx.cs">
       <DependentUpon>GetProduct.aspx</DependentUpon>
@@ -22431,7 +22294,6 @@
     </Compile>
     <Compile Include="CMSPages\handler404.aspx.cs">
       <DependentUpon>handler404.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSPages\LiveIDLogin.aspx.cs">
       <DependentUpon>LiveIDLogin.aspx</DependentUpon>
@@ -22443,7 +22305,6 @@
     </Compile>
     <Compile Include="CMSPages\NewsRss.aspx.cs">
       <DependentUpon>NewsRss.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSPages\PortalTemplate.aspx.cs">
       <DependentUpon>PortalTemplate.aspx</DependentUpon>
@@ -22459,7 +22320,6 @@
     </Compile>
     <Compile Include="CMSPages\WebFarmUpdater.aspx.cs">
       <DependentUpon>WebFarmUpdater.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSModules\EventLog\Controls\EventFilter.ascx.cs">
       <DependentUpon>EventFilter.ascx</DependentUpon>
@@ -22639,7 +22499,6 @@
     </Compile>
     <Compile Include="CMSModules\WebFarm\Pages\WebFarm_Task_List.aspx.cs">
       <DependentUpon>WebFarm_Task_List.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSSiteManager\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -22815,7 +22674,6 @@
     </Compile>
     <Compile Include="CMSWebParts\Attachments\AttachmentLightBoxGallery.ascx.cs">
       <DependentUpon>AttachmentLightBoxGallery.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Attachments\AttachmentsDataSource.ascx.cs">
       <DependentUpon>AttachmentsDataSource.ascx</DependentUpon>
@@ -22863,11 +22721,9 @@
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\SocialBookmarking.ascx.cs">
       <DependentUpon>SocialBookmarking.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SocialMedia\YouTubeVideo.ascx.cs">
       <DependentUpon>YouTubeVideo.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Community\Forums\ForumGroupList.ascx.cs">
       <DependentUpon>ForumGroupList.ascx</DependentUpon>
@@ -23087,7 +22943,6 @@
     </Compile>
     <Compile Include="CMSWebParts\Ecommerce\Products\ProductFilter.ascx.cs">
       <DependentUpon>ProductFilter.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Ecommerce\Products\ProductsDataSource.ascx.cs">
       <DependentUpon>ProductsDataSource.ascx</DependentUpon>
@@ -23111,7 +22966,6 @@
     </Compile>
     <Compile Include="CMSWebParts\Ecommerce\ShoppingCart\ShoppingCartMiniPreviewWebPart.ascx.cs">
       <DependentUpon>ShoppingCartMiniPreviewWebPart.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Ecommerce\ShoppingCart\ShoppingCartWebPart.ascx.cs">
       <DependentUpon>ShoppingCartWebPart.ascx</DependentUpon>
@@ -23207,11 +23061,9 @@
     </Compile>
     <Compile Include="CMSWebParts\Localization\languageselection.ascx.cs">
       <DependentUpon>languageselection.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Localization\languageselectionwithflags.ascx.cs">
       <DependentUpon>languageselectionwithflags.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\General\MobileDeviceRedirection.ascx.cs">
       <DependentUpon>MobileDeviceRedirection.ascx</DependentUpon>
@@ -23435,7 +23287,6 @@
     </Compile>
     <Compile Include="CMSWebParts\Navigation\cmsmenu.ascx.cs">
       <DependentUpon>cmsmenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Navigation\cmssitemap.ascx.cs">
       <DependentUpon>cmssitemap.ascx</DependentUpon>
@@ -23447,7 +23298,6 @@
     </Compile>
     <Compile Include="CMSWebParts\Navigation\cmstreemenu.ascx.cs">
       <DependentUpon>cmstreemenu.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Navigation\cmstreeview.ascx.cs">
       <DependentUpon>cmstreeview.ascx</DependentUpon>
@@ -23511,23 +23361,18 @@
     </Compile>
     <Compile Include="CMSWebParts\SharePoint\SharePointDataGrid.ascx.cs">
       <DependentUpon>SharePointDataGrid.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SharePoint\SharePointDataList.ascx.cs">
       <DependentUpon>SharePointDataList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SharePoint\SharePointDataSource.ascx.cs">
       <DependentUpon>SharePointDataSource.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SharePoint\SharePointDataSource_files\SharePointDatasource.ascx.cs">
       <DependentUpon>SharePointDatasource.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SharePoint\SharePointRepeater.ascx.cs">
       <DependentUpon>SharePointRepeater.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\SmartSearch\SearchAccelerator.ascx.cs">
       <DependentUpon>SearchAccelerator.ascx</DependentUpon>
@@ -23699,7 +23544,6 @@
     </Compile>
     <Compile Include="CMSWebParts\Viewers\Effects\lightbox.ascx.cs">
       <DependentUpon>lightbox.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CMSWebParts\Viewers\Effects\ScrollingText.ascx.cs">
       <DependentUpon>ScrollingText.ascx</DependentUpon>
@@ -24576,7 +24420,6 @@
     <Content Include="App_Data\Templates\EcommerceSite\Template.zip" />
     <Content Include="App_Data\Templates\IntranetPortal\Template.zip" />
     <Content Include="App_Data\Templates\PersonalSite\Template.zip" />
-    <Content Include="App_Themes\Default\Images\Images.zip" />
     <Content Include="App_Data\Install\SQL.zip" />
     <Content Include="App_Themes\Default\Bootstrap\alerts.less" />
     <Content Include="App_Themes\Default\Bootstrap\applist.less" />
