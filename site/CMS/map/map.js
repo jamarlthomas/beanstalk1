@@ -12,7 +12,7 @@ function initMap() {
         center: { lat: 0, lng: 0 },
         zoom: 3,
         maxZoom: 5,
-        minZoom: 0,
+        minZoom: 2,
         disableDoubleClickZoom: true,
         streetViewControl: false,
         mapTypeControl: false
@@ -77,20 +77,20 @@ function initMap() {
 }
 
 function createMarker(point, location) {
+
     var marker = new google.maps.Marker({
         map: map,
         position: point,
         title: location.title,
-        icon: '/map/afton-marker.svg'
+        icon: {
+            path: 'M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0 z',
+            fillColor: '#4c9d2f',
+            fillOpacity: 1,
+            scale: 0.1,
+            anchor: new google.maps.Point(100, 100),
+            strokeColor:'#4c9d2f'
+        }
     });
-
-    marker.setIcon(new google.maps.MarkerImage(
-		'/map/afton-marker.svg',
-		new google.maps.Size(15, 15),
-		new google.maps.Point(0, 0),
-		new google.maps.Point(8, 15),
-		new google.maps.Size(15, 15)
-	));
 
     var html = '';
     html += '<div style="max-width:300px">';
@@ -127,7 +127,7 @@ function getLocations(url) {
         });
 
         var markerCluster = new MarkerClusterer(map, mapMarkers, {
-            gridSize: 4, styles: [{
+            gridSize: 5, styles: [{
                 url: '/map/afton-marker.svg',
                 height: 15,
                 width: 15,
