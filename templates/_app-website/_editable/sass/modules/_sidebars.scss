@@ -26,6 +26,9 @@
             
                 &:hover { background: #4c9d2f; color: #FFF; }
                 
+                //nav items with images
+                img { margin-right: 10px; vertical-align: middle;  }
+                
             }
             
             a.hasChildren:after { content: "\e900"; position: absolute; font: 13px icomoon; right: 10px; top: 50%; transform: translateY(-50%); }
