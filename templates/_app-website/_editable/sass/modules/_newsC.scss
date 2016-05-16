@@ -76,7 +76,7 @@
         
         .newsItem { padding: 35px 0px; border-bottom: 1px solid #595959; overflow: auto; 
             
-            .newsImgC { @include span(3 of 12);
+            .newsImgC { @include span(2 of 12);
                 
                 img { width: 100%; }
                 
@@ -85,7 +85,7 @@
                 
             }//newsImgC
         
-            .newsContentC { @include span(9 of 12 last);
+            .newsContentC { @include span(10 of 12 last);
             
                 .newsInfo { padding-bottom: 30px; font-style: italic; }
                 
