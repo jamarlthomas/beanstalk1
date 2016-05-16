@@ -1,5 +1,6 @@
-﻿<div id="document">
-    <h1>@Model.Title</h1>
+﻿@using CMS.Mvc.Helpers
+<div id="document">
+    <h1>@UtilsHelper.ToHtmlString(Model.Title)</h1>
     <!--<div class="subTxt">@Model.Constant.PostedTimeLabel @Model.DocumentPublishFrom.ToString("M/d/yy | h:mm tt CST")</div>--><br>
    <div id="socialC2" class="noPrintDisplay">
         <a class="addthis_button_compact">

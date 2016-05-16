@@ -909,17 +909,22 @@
         </member>
         <member name="T:CMS.DocumentEngine.Types.GenericPage">
             <summary>
-            Sample item class.
+            Represents a content item of type GenericPage.
             </summary>
         </member>
         <member name="F:CMS.DocumentEngine.Types.GenericPage.CLASS_NAME">
             <summary>
-            Class name of the item.
+            The name of the data class.
+            </summary>
+        </member>
+        <member name="F:CMS.DocumentEngine.Types.GenericPage.mFields">
+            <summary>
+            The instance of the class that provides extended API for working with GenericPage fields.
             </summary>
         </member>
         <member name="M:CMS.DocumentEngine.Types.GenericPage.#ctor">
             <summary>
-            Constructor.
+            Initializes a new instance of the <see cref="T:CMS.DocumentEngine.Types.GenericPage"/> class.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.GenericPage.GenericPageID">
@@ -947,11 +952,6 @@
             Image displayed on a tile.
             </summary>
         </member>
-        <member name="P:CMS.DocumentEngine.Types.GenericPage.Abstract">
-            <summary>
-            Abstract.
-            </summary>
-        </member>
         <member name="P:CMS.DocumentEngine.Types.GenericPage.Copy">
             <summary>
             Copy.
@@ -973,6 +973,82 @@
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.GenericPage.IsHighlightedOnInsightsPage">
+            <summary>
+            Is Highlighted On Insights Page.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.GenericPage.Fields">
+            <summary>
+            Gets an object that provides extended API for working with GenericPage fields.
+            </summary>
+        </member>
+        <member name="T:CMS.DocumentEngine.Types.GenericPage.GenericPageFields">
+            <summary>
+            Provides extended API for working with GenericPage fields.
+            </summary>
+        </member>
+        <member name="F:CMS.DocumentEngine.Types.GenericPage.GenericPageFields.mInstance">
+            <summary>
+            The content item of type GenericPage that is a target of the extended API.
+            </summary>
+        </member>
+        <member name="M:CMS.DocumentEngine.Types.GenericPage.GenericPageFields.#ctor(CMS.DocumentEngine.Types.GenericPage)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMS.DocumentEngine.Types.GenericPage.GenericPageFields"/> class with the specified content item of type GenericPage.
+            </summary>
+            <param name="instance">The content item of type GenericPage that is a target of the extended API.</param>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.GenericPage.GenericPageFields.ID">
+            <summary>
+            GenericPageID.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.GenericPage.GenericPageFields.TileTitle">
+            <summary>
+            Tile Title.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.GenericPage.GenericPageFields.Title">
+            <summary>
+            Title.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.GenericPage.GenericPageFields.Description">
+            <summary>
+            Text that appears on hover over the tile.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.GenericPage.GenericPageFields.HomeImage">
+            <summary>
+            Image displayed on a tile.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.GenericPage.GenericPageFields.Copy">
+            <summary>
+            Copy.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.GenericPage.GenericPageFields.HeroImage">
+            <summary>
+            Hero Image.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.GenericPage.GenericPageFields.SidebarItems">
+            <summary>
+            Sidebar Items.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.GenericPage.GenericPageFields.SidebarItems2">
+            <summary>
+            Sidebar Items.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.GenericPage.GenericPageFields.PdfReference">
+            <summary>
+            PdfReference.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.GenericPage.GenericPageFields.IsHighlightedOnInsightsPage">
             <summary>
             Is Highlighted On Insights Page.
             </summary>
@@ -1462,17 +1538,22 @@
         </member>
         <member name="T:CMS.DocumentEngine.Types.Document">
             <summary>
-            Sample item class.
+            Represents a content item of type Document.
             </summary>
         </member>
         <member name="F:CMS.DocumentEngine.Types.Document.CLASS_NAME">
             <summary>
-            Class name of the item.
+            The name of the data class.
+            </summary>
+        </member>
+        <member name="F:CMS.DocumentEngine.Types.Document.mFields">
+            <summary>
+            The instance of the class that provides extended API for working with Document fields.
             </summary>
         </member>
         <member name="M:CMS.DocumentEngine.Types.Document.#ctor">
             <summary>
-            Constructor.
+            Initializes a new instance of the <see cref="T:CMS.DocumentEngine.Types.Document"/> class.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.Document.CustomDocumentID">
@@ -1528,6 +1609,97 @@
         <member name="P:CMS.DocumentEngine.Types.Document.IsHighlightedOnInsightsPage">
             <summary>
             Is Highlighted On Insights Page.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Document.RelatedSolution">
+            <summary>
+            Related Solutions.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Document.Fields">
+            <summary>
+            Gets an object that provides extended API for working with Document fields.
+            </summary>
+        </member>
+        <member name="T:CMS.DocumentEngine.Types.Document.DocumentFields">
+            <summary>
+            Provides extended API for working with Document fields.
+            </summary>
+        </member>
+        <member name="F:CMS.DocumentEngine.Types.Document.DocumentFields.mInstance">
+            <summary>
+            The content item of type Document that is a target of the extended API.
+            </summary>
+        </member>
+        <member name="M:CMS.DocumentEngine.Types.Document.DocumentFields.#ctor(CMS.DocumentEngine.Types.Document)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMS.DocumentEngine.Types.Document.DocumentFields"/> class with the specified content item of type Document.
+            </summary>
+            <param name="instance">The content item of type Document that is a target of the extended API.</param>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Document.DocumentFields.CustomDocumentID">
+            <summary>
+            CustomDocumentID.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Document.DocumentFields.TileTitle">
+            <summary>
+            Tile Title.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Document.DocumentFields.Title">
+            <summary>
+            Title.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Document.DocumentFields.Description">
+            <summary>
+            Text that appears on hover over the tile.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Document.DocumentFields.HomeImage">
+            <summary>
+            Image displayed on a tile.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Document.DocumentFields.Abstract">
+            <summary>
+            Abstract.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Document.DocumentFields.Copy">
+            <summary>
+            Copy.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Document.DocumentFields.HeroImage">
+            <summary>
+            Hero Image.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Document.DocumentFields.SidebarItems">
+            <summary>
+            Sidebar Items.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Document.DocumentFields.SidebarItems2">
+            <summary>
+            Sidebar Items.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Document.DocumentFields.PdfReference">
+            <summary>
+            PdfReference.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Document.DocumentFields.IsHighlightedOnInsightsPage">
+            <summary>
+            Is Highlighted On Insights Page.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Document.DocumentFields.RelatedSolution">
+            <summary>
+            Related Solutions.
             </summary>
         </member>
         <member name="T:CMS.DocumentEngine.Types.DocumentConstant">
@@ -2077,17 +2249,22 @@
         </member>
         <member name="T:CMS.DocumentEngine.Types.Solution">
             <summary>
-            Sample item class.
+            Represents a content item of type Solution.
             </summary>
         </member>
         <member name="F:CMS.DocumentEngine.Types.Solution.CLASS_NAME">
             <summary>
-            Class name of the item.
+            The name of the data class.
+            </summary>
+        </member>
+        <member name="F:CMS.DocumentEngine.Types.Solution.mFields">
+            <summary>
+            The instance of the class that provides extended API for working with Solution fields.
             </summary>
         </member>
         <member name="M:CMS.DocumentEngine.Types.Solution.#ctor">
             <summary>
-            Constructor.
+            Initializes a new instance of the <see cref="T:CMS.DocumentEngine.Types.Solution"/> class.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.Solution.SolutionID">
@@ -2095,9 +2272,9 @@
             SolutionID.
             </summary>
         </member>
-        <member name="P:CMS.DocumentEngine.Types.Solution.HomeImage">
+        <member name="P:CMS.DocumentEngine.Types.Solution.TileTitle">
             <summary>
-            
+            Tile Title.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.Solution.Title">
@@ -2105,9 +2282,24 @@
             Title.
             </summary>
         </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.HomeImage">
+            <summary>
+            Image displayed on a tile.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.Description">
+            <summary>
+            Text that appears on hover over the tile.
+            </summary>
+        </member>
         <member name="P:CMS.DocumentEngine.Types.Solution.Subtitle">
             <summary>
             Subtitle.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.HeroImage">
+            <summary>
+            Hero Image.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.Solution.Copy">
@@ -2115,29 +2307,110 @@
             Copy.
             </summary>
         </member>
-        <member name="P:CMS.DocumentEngine.Types.Solution.HeroImage">
-            <summary>
-            HeroImage.
-            </summary>
-        </member>
         <member name="P:CMS.DocumentEngine.Types.Solution.NavigationIcon">
             <summary>
-            NavigationIcon.
-            </summary>
-        </member>
-        <member name="P:CMS.DocumentEngine.Types.Solution.Description">
-            <summary>
-            Description.
+            Navigation Icon.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.Solution.FeaturedProductList">
             <summary>
-            FeaturedProductList.
+            Featured Product List.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.Solution.SidebarItems">
             <summary>
             Sidebar Items.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.SidebarTest">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.Fields">
+            <summary>
+            Gets an object that provides extended API for working with Solution fields.
+            </summary>
+        </member>
+        <member name="T:CMS.DocumentEngine.Types.Solution.SolutionFields">
+            <summary>
+            Provides extended API for working with Solution fields.
+            </summary>
+        </member>
+        <member name="F:CMS.DocumentEngine.Types.Solution.SolutionFields.mInstance">
+            <summary>
+            The content item of type Solution that is a target of the extended API.
+            </summary>
+        </member>
+        <member name="M:CMS.DocumentEngine.Types.Solution.SolutionFields.#ctor(CMS.DocumentEngine.Types.Solution)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMS.DocumentEngine.Types.Solution.SolutionFields"/> class with the specified content item of type Solution.
+            </summary>
+            <param name="instance">The content item of type Solution that is a target of the extended API.</param>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.SolutionFields.ID">
+            <summary>
+            SolutionID.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.SolutionFields.TileTitle">
+            <summary>
+            Tile Title.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.SolutionFields.Title">
+            <summary>
+            Title.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.SolutionFields.HomeImage">
+            <summary>
+            Image displayed on a tile.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.SolutionFields.Description">
+            <summary>
+            Text that appears on hover over the tile.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.SolutionFields.Subtitle">
+            <summary>
+            Subtitle.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.SolutionFields.HeroImage">
+            <summary>
+            Hero Image.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.SolutionFields.Copy">
+            <summary>
+            Copy.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.SolutionFields.NavigationIcon">
+            <summary>
+            Navigation Icon.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.SolutionFields.FeaturedProductList">
+            <summary>
+            Featured Product List.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.SolutionFields.SidebarItems">
+            <summary>
+            Sidebar Items.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.SolutionFields.SidebarItems2">
+            <summary>
+            Sidebar Items.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Solution.SolutionFields.SidebarTest">
+            <summary>
+            
             </summary>
         </member>
         <member name="T:CMS.DocumentEngine.Types.Term">
@@ -2237,17 +2510,22 @@
         </member>
         <member name="T:CMS.DocumentEngine.Types.Product">
             <summary>
-            Sample item class.
+            Represents a content item of type Product.
             </summary>
         </member>
         <member name="F:CMS.DocumentEngine.Types.Product.CLASS_NAME">
             <summary>
-            Class name of the item.
+            The name of the data class.
+            </summary>
+        </member>
+        <member name="F:CMS.DocumentEngine.Types.Product.mFields">
+            <summary>
+            The instance of the class that provides extended API for working with Product fields.
             </summary>
         </member>
         <member name="M:CMS.DocumentEngine.Types.Product.#ctor">
             <summary>
-            Constructor.
+            Initializes a new instance of the <see cref="T:CMS.DocumentEngine.Types.Product"/> class.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.Product.ProductID">
@@ -2275,6 +2553,16 @@
             Text that appears on hover over the tile.
             </summary>
         </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.Application">
+            <summary>
+            Application.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.CoverImage">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:CMS.DocumentEngine.Types.Product.Template">
             <summary>
             Template.
@@ -2283,6 +2571,26 @@
         <member name="P:CMS.DocumentEngine.Types.Product.Content">
             <summary>
             Content.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.FooterMessage">
+            <summary>
+            Footer Text.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.Theme">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.MicrobotSolutionImage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.MicrobotRobotImage">
+            <summary>
+            
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.Product.SidebarItems">
@@ -2296,6 +2604,112 @@
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.Product.PdfReference">
+            <summary>
+            PdfReference.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.Fields">
+            <summary>
+            Gets an object that provides extended API for working with Product fields.
+            </summary>
+        </member>
+        <member name="T:CMS.DocumentEngine.Types.Product.ProductFields">
+            <summary>
+            Provides extended API for working with Product fields.
+            </summary>
+        </member>
+        <member name="F:CMS.DocumentEngine.Types.Product.ProductFields.mInstance">
+            <summary>
+            The content item of type Product that is a target of the extended API.
+            </summary>
+        </member>
+        <member name="M:CMS.DocumentEngine.Types.Product.ProductFields.#ctor(CMS.DocumentEngine.Types.Product)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMS.DocumentEngine.Types.Product.ProductFields"/> class with the specified content item of type Product.
+            </summary>
+            <param name="instance">The content item of type Product that is a target of the extended API.</param>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.ID">
+            <summary>
+            ProductID.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.Title">
+            <summary>
+            Title.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.TileTitle">
+            <summary>
+            Tile Title.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.HomeImage">
+            <summary>
+            Image displayed on a tile.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.Description">
+            <summary>
+            Text that appears on hover over the tile.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.Application">
+            <summary>
+            Application.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.CoverImage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.Template">
+            <summary>
+            Template.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.Content">
+            <summary>
+            Content.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.FooterMessage">
+            <summary>
+            Footer Text.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.Theme">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.MicrobotSolutionImage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.MicrobotRobotImage">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.SidebarItems">
+            <summary>
+            Sidebar Items.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.SidebarItems2">
+            <summary>
+            Sidebar Items.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.Regions">
+            <summary>
+            Regions.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.Product.ProductFields.PdfReference">
             <summary>
             PdfReference.
             </summary>
@@ -2467,17 +2881,22 @@
         </member>
         <member name="T:CMS.DocumentEngine.Types.SolutionBusinessUnit">
             <summary>
-            Sample item class.
+            Represents a content item of type SolutionBusinessUnit.
             </summary>
         </member>
         <member name="F:CMS.DocumentEngine.Types.SolutionBusinessUnit.CLASS_NAME">
             <summary>
-            Class name of the item.
+            The name of the data class.
+            </summary>
+        </member>
+        <member name="F:CMS.DocumentEngine.Types.SolutionBusinessUnit.mFields">
+            <summary>
+            The instance of the class that provides extended API for working with SolutionBusinessUnit fields.
             </summary>
         </member>
         <member name="M:CMS.DocumentEngine.Types.SolutionBusinessUnit.#ctor">
             <summary>
-            Constructor.
+            Initializes a new instance of the <see cref="T:CMS.DocumentEngine.Types.SolutionBusinessUnit"/> class.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitID">
@@ -2502,27 +2921,22 @@
         </member>
         <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.HeroImage">
             <summary>
-            HeroImage.
+            Hero Image.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.HeroImageTitle">
             <summary>
-            HeroImageTitle.
+            Hero Image Title.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.HeroImageSubtitle">
             <summary>
-            HeroImageSubtitle.
+            Hero Image Subtitle.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.Description">
             <summary>
             Text that appears on hover over the tile.
-            </summary>
-        </member>
-        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.DocumentsDescription">
-            <summary>
-            DocumentsDescription.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.Content">
@@ -2532,15 +2946,111 @@
         </member>
         <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.FAQDescription">
             <summary>
-            FAQDescription.
+            FAQ Description.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.FAQList">
             <summary>
-            FAQList.
+            FAQ Items.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.DocumentsDescription">
+            <summary>
+            Documents Description.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.Theme">
+            <summary>
+            Theme.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.Fields">
+            <summary>
+            Gets an object that provides extended API for working with SolutionBusinessUnit fields.
+            </summary>
+        </member>
+        <member name="T:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields">
+            <summary>
+            Provides extended API for working with SolutionBusinessUnit fields.
+            </summary>
+        </member>
+        <member name="F:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields.mInstance">
+            <summary>
+            The content item of type SolutionBusinessUnit that is a target of the extended API.
+            </summary>
+        </member>
+        <member name="M:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields.#ctor(CMS.DocumentEngine.Types.SolutionBusinessUnit)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields"/> class with the specified content item of type SolutionBusinessUnit.
+            </summary>
+            <param name="instance">The content item of type SolutionBusinessUnit that is a target of the extended API.</param>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields.ID">
+            <summary>
+            SolutionBusinessUnitID.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields.TileTitle">
+            <summary>
+            Tile Title.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields.Title">
+            <summary>
+            Title.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields.HomeImage">
+            <summary>
+            Image displayed on a tile.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields.HeroImage">
+            <summary>
+            Hero Image.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields.HeroImageTitle">
+            <summary>
+            Hero Image Title.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields.HeroImageSubtitle">
+            <summary>
+            Hero Image Subtitle.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields.Description">
+            <summary>
+            Text that appears on hover over the tile.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields.Content">
+            <summary>
+            Content.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields.FAQDescription">
+            <summary>
+            FAQ Description.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields.FAQList">
+            <summary>
+            FAQ Items.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields.DocumentsDescription">
+            <summary>
+            Documents Description.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields.DocumentList">
+            <summary>
+            Document List.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.SolutionBusinessUnit.SolutionBusinessUnitFields.Theme">
             <summary>
             Theme.
             </summary>

@@ -51,5 +51,10 @@ namespace CMS.Mvc.Providers
                             : (new CultureInfo(item.DocumentCulture)).NativeName.TrimEnd()
                 }).ToList();
         }
+        public TreeNode GetDocumentByNodeGUID(Guid guid)
+        {
+            
+            return ContentHelper.GetNodeByGuid<TreeNode>(guid);
+        }
     }
 }

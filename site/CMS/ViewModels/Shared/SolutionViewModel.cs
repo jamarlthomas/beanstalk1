@@ -24,6 +24,7 @@ namespace CMS.Mvc.ViewModels.Shared
         public SidebarViewModel SideBar { get; set; }
         public SolutionConstantsViewModel Constants { get; set; }
         public DateTime DatePublishedFrom { get; set; }
+        public int DocumentID { get; set; }
 
     }
 }

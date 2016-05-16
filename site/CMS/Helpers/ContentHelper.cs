@@ -126,12 +126,23 @@ namespace CMS.Mvc.Helpers
                 GetDocByDocId<T>(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T,
                 new CacheSettings(CachingTime, string.Format("doc_guid_{0}", guid)));
         }
-
+        public static T GetNodeByGuid<T>(Guid guid, string siteName = null) where T : class
+        {
+            return CacheHelper.Cache(cs =>
+                GetDocByDocId<T>(TreePathUtils.GetNodeIdByNodeGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T,
+                new CacheSettings(CachingTime, string.Format("doc_guid_{0}", guid)));
+        }
         public static T GetDocByDocId<T>(int docId) where T : class
         {
             return CacheHelper.Cache(cs =>
                 _treeProvider.SelectSingleDocument(docId) as T,
                 new CacheSettings(CachingTime, string.Format("doc_id_{0}", docId)));
+        }
+        public static int GetNodeByNodeGuid(Guid guid, string siteName = null)
+        {
+            return CacheHelper.Cache(cs =>
+                TreePathUtils.GetNodeIdByNodeGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"]),
+                new CacheSettings(CachingTime, string.Format("node_id_{0}", guid)));
         }
 
         public static T GetDocByNodeId<T>(int nodeId) where T : class

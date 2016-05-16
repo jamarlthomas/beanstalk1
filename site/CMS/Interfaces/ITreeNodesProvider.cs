@@ -14,5 +14,6 @@ namespace CMS.Mvc.Interfaces
         TreeNode GetTreeNodeByNodeGuid(Guid guid);
         List<BreadCrumbLinkItemViewModel> GetBreadcrumb(Guid guid);
         List<DownloadLanguageLinkItemViewModel> GetAvailableTranslations(TreeNode product);
+        TreeNode GetDocumentByNodeGUID(Guid guid);
     }
 }
