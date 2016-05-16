@@ -25,6 +25,9 @@
                     
                 }//li
                 
+                //Mobile Fix Hover
+                li.no-hover a { color: #124498; backgroun: red; }
+                
                 //setup indicator of children
                 li.hasChildren > a { 
                 

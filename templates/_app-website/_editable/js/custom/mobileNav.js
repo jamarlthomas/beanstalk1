@@ -1,5 +1,16 @@
 $( document ).ready(function() {
    
+    //Add class to disable rollovers for all mobile
+    if(isMobile.any()) {
+        
+        $( "#mainNavC li" ).each(function( index ) {
+            $(this).addClass("no-hover")
+        })
+
+    }
+    
+    
+    
    //Hamburger Navigation
     $('#mobileBtn').click(function(e) {
 
