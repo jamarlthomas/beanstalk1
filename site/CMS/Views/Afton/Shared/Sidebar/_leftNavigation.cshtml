@@ -15,11 +15,21 @@
                 <li>
                     @if (navItem.Link != null)
                     {
-                        <a href="@Url.Content("~/" + navItem.Link)" class="open active"> @Html.Raw(navItem.Title)</a>
+                        <a href="@Url.Content("~/" + navItem.Link)" class="open active">
+                                                @if (!string.IsNullOrEmpty(navItem.NavigationIcon))
+                                                {
+                                                    <img src="@Url.Content(navItem.NavigationIcon))" />
+                                                }
+                        @Html.Raw(navItem.Title)></a>
                     }
                     else
                     {
-                        <a> @Html.Raw(navItem.Title)</a>
+                        <a>
+                            @if (!string.IsNullOrEmpty(navItem.NavigationIcon))
+                            {
+                                <img src="@Url.Content(navItem.NavigationIcon))" />
+                            }
+                     @Html.Raw(navItem.Title)</a>
                     }
                     <ul>
                         @foreach (var subNavItem in navItem.SubMenu)
@@ -51,11 +61,21 @@
                     {
                         if (navItem.Link == CMS.Helpers.RequestContext.CurrentURL.Substring(1))
                         {
-                            <a class="open active" href="@Url.Content("~/" + navItem.Link)">@Html.Raw(navItem.Title)</a>
+                            <a class="open active" href="@Url.Content("~/" + navItem.Link)">
+                                @if (!string.IsNullOrEmpty(navItem.NavigationIcon))
+                                {
+                                    <img src="@Url.Content(navItem.NavigationIcon))" />
+                                }
+                                @Html.Raw(navItem.Title)</a>
                         }
                         else
                         {
-                            <a href="@Url.Content("~/" + navItem.Link)">@Html.Raw(navItem.Title)</a>
+                            <a href="@Url.Content("~/" + navItem.Link)">
+                                @if (!string.IsNullOrEmpty(navItem.NavigationIcon))
+                                {
+                                    <img src="@Url.Content(navItem.NavigationIcon))" />
+                                }
+                                    @Html.Raw(navItem.Title)</a>
                         }
                     }
                     else
