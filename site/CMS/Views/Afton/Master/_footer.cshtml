@@ -1,5 +1,6 @@
 ﻿@using CMS.DocumentEngine.Types
 @using CMS.Mvc.ViewModels.Master
+@using CMS.Mvc.Helpers
 @model FooterViewModel
 <div id="footerC">
 
@@ -9,11 +10,11 @@
             @foreach (var item in Model.FooterNavCategories)
             {
                 <div class="btmNavCol">
-                    <a href="@Url.Content("~/"+item.Reference)">@item.Title</a>
+                    <a href="@Url.Content("~/"+item.Reference)">@UtilsHelper.ToHtmlString(item.Title)</a>
                     <ul>
                         @foreach (var footerNavItems in item.FooterNavItems)
                         {
-                            <li><a href="@Url.Content("~/"+footerNavItems.Reference)">@footerNavItems.Title</a></li>
+                            <li><a href="@Url.Content("~/"+footerNavItems.Reference)">@UtilsHelper.ToHtmlString(footerNavItems.Title)</a></li>
                         }
                     </ul>
                 </div>

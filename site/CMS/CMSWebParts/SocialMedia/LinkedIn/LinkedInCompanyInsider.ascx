@@ -1,2 +1,0 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CMSWebParts_SocialMedia_LinkedIn_LinkedInCompanyInsider" Codebehind="~/CMSWebParts/SocialMedia/LinkedIn/LinkedInCompanyInsider.ascx.cs" %>
-<asp:Literal runat="server" ID="ltlPluginCode" EnableViewState="false" />

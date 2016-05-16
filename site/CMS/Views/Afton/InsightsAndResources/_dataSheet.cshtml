@@ -1,10 +1,11 @@
 ﻿@using CMS.Mvc.ViewModels.InsightsAndResources
+@using CMS.Mvc.Helpers
 @model InsightsListingItemViewModel
 <h2 class="txtPaddingTop">@Model.Title</h2>
 <ul>
     @foreach (var link in Model.Links)
     {
-        <li><a href="@link.Reference">@link.Title</a></li>
+        <li><a href="@link.Reference">@UtilsHelper.ToHtmlString(link.Title)</a></li>
     }
 </ul>
 <a href="@Model.ViewAllUrl" class="viewMore">@Model.ViewAllLabel @Model.Title ></a>

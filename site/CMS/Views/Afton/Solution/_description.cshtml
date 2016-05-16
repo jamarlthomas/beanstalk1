@@ -1,5 +1,8 @@
-﻿@model string
+﻿@using CMS.Mvc.Helpers;
+
+
+@model string
 
 <div id="mainContentC">
-	@Html.Raw(Model)
+    @UtilsHelper.ToHtmlString(Model.Replace("~/", "/"))
 </div>

@@ -1,4 +1,5 @@
-﻿using CMS.DocumentEngine.Types;
+﻿using CMS.DocumentEngine;
+using CMS.DocumentEngine.Types;
 using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Infrastructure.Models;
@@ -71,79 +72,91 @@ namespace CMS.Mvc.Controllers.Afton
             model.DocumentTypes.AddRange(MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes()));
             foreach (var item in model.DocumentTypes)
             {
-                switch (item.Title) {
-                    case "Product Data Sheets":
-                        item.Documents = _productProvider.GetProductsBySBU(sbu.NodeAlias).Select(document => new LinkViewModel
-                        {
-                            Title = document.Title,
-                            Reference = document.DocumentRoutePath
-                        }).ToList();
-                        break;
-                    case "Brochures":
-                        item.Documents = _documentProvider.GetDocuments(item.Title).Select(document => new LinkViewModel {
-                        Title= document.Title,
-                        Reference= document.DocumentRoutePath
-                        }).ToList();
-                        item.Documents.AddRange(_genericPageProvider.GetChildGenericPages(item.Title).Select(document => new LinkViewModel
-                        {
-                            Title = document.Title,
-                            Reference = document.DocumentRoutePath
-                        }).ToList());
-                        break;
-                    case "Product Stewardship Summaries":
-                        switch (sbu.Title)
-                        {
-                            case "Engine Oil Additives":
-                                item.Documents = (ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x=>x.NodeID==1655).Select(document => new LinkViewModel
-                                {
-                                    Title = document.Title,
-                                    Reference = document.DocumentRoutePath
-                                }).ToList());
-                                item.Documents.AddRange(ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1650).Select(document => new LinkViewModel
-                                {
-                                    Title = document.Title,
-                                    Reference = document.DocumentRoutePath
-                                }).ToList());
-                                break;
-                            case "Fuel Additives" :
-                                item.Documents = (ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x=>x.NodeID==1646).Select(document => new LinkViewModel
-                                {
-                                    Title = document.Title,
-                                    Reference = document.DocumentRoutePath
-                                }).ToList());
-                                item.Documents.AddRange(ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1648).Select(document => new LinkViewModel
-                                {
-                                    Title = document.Title,
-                                    Reference = document.DocumentRoutePath
-                                }).ToList());
-                                break;
-                            case "Driveline Additives" :
-                                item.Documents = (ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x=>x.NodeID==1654).Select(document => new LinkViewModel
-                                {
-                                    Title = document.Title,
-                                    Reference = document.DocumentRoutePath
-                                }).ToList());
-                                item.Documents.AddRange(ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1645).Select(document => new LinkViewModel
-                                {
-                                    Title = document.Title,
-                                    Reference = document.DocumentRoutePath
-                                }).ToList());
-                                break;
-                            case "Industrial Additives":
-                                item.Documents = (ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1647).Select(document => new LinkViewModel
-                                {
-                                    Title = document.Title,
-                                    Reference = document.DocumentRoutePath
-                                }).ToList());
-                                item.Documents.AddRange(ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1649 || x.NodeID == 1652 || x.NodeID == 1653).Select(document => new LinkViewModel
-                                {
-                                    Title = document.Title,
-                                    Reference = document.DocumentRoutePath
-                                }).ToList());
-                                break;
+                if (sbu.Fields.DocumentList.Count() != 0)
+                {
+                    item.Documents = (sbu.Fields.DocumentList.Where(x => x.Parent.GetValue("Title") == item.Title).Select(document => new LinkViewModel {
+                        Title = document.GetValue("Title").ToString(),
+                        Reference = document.DocumentNamePath
+                    }).ToList());
+                }
+                else
+                {
+                    switch (item.Title)
+                    {
+                        case "Product Data Sheets":
+                            item.Documents = _productProvider.GetProductsBySBU(sbu.NodeAlias).Select(document => new LinkViewModel
+                            {
+                                Title = document.Title,
+                                Reference = document.DocumentRoutePath
+                            }).ToList();
+                            break;
+                        case "Brochures":
+                            item.Documents = _documentProvider.GetDocuments(item.Title).Select(document => new LinkViewModel
+                            {
+                                Title = document.Title,
+                                Reference = document.DocumentRoutePath
+                            }).ToList();
+                            item.Documents.AddRange(_genericPageProvider.GetChildGenericPages(item.Title).Select(document => new LinkViewModel
+                            {
+                                Title = document.Title,
+                                Reference = document.DocumentRoutePath
+                            }).ToList());
+                            break;
+                        case "Product Stewardship Summaries":
+                            switch (sbu.Title)
+                            {
+                                case "Engine Oil Additives":
+                                    item.Documents = (ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1655).Select(document => new LinkViewModel
+                                    {
+                                        Title = document.Title,
+                                        Reference = document.DocumentRoutePath
+                                    }).ToList());
+                                    item.Documents.AddRange(ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1650).Select(document => new LinkViewModel
+                                    {
+                                        Title = document.Title,
+                                        Reference = document.DocumentRoutePath
+                                    }).ToList());
+                                    break;
+                                case "Fuel Additives":
+                                    item.Documents = (ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1646).Select(document => new LinkViewModel
+                                    {
+                                        Title = document.Title,
+                                        Reference = document.DocumentRoutePath
+                                    }).ToList());
+                                    item.Documents.AddRange(ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1648).Select(document => new LinkViewModel
+                                    {
+                                        Title = document.Title,
+                                        Reference = document.DocumentRoutePath
+                                    }).ToList());
+                                    break;
+                                case "Driveline Additives":
+                                    item.Documents = (ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1654).Select(document => new LinkViewModel
+                                    {
+                                        Title = document.Title,
+                                        Reference = document.DocumentRoutePath
+                                    }).ToList());
+                                    item.Documents.AddRange(ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1645).Select(document => new LinkViewModel
+                                    {
+                                        Title = document.Title,
+                                        Reference = document.DocumentRoutePath
+                                    }).ToList());
+                                    break;
+                                case "Industrial Additives":
+                                    item.Documents = (ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1647).Select(document => new LinkViewModel
+                                    {
+                                        Title = document.Title,
+                                        Reference = document.DocumentRoutePath
+                                    }).ToList());
+                                    item.Documents.AddRange(ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.NodeID == 1649 || x.NodeID == 1652 || x.NodeID == 1653).Select(document => new LinkViewModel
+                                    {
+                                        Title = document.Title,
+                                        Reference = document.DocumentRoutePath
+                                    }).ToList());
+                                    break;
 
-                        }
-                        break;
+                            }
+                            break;
+                    }
                 }
 
             }

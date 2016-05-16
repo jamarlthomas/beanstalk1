@@ -1,4 +1,5 @@
 ﻿@using CMS.Mvc.ViewModels.Shared
+@using CMS.Mvc.Helpers
 @model SolutionViewModel
 
 <div class="bgGray padTopBtm">
@@ -25,5 +26,5 @@
             }
         </div>
     </div>
-    <div class="fullWidth"><a href="#" class="viewAllBtn">@Model.Constants.ViewAllLabel @Model.Title @Model.Constants.ProductsLabel</a></div>
+    <div class="fullWidth"><a href="@Url.Content("~/"+RouteHelper.GetSelectionFilterSolutionViewAllUrl(Model.DocumentID.ToString()))" class="viewAllBtn">@Model.Constants.ViewAllLabel @Model.Title @Model.Constants.ProductsLabel</a></div>
 </div>

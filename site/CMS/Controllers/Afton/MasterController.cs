@@ -9,6 +9,7 @@ using CMS.Mvc.Infrastructure.Models;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Master;
+using CMS.DocumentEngine;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -58,12 +59,12 @@ namespace CMS.Mvc.Controllers.Afton
             footer.FooterNavCategories = _pagesMenuItemProvider.GetPagesMenuItems().Select(category =>
             {
                 var categoryViewModel = MapData<PagesMenuItem, PagesMenuItemViewModel>(category);
-                categoryViewModel.Reference = GetLinkByGuid(UtilsHelper.ParseGuids(category.Reference).Last());
+                categoryViewModel.Reference = FindLink(category.Reference);
 
                 categoryViewModel.FooterNavItems = _footerNavItemProvider.GetFooterNavItems(category.NodeAlias).Select(s =>
                 {
                     var result = MapData<FooterNavItem, FooterNavItemViewModel>(s);
-                    result.Reference = GetLinkByGuid(UtilsHelper.ParseGuids(s.Reference).Last());
+                    result.Reference = FindLink(s.Reference);
                     return result;
                 }).ToList();
 
@@ -84,7 +85,7 @@ namespace CMS.Mvc.Controllers.Afton
             model.UtilityNavList = _pagesMenuItemProvider.GetPagesMenuItems().Select(s =>
             {
                 var result = MapData<PagesMenuItem, PagesMenuItemViewModel>(s);
-                result.Reference = GetLinkByGuid(UtilsHelper.ParseGuids(s.Reference).Last());
+                result.Reference = FindLink(s.Reference);
                 return result;
             }).ToList();
 
@@ -96,14 +97,14 @@ namespace CMS.Mvc.Controllers.Afton
             return _contentMenuItemProvider.GetContentMenuItems().Select(contentMenuItem =>
             {
                 var itemViewModel = MapData<ContentMenuItem, ContentMenuItemViewModel>(contentMenuItem);
-                itemViewModel.Reference = GetLinkByGuid(UtilsHelper.ParseGuids(contentMenuItem.Reference).Last());
+                itemViewModel.Reference = FindLink(contentMenuItem.Reference);
 
                 itemViewModel.ThumbnailedMenuItems = _megaMenuThumbnailedItemProvider.GetMegaMenuThumbnailedItems(contentMenuItem.NodeAlias).Select(thumbnailedMenuItem =>
                 {
                     var result = MapData<MegaMenuThumbnailedItem, MegaMenuThumbnailedItemViewModel>(thumbnailedMenuItem);
                     if (!string.IsNullOrEmpty(thumbnailedMenuItem.Reference))
                     {
-                        result.Reference = GetLinkByGuid(UtilsHelper.ParseGuids(thumbnailedMenuItem.Reference).Last());
+                        result.Reference = FindLink(thumbnailedMenuItem.Reference);
                     }
                     return result;
                 }).ToList();
@@ -113,13 +114,13 @@ namespace CMS.Mvc.Controllers.Afton
                 {
                     itemViewModel.SolutionsLink = MapData<MegaMenuLinkItem, MegaMenuLinkItemViewModel>(solutionLink);
 
-                    itemViewModel.SolutionsLink.Reference = GetLinkByGuid(UtilsHelper.ParseGuids(solutionLink.Reference).Last());
+                    itemViewModel.SolutionsLink.Reference = FindLink(solutionLink.Reference);
 
                     itemViewModel.SolutionsLink.Solutions = _megaMenuSubLinkItemProvider.GetMegaMenuSubLinkItems(solutionLink.NodeAlias).Select(subItem =>
                     {
                         var result = MapData<MegaMenuSubLinkItem, MegaMenuSubLinkItemViewModel>(subItem);
 
-                        result.Reference = GetLinkByGuid(subItem.Reference);
+                        result.Reference = FindLink(subItem.Reference);
                         return result;
                     }).ToList();
                 }
@@ -128,10 +129,37 @@ namespace CMS.Mvc.Controllers.Afton
             }).ToList();
         }
 
-        private string GetLinkByGuid(Guid guid)
+        private string FindLink(string reference)
         {
-            var treeNode = _treeNodesProvider.GetTreeNodeByNodeGuid(guid);
-            return (treeNode != null && ((treeNode as IRoutedModel) != null)) ? (treeNode as IRoutedModel).DocumentRoutePath : "#";
+            var newGUID = UtilsHelper.ParseGuids(reference);
+            if (newGUID.Count != 0)
+            {
+                var treeNode = _treeNodesProvider.GetTreeNodeByNodeGuid(newGUID.Last());
+                if (treeNode == null)
+                {
+                    treeNode = ContentHelper.GetDocByNodeId<TreeNode>(ContentHelper.GetNodeByNodeGuid(newGUID.Last()));
+                    //treeNode = ContentHelper.GetNodeByGuid<TreeNode>(newGUID.Last());
+                    return (treeNode != null && ((treeNode as IRoutedModel) != null)) ? (treeNode as IRoutedModel).DocumentRoutePath : "#";
+                }
+                else
+                {
+                    return (treeNode != null && ((treeNode as IRoutedModel) != null)) ? (treeNode as IRoutedModel).DocumentRoutePath : "#";
+                }
+            }
+            return "#";
+            /*else
+            {
+                var treeNode = _treeNodesProvider.GetTreeNodeByPath(reference);
+                return (treeNode != null && ((treeNode as IRoutedModel) != null)) ? (treeNode as IRoutedModel).DocumentRoutePath : "#";
+            }*/
+
+        }
+        private string FindLink(Guid reference)
+        {
+                var treeNode = _treeNodesProvider.GetTreeNodeByNodeGuid(reference);
+                return (treeNode != null && ((treeNode as IRoutedModel) != null)) ? (treeNode as IRoutedModel).DocumentRoutePath : "#";
+
+
         }
     }
 }
