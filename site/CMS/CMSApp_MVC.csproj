@@ -622,6 +622,7 @@
     <Content Include="fonts\HelveticaNeueLTStd-Roman\2F7DEF_0_0.woff2" />
     <Content Include="css\maps\normalize.min.css.map" />
     <Content Include="css\maps\styles.min.css.map" />
+    <Content Include="images\Afton_Bug.png" />
     <Content Include="images\AFTON_NEWSEVENTS.jpg" />
     <Content Include="map\afton-marker.svg" />
     <Content Include="map\bedford.jpg" />
