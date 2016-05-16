@@ -19,7 +19,7 @@
                 <div class="newsTxt">@Html.Raw(item.Description)</div>
                 @if (item.DocumentRoutePath.Contains("http"))
                 {
-                    <a href="@item.DocumentRoutePath" class="newsMore">@Model.ReadMoreLabel</a>
+                    <a href="@item.DocumentRoutePath" target="_blank" class="newsMore">@Model.ReadMoreLabel</a>
                 }
                 else
                 {
