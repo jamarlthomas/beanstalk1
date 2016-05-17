@@ -82,6 +82,12 @@ namespace CMS.Mvc.Controllers.Afton
                 }
             };*/
             var result = _resourceTileProvider.GetTiles(page.FeaturedContentList).Select(s => Mapper.Map<TileViewModel>(s)).ToList();
+            if (page.Fields.FeaturedContentList2.Count() > 0)
+            {
+                var guidString= string.Join(";",page.Fields.FeaturedContentList2.Select(x => x.NodeGUID.ToString()));
+                result = _resourceTileProvider.GetTiles(guidString).Select(s => Mapper.Map<TileViewModel>(s)).ToList();
+            }
+            
             return result;
         }
 
