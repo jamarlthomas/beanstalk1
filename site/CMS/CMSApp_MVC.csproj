@@ -594,6 +594,7 @@
   <ItemGroup>
     <Content Include="Content\Templates\dirPagination.tpl.html" />
     <Content Include="css\normalize.min.css" />
+    <Content Include="css\style-guide.min.css" />
     <Content Include="css\styles.min.css" />
     <Content Include="fonts\fonts.css" />
     <Content Include="fonts\HelveticaNeueLT-Bold\2F7DEF_2_0.eot" />
@@ -623,6 +624,11 @@
     <Content Include="css\maps\normalize.min.css.map" />
     <Content Include="css\maps\styles.min.css.map" />
     <Content Include="images\AFTON_NEWSEVENTS.jpg" />
+    <Content Include="images\sg-logo.gif" />
+    <Content Include="images\sg-logo2.gif" />
+    <Content Include="images\sgh-ind-metalworking.gif" />
+    <Content Include="images\sgh-microbots.jpg" />
+    <Content Include="images\sgh-rt.gif" />
     <Content Include="map\afton-marker.svg" />
     <Content Include="map\bedford.jpg" />
     <Content Include="map\feluy.jpg" />
@@ -639,7 +645,6 @@
     <Content Include="map\sauget.jpg" />
     <Content Include="map\singapore.jpg" />
     <Content Include="map\suzhou.jpg" />
-    <Content Include="Pdf\Template.html" />
     <Content Include="Pdf\fake.html" />
     <Content Include="images\accordMinus.png" />
     <Content Include="images\accordPlus.png" />
@@ -810,6 +815,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CMSAdminControls\" />
+    <Folder Include="Pdf\Templates\" />
     <Folder Include="Pdf\Temp\" />
   </ItemGroup>
   <ItemGroup>

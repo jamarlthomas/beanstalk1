@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="{{Domain}}/css/normalize.min.css" />
+    <link rel="stylesheet" href="{{Domain}}/fonts/fonts.css" />
+    <link rel="stylesheet" href="{{Domain}}/css/style-guide.min.css" />
+</head>
+<body>
+    <div id="sg-headerC">
+        <img src="{{Domain}}{{HeaderImage}}" alt="" />
+        <div id="hdr-Text">
+            <span id="main">{{SBUTitle}}</span>
+            <span>|</span>
+            <span id="sub">{{SolutionTitle}}</span>
+        </div>
+    </div>
+    <div id="sg-mainC">
+        <div id="sg-prodHdrC">
+            <div id="sg-prodName">
+                {{Title}}
+                <span id="sg-prodDesc">{{Description}}</span>
+            </div>
+            <div id="sg-prodApplication">{{Application}}</div>
+        </div>
+        {{Content}}
+        <div id="sg-footerC">
+            <hr/>
+            <div id="sg-footerTxt">
+                {{FooterMessage}}
+            </div>
+            <img src="{{Domain}}/images/sg-logo.gif" id="sg-footerLogo" alt="" />
+        </div>
+    </div>
+</body>
+</html>
