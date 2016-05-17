@@ -28,7 +28,7 @@ namespace CMS.Mvc
         {
             SetUpRoutesFromKentico(routes);
             SetUpConstantRoutes(routes);
-            routes.MapAttributeRoutes();
+            //routes.MapAttributeRoutes();
             routes.MapMvcAttributeRoutes();
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             /*
