@@ -32,9 +32,10 @@ namespace CMS.Mvc.Helpers
         private static HttpContext context = HttpContext.Current;
         private static readonly TreeProvider _treeProvider = new TreeProvider();
         private static string _allContentKey = "";
-        public const string NodeIdKey = "PageViewNodeId";
-        public const string NodeAliasPathKey = "PageViewDocumentPath";
+        public const string NodeIdKey = "NodeId";
+        public const string NodeAliasPathKey = "DocumentPath";
         public const string ObjectNameKey = "ObjectName";
+        public const string DocumentGuidKey = "DocumentGuid";
 
         public static List<TreeNode> GetAllNodes()
         {
@@ -352,6 +353,7 @@ namespace CMS.Mvc.Helpers
                 context.Items[ContentHelper.NodeAliasPathKey] = node.NodeAliasPath;
                 context.Items[ContentHelper.ObjectNameKey] = node.NodeAlias;
             }
+            
         }
 
         private static IQueryable<TResult> HandleQueryableData<TResult>(

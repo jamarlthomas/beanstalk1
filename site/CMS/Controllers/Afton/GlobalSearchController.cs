@@ -1,5 +1,6 @@
 ﻿using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Infrastructure.Models;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
@@ -37,7 +38,7 @@ namespace CMS.Mvc.Controllers.Afton
             _treeNodesProvider = treeNodesProvider;
             _pageTypeDisplayValueProvider = pageTypeDisplayValueProvider;
         }
-
+        [PageVisitActivity]
         public ActionResult Index(GlobalSearchRequest request)
         {
             return View("~/Views/Afton/GlobalSearch/Index.cshtml", Search(request));
