@@ -182,6 +182,23 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Theme.
+        /// </summary>
+        [DatabaseField]
+        public string Theme
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Theme"), "");
+            }
+            set
+            {
+                SetValue("Theme", value);
+            }
+        }
+
+
+        /// <summary>
         /// Content.
         /// </summary>
         [DatabaseField]
@@ -457,6 +474,22 @@ namespace CMS.DocumentEngine.Types
                 set
                 {
                     mInstance.Template = value;
+                }
+            }
+
+
+            /// <summary>
+            /// Theme.
+            /// </summary>
+            public string Theme
+            {
+                get
+                {
+                    return mInstance.Theme;
+                }
+                set
+                {
+                    mInstance.Theme = value;
                 }
             }
 

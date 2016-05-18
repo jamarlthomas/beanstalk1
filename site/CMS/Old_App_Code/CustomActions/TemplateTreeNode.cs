@@ -13,10 +13,10 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
         public TemplateTreeNode(GeneratePdf pdfGenerator)
         {
             _pdfGenerator = pdfGenerator;
-            _pdfGenerator.Pds = GetTemplate((T) pdfGenerator.TNode); //_pdfGenerator.Template;
+            _pdfGenerator.Pds = GetTemplate((T)pdfGenerator.TNode); //_pdfGenerator.Template;
         }
 
-        
+
         public TemplateTreeNode<T> FillTemplate(Expression<Func<T, string>> func)
         {
             var propertyName = GetPropertyName(func);
@@ -44,17 +44,24 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
         }
         private string GetTemplate(T node)
         {
-            var path = node.GetValue("Template", "").Replace("/","\\");
-            string template="";
-            if (!string.IsNullOrWhiteSpace(path))
+            var theme = node.GetValue("Theme", "Default");
+            string template;
+            if (theme.Equals("Default"))
             {
-                template = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"Pdf\" + path);
+                template = File.ReadAllText(TemplateLocation + "style-guide-hm.html");
+                template += File.ReadAllText(TemplateLocation + "style-guide-int.html");
+            }
+            else
+            {
+                template = File.ReadAllText(TemplateLocation + "style-guide-hm2.html");
+                template += File.ReadAllText(TemplateLocation + "style-guide-int2.html");
             }
             return template;
         }
 
-
-
-      
+        public string TemplateLocation
+        {
+            get { return AppDomain.CurrentDomain.BaseDirectory + @"Pdf\Templates\"; }
+        }
     }
 }

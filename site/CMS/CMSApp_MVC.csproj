@@ -126,12 +126,12 @@
       <HintPath>..\packages\EmitMapper.1.0.0\lib\EmitMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="itextsharp, Version=5.5.8.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\iTextSharp.5.5.8\lib\itextsharp.dll</HintPath>
+    <Reference Include="itextsharp, Version=5.5.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.9\lib\itextsharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="itextsharp.xmlworker, Version=5.5.8.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\itextsharp.xmlworker.5.5.8\lib\itextsharp.xmlworker.dll</HintPath>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.9.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itextsharp.xmlworker.5.5.9\lib\itextsharp.xmlworker.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -624,6 +624,7 @@
     <Content Include="css\maps\normalize.min.css.map" />
     <Content Include="css\maps\styles.min.css.map" />
     <Content Include="images\AFTON_NEWSEVENTS.jpg" />
+    <Content Include="images\header-gradient.jpg" />
     <Content Include="images\sg-logo.gif" />
     <Content Include="images\sg-logo2.gif" />
     <Content Include="images\sgh-ind-metalworking.gif" />
@@ -672,6 +673,7 @@
     <Content Include="images\slideBtn-o.gif" />
     <Content Include="images\slideBtn.gif" />
     <Content Include="images\trending-icon.png" />
+    <Content Include="Pdf\Temp\HtmlPage1.html" />
     <Content Include="Scripts\custom\accordion.min.js" />
     <Content Include="Scripts\custom\bgSwitch.min.js" />
     <Content Include="Scripts\custom\cards.min.js" />
@@ -817,7 +819,6 @@
   <ItemGroup>
     <Folder Include="CMSAdminControls\" />
     <Folder Include="Pdf\Templates\" />
-    <Folder Include="Pdf\Temp\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CorporateSite\News\Detail.cshtml" />
