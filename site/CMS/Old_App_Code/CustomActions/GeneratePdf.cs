@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Web;
+using System.Web.Http.Routing;
 using CMS;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
@@ -101,7 +104,7 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
             {
                 return this.TNode.GetValue("Template", "");
             }
-            
+
         }
 
         public override void Execute()
@@ -110,42 +113,42 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
 
             FillProductTemplateWithValues();
 
-            SaveContentInNode();
-
-            WrapUpContent();
-
             CreatePdf(Pdf, css);
-
-            //SaveFileToMediaLbrary();
 
             UpdatePdfReference();
 
         }
-
-        
-
-        private void WrapUpContent()
-        {
-            Pdf = string.Format(File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"Pdf\Template.html"), Pds);
-        }
-
-        private void SaveContentInNode()
-        {
-            TNode.SetValue("Content", Pds);
-            DocumentHelper.UpdateDocument(TNode, new TreeProvider(MembershipContext.AuthenticatedUser));
-        }
-
         private void FillProductTemplateWithValues()
         {
             var pr = new TemplateTreeNode<Product>(this);
             pr
+
                 .FillTemplate(p => p.Title)
+                .FillTemplate(p => p.GetValue("HeaderImage", ""), "HeaderImage")
                 .FillTemplate(p => p.Description)
-                .FillTemplate(p=>p.HomeImage)
-                .FillTemplate(p=>p.DocumentName);
+                .FillTemplate(p => p.CoverImage)
+                .FillTemplate(p => p.Application)
+                .FillTemplate(p => p.Content)
+                .FillTemplate(p => p.FooterMessage)
+                .FillTemplate(p => p.MicrobotSolutionImage)
+                .FillTemplate(p => p.MicrobotRobotImage)
+                .FillTemplate(p => p.Parent.Parent.DocumentName, "SBUTitle")
+                .FillTemplate(p => p.Parent.DocumentName, "SolutionTitle")
+                .FillTemplate(p => p.MicrobotRobotImage, "PDSHeaderImage")
+                .FillTemplate(Domain, "Domain"); //Domain should be the last one
+            Pdf = Pds.Replace("~","");
+
         }
 
- 
+        public string Domain
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings.Get("Domain");
+            }
+        }
+
+
         private void UpdatePdfReference()
         {
             TNode.SetValue("PdfReference", MediaFileReference);
@@ -167,11 +170,14 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
         //        MediaFileInfoProvider.ImportMediaFileInfo(fileInfo, CMSActionContext.CurrentUser.UserID);
         //    }
         //}
-        
+
         private string GetCss()
         {
             var baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            return File.ReadAllText(baseDir + @"CMSAdminControls\CKEditor\style-guide.min.css");
+            var css = File.ReadAllText(baseDir + @"\css\normalize.min.css");
+            css += File.ReadAllText(baseDir + @"\fonts\fonts.css");
+            css += File.ReadAllText(baseDir + @"\css\style-guide.min.css");
+            return css;
         }
 
         private void CreatePdf(string html, string css)

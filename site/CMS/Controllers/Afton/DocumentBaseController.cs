@@ -8,6 +8,7 @@ using CMS.Mvc.ViewModels.Shared;
 using CMS.Mvc.ViewModels.Shared.DownloadWidget;
 using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 using System.Web.Mvc;
+using System.Linq;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -35,6 +36,11 @@ namespace CMS.Mvc.Controllers.Afton
 
 
             var parent = node.Parent;
+            var sidebarItems = ContentHelper.GetDocByDocId<Document>(node.DocumentID).Fields.SidebarItems2.ToList();
+            if (sidebarItems.Count() == 0)
+            {
+                sidebarItems = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(node.GetStringValue("SidebarItems",string.Empty)));
+            }
             return View("~/Views/Afton/DocumentBase/Index.cshtml", new DocumentBasePageViewModel()
             {
                 Document = documentViewModel,
@@ -45,7 +51,7 @@ namespace CMS.Mvc.Controllers.Afton
                 },
                 SideBar = new SidebarViewModel
                 {
-                    Items = MapSidebar(_sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(node.GetStringValue("SidebarItems", string.Empty))), node)
+                    Items = MapSidebar(sidebarItems, node)
                 },
                 DocumentGuid = node.DocumentGUID
             });

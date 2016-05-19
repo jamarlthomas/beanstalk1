@@ -39,17 +39,22 @@
         </member>
         <member name="T:CMS.DocumentEngine.Types.LogisticsAndSupply">
             <summary>
-            Sample item class.
+            Represents a content item of type LogisticsAndSupply.
             </summary>
         </member>
         <member name="F:CMS.DocumentEngine.Types.LogisticsAndSupply.CLASS_NAME">
             <summary>
-            Class name of the item.
+            The name of the data class.
+            </summary>
+        </member>
+        <member name="F:CMS.DocumentEngine.Types.LogisticsAndSupply.mFields">
+            <summary>
+            The instance of the class that provides extended API for working with LogisticsAndSupply fields.
             </summary>
         </member>
         <member name="M:CMS.DocumentEngine.Types.LogisticsAndSupply.#ctor">
             <summary>
-            Constructor.
+            Initializes a new instance of the <see cref="T:CMS.DocumentEngine.Types.LogisticsAndSupply"/> class.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.LogisticsAndSupply.LogisticsAndSupplyID">
@@ -93,6 +98,77 @@
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.LogisticsAndSupply.SidebarItems">
+            <summary>
+            Sidebar Items.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.LogisticsAndSupply.Fields">
+            <summary>
+            Gets an object that provides extended API for working with LogisticsAndSupply fields.
+            </summary>
+        </member>
+        <member name="T:CMS.DocumentEngine.Types.LogisticsAndSupply.LogisticsAndSupplyFields">
+            <summary>
+            Provides extended API for working with LogisticsAndSupply fields.
+            </summary>
+        </member>
+        <member name="F:CMS.DocumentEngine.Types.LogisticsAndSupply.LogisticsAndSupplyFields.mInstance">
+            <summary>
+            The content item of type LogisticsAndSupply that is a target of the extended API.
+            </summary>
+        </member>
+        <member name="M:CMS.DocumentEngine.Types.LogisticsAndSupply.LogisticsAndSupplyFields.#ctor(CMS.DocumentEngine.Types.LogisticsAndSupply)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMS.DocumentEngine.Types.LogisticsAndSupply.LogisticsAndSupplyFields"/> class with the specified content item of type LogisticsAndSupply.
+            </summary>
+            <param name="instance">The content item of type LogisticsAndSupply that is a target of the extended API.</param>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.LogisticsAndSupply.LogisticsAndSupplyFields.ID">
+            <summary>
+            LogisticsAndSupplyID.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.LogisticsAndSupply.LogisticsAndSupplyFields.TileTitle">
+            <summary>
+            Tile Title.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.LogisticsAndSupply.LogisticsAndSupplyFields.Title">
+            <summary>
+            Title.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.LogisticsAndSupply.LogisticsAndSupplyFields.Description">
+            <summary>
+            Text that appears on hover over the tile.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.LogisticsAndSupply.LogisticsAndSupplyFields.HomeImage">
+            <summary>
+            Image displayed on a tile.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.LogisticsAndSupply.LogisticsAndSupplyFields.Abstract">
+            <summary>
+            Abstract.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.LogisticsAndSupply.LogisticsAndSupplyFields.Copy">
+            <summary>
+            Copy.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.LogisticsAndSupply.LogisticsAndSupplyFields.HeroImage">
+            <summary>
+            Hero Image.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.LogisticsAndSupply.LogisticsAndSupplyFields.SidebarItems">
+            <summary>
+            Sidebar Items.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.LogisticsAndSupply.LogisticsAndSupplyFields.SidebarItems2">
             <summary>
             Sidebar Items.
             </summary>
@@ -474,17 +550,22 @@
         </member>
         <member name="T:CMS.DocumentEngine.Types.TermsAndAcronymsPage">
             <summary>
-            Sample item class.
+            Represents a content item of type TermsAndAcronymsPage.
             </summary>
         </member>
         <member name="F:CMS.DocumentEngine.Types.TermsAndAcronymsPage.CLASS_NAME">
             <summary>
-            Class name of the item.
+            The name of the data class.
+            </summary>
+        </member>
+        <member name="F:CMS.DocumentEngine.Types.TermsAndAcronymsPage.mFields">
+            <summary>
+            The instance of the class that provides extended API for working with TermsAndAcronymsPage fields.
             </summary>
         </member>
         <member name="M:CMS.DocumentEngine.Types.TermsAndAcronymsPage.#ctor">
             <summary>
-            Constructor.
+            Initializes a new instance of the <see cref="T:CMS.DocumentEngine.Types.TermsAndAcronymsPage"/> class.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronimsPageID">
@@ -543,6 +624,92 @@
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.Types.TermsAndAcronymsPage.SidebarItems">
+            <summary>
+            Sidebar Items.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.TermsAndAcronymsPage.Fields">
+            <summary>
+            Gets an object that provides extended API for working with TermsAndAcronymsPage fields.
+            </summary>
+        </member>
+        <member name="T:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields">
+            <summary>
+            Provides extended API for working with TermsAndAcronymsPage fields.
+            </summary>
+        </member>
+        <member name="F:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields.mInstance">
+            <summary>
+            The content item of type TermsAndAcronymsPage that is a target of the extended API.
+            </summary>
+        </member>
+        <member name="M:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields.#ctor(CMS.DocumentEngine.Types.TermsAndAcronymsPage)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields"/> class with the specified content item of type TermsAndAcronymsPage.
+            </summary>
+            <param name="instance">The content item of type TermsAndAcronymsPage that is a target of the extended API.</param>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields.TermsAndAcronimsPageID">
+            <summary>
+            TermsAndAcronimsPageID.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields.TileTitle">
+            <summary>
+            Tile Title.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields.Title">
+            <summary>
+            Title.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields.HomeImage">
+            <summary>
+            Image displayed on a tile.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields.Description">
+            <summary>
+            Text that appears on hover over the tile.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields.SearchLabel">
+            <summary>
+            Search Label.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields.SortLabel">
+            <summary>
+            Sort Label.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields.FirstCharInAlphabetLabel">
+            <summary>
+            First Char In Alphabet Label.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields.LastCharInAlphabetLabel">
+            <summary>
+            Last Char In Alphabet Label.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields.LoadingLabel">
+            <summary>
+            Loading Label.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields.NoItemsLabel">
+            <summary>
+            No Items Label.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields.SidebarItems">
+            <summary>
+            Sidebar Items.
+            </summary>
+        </member>
+        <member name="P:CMS.DocumentEngine.Types.TermsAndAcronymsPage.TermsAndAcronymsPageFields.SidebarItems2">
             <summary>
             Sidebar Items.
             </summary>

@@ -102,9 +102,16 @@ namespace CMS.Mvc.Controllers.Afton
                 itemViewModel.ThumbnailedMenuItems = _megaMenuThumbnailedItemProvider.GetMegaMenuThumbnailedItems(contentMenuItem.NodeAlias).Select(thumbnailedMenuItem =>
                 {
                     var result = MapData<MegaMenuThumbnailedItem, MegaMenuThumbnailedItemViewModel>(thumbnailedMenuItem);
-                    if (!string.IsNullOrEmpty(thumbnailedMenuItem.Reference))
+                    if (!string.IsNullOrEmpty(thumbnailedMenuItem.ManualLink))
                     {
-                        result.Reference = FindLink(thumbnailedMenuItem.Reference);
+                        result.Reference = thumbnailedMenuItem.ManualLink;
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(thumbnailedMenuItem.Reference))
+                        {
+                            result.Reference = FindLink(thumbnailedMenuItem.Reference);
+                        }
                     }
                     return result;
                 }).ToList();
@@ -119,7 +126,6 @@ namespace CMS.Mvc.Controllers.Afton
                     itemViewModel.SolutionsLink.Solutions = _megaMenuSubLinkItemProvider.GetMegaMenuSubLinkItems(solutionLink.NodeAlias).Select(subItem =>
                     {
                         var result = MapData<MegaMenuSubLinkItem, MegaMenuSubLinkItemViewModel>(subItem);
-
                         result.Reference = FindLink(subItem.Reference);
                         return result;
                     }).ToList();

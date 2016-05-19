@@ -50,13 +50,18 @@ namespace CMS.Mvc.Controllers.Afton
             var page = _termsAndAcronymsPageProvider.GetTermsAndAcronymsPage();
             var model = MapData<TermsAndAcronymsPage, TermsAndAcronymsPageViewModel>(page);
             model.ParentTitle = (page.Parent as InsightsResources).Title;
+            var sidebarItems  = ContentHelper.GetDocByDocId<TermsAndAcronymsPage>(page.DocumentID).Fields.SidebarItems2.ToList();
+            if (sidebarItems.Count() == 0)
+            {
+                sidebarItems = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(page.SidebarItems));
+            }
             model.BreadCrumb = new BreadCrumbViewModel
             {
                 BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(page.DocumentGUID)
             };
             model.SideBar = new SidebarViewModel
             {
-                Items = MapSidebar(_sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(page.SidebarItems)), page)
+                Items = MapSidebar(sidebarItems, page)
             };
 
             return View("~/Views/Afton/TermsAndAcronyms/Index.cshtml", model);
