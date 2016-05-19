@@ -1,6 +1,7 @@
 ﻿using System;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Infrastructure.Models;
 using CMS.Mvc.Interfaces;
@@ -11,7 +12,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
-using CMS.Mvc.ViewModels.SBU;
 
 
 namespace CMS.Mvc.Controllers.Afton
@@ -87,7 +87,7 @@ namespace CMS.Mvc.Controllers.Afton
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
+        [PageVisitActivity]
         public ActionResult Index(string name)
         {
             var page = _selectionFilterPageProvider.GetSelectionFilterPage(name);

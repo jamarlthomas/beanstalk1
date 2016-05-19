@@ -4,7 +4,6 @@ using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
-using CMS.DocumentEngine.Types;
 using CMS.Mvc.Infrastructure.Models;
 using System;
 using CMS.OnlineMarketing;
