@@ -32,7 +32,10 @@ $( document ).ready(function() {
                     $(this).css({ "border-color":"red" });
                     validateNamesArray.push( $(this).attr('placeholder') )                    
                 });
-                alert( "The following fields are required: " + validateNamesArray.toString() );
+                if(validateNamesArray.length >  0){
+                    alert( "The following fields are required: " + validateNamesArray.toString() );
+                }
+                
         });
 
     }
