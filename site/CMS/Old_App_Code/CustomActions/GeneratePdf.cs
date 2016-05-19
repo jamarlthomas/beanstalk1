@@ -135,8 +135,10 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
                 .FillTemplate(p => p.Parent.Parent.DocumentName, "SBUTitle")
                 .FillTemplate(p => p.Parent.DocumentName, "SolutionTitle")
                 .FillTemplate(p => p.MicrobotRobotImage, "PDSHeaderImage")
+                .SetProperReferences()
                 .FillTemplate(Domain, "Domain"); //Domain should be the last one
-            Pdf = Pds.Replace("~","");
+            
+            Pdf = Pds;
 
         }
 

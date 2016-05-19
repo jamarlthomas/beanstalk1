@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using CMS.DocumentEngine;
 using System.IO;
-using CMS.DocumentEngine.Types;
+using HtmlAgilityPack;
 
 namespace CMS.Mvc.Old_App_Code.CustomActions
 {
@@ -62,6 +62,31 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
         public string TemplateLocation
         {
             get { return AppDomain.CurrentDomain.BaseDirectory + @"Pdf\Templates\"; }
+        }
+
+        internal TemplateTreeNode<T> SetProperReferences()
+        {
+            _pdfGenerator.Pds = _pdfGenerator.Pds.Replace("~", "");
+            ParseAndInsertDomainPlaceholderWithHap();
+            return this;
+        }
+
+        private void ParseAndInsertDomainPlaceholderWithHap()
+        {
+            HtmlDocument doc = new HtmlDocument();
+            doc.OptionWriteEmptyNodes = true;
+            doc.LoadHtml(_pdfGenerator.Pds);
+            AddDomainToReferences(doc, "img", "src");
+            AddDomainToReferences(doc, "link","href");
+            _pdfGenerator.Pds = doc.DocumentNode.InnerHtml;
+        }
+        private void AddDomainToReferences(HtmlDocument doc, string tag, string attrName)
+        {
+            foreach (HtmlNode link in doc.DocumentNode.SelectNodes(string.Format("//{0}[@{1}]", tag, attrName)))
+            {
+                HtmlAttribute att = link.Attributes[attrName];
+                att.Value = "{{Domain}}" + att.Value;
+            }
         }
     }
 }
