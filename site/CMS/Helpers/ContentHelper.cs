@@ -28,8 +28,19 @@ namespace CMS.Mvc.Helpers
                 ? 20
                 : int.Parse(WebConfigurationManager.AppSettings.Get("CacheContentMinutes"));
 
-        private static readonly string CurrentCulture = LocalizationContext.CurrentCulture.CultureCode;
-        private static HttpContext context = HttpContext.Current;
+        private static string CurrentCulture
+        {
+            get
+            {
+                return LocalizationContext.CurrentCulture.CultureCode;
+            }
+        }  
+        private static HttpContext Context {
+            get
+            {
+                return HttpContext.Current; 
+            }
+        }
         private static readonly TreeProvider _treeProvider = new TreeProvider();
         private static string _allContentKey = "";
         public const string NodeIdKey = "NodeId";
@@ -347,11 +358,11 @@ namespace CMS.Mvc.Helpers
 
         private static void SaveNode(TreeNode node)
         {
-            if (context.Items[ContentHelper.NodeIdKey] == null)
+            if (Context.Items[ContentHelper.NodeIdKey] == null)
             {
-                context.Items[ContentHelper.NodeIdKey] = node.NodeID;
-                context.Items[ContentHelper.NodeAliasPathKey] = node.NodeAliasPath;
-                context.Items[ContentHelper.ObjectNameKey] = node.NodeAlias;
+                Context.Items[ContentHelper.NodeIdKey] = node.NodeID;
+                Context.Items[ContentHelper.NodeAliasPathKey] = node.NodeAliasPath;
+                Context.Items[ContentHelper.ObjectNameKey] = node.NodeAlias;
             }
             
         }
