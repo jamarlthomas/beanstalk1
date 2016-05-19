@@ -82,7 +82,10 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
         }
         private void AddDomainToReferences(HtmlDocument doc, string tag, string attrName)
         {
-            foreach (HtmlNode link in doc.DocumentNode.SelectNodes(string.Format("//{0}[@{1}]", tag, attrName)))
+            var node = doc.DocumentNode;
+            var items = node.SelectNodes(string.Format("//{0}[@{1}]", tag, attrName));
+            if(items == null || items.Count == 0) return;
+            foreach (HtmlNode link in items)
             {
                 HtmlAttribute att = link.Attributes[attrName];
                 att.Value = "{{Domain}}" + att.Value;
