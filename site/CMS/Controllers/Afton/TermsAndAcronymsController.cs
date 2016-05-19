@@ -50,7 +50,7 @@ namespace CMS.Mvc.Controllers.Afton
             var page = _termsAndAcronymsPageProvider.GetTermsAndAcronymsPage();
             var model = MapData<TermsAndAcronymsPage, TermsAndAcronymsPageViewModel>(page);
             model.ParentTitle = (page.Parent as InsightsResources).Title;
-            var sidebarItems = ContentHelper.GetDocByDocId<TermsAndAcronymsPage>(page.DocumentID).Fields.SidebarItems2.ToList();
+            var sidebarItems  = ContentHelper.GetDocByDocId<TermsAndAcronymsPage>(page.DocumentID).Fields.SidebarItems2.ToList();
             if (sidebarItems.Count() == 0)
             {
                 sidebarItems = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(page.SidebarItems));
