@@ -139,5 +139,20 @@ $( document ).ready(function() {
     }
 
     
+    //Close Mega Menu    
+    $(".megaMenu a").click(function() {
+          
+        //check if this is a filter link
+        var urlCheck = $(this).attr("href");
+        
+        if(urlCheck == "/#"){
+            
+            closeMenu();
+            
+        }
+          
+
+    });
+    
     
 });
