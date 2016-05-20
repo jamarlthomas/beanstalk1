@@ -1,4 +1,6 @@
-﻿@model CMS.Mvc.ViewModels.Shared.Personalization.PersonalizationCardViewModel
+﻿@using CMS.Mvc.Helpers
+@model CMS.Mvc.ViewModels.Shared.Personalization.PersonalizationCardViewModel
+
 @if (!string.IsNullOrWhiteSpace(Model.Reference))
 {
     <a href="@Url.Content(@Model.Reference)" class="trending">
@@ -8,7 +10,7 @@
         <div class="trendIndicator">Trending Topic</div>
         <div class="overlayC">
             <div class="overlay">
-                <div class="cardTitle">@Model.TileTitle</div>
+                <div class="cardTitle">@UtilsHelper.ToHtmlString(Model.TileTitle)</div>
                 <div class="cardHdr">@Html.Raw(Model.Title)</div>
             </div>
             <div class="cardDate">@Model.Date.ToString("MMMM dd, yyyy")</div>
