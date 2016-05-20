@@ -19,12 +19,12 @@
                 </div>
                 <div class="cardDate">@if(!string.IsNullOrEmpty(item.Date.ToString())) {@Html.Raw(item.Date.ToString("MMMM dd, yyyy"));}</div>
             </div>
-            <div style="opacity: 0.0;" class="hoverOverlayC">
+            @*<div style="opacity: 0.0;" class="hoverOverlayC">
                 <div class="hoverOverlay">
                     <div class="hoverOverlayTxt">@item.Description</div>
                 </div>
                 <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-            </div>
+            </div>*@
             <img src="@Url.Content(item.HomeImage)" />
         </a>
     }

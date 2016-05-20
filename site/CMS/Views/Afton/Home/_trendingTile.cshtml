@@ -15,7 +15,7 @@
             </div>
             <div class="cardDate">@Model.Date.ToString("MMMM dd, yyyy")</div>
         </div>
-        <div style="opacity: 0.0;" class="hoverOverlayC">
+        @*<div style="opacity: 0.0;" class="hoverOverlayC">
             <div class="hoverOverlay">
                 <div class="hoverOverlayTxt">@Model.Description</div>
             </div>
@@ -23,7 +23,7 @@
                 Read More
                 <span class="icon-arrow"></span>
             </div>
-        </div>
+        </div>*@
         @if (!string.IsNullOrWhiteSpace(Model.HomeImage))
         {
             <img src="@Url.Content(@Model.HomeImage)" alt="" />
@@ -48,7 +48,7 @@ else
             </div>
             <div class="cardDate">@Model.Date.ToString("MMMM dd, yyyy")</div>
         </div>
-        <div style="opacity: 0.0;" class="hoverOverlayC">
+        @*<div style="opacity: 0.0;" class="hoverOverlayC">
             <div class="hoverOverlay">
                 <div class="hoverOverlayTxt">@Model.Description</div>
             </div>
@@ -56,7 +56,7 @@ else
                 Read More
                 <span class="icon-arrow"></span>
             </div>
-        </div>
+        </div>*@
         @if (!string.IsNullOrWhiteSpace(Model.HomeImage))
         {
             <img src="@Url.Content(@Model.HomeImage)" alt="" />
