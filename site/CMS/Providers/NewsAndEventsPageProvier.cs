@@ -29,7 +29,8 @@ namespace CMS.Mvc.Providers
                     {
                         return !String.Equals(request.Category, page.EventsSelectorValue, StringComparison.OrdinalIgnoreCase) || node is Event;
                     }
-                }).OrderBy(f => f.GetDateTimeValue("Date", default(DateTime)));
+                })
+                .OrderBy(f => f.GetDateTimeValue("Date", default(DateTime)));
         }
 
         public List<string> GetDocumentTypes(NewsAndEventsPage page, string category)
