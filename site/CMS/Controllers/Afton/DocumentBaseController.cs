@@ -9,6 +9,7 @@ using CMS.Mvc.ViewModels.Shared.DownloadWidget;
 using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 using System.Web.Mvc;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -36,7 +37,14 @@ namespace CMS.Mvc.Controllers.Afton
 
 
             var parent = node.Parent;
-            var sidebarItems = ContentHelper.GetDocByDocId<Document>(node.DocumentID).Fields.SidebarItems2.ToList();
+            var sidebarItems = new List<TreeNode>();
+            if(node.ClassName==CustomNews.CLASS_NAME) {
+                sidebarItems = ContentHelper.GetDocByDocId<CustomNews>(node.DocumentID).Fields.SidebarItems2.ToList();
+            }
+            else
+            {
+                sidebarItems = ContentHelper.GetDocByDocId<Document>(node.DocumentID).Fields.SidebarItems2.ToList();
+            }
             if (sidebarItems.Count() == 0)
             {
                 sidebarItems = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(node.GetStringValue("SidebarItems",string.Empty)));
