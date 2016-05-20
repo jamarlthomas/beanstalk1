@@ -6,7 +6,7 @@
     <link rel="icon"
           type="image/png"
           href="~/images/Afton_Bug.png" />
-	<title>@ViewBag.Title - Afton Chemical</title>
+    <title>@(!string.IsNullOrWhiteSpace(ViewBag.Title) ? ViewBag.Title + " - " : "") Afton Chemical</title>
 	<meta name="description" content="">
 	<meta name="keywords" content="">
 	<meta charset="utf-8">
