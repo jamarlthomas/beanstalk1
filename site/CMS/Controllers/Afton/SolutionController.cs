@@ -60,7 +60,7 @@ namespace CMS.Mvc.Controllers.Afton
                 BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(solution.DocumentGUID)
             };
             solutionViewModel.Constants = MapData<SolutionConstants, SolutionConstantsViewModel>(_solutionConstantsProvider.GetSolutionConstants());
-            solutionViewModel.DocumentID = solution.DocumentID;
+            solutionViewModel.NodeID = solution.NodeID;
             return View("~/Views/Afton/Solution/Index.cshtml", solutionViewModel);
         }
 

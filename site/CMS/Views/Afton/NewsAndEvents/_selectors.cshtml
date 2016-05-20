@@ -20,7 +20,14 @@
                 <select name="categories">
                     @foreach (var date in Model.Dates)
                     {
-                        <option value="@date">@date</option>
+                        if (date.Equals(DateTime.Now.ToString("MMM yy")))
+                        {
+                            <option value="@date" selected="selected">@date</option>
+                        }
+                        else
+                        {
+                            <option value="@date">@date</option>
+                        }
                     }
                 </select>
             </div>
