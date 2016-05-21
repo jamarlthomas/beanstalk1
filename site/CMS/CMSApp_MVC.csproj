@@ -624,6 +624,8 @@
     <Content Include="css\maps\styles.min.css.map" />
     <Content Include="images\Afton_Bug.png" />
     <Content Include="images\AFTON_NEWSEVENTS.jpg" />
+    <Content Include="images\logo-mobile.svg" />
+    <Content Include="images\logo.svg" />
     <Content Include="map\afton-marker.svg" />
     <Content Include="map\bedford.jpg" />
     <Content Include="map\feluy.jpg" />
