@@ -13,9 +13,11 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="robots" content="index,follow">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
 	@Styles.Render("~/bundles/css")
 	@Styles.RenderFormat("<link rel=\"stylesheet\"  href=\"{0}\" media=\"print\" />", "~/bundles/css/print")
 	@Scripts.Render("~/bundles/js")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 	<script>
     head.js(
         { home_rotator: "@Url.Content("~/Scripts/custom/homeSlideShow.min.js")" },
@@ -25,11 +27,12 @@
         { mobile_nav: "@Url.Content("~/Scripts/custom/mobileNav.min.js")" },
         { disclaimer_copyright: "@Url.Content("~/Scripts/custom/copyrightDate.min.js")" },
         { custom_select_DropDowns: "@Url.Content("~/Scripts/custom/customSelectDropDown.min.js")" },
+        { display_Cookies_Alert: "@Url.Content("~/Scripts/custom/cookies-display.min.js")"},
 
-        { card_Animations: "@Url.Content("~/Scripts/custom/cards.min.js")" },
+        //{ card_Animations: "@Url.Content("~/Scripts/custom/cards.min.js")" },
         { sbu_Landing_Nav: "@Url.Content("~/Scripts/custom/sbuLandingDropDown.min.js")" },
         { accordion_Nav: "@Url.Content("~/Scripts/custom/accordion.min.js")" },
-        //{ card_Animations: "@Url.Content("~/Scripts/custom/print.min.js")" },
+        { print: "@Url.Content("~/Scripts/custom/print.min.js")" },
         { language_Document_selector: "@Url.Content("~/Scripts/custom/langDocSel.min.js")" },
         { product_Filter_Nav: "@Url.Content("~/Scripts/custom/prodFilterNav.min.js")" },
         { FAQ_Download: "@Url.Content("~/Scripts/custom/faqDropDown.min.js")" },

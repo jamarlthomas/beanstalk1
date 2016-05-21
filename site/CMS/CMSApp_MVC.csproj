@@ -674,6 +674,7 @@
     <Content Include="Scripts\custom\bgSwitch.min.js" />
     <Content Include="Scripts\custom\cards.min.js" />
     <Content Include="Scripts\custom\columnizeText.min.js" />
+    <Content Include="Scripts\custom\cookies-display.min.js" />
     <Content Include="Scripts\custom\copyrightDate.min.js" />
     <Content Include="Scripts\custom\customSelectDropDown.min.js" />
     <Content Include="Scripts\custom\documentPagination.min.js" />
