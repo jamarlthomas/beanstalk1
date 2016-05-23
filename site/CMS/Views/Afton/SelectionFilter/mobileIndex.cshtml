@@ -1,0 +1,29 @@
+﻿@model CMS.Mvc.ViewModels.SelectionFilter.SelectionFilterViewModel
+
+    <div id="mobileFilterNavC1">
+        <div id="mobileFilterNavC">
+            <div id="mobileFilterHdr">@Model.FilterByLabel <a href="#" id="menuFilterclose"><img src="/images/filter-close.png"></a></div>
+            <form id="mobileFilterForm">
+                <div id="mobileFilterSearch">
+                    <input type="text" placeholder="Enter Search Term">
+                </div>
+                <ul id="mobileFilterNav">
+                    <li><a href="#">@Model.RegionHeader</a>
+                        <div id="mFilterRegion" class="mobileFilterNavItems">
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#">@Model.DocumentTypeHeader</a>
+                        <div id="mFilterDocumentType" class="mobileFilterNavItems"></div>
+                    </li>
+                    <li>
+                        <a href="#">@Model.SolutionHeader</a>
+                        <div id="mFilterSolution" class="mobileFilterNavItems"></div>
+                    </li>
+                </ul>
+                <div id="mobileClearFilterB">
+                    <input type="reset" value="Clear All"/>
+                </div>
+            </form>
+        </div>
+    </div>
