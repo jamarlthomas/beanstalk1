@@ -2,6 +2,7 @@
 @model CMS.Mvc.ViewModels.Generic.GenericPageViewModel
 @{
     Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
+    ViewBag.Title = Model.Document.Title;
 }
 @Html.Partial("~/Views/Afton/Solution/_heroImage.cshtml", Model.Document.HeroImage)
 <div id="twoColumnC-sidebar" class="@if (!string.IsNullOrEmpty(Model.Document.HeroImage)) {@Html.Raw("negMargin") }

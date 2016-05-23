@@ -26,7 +26,7 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index(string ProductName)
         {
             var product = _productProvider.GetProduct(ProductName);
-            ProductPageViewModel productModel = new ProductPageViewModel();
+            ProductPageViewModel productModel = MapData<Product, ProductPageViewModel>(product);
             var sidebarItems = ContentHelper.GetDocByDocId<Product>(product.DocumentID).Fields.SidebarItems2.ToList();
             if (sidebarItems.Count() == 0)
             {
