@@ -4,7 +4,7 @@
     ViewBag.Title = Model.Header.Title;
     Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
 }
-
+@Html.Partial("~/Views/Afton/SelectionFilter/mobileIndex.cshtml", Model);
 <div id="contentAreaC" ng-app="prodFilterApp" ng-controller="prodFilterCntl">
     <div class="fullWidth2 txtPaddingTop">
         @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", @Model.Header.BreadCrumb)

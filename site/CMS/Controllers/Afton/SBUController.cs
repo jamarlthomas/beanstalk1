@@ -88,19 +88,19 @@ namespace CMS.Mvc.Controllers.Afton
                             {
                                 Title = document.Title,
                                 Reference = document.DocumentRoutePath
-                            }).ToList();
+                            }).Take(5).ToList();
                             break;
                         case "Brochures":
                             item.Documents = _documentProvider.GetDocuments(item.Title).Select(document => new LinkViewModel
                             {
                                 Title = document.Title,
                                 Reference = document.DocumentRoutePath
-                            }).ToList();
+                            }).Take(5).ToList();
                             item.Documents.AddRange(_genericPageProvider.GetChildGenericPages(item.Title).Select(document => new LinkViewModel
                             {
                                 Title = document.Title,
                                 Reference = document.DocumentRoutePath
-                            }).ToList());
+                            }).Take(5).ToList());
                             break;
                         case "Product Stewardship Summaries":
                             switch (sbu.Title)
