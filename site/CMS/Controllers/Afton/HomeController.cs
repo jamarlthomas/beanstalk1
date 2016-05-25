@@ -80,6 +80,7 @@ namespace CMS.Mvc.Controllers.Afton
             var filteredTrendingTiles = _personalizationProvider
                 .GetTrendingTiles()
                 .Where(item => !primaryTilesNodes.Select(pt => pt.NodeID).Contains(item.Item.NodeID) && !filteredPersTiles.Select(pt => pt.NodeID).Contains(item.Item.NodeID))
+                .Where(item=>item.ClassName!=Home.CLASS_NAME||item.ClassName!=ContactPage.CLASS_NAME||item.ClassName!=InsightsResources.CLASS_NAME||item.ClassName!=DocumentType.CLASS_NAME||item.ClassName!=ATCToolsPage.CLASS_NAME||item.ClassName!=Term.CLASS_NAME||item.ClassName!=FAQTopic.CLASS_NAME||item.ClassName!=FAQItem.CLASS_NAME)
                 .Take(3)
                 .ToList();
 
