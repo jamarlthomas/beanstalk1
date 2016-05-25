@@ -99,3 +99,4 @@ site/packages/
 templates/node_modules/
 templates/bower_components/
 site/CMS/App_Data/CMSModules/SmartSearch/
+site/CMS/App_Data/CMSModules/DeviceProfile/logFiftyOne.txt
