@@ -131,23 +131,6 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Cover Image.
-        /// </summary>
-        [DatabaseField]
-        public string CoverImage
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("CoverImage"), "");
-            }
-            set
-            {
-                SetValue("CoverImage", value);
-            }
-        }
-
-
-        /// <summary>
         /// Application.
         /// </summary>
         [DatabaseField]
@@ -165,6 +148,23 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Cover Image.
+        /// </summary>
+        [DatabaseField]
+        public string CoverImage
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("CoverImage"), "");
+            }
+            set
+            {
+                SetValue("CoverImage", value);
+            }
+        }
+
+
+        /// <summary>
         /// Template.
         /// </summary>
         [DatabaseField]
@@ -177,23 +177,6 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("Template", value);
-            }
-        }
-
-
-        /// <summary>
-        /// Theme.
-        /// </summary>
-        [DatabaseField]
-        public string Theme
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("Theme"), "");
-            }
-            set
-            {
-                SetValue("Theme", value);
             }
         }
 
@@ -228,6 +211,23 @@ namespace CMS.DocumentEngine.Types
             set
             {
                 SetValue("FooterMessage", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Theme.
+        /// </summary>
+        [DatabaseField]
+        public string Theme
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Theme"), "");
+            }
+            set
+            {
+                SetValue("Theme", value);
             }
         }
 
@@ -431,22 +431,6 @@ namespace CMS.DocumentEngine.Types
 
 
             /// <summary>
-            /// Cover Image.
-            /// </summary>
-            public string CoverImage
-            {
-                get
-                {
-                    return mInstance.CoverImage;
-                }
-                set
-                {
-                    mInstance.CoverImage = value;
-                }
-            }
-
-
-            /// <summary>
             /// Application.
             /// </summary>
             public string Application
@@ -463,6 +447,22 @@ namespace CMS.DocumentEngine.Types
 
 
             /// <summary>
+            /// Cover Image.
+            /// </summary>
+            public string CoverImage
+            {
+                get
+                {
+                    return mInstance.CoverImage;
+                }
+                set
+                {
+                    mInstance.CoverImage = value;
+                }
+            }
+
+
+            /// <summary>
             /// Template.
             /// </summary>
             public string Template
@@ -474,22 +474,6 @@ namespace CMS.DocumentEngine.Types
                 set
                 {
                     mInstance.Template = value;
-                }
-            }
-
-
-            /// <summary>
-            /// Theme.
-            /// </summary>
-            public string Theme
-            {
-                get
-                {
-                    return mInstance.Theme;
-                }
-                set
-                {
-                    mInstance.Theme = value;
                 }
             }
 
@@ -522,6 +506,22 @@ namespace CMS.DocumentEngine.Types
                 set
                 {
                     mInstance.FooterMessage = value;
+                }
+            }
+
+
+            /// <summary>
+            /// Theme.
+            /// </summary>
+            public string Theme
+            {
+                get
+                {
+                    return mInstance.Theme;
+                }
+                set
+                {
+                    mInstance.Theme = value;
                 }
             }
 

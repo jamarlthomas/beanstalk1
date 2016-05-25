@@ -64,6 +64,12 @@ namespace CMS.Mvc.Controllers.Afton
             return View("~/Views/Afton/Solution/Index.cshtml", solutionViewModel);
         }
 
+        [PageVisitActivity]
+        public ActionResult SubSolution(string subSolution, string solutionName)
+        {
+            return Index(subSolution, solutionName);
+        }
+
         private List<ProductViewModel> GetProductViewModels(Solution solution)
         {
             return MapData<Product, ProductViewModel>(_treeNodesProvider.GetTreeNodes(solution.FeaturedProductList, 4).Cast<Product>());
