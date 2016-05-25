@@ -10,12 +10,23 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                var rt = RouteHelper.GetRoute("Product");
-                return (rt != null)
-                    ? rt.Route.Replace("{ProductName}", NodeAlias)
-                        .Replace("{SolutionName}", Parent.NodeAlias)
+                if (Parent.Parent.ClassName == SolutionBusinessUnit.CLASS_NAME)
+                {
+                    var rt = RouteHelper.GetRoute("Product");
+                    return rt.Route
                         .Replace("{SBUName}", Parent.Parent.NodeAlias)
-                    : string.Format("/Product/Index/{0}", this.NodeAlias);
+                        .Replace("{SolutionName}", Parent.NodeAlias)
+                        .Replace("{ProductName}", NodeAlias);
+                }
+                else
+                {
+                    var rt = RouteHelper.GetRoute("SubSolution Product");
+                    return rt.Route
+                        .Replace("{SBUName}", Parent.Parent.Parent.NodeAlias)
+                        .Replace("{SolutionName}", Parent.Parent.NodeAlias)
+                        .Replace("{SubSolution}", Parent.NodeAlias)
+                        .Replace("{ProductName}", NodeAlias);
+                }
             }
         }
 
@@ -26,6 +37,6 @@ namespace CMS.DocumentEngine.Types
                 return (DateTime)GetValue("DocumentCreatedWhen");
             }
         }
-        
+
     }
 }

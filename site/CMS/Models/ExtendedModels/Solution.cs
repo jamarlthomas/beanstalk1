@@ -10,11 +10,22 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                var rt = RouteHelper.GetRoute("Solution");
-                return (rt != null)
-                    ? rt.Route.Replace("{SolutionName}", NodeAlias)
+                if (Parent.ClassName == SolutionBusinessUnit.CLASS_NAME)
+                {
+
+                    var rt = RouteHelper.GetRoute("Solution");
+                    return rt.Route
                         .Replace("{SBUName}", Parent.NodeAlias)
-                    : string.Format("/Solution/Index/{0}/{1}", this.NodeAlias, this.Parent != null ? this.Parent.NodeAlias : string.Empty);
+                        .Replace("{SolutionName}", NodeAlias);
+                }
+                else
+                {
+                    var rt = RouteHelper.GetRoute("SubSolution");
+                    return rt.Route
+                        .Replace("{SBUName}", Parent.Parent.NodeAlias)
+                        .Replace("{SolutionName}", Parent.NodeAlias)
+                        .Replace("{SubSolution}", NodeAlias);
+                }
             }
         }
         public DateTime Date
