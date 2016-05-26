@@ -463,5 +463,18 @@ namespace CMS.Mvc.Helpers
             }
             return doc;
         }
+
+        public static T GetDocByNameAndParent<T>(string className, string docName, string parent) where T: TreeNode, new()
+        {
+            docName = docName.Replace(' ', '-');
+            parent = parent.Replace(' ', '-');
+            return HandleData<T>(
+                a => a.NodeAlias.Equals(docName, StringComparison.InvariantCultureIgnoreCase) && a.Parent.NodeAlias.Equals(parent, StringComparison.InvariantCultureIgnoreCase),
+                className,
+                string.Format("cc_{0}_cn_{1}_dn_{2}_pn_{3}", CurrentCulture, className, docName, parent),
+                null,
+                "nodeid|{0}"
+                );
+        }
     }
 }
