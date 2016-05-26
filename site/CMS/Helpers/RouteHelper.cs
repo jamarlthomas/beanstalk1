@@ -40,6 +40,10 @@ namespace CMS.Mvc.Helpers
         {
             return GetSelectionFilterUrl(new SelectionFilterSearchRequest { SolutionsIds = SolutionIds });
         }
+        public static string GetSBUSelectionFilterViewAllURL(string documentTypeIds, string SolutionIds)
+        {
+            return GetSelectionFilterUrl(new SelectionFilterSearchRequest { SolutionsIds = SolutionIds, DocumentTypesIds = documentTypeIds });
+        }
 
         public static string GetRateContentResultsLink(string nodeAlias)
         {
