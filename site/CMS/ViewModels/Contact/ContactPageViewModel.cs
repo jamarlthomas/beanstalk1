@@ -27,5 +27,8 @@ namespace CMS.Mvc.ViewModels.Contact
 
         public List<ContactRegionViewModel> Regions { get; set; }
         public EmergencyResponseViewModel EmergencyResponse { get; set; }
+
+        public string ThankYouHeader { get; set; }
+        public string ThankYouMessage { get; set; }
     }
 }
