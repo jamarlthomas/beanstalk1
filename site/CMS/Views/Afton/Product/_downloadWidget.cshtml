@@ -27,7 +27,7 @@
         @*@Html.Partial("~/Views/Afton/Shared/DownloadWidget/_downloadButtonSection.cshtml", Model.DownloadButtonSection)*@
         <div id="downloadDocsC" class="noPrintDisplay">
             <a href="#" target="_blank" class="downloadBtn">Download Product Data Sheet <span class="icon-download"></span></a>
-            @if (Model.TranslationAvailable.Any())
+            @if (Model.TranslationAvailable.Any(tr=>!tr.LanguageId.Equals(Model.CurrentLanguageId, StringComparison.CurrentCultureIgnoreCase)))
             {
                 <div id="translate-doc">
                     Select Language:
@@ -58,10 +58,10 @@
 
                 </div>
             }
-            else
+            @*else
             {
                 <div id="translate-doc">Translation not available</div>
-            }
+            }*@
         </div>
         @*<div id="downloadDocsC" class="noPrintDisplay">
                 <a href="#" target="_blank" class="downloadBtn">Download Product Data Sheet <span class="icon-download"></span></a>
