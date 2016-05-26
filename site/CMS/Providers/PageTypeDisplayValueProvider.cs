@@ -2,6 +2,7 @@
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CMS.Mvc.Providers
 {
@@ -9,7 +10,8 @@ namespace CMS.Mvc.Providers
     {
         public PageTypeDisplayValue GetDisplayValue(string alias)
         {
-            return ContentHelper.GetDocByName<PageTypeDisplayValue>(PageTypeDisplayValue.CLASS_NAME, alias);
+            return ContentHelper.GetDocs<PageTypeDisplayValue>(PageTypeDisplayValue.CLASS_NAME).Where(x => x.GetStringValue("Title","").Equals(alias)).FirstOrDefault();
+            
         }
     }
 }
