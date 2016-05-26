@@ -15,8 +15,15 @@
                         @foreach (var footerNavItems in item.FooterNavItems)
                         {
                             <li><a href="@Url.Content("~/"+footerNavItems.Reference)">@UtilsHelper.ToHtmlString(footerNavItems.Title)</a></li>
+
                         }
                     </ul>
+                    @if (Model.FooterNavCategories.Last() == item)
+                    {
+                    <br /><br />
+                    <a href="https://www.linkedin.com/company/afton-chemical?trk=top_nav_home" target="_blank"><img src="@Url.Content("~/images/linkedIn.svg")" style="width: 35px;"></a>
+                    <a href="https://www.youtube.com/user/AftonChemicalCorp" target="_blank"><img src="@Url.Content("~/images/youTube.svg")" style="width: 35px;"></a>
+                    }
                 </div>
             }
         </div>
