@@ -9,6 +9,7 @@ using CMS.Mvc.ViewModels.SBU;
 using CMS.Mvc.ViewModels.Shared;
 using System.Linq;
 using System.Web.Mvc;
+using System.Collections.Generic;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -54,6 +55,7 @@ namespace CMS.Mvc.Controllers.Afton
         {
             var sbu = _solutionBusinessUnitProvider.GetSolutionBusinessUnit(SBUName);
             var model = MapData<SolutionBusinessUnit, CMS.Mvc.ViewModels.Shared.SBUViewModel>(sbu);
+            var solutionGuidList = _solutionProvider.GetSolutions(SBUName).Select(item => item.DocumentGUID);
             var solutionIds = string.Join(",", _solutionProvider.GetSolutions(SBUName).Select(item => item.NodeID));
             model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItemsBySBU(sbu.DocumentGUID.ToString()));
             model.DocumentTypes = new System.Collections.Generic.List<DocumentTypeViewModel>();
@@ -71,8 +73,13 @@ namespace CMS.Mvc.Controllers.Afton
             //model.DocumentTypes.First().Products = MapData<Product, ProductViewModel>(_productProvider.GetProductsBySBU(sbu.NodeAlias));
             //model.DocumentTypes.AddRange(MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes(SBUName, 12)));
             model.DocumentTypes.AddRange(MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes()));
+
+            //var documentList = ContentHelper.GetDocs<Document>(Document.CLASS_NAME).Where(x => x.RelatedSolution )
+
             foreach (var item in model.DocumentTypes)
             {
+                var genericPageList = ContentHelper.GetDocs<GenericPage>(GenericPage.CLASS_NAME);
+                    
                 if (sbu.Fields.DocumentList.Count() != 0)
                 {
                     item.Documents = (sbu.Fields.DocumentList.Where(x => x.Parent.GetValue("Title") == item.Title).Select(document => new LinkViewModel {
