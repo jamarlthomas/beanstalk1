@@ -21,7 +21,7 @@
                 
             }//btmLogoC
 
-            .btmNavCol { float: left; width: 160px;
+            .btmNavCol { float: left; width: 150px;
                 
                 //*** Breakpoints ***
                 @include breakpoint($bp2) { width: 100%; float: none; padding-bottom: 10px; text-align: center; } 
@@ -54,14 +54,14 @@
          }//btmC
         
         
-        #btmContactBtn { text-align: center;
+        //#btmContactBtn { text-align: center;
             
-            a { padding: 10px 40px; display: inline-block; background: #4c9d2f; color: #FFF; text-decoration: none; }
+            //a { padding: 10px 40px; display: inline-block; background: #4c9d2f; color: #FFF; text-decoration: none; }
             
             //*** Breakpoints ***
-            @include breakpoint($bp3) { display: block!important; }
+            //@include breakpoint($bp3) { display: block!important; }
             
-        }//btmContactBtn
+        //}//btmContactBtn 
         
         
         #disclaimer { padding: 15px 0px 0px 35px; color: #FFF; font-size: 10px; 
