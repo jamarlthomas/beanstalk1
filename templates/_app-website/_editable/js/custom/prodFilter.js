@@ -443,7 +443,8 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
     $scope.runQuery = function() {              
 
         //create ajax request        
-        $scope.ajaxRequest = "http://localhost:51872/filter/"
+        //$scope.ajaxRequest = "http://test.aftonchemical.com/filter/"
+        $scope.ajaxRequest = "http://localhost:9999/product-filter-angular.html#/"
         $scope.ajaxRequest = $scope.ajaxRequest + "regions/" + $scope.regionStringID
         $scope.ajaxRequest = $scope.ajaxRequest + "/documents/" + $scope.docTypeStringID
         $scope.ajaxRequest = $scope.ajaxRequest + "/SBU/-1"
@@ -451,7 +452,7 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
         $scope.ajaxRequest = $scope.ajaxRequest + "/sort/" + $scope.sortItems
         $scope.ajaxRequest = $scope.ajaxRequest + "/page/" + $scope.pageNumber
         $scope.ajaxRequest = $scope.ajaxRequest + "/search/" + $scope.searchFilter 
-        //console.log($scope.ajaxRequest)
+        
 
         //reset display
         $scope.dataLoaded = function(){return false};
@@ -477,7 +478,15 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
             
               //For preloader
               $scope.dataLoaded = function(){return true};
-
+                
+              
+              $(".cardsSM_C .cardsSM .cardTextArea").dotdotdot({
+                ellipsis	: '... ',
+                wrap		: 'word',
+                watch: 'window'
+              });
+            
+            
               //For No results
               $scope.checkForResults = function(){                  
 
