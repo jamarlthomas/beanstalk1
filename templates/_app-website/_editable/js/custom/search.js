@@ -36,7 +36,7 @@ $( document ).ready(function() {
             
             });
             
-            $("#searchC #search input").focus();
+            setTimeout(function() { $("#searchC #search input").focus() }, 1200);
             
             searchStat = "open";   
             
