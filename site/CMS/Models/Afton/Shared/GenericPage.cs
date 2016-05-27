@@ -216,6 +216,23 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Related Solutions.
+        /// </summary>
+        [DatabaseField]
+        public string RelatedSolution
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("RelatedSolution"), "");
+            }
+            set
+            {
+                SetValue("RelatedSolution", value);
+            }
+        }
+
+
+        /// <summary>
         /// Gets an object that provides extended API for working with GenericPage fields.
         /// </summary>
         public GenericPageFields Fields
@@ -377,7 +394,7 @@ namespace CMS.DocumentEngine.Types
 
 
             /// <summary>
-            /// Sidebar Items.
+            /// SidebarItems.
             /// </summary>
             public IEnumerable<TreeNode> SidebarItems2
             {
@@ -416,6 +433,22 @@ namespace CMS.DocumentEngine.Types
                 set
                 {
                     mInstance.IsHighlightedOnInsightsPage = value;
+                }
+            }
+
+
+            /// <summary>
+            /// Related Solutions.
+            /// </summary>
+            public string RelatedSolution
+            {
+                get
+                {
+                    return mInstance.RelatedSolution;
+                }
+                set
+                {
+                    mInstance.RelatedSolution = value;
                 }
             }
         }

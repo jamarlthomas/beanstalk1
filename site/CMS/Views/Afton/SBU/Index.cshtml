@@ -56,7 +56,7 @@
         <h2 class="txtPaddingBtm">@Model.Title Insights and Resources</h2>
         <div class="txtPaddingBtm">@Html.Raw(Model.DocumentsDescription)</div>
         <hr>
-        @Html.Partial("~/Views/Afton/SBU/_documentColumns.cshtml", Model.DocumentTypes)
+        @Html.Partial("~/Views/Afton/SBU/_documentColumns.cshtml", Model.DocumentTypes.Where(dt => dt.Documents != null && dt.Documents.Count > 0).ToList())
 	    <!--<a href="@Url.Content("~/" + Model.ViewAllDocumentsLink)" class="viewAllBtn">View All @Model.Title Documents</a>-->
 
     </div>
