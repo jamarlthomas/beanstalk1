@@ -479,7 +479,7 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
               //For preloader
               $scope.dataLoaded = function(){return true};
                 
-              
+              //Ellipses Call
               $(".cardsSM_C .cardsSM .cardTextArea").dotdotdot({
                 ellipsis	: '... ',
                 wrap		: 'word',
