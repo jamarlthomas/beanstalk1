@@ -122,7 +122,7 @@ namespace CMS.Mvc.Controllers.Afton
             foreach (var x in result)
             {
                 if (x.Title != page.ProductDataSheetsTitle)
-                    x.Links = x.Links.Take(3).ToList();
+                    x.Links = x.Links.Take(5).ToList();
             }
             return result;
         }
