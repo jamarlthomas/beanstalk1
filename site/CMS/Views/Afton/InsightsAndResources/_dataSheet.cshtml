@@ -7,5 +7,9 @@
     {
         <li><a href="@link.Reference">@UtilsHelper.ToHtmlString(link.Title)</a></li>
     }
+    @for (int i = 0; i < 5 - Model.Links.Count; i++)
+    {
+        <li>&nbsp;</li>
+    }
 </ul>
 <a href="@Model.ViewAllUrl" class="viewMore">@Model.ViewAllLabel @Model.Title ></a>

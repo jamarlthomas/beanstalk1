@@ -77,7 +77,7 @@ namespace CMS.Mvc.Controllers.Afton
                 DocumentRoutePath = ((node as IRoutedModel)!= null)? (node as IRoutedModel).DocumentRoutePath :"",
                 Content = searchResult.Content,
                 Image = searchResult.Image,
-                Type = pageTypeDisplayValue != null ? pageTypeDisplayValue.DisplayValue : string.Empty
+                Type = (node.GetStringValue("TileTitle","") != "") ? node.GetStringValue("TileTitle","") : (pageTypeDisplayValue != null ? pageTypeDisplayValue.DisplayValue : string.Empty)
             };
         }
     }

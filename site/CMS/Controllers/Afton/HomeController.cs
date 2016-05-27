@@ -57,7 +57,7 @@ namespace CMS.Mvc.Controllers.Afton
             }
             
             var home = _homeProvider.GetHomePage();
-            var primaryTilesNodes = _treeNodesProvider.GetTreeNodes(home.ManagedBlocks).Take(3).AsQueryable();
+            var primaryTilesNodes = home.Fields.ManagedBlocks2.Take(3).AsQueryable();
             var primaryTilesModels = new List<PersonalizedTile>();
             primaryTilesNodes.ForEach(item =>
             {
