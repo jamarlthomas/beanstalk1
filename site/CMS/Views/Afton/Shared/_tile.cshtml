@@ -1,5 +1,4 @@
 ﻿@using CMS.Mvc.ViewModels.Shared
-@using System
 @model List<TileViewModel>
 <div class="cards">
     @foreach (var item in Model.Where(item => !string.IsNullOrWhiteSpace(item.HomeImage) && !string.IsNullOrWhiteSpace(item.Reference)))
@@ -17,14 +16,10 @@
                         <div class="cardTxt">@item.Description</div>
                     }
                 </div>
-                <div class="cardDate">@if(!string.IsNullOrEmpty(item.Date.ToString())) {@Html.Raw(item.Date.ToString("MMMM dd, yyyy"));}</div>
+                <div class="cardDate">@if (!string.IsNullOrEmpty(item.Date.ToString()))
+                {@Html.Raw(item.Date.ToString("MMMM dd, yyyy"));
+                }</div>
             </div>
-            @*<div style="opacity: 0.0;" class="hoverOverlayC">
-                <div class="hoverOverlay">
-                    <div class="hoverOverlayTxt">@item.Description</div>
-                </div>
-                <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-            </div>*@
             <img src="@Url.Content(item.HomeImage)" />
         </a>
     }

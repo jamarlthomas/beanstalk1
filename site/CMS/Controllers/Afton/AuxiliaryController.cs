@@ -58,7 +58,7 @@ namespace CMS.Mvc.Controllers.Afton
             var routes = RouteTable.Routes;
 
             RouteConfig.SetUpRoutesFromKentico(routes);
-            return RedirectToAction("Index");
+            return RedirectToAction("Infrastructure");
         }
 
         [Route("Auxiliary/Pdf")]

@@ -14,5 +14,6 @@ namespace CMS.Mvc.ViewModels.Master
         public string Title { get; set; }
         public string GlobalSearchQuery { get; set; }
         public string CookieMessage { get; set; }
+        public IEnumerable<CultureLinkViewModel> AvailableCultures { get; set; }
     }
 }

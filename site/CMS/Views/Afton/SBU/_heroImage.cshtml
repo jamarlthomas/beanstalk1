@@ -1,14 +1,18 @@
 ﻿@using CMS.Mvc.ViewModels.Shared
 @model SBUViewModel
 <div id="sbuLandingHdrC">
-	<div id="sbuLandingHdr">
-		<div class="hdrTxtBoxC">
-			<div class="hdrTxtBox">
-				<div class="sbuHeadline">@Model.HeroImageTitle</div>
-				<div class="sbuTxt">@Model.HeroImageSubtitle</div>
-			</div>
-		</div>
-		<div style="display:none;" class="sbuImgBoxC2"><img src="@Url.Content(Model.HeroImage)"></div>
-	</div>
-	<div class="sbuImgBoxC"><img src="@Url.Content(Model.HeroImage)"></div>
+    <div id="sbuLandingHdr">
+        <div class="hdrTxtBoxC">
+            <div class="hdrTxtBox">
+                <div class="sbuHeadline">@Model.HeroImageTitle</div>
+                <div class="sbuTxt">@Model.HeroImageSubtitle</div>
+            </div>
+        </div>
+        <div style="display:none;" class="sbuImgBoxC2">
+            <img src="@Url.Content(Model.HeroImage)" />
+        </div>
+    </div>
+    <div class="sbuImgBoxC">
+        <img src="@Url.Content(Model.HeroImage)" />
+    </div>
 </div>

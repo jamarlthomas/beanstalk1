@@ -1,4 +1,4 @@
-﻿@using System.Collections.Generic
+﻿@using CMS.Mvc.Helpers
 @model List<CMS.Mvc.ViewModels.SalesOffices.SalesOfficeViewModel>
 
 <div id="contactResults">
@@ -9,7 +9,7 @@
             @Html.Raw(office.Address)<br>
             @*@office.CountryName<br><br>*@
             <a href="tel:@office.Phone">T: @office.Phone</a><br><br>
-            <strong>Serving the following countries:</strong><br>
+            <strong>@UtilsHelper.GetLocalizedString("offices_ServingCountries")</strong><br>
             @string.Join(" | ", office.ServingCountriesList)<br><br>
         </div>
     }

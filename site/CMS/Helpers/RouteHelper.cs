@@ -51,7 +51,7 @@ namespace CMS.Mvc.Helpers
             var routeCollection = HttpContext.Current.Items[RouteCollectionKey];
             if (routeCollection == null)
             {
-                routeCollection = ContentHelper.GetDocChildrenByName<AftonRoute>(AftonRoute.CLASS_NAME, "Routes");
+                routeCollection = ContentHelper.GetDocChildrenByNameAllCultures<AftonRoute>(AftonRoute.CLASS_NAME, "Routes");
                 HttpContext.Current.Items[RouteCollectionKey] = routeCollection;
             }
             return ((List<AftonRoute>)routeCollection).FirstOrDefault(r => r.DocumentName.Equals(routeName));

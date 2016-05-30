@@ -10,7 +10,7 @@
     <ul>
         @foreach (var navItem in Model.NavItems)
         {
-            if (navItem.SubMenu != null && navItem.SubMenu.Count() > 0)
+            if (navItem.SubMenu != null && navItem.SubMenu.Any())
             {
                 <li>
                     @if (navItem.Link != null)
@@ -18,7 +18,7 @@
                         <a href="@Url.Content("~/" + navItem.Link)" class="open active">
                                                 @if (!string.IsNullOrEmpty(navItem.NavigationIcon))
                                                 {
-                                                    <img src="@Url.Content(navItem.NavigationIcon))" />
+                                                    <img src="@Url.Content(navItem.NavigationIcon)" />
                                                 }
                         @Html.Raw(navItem.Title)</a>
                     }
@@ -27,7 +27,7 @@
                         <a>
                             @if (!string.IsNullOrEmpty(navItem.NavigationIcon))
                             {
-                                <img src="@Url.Content(navItem.NavigationIcon))" />
+                                <img src="@Url.Content(navItem.NavigationIcon)" />
                             }
                      @Html.Raw(navItem.Title)</a>
                     }
@@ -64,7 +64,7 @@
                             <a class="open active" href="@Url.Content("~/" + navItem.Link)">
                                 @if (!string.IsNullOrEmpty(navItem.NavigationIcon))
                                 {
-                                    <img src="@Url.Content(navItem.NavigationIcon))" />
+                                    <img src="@Url.Content(navItem.NavigationIcon)" />
                                 }
                                 @Html.Raw(navItem.Title)</a>
                         }
@@ -73,7 +73,7 @@
                             <a href="@Url.Content("~/" + navItem.Link)">
                                 @if (!string.IsNullOrEmpty(navItem.NavigationIcon))
                                 {
-                                    <img src="@Url.Content(navItem.NavigationIcon))" />
+                                    <img src="@Url.Content(navItem.NavigationIcon)" />
                                 }
                                     @Html.Raw(navItem.Title)</a>
                         }

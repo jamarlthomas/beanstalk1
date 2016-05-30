@@ -1,15 +1,14 @@
-﻿@model CMS.Mvc.ViewModels.Shared.SidebarComponents.PollSurveyViewModel
+﻿@using CMS.Mvc.Helpers
+@model CMS.Mvc.ViewModels.Shared.SidebarComponents.PollSurveyViewModel
 @Html.Raw(Model.Question) : 
 @Model.NodeAlias
 @foreach (var answer in Model.Answers)
 {
     <p>@answer.Title : @answer.NodeAlias</p>
 }
-Total Votes:
+@UtilsHelper.GetLocalizedString("sidebar_pollSurvey_TotalVotes")
 @Model.TotalVotes <br/>
-
-Left:
+@UtilsHelper.GetLocalizedString("sidebar_pollSurvey_Left")
 @((Model.Expire - DateTime.Now).TotalDays)<br/>
-
-Feedback prompt:
+@UtilsHelper.GetLocalizedString("sidebar_pollSurvey_FeedbackPrompt")
 @Model.FeedbackPrompt<br/>
