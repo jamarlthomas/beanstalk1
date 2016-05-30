@@ -7,7 +7,7 @@
             <a href="#">
                 <div class="icon"></div>@item.Question
             </a>
-			<div style="display: none;" class="reveal">@item.Answer</div>
+			<div style="display: none;" class="reveal">@Html.Raw(item.Answer)</div>
 		</li>
 	}
 </ul>

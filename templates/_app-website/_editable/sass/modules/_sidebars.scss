@@ -7,9 +7,6 @@
         
     }//h2
     
-    //*** Breakpoints ***
-    @include breakpoint($bp2) { display: none; xborder-top: 1px solid #a6a6a6 }
-    
 }//sidebarHdrC
 
 
@@ -55,8 +52,6 @@
     
     }//ul    
     
-    //*** Breakpoints ***
-    @include breakpoint($bp2) { display: none; }
     
 }//sidebarNavC
 

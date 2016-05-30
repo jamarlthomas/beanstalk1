@@ -36,15 +36,15 @@
     
         header{ position: relative; margin: 0px auto; min-height: 165px; width: 1260px; transition: 0.8s;
             
-            #dLogo { position: absolute; top: 30px; left: 35px; width: 149px;
+            #dLogo { position: absolute; top: 27px; left: 35px; width: 163px;
             
                 //*** Breakpoints ***
-                @include breakpoint($bp1) { width: 120px; top: 15px; left: 10px; }
+                @include breakpoint($bp1) { width: 135px; top: 12px; left: 10px; }
                 @include breakpoint($bp3) { display: none; }
                 
             }//logoC
             
-            #mLogo { position: absolute; top: 22px; left: 10px; width: 120px; z-index: 15;
+            #mLogo { position: absolute; top: 18px; left: 10px; width: 135px; z-index: 15;
             
                 @include breakpoint($bp3) { display: block!important; }
                 

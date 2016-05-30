@@ -37,7 +37,7 @@ namespace CMS.Mvc.Controllers.Afton
 
 
             var parent = node.Parent;
-            var sidebarItems = new List<TreeNode>();
+            List<TreeNode> sidebarItems = null;
             if(node.ClassName==CustomNews.CLASS_NAME) {
                 sidebarItems = ContentHelper.GetDocByDocId<CustomNews>(node.DocumentID).Fields.SidebarItems2.ToList();
             }

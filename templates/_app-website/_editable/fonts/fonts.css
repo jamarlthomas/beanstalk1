@@ -93,26 +93,32 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-youTube:before {
+    content: "\e907";
+}
+.icon-linkedIn:before {
+    content: "\e908";
+}
 .icon-arrow:before {
-	content: "\e900";
+    content: "\e900";
 }
 .icon-download:before {
-	content: "\e901";
+    content: "\e901";
 }
 .icon-email:before {
-	content: "\e902";
+    content: "\e902";
 }
 .icon-language:before {
-	content: "\e903";
+    content: "\e903";
 }
 .icon-print:before {
-	content: "\e904";
+    content: "\e904";
 }
 .icon-search:before {
-	content: "\e905";
+    content: "\e905";
 }
 .icon-share:before {
-	content: "\e906";
+    content: "\e906";
 }
 
  

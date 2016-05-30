@@ -54,11 +54,12 @@ namespace CMS.Mvc.Controllers.Afton
         {
             var sbu = _solutionBusinessUnitProvider.GetSolutionBusinessUnit(SBUName);
             var model = MapData<SolutionBusinessUnit, CMS.Mvc.ViewModels.Shared.SBUViewModel>(sbu);
+            var solutionIds = string.Join(",", _solutionProvider.GetSolutions(SBUName).Select(item => item.NodeID));
             model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItemsBySBU(sbu.DocumentGUID.ToString()));
             model.DocumentTypes = new System.Collections.Generic.List<DocumentTypeViewModel>();
             model.ViewAllDocumentsLink = RouteHelper.GetSelectionFilterUrl(new SelectionFilterSearchRequest()
             {
-                SolutionsIds = string.Join(",", _solutionProvider.GetSolutions(SBUName).Select(item => item.NodeID))
+                SolutionsIds = solutionIds
             });
            // model.DocumentTypes.Add(MapData<DocumentType,DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes()).First());
             /*    var PDS = MapData<DocumentType, DocumentTypeViewModel>(new DocumentType
@@ -157,8 +158,9 @@ namespace CMS.Mvc.Controllers.Afton
                             }
                             break;
                     }
+                    item.ViewAllUrl = RouteHelper.GetSBUSelectionFilterViewAllURL(ContentHelper.GetDocByName<DocumentType>(DocumentType.CLASS_NAME,item.Title).NodeID.ToString(), solutionIds);
                 }
-
+                
             }
             
             /*foreach (var item in model.DocumentTypes)
