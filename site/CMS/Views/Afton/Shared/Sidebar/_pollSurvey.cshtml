@@ -1,5 +1,6 @@
-﻿@model CMS.Mvc.ViewModels.Shared.SidebarComponents.PollSurveyViewModel
-@Html.Raw(Model.Question) : 
+﻿@using CMS.Mvc.Helpers
+@model CMS.Mvc.ViewModels.Shared.SidebarComponents.PollSurveyViewModel
+@UtilsHelper.ToHtmlString(Model.Question) : 
 @Model.NodeAlias
 @foreach (var answer in Model.Answers)
 {

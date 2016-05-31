@@ -1,4 +1,5 @@
-﻿@model CMS.Mvc.ViewModels.Shared.NewsEventsAndBlogBasePageViewModel
+﻿@using CMS.Mvc.Helpers
+@model CMS.Mvc.ViewModels.Shared.NewsEventsAndBlogBasePageViewModel
 
 <div class="bgGray padTopBtm">
     <div class="fullWidth">
@@ -16,7 +17,7 @@
                             <div class="cardType">@tile.TypeName</div>
                             <div class="cardHdrText">@tile.Title</div>
                             <div class="cardSubHdr">@tile.Copy</div>
-                            <div class="cardTxt">@Html.Raw(tile.Description)</div>
+                            <div class="cardTxt">@UtilsHelper.ToHtmlString(tile.Description)</div>
                         </div>
                         <div class="cardDate">@tile.Date.ToString("MMM dd, yyyy")</div>
                     </div>

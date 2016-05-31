@@ -16,9 +16,9 @@
                     <div class="cardTextAreaC">
                         <div class="cardTextArea">
                             <div class="cardType">@Model.Constants.ProductCardType</div>
-                            <div class="cardHdrText">@Html.Raw(product.Title)</div>
-                            <div class="cardSubHdr">@Html.Raw(@product.TileOverlayText)</div>
-                            <div class="cardTxt">@Html.Raw(product.Description)</div>
+                            <div class="cardHdrText">@UtilsHelper.ToHtmlString(product.Title)</div>
+                            <div class="cardSubHdr">@UtilsHelper.ToHtmlString(@product.TileOverlayText)</div>
+                            <div class="cardTxt">@UtilsHelper.ToHtmlString(product.Description)</div>
                         </div>
                         <div class="cardDate">@product.DocumentCreatedWhen.ToString("MMM dd, yyyy")</div>
                     </div>

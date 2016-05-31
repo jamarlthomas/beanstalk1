@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using CMS.DocumentEngine.Types;
+using CMS.Helpers;
 
 namespace CMS.Mvc.Helpers
 {
@@ -67,7 +68,7 @@ namespace CMS.Mvc.Helpers
         }
         public static HtmlString ToHtmlString(string text)
         {
-            return new HtmlString(text);
+            return new HtmlString(HTMLHelper.ResolveUrls(text, "/"));
         }
         static public string Ellipsis(string text, int length)
         {

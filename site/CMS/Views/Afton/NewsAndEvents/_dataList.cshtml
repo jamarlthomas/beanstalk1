@@ -1,4 +1,5 @@
-﻿@model CMS.Mvc.ViewModels.NewsAndEvents.NewsAndEventsPageViewModel
+﻿@using CMS.Mvc.Helpers
+@model CMS.Mvc.ViewModels.NewsAndEvents.NewsAndEventsPageViewModel
 <div id="newsListC">
     @foreach (var item in Model.NewsAndEventsList)
     {
@@ -16,7 +17,7 @@
             <div class="newsContentC">
                 <h2>@item.Title</h2>
                 @*<div class="newsInfo">@item.Date.ToString("M/d/yy")</div>*@
-                <div class="newsTxt">@Html.Raw(item.Description)</div>
+                <div class="newsTxt">@UtilsHelper.ToHtmlString(item.Description)</div>
                 @if (item.DocumentRoutePath.Contains("http"))
                 {
                     <a href="@item.DocumentRoutePath" target="_blank" class="newsMore">@Model.ReadMoreLabel</a>

@@ -5,8 +5,8 @@
     ViewBag.Title = Model.Document.Title;
 }
 @Html.Partial("~/Views/Afton/Solution/_heroImage.cshtml", Model.Document.HeroImage)
-<div id="twoColumnC-sidebar" class="@if (!string.IsNullOrEmpty(Model.Document.HeroImage)) {@Html.Raw("negMargin") }
-                                    else { @Html.Raw("txtPaddingTop")} 
+<div id="twoColumnC-sidebar" class="@if (!string.IsNullOrEmpty(Model.Document.HeroImage)) {@UtilsHelper.ToHtmlString("negMargin") }
+                                    else { @UtilsHelper.ToHtmlString("txtPaddingTop")} 
      padBtm">
     <div id="rtCol-contentArea">
         @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", Model.BreadCrumb)
