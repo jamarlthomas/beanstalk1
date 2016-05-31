@@ -1,9 +1,8 @@
-﻿@using CMS.Mvc.Helpers
-@using CMS.Mvc.ViewModels.SBU
-@using CMS.Mvc.ViewModels.Shared
+﻿@using CMS.Mvc.ViewModels.Shared
 @model SBUViewModel
 @{
     ViewBag.Title = Model.Title;
+    ViewBag.SelectedMenuItem = Model.NodeGUID;
     Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
 }
 

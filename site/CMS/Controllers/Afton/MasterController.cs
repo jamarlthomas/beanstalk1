@@ -80,7 +80,7 @@ namespace CMS.Mvc.Controllers.Afton
             var model = MapData<MasterHeaderRequest, MasterViewModel>(request);
             model.SelectedCulture = UtilsHelper.GetCultureDisplayName(CultureInfo.CurrentCulture);
 
-            model.MainNavList = GetMainNavList();
+            model.MainNavList = GetMainNavList(request.SelectedMenuItem);
 
             model.UtilityNavList = _pagesMenuItemProvider.GetPagesMenuItems().Select(s =>
             {
@@ -92,13 +92,15 @@ namespace CMS.Mvc.Controllers.Afton
             return PartialView("~/Views/Afton/Master/_header.cshtml", model);
         }
 
-        private List<ContentMenuItemViewModel> GetMainNavList()
+        private List<ContentMenuItemViewModel> GetMainNavList(string selectedMenuItem)
         {
             return _contentMenuItemProvider.GetContentMenuItems().Select(contentMenuItem =>
             {
                 var itemViewModel = MapData<ContentMenuItem, ContentMenuItemViewModel>(contentMenuItem);
                 itemViewModel.Reference = FindLink(contentMenuItem.Reference);
-
+                itemViewModel.Selected = (!string.IsNullOrWhiteSpace(selectedMenuItem))
+                    ? selectedMenuItem.Equals(contentMenuItem.Reference)
+                    : false;
                 itemViewModel.ThumbnailedMenuItems = _megaMenuThumbnailedItemProvider.GetMegaMenuThumbnailedItems(contentMenuItem.NodeAlias).Select(thumbnailedMenuItem =>
                 {
                     var result = MapData<MegaMenuThumbnailedItem, MegaMenuThumbnailedItemViewModel>(thumbnailedMenuItem);

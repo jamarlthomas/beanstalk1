@@ -48,7 +48,12 @@
 
 </head>
 <body>
-	@{ Html.RenderAction("Header", "Master", new MasterHeaderRequest { Title = ViewBag.Title, GlobalSearchQuery = ViewBag.GlobalSearchQuery }); }
+	@{ Html.RenderAction("Header", "Master", new MasterHeaderRequest
+	   {
+	       Title = ViewBag.Title, 
+           GlobalSearchQuery = ViewBag.GlobalSearchQuery,
+           SelectedMenuItem = ViewBag.SelectedMenuItem
+	   }); }
 	<main>
 		@RenderBody()
 	</main>

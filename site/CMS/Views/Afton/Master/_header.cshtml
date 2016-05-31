@@ -111,12 +111,12 @@
                         if (item.SolutionsLink != null)
                         {
                             <li>
-                                <a href="@Url.Content("~/" + item.Reference)" data-mm="@item.Title.Replace(" ", string.Empty)" class="@(item.Title.Equals(Model.Title) ? "active" : "")">@item.Title</a>
+                                <a href="@Url.Content("~/" + item.Reference)" data-mm="@item.Title.Replace(" ", string.Empty)" class="@(item.Selected ? "active" : "")">@item.Title</a>
                             </li>
                         }
                         else
                         {
-                            <li><a href="@Url.Content("~/" + item.Reference)" class="@(item.Title.Equals(Model.Title) ? "active" : "")">@item.Title</a></li>
+                            <li><a href="@Url.Content("~/" + item.Reference)" class="@(item.Selected ? "active" : "")">@item.Title</a></li>
                         }
                     }
                 </ul>
@@ -132,7 +132,8 @@
                     @foreach (var thumbnailedItem in item.ThumbnailedMenuItems)
                     {
                         <a href="@Url.Content("~/" + thumbnailedItem.Reference ?? "")" class="photoLink">
-                            @if (!string.IsNullOrEmpty(thumbnailedItem.Image)) { 
+                            @if (!string.IsNullOrEmpty(thumbnailedItem.Image))
+                            {
                                 <img src="@Url.Content(thumbnailedItem.Image ?? "")">
                             }
                             <div class="photoLinkRt">
