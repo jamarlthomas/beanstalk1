@@ -1,4 +1,5 @@
-﻿@using CMS.Mvc.ViewModels.Blogs
+﻿@using CMS.Mvc.Helpers
+@using CMS.Mvc.ViewModels.Blogs
 @model BlogsPageViewModel
 <div id="newsListC">
     @foreach (BlogPostViewModel item in Model.BlogPosts)
@@ -8,7 +9,7 @@
             <div class="newsContentC">
                 <h2>@item.BlogPostTitle</h2>
                 <div class="newsInfo">@item.Category | @Model.PostedLabel @item.AuthorName: @item.BlogPostDate.ToString("M/d/yy | h:mm tt CST")</div>
-                <div class="newsTxt">@Html.Raw(item.BlogPostBody)</div>
+                <div class="newsTxt">@UtilsHelper.ToHtmlString(item.BlogPostBody)</div>
                 <a href="@item.DocumentRoutePath" class="newsMore">@Model.ReadMoreLabel</a>
             </div>
         </div>

@@ -1,4 +1,5 @@
-﻿@using CMS.Mvc.ViewModels.ATCTools
+﻿@using CMS.Mvc.Helpers
+@using CMS.Mvc.ViewModels.ATCTools
 @model ATCToolsPageViewModel
 @{
     ViewBag.Title = Model.Title;
@@ -14,12 +15,12 @@
                 <h1>@Model.Title</h1>
                 <hr>
                 <h2>@Model.GATCTitle</h2>
-                @Html.Raw(Model.GATCContent)
+                @UtilsHelper.ToHtmlString(Model.GATCContent)
                 <hr>
                 <h2>@Model.NATCTitle</h2>
-                @Html.Raw(Model.NATCContent)
+                @UtilsHelper.ToHtmlString(Model.NATCContent)
                 <hr>
-                @Html.Raw(Model.BottomContent)
+                @UtilsHelper.ToHtmlString(Model.BottomContent)
             </div>
         </div>
     </div>

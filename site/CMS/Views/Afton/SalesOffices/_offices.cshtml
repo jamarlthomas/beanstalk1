@@ -1,4 +1,5 @@
 ﻿@using System.Collections.Generic
+@using CMS.Mvc.Helpers
 @model List<CMS.Mvc.ViewModels.SalesOffices.SalesOfficeViewModel>
 
 <div id="contactResults">
@@ -6,7 +7,7 @@
     {
         <div class="contactResultItem">
             <div class="officeName">@office.Title<br></div><br>
-            @Html.Raw(office.Address)<br>
+            @UtilsHelper.ToHtmlString(office.Address)<br>
             @*@office.CountryName<br><br>*@
             <a href="tel:@office.Phone">T: @office.Phone</a><br><br>
             <strong>Serving the following countries:</strong><br>

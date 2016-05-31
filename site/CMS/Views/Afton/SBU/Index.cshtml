@@ -1,4 +1,9 @@
-﻿@using CMS.Mvc.ViewModels.Shared
+﻿@using CMS.Base
+@using CMS.Helpers
+@using CMS.Mvc.Helpers
+@using CMS.Mvc.ViewModels.SBU
+@using CMS.Mvc.ViewModels.Shared
+@using CMS.Newsletters
 @model SBUViewModel
 @{
     ViewBag.Title = Model.Title;
@@ -30,7 +35,9 @@
 </div>
 <a id="overview-pos" class="anchorTag"></a>
 <div class="twoColumnC padTop leadIn">
-    @Html.Raw(Model.Content)
+    @*@UtilsHelper.ToHtmlString(LinkConverter.ReplaceInLink(Model.Content,"~",""))*@
+    @UtilsHelper.ToHtmlString(Model.Content)
+
 </div>
 <a id="solutions-pos" class="anchorTag"></a>
 <div class="padTopBtm">
@@ -45,7 +52,7 @@
 <div class="borders bgPattern">
     <div class="fullWidth padTopBtm">
         <h2 class="txtPaddingBtm">FAQs</h2>
-        @Html.Raw(Model.FAQDescription)
+        @UtilsHelper.ToHtmlString(Model.FAQDescription))
         @Html.Partial("~/Views/Afton/SBU/_FAQs.cshtml", Model.FAQs)
 
     </div>
@@ -53,10 +60,10 @@
 <div class="padTopBtm">
     <div class="fullWidth">
         <h2 class="txtPaddingBtm">@Model.Title Insights and Resources</h2>
-        <div class="txtPaddingBtm">@Html.Raw(Model.DocumentsDescription)</div>
+        <div class="txtPaddingBtm">@UtilsHelper.ToHtmlString(Model.DocumentsDescription)</div>
         <hr>
         @Html.Partial("~/Views/Afton/SBU/_documentColumns.cshtml", Model.DocumentTypes)
-	    <!--<a href="@Url.Content("~/" + Model.ViewAllDocumentsLink)" class="viewAllBtn">View All @Model.Title Documents</a>-->
+        <!--<a href="@Url.Content("~/" + Model.ViewAllDocumentsLink)" class="viewAllBtn">View All @Model.Title Documents</a>-->
 
     </div>
 </div>

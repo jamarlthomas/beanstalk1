@@ -1,10 +1,11 @@
-﻿@using CMS.Mvc.ViewModels.SBU
+﻿@using CMS.Mvc.Helpers
+@using CMS.Mvc.ViewModels.SBU
 @model DocumentTypeViewModel
 <h3>@Model.Title</h3>
 <ul>
 	@foreach (var document in Model.Documents)
 	{
-		<li><a href="@Url.Content("~/"+document.Reference)">@Html.Raw(document.Title)</a></li>
+		<li><a href="@Url.Content("~/"+document.Reference)">@UtilsHelper.ToHtmlString(document.Title)</a></li>
 	}
     @for (int i = 0; i < 5 - Model.Documents.Count; i++)
     {

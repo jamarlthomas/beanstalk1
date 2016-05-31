@@ -1,4 +1,5 @@
-﻿@using CMS.Mvc.ViewModels.Shared
+﻿@using CMS.Mvc.Helpers
+@using CMS.Mvc.ViewModels.Shared
 @using System
 @model List<TileViewModel>
 <div class="cards">
@@ -17,7 +18,7 @@
                         <div class="cardTxt">@item.Description</div>
                     }
                 </div>
-                <div class="cardDate">@if(!string.IsNullOrEmpty(item.Date.ToString())) {@Html.Raw(item.Date.ToString("MMMM dd, yyyy"));}</div>
+                <div class="cardDate">@if(!string.IsNullOrEmpty(item.Date.ToString())) {@UtilsHelper.ToHtmlString(item.Date.ToString("MMMM dd, yyyy"));}</div>
             </div>
             @*<div style="opacity: 0.0;" class="hoverOverlayC">
                 <div class="hoverOverlay">

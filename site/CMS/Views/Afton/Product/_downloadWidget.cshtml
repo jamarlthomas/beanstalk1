@@ -1,4 +1,5 @@
-﻿@model CMS.Mvc.ViewModels.Product.DownloadWidgetViewModel
+﻿@using CMS.Mvc.Helpers
+@model CMS.Mvc.ViewModels.Product.DownloadWidgetViewModel
 <div id="prodHdrC">
     @if (!string.IsNullOrWhiteSpace(Model.TileImage))
     {
@@ -6,7 +7,7 @@
         
     }
     <div id="pRt">
-        <h1>@Html.Raw(Model.Title)</h1>
+        <h1>@UtilsHelper.ToHtmlString(Model.Title)</h1>
         <div id="subTxt">@Model.Description</div>
         @if (!Model.AvailableIn.Any())
         {
