@@ -28,37 +28,79 @@ namespace CMS.Mvc.Providers
 			return ContentHelper.PerformSearch(request);
 		}
 
-		private string AdditiveQueryBuilder(string documentTypesIds, string solutionsIds, string regions)
+		private string AdditiveQueryBuilder(SelectionFilterSearchRequest request)
 		{
 			var query = new StringBuilder(string.Empty);
-			if (!string.IsNullOrEmpty(documentTypesIds) || !string.IsNullOrEmpty(solutionsIds))
+
+			if (!string.IsNullOrEmpty(request.DocumentTypesIds))
 			{
-                if (string.IsNullOrEmpty(solutionsIds) && documentTypesIds.Contains(ConfigurationManager.AppSettings["DocumentDataSheetDocumentTypeId"]))
-                {
-                    var solutions = ContentHelper.GetDocs<Solution>(Solution.CLASS_NAME);
-                    foreach (var sol in solutions)
-                    {
-                        solutionsIds += sol.NodeID+",";
-                    }
-                }
-				query.Append("+NodeParentID:(");
-                var idsArray = string.Format("{0},{1}", documentTypesIds, solutionsIds).Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
+                query.Append("+NodeParentID:(");
+                var idsArray = request.DocumentTypesIds.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
 				for (int i = 0; i < idsArray.Length - 1; i++)
 				{
 					query.AppendFormat("(int){0} ", idsArray[i]);
 				}
 				query.AppendFormat("(int){0})", idsArray[idsArray.Length - 1]);
 			}
-			if (!string.IsNullOrEmpty(regions))
+			if (!string.IsNullOrEmpty(request.Regions))
 			{
 				query.Append("+regions:(");
-				var regionsArray = regions.Replace(' ', '+').Split(',');
+				var regionsArray = request.Regions.Replace(' ', '+').Split(',');
 				for (int i = 0; i < regionsArray.Length - 1; i++)
 				{
 					query.AppendFormat("{0} ", regionsArray[i]);
 				}
 				query.AppendFormat("{0})", regionsArray[regionsArray.Length - 1]);
 			}
+
+            // If solutionIDs were given, add a filter for documents related to the given solutions.
+            if (! request.IsNullSolutionId)
+            {
+                // Add RelatedSolution field condition
+                List<string> solnGuids = new List<string>();
+                foreach (string solnIdString in request.SolutionsIds.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries))
+                {
+                    int solnId;
+                    if (int.TryParse(solnIdString, out solnId))
+                    {
+                        Solution sln = ContentHelper.GetDocByNodeId<Solution>(solnId);
+                        if (null != sln && sln.DocumentGUID != System.Guid.Empty)
+                        {
+                            solnGuids.Add(sln.DocumentGUID.ToString());
+                        }
+                    }
+                }
+                if (solnGuids.Count > 0)
+                {
+                    query.Append(" +RelatedSolution:(");
+                    query.Append(string.Join(" ", solnGuids));
+                    query.Append(")");
+                }
+            }
+
+            if (request.DocumentTypesIds.Contains(ConfigurationManager.AppSettings["DocumentDataSheetDocumentTypeId"]))
+            {
+                // If no solution IDs given, include them all. 
+                if (string.IsNullOrEmpty(request.SolutionsIds))
+                {
+                    var solutions = ContentHelper.GetDocs<Solution>(Solution.CLASS_NAME);
+                    foreach (var sol in solutions)
+                    {
+                        request.SolutionsIds += sol.NodeID + ",";
+                    }
+                }
+                query.Append(" (");
+                query.Append(" +NodeParentID:(");
+                //Solution IDs
+                //query.Append()
+                query.Append(")");
+                query.Append(" +(");
+                //document type
+                query.Append(")");
+                query.Append(")");
+
+            }
+
 			return query.ToString();
 		}
 	}
