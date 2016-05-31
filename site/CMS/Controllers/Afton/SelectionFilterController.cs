@@ -155,6 +155,12 @@ namespace CMS.Mvc.Controllers.Afton
 
         private SelectionFilterSearchRequest FillRequestWithDefaultValues(SelectionFilterSearchRequest request)
         {
+            // Before we overwrite these values, remember if they were null or not.
+            request.IsNullRegion = (RouteHelper.NULL_VALUE_PLACEHOLDER == request.Regions || null == request.Regions);
+            request.IsNullDocumentType = (RouteHelper.NULL_VALUE_PLACEHOLDER == request.DocumentTypesIds || null == request.DocumentTypesIds);
+            request.IsNullSBU = (RouteHelper.NULL_VALUE_PLACEHOLDER == request.SBUId || null == request.SBUId);
+            request.IsNullSolutionId = (RouteHelper.NULL_VALUE_PLACEHOLDER == request.SolutionsIds || null == request.SolutionsIds);
+
             request.Regions = request.Regions != RouteHelper.NULL_VALUE_PLACEHOLDER ? request.Regions : null;
             if (request.DocumentTypesIds == RouteHelper.NULL_VALUE_PLACEHOLDER)
             {
