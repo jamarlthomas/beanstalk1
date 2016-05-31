@@ -23,12 +23,12 @@
 
             .btmNavCol { float: left; width: 150px;
                 
-                .icon-linkedIn { font-size: 25px;color: #0177b5;
-                    &:hover { color: #0177b5; }
+                .icon-linkedIn { font-size: 25px;
+                    &:hover { color: #4c9d2f; }
                 }
                 
-                .icon-youTube { font-size: 25px;color: #e5291b;
-                    &:hover { color: #e5291b; }
+                .icon-youTube { font-size: 25px; 
+                    &:hover { color: #4c9d2f; }
                 }
                 
                 //*** Breakpoints ***
@@ -83,7 +83,7 @@
             
             a { color: #FFF; text-decoration: none;
             
-                &:hover { color: #CCC; }
+                &:hover { color: #4c9d2f; }
                 
                 //*** Breakpoints ***
                 @include breakpoint($bp3) { display: block; }
