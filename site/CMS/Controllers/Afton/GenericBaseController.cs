@@ -95,6 +95,15 @@ namespace CMS.Mvc.Controllers.Afton
                     sidebarItem = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(document.GetValue("SidebarItems", "")));
                 }
             }
+            else if (document.ClassName == LogisticsAndSupplyFolder.CLASS_NAME)
+            {
+                var newdoc = ContentHelper.GetDocByDocId<LogisticsAndSupplyFolder>(document.DocumentID);
+                sidebarItem = newdoc.Fields.SidebarItems2.ToList();
+                if (sidebarItem.Count == 0)
+                {
+                    sidebarItem = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(document.GetValue("SidebarItems", "")));
+                }
+            }
             else if (document.ClassName == TermsAndAcronymsPage.CLASS_NAME)
             {
                 var newdoc = ContentHelper.GetDocByDocId<TermsAndAcronymsPage>(document.DocumentID);
