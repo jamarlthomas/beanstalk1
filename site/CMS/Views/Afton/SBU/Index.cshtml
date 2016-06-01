@@ -60,7 +60,7 @@
 </div><a id="sheets-pos" class="anchorTag"></a>
 <div class="padTopBtm">
     <div class="fullWidth">
-        <h2 class="txtPaddingBtm">@Model.Title Insights and Resources</h2>
+        <h2 class="txtPaddingBtm">@Model.Title @UtilsHelper.GetLocalizedString("sbu_InsightsAndResources")</h2>
         <div class="txtPaddingBtm">@UtilsHelper.ToHtmlString(Model.DocumentsDescription)</div>
         <hr>
         @Html.Partial("~/Views/Afton/SBU/_documentColumns.cshtml", Model.DocumentTypes)
