@@ -14,6 +14,7 @@ namespace CMS.Mvc.Helpers
 {
     public static class UtilsHelper
     {
+        static Regex _htmlRegex = new Regex("<.*?>", RegexOptions.Compiled);
         public static string GetCultureDisplayName(CultureInfo cultureInfo)
         {
             if (cultureInfo.EnglishName.StartsWith("Chinese")) return "简体中文";
@@ -87,6 +88,10 @@ namespace CMS.Mvc.Helpers
             var value = ResHelper.GetString(resourceName, LocalizationContext.CurrentCulture.CultureCode,
                 false);
             return value;
+        }
+        public static string StripHTML(string HTML)
+        {
+            return _htmlRegex.Replace(HTML, string.Empty);
         }
     }
 }
