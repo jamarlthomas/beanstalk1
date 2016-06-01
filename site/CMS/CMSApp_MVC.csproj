@@ -38,7 +38,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -245,7 +245,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
+    <Compile Include="Modules\CultureSwitcherModule.cs" />
+    <Compile Include="ViewModels\Master\CultureLinkViewModel.cs" />
     <Compile Include="Controllers\Afton\GenericController.cs" />
+    <Compile Include="Providers\LocalizationProvider.cs" />
+    <Compile Include="Interfaces\ILocalizationProvider.cs" />
     <Compile Include="Controllers\Afton\LogisticsAndSupplyFolderController.cs" />
     <Compile Include="Interfaces\IMegaMenuSubLinkItemProvider.cs" />
     <Compile Include="Models\Afton\LogisticsAndSupply\LogisticsAndSupply.cs" />
@@ -803,7 +807,6 @@
     <Content Include="map\data.json" />
     <None Include="Properties\PublishProfiles\Afton-test %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\Afton-test.pubxml" />
-    <Content Include="Views\LogisticsAndSupply\Index.cshtml" />
     <Content Include="Views\Afton\Shared\_map.cshtml" />
     <Content Include="Views\Afton\ATCTools\GATCNATCScript.cshtml" />
     <Content Include="Views\Afton\SelectionFilter\mobileIndex.cshtml" />

@@ -15,21 +15,22 @@
 <div class="sbuLandingNavC">
     <div class="sbuLandingNav">
         <ul>
-            <li><a href="#overview-pos"><span>Overview</span></a></li>
-            <li><a href="#solutions-pos"><span>Solutions</span></a></li>
-            <li><a href="#faqs-pos"><span>FAQs</span></a></li>
-            <li><a href="#sheets-pos"><span>Insights &amp; Resources</span></a></li>
-            <li><a href="#resources-pos"><span>Suggested Content</span></a></li>
+            <li><a href="#overview-pos"><span>@UtilsHelper.GetLocalizedString("sbu_Overview")</span></a></li>
+            <li><a href="#solutions-pos"><span>@UtilsHelper.GetLocalizedString("sbu_Solutions")</span></a></li>
+            <li><a href="#faqs-pos"><span>@UtilsHelper.GetLocalizedString("sbu_FAQs")</span></a></li>
+            <li><a href="#sheets-pos"><span>@UtilsHelper.GetLocalizedString("sbu_InsightsAndResources")</span></a></li>
+            <li><a href="#resources-pos"><span>@UtilsHelper.GetLocalizedString("sbu_SuggestedContent")</span></a></li>
         </ul>
     </div>
     <div style="display: none;" class="sbuLandingDropNav">
-        <span class="icon-arrow"></span><a href="#" class="sbuSelect">Overview</a>
+        <span class="icon-arrow"></span>
+        <a href="#" class="sbuSelect">@UtilsHelper.GetLocalizedString("sbu_Overview")</a>
         <ul style="display:none;" class="DropNav">
-            <li><a data-sbudd="Overview" href="#overview-pos">Overview</a></li>
-            <li><a data-sbudd="Solutions" href="#solutions-pos">Solutions</a></li>
-            <li><a data-sbudd="FAQs" href="#faqs-pos">FAQs</a></li>
-            <li><a data-sbudd="Insights &amp; Resources" href="#sheets-pos">Insights &amp; Resources</a></li>
-            <li><a data-sbudd="Suggested Content" href="#resources-pos">Suggested Content</a></li>
+            <li><a data-sbudd="Overview" href="#overview-pos">@UtilsHelper.GetLocalizedString("sbu_Overview")</a></li>
+            <li><a data-sbudd="Solutions" href="#solutions-pos">@UtilsHelper.GetLocalizedString("sbu_Solutions")</a></li>
+            <li><a data-sbudd="FAQs" href="#faqs-pos">@UtilsHelper.GetLocalizedString("sbu_FAQs")</a></li>
+            <li><a data-sbudd="Insights &amp; Resources" href="#sheets-pos">@UtilsHelper.GetLocalizedString("sbu_InsightsAndResources")</a></li>
+            <li><a data-sbudd="Suggested Content" href="#resources-pos">@UtilsHelper.GetLocalizedString("sbu_SuggestedContent")</a></li>
         </ul>
     </div>
 </div>
@@ -42,7 +43,7 @@
 <a id="solutions-pos" class="anchorTag"></a>
 <div class="padTopBtm">
     <div class="fullWidth">
-        <h2>@Model.Title Solutions</h2>
+        <h2>@Model.Title @UtilsHelper.GetLocalizedString("sbu_Solutions")</h2>
     </div>
     <div class="cardsC">
         @Html.Partial("~/Views/Afton/Shared/_tile.cshtml", Model.Solutions)
@@ -51,7 +52,7 @@
 <a id="faqs-pos" class="anchorTag"></a>
 <div class="borders bgPattern">
     <div class="fullWidth padTopBtm">
-        <h2 class="txtPaddingBtm">FAQs</h2>
+        <h2 class="txtPaddingBtm">@UtilsHelper.GetLocalizedString("sbu_FAQs")</h2>
         @UtilsHelper.ToHtmlString(Model.FAQDescription))
         @Html.Partial("~/Views/Afton/SBU/_FAQs.cshtml", Model.FAQs)
 

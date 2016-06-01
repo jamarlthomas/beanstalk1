@@ -10,7 +10,9 @@
             @foreach (var tile in Model.Tiles)
             {
                 <a href="@tile.DocumentRoutePath">
-                    <div class="cardBtnIndicator"><img src="~/images/card-btn-indicator.png"></div>
+                    <div class="cardBtnIndicator">
+                        <img src="~/images/card-btn-indicator.png" />
+                    </div>
                     <div style="background-image: url(@(string.IsNullOrEmpty(tile.HomeImage) ? string.Empty : Url.Content(tile.HomeImage))" class="cardHdrC"></div>
                     <div class="cardTextAreaC">
                         <div class="cardTextArea">
@@ -25,5 +27,7 @@
             }
         </div>
     </div>
-    <div class="fullWidth"><a href="#" class="viewAllBtn">@Model.ViewAllLabel @Model.TilesLabel</a></div>
+    <div class="fullWidth">
+        <a href="#" class="viewAllBtn">@Model.ViewAllLabel @Model.TilesLabel</a>
+    </div>
 </div>

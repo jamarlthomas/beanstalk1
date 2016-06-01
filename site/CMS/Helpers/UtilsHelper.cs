@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 using System.Web;
 using CMS.DocumentEngine.Types;
 using CMS.Helpers;
+using CMS.Localization;
+using CultureInfo = System.Globalization.CultureInfo;
 
 namespace CMS.Mvc.Helpers
 {
@@ -20,7 +22,7 @@ namespace CMS.Mvc.Helpers
             if (cultureInfo.EnglishName.StartsWith("Russian")) return "Русский";
             if (cultureInfo.EnglishName.StartsWith("Spanish")) return "Español";
             if (cultureInfo.EnglishName.StartsWith("Portuguese")) return "Português";
-            if (cultureInfo.EnglishName.StartsWith("French")) return "French";
+            if (cultureInfo.EnglishName.StartsWith("French")) return "Français";
             return "English";
         }
 
@@ -78,6 +80,13 @@ namespace CMS.Mvc.Helpers
                 return text.Substring(0, pos) + "...";
             return text;
         }
-    
+
+
+        public static string GetLocalizedString(string resourceName)
+        {
+            var value = ResHelper.GetString(resourceName, LocalizationContext.CurrentCulture.CultureCode,
+                false);
+            return value;
+        }
     }
 }

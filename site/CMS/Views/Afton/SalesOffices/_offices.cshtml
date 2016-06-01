@@ -10,7 +10,7 @@
             @UtilsHelper.ToHtmlString(office.Address)<br>
             @*@office.CountryName<br><br>*@
             <a href="tel:@office.Phone">T: @office.Phone</a><br><br>
-            <strong>Serving the following countries:</strong><br>
+            <strong>@UtilsHelper.GetLocalizedString("offices_ServingCountries")</strong><br>
             @string.Join(" | ", office.ServingCountriesList)<br><br>
         </div>
     }
