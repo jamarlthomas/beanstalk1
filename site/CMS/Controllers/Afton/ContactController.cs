@@ -102,11 +102,12 @@ namespace CMS.Mvc.Controllers.Afton
             var country = _countryProvider.GetCountryById(request.CountryId);
             var countryGuid = country.CountryGUID;
             var salesOffice = _salesOfficeProvider.GetSalesOfficeByCountryGuid(countryGuid);
+
             string email;
 
             if (salesOffice != null)
             {
-                email = (salesOffice.Parent as Region).Email;
+                email = _salesOfficeProvider.GetRegionOfSalesOffice(salesOffice).Email;
             }
             else
             {
