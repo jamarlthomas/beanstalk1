@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.ActionFilters;
@@ -10,7 +11,7 @@ using CMS.Mvc.ViewModels.Shared;
 
 namespace CMS.Mvc.Controllers.Afton
 {
-    public class ProductController: SidebarPageController
+    public class ProductController : SidebarPageController
     {
         private readonly IProductProvider _productProvider;
         private readonly ITreeNodesProvider _treeNodesProvider;
@@ -39,23 +40,23 @@ namespace CMS.Mvc.Controllers.Afton
             productModel.ContentCopyArea = MapData<Product, CMS.Mvc.ViewModels.Product.ProductViewModel>(product);
             productModel.ContentCopyArea.DefaultContent = UtilsHelper.ToHtmlString(productModel.ContentCopyArea.DefaultContent.ToString().Replace("~/", "/"));
             //productModel.RelatedProducts = GetRelatedProductsWidget(product);
-            
+
             return View("~/Views/Afton/Product/Index.cshtml", productModel);
         }
 
-    
+
 
         private RelatedProductsViewModel GetRelatedProductsWidget(Product product)
         {
             var widget = new RelatedProductsViewModel();
             var products = _productProvider.GetSiblings(product);
-            widget.Products = MapData<Product, RelatedProductCardViewModel>(products);  
+            widget.Products = MapData<Product, RelatedProductCardViewModel>(products);
             return widget;
         }
 
-        
 
-      
+
+
         private DownloadWidgetViewModel GetDownloadwidget(Product product)
         {
             return new DownloadWidgetViewModel()
@@ -65,9 +66,8 @@ namespace CMS.Mvc.Controllers.Afton
                 TileImage = product.HomeImage,
                 Description = product.Description,
                 DownloadLink = _productProvider.GetDownloadLink(product),
-                AvailableIn = _productProvider.GetAvailableRegions(product).Select(item => new LinkViewModel() {Title = item}).ToList(),
-                TranslationAvailable = _productProvider.GetAvailableTranslations(product),
-                
+                AvailableIn = _productProvider.GetAvailableRegions(product).Select(item => new LinkViewModel() { Title = item }).ToList(),
+                TranslationAvailable = _productProvider.GetAvailableTranslations(product)
             };
         }
     }

@@ -9,11 +9,7 @@
     <div id="pRt">
         <h1>@UtilsHelper.ToHtmlString(Model.Title)</h1>
         <div id="subTxt">@Model.Description</div>
-        @if (!Model.AvailableIn.Any())
-        {
-            <div id="pCurrently"> @UtilsHelper.GetLocalizedString("product_downloadWidget_CurrentlyNotAvailable")</div>
-        }
-        else
+        @if (Model.AvailableIn.Any())
         {
             <div id="pCurrently">
                 @UtilsHelper.GetLocalizedString("product_downloadWidget_AvailableIn")
@@ -24,7 +20,12 @@
                     </span>
                 }
             </div>
+
         }
+        @*else
+        {
+            <div id="pCurrently"> @UtilsHelper.GetLocalizedString("product_downloadWidget_CurrentlyNotAvailable")</div>
+        }*@
         <div id="downloadDocsC" class="noPrintDisplay">
             <a href="#" target="_blank" class="downloadBtn">@UtilsHelper.GetLocalizedString("product_downloadWidget_DownloadPDS")<span class="icon-download"></span></a>
             @if (Model.TranslationAvailable.Any(tr => !tr.LanguageId.Equals(Model.CurrentLanguageId, StringComparison.CurrentCultureIgnoreCase)))
@@ -49,7 +50,7 @@
                                 else
                                 {
                                     <li id="@translation.LanguageId">
-                                        <a href="#" data-download="@Url.Content(translation.Reference)">@translation.Title</a>
+                                        <a href="" data-download="@Url.Content(translation.Reference)">@translation.Title</a>
                                     </li>
                                 }
 
