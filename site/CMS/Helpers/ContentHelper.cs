@@ -101,7 +101,7 @@ namespace CMS.Mvc.Helpers
             TreeNode node = doc;
             while (node != null && node.NodeAliasPath != "/")
             {
-                if (!node.TryGetProperty("ExcludeFromSiteMap", out val))
+                if (!node.GetBooleanValue("ExcludeFromSiteMap", false))
                 {
                     breadcrumbList.Insert(0, new BreadCrumbLinkItemViewModel
                        {

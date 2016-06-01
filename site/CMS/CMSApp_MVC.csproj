@@ -245,6 +245,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
+    <Compile Include="Models\ExtendedModels\DocumentType.cs" />
     <Compile Include="Modules\CultureSwitcherModule.cs" />
     <Compile Include="ViewModels\Master\CultureLinkViewModel.cs" />
     <Compile Include="Controllers\Afton\GenericController.cs" />
