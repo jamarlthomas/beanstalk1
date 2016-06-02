@@ -22,6 +22,7 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly IMegaMenuThumbnailedItemProvider _megaMenuThumbnailedItemProvider;
         private readonly IPagesMenuItemProvider _pagesMenuItemProvider;
         private readonly ITreeNodesProvider _treeNodesProvider;
+        private readonly ILocalizationProvider _localizationProvider;
 
         public MasterController(IContentMenuItemProvider contentMenuItemProvider,
             IPagesMenuItemProvider pagesMenuItemProvider,
@@ -49,6 +50,7 @@ namespace CMS.Mvc.Controllers.Afton
             _footerNavItemProvider = new FooterNavItemProvider();
             _megaMenuSubLinkItemProvider = new MegaMenuSubLinkItemProvider();
             _treeNodesProvider = new TreeNodesProvider();
+            _localizationProvider = new LocalizationProvider();
         }
 
         [ChildActionOnly]
@@ -78,9 +80,10 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Header(MasterHeaderRequest request)
         {
             var model = MapData<MasterHeaderRequest, MasterViewModel>(request);
-            model.SelectedCulture = UtilsHelper.GetCultureDisplayName(CultureInfo.CurrentCulture);
+            model.AvailableCultures = MapData<Localization.CultureInfo, CultureLinkViewModel>(_localizationProvider.GetAvailableCultures());
+            model.SelectedCulture = _localizationProvider.GetCurrentCultureDisplayName();//UtilsHelper.GetCultureDisplayName(CultureInfo.CurrentCulture);
 
-            model.MainNavList = GetMainNavList();
+            model.MainNavList = GetMainNavList(request.SelectedMenuItem);
 
             model.UtilityNavList = _pagesMenuItemProvider.GetPagesMenuItems().Select(s =>
             {
@@ -92,13 +95,15 @@ namespace CMS.Mvc.Controllers.Afton
             return PartialView("~/Views/Afton/Master/_header.cshtml", model);
         }
 
-        private List<ContentMenuItemViewModel> GetMainNavList()
+        private List<ContentMenuItemViewModel> GetMainNavList(string selectedMenuItem)
         {
             return _contentMenuItemProvider.GetContentMenuItems().Select(contentMenuItem =>
             {
                 var itemViewModel = MapData<ContentMenuItem, ContentMenuItemViewModel>(contentMenuItem);
                 itemViewModel.Reference = FindLink(contentMenuItem.Reference);
-
+                itemViewModel.Selected = (!string.IsNullOrWhiteSpace(selectedMenuItem))
+                    ? selectedMenuItem.Equals(contentMenuItem.Reference)
+                    : false;
                 itemViewModel.ThumbnailedMenuItems = _megaMenuThumbnailedItemProvider.GetMegaMenuThumbnailedItems(contentMenuItem.NodeAlias).Select(thumbnailedMenuItem =>
                 {
                     var result = MapData<MegaMenuThumbnailedItem, MegaMenuThumbnailedItemViewModel>(thumbnailedMenuItem);

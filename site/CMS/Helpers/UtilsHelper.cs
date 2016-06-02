@@ -6,11 +6,15 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using CMS.DocumentEngine.Types;
+using CMS.Helpers;
+using CMS.Localization;
+using CultureInfo = System.Globalization.CultureInfo;
 
 namespace CMS.Mvc.Helpers
 {
     public static class UtilsHelper
     {
+        static Regex _htmlRegex = new Regex("<.*?>", RegexOptions.Compiled);
         public static string GetCultureDisplayName(CultureInfo cultureInfo)
         {
             if (cultureInfo.EnglishName.StartsWith("Chinese")) return "简体中文";
@@ -19,7 +23,7 @@ namespace CMS.Mvc.Helpers
             if (cultureInfo.EnglishName.StartsWith("Russian")) return "Русский";
             if (cultureInfo.EnglishName.StartsWith("Spanish")) return "Español";
             if (cultureInfo.EnglishName.StartsWith("Portuguese")) return "Português";
-            if (cultureInfo.EnglishName.StartsWith("French")) return "French";
+            if (cultureInfo.EnglishName.StartsWith("French")) return "Français";
             return "English";
         }
 
@@ -67,7 +71,7 @@ namespace CMS.Mvc.Helpers
         }
         public static HtmlString ToHtmlString(string text)
         {
-            return new HtmlString(text);
+            return new HtmlString(HTMLHelper.ResolveUrls(text, "/"));
         }
         static public string Ellipsis(string text, int length)
         {
@@ -77,6 +81,17 @@ namespace CMS.Mvc.Helpers
                 return text.Substring(0, pos) + "...";
             return text;
         }
-    
+
+
+        public static string GetLocalizedString(string resourceName)
+        {
+            var value = ResHelper.GetString(resourceName, LocalizationContext.CurrentCulture.CultureCode,
+                false);
+            return value;
+        }
+        public static string StripHTML(string HTML)
+        {
+            return _htmlRegex.Replace(HTML, string.Empty);
+        }
     }
 }

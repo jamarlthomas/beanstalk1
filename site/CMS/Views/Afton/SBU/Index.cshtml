@@ -1,9 +1,13 @@
-﻿@using CMS.Mvc.Helpers
+﻿@using CMS.Base
+@using CMS.Helpers
+@using CMS.Mvc.Helpers
 @using CMS.Mvc.ViewModels.SBU
 @using CMS.Mvc.ViewModels.Shared
+@using CMS.Newsletters
 @model SBUViewModel
 @{
     ViewBag.Title = Model.Title;
+    ViewBag.SelectedMenuItem = Model.NodeGUID;
     Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
 }
 
@@ -11,32 +15,35 @@
 <div class="sbuLandingNavC">
     <div class="sbuLandingNav">
         <ul>
-            <li><a href="#overview-pos"><span>Overview</span></a></li>
-            <li><a href="#solutions-pos"><span>Solutions</span></a></li>
-            <li><a href="#faqs-pos"><span>FAQs</span></a></li>
-            <li><a href="#sheets-pos"><span>Insights &amp; Resources</span></a></li>
-            <li><a href="#resources-pos"><span>Suggested Content</span></a></li>
+            <li><a href="#overview-pos"><span>@UtilsHelper.GetLocalizedString("sbu_Overview")</span></a></li>
+            <li><a href="#solutions-pos"><span>@UtilsHelper.GetLocalizedString("sbu_Solutions")</span></a></li>
+            <li><a href="#faqs-pos"><span>@UtilsHelper.GetLocalizedString("sbu_FAQs")</span></a></li>
+            <li><a href="#sheets-pos"><span>@UtilsHelper.GetLocalizedString("sbu_InsightsAndResources")</span></a></li>
+            <li><a href="#resources-pos"><span>@UtilsHelper.GetLocalizedString("sbu_SuggestedContent")</span></a></li>
         </ul>
     </div>
     <div style="display: none;" class="sbuLandingDropNav">
-        <span class="icon-arrow"></span><a href="#" class="sbuSelect">Overview</a>
+        <span class="icon-arrow"></span>
+        <a href="#" class="sbuSelect">@UtilsHelper.GetLocalizedString("sbu_Overview")</a>
         <ul style="display:none;" class="DropNav">
-            <li><a data-sbudd="Overview" href="#overview-pos">Overview</a></li>
-            <li><a data-sbudd="Solutions" href="#solutions-pos">Solutions</a></li>
-            <li><a data-sbudd="FAQs" href="#faqs-pos">FAQs</a></li>
-            <li><a data-sbudd="Insights &amp; Resources" href="#sheets-pos">Insights &amp; Resources</a></li>
-            <li><a data-sbudd="Suggested Content" href="#resources-pos">Suggested Content</a></li>
+            <li><a data-sbudd="Overview" href="#overview-pos">@UtilsHelper.GetLocalizedString("sbu_Overview")</a></li>
+            <li><a data-sbudd="Solutions" href="#solutions-pos">@UtilsHelper.GetLocalizedString("sbu_Solutions")</a></li>
+            <li><a data-sbudd="FAQs" href="#faqs-pos">@UtilsHelper.GetLocalizedString("sbu_FAQs")</a></li>
+            <li><a data-sbudd="Insights &amp; Resources" href="#sheets-pos">@UtilsHelper.GetLocalizedString("sbu_InsightsAndResources")</a></li>
+            <li><a data-sbudd="Suggested Content" href="#resources-pos">@UtilsHelper.GetLocalizedString("sbu_SuggestedContent")</a></li>
         </ul>
     </div>
 </div>
 <a id="overview-pos" class="anchorTag"></a>
 <div class="twoColumnC padTop leadIn">
-    @Html.Raw(Model.Content)
+    @*@UtilsHelper.ToHtmlString(LinkConverter.ReplaceInLink(Model.Content,"~",""))*@
+    @UtilsHelper.ToHtmlString(Model.Content)
+
 </div>
 <a id="solutions-pos" class="anchorTag"></a>
 <div class="padTopBtm">
     <div class="fullWidth">
-        <h2>@Model.Title Solutions</h2>
+        <h2>@Model.Title @UtilsHelper.GetLocalizedString("sbu_Solutions")</h2>
     </div>
     <div class="cardsC">
         @Html.Partial("~/Views/Afton/Shared/_tile.cshtml", Model.Solutions)
@@ -45,19 +52,19 @@
 <a id="faqs-pos" class="anchorTag"></a>
 <div class="borders bgPattern">
     <div class="fullWidth padTopBtm">
-        <h2 class="txtPaddingBtm">FAQs</h2>
-        @Html.Raw(Model.FAQDescription)
+        <h2 class="txtPaddingBtm">@UtilsHelper.GetLocalizedString("sbu_FAQs")</h2>
+        @UtilsHelper.ToHtmlString(Model.FAQDescription)
         @Html.Partial("~/Views/Afton/SBU/_FAQs.cshtml", Model.FAQs)
 
     </div>
 </div><a id="sheets-pos" class="anchorTag"></a>
 <div class="padTopBtm">
     <div class="fullWidth">
-        <h2 class="txtPaddingBtm">@Model.Title Insights and Resources</h2>
-        <div class="txtPaddingBtm">@Html.Raw(Model.DocumentsDescription)</div>
+        <h2 class="txtPaddingBtm">@Model.Title @UtilsHelper.GetLocalizedString("sbu_InsightsAndResources")</h2>
+        <div class="txtPaddingBtm">@UtilsHelper.ToHtmlString(Model.DocumentsDescription)</div>
         <hr>
         @Html.Partial("~/Views/Afton/SBU/_documentColumns.cshtml", Model.DocumentTypes)
-	    <!--<a href="@Url.Content("~/" + Model.ViewAllDocumentsLink)" class="viewAllBtn">View All @Model.Title Documents</a>-->
+        <!--<a href="@Url.Content("~/" + Model.ViewAllDocumentsLink)" class="viewAllBtn">View All @Model.Title Documents</a>-->
 
     </div>
 </div>

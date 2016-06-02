@@ -38,7 +38,7 @@ namespace CMS.Mvc.Controllers.Afton
         [PageVisitActivity]
         public ActionResult Index(string SolutionName, string SBUName)
         {
-            var solution = _solutionProvider.GetSolution(SolutionName);
+            var solution = _solutionProvider.GetSolution(SolutionName, SBUName);
 
             var solutionViewModel = MapData<Solution, SolutionViewModel>(solution);
 

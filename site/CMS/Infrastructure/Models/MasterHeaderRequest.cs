@@ -9,5 +9,6 @@ namespace CMS.Mvc.Infrastructure.Models
     {
         public string Title { get; set; }
         public string GlobalSearchQuery { get; set; }
+        public string SelectedMenuItem { get; set; }
     }
 }

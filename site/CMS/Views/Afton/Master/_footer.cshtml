@@ -1,4 +1,5 @@
 ﻿@using CMS.DocumentEngine.Types
+@using CMS.Helpers
 @using CMS.Mvc.ViewModels.Master
 @using CMS.Mvc.Helpers
 @model FooterViewModel
@@ -21,14 +22,14 @@
                     @if (Model.FooterNavCategories.Last() == item)
                     {
                     <br /><br />
-                    <a href="https://www.linkedin.com/company/afton-chemical?trk=top_nav_home" target="_blank"><img src="@Url.Content("~/images/linkedIn.svg")" style="width: 35px;"></a>
-                    <a href="https://www.youtube.com/user/AftonChemicalCorp" target="_blank"><img src="@Url.Content("~/images/youTube.svg")" style="width: 35px;"></a>
+                    <a href="https://www.linkedin.com/company/afton-chemical?trk=top_nav_home" target="_blank"><span class="icon-linkedIn"></span></a>
+                    <a href="https://www.youtube.com/user/AftonChemicalCorp" target="_blank"><span class="icon-youTube"></span></a>
                     }
                 </div>
             }
         </div>
         <div id="btmContactBtn" style="display:none;">
-            <a href="@Url.Content("~/"+ ContactPage.RoutePath)">Contact</a>
+            <a href="@Url.Content("~/"+ ContactPage.RoutePath)">@ResHelper.GetString("master_footer_ContactButton")</a>
         </div>
         <div id="disclaimer">
             &copy;<span id="dateYear"></span> Afton Chemical <span class="divider">|</span><a href="/Generic/Privacy-Terms">Privacy & Terms</a>

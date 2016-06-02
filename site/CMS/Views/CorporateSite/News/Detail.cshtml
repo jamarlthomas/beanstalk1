@@ -2,6 +2,7 @@
 
 @using CMS.DocumentEngine.Types;              
 @using CMS.Helpers
+@using CMS.Mvc.Helpers
 
 @{ 
     Layout = "~/Views/CorporateSite/Shared/Master.cshtml";
@@ -19,7 +20,7 @@
         <h2>
             @Model.NewsTitle</h2>
         <p>
-            @Html.Raw(Model.NewsText)
+            @UtilsHelper.ToHtmlString(Model.NewsText)
         </p>
         <p>
             <a href="@URLHelper.ResolveUrl("~/NewsMVC")">Back to the list of news</a>

@@ -25,5 +25,10 @@ namespace CMS.Mvc.Providers
             return ContentHelper.GetDocs<SalesOffice>(SalesOffice.CLASS_NAME)
                 .FirstOrDefault(f => Guid.Parse(f.Country) == countryGuid || UtilsHelper.ParseGuids(f.ServingCountries).Any(guid => guid == countryGuid));
         }
+
+        public Region GetRegionOfSalesOffice(SalesOffice office)
+        {
+            return ContentHelper.GetDocs<Region>(Region.CLASS_NAME).Where(x => x.Children.Where(y => y.NodeID == office.NodeID).Any()).First();
+        }
     }
 }

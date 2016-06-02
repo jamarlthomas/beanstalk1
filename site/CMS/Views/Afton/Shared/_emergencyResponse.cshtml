@@ -1,5 +1,6 @@
-﻿@model CMS.Mvc.ViewModels.Shared.EmergencyResponseViewModel
+﻿@using CMS.Mvc.Helpers
+@model CMS.Mvc.ViewModels.Shared.EmergencyResponseViewModel
 <div class="fullWidth borderTop padTopBtm">
     <h1>@Model.EmergencyResponseTitle</h1>
-    @Html.Raw(Model.EmergencyResponseBody)
+    @UtilsHelper.ToHtmlString(Model.EmergencyResponseBody)
 </div>

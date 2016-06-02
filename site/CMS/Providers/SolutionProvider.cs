@@ -20,9 +20,9 @@ namespace CMS.Mvc.Providers
             return ContentHelper.GetDocs<Solution>(Solution.CLASS_NAME);
         }
 
-        public Solution GetSolution(string alias)
+        public Solution GetSolution(string alias, string parent)
         {
-            return ContentHelper.GetDocByName<Solution>(Solution.CLASS_NAME, alias);
+            return ContentHelper.GetDocByNameAndParent<Solution>(Solution.CLASS_NAME, alias, parent);
         }
     }
 }

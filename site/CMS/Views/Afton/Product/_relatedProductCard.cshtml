@@ -1,4 +1,5 @@
-﻿@model CMS.Mvc.ViewModels.Product.RelatedProductCardViewModel
+﻿@using CMS.Mvc.Helpers
+@model CMS.Mvc.ViewModels.Product.RelatedProductCardViewModel
 @if (!string.IsNullOrWhiteSpace(Model.Reference))
 {
     <a href="@Url.Content("~/" + Model.Reference)">
@@ -12,7 +13,7 @@
         }
         <div class="cardTextAreaC">
             <div class="cardTextArea">
-                <div class="cardType">@Html.Raw(Model.Title)</div>
+                <div class="cardType">@UtilsHelper.ToHtmlString(Model.Title)</div>
                 <div class="cardHdrText">@Model.Header</div>
                 <div class="cardSubHdr">@Model.SubHeader</div>
                 <div class="cardTxt">@Model.Text</div>
@@ -35,7 +36,7 @@ else
         }
         <div class="cardTextAreaC">
             <div class="cardTextArea">
-                <div class="cardType">@Html.Raw(Model.Title)</div>
+                <div class="cardType">@UtilsHelper.ToHtmlString(Model.Title)</div>
                 <div class="cardHdrText">@Model.Header</div>
                 <div class="cardSubHdr">@Model.SubHeader</div>
                 <div class="cardTxt">@Model.Text</div>

@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization
+@using CMS.Mvc.Helpers
 @using CMS.Mvc.Infrastructure.Models
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +7,7 @@
     <link rel="icon"
           type="image/png"
           href="~/images/Afton_Bug.png" />
-	<title>@ViewBag.Title - Afton Chemical</title>
+	<title>@UtilsHelper.StripHTML(ViewBag.Title) - @UtilsHelper.GetLocalizedString("site_TitlePostfix")</title>
 	<meta name="description" content="">
 	<meta name="keywords" content="">
 	<meta charset="utf-8">
@@ -48,7 +49,12 @@
 
 </head>
 <body>
-	@{ Html.RenderAction("Header", "Master", new MasterHeaderRequest { Title = ViewBag.Title, GlobalSearchQuery = ViewBag.GlobalSearchQuery }); }
+	@{ Html.RenderAction("Header", "Master", new MasterHeaderRequest
+	   {
+	       Title = ViewBag.Title, 
+           GlobalSearchQuery = ViewBag.GlobalSearchQuery,
+           SelectedMenuItem = ViewBag.SelectedMenuItem
+	   }); }
 	<main>
 		@RenderBody()
 	</main>

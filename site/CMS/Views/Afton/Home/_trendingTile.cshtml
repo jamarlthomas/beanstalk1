@@ -7,11 +7,11 @@
         <div class="cardBtnIndicator">
             <img src="~/images/card-btn-indicator.png" />
         </div>
-        <div class="trendIndicator">Trending Topic</div>
+        <div class="trendIndicator">@UtilsHelper.GetLocalizedString("home_TrendingTopic")Trending Topic</div>
         <div class="overlayC">
             <div class="overlay">
                 <div class="cardTitle">@UtilsHelper.ToHtmlString(Model.TileTitle)</div>
-                <div class="cardHdr">@Html.Raw(Model.Title)</div>
+                <div class="cardHdr">@UtilsHelper.ToHtmlString(Model.Title)</div>
             </div>
             <div class="cardDate">@Model.Date.ToString("MMMM dd, yyyy")</div>
         </div>
@@ -40,11 +40,11 @@ else
         <div class="cardBtnIndicator">
             <img src="~/images/card-btn-indicator.png" />
         </div>
-        <div class="trendIndicator">Trending Topic</div>
+        <div class="trendIndicator">@UtilsHelper.GetLocalizedString("home_TrendingTopic")</div>
         <div class="overlayC">
             <div class="overlay">
-                <div class="cardTitle">@Html.Raw(@Model.TileTitle)</div>
-                <div class="cardHdr">@Html.Raw(@Model.Title)</div>
+                <div class="cardTitle">@UtilsHelper.ToHtmlString(@Model.TileTitle)</div>
+                <div class="cardHdr">@UtilsHelper.ToHtmlString(@Model.Title)</div>
             </div>
             <div class="cardDate">@Model.Date.ToString("MMMM dd, yyyy")</div>
         </div>

@@ -1,21 +1,22 @@
-﻿@model CMS.Mvc.ViewModels.Product.DownloadWidgetViewModel
+﻿@using CMS.Mvc.Helpers
+@model CMS.Mvc.ViewModels.Product.DownloadWidgetViewModel
 <div id="prodHdrC">
     @if (!string.IsNullOrWhiteSpace(Model.TileImage))
     {
         <img id="pLft" src="@Url.Content(Model.TileImage)" />
-        
+
     }
     <div id="pRt">
-        <h1>@Html.Raw(Model.Title)</h1>
+        <h1>@UtilsHelper.ToHtmlString(Model.Title)</h1>
         <div id="subTxt">@Model.Description</div>
         @if (!Model.AvailableIn.Any())
         {
-            <div id="pCurrently"> Currently not available</div>
+            <div id="pCurrently"> @UtilsHelper.GetLocalizedString("product_downloadWidget_CurrentlyNotAvailable")</div>
         }
         else
         {
             <div id="pCurrently">
-                Currently available in:
+                @UtilsHelper.GetLocalizedString("product_downloadWidget_AvailableIn")
                 @foreach (var link in Model.AvailableIn)
                 {
                     <span>
@@ -24,13 +25,13 @@
                 }
             </div>
         }
-        @*@Html.Partial("~/Views/Afton/Shared/DownloadWidget/_downloadButtonSection.cshtml", Model.DownloadButtonSection)*@
         <div id="downloadDocsC" class="noPrintDisplay">
-            <a href="#" target="_blank" class="downloadBtn">Download Product Data Sheet <span class="icon-download"></span></a>
-            @if (Model.TranslationAvailable.Any(tr=>!tr.LanguageId.Equals(Model.CurrentLanguageId, StringComparison.CurrentCultureIgnoreCase)))
+            <a href="#" target="_blank" class="downloadBtn">@UtilsHelper.GetLocalizedString("product_downloadWidget_DownloadPDS")<span class="icon-download"></span></a>
+            @if (Model.TranslationAvailable.Any(tr => !tr.LanguageId.Equals(Model.CurrentLanguageId, StringComparison.CurrentCultureIgnoreCase)))
             {
                 <div id="translate-doc">
-                    Select Language:
+                    @UtilsHelper.GetLocalizedString("product_downloadWidget_SelectLanguage")
+
                     <a id="selDocLang">
                         <span class="icon-arrow"></span>
                     </a>
@@ -59,26 +60,12 @@
                 </div>
             }
             @*else
-            {
-                <div id="translate-doc">Translation not available</div>
-            }*@
+                {
+                    <div id="translate-doc">@UtilsHelper.GetLocalizedString("product_downloadWidget_NoTranslation")</div>
+                }
+            *@
+
         </div>
-        @*<div id="downloadDocsC" class="noPrintDisplay">
-                <a href="#" target="_blank" class="downloadBtn">Download Product Data Sheet <span class="icon-download"></span></a>
-                <div id="translate-doc">
-                    Select Language: <a href="#" id="selDocLang"> <span class="icon-arrow"></span></a>
-                    <ul id="langDocDropDown" style="display: none;">
-                        <li id="langEnglish"><a href="#" data-download="http://google.com">English</a></li>
-                        <li id="langChinese"><a href="#" data-download="http://yahoo.com">简体中文                                </a></li>
-                        <li id="langGerman" class="selected"><a href="#" data-download="http://aol.com">German</a></li>
-                        <li id="langJapanese"><a href="#" data-download="http://facebook.com">日本語</a></li>
-                        <li id="langRussian"><a href="#" data-download="http://bing.com">Russian</a></li>
-                        <li id="langSpanish"><a href="#" data-download="http://msn.com">Español</a></li>
-                        <li id="langPortugues"><a href="#" data-download="http://stackoverflow.com">Português</a></li>
-                        <li id="langFrench"><a href="#" data-download="http://gmail.com">French</a></li>
-                    </ul>
-                </div>
-            </div>*@
         <div id="socialC2" class="noPrintDisplay">
             <a class="addthis_button_compact">
                 <span class="icon-share"></span>
