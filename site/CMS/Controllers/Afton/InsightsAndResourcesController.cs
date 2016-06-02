@@ -72,15 +72,6 @@ namespace CMS.Mvc.Controllers.Afton
 
         private List<TileViewModel> GetTiles(InsightsResources page)
         {
-            /*var result = new List<TileViewModel>
-            {
-                new TileViewModel 
-                {
-                    Title = page.StayInformedTileTitle,
-                    Description = page.StayInformedTileDescription,
-                    Reference = "/StayInformed"
-                }
-            };*/
             var result = _resourceTileProvider.GetTiles(page.FeaturedContentList).Select(s => Mapper.Map<TileViewModel>(s)).ToList();
             if (page.Fields.FeaturedContentList2.Count() > 0)
             {
@@ -125,7 +116,7 @@ namespace CMS.Mvc.Controllers.Afton
                 }).ToList()));
             foreach (var x in result)
             {
-                if (x.Title != page.ProductDataSheetsTitle)
+                //if (x.Title != page.ProductDataSheetsTitle)
                     x.Links = x.Links.OrderBy(l => l.Title).Take(5).ToList();
             }
             return result;
