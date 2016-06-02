@@ -22,13 +22,9 @@
             </div>
 
         }
-        @*else
-        {
-            <div id="pCurrently"> @UtilsHelper.GetLocalizedString("product_downloadWidget_CurrentlyNotAvailable")</div>
-        }*@
         <div id="downloadDocsC" class="noPrintDisplay">
-            <a href="#" target="_blank" class="downloadBtn">@UtilsHelper.GetLocalizedString("product_downloadWidget_DownloadPDS")<span class="icon-download"></span></a>
-            @if (Model.TranslationAvailable.Any(tr => !tr.LanguageId.Equals(Model.CurrentLanguageId, StringComparison.CurrentCultureIgnoreCase)))
+            <a href="" target="_blank" class="downloadBtn">@UtilsHelper.GetLocalizedString("product_downloadWidget_DownloadPDS")<span class="icon-download"></span></a>
+            @if (Model.TranslationAvailable.Any())
             {
                 <div id="translate-doc">
                     @UtilsHelper.GetLocalizedString("product_downloadWidget_SelectLanguage")
@@ -39,32 +35,24 @@
                     <ul id="langDocDropDown" style="display: none;">
                         @foreach (var translation in Model.TranslationAvailable)
                         {
-                            if (!string.IsNullOrWhiteSpace(translation.Reference))
+                            if (translation.LanguageId.Equals(Model.SelectedTranslation.LanguageId, StringComparison.CurrentCultureIgnoreCase))
                             {
-                                if (translation.LanguageId.Equals(Model.CurrentLanguageId, StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    <li id="@translation.LanguageId" class="selected">
-                                        <a data-download="@Url.Content(translation.Reference)">@translation.Title</a>
-                                    </li>
-                                }
-                                else
-                                {
-                                    <li id="@translation.LanguageId">
-                                        <a href="" data-download="@Url.Content(translation.Reference)">@translation.Title</a>
-                                    </li>
-                                }
-
+                                <li id="@translation.LanguageId" class="selected">
+                                    <a data-download="@Url.Content(translation.Reference)">@translation.Title</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li id="@translation.LanguageId">
+                                    <a href="" data-download="@Url.Content(translation.Reference)">@translation.Title</a>
+                                </li>
                             }
                         }
                     </ul>
 
                 </div>
             }
-            @*else
-                {
-                    <div id="translate-doc">@UtilsHelper.GetLocalizedString("product_downloadWidget_NoTranslation")</div>
-                }
-            *@
+         
 
         </div>
         <div id="socialC2" class="noPrintDisplay">

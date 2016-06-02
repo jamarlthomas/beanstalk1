@@ -2,9 +2,9 @@
 
 <div id="downloadDocsC" class="noPrintDisplay">
     
-    @if (Model.TranslationAvailable.Any(translation => !string.IsNullOrWhiteSpace(translation.Reference)))
+    @if (Model.TranslationAvailable.Any())
     {
-        <a href="#" target="_blank" class="downloadBtn">@Model.DownloadLabel <span class="icon-download"></span></a>
+        <a href="" target="_blank" class="downloadBtn">@Model.DownloadLabel <span class="icon-download"></span></a>
         <div id="translate-doc">
             @Model.TranslationAvailableLabel
             <a id="selDocLang">
@@ -12,9 +12,9 @@
                 <span class="icon-arrow"></span>
             </a>
             <ul id="langDocDropDown" style="display: none;">
-                @foreach (var translation in Model.TranslationAvailable.Where(translation => !string.IsNullOrWhiteSpace(translation.Reference)))
+                @foreach (var translation in Model.TranslationAvailable)
                 {
-                    if (translation.LanguageId.Equals(Model.CurrentLanguageId, StringComparison.CurrentCultureIgnoreCase))
+                    if (translation.LanguageId.Equals(Model.SelectedLanguage.LanguageId, StringComparison.CurrentCultureIgnoreCase))
                     {
                         <li id="@translation.LanguageId" class="selected">
                             <a data-download="@Url.Content(translation.Reference)">@translation.Title</a>
@@ -23,7 +23,7 @@
                     else
                     {
                         <li id="@translation.LanguageId">
-                            <a href="#" data-download="@Url.Content(translation.Reference)">@translation.Title</a>
+                            <a href="" data-download="@Url.Content(translation.Reference)">@translation.Title</a>
                         </li>
                     }
                 }

@@ -59,15 +59,18 @@ namespace CMS.Mvc.Controllers.Afton
 
         private DownloadWidgetViewModel GetDownloadwidget(Product product)
         {
+            var translations = _productProvider.GetAvailableTranslations(product);
+            var selectedTranslation = translations.FirstOrDefault(t => t.LanguageId.Equals(GetCurrentCulture())) ??
+                      translations.FirstOrDefault();
             return new DownloadWidgetViewModel()
             {
-                CurrentLanguageId = base.GetCurrentCulture(),
+                SelectedTranslation = selectedTranslation,
                 Title = product.Title,
                 TileImage = product.HomeImage,
                 Description = product.Description,
                 DownloadLink = _productProvider.GetDownloadLink(product),
                 AvailableIn = _productProvider.GetAvailableRegions(product).Select(item => new LinkViewModel() { Title = item }).ToList(),
-                TranslationAvailable = _productProvider.GetAvailableTranslations(product)
+                TranslationAvailable = translations
             };
         }
     }
