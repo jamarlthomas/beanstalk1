@@ -42,14 +42,16 @@ namespace CMS.Mvc.Providers
 
         public List<string> GetAvailableRegions(Product product)
         {
-            return product.Regions.Split('|').ToList();
+            return product.Regions.Split('|').Where(r=>!string.IsNullOrWhiteSpace(r)).ToList();
         }
 
         //ToDo: 
         public List<DownloadLanguageLinkItemViewModel> GetAvailableTranslations(Product product)
         {
-            return product.CultureVersions.Select(
-                item => new DownloadLanguageLinkItemViewModel()
+            return product
+                .CultureVersions
+                .Where(p=>!string.IsNullOrWhiteSpace(((Product)p).PdfReference))
+                .Select(item => new DownloadLanguageLinkItemViewModel()
                 {
                     LanguageId = item.DocumentCulture,
                     Reference = ((Product)item).PdfReference,
