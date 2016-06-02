@@ -44,7 +44,7 @@ namespace CMS.Mvc.Controllers.Afton
             IDocumentProvider documentProvider,
             IResourceTileProvider resourceTileProvider,
             ISelectionFilterPageProvider selectionFilterPageProvider,
-            ISolutionProvider solutionProvider,IGenericPageProvider genericPageProvider)
+            ISolutionProvider solutionProvider, IGenericPageProvider genericPageProvider)
         {
             _solutionBusinessUnitProvider = solutionBusinessUnitProvider;
             _insightsAndResourcesPageProvider = insightsAndResourcesPageProvider;
@@ -84,10 +84,10 @@ namespace CMS.Mvc.Controllers.Afton
             var result = _resourceTileProvider.GetTiles(page.FeaturedContentList).Select(s => Mapper.Map<TileViewModel>(s)).ToList();
             if (page.Fields.FeaturedContentList2.Count() > 0)
             {
-                var guidString= string.Join(";",page.Fields.FeaturedContentList2.Select(x => x.NodeGUID.ToString()));
+                var guidString = string.Join(";", page.Fields.FeaturedContentList2.Select(x => x.NodeGUID.ToString()));
                 result = _resourceTileProvider.GetTiles(guidString).Select(s => Mapper.Map<TileViewModel>(s)).ToList();
             }
-            
+
             return result;
         }
 
@@ -100,7 +100,10 @@ namespace CMS.Mvc.Controllers.Afton
                     Title = page.ProductDataSheetsTitle,
                     ViewAllLabel = page.ViewAllLabel,
                     ViewAllUrl = RouteHelper.GetSelectionFilterViewAllUrl(ConfigurationManager.AppSettings["DocumentDataSheetDocumentTypeId"]),
-                    Links = _solutionBusinessUnitProvider.GetSolutionBusinessUnits().Select(MapSBUToLinkViewModel).ToList()
+                    Links = _solutionBusinessUnitProvider
+                    .GetSolutionBusinessUnits()
+                    .Select(MapSBUToLinkViewModel)
+                    .ToList()
                 }
             };
             result.AddRange(_documentTypeProvider.GetDocumentTypes().Where(x => x.NodeID != Int32.Parse(ConfigurationManager.AppSettings["DocumentDataSheetDocumentTypeId"])).Select(s => new InsightsListingItemViewModel
@@ -112,7 +115,8 @@ namespace CMS.Mvc.Controllers.Afton
                 {
                     Title = document.Title,
                     Reference = document.DocumentRoutePath
-                }).ToList()
+                })
+                .ToList()
             }));
             result.ForEach(x => x.Links.AddRange(_genericPageProvider.GetHighlightedGenericPage(x.Title).Select(document => new LinkViewModel
                 {
@@ -122,7 +126,7 @@ namespace CMS.Mvc.Controllers.Afton
             foreach (var x in result)
             {
                 if (x.Title != page.ProductDataSheetsTitle)
-                    x.Links = x.Links.Take(5).ToList();
+                    x.Links = x.Links.OrderBy(l => l.Title).Take(5).ToList();
             }
             return result;
         }
