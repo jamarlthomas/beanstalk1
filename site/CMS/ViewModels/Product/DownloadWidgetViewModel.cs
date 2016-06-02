@@ -13,8 +13,7 @@ namespace CMS.Mvc.ViewModels.Product
         public List<LinkViewModel> AvailableIn { get; set; }
         public List<DownloadLanguageLinkItemViewModel> TranslationAvailable { get; set; }
         public string DownloadLink { get; set; }
-        public string CurrentLanguageId { get; set; }
-
         public DownloadButtonSectionViewModel DownloadButtonSection { get; set; }
+        public DownloadLanguageLinkItemViewModel SelectedTranslation { get; set; }
     }
 }

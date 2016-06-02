@@ -40,7 +40,10 @@ namespace CMS.Mvc.Providers
 
         public List<DownloadLanguageLinkItemViewModel> GetAvailableTranslations(TreeNode product)
         {
-            return product.CultureVersions.Select(
+            return product
+                .CultureVersions
+                .Where(p => !string.IsNullOrWhiteSpace(p.GetValue("PdfReference", "")))
+                .Select(
                 item => new DownloadLanguageLinkItemViewModel()
                 {
                     LanguageId = item.DocumentCulture,
