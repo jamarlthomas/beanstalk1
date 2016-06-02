@@ -17,13 +17,13 @@
                     if (translation.LanguageId.Equals(Model.SelectedLanguage.LanguageId, StringComparison.CurrentCultureIgnoreCase))
                     {
                         <li id="@translation.LanguageId" class="selected">
-                            <a data-download="@Url.Content(translation.Reference)">@translation.Title</a>
+                            <a href="@Url.Content(translation.Reference)" data-download="@Url.Content(translation.Reference)">@translation.Title</a>
                         </li>
                     }
                     else
                     {
                         <li id="@translation.LanguageId">
-                            <a href="" data-download="@Url.Content(translation.Reference)">@translation.Title</a>
+                            <a href="@Url.Content(translation.Reference)" data-download="@Url.Content(translation.Reference)">@translation.Title</a>
                         </li>
                     }
                 }
