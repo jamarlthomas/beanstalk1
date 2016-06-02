@@ -7,7 +7,6 @@ using CMS.DocumentEngine.Types;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Shared.SidebarComponents;
-using CMS.Mvc.ViewModels.Solution;
 
 namespace CMS.Mvc.Controllers.Afton
 {

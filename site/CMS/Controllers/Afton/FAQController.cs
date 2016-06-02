@@ -33,7 +33,7 @@ namespace CMS.Mvc.Controllers.Afton
                 MenuSelectedItem = page.Parent.GetStringValue("Title", page.Parent.NodeAlias),
                 SideBar = new SidebarViewModel()
                 {
-                    Items = MapSidebar(_sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(page.SidebarItems)), page)
+                    Items = MapSidebar(page.Fields.SidebarItems.ToList(), page)
                 },
                 Topics = _faqTopicProvider.GetFaqTopics().Select(GetTopicItems).ToList(),
                 BreadCrumb = new BreadCrumbViewModel
