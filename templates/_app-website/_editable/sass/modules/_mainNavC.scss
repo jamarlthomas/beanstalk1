@@ -5,7 +5,7 @@
 
     a { display: block; height: 41px; text-decoration: none; color: #0c419a; font: 16px HelveticaNeueLT-Light; transition: 0.2s; width: 175px; text-align: center; 
        
-        &:hover, &.active { color: #50a84a; border-bottom: 5px solid #50a84a; }
+        &:hover, &.active, &.hover { color: #50a84a; border-bottom: 5px solid #50a84a; }
         
     }//a
     
