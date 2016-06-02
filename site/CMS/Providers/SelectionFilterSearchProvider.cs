@@ -24,16 +24,17 @@ namespace CMS.Mvc.Providers
             }
 			
             request.SortOrder = string.Format("documentcreatedwhen {0}", !string.IsNullOrEmpty(request.SortOrder) && request.SortOrder.ToUpper().Equals("NEWEST") ? "DESC" : "ASC");
-			request.AdditiveQuery = AdditiveQueryBuilder(request.DocumentTypesIds, request.SolutionsIds, request.Regions);
+			request.AdditiveQuery = AdditiveQueryBuilder(request);
 			return ContentHelper.PerformSearch(request);
 		}
 
 		private string AdditiveQueryBuilder(SelectionFilterSearchRequest request)
 		{
-			var query = new StringBuilder(string.Empty);
+			var query = new StringBuilder("( "); // Begin with a 'SHOULD' clause
 
 			if (!string.IsNullOrEmpty(request.DocumentTypesIds))
 			{
+                // a 'MUST' clause - like an 'AND' - for documents of the selected types
                 query.Append("+NodeParentID:(");
                 var idsArray = request.DocumentTypesIds.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
 				for (int i = 0; i < idsArray.Length - 1; i++)
@@ -41,16 +42,6 @@ namespace CMS.Mvc.Providers
 					query.AppendFormat("(int){0} ", idsArray[i]);
 				}
 				query.AppendFormat("(int){0})", idsArray[idsArray.Length - 1]);
-			}
-			if (!string.IsNullOrEmpty(request.Regions))
-			{
-				query.Append("+regions:(");
-				var regionsArray = request.Regions.Replace(' ', '+').Split(',');
-				for (int i = 0; i < regionsArray.Length - 1; i++)
-				{
-					query.AppendFormat("{0} ", regionsArray[i]);
-				}
-				query.AppendFormat("{0})", regionsArray[regionsArray.Length - 1]);
 			}
 
             // If solutionIDs were given, add a filter for documents related to the given solutions.
@@ -72,11 +63,13 @@ namespace CMS.Mvc.Providers
                 }
                 if (solnGuids.Count > 0)
                 {
+                    // a 'MUST' clause - like an 'AND' - for documents related to the given solutions
                     query.Append(" +RelatedSolution:(");
                     query.Append(string.Join(" ", solnGuids));
                     query.Append(")");
                 }
             }
+            query.Append(" )");
 
             if (request.DocumentTypesIds.Contains(ConfigurationManager.AppSettings["DocumentDataSheetDocumentTypeId"]))
             {
@@ -89,19 +82,30 @@ namespace CMS.Mvc.Providers
                         request.SolutionsIds += sol.NodeID + ",";
                     }
                 }
-                query.Append(" (");
-                query.Append(" +NodeParentID:(");
-                //Solution IDs
-                //query.Append()
-                query.Append(")");
-                query.Append(" +(");
-                //document type
-                query.Append(")");
-                query.Append(")");
+                // Start a new 'SHOULD' clause - sort of like an OR - for the children of the solution nodes. This will OR in all the products.
+                query.Append(" NodeParentID:(");
+                var idsArray = request.SolutionsIds.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
+                for (int i = 0; i < idsArray.Length - 1; i++)
+                {
+                    query.AppendFormat("(int){0} ", idsArray[i]);
+                }
+                query.AppendFormat("(int){0})", idsArray[idsArray.Length - 1]);
 
             }
 
-			return query.ToString();
+            // Begin a 'MUST' clause for the region - applies to all of the previous SHOULD clauses
+             if (!string.IsNullOrEmpty(request.Regions))
+            {
+                query.Append(" +regions:(");
+                var regionsArray = request.Regions.Replace(' ', '+').Split(',');
+                for (int i = 0; i < regionsArray.Length - 1; i++)
+                {
+                    query.AppendFormat("{0} ", regionsArray[i]);
+                }
+                query.AppendFormat("{0})", regionsArray[regionsArray.Length - 1]);
+            }
+
+            return query.ToString();
 		}
 	}
 }
