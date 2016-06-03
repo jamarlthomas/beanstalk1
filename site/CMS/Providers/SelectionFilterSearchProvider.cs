@@ -30,7 +30,9 @@ namespace CMS.Mvc.Providers
 
 		private string AdditiveQueryBuilder(SelectionFilterSearchRequest request)
 		{
-			var query = new StringBuilder("( "); // Begin with a 'SHOULD' clause
+            var query = new StringBuilder("+( "); // Begin the additive query outer MUST clause.  Search provider will prepend some clauses; don't want an OR with respect to them.
+
+            query.Append(" ("); // Begin the document SHOULD clause
 
 			if (!string.IsNullOrEmpty(request.DocumentTypesIds))
 			{
@@ -68,9 +70,11 @@ namespace CMS.Mvc.Providers
                     query.Append(string.Join(" ", solnGuids));
                     query.Append(")");
                 }
-            }
+            } //End the document SHOULD clause
             query.Append(" )");
 
+
+            query.Append(" ("); // Begin the product SHOULD clause
             if (request.DocumentTypesIds.Contains(ConfigurationManager.AppSettings["DocumentDataSheetDocumentTypeId"]))
             {
                 // If no solution IDs given, include them all. 
@@ -93,8 +97,8 @@ namespace CMS.Mvc.Providers
 
             }
 
-            // Begin a 'MUST' clause for the region - applies to all of the previous SHOULD clauses
-             if (!string.IsNullOrEmpty(request.Regions))
+            // Begin a 'MUST' clause for the region - applies to the product clause
+            if (!string.IsNullOrEmpty(request.Regions))
             {
                 query.Append(" +regions:(");
                 var regionsArray = request.Regions.Replace(' ', '+').Split(',');
@@ -104,6 +108,10 @@ namespace CMS.Mvc.Providers
                 }
                 query.AppendFormat("{0})", regionsArray[regionsArray.Length - 1]);
             }
+
+            query.Append(")"); // End the product SHOULD clause
+
+            query.Append(")"); // End the additive query outer MUST clause
 
             return query.ToString();
 		}
