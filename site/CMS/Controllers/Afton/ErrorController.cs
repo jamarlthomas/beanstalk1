@@ -10,6 +10,7 @@ namespace CMS.Mvc.Controllers.Afton
     {
         public ViewResult Index()
         {
+            Response.TrySkipIisCustomErrors = true;
             return View("~/Views/Afton/Shared/Error.cshtml");
         }
 	}
