@@ -244,14 +244,41 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Afton\ATCToolsController.cs" />
     <Compile Include="Controllers\Afton\AuxiliaryController.cs" />
+    <Compile Include="Controllers\Afton\BaseController.cs" />
+    <Compile Include="Controllers\Afton\BlogPostController.cs" />
+    <Compile Include="Controllers\Afton\BlogsController.cs" />
+    <Compile Include="Controllers\Afton\ContactController.cs" />
+    <Compile Include="Controllers\Afton\DocumentBaseController.cs" />
+    <Compile Include="Controllers\Afton\DocumentController.cs" />
+    <Compile Include="Controllers\Afton\ErrorController.cs" />
+    <Compile Include="Controllers\Afton\FAQController.cs" />
+    <Compile Include="Controllers\Afton\GenericBaseController.cs" />
+    <Compile Include="Controllers\Afton\GenericController.cs" />
+    <Compile Include="Controllers\Afton\GlobalSearchController.cs" />
+    <Compile Include="Controllers\Afton\HomeController.cs" />
+    <Compile Include="Controllers\Afton\InsightsAndResourcesController.cs" />
+    <Compile Include="Controllers\Afton\LogisticsAndSupplyController.cs" />
+    <Compile Include="Controllers\Afton\LogisticsAndSupplyFolderController.cs" />
+    <Compile Include="Controllers\Afton\MasterController.cs" />
+    <Compile Include="Controllers\Afton\NewsAndEventsController.cs" />
+    <Compile Include="Controllers\Afton\NewsController.cs" />
+    <Compile Include="Controllers\Afton\PersonalizationController.cs" />
+    <Compile Include="Controllers\Afton\ProductController.cs" />
+    <Compile Include="Controllers\Afton\RateContentController.cs" />
+    <Compile Include="Controllers\Afton\SalesOfficesController.cs" />
+    <Compile Include="Controllers\Afton\SBUController.cs" />
+    <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
+    <Compile Include="Controllers\Afton\SidebarPageController.cs" />
+    <Compile Include="Controllers\Afton\SolutionController.cs" />
+    <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
     <Compile Include="Models\ExtendedModels\DocumentType.cs" />
     <Compile Include="Modules\CultureSwitcherModule.cs" />
+    <Compile Include="ViewModels\Error\ErrorPageViewModel.cs" />
     <Compile Include="ViewModels\Master\CultureLinkViewModel.cs" />
-    <Compile Include="Controllers\Afton\GenericController.cs" />
     <Compile Include="Providers\LocalizationProvider.cs" />
     <Compile Include="Interfaces\ILocalizationProvider.cs" />
-    <Compile Include="Controllers\Afton\LogisticsAndSupplyFolderController.cs" />
     <Compile Include="Interfaces\IMegaMenuSubLinkItemProvider.cs" />
     <Compile Include="Models\Afton\LogisticsAndSupply\LogisticsAndSupply.cs" />
     <Compile Include="Models\Afton\LogisticsAndSupply\LogisticsAndSupplyFolder.cs" />
@@ -269,19 +296,9 @@
     <Compile Include="Providers\MegaMenuSubLinkItemProvider.cs" />
     <Compile Include="ViewModels\Auxiliary\AuxiliaryHyperlink.cs" />
     <Compile Include="ViewModels\Auxiliary\AuxiliryViewModel.cs" />
-    <Compile Include="Controllers\Afton\BaseController.cs" />
-    <Compile Include="Controllers\Afton\ContactController.cs" />
-    <Compile Include="Controllers\Afton\DocumentBaseController.cs" />
-    <Compile Include="Controllers\Afton\BlogPostController.cs" />
-    <Compile Include="Controllers\Afton\RateContentController.cs" />
-    <Compile Include="Controllers\Afton\NewsController.cs" />
-    <Compile Include="Controllers\Afton\FAQController.cs" />
-    <Compile Include="Controllers\Afton\GenericBaseController.cs" />
-    <Compile Include="Controllers\Afton\LogisticsAndSupplyController.cs" />
     <Compile Include="ViewModels\Shared\DownloadWidget\DownloadButtonSectionViewModel.cs" />
     <Compile Include="ViewModels\Generic\GenericPageViewModel.cs" />
     <Compile Include="Providers\GenericProvider.cs" />
-    <Compile Include="Controllers\Afton\PersonalizationController.cs" />
     <Compile Include="Infrastructure\Models\RateContentCommentRequest.cs" />
     <Compile Include="Infrastructure\Models\RateContentRequest.cs" />
     <Compile Include="Interfaces\INewsProvider.cs" />
@@ -299,13 +316,6 @@
     <Compile Include="Models\ExtendedModels\Event.cs" />
     <Compile Include="Models\ExtendedModels\GenericPage.cs" />
     <Compile Include="Models\ExtendedModels\PersonalizedTile.cs" />
-    <Compile Include="Controllers\Afton\BlogsController.cs" />
-    <Compile Include="Controllers\Afton\ATCToolsController.cs" />
-    <Compile Include="Controllers\Afton\GlobalSearchController.cs" />
-    <Compile Include="Controllers\Afton\SalesOfficesController.cs" />
-    <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
-    <Compile Include="Controllers\Afton\NewsAndEventsController.cs" />
-    <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
     <Compile Include="Helpers\AftonData.cs" />
     <Compile Include="Helpers\ContentHelper.cs" />
     <Compile Include="Helpers\RouteHelper.cs" />
@@ -354,14 +364,6 @@
     <Compile Include="Models\Afton\Shared\SalesOffice.cs" />
     <Compile Include="Models\Afton\Contact\ContactPage.cs" />
     <Compile Include="Models\Afton\FAQ\FAQPage.cs" />
-    <Compile Include="Controllers\Afton\DocumentController.cs" />
-    <Compile Include="Controllers\Afton\InsightsAndResourcesController.cs" />
-    <Compile Include="Controllers\Afton\ProductController.cs" />
-    <Compile Include="Controllers\Afton\SolutionController.cs" />
-    <Compile Include="Controllers\Afton\SBUController.cs" />
-    <Compile Include="Controllers\Afton\HomeController.cs" />
-    <Compile Include="Controllers\Afton\MasterController.cs" />
-    <Compile Include="Controllers\Afton\SidebarPageController.cs" />
     <Compile Include="Models\Afton\GlobalSearch\GlobalSearchPage.cs" />
     <Compile Include="Models\Afton\NewsAndEvents\NewsAndEventsPage.cs" />
     <Compile Include="Models\Afton\Shared\Document.cs" />
@@ -812,6 +814,7 @@
     <Content Include="Views\Afton\ATCTools\GATCNATCScript.cshtml" />
     <Content Include="Views\Afton\SelectionFilter\mobileIndex.cshtml" />
     <Content Include="Views\Afton\Contact\ThankYou.cshtml" />
+    <Content Include="Views\Afton\Shared\Error.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -821,6 +824,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pdf\Temp\" />
+    <Folder Include="Views\Error\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CorporateSite\News\Detail.cshtml" />
