@@ -10,7 +10,7 @@
             @foreach (var faqItem in topic.Items)
             {
                 <li>
-                    <a>
+                    <a href="">
                         <div class="icon"></div> @faqItem.Question
                     </a>
                     <div style="display: none;" class="reveal">@UtilsHelper.ToHtmlString(faqItem.Answer)</div>
