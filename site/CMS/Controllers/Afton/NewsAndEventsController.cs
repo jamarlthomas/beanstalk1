@@ -53,23 +53,38 @@ namespace CMS.Mvc.Controllers.Afton
             }
             List<DateTime> Dates = contentList.Select(x => Convert.ToDateTime(x.GetStringValue("Date", ""))).ToList();
             List<string> MonthDate = Dates.Select(y => y.ToString("MMM yy")).Distinct().ToList();
-          
+
+            var monthList = contentList;
+
             if (!MonthDate.Contains(request.DateFilter))
             {
-                request.DateFilter = MonthDate.First();
+                if (request.DateFilter != "View All")
+                {
+                    request.DateFilter = MonthDate.First();
+                }
             }
-            var monthList = contentList
-                .Where(x => !string.IsNullOrEmpty(request.DateFilter)
-                    ? (Convert.ToDateTime(x.GetStringValue("Date", "")).ToString("MMM yy") == request.DateFilter)
-                    : 1 == 1).ToList();
-            model.NewsAndEventsList = monthList
-                .Skip((request.Page - 1) * recordsOnPage ?? 0)
-                .Take(recordsOnPage)
-                .Select(AutoMapper.Mapper.Map<NewsAndEventViewModel>).ToList();
-            foreach (var item in model.NewsAndEventsList)
+
+            if (request.DateFilter == "View All")
             {
-                //item.Date = UtilsHelper.ConvertToCST(item.Date);
+
             }
+            else
+            {
+                monthList = monthList
+                     .Where(x => !string.IsNullOrEmpty(request.DateFilter)
+                         ? (Convert.ToDateTime(x.GetStringValue("Date", "")).ToString("MMM yy") == request.DateFilter)
+                         : 1 == 1).ToList();
+            }
+
+            model.NewsAndEventsList = monthList
+                    .Skip((request.Page - 1) * recordsOnPage ?? 0)
+                    .Take(recordsOnPage)
+                    .Select(AutoMapper.Mapper.Map<NewsAndEventViewModel>).ToList();
+
+            //foreach (var item in model.NewsAndEventsList)
+            //{
+            //    //item.Date = UtilsHelper.ConvertToCST(item.Date);
+            //}
 
             model.Dates = MonthDate;
             model.Pagination = GetPagination((int)Math.Ceiling((double)monthList.Count() / recordsOnPage), request.Page);
