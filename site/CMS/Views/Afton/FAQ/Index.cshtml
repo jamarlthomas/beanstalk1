@@ -6,20 +6,18 @@
     Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
 }
 
-<div id="contentAreaC">
-    <div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
-        <div id="rtCol-contentArea">
-            @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", Model.BreadCrumb)
-            <div id="faqsHdrC" class="txtPaddingTop padBtm">
-                <h1>@Model.Title</h1><br>
-                @Html.Partial("~/Views/Afton/FAQ/_dropdown.cshtml", Model)
-            </div>
-            <div id="faqItems">
-                @Html.Partial("~/Views/Afton/FAQ/_topics.cshtml", Model)
-            </div>
+<div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
+    <div id="rtCol-contentArea">
+        @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", Model.BreadCrumb)
+        <div id="faqsHdrC" class="txtPaddingTop padBtm">
+            <h1>@Model.Title</h1><br>
+            @Html.Partial("~/Views/Afton/FAQ/_dropdown.cshtml", Model)
         </div>
-        <div id="lftCol-sidebar">
-            @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar)
+        <div id="faqItems">
+            @Html.Partial("~/Views/Afton/FAQ/_topics.cshtml", Model)
         </div>
+    </div>
+    <div id="lftCol-sidebar">
+        @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar)
     </div>
 </div>

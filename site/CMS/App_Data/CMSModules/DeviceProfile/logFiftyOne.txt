@@ -1,0 +1,9 @@
+2016-06-01T15:34:53.7041219Z - 3832 - Warn - Exception cleaning temporary files
+2016-06-01T15:34:53.7120859Z - 3832 - Warn - 
+2016-06-01T15:34:53.7120859Z - 3832 - Warn - Could not find a part of the path 'C:\Users\creative.temp2\Documents\kishore\site\CMS\App_Data\51Degrees'.
+2016-06-01T15:34:53.7339869Z - 3832 - Warn -    at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   at System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   at System.IO.DirectoryInfo.InternalGetFiles(String searchPattern, SearchOption searchOption)
+   at System.IO.DirectoryInfo.GetFiles()
+   at FiftyOne.Foundation.Mobile.Detection.WebProvider.CleanTemporaryFiles()

@@ -1,0 +1,19 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+
+@{
+    Layout = "~/Views/Afton/Shared/Master.cshtml";
+    ViewBag.Title = "Error";
+}
+
+<div id="contentAreaC">
+    <div class="fullWidth borderTop padTopBtm">
+        <div align="center" style="padding: 50px 0px 150px 0px;">
+            <div style="font-size: 120px; line-height: 130px; color: #0c419a;">404</div><br>
+            <div style="font-size: 40px; line-height: 45px;">Page Not Found</div>
+            <br>The page you are looking for does not exist or an error occured. Please visit our <a href="@Url.Action("Index", "Home")" class="elements">
+          <span>home page</span></a>.<br><br>
+        </div>
+    </div>
+</div>
+

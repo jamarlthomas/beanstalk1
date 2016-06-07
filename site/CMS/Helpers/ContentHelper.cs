@@ -194,6 +194,7 @@ namespace CMS.Mvc.Helpers
                                 SelectAllData = true,
                                 AliasPath = aliasPath + "/%",
                                 MaxRelativeLevel = maxRelativeLevel,
+                                OrderBy = "NodeLevel, NodeOrder, NodeName"
                             }) ?? new CMS.DataEngine.InfoDataSet<TreeNode>()).Where(i => i != null).ToList();
                         },
                     new CacheSettings(CachingTime,

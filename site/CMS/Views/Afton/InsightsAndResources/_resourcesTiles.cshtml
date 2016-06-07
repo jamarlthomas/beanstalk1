@@ -5,17 +5,40 @@
         @foreach (var tile in Model)
         {
             <a href="@Url.Content("~/" + tile.DocumentRoutePath)">
+                @if(string.IsNullOrWhiteSpace(tile.HomeImage))
+                { 
                 <div class="cardBtnIndicator">
                     <img src="@Url.Content("~/images/card-btn-indicator.png")">
                 </div>
                 <div class="cardHdrC" >
-                    <div class="cardHdrTxt">@tile.Title</div>
+                    <div class="cardHdrTxt">@UtilsHelper.ToHtmlString(tile.Title)</div>
                 </div>
                 <div class="cardTextAreaC">
                     <div class="cardTextArea">
                         <div class="cardTxt">@UtilsHelper.ToHtmlString(tile.Description)</div>
                     </div>
+                    <div class="cardDate">@UtilsHelper.ToHtmlString(tile.Date.ToString("MMMM dd, yyyy"))</div>
                 </div>
+                }
+                else
+                { 
+                <div class="cardBtnIndicator">
+                    <img src="@Url.Content("~/images/card-btn-indicator.png")" />
+                </div>
+                <div style="background-image: url(@Url.Content(tile.HomeImage));" class="cardHdrC"></div>
+                <div class="cardTextAreaC">
+                    <div class="cardTextArea">
+                        <div class="cardType">@UtilsHelper.ToHtmlString(tile.TileTitle)</div>
+                        <div class="cardHdrText">@UtilsHelper.ToHtmlString(tile.Title)</div>
+                        @*<div class="cardSubHdr">Manual Transmissions</div>*@
+                        @if (tile.Description != null)
+                        {
+                            <div class="cardTxt">@UtilsHelper.ToHtmlString(tile.Description)</div>
+                        }
+                    </div>
+                    <div class="cardDate">@UtilsHelper.ToHtmlString(tile.Date.ToString("MMMM dd, yyyy"))</div>
+                </div>
+                }
             </a>
         }
     </div>
