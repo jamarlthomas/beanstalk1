@@ -41,7 +41,7 @@ $( document ).ready(function() {
     }
     
     //Other Validations
-    $(document).on("submit", function(e) {
+    $(document).on("submit", "form", function(e) {
         
         var validateFields = [];
         
