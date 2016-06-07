@@ -2,34 +2,52 @@ $( document ).ready(function() {
  
     //check if cookie display cookie has been set
     var cookieDisplayCheck = $.cookie('displayCookie');
+
+    console.log(cookieDisplayCheck)
     
     //if cookie hasn't been set then open cookie display
-    if(cookieDisplayCheck != "cookieSet"){
-        $("#cookiesC").css({"height":"60px"})
-        $("#cookies").css({"display":"block"})
+    if(!cookieDisplayCheck){
         
-        //Move content down now that cookie display is open
-        $("body").css({"padding-top": "225px"});
+        $("body").css({"overflow":"hidden"})
+        
+        $("#cookieOverlayC").fadeIn(500);
+
     }
+    
         
-    //close cookies box
-    $("#closeCookieDisplay").click(function(e) {
+    //Allow cookie button
+    $("#cookieDisplayC .allow").click(function(e) {
         
         //fade out cookies display
-        $("#cookies").fadeOut(200, function(){
+        $("#cookieOverlayC").fadeOut(200, function(){
             
-            //Close cookies Box
-            $("#cookiesC").animate({
-                height: 0            
-            }, 500, function(){
-                $(this).removeAttr("style")
-            });
-            
-            //remove style that was used to move content down now for the cookie display
+            //display regular scroll bar again
             $("body").removeAttr('style');
             
             //set cookie
-            $.cookie('displayCookie', 'cookieSet', { expires: 365, path: '/' });
+            $.cookie('displayCookie', 'cookiesAllowed', { expires: 365, path: '/' });
+        })
+        
+    });
+    
+    
+    //Allow cookie button
+    $("#cookieDisplayC .disallow").click(function(e) {
+        
+        //disable Google tracking cookies
+        window['ga-disable-UA-10080511-2'] = true;
+        
+        //disable kentico cookies
+        $.cookie('CMSCookieLevel', '-100', { expires: 365, path: '/' });
+        
+        //fade out cookies display
+        $("#cookieOverlayC").fadeOut(200, function(){
+            
+            //display regular scroll bar again
+            $("body").removeAttr('style');
+            
+            //set cookie
+            $.cookie('displayCookie', 'cookiesDisallowed', { expires: 365, path: '/' });
         })
         
     });

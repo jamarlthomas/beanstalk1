@@ -63,6 +63,11 @@
     </script>
   </head>
   <body>
+    <div id="cookieOverlayC" style="display: none;">
+      <div id="cookieDisplayC">This website uses cookies to make your browsing experience more efficient and enjoyable. We are obliged to ask your permission before placing cookies on your computer.<br><br>Please indicate whether you accept the use of cookies.<br><br>
+        <div id="cookieDisplayOptions"><a href="#" class="cookieBtn allow">Allow</a><a href="#" class="cookieBtn disallow">Do Not Allow</a></div><br><br><a href="#" class="policy">Cookie Policy </a>
+      </div>
+    </div>
     <div id="mobileNavC1">
       <div id="mobileNavC">
         <div id="menuHdrC">
@@ -133,11 +138,14 @@
       </div>
     </div>
     <div id="topHeaderC">
-      <div id="cookiesC">
-        <div id="cookies">
-          <div id="txt">By using this website you consent to use cookies. Detailed information about the use of cookies on our website is available <a href="#">here</a>. &nbsp;</div><a href="#" id="closeCookieDisplay"><img src="images/close-cookie.gif"></a>
-        </div>
-      </div>
+      <!--hide cookie bar-->
+      <!--div(id="cookiesC")
+      div(id="cookies")
+          div(id="txt")
+              | By using this website you consent to use cookies. Detailed information about the use of cookies on our website is available <a href="#">here</a>. &nbsp;
+          a(href="#" id="closeCookieDisplay"): img(src="images/close-cookie.gif")
+      
+      -->
       <div id="searchC">
         <div id="search">
           <form action="" method="get">
