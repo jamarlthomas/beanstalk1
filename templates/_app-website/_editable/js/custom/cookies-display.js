@@ -2,8 +2,6 @@ $( document ).ready(function() {
  
     //check if cookie display cookie has been set
     var cookieDisplayCheck = $.cookie('displayCookie');
-
-    console.log(cookieDisplayCheck)
     
     //if cookie hasn't been set then open cookie display
     if(!cookieDisplayCheck){
