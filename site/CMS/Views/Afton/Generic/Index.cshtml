@@ -23,6 +23,7 @@
             @*<div class="padBtm">
                 <div style="display: none;" class="paginationC"><a href="#" class="prev"></a><span class="pageNumbers"></span><a href="#" class="next"></a></div>
             </div>*@
+            @{ Html.RenderAction("Widget", "RateContent", new { Request = Model.DocumentGUID }); }
         </div>
     </div>
     <div id="lftCol-sidebar">
