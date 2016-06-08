@@ -1,5 +1,6 @@
 ﻿using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.Helpers;
 
 namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
 {
@@ -8,6 +9,10 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
         public GenericSidebarBlockViewModel(TreeNode item) : base(item)
         {
             DefaultImage = ((GenericSidebarBlock) item).DefaultImage;
+            if (!string.IsNullOrEmpty(((GenericSidebarBlock)item).Description))
+            {
+                Description = UtilsHelper.ToHtmlString(((GenericSidebarBlock)item).Description);
+            }
         }
     }
 }

@@ -56,6 +56,22 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
+        public string Description
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Description"), "");
+            }
+            set
+            {
+                SetValue("Description", value);
+            }
+        }
+
+        /// <summary>
         /// Title.
         /// </summary>
         [DatabaseField]
