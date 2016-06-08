@@ -1,5 +1,6 @@
 ﻿using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
+using CMS.Mvc.Helpers;
 
 namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
 {
@@ -10,7 +11,7 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
             DefaultImage = ((GenericSidebarBlock) item).DefaultImage;
             if (!string.IsNullOrEmpty(((GenericSidebarBlock)item).Description))
             {
-                Description = new System.Web.HtmlString(((GenericSidebarBlock)item).Description);
+                Description = UtilsHelper.ToHtmlString(((GenericSidebarBlock)item).Description);
             }
         }
     }
