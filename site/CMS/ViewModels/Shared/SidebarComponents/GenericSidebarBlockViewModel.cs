@@ -9,10 +9,17 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
         public GenericSidebarBlockViewModel(TreeNode item) : base(item)
         {
             DefaultImage = ((GenericSidebarBlock) item).DefaultImage;
+
             if (!string.IsNullOrEmpty(((GenericSidebarBlock)item).Description))
             {
                 Description = UtilsHelper.ToHtmlString(((GenericSidebarBlock)item).Description);
             }
+
+            if (!string.IsNullOrEmpty(((GenericSidebarBlock)item).ManualReference))
+            {
+                Reference = ((GenericSidebarBlock)item).ManualReference;
+            }
+            
         }
     }
 }
