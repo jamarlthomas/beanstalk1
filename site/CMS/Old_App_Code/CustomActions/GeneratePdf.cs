@@ -2,16 +2,24 @@
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Web;
-using System.Web.Http.Routing;
 using CMS;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Membership;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Old_App_Code.CustomActions;
-using iTextSharp.text.pdf;
+using iTextSharp.text;
+using iTextSharp.tool.xml;
+using iTextSharp.tool.xml.css;
+using iTextSharp.tool.xml.html;
+using iTextSharp.tool.xml.parser;
+using iTextSharp.tool.xml.pipeline.css;
+using iTextSharp.tool.xml.pipeline.end;
+using iTextSharp.tool.xml.pipeline.html;
+using Org.BouncyCastle.Crypto.Generators;
 using Document = iTextSharp.text.Document;
+//using EvoPdf;
+using iTextSharp.text.pdf;
 
 [assembly: RegisterCustomClass("GeneratePdf", typeof(GeneratePdf))]
 
@@ -36,7 +44,7 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
                     {
                         _tNode = Node;
                     }
-                    catch (Exception exception)
+                    catch (Exception)
                     {
                         // if running outside the custom action context (for development purposes)
                         _tNode = ContentHelper.GetDoc<Product>(Product.CLASS_NAME);
@@ -102,7 +110,7 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
         {
             get
             {
-                return this.TNode.GetValue("Template", "");
+                return TNode.GetValue("Template", "");
             }
 
         }
@@ -113,11 +121,63 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
 
             FillProductTemplateWithValues();
 
+            //css = string.Empty;
             CreatePdf(Pdf, css);
-
+            //PdfSharpCreatePdf(Pdf, css);
+            //NRecoCreatePdf(Pdf, css);
+            //ExpertCreatePdf(Pdf, css);
+            //EvoCreatePdf(Pdf, css);
+            //EOCreatePdf(Pdf, css);
             UpdatePdfReference();
 
         }
+
+        //private void EOCreatePdf(string Pdf, string css)
+        //{
+        //    var ms = new MemoryStream();
+        //    var res = EO.Pdf.HtmlToPdf.ConvertHtml(Pdf, ms);
+        //    Byte[] ba = ms.ToArray();
+        //    SaveDocument(ba);
+        //}
+
+        //private void EvoCreatePdf(string Pdf, string css)
+        //{
+        //    HtmlToPdfConverter htmlToPdfConverter = new HtmlToPdfConverter();
+        //    Byte[] bytes = htmlToPdfConverter.ConvertHtml(Pdf, "http://localhost:8082");
+        //    SaveDocument(bytes);
+        //}
+
+        //private void ExpertCreatePdf(string html, string css)
+        //{
+        //    var conv = new ExpertPdf.HtmlToPdf.PdfConverter();
+        //    Byte[] bytes= conv.GetPdfBytesFromHtmlString(html);
+        //    SaveDocument(bytes);
+        //}
+
+        //private void NRecoCreatePdf(string html, string css)
+        //{
+        //    Byte[] bytes = (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(html);
+        //    SaveDocument(bytes);
+        //}
+        /*
+        private void PdfSharpCreatePdf(string html, string css)
+        {
+            Byte[] ba = PdfSharpGetPdfByteArray(html, css);
+            SaveDocument(ba);
+        }
+
+        private Byte[] PdfSharpGetPdfByteArray(string html, string css)
+        {
+            Byte[] res = null;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                var pdf = TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(html, PdfSharp.PageSize.A1);
+                pdf.Save(ms);
+                res = ms.ToArray();
+            }
+            return res;
+        }
+        */
         private void FillProductTemplateWithValues()
         {
             var pr = new TemplateTreeNode<Product>(this);
@@ -137,7 +197,7 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
                 .FillTemplate(p => p.MicrobotRobotImage, "PDSHeaderImage")
                 .SetProperReferences()
                 .FillTemplate(Domain, "Domain"); //Domain should be the last one
-            
+
             Pdf = Pds;
 
         }
@@ -182,8 +242,56 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
             css += File.ReadAllText(baseDir + @"\css\style-guide.min.css");
             return css;
         }
-
         private void CreatePdf(string html, string css)
+        {
+            try
+            {
+                Byte[] bytes;
+                using (var ms = new MemoryStream())
+                {
+                    using (var doc = new Document(PageSize.A4, 0f, 0f, 0f, 0f))
+                    {
+                        using (var writer = PdfWriter.GetInstance(doc, ms))
+                        {
+                            doc.Open();
+                            var cssResolver = new StyleAttrCSSResolver();
+                            var msCss = XMLWorkerHelper.GetCSS(new MemoryStream(System.Text.Encoding.UTF8.GetBytes(css)));
+                            cssResolver.AddCss(msCss);
+
+                            HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
+                            htmlContext.SetTagFactory(Tags.GetHtmlTagProcessorFactory());
+                            htmlContext.AutoBookmark(false);
+                            var htmlStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(html));
+
+                            PdfWriterPipeline pdfPpl = new PdfWriterPipeline(doc, writer);
+                            HtmlPipeline htmlPpl = new HtmlPipeline(htmlContext, pdfPpl);
+                            CssResolverPipeline cssPpl = new CssResolverPipeline(cssResolver, htmlPpl);
+
+                            new XMLParser(new XMLWorker(cssPpl, true)).Parse(htmlStream);
+                            
+                            doc.Close();
+                        }
+                    }
+                    bytes = ms.ToArray();
+                }
+                SaveDocument(bytes);
+            }
+            catch (Exception exc)
+            {
+                //TODO log errror
+            }
+        }
+        private void SaveDocument(byte[] bytes)
+        {
+            if (File.Exists(FilePath))
+            {
+                File.Delete(FilePath);
+            }
+            var file = File.Create(FilePath);
+            file.Write(bytes, 0, bytes.Count());
+            file.Close();
+        }
+        private void CreatePdf1(string html, string css)
         {
             try
             {
@@ -200,7 +308,7 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
                                 using (var msHtml = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(html)))
                                 {
 
-                                    iTextSharp.tool.xml.XMLWorkerHelper.GetInstance().ParseXHtml(writer, doc, msHtml, msCss);
+                                    XMLWorkerHelper.GetInstance().ParseXHtml(writer, doc, msHtml, msCss);
                                 }
                             }
                             doc.Close();
