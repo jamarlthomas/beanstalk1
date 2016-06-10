@@ -17,7 +17,7 @@
             <div id="contentC">
                 <h1 class="txtPaddingTop">
                     @Model.Title
-                    <div class="subTxt">@Model.Subtitle</div>
+                    <div class="subTxt">@UtilsHelper.ToHtmlString(@Model.Subtitle)</div>
                     <div id="socialC">
                     <a class="addthis_button_compact"><span class="icon-share"></span></a>
                     <a href="#"><span class="icon-print"></span></a></div>
