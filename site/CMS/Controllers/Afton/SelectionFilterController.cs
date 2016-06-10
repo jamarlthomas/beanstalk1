@@ -161,7 +161,28 @@ namespace CMS.Mvc.Controllers.Afton
             request.IsNullSBU = (RouteHelper.NULL_VALUE_PLACEHOLDER == request.SBUId || null == request.SBUId);
             request.IsNullSolutionId = (RouteHelper.NULL_VALUE_PLACEHOLDER == request.SolutionsIds || null == request.SolutionsIds);
 
-            request.Regions = request.Regions != RouteHelper.NULL_VALUE_PLACEHOLDER ? request.Regions : null;
+            if (request.Regions == RouteHelper.NULL_VALUE_PLACEHOLDER)
+            {
+                request.Regions = null;
+            }
+            else
+            {
+                // Expecting regions to be a comma-separated list of int. Get all ints from the list.
+                int y;
+                var regionIds = request.Regions.Split(',').Where(x=> int.TryParse(x, out y)).Select(int.Parse).ToList();
+                if (regionIds.Count > 0)
+                {
+                    // Found at least one int.
+                    // Replace each numerical region id with the title. 
+                    request.Regions = string.Join(" ",                  // make it a space-separated list.
+                        _regionProvider.GetRegions()
+                            .Where(x => regionIds.Contains(x.RegionID)) 
+                            .Select(x => x.Title.Replace(" ", "+"))     // replace space inside region title with +
+                            );
+                }
+                //...Else leave the regions arg as-is.
+            }
+
             if (request.DocumentTypesIds == RouteHelper.NULL_VALUE_PLACEHOLDER)
             {
                 request.DocumentTypesIds = MapTreeNodesToIdStr(_documentTypeProvider.GetDocumentTypes());

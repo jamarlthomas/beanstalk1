@@ -100,13 +100,10 @@ namespace CMS.Mvc.Providers
             // Begin a 'MUST' clause for the region - applies to the product clause
             if (!string.IsNullOrEmpty(request.Regions))
             {
-                query.Append(" +regions:(");
-                var regionsArray = request.Regions.Replace(' ', '+').Split(',');
-                for (int i = 0; i < regionsArray.Length - 1; i++)
-                {
-                    query.AppendFormat("{0} ", regionsArray[i]);
-                }
-                query.AppendFormat("{0})", regionsArray[regionsArray.Length - 1]);
+
+                // Regions must already be space-separated region titles (with internal spaces escaped.)
+                // Note: Parentheses (e.g. in EMEA region title) don't seem to need escaping.
+                query.AppendFormat(" +regions:({0}) ", request.Regions);
             }
 
             query.Append(")"); // End the product SHOULD clause
