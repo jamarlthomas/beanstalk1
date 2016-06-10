@@ -1,7 +1,7 @@
 ﻿@model CMS.Mvc.ViewModels.Product.ProductPageViewModel
 
 @{
-    ViewBag.Title = "Product";
+    ViewBag.Title = Model.Title;
     Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
 }
 
@@ -10,8 +10,6 @@
         @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", @Model.BreadCrumb)
         @Html.Partial("~/Views/Afton/Product/_downloadWidget.cshtml", @Model.DownloadWidget)
         @Html.Partial("~/Views/Afton/Product/_productMainContent.cshtml", @Model.ContentCopyArea)
-    </div>
-    <div id="lftCol-sidebar">
         @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.SideBar)
 
     </div>

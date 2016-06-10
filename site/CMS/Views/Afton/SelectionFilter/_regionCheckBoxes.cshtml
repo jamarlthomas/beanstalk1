@@ -1,10 +1,10 @@
-﻿@using System.Collections.Generic
-@model List<CMS.Mvc.ViewModels.SelectionFilter.CheckBoxViewModel>
+﻿@model List<CMS.Mvc.ViewModels.SelectionFilter.CheckBoxViewModel>
 
 @for (int i = 0; i < Model.Count; i++)
 {
     <label>
         <input type="checkbox" ng-model="region[@i]" data-id="@Model[i].Value" ng-click="regionWatch('@Model[i].Value','@Model[i].Title',region[@i])">
-        <span class="checkboxDisplay"></span><span class="txt">@Model[i].Title</span>
+        <span class="checkboxDisplay"></span>
+        <span class="txt">@Model[i].Title</span>
     </label>
 }

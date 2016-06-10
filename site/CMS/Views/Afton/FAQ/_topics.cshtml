@@ -1,4 +1,5 @@
-﻿@using CMS.Mvc.ViewModels.FAQ
+﻿@using CMS.Mvc.Helpers
+@using CMS.Mvc.ViewModels.FAQ
 @model FAQPageViewModel
 
 @foreach (var topic in Model.Topics)
@@ -9,10 +10,10 @@
             @foreach (var faqItem in topic.Items)
             {
                 <li>
-                    <a>
+                    <a href="">
                         <div class="icon"></div> @faqItem.Question
                     </a>
-                    <div style="display: none;" class="reveal">@Html.Raw(faqItem.Answer)</div>
+                    <div style="display: none;" class="reveal">@UtilsHelper.ToHtmlString(faqItem.Answer)</div>
                 </li>
             }
         </ul>

@@ -78,8 +78,14 @@ namespace CMS.Mvc.Controllers.Afton
 
             viewModel.Regions = _regionProvider.GetRegions().Select(MapRegionToRegionViewModel).ToList();
 
-            return View("~/Views/Afton/Contact/Index.cshtml", viewModel);
-        }
+            if (showSubmitSuccesied) {
+                return View("~/Views/Afton/Contact/ThankYou.cshtml", viewModel);
+            }
+            else
+            {
+                return View("~/Views/Afton/Contact/Index.cshtml", viewModel);
+            }
+            }
 
         [HttpPost]
         public ActionResult Index(UpdateContactRequest request)
@@ -96,11 +102,12 @@ namespace CMS.Mvc.Controllers.Afton
             var country = _countryProvider.GetCountryById(request.CountryId);
             var countryGuid = country.CountryGUID;
             var salesOffice = _salesOfficeProvider.GetSalesOfficeByCountryGuid(countryGuid);
+
             string email;
 
             if (salesOffice != null)
             {
-                email = (salesOffice.Parent as Region).Email;
+                email = _salesOfficeProvider.GetRegionOfSalesOffice(salesOffice).Email;
             }
             else
             {

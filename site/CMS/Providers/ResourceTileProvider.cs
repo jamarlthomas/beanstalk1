@@ -11,6 +11,19 @@ namespace CMS.Mvc.Providers
     {
         public List<TreeNode> GetTiles(string guids)
         {
+            var newguids = UtilsHelper.ParseGuids(guids);
+            List<TreeNode> Tiles = new List<TreeNode>();
+            foreach(var guid in newguids) {
+                var NodeReference = ContentHelper.GetDocByNodeId<TreeNode>(ContentHelper.GetNodeByNodeGuid(guid));
+                if (NodeReference != null)
+                {
+                    Tiles.Add(NodeReference);
+                }
+            }
+            if (Tiles.Count > 0)
+            {
+                return Tiles;
+            }
             return ContentHelper.GetDocsByGuids<TreeNode>(UtilsHelper.ParseGuids(guids));
         }
     }

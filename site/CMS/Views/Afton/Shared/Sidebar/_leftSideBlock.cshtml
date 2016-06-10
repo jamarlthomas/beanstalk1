@@ -13,7 +13,7 @@
         }
         <div class="txtCol">
             @*<div class="sTxt">@Model.Title</div>*@
-            <um>@UtilsHelper.Ellipsis(Model.Description.ToString(),120)</um>
+            <um>@UtilsHelper.ToHtmlString(UtilsHelper.Ellipsis(Model.Description.ToString(),120))</um>
         </div>
     </a>
 }
@@ -29,7 +29,7 @@ else
             <img src="@Url.Content(Model.DefaultImage)" alt="@Model.Title" />
         }
         <div class="txtCol">
-            <um>@UtilsHelper.Ellipsis(Model.Description.ToString(), 120)</um>
+            <um>@UtilsHelper.ToHtmlString(UtilsHelper.Ellipsis(Model.Description.ToString(), 120))</um>
         </div>
     </a>
 }

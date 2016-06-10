@@ -1,7 +1,8 @@
-﻿@using CMS.Mvc.ViewModels.DocumentBase
+﻿@using CMS.Mvc.Helpers
+@using CMS.Mvc.ViewModels.DocumentBase
 @model DocumentBasePageViewModel
 @{
-    ViewBag.Title = @Model.MenuItemTitle;
+    ViewBag.Title = Model.Document.Title;
     Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
 }
 
@@ -11,7 +12,7 @@
         @Html.Partial("~/Views/Afton/DocumentBase/_header.cshtml", Model.Document)
         <div id="contentC">
             <div id="mainContentC" class="documentPagination">
-                @Html.Raw(Model.Document.Copy.Replace("~/", "/"))
+                @UtilsHelper.ToHtmlString(Model.Document.Copy.Replace("~/", "/"))
             </div>
             <div class="padBtm">
                 <div style="display: none;" class="paginationC"><a href="#" class="prev"></a><span class="pageNumbers"></span><a href="#" class="next"></a></div>

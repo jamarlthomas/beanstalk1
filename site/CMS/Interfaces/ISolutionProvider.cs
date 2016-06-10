@@ -7,6 +7,6 @@ namespace CMS.Mvc.Interfaces
     {
         List<Solution> GetSolutions(string alias);
         List<Solution> GetSolutions();
-        Solution GetSolution(string alias);
+        Solution GetSolution(string alias, string parent);
     }
 }

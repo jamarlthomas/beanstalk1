@@ -1,3 +1,4 @@
-﻿@model CMS.Mvc.ViewModels.Shared.NewsEventsAndBlogBasePageViewModel
+﻿@using CMS.Mvc.Helpers
+@model CMS.Mvc.ViewModels.Shared.NewsEventsAndBlogBasePageViewModel
 <h1>@Model.Title</h1>
-<div class="subTxt">@Html.Raw(Model.Description)</div>
+<div class="subTxt">@UtilsHelper.ToHtmlString(Model.Description)</div>

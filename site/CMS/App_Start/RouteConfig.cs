@@ -28,7 +28,7 @@ namespace CMS.Mvc
         {
             SetUpRoutesFromKentico(routes);
             SetUpConstantRoutes(routes);
-            routes.MapAttributeRoutes();
+            //routes.MapAttributeRoutes();
             routes.MapMvcAttributeRoutes();
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             /*
@@ -99,10 +99,9 @@ namespace CMS.Mvc
 
         internal static void SetUpRoutesFromKentico(RouteCollection routes)
         {
-            var kenticoRoutes = ContentHelper.GetDocChildrenByName<AftonRoute>(AftonRoute.CLASS_NAME, "Routes");
-            var localizedRoutes = new List<AftonRoute>();
-            kenticoRoutes.ForEach(r=>localizedRoutes.AddRange(r.CultureVersions.Select(it=>(AftonRoute)it).ToList()));
-            localizedRoutes.ForEach(lr => RouteHelper.UpdateAftonRoute(routes, lr));
+            var kenticoRoutes = ContentHelper.GetDocChildrenByNameAllCultures<AftonRoute>(AftonRoute.CLASS_NAME, "Routes");
+           
+            kenticoRoutes.ForEach(kr => RouteHelper.UpdateAftonRoute(routes, kr));
             
         }
      

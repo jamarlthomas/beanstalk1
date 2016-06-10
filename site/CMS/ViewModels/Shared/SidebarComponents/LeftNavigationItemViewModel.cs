@@ -6,6 +6,7 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
     {
         public string Title { get; set; }
         public string Link { get; set; }
+        public string NavigationIcon { get; set; }
         public IEnumerable<LeftNavigationItemViewModel> SubMenu { get; set; }
     }
 }

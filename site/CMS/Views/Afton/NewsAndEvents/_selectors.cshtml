@@ -1,4 +1,6 @@
-﻿@model CMS.Mvc.ViewModels.NewsAndEvents.NewsAndEventsPageViewModel
+﻿@using CMS.Mvc.Helpers
+@model CMS.Mvc.ViewModels.NewsAndEvents.NewsAndEventsPageViewModel
+
 <div id="newsDD">
     <div id="categoriesDD">
         @Model.FilterByLabel<br>
@@ -20,8 +22,16 @@
                 <select name="categories">
                     @foreach (var date in Model.Dates)
                     {
-                        <option value="@date">@date</option>
+                        if (date.Equals(DateTime.Now.ToString("MMM yy")))
+                        {
+                            <option value="@date" selected="selected">@date</option>
+                        }
+                        else
+                        {
+                            <option value="@date">@date</option>
+                        }
                     }
+                    <option value="View All" >@UtilsHelper.GetLocalizedString("news_ViewAll")</option>
                 </select>
             </div>
         </div>

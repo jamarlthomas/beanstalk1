@@ -5,16 +5,16 @@ $( document ).ready(function() {
     //function to close search
     function closeSearch() {
         
-        //find the height of the search box
-        var searchHeight = $("#searchC").height();
-        searchHeight = -1 * searchHeight
-        
-        $("#searchC").animate({
-                marginTop: searchHeight
-        }, 500, function(){
-            $(this).removeAttr("style")
-        });
-        
+        //fade out search display
+        $("#search").fadeOut(200, function(){
+            
+            //Close Search Box
+            $("#searchC").animate({
+                height: 0            
+            }, 500, function(){
+                $(this).removeAttr("style")
+            });
+        })
         
         searchStat = "closed"; 
     }
@@ -26,11 +26,17 @@ $( document ).ready(function() {
         //open search
         if(searchStat == "closed") {
             
+            //open up search box
             $("#searchC").animate({
-                marginTop: 0
-            },500);
+                height: 100            
+            }, 500, function(){
+                
+                //fade in search display
+                $("#search").fadeIn(500)
             
-            $("#searchC #search input").focus();
+            });
+            
+            setTimeout(function() { $("#searchC #search input").focus() }, 1200);
             
             searchStat = "open";   
             

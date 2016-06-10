@@ -8,6 +8,8 @@ using CMS.Mvc.ViewModels.Shared;
 using CMS.Mvc.ViewModels.Shared.DownloadWidget;
 using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 using System.Web.Mvc;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -35,6 +37,18 @@ namespace CMS.Mvc.Controllers.Afton
 
 
             var parent = node.Parent;
+            List<TreeNode> sidebarItems = null;
+            if(node.ClassName==CustomNews.CLASS_NAME) {
+                sidebarItems = ContentHelper.GetDocByDocId<CustomNews>(node.DocumentID).Fields.SidebarItems2.ToList();
+            }
+            else
+            {
+                sidebarItems = ContentHelper.GetDocByDocId<Document>(node.DocumentID).Fields.SidebarItems2.ToList();
+            }
+            if (sidebarItems.Count() == 0)
+            {
+                sidebarItems = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(node.GetStringValue("SidebarItems",string.Empty)));
+            }
             return View("~/Views/Afton/DocumentBase/Index.cshtml", new DocumentBasePageViewModel()
             {
                 Document = documentViewModel,
@@ -45,7 +59,7 @@ namespace CMS.Mvc.Controllers.Afton
                 },
                 SideBar = new SidebarViewModel
                 {
-                    Items = MapSidebar(_sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(node.GetStringValue("SidebarItems", string.Empty))), node)
+                    Items = MapSidebar(sidebarItems, node)
                 },
                 DocumentGuid = node.DocumentGUID
             });
@@ -53,12 +67,16 @@ namespace CMS.Mvc.Controllers.Afton
 
         protected void FillDownLoadButtonSection(DocumentBaseViewModel documentViewModel, TreeNode node)
         {
+            var tranlations = _treeNodesProvider.GetAvailableTranslations(node);
+            var selectedLanguage = tranlations.FirstOrDefault(t => t.LanguageId.Equals(GetCurrentCulture())) ??
+                                   tranlations.FirstOrDefault();
+
             documentViewModel.DownloadButtonSection = new DownloadButtonSectionViewModel();
             documentViewModel.DownloadButtonSection.DownloadLabel = documentViewModel.Constant.DownloadLabel;
             documentViewModel.DownloadButtonSection.TranslationAvailableLabel = documentViewModel.Constant.TranslationAvailableLabel;
             documentViewModel.DownloadButtonSection.SelectLanguageLabel = documentViewModel.Constant.SelectLanguageLabel;
-            documentViewModel.DownloadButtonSection.CurrentLanguageId = GetCurrentCulture();
-            documentViewModel.DownloadButtonSection.TranslationAvailable =_treeNodesProvider.GetAvailableTranslations(node);
+            documentViewModel.DownloadButtonSection.SelectedLanguage = selectedLanguage;//GetCurrentCulture();
+            documentViewModel.DownloadButtonSection.TranslationAvailable = tranlations;
 
         }
     }

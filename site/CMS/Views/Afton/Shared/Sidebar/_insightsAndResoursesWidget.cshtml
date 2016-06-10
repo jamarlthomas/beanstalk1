@@ -1,7 +1,8 @@
-﻿@using CMS.Mvc.ViewModels.Shared.SidebarComponents
+﻿@using CMS.Mvc.Helpers
+@using CMS.Mvc.ViewModels.Shared.SidebarComponents
 @model InsightsAndResourcesWidgetViewModel
 <div class="sidebarBoxC">
-    <div class="hdr">Insights & Resources</div>
+    <div class="hdr">@UtilsHelper.GetLocalizedString("sidebar_InsightsAndResources")</div>
     <div class="twoCol">
         @foreach (InsightsAndResourcesBlockViewModel block in @Model.InsightsAndResourcesBlocks)
         {

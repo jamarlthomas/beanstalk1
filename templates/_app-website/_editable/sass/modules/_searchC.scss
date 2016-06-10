@@ -1,23 +1,21 @@
-#searchC { position: relative; margin-top: -115px; width: 100%; height: 115px; background: #f8f8f8; z-index: 40;
+#searchC { position: relative; margin: 0px; width: 100%; height: 0px; background: #f8f8f8; z-index: 40;
 
-    #search { position: absolute; top: 50%; left:0; right:0; width: 1190px; margin-left: auto; margin-right: auto; transform: translateY(-50%);  
+    #search { position: absolute; top: 50%; left:0; right:0; width: 1190px; margin-left: auto; margin-right: auto; transform: translateY(-50%); display: none;
 
         input { width: 68%; color: #0033a1; font: 36px HelveticaNeueLT-Light; border: 0px; background: #f8f8f8; outline-width: 0;
 
             //*** Breakpoints ***                        
-            @include breakpoint($bp1) { font-size: 20px; }
+            @include breakpoint($bp2) { width: 50%; font-size: 20px; }
 
         }//input
 
-        ::-webkit-input-placeholder { color: #0033a1; }
-        :-moz-placeholder { color: #0033a1; }
-        ::-moz-placeholder { color: #0033a1; }
-        :-ms-input-placeholder { color: #0033a1; }
 
-        #searchDir { position: absolute; top: 13px; right: 45px; color: #b2b1b1; font: 16px HelveticaNeueLT-Light;
+
+        #searchDir { position: absolute; top: 15px; right: 45px; color: #b2b1b1; font: 16px HelveticaNeueLT-Light;
 
             //*** Breakpoints ***                        
-            @include breakpoint($bp1) { font-size: 15px; top: 2px; right: 30px; }
+            @include breakpoint($bp2) { font-size: 15px; top: 6px; right: 30px; }
+            @include breakpoint($bp3) { font-size: 11px; top: 8px; }
 
         }
 
@@ -26,12 +24,13 @@
             img {
 
                 //*** Breakpoints ***                        
-                @include breakpoint($bp1) { width: 20px; }
+                @include breakpoint($bp2) { width: 20px; }
 
             }//img
 
             //*** Breakpoints ***                        
-            @include breakpoint($bp1) { top: 0px; }
+            @include breakpoint($bp2) { top: 0px; }
+            @include breakpoint($bp2) { top: 4px; }
 
 
         }//closeSearch
@@ -40,8 +39,5 @@
         @include breakpoint($bp1) { width: 98%; }
 
     }//search
-
-    //*** Breakpoints ***                        
-    @include breakpoint($bp1) { height: 45px; margin-top: -45px; }
 
 }//searchC

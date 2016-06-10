@@ -11,12 +11,16 @@ html(lang='en')
         include includes/_scripts_header.jade
         
     body
-    
+        
+        include includes/_cookieOverlay.jade
+        
         include includes/_mobileNav.jade
         
         include includes/_header.jade
         
         div(id="contentAreaC")
+        
+            script(src="assets-layout/js/custom/gatc.min.js")
         
             div(id="twoColumnC-sidebar" class="txtPaddingTop padBtm")
             
@@ -44,33 +48,32 @@ html(lang='en')
 
                             p <strong>Lorem ipsum</strong><br> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor iaculis facilisis. In sit amet hendrerit urna. Fusce eleifend nibh at nisi mattis ornare. Donec feugiat sollicitudin metus, nec feugiat quam egestas quis. Curabitur facilisis viverra nibh eu vulputate. Cras vestibulum tristique tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. lubricants.
                             
-                            form(class="calculator")
+                            form(class="calculator" id="gatcCalculator")
                             
                                 strong Price
                                 br                            
 
-                                input(type="text" placeholder="Enter Your Target Price $")
+                                input(type="text" placeholder="Enter Your Target Price $" class="price")
                                 strong $/lb
                                 br
                                 br
 
                                 strong Treat Rate
                                 br                            
-                                input(type="text" placeholder="Enter Required Treat Rate")
+                                input(type="text" placeholder="Enter Required Treat Rate" class="treatRate")
                                 
                                 div(class="customSelectC standard treatWeightSelect")
                                     div(class="orgSelect")
-                                        select(name="treatWeight")
+                                        select(class="treatRateType" name="treatWeight")
                                             option(value="WT") WT. %
-                                            option(value="PTB") PTB
+                                            option(value="ptb") PTB
+                                br
+                                br
+                                input(class="submitBtn" id="calculateGATC" type="button" value="Calculate GATC")
                                 br
                                 br
 
-                                input(class="submitBtn" type="submit" value="Calculate GATC")
-                                br
-                                br
-
-                                input(type="text")
+                                input(type="text" class="pointTotal")
                                 br
 
                                 input(class="resetBtn" type="reset" value="Reset")
@@ -81,25 +84,31 @@ html(lang='en')
                             
                             p <strong>Lorem ipsum</strong><br> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor iaculis facilisis. In sit amet hendrerit urna. Fusce eleifend nibh at nisi mattis ornare. Donec feugiat sollicitudin metus, nec feugiat quam egestas quis. Curabitur facilisis viverra nibh eu vulputate. Cras vestibulum tristique tempor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. lubricants.
                             
-                            form(class="calculator")
+                            form(class="calculator" id="natcCalculator")
                             
                                 strong Price
                                 br                            
 
-                                input(type="text" placeholder="Enter Your Target Price $")
+                                input(type="text" placeholder="Enter Your Target Price $" class="price")
                                 strong $/lb
                                 br
                                 br
-
+                                
+                                strong Base Oil/Gasoline Price
+                                br                            
+                                input(type="text" placeholder="Enter Your Base Oil/Gasoline Price $" class="gasolinePrice")
+                                br
+                                br
+                                
                                 strong Treat Rate
                                 br                            
-                                input(type="text" placeholder="Enter Required Treat Rate")
+                                input(type="text" placeholder="Enter Required Treat Rate" class="treatRate")
                                 
                                 div(class="customSelectC standard treatWeightSelect")
                                     div(class="orgSelect")
-                                        select(name="treatWeight")
+                                        select(class="treatRateType" name="treatWeight")
                                             option(value="WT") WT. %
-                                            option(value="PTB") PTB
+                                            option(value="ptb") PTB
                                 br
                                 br
 
@@ -107,17 +116,17 @@ html(lang='en')
                                 br
                                 div(class="customSelectC standard specificGravitySelect")
                                     div(class="orgSelect")
-                                        select(name="specificGravity")
+                                        select(class="sg" name="specificGravity")
                                             option(value="7.0") 7.0
                                             option(value="9.0") 9.0
                                 br
                                 br
-
-                                input(class="submitBtn" type="submit" value="Calculate NATC")
+                                
+                                input(class="submitBtn" id="calculateNATC" type="button" value="Calculate NATC")
                                 br
                                 br
-
-                                input(type="text")
+                                
+                                input(class="pointTotal" type="text")
                                 br
 
                                 input(class="resetBtn" type="reset" value="Reset")
@@ -180,7 +189,7 @@ html(lang='en')
                                     option(value="French") French
                             br
                             br
-                            input(type="text" class="txtBox" placeholder="Email Address")
+                            input(type="text" class="txtBox" placeholder="Email Address" email)
                             input(type="submit" class="submitBtn" value="Submit")
                             br 
                             br
@@ -246,7 +255,9 @@ html(lang='en')
                                     div(class="cardTitle") News
                                     div(class="cardHdr") Afton Chemical to exhibit and present at annual international CTI Symposium. 
                                 div(class="cardDate") March 27, 2015
-                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                            
+                            // Hide Card Hover HTML
+                            //div(class="hoverOverlayC" style="opacity: 0.0;")
                                 div(class="hoverOverlay")
                                     div(class="hoverOverlayTxt")
                                         | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
@@ -265,7 +276,9 @@ html(lang='en')
                                     div(class="cardTitle") Events
                                     div(class="cardHdr") Afton Chemical breaks ground for its facility in Singapore.
                                     div(class="cardTxt") Production of the next generation of additive solutions is set to begin in January 2016.
-                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                                    
+                            // Hide Card Hover HTML
+                            //div(class="hoverOverlayC" style="opacity: 0.0;")
                                 div(class="hoverOverlay")
                                     div(class="hoverOverlayTxt")
                                         | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
@@ -284,8 +297,9 @@ html(lang='en')
                                     div(class="cardTitle") Fact Sheet
                                     div(class="cardHdr") Automatic Transmissions
                                     div(class="cardTxt") Afton Chemical develops and manufacturers petroleum additives that enhances the performance of fuels and lubricating oils in machinery and vehicles.
-
-                            div(class="hoverOverlayC" style="opacity: 0.0;")
+                            
+                            // Hide Card Hover HTML
+                            //div(class="hoverOverlayC" style="opacity: 0.0;")
                                 div(class="hoverOverlay")
                                     div(class="hoverOverlayTxt")
                                         | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.

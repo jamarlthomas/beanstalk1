@@ -1,0 +1,22 @@
+﻿@using CMS.Mvc.ViewModels.Contact
+@using CMS.Mvc.Helpers
+@model ContactPageViewModel
+@{
+    ViewBag.Title = "Thank You";
+    Layout = "~/Views/Afton/Shared/Master.cshtml";
+}
+
+<div id="contentAreaC">
+    <div id="twoColumnC-sidebar2" class="txtPaddingTop padBtm">
+        <div id="lftCol-contentArea">
+            <h1>@Model.ThankYouHeader</h1>
+            <br />
+            <p>@UtilsHelper.ToHtmlString(Model.ThankYouMessage)</p>
+        </div>
+        <div id="rtCol-sidebar">
+            @{ Html.RenderPartial("~/Views/Afton/Contact/_regions.cshtml", Model); }
+        </div>
+    </div>
+    @{ Html.RenderPartial("~/Views/Afton/Shared/_emergencyResponse.cshtml", Model.EmergencyResponse); }
+</div>
+

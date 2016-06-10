@@ -19,8 +19,8 @@
         @include breakpoint($bp3) { width: 85%; } 
     }
     
-    .submitBtn { background: #4c9d2f; border: 0px; color: #FFF; }
+    .submitBtn { background: #4c9d2f; border: 0px; color: #FFF; outline: 0; }
     
-    .resetBtn { background: #FFF; border: 0px; color: #4c9d2f; }
+    .resetBtn { background: #FFF; border: 0px; color: #4c9d2f; outline: 0; }
     
 }

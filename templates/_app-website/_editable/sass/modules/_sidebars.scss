@@ -7,9 +7,6 @@
         
     }//h2
     
-    //*** Breakpoints ***
-    @include breakpoint($bp2) { display: none; xborder-top: 1px solid #a6a6a6 }
-    
 }//sidebarHdrC
 
 
@@ -25,6 +22,9 @@
             a { position: relative; padding: 10px 15px; display: block; background: #e2e2e2; text-decoration: none; font-size: 16px; color: #595959;
             
                 &:hover { background: #4c9d2f; color: #FFF; }
+                
+                //nav items with images
+                img { margin-right: 10px; vertical-align: middle;  }
                 
             }
             
@@ -52,8 +52,6 @@
     
     }//ul    
     
-    //*** Breakpoints ***
-    @include breakpoint($bp2) { display: none; }
     
 }//sidebarNavC
 

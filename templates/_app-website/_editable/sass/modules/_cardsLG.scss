@@ -2,7 +2,7 @@
 
     .cards { @include gridContainer; padding-top: 35px; padding-bottom: 15px;
         
-        a { position: relative; @include gallery(4 of 12); margin-bottom: gutter(); display: block; box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.10);
+        a { position: relative; @include gallery(4 of 12); margin-bottom: gutter(); display: block; box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.10); transition: none;
             
             .cardBtnIndicator { position: absolute; bottom: 10px; right: 10px; z-index: 11;
                 
@@ -55,6 +55,8 @@
                 
             }//overlayC
             
+            /* Disabled Hover */
+            /*
             .hoverOverlayC { position: absolute; bottom: 0px; width: 100%; padding: 10px 33px 0px 15px; background-color: rgba(12, 65, 154, 0.90);
                 
                 .hoverOverlay { max-height: 115px; margin-bottom: 5px; overflow: hidden;
@@ -91,6 +93,7 @@
                 @include breakpoint($bp2) { padding: 20px 15px 0px 15px; }
                 
             }//hoverOverlayC
+            */
             
             img { display: block; width: 100%; }
           
@@ -107,9 +110,11 @@
         
         a.trending .overlayC { background-color: rgba(12, 65, 154, 0.90)!important; }
         a.trending .cardTitle, a.trending .cardHdr, a.trending .cardTxt, a.trending .cardDate { color: #FFF!important; }
-        a.trending .hoverOverlayC { background: rgba(255,255,255,.90); }
-        a.trending .hoverOverlayC .hoverOverlayTxt { color: #595959; }
+        //a.trending .hoverOverlayC { background: rgba(255,255,255,.90); }
+        //a.trending .hoverOverlayC .hoverOverlayTxt { color: #595959; }
         
     }//cards
+    
+    .cards a:hover { box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.40) }
     
 }//cardsC

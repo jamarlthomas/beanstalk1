@@ -2,10 +2,12 @@
 @model CMS.Mvc.ViewModels.Generic.GenericPageViewModel
 @{
     Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
+    ViewBag.Title = Model.Document.Title;
+    ViewBag.SelectedMenuItem = Model.Document.NodeGUID;
 }
 @Html.Partial("~/Views/Afton/Solution/_heroImage.cshtml", Model.Document.HeroImage)
-<div id="twoColumnC-sidebar" class="@if (!string.IsNullOrEmpty(Model.Document.HeroImage)) {@Html.Raw("negMargin") }
-                                    else { @Html.Raw("txtPaddingTop")} 
+<div id="twoColumnC-sidebar" class="@if (!string.IsNullOrEmpty(Model.Document.HeroImage)) {@UtilsHelper.ToHtmlString("negMargin") }
+                                    else { @UtilsHelper.ToHtmlString("txtPaddingTop")} 
      padBtm">
     <div id="rtCol-contentArea">
         @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", Model.BreadCrumb)
@@ -21,6 +23,7 @@
             @*<div class="padBtm">
                 <div style="display: none;" class="paginationC"><a href="#" class="prev"></a><span class="pageNumbers"></span><a href="#" class="next"></a></div>
             </div>*@
+            @{ Html.RenderAction("Widget", "RateContent", new { Request = Model.DocumentGUID }); }
         </div>
     </div>
     <div id="lftCol-sidebar">

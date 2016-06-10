@@ -14,5 +14,7 @@ namespace CMS.Mvc.ViewModels.Shared.DownloadWidget
         public List<DownloadLanguageLinkItemViewModel> TranslationAvailable { get; set; }
 
         public string CurrentLanguageId { get; set; }
+
+        public DownloadLanguageLinkItemViewModel SelectedLanguage { get; set; }
     }
 }

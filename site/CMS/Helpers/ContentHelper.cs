@@ -1,4 +1,5 @@
-﻿﻿using System.Web;
+﻿﻿using System.Collections.Specialized;
+﻿using System.Web;
 using CMS.Base;
 using CMS.Globalization;
 using CMS.DocumentEngine;
@@ -28,13 +29,31 @@ namespace CMS.Mvc.Helpers
                 ? 20
                 : int.Parse(WebConfigurationManager.AppSettings.Get("CacheContentMinutes"));
 
-        private static readonly string CurrentCulture = LocalizationContext.CurrentCulture.CultureCode;
-        private static HttpContext context = HttpContext.Current;
+        public static bool CacheEnabled
+        {
+            get { return WebConfigurationManager.AppSettings.Get("EnableCache") != "false"; }
+        }
+
+        private static string CurrentCulture
+        {
+            get
+            {
+                return LocalizationContext.PreferredCultureCode;
+            }
+        }
+        private static HttpContext Context
+        {
+            get
+            {
+                return HttpContext.Current;
+            }
+        }
         private static readonly TreeProvider _treeProvider = new TreeProvider();
         private static string _allContentKey = "";
-        public const string NodeIdKey = "PageViewNodeId";
-        public const string NodeAliasPathKey = "PageViewDocumentPath";
+        public const string NodeIdKey = "NodeId";
+        public const string NodeAliasPathKey = "DocumentPath";
         public const string ObjectNameKey = "ObjectName";
+        public const string DocumentGuidKey = "DocumentGuid";
 
         public static List<TreeNode> GetAllNodes()
         {
@@ -82,7 +101,7 @@ namespace CMS.Mvc.Helpers
             TreeNode node = doc;
             while (node != null && node.NodeAliasPath != "/")
             {
-                if (!node.TryGetProperty("ExcludeFromSiteMap", out val))
+                if (!node.GetBooleanValue("ExcludeFromSiteMap", false))
                 {
                     breadcrumbList.Insert(0, new BreadCrumbLinkItemViewModel
                        {
@@ -126,12 +145,23 @@ namespace CMS.Mvc.Helpers
                 GetDocByDocId<T>(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T,
                 new CacheSettings(CachingTime, string.Format("doc_guid_{0}", guid)));
         }
-
+        public static T GetNodeByGuid<T>(Guid guid, string siteName = null) where T : class
+        {
+            return CacheHelper.Cache(cs =>
+                GetDocByDocId<T>(TreePathUtils.GetNodeIdByNodeGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T,
+                new CacheSettings(CachingTime, string.Format("doc_guid_{0}", guid)));
+        }
         public static T GetDocByDocId<T>(int docId) where T : class
         {
             return CacheHelper.Cache(cs =>
                 _treeProvider.SelectSingleDocument(docId) as T,
                 new CacheSettings(CachingTime, string.Format("doc_id_{0}", docId)));
+        }
+        public static int GetNodeByNodeGuid(Guid guid, string siteName = null)
+        {
+            return CacheHelper.Cache(cs =>
+                TreePathUtils.GetNodeIdByNodeGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"]),
+                new CacheSettings(CachingTime, string.Format("node_id_{0}", guid)));
         }
 
         public static T GetDocByNodeId<T>(int nodeId) where T : class
@@ -152,11 +182,26 @@ namespace CMS.Mvc.Helpers
             switch (PortalContext.ViewMode)
             {
                 case (ViewModeEnum.LiveSite):
-                {
-                    return CacheHelper.Cache(cs =>
                     {
-                        if (!string.IsNullOrWhiteSpace(cacheDependencyKey))
-                            cs.CacheDependency = CacheHelper.GetCacheDependency(cacheDependencyKey);
+                        return CacheHelper.Cache(cs =>
+                        {
+                            if (!string.IsNullOrWhiteSpace(cacheDependencyKey))
+                                cs.CacheDependency = CacheHelper.GetCacheDependency(cacheDependencyKey);
+                            return (new TreeProvider().SelectNodes(new NodeSelectionParameters
+                            {
+                                ClassNames = classNames,
+                                SiteName = ConfigurationManager.AppSettings["SiteName"],
+                                SelectAllData = true,
+                                AliasPath = aliasPath + "/%",
+                                MaxRelativeLevel = maxRelativeLevel,
+                                OrderBy = "NodeLevel, NodeOrder, NodeName"
+                            }) ?? new CMS.DataEngine.InfoDataSet<TreeNode>()).Where(i => i != null).ToList();
+                        },
+                    new CacheSettings(CachingTime,
+                        string.Format("pth_{0}_mrl_{1}_cn_{2}", aliasPath, maxRelativeLevel, classNames)));
+                    }
+                default:
+                    {
                         return (new TreeProvider().SelectNodes(new NodeSelectionParameters
                         {
                             ClassNames = classNames,
@@ -165,23 +210,9 @@ namespace CMS.Mvc.Helpers
                             AliasPath = aliasPath + "/%",
                             MaxRelativeLevel = maxRelativeLevel,
                         }) ?? new CMS.DataEngine.InfoDataSet<TreeNode>()).Where(i => i != null).ToList();
-                    },
-                new CacheSettings(CachingTime,
-                    string.Format("pth_{0}_mrl_{1}_cn_{2}", aliasPath, maxRelativeLevel, classNames)));
-                }
-                default:
-                {
-                    return (new TreeProvider().SelectNodes(new NodeSelectionParameters
-                    {
-                        ClassNames = classNames,
-                        SiteName = ConfigurationManager.AppSettings["SiteName"],
-                        SelectAllData = true,
-                        AliasPath = aliasPath + "/%",
-                        MaxRelativeLevel = maxRelativeLevel,
-                    }) ?? new CMS.DataEngine.InfoDataSet<TreeNode>()).Where(i => i != null).ToList();
-                }
+                    }
             }
-          
+
         }
 
         public static SearchResult PerformSearch(BaseSearchRequest request)
@@ -286,17 +317,19 @@ namespace CMS.Mvc.Helpers
                     {
                         node = (T)DocumentHelper.GetDocuments(className).Published(false)
                             .OrderBy("NodeLevel", "NodeOrder", "NodeName")
+                            .Culture(LocalizationContext.PreferredCultureCode)
                             .FirstOrDefault(predicate);
                         break;
                     }
                 case ViewModeEnum.LiveSite:
                     {
-                        if (!string.IsNullOrWhiteSpace(cacheKey))
+                        if (!string.IsNullOrWhiteSpace(cacheKey) && CacheEnabled)
                         {
                             node = CacheHelper.Cache(cs =>
                             {
                                 TreeProvider tree = new TreeProvider();
                                 var doc = tree.SelectNodes(className) //.Published()
+                                    .Culture(LocalizationContext.PreferredCultureCode)
                                     .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                                     .FirstOrDefault(predicate);
                                 if (string.IsNullOrWhiteSpace(cacheDependencyKey))
@@ -312,6 +345,7 @@ namespace CMS.Mvc.Helpers
                         {
                             TreeProvider tree = new TreeProvider();
                             node = (T)tree.SelectNodes(className).Published()
+                                .Culture(LocalizationContext.PreferredCultureCode)
                                 .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                                 .FirstOrDefault(predicate);
                             //return (T)doc;
@@ -321,6 +355,7 @@ namespace CMS.Mvc.Helpers
                 default:
                     {
                         node = (T)DocumentHelper.GetDocuments(className)
+                            .Culture(LocalizationContext.PreferredCultureCode)
                             .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                             .FirstOrDefault(predicate);
                         break;
@@ -330,17 +365,42 @@ namespace CMS.Mvc.Helpers
 
             if (node != null)
                 SaveNode(node);
+            else
+            {
+                RedirectToEnglish();
+            }
             return node;
+        }
+
+        private static void RedirectToEnglish()
+        {
+            CultureHelper.SetPreferredCulture("en-US");
+            RedirectWithoutLanguageQueryString();
+        }
+
+        public static void RedirectWithoutLanguageQueryString()
+        {
+            var qs = HttpUtility.ParseQueryString(Context.Request.Url.Query);
+            qs.Remove("lang");
+            if (qs.Count > 0)
+            {
+                Context.Response.Redirect(string.Format("{0}?{1}", Context.Request.Url.GetLeftPart(UriPartial.Path), qs));
+            }
+            else
+            {
+                Context.Response.Redirect(Context.Request.Url.GetLeftPart(UriPartial.Path));
+            }
         }
 
         private static void SaveNode(TreeNode node)
         {
-            if (context.Items[ContentHelper.NodeIdKey] == null)
+            if (Context.Items[ContentHelper.NodeIdKey] == null)
             {
-                context.Items[ContentHelper.NodeIdKey] = node.NodeID;
-                context.Items[ContentHelper.NodeAliasPathKey] = node.NodeAliasPath;
-                context.Items[ContentHelper.ObjectNameKey] = node.NodeAlias;
+                Context.Items[ContentHelper.NodeIdKey] = node.NodeID;
+                Context.Items[ContentHelper.NodeAliasPathKey] = node.NodeAliasPath;
+                Context.Items[ContentHelper.ObjectNameKey] = node.NodeAlias;
             }
+
         }
 
         private static IQueryable<TResult> HandleQueryableData<TResult>(
@@ -353,17 +413,19 @@ namespace CMS.Mvc.Helpers
                     {
                         var treeNodes = DocumentHelper.GetDocuments(className)
                             .Published(false)
+                            .Culture(LocalizationContext.PreferredCultureCode)
                             .OrderBy("NodeLevel", "NodeOrder", "NodeName");
                         return constraint(treeNodes).Select(it => (TResult)it);
                     }
                 case ViewModeEnum.LiveSite:
                     {
-                        if (!string.IsNullOrWhiteSpace(cacheKey))
+                        if (!string.IsNullOrWhiteSpace(cacheKey) && CacheEnabled)
                         {
                             return CacheHelper.Cache(cs =>
                             {
                                 var tree = new TreeProvider();
                                 var treeNodes = tree.SelectNodes(className)
+                                    .Culture(LocalizationContext.PreferredCultureCode)
                                     .Published()
                                     .OrderBy("NodeLevel", "NodeOrder", "NodeName");
                                 if (!string.IsNullOrWhiteSpace(cacheDependencyKey))
@@ -375,7 +437,9 @@ namespace CMS.Mvc.Helpers
                         {
                             var tree = new TreeProvider();
                             var baseNodes = tree.SelectNodes(className);
-                            var treeNodes = baseNodes.Published()
+                            var treeNodes = baseNodes
+                                .Culture(LocalizationContext.PreferredCultureCode)
+                                .Published()
                                 .OrderBy("NodeLevel", "NodeOrder", "NodeName");
                             return constraint(treeNodes).Select(item => (TResult)item).Where(i => i != null);
                         }
@@ -383,6 +447,7 @@ namespace CMS.Mvc.Helpers
                 default:
                     {
                         return constraint(DocumentHelper.GetDocuments(className)
+                            .Culture(LocalizationContext.PreferredCultureCode)
                             .OrderBy("NodeLevel", "NodeOrder", "NodeName")).Select(it => (TResult)it);
                     }
             }
@@ -438,6 +503,31 @@ namespace CMS.Mvc.Helpers
                 SaveNode(doc);
             }
             return doc;
+        }
+
+        public static T GetDocByNameAndParent<T>(string className, string docName, string parent) where T: TreeNode, new()
+        {
+            docName = docName.Replace(' ', '-');
+            parent = parent.Replace(' ', '-');
+            return HandleData<T>(
+                a => a.NodeAlias.Equals(docName, StringComparison.InvariantCultureIgnoreCase) && a.Parent.NodeAlias.Equals(parent, StringComparison.InvariantCultureIgnoreCase),
+                className,
+                string.Format("cc_{0}_cn_{1}_dn_{2}_pn_{3}", CurrentCulture, className, docName, parent),
+                null,
+                "nodeid|{0}"
+                );
+        }
+        internal static List<T> GetDocChildrenByNameAllCultures<T>(string childrenClassName, string docName,
+            int limit = Int32.MaxValue)
+            where T : TreeNode, new()
+        {
+            var treeNodes = DocumentHelper
+                .GetDocuments(childrenClassName)
+                .Published(false)
+                .OrderBy("NodeLevel", "NodeOrder", "NodeName")
+                .AllCultures()
+                .Where(d => d.Parent.NodeAlias.Equals(docName));
+            return treeNodes.Select(it => (T)it).ToList();
         }
     }
 }

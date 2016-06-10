@@ -82,7 +82,7 @@ $( document ).ready(function() {
           var mmItem = $(".mmItemOpen").attr("id");
           
           //activate nav highlight
-          $("#mainNavC a[data-mm='" + mmItem + "']").addClass("active");
+          $("#mainNavC a[data-mm='" + mmItem + "']").addClass("hover");
 
           //turn off timer
           clearTimeout(timerControl);
@@ -90,7 +90,7 @@ $( document ).ready(function() {
       }, function() {
           
           //clear any active states
-          $("#mainNavC a.active").removeClass("active");
+          $("#mainNavC a.hover").removeClass("hover");
           
           //set timer
           closeTimer();
@@ -138,6 +138,21 @@ $( document ).ready(function() {
         timerControl = setTimeout(closeMenu, 200);
     }
 
+    
+    //Close Mega Menu    
+    $(".megaMenu a").click(function() {
+          
+        //check if this is a filter link
+        var urlCheck = $(this).attr("href");
+        
+        if(urlCheck == "/#"){
+            
+            closeMenu();
+            
+        }
+          
+
+    });
     
     
 });

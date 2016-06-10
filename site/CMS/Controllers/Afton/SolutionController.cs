@@ -38,7 +38,7 @@ namespace CMS.Mvc.Controllers.Afton
         [PageVisitActivity]
         public ActionResult Index(string SolutionName, string SBUName)
         {
-            var solution = _solutionProvider.GetSolution(SolutionName);
+            var solution = _solutionProvider.GetSolution(SolutionName, SBUName);
 
             var solutionViewModel = MapData<Solution, SolutionViewModel>(solution);
 
@@ -46,16 +46,28 @@ namespace CMS.Mvc.Controllers.Afton
 
             solutionViewModel.ParentName = SBUName;
 
+            var sidebarItems = ContentHelper.GetDocByDocId<Solution>(solution.DocumentID).Fields.SidebarItems2.ToList();
+            if (sidebarItems.Count() == 0)
+            {
+                sidebarItems = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(solution.SidebarItems));
+            }
             solutionViewModel.SideBar = new SidebarViewModel
             {
-                Items = MapSidebar(_sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(solution.SidebarItems)), solution)
+                Items = MapSidebar(sidebarItems, solution)
             };
             solutionViewModel.BreadCrumb = new BreadCrumbViewModel
             {
                 BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(solution.DocumentGUID)
             };
             solutionViewModel.Constants = MapData<SolutionConstants, SolutionConstantsViewModel>(_solutionConstantsProvider.GetSolutionConstants());
+            solutionViewModel.NodeID = solution.NodeID;
             return View("~/Views/Afton/Solution/Index.cshtml", solutionViewModel);
+        }
+
+        [PageVisitActivity]
+        public ActionResult SubSolution(string subSolution, string solutionName)
+        {
+            return Index(subSolution, solutionName);
         }
 
         private List<ProductViewModel> GetProductViewModels(Solution solution)

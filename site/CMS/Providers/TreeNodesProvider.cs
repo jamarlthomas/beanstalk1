@@ -40,7 +40,10 @@ namespace CMS.Mvc.Providers
 
         public List<DownloadLanguageLinkItemViewModel> GetAvailableTranslations(TreeNode product)
         {
-            return product.CultureVersions.Select(
+            return product
+                .CultureVersions
+                .Where(p => !string.IsNullOrWhiteSpace(p.GetValue("PdfReference", "")))
+                .Select(
                 item => new DownloadLanguageLinkItemViewModel()
                 {
                     LanguageId = item.DocumentCulture,
@@ -50,6 +53,11 @@ namespace CMS.Mvc.Providers
                             ? (new CultureInfo(item.DocumentCulture)).NativeName.Substring(0, ((new CultureInfo(item.DocumentCulture)).NativeName).IndexOf("(", StringComparison.Ordinal)).TrimEnd()
                             : (new CultureInfo(item.DocumentCulture)).NativeName.TrimEnd()
                 }).ToList();
+        }
+        public TreeNode GetDocumentByNodeGUID(Guid guid)
+        {
+            
+            return ContentHelper.GetNodeByGuid<TreeNode>(guid);
         }
     }
 }

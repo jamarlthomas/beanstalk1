@@ -1,13 +1,14 @@
-﻿@model CMS.Mvc.ViewModels.Shared.SidebarComponents.GenericSidebarBlockViewModel
+﻿@using CMS.Mvc.Helpers
+@model CMS.Mvc.ViewModels.Shared.SidebarComponents.GenericSidebarBlockViewModel
 
 <div class="sidebarBoxC">
     @if (Model.Reference != null)
     {
-        <div class="title">@Model.Title</div>
+        <div class="title">@UtilsHelper.ToHtmlString(@Model.Title)</div>
     }
     else
     {
-    <div class="hdr">@Model.Title</div>
+    <div class="hdr">@UtilsHelper.ToHtmlString(@Model.Title)</div>
     }
     <div class="twoCol">
         @Html.Partial("~/Views/Afton/Shared/Sidebar/_leftSideBlock.cshtml", Model)

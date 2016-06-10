@@ -14,5 +14,6 @@ namespace CMS.Mvc.ViewModels.Shared
         public DocumentConstantViewModel Constant { get; set; }
         public bool map { get; set; }
         public string DocumentRoutePath { get; set; }
+        public string NodeGUID { get; set; }
     }
 }

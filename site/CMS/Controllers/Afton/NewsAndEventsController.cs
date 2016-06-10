@@ -35,13 +35,17 @@ namespace CMS.Mvc.Controllers.Afton
         [PageVisitActivity]
         public ActionResult Index(NewsAndEventsRequest request)
         {
+            if (string.IsNullOrWhiteSpace(request.DateFilter))
+            {
+                request.DateFilter = DateTime.Now.ToString("MMM yy");
+            }
             var page = _newsAndEventsPageProvier.GetNewsAndEventsPage();
             var model = MapData<NewsAndEventsPage, NewsAndEventsPageViewModel>(page);
 
             model.Types = _newsAndEventsPageProvier.GetDocumentTypes(page, request.Category);
 
             var recordsOnPage = Int32.Parse(ConfigurationManager.AppSettings["NewsEventsBlogsRecordOnPageCount"]);
-            
+
             var contentList = _newsAndEventsPageProvier.GetContentList(page, request).ToList();
             if (!String.Equals(request.SortOrder, "DESC", StringComparison.OrdinalIgnoreCase))
             {
@@ -49,22 +53,41 @@ namespace CMS.Mvc.Controllers.Afton
             }
             List<DateTime> Dates = contentList.Select(x => Convert.ToDateTime(x.GetStringValue("Date", ""))).ToList();
             List<string> MonthDate = Dates.Select(y => y.ToString("MMM yy")).Distinct().ToList();
-            if (!MonthDate.Contains(request.DateFilter)&&!string.IsNullOrEmpty(request.DateFilter)) {
-                request.DateFilter = MonthDate.First();
-            }
-            model.NewsAndEventsList = contentList
-                .Where(x=>!string.IsNullOrEmpty(request.DateFilter) ?
-                    (Convert.ToDateTime(x.GetStringValue("Date","")).ToString("MMM yy")==request.DateFilter):1==1)
-                .Skip((request.Page - 1) * recordsOnPage ?? 0)
-                .Take(recordsOnPage)
-                .Select(AutoMapper.Mapper.Map<NewsAndEventViewModel>).ToList();
-            foreach (var item in model.NewsAndEventsList)
+
+            var monthList = contentList;
+
+            if (!MonthDate.Contains(request.DateFilter))
             {
-                //item.Date = UtilsHelper.ConvertToCST(item.Date);
+                if (request.DateFilter != "View All")
+                {
+                    request.DateFilter = MonthDate.First();
+                }
             }
- 
+
+            if (request.DateFilter == "View All")
+            {
+
+            }
+            else
+            {
+                monthList = monthList
+                     .Where(x => !string.IsNullOrEmpty(request.DateFilter)
+                         ? (Convert.ToDateTime(x.GetStringValue("Date", "")).ToString("MMM yy") == request.DateFilter)
+                         : 1 == 1).ToList();
+            }
+
+            model.NewsAndEventsList = monthList
+                    .Skip((request.Page - 1) * recordsOnPage ?? 0)
+                    .Take(recordsOnPage)
+                    .Select(AutoMapper.Mapper.Map<NewsAndEventViewModel>).ToList();
+
+            //foreach (var item in model.NewsAndEventsList)
+            //{
+            //    //item.Date = UtilsHelper.ConvertToCST(item.Date);
+            //}
+
             model.Dates = MonthDate;
-            model.Pagination = GetPagination((int)Math.Ceiling((double)contentList.Count / recordsOnPage), request.Page);
+            model.Pagination = GetPagination((int)Math.Ceiling((double)monthList.Count() / recordsOnPage), request.Page);
             model.SelectedSortOrder = request.SortOrder;
 
             model.Tiles = _treeNodesProvider

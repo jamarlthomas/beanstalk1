@@ -7,7 +7,6 @@ using CMS.DocumentEngine.Types;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Shared.SidebarComponents;
-using CMS.Mvc.ViewModels.Solution;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -142,7 +141,8 @@ namespace CMS.Mvc.Controllers.Afton
             return new LeftNavigationItemViewModel
             {
                 Title = node.GetStringValue("Title", node.NodeName),
-                Link =  ((node as IRoutedModel) != null) ? (node as IRoutedModel).DocumentRoutePath : node.DocumentNamePath
+                Link =  ((node as IRoutedModel) != null) ? (node as IRoutedModel).DocumentRoutePath : node.DocumentNamePath,
+                NavigationIcon = node.GetStringValue("NavigationIcon",null)
             };
         }
 

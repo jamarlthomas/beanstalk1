@@ -88,10 +88,17 @@ $( document ).ready(function() {
                var thisId = $$.attr("id");
                var headerHeight = $("#topHeaderC").height()
 
-               var secDisplay = scrollDist
+               var secDisplay = scrollDist - 300
+               
+               var distanceFromTop = secDisplay - anchorLinkPos[anchorInc]
+               
+               //console.log(secDisplay + " " + anchorLinkPos[anchorInc] + " " + distanceFromTop)
                
                //check if anchor link is viewable in range of what is being displayed
-               if (secDisplay > anchorLinkPos[anchorInc] && secDisplay < anchorLinkPos[anchorInc+1]) {
+               //if (secDisplay > anchorLinkPos[anchorInc] && secDisplay < anchorLinkPos[anchorInc+1]) {
+               if (distanceFromTop < 50 && distanceFromTop > -50 ) {
+                   
+                   console.log(distanceFromTop)
                    
                    //reset any active states
                    $(".sbuLandingNav a").removeAttr("style");

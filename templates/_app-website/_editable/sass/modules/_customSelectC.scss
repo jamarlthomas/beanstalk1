@@ -11,7 +11,7 @@
 
     }//currentItem
 
-    .dropDownItemsC { width: 100%; position: absolute; margin-top: -1px;  background: #FFF; border: 1px solid #000; z-index: 1; display: none;
+    .dropDownItemsC { width: 100%; max-height: 237px; position: absolute; margin-top: -1px;  background: #FFF; border: 1px solid #000; overflow: auto; z-index: 1; display: none;
 
         ul { margin: 0px; padding: 0px;
 

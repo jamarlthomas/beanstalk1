@@ -1,4 +1,5 @@
 ﻿@using CMS.Mvc.ViewModels.Shared
+@using CMS.Mvc.Helpers
 @model SolutionViewModel
 
 <div class="bgGray padTopBtm">
@@ -10,14 +11,16 @@
             @foreach (var product in Model.Products)
             {
                 <a href="@Url.Content("~/" + product.DocumentRoutePath)">
-                    <div class="cardBtnIndicator"><img src="@Url.Content("~/images/card-btn-indicator.png")"></div>
+                    <div class="cardBtnIndicator">
+                        <img src="@Url.Content("~/images/card-btn-indicator.png")" />
+                    </div>
                     <div style="background-image: url(@(!string.IsNullOrEmpty(product.HomeImage) ? Url.Content(product.HomeImage) : string.Empty));" class="cardHdrC"></div>
                     <div class="cardTextAreaC">
                         <div class="cardTextArea">
                             <div class="cardType">@Model.Constants.ProductCardType</div>
-                            <div class="cardHdrText">@Html.Raw(product.Title)</div>
-                            <div class="cardSubHdr">@Html.Raw(@product.TileOverlayText)</div>
-                            <div class="cardTxt">@Html.Raw(product.Description)</div>
+                            <div class="cardHdrText">@UtilsHelper.ToHtmlString(product.Title)</div>
+                            <div class="cardSubHdr">@UtilsHelper.ToHtmlString(@product.TileOverlayText)</div>
+                            <div class="cardTxt">@UtilsHelper.ToHtmlString(product.Description)</div>
                         </div>
                         <div class="cardDate">@product.DocumentCreatedWhen.ToString("MMM dd, yyyy")</div>
                     </div>
@@ -25,5 +28,9 @@
             }
         </div>
     </div>
-    <div class="fullWidth"><a href="#" class="viewAllBtn">@Model.Constants.ViewAllLabel @Model.Title @Model.Constants.ProductsLabel</a></div>
+    <div class="fullWidth">
+        <a href="@Url.Content("~/"+RouteHelper.GetSelectionFilterSolutionViewAllUrl(Model.NodeID.ToString()))" class="viewAllBtn">
+            @Model.Constants.ViewAllLabel @Model.Title @Model.Constants.ProductsLabel
+        </a>
+    </div>
 </div>

@@ -14,7 +14,7 @@ namespace CMS.Mvc.Providers
 		{
 			request.IndexName = "SelectionFilterSearch";
             request.RecordsOnPage = int.Parse(ConfigurationManager.AppSettings["SelectionFilterRecordOnPageCount"]);
-            if (request.DocumentTypesIds == "1690")
+            if (request.DocumentTypesIds == ConfigurationManager.AppSettings["DocumentDataSheetDocumentTypeId"])
             {
                 request.ClassNames = "custom.Product;";
             }

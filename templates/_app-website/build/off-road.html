@@ -23,6 +23,7 @@
     <script src="https://cdn.jsdelivr.net/jquery.columnizer/1.6.0/jquery.columnizer.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.actual/1.0.17/jquery.actual.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-placeholder/2.3.1/jquery.placeholder.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="https://code.angularjs.org/1.4.8/angular.js"></script>
     <script src="assets-layout/js/library/dirPagination.min.js"></script>
     <script src="assets-layout/js/custom/prodFilter.min.js"></script>
@@ -40,10 +41,10 @@
           {disclaimer_copyright: "assets-layout/js/custom/copyrightDate.min.js"},
           {custom_select_DropDowns: "assets-layout/js/custom/customSelectDropDown.min.js"},
           
-          {card_Animations: "assets-layout/js/custom/cards.min.js"},
+          {display_Cookies_Alert: "assets-layout/js/custom/cookies-display.min.js"},
           {sbu_Landing_Nav: "assets-layout/js/custom/sbuLandingDropDown.min.js"},
           {accordion_Nav: "assets-layout/js/custom/accordion.min.js"},
-          {card_Animations: "assets-layout/js/custom/print.min.js"},
+          {print: "assets-layout/js/custom/print.min.js"},
           {language_Document_selector: "assets-layout/js/custom/langDocSel.min.js"},
           {product_Filter_Nav: "assets-layout/js/custom/prodFilterNav.min.js"},
           {FAQ_Download: "assets-layout/js/custom/faqDropDown.min.js"},
@@ -62,6 +63,11 @@
     </script>
   </head>
   <body>
+    <div id="cookieOverlayC" style="display: none;">
+      <div id="cookieDisplayC">This website uses cookies to make your browsing experience more efficient and enjoyable. We are obliged to ask your permission before placing cookies on your computer.<br><br>Please indicate whether you accept the use of cookies.<br><br>
+        <div id="cookieDisplayOptions"><a href="#" class="cookieBtn allow">Allow</a><a href="#" class="cookieBtn disallow">Do Not Allow</a></div><br><br><a href="#" class="policy">Cookie Policy </a>
+      </div>
+    </div>
     <div id="mobileNavC1">
       <div id="mobileNavC">
         <div id="menuHdrC">
@@ -132,15 +138,25 @@
       </div>
     </div>
     <div id="topHeaderC">
+      <!--hide cookie bar-->
+      <!--div(id="cookiesC")
+      div(id="cookies")
+          div(id="txt")
+              | By using this website you consent to use cookies. Detailed information about the use of cookies on our website is available <a href="#">here</a>. &nbsp;
+          a(href="#" id="closeCookieDisplay"): img(src="images/close-cookie.gif")
+      
+      -->
       <div id="searchC">
         <div id="search">
-          <input type="text" placeholder="Search Term...">
+          <form action="" method="get">
+            <input type="text" placeholder="Search Term..." class="test">
+          </form>
           <div id="searchDir">Press Enter to Search</div>
           <div id="closeSearch"><a href="#"><img src="images/searchClose.png"></a></div>
         </div>
       </div>
       <div id="topHeader">
-        <header><a href="#"><img src="images/logo.gif" id="dLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions"><img src="images/logo-mobile.gif" id="mLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions" style="display: none;"></a><a href="#" id="mobileBtn" style="display: none;"><img src="images/mobileBtn.gif"></a><a href="#" id="mobileSearch" style="display: none;"><span class="icon-search"></span></a>
+        <header><a href="#"><img src="images/logo.svg" id="dLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions"><img src="images/logo-mobile.svg" id="mLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions" style="display: none;"></a><a href="#" id="mobileBtn" style="display: none;"><img src="images/mobileBtn.gif"></a><a href="#" id="mobileSearch" style="display: none;"><span class="icon-search"></span></a>
           <div id="languageC">
             <ul>
               <li><a href="#" id="selLang" data-lang="langEnglish">English</a><span class="icon-language"></span>
@@ -169,7 +185,7 @@
           </div>
           <div id="mainNavC">
             <ul>
-              <li><a href="#" data-mm="driveline">Driveline Additives</a></li>
+              <li><a href="#" data-mm="driveline" class="active">Driveline Additives</a></li>
               <li><a href="#" data-mm="engine">Engine Oil Additives</a></li>
               <li><a href="#" data-mm="fuel">Fuel Additives</a></li>
               <li><a href="#" data-mm="industrial">Industrial Additives</a></li>
@@ -183,11 +199,11 @@
       <div id="stickySBU-navC" style="display: none;"></div>
       <div id="megaMenuC" style="opacity: 0;"><!-- DriveLine Mega Menu -->
         <div id="driveline" class="megaMenu">
-          <div class="lftCol"><a href="#" class="photoLink"><img src="page-images/mega-menu/sample-pic-megamanu1.jpg">
+          <div class="lftCol"><a href="http://google.com" class="photoLink"><img src="page-images/mega-menu/sample-pic-megamanu1.jpg">
               <div class="photoLinkRt">
                 <div class="mHeader">Learn About Driveline Additives</div>
                 <div class="mTxt">Keeping even more of your big, dirty, dusty machines working smoothly and more efficiently for longer operating.</div>
-              </div></a><a href="#" class="photoLink"><img src="page-images/mega-menu/sample-pic-megamanu2.jpg">
+              </div></a><a href="/#" class="photoLink"><img src="page-images/mega-menu/sample-pic-megamanu2.jpg">
               <div class="photoLinkRt">
                 <div class="mHeader">Driveline Insights & Resources</div>
                 <div class="mTxt">Keeping even more of your big, dirty, dusty machines working smoothly and more efficiently for longer operating.</div>
@@ -519,7 +535,7 @@
                   </select>
                 </div>
               </div><br><br>
-              <input type="text" placeholder="Email Address" class="txtBox">
+              <input type="text" placeholder="Email Address" email class="txtBox">
               <input type="submit" value="Submit" class="submitBtn"><br><br>
             </form>
             <div class="txt"> <a href="#">Learn More</a>&nbsp; about our newsletter.</div>
@@ -615,12 +631,16 @@
                 </div>
                 <div class="cardDate">March 27, 2015</div>
               </div>
-              <div style="opacity: 0.0;" class="hoverOverlayC">
-                <div class="hoverOverlay">
-                  <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
-                </div>
-                <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-              </div><img src="page-images/cards/sample-card1.jpg"></a><a href="#">
+              <!-- Hide Card Hover HTML-->
+              <!--div(class="hoverOverlayC" style="opacity: 0.0;")
+              div(class="hoverOverlay")
+                  div(class="hoverOverlayTxt")
+                      | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+              
+              div(class="cardLearnMore") Read More
+                  span(class="icon-arrow")
+              
+              --><img src="page-images/cards/sample-card1.jpg"></a><a href="#">
               <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
               <div class="overlayC">
                 <div class="overlay">
@@ -629,12 +649,16 @@
                   <div class="cardTxt">Production of the next generation of additive solutions is set to begin in January 2016.</div>
                 </div>
               </div>
-              <div style="opacity: 0.0;" class="hoverOverlayC">
-                <div class="hoverOverlay">
-                  <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
-                </div>
-                <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-              </div><img src="page-images/cards/sample-card2.jpg"></a><a href="#">
+              <!-- Hide Card Hover HTML-->
+              <!--div(class="hoverOverlayC" style="opacity: 0.0;")
+              div(class="hoverOverlay")
+                  div(class="hoverOverlayTxt")
+                      | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+              
+              div(class="cardLearnMore") Read More
+                  span(class="icon-arrow")
+              
+              --><img src="page-images/cards/sample-card2.jpg"></a><a href="#">
               <div class="cardBtnIndicator"><img src="images/card-btn-indicator.png"></div>
               <div class="overlayC">
                 <div class="overlay">
@@ -643,12 +667,16 @@
                   <div class="cardTxt">Afton Chemical develops and manufacturers petroleum additives that enhances the performance of fuels and lubricating oils in machinery and vehicles.</div>
                 </div>
               </div>
-              <div style="opacity: 0.0;" class="hoverOverlayC">
-                <div class="hoverOverlay">
-                  <div class="hoverOverlayTxt">Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.</div>
-                </div>
-                <div class="cardLearnMore">Read More<span class="icon-arrow"></span></div>
-              </div><img src="page-images/cards/sample-card3.jpg"></a></div>
+              <!-- Hide Card Hover HTML-->
+              <!--div(class="hoverOverlayC" style="opacity: 0.0;")
+              div(class="hoverOverlay")
+                  div(class="hoverOverlayTxt")
+                      | Tem as moluptatusto voloreiur rectiun totaspellab ipsan. Et auta nost lant, tem erro berum nectio que sequaes aut late rempossit est, num cus, que.
+              
+              div(class="cardLearnMore") Read More
+                  span(class="icon-arrow")
+              
+              --><img src="page-images/cards/sample-card3.jpg"></a></div>
         </div>
       </div>
     </div>
@@ -681,11 +709,17 @@
             </ul>
           </div>
           <div class="btmNavCol"><a href="#">Blog</a></div>
+          <div class="btmNavCol"><a href="#">Contact</a><br><br><a href="https://www.linkedin.com/company/afton-chemical?trk=top_nav_home" target="_blank"><span class="icon-linkedIn"></span></a>&nbsp;&nbsp;<a href="https://www.youtube.com/user/AftonChemicalCorp" target="_blank"><span class="icon-youTube"></span></a></div>
         </div>
         <div id="btmContactBtn" style="display:none;"><a href="#">Contact</a></div>
         <div id="disclaimer">&copy;<span id="dateYear"></span> Afton Chemical <span class="divider">|</span><a href="#">Legal Notice</a><span class="divider">|</span><a href="#">Privacy & Terms</a><span class="divider">|</span><a href="#">Site Map</a></div>
       </footer>
     </div><script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-56686002384632a9" async="async"></script>
+    <script>
+      var addthis_config = { services_compact: 'email,linkedin,twitter,facebook,more', services_exclude:'google,google_plusone_share' }
+      
+      
+    </script>
     <script>
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-10080511-2']);

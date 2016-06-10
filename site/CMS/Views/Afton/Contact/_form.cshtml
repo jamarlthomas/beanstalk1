@@ -1,4 +1,5 @@
-﻿@using CMS.Mvc.ViewModels.Contact
+﻿@using CMS.Mvc.Helpers
+@using CMS.Mvc.ViewModels.Contact
 @model ContactPageViewModel
 
 <div id="contactC">
@@ -10,8 +11,8 @@
             <input placeholder="@Model.FirstNamePlaceholder" required name="FirstName">
             <input placeholder="@Model.LastNamePlaceholder" required name="LastName">
             <input placeholder="@Model.CompanyNamePlaceholder" required name="CompanyName">
-            <input placeholder="@Model.EmailPlaceholder" required name="Email">
-            <input placeholder="@Model.PhonePlaceholder" required name="Phone">
+            <input placeholder="@Model.EmailPlaceholder" required email name="Email">
+            <input placeholder="@Model.PhonePlaceholder" required phone name="Phone">
             <div class="customSelectC standard">
                 <div class="orgSelect">
                     <select name="CountryId" required>
@@ -26,7 +27,7 @@
             <textarea placeholder="@Model.MessagePlaceholder" required name="Note"></textarea>
             <strong>@Model.NewsletterTitle</strong><br><br>
             <label>
-                <input type="checkbox" name="IsSubscribed"><span class="checkboxDisplay"></span><span class="txt">@Html.Raw(@Model.NewsletterCheckboxLabel)</span><a href="@Model.NewsletterPrivacyLink">@Model.NewsletterPrivacyLabel</a>
+                <input type="checkbox" name="IsSubscribed"><span class="checkboxDisplay"></span><span class="txt">@UtilsHelper.ToHtmlString(@Model.NewsletterCheckboxLabel)</span><a target="_blank" href="@Model.NewsletterPrivacyLink">@Model.NewsletterPrivacyLabel</a>
             </label><br><br>
             <input type="submit" value="@Model.SubmitLabel" class="subscribe">
         </form>

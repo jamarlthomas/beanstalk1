@@ -1,5 +1,15 @@
-﻿@using CMS.Mvc.ViewModels.Master
+﻿@using CMS.Helpers
+@using CMS.Mvc.Helpers
+@using CMS.Mvc.ViewModels.Master
 @model MasterViewModel
+
+<div id="cookieOverlayC" style="display: none;">
+    <div id="cookieDisplayC">
+        @UtilsHelper.GetLocalizedString("cookie_Message") <br><br> @UtilsHelper.GetLocalizedString("cookie_Accept_Message") <br><br>
+        <div id="cookieDisplayOptions"><a href="#" class="cookieBtn allow">@UtilsHelper.GetLocalizedString("cookie_Allow_Message")</a><a href="#" class="cookieBtn disallow">@UtilsHelper.GetLocalizedString("cookie_Do_Not_Allow_Message")</a></div><br><br><a href="#" class="policy">@UtilsHelper.GetLocalizedString("cookie_Policy_Message")</a>
+    </div>
+</div>
+
 <div id="mobileNavC1">
     <div id="mobileNavC">
         <div id="menuHdrC">
@@ -46,12 +56,24 @@
     </div>
 </div>
 <div id="topHeaderC">
+    @*<div id="cookiesC">
+        <div id="cookies">
+            <div id="txt">
+                By using this website you consent to use cookies. Detailed information about the use of cookies on our website is available
+                <a href="#">here</a>. &nbsp;
+            </div>
+            <a href="#" id="closeCookieDisplay">
+                <img src="/images/close-cookie.gif" alt="" />
+            </a>
+        </div>
+    </div>*@
+
     <div id="searchC">
         <div id="search">
             @using (Html.BeginForm("Index", "GlobalSearch", FormMethod.Get))
             {
-                <input type="text" placeholder="Search Term..." value="@(Model.GlobalSearchQuery ?? string.Empty)" name="query">
-                <div id="searchDir">Press Enter to Search</div>
+                <input type="text" placeholder=@UtilsHelper.GetLocalizedString("master_header_SearchPlaceHolder") value="@(Model.GlobalSearchQuery ?? string.Empty)" name="query" />
+                <div id="searchDir">@UtilsHelper.GetLocalizedString("master_header_SearchTooltip")</div>
                 <div id="closeSearch">
                     <a href="#">
                         <img src="@Url.Content("~/images/searchClose.png")" alt="" />
@@ -63,8 +85,9 @@
     <div id="topHeader">
         <header>
             <a href="/">
-                <img src="@Url.Content("~/images/logo.gif")" id="dLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions" />
-                <img src="@Url.Content("~/images/logo-mobile.gif")" id="mLogo" alt="Afton - Passion for Solutions" title="Afton - Passion for Solutions" style="display: none;" />
+                <img src="@Url.Content("~/images/logo.svg")" id="dLogo" alt=@UtilsHelper.GetLocalizedString("master_header_LogoTitle") title=@UtilsHelper.GetLocalizedString("master_header_LogoTitle") />
+                <img src="@Url.Content("~/images/logo-mobile.svg")" id="mLogo" alt=@UtilsHelper.GetLocalizedString("master_header_LogoTitle") title=@UtilsHelper.GetLocalizedString("master_header_LogoTitle") style="display: none;" />
+
             </a>
             <a href="#" id="mobileBtn" style="display: none;">
                 <img src="@Url.Content("~/images/mobileBtn.gif")" />
@@ -72,23 +95,21 @@
             <a href="#" id="mobileSearch" style="display: none;">
                 <span class="icon-search"></span>
             </a>
-            <div id="languageC">
+            @*<div id="languageC">
                 <ul>
                     <li>
                         <a href="#" id="selLang" data-lang="@Model.SelectedCulture">@Model.SelectedCulture</a><span class="icon-language"></span>
                         <ul id="langDropDown" style="display: none;">
-                            <li id="English"><a href="#">English</a></li>
-                            <li id="简体中文"><a href="#">简体中文</a></li>
-                            <li id="German"><a href="#">German</a></li>
-                            <li id="日本語"><a href="#">日本語</a></li>
-                            <li id="Русский"><a href="#">Русский</a></li>
-                            <li id="Español"><a href="#">Español</a></li>
-                            <li id="Português"><a href="#">Português</a></li>
-                            <li id="French"><a href="#">French</a></li>
+                            @foreach (CultureLinkViewModel cultureLink in Model.AvailableCultures.Where(c => c.Title != Model.SelectedCulture))
+                            {
+                                <li id=@cultureLink.CultureId>
+                                    <a href="@Url.Content(cultureLink.Reference)">@cultureLink.Title</a>
+                                </li>
+                            }
                         </ul>
                     </li>
                 </ul>
-            </div>
+            </div>*@
             <div id="utilityNavC">
                 <ul>
                     @foreach (var item in Model.UtilityNavList)
@@ -105,12 +126,12 @@
                         if (item.SolutionsLink != null)
                         {
                             <li>
-                                <a href="@Url.Content("~/" + item.Reference)" data-mm="@item.Title.Replace(" ", string.Empty)" class="@(item.Title.Equals(Model.Title) ? "active" : "")">@item.Title</a>
+                                <a href="@Url.Content("~/" + item.Reference)" data-mm="@item.Title.Replace(" ", string.Empty)" class="@(item.Selected ? "active" : "")">@item.Title</a>
                             </li>
                         }
                         else
                         {
-                            <li><a href="@Url.Content("~/" + item.Reference)" class="@(item.Title.Equals(Model.Title) ? "active" : "")">@item.Title</a></li>
+                            <li><a href="@Url.Content("~/" + item.Reference)" class="@(item.Selected ? "active" : "")">@item.Title</a></li>
                         }
                     }
                 </ul>
@@ -156,6 +177,8 @@
 </div>
 <div id="stickyFooterC">
     <div id="stickyFooter">
-        <div id="stickyFoot"><a href="@Url.Content("~/"+ CMS.DocumentEngine.Types.ContactPage.RoutePath)">Contact</a></div>
+        <div id="stickyFoot">
+            <a href="@Url.Content("~/"+ CMS.DocumentEngine.Types.ContactPage.RoutePath)">@UtilsHelper.GetLocalizedString("master_header_StickyFooterButton") </a>
+        </div>
     </div>
 </div>

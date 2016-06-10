@@ -214,6 +214,7 @@ namespace CMS.Mvc.Providers
         public List<PersonalizedTile> GetTrendingTiles()
         {
             GetAllContent();
+            GetNumberOfViewsOfAllTheContent();
             var trendingContent = ContentList.OrderByDescending(item => item.ViewsCount);
             return trendingContent.Select(tile => tile.Item).ToList();
         }

@@ -11,7 +11,9 @@ html(lang='en')
         include includes/_scripts_header.jade
         
     body
-    
+        
+        include includes/_cookieOverlay.jade
+        
         include includes/_mobileNav.jade
         
         include includes/_header.jade
@@ -38,9 +40,9 @@ html(lang='en')
 
                             input(placeholder="Company Name" required)
 
-                            input(placeholder="Email" required)
+                            input(placeholder="Email" required email)
 
-                            input(placeholder="Phone (Country Code + Number)" required)
+                            input(placeholder="Phone (Country Code + Number)" required phone)
 
                             div(class="customSelectC standard")
                                 div(class="orgSelect")

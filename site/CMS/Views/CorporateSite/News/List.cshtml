@@ -2,6 +2,7 @@
 
 @using CMS.DocumentEngine.Types;
 @using CMS.Helpers
+@using CMS.Mvc.Helpers
 
 @{ 
     Layout = "~/Views/CorporateSite/Shared/Master.cshtml";
@@ -23,7 +24,7 @@
                 </a>
             </h2>
             <p>
-                @Html.Raw(doc.NewsText)
+                @UtilsHelper.ToHtmlString(doc.NewsText)
             </p>
         }
     </div>

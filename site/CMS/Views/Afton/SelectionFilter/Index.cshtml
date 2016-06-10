@@ -4,7 +4,7 @@
     ViewBag.Title = Model.Header.Title;
     Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
 }
-
+@Html.Partial("~/Views/Afton/SelectionFilter/mobileIndex.cshtml", Model);
 <div id="contentAreaC" ng-app="prodFilterApp" ng-controller="prodFilterCntl">
     <div class="fullWidth2 txtPaddingTop">
         @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", @Model.Header.BreadCrumb)
@@ -12,7 +12,8 @@
     @Html.Partial("~/Views/Afton/SelectionFilter/_header.cshtml", @Model.Header)
     <div id="mobileFilterBtnC" style="display: none;">
         <a href="#" id="mobileFilterBtn">
-            <div id="mobileFilterTxt">@Model.FilterLabel</div><img id="mobileFilterImg" src="@Url.Content("~/images/filter-open.gif")">
+            <div id="mobileFilterTxt">@Model.FilterLabel</div>
+            <img id="mobileFilterImg" src="@Url.Content("~/images/filter-open.gif")"/>
         </a>
     </div>
     <div id="filterAreaC" class="padBtm">

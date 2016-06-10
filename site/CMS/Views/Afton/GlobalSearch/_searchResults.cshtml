@@ -1,4 +1,5 @@
 ﻿@using System;
+@using CMS.Mvc.Helpers
 @using CMS.Mvc.ViewModels.GlobalSearch
 @model List<ResultItemViewModel>
 
@@ -10,8 +11,8 @@
             <div class="searchImgC"><img src="@Url.Content(searchResult.Image)"></div>
         }
         <div class="searchContentC">
-            <h2>@Html.Raw(searchResult.Title) | <span class="docType">@searchResult.Type</span></h2>
-            <div class="newsTxt">@Html.Raw(!string.IsNullOrEmpty(searchResult.Content) ? searchResult.Content.TruncateHtml(140, "...") : string.Empty)</div>
+            <h2>@UtilsHelper.ToHtmlString(searchResult.Title) @(searchResult.Type != "" ? "|":"") <span class="docType">@UtilsHelper.ToHtmlString(searchResult.Type)</span></h2>
+            <div class="newsTxt">@UtilsHelper.ToHtmlString(!string.IsNullOrEmpty(searchResult.Content) ? searchResult.Content.TruncateHtml(140, "...") : string.Empty)</div>
         </div>
     </a>
 }

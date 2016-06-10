@@ -12,5 +12,6 @@ namespace CMS.Mvc.ViewModels.InsightsAndResources
         public string Subheadline { get; set; }
         public List<InsightsListingItemViewModel> InsightsListing { get; set; }
         public List<TileViewModel> Tiles { get; set; }
+        public string NodeGUID { get; set; }
     }
 }

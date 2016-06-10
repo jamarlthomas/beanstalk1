@@ -36,6 +36,14 @@ namespace CMS.Mvc.Helpers
         {
             return GetSelectionFilterUrl(new SelectionFilterSearchRequest { DocumentTypesIds = documentTypesIds });
         }
+        public static string GetSelectionFilterSolutionViewAllUrl(string SolutionIds)
+        {
+            return GetSelectionFilterUrl(new SelectionFilterSearchRequest { SolutionsIds = SolutionIds });
+        }
+        public static string GetSBUSelectionFilterViewAllURL(string documentTypeIds, string SolutionIds)
+        {
+            return GetSelectionFilterUrl(new SelectionFilterSearchRequest { SolutionsIds = SolutionIds, DocumentTypesIds = documentTypeIds });
+        }
 
         public static string GetRateContentResultsLink(string nodeAlias)
         {
@@ -47,7 +55,7 @@ namespace CMS.Mvc.Helpers
             var routeCollection = HttpContext.Current.Items[RouteCollectionKey];
             if (routeCollection == null)
             {
-                routeCollection = ContentHelper.GetDocChildrenByName<AftonRoute>(AftonRoute.CLASS_NAME, "Routes");
+                routeCollection = ContentHelper.GetDocChildrenByNameAllCultures<AftonRoute>(AftonRoute.CLASS_NAME, "Routes");
                 HttpContext.Current.Items[RouteCollectionKey] = routeCollection;
             }
             return ((List<AftonRoute>)routeCollection).FirstOrDefault(r => r.DocumentName.Equals(routeName));

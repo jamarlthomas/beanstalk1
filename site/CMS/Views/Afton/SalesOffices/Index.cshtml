@@ -1,13 +1,13 @@
 ﻿@using CMS.Mvc.ViewModels.SalesOffices
 @model RegionViewModel
 @{
-    ViewBag.Title = string.Empty;
+    ViewBag.Title = Model.Title;
     Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
 
 <div id="contact-intC">
     <div id="contactHdr" class="padTop padBtm">
-        <h1>@Model.Title</h1><br><img src="@Url.Content(Model.MapImage)">
+        <h1>@Model.Title</h1><br><img src="@Url.Content(Model.MapImage)"/>
     </div>
 
     @{ Html.RenderPartial("~/Views/Afton/SalesOffices/_offices.cshtml", Model.Offices); }

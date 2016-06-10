@@ -1,25 +1,36 @@
 ﻿@using CMS.Helpers
+@using CMS.Mvc.Helpers
 @model CMS.Mvc.ViewModels.Shared.SidebarComponents.LeftNavigationViewModel
 <div id="sidebarHdrC" class="
      @if(!Model.HasHero) {
-         @Html.Raw("altSidbarstyles");
+         @UtilsHelper.ToHtmlString("altSidbarstyles");
          }
-         "> <h2>@Html.Raw(Model.Title)</h2>
+         "> <h2>@UtilsHelper.ToHtmlString(Model.Title)</h2>
 </div>
 <div id="sidebarNavC">
     <ul>
         @foreach (var navItem in Model.NavItems)
         {
-            if (navItem.SubMenu != null && navItem.SubMenu.Count() > 0)
+            if (navItem.SubMenu != null && navItem.SubMenu.Any())
             {
                 <li>
                     @if (navItem.Link != null)
                     {
-                        <a href="@Url.Content("~/" + navItem.Link)" class="open active"> @Html.Raw(navItem.Title)</a>
+                        <a href="@Url.Content("~/" + navItem.Link)" class="open active">
+                                                @if (!string.IsNullOrEmpty(navItem.NavigationIcon))
+                                                {
+                                                    <img src="@Url.Content(navItem.NavigationIcon)" />
+                                                }
+                        @UtilsHelper.ToHtmlString(navItem.Title)</a>
                     }
                     else
                     {
-                        <a> @Html.Raw(navItem.Title)</a>
+                        <a>
+                            @if (!string.IsNullOrEmpty(navItem.NavigationIcon))
+                            {
+                                <img src="@Url.Content(navItem.NavigationIcon)" />
+                            }
+                     @UtilsHelper.ToHtmlString(navItem.Title)</a>
                     }
                     <ul>
                         @foreach (var subNavItem in navItem.SubMenu)
@@ -28,16 +39,16 @@
                                 @if (subNavItem.Link != null)
                                 {
                                     if (subNavItem.Link == CMS.Helpers.RequestContext.CurrentURL.Substring(1)) { 
-                                        <a class="active" href="@Url.Content("~/" + subNavItem.Link)">@Html.Raw(subNavItem.Title)</a>
+                                        <a class="active" href="@Url.Content("~/" + subNavItem.Link)">@UtilsHelper.ToHtmlString(subNavItem.Title)</a>
                                     }
                                     else
                                     {
-                                        <a href="@Url.Content("~/" + subNavItem.Link)">@Html.Raw(subNavItem.Title)</a>
+                                        <a href="@Url.Content("~/" + subNavItem.Link)">@UtilsHelper.ToHtmlString(subNavItem.Title)</a>
                                     }
                                 }
                                 else
                                 {
-                                    <a>@Html.Raw(subNavItem.Title)</a>
+                                    <a>@UtilsHelper.ToHtmlString(subNavItem.Title)</a>
                                 }
                             </li>
                         }
@@ -51,16 +62,26 @@
                     {
                         if (navItem.Link == CMS.Helpers.RequestContext.CurrentURL.Substring(1))
                         {
-                            <a class="open active" href="@Url.Content("~/" + navItem.Link)">@Html.Raw(navItem.Title)</a>
+                            <a class="open active" href="@Url.Content("~/" + navItem.Link)">
+                                @if (!string.IsNullOrEmpty(navItem.NavigationIcon))
+                                {
+                                    <img src="@Url.Content(navItem.NavigationIcon)" />
+                                }
+                                @UtilsHelper.ToHtmlString(navItem.Title)</a>
                         }
                         else
                         {
-                            <a href="@Url.Content("~/" + navItem.Link)">@Html.Raw(navItem.Title)</a>
+                            <a href="@Url.Content("~/" + navItem.Link)">
+                                @if (!string.IsNullOrEmpty(navItem.NavigationIcon))
+                                {
+                                    <img src="@Url.Content(navItem.NavigationIcon)" />
+                                }
+                                    @UtilsHelper.ToHtmlString(navItem.Title)</a>
                         }
                     }
                     else
                     {
-                        <a>@Html.Raw(navItem.Title)</a>
+                        <a>@UtilsHelper.ToHtmlString(navItem.Title)</a>
                     }
                 </li>
             }

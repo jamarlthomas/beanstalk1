@@ -2,9 +2,11 @@
 using CMS.DocumentEngine;
 using CMS.Mvc.Helpers;
 using System;
+using System.Linq;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.Interfaces;
-
+using CMS.Mvc.Helpers;
+using CMS.Mvc.Providers;
 
 namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
 {
@@ -15,9 +17,21 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
             //Reference = item.GetStringValue("Reference", "");
             if (item.NodeClassName == GenericSidebarBlock.CLASS_NAME)
             {
-                var NodeReference = ContentHelper.GetDocByGuid<TreeNode>(Guid.Parse(item.GetStringValue("SidebarItem", "")));
-                Reference = ((NodeReference as IRoutedModel) != null) ? (NodeReference as IRoutedModel).DocumentRoutePath : NodeReference.DocumentNamePath;
-                Description = new HtmlString(NodeReference.GetStringValue("Description", ""));
+                var _treeNodesProvider = new TreeNodesProvider();
+                var newGUID= UtilsHelper.ParseGuids(item.GetStringValue("SidebarItem", ""));
+                var NodeReference = ContentHelper.GetDocByNodeId<TreeNode>(ContentHelper.GetNodeByNodeGuid(newGUID.Last()));
+                if (NodeReference == null)
+                {
+                    NodeReference = ContentHelper.GetDocByGuid<TreeNode>(newGUID.Last());
+                    Reference = ((NodeReference as IRoutedModel) != null) ? (NodeReference as IRoutedModel).DocumentRoutePath : NodeReference.DocumentNamePath;
+                    Description = new HtmlString(NodeReference.GetStringValue("Description", ""));
+                }
+                else
+                {
+                    Reference = ((NodeReference as IRoutedModel) != null) ? (NodeReference as IRoutedModel).DocumentRoutePath : NodeReference.DocumentNamePath;
+                    Description = new HtmlString(NodeReference.GetStringValue("Description", ""));
+                }
+                
             }
             else
             {
