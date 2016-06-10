@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    $(".sidebarBoxC input.submitBtn").click(submitEmail);
+    $(".sidebarBoxC input.submitBtn").submit(submitEmail);
     function submitEmail() {
         var email = $(".sidebarBoxC input[name=email]").val();
         $.get('/SidebarPage/SubmitEmail', { email: email }, function () {

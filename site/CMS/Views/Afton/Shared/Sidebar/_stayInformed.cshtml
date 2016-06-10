@@ -2,9 +2,11 @@
 <div class="sidebarBoxC">
     @*using (Html.BeginForm("SubmitEmail", "SideBarPage", FormMethod.Post))
     {*@
+    <form>
         <div class="hdr">@Model.Title</div>
         <div class="txt">@Model.Copy</div>
         <input type="text" placeholder="@Model.EmailPlaceholder" class="txtBox" name="email" email>
-        <input type="button" value="@Model.SubmitButtonText" class="submitBtn">
+        <input type="submit" value="@Model.SubmitButtonText" class="submitBtn">
+    </form>
     @*}*@
 </div>
