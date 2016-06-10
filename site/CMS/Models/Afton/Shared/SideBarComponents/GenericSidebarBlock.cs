@@ -71,6 +71,24 @@ namespace CMS.DocumentEngine.Types
             }
         }
 
+
+        /// <summary>
+        /// Manual Reference.
+        /// </summary>
+        [DatabaseField]
+        public string ManualReference
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("ManualReference"), "");
+            }
+            set
+            {
+                SetValue("ManualReference", value);
+            }
+        }
+
+
         /// <summary>
         /// Title.
         /// </summary>
