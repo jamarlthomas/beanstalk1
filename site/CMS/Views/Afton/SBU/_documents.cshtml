@@ -9,7 +9,7 @@
 	}
     @for (int i = 0; i < 5 - Model.Documents.Count; i++)
     {
-        <li>&nbsp;</li>
+        <li class="empty-li">&nbsp;</li>
     }
 </ul>
 <a href="@Url.Content("~/"+Model.ViewAllUrl)" class="viewMore">@Model.ViewAllLabel @Model.Title ></a>

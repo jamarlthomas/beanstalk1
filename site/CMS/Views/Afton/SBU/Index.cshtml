@@ -63,8 +63,8 @@
         <h2 class="txtPaddingBtm">@Model.Title @UtilsHelper.GetLocalizedString("sbu_InsightsAndResources")</h2>
         <div class="txtPaddingBtm">@UtilsHelper.ToHtmlString(Model.DocumentsDescription)</div>
         <hr>
-        @Html.Partial("~/Views/Afton/SBU/_documentColumns.cshtml", Model.DocumentTypes)
-        <!--<a href="@Url.Content("~/" + Model.ViewAllDocumentsLink)" class="viewAllBtn">View All @Model.Title Documents</a>-->
+        @Html.Partial("~/Views/Afton/SBU/_documentColumns.cshtml", Model.DocumentTypes.Where(dt => dt.Documents != null && dt.Documents.Count > 0).ToList())
+	    <!--<a href="@Url.Content("~/" + Model.ViewAllDocumentsLink)" class="viewAllBtn">View All @Model.Title Documents</a>-->
 
     </div>
 </div>
