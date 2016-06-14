@@ -5,7 +5,7 @@
         .hdrTxtBoxC { width: 50%;
             
             .hdrTxtBox { position: absolute; top: 50%; width: 50%; transform: translateY(-50%); text-align: center; padding: 0px 30px;
-                .sbuHeadline { padding-bottom: 14px; color: #0c419a; font: 40px/45px HelveticaNeueLT-Thin; 
+                .sbuHeadline { padding-bottom: 14px; color: #0c419a; font: 45px/48px HelveticaNeueLT-Thin; 
                     
                     //*** Breakpoints ***                        
                     @include breakpoint($bp1) { padding-bottom: 7px; font-size: 30px; line-height: 33px; }
