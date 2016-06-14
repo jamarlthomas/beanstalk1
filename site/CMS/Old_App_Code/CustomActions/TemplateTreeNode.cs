@@ -54,7 +54,7 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
             else
             {
                 template = File.ReadAllText(TemplateLocation + "style-guide-hm2.html");
-                template += File.ReadAllText(TemplateLocation + "style-guide-int2.html");
+                //template += File.ReadAllText(TemplateLocation + "style-guide-int2.html");
             }
             return template;
         }

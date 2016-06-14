@@ -30,23 +30,33 @@
         </thead>
         <tbody>
             <tr>
-                <td id="sgh-lftC" style="width:800px">
-
+                <td id="sgh-lftC">
                     <div id="sgh-mainC">
                         <div id="sgh-hdr">
-                            <img src="{{MicrobotSolutionImage}}" alt="" />
+                            <img src="{{MicrobotSolutionImage}}" id="sgh-hdrImg" alt="" />
                         </div>
                         <div id="sgh-prodName">{{Title}}</div>
                         <div id="sgh-prodDesc">{{Description}}</div>
-                        <img src="{{CoverImage}}" alt="" />
+                        <img src="{{CoverImage}}" alt="" id="sgh-covImg" />
                         <div id="sgh-prodApplication">{{Application}}</div>
                     </div>
-                    <img src="{{MicrobotRobotImage}}" id="sgh-lftLogo" alt="" />
-
+                    
+                    <table id="sgh-logosTable">
+                        <tbody>
+                            <tr id="sgh-logosRow">
+                                <td id="sgh-lftLogo" >
+                                    <img src="{{MicrobotRobotImage}}" id="sgh-lftLogoImg" alt="" />
+                                </td>
+                                <td id="sgh-rtLogo" >
+                                    <img src="/images/sg-logo.gif" id="sgh-rtLogoImg" alt="" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </td>
-                <td id="sgh-rt" style="width:28px">
-                    <div>
-                        <img src="/images/sgh-rt.gif" alt="" />
+                <td id="sgh-rt">
+                    <div id="sgh-rtDiv">
+                        <img src="/images/sgh-rt.gif" id="sgh-rtImg" alt="" />
                     </div>
                 </td>
             </tr>
