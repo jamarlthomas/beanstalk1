@@ -29,7 +29,7 @@ $(document).ready(function() {
       tolerance	: 2,
       watch: 'window'
     });
-    
+
 
     //ellipses for large cards hover txt
     $(".cardsC .cards a .hoverOverlay").dotdotdot({

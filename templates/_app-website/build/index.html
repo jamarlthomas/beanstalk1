@@ -24,12 +24,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.actual/1.0.17/jquery.actual.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-placeholder/2.3.1/jquery.placeholder.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/balance-text/1.6.0/jquery.balancetext.min.js"></script>
     <script src="https://code.angularjs.org/1.4.8/angular.js"></script>
     <script src="assets-layout/js/library/dirPagination.min.js"></script>
     <script src="assets-layout/js/custom/prodFilter.min.js"></script>
     <script src="assets-layout/js/custom/terms-acronyms.min.js"></script>
     <script src="assets-layout/js/custom/ellipsesText.min.js"></script>
-    <script src="assets-layout/js/custom/columnizeText.min.js"></script>
+    <!--script(src='assets-layout/js/custom/columnizeText.min.js')-->
+    <script src="assets-layout/js/custom/balanceText.min.js"></script>
     <script src="assets-layout/js/library/head.min.js">       </script>
     <script>
       head.js(
@@ -60,7 +62,14 @@
               //);
           }
       ); 
+      
     </script>
+    <style type="text/css">
+      /* Plugin looks for elements with class named "balance-text" */
+      .balance-text {
+          text-wrap: balanced;   /* Apply (proposed) CSS style */
+      }
+    </style>
   </head>
   <body>
     <div id="cookieOverlayC" style="display: none;">
@@ -405,8 +414,8 @@
             <div style="display: none;" class="slide rtLayout">                   
               <div class="slideTxtBoxC">
                 <div class="slideTxtBox">                       
-                  <div class="slideHdr">Our culture and people are our most treasured assets </div>
-                  <div class="slideTxt">A key player in the lubricant and fuel industry with over 90 years of customer collaboration.</div><a href="#s1">Learn More<span class="icon-arrow"></span></a>
+                  <div class="slideHdr">Logistics & Supply Solutions Built on a Foundation of Excellence </div>
+                  <div class="slideTxt">A new Singapore manufacturing facility demonstrates our commitment to meeting customer needs in Asia's growing economy.</div><a href="#s1">Learn More<span class="icon-arrow"></span></a>
                 </div>
               </div>
               <div class="slideImgBoxC"><img src="page-images/home-slider/lft-sample1.jpg"></div>
