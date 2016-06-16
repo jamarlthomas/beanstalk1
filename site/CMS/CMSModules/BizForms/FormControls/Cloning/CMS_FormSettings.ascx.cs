@@ -43,6 +43,12 @@ public partial class CMSModules_BizForms_FormControls_Cloning_CMS_FormSettings :
             return false;
         }
 
+        TableManager tm = new TableManager(null);
+        if (tm.TableExists(txtTableName.Text))
+        {
+            ShowError(GetString("sysdev.class_edit_gen.tablenameunique"));
+            return false;
+        }
         return true;
     }
 

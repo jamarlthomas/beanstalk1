@@ -471,13 +471,6 @@
             <param name="columnName">Column name</param>
             <param name="value">New value</param>
         </member>
-        <member name="M:CMS.SocialMarketing.FacebookPostInfo.CheckLicense(CMS.DataEngine.ObjectActionEnum,System.String)">
-            <summary>
-            Checks the object license. Returns true if the licensing conditions for this object were matched
-            </summary>
-            <param name="action">Object action</param>
-            <param name="domainName">Domain name, if not set, uses current domain</param>
-        </member>
         <member name="M:CMS.SocialMarketing.FacebookPostInfo.CheckPermissionsInternal(CMS.DataEngine.PermissionsEnum,System.String,CMS.Base.IUserInfo,System.Boolean)">
             <summary>
             Checks the permissions of the object.
@@ -1166,13 +1159,6 @@
             <summary>
             Updates this object.
             </summary>
-        </member>
-        <member name="M:CMS.SocialMarketing.InsightInfo.CheckLicense(CMS.DataEngine.ObjectActionEnum,System.String)">
-            <summary>
-            Checks the object license. Returns true if the licensing conditions for this object were matched
-            </summary>
-            <param name="action">Object action</param>
-            <param name="domainName">Domain name, if not set, uses current domain</param>
         </member>
         <member name="P:CMS.SocialMarketing.InsightInfo.InsightCodeName">
             <summary>
@@ -3738,13 +3724,6 @@
             <param name="columnName">Column name</param>
             <param name="value">New value</param>
         </member>
-        <member name="M:CMS.SocialMarketing.TwitterPostInfo.CheckLicense(CMS.DataEngine.ObjectActionEnum,System.String)">
-            <summary>
-            Checks the object license. Returns true if the licensing conditions for this object were matched
-            </summary>
-            <param name="action">Object action</param>
-            <param name="domainName">Domain name, if not set, uses current domain</param>
-        </member>
         <member name="M:CMS.SocialMarketing.TwitterPostInfo.CheckPermissionsInternal(CMS.DataEngine.PermissionsEnum,System.String,CMS.Base.IUserInfo,System.Boolean)">
             <summary>
             Checks the permissions of the object.
@@ -4161,13 +4140,6 @@
             </summary>
             <param name="dr">DataRow with the object data.</param>
         </member>
-        <member name="M:CMS.SocialMarketing.TwitterAccountInfo.CheckLicense(CMS.DataEngine.ObjectActionEnum,System.String)">
-            <summary>
-            Checks the object license. Returns true if the licensing conditions for this object were matched
-            </summary>
-            <param name="action">Object action</param>
-            <param name="domainName">Domain name, if not set, uses current domain</param>
-        </member>
         <member name="M:CMS.SocialMarketing.TwitterAccountInfo.CheckPermissionsInternal(CMS.DataEngine.PermissionsEnum,System.String,CMS.Base.IUserInfo,System.Boolean)">
             <summary>
             Checks the permissions of the object.
@@ -4427,13 +4399,6 @@
             </summary>
             <param name="dr">DataRow with the object data.</param>
         </member>
-        <member name="M:CMS.SocialMarketing.TwitterApplicationInfo.CheckLicense(CMS.DataEngine.ObjectActionEnum,System.String)">
-            <summary>
-            Checks the object license. Returns true if the licensing conditions for this object were matched
-            </summary>
-            <param name="action">Object action</param>
-            <param name="domainName">Domain name, if not set, uses current domain</param>
-        </member>
         <member name="M:CMS.SocialMarketing.TwitterApplicationInfo.CheckPermissionsInternal(CMS.DataEngine.PermissionsEnum,System.String,CMS.Base.IUserInfo,System.Boolean)">
             <summary>
             Checks the permissions of the object.
@@ -4665,13 +4630,6 @@
             Initializes a new instance of the FacebookAccountInfo class with the specified data.
             </summary>
             <param name="dr">DataRow with the object data.</param>
-        </member>
-        <member name="M:CMS.SocialMarketing.FacebookAccountInfo.CheckLicense(CMS.DataEngine.ObjectActionEnum,System.String)">
-            <summary>
-            Checks the object license. Returns true if the licensing conditions for this object were matched
-            </summary>
-            <param name="action">Object action</param>
-            <param name="domainName">Domain name, if not set, uses current domain</param>
         </member>
         <member name="M:CMS.SocialMarketing.FacebookAccountInfo.CheckPermissionsInternal(CMS.DataEngine.PermissionsEnum,System.String,CMS.Base.IUserInfo,System.Boolean)">
             <summary>
@@ -4973,13 +4931,6 @@
             Initializes a new instance of the FacebookApplicationInfo class with the specified data.
             </summary>
             <param name="dr">DataRow with the object data.</param>
-        </member>
-        <member name="M:CMS.SocialMarketing.FacebookApplicationInfo.CheckLicense(CMS.DataEngine.ObjectActionEnum,System.String)">
-            <summary>
-            Checks the object license. Returns true if the licensing conditions for this object were matched
-            </summary>
-            <param name="action">Object action</param>
-            <param name="domainName">Domain name, if not set, uses current domain</param>
         </member>
         <member name="M:CMS.SocialMarketing.FacebookApplicationInfo.CheckPermissionsInternal(CMS.DataEngine.PermissionsEnum,System.String,CMS.Base.IUserInfo,System.Boolean)">
             <summary>

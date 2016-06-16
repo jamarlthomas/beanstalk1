@@ -36,7 +36,7 @@ public partial class CMSFormControls_Selectors_AlternativeFormSelection {
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSDropDownList drpClass;
+    protected global::CMSAdminControls_UI_UniSelector_UniSelector drpClass;
     
     /// <summary>
     /// LocalizedLabel1 control.

@@ -381,6 +381,33 @@ public partial class CMSModules_Newsletters_Controls_EditIssue {
     protected global::CMS.ExtendedControls.CMSTextBox txtIssueUTMCampaign;
     
     /// <summary>
+    /// pnlIssueUTMCampaignTextBox control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel pnlIssueUTMCampaignTextBox;
+    
+    /// <summary>
+    /// lblIssueUTMCampaignTextBox control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.LocalizedLabel lblIssueUTMCampaignTextBox;
+    
+    /// <summary>
+    /// txtIssueUTMCampaignTextBox control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::CMS.ExtendedControls.CMSTextBox txtIssueUTMCampaignTextBox;
+    
+    /// <summary>
     /// hdnTemplateID control.
     /// </summary>
     /// <remarks>

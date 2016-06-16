@@ -1652,7 +1652,7 @@
         </member>
         <member name="P:CMS.ExtendedControls.AbstractDateTimePicker.TimeZoneOffset">
             <summary>
-            Time zone offset (in minutes).
+            Time zone offset (in minutes) relative to UTC.
             </summary>
         </member>
         <member name="P:CMS.ExtendedControls.AbstractDateTimePicker.CustomTimeZone">

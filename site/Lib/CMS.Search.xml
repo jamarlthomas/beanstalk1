@@ -3079,9 +3079,9 @@
         </member>
         <member name="M:CMS.Search.SearchCrawler.DownloadHtmlContent(System.String)">
             <summary>
-            Downloads the html code for the specified url.
+            Downloads the HTML code for the specified URL.
             </summary>
-            <param name="url">Page url</param>
+            <param name="url">Page URL</param>
         </member>
         <member name="M:CMS.Search.SearchCrawler.AddCrawlerIdToUrl(System.String)">
             <summary>
@@ -3137,6 +3137,12 @@
         <member name="P:CMS.Search.SearchCrawler.CrawlerDomain">
             <summary>
             Gets the crawler user domain.
+            </summary>
+        </member>
+        <member name="P:CMS.Search.SearchCrawler.AcceptInvalidServerCertificate">
+            <summary>
+            Indicates whether crawler is allowed to browse web site secured via TLS/SSL even though the web site server doesn't provide a valid certificate. For example, self-signed or expired certificate is the case. 
+            Default is false because allowing it implicitly may represent security vulnerability.
             </summary>
         </member>
         <member name="T:CMS.Search.SearchCrawler.HtmlToPlainTextHandler">

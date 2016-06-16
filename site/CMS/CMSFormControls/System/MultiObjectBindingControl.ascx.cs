@@ -194,7 +194,7 @@ public partial class CMSFormControls_System_MultiObjectBindingControl : FormEngi
                 }
                 else
                 {
-                    mTargetObjectIDColumn = TargetObjectIDColumn;
+                    mTargetObjectIDColumn = TargetObjectColumnName;
                 }
             }
 

@@ -100,7 +100,7 @@ public partial class CMSFormControls_System_FieldSelector : FormEngineUserContro
     {
         get
         {
-            return drpFields.SelectedValue;
+            return fieldSelector.SelectedValue;
         }
         set
         {
@@ -119,55 +119,79 @@ public partial class CMSFormControls_System_FieldSelector : FormEngineUserContro
     protected void Page_Load(object sender, EventArgs e)
     {
         // Setup uni-selector
-        selectionElem.UniSelector.AllowEmpty = AllowNone;
-        selectionElem.DropDownSingleSelect.AutoPostBack = true;
-        selectionElem.IsLiveSite = false;
-        selectionElem.UniSelector.OnSelectionChanged+= DropDownSingleSelect_SelectedIndexChanged;
+        classSelector.UniSelector.AllowEmpty = AllowNone;
+        classSelector.DropDownSingleSelect.AutoPostBack = true;
+        classSelector.IsLiveSite = false;
+        classSelector.UniSelector.OnSelectionChanged += DropDownSingleSelect_SelectedIndexChanged;
 
         switch (ClassType)
         {
             // Custom tables
             case 0:
-                selectionElem.UniSelector.ObjectType = CustomTableInfo.OBJECT_TYPE_CUSTOMTABLE;
+                classSelector.UniSelector.ObjectType = CustomTableInfo.OBJECT_TYPE_CUSTOMTABLE;
                 break;
 
             // System tables
             case 2:
-                selectionElem.UniSelector.ObjectType = DataClassInfo.OBJECT_TYPE_SYSTEMTABLE;
-                selectionElem.ShowOnlySystemTables = true;
+                classSelector.UniSelector.ObjectType = DataClassInfo.OBJECT_TYPE_SYSTEMTABLE;
+                classSelector.ShowOnlySystemTables = true;
                 break;
 
             // Document types
             default:
-                selectionElem.UniSelector.ObjectType = DocumentTypeInfo.OBJECT_TYPE_DOCUMENTTYPE;
-                selectionElem.ShowOnlyCoupled = true;
+                classSelector.UniSelector.ObjectType = DocumentTypeInfo.OBJECT_TYPE_DOCUMENTTYPE;
+                classSelector.ShowOnlyCoupled = true;
                 break;
         }
 
-        // Bind fields drop-down list
+        // Check backward compatibility
+        if (mValue.Contains("|"))
+        {
+            SetupSelectorsObsolete();
+        }
+        else
+        {
+            SetupSelectors();
+        }
+    }
+
+
+    /// <summary>
+    /// Setups the class selector and field selector when the value is in an obsolete format "guid|text" (backward compatibility)
+    /// </summary>
+    private void SetupSelectorsObsolete()
+    {
+        string[] values = mValue.Split('|');
+        Guid guid = new Guid(values[0]);
+
+        string className = GetObsoleteSelectedClassName(guid);
+
+        // Column found, preselect class name and column in drop down lists
+        if (!String.IsNullOrEmpty(className))
+        {
+            SetupClassSelector(className);
+            SetupFieldSelector(guid.ToString(), false);
+        }
+    }
+
+
+    /// <summary>
+    /// Setups the class selector and field selector 
+    /// </summary>
+    private void SetupSelectors()
+    {
+        SetupClassSelector(ClassName);
+        SetupFieldSelector(mValue, false);
+    }
+
+
+    private void SetupClassSelector(string className)
+    {
         if (!RequestHelper.IsPostBack())
         {
-            selectionElem.ReloadData(false);
-
-            // Check backward compatibility
-            if (mValue.Contains("|"))
-            {
-                GetOlderValues();
-            }
-            else
-            {
-                if (!String.IsNullOrEmpty(ClassName))
-                {
-                    selectionElem.DropDownSingleSelect.SelectedValue = ClassName;
-                }
-                else
-                {
-                    selectionElem.DropDownSingleSelect.SelectedIndex = 0;
-                }
-            }
+            classSelector.Value = className;
+            classSelector.ReloadData(false);
         }
-
-        LoadFields(false);
     }
 
 
@@ -176,7 +200,7 @@ public partial class CMSFormControls_System_FieldSelector : FormEngineUserContro
     /// </summary>
     protected void DropDownSingleSelect_SelectedIndexChanged(object sender, EventArgs e)
     {
-        LoadFields(true);
+        SetupFieldSelector(mValue, true);
     }
 
     #endregion
@@ -187,7 +211,7 @@ public partial class CMSFormControls_System_FieldSelector : FormEngineUserContro
     /// <summary>
     /// Resolves backward compatibility issue. 
     /// </summary>
-    private void GetOlderValues()
+    private string GetObsoleteSelectedClassName(Guid guid)
     {
         DataSet data;
 
@@ -210,7 +234,7 @@ public partial class CMSFormControls_System_FieldSelector : FormEngineUserContro
                     break;
                 }
 
-                // Document types
+            // Document types
             default:
                 {
                     data = DataClassInfoProvider.GetClasses()
@@ -222,11 +246,7 @@ public partial class CMSFormControls_System_FieldSelector : FormEngineUserContro
                 }
         }
 
-        // Get GUID
-        string[] values = mValue.Split('|');
-        Guid guid = new Guid(values[0]);
-
-        // Go thru selected classes and try find right field
+        // Go through selected classes and try find right field
         foreach (DataRow row in data.Tables[0].Rows)
         {
             string className = row["ClassName"].ToString();
@@ -238,30 +258,27 @@ public partial class CMSFormControls_System_FieldSelector : FormEngineUserContro
                 var ffi = fi.GetFields(true, true).FirstOrDefault(f => f.Guid == guid);
                 if (ffi != null)
                 {
-                    // Column found, preselect class name and column in drop down lists
-                    selectionElem.DropDownSingleSelect.SelectedValue = className;
-                    LoadFields(false);
-                    drpFields.SelectedValue = guid.ToString();
-                    return;
+                    return className;
                 }
             }
         }
+
+        return null;
     }
 
 
     /// <summary>
     /// Loads fields to drop down control.
     /// </summary>
-    /// <param name="classIndexChanged">Indicates if class selector has changed or not</param>
-    private void LoadFields(bool classIndexChanged)
+    private void SetupFieldSelector(string selectedValue, bool forceReload)
     {
-        if (classIndexChanged || (drpFields.Items.Count == 0))
+        if (forceReload || (fieldSelector.Items.Count == 0))
         {
             // Clear dropdown list
-            drpFields.Items.Clear();
+            fieldSelector.Items.Clear();
 
             // Get data class info
-            string className = ValidationHelper.GetString(selectionElem.Value, null);
+            string className = ValidationHelper.GetString(classSelector.Value, null);
             if (!String.IsNullOrEmpty(className) && (className != SpecialFieldValue.NONE.ToString()))
             {
                 // Get fields of type file
@@ -293,25 +310,25 @@ public partial class CMSFormControls_System_FieldSelector : FormEngineUserContro
                     var list = ffi.Select(t => new Tuple<string, string>(!String.IsNullOrEmpty(t.GetPropertyValue(FormFieldPropertyEnum.FieldCaption, ContextResolver)) ? t.GetPropertyValue(FormFieldPropertyEnum.FieldCaption, ContextResolver) : t.Name, t.Guid.ToString())).OrderBy(t => t.Item1);
                     foreach (var item in list)
                     {
-                        drpFields.Items.Add(new ListItem(item.Item1, item.Item2));
+                        fieldSelector.Items.Add(new ListItem(item.Item1, item.Item2));
                     }
 
-                    if (!String.IsNullOrEmpty(mValue) && (drpFields.Items.FindByValue(mValue) != null) && !classIndexChanged)
+                    if (!String.IsNullOrEmpty(selectedValue) && (fieldSelector.Items.FindByValue(selectedValue) != null) && !forceReload)
                     {
                         // Selected value from database
-                        drpFields.SelectedValue = mValue;
+                        fieldSelector.SelectedValue = selectedValue;
                     }
                     else
                     {
                         // Select first item if nothing selected or class name was changed
-                        drpFields.SelectedIndex = 0;
+                        fieldSelector.SelectedIndex = 0;
                     }
 
-                    drpFields.Enabled = true;
+                    fieldSelector.Enabled = true;
                 }
                 else
                 {
-                    drpFields.Enabled = false;
+                    fieldSelector.Enabled = false;
                 }
 
                 pnlFields.Visible = true;
@@ -355,7 +372,7 @@ public partial class CMSFormControls_System_FieldSelector : FormEngineUserContro
     {
         if (!String.IsNullOrEmpty(ClassNameColumnName))
         {
-            string selectedValue = selectionElem.DropDownSingleSelect.SelectedValue;
+            string selectedValue = classSelector.DropDownSingleSelect.SelectedValue;
 
             // Set properties names
             object[,] values = new object[1, 2];

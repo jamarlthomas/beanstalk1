@@ -245,9 +245,9 @@ public partial class CMSModules_Content_CMSDesk_Properties_Menu : CMSPropertiesP
                 headSearch.Visible = false;
             }
 
-            if (!RequestHelper.IsPostBack())
+            if (!RequestHelper.IsPostBack() || Node.DocumentSitemapSettings == String.Empty)
             {
-                // Use predefined value
+                // Set default value
                 drpPriority.SelectedValue = "0.5";
             }
 

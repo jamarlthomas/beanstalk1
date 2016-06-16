@@ -172,7 +172,7 @@ public partial class CMSWebParts_Community_Profile_GroupSecurityMessage : CMSAbs
                         case SecurityAccessEnum.AuthenticatedUsers:
                             if (!AuthenticationHelper.IsAuthenticated())
                             {
-                                lblAccessInfo.Text = String.Format(SiteMembersOnlyText, "<a title=\"Sign in\" href=\"" + URLHelper.UpdateParameterInUrl(LoginURL, "returnurl", Server.UrlEncode(RequestContext.CurrentURL)) + "\">", "</a>");
+                                lblAccessInfo.Text = String.Format(SiteMembersOnlyText, "<a title=\"Sign in\" href=\"" + URLHelper.UpdateParameterInUrl(LoginURL, "returnurl", HTMLHelper.EncodeForHtmlAttribute(RequestContext.CurrentURL)) + "\">", "</a>");
                             }
                             else
                             {
@@ -187,7 +187,7 @@ public partial class CMSWebParts_Community_Profile_GroupSecurityMessage : CMSAbs
                                 // If current user is public show text with sign in link
                                 if (!AuthenticationHelper.IsAuthenticated())
                                 {
-                                    lblAccessInfo.Text = String.Format(GroupMembersOnlyText, "<a title=\"Sign in\" href=\"" + URLHelper.UpdateParameterInUrl(LoginURL, "returnurl", Server.UrlEncode(RequestContext.CurrentURL)) + "\">", "</a>");
+                                    lblAccessInfo.Text = String.Format(GroupMembersOnlyText, "<a title=\"Sign in\" href=\"" + URLHelper.UpdateParameterInUrl(LoginURL, "returnurl", HTMLHelper.EncodeForHtmlAttribute(RequestContext.CurrentURL)) + "\">", "</a>");
                                 }
                                 else
                                 {
@@ -205,7 +205,7 @@ public partial class CMSWebParts_Community_Profile_GroupSecurityMessage : CMSAbs
                                                                                " } \n");
                                         ScriptHelper.RegisterClientScriptBlock(this, typeof(string), "JoinToGroupAccessRequest", script);
 
-                                        link = "<a title=\"" + GetString("group.joingroup") + "\" href=\"" + RequestContext.CurrentURL + "\" onclick=\"JoinToGroupAccessRequest(); return false;\">";
+                                        link = "<a title=\"" + GetString("group.joingroup") + "\" href=\"" + HTMLHelper.EncodeForHtmlAttribute(RequestContext.CurrentURL) + "\" onclick=\"JoinToGroupAccessRequest(); return false;\">";
                                     }
                                     else
                                     {

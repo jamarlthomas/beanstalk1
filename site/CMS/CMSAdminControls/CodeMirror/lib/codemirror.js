@@ -393,6 +393,10 @@ var CodeMirror = (function () {
 
             if (!focused) onFocus();
 
+            /* CMS */
+            if (options.onMouseDown && options.onMouseDown(instance, e)) return;
+            /* CMS end*/
+
             var now = +new Date;
             if (lastDoubleClick && lastDoubleClick.time > now - 400 && posEq(lastDoubleClick.pos, start)) {
                 e_preventDefault(e);
@@ -1949,6 +1953,7 @@ var CodeMirror = (function () {
         isMacroMixedMode: true,
         resolverSessionKey: "",
         singleLineMode: false,
+        onMouseDown: null,
         /* CMS end */
 
         value: "",

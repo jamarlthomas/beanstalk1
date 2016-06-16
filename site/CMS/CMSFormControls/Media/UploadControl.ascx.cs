@@ -282,7 +282,7 @@ public partial class CMSFormControls_Media_UploadControl : FormEngineUserControl
             }
             else if (!UploadHelper.IsExtensionAllowed(ext, extensions))
             {
-                validationError = string.Format(ResHelper.GetString("BasicForm.ErrorWrongFileType"), ext.TrimStart('.'), extensions.Replace(";", ", "));
+                validationError = string.Format(ResHelper.GetString("BasicForm.ErrorWrongFileType"), HTMLHelper.HTMLEncode(ext.TrimStart('.')), extensions.Replace(";", ", "));
             }
 
             if (!string.IsNullOrEmpty(validationError))

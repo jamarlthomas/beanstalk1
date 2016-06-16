@@ -118,7 +118,6 @@ var CMSContentManager = {
 
         // Get elements
         var formChildren = $cmsj(searchScope)
-            .filter(":visible")
             .filter(":input")
             .not(".dont-check-changes, .dont-check-changes *")
             .not(":input[type=image]");

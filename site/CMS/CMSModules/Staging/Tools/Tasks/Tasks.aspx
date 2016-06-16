@@ -5,6 +5,7 @@
 <%@ Register Src="~/CMSModules/Staging/FormControls/ServerSelector.ascx" TagName="ServerSelector"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/UI/UniGrid/UniGrid.ascx" TagName="UniGrid" TagPrefix="cms" %>
+<%@ Register Namespace="CMS.UIControls.UniGridConfig" TagPrefix="ug" Assembly="CMS.UIControls" %>
 <%@ Register Src="~/CMSAdminControls/AsyncLogDialog.ascx" TagName="AsyncLog"
     TagPrefix="cms" %>
 <%@ Register Src="~/CMSAdminControls/Basic/DisabledModuleInfo.ascx" TagPrefix="cms"
@@ -35,8 +36,22 @@
             </asp:Panel>
             <asp:PlaceHolder ID="plcContent" runat="server">
                 <asp:Panel ID="pnlTasksGrid" runat="server" Visible="true">
-                    <cms:UniGrid ID="tasksUniGrid" runat="server" GridName="~/CMSModules/Staging/Tools/AllTasks/Tasks.xml"
-                        IsLiveSite="false" OrderBy="TaskTime, TaskID" ExportFileName="staging_task" />
+                    <cms:UniGrid ID="tasksUniGrid" runat="server" IsLiveSite="false" OrderBy="TaskTime, TaskID" ExportFileName="staging_task">
+                        <GridActions>
+                            <ug:action name="view" externalsourcename="view" caption="$General.View$" fonticonclass="icon-eye" fonticonstyle="allow" />
+                            <ug:action name="synchronize" caption="$general.synchronize$" fonticonclass="icon-rotate-double-right" />
+                            <ug:action name="delete" caption="$General.Delete$" fonticonclass="icon-bin" fonticonstyle="critical" confirmation="$Tasks.ConfirmDelete$" />
+                        </GridActions>
+                        <GridColumns>
+                            <ug:Column source="##ALL##" externalsourcename="TaskTitle" caption="$tasks.headertitle$" sort="TaskTitle" wrap="false" cssclass="main-column-100" >
+                              <ug:Tooltip source="TaskTitle" width="0" />
+                            </ug:Column>
+                            <ug:Column source="TaskType" caption="$Tasks.HeaderType$" externalsourcename="TaskType" wrap="false" />
+                            <ug:Column source="TaskTime" caption="$tasks.headertime$" wrap="false" />
+                            <ug:Column source="##ALL##" caption="$tasks.headerresult$" externalsourcename="TaskResult" />
+                        </GridColumns>
+                        <GridOptions ShowSelection="true" SelectionColumn="TaskID" DisplayFilter="true" FilterPath="~/CMSModules/Staging/Tools/Controls/StagingTasksFilter.ascx"/>   
+                    </cms:UniGrid>
                 </asp:Panel>
                 <br />
                 <asp:Panel ID="pnlFooter" runat="server" CssClass="Clear">

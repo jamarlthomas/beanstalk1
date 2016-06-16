@@ -911,6 +911,28 @@
             <param name="addToSite">If true, assigns the object to the site</param>
             <param name="postProcessList">List of objects which should be processed after finishing of main objects</param>
         </member>
+        <member name="M:CMS.Synchronization.SyncManager.GetUpdatedInfoObjectId(CMS.DataEngine.GeneralizedInfo,CMS.DataEngine.TranslationHelper,System.Int32)">
+            <summary>
+            Gets ID to be used for the updated <see cref="P:CMS.DataEngine.BaseInfo.GeneralizedInfoWrapper.ObjectID"/>.
+            </summary>
+            <remarks>
+            If the updated object is not allowed to be stored in recycle bin, it gets new ID using <see cref="M:CMS.DataEngine.TranslationHelper.GetNewID(System.String,System.Int32,System.String,System.Int32,System.String,System.String,System.String)"/>,
+            otherwise original ID is used to prevent overwriting another object, which has only same codename. 
+            </remarks>
+            <param name="infoObj">Object to be restored from bin or minor versions with id equals zero</param>
+            <param name="th">Translation table</param>
+            <param name="originalId">Id that should be checked with code name</param>
+            <returns>ID for the updated <see cref="P:CMS.DataEngine.BaseInfo.GeneralizedInfoWrapper.ObjectID"/></returns>
+        </member>
+        <member name="M:CMS.Synchronization.SyncManager.ValidateVersioningUniqueCodeName(CMS.DataEngine.GeneralizedInfo)">
+            <summary>
+            Validates that object to be restored from bin or from minor version has unique code name.
+            </summary>
+            <remarks>
+            Make sure that <paramref name="infoObj"/> has properly set its <see cref="P:CMS.DataEngine.BaseInfo.GeneralizedInfoWrapper.ObjectID"/>.
+            </remarks>
+            <param name="infoObj">Object to be restored from bin or from minor version</param>
+        </member>
         <member name="M:CMS.Synchronization.SyncManager.ResetSpecialFields(CMS.DataEngine.GeneralizedInfo)">
             <summary>
             Resets special fields to their default values

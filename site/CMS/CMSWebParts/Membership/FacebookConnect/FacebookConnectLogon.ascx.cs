@@ -497,12 +497,16 @@ public partial class CMSWebParts_Membership_FacebookConnect_FacebookConnectLogon
     /// <param name="ui">User that will be signed in.</param>
     /// <param name="facebookUserId">The user's Facebook ID</param>
     /// <param name="facebookAccessToken">The user's access token retrieved from Facebook</param>
-    private void SignInUser(UserInfo ui, string facebookUserId, string facebookAccessToken)
+    /// <param name="mapFacebookProfile">Indicates whether the user's Facebook profile is mapped to user info or not</param>
+    private void SignInUser(UserInfo ui, string facebookUserId, string facebookAccessToken, bool mapFacebookProfile = true)
     {
         // Login existing user
         if (ui.Enabled)
         {
-            MapFacebookUserProfile(FacebookUserProfileMappingTriggerEnum.Login, ui, facebookUserId, facebookAccessToken);
+            if (mapFacebookProfile)
+            {
+                MapFacebookUserProfile(FacebookUserProfileMappingTriggerEnum.Login, ui, facebookUserId, facebookAccessToken);
+            }
 
             // Ban IP addresses which are blocked for login
             BannedIPInfoProvider.CheckIPandRedirect(SiteContext.CurrentSiteName, BanControlEnum.Login);
@@ -549,6 +553,8 @@ public partial class CMSWebParts_Membership_FacebookConnect_FacebookConnectLogon
         // If user was found or successfuly created
         if (ui != null)
         {
+            MapFacebookUserProfile(FacebookUserProfileMappingTriggerEnum.Registration, ui, facebookUserId, facebookAccessToken);
+            
             // Send registration e-mails
             // E-mail confirmation is not required as user already provided confirmation by successful login using Facebook connect
             AuthenticationHelper.SendRegistrationEmails(ui, null, null, false, false);
@@ -569,10 +575,8 @@ public partial class CMSWebParts_Membership_FacebookConnect_FacebookConnectLogon
                 activity.Log();
             }
 
-            MapFacebookUserProfile(FacebookUserProfileMappingTriggerEnum.Registration, ui, facebookUserId, facebookAccessToken);
-
             // Signs in created user and redirects her to the return URL
-            SignInUser(ui, facebookUserId, facebookAccessToken);
+            SignInUser(ui, facebookUserId, facebookAccessToken, false);
         }
 
         lblError.Text = error;
@@ -642,7 +646,7 @@ public partial class CMSWebParts_Membership_FacebookConnect_FacebookConnectLogon
         }
 
         // Map Facebook user on appropriate action
-        if (FacebookMappingHelper.GetUserProfileMappingTrigger(SiteContext.CurrentSiteName) == mappingTrigger)
+        if (FacebookMappingHelper.GetUserProfileMappingTrigger(SiteContext.CurrentSiteName) >= mappingTrigger)
         {
             FacebookMappingHelper.MapUserProfile(facebookUser, user);
             userChanged = true;

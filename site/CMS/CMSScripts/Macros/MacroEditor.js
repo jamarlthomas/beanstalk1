@@ -13,6 +13,7 @@ var KEYRIGHT = 39;
 var CTRL = 17;
 var BACKSPACE = 8;
 var DELETE = 46;
+var DOT_KEYCODE = 190;
 
 // CharCode constants
 var SPACE = 32;
@@ -123,6 +124,9 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
     // This flag is to ensure that lost focus because of clicking the option from hint with mouse does not cause the hint to hide too early
     this.stillHasFocus = false;
 
+    // Current key code stored for key event handlers
+    this.currentKeyCode = null;
+
     // Register the events
     if (this.elem.win != null) {
         this.docObj = $cmsj(this.elem.win.document);
@@ -140,8 +144,16 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
     this.docObj.keypress(function (e) {
         me.handleKeyPress(e);
     });
-    this.docObj.mouseup(function (e) {
-        me.handleMouseUp(e);
+ 
+    this.elem.setOption('onKeyEvent', function (instance, event) {
+        if (event.type == 'keydown') {
+            // Handle key down from code mirror control
+            me.handleCodeMirrorKeyDown(event);
+        }
+    });
+
+    this.elem.setOption('onMouseDown', function (instance, event) {
+        me.handleMouseDown(event);
     });
 
     // Events that handle hiding of the autocompletion when the focus is outside the editor
@@ -173,9 +185,34 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
     * Keyboard handlers.
     */
 
-    // Indicator variable
+
+    // Key down event called from code mirror
+    this.handleCodeMirrorKeyDown = function (ev) {
+        var key = me.getKeyCode(ev);
+
+        switch (key) {
+            case BACKSPACE:
+                if (me.isHintsDivDisplayed()) {
+                    // We need to find out if we deleted the dot, if so, IntelliSense should be hidden
+                    var pos = this.currentLinePos();
+                    if (pos > 0) {
+                        var charToDelete = this.currentLineText()[pos - 1];
+                        if (charToDelete == '.') {
+                            me.hideHints(true);
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+
     this.handleKeyDown = function (ev) {
         var key = me.getKeyCode(ev);
+
+        // Store clicked key code
+        me.currentKeyCode = key;
+
         switch (key) {
             case END:
             case HOME:
@@ -190,6 +227,7 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
             case KEYLEFT:
             case KEYRIGHT:
                 if (this.autoCompleteEnabled()) {
+                    me.hideHints(true);
                     me.showContext();
                 }
                 break;
@@ -229,19 +267,6 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
                         me.autoComplete = true;
                         me.showHints(null);
                         return me.cancelEvent(ev);
-                    }
-                }
-                break;
-
-            case BACKSPACE:
-                if (me.isHintsDivDisplayed()) {
-                    // We need to find out if we deleted the dot, if so, IntelliSense should be hidden
-                    var pos = this.currentLinePos();
-                    if (pos > 0) {
-                        var charToDelete = this.currentLineText()[pos - 1];
-                        if (charToDelete == '.') {
-                            me.hideHints(false);
-                        }
                     }
                 }
                 break;
@@ -439,7 +464,7 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
         }
     };
 
-    this.handleMouseUp = function (ev) {
+    this.handleMouseDown = function (ev) {
         this.hideHints();
         this.hideQuickContext();
         this.hideContext();
@@ -610,7 +635,7 @@ function AutoCompleteExtender(codeElem, hintElem, contextElem, quickContextElem,
             identifier += lastChar;
         }
 
-        if (identifier != '') {
+        if ((identifier != '') && (this.currentKeyCode != DOT_KEYCODE)) {
             identifier = identifier.toLowerCase();
             // Find the first item with given prefix
             var onlyMatch = true;

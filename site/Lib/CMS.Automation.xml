@@ -706,13 +706,14 @@
             <param name="transitionType">Type of transition (Use Manual when the action is performed by the user, not the process.)</param>
             <param name="handleActions">Indicates if step actions should be handled</param>
         </member>
-        <member name="M:CMS.Automation.AbstractAutomationManager`1.MoveStepInternal(`0,CMS.Automation.AutomationStateInfo,CMS.WorkflowEngine.WorkflowStepInfo)">
+        <member name="M:CMS.Automation.AbstractAutomationManager`1.MoveStepInternal(`0,CMS.Automation.AutomationStateInfo,CMS.WorkflowEngine.WorkflowStepInfo,System.String)">
             <summary>
             Moves the specified object to the first step without automatic transition and returns the final step.
             </summary>
             <param name="infoObj">Object instance</param>
             <param name="stateObj">State object</param>
             <param name="currentStep">Current workflow step of the object</param>
+            <param name="comment">Action comment</param>
             <remarks>The return step can be different than the original target step.</remarks>
         </member>
         <member name="M:CMS.Automation.AbstractAutomationManager`1.MoveToFinishedStepInternal(`0,CMS.Automation.AutomationStateInfo,System.String,CMS.WorkflowEngine.WorkflowTransitionTypeEnum)">

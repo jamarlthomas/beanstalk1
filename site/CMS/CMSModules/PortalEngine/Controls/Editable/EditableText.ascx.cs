@@ -60,7 +60,21 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
     #endregion
 
 
-    #region "Public properties"
+    #region "Public properties & events"
+
+    /// <summary>
+    /// Fires when web part property value is requested.
+    /// </summary>
+    /// <param name="value">Web part property value to be processed</param>
+    /// <returns>Returns processed web part property value.</returns>
+    public delegate object OnGetValueEventHandler(object value);
+
+
+    /// <summary>
+    /// Occurs when GetValue method of the DataControl object is called.
+    /// </summary>
+    public event OnGetValueEventHandler OnGetValue;
+
 
     /// <summary>
     /// Gets the current context resolver
@@ -1149,14 +1163,21 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
 
 
     /// <summary>
-    /// Returns the value of the given web part property property.
+    /// Returns the value of the given web part property.
     /// </summary>
     /// <param name="propertyName">Property name</param>
     public override object GetValue(string propertyName)
     {
         if ((DataControl != null) && (DataControl != this))
         {
-            return DataControl.GetValue(propertyName);
+            var value = DataControl.GetValue(propertyName);
+
+            if (OnGetValue != null)
+            {
+                value = OnGetValue(value);
+            }
+
+            return value;
         }
 
         return base.GetValue(propertyName);

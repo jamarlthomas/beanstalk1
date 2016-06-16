@@ -37,7 +37,7 @@ public partial class CMSModules_PortalEngine_Controls_Layout_TemplateLayoutEdit 
     private bool enablePreview = true;
 
     private bool? mShowSharedLayoutWarnings;
-    private bool requiresDialog ;
+    private bool requiresDialog;
     private bool dialog;
     private int sharedLayoutId;
 
@@ -538,6 +538,58 @@ public partial class CMSModules_PortalEngine_Controls_Layout_TemplateLayoutEdit 
         editMenuElem.ObjectEditMenu.PreviewMode = true;
         editMenuElem.MenuPanel.CssClass = "PreviewMenu";
         editMenuElem.ObjectManager.OnAfterAction += ObjectManager_OnAfterAction;
+        EditForm.OnBeforeSave += EditForm_OnBeforeSave;
+    }
+
+
+    private void EditForm_OnBeforeSave(object sender, EventArgs e)
+    {
+        // Don't save shared layout object, update only necessary objects
+        if ((EditedObjectType == EditedObjectTypeEnum.Layout) && radShared.Checked)
+        {
+            LayoutInfo li = EditedObject as LayoutInfo;
+            
+            // Get the current layout type
+            PageTemplateLayoutTypeEnum layoutType = PageTemplateLayoutTypeEnum.PageTemplateLayout;
+            PageTemplateDeviceLayoutInfoProvider.GetLayoutObject(PageTemplateInfo, DeviceProfileInfo, out layoutType);
+
+            switch (layoutType)
+            {
+                case PageTemplateLayoutTypeEnum.PageTemplateLayout:
+                case PageTemplateLayoutTypeEnum.SharedLayout:
+                    {
+                        int newLayoutId = ValidationHelper.GetInteger(drpLayout.Value, 0);
+
+                        // We need to save also page template if shared template is used
+                        if ((PageTemplateInfo != null) && (PageTemplateInfo.LayoutID != li.LayoutId))
+                        {
+                            PageTemplateInfo.LayoutID = newLayoutId;
+                            PageTemplateInfo.Update();
+                        }
+                    }
+                    break;
+
+                case PageTemplateLayoutTypeEnum.DeviceSharedLayout:
+                case PageTemplateLayoutTypeEnum.DeviceLayout:
+                    {
+                        // We need to save also template device layout if shared template is used
+                        PageTemplateDeviceLayoutInfo deviceLayout = PageTemplateDeviceLayoutInfoProvider.GetTemplateDeviceLayoutInfo(TemplateID, DeviceProfileID);
+                        if (deviceLayout != null)
+                        {
+                            deviceLayout.LayoutID = ValidationHelper.GetInteger(drpLayout.Value, 0);
+                            deviceLayout.LayoutCode = null;
+                            deviceLayout.LayoutCSS = null;
+                            deviceLayout.Update();
+                        }
+                    }
+                    break;
+            }
+
+            ShowChangesSaved();
+
+            // Prevent from saving object
+            EditForm.StopProcessing = true;
+        }
     }
 
 
@@ -559,12 +611,16 @@ public partial class CMSModules_PortalEngine_Controls_Layout_TemplateLayoutEdit 
             }
 
             radCustom.Text = GetString("TemplateLayout.Custom");
-            radCustom.Attributes.Add("onclick", "window.location = '" + URLHelper.AddParameterToUrl(URLHelper.AddParameterToUrl(RequestContext.CurrentURL, "newshared", "0"), "oldshared", drpLayout.Value.ToString()) + "'");
+
+            var sanitizedCurrentUrl = ScriptHelper.GetString(RequestContext.CurrentURL, encapsulate: false);
+            var customLayoutUrl = URLHelper.AddParameterToUrl(URLHelper.AddParameterToUrl(sanitizedCurrentUrl, "newshared", "0"), "oldshared", drpLayout.Value.ToString());
+
+            radCustom.Attributes.Add("onclick", "window.location = '" + customLayoutUrl + "'");
 
             radShared.Text = GetString("TemplateLayout.Shared");
             if (drpLayout.UniSelector.HasData)
             {
-                radShared.Attributes.Add("onclick", "window.location = '" + URLHelper.AddParameterToUrl(RequestContext.CurrentURL, "newshared", drpLayout.Value + "") + "'");
+                radShared.Attributes.Add("onclick", "window.location = '" + URLHelper.AddParameterToUrl(sanitizedCurrentUrl, "newshared", drpLayout.Value + "") + "'");
             }
 
             // Get the current layout type
@@ -630,15 +686,7 @@ public partial class CMSModules_PortalEngine_Controls_Layout_TemplateLayoutEdit 
         // Enable DDL and disable UIForm for shared layouts
         if (radShared.Checked)
         {
-            if (codeElem != null)
-            {
-                codeElem.Enabled = false;
-                cssEditor.Editor.Enabled = false;
-                codeLayoutElem.Enabled = false;
-                cssLayoutEditor.Editor.Enabled = false;
-                deviceCode.Enabled = false;
-                cssDeviceEditor.Editor.Enabled = false;
-            }
+            DisableEditableFields();
         }
         else
         {
@@ -654,6 +702,29 @@ public partial class CMSModules_PortalEngine_Controls_Layout_TemplateLayoutEdit 
 
 
     /// <summary>
+    /// Disables editable form fields according to appropriate object type.
+    /// </summary>
+    private void DisableEditableFields()
+    {
+        switch (EditedObjectType)
+        {
+            case EditedObjectTypeEnum.Layout:
+                codeLayoutElem.Enabled = false;
+                cssLayoutEditor.Editor.Enabled = false;
+                break;
+            case EditedObjectTypeEnum.Template:
+                codeElem.Editor.Enabled = false;
+                cssEditor.Editor.Enabled = false;
+                break;
+            case EditedObjectTypeEnum.DeviceLayout:
+                deviceCode.Enabled = false;
+                cssDeviceEditor.Editor.Enabled = false;
+                break;
+        }
+    }
+
+
+    /// <summary>
     /// Handles the OnAfterAction event of the ObjectManager control.
     /// </summary>
     protected void ObjectManager_OnAfterAction(object sender, SimpleObjectManagerEventArgs e)
@@ -662,47 +733,6 @@ public partial class CMSModules_PortalEngine_Controls_Layout_TemplateLayoutEdit 
         {
             if (EditForm.ValidateData())
             {
-                LayoutInfo li = EditedObject as LayoutInfo;
-
-                if (radShared.Checked)
-                {
-                    // Get the current layout type
-                    PageTemplateLayoutTypeEnum layoutType = PageTemplateLayoutTypeEnum.PageTemplateLayout;
-                    PageTemplateDeviceLayoutInfoProvider.GetLayoutObject(PageTemplateInfo, DeviceProfileInfo, out layoutType);
-
-                    switch (layoutType)
-                    {
-                        case PageTemplateLayoutTypeEnum.PageTemplateLayout:
-                        case PageTemplateLayoutTypeEnum.SharedLayout:
-                            {
-                                int newLayoutId = ValidationHelper.GetInteger(drpLayout.Value, 0);
-
-                                // We need to save also page template if shared template is used
-                                if ((PageTemplateInfo != null) && (PageTemplateInfo.LayoutID != li.LayoutId))
-                                {
-                                    PageTemplateInfo.LayoutID = newLayoutId;
-                                    PageTemplateInfo.Update();
-                                }
-                            }
-                            break;
-
-                        case PageTemplateLayoutTypeEnum.DeviceSharedLayout:
-                        case PageTemplateLayoutTypeEnum.DeviceLayout:
-                            {
-                                // We need to save also template device layout if shared template is used
-                                PageTemplateDeviceLayoutInfo deviceLayout = PageTemplateDeviceLayoutInfoProvider.GetTemplateDeviceLayoutInfo(TemplateID, DeviceProfileID);
-                                if (deviceLayout != null)
-                                {
-                                    deviceLayout.LayoutID = ValidationHelper.GetInteger(drpLayout.Value, 0);
-                                    deviceLayout.LayoutCode = null;
-                                    deviceLayout.LayoutCSS = null;
-                                    deviceLayout.Update();
-                                }
-                            }
-                            break;
-                    }
-                }
-
                 // Register refresh script
                 string refreshScript = ScriptHelper.GetScript("if ((wopener != null) && (wopener.RefreshPage != null)) {wopener.RefreshPage();}");
                 ScriptHelper.RegisterClientScriptBlock(Page, typeof(String), "pageTemplateRefreshScript", refreshScript);
@@ -714,12 +744,6 @@ public partial class CMSModules_PortalEngine_Controls_Layout_TemplateLayoutEdit 
                 if (ValidationHelper.GetBoolean(hdnClose.Value, false))
                 {
                     ScriptHelper.RegisterStartupScript(Page, typeof(string), "CloseDialogPreviewScript", ScriptHelper.GetScript("CloseDialog();"));
-                }
-
-                // Load actual layout info (it was edited during saving by LayoutInfoProvider)
-                if (li != null)
-                {
-                    actualLayoutInfo = LayoutInfoProvider.GetLayoutInfo(li.LayoutId);
                 }
             }
 

@@ -5,7 +5,7 @@
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">
     <ContentTemplate>
         <cms:UniSelector ID="blogSelector" runat="server" ObjectType="cms.blog" SelectionMode="SingleDropDownList"
-            ResourcePrefix="blogselector" OrderBy="BlogName"
+            ResourcePrefix="blogselector" OrderBy="BlogName" OnOnSpecialFieldsLoaded="blogSelector_OnSpecialFieldsLoaded"
             AllowEmpty="false" AllowAll="false" DisplayNameFormat="{%BlogName%}" />
     </ContentTemplate>
 </cms:CMSUpdatePanel>

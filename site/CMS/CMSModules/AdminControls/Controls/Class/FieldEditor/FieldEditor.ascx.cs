@@ -2480,7 +2480,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
 
                         // Fill FormFieldInfo structure with updated form data
                         ffiUpdated = FillFormFieldInfoStructure(ffi);
-
+  
                         if (IsNewItemEdited)
                         {
                             // Raise event for field addition
@@ -3726,8 +3726,7 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
             // When updating existing field
             if ((ffi != null) && (dci.ClassNodeNameSource == ffi.Name))
             {
-                // Update ClassNodeNameSource field
-                dci.ClassNodeNameSource = updatedFieldInfo.Name;
+                dci.ClassNodeNameSource = updatedFieldInfo.IsNodeNameSourceCandidate() ? updatedFieldInfo.Name : String.Empty;
             }
 
             bool isNotDummyOrField = (SelectedItemType != FieldEditorSelectedItemEnum.Field) || !updatedFieldInfo.IsDummyField;

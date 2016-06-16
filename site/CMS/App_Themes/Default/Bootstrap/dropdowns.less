@@ -371,8 +371,8 @@
     }
 }
 
-// Language menu
-.language-menu {
+// Styles for the scrollable dropdown menu utilizing the jQueryJScrollPane plugin
+.scrollable-menu {
     &, &.open {
         .dropdown-menu {
             visibility: visible;
@@ -409,7 +409,10 @@
             box-shadow: none;
         }
     }
+}
 
+// Language menu
+.language-menu {
     & + .btn {
         margin-left: @base-unit * 0.5;
     }

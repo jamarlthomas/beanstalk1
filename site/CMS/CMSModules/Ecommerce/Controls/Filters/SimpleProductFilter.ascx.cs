@@ -98,13 +98,25 @@ public partial class CMSModules_Ecommerce_Controls_Filters_SimpleProductFilter :
 
         if (!string.IsNullOrEmpty(productNameFilter))
         {
-            // Condition to get also products with variants that contains
-            where.Where(w => w.WhereContains("SKUName", productNameFilter)
-                              .Or()
-                              .WhereContains("SKUNumber", productNameFilter)
-                              .Or()
-                              .WhereIn("SKUID", new IDQuery<SKUInfo>("SKUParentSKUID").WhereContains("SKUName", productNameFilter).Or().WhereContains("SKUNumber", productNameFilter))
-                );
+            // Alias for COM_SKU 
+            var variants = new QuerySourceTable("COM_SKU", "variants");
+
+            // Get IDs of products containing filter text; search among variants too
+            var ids = new IDQuery<SKUInfo>()
+                .Columns(new QueryColumn("COM_SKU.SKUID"))
+                .Source(s => s.LeftJoin(variants, "COM_SKU.SKUID", "variants.SKUParentSKUID",
+                    new WhereCondition()
+                        .WhereContains("variants.SKUName", productNameFilter)
+                        .Or()
+                        .WhereContains("variants.SKUNumber", productNameFilter)))
+                .Where(
+                    new WhereCondition()
+                        .WhereContains("COM_SKU.SKUName", productNameFilter)
+                        .Or()
+                        .WhereContains("COM_SKU.SKUNumber", productNameFilter));
+
+            // Add the condition
+            where.Where(w => w.WhereIn("SKUID", ids));
         }
 
         where.Where(SKUInfoProvider.ProviderObject.AddSiteWhereCondition(string.Empty, SiteContext.CurrentSiteID, ECommerceSettings.ALLOW_GLOBAL_PRODUCTS, true));

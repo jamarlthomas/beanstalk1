@@ -418,7 +418,8 @@
             disableDaySelect: false, // If true day selection is disabled
             disableMontSelect: false, // If true month selection is disabled
             defaultTimeValue: 0, // 0..now,1.. start of day, 2 .. end of day
-            timeZoneOffset: 0, //Offset of time zone
+            timeZoneOffset: 0, // Offset of time zone relative to UTC
+            applyTimeZones: false, // If true time zone offset is applied
             highlightCurrentDay: false // If true current day is highlighted
         };
         $.extend(this._defaults, this.regional['']);
@@ -1759,10 +1760,12 @@
                 now = new Date(date.getFullYear(), date.getMonth(), date.getDate(), now.getHours(), now.getMinutes(), now.getSeconds());
             }
 
-            var timeZoneOffset = this._get(inst, 'timeZoneOffset');
+            var applyTimeZones = this._get(inst, 'applyTimeZones');
+            if (applyTimeZones) {
+                var timeZoneOffset = this._get(inst, 'timeZoneOffset');
+                var localTimeZoneOffset = now.getTimezoneOffset();
 
-            if (timeZoneOffset != 0) {
-                now.setMinutes(now.getMinutes() + timeZoneOffset);
+                now.setMinutes(now.getMinutes() + timeZoneOffset + localTimeZoneOffset);
             }
 
             if (defaultTimeValue != 0) {
@@ -1837,7 +1840,6 @@
         _setDate: function(inst, date, noChange) {
             var disableDaySelect = this._get(inst, 'disableDaySelect');
             var disableMonthSelect = this._get(inst, 'disableMonthSelect');
-            var timeZoneOffset = this._get(inst, 'timeZoneOffset');
             var defaultTimeValue = this._get(inst, 'defaultTimeValue');
 
             var defaultMonth = defaultTimeValue == 1 ? 0 : 11;
@@ -1867,8 +1869,11 @@
 
             var defaultDate = this._getDefaultDate(inst);
 
-            if ((timeZoneOffset != 0) && (defaultTimeValue == 0)) {
-                defaultDate.setMinutes(defaultDate.getMinutes() + timeZoneOffset);
+            var applyTimeZones = this._get(inst, 'applyTimeZones');
+            if ((applyTimeZones && (defaultTimeValue == 0))) {
+                var timeZoneOffset = this._get(inst, 'timeZoneOffset');
+                var localTimeZoneOffset = defaultDate.getTimezoneOffset();
+                defaultDate.setMinutes(defaultDate.getMinutes() + timeZoneOffset + localTimeZoneOffset);
             }
 
             var newDate = this._restrictMinMax(inst, this._determineDate(inst, date, defaultDate));

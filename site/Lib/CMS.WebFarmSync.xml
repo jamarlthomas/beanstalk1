@@ -573,6 +573,14 @@
             </summary>
             <param name="infoObj">WebFarmServerTask object</param>
         </member>
+        <member name="M:CMS.WebFarmSync.WebFarmServerTaskInfoProvider.SetErrorInTask(System.Int32,System.Int32,System.String)">
+            <summary>
+            Sets given error message to task with given ID on server with given ID.
+            </summary>
+            <param name="taskId">Task Id to be set</param>
+            <param name="serverId">Server Id to be set</param>
+            <param name="errorMessage">Error message to be set</param>
+        </member>
         <member name="T:CMS.WebFarmSync.WebFarmServerTaskInfo">
             <summary>
             WebFarmServerTaskInfo data container class.
@@ -889,6 +897,11 @@
             Returns task binary data.
             </summary>
             <param name="taskId">Task ID</param>
+        </member>
+        <member name="M:CMS.WebFarmSync.WebFarmTaskProcessor.ReportTaskError(System.Int32,System.Int32,System.Exception)">
+            <summary>
+            Reports given error in task obtained by given ID and given server ID.
+            </summary>
         </member>
         <member name="M:CMS.WebFarmSync.WebFarmTaskProcessor.DeleteTask(System.Int32,System.Int32)">
             <summary>
@@ -1283,6 +1296,11 @@
             Indicates if task is used only to synchronize memory.
             </summary>
         </member>
+        <member name="P:CMS.WebFarmSync.WebFarmTaskInfo.TaskErrorMessage">
+            <summary>
+            Contains error message when some occurred during task handling.
+            </summary>
+        </member>
         <member name="P:CMS.WebFarmSync.WebFarmTaskInfo.TaskFilePath">
             <summary>
             Target path of file transported by task.
@@ -1435,6 +1453,13 @@
             Deletes old orphaned tasks.
             </summary>
             <remarks>Orphaned task is task that does NOT have any server task bindings and is NOT anonymous.</remarks>
+        </member>
+        <member name="M:CMS.WebFarmSync.WebFarmTaskInfoProvider.SetErrorInTask(System.Int32,System.String)">
+            <summary>
+            Sets given error message to task with given ID on server with given ID.
+            </summary>
+            <param name="taskId">Task Id to be set</param>
+            <param name="errorMessage">Error message to be set</param>
         </member>
         <member name="T:CMS.WebFarmSync.WebFarmDebug">
             <summary>

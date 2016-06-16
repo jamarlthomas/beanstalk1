@@ -95,7 +95,7 @@
         </member>
         <member name="M:CMS.Ecommerce.CurrencyConverter.ApplyExchangeRate(System.Decimal,System.Decimal)">
             <summary>
-            Applies given exchange rate to monetary amount. If rate is negative, amount is returned with no change.
+            Applies given exchange rate to monetary amount. If rate is negative or zero, amount is returned with no change.
             </summary>
             <param name="amount">Monetary amount.</param>
             <param name="rate">Exchange rate to be applied.</param>
@@ -6993,6 +6993,16 @@
             </summary>
         </member>
         <member name="M:CMS.Ecommerce.ExportSpecialActions.Init">
+            <summary>
+            Initializes export handlers
+            </summary>
+        </member>
+        <member name="T:CMS.Ecommerce.ExportDepartment">
+            <summary>
+            Handles special actions during the department export process.
+            </summary>
+        </member>
+        <member name="M:CMS.Ecommerce.ExportDepartment.Init">
             <summary>
             Initializes export handlers
             </summary>

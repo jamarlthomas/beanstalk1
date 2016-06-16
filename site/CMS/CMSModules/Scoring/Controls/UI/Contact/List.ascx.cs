@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Linq;
 
 using CMS.Base;
 using CMS.Core;
@@ -234,15 +234,6 @@ public partial class CMSModules_Scoring_Controls_UI_Contact_List : CMSAdminListC
                 btn = (CMSGridActionButton)sender;
                 btn.OnClientClick = "ViewScoreDetail(" + btn.CommandArgument + "); return false;";
                 break;
-
-            case "#contactfullname":
-                ci = ContactInfoProvider.GetContactInfo(ValidationHelper.GetInteger(parameter, 0));
-                if (ci != null)
-                {
-                    string fullName = TextHelper.MergeIfNotEmpty(" ", ci.ContactFirstName, ci.ContactMiddleName, ci.ContactLastName);
-                    return HTMLHelper.HTMLEncode(fullName);
-                }
-                return String.Empty;
 
             case "#statusdisplayname":
                 ci = ContactInfoProvider.GetContactInfo(ValidationHelper.GetInteger(parameter, 0));
@@ -529,13 +520,20 @@ function SelectValue_" + ClientID + @"(valueID) {
     /// <summary>
     /// Returns all contacts with scores that meet filter condition.
     /// </summary>
-    private InfoDataSet<ScoreContactRuleInfo> GetContactsWithScore()
+    private DataSet GetContactsWithScore()
     {
         return ScoreContactRuleInfoProvider.GetContactsWithScore()
+                                           .Source(s => s.InnerJoin<ContactInfo>("OM_ScoreContactRule.ContactID", "OM_Contact.ContactID"))
+                                           .Columns("OM_Contact.ContactID", "ContactFirstName", "ContactLastName", "ScoreID")
+                                           .AddColumn(
+                                               new AggregatedColumn(AggregationType.Sum, "Value").As("Score")
+                                            )
                                            .WhereEquals("ScoreID", scoreId)
+                                           .NewGroupBy()
+                                           .GroupBy("OM_Contact.ContactID", "ScoreID", "ContactFirstName", "ContactLastName")
                                            .Having(ucScoreFilter.GetWhereCondition())
                                            .OrderByDescending("SUM(VALUE)")
-                                           .TypedResult;
+                                           .Result;
     }
 
     #endregion

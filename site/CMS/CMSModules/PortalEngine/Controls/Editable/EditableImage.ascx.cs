@@ -793,7 +793,11 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableImage : C
                     {
                         lblError.Visible = (lblError.Text != "");
                     }
-                    lblTitle.Text = HTMLHelper.HTMLEncode(ImageTitle);
+
+                    if (lblTitle != null)
+                    {
+                        lblTitle.Text = HTMLHelper.HTMLEncode(ImageTitle);
+                    }
                     break;
             }
         }

@@ -211,7 +211,8 @@ public partial class CMSModules_System_Macros_System_Macros : GlobalAdminPage
                             bool refreshed;
                             if (oldSaltSpecified)
                             {
-                                refreshed = MacroSecurityProcessor.RefreshSecurityParameters(info, oldSalt, newSaltSpecified ? newSalt : ValidationHelper.HashStringSalt, true);
+                                refreshed = MacroSecurityProcessor.RefreshSecurityParameters(info, oldSalt, 
+                                    newSaltSpecified ? newSalt : ValidationHelper.HashStringSalt, true, MembershipContext.AuthenticatedUser.UserName);
                             }
                             else
                             {

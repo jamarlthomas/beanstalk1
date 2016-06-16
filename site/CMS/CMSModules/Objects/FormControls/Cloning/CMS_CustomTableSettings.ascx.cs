@@ -51,6 +51,13 @@ public partial class CMSModules_Objects_FormControls_Cloning_CMS_CustomTableSett
             ShowError(GetString("BizForm_Edit.ErrorFormTableNameInIdentifierFormat"));
             return false;
         }
+
+        TableManager tm = new TableManager(null);
+        if (tm.TableExists(txtTableName.Text))
+        {
+            ShowError(GetString("sysdev.class_edit_gen.tablenameunique"));
+            return false;
+        }
         return true;
     }
 

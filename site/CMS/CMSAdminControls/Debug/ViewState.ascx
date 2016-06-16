@@ -31,12 +31,17 @@
                 <asp:PlaceHolder runat="server" ID="plcTotalSize" EnableViewState="false" Visible="<%#DisplayTotalSize%>">
                     <cms:LocalizedLabel runat="server" ID="lblTotal" EnableViewState="false" ResourceString="ViewStateLog.Total" />
                     <strong>
+                        <span id="cmsDebugViewStateTotalSize" />
                         <script type="text/javascript">
                             //<![CDATA[
-                            var stateElem = document.getElementById("__VIEWSTATE");
-                            if (stateElem != null) {
-                                document.write(stateElem.value.length);
-                            }
+                            document.addEventListener('DOMContentLoaded', function () {
+                                var stateElem = document.getElementById('__VIEWSTATE');
+                                if (stateElem != null) {
+                                    document.getElementById('cmsDebugViewStateTotalSize').textContent = stateElem.value.length;
+                                } else {
+                                    document.getElementById('cmsDebugViewStateTotalSize').textContent = 0;
+                                }
+                            });
                             //]]>
                         </script>
                     </strong>

@@ -672,13 +672,13 @@ function US_GetNewItemId_", ctrlSiteSelectStyleSheet.ValueElementID, @"(newStyle
                     e.IsValid = false;
                 }
             }
-            else if (radInherit.Checked)
+            else if (radInherit.Checked && (currentPage != null))
             {
                 // Get parent value
                 currentPage.NodeCacheMinutes = -1;
 
                 cacheMinutes = null;
-                if ((currentPage != null) && (currentPage.NodeCacheMinutes > 0))
+                if (currentPage.NodeCacheMinutes > 0)
                 {
                     txtCacheMinutes.Text = currentPage.NodeCacheMinutes.ToString();
                 }

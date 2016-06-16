@@ -331,6 +331,16 @@
             Initializes export handlers
             </summary>
         </member>
+        <member name="T:CMS.WorkflowEngine.ExportWorkflow">
+            <summary>
+            Handles special actions during the workflow export process.
+            </summary>
+        </member>
+        <member name="M:CMS.WorkflowEngine.ExportWorkflow.Init">
+            <summary>
+            Initializes export handlers
+            </summary>
+        </member>
         <member name="T:CMS.WorkflowEngine.ImportSpecialActions">
             <summary>
             Handles special actions during the import process.
@@ -2307,7 +2317,7 @@
             <param name="stateObj">State object</param>
             <param name="status">Status string</param>
         </member>
-        <member name="M:CMS.WorkflowEngine.AbstractWorkflowManager`3.HandleStepInternal(`0,`1,CMS.Membership.UserInfo,CMS.WorkflowEngine.WorkflowInfo,CMS.WorkflowEngine.WorkflowStepInfo,CMS.WorkflowEngine.WorkflowStepInfo,System.Boolean)">
+        <member name="M:CMS.WorkflowEngine.AbstractWorkflowManager`3.HandleStepInternal(`0,`1,CMS.Membership.UserInfo,CMS.WorkflowEngine.WorkflowInfo,CMS.WorkflowEngine.WorkflowStepInfo,CMS.WorkflowEngine.WorkflowStepInfo,System.String,System.Boolean)">
             <summary>
             Handles step additional actions
             </summary>
@@ -2317,6 +2327,7 @@
             <param name="workflow">Workflow</param>
             <param name="currentStep">Current workflow step</param>
             <param name="step">Target workflow step</param>
+            <param name="comment">Action comment</param>
             <param name="handleActions">Indicates if step actions should be handled</param>
         </member>
         <member name="M:CMS.WorkflowEngine.AbstractWorkflowManager`3.HandleStepTimeoutInternal(`0,`1,CMS.Membership.UserInfo,CMS.WorkflowEngine.WorkflowInfo,CMS.WorkflowEngine.WorkflowStepInfo,CMS.WorkflowEngine.WorkflowStepInfo)">
@@ -2330,7 +2341,7 @@
             <param name="currentStep">Current workflow step</param>
             <param name="step">Target workflow step</param>
         </member>
-        <member name="M:CMS.WorkflowEngine.AbstractWorkflowManager`3.CreateActionsExecutorInternal(`0,`1,CMS.Membership.UserInfo,CMS.WorkflowEngine.WorkflowStepInfo,CMS.WorkflowEngine.WorkflowStepInfo)">
+        <member name="M:CMS.WorkflowEngine.AbstractWorkflowManager`3.CreateActionsExecutorInternal(`0,`1,CMS.Membership.UserInfo,CMS.WorkflowEngine.WorkflowStepInfo,CMS.WorkflowEngine.WorkflowStepInfo,System.String)">
             <summary>
             Creates action executor with prefilled parameters.
             </summary>
@@ -2339,6 +2350,7 @@
             <param name="user">User</param>
             <param name="initialStep">Initial workflow step</param>
             <param name="actionStep">Initial workflow step</param>
+            <param name="comment">Action comment</param>
         </member>
         <member name="M:CMS.WorkflowEngine.AbstractWorkflowManager`3.ProcessActionInternal(CMS.WorkflowEngine.WorkflowActionEventArgs{`0,`1,`2})">
             <summary>
@@ -2346,7 +2358,7 @@
             </summary>
             <param name="arguments">Action arguments</param>
         </member>
-        <member name="M:CMS.WorkflowEngine.AbstractWorkflowManager`3.CreateActionArgumentsInternal(`0,`1,CMS.Membership.UserInfo,CMS.WorkflowEngine.WorkflowStepInfo,CMS.WorkflowEngine.WorkflowStepInfo,CMS.WorkflowEngine.WorkflowInfo,CMS.WorkflowEngine.AbstractWorkflowManager{`0,`1,`2})">
+        <member name="M:CMS.WorkflowEngine.AbstractWorkflowManager`3.CreateActionArgumentsInternal(`0,`1,CMS.Membership.UserInfo,CMS.WorkflowEngine.WorkflowStepInfo,CMS.WorkflowEngine.WorkflowStepInfo,CMS.WorkflowEngine.WorkflowInfo,CMS.WorkflowEngine.AbstractWorkflowManager{`0,`1,`2},System.String)">
             <summary>
             Creates action arguments.
             </summary>
@@ -2357,6 +2369,7 @@
             <param name="actionStep">Initial workflow step</param>
             <param name="workflow">Workflow</param>
             <param name="manager">Manager</param>
+            <param name="comment">Action comment</param>
         </member>
         <member name="M:CMS.WorkflowEngine.AbstractWorkflowManager`3.ProcessActionsInternal(CMS.WorkflowEngine.WorkflowActionEventArgs{`0,`1,`2})">
             <summary>
@@ -2364,7 +2377,7 @@
             </summary>
             <param name="arguments">Initial action arguments</param>
         </member>
-        <member name="M:CMS.WorkflowEngine.AbstractWorkflowManager`3.MoveStepInternal(`0,`1,CMS.WorkflowEngine.WorkflowStepInfo,CMS.Membership.UserInfo)">
+        <member name="M:CMS.WorkflowEngine.AbstractWorkflowManager`3.MoveStepInternal(`0,`1,CMS.WorkflowEngine.WorkflowStepInfo,CMS.Membership.UserInfo,System.String)">
             <summary>
             Moves the specified object to the first step without automatic transition in the workflow and returns the final step.
             </summary>
@@ -2372,6 +2385,7 @@
             <param name="stateObj">State object</param>
             <param name="currentStep">Current workflow step of the object</param>
             <param name="user">User</param>
+            <param name="comment">Action comment</param>
             <remarks>The return step can be different than the original target step.</remarks>
         </member>
         <member name="M:CMS.WorkflowEngine.AbstractWorkflowManager`3.GetBasicResolverInternal(CMS.WorkflowEngine.WorkflowInfo,CMS.WorkflowEngine.WorkflowStepInfo,CMS.Membership.UserInfo)">

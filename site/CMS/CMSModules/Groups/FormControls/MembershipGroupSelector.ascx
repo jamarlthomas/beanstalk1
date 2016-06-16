@@ -4,7 +4,7 @@
 
 <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">
     <ContentTemplate>
-        <cms:UniSelector ObjectType="community.group" ReturnColumnName="GroupName"
+        <cms:UniSelector ObjectType="community.group" SelectionMode="MultipleTextBox" ReturnColumnName="GroupName"
             OrderBy="GroupDisplayName" ResourcePrefix="groups" runat="server" AllowEmpty="false"
             ID="usGroups" />
     </ContentTemplate>

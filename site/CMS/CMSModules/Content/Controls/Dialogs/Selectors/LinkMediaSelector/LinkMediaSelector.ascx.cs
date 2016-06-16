@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web.UI;
@@ -203,7 +204,7 @@ public partial class CMSModules_Content_Controls_Dialogs_Selectors_LinkMediaSele
         {
             if (mTreeNodeObj == null)
             {
-                var node = GetDocument(NodeID);
+                var node = GetDocument(SiteName, NodeID);
 
                 mTreeNodeObj = node;
                 mediaView.TreeNodeObj = mTreeNodeObj;
@@ -1459,58 +1460,136 @@ function RaiseHiddenPostBack(){{
     /// <param name="totalRecords">Total records</param>
     private DataSet GetNodes(string searchText, string parentAliasPath, string siteName, out int totalRecords)
     {
-        // Create WHERE condition
-        var where = new WhereCondition()
-            .WhereNotEquals("NodeAliasPath", "/");
-
-        bool searchEnabled = !string.IsNullOrEmpty(searchText);
-        if (searchEnabled)
-        {
-            var searchWhere = new WhereCondition().WhereContains("DocumentName", searchText)
-                .Or().WhereContains("DocumentType", searchText);
-
-            where = where.Where(searchWhere);
-        }
-
-        // If not all content is selectable and no additional content being displayed
-        if ((SelectableContent != SelectableContentEnum.AllContent) && !IsFullListingMode)
-        {
-            where = where.WhereEquals("ClassName", SystemDocumentTypes.File);
-        }
-
-        var childClassNames = DocumentHelper.GetDocuments()
-                                            .Path(parentAliasPath, PathTypeEnum.Children)
-                                            .Column("ClassName")
-                                            .OnSite(siteName)
-                                            .NestingLevel(1)
-                                            .Distinct();
-
-        var classNames = String.Join(";", childClassNames.Select(name => name.ClassName));
-
-        // Get nodes with coupled data to be able to recover presentation URL in case coupled data macro is used in URL pattern
-        var query = DocumentHelper.GetDocuments()
-                                  .Published(IsLiveSite)
-                                  .WithCoupledColumns()
-                                  .Types(classNames)
-                                  .PublishedVersion(IsLiveSite)
-                                  .OnSite(siteName)
-                                  .Path(parentAliasPath, PathTypeEnum.Children)
-                                  .Culture(Config.Culture)
-                                  .CombineWithDefaultCulture()
-                                  .Where(where)
-                                  .OrderBy(mediaView.ListViewControl.SortDirect)
-                                  .NestingLevel(1)
-                                  .CheckPermissions();
-
-        if (!searchEnabled)
-        {
-            // Don't use paged query for searching (works only for first page)
-            query.Page(mediaView.CurrentPage - 1, mediaView.CurrentPageSize);
-        }
+        var query = GetQuery(searchText, parentAliasPath, siteName);
 
         DataSet nodes = query.Result;
         totalRecords = query.TotalRecords;
+
         return nodes;
+    }
+
+
+    private MultiDocumentQuery GetQuery(string searchText, string parentAliasPath, string siteName)
+    {
+        var where = GetWhereCondition(searchText);
+        var classNames = GetClassNames(siteName, parentAliasPath);
+        var orderBy = mediaView.ListViewControl.SortDirect;
+
+        // Get nodes with coupled data to be able to recover presentation URL in case coupled data macro is used in URL pattern
+        var query = GetBaseQuery(siteName, parentAliasPath)
+            .WithCoupledColumns()
+            .Types(classNames)
+            .PublishedVersion(IsLiveSite)
+            .Where(where)
+            .OrderBy(orderBy);
+
+        // Don't use paged query for searching (works only for first page)
+        if (!IsSearchMode(searchText))
+        {
+            ApplyPaging(query);
+        }
+
+        return query;
+    }
+
+
+    private WhereCondition GetWhereCondition(string searchText)
+    {
+        var where = new WhereCondition().WhereNotEquals("NodeAliasPath", "/");
+        AddWhereConditionForSearch(searchText, where);
+        AddFileClassNameCondition(where);
+
+        return where;
+    }
+
+
+    private string[] GetClassNames(string siteName, string parentAliasPath)
+    {
+        var query = GetBaseQuery(siteName, parentAliasPath)
+            .PublishedVersion()
+            .Column("ClassName")
+            .Distinct();
+
+        return query
+            .GetListResult<string>()
+            .Distinct(StringComparer.InvariantCultureIgnoreCase)
+            .ToArray();
+    }
+
+
+    private void AddFileClassNameCondition(WhereCondition where)
+    {
+        if (SelectOnlyFiles())
+        {
+            where.WhereEquals("ClassName", SystemDocumentTypes.File);
+        }
+    }
+
+
+    private MultiDocumentQuery GetBaseQuery(string siteName, string parentAliasPath)
+    {
+        var query = DocumentHelper.GetDocuments()
+                             .Published(IsLiveSite)
+                             .Culture(Config.Culture)
+                             .NestingLevel(1)
+                             .OnSite(siteName)
+                             .Path(parentAliasPath, PathTypeEnum.Children)
+                             .CheckPermissions();
+
+        AddCombineWithCultureSettings(query, siteName);
+
+        return query;
+    }
+
+
+    private void ApplyPaging(MultiDocumentQuery query)
+    {
+        query.Page(mediaView.CurrentPage - 1, mediaView.CurrentPageSize);
+    }
+
+
+    private void AddCombineWithCultureSettings(MultiDocumentQuery query, string siteName)
+    {
+        if (IsFullListingMode)
+        {
+            query.CombineWithAnyCulture();
+        }
+        else
+        {
+            var combine = UseCombineCondition(siteName);
+            query.CombineWithDefaultCulture(combine);
+        }
+    }
+
+
+    private bool UseCombineCondition(string siteName)
+    {
+        return SelectOnlyFiles() ? SiteInfoProvider.CombineFilesWithDefaultCulture(siteName) : SiteInfoProvider.CombineWithDefaultCulture(siteName);
+    }
+
+
+    private bool SelectOnlyFiles()
+    {
+        return (SelectableContent != SelectableContentEnum.AllContent) && !IsFullListingMode;
+    }
+
+
+    private static void AddWhereConditionForSearch(string searchText, WhereCondition where)
+    {
+        if (IsSearchMode(searchText))
+        {
+            var searchWhere = new WhereCondition().WhereContains("DocumentName", searchText)
+                                                  .Or()
+                                                  .WhereContains("DocumentType", searchText);
+
+            where.Where(searchWhere);
+        }
+    }
+
+
+    private static bool IsSearchMode(string searchText)
+    {
+        return !string.IsNullOrEmpty(searchText);
     }
 
 
@@ -1594,6 +1673,10 @@ function RaiseHiddenPostBack(){{
                         DisplayNormal();
                     }
                 }
+            }
+            else if (TreeNodeObj == null)
+            {
+                DisplayNormal();
             }
         }
 
@@ -1780,7 +1863,7 @@ function RaiseHiddenPostBack(){{
         {
             ItemToColorize = attachment.AttachmentGUID;
         }
-        else if (attachment.AttachmentDocumentID == TreeNodeObj.DocumentID)
+        else if (TreeNodeObj != null && attachment.AttachmentDocumentID == TreeNodeObj.DocumentID)
         {
             ItemToColorize = TreeNodeObj.NodeGUID;
         }

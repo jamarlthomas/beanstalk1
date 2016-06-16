@@ -109,12 +109,19 @@ public partial class CMSModules_TagGroups_Controls_TagSelectorDialog : CMSUserCo
             resultTags = resultTags.Union(savedTagNames, StringComparer.InvariantCultureIgnoreCase).ToHashSet();
         }
 
-        var result = resultTags.Select(t => t.Contains(" ") ? String.Format("\"{0}\"", t.Trim('"')) : t).Join(", ");
+        if (resultTags != null)
+        {
+            var result = resultTags.Select(t => t.Contains(" ") ? String.Format("\"{0}\"", t.Trim('"')) : t).Join(", ");
 
-        // Update parameters
-        UpdateParameters(result);
+            // Update parameters
+            UpdateParameters(result);
 
-        ltlScript.Text = ScriptHelper.GetScript("wopener.setTagsToTextBox(" + ScriptHelper.GetString(textBoxId) + ", " + ScriptHelper.GetString(result) + "); CloseDialog();");
+            ltlScript.Text = ScriptHelper.GetScript("wopener.setTagsToTextBox(" + ScriptHelper.GetString(textBoxId) + ", " + ScriptHelper.GetString(result) + "); CloseDialog();");
+        }
+        else
+        {
+            ltlScript.Text = ScriptHelper.GetScript("CloseDialog();");
+        }
     }
 
 
