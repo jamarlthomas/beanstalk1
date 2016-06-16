@@ -1,0 +1,9 @@
+﻿@using CMS.Mvc.Helpers
+@using CMS.Mvc.ViewModels.SiteMap
+@model IEnumerable<SiteMapHyperLink>
+@foreach (SiteMapHyperLink item in Model)
+{
+    <a href="@Url.Content("~/" + item.Reference)">@UtilsHelper.ToHtmlString(item.Text)</a>
+    <br/>
+}
+
