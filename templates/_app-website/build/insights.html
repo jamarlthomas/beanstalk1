@@ -24,12 +24,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.actual/1.0.17/jquery.actual.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-placeholder/2.3.1/jquery.placeholder.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/balance-text/1.6.0/jquery.balancetext.min.js"></script>
     <script src="https://code.angularjs.org/1.4.8/angular.js"></script>
     <script src="assets-layout/js/library/dirPagination.min.js"></script>
     <script src="assets-layout/js/custom/prodFilter.min.js"></script>
     <script src="assets-layout/js/custom/terms-acronyms.min.js"></script>
     <script src="assets-layout/js/custom/ellipsesText.min.js"></script>
     <script src="assets-layout/js/custom/columnizeText.min.js"></script>
+    <script src="assets-layout/js/custom/balanceText.min.js"></script>
     <script src="assets-layout/js/library/head.min.js">       </script>
     <script>
       head.js(
@@ -60,7 +62,14 @@
               //);
           }
       ); 
+      
     </script>
+    <style type="text/css">
+      /* Plugin looks for elements with class named "balance-text" */
+      .balance-text {
+          text-wrap: balanced;   /* Apply (proposed) CSS style */
+      }
+    </style>
   </head>
   <body>
     <div id="mobileNavC1">
@@ -397,7 +406,7 @@
           <div class="hdrTxtBoxC">
             <div class="hdrTxtBox">
               <div class="sbuHeadline">Enhanced protection, antiwear qualities & improved performance under nearly any conditions</div>
-              <div class="sbuTxt">Afton Chemical has a full and robust selection of lubricant components to meet your needs.</div>
+              <div class="sbuTxt">Afton Chemical has a full and robust selection of lubricant components needs.</div>
             </div>
           </div>
           <div style="display:none;" class="sbuImgBoxC2"><img src="page-images/sbu-header-image/sbu-header-sample.jpg"></div>
