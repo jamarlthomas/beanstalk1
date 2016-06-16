@@ -275,7 +275,6 @@
     <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
     <Compile Include="Models\ExtendedModels\DocumentType.cs" />
     <Compile Include="Modules\CultureSwitcherModule.cs" />
-    <Compile Include="ViewModels\Error\ErrorPageViewModel.cs" />
     <Compile Include="ViewModels\Master\CultureLinkViewModel.cs" />
     <Compile Include="Providers\LocalizationProvider.cs" />
     <Compile Include="Interfaces\ILocalizationProvider.cs" />
@@ -823,6 +822,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pdf\Temp\" />
+    <Folder Include="ViewModels\Error\" />
     <Folder Include="Views\Error\" />
   </ItemGroup>
   <ItemGroup>
