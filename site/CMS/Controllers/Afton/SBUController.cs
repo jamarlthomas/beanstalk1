@@ -51,6 +51,7 @@ namespace CMS.Mvc.Controllers.Afton
             _productProvider = productProvider;
         }
         [PageVisitActivity]
+        [OutputCache(Duration=600,VaryByParam="none")]
         public ActionResult Index(string SBUName)
         {
             var sbu = _solutionBusinessUnitProvider.GetSolutionBusinessUnit(SBUName);
