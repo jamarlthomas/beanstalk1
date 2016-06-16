@@ -14,6 +14,7 @@ using CMS.UIControls;
 /// dialogs_content_hide
 /// dialogs_content_path
 /// dialogs_content_site
+/// dialogs_content_userelativeurl
 /// dialogs_libraries_hide
 /// dialogs_libraries_site
 /// dialogs_libraries_global
@@ -419,7 +420,7 @@ public partial class CMSFormControls_Dialogs_DialogStartConfiguration : FormEngi
         }
         if (ContainsColumn("dialogs_content_userelativeurl"))
         {
-            chkUseRelativeUrl.Checked = ValidationHelper.GetBoolean(data.GetValue("dialogs_content_userelativeurl"), false);
+            chkUseRelativeUrl.Checked = ValidationHelper.GetBoolean(data.GetValue("dialogs_content_userelativeurl"), true);
         }
 
         if (ContainsColumn("dialogs_content_path"))
@@ -548,16 +549,12 @@ public partial class CMSFormControls_Dialogs_DialogStartConfiguration : FormEngi
         }
 
         // Content tab
-        if (!chkDisplayContentTab.Checked)
-        {
-            values[4, 1] = true;
-        }
-        else
-        {
-            values[4, 1] = false;
-        }
+        values[4, 1] = !chkDisplayContentTab.Checked;
 
-        values[20, 1] = chkUseRelativeUrl.Checked;
+        if (!chkUseRelativeUrl.Checked)
+        {
+            values[20, 1] = false;
+        }
 
         if ((string)selectPathElem.Value != "")
         {

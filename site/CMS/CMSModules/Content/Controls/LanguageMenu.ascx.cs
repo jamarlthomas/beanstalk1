@@ -84,8 +84,8 @@ public partial class CMSModules_Content_Controls_LanguageMenu : CMSUserControl
     protected void Page_Load(object sender, EventArgs e)
     {
         ScriptHelper.RegisterJQuery(Page);
-        ScriptHelper.RegisterModule(Page, "CMS.Content/LanguageMenu");
-
+        ScriptHelper.RegisterModule(Page, "CMS.Content/LanguageMenu", new { selector = "#language-menu" });
+        
         CSSHelper.RegisterCSSLink(Page, "~/CMSScripts/jquery/jquery-jscrollpane.css");
 
         string currentSiteName = (SiteID != 0) ? SiteInfoProvider.GetSiteName(SiteID) : SiteContext.CurrentSiteName;

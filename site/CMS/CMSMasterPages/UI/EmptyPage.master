@@ -14,6 +14,7 @@
     <asp:PlaceHolder runat="server" ID="plcLabels" />
     <asp:ContentPlaceHolder ID="plcContent" runat="server" />
     </form>
+    <asp:ContentPlaceHolder runat="server" ID="cpAfterForm" />
     <asp:PlaceHolder runat="server" ID="plcAfterForm"></asp:PlaceHolder>
 </body>
 </html>

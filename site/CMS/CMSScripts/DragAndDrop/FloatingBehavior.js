@@ -47,11 +47,11 @@ function GetPredecessorAbsoluteOffset(element) {
     if (element.style && (element.style.position == 'absolute')) {
         return { x: 0, y: 0 };
     }
-       
+
     element = element.offsetParent;
     for (parent = element; parent; parent = parent.offsetParent) {
-        var s = parent.style;
-        if (s && ((s.position == 'absolute') || (s.position == 'relative'))) {
+        var position = $cmsj(parent).css('position');
+        if ((position == 'absolute') || (position == 'relative')) {
             if (parent.offsetLeft) {
                 offsetX += parent.offsetLeft;
             }
@@ -442,4 +442,4 @@ RegisterCMSFloatingBehavior = function () {
     }
 };
 
-        
+

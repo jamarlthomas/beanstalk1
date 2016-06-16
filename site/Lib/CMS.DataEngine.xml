@@ -9172,6 +9172,25 @@
             </summary>
             <param name="infoObj">DataClassInfo to be deleted</param>        
         </member>
+        <member name="M:CMS.DataEngine.DataClassInfoProviderBase`1.UpdateObjectInHashtables(CMS.DataEngine.DataClassInfo)">
+            <summary>
+            Updates the object instance in the hashtables. Updates is different than <see cref="M:CMS.DataEngine.AbstractInfoProvider`3.RegisterObjectInHashtables(`0)"/>, because it logs task about changing object.
+            </summary>
+            <param name="info">Object to update</param>
+        </member>
+        <member name="M:CMS.DataEngine.DataClassInfoProviderBase`1.DeleteObjectFromHashtables(CMS.DataEngine.DataClassInfo)">
+            <summary>
+            Deletes the object instance from the hashtables.
+            </summary>
+            <param name="info">Object to delete</param>
+            <exception cref="T:System.ArgumentNullException">When info is null</exception>
+        </member>
+        <member name="M:CMS.DataEngine.DataClassInfoProviderBase`1.RemoveObjectFromCustomHashtables(CMS.DataEngine.DataClassInfo)">
+            <summary>
+            Removes the object instance from custom cache storages.
+            </summary>
+            <param name="info">Object to remove</param>
+        </member>
         <member name="T:CMS.DataEngine.LayoutHelper">
             <summary>
             Helper for layout objects
@@ -13095,12 +13114,12 @@
         </member>
         <member name="F:CMS.DataEngine.ObjectTypeInfo.VALUE_UNKNOWN">
             <summary>
-            Uknown value.
+            Unknown value.
             </summary>
         </member>
         <member name="F:CMS.DataEngine.ObjectTypeInfo.COLUMN_NAME_UNKNOWN">
             <summary>
-            Uknown column name.
+            Unknown column name.
             </summary>
         </member>
         <member name="F:CMS.DataEngine.ObjectTypeInfo.mObjectDependencies">
@@ -13295,12 +13314,26 @@
             <param name="objectId">Object ID to invalidate</param>
             <param name="logTask">If true web farm task is logged</param>
         </member>
+        <member name="M:CMS.DataEngine.ObjectTypeInfo.ObjectInvalidatedInternal(System.Int32,System.DateTime)">
+            <summary>
+            Invalidates specific object to the specific time.
+            </summary>
+            <param name="objectId">Object ID to invalidate</param>
+            <param name="now">Time of invalidation</param>
+        </member>
         <member name="M:CMS.DataEngine.ObjectTypeInfo.ChildrenInvalidated(System.Int32,System.Boolean)">
             <summary>
             Invalidates direct child objects of specific parent.
             </summary>
             <param name="parentId">Parent object ID</param>
             <param name="logTask">If true web farm task is logged</param>
+        </member>
+        <member name="M:CMS.DataEngine.ObjectTypeInfo.ChildrenInvalidatedInternal(System.Int32,System.DateTime)">
+            <summary>
+            Invalidates direct child objects of specific parent to the specific time.
+            </summary>
+            <param name="parentId">Parent object ID</param>
+            <param name="now">Time of invalidation</param>
         </member>
         <member name="M:CMS.DataEngine.ObjectTypeInfo.InvalidateAllObjects">
             <summary>
@@ -13312,6 +13345,12 @@
             Invalidates all objects of this type.
             </summary>
             <param name="logTask">If true, web farm task is logged</param>
+        </member>
+        <member name="M:CMS.DataEngine.ObjectTypeInfo.InvalidateAllObjectsInternal(System.DateTime)">
+            <summary>
+            Invalidates all objects of this type to specific time.
+            </summary>
+            <param name="now">Time of invalidation</param>
         </member>
         <member name="M:CMS.DataEngine.ObjectTypeInfo.InvalidateColumnNames">
             <summary>
@@ -18632,6 +18671,34 @@
             Names of the columns that are changed by the bulk update. Any object's column can be changed if this collection is not set or empty.
             </summary>
         </member>
+        <member name="T:CMS.DataEngine.BulkInsertEventArgs">
+            <summary>
+            Bulk insert event arguments.
+            </summary>
+        </member>
+        <member name="M:CMS.DataEngine.BulkInsertEventArgs.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:CMS.DataEngine.BulkInsertEventArgs.#ctor(CMS.DataEngine.ObjectTypeInfo,System.Collections.Generic.IEnumerable{CMS.DataEngine.IInfo})">
+            <summary>
+            Constructor
+            </summary>
+            <param name="typeInfo">Processed type info</param>
+            <param name="objects">Inserted objects</param>
+        </member>
+        <member name="P:CMS.DataEngine.BulkInsertEventArgs.TypeInfo">
+            <summary>
+            Processed type info.
+            </summary>
+        </member>
+        <member name="P:CMS.DataEngine.BulkInsertEventArgs.InsertedObjects">
+            <summary>
+            Inserted objects.
+            </summary>
+            <remarks>Objects in the collection are not complete (ID is not set) and are not intended for additional processing</remarks>
+        </member>
         <member name="T:CMS.DataEngine.BulkUpdateHandler">
             <summary>
             Bulk update handler enables update result processing.
@@ -18655,6 +18722,29 @@
             <param name="typeInfo">Type information regarding the objects updated.</param>
             <param name="where">Where condition for the update</param>
             <param name="changedColumns">Names of the columns that are changed by the bulk update. Any object's column can be changed if this collection is not set or empty.</param>
+        </member>
+        <member name="T:CMS.DataEngine.BulkInsertHandler">
+            <summary>
+            Bulk insert handler enables insert result processing.
+            </summary>
+        </member>
+        <member name="M:CMS.DataEngine.BulkInsertHandler.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:CMS.DataEngine.BulkInsertHandler.#ctor(CMS.DataEngine.BulkInsertHandler)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="parentHandler">Parent handler</param>
+        </member>
+        <member name="M:CMS.DataEngine.BulkInsertHandler.StartEvent(CMS.DataEngine.ObjectTypeInfo,System.Collections.Generic.IEnumerable{CMS.DataEngine.IInfo})">
+            <summary>
+            Initiates the event handling.
+            </summary>
+            <param name="typeInfo">Type information regarding the objects inserted.</param>
+            <param name="objects">Collection of inserted objects</param>
         </member>
         <member name="T:CMS.DataEngine.ObjectDataEventArgs">
             <summary>
@@ -20377,6 +20467,13 @@
             </summary>
             <param name="expression">Expression to expand</param>
         </member>
+        <member name="M:CMS.DataEngine.DataParameter.Expand(System.String,System.Func{CMS.DataEngine.DataParameter,System.String})">
+            <summary>
+            Expands the given expression
+            </summary>
+            <param name="expression">Expression to expand</param>
+            <param name="getValue">Custom function for getting the value</param>
+        </member>
         <member name="M:CMS.DataEngine.DataParameter.GetDeclaration">
             <summary>
             Gets the parameter declaration
@@ -20580,6 +20677,13 @@
             Expands the expression by replacing parameters with their values
             </summary>
             <param name="expression">Expression to expand</param>
+        </member>
+        <member name="M:CMS.DataEngine.QueryParametersBase`1.Expand(System.String,System.Func{CMS.DataEngine.DataParameter,System.String})">
+            <summary>
+            Expands the expression by replacing parameters with their values
+            </summary>
+            <param name="expression">Expression to expand</param>
+            <param name="getValue">Custom function for getting the value</param>
         </member>
         <member name="M:CMS.DataEngine.QueryParametersBase`1.ToString">
             <summary>
@@ -24626,9 +24730,9 @@
             </summary>
             <param name="settings">Parameters for the query</param>
         </member>
-        <member name="M:CMS.DataEngine.MultiQueryBase`2.CanUseSingleQuery">
+        <member name="M:CMS.DataEngine.MultiQueryBase`2.IsQuerySourceUsed">
             <summary>
-            Returns true if the query is allowed to use single query fallback mode
+            Returns true if the query has defined QuerySource
             </summary>
         </member>
         <member name="M:CMS.DataEngine.MultiQueryBase`2.GetCompleteSettings(CMS.DataEngine.IDataQuery)">
@@ -24658,7 +24762,7 @@
             </summary>
             <param name="settings">Parameters for the query</param>
         </member>
-        <member name="M:CMS.DataEngine.MultiQueryBase`2.EnsureColumnLists(System.Collections.Generic.IEnumerable{`1})">
+        <member name="M:CMS.DataEngine.MultiQueryBase`2.SynchronizeColumnLists(System.Collections.Generic.IEnumerable{`1})">
             <summary>
             Ensures the column lists in the given list of queries
             </summary>
@@ -24709,7 +24813,7 @@
             Prepares the inner query for execution within multi query
             </summary>
             <param name="query">Query to prepare</param>
-            <param name="isSingleQuery">If true, only single inner query for multi-query is being prepared</param>
+            <param name="expandColumns">If true, query columns will be expanded</param>
         </member>
         <member name="M:CMS.DataEngine.MultiQueryBase`2.ApplyGlobalParameters(`1,CMS.DataEngine.DataQuerySettings,System.Boolean)">
             <summary>
@@ -27865,6 +27969,13 @@
             Expands the expression by replacing parameters with their values
             </summary>
             <param name="expression">Expression to expand</param>
+        </member>
+        <member name="M:CMS.DataEngine.QueryDataParameters.Expand(System.String,System.Func{CMS.DataEngine.DataParameter,System.String})">
+            <summary>
+            Expands the expression by replacing parameters with their values
+            </summary>
+            <param name="expression">Expression to expand</param>
+            <param name="getValue">Custom function for getting the value</param>
         </member>
         <member name="M:CMS.DataEngine.QueryDataParameters.GetCompleteQueryText(System.String)">
             <summary>
@@ -33170,6 +33281,11 @@
         <member name="F:CMS.DataEngine.ObjectEvents.Sort">
             <summary>
             Fires when sorting of a objects is requested
+            </summary>
+        </member>
+        <member name="F:CMS.DataEngine.ObjectEvents.BulkInsert">
+            <summary>
+            Fires when objects are inserted in bulk.
             </summary>
         </member>
         <member name="F:CMS.DataEngine.ObjectEvents.BulkUpdate">
@@ -39830,6 +39946,14 @@
             Updates the structure of database table based on given parameters.
             </summary>
             <param name="parameters">Update table parameters</param>
+        </member>
+        <member name="M:CMS.DataEngine.TableManager.GetFieldDefaultValue(CMS.DataEngine.IField,CMS.DataEngine.DataType)">
+            <summary>
+            Gets data type default value in case that field doesn't allow null and original default value is not set. 
+            If field allows null value returns original default value.
+            </summary>
+            <param name="field">Form definition field</param>
+            <param name="dataType">Data type of the field</param>
         </member>
         <member name="M:CMS.DataEngine.TableManager.GetOldFields(System.String,System.String,System.Boolean)">
             <summary>

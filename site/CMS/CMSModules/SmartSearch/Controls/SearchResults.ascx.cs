@@ -1377,7 +1377,7 @@ public partial class CMSModules_SmartSearch_Controls_SearchResults : CMSUserCont
                 // Check if search action was fired really on the live site
                 if (PortalContext.ViewMode.IsLiveSite() && (DocumentContext.CurrentPageInfo != null))
                 {
-                    if (AnalyticsHelper.AnalyticsEnabled(siteName))
+                    if (AnalyticsHelper.AnalyticsEnabled(siteName) && !string.IsNullOrEmpty(searchText))
                     {
                         if (AnalyticsHelper.JavascriptLoggingEnabled(siteName))
                         {
@@ -1399,7 +1399,6 @@ public partial class CMSModules_SmartSearch_Controls_SearchResults : CMSUserCont
                 {
                     // Make sure the synonyms are expanded before the filter condition is applied (filter condition is Lucene syntax, cannot be expanded)
                     searchCond = SearchSyntaxHelper.ExpandWithSynonyms(searchCond, docCondition.Culture);
-                    searchModeEnum = SearchModeEnum.AnyWord;
                 }
 
                 var condition = new SearchCondition(searchCond + FilterSearchCondition, searchModeEnum, SearchOptions, docCondition, DoFuzzySearch);

@@ -565,6 +565,7 @@ public partial class CMSModules_Membership_FormControls_Avatars_UserPictureEdit 
             if (IsNewPictureUploaded())
             {
                 avatar = StoreUploadedPicture(avatarID, EditedUser);
+                hiddenDeleteAvatar.Value = String.Empty;
             }
                 // If some predefined avatar was selected
             else if (!string.IsNullOrEmpty(hiddenAvatarGuid.Value))
@@ -787,12 +788,14 @@ function ", ClientID, @"updateHidden(guidPrefix, clientId)
         avatarGuid = guidPrefix.substring(4);
         if (avatarGuid != '')
         {
-            hidden = document.getElementById('", hiddenAvatarGuid.ClientID, @"');
+            var hidden = document.getElementById('", hiddenAvatarGuid.ClientID, @"');
             hidden.value = avatarGuid ;
-            div = document.getElementById('", pnlPreview.ClientID, @"');
+
+            var div = document.getElementById('", pnlPreview.ClientID, @"');
             div.style.display='';
             div.innerHTML = '<img src=""", getAvatarPath, @"?avatarguid=' + avatarGuid + '", sizeParams, @""" />&#13;&#10;&nbsp;<img src=""", btnDeleteImage.ImageUrl, @""" border=""0"" onclick=""deleteImagePreview(\'", hiddenAvatarGuid.ClientID, @"\',\'", pnlPreview.ClientID, @"\')"" style=""cursor:pointer""/>';
-            placeholder = document.getElementById('", pnlAvatarImage.ClientID, @"');
+
+            var placeholder = document.getElementById('", pnlAvatarImage.ClientID, @"');
             if ( placeholder != null)
             {
                 placeholder.style.display='none';
@@ -808,9 +811,10 @@ function deleteImagePreview(hiddenId, divId)
 {
     if(confirm(", ScriptHelper.GetString(GetString("myprofile.pictdeleteconfirm")), @"))
     {   
-        hidden = document.getElementById(hiddenId);
+        var hidden = document.getElementById(hiddenId);
         hidden.value = '' ;
-        div = document.getElementById(divId);
+
+        var div = document.getElementById(divId);
         div.style.display='none';
         div.innerHTML = '';
     }
@@ -824,11 +828,13 @@ function deleteAvatar(hiddenDeleteId, hiddenGuidId, placeholderId)
 {
     if(confirm(", ScriptHelper.GetString(GetString("myprofile.pictdeleteconfirm")), @"))
     {
-        hidden = document.getElementById(hiddenDeleteId);
+        var hidden = document.getElementById(hiddenDeleteId);
         hidden.value = 'true' ;
-        placeholder = document.getElementById(placeholderId);
+
+        var placeholder = document.getElementById(placeholderId);
         placeholder.style.display='none';
-        hidden = document.getElementById(hiddenGuidId);
+
+        var hidden = document.getElementById(hiddenGuidId);
         hidden.value = '' ;
     }
     return false;

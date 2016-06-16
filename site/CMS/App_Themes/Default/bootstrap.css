@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * Bootstrap v3.1.0 (http://getbootstrap.com)
  * Copyright 2011-2014 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
@@ -7183,31 +7183,31 @@ textarea.cms-bootstrap .input-lg {
     left: auto;
   }
 }
-.cms-bootstrap .language-menu .dropdown-menu,
-.cms-bootstrap .language-menu.open .dropdown-menu {
+.cms-bootstrap .scrollable-menu .dropdown-menu,
+.cms-bootstrap .scrollable-menu.open .dropdown-menu {
   visibility: visible;
 }
-.cms-bootstrap .language-menu .dropdown-menu {
+.cms-bootstrap .scrollable-menu .dropdown-menu {
   visibility: hidden;
   display: block;
   width: 265px;
   max-height: 480px;
 }
-.cms-bootstrap .language-menu .dropdown-menu span {
+.cms-bootstrap .scrollable-menu .dropdown-menu span {
   font-family: "Segoe UI", Helvetica, Verdana, Arial, sans-serif !important;
 }
-.cms-bootstrap .language-menu .dropdown-menu .dropdown-menu-inner-wrap {
+.cms-bootstrap .scrollable-menu .dropdown-menu .dropdown-menu-inner-wrap {
   padding: 0;
   position: static;
 }
-.cms-bootstrap .language-menu .dropdown-menu .jspDrag {
+.cms-bootstrap .scrollable-menu .dropdown-menu .jspDrag {
   background-color: #696663;
   border: none;
 }
-.cms-bootstrap .language-menu .dropdown-menu .jspDrag:hover {
+.cms-bootstrap .scrollable-menu .dropdown-menu .jspDrag:hover {
   background-color: #a3a2a2;
 }
-.cms-bootstrap .language-menu .dropdown-menu .jspPane ul {
+.cms-bootstrap .scrollable-menu .dropdown-menu .jspPane ul {
   box-shadow: none;
 }
 .cms-bootstrap .language-menu + .btn {

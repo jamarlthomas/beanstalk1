@@ -216,7 +216,12 @@ public partial class CMSAdminControls_UI_UserMenu : CMSUserControl
         if (RequestHelper.IsFormsAuthentication())
         {
             UserInfo ui = UserInfoProvider.GetUserInfo(originalUserName);
-            AuthenticationHelper.ImpersonateUser(ui, null, false);
+
+            AuthenticationHelper.SetCurrentUser(null);
+            AuthenticationHelper.AuthenticateUser(ui.UserName, false, false);
+
+            EventLogProvider.LogEvent(EventType.INFORMATION, "Administration", "Impersonate", "User " + ui.UserName + " has returned to his account.");
+
             UIContextHelper.RegisterAdminRedirectScript(Page);
         }
         else

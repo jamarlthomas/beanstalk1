@@ -550,6 +550,18 @@ var menuSettings = {},
                 }
                 menuElements[menuId] = currentElem;
 
+                if ($currentElem.parents().hasClass("LayoutWebPartHeader")) {
+                    // Layout web parts cannot be personalised
+                    if (window.webPartCPVariantContextMenuId) {
+                        document.getElementById(window.webPartCPVariantContextMenuId).style.display = "none";
+                    }
+
+                    // or used in MV tests
+                    if (window.webPartMVTVariantContextMenuId) {
+                        document.getElementById(window.webPartMVTVariantContextMenuId).style.display = "none";
+                    }
+                }
+
                 if (ev) {
                     return stopPropagation(ev);
                 }

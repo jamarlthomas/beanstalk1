@@ -39,6 +39,9 @@
                         </div>
                         <div class="editing-form-value-cell">
                             <cms:CMSTextBox ID="txtUserName" runat="server" MaxLength="100" Enabled="false" CssClass="form-control input-width-60" />
+                             <%-- CHROME AUTO-FILL BUG WORKAROUND --%>
+                            <input class="hide" />
+                            <%-- CHROME AUTO-FILL BUG WORKAROUND END --%>
                         </div>
                     </div>
 

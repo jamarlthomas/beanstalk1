@@ -189,6 +189,11 @@
             <param name="data">Data from BasicForm</param>
             <param name="bfi">BizFormInfo</param>
         </member>
+        <member name="M:CMS.OnlineForms.BizForm.ConvertDate(System.Object)">
+            <summary>
+            Gets date from date time without time information.
+            </summary>
+        </member>
         <member name="M:CMS.OnlineForms.BizForm.SendConfirmationEmail(System.String,System.String,CMS.Base.IDataContainer,CMS.OnlineForms.BizFormInfo)">
             <summary>
             Sends confirmation email (autoresponder).
@@ -425,7 +430,8 @@
         </member>
         <member name="P:CMS.OnlineForms.BizFormInfo.Items">
             <summary>
-            Returns the items of this collection
+            Returns the form items. Result of this property is not cached.
+            Use <see cref="T:CMS.OnlineForms.BizFormItemProvider"/> if you need more advanced way for obtaining the form items.
             </summary>
         </member>
         <member name="P:CMS.OnlineForms.BizFormInfo.AuthorizedRoles">

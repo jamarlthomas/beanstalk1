@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Web.UI.WebControls;
 
 using CMS.FormControls;
 using CMS.Helpers;
@@ -206,6 +205,29 @@ public partial class CMSModules_Blogs_FormControls_BlogSelector : FormEngineUser
         {
             blogSelector.StopProcessing = true;
         }
+
+        if (UseAlternativeMode)
+        {
+            blogSelector.Enabled = !String.IsNullOrEmpty(GetSiteName());
+        }
+    }
+
+
+    protected void blogSelector_OnSpecialFieldsLoaded(object sender, EventArgs e)
+    {
+        if (UseAlternativeMode)
+        {
+            blogSelector.SpecialFields.Add(new SpecialField { Text = GetString("blogselector.myblogs"), Value = "##myblogs##" });
+
+            if (MembershipContext.AuthenticatedUser.IsGlobalAdministrator)
+            {
+                blogSelector.SpecialFields.Add(new SpecialField { Text = GetString("general.selectall"), Value = "##all##" });
+            }
+        }
+        else
+        {
+            blogSelector.SpecialFields.Add(new SpecialField() { Text = GetString("blogselector.selectblog"), Value = String.Empty });
+        }
     }
 
     #endregion
@@ -224,24 +246,6 @@ public partial class CMSModules_Blogs_FormControls_BlogSelector : FormEngineUser
         blogSelector.ReturnColumnName = ReturnColumnName;
         blogSelector.IsLiveSite = IsLiveSite;
         blogSelector.WhereCondition = UpdateWhereCondition(siteName);
-
-        if (UseAlternativeMode)
-        {
-            blogSelector.SpecialFields.Add(new SpecialField { Text = GetString("blogselector.myblogs"), Value = "##myblogs##" });
-            if (MembershipContext.AuthenticatedUser.IsGlobalAdministrator)
-            {
-                blogSelector.SpecialFields.Add(new SpecialField { Text = GetString("general.selectall"), Value = "##all##" });
-            }
-
-            if (String.IsNullOrEmpty(siteName))
-            {
-                blogSelector.Enabled = false;
-            }
-        }
-        else
-        {
-            blogSelector.SpecialFields.Add(new SpecialField() { Text = GetString("blogselector.selectblog"), Value = String.Empty });
-        }
 
         try
         {

@@ -3,6 +3,7 @@ using System.Data;
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
 
+using CMS.DataEngine;
 using CMS.FormEngine;
 using CMS.Helpers;
 using CMS.UIControls;
@@ -22,30 +23,21 @@ public partial class CMSFormControls_Selectors_AlternativeFormSelection : Design
             return;
         }
 
-        if (!RequestHelper.IsPostBack())
+        if (!RequestHelper.IsPostBack() && drpClass.HasData)
         {
-            DataSet dsClasses = AlternativeFormInfoProvider.GetClassesWithAlternativeForms();
-
-            drpClass.DataSource = dsClasses;
-            drpClass.DataValueField = "FormClassID";
-            drpClass.DataTextField = "ClassName";
-            drpClass.DataBind();
-
-            if (!DataHelper.DataSourceIsEmpty(dsClasses))
+            // Try to preselect class from drop-down list
+            string className = QueryHelper.GetString("classname", string.Empty);
+            if (!String.IsNullOrEmpty(className))
             {
-                // Try to preselect class from drop-down list
-                string className = QueryHelper.GetString("classname", string.Empty);
-                if (className != string.Empty)
+                var classInfo = DataClassInfoProvider.GetDataClassInfo(className);
+                if (classInfo != null)
                 {
-                    drpClass.SelectedIndex = drpClass.Items.IndexOf(drpClass.Items.FindByText(className));
+                    drpClass.Value = classInfo.ClassID;
                 }
-                else
-                {
-                    drpClass.SelectedIndex = 0;
-                }
-                // Load alternative forms for selected class
-                LoadAltFormsList();
             }
+
+            // Load alternative forms for selected class
+            LoadAltFormsList();
         }
 
         SetSaveJavascript("SelectCurrentAlternativeForm('" + txtClientId + "','" + lblClientId + "'); return false;");
@@ -62,7 +54,7 @@ public partial class CMSFormControls_Selectors_AlternativeFormSelection : Design
     /// </summary>
     protected void LoadAltFormsList()
     {
-        int formClassId = ValidationHelper.GetInteger(drpClass.SelectedValue, 0);
+        int formClassId = ValidationHelper.GetInteger(drpClass.Value, 0);
         DataSet ds = AlternativeFormInfoProvider.GetAlternativeForms("FormClassID=" + formClassId, "FormName");
 
         lstAlternativeForms.Items.Clear();
@@ -72,12 +64,9 @@ public partial class CMSFormControls_Selectors_AlternativeFormSelection : Design
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
                 AlternativeFormInfo afi = new AlternativeFormInfo(dr);
-                if (afi != null)
+                if ((afi.FormDisplayName != String.Empty) && (afi.FormName != String.Empty))
                 {
-                    if ((afi.FormDisplayName != String.Empty) && (afi.FormName != String.Empty))
-                    {
-                        lstAlternativeForms.Items.Add(new ListItem(ResHelper.LocalizeString(afi.FormDisplayName), afi.FullName));
-                    }
+                    lstAlternativeForms.Items.Add(new ListItem(ResHelper.LocalizeString(afi.FormDisplayName), afi.FullName));
                 }
             }
             lstAlternativeForms.SelectedValue = null;

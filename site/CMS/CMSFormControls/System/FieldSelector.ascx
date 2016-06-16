@@ -4,13 +4,13 @@
     TagName="SelectClassNames" %>
 <div class="editing-form-value-cell">
     <div>
-        <cms:SelectClassNames ID="selectionElem" runat="server" SelectionMode="SingleDropDownList" />
+        <cms:SelectClassNames ID="classSelector" runat="server" SelectionMode="SingleDropDownList" />
     </div>
     <cms:CMSUpdatePanel ID="pnlUpdate" runat="server">
         <ContentTemplate>
             <cms:CMSPanel ID="pnlFields" runat="server">
                 <div style="padding-top:5px">
-                    <cms:CMSDropDownList ID="drpFields" runat="server" CssClass="DropDownField" />
+                    <cms:CMSDropDownList ID="fieldSelector" runat="server" CssClass="DropDownField" />
                 </div>
             </cms:CMSPanel>
         </ContentTemplate>

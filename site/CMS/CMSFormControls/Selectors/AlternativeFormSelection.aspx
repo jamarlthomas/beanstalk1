@@ -2,6 +2,7 @@
     Inherits="CMSFormControls_Selectors_AlternativeFormSelection" ValidateRequest="false"
     Theme="Default" MasterPageFile="~/CMSMasterPages/UI/Dialogs/ModalDialogPage.master"
     Title="Alternative form selection"  Codebehind="AlternativeFormSelection.aspx.cs" %>
+<%@ Register Src="~/CMSAdminControls/UI/UniSelector/UniSelector.ascx" TagPrefix="cms" TagName="UniSelector" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
     <asp:Panel runat="server" ID="pnlContent">
@@ -11,8 +12,9 @@
                     <cms:LocalizedLabel CssClass="control-label" ID="lblClass" runat="server" ResourceString="general.class" DisplayColon="true" AssociatedControlID="drpClass" />
                 </div>
                 <div class="editing-form-value-cell">
-                    <cms:CMSDropDownList ID="drpClass"  runat="server" AutoPostBack="True" OnSelectedIndexChanged="drpClass_SelectedIndexChanged"
-                        CssClass="DropDownField" />
+                    <cms:UniSelector runat="server" DropDownSingleSelect-AutoPostBack="True" ID="drpClass" SelectionMode="SingleDropDownList" AllowEmpty="False" ObjectType="cms.class" 
+                        OnOnSelectionChanged="drpClass_SelectedIndexChanged" DisplayNameFormat="{%ClassDisplayName%} ({%ClassName%})" OrderBy="ClassDisplayName" 
+                        ReturnColumnName="ClassID" WhereCondition="ClassID IN (SELECT FormClassID FROM CMS_AlternativeForm)"/>
                 </div>
             </div>
             <div class="form-group">

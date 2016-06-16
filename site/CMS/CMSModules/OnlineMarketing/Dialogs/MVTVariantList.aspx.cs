@@ -1,5 +1,6 @@
 ﻿using System;
 
+using CMS.Base;
 using CMS.Helpers;
 using CMS.Membership;
 using CMS.OnlineMarketing;
@@ -115,20 +116,20 @@ public partial class CMSModules_OnlineMarketing_Dialogs_MVTVariantList : CMSVari
         {
             case VariantTypeEnum.WebPart:
                 functionName = "ConfigureWebPart";
-                parameters = "new webPartProperties('" + zoneId + "','" + webPartId + "','" + aliasPath + "','" + instanceGuid + "'," + pageTemplateId + ")";
+                parameters = "new webPartProperties('" + ScriptHelper.GetString(zoneId, false) + "','" + ScriptHelper.GetString(webPartId, false) + "','" + ScriptHelper.GetString(aliasPath, false) + "','" + instanceGuid + "'," + pageTemplateId + ")";
                 setVariant = "SetVariant('Variant_WP_" + instanceGuid.ToString("N") + "', variantId);";
                 break;
 
             case VariantTypeEnum.Widget:
                 functionName = "ConfigureWidget";
-                parameters = "new webPartProperties('" + zoneId + "','" + webPartId + "','" + aliasPath + "','" + instanceGuid + "'," + pageTemplateId + ")";
+                parameters = "new webPartProperties('" + ScriptHelper.GetString(zoneId, false) + "','" + ScriptHelper.GetString(webPartId, false) + "','" + ScriptHelper.GetString(aliasPath, false) + "','" + instanceGuid + "'," + pageTemplateId + ")";
                 setVariant = "SetVariant('Variant_WP_" + instanceGuid.ToString("N") + "', variantId);";
                 break;
 
             case VariantTypeEnum.Zone:
                 functionName = "ConfigureWebPartZone";
-                parameters = "new zoneProperties('" + zoneId + "','" + aliasPath + "'," + pageTemplateId + ",''," + QueryHelper.GetText("islayoutzone", "false") + ")";
-                setVariant = "SetVariant('Variant_Zone_" + zoneId + "', variantId);";
+                parameters = "new zoneProperties('" + ScriptHelper.GetString(zoneId, false) + "','" + ScriptHelper.GetString(aliasPath, false) + "'," + pageTemplateId + ",''," + QueryHelper.GetBoolean("islayoutzone", false).ToString().ToLowerCSafe() + ")";
+                setVariant = "SetVariant('Variant_Zone_" + ScriptHelper.GetString(zoneId, false) + "', variantId);";
                 break;
         }
 

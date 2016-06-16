@@ -7,6 +7,7 @@ using CMS.Helpers;
 using CMS.Controls;
 using CMS.ExtendedControls;
 using CMS.PortalEngine;
+using CMS.MacroEngine;
 
 public partial class CMSModules_PortalEngine_UI_OnSiteEdit_EditText : CMSAbstractEditablePage
 {
@@ -14,6 +15,10 @@ public partial class CMSModules_PortalEngine_UI_OnSiteEdit_EditText : CMSAbstrac
     {
         DocumentManager.OnValidateData += DocumentManager_OnValidateData;
         DocumentManager.OnAfterAction += DocumentManager_OnAfterAction;
+
+        // Web part property macros need to be resolved manually in the EditText dialog.
+        // In portal engine, macros are being resolved by the CMSAbstractWebpart control which cannot be used in this page.
+        ucEditableText.OnGetValue += ucEditableText_OnGetValue;
 
         // Process ASPX template parameters
         if (QueryHelper.Contains("regiontype"))
@@ -179,5 +184,29 @@ public partial class CMSModules_PortalEngine_UI_OnSiteEdit_EditText : CMSAbstrac
                 break;
         }
 
+    }
+
+
+    /// <summary>
+    /// Resolve the web part property macro.
+    /// </summary>
+    /// <param name="value">The web part property value</param>
+    /// <returns>Returns resolved web part property.</returns>
+    private object ucEditableText_OnGetValue(object value)
+    {
+        if (value is string)
+        {
+            bool disableMacros = ValidationHelper.GetBoolean(CurrentWebPartInstance.GetValue("DisableMacros"), false);
+            if (!disableMacros)
+            {
+                // Resolve property macro
+                var resolver = MacroContext.CurrentResolver.CreateChild();
+                resolver.Culture = System.Threading.Thread.CurrentThread.CurrentCulture.ToString();
+
+                return resolver.ResolveMacros(value.ToString());
+            }
+        }
+
+        return value;
     }
 }
