@@ -29,10 +29,10 @@ namespace CMS.Mvc.Controllers.Afton
             var product = _productProvider.GetProduct(ProductName);
             ProductPageViewModel productModel = MapData<Product, ProductPageViewModel>(product);
             var sidebarItems = ContentHelper.GetDocByDocId<Product>(product.DocumentID).Fields.SidebarItems2.ToList();
-            if (sidebarItems.Count() == 0)
-            {
-                sidebarItems = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(product.SidebarItems));
-            }
+            //if (sidebarItems.Count() == 0)
+            //{
+            //    sidebarItems = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(product.SidebarItems));
+            //}
             productModel.SideBar.Items = MapSidebar(sidebarItems, product);
             productModel.BreadCrumb.BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(product.DocumentGUID);
             productModel.DownloadWidget = GetDownloadwidget(product);

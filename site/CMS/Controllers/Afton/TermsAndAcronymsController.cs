@@ -51,10 +51,10 @@ namespace CMS.Mvc.Controllers.Afton
             var model = MapData<TermsAndAcronymsPage, TermsAndAcronymsPageViewModel>(page);
             model.ParentTitle = (page.Parent as InsightsResources).Title;
             var sidebarItems  = ContentHelper.GetDocByDocId<TermsAndAcronymsPage>(page.DocumentID).Fields.SidebarItems2.ToList();
-            if (sidebarItems.Count() == 0)
-            {
-                sidebarItems = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(page.SidebarItems));
-            }
+            //if (sidebarItems.Count() == 0)
+            //{
+            //    sidebarItems = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(page.SidebarItems));
+            //}
             model.BreadCrumb = new BreadCrumbViewModel
             {
                 BreadcrumbLinkItems = _treeNodesProvider.GetBreadcrumb(page.DocumentGUID)
