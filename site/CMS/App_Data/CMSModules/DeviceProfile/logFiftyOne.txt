@@ -7,3 +7,12 @@
    at System.IO.DirectoryInfo.InternalGetFiles(String searchPattern, SearchOption searchOption)
    at System.IO.DirectoryInfo.GetFiles()
    at FiftyOne.Foundation.Mobile.Detection.WebProvider.CleanTemporaryFiles()
+2016-06-17T16:37:24.3528852Z - 15968 - Warn - Exception cleaning temporary files
+2016-06-17T16:37:24.3589073Z - 15968 - Warn - 
+2016-06-17T16:37:24.3589073Z - 15968 - Warn - Could not find a part of the path 'E:\MasterProjects\afton\corporate-website-2015\site\CMS\App_Data\51Degrees'.
+2016-06-17T16:37:24.3608896Z - 15968 - Warn -    at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   at System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   at System.IO.DirectoryInfo.InternalGetFiles(String searchPattern, SearchOption searchOption)
+   at System.IO.DirectoryInfo.GetFiles()
+   at FiftyOne.Foundation.Mobile.Detection.WebProvider.CleanTemporaryFiles()
