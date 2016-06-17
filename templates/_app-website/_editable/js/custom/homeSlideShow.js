@@ -43,9 +43,17 @@ $( document ).ready(function() {
 
         //SlideShow
         function runSlideShow(status) {
-
-
-
+            
+            setTimeout(function(){
+                
+                //slider Header
+                $('.slideHdr').balanceText();
+    
+                //sider sub text
+                $('.slideTxt').balanceText();
+                
+            }, 50);
+                
             if(status == "forward"){    
                 //update slide number
                 prevSlide = currSlide
