@@ -63,6 +63,23 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Regions.
+        /// </summary>
+        [DatabaseField]
+        public string Regions
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Regions"), "");
+            }
+            set
+            {
+                SetValue("Regions", value);
+            }
+        }
+
+
+        /// <summary>
         /// Tile Title.
         /// </summary>
         [DatabaseField]
@@ -299,6 +316,34 @@ namespace CMS.DocumentEngine.Types
 
 
             /// <summary>
+            /// Regions.
+            /// </summary>
+            public string Regions
+            {
+                get
+                {
+                    return mInstance.Regions;
+                }
+                set
+                {
+                    mInstance.Regions = value;
+                }
+            }
+
+
+            /// <summary>
+            /// SidebarItems.
+            /// </summary>
+            public IEnumerable<TreeNode> SidebarItems2
+            {
+                get
+                {
+                    return mInstance.GetRelatedDocuments("SidebarItems2");
+                }
+            }
+
+
+            /// <summary>
             /// Tile Title.
             /// </summary>
             public string TileTitle
@@ -422,18 +467,6 @@ namespace CMS.DocumentEngine.Types
                 set
                 {
                     mInstance.SidebarItems = value;
-                }
-            }
-
-
-            /// <summary>
-            /// Sidebar Items.
-            /// </summary>
-            public IEnumerable<TreeNode> SidebarItems2
-            {
-                get
-                {
-                    return mInstance.GetRelatedDocuments("SidebarItems2");
                 }
             }
 

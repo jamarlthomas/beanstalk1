@@ -63,6 +63,23 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Regions.
+        /// </summary>
+        [DatabaseField]
+        public string Regions
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Regions"), "");
+            }
+            set
+            {
+                SetValue("Regions", value);
+            }
+        }
+
+
+        /// <summary>
         /// Tile Title.
         /// </summary>
         [DatabaseField]
@@ -277,6 +294,22 @@ namespace CMS.DocumentEngine.Types
                 set
                 {
                     mInstance.GenericPageID = value;
+                }
+            }
+
+
+            /// <summary>
+            /// Regions.
+            /// </summary>
+            public string Regions
+            {
+                get
+                {
+                    return mInstance.Regions;
+                }
+                set
+                {
+                    mInstance.Regions = value;
                 }
             }
 
