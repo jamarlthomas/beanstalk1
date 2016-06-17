@@ -26,6 +26,7 @@ namespace CMS.Mvc.App_Start
                 .Include("~/Scripts/custom/terms-acronyms.min.js")
                 .Include("~/Scripts/custom/ellipsesText.min.js")
                 .Include("~/Scripts/custom/columnizeText.min.js")
+                .Include("~/Scripts/custom/balanceText.min.js")
                 .Include("~/Scripts/library/head.min.js"));
 
             bundles.Add(new StyleBundle("~/bundles/css")

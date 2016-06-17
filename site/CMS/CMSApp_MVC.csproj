@@ -677,6 +677,7 @@
     <Content Include="images\slideBtn.gif" />
     <Content Include="images\trending-icon.png" />
     <Content Include="Scripts\custom\accordion.min.js" />
+    <Content Include="Scripts\custom\balanceText.min.js" />
     <Content Include="Scripts\custom\bgSwitch.min.js" />
     <Content Include="Scripts\custom\cards.min.js" />
     <Content Include="Scripts\custom\columnizeText.min.js" />

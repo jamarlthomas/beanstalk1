@@ -47,10 +47,10 @@ namespace CMS.Mvc.Controllers.Afton
             solutionViewModel.ParentName = SBUName;
 
             var sidebarItems = ContentHelper.GetDocByDocId<Solution>(solution.DocumentID).Fields.SidebarItems2.ToList();
-            if (sidebarItems.Count() == 0)
-            {
-                sidebarItems = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(solution.SidebarItems));
-            }
+            //if (sidebarItems.Count() == 0)
+            //{
+            //    sidebarItems = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(solution.SidebarItems));
+            //}
             solutionViewModel.SideBar = new SidebarViewModel
             {
                 Items = MapSidebar(sidebarItems, solution)

@@ -45,10 +45,10 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 sidebarItems = ContentHelper.GetDocByDocId<Document>(node.DocumentID).Fields.SidebarItems2.ToList();
             }
-            if (sidebarItems.Count() == 0)
-            {
-                sidebarItems = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(node.GetStringValue("SidebarItems",string.Empty)));
-            }
+            //if (sidebarItems.Count() == 0)
+            //{
+            //    sidebarItems = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(node.GetStringValue("SidebarItems",string.Empty)));
+            //}
             return View("~/Views/Afton/DocumentBase/Index.cshtml", new DocumentBasePageViewModel()
             {
                 Document = documentViewModel,
