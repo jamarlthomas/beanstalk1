@@ -301,7 +301,7 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Contact_Delete : C
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
                 var ci = new ContactInfo(dr);
-                AddLog((ci.ContactLastName + " " + ci.ContactFirstName).Trim());
+                AddLog(HTMLHelper.HTMLEncode(ci.ContactLastName + " " + ci.ContactFirstName).Trim());
                 ContactHelper.Delete(ci, chkChildren.Checked, chkMoveRelations.Checked);
             }
 

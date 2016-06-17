@@ -42,6 +42,23 @@ public partial class CMSModules_Objects_FormControls_Cloning_CMS_DocumentTypeSet
 
     #region "Methods"
 
+    /// <summary>
+    /// Returns true if custom settings are valid against given clone setting.
+    /// </summary>
+    /// <param name="settings">Clone settings</param>
+    /// <returns></returns>
+    public override bool IsValid(CloneSettings settings)
+    {
+        TableManager tm = new TableManager(null);
+        if (tm.TableExists(txtTableName.Text))
+        {
+            ShowError(GetString("sysdev.class_edit_gen.tablenameunique"));
+            return false;
+        }
+        return true;
+    }
+
+
     protected void Page_Load(object sender, EventArgs e)
     {
         lblTableName.ToolTip = GetString("clonning.settings.class.tablename.tooltip");

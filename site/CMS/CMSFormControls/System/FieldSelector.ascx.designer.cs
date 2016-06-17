@@ -12,13 +12,13 @@
 public partial class CMSFormControls_System_FieldSelector {
     
     /// <summary>
-    /// selectionElem control.
+    /// classSelector control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMSFormControls_Classes_SelectClassNames selectionElem;
+    protected global::CMSFormControls_Classes_SelectClassNames classSelector;
     
     /// <summary>
     /// pnlUpdate control.
@@ -39,11 +39,11 @@ public partial class CMSFormControls_System_FieldSelector {
     protected global::CMS.ExtendedControls.CMSPanel pnlFields;
     
     /// <summary>
-    /// drpFields control.
+    /// fieldSelector control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::CMS.ExtendedControls.CMSDropDownList drpFields;
+    protected global::CMS.ExtendedControls.CMSDropDownList fieldSelector;
 }

@@ -846,6 +846,33 @@
             <param name="issue">Issue to be sent</param>
             <param name="recipients">Recipients delimited by semicolon</param>
         </member>
+        <member name="T:CMS.Newsletters.IConfirmationSender">
+            <summary>
+            Class for sending newsletter issues confirmation.
+            </summary>
+        </member>
+        <member name="M:CMS.Newsletters.IConfirmationSender.SendConfirmationEmail(System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            Sends e-mail to confirm subscription/unsubscription of subscriber to newsletter.
+            </summary>
+            <param name="isSubscriptionEmail">True if the message is subscription confirmation, false if unsubscription confirmation</param>
+            <param name="subscriberId">Subscriber ID</param>
+            <param name="newsletterId">Newsletter ID</param>
+        </member>
+        <member name="M:CMS.Newsletters.IConfirmationSender.SendDoubleOptInEmail(System.Int32,System.Int32)">
+            <summary>
+            Sends double opt-in e-mail to confirm subscription.
+            </summary>
+            <param name="subscriberId">Subscriber ID</param>
+            <param name="newsletterId">Newsletter ID</param>
+        </member>
+        <member name="M:CMS.Newsletters.IConfirmationSender.SendUnsubscriptionConfirmation(System.Collections.Generic.IList{System.Collections.Generic.KeyValuePair{System.Int32,CMS.Newsletters.SubscriberInfo}},System.Int32)">
+            <summary>
+            Sends unsubscription confirmation e-mail to subscribers.
+            </summary>
+            <param name="subscribers">Subscribers to send email to</param>
+            <param name="newsletterId">ID of newsletter to be unsubscribed from</param>
+        </member>
         <member name="T:CMS.Newsletters.DefaultIssueTextFilter">
             <summary>
             Default implementation for <see cref="T:CMS.Newsletters.IIssueTextFilter"/>. 
@@ -1684,6 +1711,72 @@
             </summary>
             <param name="recipients">Recipients delimited by semicolon</param>
         </member>
+        <member name="T:CMS.Newsletters.ConfirmationSender">
+            <summary>
+            Class for sending newsletter issues confirmation.
+            </summary>
+        </member>
+        <member name="M:CMS.Newsletters.ConfirmationSender.SendConfirmationEmail(System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            Sends e-mail to confirm subscription/unsubscription of subscriber to newsletter.
+            </summary>
+            <param name="isSubscriptionEmail">True if the message is subscription confirmation, false if unsubscription confirmation</param>
+            <param name="subscriberId">Subscriber ID</param>
+            <param name="newsletterId">Newsletter ID</param>
+        </member>
+        <member name="M:CMS.Newsletters.ConfirmationSender.SendDoubleOptInEmail(System.Int32,System.Int32)">
+            <summary>
+            Sends double opt-in e-mail to confirm subscription.
+            </summary>
+            <param name="subscriberId">Subscriber ID</param>
+            <param name="newsletterId">Newsletter ID</param>
+        </member>
+        <member name="M:CMS.Newsletters.ConfirmationSender.SendUnsubscriptionConfirmation(System.Collections.Generic.IList{System.Collections.Generic.KeyValuePair{System.Int32,CMS.Newsletters.SubscriberInfo}},System.Int32)">
+            <summary>
+            Sends unsubscription confirmation e-mail to subscribers.
+            </summary>
+            <param name="subscribers">Subscribers to send email to</param>
+            <param name="newsletterId">ID of newsletter to be unsubscribed from</param>
+        </member>
+        <member name="M:CMS.Newsletters.ConfirmationSender.SendConfirmation(System.Int32,System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            Sends either double opt-in e-mail or subscription/unsubscription confirmation e-mail.
+            </summary>
+            <param name="subscriberId">Subscriber ID</param>
+            <param name="newsletterId">Newsletter ID</param>
+            <param name="isOptIn">True if double opt-in e-mail should be sent, false for subscription/unsubscription e-mails</param>
+            <param name="isSubscription">True if subscription e-mail should be sent, false, false is unsubscription e-mail should be sent</param>
+        </member>
+        <member name="M:CMS.Newsletters.ConfirmationSender.CreateAndSendConfirmationToSubscribers(System.Collections.Generic.SortedDictionary{System.Int32,CMS.Newsletters.SubscriberInfo},CMS.Newsletters.NewsletterInfo,CMS.Newsletters.SubscriberNewsletterInfo,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Creates double opt-in e-mail or subcsription/unsubscription confirmation email and sends it to subscribers.
+            </summary>
+            <param name="subscribers">Newsletter subscriber's members</param>
+            <param name="newsletter">Newsletter to send email for</param>
+            <param name="subscription">Subscription info for double-opt-in message</param>
+            <param name="isContact">True if subscriber is contact type (contact group, persona)</param>
+            <param name="isOptIn">True if doule-opt-in message</param>
+            <param name="isSubscription">True if subscription message</param>
+        </member>
+        <member name="M:CMS.Newsletters.ConfirmationSender.GetEmailTemplateInfo(CMS.Newsletters.NewsletterInfo,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Gets a template for a specified type of confirmation e-mail message.
+            </summary>
+            <param name="newsletter">Newsletter to get email template for</param>
+            <param name="siteName">Newsletter site</param>
+            <param name="isOptIn">True if double opt-in e-mail should be sent, false for subscription/unsubscription e-mails</param>
+            <param name="isSubscription">True if subscription e-mail should be sent, false, false is unsubscription e-mail should be sent</param>
+        </member>
+        <member name="M:CMS.Newsletters.ConfirmationSender.GetTemplate(System.Boolean,System.Boolean,CMS.Newsletters.NewsletterInfo,System.String)">
+            <summary>
+            Gets a template for a specified type of confirmation e-mail message.
+            </summary>        
+            <param name="isOptIn">True if double opt-in e-mail should be sent, false for subscription/unsubscription e-mails</param>
+            <param name="isSubscription">True if subscription e-mail should be sent, false, false is unsubscription e-mail should be sent</param>
+            <param name="newsletter">Newsletter</param>
+            <param name="culture">Culture string</param>
+            <returns>Confirmation e-mail template</returns>
+        </member>
         <member name="T:CMS.Newsletters.NewsletterHelper">
             <summary>
             Newsletter helper class.
@@ -2496,13 +2589,14 @@
             Approves subscription by provided hash.
             </summary>
         </member>
-        <member name="M:CMS.Newsletters.SubscriptionApprovalService.#ctor(CMS.Newsletters.IUnsubscriptionProvider,CMS.Newsletters.ISubscriptionHashValidator,CMS.Newsletters.ISubscriberEmailRetriever)">
+        <member name="M:CMS.Newsletters.SubscriptionApprovalService.#ctor(CMS.Newsletters.IUnsubscriptionProvider,CMS.Newsletters.ISubscriptionHashValidator,CMS.Newsletters.ISubscriberEmailRetriever,CMS.Newsletters.IConfirmationSender)">
             <summary>
             Constructor.
             </summary>
             <param name="unsubscriptionProvider">Implementation of <see cref="T:CMS.Newsletters.IUnsubscriptionProvider"/> interface.</param>
             <param name="subscriptionHashValidator">Implementation of <see cref="T:CMS.Newsletters.ISubscriptionHashValidator"/> interface.</param>
             <param name="subscriberEmailRetriever">Implementation of <see cref="T:CMS.Newsletters.ISubscriberEmailRetriever"/> interface.</param>
+            <param name="confirmationSender">Implementation of <see cref="T:CMS.Newsletters.IConfirmationSender"/> interface.</param>
         </member>
         <member name="M:CMS.Newsletters.SubscriptionApprovalService.ApproveSubscription(System.String,System.Boolean,System.String,System.DateTime)">
             <summary>
@@ -2839,6 +2933,13 @@
             <param name="lastName">(Optional) Subscriber's last name</param>
             <param name="email">(Optional) Subscriber's e-mail address when needed</param>
         </member>
+        <member name="M:CMS.Newsletters.SubscriberInfoProvider.GetSubscribersWithSpecifiedEmail(System.Int32,System.String)">
+            <summary>
+            Gets the list of subscriber's members for newsletter.
+            </summary>
+            <param name="newsletterId">ID of newsletter to get subscribers from</param>
+            <param name="email">Email to find in newsletter subscribers</param>
+        </member>
         <member name="M:CMS.Newsletters.SubscriberInfoProvider.SetSubscriberBounces(System.Int32,System.Int32)">
             <summary>
             Sets the bounced e-mails counter to specified value for a subscriber.
@@ -3063,13 +3164,14 @@
             Handles all work with subscriptions and unsubscriptions.
             </summary>
         </member>
-        <member name="M:CMS.Newsletters.SubscriptionService.#ctor(CMS.Newsletters.ISubscriptionProvider,CMS.Newsletters.IUnsubscriptionProvider,CMS.Newsletters.ISubscriberEmailRetriever)">
+        <member name="M:CMS.Newsletters.SubscriptionService.#ctor(CMS.Newsletters.ISubscriptionProvider,CMS.Newsletters.IUnsubscriptionProvider,CMS.Newsletters.ISubscriberEmailRetriever,CMS.Newsletters.IConfirmationSender)">
             <summary>
             Constructor.
             </summary>
             <param name="subscriptionProvider">Implementation of <see cref="T:CMS.Newsletters.ISubscriptionProvider"/></param>
             <param name="unsubscriptionProvider">Implementation of <see cref="T:CMS.Newsletters.IUnsubscriptionProvider"/></param>
             <param name="subscriberEmailRetriever">Implementation of <see cref="T:CMS.Newsletters.ISubscriberEmailRetriever"/></param>
+            <param name="confirmationSender">Implementation of <see cref="T:CMS.Newsletters.IConfirmationSender"/></param>
         </member>
         <member name="M:CMS.Newsletters.SubscriptionService.IsSubscribed(System.Int32,System.Int32)">
             <summary>
@@ -5125,31 +5227,12 @@
             <param name="issueId">Issue ID</param>
             <param name="newStatus">New status</param>
         </member>
-        <member name="M:CMS.Newsletters.IssueInfoProvider.GetTemplate(System.Boolean,System.Boolean,CMS.Newsletters.NewsletterInfo,System.String)">
-            <summary>
-            Gets a template for a specified type of confirmation e-mail message.
-            </summary>        
-            <param name="isOptIn">True if double opt-in e-mail should be sent, false for subscription/unsubscription e-mails</param>
-            <param name="isSubscription">True if subscription e-mail should be sent, false, false is unsubscription e-mail should be sent</param>
-            <param name="newsletter">Newsletter</param>
-            <param name="culture">Culture string</param>
-            <returns>Confirmation e-mail template</returns>
-        </member>
         <member name="M:CMS.Newsletters.IssueInfoProvider.GetHeader(CMS.Newsletters.EmailTemplateInfo)">
             <summary>
             Gets a header from template with embedded or linked stylesheet.
             </summary>
             <param name="template">E-mail template</param>
             <returns>Header with stylesheet data</returns>
-        </member>
-        <member name="M:CMS.Newsletters.IssueInfoProvider.SendConfirmation(System.Int32,System.Int32,System.Boolean,System.Boolean)">
-            <summary>
-            Sends either double opt-in e-mail or subscription/unsubscription confirmation e-mail.
-            </summary>
-            <param name="subscriberId">Subscriber ID</param>
-            <param name="newsletterId">Newsletter ID</param>
-            <param name="isOptIn">True if double opt-in e-mail should be sent, false for subscription/unsubscription e-mails</param>
-            <param name="isSubscription">True if subscription e-mail should be sent, false, false is unsubscription e-mail should be sent</param>
         </member>
         <member name="M:CMS.Newsletters.IssueInfoProvider.GetEmailBody(CMS.Newsletters.IssueInfo,CMS.Newsletters.EmailTemplateInfo)">
             <summary>
@@ -5159,21 +5242,20 @@
             <param name="template">Newsletter email template for this issue</param>
             <returns>Email body with text common to all subscribers.</returns>
         </member>
-        <member name="M:CMS.Newsletters.IssueInfoProvider.SendConfirmation(CMS.Newsletters.SubscriberInfo,CMS.Newsletters.NewsletterInfo,CMS.Newsletters.SubscriberNewsletterInfo,CMS.Newsletters.EmailTemplateInfo,System.String,System.String)">
-            <summary>
-            Sends either double opt-in e-mail or subcsription/unsubscription confirmation e-mail.
-            </summary>
-            <param name="subscriber">Subsciber</param>
-            <param name="newsletter">Newsletter</param>
-            <param name="subscription">Subscription information</param>
-            <param name="template">Email template to use</param>
-            <param name="siteName">Name of the site</param>
-            <param name="culture">Culture string</param>
-        </member>
         <member name="M:CMS.Newsletters.IssueInfoProvider.OpenRate(CMS.Newsletters.IssueInfo)">
             <summary>
             Gets the open rate percentage for this issue (how many e-mails were open out of all sent e-mails).
             </summary>
+        </member>
+        <member name="M:CMS.Newsletters.IssueInfoProvider.GetTemplate(System.Boolean,System.Boolean,CMS.Newsletters.NewsletterInfo,System.String)">
+            <summary>
+            Gets a template for a specified type of confirmation e-mail message.
+            </summary>        
+            <param name="isOptIn">True if double opt-in e-mail should be sent, false for subscription/unsubscription e-mails</param>
+            <param name="isSubscription">True if subscription e-mail should be sent, false, false is unsubscription e-mail should be sent</param>
+            <param name="newsletter">Newsletter</param>
+            <param name="culture">Culture string</param>
+            <returns>Confirmation e-mail template</returns>
         </member>
         <member name="M:CMS.Newsletters.IssueInfoProvider.GetIssuesInternal">
             <summary>
@@ -6243,6 +6325,13 @@
             </summary>
             <param name="where">Where condition. Deletes all subscribers when where condition is set to null</param>
         </member>
+        <member name="M:CMS.Newsletters.SubscriberNewsletterInfoProvider.GetNewsletterSubscribersIds(System.Int32)">
+            <summary>
+            Returns subscribers IDs for a specified newsletter.
+            </summary>
+            <param name="newsletterId">Id of newsletter</param>
+            <returns>IDs of subscribers for given newsletter</returns>
+        </member>
         <member name="M:CMS.Newsletters.SubscriberNewsletterInfoProvider.GetSubscriptions(System.String,System.String,System.Int32,System.String)">
             <summary>
             Returns all existing subscriptions along with detailed information about the subscriber.
@@ -6385,6 +6474,13 @@
             <param name="topN">Top N </param>
             <param name="columns">Columns</param>
             <returns>Returns DataSet.</returns>
+        </member>
+        <member name="M:CMS.Newsletters.SubscriberNewsletterInfoProvider.GetSubscribersIdsFromViewInternal(System.Int32)">
+            <summary>
+            Returns subscribers IDs for a specified newsletter.
+            </summary>
+            <param name="newsletterId">Id of newsletter</param>
+            <returns>DataQuery containing all IDs of subscribers with a given newsletter</returns>
         </member>
         <member name="T:CMS.Newsletters.ThreadEmailSender">
             <summary>
@@ -6624,6 +6720,15 @@
             Constructor - Creates a new UnsubscriptionInfo object from the given DataRow.
             </summary>
             <param name="dr">DataRow with the object data</param>
+        </member>
+        <member name="M:CMS.Newsletters.UnsubscriptionInfo.CheckPermissionsInternal(CMS.DataEngine.PermissionsEnum,System.String,CMS.Base.IUserInfo,System.Boolean)">
+            <summary>
+            Checks the permissions of the object.
+            </summary>
+            <param name="permission">Permission type</param>
+            <param name="siteName">Name of the site</param>
+            <param name="userInfo">UserInfo object</param>
+            <param name="exceptionOnFailure">If true, PermissionCheckException is thrown whenever a permission check fails</param>
         </member>
         <member name="P:CMS.Newsletters.UnsubscriptionInfo.UnsubscriptionID">
             <summary>

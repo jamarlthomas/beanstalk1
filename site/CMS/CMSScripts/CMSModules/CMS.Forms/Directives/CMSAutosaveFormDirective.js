@@ -123,7 +123,7 @@
     return ["$timeout", function ($timeout) {
         return {
             template:
-'<form>' +
+'<form novalidate>' +
     '<span class="form-autosave-message" ng-class="autosaveClass" data-ng-show="autosaveStateText">{{autosaveStateText}}</span>' +
     '<div data-ng-transclude="" class="form-horizontal analytics_campaign"></div>' +
 '</form>',

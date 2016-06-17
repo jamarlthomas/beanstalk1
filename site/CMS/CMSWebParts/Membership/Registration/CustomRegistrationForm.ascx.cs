@@ -690,7 +690,7 @@ public partial class CMSWebParts_Membership_Registration_CustomRegistrationForm 
             return;
         }
 
-        formUser.SaveData(null);
+        formUser.SaveData(null, String.IsNullOrEmpty(DisplayMessage.Trim()));
     }
 
 
@@ -765,28 +765,34 @@ public partial class CMSWebParts_Membership_Registration_CustomRegistrationForm 
         LogWebAnalytics(ui);
         AssignToRoles(ui);
 
-        if (DisplayMessage.Trim() != String.Empty)
+        if (ui.Enabled)
         {
-            pnlRegForm.Visible = false;
-            ShowInformation(DisplayMessage);
+            AuthenticationHelper.AuthenticateUser(ui.UserName, true);
+        }
+
+        var displayMessage = DisplayMessage.Trim();
+
+        if (!String.IsNullOrEmpty(displayMessage))
+        {
+            ShowInformation(displayMessage);
         }
         else
         {
-            if (ui.Enabled)
+            // Redirect after user registration, first try to use RedirectToURL property
+            if (RedirectToURL != String.Empty)
             {
-                AuthenticationHelper.AuthenticateUser(ui.UserName, true);
+                URLHelper.Redirect(RedirectToURL);
             }
 
+            // RedirectToURL property is not set, try to use ReturnURL query string
             string returnUrl = QueryHelper.GetString("ReturnURL", String.Empty);
             if (!String.IsNullOrEmpty(returnUrl) && (returnUrl.StartsWithCSafe("~") || returnUrl.StartsWithCSafe("/") || QueryHelper.ValidateHash("hash", "aliaspath")))
             {
                 URLHelper.Redirect(HttpUtility.UrlDecode(returnUrl));
             }
-            else if (RedirectToURL != String.Empty)
-            {
-                URLHelper.Redirect(RedirectToURL);
-            }
         }
+
+        pnlRegForm.Visible = false;
     }
 
 

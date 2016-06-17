@@ -4237,6 +4237,16 @@
             Loads value from appropriate control.
             </summary>
         </member>
+        <member name="M:CMS.FormControls.FormControlValidation.GetAppropriateControl">
+            <summary>
+            Returns <see cref="F:CMS.FormControls.FormControlValidation.validatedControl"/> or <see cref="F:CMS.FormControls.FormControlValidation.formControl"/> if <see cref="F:CMS.FormControls.FormControlValidation.validatedControl"/> does not exists.
+            </summary>
+        </member>
+        <member name="M:CMS.FormControls.FormControlValidation.FormControlContainsEmptyValue(CMS.FormControls.IFormControl)">
+            <summary>
+            Returns true, if <paramref name="control"/> has empty value, without any data.
+            </summary>
+        </member>
         <member name="M:CMS.FormControls.FormControlValidation.AppendValidationError(System.String)">
             <summary>
             Add validation error to validation result.

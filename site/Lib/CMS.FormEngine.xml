@@ -2444,6 +2444,7 @@
         <member name="M:CMS.FormEngine.FormHelper.GetDifferentAttributes(System.Xml.XmlAttributeCollection,System.Xml.XmlAttributeCollection)">
             <summary>
             Returns array with different attributes which are in both collections.
+            Attribute with name "guid" is returned even if unchanged.
             </summary>
             <param name="origAttributes">Collection of original attributes</param>
             <param name="newAttributes">Collection of new attributes</param>

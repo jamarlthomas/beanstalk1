@@ -1,28 +1,32 @@
 ﻿cmsdefine(['CMS/EventHub', 'jQuery', 'jQueryJScrollPane'], function (EventHub, $) {
     'use strict';
 
-    var LanguageMenu = function () {
-            var $dropdownMenu = $('.js-scrollable-language-menu');
+    var ScrollPane = function (options) {
+        if (!options || !options.selector) {
+            return;
+        }
 
-            $dropdownMenu.click(function (event) {
-                // Check if click was made on link otherwise stop propagation
-                if (!$(event.target).closest('a').length) {
-                    event.stopPropagation();
-                }
-            });
+        var $dropdownMenu = $(options.selector);
 
-            // Init scrolling
-            $dropdownMenu.jScrollPane();
+        $dropdownMenu.click(function (event) {
+            // Check if click was made on link otherwise stop propagation
+            if (!$(event.target).closest('a').length) {
+                event.stopPropagation();
+            }
+        });
 
-            // Fix HTML validity
-            $('.jspContainer').wrap('<li></li>');
-            $('.jspPane').wrapInner('<ul class="dropdown-menu dropdown-menu-inner-wrap"></ul>');
+        // Init scrolling
+        $dropdownMenu.jScrollPane();
 
-            // Subscribe to GlobalClick event for hiding language menu when click is outside menu
-            EventHub.subscribe("GlobalClick", function () {
-                $('.language-menu').removeClass('open');
-            });
-        };
+        // Fix HTML validity
+        $('.jspContainer').wrap('<li></li>');
+        $('.jspPane').wrapInner('<ul class="dropdown-menu dropdown-menu-inner-wrap"></ul>');
 
-    return LanguageMenu;
+        // Subscribe to GlobalClick event for hiding language menu when click is outside menu
+        EventHub.subscribe("GlobalClick", function () {
+            $('.language-menu').removeClass('open');
+        });
+    };
+
+    return ScrollPane;
 })

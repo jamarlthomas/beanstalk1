@@ -830,8 +830,16 @@ public partial class CMSModules_Ecommerce_FormControls_SKUSelector : FormEngineU
 
         if (DisplayProductVariants)
         {
-            // Do not display parent product in selector
-            where.WhereNotIn("SKUID", new IDQuery<SKUInfo>("SKUParentSKUID").WhereNotNull("SKUParentSKUID"));
+            // Alias for COM_SKU 
+            var parents = new QuerySourceTable("COM_SKU", "parentIDs");
+
+            // Select IDs of all products that are not parents of variants
+            var ids = new IDQuery<SKUInfo>()
+                .Columns(new QueryColumn("COM_SKU.SKUID"))
+                .Source(s => s.LeftJoin(parents, "COM_SKU.SKUID", "parentIDs.SKUParentSKUID"))
+                .Where(new WhereCondition().WhereNull("parentIDs.SKUID"));
+
+            where.WhereIn("SKUID", ids);
         }
         else
         {

@@ -117,4 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Administration-User_List.ErrorDefaultUser" xml:space="preserve">
+    <value>You cannot delete the default global administrator user account. The default user can be specified through the &lt;strong&gt;Settings -&gt; System -&gt; Default user ID&lt;/strong&gt; setting.</value>
+  </data>
+  <data name="com.checkout.paymentnoshipping" xml:space="preserve">
+    <value>The selected payment is not applicable when no shipping is required.</value>
+  </data>
+  <data name="settingskey.cmscmallowloggingipaddresses" xml:space="preserve">
+    <value>Log IP addresses and user agents</value>
+  </data>
+  <data name="settingskey.cmscmallowloggingipaddresses.description" xml:space="preserve">
+    <value>Enable/disable logging of IP addresses and user agents</value>
+  </data>
+  <data name="groups.memberapproved.subject" xml:space="preserve">
+    <value>You are now approved to access group {%group.groupdisplayname%}</value>
+  </data>
+  <data name="groups.memberjoin.subject" xml:space="preserve">
+    <value>New member joined group {%group.groupdisplayname%}</value>
+  </data>
+  <data name="groups.memberjoinedconfirmation.subject" xml:space="preserve">
+    <value>You are now member of group {%group.groupdisplayname%}</value>
+  </data>
+  <data name="groups.memberjoinedwaitingforapproval.subject" xml:space="preserve">
+    <value>You are now waiting for approval to group {%group.groupdisplayname%}</value>
+  </data>
+  <data name="groups.memberleave.subject" xml:space="preserve">
+    <value>User left group {%group.groupdisplayname%}</value>
+  </data>
+  <data name="groups.memberrejected.subject" xml:space="preserve">
+    <value>You were rejected from group {%group.groupdisplayname%}</value>
+  </data>
+  <data name="groups.memberwaitingforapproval.subject" xml:space="preserve">
+    <value>User waiting for approval in group {%group.groupdisplayname%}</value>
+  </data>
+  <data name="tags.tagsselector.assigntaggroup" xml:space="preserve">
+    <value>You need to assign a tag group to the page on the Metadata tab to enable using page tags.</value>
+  </data>
 </root>

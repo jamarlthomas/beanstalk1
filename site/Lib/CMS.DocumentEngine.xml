@@ -2348,6 +2348,11 @@
             <param name="classNames">Class names</param>
             <param name="siteName">Site name</param>
         </member>
+        <member name="M:CMS.DocumentEngine.DocumentTypeHelper.IsNodeNameSourceCandidate(CMS.FormEngine.FormFieldInfo)">
+            <summary>
+            Checks if form field can be used as source for document node name.
+            </summary>
+        </member>
         <member name="P:CMS.DocumentEngine.DocumentTypeHelper.ClassNames">
             <summary>
             Table of resolved class names [classNames -> resolved]
@@ -8623,7 +8628,7 @@
             <param name="documentGuid">Document GUID</param>
             <param name="siteId">Document site ID</param>
         </member>
-        <member name="M:CMS.DocumentEngine.PageInfoProvider.GetDataForPageInfo(System.String,System.String,System.String,System.Int32,System.String,System.Boolean)">
+        <member name="M:CMS.DocumentEngine.PageInfoProvider.GetDataForPageInfo(System.String,System.String,System.String,System.Int32,System.String,System.Boolean,System.Boolean)">
             <summary>
             Returns the data for the specified page info.
             </summary>
@@ -8634,6 +8639,7 @@
             <param name="cultureCode">Preferred culture code to be used to get the best matching candidate. 
             When the URL path is provided and there is a match by the URL path, the culture code of the matched candidate has higher priority than the given culture code and is used for the result.</param>
             <param name="combineWithDefaultCulture">Indicates if results should be combined with default culture</param>
+            <param name="onlyPublished">Indicates whether resulting PageInfo must be published</param>
         </member>
         <member name="M:CMS.DocumentEngine.PageInfoProvider.GetBlankPageInfo(System.Int32,System.String,System.String,System.Int32)">
             <summary>
@@ -11315,6 +11321,11 @@
             Download and process HTML content and returns parsed content.
             </summary>
         </member>
+        <member name="M:CMS.DocumentEngine.TreeNode.GetSearchDocumentWebPartsContent">
+            <summary>
+            Processes document web parts content and returns string that should be inserted into search content field.
+            </summary>
+        </member>
         <member name="M:CMS.DocumentEngine.TreeNode.GetSearchDocumentAliases">
             <summary>
             Processes document allias and returns string containing all relevant aliases that should be inserted into search content field.
@@ -13142,9 +13153,9 @@
             If true, node name is automatically updated from the document name when needed
             </summary>
         </member>
-        <member name="F:CMS.DocumentEngine.TreeProvider.mUseNamePathForUrlPath">
+        <member name="F:CMS.DocumentEngine.TreeProvider.mUpdateUrlPath">
             <summary>
-            Indicates if name path can be used for the URL path.
+            Indicates if the URL path should be updated.
             </summary>
         </member>
         <member name="M:CMS.DocumentEngine.TreeProvider.#ctor">
@@ -13847,7 +13858,15 @@
             </summary>
             <param name="node">Document</param>
         </member>
-        <member name="M:CMS.DocumentEngine.TreeProvider.GetSelectNodesQuery(System.Boolean,System.String,System.Collections.Generic.List{System.String},System.Int32,System.String,System.String,System.Guid,System.String,CMS.DocumentEngine.RelationshipSideEnum,System.Boolean,System.Boolean,System.String,System.Int32,System.String,System.String,System.Boolean,System.Boolean)">
+        <member name="M:CMS.DocumentEngine.TreeProvider.GetIncludeCoupledDataType(System.Collections.Generic.List{System.String},System.Boolean,System.String)">
+            <summary>
+            Returns type of including coupled columns into result
+            </summary>
+            <param name="classNames">List of the class names</param>
+            <param name="selectAllData">Indicates if all data should be selected (including coupled data)</param>
+            <param name="columns">Columns to select</param>
+        </member>
+        <member name="M:CMS.DocumentEngine.TreeProvider.GetSelectNodesQuery(System.Boolean,System.String,System.Collections.Generic.List{System.String},System.Int32,System.String,System.String,System.Guid,System.String,CMS.DocumentEngine.RelationshipSideEnum,System.Boolean,System.Boolean,System.String,System.Int32,System.String,System.String,System.Boolean,System.Boolean,CMS.DocumentEngine.IncludeCoupledDataEnum)">
             <summary>
             Gets document query for nodes selection
             </summary>
@@ -14227,9 +14246,9 @@
             If true, the document stays checked in on the insert operation
             </summary>
         </member>
-        <member name="P:CMS.DocumentEngine.TreeProvider.UseNamePathForUrlPath">
+        <member name="P:CMS.DocumentEngine.TreeProvider.UpdateUrlPath">
             <summary>
-            Indicates if name path can be used for the URL path. By default it is set to TRUE.
+            Indicates if URL path should be updated.
             </summary>
         </member>
         <member name="P:CMS.DocumentEngine.TreeProvider.ProviderAssemblyName">
@@ -18742,13 +18761,14 @@
             <param name="transitionType">Type of transition</param>
             <param name="handleActions">Indicates if step actions should be handled</param>
         </member>
-        <member name="M:CMS.DocumentEngine.WorkflowManager.MoveStepInternal(CMS.DocumentEngine.TreeNode,CMS.WorkflowEngine.WorkflowStepInfo)">
+        <member name="M:CMS.DocumentEngine.WorkflowManager.MoveStepInternal(CMS.DocumentEngine.TreeNode,CMS.WorkflowEngine.WorkflowStepInfo,System.String)">
             <summary>
             Moves the specified node to the first step without automatic transition in the workflow and returns the final step.
             </summary>
             <param name="node">Node to process</param>
             <param name="currentStep">Current workflow step of the document</param>
             <remarks>The return step can be different than the original target step.</remarks>
+            <param name="comment">Action comment</param>
         </member>
         <member name="M:CMS.DocumentEngine.WorkflowManager.MoveToPublishedStepInternal(CMS.DocumentEngine.TreeNode,System.String,System.Boolean)">
             <summary>

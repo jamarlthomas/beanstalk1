@@ -372,6 +372,7 @@ public partial class CMSModules_Automation_Controls_AutomationMenu : BaseEditMen
                             Tooltip = string.Format(ResHelper.GetString("AutoMenu.SpecificStepMultiple", ResourceCulture), objectName),
                             CommandName = ComponentEvents.AUTOMATION_MOVE_SPEC,
                             EventName = ComponentEvents.AUTOMATION_MOVE_SPEC,
+                            CssClass = "scrollable-menu",
 
                             // Make action inactive
                             OnClientClick = null,
@@ -595,6 +596,11 @@ public partial class CMSModules_Automation_Controls_AutomationMenu : BaseEditMen
             lblInfo.CssClass = "LeftAlign EditMenuInfo";
             lblInfo.Visible = true;
         }
+        
+        ScriptHelper.RegisterJQuery(Page);
+        ScriptHelper.RegisterModule(Page, "CMS.Content/LanguageMenu", new { selector = ".scrollable-menu ul" });
+
+        CSSHelper.RegisterCSSLink(Page, "~/CMSScripts/jquery/jquery-jscrollpane.css");
     }
 
 

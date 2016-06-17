@@ -294,9 +294,10 @@ public partial class CMSModules_AdminControls_Controls_UIControls_BindingEditIte
     private string GetObjectDependencyColumn(string dependencyObjectType)
     {
         var bindingTypeInfo = ObjectTypeManager.GetTypeInfo(BindingObjectType);
+        var dependencyTypeInfo = ObjectTypeManager.GetTypeInfo(dependencyObjectType);
 
         // 1. ParentObjectType
-        if (bindingTypeInfo.ParentObjectType.EqualsCSafe(dependencyObjectType, true))
+        if (ParentObjectTypeEqualsDependencyObjectType(bindingTypeInfo, dependencyTypeInfo))
         {
             return bindingTypeInfo.ParentIDColumn;
         }
@@ -317,6 +318,13 @@ public partial class CMSModules_AdminControls_Controls_UIControls_BindingEditIte
         }
 
         return null;
+    }
+
+
+    private static bool ParentObjectTypeEqualsDependencyObjectType(ObjectTypeInfo bindingTypeInfo, ObjectTypeInfo dependencyTypeInfo)
+    {
+        return bindingTypeInfo.ParentObjectType.EqualsCSafe(dependencyTypeInfo.ObjectType, true) ||
+               bindingTypeInfo.ParentObjectType.EqualsCSafe(dependencyTypeInfo.OriginalObjectType, true);
     }
 
 

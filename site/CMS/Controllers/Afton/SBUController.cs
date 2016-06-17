@@ -64,30 +64,11 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 SolutionsIds = solutionIds
             });
-           // model.DocumentTypes.Add(MapData<DocumentType,DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes()).First());
-            /*    var PDS = MapData<DocumentType, DocumentTypeViewModel>(new DocumentType
-            {
-                DocumentTypeID = -100,
-                Title = "Product Data Sheets"
-            });
-            model.DocumentTypes.Add(PDS);*/
-            //model.DocumentTypes.First().Products = MapData<Product, ProductViewModel>(_productProvider.GetProductsBySBU(sbu.NodeAlias));
-            //model.DocumentTypes.AddRange(MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes(SBUName, 12)));
             model.DocumentTypes.AddRange(MapData<DocumentType, DocumentTypeViewModel>(_documentTypeProvider.GetDocumentTypes()));
 
             foreach (var item in model.DocumentTypes)
             {
- 
-                // Ignore SBU.DocumentList. Instead,  get documents associated with any of the SBU's solutions
-                //if (sbu.Fields.DocumentList.Count() != 0)
-                //{
-                //    item.Documents = (sbu.Fields.DocumentList.Where(x => x.Parent.GetValue("Title") == item.Title).Select(document => new LinkViewModel {
-                //        Title = document.GetValue("Title").ToString(),
-                //        Reference = document.DocumentNamePath
-                //    }).ToList());
-                //}
-                //else
-                //{
+
                     switch (item.Title)
                     {
                         case "Product Data Sheets":
@@ -124,10 +105,7 @@ namespace CMS.Mvc.Controllers.Afton
                 
             }
             
-            /*foreach (var item in model.DocumentTypes)
-            {
-                item.Documents = item.Documents = MapData<Product, ProductViewModel>(_productProvider.GetDocuments(item.Title));
-            }*/
+
             model.Solutions = MapData<Solution, TileViewModel>(_solutionProvider.GetSolutions(SBUName)).Where(w => !string.IsNullOrEmpty(w.HomeImage)).ToList();
             return View("~/Views/Afton/SBU/Index.cshtml", model);
         }

@@ -218,7 +218,10 @@ public partial class CMSModules_Membership_Controls_MyProfile : CMSUserControl
                 editProfileForm.AllowEditVisibility = AllowEditVisibility;
                 editProfileForm.IsLiveSite = IsLiveSite;
                 editProfileForm.RedirectUrlAfterSave = AfterSaveRedirectURL;
-                editProfileForm.SubmitButton.ResourceString = SubmitButtonResourceString;
+                if (!String.IsNullOrEmpty(SubmitButtonResourceString))
+                {
+                    editProfileForm.SubmitButton.ResourceString = SubmitButtonResourceString;
+                }
                 editProfileForm.CssClass = FormCSSClass;
                 editProfileForm.MarkRequiredFields = MarkRequiredFields;
                 editProfileForm.UseColonBehindLabel = UseColonBehindLabel;

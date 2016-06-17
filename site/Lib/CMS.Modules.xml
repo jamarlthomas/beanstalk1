@@ -1992,6 +1992,19 @@
             Initializes export handlers
             </summary>
         </member>
+        <member name="M:CMS.Modules.ExportSpecialActions.SealModules(System.Data.DataTable)">
+            <summary>
+            Seals the exported modules.
+            </summary>
+            <param name="modules">Table with modules.</param>
+        </member>
+        <member name="M:CMS.Modules.ExportSpecialActions.SealUIElements(System.Data.DataTable,System.Data.DataTable)">
+            <summary>
+            Seals exported UI elements based on module's 'is in development' flag.
+            </summary>
+            <param name="uiElements">Table with UI elements.</param>
+            <param name="modules">Table with modules.</param>
+        </member>
         <member name="T:CMS.Modules.ImportSpecialActions">
             <summary>
             Handles special actions during the import/export process.
@@ -2001,19 +2014,6 @@
             <summary>
             Initializes export handlers
             </summary>
-        </member>
-        <member name="M:CMS.Modules.ImportSpecialActions.SealModules(System.Data.DataTable)">
-            <summary>
-            Seals the exported modules.
-            </summary>
-            <param name="modules">Table with modules.</param>
-        </member>
-        <member name="M:CMS.Modules.ImportSpecialActions.SealUIElements(System.Data.DataTable,System.Data.DataTable)">
-            <summary>
-            Seals exported UI elements based on module's 'is in development' flag.
-            </summary>
-            <param name="uiElements">Table with UI elements.</param>
-            <param name="modules">Table with modules.</param>
         </member>
         <member name="T:CMS.Modules.ModuleExport">
             <summary>
@@ -3244,6 +3244,14 @@
             Constructor, creates an empty UIElementInfo object from the given DataRow data.
             </summary>
             <param name="dr">Datarow with the class info data</param>
+        </member>
+        <member name="M:CMS.Modules.UIElementInfo.RemoveObjectDependencies(System.Boolean,System.Boolean)">
+            <summary>
+            Removes object dependencies. Removes ad-hoc page templates that are used in UIElement.
+            </summary>
+            <param name="deleteAll">If false, only required dependencies are deleted, dependencies with default value are replaced with default value and nullable values are replaced with null</param>
+            <param name="clearHashtables">If true, hashtables of all objecttypes which were potentially modified are cleared</param>
+            <remarks>UI ad-hoc templates are inside UIElement because they extend it from the page template side of view.</remarks>
         </member>
         <member name="M:CMS.Modules.UIElementInfo.BuildObjectPath(System.String,System.String,System.String,System.String,System.Int32@)">
             <summary>

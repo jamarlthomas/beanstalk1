@@ -1325,10 +1325,7 @@ body.cms-bootstrap,
   font-weight: bold;
 }
 .cms-bootstrap .PageContent {
-  padding: 16px 16px 0 16px;
-}
-.cms-bootstrap .PageContentAfterForm {
-  padding: 0 16px 16px 16px;
+  padding: 16px;
 }
 .cms-bootstrap .cke_dialog .cke_dialog_contents_body {
   padding: 17px 10px 5px;

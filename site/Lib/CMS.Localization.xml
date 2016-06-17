@@ -797,19 +797,6 @@
             Web farm synchronization for the localization
             </summary>
         </member>
-        <member name="M:CMS.Localization.LocalizationSynchronization.Init">
-            <summary>
-            Initializes the tasks for media files synchronization
-            </summary>
-        </member>
-        <member name="M:CMS.Localization.LocalizationSynchronization.RemoveString(System.String,System.String[],CMS.Core.BinaryData)">
-            <summary>
-            Removes the resource string
-            </summary>
-            <param name="target">Task target</param>
-            <param name="data">Task data</param>
-            <param name="binaryData">Task binary data</param>
-        </member>
         <member name="T:CMS.Localization.LocalizationTaskType">
             <summary>
             Web farm task types for localization
@@ -1635,18 +1622,25 @@
             <param name="stringKey">Resource string key</param>
             <param name="cultureCode">Culture code</param>
         </member>
-        <member name="M:CMS.Localization.ResourceStringInfoProvider.RemoveFromHashTable(System.String)">
+        <member name="M:CMS.Localization.ResourceStringInfoProvider.DeleteFromHashTable(System.String)">
             <summary>
-            Remove translation from hash table.
+            Deletes translation from <see cref="P:CMS.DataEngine.ProviderDictionaryCollection.StringValues"/> hashtable.
             </summary>
             <param name="completeStringKey">Complete resource string key</param>
         </member>
         <member name="M:CMS.Localization.ResourceStringInfoProvider.AddToHashTable(System.String,System.String)">
             <summary>
-            Add translation to hashtable.
+            Adds translation to <see cref="P:CMS.DataEngine.ProviderDictionaryCollection.StringValues"/> hashtable.
             </summary>
             <param name="completeStringKey">Complete resource string key (e.g., "en-us.general.default")</param>
-            <param name="text">Text</param>
+            <param name="text">Translation text</param>
+        </member>
+        <member name="M:CMS.Localization.ResourceStringInfoProvider.UpdateInHashTable(System.String,System.String)">
+            <summary>
+            Updates translation in <see cref="P:CMS.DataEngine.ProviderDictionaryCollection.StringValues"/> hashtable.
+            </summary>
+            <param name="completeStringKey">Complete resource string key (e.g., "en-us.general.default")</param>
+            <param name="text">Translation text</param>
         </member>
         <member name="M:CMS.Localization.ResourceStringInfoProvider.Clear(System.Boolean)">
             <summary>

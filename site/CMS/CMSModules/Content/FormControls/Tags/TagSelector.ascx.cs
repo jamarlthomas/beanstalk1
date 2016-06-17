@@ -179,6 +179,13 @@ public partial class CMSModules_Content_FormControls_Tags_TagSelector : FormEngi
 
     protected void Page_PreRender(object sender, EventArgs e)
     {
+        if (GroupId == 0)
+        {
+            Enabled = false;
+            btnSelect.ToolTip = ResHelper.GetString("tags.tagsselector.assigntaggroup");
+            txtTags.ToolTip = ResHelper.GetString("tags.tagsselector.assigntaggroup");
+        }
+
         // Enable / Disable control
         txtTags.Enabled = Enabled;
         btnSelect.Enabled = Enabled;

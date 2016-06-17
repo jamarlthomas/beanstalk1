@@ -1,8 +1,9 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/SimplePage.master"
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/CMSMasterPages/UI/EmptyPage.master"
     Title="Campaign properties - General" Inherits="CMSModules_WebAnalytics_Pages_Tools_Campaign_Tab_General"
     Theme="Default" CodeBehind="Tab_General.aspx.cs" %>
 
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="cpAfterForm">
+<asp:Panel runat="server" CssClass="PageContent">
     <cms-autosave data-ng-controller="Autosave">
         <div data-ng-controller="CampaignEdit" class="cms-campaigns-edit" data-ng-cloak="cloak">
             <div class="editing-form-category campaign-category-description">
@@ -218,13 +219,15 @@
                 id="Button1" 
                 data-ng-click="launchCampaign()" 
                 class="btn btn-primary" 
-                data-ng-if="model.campaign.campaignID && model.campaign.status === 'Draft'">{{"campaign.launch"|resolve}}
+                data-ng-if="model.campaign.campaignID && model.campaign.status === 'Draft'"
+                data-ng-disabled="formController.$invalid || savingInProgress">{{"campaign.launch"|resolve}}
             </button>
             <button 
                 id="Button2" 
                 data-ng-click="finishCampaign()" 
                 class="btn btn-primary" 
-                data-ng-if="model.campaign.campaignID && model.campaign.status === 'Launched'">{{"campaign.finish"|resolve}}
+                data-ng-if="model.campaign.campaignID && model.campaign.status === 'Launched'"
+                data-ng-disabled="formController.$invalid || savingInProgress">{{"campaign.finish"|resolve}}
             </button>
         </div>
     </cms-autosave>
@@ -369,4 +372,5 @@
             </cms-textarea>
         </form>    
     </div>
+</asp:Panel>
 </asp:Content>

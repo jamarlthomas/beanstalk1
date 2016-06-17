@@ -135,7 +135,7 @@ public partial class CMSModules_WebAnalytics_Pages_Tools_Conversion_Edit : CMSDe
             ScriptHelper.RegisterWOpenerScript(this);
             // Add selector refresh
             string script =
-                string.Format(@"if (wopener) {{ wopener.US_SelectNewValue_{0}('{1}'); }}", selector, info.ConversionName);
+                string.Format(@"if (wopener) {{ wopener.US_SelectNewValue_{0}('{1}'); }}", ValidationHelper.GetControlClientId(selector, ""), info.ConversionName);
 
             if (closeOnSave)
             {

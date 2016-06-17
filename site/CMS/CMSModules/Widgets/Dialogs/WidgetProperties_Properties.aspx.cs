@@ -19,17 +19,16 @@ public partial class CMSModules_Widgets_Dialogs_WidgetProperties_Properties : CM
     }
 
 
-    /// <summary>
-    /// Load event handler.
-    /// </summary>
-    protected override void OnLoad(EventArgs e)
+    protected override void OnInit(EventArgs e)
     {
-        base.OnLoad(e);
+        base.OnInit(e);
 
-        // WOpener is required for inline widgets insert script
-        ScriptHelper.RegisterWOpenerScript(Page);
+        // Ensure the design mode for the dialog
+        if (String.IsNullOrEmpty(aliasPath))
+        {
+            PortalContext.SetRequestViewMode(ViewModeEnum.Design);
+        }
 
-        // Initialize the control
         widgetProperties.AliasPath = aliasPath;
         widgetProperties.CultureCode = culture;
         widgetProperties.PageTemplateId = templateId;
@@ -45,11 +44,19 @@ public partial class CMSModules_Widgets_Dialogs_WidgetProperties_Properties : CM
         widgetProperties.IsLiveSite = false;
         widgetProperties.CurrentPageInfo = PageInfo;
 
-        // Ensure the design mode for the dialog
-        if (String.IsNullOrEmpty(aliasPath))
-        {
-            PortalContext.SetRequestViewMode(ViewModeEnum.Design);
-        }
+        widgetProperties.LoadData();
+    }
+
+
+    /// <summary>
+    /// Load event handler.
+    /// </summary>
+    protected override void OnLoad(EventArgs e)
+    {
+        base.OnLoad(e);
+
+        // WOpener is required for inline widgets insert script
+        ScriptHelper.RegisterWOpenerScript(Page);
 
         // Setup the current document
         EditedDocument = Node;

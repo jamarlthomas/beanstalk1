@@ -47,9 +47,6 @@
         </asp:Panel>
         <cms:devtools id="devElem" runat="server" />
     </form>
-    <asp:Panel ID="pnlContentAfterForm" runat="server" CssClass="PageContentAfterForm">
-        <asp:ContentPlaceHolder runat="server" ID="cpAfterForm" />
-    </asp:Panel>
     <asp:PlaceHolder runat="server" ID="plcAfterForm"></asp:PlaceHolder>
 </body>
 </html>

@@ -1175,6 +1175,12 @@
             <param name="globalOnly">Indicates whether only objects with null in their site ID column should be included.</param>
             <param name="excludedNames">Objects with display names and code names starting with these expressions are filtered out.</param>
         </member>
+        <member name="M:CMS.Membership.UserInfo.ChangedColumns">
+            <summary>
+            Returns list of column names which values were changed.
+            </summary>
+            <returns>List of column names</returns>
+        </member>
         <member name="M:CMS.Membership.UserInfo.CopyCachedDataTo(CMS.Membership.UserInfo)">
             <summary>
             Copies the cached data to another UserInfo object

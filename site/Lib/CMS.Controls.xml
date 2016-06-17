@@ -1638,6 +1638,11 @@
             Binds a data source to the invoked server control and all its child controls.
             </summary>
         </member>
+        <member name="M:CMS.Controls.CMSUniView.CreateChildControls">
+            <summary>
+            Creates the control hierarchy that is used to render a composite data-bound control based on the values that are stored in view state.
+            </summary>
+        </member>
         <member name="M:CMS.Controls.CMSUniView.InitControl(System.Boolean)">
             <summary>
             Ensures default data binding 
@@ -1688,18 +1693,6 @@
             <summary>
             Releases the web part context.
             </summary>
-        </member>
-        <member name="M:CMS.Controls.CMSUniView.EnsurePager">
-            <summary>
-            Creates instance of unipager and bind this pager to the current control.
-            </summary>
-        </member>
-        <member name="M:CMS.Controls.CMSUniView.RemovedControl(System.Web.UI.Control)">
-            <summary>
-            Called after a child control is removed from controls collections.
-            Ensures unipager for current control
-            </summary>
-            <param name="control">Control instance</param>
         </member>
         <member name="P:CMS.Controls.CMSUniView.LoadHierarchicalData">
             <summary>
@@ -2255,6 +2248,11 @@
             Constructor.
             </summary>
         </member>
+        <member name="M:CMS.Controls.QueryUniView.CreateChildControls">
+            <summary>
+            Creates the control hierarchy that is used to render a composite data-bound control based on the values that are stored in view state.
+            </summary>
+        </member>
         <member name="M:CMS.Controls.QueryUniView.InitControl(System.Boolean)">
             <summary>
             Ensures default data binding 
@@ -2310,18 +2308,6 @@
             <summary>
             Releases the web part context.
             </summary>
-        </member>
-        <member name="M:CMS.Controls.QueryUniView.EnsurePager">
-            <summary>
-            Creates instance of unipager and bind this pager to the current control.
-            </summary>
-        </member>
-        <member name="M:CMS.Controls.QueryUniView.RemovedControl(System.Web.UI.Control)">
-            <summary>
-            Called after a child control is removed from controls collections.
-            Ensures unipager for current control
-            </summary>
-            <param name="control">Control instance</param>
         </member>
         <member name="P:CMS.Controls.QueryUniView.ForceCacheMinutes">
             <summary>
@@ -3846,11 +3832,11 @@
             Gets the start tag for the on-site editing envelope for Portal engine mode.
             </summary>
             <param name="pageInfo">The page info</param>
-            <param name="editPageUrl">The edit page url used for edit dialog</param>
+            <param name="editPageUrl">The edit page URL used for edit dialog</param>
             <param name="dialogWidth">Width of the edit dialog</param>
             <param name="webPartInstance">The web part instance</param>
             <param name="webPartTitle">The web part title</param>
-            <param name="visible">Indicates whether the web part is set to be visible</param>
+            <param name="visible">Indicates whether On-Site Edit tag should be visible in order to display Edit dialog.</param>
             <param name="controlObject">The current control object (must be defined in ASPX mode)</param>
         </member>
         <member name="M:CMS.Controls.OnSiteEditHelper.GetOnSiteEditEndTag">
@@ -16617,11 +16603,6 @@
             ViewState debug methods
             </summary>
         </member>
-        <member name="F:CMS.Controls.ViewStateDebug.mViewStateParentDepth">
-            <summary>
-            Depth of the control context parent.
-            </summary>
-        </member>
         <member name="M:CMS.Controls.ViewStateDebug.GetDebugSettings">
             <summary>
             Gets the debug settings
@@ -16637,6 +16618,13 @@
             Creates a new log table
             </summary>
         </member>
+        <member name="M:CMS.Controls.ViewStateDebug.AddViewStates(System.Web.UI.Page,System.Data.DataTable)">
+            <summary>
+            Adds the viewstates to the specified DataSet.
+            </summary>
+            <param name="dt">Table with the viewstates</param>
+            <param name="page">Processed page</param>
+        </member>
         <member name="M:CMS.Controls.ViewStateDebug.AddViewStates(System.Data.DataTable,System.Web.UI.Control,System.Boolean)">
             <summary>
             Adds the viewstates to the specified DataSet.
@@ -16645,11 +16633,43 @@
             <param name="control">Control to process</param>
             <param name="processChildControls">Process ViewState of the child controls</param>
         </member>
+        <member name="M:CMS.Controls.ViewStateDebug.GetInheritedViewStateMode(System.Web.UI.Control)">
+            <summary>
+            Gets the <see cref="T:System.Web.UI.ViewStateMode"/> which is inherited from page and parent controls.
+            </summary>
+            <param name="control"></param>
+            <returns>Inherited <see cref="T:System.Web.UI.ViewStateMode"/> i.e. <see cref="F:System.Web.UI.ViewStateMode.Enabled"/> or <see cref="F:System.Web.UI.ViewStateMode.Disabled"/></returns>
+        </member>
+        <member name="M:CMS.Controls.ViewStateDebug.AddViewStates(System.Data.DataTable,System.Web.UI.Control,System.Boolean,System.Web.UI.ViewStateMode)">
+            <summary>
+            Adds the viewstates to the specified DataSet.
+            </summary>
+            <param name="dt">Table with the viewstates</param>
+            <param name="control">Control to process</param>
+            <param name="processChildControls">Process ViewState of the child controls</param>
+            <param name="inheritedViewStateMode">Inherited <see cref="T:System.Web.UI.ViewStateMode"/>. Must be Enabled or Disabled.</param>
+            <exception cref="T:System.ArgumentException">Thrown when <paramref name="inheritedViewStateMode"/> is <see cref="F:System.Web.UI.ViewStateMode.Inherit"/></exception>
+        </member>
         <member name="M:CMS.Controls.ViewStateDebug.GetControlViewState(System.Web.UI.Control)">
             <summary>
             Gets the control viewstate.
             </summary>
             <param name="control">Control</param>
+        </member>
+        <member name="M:CMS.Controls.ViewStateDebug.GetControlIdentifier(System.Web.UI.Control)">
+            <summary>
+            Gets identifier for the control from its Id and from Ids of its parents for the debug info.
+            The identifier is reflecting its parent to child path.
+            </summary>
+            <param name="control">Control</param>
+            <returns>Composed identifier of the control.</returns>
+        </member>
+        <member name="M:CMS.Controls.ViewStateDebug.AddViewStateDetails(System.Web.UI.StateBag,System.Data.DataRow)">
+            <summary>
+            Adds <paramref name="viewState"/> details into the <paramref name="dataRow"/>.
+            </summary>
+            <param name="viewState">viewstate</param>
+            <param name="dataRow">data row</param>
         </member>
         <member name="P:CMS.Controls.ViewStateDebug.Settings">
             <summary>

@@ -11638,7 +11638,8 @@
         </member>
         <member name="P:CMS.Helpers.HTTPHelper.DispositionInlineExtensions">
             <summary>
-            List of file extensions for which the default disposition is inline. (Beside image, '.html' and '.htm' extensions, default extensions are '.pdf', '.swf')
+            List of file extensions for which the default disposition is inline. 
+            (Beside image, '.html' and '.htm' extensions, default extensions are '.pdf', '.swf')
             </summary>
         </member>
         <member name="T:CMS.Helpers.CultureHelper">
@@ -13256,6 +13257,12 @@
         <member name="M:CMS.Helpers.HTMLHelper.EncodeForHtmlAttribute(System.String)">
             <summary>
             Encodes string to be used as the HTML attribute value.
+            </summary>
+            <param name="inputText">Input text to encode</param>
+        </member>
+        <member name="M:CMS.Helpers.HTMLHelper.EncodeForHtmlComment(System.String)">
+            <summary>
+            Encodes string to be used in a HTML comment.
             </summary>
             <param name="inputText">Input text to encode</param>
         </member>
@@ -16705,25 +16712,33 @@
         </member>
         <member name="M:CMS.Helpers.ValidationHelper.GetTimeSpanSystem(System.Object,System.TimeSpan)">
             <summary>
-            Converts the given object to a decimal value
+            Returns the TimeSpan representation of an object or default value if not.
             </summary>
             <param name="value">Value to convert</param>
             <param name="defaultValue">Default value</param>
         </member>
-        <member name="M:CMS.Helpers.ValidationHelper.GetTimeSpan(System.Object,System.TimeSpan)">
+        <member name="M:CMS.Helpers.ValidationHelper.GetTimeSpan(System.Object,System.TimeSpan,System.String)">
             <summary>
-            Converts the given object to a decimal value
+            Returns the TimeSpan representation of an object or default value if not.
             </summary>
             <param name="value">Value to convert</param>
             <param name="defaultValue">Default value</param>
+            <param name="culture">Culture to use for processing of the string</param>
         </member>
         <member name="M:CMS.Helpers.ValidationHelper.GetTimeSpan(System.Object,System.TimeSpan,System.Globalization.CultureInfo)">
             <summary>
-            Converts the given object to a decimal value
+            Returns the TimeSpan representation of an object or default value if not.
             </summary>
             <param name="value">Value to convert</param>
             <param name="defaultValue">Default value</param>
             <param name="culture">Culture for the conversion</param>
+        </member>
+        <member name="M:CMS.Helpers.ValidationHelper.GetControlClientId(System.Object,System.String)">
+            <summary>
+            Returns the given string if it matches the criteria for valid client ID value.
+            </summary>
+            <param name="value">Value to check</param>
+            <param name="defaultValue">Value to return in case given value is not a valid client ID</param>
         </member>
         <member name="M:CMS.Helpers.ValidationHelper.GetValue``1(System.Object)">
             <summary>
@@ -16899,6 +16914,13 @@
         <member name="M:CMS.Helpers.ValidationHelper.LoadDateTimeSystem(System.DateTime@,System.Object)">
             <summary>
             Attempts to load the given new value as a DateTime to the result (it uses en-us culture). Returns true if the conversion of the new value was successful, if not, returns false and keeps the value the same.
+            </summary>
+            <param name="value">Value to load</param>
+            <param name="newValue">New value</param>
+        </member>
+        <member name="M:CMS.Helpers.ValidationHelper.LoadTimeSpanSystem(System.TimeSpan@,System.Object)">
+            <summary>
+            Attempts to load the given new value as a TimeSpan to the result (it uses en-us culture). Returns true if the conversion of the new value was successful, if not, returns false and keeps the value the same.
             </summary>
             <param name="value">Value to load</param>
             <param name="newValue">New value</param>

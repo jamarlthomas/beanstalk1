@@ -5,6 +5,7 @@ using CMS.ExtendedControls;
 using CMS.FormEngine;
 using CMS.Helpers;
 using CMS.UIControls;
+using CMS.DocumentEngine;
 
 public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_DocumentSource : CMSUserControl
 {
@@ -169,9 +170,9 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_Documen
                 foreach (string name in columnNames)
                 {
                     FormFieldInfo ffiColumn = FormInfo.GetFormField(name);
-
+                    
                     // Add only text fields
-                    if (!ffiColumn.PrimaryKey && !ffiColumn.AllowEmpty && ((ffiColumn.DataType == FieldDataType.Text) || (ffiColumn.DataType == FieldDataType.LongText)))
+                    if (ffiColumn.IsNodeNameSourceCandidate())
                     {
                         AddField(drpSourceField, name);
                     }

@@ -24,17 +24,19 @@
                 </div>
             </div>
         </div>
-        <cms:UniGrid runat="server" ID="gridElem" ShowObjectMenu="false">
+        <cms:UniGrid runat="server" ID="gridElem" ShowObjectMenu="false" OrderBy="Score">
             <GridActions>
                 <ug:Action ExternalSourceName="edit" Name="edit" Caption="$om.contact.viewdetail$"
                     FontIconClass="icon-edit" FontIconStyle="Allow" ModuleName="CMS.OnlineMarketing" CommandArgument="ContactID" />
                 <ug:Action Name="view" ExternalSourceName="view" Caption="$om.score.viewdetail$" FontIconClass="icon-eye" FontIconStyle="Allow"
                     ModuleName="OM.Scoring" Permissions="Read" CommandArgument="ContactID" />
             </GridActions>
-            <GridColumns>
-                <ug:Column Source="ContactID" ExternalSourceName="#contactfullname" Caption="$general.fullname$" Wrap="false">
+             <GridColumns>
+                <ug:Column Source="ContactFirstName" Caption="$general.firstname$" Wrap="false">
                 </ug:Column>
-                <ug:Column Source="ContactID" ExternalSourceName="#statusdisplayname" Caption="$om.contactstatus$"
+                <ug:Column Source="ContactLastName" Caption="$general.lastname$" Wrap="false">
+                </ug:Column>
+                <ug:Column Source="ContactID" ExternalSourceName="#statusdisplayname" AllowSorting="false" Caption="$om.contactstatus$" 
                     Wrap="false">
                 </ug:Column>
                 <ug:Column Source="Score" Caption="$om.score$" Wrap="false" />

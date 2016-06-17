@@ -4198,6 +4198,13 @@
             </summary>
             <param name="eventArgs">Bulk delete event arguments.</param>
         </member>
+        <member name="M:CMS.ContinuousIntegration.Internal.ContinuousIntegrationEventHandling.BulkInsertAfter(CMS.DataEngine.BulkInsertEventArgs)">
+            <summary>
+            Handles necessary actions after bulk insert, see <see cref="M:CMS.DataEngine.AbstractInfoProvider`3.BulkInsertInfos(System.Collections.Generic.IEnumerable{CMS.DataEngine.BaseInfo})"/> or
+             <see cref="M:CMS.DataEngine.AbstractInfoProvider`3.BulkInsertInfos(System.Collections.Generic.IEnumerable{`0})"/>"/&gt;.
+            </summary>
+            <param name="eventArgs">Bulk insert event arguments.</param>
+        </member>
         <member name="M:CMS.ContinuousIntegration.Internal.ContinuousIntegrationEventHandling.StoreBaseInfo(CMS.DataEngine.BaseInfo)">
             <summary>
             Stores info object to CI repository if configuration allows it. 
@@ -4521,6 +4528,27 @@
             <param name="typeInfo">Type info of the object type to store</param>
             <param name="where">Where condition selecting objects to store</param>
             <param name="storeDependentObjects">Indicates whether to store all dependent objects of actually stored objects</param>
+        </member>
+        <member name="M:CMS.ContinuousIntegration.Internal.RepositoryBulkOperations.StoreObjects(CMS.DataEngine.ObjectTypeInfo,System.Collections.Generic.IEnumerable{CMS.DataEngine.BaseInfo})">
+            <summary>
+            Stores given objects to CI repository.
+            </summary>
+            <remarks>The method does not process objects that depend on given objects.</remarks>
+            <param name="typeInfo">Type info object that describes objects in <paramref name="objects"/> collection.</param>
+            <param name="objects">Objects to store. All objects must be of same type as <paramref name="typeInfo"/>.</param>
+        </member>
+        <member name="M:CMS.ContinuousIntegration.Internal.RepositoryBulkOperations.ObjectsCanBeStored">
+            <summary>
+            Determines whether objects can be to the CI repository.
+            </summary>
+        </member>
+        <member name="M:CMS.ContinuousIntegration.Internal.RepositoryBulkOperations.StoreObjectsInternal(CMS.DataEngine.ObjectTypeInfo,System.Collections.Generic.IEnumerable{CMS.DataEngine.BaseInfo},CMS.DataEngine.TranslationHelper)">
+            <summary>
+            Stores given objects to the CI repository.
+            </summary>
+            <param name="typeInfo">Type info object that describes objects in <paramref name="objects"/> collection.</param>
+            <param name="objects">Objects to store. All objects must be of same type as <paramref name="typeInfo"/>.</param>
+            <param name="translationHelper">Translation helper objects that caches translation data between multiple method calls.</param>
         </member>
     </members>
 </doc>

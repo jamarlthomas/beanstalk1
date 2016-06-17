@@ -1062,14 +1062,13 @@
             <param name="domain">Current domain without www. Taken from url when empty.</param>
             <param name="url">URL to check</param>
         </member>
-        <member name="M:CMS.URLRewritingEngine.URLRewriter.SetLanguage(CMS.SiteProvider.SiteNameOnDemand,CMS.PortalEngine.ViewModeOnDemand,System.String,CMS.URLRewritingEngine.UrlRewritingAction,System.Boolean)">
+        <member name="M:CMS.URLRewritingEngine.URLRewriter.SetLanguage(CMS.SiteProvider.SiteNameOnDemand,CMS.PortalEngine.ViewModeOnDemand,System.String,System.Boolean)">
             <summary>
             Sets language.
             </summary>
             <param name="siteName">Site name</param>
             <param name="viewMode">View mode</param>
             <param name="culture">Culture code</param>
-            <param name="action">Rewriting action</param>
             <param name="setCookie">Set the culture to a cookie as well</param>
         </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.RedirectToCorrectCase(CMS.SiteProvider.SiteNameOnDemand,CMS.DocumentEngine.PageInfo,CMS.DocumentEngine.PageInfoSource,System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction,System.String,System.String)">
@@ -1195,7 +1194,7 @@
         </member>
         <member name="M:CMS.URLRewritingEngine.URLRewriter.SetRewritingAction(System.String,System.String,CMS.URLRewritingEngine.UrlRewritingAction,CMS.Helpers.RequestStatusEnum)">
             <summary>
-            Sets rewriting action. In case of using virtual context then preview hash in query string is updated to the new path.
+            Sets rewriting action.
             </summary>
             <param name="path">New path</param>
             <param name="query">Query string</param>

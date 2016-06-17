@@ -341,6 +341,14 @@ public class CMSCheckoutWebPart : CMSAbstractWebPart
             sb.Append(HTML_SEPARATOR);
         }
 
+        // Check selected payment and shipping
+        if (!CheckShippingAndPayment(shoppingCart, out message))
+        {
+            valid = false;
+            sb.Append(message);
+            sb.Append(HTML_SEPARATOR);
+        }
+
         errorMessage = TextHelper.TrimEndingWord(sb.ToString(), HTML_SEPARATOR);
         return valid;
     }
@@ -388,6 +396,9 @@ public class CMSCheckoutWebPart : CMSAbstractWebPart
             LogError("Save customer action failed", EVENT_CODE_SAVING);
             return false;
         }
+
+        // Create contact - customer binding
+        AssignCustomerToContact(customer);
 
         return true;
     }
@@ -584,6 +595,35 @@ public class CMSCheckoutWebPart : CMSAbstractWebPart
 
 
     /// <summary>
+    /// Checks whether selected shipping option and payment method are valid for given cart.
+    /// </summary>
+    protected bool CheckShippingAndPayment(ShoppingCartInfo cart, out string message)
+    {
+        message = String.Empty;
+        if (!ShippingOptionInfoProvider.IsShippingOptionApplicable(cart, cart.ShippingOption))
+        {
+            message = GetString("com.checkout.shippingoptionnotapplicable");
+            return false;
+        }
+        if (!cart.IsShippingNeeded && (cart.ShippingOption != null))
+        {
+            // Just remove the shipping option if shipping is not needed 
+            cart.ShoppingCartShippingOptionID = 0;
+        }
+        if (!cart.IsShippingNeeded && (cart.PaymentOption != null) && (!cart.PaymentOption.PaymentOptionAllowIfNoShipping))
+        {
+            // The selected payment is not applicable with no shipping
+            message = GetString("com.checkout.paymentnoshipping");
+            return false;
+        }
+
+        return true;
+    }
+
+
+
+
+    /// <summary>
     /// Logs activity "purchase" for all items.
     /// </summary>
     /// <param name="shoppingCartInfoObj">Shopping cart</param>
@@ -626,6 +666,19 @@ public class CMSCheckoutWebPart : CMSAbstractWebPart
             activity.Data.ContactID = contactId;
             activity.CheckViewMode = false;
             activity.Log();
+        }
+    }
+
+
+    /// <summary>
+    /// Creates customer - current contact binding if does not exist and logs customer registration activity.
+    /// </summary>
+    /// <param name="customer">Customer to assign to the current contact.</param>
+    private void AssignCustomerToContact(CustomerInfo customer)
+    {
+        if (ContactID > 0)
+        {
+            ModuleCommands.OnlineMarketingCreateRelation(customer.CustomerID, MembershipType.ECOMMERCE_CUSTOMER, ContactID);
         }
     }
 
