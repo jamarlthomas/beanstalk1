@@ -14,6 +14,10 @@ namespace CMS.Mvc.Providers
         {
             return ContentHelper.GetDocChildrenByName<Solution>(Solution.CLASS_NAME, alias);
         }
+        public List<Solution> GetSolutionsByParent(string alias, string parentPath)
+        {
+            return ContentHelper.GetDocChildrenByNameWithParent<Solution>(Solution.CLASS_NAME, alias, parentPath);
+        }
 
         public List<Solution> GetSolutions()
         {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using CMS.DocumentEngine.Types;
+using CMS.DocumentEngine;
+using CMS.Helpers;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.ViewModels.Product;
@@ -17,13 +19,13 @@ namespace CMS.Mvc.Providers
         {
             return ContentHelper.GetDocsByGuids<Product>(guids, siteName);
         }
-        public List<Product> GetProductsBySBU(string SBUName)
+        public List<Product> GetProductsBySBU(string SBUName,string parentPath)
         {
             var productList = new List<Product>();
-            var solutionList = ContentHelper.GetDocChildrenByName<Solution>(Solution.CLASS_NAME, SBUName);
+            var solutionList = ContentHelper.GetDocChildrenByNameWithParent<Solution>(Solution.CLASS_NAME, SBUName, parentPath);
             foreach (var solution in solutionList)
             {
-                productList.AddRange(ContentHelper.GetDocChildrenByName<Product>(Product.CLASS_NAME, solution.NodeAlias));
+                productList.AddRange(ContentHelper.GetDocChildrenByNameWithParent<Product>(Product.CLASS_NAME, solution.NodeAlias, solution.NodeAliasPath));
             }
             return productList;
         }

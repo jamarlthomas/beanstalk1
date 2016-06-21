@@ -54,10 +54,11 @@ namespace CMS.Mvc.Controllers.Afton
         
         public ActionResult Index(string SBUName)
         {
+            var solutions = _solutionProvider.GetSolutions(SBUName);
             var sbu = _solutionBusinessUnitProvider.GetSolutionBusinessUnit(SBUName);
             var model = MapData<SolutionBusinessUnit, CMS.Mvc.ViewModels.Shared.SBUViewModel>(sbu);
-            var solutionGuidList = _solutionProvider.GetSolutions(SBUName).Select(item => item.DocumentGUID);
-            var solutionIds = string.Join(",", _solutionProvider.GetSolutions(SBUName).Select(item => item.NodeID));
+            var solutionGuidList = solutions.Select(item => item.DocumentGUID).ToList();
+            var solutionIds = string.Join(",", solutions.Select(item => item.NodeID));
             model.FAQs = MapData<FAQItem, FAQItemViewModel>(_FAQItemProvider.GetFAQItemsBySBU(sbu.DocumentGUID.ToString()));
             model.DocumentTypes = new System.Collections.Generic.List<DocumentTypeViewModel>();
             model.ViewAllDocumentsLink = RouteHelper.GetSelectionFilterUrl(new SelectionFilterSearchRequest()
@@ -72,7 +73,7 @@ namespace CMS.Mvc.Controllers.Afton
                     switch (item.Title)
                     {
                         case "Product Data Sheets":
-                            item.Documents = _productProvider.GetProductsBySBU(sbu.NodeAlias).Select(document => new LinkViewModel
+                            item.Documents = _productProvider.GetProductsBySBU(sbu.NodeAlias,sbu.NodeAliasPath).Select(document => new LinkViewModel
                             {
                                 Title = document.Title,
                                 Reference = document.DocumentRoutePath
@@ -106,7 +107,7 @@ namespace CMS.Mvc.Controllers.Afton
             }
             
 
-            model.Solutions = MapData<Solution, TileViewModel>(_solutionProvider.GetSolutions(SBUName)).Where(w => !string.IsNullOrEmpty(w.HomeImage)).ToList();
+            model.Solutions = MapData<Solution, TileViewModel>(solutions).Where(w => !string.IsNullOrEmpty(w.HomeImage)).ToList();
             return View("~/Views/Afton/SBU/Index.cshtml", model);
         }
     }
