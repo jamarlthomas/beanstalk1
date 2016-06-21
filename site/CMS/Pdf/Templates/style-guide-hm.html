@@ -4,12 +4,17 @@
     <title>PDS</title>
     <meta name="description" content="" />
     <meta name="keywords" content="" />
+    <link rel="stylesheet" type="text/css" href="../../css/style-guide.min.css">
 </head>
 <body>
+    <!--
     <div id="sghC">
         <div id="sgh-lftC">
             <div id="sgh-mainC">
-                <div id="sgh-hdr">{{SolutionTitle}} | {{SBUTitle}} </div>
+                <div id="sgh-hdr">
+                    {{SolutionTitle}}<br>
+                    {{SBUTitle}}
+                </div>
                 <div id="sgh-prodName">{{Title}}</div>
                 <div id="sgh-prodDesc">{{Description}}</div>
                 <img src="{{CoverImage}}" alt="" />
@@ -21,5 +26,54 @@
             <img src="/images/sgh-rt.gif" />
         </div>
     </div>
+    -->
+
+    <table border="0" width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+            <td width="100%" valign="top">
+
+                <table border="0" width="100%" cellpadding="0" cellspacing="0" id="sgh-contentTable">
+                    <tr>
+                        <td width="50%" valign="top">
+                            <img src="/images/spacer.gif" width="20" height="960">
+                        </td>
+                        <td valign=top"" width="438">
+
+                            <div id="sgh-hdr">
+                                <span id="sgh-hdr-sol">{{SolutionTitle}}</span>
+                                {{SBUTitle}}
+                            </div>
+
+                            <div id="sgh-prodName">{{Title}}</div>
+
+                            <div id="sgh-prodDesc">{{Description}}</div>
+
+                            <img src="{{CoverImage}}" alt="" id="sgh-covImg" />
+
+                            <div id="sgh-prodApplication">{{Application}}</div>
+
+                        </td>
+                        <td width="50%"></td>
+                    </tr>
+                </table>
+
+                <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td align="right">
+                            <img src="/images/sg-logo.gif" alt="" />
+                        </td>
+                        <td align="right">
+                            &nbsp;
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+            <td valign="top" width="14" id="sgh-rt">
+                <img src="/images/sgh-rt.gif" alt="" />
+            </td>
+        </tr>
+    </table>
+
 </body>
 </html>

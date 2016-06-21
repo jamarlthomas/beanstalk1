@@ -123,12 +123,14 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
 
             //css = string.Empty;
             CreatePdf(Pdf, css);
+            
             //PdfSharpCreatePdf(Pdf, css);
             //NRecoCreatePdf(Pdf, css);
             //ExpertCreatePdf(Pdf, css);
             //EvoCreatePdf(Pdf, css);
             //EOCreatePdf(Pdf, css);
             UpdatePdfReference();
+            System.IO.File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory+@"\Pdf\Temp\TestOutput.html",Pdf);
 
         }
 

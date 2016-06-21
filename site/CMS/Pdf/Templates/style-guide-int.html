@@ -5,6 +5,7 @@
     <meta name="keywords" content="" />
 </head>
 <body>
+    <!--
     <div id="sg-headerC">
             <div id="hdr-Text">
             <span id="main">{{SBUTitle}}</span>
@@ -29,5 +30,75 @@
             <img src="/images/sg-logo.gif" id="sg-footerLogo" alt="" />
         </div>
     </div>
+    -->
+
+    <table border="0" width="100%" cellpadding="0" cellspacing="0" style="background: #0c419a">
+        <tr>
+            <td>
+                <img src="{{CoverImage}}" alt="" width="162" height="70" id="sg-headerImg" />
+            </td>
+            <td width="100%" align="right" id="sg-headerTxt">
+                <span id="sg-headerSBUTitle">{{SBUTitle}}</span>
+                <span>|</span>
+                <span id="sg-headerSolutionTitle">{{SolutionTitle}}</span>
+            </td>
+            <td width="25"></td>
+        </tr>
+    </table>
+
+    <table border="0" width="100%" cellpadding="25" cellspacing="0">
+        <tr>
+            <td>
+
+                <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td id="sg-prodHdrC">
+
+                            <div id="sg-prodName">
+                                {{Title}}
+                                <span id="sg-prodDesc">{{Description}}</span>
+                            </div>
+                            <div id="sg-prodApplication">{{Application}}</div>
+
+                        </td>
+                    </tr>
+                </table>
+
+                <table border="0" width="100%" cellpadding="0" cellspacing="0" id="sg-mainC">
+                    <tr>
+                        <td>{{Content}}</td>
+                    </tr>
+                </table>
+                <br>
+                <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td width="80%" valign="top">
+                            {{FooterMessage}}
+                        </td>
+                        <td align="right" valign="top">
+                            &nbsp;
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+                <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td width="60%" valign="top">
+                            &copy; 2014. Afton Chemical Corporation is a wholly-owned subsidiary of NewMarket Corporation (NYSE:NEU). Polartech&reg; is a trademark of Afton Chemical Corporation. 10/13.<br>
+                            <br>
+                            The information in this bulletin is, to our best knowledge, sure and accurate, but all recommendations or suggestions are made without guarantee since the conditions of useare beyond our control. Afton Chemical Corporation and its affiliates disclaim any liability incurred in connection with the use of these data or suggestions. Furthermore, nothing contained herein shall be construed as a recommendation to use any product in conflict with existing patents covering any material or its use.
+                        </td>
+                        <td align="right" valign="top">
+                            <img src="/images/sg-logo.gif" id="sg-footerLogo" alt="" />
+                        </td>
+                    </tr>
+                </table>
+
+
+            </td>
+        </tr>
+     </table>
+
 </body>
 </html>
