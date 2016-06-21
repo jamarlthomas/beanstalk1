@@ -710,6 +710,7 @@
     <Content Include="Scripts\library\head.min.js" />
     <Content Include="Scripts\library\jquery.actual.min.js" />
     <Content Include="Scripts\library\jquery.animate-colors.min.js" />
+    <Content Include="Scripts\library\jquery.balancetext.min.js" />
     <Content Include="Scripts\library\jquery.columnizer.js" />
     <Content Include="Scripts\library\jquery.dotdotdot.min.js" />
     <Content Include="Scripts\library\jquery.easing.min.js" />
