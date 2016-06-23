@@ -131,7 +131,7 @@
 
 .leadInC { 
     
-    .leadIn { width: 80%; margin: 0 auto;
+    .leadIn { width: 80%;
         
         .video-container { width: 60%; padding: 0px 0px 33% 0px; margin: 0px auto;
 
@@ -140,7 +140,7 @@
         }
 
         //*** Breakpoints ***
-        @include breakpoint($bp2) { width: 100%; }
+        @include breakpoint($bp1) { width: 100%; }
         
     }
 }
