@@ -138,7 +138,19 @@ namespace CMS.Mvc.Helpers
                 string.Format("nodes|afton|{0}|all", childrenClassName.ToLower())
                 ).ToList();
         }
-
+        public static List<T> GetDocChildrenByNameWithParent<T>(string childrenClassName, string docName,string parentPath,
+            int limit = Int32.MaxValue)
+            where T : TreeNode, new()
+        {
+            docName = docName.Replace(' ', '-');
+            return HandleQueryableDataParent<T>( 
+                q => q,
+                parentPath,
+                childrenClassName,
+                string.Format("cc_{0}_ccn_{1}_pp_{2}_dn_{3}_lim_{4}", CurrentCulture, childrenClassName, parentPath, docName, limit),
+                string.Format("nodes|afton|{0}|all", childrenClassName.ToLower())
+                ).ToList();
+        }
         public static T GetDocByGuid<T>(Guid guid, string siteName = null) where T : class
         {
             return CacheHelper.Cache(cs =>
@@ -452,7 +464,59 @@ namespace CMS.Mvc.Helpers
                     }
             }
         }
-
+        private static IQueryable<TResult> HandleQueryableDataParent<TResult>(
+            Func<DocumentQuery, IQueryable<TreeNode>> constraint, string ParentPath, string className, string cacheKey = "",
+            string cacheDependencyKey = "") where TResult : TreeNode, new()
+        {
+            switch (PortalContext.ViewMode)
+            {
+                case ViewModeEnum.Preview:
+                    {
+                        var treeNodes = DocumentHelper.GetDocuments(className)
+                            .Published(false)
+                            .Culture(LocalizationContext.PreferredCultureCode)
+                            .Path(ParentPath,PathTypeEnum.Children)
+                            .OrderBy("NodeLevel", "NodeOrder", "NodeName");
+                        return constraint(treeNodes).Select(it => (TResult)it);
+                    }
+                case ViewModeEnum.LiveSite:
+                    {
+                        if (!string.IsNullOrWhiteSpace(cacheKey) && CacheEnabled)
+                        {
+                            return CacheHelper.Cache(cs =>
+                            {
+                                var tree = new TreeProvider();
+                                var treeNodes = tree.SelectNodes(className)
+                                    .Culture(LocalizationContext.PreferredCultureCode)
+                                    .Published()
+                                    .Path(ParentPath, PathTypeEnum.Children)
+                                    .OrderBy("NodeLevel", "NodeOrder", "NodeName");
+                                if (!string.IsNullOrWhiteSpace(cacheDependencyKey))
+                                    cs.CacheDependency = CacheHelper.GetCacheDependency(cacheDependencyKey);
+                                return constraint(treeNodes).Select(item => (TResult)item).Where(i => i != null);
+                            }, new CacheSettings(CachingTime, cacheKey));
+                        }
+                        else
+                        {
+                            var tree = new TreeProvider();
+                            var baseNodes = tree.SelectNodes(className);
+                            var treeNodes = baseNodes
+                                .Culture(LocalizationContext.PreferredCultureCode)
+                                .Published()
+                                .Path(ParentPath, PathTypeEnum.Children)
+                                .OrderBy("NodeLevel", "NodeOrder", "NodeName");
+                            return constraint(treeNodes).Select(item => (TResult)item).Where(i => i != null);
+                        }
+                    }
+                default:
+                    {
+                        return constraint(DocumentHelper.GetDocuments(className)
+                            .Culture(LocalizationContext.PreferredCultureCode)
+                            .Path(ParentPath, PathTypeEnum.Children)
+                            .OrderBy("NodeLevel", "NodeOrder", "NodeName")).Select(it => (TResult)it);
+                    }
+            }
+        }
         internal static List<TreeNode> GetNodes(string[] stringIds)
         {
             int intId;
