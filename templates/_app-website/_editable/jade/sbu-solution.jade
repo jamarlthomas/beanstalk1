@@ -18,6 +18,8 @@ html(lang='en')
         
         include includes/_header.jade
         
+        div(id="printArea")
+        
         div(id="contentAreaC")
             
             div(class="headerImgC" style="background-image: url(page-images/solution-header-image/headerImg-sample.jpg)")
@@ -38,8 +40,9 @@ html(lang='en')
                         h1(class="txtPaddingTop")
                             | Dispersants & Emulsifiers
                             div(class="subTxt") A key player in the lubricant and fuel industry with over 90 years of customer collaboration.
-                            div(id="socialC")
+                            div(id="socialC" class="noPrintDisplay")
                                 a(class="addthis_button_compact"): span(class="icon-share")
+                                a(href="#"): span(class="icon-print")
 
                         div(id="mainContentC")
 
