@@ -15,7 +15,7 @@
             <div class="address-header">@region.Title</div>
             @UtilsHelper.ToHtmlString(region.Address)<br>
             <strong>@region.CountryName<br></strong>
-            T: @region.Phone<br>
+            <a href="tel:@region.Phone">T: @region.Phone</a><br>
             <a href="@region.DocumentRoutePath" class="viewOffices">@Model.ViewSalesOfficesLabel</a>
         </div>
     </div>
