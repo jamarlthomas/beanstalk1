@@ -1,6 +1,6 @@
 #sitemapC { @include container;  padding: 40px 0px;
     
-    #sitemap-col1 { @include span(3 of 12);
+    #sitemap-col1 { @include span(4 of 12);
         
         //*** Breakpoints ***
         @include breakpoint($bp2) { @include span(6 of 12); }
@@ -8,7 +8,7 @@
         
     }
     
-    #sitemap-col2 { @include span(3 of 12);
+    #sitemap-col2 { @include span(4 of 12);
         
         //*** Breakpoints ***
         @include breakpoint($bp2) { @include span(6 of 12 last); }
@@ -16,26 +16,20 @@
         
     }
     
-    #sitemap-col3 { @include span(3 of 12);
+    #sitemap-col3 { @include span(4 of 12 last);
     
         //*** Breakpoints ***
-        @include breakpoint($bp2) { @include span(6 of 12); }
+        @include breakpoint($bp2) { @include span(6 of 12 ); }
         @include breakpoint($bp3) { @include span(full); }
         
     }
     
-    #sitemap-col4 { @include span(3 of 12 last);
-    
-         //*** Breakpoints ***
-        @include breakpoint($bp2) { @include span(6 of 12 last); }
-        @include breakpoint($bp3) { @include span(full); }
-        
-    }
-    
-    
-    ul{ margin: 0px; padding: 15px 0px 15px 15px;
 
-        li { margin: 0px; padding: 0px 0px 5px 0px;
+    
+    
+    ul{ margin: 0px; padding: 2px 0px 8px 15px;
+
+        li { margin: 0px; padding: 0px;
 
             a { text-decoration: none; color: #48a540; }
 
