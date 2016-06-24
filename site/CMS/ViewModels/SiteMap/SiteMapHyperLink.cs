@@ -1,8 +1,8 @@
-﻿namespace CMS.Mvc.ViewModels.Auxiliary
+﻿namespace CMS.Mvc.ViewModels.SiteMap
 {
-    public class AuxiliaryHyperlink
+    public class SiteMapHyperLink
     {
-        public AuxiliaryHyperlink(string text, string reference)
+        public SiteMapHyperLink(string text, string reference)
         {
             this.Text = text;
             this.Reference = reference;

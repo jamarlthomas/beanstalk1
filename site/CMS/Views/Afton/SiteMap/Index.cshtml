@@ -1,0 +1,59 @@
+﻿@model CMS.Mvc.ViewModels.SiteMap.SiteMapViewModel
+@{
+    ViewBag.Title = "Afton Sitemap";
+    Layout = "~/Views/Afton/Shared/Master.cshtml";
+}
+<div id="contentAreaC">
+    <div id="twoColumnC-sidebar" class="txtPaddingTop padBtm">
+        @*<div id="rtCol-contentArea">*@
+            <h1>Landing pages</h1>
+            @Html.Partial("~/Views/Afton/SiteMap/_link.cshtml", Model.Home)
+            @Html.Partial("~/Views/Afton/SiteMap/_link.cshtml", Model.NewsAndEvents)
+            @Html.Partial("~/Views/Afton/SiteMap/_link.cshtml", Model.FAQ)
+            @Html.Partial("~/Views/Afton/SiteMap/_link.cshtml", Model.GATC)
+            @Html.Partial("~/Views/Afton/SiteMap/_link.cshtml", Model.SearchFilter)
+            @Html.Partial("~/Views/Afton/SiteMap/_link.cshtml", Model.Blogs)
+            @Html.Partial("~/Views/Afton/SiteMap/_link.cshtml", Model.Contact)
+            @Html.Partial("~/Views/Afton/SiteMap/_link.cshtml", Model.RateContentResults)
+            @Html.Partial("~/Views/Afton/SiteMap/_link.cshtml", Model.Insights)
+            @Html.Partial("~/Views/Afton/SiteMap/_link.cshtml", Model.GlobalSearch)
+            @Html.Partial("~/Views/Afton/SiteMap/_link.cshtml", Model.TermsAndAcronyms)
+
+            <hr />
+            <h1>Solution Business Units</h1>
+            @Html.Partial("~/Views/Afton/SiteMap/_linksList.cshtml", Model.SBUs)
+            <hr />
+            <h1>Products</h1>
+            @Html.Partial("~/Views/Afton/SiteMap/_linksList.cshtml", Model.Products)
+            <hr />
+            <h1>Solutions</h1>
+            @Html.Partial("~/Views/Afton/SiteMap/_linksList.cshtml", Model.Solutions)
+            <hr />
+            <h1>Documents</h1>
+            @Html.Partial("~/Views/Afton/SiteMap/_linksList.cshtml", Model.Documents)
+            <hr>
+            <h1>News</h1>
+            @Html.Partial("~/Views/Afton/SiteMap/_linksList.cshtml", Model.News)
+            <hr />
+            <h1>Posts</h1>
+            @Html.Partial("~/Views/Afton/SiteMap/_linksList.cshtml", Model.BlogPosts)
+            <hr />
+            <h1>Offices</h1>
+            @Html.Partial("~/Views/Afton/SiteMap/_linksList.cshtml", Model.Offices)
+            <hr />
+            <h1>Generic Pages</h1>
+            @Html.Partial("~/Views/Afton/SiteMap/_linksList.cshtml", Model.Generic)
+            <hr />
+            <a href="http://afton-test.azurewebsites.net/templates/newsletter-signup.html">Newsletter Sign Up (no page on site)</a><br>
+            <a href="http://afton-test.azurewebsites.net/templates/polls-surveys.html">Polls & Surveys (Page and Sidebar) (no page on site)</a><br>
+
+
+            <br />
+            <a href="http://afton-test.azurewebsites.net/templates/style-guide-hm.html">Style Guide Home 1</a><br>
+            <a href="http://afton-test.azurewebsites.net/templates/style-guide-hm2.html">Style Guide Home 2</a><br>
+            <a href="http://afton-test.azurewebsites.net/templates/style-guide-int.html">Style Guide Int</a><br>
+            <a href="http://afton-test.azurewebsites.net/templates/style-guide-int2.html">Style Guide Int 2</a><br>
+
+        </div>
+    @*</div>*@
+</div>
