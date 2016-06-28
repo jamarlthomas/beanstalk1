@@ -13,7 +13,7 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
         public TemplateTreeNode(GeneratePdf pdfGenerator)
         {
             _pdfGenerator = pdfGenerator;
-            _pdfGenerator.Pds = GetTemplate((T)pdfGenerator.TNode); //_pdfGenerator.Template;
+            _pdfGenerator.Pds = GetTemplate((T)pdfGenerator.TNode);
         }
 
 
