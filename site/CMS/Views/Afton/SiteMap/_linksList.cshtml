@@ -3,7 +3,14 @@
 @model IEnumerable<SiteMapHyperLink>
 @foreach (SiteMapHyperLink item in Model)
 {
-    <a href="@Url.Content("~/" + item.Reference)">@UtilsHelper.ToHtmlString(item.Text)</a>
-    <br/>
+
+    <li><a href="@Url.Content("~/" + item.Reference)">@UtilsHelper.ToHtmlString(item.Text)</a>
+    @if ( item.Children != null )
+    {
+        <ul>
+                @Html.Partial( "~/Views/Afton/SiteMap/_linksList.cshtml", item.Children )
+        </ul>
+    }
+    </li>
 }
 

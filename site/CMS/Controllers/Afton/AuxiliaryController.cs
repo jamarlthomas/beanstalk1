@@ -16,7 +16,7 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index()
         {
             SiteMapViewModel model= new SiteMapViewModel();
-
+            /*
             model.Home = new SiteMapHyperLink("Home", "");
             model.SBUs = ContentHelper.GetDocs<SolutionBusinessUnit>(SolutionBusinessUnit.CLASS_NAME)
                 .Where(sbu=>sbu.Parent.NodeAlias == "Home")
@@ -38,6 +38,7 @@ namespace CMS.Mvc.Controllers.Afton
             model.GlobalSearch = new SiteMapHyperLink(RouteHelper.GetRoute("GlobalSearch").Page, RouteHelper.GetRoute("GlobalSearch").Route);
             model.TermsAndAcronyms = new SiteMapHyperLink(RouteHelper.GetRoute("TermsAndAcronyms").Page, RouteHelper.GetRoute("TermsAndAcronyms").Route);
             model.Generic = ContentHelper.GetDocs<GenericPage>(GenericPage.CLASS_NAME).Select(item => new SiteMapHyperLink(item.Title, item.DocumentRoutePath)).ToList();
+             */
             return View("~/Views/Afton/Auxiliary/Index.cshtml", model);
         }
 

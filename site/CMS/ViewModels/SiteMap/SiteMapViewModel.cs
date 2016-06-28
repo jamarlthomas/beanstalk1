@@ -5,9 +5,7 @@ namespace CMS.Mvc.ViewModels.SiteMap
     public class SiteMapViewModel
     {
         public List<SiteMapHyperLink> SBUs { get; set; }
-        public List<SiteMapHyperLink> Solutions { get; set; }
-        public List<SiteMapHyperLink> Products { get; set; }
-
+        public List<SiteMapHyperLink> Pages { get; set; }
         public List<SiteMapHyperLink> Documents { get; set; }
         public SiteMapHyperLink Home { get; set; }
         public SiteMapHyperLink NewsAndEvents { get; set; }
@@ -24,5 +22,9 @@ namespace CMS.Mvc.ViewModels.SiteMap
         public SiteMapHyperLink TermsAndAcronyms { get; set; }
         public List<SiteMapHyperLink> Offices { get; set; }
         public List<SiteMapHyperLink> Generic { get; set; }
+        public string SBUName { get; set; }
+        public string PagesName { get; set; }
+        public string OfficesName { get; set; }
+
     }
 }
