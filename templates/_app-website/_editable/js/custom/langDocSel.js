@@ -1,5 +1,11 @@
 $( document ).ready(function() {
     
+    var disableDropDown = false;
+    
+    //If only one language if found disable the drop down
+    var disableDropDown = $("#translate-doc").hasClass("oneLanguage");
+
+    
     //on load upate selected language label 
     var findSelectedLang = $("#langDocDropDown").find(".selected a").text()
     findSelectedLang = findSelectedLang + "<span class='icon-arrow'></span>"
@@ -15,9 +21,12 @@ $( document ).ready(function() {
     //function to open language
     function openLang() {
         
-        $("#langDocDropDown").stop().fadeIn(500)
+        if(disableDropDown == false){
+            
+            $("#langDocDropDown").stop().fadeIn(500);
         
-        langStatus = "open"
+            langStatus = "open";
+        }
     }
     
     
