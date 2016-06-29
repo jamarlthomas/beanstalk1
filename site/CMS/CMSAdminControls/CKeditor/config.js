@@ -25,7 +25,7 @@ CKEDITOR.editorConfig = function (config) {
         ['Styles'],
         ['NumberedList', 'BulletedList', 'Outdent', 'Indent', '-'],
         ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-'],
-        ['InsertLink', 'Unlink', '-'],
+        ['InsertLink', 'Unlink', 'Anchor', '-'],
         ['InsertImageOrMedia', 'QuicklyInsertImage', 'Table', 'InsertWidget', 'InsertMacro', 'HorizontalRule', '-'],
         ['Maximize']
     ];
