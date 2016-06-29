@@ -216,7 +216,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Theme.
+        /// 
         /// </summary>
         [DatabaseField]
         public string Theme
@@ -233,7 +233,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Microbot Solution Image.
+        /// Solution Image.
         /// </summary>
         [DatabaseField]
         public string MicrobotSolutionImage
@@ -250,7 +250,7 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
-        /// Microbot Robot Image.
+        /// Microbots Robot Image.
         /// </summary>
         [DatabaseField]
         public string MicrobotRobotImage
@@ -511,7 +511,7 @@ namespace CMS.DocumentEngine.Types
 
 
             /// <summary>
-            /// Theme.
+            /// 
             /// </summary>
             public string Theme
             {
@@ -527,7 +527,7 @@ namespace CMS.DocumentEngine.Types
 
 
             /// <summary>
-            /// Microbot Solution Image.
+            /// Solution Image.
             /// </summary>
             public string MicrobotSolutionImage
             {
@@ -543,7 +543,7 @@ namespace CMS.DocumentEngine.Types
 
 
             /// <summary>
-            /// Microbot Robot Image.
+            /// Microbots Robot Image.
             /// </summary>
             public string MicrobotRobotImage
             {

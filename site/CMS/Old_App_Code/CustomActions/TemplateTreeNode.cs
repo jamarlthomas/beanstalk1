@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using CMS.DocumentEngine;
 using System.IO;
-using CMS.DocumentEngine.Types;
+using HtmlAgilityPack;
 
 namespace CMS.Mvc.Old_App_Code.CustomActions
 {
@@ -13,7 +13,7 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
         public TemplateTreeNode(GeneratePdf pdfGenerator)
         {
             _pdfGenerator = pdfGenerator;
-            _pdfGenerator.Pds = GetTemplate((T)pdfGenerator.TNode); //_pdfGenerator.Template;
+            _pdfGenerator.Pds = GetTemplate((T)pdfGenerator.TNode);
         }
 
 
@@ -62,6 +62,34 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
         public string TemplateLocation
         {
             get { return AppDomain.CurrentDomain.BaseDirectory + @"Pdf\Templates\"; }
+        }
+
+        internal TemplateTreeNode<T> SetProperReferences()
+        {
+            _pdfGenerator.Pds = _pdfGenerator.Pds.Replace("~", "");
+            ParseAndInsertDomainPlaceholderWithHap();
+            return this;
+        }
+
+        private void ParseAndInsertDomainPlaceholderWithHap()
+        {
+            HtmlDocument doc = new HtmlDocument();
+            doc.OptionWriteEmptyNodes = true;
+            doc.LoadHtml(_pdfGenerator.Pds);
+            AddDomainToReferences(doc, "img", "src");
+            AddDomainToReferences(doc, "link","href");
+            _pdfGenerator.Pds = doc.DocumentNode.InnerHtml;
+        }
+        private void AddDomainToReferences(HtmlDocument doc, string tag, string attrName)
+        {
+            var node = doc.DocumentNode;
+            var items = node.SelectNodes(string.Format("//{0}[@{1}]", tag, attrName));
+            if(items == null || items.Count == 0) return;
+            foreach (HtmlNode link in items)
+            {
+                HtmlAttribute att = link.Attributes[attrName];
+                att.Value = "{{Domain}}" + att.Value;
+            }
         }
     }
 }
