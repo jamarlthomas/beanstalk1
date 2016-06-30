@@ -24,21 +24,21 @@
         }
         <div id="downloadDocsC">
             <a href="" target="_blank" class="downloadBtn">@UtilsHelper.GetLocalizedString("product_downloadWidget_DownloadPDS")<span class="icon-download"></span></a>
-            @if (Model.TranslationAvailable.Any())
+            @if ( Model.TranslationAvailable.Any() )
             {
-                <div id="translate-doc">
-                    @UtilsHelper.GetLocalizedString("product_downloadWidget_SelectLanguage")
+                <div id="translate-doc" @(Model.TranslationAvailable.Count==1 ? "class=oneLanguage" :"")>
+                    @UtilsHelper.GetLocalizedString( "product_downloadWidget_SelectLanguage" )
 
                     <a id="selDocLang">
                         <span class="icon-arrow"></span>
                     </a>
                     <ul id="langDocDropDown" style="display: none;">
-                        @foreach (var translation in Model.TranslationAvailable)
+                        @foreach ( var translation in Model.TranslationAvailable )
                         {
-                            if (translation.LanguageId.Equals(Model.SelectedTranslation.LanguageId, StringComparison.CurrentCultureIgnoreCase))
+                            if ( translation.LanguageId.Equals( Model.SelectedTranslation.LanguageId, StringComparison.CurrentCultureIgnoreCase ) )
                             {
                                 <li id="@translation.LanguageId" class="selected">
-                                    <a href ="@Url.Content(translation.Reference)" data-download="@Url.Content(translation.Reference)">@translation.Title</a>
+                                    <a href="@Url.Content(translation.Reference)" data-download="@Url.Content(translation.Reference)">@translation.Title</a>
                                 </li>
                             }
                             else
@@ -48,6 +48,7 @@
                                 </li>
                             }
                         }
+
                     </ul>
 
                 </div>
