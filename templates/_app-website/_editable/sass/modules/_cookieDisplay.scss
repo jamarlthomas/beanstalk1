@@ -1,29 +1,35 @@
 #cookieOverlayC { position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; background: rgba(0,0,0,.55); z-index: 100; overflow-y: scroll;
 
-    #cookieDisplayC { margin: 100px auto 80px auto; padding: 40px; width: 60%; max-width: 700px; font-size: 20px; line-height: 26px; background: #FFF;
+    #cookieDisplayC { margin: 100px auto 80px auto; padding: 40px; width: 60%; max-width: 700px; background: #FFF;
+        
+        #mainTxt { font-size: 20px; line-height: 26px;
+        
+            //*** Breakpoints ***
+            @include breakpoint($bp3) { font-size: 16px; line-height: 20px; }
+        }
         
         #cookieDisplayOptions { overflow: hidden;
             
-            .cookieBtn { float: left; width: 40%; max-width: 248px; padding: 17px 0px; color: #FFF; text-align: center; text-decoration: none; font-size: 18px; transition: none;
+            .cookieBtn { float: left; width: 47%; padding: 17px 0px; color: #FFF; text-align: center; text-decoration: none; font-size: 20px; transition: none;
                 
                 //*** Breakpoints ***
-                @include breakpoint($bp3) { display: block; width: 100%; max-width: none; }
+                @include breakpoint($bp3) { display: block; width: 100%; padding: 10px 0px; font-size: 16px; }
             }
 
-            .allow { background: #4c9d2f; margin-right: 10%;
+            .accept { background: #4c9d2f; margin-right: 5%;
             
                 //*** Breakpoints ***
-                @include breakpoint($bp3) { margin-right: 0px; margin-bottom: 20px; }
+                @include breakpoint($bp3) { margin-right: 0px; margin-bottom: 18px; }
             }
 
-            .disallow { background: #a7a7a7; }            
+            .decline { background: #a7a7a7; }            
         
         }
         
         .policy { font-size: 15px; color: #4c9d2f; text-decoration: none; }
         
         //*** Breakpoints ***
-        @include breakpoint($bp1) { font-size: 15px; line-height: 20px; }
+        @include breakpoint($bp1) { font-size: 12px; line-height: 18px; }
         @include breakpoint($bp2) { width: 90%; padding: 20px; }
         
     }

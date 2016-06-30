@@ -1,0 +1,29 @@
+#privacyC { padding-top: 40px;
+    
+    #privacy { width: 80%;
+
+        #cookiePrefC { margin: 0px; padding: 0px; counter-reset: num; overflow: hidden;
+
+            li { position: relative; margin: 0px; padding: 0px 0px 20px 15px; list-style: none; overflow: hidden; }
+
+            li:before { position: absolute; top: 0px; left: 0px; counter-increment: num; content: counter(num) ") "; font-weight: bold;  }
+
+            .cookie { display: block; font-weight: bold; padding-bottom: 10px; }
+
+            .selection { float: left; width: 10%; margin-left: 5%;
+                
+                input[type="checkbox"] { display:none; }
+
+                input[type="checkbox"] +  span.checkboxDisplay { display:inline-block; width: 18px; height: 13px; margin: -5px 4px 0 -13px; vertical-align: middle; cursor: pointer; background:url(../../images/check-box.png) left top no-repeat; }
+
+                input[type="checkbox"]:checked + span.checkboxDisplay { background: url(../../images/check-box-a.png) left top no-repeat; }  
+                                
+            }
+
+            .definition { float: right; width: 80%; }
+
+        }//cookiePrefC
+        
+    }//privacy
+
+}//privacyC
