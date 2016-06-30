@@ -45,16 +45,16 @@ html(lang='en')
                             a(href="#" class="downloadBtn" target="_blank") Download Product Data Sheet 
                                 span(class="icon-download")
 
-                            div(id="translate-doc") Select Language: 
+                            div(id="translate-doc" class="oneLanguage") Language: 
                                 a(href="#" id="selDocLang") 
                                     span(class="icon-arrow")
 
                                 ul(id="langDocDropDown" style="display: none;")
-                                    li(id="langEnglish")
+                                    li(id="langEnglish" class="selected")
                                         a(href="#" data-download="http://google.com") English
                                     li(id="langChinese")
                                         a(href="#" data-download="http://yahoo.com") 简体中文                                
-                                    li(id="langGerman" class="selected")
+                                    li(id="langGerman")
                                         a(href="#" data-download="http://aol.com") German
                                     li(id="langJapanese")
                                         a(href="#" data-download="http://facebook.com") 日本語
@@ -96,6 +96,8 @@ html(lang='en')
                             img(src="page-images/document/sample-doc-img-1.gif" class="inContent")
                             br
                             br
+                            
+                            <a name="testAnchor" id="testAnchor" class="devAnchorTag"></a>
                             
                             p <strong>Q. How is the cetane number determined?</strong><br> The standard method for determining the cetane number of a diesel fuel is the ASTM D613 method which uses the Cooperative Fuel Research Committee (CFR) engine technique. The procedure, which was introduced in 1941, determines the cetane number of a diesel fuel comparing its ignition quality with two reference blends of known cetane number under the same operating conditions.
 
