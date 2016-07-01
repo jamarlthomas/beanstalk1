@@ -275,6 +275,7 @@
     <Compile Include="Controllers\Afton\SBUController.cs" />
     <Compile Include="Controllers\Afton\SelectionFilterController.cs" />
     <Compile Include="Controllers\Afton\SidebarPageController.cs" />
+    <Compile Include="Controllers\Afton\SiteMapController.cs" />
     <Compile Include="Controllers\Afton\SolutionController.cs" />
     <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
     <Compile Include="Models\ExtendedModels\DocumentType.cs" />
@@ -299,6 +300,8 @@
     <Compile Include="Providers\MegaMenuSubLinkItemProvider.cs" />
     <Compile Include="ViewModels\Auxiliary\AuxiliaryHyperlink.cs" />
     <Compile Include="ViewModels\Auxiliary\AuxiliryViewModel.cs" />
+    <Compile Include="ViewModels\SiteMap\SiteMapHyperLink.cs" />
+    <Compile Include="ViewModels\SiteMap\SiteMapViewModel.cs" />
     <Compile Include="ViewModels\Shared\DownloadWidget\DownloadButtonSectionViewModel.cs" />
     <Compile Include="ViewModels\Generic\GenericPageViewModel.cs" />
     <Compile Include="Providers\GenericProvider.cs" />
@@ -817,6 +820,8 @@
     <Content Include="Views\Afton\RateContent\Index.cshtml" />
     <Content Include="Views\Afton\Auxiliary\_linksList.cshtml" />
     <Content Include="Views\Afton\Auxiliary\_link.cshtml" />
+    <Content Include="Views\Afton\SiteMap\_linksList.cshtml" />
+    <Content Include="Views\Afton\SiteMap\_link.cshtml" />
     <Content Include="Views\Afton\Shared\DownloadWidget\_downloadButtonSection.cshtml" />
     <Content Include="Views\Afton\Auxiliary\Infrastructure.cshtml" />
     <Content Include="map\data.json" />
@@ -826,6 +831,7 @@
     <Content Include="Views\Afton\ATCTools\GATCNATCScript.cshtml" />
     <Content Include="Views\Afton\SelectionFilter\mobileIndex.cshtml" />
     <Content Include="Views\Afton\Contact\ThankYou.cshtml" />
+    <Content Include="Views\Afton\SiteMap\Index.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
