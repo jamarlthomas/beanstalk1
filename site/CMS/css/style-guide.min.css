@@ -102,6 +102,11 @@ div, h1, li, p, td {
     
 }
 
+
+#sg-mainC hr {
+    width: 0px; height: 0px;
+}
+
 #sg-mainC .sg-lftContent {
     padding-top: 20px;    
     width: 350px;
@@ -131,7 +136,10 @@ div, h1, li, p, td {
     margin-bottom: 10px;
 }
 
-
+#sg-footerC {
+    font-size: 11px;
+    line-height: 13px;
+}
 
 
 

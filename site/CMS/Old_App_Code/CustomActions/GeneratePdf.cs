@@ -122,7 +122,7 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
             CreatePdf(Pdf, css);
             
             UpdatePdfReference();
-            //System.IO.File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory+@"\Pdf\Temp\TestOutput.html",Pdf);
+            System.IO.File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory+@"\Pdf\Temp\TestOutput.html",Pdf);
 
         }
 
