@@ -14,15 +14,26 @@
                 
                 input[type="checkbox"] { display:none; }
 
-                input[type="checkbox"] +  span.checkboxDisplay { display:inline-block; width: 18px; height: 13px; margin: -5px 4px 0 -13px; vertical-align: middle; cursor: pointer; background:url(../../images/check-box.png) left top no-repeat; }
+                input[type="checkbox"] +  span.checkboxDisplay { display:inline-block; width: 18px; height: 13px; margin: -5px 4px 0 -4%; vertical-align: middle; cursor: pointer; background:url(../../images/check-box.png) left top no-repeat; }
 
                 input[type="checkbox"]:checked + span.checkboxDisplay { background: url(../../images/check-box-a.png) left top no-repeat; }  
-                                
+                
+                //*** Breakpoints ***                        
+                @include breakpoint($bp3) { width: 100%; }
+                
             }
 
-            .definition { float: right; width: 80%; }
+            .definition { float: right; width: 80%;
+            
+                //*** Breakpoints ***                        
+                @include breakpoint($bp3) { padding-top: 10px; width: 100%; }
+            
+            }
 
         }//cookiePrefC
+        
+        //*** Breakpoints ***                        
+        @include breakpoint($bp2) { width: 100%; }
         
     }//privacy
 
