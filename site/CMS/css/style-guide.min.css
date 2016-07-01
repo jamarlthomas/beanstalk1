@@ -11,26 +11,28 @@ div, h1, li, p, td {
 
 /* Style Guide Home */
 #sgh-contentTable {
-    margin-top: 112px;
+    margin-top: 100px;
 }
 
-#sgh-hdr {
+#sgh-hdr-sol {
+    font-family: HelveticaNeueLTStd-Roman;
+    font-weight: 700;
+}
+
+#sgh-hdr { font-family: HelveticaNeueLT-Light;
     padding-bottom: 85px;
     font-size: 28px;
     line-height: 33px;
     color: #4c9d2f;
 }
-#sgh-hdr-sol {
-    display: block;
-    text-transform: uppercase;
-    font-weight: 700;
-}
+
 
 #sgh-prodName {
     padding-top: 84px;
     padding-bottom: 10px;
     font-size: 28px;
     color: #0c419a;
+    font-weight: 700;
 }
 
 #sgh-prodDesc {
@@ -40,8 +42,9 @@ div, h1, li, p, td {
 }
 
 #sgh-prodApplication {
-    padding-top: 10px;
-    font-size: 14px;
+    padding-top: 20px;
+    font-size: 11px;
+    line-height: 13px;
     color: #595959;
 
 }
@@ -62,13 +65,12 @@ div, h1, li, p, td {
 }
 
 #sg-headerSBUTitle {
-    padding-right: 20px;
-    text-transform: uppercase;
     font-weight: 700;
 }
 
 #sg-headerSolutionTitle {
-    padding-left: 20px;
+    font-family: HelveticaNeueLT-Light;
+     padding-right: 20px;
 }
 
 #sg-prodHdrC {
@@ -79,17 +81,18 @@ div, h1, li, p, td {
     padding-bottom: 5px;
     font-size: 25px;
     color: #0c419a;
+    font-weight: 700;
 }
 
 #sg-prodDesc {
-    padding-left: 15px;
-    font-size: 16px;
+    padding-left: 5px;
+    font-size: 13px;
     color: #4c9d2f;
 }
 
 #sg-prodApplication {
     padding-bottom: 20px;
-    font-size: 15px;
+    font-size: 13px;
     color: #595959;
 }
 
