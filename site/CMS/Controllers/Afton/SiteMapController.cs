@@ -50,17 +50,18 @@ namespace CMS.Mvc.Controllers.Afton
                 pagesList.Add( new SiteMapHyperLink( item.Title, item.DocumentRoutePath, childItems.Select( x => new SiteMapHyperLink( x.Title, x.DocumentRoutePath, null ) ) ) );
             }*/
             pagesList = GenerateMapGeneric(parentList, genericList);
-            model.Pages = pagesList;
+            pagesList.Add( new SiteMapHyperLink( RouteHelper.GetRoute( "NewsAndEvents" ).Page, RouteHelper.GetRoute( "NewsAndEvents" ).Route, null ) );
+            pagesList.Add( new SiteMapHyperLink( RouteHelper.GetRoute( "FAQ" ).Page, RouteHelper.GetRoute( "FAQ" ).Route, null ) );
+            pagesList.Add( new SiteMapHyperLink( RouteHelper.GetRoute( "Insights And Resources" ).Page, RouteHelper.GetRoute( "Insights And Resources" ).Route, null ) );
+            pagesList.Add( new SiteMapHyperLink( RouteHelper.GetRoute( "ContactPage" ).Page, RouteHelper.GetRoute( "ContactPage" ).Route, null ) );
+            pagesList.Add( new SiteMapHyperLink( RouteHelper.GetRoute("Logistics and Supply").Page, RouteHelper.GetRoute("Logistics and Supply").Route, null ) );
+            pagesList.Add( new SiteMapHyperLink( RouteHelper.GetRoute( "TermsAndAcronyms" ).Page, RouteHelper.GetRoute( "TermsAndAcronyms" ).Route, null ) );
+            model.Pages = pagesList.AsEnumerable().OrderBy(x=>x.Text).ToList();
 
 
 
             model.Offices = ContentHelper.GetDocs<Region>(Region.CLASS_NAME).Select(item => new SiteMapHyperLink(item.Title + " office", item.DocumentRoutePath, null)).ToList();
-            model.NewsAndEvents = new SiteMapHyperLink(RouteHelper.GetRoute("NewsAndEvents").Page, RouteHelper.GetRoute("NewsAndEvents").Route, null);
-            model.FAQ = new SiteMapHyperLink(RouteHelper.GetRoute("FAQ").Page, RouteHelper.GetRoute("FAQ").Route, null);
-            model.GATC = new SiteMapHyperLink(RouteHelper.GetRoute("ATCTools").Page, RouteHelper.GetRoute("ATCTools").Route, null);
-            model.SearchFilter = new SiteMapHyperLink(RouteHelper.GetRoute("SelectionFilterPage").Page, RouteHelper.GetRoute("SelectionFilterPage").Route, null);
-            model.Contact = new SiteMapHyperLink(RouteHelper.GetRoute("ContactPage").Page, RouteHelper.GetRoute("ContactPage").Route, null);
-            model.Insights = new SiteMapHyperLink(RouteHelper.GetRoute("Insights And Resources").Page, RouteHelper.GetRoute("Insights And Resources").Route, null);
+
             model.PagesName = UtilsHelper.GetLocalizedString("sitemap_Pages");
             model.SBUName = UtilsHelper.GetLocalizedString("sitemap_SBUName");
             model.OfficesName = UtilsHelper.GetLocalizedString("sitemap_OfficesName");
@@ -77,7 +78,7 @@ namespace CMS.Mvc.Controllers.Afton
                 }
 
             }
-            return outputList;
+            return outputList.AsEnumerable().OrderBy(x=>x.Text).ToList();
         }
     }
 }
