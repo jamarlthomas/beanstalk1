@@ -17,19 +17,22 @@ namespace CMS.Mvc.ViewModels.Shared.SidebarComponents
             //Reference = item.GetStringValue("Reference", "");
             if (item.NodeClassName == GenericSidebarBlock.CLASS_NAME)
             {
-                var _treeNodesProvider = new TreeNodesProvider();
-                var newGUID= UtilsHelper.ParseGuids(item.GetStringValue("SidebarItem", ""));
-                var NodeReference = ContentHelper.GetDocByNodeId<TreeNode>(ContentHelper.GetNodeByNodeGuid(newGUID.Last()));
-                if (NodeReference == null)
+                if ( !string.IsNullOrEmpty( item.GetStringValue( "SidebarItem", "" ) ) )
                 {
-                    NodeReference = ContentHelper.GetDocByGuid<TreeNode>(newGUID.Last());
-                    Reference = ((NodeReference as IRoutedModel) != null) ? (NodeReference as IRoutedModel).DocumentRoutePath : NodeReference.DocumentNamePath;
-                    Description = new HtmlString(NodeReference.GetStringValue("Description", ""));
-                }
-                else
-                {
-                    Reference = ((NodeReference as IRoutedModel) != null) ? (NodeReference as IRoutedModel).DocumentRoutePath : NodeReference.DocumentNamePath;
-                    Description = new HtmlString(NodeReference.GetStringValue("Description", ""));
+                    var _treeNodesProvider = new TreeNodesProvider();
+                    var newGUID = UtilsHelper.ParseGuids( item.GetStringValue( "SidebarItem", "" ) );
+                    var NodeReference = ContentHelper.GetDocByNodeId<TreeNode>( ContentHelper.GetNodeByNodeGuid( newGUID.Last() ) );
+                    if ( NodeReference == null )
+                    {
+                        NodeReference = ContentHelper.GetDocByGuid<TreeNode>( newGUID.Last() );
+                        Reference = ( ( NodeReference as IRoutedModel ) != null ) ? ( NodeReference as IRoutedModel ).DocumentRoutePath : NodeReference.DocumentNamePath;
+                        Description = new HtmlString( NodeReference.GetStringValue( "Description", "" ) );
+                    }
+                    else
+                    {
+                        Reference = ( ( NodeReference as IRoutedModel ) != null ) ? ( NodeReference as IRoutedModel ).DocumentRoutePath : NodeReference.DocumentNamePath;
+                        Description = new HtmlString( NodeReference.GetStringValue( "Description", "" ) );
+                    }
                 }
                 
             }
