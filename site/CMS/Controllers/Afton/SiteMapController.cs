@@ -31,7 +31,6 @@ namespace CMS.Mvc.Controllers.Afton
                 .Where(sbu => sbu.Parent.NodeAlias == "Home").ToList();
             var solutionList = ContentHelper.GetDocs<Solution>(Solution.CLASS_NAME).ToList();
             var sbuSolutionList = new List<SiteMapHyperLink>();
-
             foreach ( var item in SBUList )
             {
                 var solutionItems = solutionList.Where( solution => solution.Parent.NodeID == item.NodeID ).ToList();
@@ -44,11 +43,6 @@ namespace CMS.Mvc.Controllers.Afton
             var parentList = new List<GenericPage>();
             var genericList = ContentHelper.GetDocs<GenericPage>( GenericPage.CLASS_NAME ).ToList();
             parentList.AddRange( genericList.Where( x => x.Parent.ClassName != GenericPage.CLASS_NAME && x.Parent.ClassName != DocumentType.CLASS_NAME ).ToList() );
-            /*foreach ( var item in parentList )
-            {
-                var childItems = genericList.Where( x => x.Parent.NodeID == item.NodeID ).ToList();
-                pagesList.Add( new SiteMapHyperLink( item.Title, item.DocumentRoutePath, childItems.Select( x => new SiteMapHyperLink( x.Title, x.DocumentRoutePath, null ) ) ) );
-            }*/
             pagesList = GenerateMapGeneric(parentList, genericList);
             pagesList.Add( new SiteMapHyperLink( RouteHelper.GetRoute( "NewsAndEvents" ).Page, RouteHelper.GetRoute( "NewsAndEvents" ).Route, null ) );
             pagesList.Add( new SiteMapHyperLink( RouteHelper.GetRoute( "FAQ" ).Page, RouteHelper.GetRoute( "FAQ" ).Route, null ) );
@@ -59,14 +53,17 @@ namespace CMS.Mvc.Controllers.Afton
             model.Pages = pagesList.AsEnumerable().OrderBy(x=>x.Text).ToList();
 
 
-
+            //Build Offices List
             model.Offices = ContentHelper.GetDocs<Region>(Region.CLASS_NAME).Select(item => new SiteMapHyperLink(item.Title + " office", item.DocumentRoutePath, null)).ToList();
 
+            //Grab Headings from Resource Keys
             model.PagesName = UtilsHelper.GetLocalizedString("sitemap_Pages");
             model.SBUName = UtilsHelper.GetLocalizedString("sitemap_SBUName");
             model.OfficesName = UtilsHelper.GetLocalizedString("sitemap_OfficesName");
             return model;
         }
+
+        //Recursive function for Generic Pages
         public static List<SiteMapHyperLink> GenerateMapGeneric( List<GenericPage> parentList, List<GenericPage> childList ) 
         {
             var outputList =  new List<SiteMapHyperLink>();
