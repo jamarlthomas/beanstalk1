@@ -127,6 +127,7 @@ div, h1, li, p, td {
 #sg-mainC .sg-lftContent img, #sg-mainC .sg-rtContent img {
     /*max-width: 100%!important;*/
     width: 100%;
+    /*width: 285px;*/
     height: auto!important;
 }
 
