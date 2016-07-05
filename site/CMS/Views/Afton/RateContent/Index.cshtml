@@ -21,13 +21,15 @@
     </tr>
     @foreach (var result in Model.Items)
     {
-        <tr>
-            <td>@result.Date.ToString("M/d/yy | h:mm tt CST")</td>
-            <td><a href="~/@result.DocumentLink">@result.DocumentTitle</a> </td>
-            <td>@result.ContactTitle</td>
-            <td>@(result.IsHelpful ? UtilsHelper.GetLocalizedString("rate_Yes") : UtilsHelper.GetLocalizedString("rate_No"))</td>
-            <td>@result.Message</td>
-            <td><a href="~/@result.DocumentRateResultsLink">@UtilsHelper.GetLocalizedString("rate_AllResults")</a> </td>
-        </tr>
+        if ( !string.IsNullOrEmpty( result.DocumentTitle ) ) { 
+            <tr>
+                <td>@result.Date.ToString("M/d/yy | h:mm tt CST")</td>
+                <td><a href="~/@result.DocumentLink">@result.DocumentTitle</a> </td>
+                <td>@result.ContactTitle</td>
+                <td>@(result.IsHelpful ? UtilsHelper.GetLocalizedString("rate_Yes") : UtilsHelper.GetLocalizedString("rate_No"))</td>
+                <td>@result.Message</td>
+                <td><a href="~/@result.DocumentRateResultsLink">@UtilsHelper.GetLocalizedString("rate_AllResults")</a> </td>
+            </tr>
+        }
     }
 </table>
