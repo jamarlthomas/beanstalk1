@@ -55,63 +55,43 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 var newdoc = ContentHelper.GetDocByDocId<GenericPage>(document.DocumentID);
                 sidebarItem = newdoc.Fields.SidebarItems2.ToList();
-                //if(sidebarItem.Count == 0) {
-                //    sidebarItem = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(document.GetValue("SidebarItems","")));
-                //}
+
             }
             else if (document.ClassName == Product.CLASS_NAME)
             {
                 var newdoc = ContentHelper.GetDocByDocId<Product>(document.DocumentID);
                 sidebarItem = newdoc.Fields.SidebarItems2.ToList();
-                //if (sidebarItem.Count == 0)
-                //{
-                //    sidebarItem = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(document.GetValue("SidebarItems", "")));
-                //}
+
             }
             else if (document.ClassName == Document.CLASS_NAME)
             {
                 var newdoc = ContentHelper.GetDocByDocId<Document>(document.DocumentID);
                 sidebarItem = newdoc.Fields.SidebarItems2.ToList();
-                //if (sidebarItem.Count == 0)
-                //{
-                //    sidebarItem = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(document.GetValue("SidebarItems", "")));
-                //}
+
             }
             else if (document.ClassName == Solution.CLASS_NAME)
             {
                 var newdoc = ContentHelper.GetDocByDocId<Solution>(document.DocumentID);
                 sidebarItem = newdoc.Fields.SidebarItems2.ToList();
-                //if (sidebarItem.Count == 0)
-                //{
-                //    sidebarItem = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(document.GetValue("SidebarItems", "")));
-                //}
+
             }
             else if (document.ClassName == LogisticsAndSupply.CLASS_NAME)
             {
                 var newdoc = ContentHelper.GetDocByDocId<LogisticsAndSupply>(document.DocumentID);
                 sidebarItem = newdoc.Fields.SidebarItems2.ToList();
-                //if (sidebarItem.Count == 0)
-                //{
-                //    sidebarItem = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(document.GetValue("SidebarItems", "")));
-                //}
+
             }
             else if (document.ClassName == LogisticsAndSupplyFolder.CLASS_NAME)
             {
                 var newdoc = ContentHelper.GetDocByDocId<LogisticsAndSupplyFolder>(document.DocumentID);
                 sidebarItem = newdoc.Fields.SidebarItems2.ToList();
-                //if (sidebarItem.Count == 0)
-                //{
-                //    sidebarItem = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(document.GetValue("SidebarItems", "")));
-                //}
+
             }
             else if (document.ClassName == TermsAndAcronymsPage.CLASS_NAME)
             {
                 var newdoc = ContentHelper.GetDocByDocId<TermsAndAcronymsPage>(document.DocumentID);
                 sidebarItem = newdoc.Fields.SidebarItems2.ToList();
-                //if (sidebarItem.Count == 0)
-                //{
-                //    sidebarItem = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(document.GetValue("SidebarItems", "")));
-                //}
+
             }
             else
             {
