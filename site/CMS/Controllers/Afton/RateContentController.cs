@@ -55,7 +55,7 @@ namespace CMS.Mvc.Controllers.Afton
             }
             else
             {
-                rateContentResults = _rateContentProvider.GetRateContentItemsByRatedDocumentAlias(Request);
+                rateContentResults = _rateContentProvider.GetRateContentItemsByRatedDocumentGUID( Guid.Parse(Request) );
             }
 
             var viewModel = new RateContentResultsViewModel
@@ -75,7 +75,8 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 rateContentViewModel.DocumentTitle = ratedDocument.GetStringValue( "Title", ratedDocument.NodeAlias );
                 rateContentViewModel.DocumentLink = ( ( ratedDocument as IRoutedModel ) != null ) ? ( ratedDocument as IRoutedModel ).DocumentRoutePath : "#";
-                rateContentViewModel.DocumentRateResultsLink = RouteHelper.GetRateContentResultsLink( ratedDocument.NodeAlias );
+                rateContentViewModel.DocumentRateResultsLink = RouteHelper.GetRateContentResultsLink( ratedDocument.DocumentGUID.ToString() );
+                rateContentViewModel.DocumentGUID = ratedDocument.DocumentGUID;
             }
             return rateContentViewModel;
         }

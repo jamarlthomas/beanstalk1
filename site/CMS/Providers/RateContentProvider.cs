@@ -47,6 +47,10 @@ namespace CMS.Mvc.Providers
             var doc = ContentHelper.GetDocByName<TreeNode>(string.Empty, alias);
             return GetRateContentItems().Where(w => w.RatedDocument == doc.DocumentGUID).ToList();
         }
+        public List<RateContent> GetRateContentItemsByRatedDocumentGUID( Guid documentGuid )
+        {
+            return GetRateContentItems().Where( w => w.RatedDocument == documentGuid ).ToList();
+        }
 
     }
 }
