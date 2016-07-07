@@ -13,7 +13,7 @@ namespace CMS.Mvc.ActionFilters
         }
         protected override string ActivityTitleTemplate
         {
-            get { return "Document with Id {0} was downloaded"; } 
+            get { return "Document {0} was downloaded"; } 
         }
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {

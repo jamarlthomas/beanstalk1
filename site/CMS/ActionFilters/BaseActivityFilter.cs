@@ -70,7 +70,7 @@ namespace CMS.Mvc.ActionFilters
                 {
                     ActivityNodeID = NodeId,
                     ActivityType = activityType,
-                    ActivityTitle = string.Format(activityTitleTemplate, NodeId),
+                    ActivityTitle = string.Format(activityTitleTemplate, ObjectName),
                     ActivitySiteID = SiteContext.CurrentSiteID,
                     ActivityOriginalContactID = CurrentContact.ContactID,
                     ActivityActiveContactID = CurrentContact.ContactID,
