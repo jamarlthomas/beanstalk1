@@ -8,7 +8,7 @@
         }
         protected override string ActivityTitleTemplate
         {
-            get { return "Document with Id {0} was printed"; }
+            get { return "Document {0} was printed"; }
         }
     }
 }

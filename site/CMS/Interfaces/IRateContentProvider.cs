@@ -13,5 +13,6 @@ namespace CMS.Mvc.Interfaces
         RateContent GetRateContent(Guid guid);
         List<RateContent> GetRateContentItems();
         List<RateContent> GetRateContentItemsByRatedDocumentAlias(string alias);
+        List<RateContent> GetRateContentItemsByRatedDocumentGUID( Guid documentGuid );
     }
 }

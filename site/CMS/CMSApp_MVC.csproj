@@ -269,6 +269,7 @@
     <Compile Include="Controllers\Afton\NewsAndEventsController.cs" />
     <Compile Include="Controllers\Afton\NewsController.cs" />
     <Compile Include="Controllers\Afton\PersonalizationController.cs" />
+    <Compile Include="Controllers\Afton\PrivacyTermsCookieController.cs" />
     <Compile Include="Controllers\Afton\ProductController.cs" />
     <Compile Include="Controllers\Afton\RateContentController.cs" />
     <Compile Include="Controllers\Afton\SalesOfficesController.cs" />
@@ -278,8 +279,11 @@
     <Compile Include="Controllers\Afton\SiteMapController.cs" />
     <Compile Include="Controllers\Afton\SolutionController.cs" />
     <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
+    <Compile Include="Interfaces\IPrivacyTermsCookieProvider.cs" />
+    <Compile Include="Models\Afton\PrivacyTermsCookie\Privacyconstants.cs" />
     <Compile Include="Models\ExtendedModels\DocumentType.cs" />
     <Compile Include="Modules\CultureSwitcherModule.cs" />
+    <Compile Include="Providers\PrivacyTermsCookieProvider.cs" />
     <Compile Include="ViewModels\Master\CultureLinkViewModel.cs" />
     <Compile Include="Providers\LocalizationProvider.cs" />
     <Compile Include="Interfaces\ILocalizationProvider.cs" />
@@ -298,8 +302,7 @@
     <Compile Include="Models\ExtendedModels\TermsandAcronymsPage.cs" />
     <Compile Include="Old_App_Code\CustomActions\TemplateTreeNode.cs" />
     <Compile Include="Providers\MegaMenuSubLinkItemProvider.cs" />
-    <Compile Include="ViewModels\Auxiliary\AuxiliaryHyperlink.cs" />
-    <Compile Include="ViewModels\Auxiliary\AuxiliryViewModel.cs" />
+    <Compile Include="ViewModels\PrivacyTermsCookie\PrivacyTermCookieViewModel.cs" />
     <Compile Include="ViewModels\SiteMap\SiteMapHyperLink.cs" />
     <Compile Include="ViewModels\SiteMap\SiteMapViewModel.cs" />
     <Compile Include="ViewModels\Shared\DownloadWidget\DownloadButtonSectionViewModel.cs" />
@@ -832,6 +835,7 @@
     <Content Include="Views\Afton\SelectionFilter\mobileIndex.cshtml" />
     <Content Include="Views\Afton\Contact\ThankYou.cshtml" />
     <Content Include="Views\Afton\SiteMap\Index.cshtml" />
+    <Content Include="Views\Afton\PrivacyTermsCookie\Index.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -842,6 +846,7 @@
   <ItemGroup>
     <Folder Include="CMSAdminControls\" />
     <Folder Include="Pdf\Templates\" />
+    <Folder Include="ViewModels\Auxiliary\" />
     <Folder Include="Views\Error\" />
   </ItemGroup>
   <ItemGroup>
