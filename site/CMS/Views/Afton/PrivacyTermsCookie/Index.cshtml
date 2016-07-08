@@ -1,0 +1,52 @@
+﻿@using CMS.Mvc.Helpers
+@model CMS.Mvc.ViewModels.PrivacyTermsCookie.PrivacyTermCookieViewModel
+
+@{
+    ViewBag.Title = "Privacy and Terms";
+    Layout = "~/Views/Afton/Shared/Master.cshtml";
+}
+<div id="privacyC" data-disable="cookiePopup" class="fullWidth">
+    <div id="privacy">
+        <h1>@Model.PrivacyHeader</h1><br>
+        @UtilsHelper.ToHtmlString(Model.PrivacyContent)
+<br>
+        <hr><br><a id="cookie-policy" name="cookie-policy" class="defAnchorTag"></a>
+        <h1>@Model.CookieHeader</h1><br>
+        @UtilsHelper.ToHtmlString(Model.CookieContent)
+        <ol id="cookiePrefC">
+            <li>
+                <div class="cookie">@Model.PrefCookieHeader</div>
+                <div class="selection">
+                    <label>
+                        <input type="checkbox" id="preferenceCookies" checked><span class="checkboxDisplay"></span>
+                    </label>
+                </div>
+                <div class="definition">
+                    @UtilsHelper.ToHtmlString(Model.PrefCookieMessage)
+                </div>
+            </li>
+            <li>
+                <div class="cookie">@Model.PerfCookieHeader</div>
+                <div class="selection">
+                    <label>
+                        <input type="checkbox" id="performanceCookies" checked><span class="checkboxDisplay"></span>
+                    </label>
+                </div>
+                <div class="definition">
+                    @UtilsHelper.ToHtmlString(Model.PerfCookieMessage)
+                </div>
+            </li>
+            <li>
+                <div class="cookie">@Model.PersonCookieHeader</div>
+                <div class="selection">
+                    <label>
+                        <input type="checkbox" id="personalCookies" checked><span class="checkboxDisplay"></span>
+                    </label>
+                </div>
+                <div class="definition">
+                    @UtilsHelper.ToHtmlString(Model.PersonCookieMessage)
+                </div>
+            </li>
+        </ol><br><br>
+    </div>
+</div>
