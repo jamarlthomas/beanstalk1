@@ -374,7 +374,8 @@ html(lang='en' ng-app="prodFilterApp")
                                 
                                 
                                 <div ng-hide="dataLoaded()">Loading Items...</div>
-                                <div ng-show="checkForResults()">No Items found</div>
+                                div(ng-show="checkForResults()" class="noResults")
+                                    | No results found. You can explore a complete list of pages on our <a href="/Sitemap">sitemap</a>. Or, please click <a href="/Contact">here</a>&nbsp;to submit an inquiry.
                         
                         dir-pagination-controls(max-size="7" boundary-links="false" template-url="dirPagination.tpl.html" on-page-change="pageChanged(newPageNumber)")
                         
