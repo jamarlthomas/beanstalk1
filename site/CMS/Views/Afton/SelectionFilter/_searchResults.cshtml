@@ -36,7 +36,7 @@
                 <div ng-show="item.Date != ''" class="cardDate">{{item.Date}}</div>
             </div>
         </a><div ng-hide="dataLoaded()">@Model.LoadingLabel</div>
-        <div ng-show="checkForResults()">@UtilsHelper.ToHtmlString(Model.NoItemsLabel)</div>
+        <div ng-show="checkForResults()" class="noResults">@UtilsHelper.ToHtmlString(Model.NoItemsLabel)</div>
     </div>
 </div>
 <dir-pagination-controls max-size="7" boundary-links="false" ng-show="dataLoaded()" template-url="@Url.Content("~/Content/Templates/dirPagination.tpl.html")" on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
