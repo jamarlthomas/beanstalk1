@@ -99,8 +99,31 @@ namespace CMS.Mvc.Providers
                     for (int i = 0; i < idsArray.Length - 1; i++)
                     {
                         query.AppendFormat("(int){0} ", idsArray[i]);
+                        var solution = ContentHelper.GetDocByNodeId<Solution>( int.Parse( idsArray[ i ] ) );
+                        if ( solution != null )
+                        {
+                            if ( solution.NodeHasChildren )
+                            {
+                                foreach ( var child in solution.Children )
+                                {
+                                    query.AppendFormat( "(int){0} ", child.NodeID );
+                                }
+                            }
+                        }
                     }
+                    var lastSolution = ContentHelper.GetDocByNodeId<Solution>( int.Parse( idsArray[ idsArray.Length - 1 ] ) );
+                    if ( lastSolution != null ) {
+                        if ( lastSolution.NodeHasChildren )
+                        {
+                            foreach ( var child in lastSolution.Children )
+                            {
+                                query.AppendFormat( "(int){0} ", child.NodeID );
+                            }
+                        }
+                    }
+
                     query.AppendFormat("(int){0})", idsArray[idsArray.Length - 1]);
+
 
                 }
 
