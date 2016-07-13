@@ -81,4 +81,12 @@ div, p, li, h1 { font: 14px/22px HelveticaNeueLTStd-Roman, Helvetica, Arial, San
     
 }
 
+/* For Editor */
+.cke_editable .sg-lftContent { padding-top: 20px; float: left; width: 45%; }
+    
+.cke_editable .sg-rtContent { padding-top: 20px; float: right; width: 45%; }
+
+.cke_editable .sg-fullContent { clear: both; padding-top: 20px; }
+
+
 
