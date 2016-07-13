@@ -195,6 +195,12 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
         {
             try
             {
+                //Register fonts
+                var xmlWorkerFontProvider = new XMLWorkerFontProvider();
+
+                xmlWorkerFontProvider.Register( AppDomain.CurrentDomain.BaseDirectory + @"\fonts\HelveticaNeueLT-Light\2F7DEF_3_0.ttf", "HelveticaNeueLT-Light" );
+                xmlWorkerFontProvider.Register( AppDomain.CurrentDomain.BaseDirectory + @"\fonts\HelveticaNeueLTStd-Roman\2F7DEF_0_0.ttf", "HelveticaNeueLTStd-Roman" );
+
                 Byte[] bytes;
                 using (var ms = new MemoryStream())
                 {
@@ -206,10 +212,12 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
                             var cssResolver = new StyleAttrCSSResolver();
                             var msCss = XMLWorkerHelper.GetCSS(new MemoryStream(System.Text.Encoding.UTF8.GetBytes(css)));
                             cssResolver.AddCss(msCss);
+                            CssAppliers ca = new CssAppliersImpl( xmlWorkerFontProvider );
 
-                            HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
+                            HtmlPipelineContext htmlContext = new HtmlPipelineContext(ca);
                             htmlContext.SetTagFactory(Tags.GetHtmlTagProcessorFactory());
                             htmlContext.AutoBookmark(false);
+
                             var htmlStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(html));
 
                             PdfWriterPipeline pdfPpl = new PdfWriterPipeline(doc, writer);

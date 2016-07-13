@@ -1,0 +1,16 @@
+﻿@using CMS.Mvc.Helpers
+@using CMS.Mvc.ViewModels.SiteMap
+@model IEnumerable<SiteMapHyperLink>
+@foreach (SiteMapHyperLink item in Model)
+{
+
+    <li><a href="@Url.Content("~/" + item.Reference)">@UtilsHelper.ToHtmlString(item.Text)</a>
+    @if ( item.Children != null && item.Children.Count != 0 )
+    {
+        <ul>
+                @Html.Partial( "~/Views/Afton/SiteMap/_linksList.cshtml", item.Children )
+        </ul>
+    }
+    </li>
+}
+

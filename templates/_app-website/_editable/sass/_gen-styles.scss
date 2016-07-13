@@ -14,7 +14,8 @@ h3 { margin: 0px; padding: 0px; color: #0c419a; font: 20px/24px HelveticaNeueLTS
 
 .subTxt { padding-top: 5px; font-family: HelveticaNeueLTStd-It; }
 
-a { transition: 0.8s; }
+a { color: #4c9d2f; text-decoration: none; transition: 0.8s; }
+a:hover { color: #247408; }
 
 /* default anchor fix */
 a.defAnchorTag { display: block; position: relative; top: -190px; visibility: hidden;
