@@ -10,6 +10,8 @@ using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Master;
 using CMS.DocumentEngine;
+using CMS.OnlineMarketing;
+using CMS.Personas;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -23,6 +25,10 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly IPagesMenuItemProvider _pagesMenuItemProvider;
         private readonly ITreeNodesProvider _treeNodesProvider;
         private readonly ILocalizationProvider _localizationProvider;
+        private readonly IPersonaService _personaService;
+        private ContactInfo currentContact;
+        private PersonaInfo currentPersona;
+
 
         public MasterController(IContentMenuItemProvider contentMenuItemProvider,
             IPagesMenuItemProvider pagesMenuItemProvider,
@@ -30,7 +36,10 @@ namespace CMS.Mvc.Controllers.Afton
             IMegaMenuLinkItemProvider megaMenuLinkItemProvider,
             IFooterNavItemProvider footerNavItemProvider,
             IMegaMenuSubLinkItemProvider megaMenuSubLinkItemProvider,
-            ITreeNodesProvider treeNodesProvider)
+            ITreeNodesProvider treeNodesProvider,
+            ILocalizationProvider localizationProvider,
+            IPersonaService personaService
+            )
         {
             _contentMenuItemProvider = contentMenuItemProvider;
             _pagesMenuItemProvider = pagesMenuItemProvider;
@@ -39,6 +48,8 @@ namespace CMS.Mvc.Controllers.Afton
             _footerNavItemProvider = footerNavItemProvider;
             _megaMenuSubLinkItemProvider = megaMenuSubLinkItemProvider;
             _treeNodesProvider = treeNodesProvider;
+            _localizationProvider = localizationProvider;
+            _personaService = personaService;
         }
 
         public MasterController()
@@ -51,8 +62,36 @@ namespace CMS.Mvc.Controllers.Afton
             _megaMenuSubLinkItemProvider = new MegaMenuSubLinkItemProvider();
             _treeNodesProvider = new TreeNodesProvider();
             _localizationProvider = new LocalizationProvider();
+            _personaService = new PersonaService();
+            currentContact = OnlineMarketingContext.CurrentContact;
+
         }
 
+        protected override void Initialize( System.Web.Routing.RequestContext requestContext )
+        {
+            base.Initialize( requestContext );
+
+            //Set Session Variables for Contact Persona and IP/Company Name
+            if ( string.IsNullOrEmpty( currentContact.ContactCompanyName ) )
+            {
+                var ip = IPInfoProvider.GetIps().WhereEquals( "IPOriginalContactID", currentContact.ContactID ).First().IPAddress.ToString();
+                Session[ "CompanyName" ] = ip;
+            }
+            else
+            {
+                Session[ "CompanyName" ] = currentContact.ContactCompanyName;
+            }
+            currentPersona = _personaService.GetPersonaForContact( currentContact );
+            if ( currentPersona != null )
+            {
+                Session[ "Persona" ] = currentPersona.ToString();
+            }
+            else
+            {
+                Session[ "Persona" ] = "None";
+            }
+
+        }
         [ChildActionOnly]
         public ActionResult Footer()
         {
