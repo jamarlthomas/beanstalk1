@@ -11,7 +11,7 @@
                 <div class="cardTitle">@Model.TileTitle</div>
                 <div class="cardHdr">@UtilsHelper.ToHtmlString(Model.Title)</div>
             </div>
-            <div class="cardDate">@Model.Date.ToString("MMMM dd, yyyy")</div>
+            <div class="cardDate">@if ( Model.Date != null) { @UtilsHelper.ToHtmlString( ( ( DateTime )Model.Date ).ToString( "MMMM dd, yyyy" ) ) }</div>
         </div>
         @*@<div style="opacity: 0.0;" class="hoverOverlayC">
             <div class="hoverOverlay">

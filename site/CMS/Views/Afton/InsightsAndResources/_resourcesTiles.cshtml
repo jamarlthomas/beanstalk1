@@ -17,7 +17,7 @@
                     <div class="cardTextArea">
                         <div class="cardTxt">@UtilsHelper.ToHtmlString(tile.Description)</div>
                     </div>
-                    <div class="cardDate">@UtilsHelper.ToHtmlString(tile.Date.ToString("MMMM dd, yyyy"))</div>
+                    @if ( tile.Date != null ){<div class="cardDate">@UtilsHelper.ToHtmlString( ( ( DateTime )tile.Date ).ToString( "MMMM dd, yyyy" ) )</div>}
                 </div>
                 }
                 else
@@ -36,7 +36,7 @@
                             <div class="cardTxt">@UtilsHelper.ToHtmlString(tile.Description)</div>
                         }
                     </div>
-                    <div class="cardDate">@UtilsHelper.ToHtmlString(tile.Date.ToString("MMMM dd, yyyy"))</div>
+                    @if(tile.Date != null){<div class="cardDate">@UtilsHelper.ToHtmlString(((DateTime)tile.Date).ToString("MMMM dd, yyyy"))</div>}
                 </div>
                 }
             </a>

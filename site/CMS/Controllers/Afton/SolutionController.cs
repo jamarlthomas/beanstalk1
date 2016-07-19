@@ -61,6 +61,12 @@ namespace CMS.Mvc.Controllers.Afton
             };
             solutionViewModel.Constants = MapData<SolutionConstants, SolutionConstantsViewModel>(_solutionConstantsProvider.GetSolutionConstants());
             solutionViewModel.NodeID = solution.NodeID;
+
+            if ( System.Configuration.ConfigurationManager.AppSettings[ "DateOnCards" ] == "false" )
+            {
+                solutionViewModel.Products.ForEach( x => x.DocumentCreatedWhen = null );
+
+            }
             return View("~/Views/Afton/Solution/Index.cshtml", solutionViewModel);
         }
 
