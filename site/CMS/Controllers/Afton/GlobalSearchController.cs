@@ -18,6 +18,7 @@ namespace CMS.Mvc.Controllers.Afton
         private readonly IGlobalSearchPageProvider _globalSearchPageProvider;
         private readonly ITreeNodesProvider _treeNodesProvider;
         private readonly IPageTypeDisplayValueProvider _pageTypeDisplayValueProvider;
+        private readonly ISelectionFilterConstantsProvider _selectionFilterConstantsProvider;
 
 
         public GlobalSearchController()
@@ -26,17 +27,20 @@ namespace CMS.Mvc.Controllers.Afton
             _globalSearchPageProvider = new GlobalSearchPageProvider();
             _treeNodesProvider = new TreeNodesProvider();
             _pageTypeDisplayValueProvider = new PageTypeDisplayValueProvider();
+            _selectionFilterConstantsProvider = new SelectionFilterConstantsProvider();
         }
 
         public GlobalSearchController(IGlobalSearchProvider globalSearchProvider,
             IGlobalSearchPageProvider globalSearchPageProvider,
             ITreeNodesProvider treeNodesProvider,
-            IPageTypeDisplayValueProvider pageTypeDisplayValueProvider)
+            IPageTypeDisplayValueProvider pageTypeDisplayValueProvider,
+            ISelectionFilterConstantsProvider selectionFilterConstantsProvider )
         {
             _globalSearchProvider = globalSearchProvider;
             _globalSearchPageProvider = globalSearchPageProvider;
             _treeNodesProvider = treeNodesProvider;
             _pageTypeDisplayValueProvider = pageTypeDisplayValueProvider;
+            _selectionFilterConstantsProvider = selectionFilterConstantsProvider;
         }
         [PageVisitActivity]
         public ActionResult Index(GlobalSearchRequest request)
@@ -63,6 +67,7 @@ namespace CMS.Mvc.Controllers.Afton
                 CurrentPage = request.PageNumber ?? 1,
                 PageArgName = "PageNumber"
             };
+            viewModel.NoResultsLabel = _selectionFilterConstantsProvider.GetSelectionFilterConstants().NoItemsLabel;
             return viewModel;
         }
 
