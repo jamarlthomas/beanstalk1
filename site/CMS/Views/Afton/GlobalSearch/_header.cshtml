@@ -2,9 +2,9 @@
 @model CMS.Mvc.ViewModels.GlobalSearch.GlobalSearchPageViewModel
 
 <div id="searchHdr" class="padTop padBtm">
-    <h1>@Model.Title</h1><br>
+    <h1>@Model.Title</h1><br> 
     @if ( Model.ResultsCount > 0 ) { 
-        @Model.ResultsCount @Model.ResultsForLabel <strong>"@Model.SearchTerm"</strong>
+        @Model.ResultsCount@:&nbsp;@Model.ResultsForLabel <strong>"@Model.SearchTerm"</strong>
     }
     else
     {
