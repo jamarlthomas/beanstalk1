@@ -9,7 +9,7 @@
     
     #pRt { @include span(6 of 8 last);
         
-        #pCurrently { padding: 5px 0px; font-size: 12px;
+        #pCurrently { padding: 5px 0px 0px 0px 0px; font-size: 12px;
             
             
             a{ color: #48a540; text-decoration: none;
@@ -23,6 +23,14 @@
             
         }//pCurrently
         
+        #pCurrently2 { padding-bottom: 5px; font-size: 12px;
+            
+            a{ color: #48a540; text-decoration: none;
+            
+                &:hover { color: #184a9e; }
+            }
+            
+        }//pCurrently2
         
         //*** Breakpoints ***
         @include breakpoint($bp3) { @include span(full); }  
