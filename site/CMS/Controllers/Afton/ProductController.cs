@@ -71,7 +71,7 @@ namespace CMS.Mvc.Controllers.Afton
                 TileImage = product.HomeImage,
                 Description = product.Description,
                 DownloadLink = _productProvider.GetDownloadLink(product),
-                AvailableIn = _productProvider.GetAvailableRegions(product).Select(item => new LinkViewModel() { Title = item,Reference = _regionProvider.GetRegion(item.Replace(" ","-")).DocumentRoutePath }).ToList(),
+                AvailableIn = _productProvider.GetAvailableRegions(product).Select(item => new LinkViewModel() { Title = item.Title,Reference = item.DocumentRoutePath }).ToList(),
                 TranslationAvailable = translations
             };
         }
