@@ -44,7 +44,10 @@ namespace CMS.Mvc.Providers
 
         public List<string> GetAvailableRegions(Product product)
         {
-            return product.Regions.Split('|').Where(r=>!string.IsNullOrWhiteSpace(r)).ToList();
+            var regions = product.Regions.Split('|').Where(r=>!string.IsNullOrWhiteSpace(r)).ToList();
+            
+            return regions;
+
         }
 
         //ToDo: 
