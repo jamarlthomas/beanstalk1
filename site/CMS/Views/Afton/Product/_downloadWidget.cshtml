@@ -9,19 +9,24 @@
     <div id="pRt">
         <h1>@UtilsHelper.ToHtmlString(Model.Title)</h1>
         <div id="subTxt">@Model.Description</div>
-        @if (Model.AvailableIn.Any())
-        {
             <div id="pCurrently">
-                @UtilsHelper.GetLocalizedString("product_downloadWidget_AvailableIn")
-                @foreach (var link in Model.AvailableIn)
+                @if ( Model.AvailableIn.Any() )
                 {
-                    <span>
-                        <a>@link.Title</a>
-                    </span>
+                    @UtilsHelper.GetLocalizedString("product_downloadWidget_AvailableIn")
+                    foreach (var link in Model.AvailableIn)
+                    {
+                        <span>
+                            <a href="@Url.Content("~/"+link.Reference)">@link.Title</a>
+                        </span>
+                    }
+                    <br />
                 }
+                
+                @UtilsHelper.GetLocalizedString( "product_contact" )
             </div>
 
-        }
+        
+        
         <div id="downloadDocsC">
             <a href="" target="_blank" class="downloadBtn">@UtilsHelper.GetLocalizedString("product_downloadWidget_DownloadPDS")<span class="icon-download"></span></a>
             @if ( Model.TranslationAvailable.Any() )

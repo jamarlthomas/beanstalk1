@@ -105,9 +105,16 @@ namespace CMS.Mvc.Controllers.Afton
                 //}
                 
             }
-            
 
+            
             model.Solutions = MapData<Solution, TileViewModel>(solutions).Where(w => !string.IsNullOrEmpty(w.HomeImage)).ToList();
+
+            if ( System.Configuration.ConfigurationManager.AppSettings[ "DateOnCards" ] == "false" )
+            {
+                model.Solutions.ForEach( x => x.Date = null );
+            }
+
+
             return View("~/Views/Afton/SBU/Index.cshtml", model);
         }
     }

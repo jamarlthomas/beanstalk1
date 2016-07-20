@@ -55,7 +55,6 @@ namespace CMS.Mvc.Controllers.Afton
 
                 item.RelatedDocument = getDoc.GetType().GetProperty("DocumentRoutePath").GetValue(getDoc).ToString();
             }
-            
             var home = _homeProvider.GetHomePage();
             var primaryTilesNodes = home.Fields.ManagedBlocks2.Take(3).AsQueryable();
             var primaryTilesModels = new List<PersonalizedTile>();
@@ -83,8 +82,16 @@ namespace CMS.Mvc.Controllers.Afton
                 .Where(item=>item.ClassName!=Home.CLASS_NAME||item.ClassName!=ContactPage.CLASS_NAME||item.ClassName!=InsightsResources.CLASS_NAME||item.ClassName!=DocumentType.CLASS_NAME||item.ClassName!=ATCToolsPage.CLASS_NAME||item.ClassName!=Term.CLASS_NAME||item.ClassName!=FAQTopic.CLASS_NAME||item.ClassName!=FAQItem.CLASS_NAME)
                 .Take(3)
                 .ToList();
-
+            
             model.TrendingTiles = MapData<PersonalizedTile, PersonalizationCardViewModel>(filteredTrendingTiles);
+
+            if ( System.Configuration.ConfigurationManager.AppSettings[ "DateOnCards" ] == "false" )
+            {
+                //Remove Date from Home Cards
+                model.PrimaryTiles.Where( x => x.TypeName != CustomNews.CLASS_NAME && x.TypeName != Event.CLASS_NAME ).ForEach( x => x.Date = null );
+                model.PersonalizedTiles.Where( x => x.TypeName != CustomNews.CLASS_NAME && x.TypeName != Event.CLASS_NAME).ForEach( x => x.Date = null );
+                model.TrendingTiles.Where( x => x.TypeName != CustomNews.CLASS_NAME && x.TypeName != Event.CLASS_NAME ).ForEach( x => x.Date = null );
+            }
 
          
             return View("~/Views/Afton/Home/Index.cshtml", model);

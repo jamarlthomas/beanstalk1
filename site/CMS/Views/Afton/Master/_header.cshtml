@@ -11,7 +11,7 @@
             <a href="#" class="cookieBtn decline">@UtilsHelper.GetLocalizedString("cookie_Do_Not_Allow_Message")</a>
         </div>
         <br><br>
-        <a href="#" class="policy">@UtilsHelper.GetLocalizedString("cookie_Policy_Message")</a>
+        @UtilsHelper.ToHtmlString(UtilsHelper.GetLocalizedString("cookie_Policy_Message"))
     </div>
 </div>
 
