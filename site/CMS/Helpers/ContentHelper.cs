@@ -83,7 +83,17 @@ namespace CMS.Mvc.Helpers
                 "nodeid|{0}"
                 );
         }
-
+        public static T GetDocByTitle<T>( string className, string docName ) where T : TreeNode, new()
+        {
+            //docName = docName.Replace( ' ', '-' );
+            return HandleData<T>(
+                a => a.GetValue("Title").ToString().Equals( docName, StringComparison.InvariantCultureIgnoreCase ),
+                className,
+                string.Format( "cc_{0}_cn_{1}_dn_{2}", CurrentCulture, className, docName ),
+                null,
+                "nodeid|{0}"
+                );
+        }
         public static List<BreadCrumbLinkItemViewModel> GetBreadcrumb<T>(Guid guid) where T : TreeNode
         {
             return GetBreadcrumb(GetDocByGuid<T>(guid));
@@ -377,10 +387,10 @@ namespace CMS.Mvc.Helpers
 
             if (node != null)
                 SaveNode(node);
-            else
+            /*else
             {
                 RedirectToEnglish();
-            }
+            }*/
             return node;
         }
 
