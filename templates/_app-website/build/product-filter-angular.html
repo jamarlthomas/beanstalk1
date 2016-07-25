@@ -627,9 +627,9 @@
                   </div>
                   <div class="cardTextAreaC">
                     <div class="cardTextArea">
-                      <div ng-hide="item.SBU != ''" class="cardType">{{item.SBU}}</div>
+                      <div ng-hide="item.SBU == ''" class="cardType">{{item.SBU}}</div>
                       <div ng-show="item.Image != ''" class="cardHdrText">{{item.Title}}</div>
-                      <div ng-hide="item.Solution != ''" class="cardSubHdr">{{item.Solution}}</div>
+                      <div ng-hide="item.Solution == ''" class="cardSubHdr">{{item.Solution}}</div>
                       <div class="cardTxt">{{item.Description}}</div>
                     </div>
                     <div ng-show="item.Date != ''" class="cardDate">{{item.Date}}</div>
