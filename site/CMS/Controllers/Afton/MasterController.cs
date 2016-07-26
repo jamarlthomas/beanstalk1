@@ -75,7 +75,7 @@ namespace CMS.Mvc.Controllers.Afton
             if ( string.IsNullOrEmpty( currentContact.ContactCompanyName ) )
             {
                 var ipList = IPInfoProvider.GetIps().WhereEquals( "IPOriginalContactID", currentContact.ContactID );
-                if(ipList != null) {
+                if(ipList != null && ipList.Count > 0) {
                     var ip = ipList.First().IPAddress.ToString();
                     Session[ "CompanyName" ] = ip;
                 }
