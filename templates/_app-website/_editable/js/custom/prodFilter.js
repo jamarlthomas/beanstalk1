@@ -478,14 +478,18 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
             
               //For preloader
               $scope.dataLoaded = function(){return true};
-                
-              //Ellipses Call
-              $(".cardsSM_C .cardsSM .cardTextArea").dotdotdot({
-                ellipsis	: '... ',
-                wrap		: 'word',
-                watch: 'window'
+              
+              $timeout(function () {
+                  
+                  //Ellipses Call
+                  $(".cardsSM_C .cardsSM .cardTextArea").dotdotdot({
+                    ellipsis	: '... ',
+                    wrap		: 'word',
+                    watch: 'window'
+                  });
+                  
               });
-            
+              
             
               //For No results
               $scope.checkForResults = function(){                  
@@ -499,7 +503,7 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
 
               }
 
-        }); 
+        })
 
     }
     
