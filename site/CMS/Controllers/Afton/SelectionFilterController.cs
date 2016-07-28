@@ -121,7 +121,7 @@ namespace CMS.Mvc.Controllers.Afton
                 Link = ((node as IRoutedModel) != null) ? (node as IRoutedModel).DocumentRoutePath : node.DocumentNamePath,
                 Description = searchResultItem.Content,
                 Image = !string.IsNullOrEmpty(searchResultItem.Image) ? Url.Content(searchResultItem.Image) : null,
-                Type = pageTypeDisplayValue.DisplayValue,
+                Type = pageTypeDisplayValue != null ? pageTypeDisplayValue.DisplayValue : string.Empty,
                 TileTitle = node.GetValue("TileTitle",string.Empty),
                 PostedDate = (DateTime)node.GetValue("DocumentCreatedWhen"),
                 SBU = node.Parent.Parent is SolutionBusinessUnit ? (node.Parent.Parent as SolutionBusinessUnit).Title : null,
