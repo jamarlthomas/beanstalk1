@@ -28,10 +28,10 @@
             </div>
             <div class="cardTextAreaC">
                 <div class="cardTextArea">
-                    <div ng-hide="item.Type == ''" class="cardType">{{item.Type}}</div>
+                    <div ng-hide="item.TileTitle == ''" class="cardType" ng-bind-html="item.TileTitle | to_trusted">{{item.TileTitle}}</div>
                     <div ng-show="item.Image != ''" class="cardHdrText" ng-bind-html="item.Title | to_trusted">{{item.Title}}</div>
-                    <div ng-hide="item.Solution != ''" class="cardSubHdr">{{item.Solution}}</div>
-                    <div class="cardTxt" ng-bind-html="item.Description | to_trusted">{{item.Description}}</div>
+                    <div ng-hide="item.Solution == ''" class="cardSubHdr" ng-bind-html="item.Solution | to_trusted">{{item.Solution}}</div>
+                    <div class="cardTxt" ng-hide="item.Type == 'Product'" ng-bind-html="item.Description | to_trusted">{{item.Description}}</div>
                 </div>
                 <div ng-show="item.Date != ''" class="cardDate">{{item.Date}}</div>
             </div>
