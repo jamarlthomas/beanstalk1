@@ -247,6 +247,7 @@ namespace CMS.Mvc.Helpers
 
             var condition = new SearchCondition(request.AdditiveQuery, SearchModeEnum.AnyWord,
                 SearchOptionsEnum.FullSearch, docCondition);
+            condition.FuzzySearch = true;
             var searchText = SearchSyntaxHelper.CombineSearchCondition(request.Query, condition);
 
             var parameters = new Search.SearchParameters
