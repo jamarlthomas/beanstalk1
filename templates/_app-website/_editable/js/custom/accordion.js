@@ -1,6 +1,6 @@
 $(document).ready(function() {
     
-    $(".accordC a").click(function(e) {
+    $(".accordC a.accordTrigger").click(function(e) {
        
         e.preventDefault();
         
