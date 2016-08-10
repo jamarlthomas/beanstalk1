@@ -74,8 +74,11 @@ namespace CMS.Mvc.Controllers.Afton
             //Set Session Variables for Contact Persona and IP/Company Name
             if ( string.IsNullOrEmpty( currentContact.ContactCompanyName ) )
             {
-                var ip = IPInfoProvider.GetIps().WhereEquals( "IPOriginalContactID", currentContact.ContactID ).First().IPAddress.ToString();
-                Session[ "CompanyName" ] = ip;
+                var ipList = IPInfoProvider.GetIps().WhereEquals( "IPOriginalContactID", currentContact.ContactID );
+                if(ipList != null && ipList.Count > 0) {
+                    var ip = ipList.First().IPAddress.ToString();
+                    Session[ "CompanyName" ] = ip;
+                }
             }
             else
             {

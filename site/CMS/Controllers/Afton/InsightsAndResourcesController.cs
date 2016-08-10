@@ -78,7 +78,13 @@ namespace CMS.Mvc.Controllers.Afton
                 var guidString = string.Join(";", page.Fields.FeaturedContentList2.Select(x => x.NodeGUID.ToString()));
                 result = _resourceTileProvider.GetTiles(guidString).Select(s => Mapper.Map<TileViewModel>(s)).ToList();
             }
-
+            if ( System.Configuration.ConfigurationManager.AppSettings[ "DateOnCards" ] == "false" )
+            {
+                foreach(var card in result.Where(x=>x.TypeName!=CustomNews.CLASS_NAME&&x.TypeName!=Event.CLASS_NAME))
+                {
+                    card.Date = null;
+                }
+            }
             return result;
         }
 

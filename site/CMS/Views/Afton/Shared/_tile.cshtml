@@ -18,7 +18,7 @@
                         <div class="cardTxt">@item.Description</div>
                     }
                 </div>
-                <div class="cardDate">@if(!string.IsNullOrEmpty(item.Date.ToString())) {@UtilsHelper.ToHtmlString(item.Date.ToString("MMMM dd, yyyy"));}</div>
+                <div class="cardDate">@if(!string.IsNullOrEmpty(item.Date.ToString())) {@UtilsHelper.ToHtmlString(((DateTime)item.Date).ToString("MMMM dd, yyyy"));}</div>
             </div>
             <img src="@Url.Content(item.HomeImage)" />
         </a>

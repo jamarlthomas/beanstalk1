@@ -4,6 +4,7 @@ using CMS.Base;
 using CMS.Globalization;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
+using CMS.DataEngine;
 using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
@@ -19,6 +20,7 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Configuration;
+using CMS.OnlineMarketing;
 
 namespace CMS.Mvc.Helpers
 {
@@ -83,7 +85,17 @@ namespace CMS.Mvc.Helpers
                 "nodeid|{0}"
                 );
         }
-
+        public static T GetDocByTitle<T>( string className, string docName ) where T : TreeNode, new()
+        {
+            //docName = docName.Replace( ' ', '-' );
+            return HandleData<T>(
+                a => a.GetValue("Title").ToString().Equals( docName, StringComparison.InvariantCultureIgnoreCase ),
+                className,
+                string.Format( "cc_{0}_cn_{1}_dn_{2}", CurrentCulture, className, docName ),
+                null,
+                "nodeid|{0}"
+                );
+        }
         public static List<BreadCrumbLinkItemViewModel> GetBreadcrumb<T>(Guid guid) where T : TreeNode
         {
             return GetBreadcrumb(GetDocByGuid<T>(guid));
@@ -237,6 +249,7 @@ namespace CMS.Mvc.Helpers
 
             var condition = new SearchCondition(request.AdditiveQuery, SearchModeEnum.AnyWord,
                 SearchOptionsEnum.FullSearch, docCondition);
+            condition.FuzzySearch = true;
             var searchText = SearchSyntaxHelper.CombineSearchCondition(request.Query, condition);
 
             var parameters = new Search.SearchParameters
@@ -377,10 +390,10 @@ namespace CMS.Mvc.Helpers
 
             if (node != null)
                 SaveNode(node);
-            else
+            /*else
             {
                 RedirectToEnglish();
-            }
+            }*/
             return node;
         }
 
@@ -592,6 +605,40 @@ namespace CMS.Mvc.Helpers
                 .AllCultures()
                 .Where(d => d.Parent.NodeAlias.Equals(docName));
             return treeNodes.Select(it => (T)it).ToList();
+        }
+        public static ObjectQuery<ActivityInfo> GetActivities()
+        {
+            var cacheKey = "om_ac";
+            var cacheDependencyKey = "";
+            switch ( PortalContext.ViewMode )
+            {
+                case ViewModeEnum.Preview:
+                    {
+                        return ActivityInfoProvider.GetActivities().OrderByDescending("ActivityCreated");
+                    }
+                case ViewModeEnum.LiveSite:
+                    {
+                        if ( !string.IsNullOrWhiteSpace( cacheKey ) && CacheEnabled )
+                        {
+                            return CacheHelper.Cache( cs =>
+                            {
+                                var activities = ActivityInfoProvider.GetActivities();
+                                if ( !string.IsNullOrWhiteSpace( cacheDependencyKey ) )
+                                    cs.CacheDependency = CacheHelper.GetCacheDependency( cacheDependencyKey );
+                                return ActivityInfoProvider.GetActivities().OrderByDescending( "ActivityCreated" );
+                            }, new CacheSettings( CachingTime, cacheKey ) );
+                        }
+                        else
+                        {
+                            return ActivityInfoProvider.GetActivities().OrderByDescending( "ActivityCreated" );
+                        }
+                    }
+                default:
+                    {
+                        return ActivityInfoProvider.GetActivities().OrderByDescending( "ActivityCreated" );
+
+                    }
+            }
         }
     }
 }

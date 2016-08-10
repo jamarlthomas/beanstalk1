@@ -4,7 +4,7 @@
 
 <div class="bgGray padTopBtm">
     <div class="fullWidth">
-        <h2>@Model.Title @Model.Constants.ProductsLabel</h2>
+        <h2>@UtilsHelper.ToHtmlString(Model.Title) @Model.Constants.ProductsLabel</h2>
     </div>
     <div class="cardsSM_C">
         <div class="cardsSM fourCol">
@@ -22,7 +22,7 @@
                             <div class="cardSubHdr">@UtilsHelper.ToHtmlString(@product.TileOverlayText)</div>
                             <div class="cardTxt">@UtilsHelper.ToHtmlString(product.Description)</div>
                         </div>
-                        <div class="cardDate">@product.DocumentCreatedWhen.ToString("MMM dd, yyyy")</div>
+                        @if(product.DocumentCreatedWhen != null) {<div class="cardDate">@((DateTime)product.DocumentCreatedWhen).ToString("MMM dd, yyyy")</div>}
                     </div>
                 </a>
             }
@@ -30,7 +30,7 @@
     </div>
     <div class="fullWidth">
         <a href="@Url.Content("~/"+RouteHelper.GetSelectionFilterSolutionViewAllUrl(Model.NodeID.ToString()))" class="viewAllBtn">
-            @Model.Constants.ViewAllLabel @Model.Title @Model.Constants.ProductsLabel
+            @Model.Constants.ViewAllLabel @UtilsHelper.ToHtmlString(Model.Title) @Model.Constants.ProductsLabel
         </a>
     </div>
 </div>

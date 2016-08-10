@@ -365,9 +365,9 @@ html(lang='en' ng-app="prodFilterApp")
 
                                     div(class="cardTextAreaC")
                                         div(class="cardTextArea")
-                                            div(class="cardType" ng-hide="item.SBU != ''") {{item.SBU}}
+                                            div(class="cardType" ng-hide="item.SBU == ''") {{item.SBU}}
                                             div(class="cardHdrText" ng-show="item.Image != ''") {{item.Title}}
-                                            div(class="cardSubHdr" ng-hide="item.Solution != ''") {{item.Solution}}
+                                            div(class="cardSubHdr" ng-hide="item.Solution == ''") {{item.Solution}}
                                             div(class="cardTxt") {{item.Description}}
 
                                         div(class="cardDate" ng-show="item.Date != ''") {{item.Date}}

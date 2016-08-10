@@ -29,10 +29,11 @@ namespace CMS.Mvc.Infrastructure
                 .ForMember(s => ((Solution)s.Parent).Title, d => d.SubHeader);
 
             CreateMap<PersonalizedTile, PersonalizationCardViewModel>()
-                .ForMember(s => s.HomeImage, d => d.HomeImage)
-                .ForMember(s => s.Title, d => d.Title)
-                .ForMember(s => (DateTime)s.Item.GetValue("DocumentModifiedWhen"), d => d.Date)
-                .ForMember(s => s.Description, d => d.Description);
+                .ForMember( s => s.HomeImage, d => d.HomeImage )
+                .ForMember( s => s.Title, d => d.Title )
+                .ForMember( s => ( DateTime )s.Item.GetValue( "DocumentModifiedWhen" ), d => d.Date )
+                .ForMember( s => s.Description, d => d.Description )
+                .ForMember( s => s.Item.ClassName, d => d.TypeName );
             CreateMap<Solution, TileViewModel>()
                 .ForMember(s => s.DocumentRoutePath, d => d.Reference);
             CreateMap<FAQPage, TileViewModel>()

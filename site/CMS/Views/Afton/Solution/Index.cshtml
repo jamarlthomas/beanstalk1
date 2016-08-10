@@ -16,7 +16,7 @@
             @Html.Partial("~/Views/Afton/Shared/_breadCrumb.cshtml", @Model.BreadCrumb)
             <div id="contentC">
                 <h1 class="txtPaddingTop">
-                    @Model.Title
+                    @UtilsHelper.ToHtmlString(Model.Title)
                     <div class="subTxt">@UtilsHelper.ToHtmlString(@Model.Subtitle)</div>
                     <div id="socialC" class="noPrintDisplay">
                         <a class="addthis_button_compact"><span class="icon-share"></span></a>

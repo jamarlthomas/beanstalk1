@@ -12,5 +12,6 @@ namespace CMS.Mvc.ViewModels.GlobalSearch
         public int PageCount { get; set; }
         public List<ResultItemViewModel> Results { get; set; }
         public PaginationViewModel Pagination { get; set; }
+        public string NoResultsLabel { get; set; }
     }
 }

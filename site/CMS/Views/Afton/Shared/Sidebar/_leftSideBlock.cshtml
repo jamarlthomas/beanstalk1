@@ -2,7 +2,7 @@
 @model CMS.Mvc.ViewModels.Shared.SidebarComponents.SidebarComponentWithDefaultImageViewModel
 @if (!string.IsNullOrWhiteSpace(Model.Reference))
 {
-    <a href="@Url.Content("~/" + Model.Reference)">
+    <a href="@(Model.Reference.Contains("http") ? Model.Reference : Url.Content("~/" + Model.Reference))" target="@(Model.Reference.Contains("http") ? Html.Raw("_blank"):Html.Raw("_self"))">
         @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
         {
             <img src="@Url.Content(Model.ImageUrl)" alt="@Model.Title"/>

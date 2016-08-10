@@ -18,6 +18,6 @@ namespace CMS.Mvc.ViewModels.Shared
         public string HandlingInformation { get; set; }
         public string Comparison { get; set; }
         public string DocumentRoutePath { get; set; }
-        public DateTime DocumentCreatedWhen { get; set; }
+        public DateTime? DocumentCreatedWhen { get; set; }
     }
 }

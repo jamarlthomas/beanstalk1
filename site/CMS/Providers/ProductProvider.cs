@@ -42,9 +42,17 @@ namespace CMS.Mvc.Providers
         }
 
 
-        public List<string> GetAvailableRegions(Product product)
+        public List<Region> GetAvailableRegions(Product product)
         {
-            return product.Regions.Split('|').Where(r=>!string.IsNullOrWhiteSpace(r)).ToList();
+            var regionStr = product.Regions.Split('|').Where(r=>!string.IsNullOrWhiteSpace(r)).ToList();
+            var regions = new List<Region>();
+            var _regionProvider = new RegionProvider();
+            foreach ( var region in regionStr )
+            {
+                regions.Add( _regionProvider.GetRegionByTitle( region ) );
+            }
+            return regions;
+
         }
 
         //ToDo: 

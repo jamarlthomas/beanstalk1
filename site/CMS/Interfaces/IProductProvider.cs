@@ -11,7 +11,7 @@ namespace CMS.Mvc.Interfaces
         Product GetProduct(string alias);
         List<Product> GetProductsBySBU(string SBUName, string parentPath);
         List<BreadCrumbLinkItemViewModel> GetBreadcrumb(string name);
-        List<string> GetAvailableRegions(Product product);
+        List<Region> GetAvailableRegions(Product product);
         List<DownloadLanguageLinkItemViewModel> GetAvailableTranslations(Product product);
         string GetDownloadLink(Product product);
        
