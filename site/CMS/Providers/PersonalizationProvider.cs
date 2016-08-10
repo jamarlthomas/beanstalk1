@@ -145,19 +145,28 @@ namespace CMS.Mvc.Providers
         {
             if (CurrentContact == null)
                 return;
-            ContentList.ForEach(ci =>
+            var activities = ContentHelper.GetActivities()
+                .Where(item=>item.ActivityActiveContactID == CurrentContact.ContactID && item.ActivityType == PredefinedActivityType.PAGE_VISIT);
+
+            for ( var contentIndex = 0; contentIndex < ContentList.Count; contentIndex++ )
             {
-                ci.LastViewDate =
-                    ActivityInfoProvider
-                        .GetActivities()
-                        .Where(item =>
-                            item.ActivityNodeID == ci.Item.NodeID &&
-                            item.ActivityActiveContactID == CurrentContact.ContactID &&
-                            item.ActivityType == PredefinedActivityType.PAGE_VISIT)
-                        .OrderByDescending(ac => ac.ActivityCreated)
-                        .Select(it => it.ActivityCreated)
-                        .FirstOrDefault();
-            });
+                DateTime? lastViewDate = null;
+                var activityList = activities.Where( item => item.ActivityNodeID == ContentList[ contentIndex ].Item.Item.NodeID ).Select( it => it.ActivityCreated );
+                for ( var aIndex = 0; aIndex < activityList.Count(); aIndex++ )
+                {
+                    var activity = activityList.ElementAt( aIndex );
+                    if(activity !=null)
+                    {
+                        lastViewDate = activity;
+                        break;
+                    }
+                }
+
+
+                ContentList[ contentIndex ].LastViewDate = lastViewDate;
+            }
+
+
 
         }
 
