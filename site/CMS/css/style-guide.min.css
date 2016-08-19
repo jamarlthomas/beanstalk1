@@ -8,6 +8,9 @@ div, h1, li, p, td {
     color: #595959;
 }
 
+p {
+    padding-bottom:20px;
+}
 
 /* Style Guide Home */
 #sgh-contentTable {

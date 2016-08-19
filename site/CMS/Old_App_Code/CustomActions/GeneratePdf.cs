@@ -188,7 +188,7 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
             var baseDir = AppDomain.CurrentDomain.BaseDirectory;
             var css = File.ReadAllText(baseDir + @"\css\normalize.min.css");
             css += File.ReadAllText(baseDir + @"\fonts\fonts.css");
-            css += File.ReadAllText(baseDir + @"\css\style-guide.min.css");
+            //css += File.ReadAllText(baseDir + @"\css\style-guide.min.css");
             return css;
         }
         private void CreatePdf(string html, string css)
@@ -204,7 +204,7 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
                 Byte[] bytes;
                 using (var ms = new MemoryStream())
                 {
-                    using (var doc = new Document(PageSize.A4, 0f, 0f, 0f, 0f))
+                    using (var doc = new Document(PageSize.LETTER, 0f, 0f, 0f, 0f))
                     {
                         using (var writer = PdfWriter.GetInstance(doc, ms))
                         {
