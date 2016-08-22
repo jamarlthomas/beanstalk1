@@ -18,7 +18,9 @@ namespace CMS.Mvc.Providers
 
         public IEnumerable<TreeNode> GetContentList(NewsAndEventsPage page, NewsAndEventsRequest request)
         {
-            return ContentHelper.GetDocsByGuids<TreeNode>(UtilsHelper.ParseGuids(page.NewsAndEvents))
+            var ContentList = ContentHelper.GetDocsByGuids<TreeNode>( UtilsHelper.ParseGuids( page.NewsAndEvents ) );
+            ContentList.Concat( ContentHelper.GetDocsByGuids<TreeNode>( UtilsHelper.ParseGuids( page.NewsList ) ));
+            return /*ContentHelper.GetDocsByGuids<TreeNode>(UtilsHelper.ParseGuids(page.NewsAndEvents))
                 .Where(node =>
                 {
                     if (String.Equals(request.Category, page.NewsSelectorValue, StringComparison.OrdinalIgnoreCase))
@@ -29,7 +31,19 @@ namespace CMS.Mvc.Providers
                     {
                         return !String.Equals(request.Category, page.EventsSelectorValue, StringComparison.OrdinalIgnoreCase) || node is Event;
                     }
-                })
+                })*/
+                ContentList
+                .Where( node =>
+                {
+                    if ( String.Equals( request.Category, page.NewsSelectorValue, StringComparison.OrdinalIgnoreCase ) )
+                    {
+                        return node is CustomNews;
+                    }
+                    else
+                    {
+                        return !String.Equals( request.Category, page.EventsSelectorValue, StringComparison.OrdinalIgnoreCase ) || node is Event;
+                    }
+                } )
                 .OrderBy(f => f.GetDateTimeValue("Date", default(DateTime)));
         }
 
