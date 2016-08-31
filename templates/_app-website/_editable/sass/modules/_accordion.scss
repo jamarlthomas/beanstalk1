@@ -6,7 +6,7 @@
                     
             &:hover { color: #4c9d2f; }
             
-            .icon { background: url(../../images/accordPlus.png) no-repeat; position: absolute; top: 8px; left: -28px; width: 15px; height: 15px; }
+            .icon { background: url(../../images/accordPlus.png) no-repeat; position: absolute; top: 4px; left: -28px; width: 15px; height: 15px; }
             
             //*** Breakpoints ***
             @include breakpoint($bp1) { font-size: 18px; line-height: 22px; } 
