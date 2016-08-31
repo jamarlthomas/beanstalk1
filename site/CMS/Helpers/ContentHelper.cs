@@ -4,6 +4,7 @@ using CMS.Base;
 using CMS.Globalization;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
+using CMS.DataEngine;
 using CMS.Helpers;
 using CMS.Localization;
 using CMS.Membership;
@@ -19,6 +20,7 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Configuration;
+using CMS.OnlineMarketing;
 
 namespace CMS.Mvc.Helpers
 {
@@ -603,6 +605,40 @@ namespace CMS.Mvc.Helpers
                 .AllCultures()
                 .Where(d => d.Parent.NodeAlias.Equals(docName));
             return treeNodes.Select(it => (T)it).ToList();
+        }
+        public static ObjectQuery<ActivityInfo> GetActivities()
+        {
+            var cacheKey = "om_ac";
+            var cacheDependencyKey = "";
+            switch ( PortalContext.ViewMode )
+            {
+                case ViewModeEnum.Preview:
+                    {
+                        return ActivityInfoProvider.GetActivities().OrderByDescending("ActivityCreated");
+                    }
+                case ViewModeEnum.LiveSite:
+                    {
+                        if ( !string.IsNullOrWhiteSpace( cacheKey ) && CacheEnabled )
+                        {
+                            return CacheHelper.Cache( cs =>
+                            {
+                                var activities = ActivityInfoProvider.GetActivities();
+                                if ( !string.IsNullOrWhiteSpace( cacheDependencyKey ) )
+                                    cs.CacheDependency = CacheHelper.GetCacheDependency( cacheDependencyKey );
+                                return ActivityInfoProvider.GetActivities().OrderByDescending( "ActivityCreated" );
+                            }, new CacheSettings( CachingTime, cacheKey ) );
+                        }
+                        else
+                        {
+                            return ActivityInfoProvider.GetActivities().OrderByDescending( "ActivityCreated" );
+                        }
+                    }
+                default:
+                    {
+                        return ActivityInfoProvider.GetActivities().OrderByDescending( "ActivityCreated" );
+
+                    }
+            }
         }
     }
 }
