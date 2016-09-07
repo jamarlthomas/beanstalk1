@@ -3,6 +3,18 @@
 @using CMS.Mvc.Infrastructure.Models
 @using CMS.Personas
 @using CMS.OnlineMarketing
+@using CMS.Helpers
+@{
+    var page = DocumentContext.CurrentPageInfo;
+
+    if ( page != null )
+    {
+        ViewBag.PageGuid = ( page.DocumentGUID == Guid.Empty ) ? String.Empty : page.DocumentGUID.ToString();
+        ViewBag.SiteId = ( page.NodeSiteID > 0 ) ? page.NodeSiteID.ToString() : String.Empty;
+    }
+
+    ViewBag.Referrer = ( Request.UrlReferrer != null ) ? Request.UrlReferrer.ToString() : String.Empty;
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +33,7 @@
 	@Styles.RenderFormat("<link rel=\"stylesheet\"  href=\"{0}\" media=\"print\" />", "~/bundles/css/print")
 	@Scripts.Render("~/bundles/js")
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-    
+    <script type="text/javascript" src="/CMSScripts/WebServiceCall.js"></script>
 	<script>
     head.js(
         { home_rotator: "@Url.Content("~/Scripts/custom/homeSlideShow.min.js")" },
@@ -84,6 +96,9 @@
     <script>
         var addthis_config = { services_compact: 'email,linkedin,twitter,facebook,more', services_exclude:'google,google_plusone_share' }
     </script>
+    <script type="text/javascript">
+        WebServiceCall('/CMSPages/WebAnalyticsService.asmx', 'LogHits', '{ "parameters": { "pageGUID" : "@ViewBag.PageGuid", "pagesiteId" : "@ViewBag.SiteId", "referrer" : "@ViewBag.Referrer" }}');
+    </script>
     <script>
     (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
@@ -96,7 +111,6 @@
     ga('set', 'dimension1', '@Session[ "Persona" ]');
     ga('set', 'dimension2', '@Session[ "CompanyName" ]');
     ga('send', 'pageview');
-
     </script>
 
 </body>

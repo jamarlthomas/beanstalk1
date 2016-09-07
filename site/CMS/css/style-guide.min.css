@@ -32,10 +32,10 @@ p {
 
 #sgh-prodName {
     padding-top: 84px;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
     font-size: 28px;
     color: #0c419a;
-    font-weight: 700;
+    
 }
 
 #sgh-prodDesc {
@@ -81,10 +81,11 @@ p {
 }
 
 #sg-prodName{
+    font-family: "HelveticaNeueLT-Bold";
     padding-bottom: 5px;
     font-size: 25px;
     color: #0c419a;
-    font-weight: 700;
+    /*font-weight: 700;*/
 }
 
 #sg-prodDesc {
@@ -145,6 +146,10 @@ p {
     line-height: 13px;
 }
 
+             #sgh-covImg {
+                width: 488px;
+                height: auto;
+            }
 
 
 

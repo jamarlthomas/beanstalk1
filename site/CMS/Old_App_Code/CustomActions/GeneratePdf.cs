@@ -188,7 +188,7 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
             var baseDir = AppDomain.CurrentDomain.BaseDirectory;
             var css = File.ReadAllText(baseDir + @"\css\normalize.min.css");
             css += File.ReadAllText(baseDir + @"\fonts\fonts.css");
-            //css += File.ReadAllText(baseDir + @"\css\style-guide.min.css");
+            css += File.ReadAllText(baseDir + @"\css\style-guide.min.css");
             return css;
         }
         private void CreatePdf(string html, string css)
@@ -200,6 +200,7 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
 
                 xmlWorkerFontProvider.Register( AppDomain.CurrentDomain.BaseDirectory + @"\fonts\HelveticaNeueLT-Light\2F7DEF_3_0.ttf", "HelveticaNeueLT-Light" );
                 xmlWorkerFontProvider.Register( AppDomain.CurrentDomain.BaseDirectory + @"\fonts\HelveticaNeueLTStd-Roman\2F7DEF_0_0.ttf", "HelveticaNeueLTStd-Roman" );
+                xmlWorkerFontProvider.Register( AppDomain.CurrentDomain.BaseDirectory + @"\fonts\HelveticaNeueLT-Bold\2F7DEF_2_0.ttf", "HelveticaNeueLT-Bold" );
 
                 Byte[] bytes;
                 using (var ms = new MemoryStream())
