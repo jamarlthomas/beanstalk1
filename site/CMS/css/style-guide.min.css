@@ -8,9 +8,10 @@ div, h1, li, p, td {
     color: #595959;
 }
 
-p {
-    padding-bottom:20px;
+h2 {
+    padding-top:20px;
 }
+
 
 /* Style Guide Home */
 #sgh-contentTable {
@@ -27,6 +28,12 @@ p {
     font-size: 28px;
     line-height: 33px;
     color: #4c9d2f;
+}
+
+ul {
+    list-style-type:disc;
+    margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 
@@ -46,7 +53,7 @@ p {
 
 #sgh-prodApplication {
     padding-top: 20px;
-    font-size: 11px;
+    font-size: 15px;
     line-height: 13px;
     color: #595959;
 
@@ -83,7 +90,7 @@ p {
 #sg-prodName{
     font-family: "HelveticaNeueLT-Bold";
     padding-bottom: 5px;
-    font-size: 25px;
+    font-size: 27px;
     color: #0c419a;
     /*font-weight: 700;*/
 }
@@ -122,7 +129,13 @@ p {
     width: 350px;
     float: right;
 }
+#sg-mainC .sg-lftContent img{
+    width: 350px;
+}
 
+#sg-mainC .sg-rtContent img{        
+    width: 350px;
+}
 #sg-mainC .sg-fullContent {
     clear: both;
     padding-top: 20px;

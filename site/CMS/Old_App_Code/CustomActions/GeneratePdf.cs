@@ -202,6 +202,8 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
                 xmlWorkerFontProvider.Register( AppDomain.CurrentDomain.BaseDirectory + @"\fonts\HelveticaNeueLTStd-Roman\2F7DEF_0_0.ttf", "HelveticaNeueLTStd-Roman" );
                 xmlWorkerFontProvider.Register( AppDomain.CurrentDomain.BaseDirectory + @"\fonts\HelveticaNeueLT-Bold\2F7DEF_2_0.ttf", "HelveticaNeueLT-Bold" );
 
+                //Inject inline list-style-type
+                
                 Byte[] bytes;
                 using (var ms = new MemoryStream())
                 {
