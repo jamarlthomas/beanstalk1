@@ -25,12 +25,12 @@ namespace CMS.Mvc
         /// <param name="routes">The routes collection</param>
         public static void RegisterRoutes(RouteCollection routes)
         {
-
+            routes.IgnoreRoute( "robots.txt" );
             SetUpRoutesFromKentico(routes);
             SetUpConstantRoutes(routes);
             routes.MapMvcAttributeRoutes();
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            routes.IgnoreRoute("robots.txt");
+            
 
         }
 
