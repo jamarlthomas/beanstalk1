@@ -30,6 +30,7 @@ namespace CMS.Mvc
             SetUpConstantRoutes(routes);
             routes.MapMvcAttributeRoutes();
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.IgnoreRoute("robots.txt");
 
         }
 

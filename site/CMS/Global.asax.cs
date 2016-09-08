@@ -3,6 +3,8 @@
 using CMS.Base;
 using CMS.Core;
 using CMS.DataEngine;
+using CMS.Helpers;
+using CMS.SettingsProvider;
 
 /// <summary>
 /// Application methods.
@@ -39,4 +41,10 @@ public class Global : CMSHttpApplication
     }
 
     #endregion
+    void Application_BeginRequest( object sender, EventArgs e ) 
+    {
+        var _ip = String.IsNullOrEmpty( Request.ServerVariables[ "HTTP_CF_CONNECTING_IP" ] ) ? Request.ServerVariables[ "REMOTE_ADDR" ] : Request.ServerVariables[ "HTTP_CF_CONNECTING_IP" ];
+        RequestContext.UserHostAddress = _ip;
+         
+    }
 }
