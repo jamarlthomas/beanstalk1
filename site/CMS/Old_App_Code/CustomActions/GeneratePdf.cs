@@ -122,7 +122,7 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
             CreatePdf(Pdf, css);
             
             UpdatePdfReference();
-            //System.IO.File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory+@"\Pdf\Temp\TestOutput.html",Pdf);
+            System.IO.File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory+@"\Pdf\Temp\TestOutput.html",Pdf);
 
         }
 
@@ -195,10 +195,19 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
         {
             try
             {
+                //Register fonts
+                var xmlWorkerFontProvider = new XMLWorkerFontProvider();
+
+                xmlWorkerFontProvider.Register( AppDomain.CurrentDomain.BaseDirectory + @"\fonts\HelveticaNeueLT-Light\2F7DEF_3_0.ttf", "HelveticaNeueLT-Light" );
+                xmlWorkerFontProvider.Register( AppDomain.CurrentDomain.BaseDirectory + @"\fonts\HelveticaNeueLTStd-Roman\2F7DEF_0_0.ttf", "HelveticaNeueLTStd-Roman" );
+                xmlWorkerFontProvider.Register( AppDomain.CurrentDomain.BaseDirectory + @"\fonts\HelveticaNeueLT-Bold\2F7DEF_2_0.ttf", "HelveticaNeueLT-Bold" );
+
+                //Inject inline list-style-type
+                
                 Byte[] bytes;
                 using (var ms = new MemoryStream())
                 {
-                    using (var doc = new Document(PageSize.A4, 0f, 0f, 0f, 0f))
+                    using (var doc = new Document(PageSize.LETTER, 0f, 0f, 0f, 0f))
                     {
                         using (var writer = PdfWriter.GetInstance(doc, ms))
                         {
@@ -206,10 +215,12 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
                             var cssResolver = new StyleAttrCSSResolver();
                             var msCss = XMLWorkerHelper.GetCSS(new MemoryStream(System.Text.Encoding.UTF8.GetBytes(css)));
                             cssResolver.AddCss(msCss);
+                            CssAppliers ca = new CssAppliersImpl( xmlWorkerFontProvider );
 
-                            HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
+                            HtmlPipelineContext htmlContext = new HtmlPipelineContext(ca);
                             htmlContext.SetTagFactory(Tags.GetHtmlTagProcessorFactory());
                             htmlContext.AutoBookmark(false);
+
                             var htmlStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(html));
 
                             PdfWriterPipeline pdfPpl = new PdfWriterPipeline(doc, writer);
