@@ -1,6 +1,7 @@
 ﻿@using CMS.Helpers
 @using CMS.Mvc.Helpers
 @using CMS.Mvc.ViewModels.Master
+@using CMS.PortalEngine
 @model MasterViewModel
 
 <div id="cookieOverlayC" style="display: none;">
@@ -88,6 +89,18 @@
         </div>
     </div>
     <div id="topHeader">
+        @if ( PortalContext.ViewMode != ViewModeEnum.LiveSite)
+        { 
+        <div id="m">
+            <div class="cms-bootstrap">
+                <div id="CMSHeaderDiv">
+                    <div id="m_pnlPreviewInfo" class="PageManagerPreviewInfo">
+                        <span class="PreviewInfo">You are in preview mode.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
         <header>
             <a href="/">
                 <img src="@Url.Content("~/images/logo.svg")" id="dLogo" alt=@UtilsHelper.GetLocalizedString("master_header_LogoTitle") title=@UtilsHelper.GetLocalizedString("master_header_LogoTitle") />
