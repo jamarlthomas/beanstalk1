@@ -12,7 +12,9 @@ h2 {
     padding-top:20px;
 }
 
-
+hr {
+    display:none;
+}
 /* Style Guide Home */
 #sgh-contentTable {
     margin-top: 100px;
@@ -130,11 +132,11 @@ ul {
     float: right;
 }
 #sg-mainC .sg-lftContent img{
-    width: 350px;
+    width: 260px !important;
 }
 
 #sg-mainC .sg-rtContent img{        
-    width: 350px;
+    width: 260px !important;
 }
 #sg-mainC .sg-fullContent {
     clear: both;
