@@ -125,7 +125,8 @@ namespace CMS.Mvc.Controllers.Afton
                 TileTitle = node.GetValue("TileTitle",string.Empty),
                 PostedDate = (DateTime)node.GetValue("DocumentCreatedWhen"),
                 SBU = node.Parent.Parent is SolutionBusinessUnit ? (node.Parent.Parent as SolutionBusinessUnit).Title : null,
-                Solution = node.Parent is Solution ? (node.Parent as Solution).Title : null
+                //Solution = node.Parent is Solution ? (node.Parent as Solution).Title : null
+                Solution = node.GetValue("Description",string.Empty)
             };
         }
 
