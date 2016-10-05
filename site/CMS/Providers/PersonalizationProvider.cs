@@ -209,7 +209,7 @@ namespace CMS.Mvc.Providers
                 }
                 else
                 {
-                    item.PostedDate = ( DateTime )item.Item.Item.GetValue( "DocumentLastPublished" );
+                    item.PostedDate = ( DateTime )item.Item.Item.GetValue( "DocumentModifiedWhen" );
                 }
             }
             //ContentList.ForEach( item => item.PostedDate = ( DateTime )item.Item.Item.GetValue( "DocumentLastPublished" ) );
