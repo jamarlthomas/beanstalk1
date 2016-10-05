@@ -18,8 +18,8 @@ namespace CMS.Mvc.Providers
 
         public IEnumerable<TreeNode> GetContentList(NewsAndEventsPage page, NewsAndEventsRequest request)
         {
-            var ContentList = ContentHelper.GetDocsByGuids<TreeNode>( UtilsHelper.ParseGuids( page.NewsAndEvents ) );
-            ContentList = ContentList.Concat( ContentHelper.GetDocsByGuids<TreeNode>( UtilsHelper.ParseGuids( page.NewsList ) )).ToList();
+            var ContentList = ContentHelper.GetDocsByGuidsNews( UtilsHelper.ParseGuids( page.NewsAndEvents ) );
+            ContentList = ContentList.Concat( ContentHelper.GetDocsByGuidsNews( UtilsHelper.ParseGuids( page.NewsList ) )).ToList();
             return ContentList
                 .Where( node =>
                 {

@@ -201,7 +201,18 @@ namespace CMS.Mvc.Providers
 
         private void GetPostedDateOfAllTheContent()
         {
-            ContentList.ForEach(item => item.PostedDate = (DateTime)item.Item.Item.GetValue("DocumentModifiedWhen"));
+            foreach ( var item in ContentList )
+            {
+                if ( item.Item.Item.ClassName == CustomNews.CLASS_NAME || item.Item.Item.ClassName == Event.CLASS_NAME )
+                {
+                    item.PostedDate = ( DateTime )item.Item.Item.GetValue( "Date" );
+                }
+                else
+                {
+                    item.PostedDate = ( DateTime )item.Item.Item.GetValue( "DocumentLastPublished" );
+                }
+            }
+            //ContentList.ForEach( item => item.PostedDate = ( DateTime )item.Item.Item.GetValue( "DocumentLastPublished" ) );
         }
 
         private void GetPersona()

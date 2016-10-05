@@ -169,6 +169,14 @@ namespace CMS.Mvc.Helpers
                 GetDocByDocId<T>(TreePathUtils.GetDocumentIdByDocumentGUID(guid, siteName ?? ConfigurationManager.AppSettings["SiteName"])) as T,
                 new CacheSettings(CachingTime, string.Format("doc_guid_{0}", guid)));
         }
+        public static TreeNode GetDocByGuidNews(Guid guid, string sitename = null)
+        {
+            return CacheHelper.Cache(cs => {
+                var doc = GetDocByDocIdNews( TreePathUtils.GetDocumentIdByDocumentGUID( guid, sitename ?? ConfigurationManager.AppSettings[ "SiteName" ] ) ) as TreeNode;
+                cs.CacheDependency = CacheHelper.GetCacheDependency(string.Format("nodes|afton|{0}|all", doc.ClassName.ToLower()));
+                return doc;
+            }, new CacheSettings(CachingTime, string.Format("doc_guid_{0}", guid)));
+        }
         public static T GetNodeByGuid<T>(Guid guid, string siteName = null) where T : class
         {
             return CacheHelper.Cache(cs =>
@@ -180,6 +188,15 @@ namespace CMS.Mvc.Helpers
             return CacheHelper.Cache(cs =>
                 _treeProvider.SelectSingleDocument(docId) as T,
                 new CacheSettings(CachingTime, string.Format("doc_id_{0}", docId)));
+        }
+        public static TreeNode GetDocByDocIdNews( int docId )
+        {
+            return CacheHelper.Cache( cs => {
+                var doc = _treeProvider.SelectSingleDocument( docId ) as TreeNode;
+                cs.CacheDependency = CacheHelper.GetCacheDependency(string.Format("nodes|afton|{0}|all", doc.ClassName.ToLower()));
+                return doc;
+            },
+                new CacheSettings( CachingTime, string.Format( "doc_id_{0}", docId ) ) );
         }
         public static int GetNodeByNodeGuid(Guid guid, string siteName = null)
         {
@@ -199,7 +216,10 @@ namespace CMS.Mvc.Helpers
         {
             return guids.Select(guid => GetDocByGuid<T>(guid, siteName)).Where(w => w != null).ToList();
         }
-
+        public static List<TreeNode> GetDocsByGuidsNews(IEnumerable<Guid> guids, string siteName = null)
+        {
+            return guids.Select(guid => GetDocByGuidNews(guid, siteName)).Where(w => w != null).ToList();
+        }
         public static List<TreeNode> GetDocsByPath(string aliasPath, int maxRelativeLevel = 1, string classNames = "*")
         {
             var cacheDependencyKey = "nodes|afton|all";

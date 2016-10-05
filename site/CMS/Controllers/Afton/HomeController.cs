@@ -58,6 +58,7 @@ namespace CMS.Mvc.Controllers.Afton
             var home = _homeProvider.GetHomePage();
             var primaryTilesNodes = home.Fields.ManagedBlocks2.Take(3).AsQueryable();
             var primaryTilesModels = new List<PersonalizedTile>();
+
             primaryTilesNodes.ForEach(item =>
             {
                 var pt = new PersonalizedTile();
@@ -68,12 +69,25 @@ namespace CMS.Mvc.Controllers.Afton
 
             //avoid duplicates here
             model.PrimaryTiles = MapData<PersonalizedTile, PersonalizationCardViewModel>(primaryTilesModels);
+            model.PrimaryTiles.ForEach( x =>
+            {
+                if ( x.TypeName == CustomNews.CLASS_NAME || x.TypeName == Event.CLASS_NAME )
+                {
+                    x.Date = (DateTime)x.Item.GetValue( "Date" );
+                }
+            } );
             var filteredPersTiles = _personalizationProvider.GetPersonalizedItems()
                 .Where(item => !primaryTilesNodes.Select(pt => pt.NodeID).Contains(item.Item.NodeID))
                 .Take(3)
                 .ToList();
             model.PersonalizedTiles = MapData<PersonalizedTile, PersonalizationCardViewModel>(filteredPersTiles);
-
+            model.PersonalizedTiles.ForEach( x =>
+            {
+                if ( x.TypeName == CustomNews.CLASS_NAME || x.TypeName == Event.CLASS_NAME )
+                {
+                    x.Date = ( DateTime )x.Item.GetValue( "Date" );
+                }
+            } );
 
             //exclude duplicates from first two lines
             var filteredTrendingTiles = _personalizationProvider
@@ -84,7 +98,13 @@ namespace CMS.Mvc.Controllers.Afton
                 .ToList();
             
             model.TrendingTiles = MapData<PersonalizedTile, PersonalizationCardViewModel>(filteredTrendingTiles);
-
+            model.TrendingTiles.ForEach( x =>
+            {
+                if ( x.TypeName == CustomNews.CLASS_NAME || x.TypeName == Event.CLASS_NAME )
+                {
+                    x.Date = ( DateTime )x.Item.GetValue( "Date" );
+                }
+            } );
             if ( System.Configuration.ConfigurationManager.AppSettings[ "DateOnCards" ] == "false" )
             {
                 //Remove Date from Home Cards

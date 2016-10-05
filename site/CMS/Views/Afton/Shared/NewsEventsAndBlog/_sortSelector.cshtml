@@ -4,15 +4,15 @@
 <div class="customSelectC standard">
     <div class="orgSelect">
         <select name="sort">
-            @if (String.Equals(Model.SelectedSortOrder, Model.SortOldestLabel, StringComparison.OrdinalIgnoreCase))
+            @if ( String.Equals( Model.SelectedSortOrder, Model.SortOldestLabel, StringComparison.OrdinalIgnoreCase ) )
             {
-                <option value="ASC">@Model.SortOldestLabel</option>
-                <option value="DESC">@Model.SortNewestLabel</option>
+                <option value="DESC">@Model.SortOldestLabel</option>
+                <option value="ASC">@Model.SortNewestLabel</option>
             }
             else
             {
-                <option value="DESC">@Model.SortNewestLabel</option>
-                <option value="ASC">@Model.SortOldestLabel</option>
+                <option value="ASC">@Model.SortNewestLabel</option>
+                <option value="DESC">@Model.SortOldestLabel</option>
             }
         </select>
     </div>
