@@ -13,6 +13,7 @@ namespace CMS.DocumentEngine.Types
             Title = (string)item.GetValue("Title");
             Description = (string)item.GetValue("Description");
             Reference = ((item as IRoutedModel) != null) ? ((IRoutedModel) item).DocumentRoutePath : item.DocumentNamePath;
+
         }
 
     }

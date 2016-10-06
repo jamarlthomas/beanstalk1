@@ -4,7 +4,7 @@ using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 
 namespace CMS.Mvc.ViewModels.Product
 {
-    public class ProductPageViewModel : PersonalizationCardViewModel
+    public class ProductPageViewModel : TileViewModel
     {
         public ProductPageViewModel()
         {

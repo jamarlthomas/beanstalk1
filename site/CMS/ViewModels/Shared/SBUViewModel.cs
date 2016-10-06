@@ -6,7 +6,7 @@ using CMS.Mvc.ViewModels.SBU;
 
 namespace CMS.Mvc.ViewModels.Shared
 {
-    public class SBUViewModel : PersonalizationCardViewModel
+    public class SBUViewModel : TileViewModel
     {
         public string HeroImage { get; set; }
         public string HeroImageTitle { get; set; }

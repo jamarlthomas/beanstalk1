@@ -4,7 +4,7 @@ using CMS.Mvc.ViewModels.Shared.Personalization;
 
 namespace CMS.Mvc.ViewModels.Shared
 {
-    public abstract class NewsEventsAndBlogBasePageViewModel : PersonalizationCardViewModel
+    public abstract class NewsEventsAndBlogBasePageViewModel : TileViewModel
     {
         //public string Title { get; set; }
         //public string Description { get; set; }

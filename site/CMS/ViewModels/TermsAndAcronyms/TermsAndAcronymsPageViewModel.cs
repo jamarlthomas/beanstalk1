@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CMS.Mvc.ViewModels.TermsAndAcronyms
 {
-    public class TermsAndAcronymsPageViewModel : PersonalizationCardViewModel
+    public class TermsAndAcronymsPageViewModel : TileViewModel
     {
         public string ParentTitle { get; set; }
         //public string Title { get; set; }

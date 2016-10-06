@@ -1,5 +1,5 @@
 ﻿using System;
-using CMS.DocumentEngine;
+
 
 namespace CMS.Mvc.ViewModels.Shared
 {
@@ -17,6 +17,6 @@ namespace CMS.Mvc.ViewModels.Shared
         public string HoverContent { get; set; }
         public string TypeName { get; set; }
         public bool? IsTrending { get; set; }
-        public TreeNode Item { get; set; } 
+        
     }
 }

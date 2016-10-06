@@ -5,7 +5,7 @@ using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 
 namespace CMS.Mvc.ViewModels.FAQ
 {
-    public class FAQPageViewModel : PersonalizationCardViewModel
+    public class FAQPageViewModel : TileViewModel
     {
         public SidebarViewModel SideBar { get; set; }
         //public string Title { get; set; }
