@@ -70,28 +70,32 @@ namespace CMS.Mvc.Controllers.Afton
         protected override void Initialize( System.Web.Routing.RequestContext requestContext )
         {
             base.Initialize( requestContext );
-
-            //Set Session Variables for Contact Persona and IP/Company Name
-            if ( string.IsNullOrEmpty( currentContact.ContactCompanyName ) )
+            if ( currentContact != null )
             {
-                var ipList = IPInfoProvider.GetIps().WhereEquals( "IPOriginalContactID", currentContact.ContactID );
-                if(ipList != null && ipList.Count > 0) {
-                    var ip = ipList.First().IPAddress.ToString();
-                    Session[ "CompanyName" ] = ip;
+                //Set Session Variables for Contact Persona and IP/Company Name
+                if ( string.IsNullOrEmpty( currentContact.ContactCompanyName ) )
+                {
+                    var ipList = IPInfoProvider.GetIps().WhereEquals( "IPOriginalContactID", currentContact.ContactID );
+                    if ( ipList != null && ipList.Count > 0 )
+                    {
+                        var ip = ipList.First().IPAddress.ToString();
+                        Session[ "CompanyName" ] = ip;
+                    }
                 }
-            }
-            else
-            {
-                Session[ "CompanyName" ] = currentContact.ContactCompanyName;
-            }
-            currentPersona = _personaService.GetPersonaForContact( currentContact );
-            if ( currentPersona != null )
-            {
-                Session[ "Persona" ] = currentPersona.ToString();
-            }
-            else
-            {
-                Session[ "Persona" ] = "None";
+                else
+                {
+                    Session[ "CompanyName" ] = currentContact.ContactCompanyName;
+                }
+
+                currentPersona = _personaService.GetPersonaForContact( currentContact );
+                if ( currentPersona != null )
+                {
+                    Session[ "Persona" ] = currentPersona.ToString();
+                }
+                else
+                {
+                    Session[ "Persona" ] = "None";
+                }
             }
 
         }
