@@ -15,7 +15,7 @@
                 }
             </div>
             <div class="newsContentC">
-                <h2>@item.Title</h2>
+                <h2>@UtilsHelper.ToHtmlString(item.Title)</h2>
                 @*<div class="newsInfo">@item.Date.ToString("M/d/yy")</div>*@
                 <div class="newsTxt">@UtilsHelper.ToHtmlString(item.Description)</div>
                 @if (item.DocumentRoutePath.Contains("http"))

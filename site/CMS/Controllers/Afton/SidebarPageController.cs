@@ -108,10 +108,21 @@ namespace CMS.Mvc.Controllers.Afton
                             aliasPath = baseNode.Parent.Parent.Parent.NodeAliasPath;
                             aliasTitle = baseNode.Parent.Parent.Parent.GetStringValue("Title", baseNode.Parent.Parent.NodeName);
                         }
+                        else if (baseNode.Parent.NodeClassName == DocumentType.CLASS_NAME) 
+                        {
+                            aliasPath = baseNode.Parent.NodeAliasPath;
+                            aliasTitle = baseNode.Parent.GetStringValue( "Title", baseNode.Parent.Parent.NodeName );
+                        }
+                        else if ( baseNode.Parent.Parent.NodeClassName == DocumentType.CLASS_NAME )
+                        {
+                            aliasPath = baseNode.Parent.Parent.NodeAliasPath;
+                            aliasTitle = baseNode.Parent.Parent.GetStringValue( "Title", baseNode.Parent.Parent.Parent.NodeName );
+                        }
                         else {
                             aliasPath = baseNode.NodeAliasPath;
                             aliasTitle = baseNode.GetStringValue("Title", baseNode.NodeName);
                         }
+
                         return new LeftNavigationViewModel
                         {
                             ClassName = item.ClassName,
@@ -120,7 +131,7 @@ namespace CMS.Mvc.Controllers.Afton
                                 .Select(node =>
                                 {
                                     var model = GetLeftNavItemViewModel(node);
-                                    if (baseNode.Parent.NodeAliasPath==node.NodeAliasPath||(node.Children.Where(x=>(x.NodeClassName==Solution.CLASS_NAME||x.NodeClassName==GenericPage.CLASS_NAME)).Count()>0 && baseNode.NodeAliasPath==node.NodeAliasPath))
+                                    if (baseNode.Parent.NodeAliasPath==node.NodeAliasPath||(node.Children.Where(x=>(x.NodeClassName==Solution.CLASS_NAME||x.NodeClassName==GenericPage.CLASS_NAME||x.NodeClassName==Document.CLASS_NAME)).Count()>0 && baseNode.NodeAliasPath==node.NodeAliasPath))
                                     {
                                         model.SubMenu = node.Children.Select(GetLeftNavItemViewModel);
                                     }
