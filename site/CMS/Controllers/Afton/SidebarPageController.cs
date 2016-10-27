@@ -92,18 +92,18 @@ namespace CMS.Mvc.Controllers.Afton
                         string aliasPath = null;
                         string aliasTitle = null;
                         if (baseNode.NodeClassName == Solution.CLASS_NAME && baseNode.NodeLevel < 4||
-                            (baseNode.NodeClassName == GenericPage.CLASS_NAME && baseNode.NodeLevel == 3))
+                            ( baseNode.NodeClassName == GenericPage.CLASS_NAME && baseNode.NodeLevel == 3 && baseNode.Parent.NodeClassName != DocumentType.CLASS_NAME ) )
                         {
                             aliasPath = baseNode.Parent.NodeAliasPath;
                             aliasTitle = baseNode.Parent.GetStringValue("Title", baseNode.Parent.NodeName);
                         }
                         else if (baseNode.NodeClassName == Product.CLASS_NAME || (baseNode.NodeClassName == Solution.CLASS_NAME && baseNode.NodeLevel >= 4) ||
-                            (baseNode.NodeClassName == GenericPage.CLASS_NAME && baseNode.NodeLevel == 4))
+                            ( baseNode.NodeClassName == GenericPage.CLASS_NAME && baseNode.NodeLevel == 4 && baseNode.Parent.NodeClassName != DocumentType.CLASS_NAME ) )
                         {
                             aliasPath = baseNode.Parent.Parent.NodeAliasPath;
                             aliasTitle = baseNode.Parent.Parent.GetStringValue("Title", baseNode.Parent.Parent.NodeName);
                         }
-                        else if ((baseNode.NodeClassName == GenericPage.CLASS_NAME && baseNode.NodeLevel == 5))
+                        else if ( ( baseNode.NodeClassName == GenericPage.CLASS_NAME && baseNode.NodeLevel == 5 && baseNode.Parent.Parent.NodeClassName != DocumentType.CLASS_NAME ) )
                         {
                             aliasPath = baseNode.Parent.Parent.Parent.NodeAliasPath;
                             aliasTitle = baseNode.Parent.Parent.Parent.GetStringValue("Title", baseNode.Parent.Parent.NodeName);
