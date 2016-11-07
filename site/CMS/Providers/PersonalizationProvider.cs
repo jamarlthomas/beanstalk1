@@ -188,14 +188,17 @@ namespace CMS.Mvc.Providers
             ContentList.ForEach(item =>
             {
                 int count = 0;
-                foreach (DataRow row in info.Tables[0].Rows)
+                if ( info != null)
                 {
-                    if ((int)row["StatisticsObjectID"] == item.Item.Item.NodeID)
+                    foreach ( DataRow row in info.Tables[ 0 ].Rows )
                     {
-                        count += (int)row["HitsCount"];
+                        if ( ( int )row[ "StatisticsObjectID" ] == item.Item.Item.NodeID )
+                        {
+                            count += ( int )row[ "HitsCount" ];
+                        }
                     }
+                    item.ViewsCount = count;
                 }
-                item.ViewsCount = count;
             });
         }
 

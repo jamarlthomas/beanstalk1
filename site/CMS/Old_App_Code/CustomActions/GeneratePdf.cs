@@ -8,6 +8,8 @@ using CMS.DocumentEngine.Types;
 using CMS.Membership;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Old_App_Code.CustomActions;
+using CMS.EventLog;
+
 using iTextSharp.text;
 using iTextSharp.tool.xml;
 using iTextSharp.tool.xml.css;
@@ -97,7 +99,7 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
             {
                 if (string.IsNullOrWhiteSpace(_fileName))
                 {
-                    _fileName = string.Format(PDF_FILE_NAME_PATTERN, TNode.DocumentName, TNode.DocumentCulture);
+                    _fileName = string.Format(PDF_FILE_NAME_PATTERN, Node.DocumentName, Node.DocumentCulture);
                 }
                 return _fileName;
             }
@@ -108,7 +110,7 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
         {
             get
             {
-                return TNode.GetValue("Template", "");
+                return Node.GetValue("Template", "");
             }
 
         }
@@ -163,8 +165,8 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
 
         private void UpdatePdfReference()
         {
-            TNode.SetValue("PdfReference", MediaFileReference);
-            DocumentHelper.UpdateDocument(TNode, new TreeProvider(MembershipContext.AuthenticatedUser));
+            Node.SetValue("PdfReference", MediaFileReference);
+            DocumentHelper.UpdateDocument(Node, new TreeProvider(MembershipContext.AuthenticatedUser));
         }
 
         //private void SaveFileToMediaLbrary()
@@ -238,18 +240,19 @@ namespace CMS.Mvc.Old_App_Code.CustomActions
             }
             catch (Exception exc)
             {
-                //TODO log errror
+                EventLog.EventLogProvider.LogException("Generate PDF Task","EXCEPTION",exc);
             }
         }
         private void SaveDocument(byte[] bytes)
         {
-            if (File.Exists(FilePath))
+            /*if (File.Exists(FilePath))
             {
                 File.Delete(FilePath);
             }
             var file = File.Create(FilePath);
             file.Write(bytes, 0, bytes.Count());
-            file.Close();
+            file.Close();*/
+            File.WriteAllBytes( FilePath, bytes );
         }
 
         private void CreatePdf2(string html, string css)
