@@ -1655,6 +1655,29 @@
             <exception cref="T:System.ArgumentNullException"><paramref name="issue"/> is null</exception>
             <exception cref="T:System.InvalidOperationException">Thrown when given issue has no existing newsletter assigned.</exception>
         </member>
+        <member name="M:CMS.Newsletters.IssueSender.IsABTest(CMS.Newsletters.IssueInfo)">
+            <summary>
+            Returns if given issue is A/B test
+            </summary>
+        </member>
+        <member name="M:CMS.Newsletters.IssueSender.SendAllIssueVariants(CMS.Newsletters.IssueInfo)">
+            <summary>
+            Sets up everything that need to be done to ensure that all variants are send.
+            </summary>
+            <param name="issue"></param>
+        </member>
+        <member name="M:CMS.Newsletters.IssueSender.SendIssue(CMS.Newsletters.IssueInfo,System.DateTime)">
+            <summary>
+            Sets up everything that need be done to ensure thant single issue is sent.
+            </summary>
+            <param name="issue"></param>
+            <param name="when"></param>
+        </member>
+        <member name="M:CMS.Newsletters.IssueSender.IsSendingWinnerVariant(CMS.Newsletters.IssueInfo)">
+            <summary>
+            Returns if given issue is sending winner variant (all emails should be send to the rest of the subscribers - except testing group)
+            </summary>
+        </member>
         <member name="M:CMS.Newsletters.IssueSender.Send(CMS.Newsletters.IssueInfo,CMS.Newsletters.SubscriberInfo)">
             <summary>
             Sends e-mail based on the issue to the specified subscriber.
@@ -3973,6 +3996,12 @@
             <param name="originalLinks">Dictionary containing links that existed in the previous version of the issue, using URL as key</param>
             <param name="trackingLink">Tracking link without query parameters</param>
             <returns>A tracking hyperlink</returns>
+        </member>
+        <member name="M:CMS.Newsletters.LinkConverter.LinkExistsInDatabase(CMS.Newsletters.IssueInfo,System.String)">
+            <summary>
+            Determines whether link targeting the given <paramref name="url"/> exists in the database. Handles case sensitivity according to the setting specified
+            in app config.
+            </summary>
         </member>
         <member name="M:CMS.Newsletters.LinkConverter.IsTrackable(System.Text.RegularExpressions.Match,System.String,System.String)">
             <summary>

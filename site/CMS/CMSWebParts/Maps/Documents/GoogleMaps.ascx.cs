@@ -149,6 +149,22 @@ public partial class CMSWebParts_Maps_Documents_GoogleMaps : CMSAbstractWebPart
     #region "Map properties"
 
     /// <summary>
+    /// Api key for communicating with Google services.
+    /// </summary>
+    public string ApiKey
+    {
+        get
+        {
+            return ValidationHelper.GetString(GetValue("ApiKey"), "");
+        }
+        set
+        {
+            SetValue("ApiKey", value);
+        }
+    }
+
+
+    /// <summary>
     /// Gets or sets the scale of the map.
     /// </summary>
     public int Scale
@@ -944,6 +960,7 @@ public partial class CMSWebParts_Maps_Documents_GoogleMaps : CMSAbstractWebPart
             mp.ShowPanControl = ShowPanControl;
             mp.ShowStreetViewControl = ShowStreetViewControl;
 
+            ucGoogleMap.ApiKey = ApiKey;
             ucGoogleMap.DataBindByDefault = false;
             ucGoogleMap.MapProperties = mp;
             ucGoogleMap.ItemTemplate = CMSDataProperties.LoadTransformation(this, TransformationName);

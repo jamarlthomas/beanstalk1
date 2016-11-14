@@ -8,7 +8,7 @@
             <cms:UILayoutPane ID="tree" runat="server" Direction="Center" PaneClass="TreeBody"
                 ControlPath="~/CMSModules/Content/Controls/CMSDeskTree.ascx"/>
             <cms:UILayoutPane ID="language" runat="server" Direction="South" Closable="false" Resizable="false" SpacingOpen="0"
-                 ControlPath="~/CMSModules/Content/Controls/TreeLanguageMenu.ascx" PaneClass="ui-layout-pane-visible" />
+                 ControlPath="~/CMSModules/Content/Controls/TreeLanguageMenu.ascx" PaneClass="tree-bottom-actions-panel" />
         </Panes>
     </cms:UILayout>
 </div>

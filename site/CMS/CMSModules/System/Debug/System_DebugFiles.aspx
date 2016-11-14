@@ -12,7 +12,10 @@
     </div>
 </asp:Content>
 <asp:Content ID="cntBody" runat="server" ContentPlaceHolderID="plcContent">
-    <cms:DisabledModule runat="server" ID="ucDisabled" SettingsKeys="CMSDebugFiles;CMSDebugEverything;CMSDebugEverythingEverywhere" ConfigKeys="CMSDebugFiles;CMSDebugEverything;CMSDebugEverythingEverywhere" InfoText="{$DebugFiles.NotConfigured$}" AtLeastOne="True" />
+    <cms:DisabledModule runat="server" ID="ucDisabled" InfoText="{$DebugFiles.NotConfigured$}" AtLeastOne="True" KeyScope="Global"
+        SetSettingsKeys="CMSDebugFiles"
+        SettingsKeys="CMSDebugFiles;CMSDebugEverything;CMSDebugEverythingEverywhere" 
+        ConfigKeys="CMSDebugFiles;CMSDebugEverything;CMSDebugEverythingEverywhere" />
     <div class="clearfix">
         <div class="form-horizontal form-filter pull-left">
             <div class="form-group">

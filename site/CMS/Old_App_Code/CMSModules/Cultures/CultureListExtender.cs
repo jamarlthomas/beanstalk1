@@ -32,11 +32,12 @@ public class CultureListExtender : ControlExtender<UniGrid>
             case "culturename":
                 DataRowView drv = (DataRowView)parameter;
 
-                string name = ValidationHelper.GetString(drv["CultureName"], string.Empty);
+                string name = ResHelper.LocalizeString(ValidationHelper.GetString(drv["CultureName"], string.Empty));
                 string code = ValidationHelper.GetString(drv["CultureCode"], string.Empty);
 
-                return string.Format("<img class=\"cms-icon-80\" src=\"{0}\" alt=\"{1}\" />&nbsp;{1}",
+                return string.Format("<img class=\"cms-icon-80\" src=\"{0}\" alt=\"{1}\" />&nbsp;{2}",
                                      UIHelper.GetFlagIconUrl(Control.Page, code, "16x16"),
+                                     HTMLHelper.EncodeForHtmlAttribute(name),
                                      HTMLHelper.HTMLEncode(name));
         }
 

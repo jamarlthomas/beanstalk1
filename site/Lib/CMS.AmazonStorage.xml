@@ -98,6 +98,35 @@
             Gets instance of AmazonS3 class (main class providing operations with storage).
             </summary>
         </member>
+        <member name="T:CMS.AmazonStorage.AmazonS3ClientFactory">
+            <summary>
+            Class that encapsulates creation of the <see cref="T:Amazon.S3.AmazonS3Client"/> instance.
+            </summary>
+        </member>
+        <member name="M:CMS.AmazonStorage.AmazonS3ClientFactory.Create(System.String,System.String,System.String)">
+            <summary>
+            Creates <see cref="T:Amazon.S3.AmazonS3Client"/> instance that can access Amazon S3 via REST interface.
+            </summary>
+            <param name="accessKeyID">It is alphanumeric text string that uniquely identifies the user who owns the account.</param>
+            <param name="accessKey">Password to the Amazon S3 storage.</param>
+            <param name="bucketName">Name of the bucket in Amazon S3 storage.</param>
+            <returns>Returns <see cref="T:Amazon.S3.AmazonS3Client"/> instance that can access Amazon S3 via REST interface.</returns>
+        </member>
+        <member name="M:CMS.AmazonStorage.AmazonS3ClientFactory.CreateInternal(System.String,System.String,System.String)">
+            <summary>
+            Creates <see cref="T:Amazon.S3.AmazonS3Client"/> instance that can access Amazon S3 via REST interface.
+            </summary>
+            <param name="accessKeyID">It is alphanumeric text string that uniquely identifies the user who owns the account.</param>
+            <param name="accessKey">Password to the Amazon S3 storage.</param>
+            <param name="bucketName">Name of the bucket in Amazon S3 storage.</param>
+            <returns>Returns <see cref="T:Amazon.S3.AmazonS3Client"/> instance that can access Amazon S3 via REST interface.</returns>
+        </member>
+        <member name="M:CMS.AmazonStorage.AmazonS3ClientFactory.GetRegionEndpoint(System.String)">
+            <summary>
+            Gets existing <see cref="T:Amazon.RegionEndpoint"/> from <paramref name="location"/>.
+            </summary>
+            <param name="location">String value returned from Amazon S3 service that defines bucket location.</param>
+        </member>
         <member name="T:CMS.AmazonStorage.Directory">
             <summary>
             Implementation of Directory class for Amazon S3.
@@ -732,6 +761,45 @@
             </summary>
             <param name="value">Value to write.</param>
         </member>
+        <member name="M:CMS.AmazonStorage.FileStream.InitMultiPartUpload">
+            <summary>
+            Inits multipart upload for given path.
+            </summary>
+            <returns>
+            Upload ID, unique identifier for one multipart upload to Amazon S3 storage.
+            Returned upload ID is needed for each subsequent multipart upload operation.
+            </returns>
+        </member>
+        <member name="M:CMS.AmazonStorage.FileStream.UploadStreamContentAsMultiPart(System.String,System.Int32)">
+            <summary>
+            Uploads stream's content to Amazon S3 storage as one part of the file in multipart upload process
+            identified by <paramref name="uploadSessionId"/>.
+            </summary>
+            <remarks>
+            Always returns one ETag in collection. If stream's length is more than 5GB then exception is thrown.
+            </remarks>
+            <param name="uploadSessionId">Unique identifier for one multipart upload. Can be obtained by <see cref="M:CMS.AmazonStorage.FileStream.InitMultiPartUpload"/>.</param>
+            <param name="nextPartNumber">Number that defines position of the data obtained by the stream in the whole multipart upload process.</param>
+            <returns>One unique identifier of the uploaded part in collection.</returns>
+        </member>
+        <member name="M:CMS.AmazonStorage.FileStream.CompleteMultiPartUploadProcess(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Uploads one large file to Amazon S3 storage in smaller parts.
+            </summary>
+            <remarks>Stream still needs to be disposed.</remarks>
+            <param name="uploadSessionId">Unique identifier for one multipart upload. Can be obtained by <see cref="M:CMS.AmazonStorage.FileStream.InitMultiPartUpload"/> method.</param>
+            <param name="partIdentifiers">List of identifiers from Amazon S3 received after uploading each part by <see cref="M:CMS.AmazonStorage.FileStream.UploadStreamContentAsMultiPart(System.String,System.Int32)"/> method.</param>
+            <returns>ETag of the uploaded file.</returns>
+        </member>
+        <member name="M:CMS.AmazonStorage.FileStream.AbortMultiPartUpload(System.String)">
+            <summary>
+            Aborts multipart upload to Amazon S3 storage and removes all resources already uploaded.
+            </summary>
+            <param name="uploadSessionId">
+            Unique identifier for multipart upload process to external storage.
+            Is obtained by <see cref="M:CMS.AmazonStorage.FileStream.InitMultiPartUpload"/>.
+            </param>
+        </member>
         <member name="M:CMS.AmazonStorage.FileStream.Dispose">
             <summary>
             Releases all resources.
@@ -742,9 +810,19 @@
             Initializes file stream object.
             </summary>
         </member>
+        <member name="M:CMS.AmazonStorage.FileStream.SetLastWriteTimeAndCreationTimeToS3Object">
+            <summary>
+            Sets last write time and creation time to S3 object.
+            </summary>
+        </member>
         <member name="P:CMS.AmazonStorage.FileStream.Provider">
             <summary>
             Returns S3Object provider.
+            </summary>
+        </member>
+        <member name="P:CMS.AmazonStorage.FileStream.MultiPartUploader">
+            <summary>
+            Instance for uploading large files in smaller parts to Amazon S3 storage.
             </summary>
         </member>
         <member name="P:CMS.AmazonStorage.FileStream.CanSeek">
@@ -766,6 +844,16 @@
         <member name="P:CMS.AmazonStorage.FileStream.SystemStream">
             <summary>
             Gets or sets system stream
+            </summary>
+        </member>
+        <member name="P:CMS.AmazonStorage.FileStream.MinimalPartSize">
+            <summary>
+            Returns minimal size of the part used in multipart upload process to Amazon S3 storage.
+            </summary>
+        </member>
+        <member name="P:CMS.AmazonStorage.FileStream.MaximalPartSize">
+            <summary>
+            Maximal size of the part used in multipart upload process to Amazon S3 storage.
             </summary>
         </member>
         <member name="T:CMS.AmazonStorage.IS3ObjectInfo">
@@ -847,6 +935,17 @@
             <summary>
             Gets or sets content length of the object.
             </summary>
+        </member>
+        <member name="T:CMS.AmazonStorage.IS3ObjectInfoExtensionMethods">
+            <summary>
+            Extension methods for <see cref="T:CMS.AmazonStorage.IS3ObjectInfo"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.AmazonStorage.IS3ObjectInfoExtensionMethods.GetBucketName(CMS.AmazonStorage.IS3ObjectInfo)">
+            <summary>
+            Returns bucket name for current <see cref="T:CMS.AmazonStorage.IS3ObjectInfo"/>.
+            </summary>
+            <param name="obj">Representation of a file in Amazon S3 storage.</param>
         </member>
         <member name="T:CMS.AmazonStorage.IS3ObjectInfoProvider">
             <summary>
@@ -1257,6 +1356,21 @@
             Indicates maximum number of items processed by one request.
             </summary>
         </member>
+        <member name="F:CMS.AmazonStorage.S3ObjectInfoProvider.RECOMMENDED_SIZE_FOR_MULTIPART_UPLOAD">
+            <summary>
+            Recommended minimal size (15 MB) of the file in Bytes for which multipart upload to Amazon S3 storage should be used.
+            </summary>
+        </member>
+        <member name="F:CMS.AmazonStorage.S3ObjectInfoProvider.MINIMAL_PART_SIZE">
+            <summary>
+            Minimal size (5 MB) of the parts used for multipart upload.
+            </summary>
+        </member>
+        <member name="F:CMS.AmazonStorage.S3ObjectInfoProvider.MAXIMAL_PART_SIZE">
+            <summary>
+            Maximal size (5 GB) of the parts used for multipart upload.
+            </summary>
+        </member>
         <member name="M:CMS.AmazonStorage.S3ObjectInfoProvider.GetBucketName(System.String)">
             <summary>
             Returns bucket name from account info.
@@ -1302,10 +1416,14 @@
         </member>
         <member name="M:CMS.AmazonStorage.S3ObjectInfoProvider.PutFileToObject(CMS.AmazonStorage.IS3ObjectInfo,System.String)">
             <summary>
-            Puts file to Amazon S3 storage.
+            Puts local file to Amazon S3 storage.
             </summary>
+            <remarks>
+            For uploading a file from different file system other than local file system to Amazon S3 storage,
+            <see cref="M:CMS.AmazonStorage.S3ObjectInfoProvider.PutDataFromStreamToObject(CMS.AmazonStorage.IS3ObjectInfo,CMS.IO.Stream)"/> method should be used.
+            </remarks>
             <param name="obj">Object info.</param>
-            <param name="pathToSource">Path to source file.</param>
+            <param name="pathToSource">Path to local file.</param>
         </member>
         <member name="M:CMS.AmazonStorage.S3ObjectInfoProvider.PutDataFromStreamToObject(CMS.AmazonStorage.IS3ObjectInfo,CMS.IO.Stream)">
             <summary>
@@ -1384,6 +1502,50 @@
             </summary>
             <param name="path">Path to the file to be deleted</param>
         </member>
+        <member name="M:CMS.AmazonStorage.S3ObjectInfoProvider.CreatePutRequest(System.String,System.String)">
+            <summary>
+            Creates request for uploading data to Amazon S3 storage.
+            </summary>
+            <param name="key">Unique identifier for an object within a bucket.</param>
+            <param name="bucket">Existing Amazon S3 bucket.</param>
+        </member>
+        <member name="M:CMS.AmazonStorage.S3ObjectInfoProvider.SetS3ObjectMetadaFromResponse(CMS.AmazonStorage.IS3ObjectInfo,System.String,Amazon.Runtime.AmazonWebServiceResponse,System.Int64)">
+            <summary>
+            Sets metadata from response acquired from Amazon S3 storage to S3ObjectInfo.
+            </summary>
+            <param name="obj">Representation of the file on Amazon S3 storage.</param>
+            <param name="eTag">ETag assigned to file uploaded to Amazon S3 storage.</param>
+            <param name="response">Response acquired from Amazon S3 storage after uploading file.</param>
+            <param name="length">
+            Amazon S3 storage does not return length of the uploaded file in <paramref name="response"/>, 
+            if the file was uploaded via multipart upload. In case of multipart upload is <see cref="P:CMS.AmazonStorage.IS3ObjectInfo.Length"/>
+            of the <paramref name="obj"/> set via this parameter.
+            </param>
+        </member>
+        <member name="M:CMS.AmazonStorage.S3ObjectInfoProvider.SetS3ObjectMetadaFromResponse(CMS.AmazonStorage.IS3ObjectInfo,Amazon.S3.Model.PutObjectResponse,System.Int64)">
+            <summary>
+            Sets metadata from response acquired from Amazon S3 storage to S3ObjectInfo.
+            </summary>
+            <param name="obj">Representation of the file on Amazon S3 storage.</param>
+            <param name="response">Response acquired from Amazon S3 storage after uploading file.</param>
+            <param name="length">
+            Amazon S3 storage does not return length of the uploaded file in <paramref name="response"/>, 
+            if the file was uploaded via multipart upload. In case of multipart upload is <see cref="P:CMS.AmazonStorage.IS3ObjectInfo.Length"/>
+            of the <paramref name="obj"/> set via this parameter.
+            </param>
+        </member>
+        <member name="M:CMS.AmazonStorage.S3ObjectInfoProvider.SetS3ObjectMetadaFromResponse(CMS.AmazonStorage.IS3ObjectInfo,Amazon.S3.Model.CompleteMultipartUploadResponse,System.Int64)">
+            <summary>
+            Sets metadata from response acquired from Amazon S3 storage to S3ObjectInfo.
+            </summary>
+            <param name="obj">Representation of the file on Amazon S3 storage.</param>
+            <param name="response">Response acquired from Amazon S3 storage after uploading file.</param>
+            <param name="length">
+            Amazon S3 storage does not return length of the uploaded file in <paramref name="response"/>, 
+            if the file was uploaded via multipart upload. In case of multipart upload is <see cref="P:CMS.AmazonStorage.IS3ObjectInfo.Length"/>
+            of the <paramref name="obj"/> set via this parameter.
+            </param>
+        </member>
         <member name="M:CMS.AmazonStorage.S3ObjectInfoProvider.GetDateTimeString(System.DateTime)">
             <summary>
             Returns date time as a string type in english culture.
@@ -1401,10 +1563,116 @@
             Returns AmazonS3 class from account info.
             </summary>
         </member>
+        <member name="P:CMS.AmazonStorage.S3ObjectInfoProvider.MultiPartUploader">
+            <summary>
+            Utility for uploading large files in smaller parts to Amazon S3 storage.
+            </summary>
+        </member>
         <member name="P:CMS.AmazonStorage.S3ObjectInfoProvider.Current">
             <summary>
             Returns current instance of S3ObjectInfo provider.
             </summary>
+        </member>
+        <member name="T:CMS.AmazonStorage.S3MultiPartUploader">
+            <summary>
+            Class for uploading large files to Amazon S3 storage.
+            </summary>
+        </member>
+        <member name="M:CMS.AmazonStorage.S3MultiPartUploader.#ctor(Amazon.S3.AmazonS3Client,System.Int64,System.Int64)">
+            <summary>
+            Creates utility for uploading large files in smaller parts to Amazon S3 storage.
+            </summary>
+            <param name="s3Client">Client for accessing the Amazon S3 storage.</param>
+            <param name="minimalPartSize">Minimal size of the part sent in one request to Amazon S3 storage.</param>
+            <param name="maximalPartSize">Maximal possible size of the part sent in one request to Amazon S3 storage.</param>
+        </member>
+        <member name="M:CMS.AmazonStorage.S3MultiPartUploader.InitMultiPartUpload(System.String,System.String)">
+            <summary>
+            Inits multipart upload with given <paramref name="key"/> inside <paramref name="bucket"/> with Amazon S3 storage.
+            </summary>
+            <param name="key">Unique identifier for an object within a bucket.</param>
+            <param name="bucket">Existing Amazon S3 bucket.</param>
+            <returns>
+            Upload ID, unique identifier for one multipart upload to Amazon S3 storage.
+            Returned upload ID is needed for each subsequent multipart upload operation.
+            </returns>
+        </member>
+        <member name="M:CMS.AmazonStorage.S3MultiPartUploader.UploadPartFromStream(System.String,System.String,System.String,System.Int32,CMS.IO.Stream)">
+            <summary>
+            Uploads one part of a file to Amazon S3 storage.
+            </summary>
+            <remarks>
+            If some of the Amazon S3 policies about multipart upload is violated then exception will be thrown.
+            For example, if part smaller than 5 MB is uploaded and given part is not the last part of the multipart upload process.
+            </remarks>
+            <param name="uploadId">Unique identifier for one multipart upload. Can be obtained by <see cref="M:CMS.AmazonStorage.S3MultiPartUploader.InitMultiPartUpload(System.String,System.String)"/> method.</param>
+            <param name="key">Unique identifier for an object within a bucket.</param>
+            <param name="bucket">Existing Amazon S3 bucket.</param>
+            <param name="partNumber">Number that defines position of the data obtained by the stream in the whole multipart upload process.</param>
+            <param name="stream">Stream with data to upload. Supplied stream has always it's position set to origin.</param>
+            <returns>Unique identifier of the uploaded part.</returns>
+        </member>
+        <member name="M:CMS.AmazonStorage.S3MultiPartUploader.UploadFromStream(System.String,System.String,CMS.IO.Stream)">
+            <summary>
+            Uploads one large file to Amazon S3 storage in smaller parts.
+            </summary>
+            <param name="key">Unique identifier for an object within a bucket.</param>
+            <param name="bucket">Existing Amazon S3 bucket.</param>
+            <param name="stream">Stream with data to upload. Supplied stream has always it's position set to origin.</param>
+            <returns>
+            Response containing metadata of uploaded file.
+            </returns>
+        </member>
+        <member name="M:CMS.AmazonStorage.S3MultiPartUploader.UploadFromFilePath(System.String,System.String,System.String)">
+            <summary>
+            Uploads large file from local file system to Amazon S3 storage in smaller parts.
+            </summary>
+            <param name="key">Unique identifier for an object within a bucket.</param>
+            <param name="bucket">Existing Amazon S3 bucket.</param>
+            <param name="filePath">Path to a local file.</param>
+            <returns>
+            Response contains metadata of uploaded file like ETag.
+            </returns>
+        </member>
+        <member name="M:CMS.AmazonStorage.S3MultiPartUploader.CompleteMultiPartUploadProcess(System.String,System.String,System.String,System.Collections.Generic.IEnumerable{Amazon.S3.Model.UploadPartResponse})">
+            <summary>
+            Completes multiple part upload process.
+            Sends final request to Amazon S3 to merge all parts already sent to storage.
+            </summary>
+            <param name="key">Unique identifier for an object within a bucket.</param>
+            <param name="bucket">Existing Amazon S3 bucket.</param>
+            <param name="uploadId">Unique identifier for one multipart upload. Can be obtained by <see cref="M:CMS.AmazonStorage.S3MultiPartUploader.InitMultiPartUpload(System.String,System.String)"/> method.</param>
+            <param name="uploadedPartResponses">List of responses from Amazon S3 received after uploading each part.</param>
+            <returns>Response from Amazon S3 storage after finishing the multipart upload.</returns>
+        </member>
+        <member name="M:CMS.AmazonStorage.S3MultiPartUploader.AbortMultiPartUpload(System.String,System.String,System.String)">
+            <summary>
+            Aborts multipart upload, so Amazon S3 storage can delete uploaded parts.
+            </summary>
+            <param name="key">Unique identifier for an object within a bucket.</param>
+            <param name="bucket">Existing Amazon S3 bucket.</param>
+            <param name="uploadId">Unique identifier for one multipart upload. Can be obtained by <see cref="M:CMS.AmazonStorage.S3MultiPartUploader.InitMultiPartUpload(System.String,System.String)"/> method.</param>
+        </member>
+        <member name="M:CMS.AmazonStorage.S3MultiPartUploader.MultiPartUploadFromStream(System.String,System.String,CMS.IO.Stream)">
+            <summary>
+            Uploads one large file stored in <paramref name="stream"/> to Amazon S3 storage in smaller parts.
+            </summary>
+            <param name="key">Unique identifier for an object within a bucket.</param>
+            <param name="bucket">Existing Amazon S3 bucket.</param>
+            <param name="stream">Stream with data to upload. Supplied stream has always it's position set to origin.</param>
+            <returns>
+            Response from Amazon S3 storage after finishing the multipart upload.
+            Response contains metadata of the uploaded file.
+            </returns>
+        </member>
+        <member name="M:CMS.AmazonStorage.S3MultiPartUploader.CreateUploadPartRequest(System.String,System.String,System.String)">
+            <summary>
+            Creates first request used for multipart upload.
+            </summary>
+            <param name="key">Unique identifier for an object within a bucket.</param>
+            <param name="bucket">Existing Amazon S3 bucket.</param>
+            <param name="uploadId">Unique identifier for one multipart upload. Can be obtained by <see cref="M:CMS.AmazonStorage.S3MultiPartUploader.InitMultiPartUpload(System.String,System.String)"/> method.</param>
+            <returns>Returns first request used for multipart upload.</returns>
         </member>
     </members>
 </doc>

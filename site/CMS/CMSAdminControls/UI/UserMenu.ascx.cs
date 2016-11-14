@@ -127,7 +127,7 @@ public partial class CMSAdminControls_UI_UserMenu : CMSUserControl
             lnkUsers.OnClientClick = ucUsers.GetSelectionDialogScript();
 
             // Show all users except global administrators and public user, in CMSDesk show only site users
-            ucUsers.WhereCondition = "UserID IN (SELECT UserID FROM CMS_UserSite WHERE " + (IsCMSDesk ? "(SiteID = " + SiteContext.CurrentSiteID + ") AND" : "") + " (UserIsGlobalAdministrator = 0)) AND (UserID != " + MembershipContext.AuthenticatedUser.UserID + ") AND (UserName != N'public')";
+            ucUsers.WhereCondition = "UserID IN (SELECT UserID FROM CMS_UserSite WHERE " + (IsCMSDesk ? "(SiteID = " + SiteContext.CurrentSiteID + ") AND" : "") + " (UserIsGlobalAdministrator = 0)) AND (UserID != " + MembershipContext.AuthenticatedUser.UserID + ") AND (UserName != N'public') AND (UserEnabled = 1)";
 
             // Script for open uniselector modal dialog
             string impersonateScript = "function userImpersonateShowDialog () {US_SelectionDialog_" + ucUsers.ClientID + "()}";

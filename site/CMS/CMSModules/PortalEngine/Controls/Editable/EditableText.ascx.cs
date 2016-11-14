@@ -1142,8 +1142,6 @@ public partial class CMSModules_PortalEngine_Controls_Editable_EditableText : CM
                             txtValue = new CMSTextBox();
                             txtValue.ID = "txtValue";
                             txtValue.CssClass = "EditableTextTextBox";
-                            // Do not append macro hash. Macro security is being applied in the CMSAbstractWebPart
-                            txtValue.ProcessMacroSecurity = false;
                             txtValue.Enabled = IsEnabled(ViewMode);
                             pnlEditor.Controls.Add(txtValue);
                             break;

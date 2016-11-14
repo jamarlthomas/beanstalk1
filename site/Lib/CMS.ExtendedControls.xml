@@ -1343,6 +1343,12 @@
             Name of a resource string used for tooltip.
             </summary>
         </member>
+        <member name="P:CMS.ExtendedControls.CMSListBox.SupportsDisabledAttribute">
+            <summary>
+            Indicates if the control should render <c>disabled="disabled"</c> attribute when the control's <see cref="P:System.Web.UI.WebControls.WebControl.IsEnabled"/> property is false.
+            </summary>
+            <remarks>ListBox control does not render disabled attribute since ASP.NET 4.</remarks>
+        </member>
         <member name="T:CMS.ExtendedControls.CMSRadioButton">
             <summary>
             RadioButton control with localized text string.
@@ -8144,6 +8150,16 @@
             Character used for separation of resize arguments.
             </summary>
         </member>
+        <member name="F:CMS.ExtendedControls.UploaderHelper.UPLOAD_CHUNK_SIZE">
+            <summary>
+            Default size of the chunk in Bytes for uploader.
+            </summary>
+        </member>
+        <member name="F:CMS.ExtendedControls.UploaderHelper.REQUEST_CONTENT_TYPE">
+            <summary>
+            Content type for request that uploads a whole file in one chunk.
+            </summary>
+        </member>
         <member name="M:CMS.ExtendedControls.UploaderHelper.#ctor(System.Web.HttpContext)">
             <summary>
             Default constructor.
@@ -8171,9 +8187,36 @@
             Processes the given data according to the uploader mode.
             </summary>
         </member>
+        <member name="M:CMS.ExtendedControls.UploaderHelper.CopyDataFromRequestToFileStream(System.Web.HttpRequest,CMS.IO.FileStream)">
+            <summary>
+            Copies file sent from client to <paramref name="fileStream"/>.
+            It can handle if the file is sent in multipart/form-data request or
+            in body of application/octet-stream request.
+            </summary>
+            <param name="fileStream">FileStream that saves data sent from client to associated storage.</param>
+            <param name="request">Http request to read data from.</param>
+        </member>
+        <member name="M:CMS.ExtendedControls.UploaderHelper.UseMultiPartUpload(CMS.IO.IMultiPartUploadStream,CMS.ExtendedControls.UploaderHelper.MultiPartUploadData)">
+            <summary>
+            Uploads data in smaller parts that are served by media library uploader to external storage. 
+            </summary>
+            <param name="stream">Stream that support multipart upload.</param>
+            <param name="multipartUploadData">Data related to currently multipart uploaded file.</param>
+        </member>
+        <member name="M:CMS.ExtendedControls.UploaderHelper.SendMultipartDataToClient(CMS.ExtendedControls.UploaderHelper.MultiPartUploadData)">
+            <summary>
+            Sends informations about currently uploaded part of a file to client.
+            </summary>
+            <param name="multipartUploadData">Informations about currently uploaded part of a file </param>
+        </member>
         <member name="M:CMS.ExtendedControls.UploaderHelper.CleanTempFile">
             <summary>
             Removes the temporary file.
+            </summary>
+        </member>
+        <member name="M:CMS.ExtendedControls.UploaderHelper.AbortCurrentMultiPartUpload">
+            <summary>
+            Cleans resources on external storage that has already been uploaded.
             </summary>
         </member>
         <member name="M:CMS.ExtendedControls.UploaderHelper.CopyFile(System.String)">
@@ -8458,6 +8501,37 @@
         <member name="P:CMS.ExtendedControls.UploaderHelper.FileSuccessfullyProcessed">
             <summary>
             Indicates if file was successfully processed (checked if exist or uploaded).
+            </summary>
+        </member>
+        <member name="P:CMS.ExtendedControls.UploaderHelper.CurrentFileSize">
+            <summary>
+            Returns the whole size of currently uploaded file.
+            </summary>
+        </member>
+        <member name="T:CMS.ExtendedControls.UploaderHelper.MultiPartUploadData">
+            <summary>
+            Encapsulates important data for multipart upload.
+            </summary>
+        </member>
+        <member name="M:CMS.ExtendedControls.UploaderHelper.MultiPartUploadData.SerializeToJson">
+            <summary>
+            Serializes <see cref="T:CMS.ExtendedControls.UploaderHelper.MultiPartUploadData"/> to Json.
+            </summary>
+            <returns>Serialized <see cref="T:CMS.ExtendedControls.UploaderHelper.MultiPartUploadData"/> in Json format.</returns>
+        </member>
+        <member name="P:CMS.ExtendedControls.UploaderHelper.MultiPartUploadData.UploadSessionID">
+            <summary>
+            Unique identifier for one multipart upload.
+            </summary>
+        </member>
+        <member name="P:CMS.ExtendedControls.UploaderHelper.MultiPartUploadData.PartNumber">
+            <summary>
+            Number of the part that is currently uploaded to external storage.
+            </summary>
+        </member>
+        <member name="P:CMS.ExtendedControls.UploaderHelper.MultiPartUploadData.PartIdentifiers">
+            <summary>
+            ETag of every part already uploaded to external storage.
             </summary>
         </member>
         <member name="T:CMS.ExtendedControls.UploaderHelper.ForumArgsStruct">
@@ -10565,11 +10639,6 @@
         <member name="T:CMS.ExtendedControls.DateTimePicker">
             <summary>
             Date and time picker.
-            </summary>
-        </member>
-        <member name="F:CMS.ExtendedControls.DateTimePicker.lblDateTime">
-            <summary>
-            DateTime label
             </summary>
         </member>
         <member name="F:CMS.ExtendedControls.DateTimePicker.imgEnabled">

@@ -339,7 +339,7 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_AdvancedExport : Advan
     /// <param name="forceMaxItems">Max items count (for preview export)</param>
     private void ExportData(DataExportFormatEnum format, int? forceMaxItems = null)
     {
-        UniGridExportHelper.ExportRawData = chkExportRawData.Checked;
+        UniGridExportHelper.ExportRawData = chkExportRawData.Checked && UserCanEditSql;
         UniGridExportHelper.CSVDelimiter = CurrentDelimiter;
         UniGridExportHelper.GenerateHeader = chkExportHeader.Checked;
         UniGridExportHelper.CurrentPageOnly = chkCurrentPageOnly.Checked;
@@ -369,7 +369,7 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_AdvancedExport : Advan
         if (!chkCurrentPageOnly.Checked)
         {
             UniGridExportHelper.OrderBy = UserCanEditSql ? TrimExtendedTextAreaValue(txtOrderBy.Text) : ValidationHelper.GetString(orderByElem.Value, null);
-            UniGridExportHelper.WhereCondition = TrimExtendedTextAreaValue(txtWhereCondition.Text);
+            UniGridExportHelper.WhereCondition = UserCanEditSql ? TrimExtendedTextAreaValue(txtWhereCondition.Text) : String.Empty;
         }
         UniGridExportHelper.Columns = GetSelectedColumns();
 
@@ -389,6 +389,18 @@ public partial class CMSAdminControls_UI_UniGrid_Controls_AdvancedExport : Advan
     private List<string> GetSelectedColumns()
     {
         List<string> exportedColumns = new List<string>();
+
+        // Edge case for user who had permission to export raw data but lost it on postback
+        if (chkExportRawData.Checked && !UserCanEditSql)
+        {
+            // Get default column indexes of UI columns to export
+            var cols = UniGridExportHelper.BoundFields.Where(f => !String.IsNullOrEmpty(f.HeaderText));
+            var range = Enumerable.Range(0, cols.Count());
+            exportedColumns.AddRange(range.Select(t => t.ToString()));
+
+            return exportedColumns;
+        }
+
         for (int i = 0; i < chlColumns.Items.Count; i++)
         {
             ListItem column = chlColumns.Items[i];

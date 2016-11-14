@@ -200,6 +200,18 @@ public partial class CMSModules_Content_FormControls_Categories_CategorySelector
         }
     }
 
+
+    /// <summary>
+    /// Underlying form control, if provided, the form control automatically redirects all properties to that control
+    /// </summary>
+    protected override FormEngineUserControl UnderlyingFormControl
+    {
+        get
+        {
+            return selectCategory;
+        }
+    }
+
     #endregion
 
 

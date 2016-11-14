@@ -59,7 +59,7 @@ public partial class CMSModules_Widgets_Dialogs_WidgetProperties : CMSWidgetProp
             }
         }
 
-        if (widgetId != "")
+        if ((widgetId != "") && (PageInfo != null))
         {
             // Get template instance
             PageTemplateInstance templateInstance = CMSPortalManager.GetTemplateInstanceForEditing(PageInfo);

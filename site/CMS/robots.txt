@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /CMSDesk
+Disallow: /Admin
+Disallow: /App_Data
+Disallow: /App_Start
+Disallow: /bin
+Disallow: /Old_App_Code

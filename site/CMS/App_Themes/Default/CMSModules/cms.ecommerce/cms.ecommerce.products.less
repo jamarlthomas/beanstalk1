@@ -2,11 +2,27 @@
 // Stylesheet for ecommerce products UI.
 // --------------------------------------------------
 
-.ProductSectionNavigation {
-    background: @color-gray-140;
+// Variables
+@tree-default-width: 	304px; // Based on Size set in CMSModules/Ecommerce/Pages/Tools/Products/Products_Frameset.aspx
+@tree-panel-bg:         @color-gray-140;
 
-    .TreeBody {
-        overflow: auto;
+.ProductSectionNavigation
+{
+    position: absolute;
+    left: 0;
+    top: 0; 
+    width: @tree-default-width;
+    height: 100%;
+
+    .TreeBody
+    {
+        position: absolute;
+        top: 48px;
+    }
+
+    .tree-bottom-actions-panel
+    { 
+        width: @tree-default-width;
     }
 }
 

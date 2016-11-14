@@ -39,15 +39,6 @@ public partial class CMSFormControls_Inputs_USphone {
     protected global::CMS.ExtendedControls.CMSTextBox txt3rd;
     
     /// <summary>
-    /// lbl1st control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::CMS.ExtendedControls.LocalizedLabel lbl1st;
-    
-    /// <summary>
     /// lbl2nd control.
     /// </summary>
     /// <remarks>

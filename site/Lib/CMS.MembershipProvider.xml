@@ -766,11 +766,6 @@
             Gets or sets user's gender.
             </summary>
         </member>
-        <member name="P:CMS.MembershipProvider.Facebook.FacebookUserProfile.Biography">
-            <summary>
-            Gets or sets user's biography.
-            </summary>
-        </member>
         <member name="P:CMS.MembershipProvider.Facebook.FacebookUserProfile.Birthday">
             <summary>
             Gets or sets user's birthday.

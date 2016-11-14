@@ -18,7 +18,7 @@ public partial class CMSModules_Membership_FormControls_Users_SelectUser : FormE
     #endregion
 
 
-    #region "Public properties"
+    #region "Properties"
 
     /// <summary>
     /// Gets underlying control.

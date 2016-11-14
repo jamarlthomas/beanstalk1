@@ -450,6 +450,19 @@ public partial class CMSAdminControls_UI_UniSelector_UniSelector : UniSelector, 
         }
     }
 
+
+    /// <summary>
+    /// Gets ClientID of the control from which the Value is retrieved or 
+    /// null if such a control can't be specified.
+    /// </summary>
+    public override string ValueElementID
+    {
+        get
+        {
+            return InputClientID;
+        }
+    }
+
     #endregion
 
 
@@ -1644,7 +1657,10 @@ function US_SelectionDialogReady_{0}(rvalue, context)
         // Select button
         if (AllowEditTextBox)
         {
-            btnClear.OnClientClick = string.Format("US_SetVal('{0}', ''); return false;", GetClientID(txtSingleSelect));
+            if (!HasDependingFields)
+            {
+                btnClear.OnClientClick = string.Format("US_SetVal('{0}', ''); return false;", GetClientID(txtSingleSelect));
+            }
             btnSelect.OnClientClick = "US_SelectionDialog_" + UniSelectorClientID + "('$|' + US_GetVal('" + GetClientID(txtSingleSelect) + "')); return false;";
         }
         else
@@ -1665,7 +1681,10 @@ function US_SelectionDialogReady_{0}(rvalue, context)
         // Select button
         if (isTextBoxMode && AllowEditTextBox)
         {
-            btnClear.OnClientClick = string.Format("US_SetVal('{0}', ''); return false;", txtSingleSelect.ClientID);
+            if (!HasDependingFields)
+            {
+                btnClear.OnClientClick = string.Format("US_SetVal('{0}', ''); return false;", txtSingleSelect.ClientID);
+            }
             btnSelect.OnClientClick = "US_SelectionDialog_" + UniSelectorClientID + "('$|' + US_GetVal('" + GetClientID(txtSingleSelect) + "')); return false;";
         }
         else

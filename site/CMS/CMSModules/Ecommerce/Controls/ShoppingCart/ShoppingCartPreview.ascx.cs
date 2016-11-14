@@ -193,11 +193,19 @@ public partial class CMSModules_Ecommerce_Controls_ShoppingCart_ShoppingCartPrev
     /// </summary>    
     public override bool IsValid()
     {
+        var cart = ShoppingCart;
+
         // Force loading current values         
-        ShoppingCartInfoProvider.EvaluateShoppingCart(ShoppingCart);
+        ShoppingCartInfoProvider.EvaluateShoppingCart(cart);
 
         // Check inventory
-        var checkResult = ShoppingCartInfoProvider.CheckShoppingCart(ShoppingCart);
+        var checkResult = ShoppingCartInfoProvider.CheckShoppingCart(cart);
+
+        // Check if selected shipping option is applicable
+        if (!ShippingOptionInfoProvider.IsShippingOptionApplicable(cart, cart.ShippingOption))
+        {
+            checkResult.ShippingOptionNotAvailable = true;
+        }
 
         if (checkResult.CheckFailed)
         {

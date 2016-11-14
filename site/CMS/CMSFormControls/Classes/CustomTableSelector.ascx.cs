@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Web.UI.WebControls;
+
 using CMS.DataEngine;
+using CMS.ExtendedControls;
 using CMS.FormControls;
 using CMS.Helpers;
 using CMS.MacroEngine;
-using CMS.Base;
 using CMS.SiteProvider;
 using CMS.UIControls;
-using CMS.ExtendedControls;
 
 public partial class CMSFormControls_Classes_CustomTableSelector : FormEngineUserControl
 {
@@ -57,7 +56,7 @@ public partial class CMSFormControls_Classes_CustomTableSelector : FormEngineUse
     {
         get
         {
-            return uniSelector.TextBoxSelect.ClientID;
+            return uniSelector.DropDownSingleSelect.ClientID;
         }
     }
 

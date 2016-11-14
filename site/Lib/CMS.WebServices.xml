@@ -900,6 +900,11 @@
             Forms authentication
             </summary>
         </member>
+        <member name="F:CMS.WebServices.RESTSecurityInvoker.HASH_AUTH_KEY">
+            <summary>
+            Is hash authenticated key
+            </summary>
+        </member>
         <member name="M:CMS.WebServices.RESTSecurityInvoker.ApplyDispatchBehavior(System.ServiceModel.Description.OperationDescription,System.ServiceModel.Dispatcher.DispatchOperation)">
             <summary>
             Initializes the invoker.
@@ -1010,6 +1015,12 @@
             <summary>
             Check the read-only settings for object/document operations.
             </summary>
+        </member>
+        <member name="M:CMS.WebServices.RESTSecurityInvoker.IsHashAuthenticated">
+            <summary>
+            Returns true if the request is GET and the hash parameter is present and matches the requested URL.
+            </summary>
+            <remarks>This method was introduced in the hotfix 9.0.39 to replace the use of <see cref="F:CMS.WebServices.RESTSecurityInvoker.HASH_AUTHENTICATED_USERNAME"/> constant.</remarks>
         </member>
         <member name="M:CMS.WebServices.RESTSecurityInvoker.GetAuthenticatedUserNameInternal(System.Boolean,System.String)">
             <summary>

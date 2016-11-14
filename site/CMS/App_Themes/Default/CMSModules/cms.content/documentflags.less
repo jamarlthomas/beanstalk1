@@ -1,3 +1,27 @@
+// Variables
+@tree-default-width: 	304px; // Based on Size set in CMSModules/Content/CMSDesk/Default.aspx
+@tree-panel-bg:         @color-gray-140;
+
+.ContentMenu
+{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: @tree-default-width; 
+    height: 100%;
+
+    .TreeBody
+    {
+        position: absolute;
+        top: 96px;
+    }
+
+    .tree-bottom-actions-panel
+    {
+        width: @tree-default-width;
+    }
+}
+
 /* Translation managment */
 
 .document-flag-tooltip {

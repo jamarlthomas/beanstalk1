@@ -110,11 +110,9 @@ public partial class CMSModules_Blogs_Controls_BlogCommentDetail : BlogCommentDe
         {
             lnkName.Text = HTMLHelper.HTMLEncode(Comment.CommentUserName);
             lnkName.NavigateUrl = Comment.CommentUrl;
-            // Add no follow attribute if it is required
-            if (HTMLHelper.UseNoFollowForUsersLinks(SiteContext.CurrentSiteName))
-            {
-                lnkName.Attributes.Add("rel", "nofollow");
-            }
+
+            AddRelAttributes();
+
             lblName.Visible = false;
         }
         else
@@ -160,6 +158,21 @@ public partial class CMSModules_Blogs_Controls_BlogCommentDetail : BlogCommentDe
     private string GetPostBackEventReference(string actionName)
     {
         return ControlsHelper.GetPostBackEventReference(this, string.Format("{0};{1}", actionName, CommentID));
+    }
+
+
+    private void AddRelAttributes()
+    {
+        string attributeValue = string.Empty;
+
+        // Add no follow attribute if it is required
+        if (HTMLHelper.UseNoFollowForUsersLinks(SiteContext.CurrentSiteName))
+        {
+            attributeValue = "nofollow ";
+        }
+
+        // Prevent target _blank vulnerability phishing attack
+        lnkName.Attributes.Add("rel", attributeValue + "noopener noreferrer");
     }
 
     #endregion

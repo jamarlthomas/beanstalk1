@@ -19,6 +19,8 @@ public partial class CMSAdminControls_MultiFileUploader_MultiFileUploader : CMSU
 
     private const string PARAMETER_SEPARATOR = "|";
 
+    private const long UPLOAD_CHUNK_SIZE = 8 * 1024 * 1024;
+
     #endregion
 
 
@@ -820,7 +822,7 @@ public partial class CMSAdminControls_MultiFileUploader_MultiFileUploader : CMSU
             MaxNumberToUpload,
             MaximumTotalUpload,
             MaximumUploadSize = MaximumUpload,
-            UploadChunkSize,
+            UploadChunkSize = (UploadChunkSize > 0) ? UploadChunkSize : UPLOAD_CHUNK_SIZE,
             UploadMode,
             UploadPage = UploadHandlerUrl,
             ResizeArgs = string.Format("{0};{1};{2}", ResizeToWidth, ResizeToHeight, ResizeToMaxSideSize),

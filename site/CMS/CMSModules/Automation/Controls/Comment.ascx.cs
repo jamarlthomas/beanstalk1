@@ -150,7 +150,7 @@ function ProcessAction(action) {
         break;
 
         case '", ComponentEvents.AUTOMATION_MOVE_SPEC, @"':
-            if(wopener.", nextStr, @") { wopener.", specStr, @"(param, comment); } else { wopener.", consStr, @"(); }
+            if(wopener.", specStr, @") { wopener.", specStr, @"(param, comment); } else { wopener.", consStr, @"(); }
         break;
 
         case '", ComponentEvents.AUTOMATION_MOVE_PREVIOUS, @"':

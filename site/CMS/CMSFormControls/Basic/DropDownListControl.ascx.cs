@@ -229,6 +229,17 @@ public partial class CMSFormControls_Basic_DropDownListControl : ListFormControl
         {
             btnAutocomplete.Visible = true;
 
+            string dependingScriptPart = HasDependingFields ? string.Format(
+@",
+change: function (event, ui) {{
+    __doPostBack('#{0}', '');
+}},
+close: function(event, ui) {{
+    if (event.originalEvent && event.originalEvent.type === 'menuselect') {{
+        __doPostBack('#{0}', '');
+    }}
+}}", txtCombo.ClientID) : "";
+
             ScriptHelper.RegisterJQueryUI(Page);
             ScriptHelper.RegisterStartupScript(Page, typeof (string), "Autocomplete_" + ClientID, ScriptHelper.GetScript(String.Format(
 @"var txtCombo{0} = $cmsj('#{0}');
@@ -237,7 +248,7 @@ public partial class CMSFormControls_Basic_DropDownListControl : ListFormControl
 txtCombo{0}.autocomplete({{
     source: {1},
     minLength: 0,
-    appendTo: '#{2}'
+    appendTo: '#{2}'{4}
 }});
 
 // Open dropdown list
@@ -251,7 +262,7 @@ $cmsj(document).bind('mousewheel DOMMouseScroll', function (e) {{
     if (!txtCombo{0}.autocomplete('widget').is(':hover')) {{
             txtCombo{0}.autocomplete('close');
     }}
-}});", txtCombo.ClientID, GetDataAsJsArray(), autoComplete.ClientID, btnAutocomplete.ClientID)));
+}});", txtCombo.ClientID, GetDataAsJsArray(), autoComplete.ClientID, btnAutocomplete.ClientID, dependingScriptPart)));
         }
         else
         {

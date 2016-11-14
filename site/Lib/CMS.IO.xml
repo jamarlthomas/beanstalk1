@@ -2808,6 +2808,63 @@
              Gets or sets the position within the current stream.
             </summary>
         </member>
+        <member name="T:CMS.IO.IMultiPartUploadStream">
+            <summary>
+            Interface extending <see cref="T:CMS.IO.Stream"/>'s functionality to enable upload of large files in smaller parts to external storage.
+            </summary>
+            <remarks>This API supports the framework infrastructure and is not intended to be used directly from your code.</remarks>
+        </member>
+        <member name="M:CMS.IO.IMultiPartUploadStream.InitMultiPartUpload">
+            <summary>
+            Inits multipart upload with external storage.
+            </summary>
+            <returns>
+            Unique identifier for multipart upload process to external storage.
+            Returned unique identifier may be needed for each subsequent multipart upload operation.
+            </returns>
+        </member>
+        <member name="M:CMS.IO.IMultiPartUploadStream.UploadStreamContentAsMultiPart(System.String,System.Int32)">
+            <summary>
+            Uploads stream content to external storage.
+            </summary>
+            <param name="uploadSessionId">
+            Unique identifier for multipart upload process to external storage.
+            Is obtained by <see cref="M:CMS.IO.IMultiPartUploadStream.InitMultiPartUpload"/>.
+            </param>
+            <param name="nextPartNumber">Number that defines position of the data obtained by the stream in the whole multipart upload process.</param>
+            <returns>Unique identifiers of currently uploaded parts to external storage.</returns>
+        </member>
+        <member name="M:CMS.IO.IMultiPartUploadStream.CompleteMultiPartUploadProcess(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Completes multipart upload process.
+            </summary>
+            <remarks>Stream still needs to be disposed.</remarks>
+            <param name="uploadSessionId">
+            Unique identifier for multipart upload process to external storage.
+            Is obtained by <see cref="M:CMS.IO.IMultiPartUploadStream.InitMultiPartUpload"/>.
+            </param>
+            <param name="partIdentifiers">All unique identifiers of uploaded parts acquired by <see cref="M:CMS.IO.IMultiPartUploadStream.UploadStreamContentAsMultiPart(System.String,System.Int32)"/> method.</param>
+            <returns>ETag of the uploaded file.</returns>
+        </member>
+        <member name="M:CMS.IO.IMultiPartUploadStream.AbortMultiPartUpload(System.String)">
+            <summary>
+            Aborts multipart upload to external storage and should remove all resources already uploaded to external storage if necessary.
+            </summary>
+            <param name="uploadSessionId">
+            Unique identifier for multipart upload process to external storage.
+            Is obtained by <see cref="M:CMS.IO.IMultiPartUploadStream.InitMultiPartUpload"/>.
+            </param>
+        </member>
+        <member name="P:CMS.IO.IMultiPartUploadStream.MinimalPartSize">
+            <summary>
+            Returns minimal size in bytes of a part that can be sent to external storage.
+            </summary>
+        </member>
+        <member name="P:CMS.IO.IMultiPartUploadStream.MaximalPartSize">
+            <summary>
+            Returns maximal size in bytes of a part that can be sent to external storage.
+            </summary>
+        </member>
         <member name="T:CMS.IO.MemoryStream">
             <summary>
             Envelope for System.IO.MemoryStream.

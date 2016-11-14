@@ -351,7 +351,7 @@ public partial class CMSModules_Scoring_Controls_UI_Contact_List : CMSAdminListC
                     ContactGroupInfo group = ContactGroupInfoProvider.GetContactGroupInfo(groupId);
                     if (group != null)
                     {
-                        resultMessage = String.Format(GetString("om.contact.massaction.addedtogroup"), group.ContactGroupDisplayName);
+                        resultMessage = string.Format(GetString("om.contact.massaction.addedtogroup"), HTMLHelper.HTMLEncode(group.ContactGroupDisplayName));
                     }
                 }
                 break;

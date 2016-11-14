@@ -730,8 +730,14 @@ select.form-control {
                 }
             }
         }
-        // Hide default inputs
-        .sr-only;
+        // Hide default inputs                
+        position:fixed;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden; 
+        clip: rect(0, 0, 0, 0);
+        border: 0;
         // Icons
         + label:before,
         + label:after {

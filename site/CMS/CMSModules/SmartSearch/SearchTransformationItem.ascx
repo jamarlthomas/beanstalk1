@@ -17,7 +17,7 @@
                 </div>
                 <%-- Search result content --%>
                 <div style="margin-top: 5px; width: 590px;">
-                    <%# SearchHighlight(HTMLHelper.HTMLEncode(TextHelper.LimitLength(HttpUtility.HtmlDecode(HTMLHelper.StripTags(GetSearchedContent(DataHelper.GetNotEmpty(Eval("Content"), "")), false, " ")), 280, "...")), "<span style=\"background-color: #FEFF8F\">", "</span>") %><br />
+                    <%# SearchHighlight(HTMLHelper.HTMLEncode(TextHelper.LimitLength(HttpUtility.HtmlDecode(HTMLHelper.StripTags(GetSearchedContent(DataHelper.GetNotEmpty(Eval("Content"), "")), false, true, " ", "@", "")), 280, "...")), "<span style=\"background-color: #FEFF8F\">", "</span>") %><br />
                 </div>
                 <%-- Relevance, URL, Creattion --%>
                 <div style="margin-top: 5px;">

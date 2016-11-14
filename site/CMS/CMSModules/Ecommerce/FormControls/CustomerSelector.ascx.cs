@@ -215,9 +215,9 @@ public partial class CMSModules_Ecommerce_FormControls_CustomerSelector : FormEn
     public void InitSelector()
     {
         uniSelector.IsLiveSite = IsLiveSite;
+        uniSelector.AdditionalSearchColumns = "CustomerFirstName,CustomerCompany,CustomerEmail";
 
-        // Set resource prefix if specified
-        if (ResourcePrefix != null)
+        if (!string.IsNullOrEmpty(ResourcePrefix))
         {
             uniSelector.ResourcePrefix = ResourcePrefix;
         }

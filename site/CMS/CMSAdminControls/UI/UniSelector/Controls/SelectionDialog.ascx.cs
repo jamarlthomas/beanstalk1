@@ -57,6 +57,7 @@ public partial class CMSAdminControls_UI_UniSelector_Controls_SelectionDialog : 
 
     private bool allowEditTextBox;
     private bool fireOnChanged;
+    private bool mHasDependingFields;
     private bool mLocalizeItems = true;
 
     private string mGlobalObjectSuffix;
@@ -339,9 +340,13 @@ public partial class CMSAdminControls_UI_UniSelector_Controls_SelectionDialog : 
             // Textbox modes
             case SelectionModeEnum.SingleTextBox:
             case SelectionModeEnum.MultipleTextBox:
-                if (allowEditTextBox)
+                if (allowEditTextBox && !mHasDependingFields)
                 {
                     buttonsScript += "function US_Submit(){ SelectItems(escape(ItemsElem().value), escape(ItemsElem().value.replace(/^" + regexEscapedValuesSeparator + "+|" + regexEscapedValuesSeparator + "+$/g, '')), " + ScriptHelper.GetString(hdnClientId) + ", " + ScriptHelper.GetString(txtClientId) + ", " + ScriptHelper.GetString(hashId) + ", HashElem().value); return false; }";
+                }
+                else if (mHasDependingFields)
+                {
+                    buttonsScript += "function US_Submit(){ SelectItemsReload(escape(ItemsElem().value), escape(ItemsElem().value.replace(/^" + regexEscapedValuesSeparator + "+|" + regexEscapedValuesSeparator + "+$/g, '')), " + ScriptHelper.GetString(hdnClientId) + ", " + ScriptHelper.GetString(txtClientId) + ", " + ScriptHelper.GetString(hdnDrpId) + ", " + ScriptHelper.GetString(hashId) + ", HashElem().value); return false; }";
                 }
                 else
                 {
@@ -678,11 +683,25 @@ function SelectAllItems(checkbox, hash) {
                             case SelectionModeEnum.SingleTextBox:
                                 if (allowEditTextBox)
                                 {
-                                    onclick = string.Format("SelectItems({0},{0},{1},{2},{3},'{4}'); return false;", safeItemID, ScriptHelper.GetString(hdnClientId), ScriptHelper.GetString(txtClientId), ScriptHelper.GetString(hashId), itemHash);
+                                    if (!mHasDependingFields)
+                                    {
+                                        onclick = string.Format("SelectItems({0},{0},{1},{2},{3},'{4}'); return false;", safeItemID, ScriptHelper.GetString(hdnClientId), ScriptHelper.GetString(txtClientId), ScriptHelper.GetString(hashId), itemHash);
+                                    }
+                                    else
+                                    {
+                                        onclick = string.Format("SelectItemsReload({0},{0},{1},{2},{3},{4},'{5}'); return false;", safeItemID, ScriptHelper.GetString(hdnClientId), ScriptHelper.GetString(txtClientId), ScriptHelper.GetString(hdnDrpId), ScriptHelper.GetString(hashId), itemHash);
+                                    }
                                 }
                                 else
                                 {
-                                    onclick = string.Format("SelectItems({0},{1},{2},{3},{4},'{5}'); return false;", safeItemID, GetSafe(itemName), ScriptHelper.GetString(hdnClientId), ScriptHelper.GetString(txtClientId), ScriptHelper.GetString(hashId), itemHash);
+                                    if (!mHasDependingFields)
+                                    {
+                                        onclick = string.Format("SelectItems({0},{1},{2},{3},{4},'{5}'); return false;", safeItemID, GetSafe(itemName), ScriptHelper.GetString(hdnClientId), ScriptHelper.GetString(txtClientId), ScriptHelper.GetString(hashId), itemHash);
+                                    }
+                                    else
+                                    {
+                                        onclick = string.Format("SelectItemsReload({0},{1},{2},{3},{4},{5},'{6}'); return false;", safeItemID, GetSafe(itemName), ScriptHelper.GetString(hdnClientId), ScriptHelper.GetString(txtClientId), ScriptHelper.GetString(hdnDrpId), ScriptHelper.GetString(hashId), itemHash);
+                                    }
                                 }
                                 break;
 
@@ -943,6 +962,7 @@ function SelectAllItems(checkbox, hash) {
             AllowLocalizedFiltering = ValidationHelper.GetBoolean(parameters["AllowLocalizedFiltering"], true);
             mZeroRowsText = ValidationHelper.GetString(parameters["ZeroRowsText"], string.Empty);
             mFilteredZeroRowsText = ValidationHelper.GetString(parameters["FilteredZeroRowsText"], string.Empty);
+            mHasDependingFields = ValidationHelper.GetBoolean(parameters["HasDependingFields"], false);
 
             // Set item prefix if it was passed by UniSelector's AdditionalUrlParameters
             var itemPrefix = QueryHelper.GetString("ItemPrefix", null);

@@ -87,7 +87,7 @@ public partial class CMSModules_Membership_Pages_Users_User_Edit_General : CMSUs
         }
 
         // Display impersonation link if current user is global administrator and edited user is not global admin
-        if (CurrentUser.IsGlobalAdministrator && (ui.UserID != CurrentUser.UserID) && !ui.IsPublic())
+        if (CurrentUser.IsGlobalAdministrator && (ui.UserID != CurrentUser.UserID) && !ui.IsPublic() && ui.Enabled)
         {
             string message = GetImpersonalMessage(ui);
 

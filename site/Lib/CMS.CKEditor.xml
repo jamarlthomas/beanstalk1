@@ -142,11 +142,6 @@
             The HTML content of the editor.
             </summary>
         </member>
-        <member name="P:CMS.CKEditor.CKEditorControl.Signatures">
-            <summary>
-            Hashtable with macro signatures.
-            </summary>
-        </member>
         <member name="P:CMS.CKEditor.CKEditorControl.BasePath">
              <summary>
             <p>

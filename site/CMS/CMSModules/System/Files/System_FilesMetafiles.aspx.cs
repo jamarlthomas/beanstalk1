@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Security.Principal;
 using System.Web.UI.WebControls;
-using System.Linq;
 
 using CMS.ExtendedControls;
 using CMS.Helpers;
@@ -19,7 +18,6 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
 
     protected int currentSiteId = 0;
     protected int siteId = 0;
-
     protected string filterWhere = null;
 
     #endregion
@@ -685,13 +683,19 @@ public partial class CMSModules_System_Files_System_FilesMetafiles : GlobalAdmin
 
 
     /// <summary>
-    /// Gets the files location type
+    /// Gets the files location type.
     /// </summary>
     /// <param name="siteId">Site identifier</param>
     private static FilesLocationTypeEnum GetFilesLocationType(int siteId)
     {
-        var siteIdentifier = new SiteInfoIdentifier(siteId);
-        return FileHelper.FilesLocationType(siteIdentifier.ObjectCodeName);
+        string siteCodeName = null;
+
+        if (siteId > 0)
+        {
+            siteCodeName = new SiteInfoIdentifier(siteId).ObjectCodeName;
+        }
+
+        return FileHelper.FilesLocationType(siteCodeName);
     }
 
     #endregion

@@ -153,4 +153,7 @@
   <data name="tags.tagsselector.assigntaggroup" xml:space="preserve">
     <value>You need to assign a tag group to the page on the Metadata tab to enable using page tags.</value>
   </data>
+  <data name="mediafile.cantupdatelockedfile" xml:space="preserve">
+    <value>Cannot update the 'Modified' time stamp, because the file is currently being used by another process.</value>
+  </data>
 </root>

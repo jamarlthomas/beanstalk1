@@ -93,9 +93,25 @@ public partial class CMSWebParts_Maps_Static_StaticGoogleMaps : CMSAbstractWebPa
     #region "Map properties"
 
     /// <summary>
-    /// Gets or sets the value that indicates whether the keyboard shortcuts are enabled.
+    /// Api key for communicating with Google services.
     /// </summary>
-    public bool EnableKeyboardShortcuts
+    public string ApiKey
+    {
+        get
+        {
+            return ValidationHelper.GetString(GetValue("ApiKey"), "");
+        }
+        set
+        {
+            SetValue("ApiKey", value);
+        }
+    }
+
+
+/// <summary>
+/// Gets or sets the value that indicates whether the keyboard shortcuts are enabled.
+/// </summary>
+public bool EnableKeyboardShortcuts
     {
         get
         {
@@ -450,7 +466,7 @@ public partial class CMSWebParts_Maps_Static_StaticGoogleMaps : CMSAbstractWebPa
             LoadMap();
 
             // Register Google javascript files
-            BasicGoogleMaps.RegisterMapScripts(Page, ClientID, "~/CMSWebParts/Maps/Static/StaticGoogleMaps_files/GoogleMaps.js");
+            BasicGoogleMaps.RegisterMapScripts(Page, ClientID, "~/CMSWebParts/Maps/Static/StaticGoogleMaps_files/GoogleMaps.js", ApiKey);
         }
     }
 

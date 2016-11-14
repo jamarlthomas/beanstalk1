@@ -6178,11 +6178,11 @@
             Return name of site that is assigned to the node.
             </summary>
         </member>
-        <member name="M:CMS.DocumentEngine.DocumentHelper.UpdateSearchIndex(CMS.DocumentEngine.TreeNode)">
+        <member name="M:CMS.DocumentEngine.DocumentHelper.UpdateSearchIndexIfAllowed(CMS.DocumentEngine.TreeNode)">
             <summary>
             Updates search index if the search task for given node should be created.
             </summary>
-            <param name="node">Node to check</param>
+            <param name="node">Node to create search task for</param>
         </member>
         <member name="M:CMS.DocumentEngine.DocumentHelper.SetDefaultExtension(CMS.DocumentEngine.TreeNode,System.String,CMS.DocumentEngine.AttachmentInfo)">
             <summary>
@@ -7213,6 +7213,24 @@
         <member name="T:CMS.DocumentEngine.DocumentSearchIndexer.GetSearchDocumentsParams">
             <summary>
             Get search document parameters
+            </summary>
+        </member>
+        <member name="T:CMS.DocumentEngine.SearchEditableContentProvider">
+            <summary>
+            Provides filtered content from document content field.
+            </summary>
+        </member>
+        <member name="M:CMS.DocumentEngine.SearchEditableContentProvider.#ctor(System.String)">
+            <summary>
+            Creates an instance of the <see cref="T:CMS.DocumentEngine.SearchEditableContentProvider"/> class.
+            </summary>
+            <param name="content">XML with editable webparts.</param>
+        </member>
+        <member name="M:CMS.DocumentEngine.SearchEditableContentProvider.GetSearchContent">
+            <summary>
+            Returns filtered content from DocumentContent field. This method filters EditableImage 
+            webparts from content. If processed content does not contain XML with editable webparts, 
+            the method returns Content without modifications.
             </summary>
         </member>
         <member name="T:CMS.DocumentEngine.SiteDeletion">
@@ -8628,7 +8646,7 @@
             <param name="documentGuid">Document GUID</param>
             <param name="siteId">Document site ID</param>
         </member>
-        <member name="M:CMS.DocumentEngine.PageInfoProvider.GetDataForPageInfo(System.String,System.String,System.String,System.Int32,System.String,System.Boolean,System.Boolean)">
+        <member name="M:CMS.DocumentEngine.PageInfoProvider.GetDataForPageInfo(System.String,System.String,System.String,System.Int32,System.String,System.Boolean)">
             <summary>
             Returns the data for the specified page info.
             </summary>
@@ -8639,7 +8657,6 @@
             <param name="cultureCode">Preferred culture code to be used to get the best matching candidate. 
             When the URL path is provided and there is a match by the URL path, the culture code of the matched candidate has higher priority than the given culture code and is used for the result.</param>
             <param name="combineWithDefaultCulture">Indicates if results should be combined with default culture</param>
-            <param name="onlyPublished">Indicates whether resulting PageInfo must be published</param>
         </member>
         <member name="M:CMS.DocumentEngine.PageInfoProvider.GetBlankPageInfo(System.Int32,System.String,System.String,System.Int32)">
             <summary>

@@ -907,14 +907,7 @@
             </summary>
             <param name="resKeyPrefix">Prefix of the resource string that should be used</param>
             <param name="plainText">Plain text from which the string should be generated</param>
-            <param name="maxKeyLength">Maximal resource string key length</param>
-        </member>
-        <member name="M:CMS.Localization.LocalizationHelper.LimitLength(System.String,System.Int32)">
-            <summary>
-            Limits the string length.
-            </summary>
-            <param name="text">Text to trim</param>
-            <param name="maxLength">Max length</param>
+            <param name="maxKeyLength">Maximal resource string key length. Length of the resource string key is limited to 50 chars.</param>
         </member>
         <member name="M:CMS.Localization.LocalizationHelper.CreateFileManager(System.String)">
             <summary>

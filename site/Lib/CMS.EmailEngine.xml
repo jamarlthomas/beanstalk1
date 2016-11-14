@@ -212,6 +212,12 @@
             <param name="siteName">Site name; default value is null</param>
             <returns>New MailMessage object</returns>
         </member>
+        <member name="M:CMS.EmailEngine.EmailInfoProvider.GetAttachments(System.Int32)">
+            <summary>
+            Returns collection of <see cref="T:System.Net.Mail.Attachment"/> objects based on email's attachments stored in DB.
+            </summary>
+            <param name="emailId">ID of the email which attachments should be returned</param>
+        </member>
         <member name="M:CMS.EmailEngine.EmailInfoProvider.FetchEmails(CMS.EmailEngine.EmailMailoutEnum,System.Int32,System.Int32,System.Nullable{System.DateTime})">
             <summary>
             Fetches e-mails which should be sent and marks them as being sent.
@@ -1281,6 +1287,16 @@
             E-mail used as default sender
             </summary>
         </member>
+        <member name="F:CMS.EmailEngine.EmailHelper.IMAGE_SRC_REGEXP_STRING">
+            <summary>
+            Template which is used to create regular expression to match image metafile source in HTML
+            </summary>
+        </member>
+        <member name="F:CMS.EmailEngine.EmailHelper.INLINE_SRC_REPLACE_STRING">
+            <summary>
+            Template which is used to replace URL in image metafile source with content identifier
+            </summary>
+        </member>
         <member name="M:CMS.EmailEngine.EmailHelper.IsAnySendingEnabled">
             <summary>
             Returns if e-mail sending is enabled in either global or any site settings.
@@ -1358,7 +1374,7 @@
             <param name="objectType">Type of meta-file</param>
             <param name="category">Meta-file category</param>
         </member>
-        <member name="M:CMS.EmailEngine.EmailHelper.ResolveMetaFileImages(CMS.EmailEngine.EmailMessage,System.Collections.Generic.List{CMS.DataEngine.MetaFileInfo})">
+        <member name="M:CMS.EmailEngine.EmailHelper.ResolveMetaFileImages(CMS.EmailEngine.EmailMessage,System.Collections.Generic.IEnumerable{CMS.DataEngine.MetaFileInfo})">
             <summary>
             Appends all attached files to given email.
             Replaces link 'src="...GetMetaFile.aspx?...fileguid=..."' or 'src=".../GetMetaFile/..." with link to e-mail in-line attachments (only for images).
@@ -1379,7 +1395,7 @@
             <param name="message">E-mail message to process</param>
             <returns>true, if debugging was performed</returns>
         </member>
-        <member name="M:CMS.EmailEngine.EmailHelper.SetEmailBody(System.Net.Mail.MailMessage,CMS.EmailEngine.EmailFormatEnum,System.String,System.String,System.String)">
+        <member name="M:CMS.EmailEngine.EmailHelper.SetEmailBody(System.Net.Mail.MailMessage,CMS.EmailEngine.EmailFormatEnum,System.String,System.String,System.String,System.Collections.Generic.IEnumerable{System.Net.Mail.Attachment})">
             <summary>
             Sets the mail message body.
             </summary>
@@ -1387,7 +1403,14 @@
             <param name="emailFormat">The e-mail format of the message</param>
             <param name="htmlBody">HTML body</param>
             <param name="plainTextBody">Plain text body</param>
-            <param name="siteName">Site name to determine content encoding from Settings; default value is null</param>
+            <param name="siteName">Site name to determine content encoding from Settings</param>
+            <param name="attachments">Collection of attachments that should be included</param>
+        </member>
+        <member name="M:CMS.EmailEngine.EmailHelper.GetLinkedResource(System.Net.Mail.AttachmentBase)">
+            <summary>
+            Returns <see cref="T:System.Net.Mail.LinkedResource"/> from given <paramref name="attachment"/>.
+            </summary>
+            <param name="attachment">Email attachment</param>
         </member>
         <member name="M:CMS.EmailEngine.EmailHelper.ResolveEmailFormat(CMS.EmailEngine.EmailFormatEnum,System.Int32)">
             <summary>

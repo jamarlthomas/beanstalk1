@@ -6689,6 +6689,11 @@
             <param name="ds">DataSet to fill</param>
             <param name="xml">XML with data</param>
         </member>
+        <member name="M:CMS.Helpers.HelpersExtensions.ReadXmlToDataSet(System.Data.DataSet,System.String,System.Xml.XmlParserContext,System.Xml.XmlReaderSettings)">
+            <summary>
+            Reads XML string to data set using the supplied XML context and settings.
+            </summary>
+        </member>
         <member name="T:CMS.Helpers.PreferredCultureOnDemand">
             <summary>
             Encapsulates the site name but doesn't request it until it is demanded by Value.
@@ -7660,6 +7665,21 @@
             <param name="height">New height of the image</param>
             <param name="xPos">X coordinates of trimmed area</param>
             <param name="yPos">Y coordinates of trimmed area</param>
+        </member>
+        <member name="M:CMS.Helpers.ImageHelper.TrimGifImage(System.Drawing.Rectangle)">
+            <summary>
+            Trims GIF image according to <paramref name="cropArea"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.ImageHelper.ConvertToPngBitmap(System.Drawing.Image)">
+            <summary>
+            Converts <paramref name="image"/> to PNG <see cref="T:System.Drawing.Bitmap"/>.
+            </summary>
+        </member>
+        <member name="M:CMS.Helpers.ImageHelper.ConvertToGifImage(System.Drawing.Image)">
+            <summary>
+            Converts <paramref name="image"/> to GIF <see cref="T:System.Drawing.Image"/>.
+            </summary>
         </member>
         <member name="M:CMS.Helpers.ImageHelper.GetTrimmedImage(System.Int32,System.Int32,CMS.Helpers.ImageHelper.ImageTrimAreaEnum)">
             <summary>
@@ -9402,6 +9422,11 @@
             Page info caching key.
             </summary>
         </member>
+        <member name="F:CMS.Helpers.CacheHelper.PAGEINFOBYURL_KEY">
+            <summary>
+            Cache key prefix of PageInfo obtained by URL. 
+            </summary>
+        </member>
         <member name="F:CMS.Helpers.CacheHelper.FILENODE_KEY">
             <summary>
             File node caching key.
@@ -9420,6 +9445,11 @@
         <member name="F:CMS.Helpers.CacheHelper.PARTIAL_KEY">
             <summary>
             Partial cache key.
+            </summary>
+        </member>
+        <member name="F:CMS.Helpers.CacheHelper.MACRO_KEY">
+            <summary>
+            Macro cache key.
             </summary>
         </member>
         <member name="F:CMS.Helpers.CacheHelper.NO_CACHE_DEPENDENCIES">

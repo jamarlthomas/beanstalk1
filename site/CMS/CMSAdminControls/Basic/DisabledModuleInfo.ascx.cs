@@ -15,6 +15,7 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
 {
     #region "Variables"
 
+    private String mSetSettingsKeys = String.Empty;
     private String mSettingsKeys = String.Empty;
     private String mConfigKeys = String.Empty;
 
@@ -103,6 +104,22 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
         set
         {
             ViewState["SiteName"] = value;
+        }
+    }
+
+
+    /// <summary>
+    /// Settings keys to check delimited by ';'
+    /// </summary>
+    public String SetSettingsKeys
+    {
+        get
+        {
+            return mSetSettingsKeys;
+        }
+        set
+        {
+            mSetSettingsKeys = value;
         }
     }
 
@@ -222,7 +239,19 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
     /// <summary>
     /// Returns settings keys in list.
     /// </summary>
-    private List<string> SettingsList
+    private List<string> SetSettingKeysList
+    {
+        get
+        {
+            return String.IsNullOrEmpty(SetSettingsKeys) ? SettingKeysList : SetSettingsKeys.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        }
+    }
+
+
+    /// <summary>
+    /// Returns settings keys in list.
+    /// </summary>
+    private List<string> SettingKeysList
     {
         get 
         { 
@@ -328,7 +357,7 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
         // This action is permitted only for global administrators
         if (MembershipContext.AuthenticatedUser.IsGlobalAdministrator)
         {
-            SettingsList.ForEach(key => EnableSettingByActualScope(key, isSite));
+            SetSettingKeysList.ForEach(key => EnableSettingByActualScope(key, isSite));
 
             // Reload UI if necessary
             if (ReloadUIWhenModuleEnabled)
@@ -363,10 +392,10 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
     {
         if (AtLeastOne)
         {
-            return SettingsList.Any(key => IsSettingEnabledInActualScope(key));
+            return SettingKeysList.Any(key => IsSettingEnabledInActualScope(key));
         }
 
-        return !SettingsList.Exists(key => !IsSettingEnabledInActualScope(key));
+        return !SettingKeysList.Exists(key => !IsSettingEnabledInActualScope(key));
     }
 
 
@@ -398,7 +427,7 @@ public partial class CMSAdminControls_Basic_DisabledModuleInfo : CMSUserControl
             return;
         }
 
-        foreach (string key in SettingsList)
+        foreach (string key in SettingKeysList)
         {
             // If module disabled for given key, write text about given setting
             if (!IsSettingEnabledInActualScope(key))

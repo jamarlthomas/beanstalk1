@@ -4,7 +4,7 @@
     <div class="btn-dropdown language-menu scrollable-menu">
         <div class="btn btn-default dropdown-toggle icon-only" data-toggle="dropdown" id="drpLanguages">
             <asp:Image runat="server" ID="imgLanguage" CssClass="icon-only" />
-            <asp:Label runat="server" ID="lblLanguageName" CssClass="language-name-selected" />
+            <asp:Label runat="server" ID="lblLanguageName" CssClass="language-name-selected" EnableViewState="false" />
             <i class="icon-caret-right-down cms-icon-30" aria-hidden="true"></i>
             <span class="sr-only"><%= GetString("languageselect.title") %></span>
         </div>

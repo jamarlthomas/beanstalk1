@@ -733,7 +733,7 @@ public partial class CMSModules_Content_CMSDesk_Delete : CMSContentPage
                     nsp.MaxRelativeLevel = TreeProvider.ALL_LEVELS;
                     nsp.TopN = 1;
 
-                    altNode = DocumentHelper.GetDocument(nsp, tree);
+                    altNode = tree.SelectSingleNode(nsp);
 
                     // Check whether user is authorized to use alternating document
                     if (altNode != null)

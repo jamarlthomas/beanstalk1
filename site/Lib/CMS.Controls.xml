@@ -9249,13 +9249,19 @@
             Indicates that you are over your quota.
             </summary>
         </member>
-        <member name="M:CMS.Controls.BasicGoogleMaps.RegisterMapScripts(System.Web.UI.Page,System.String,System.String)">
+        <member name="F:CMS.Controls.BasicGoogleMaps.GOOGLE_API_URL">
+            <summary>
+            Google API URL in the form of protocol-agnostic URL.
+            </summary>
+        </member>
+        <member name="M:CMS.Controls.BasicGoogleMaps.RegisterMapScripts(System.Web.UI.Page,System.String,System.String,System.String)">
             <summary>
             Registers necessary Google javascript files.
             </summary>
             <param name="page">Page</param>
-            <param name="mapId">Map Id</param>
+            <param name="mapId">Map ID</param>
             <param name="mainScriptPath">Map script path</param>
+            <param name="apiKey">API key for communicating with Google services.</param>
         </member>
         <member name="M:CMS.Controls.BasicGoogleMaps.OnItemDataBound(System.Web.UI.WebControls.RepeaterItemEventArgs)">
             <summary>
@@ -9327,6 +9333,11 @@
         <member name="P:CMS.Controls.BasicGoogleMaps.ProviderObject">
             <summary>
             Provider object.
+            </summary>
+        </member>
+        <member name="P:CMS.Controls.BasicGoogleMaps.ApiKey">
+            <summary>
+            Api key for communicating with Google services.
             </summary>
         </member>
         <member name="T:CMS.Controls.BasicMultiColumnTable">
@@ -15746,9 +15757,8 @@
         </member>
         <member name="M:CMS.Controls.CMSSiteMap.GetSiteMap">
             <summary>
-            Gets source code of site map.
+            Returns string representation of site map source code.
             </summary>
-            <returns>String.</returns>
         </member>
         <member name="M:CMS.Controls.CMSSiteMap.GetItems(System.Int32,System.Boolean)">
             <summary>

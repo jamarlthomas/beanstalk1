@@ -441,57 +441,57 @@ function disableLast(disable) {
                 {
                     interval = HitsIntervalEnum.Hour;
                 }
-                else
-                    if (sFrom.Contains("adddays"))
-                    {
-                        interval = HitsIntervalEnum.Day;
-                    }
-                    else
-                        if (sFrom.Contains("addweeks"))
-                        {
-                            interval = HitsIntervalEnum.Week;
-                        }
-                        else
-                            if (sFrom.Contains("addmonths"))
-                            {
-                                interval = HitsIntervalEnum.Month;
-                            }
-                            else
-                                if (sFrom.Contains("addyears"))
-                                {
-                                    interval = HitsIntervalEnum.Year;
-                                }
+                else if (sFrom.Contains("adddays"))
+                {
+                    interval = HitsIntervalEnum.Day;
+                }
+                else if (sFrom.Contains("addweeks"))
+                {
+                    interval = HitsIntervalEnum.Week;
+                }
+                else if (sFrom.Contains("addmonths"))
+                {
+                    interval = HitsIntervalEnum.Month;
+                }
+                else if (sFrom.Contains("addyears"))
+                {
+                    interval = HitsIntervalEnum.Year;
+                }
 
+                var macroResolverSettings = new MacroSettings
+                {
+                    AvoidInjection = false,
+                    Culture = CultureHelper.EnglishCulture.Name
+                };
                 to = DateTime.Now;
-                from = ValidationHelper.GetDateTime(MacroResolver.Resolve(sFrom), DateTime.Now);
+                from = ValidationHelper.GetDateTime(MacroResolver.Resolve(sFrom, macroResolverSettings), DateTime.Now, macroResolverSettings.Culture);
                 noAddToDiff = true;
             }
-            else
-                if ((from != DateTimeHelper.ZERO_TIME) && (to != DateTimeHelper.ZERO_TIME))
+            else if ((from != DateTimeHelper.ZERO_TIME) && (to != DateTimeHelper.ZERO_TIME))
+            {
+                // Set interval as greatest possible interval (365+ days -> years, 30+days->months ,...)
+                diff = (int)(to - from).TotalDays;
+                if (diff >= 365)
                 {
-                    // Set interval as greatest possible interval (365+ days -> years, 30+days->months ,...)
-                    diff = (int)(to - from).TotalDays;
-                    if (diff >= 365)
-                    {
-                        interval = HitsIntervalEnum.Year;
-                    }
-                    else if (diff >= 30)
-                    {
-                        interval = HitsIntervalEnum.Month;
-                    }
-                    else if (diff >= 7)
-                    {
-                        interval = HitsIntervalEnum.Week;
-                    }
-                    else if (diff >= 1)
-                    {
-                        interval = HitsIntervalEnum.Day;
-                    }
-                    else
-                    {
-                        interval = HitsIntervalEnum.Hour;
-                    }
+                    interval = HitsIntervalEnum.Year;
                 }
+                else if (diff >= 30)
+                {
+                    interval = HitsIntervalEnum.Month;
+                }
+                else if (diff >= 7)
+                {
+                    interval = HitsIntervalEnum.Week;
+                }
+                else if (diff >= 1)
+                {
+                    interval = HitsIntervalEnum.Day;
+                }
+                else
+                {
+                    interval = HitsIntervalEnum.Hour;
+                }
+            }
         }
 
         // Set default period and diff based on interval

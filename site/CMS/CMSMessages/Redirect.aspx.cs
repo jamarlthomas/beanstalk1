@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Web;
+
 using CMS.Helpers;
 using CMS.PortalControls;
 using CMS.PortalEngine;
@@ -16,7 +18,7 @@ public partial class CMSMessages_Redirect : MessagePage
     protected override void OnPreInit(EventArgs e)
     {
         string url = QueryHelper.GetText("url", String.Empty);     
-        CheckHashValidationAttribute = !(url.StartsWithAny(StringComparison.InvariantCulture, "~", "/"));
+        CheckHashValidationAttribute = !IsLocalUrl(url);
 
         base.OnPreInit(e);
     }
@@ -41,7 +43,7 @@ public partial class CMSMessages_Redirect : MessagePage
             PortalContext.ViewMode = ViewModeEnum.LiveSite;
         }
 
-        bool urlIsRelative = url.StartsWithCSafe("~/");
+        bool urlIsRelative = IsLocalUrl(url);
 
         string script = String.Empty;
         url = ResolveUrl(url);
@@ -64,6 +66,32 @@ public partial class CMSMessages_Redirect : MessagePage
         }
 
         ltlScript.Text += ScriptHelper.GetScript(script);       
+    }
+
+    #endregion
+
+
+    #region "Private methods"
+
+    /// <summary>
+    /// Returns true if the given URL is local.
+    /// </summary>
+    /// <param name="url">URL to check.</param>
+    private static bool IsLocalUrl(string url)
+    {
+        if (string.IsNullOrEmpty(url))
+        {
+            return false;
+        }
+
+        // The url might not be encoded and might just contain a url-encoded query string.  
+        if (!url.Contains("/") && url.Contains("%"))
+        {
+            url = HttpUtility.UrlDecode(url);
+        }
+
+        return (url[0] == '/' && (url.Length == 1 || (url[1] != '/' && url[1] != '\\'))) || // "/" or "/foo" but not "//" or "/\"
+               (url.Length > 1 && url[0] == '~' && url[1] == '/'); // "~/" or "~/foo"
     }
 
     #endregion

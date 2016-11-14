@@ -1857,6 +1857,21 @@
             Raises the Changed event.
             </summary>
         </member>
+        <member name="M:CMS.FormControls.FormEngineUserControl.GetInputControl(System.Web.UI.ControlCollection)">
+            <summary>
+            Gets input control based on <see cref="P:CMS.FormControls.FormEngineUserControl.ValueElementID"/> or first inner input control if <see cref="P:CMS.FormControls.FormEngineUserControl.ValueElementID"/> is not set or null if no input control is found.
+            </summary>
+        </member>
+        <member name="M:CMS.FormControls.FormEngineUserControl.FindInputControl(System.Web.UI.ControlCollection)">
+            <summary>
+            Seacrhes for first inner input control which is not already associated with some label. Returns null if no input control is found.
+            </summary>
+        </member>
+        <member name="M:CMS.FormControls.FormEngineUserControl.GetValueElement(System.Web.UI.ControlCollection)">
+            <summary>
+            Tries to get input control based on <see cref="P:CMS.FormControls.FormEngineUserControl.ValueElementID"/>.
+            </summary>
+        </member>
         <member name="M:CMS.FormControls.FormEngineUserControl.GetInputClientID(System.Web.UI.ControlCollection)">
             <summary>
             Gets client ID of first inner control.
@@ -1930,6 +1945,13 @@
             </summary>
             <param name="ctrl">Control to set</param>
             <param name="value">New value</param>
+        </member>
+        <member name="M:CMS.FormControls.FormEngineUserControl.RegisterPostbackTrigger(System.Web.UI.UpdatePanel,System.Web.UI.Control)">
+            <summary>
+            Registers input control <paramref name="inputControl"/> as postback trigger of the update panel <paramref name="updatePanel"/>.
+            </summary>
+            <param name="updatePanel">Outer update panel</param>
+            <param name="inputControl">Input control that should be registered</param>
         </member>
         <member name="E:CMS.FormControls.FormEngineUserControl.Changed">
             <summary>

@@ -3,6 +3,7 @@ using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 
+using CMS.Core;
 using CMS.Helpers;
 using CMS.Newsletters;
 using CMS.Scheduler;
@@ -503,7 +504,7 @@ public partial class CMSModules_Newsletters_Controls_SendVariantIssue : CMSAdmin
         }
 
         // Enable scheduled tasks and set 'Ready for sending' status to all variants
-        NewsletterTasksManager.EnableVariantScheduledTasks(parentIssue);
+        Service<IIssueSender>.Entry().Send(parentIssue, DateTime.Now);
 
         return true;
     }

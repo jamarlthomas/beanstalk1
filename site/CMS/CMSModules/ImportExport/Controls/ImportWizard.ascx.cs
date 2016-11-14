@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Principal;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -12,6 +14,7 @@ using CMS.ExtendedControls;
 using CMS.Helpers;
 using CMS.IO;
 using CMS.Base;
+using CMS.LicenseProvider;
 using CMS.PortalEngine;
 using CMS.SiteProvider;
 using CMS.Membership;
@@ -688,6 +691,12 @@ function NextStepAction() {
     /// <returns>Returns true if import was started successfully, false otherwise.</returns>
     private bool StartImport(SiteImportSettings settings)
     {
+        if (!string.IsNullOrEmpty(ImportExportControl.CheckLicenses(settings)))
+        {
+            // License is missing, let's try to import some from package.
+            EnsureLicenseFromPackage(settings);
+        }
+
         // Check licences
         string error = ImportExportControl.CheckLicenses(settings);
         if (!string.IsNullOrEmpty(error))
@@ -711,6 +720,27 @@ function NextStepAction() {
         ctlAsyncImport.RunAsync(manager.Import, WindowsIdentity.GetCurrent());
 
         return true;
+    }
+
+
+    /// <summary>
+    /// Imports the license keys from package defined by <paramref name="settings"/>.
+    /// </summary>
+    private static void EnsureLicenseFromPackage(SiteImportSettings settings)
+    {
+        // Clone import settings so they aren't changed by license import process
+        SiteImportSettings settingsCopy;
+
+        using (var stream = new IOExceptions.MemoryStream())
+        {
+            var formatter = new BinaryFormatter();
+            formatter.Serialize(stream, settings);
+
+            stream.Position = 0;
+            settingsCopy = (SiteImportSettings)formatter.Deserialize(stream);
+        }
+
+        ImportProvider.ImportObjectType(settingsCopy, LicenseKeyInfo.OBJECT_TYPE, false, new TranslationHelper(), ProcessObjectEnum.Selected, new List<int>());
     }
 
 

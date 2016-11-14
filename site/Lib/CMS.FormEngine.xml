@@ -1330,6 +1330,14 @@
             Gets the automatic code name for the object.
             </summary>
         </member>
+        <member name="M:CMS.FormEngine.AlternativeFormInfo.InsertAsCloneInternal(CMS.DataEngine.CloneSettings,CMS.DataEngine.CloneResult,CMS.DataEngine.BaseInfo)">
+            <summary>
+            Inserts cloned object to DB.
+            </summary>
+            <param name="settings">Cloning settings</param>
+            <param name="result">Cloning result</param>
+            <param name="originalObject">Original source BaseInfo (object being cloned)</param>
+        </member>
         <member name="P:CMS.FormEngine.AlternativeFormInfo.FormVersionGUID">
             <summary>
             Form version GUID.
@@ -2205,9 +2213,9 @@
             Caching for form control parameters.
             </summary>
         </member>
-        <member name="F:CMS.FormEngine.FormHelper.mStartsWithCategoryRegExp">
+        <member name="F:CMS.FormEngine.FormHelper.mLatestVersionRegExp">
             <summary>
-            Regular expression to match the category at the beginning of form definition.
+            Regular expression to match if form definition is in the latest version.
             </summary>
         </member>
         <member name="M:CMS.FormEngine.FormHelper.GetFormFieldControlType(System.String)">
@@ -2428,12 +2436,28 @@
             <param name="parent">Parent node</param>
             <param name="name">Name for new category</param>
         </member>
+        <member name="M:CMS.FormEngine.FormHelper.IsLatestVersion(System.String)">
+            <summary>
+            Returns true if the given form definition uses latest version format.
+            </summary>
+            <param name="definition"></param>
+        </member>
+        <member name="M:CMS.FormEngine.FormHelper.EnsureFormDefinition(System.String)">
+            <summary>
+            Returns minimal form definition (only root element) if the given form definition is empty.
+            </summary>
+        </member>
         <member name="M:CMS.FormEngine.FormHelper.EnsureFormDefinitionFormat(System.String)">
             <summary>
-            Ensures form definition format for backward compatibility
+            Ensures form definition format for backward compatibility.
             </summary>
             <param name="definition">Form definition</param>
-            <returns>Form definition in proper format</returns>
+        </member>
+        <member name="M:CMS.FormEngine.FormHelper.EnsureAlternativeFormDefinitionFormat(System.String)">
+            <summary>
+            Ensures alternative form definition format for backward compatibility.
+            </summary>
+            <param name="definition">Form definition</param>
         </member>
         <member name="M:CMS.FormEngine.FormHelper.AddLatestVersionAttribute(System.Xml.XmlNode)">
             <summary>

@@ -326,7 +326,8 @@ public partial class CMSModules_ContactManagement_Pages_Tools_Activities_Activit
                                                      .Where(whereCondition);
         foreach (var activity in activitiesToDelete)
         {
-            AddLog(string.Format("{0} - {1}", activity.ActivityTitle, activity.ActivityType));
+            var safeLog = HTMLHelper.HTMLEncode(string.Format("{0} - {1}", activity.ActivityTitle, activity.ActivityType));
+            AddLog(safeLog);
             ActivityInfoProvider.DeleteActivityInfo(activity);
         }
     }

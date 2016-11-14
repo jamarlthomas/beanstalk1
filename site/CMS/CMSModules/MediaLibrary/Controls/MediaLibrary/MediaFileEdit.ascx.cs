@@ -16,6 +16,8 @@ using CMS.Synchronization;
 using CMS.UIControls;
 
 using MediaHelper = CMS.Helpers.MediaHelper;
+using IOExceptions = System.IO;
+using CMS.EventLog;
 
 public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileEdit : CMSAdminControl
 {
@@ -982,11 +984,7 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileEdit
                 MediaFileInfoProvider.SetMediaFileInfo(FileInfo);
                 FilePath = FileInfo.FilePath;
 
-                // Update file modified if not moving physical file
-                if (fileName == origFileName)
-                {
-                    fi.LastWriteTime = FileInfo.FileModifiedWhen;
-                }
+                UpdateLastWriteTime(fileName, origFileName, fi);
 
                 // Inform user on success
                 ShowChangesSaved();
@@ -1005,6 +1003,24 @@ public partial class CMSModules_MediaLibrary_Controls_MediaLibrary_MediaFileEdit
 
                 RaiseOnAction("rehighlightitem", Path.GetFileName(FileInfo.FilePath));
             }
+        }
+    }
+
+
+    private void UpdateLastWriteTime(string fileName, string origFileName, FileInfo fi)
+    {
+        try
+        {
+            if (fileName == origFileName)
+            {
+                fi.LastWriteTime = FileInfo.FileModifiedWhen;
+            }
+        }
+        catch (IOExceptions.IOException exception)
+        {
+            EventLogProvider.LogWarning("Media File Edit", "UPDATEFILE", exception, CurrentSite.SiteID,
+                "Cannot update the 'Modified' time stamp, because the file is currently being used by another process.");
+            ShowWarning(ResHelper.GetString("mediafile.cantupdatelockedfile"));
         }
     }
 

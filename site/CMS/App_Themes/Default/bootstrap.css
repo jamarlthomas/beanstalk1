@@ -5635,8 +5635,7 @@ body.cms-bootstrap,
   border: 2px solid #bdbbbb;
   border-radius: 3px;
   box-sizing: border-box;
-  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .cms-bootstrap .form-control:focus {
   border-bottom: 2px solid #1175ae;
@@ -5786,8 +5785,7 @@ textarea.cms-bootstrap .input-lg {
 }
 .cms-bootstrap .radio input,
 .cms-bootstrap .checkbox input {
-  position: absolute;
-  width: 1px;
+  position: fixed;
   height: 1px;
   margin: -1px;
   padding: 0;
@@ -6790,8 +6788,7 @@ textarea.cms-bootstrap .input-lg {
 }
 .cms-bootstrap .fade {
   opacity: 0;
-  -webkit-transition: opacity .15s linear;
-          transition: opacity .15s linear;
+  transition: opacity .15s linear;
 }
 .cms-bootstrap .fade.in {
   opacity: 1;
@@ -6806,8 +6803,7 @@ textarea.cms-bootstrap .input-lg {
   position: relative;
   height: 0;
   overflow: hidden;
-  -webkit-transition: height .35s ease;
-          transition: height .35s ease;
+  transition: height .35s ease;
 }
 @-webkit-keyframes spin {
   0% {
@@ -7853,8 +7849,7 @@ textarea.cms-bootstrap .input-lg {
 }
 .cms-bootstrap .nav-tabs-vertical-hidden-hover .nav-tabs-container-vertical-background:hover .nav-tabs-container-vertical-hidden {
   width: 40px;
-  -webkit-transition: all 125ms ease;
-          transition: all 125ms ease;
+  transition: all 125ms ease;
   box-shadow: 0 0 8px #bdbbbb;
   cursor: pointer;
 }
@@ -7877,7 +7872,6 @@ textarea.cms-bootstrap .input-lg {
   left: 0;
   right: 0;
   z-index: 2;
-  background-image: -webkit-linear-gradient(top, #bdbbbb 0%, rgba(189, 187, 187, 0) 100%);
   background-image: linear-gradient(to bottom, #bdbbbb 0%, rgba(189, 187, 187, 0) 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffbdbbbb', endColorstr='#00bdbbbb', GradientType=0);
@@ -7885,7 +7879,6 @@ textarea.cms-bootstrap .input-lg {
 .cms-bootstrap .nav-tabs-vertical-layout .scroll-shadow.bottom {
   top: auto;
   bottom: 0;
-  background-image: -webkit-linear-gradient(top, rgba(189, 187, 187, 0) 0%, #bdbbbb 100%);
   background-image: linear-gradient(to bottom, rgba(189, 187, 187, 0) 0%, #bdbbbb 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00bdbbbb', endColorstr='#ffbdbbbb', GradientType=0);
@@ -8339,8 +8332,7 @@ textarea.cms-bootstrap .input-lg {
   border: none;
   border-radius: 3px;
   box-sizing: border-box;
-  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   vertical-align: middle;
 }
 .cms-bootstrap .nav-search-container input[type="search"]:-moz-placeholder {
@@ -8906,11 +8898,9 @@ textarea.cms-bootstrap .input-lg {
   text-align: center;
   background-color: #0f6194;
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  -webkit-transition: width .6s ease;
-          transition: width .6s ease;
+  transition: width .6s ease;
 }
 .cms-bootstrap .progress-striped .progress-bar {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-size: 40px 40px;
 }
@@ -8922,21 +8912,18 @@ textarea.cms-bootstrap .input-lg {
   background-color: #497d04;
 }
 .progress-striped .cms-bootstrap .progress-bar-success {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .cms-bootstrap .progress-bar-warning {
   background-color: #c98209;
 }
 .progress-striped .cms-bootstrap .progress-bar-warning {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .cms-bootstrap .progress-bar-danger {
   background-color: #e14344;
 }
 .progress-striped .cms-bootstrap .progress-bar-danger {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .cms-bootstrap .panel {
@@ -9241,7 +9228,6 @@ button.cms-bootstrap .close {
   left: 0;
   right: 0;
   z-index: 2;
-  background-image: -webkit-linear-gradient(top, #000000 0%, rgba(0, 0, 0, 0) 100%);
   background-image: linear-gradient(to bottom, #000000 0%, rgba(0, 0, 0, 0) 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff000000', endColorstr='#00000000', GradientType=0);
@@ -9249,7 +9235,6 @@ button.cms-bootstrap .close {
 .cms-bootstrap .applist-panel .scroll-shadow.bottom {
   top: auto;
   bottom: 0;
-  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, #000000 100%);
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #000000 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#ff000000', GradientType=0);
@@ -9480,8 +9465,7 @@ button.cms-bootstrap .close {
 }
 .cms-bootstrap .dashboard .tile-wrapper-live-add,
 .cms-bootstrap .dashboard .tile-wrapper-live-remove {
-  -webkit-transition: all 1000ms cubic-bezier(0.165, 0.84, 0.44, 1);
-          transition: all 1000ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 1000ms cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .cms-bootstrap .dashboard .tile-wrapper-live-remove-active {
   -webkit-transform: translate(0, 0);
@@ -9496,8 +9480,7 @@ button.cms-bootstrap .close {
 }
 .cms-bootstrap .dashboard .tile-shrink-add,
 .cms-bootstrap .dashboard .tile-shrink-remove {
-  -webkit-transition: all 125ms ease-out;
-          transition: all 125ms ease-out;
+  transition: all 125ms ease-out;
 }
 .cms-bootstrap .dashboard .tile-shrink,
 .cms-bootstrap .dashboard .tile-shrink-add-active {
@@ -9509,12 +9492,10 @@ button.cms-bootstrap .close {
           transform: scale3d(1, 1, 1);
 }
 .cms-bootstrap .dashboard .btn-edit-mode-translate-add {
-  -webkit-transition: all 400ms ease-in;
-          transition: all 400ms ease-in;
+  transition: all 400ms ease-in;
 }
 .cms-bootstrap .dashboard .btn-edit-mode-translate-remove {
-  -webkit-transition: all 100ms ease-out;
-          transition: all 100ms ease-out;
+  transition: all 100ms ease-out;
 }
 .cms-bootstrap .dashboard .btn-edit-mode-translate,
 .cms-bootstrap .dashboard .btn-edit-mode-translate-add-active {
@@ -9529,14 +9510,12 @@ button.cms-bootstrap .close {
 }
 .cms-bootstrap .dashboard .editable-mode .tile-header-panel.ng-hide-add,
 .cms-bootstrap .dashboard .editable-mode .tile-header-panel.ng-hide-remove {
-  -webkit-transition: all 125ms ease-out;
-          transition: all 125ms ease-out;
+  transition: all 125ms ease-out;
   display: block!important;
 }
 .cms-bootstrap .dashboard .editable-mode .tile-header-panel.ng-hide-remove,
 .cms-bootstrap .dashboard .editable-mode.shrinked .tile-shrink-add {
-  -webkit-transition-delay: 125ms;
-          transition-delay: 125ms;
+  transition-delay: 125ms;
 }
 .cms-bootstrap .dashboard .tile {
   display: inline-block;
@@ -9652,7 +9631,6 @@ button.cms-bootstrap .close {
   text-align: center;
 }
 .cms-bootstrap .dashboard .tile-dead h3 {
-  display: -webkit-box;
 }
 .cms-bootstrap .dashboard .tile-dead-btn {
   padding: 12px;
@@ -9662,8 +9640,7 @@ button.cms-bootstrap .close {
 }
 .cms-bootstrap .dashboard .tile-dead-btn:not(.tile-btn-add):hover {
   border-bottom: 8px solid #d0e8ed;
-  -webkit-transition: all 125ms;
-          transition: all 125ms;
+  transition: all 125ms;
 }
 .cms-bootstrap .dashboard .tile-dead-btn.editable-mode:hover {
   border-bottom: none;
@@ -9702,8 +9679,7 @@ button.cms-bootstrap .close {
 }
 .cms-bootstrap .dashboard .tile-live .tile-live-btn:hover {
   border-bottom: 8px solid #d0e8ed;
-  -webkit-transition: all 125ms;
-          transition: all 125ms;
+  transition: all 125ms;
 }
 .cms-bootstrap .dashboard .tile-live-icon {
   padding: 12px;
@@ -9755,8 +9731,7 @@ button.cms-bootstrap .close {
 }
 .cms-bootstrap .dashboard .tile-single-object .tile-live-btn:hover {
   border-bottom: 8px solid #d0e8ed;
-  -webkit-transition: all 125ms;
-          transition: all 125ms;
+  transition: all 125ms;
 }
 .cms-bootstrap .dashboard .tile-single-object .tile-description {
   color: #262524;
@@ -9776,8 +9751,7 @@ button.cms-bootstrap .close {
 }
 .cms-bootstrap .dashboard .tile-single-object .tile-single-object-btn:hover {
   border-bottom: 8px solid #d0e8ed;
-  -webkit-transition: all 125ms;
-          transition: all 125ms;
+  transition: all 125ms;
 }
 .cms-bootstrap .dashboard .tile-single-object .tile-single-object-btn.editable-mode:hover {
   border-bottom: none;
@@ -10336,8 +10310,7 @@ button.cms-bootstrap .close {
   float: left !important;
 }
 .cms-bootstrap .no-transition {
-  -webkit-transition: none;
-          transition: none;
+  transition: none;
 }
 .cms-bootstrap .hide {
   display: none !important;

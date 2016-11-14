@@ -65,6 +65,12 @@
             <param name="userInfo">UserInfo object</param>
             <param name="exceptionOnFailure">If true, PermissionCheckException is thrown whenever a permission check fails</param>
         </member>
+        <member name="M:CMS.CustomTables.CustomTableInfo.GetCustomTableItems">
+            <summary>
+            Returns the custom table items.
+            Returning type <see cref="T:CMS.DataEngine.InfoObjectCollection"/> provides a limited set of properties which are available in macros.
+            </summary>
+        </member>
         <member name="P:CMS.CustomTables.CustomTableInfo.TypeInfo">
             <summary>
             Type information.

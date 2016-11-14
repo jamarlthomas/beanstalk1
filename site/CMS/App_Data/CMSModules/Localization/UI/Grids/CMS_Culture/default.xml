@@ -5,7 +5,7 @@
     <action name="delete" caption="$General.Delete$" fonticonclass="icon-bin" fonticonstyle="critical" confirmation="$General.ConfirmDelete$" />
   </actions>
   <columns>
-    <column source="##ALL##" externalsourcename="culturename" caption="$Unigrid.CultureList.Columns.CultureName$" wrap="false" localize="true" sort="CultureName">
+    <column source="##ALL##" externalsourcename="culturename" caption="$Unigrid.CultureList.Columns.CultureName$" wrap="false" localize="false" sort="CultureName">
     <filter type="text" source="CultureName" />
     </column>
     <column source="CultureCode" caption="$Unigrid.CultureList.Columns.CultureCode$" wrap="false">

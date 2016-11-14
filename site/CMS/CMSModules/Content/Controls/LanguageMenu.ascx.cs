@@ -97,15 +97,15 @@ public partial class CMSModules_Content_Controls_LanguageMenu : CMSUserControl
             CultureInfo ci = CultureInfoProvider.GetCultureInfo(SelectedCulture);
 
             imgLanguage.ImageUrl = GetFlagIconUrl(SelectedCulture, "16x16");
-            imgLanguage.AlternateText = imgLanguage.ToolTip = GetString(ci.CultureName);
-            lblLanguageName.Text = ci.CultureShortName;
+            imgLanguage.AlternateText = imgLanguage.ToolTip = ResHelper.LocalizeString(ci.CultureName);
+            lblLanguageName.Text = HTMLHelper.HTMLEncode(ResHelper.LocalizeString(ci.CultureShortName));
 
             // Generate sub-menu only if more cultures to choose from
             StringBuilder sb = new StringBuilder();
             foreach (var culture in cultures)
             {
                 string cultureCode = culture.CultureCode;
-                string cultureName = HTMLHelper.HTMLEncode(culture.CultureName);
+                string cultureName = HTMLHelper.HTMLEncode(ResHelper.LocalizeString(culture.CultureName));
 
                 if (CMSString.Compare(cultureCode, defaultCulture, true) == 0)
                 {

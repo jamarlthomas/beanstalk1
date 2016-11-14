@@ -71,7 +71,7 @@ public partial class CMSAdminControls_UI_ScreenLock_ScreenLockDialog : CMSUserCo
             btnScreenLockSignOut.Text = GetString("signoutbutton.signout");
             lblInstructions.Text = GetString("screenlock.instruction");
 
-            var user = MembershipContext.AuthenticatedUser;
+            var user = GetUserForAuthentication();
             txtUserName.Text = user.UserName;
 
             // Set account locked information
@@ -131,7 +131,7 @@ public partial class CMSAdminControls_UI_ScreenLock_ScreenLockDialog : CMSUserCo
     /// </summary>
     public string GetCallbackResult()
     {
-        var user = MembershipContext.AuthenticatedUser;
+        var user = GetUserForAuthentication();
 
         if (!user.Enabled)
         {
@@ -256,7 +256,7 @@ public partial class CMSAdminControls_UI_ScreenLock_ScreenLockDialog : CMSUserCo
             userValidates = true;
             validatePassword = eventArgument.Substring(START_INDEX_FOR_PASSWORD);
 
-            if (MFAuthenticationHelper.IsMultiFactorRequiredForUser(MembershipContext.AuthenticatedUser.UserName))
+            if (MFAuthenticationHelper.IsMultiFactorRequiredForUser(GetUserForAuthentication().UserName))
             {
                 userWaitingForPasscode = true;
             }
@@ -334,7 +334,7 @@ public partial class CMSAdminControls_UI_ScreenLock_ScreenLockDialog : CMSUserCo
     private static void ResetCurrentUserInvalidLogonAttempts()
     {
         // Get the current user
-        var currentUser = UserInfoProvider.GetUserInfo(MembershipContext.AuthenticatedUser.UserID);
+        var currentUser = GetUserForAuthentication();
 
         if (currentUser != null)
         {
@@ -352,6 +352,26 @@ public partial class CMSAdminControls_UI_ScreenLock_ScreenLockDialog : CMSUserCo
                 UserInfoProvider.SetUserInfo(currentUser);
             }
         }
+    }
+
+
+    /// <summary>
+    /// Gets authenticated user for authentication check.
+    /// If the user is impersonated, returns impersonating user.
+    /// </summary>
+    private static UserInfo GetUserForAuthentication()
+    {
+        // Check if impersonalization is used
+        string originalUserName = ValidationHelper.GetString(SessionHelper.GetValue("OriginalUserName"), "");
+        bool isCurrentUserImpersonated = !String.IsNullOrEmpty(originalUserName);
+
+        if (isCurrentUserImpersonated)
+        {
+            return UserInfoProvider.GetUserInfo(originalUserName);
+        }
+
+        // We need to return pure UserInfo (on which can be called Set) instead of casted CurrentUserInfo.
+        return UserInfoProvider.GetUserInfo(MembershipContext.AuthenticatedUser.UserID);
     }
 
     #endregion

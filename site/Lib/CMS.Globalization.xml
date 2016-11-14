@@ -550,19 +550,23 @@
             <param name="destTimeZoneInfo">Destination timezone</param>
             <param name="timeZonesRequired">If true than the time is converted only if timezones are enabled in the system</param>
         </member>
-        <member name="M:CMS.Globalization.TimeZoneHelper.GetGMToffset(System.DateTime,CMS.Globalization.TimeZoneInfo)">
+        <member name="M:CMS.Globalization.TimeZoneHelper.GetGMToffset(System.DateTime,CMS.Globalization.TimeZoneInfo,System.Boolean)">
             <summary>
-            Compute gmt offset with dependence on daylight saving time.
+            Compute GMT offset with dependence on daylight saving time.
             </summary>
             <param name="dt">DateTime to convert</param>
             <param name="tzi">Time zone info</param>
+            <param name="isDestTimeZone">Indicates if offset is calculated from UTC to destination time zone</param>
         </member>
-        <member name="M:CMS.Globalization.TimeZoneHelper.IsDaylightSavingsTime(System.DateTime,CMS.Globalization.TimeZoneInfo)">
+        <member name="M:CMS.Globalization.TimeZoneHelper.IsDaylightSavingsTime(System.DateTime,CMS.Globalization.TimeZoneInfo,System.Boolean,System.Double)">
             <summary>
             Returns true if given DateTime is within daylight saving time in given time zone.
             </summary>
+            <remarks>If <paramref name="isDestTimeZone"/> is true, input time has to be in UTC format</remarks>
             <param name="dt">DateTime to be checked</param>
             <param name="tzi">Time zone with DST configuration</param>
+            <param name="isDestTimeZone">Indicates if offset is calculated from UTC to destination time zone</param>
+            <param name="dstOffset">Offset between standard and DST time</param>
         </member>
         <member name="M:CMS.Globalization.TimeZoneHelper.GetTimeZoneInfo(System.Int32)">
             <summary>

@@ -156,7 +156,7 @@ public partial class CMSModules_ContactManagement_FormControls_ContactGroupSelec
             }
         }
         // Global or site objects
-        else if (ObjectsRange == UniSelector.US_GLOBAL_AND_SITE_RECORD)
+        else if (ObjectsRange == UniSelector.US_GLOBAL_AND_SITE_RECORD || ObjectsRange == SiteID)
         {
             if (authorizedSite && authorizedGlobal)
             {

@@ -356,8 +356,6 @@ public partial class CMSModules_Membership_Controls_Users_UserFilter : CMSAbstra
     {
         InitializeForm();
 
-        drpLockReason.Enabled = chkEnabled.Checked;
-
         // Score selector is not null only if DisplayScore is true
         if (scoreSelector != null)
         {
@@ -451,6 +449,19 @@ public partial class CMSModules_Membership_Controls_Users_UserFilter : CMSAbstra
         }
     }
 
+    /// <summary>
+    /// PreRender event.
+    /// </summary>
+    protected void Page_PreRender(object sender, EventArgs e)
+    {
+        drpLockReason.Enabled = chkEnabled.Checked;
+
+        if (!drpLockReason.Enabled)
+        {
+            drpLockReason.SelectedIndex = 0;
+        }
+    }
+
     #endregion
 
 
@@ -521,6 +532,7 @@ public partial class CMSModules_Membership_Controls_Users_UserFilter : CMSAbstra
         }
 
         chkDisplayAnonymous.Checked = DisplayGuestsByDefault;
+        chkEnabled.Checked = false;
     }
 
     /// <summary>
@@ -562,7 +574,7 @@ public partial class CMSModules_Membership_Controls_Users_UserFilter : CMSAbstra
         lblLockReason.Text = GetString("userlist.LockReason") + ResHelper.Colon;
 
         // Checkbox javascript
-        string script = "var drpEnabled = document.getElementById('" + drpLockReason.ClientID + "'); if(drpEnabled) {drpEnabled.disabled = !drpEnabled.disabled; if(drpEnabled.disabled){drpEnabled.selectedIndex = 0;}}";
+        string script = "var drpEnabled = document.getElementById('" + drpLockReason.ClientID + "'); if(drpEnabled) {drpEnabled.disabled = !this.checked; if(drpEnabled.disabled){drpEnabled.selectedIndex = 0;}}";
         chkEnabled.Attributes.Add("onclick", script);
 
         int siteId = QueryHelper.GetInteger("siteid", 0);
@@ -738,11 +750,16 @@ public partial class CMSModules_Membership_Controls_Users_UserFilter : CMSAbstra
 
         if (DisplayUserEnabled)
         {
-            string enabledWhere = (chkEnabled.Checked ? "UserEnabled = 0" : String.Empty);
-            int lockReason = ValidationHelper.GetInteger(drpLockReason.SelectedValue, -1);
-            string lockWhere = ((lockReason >= 0) ? "ISNULL(UserAccountLockReason, 0) = " + lockReason.ToString() : String.Empty);
-            whereCond = SqlHelper.AddWhereCondition(whereCond, enabledWhere);
-            whereCond = SqlHelper.AddWhereCondition(whereCond, lockWhere);
+            if (chkEnabled.Checked)
+            {
+                whereCond = SqlHelper.AddWhereCondition(whereCond, "UserEnabled = 0");
+
+                int lockReason = ValidationHelper.GetInteger(drpLockReason.SelectedValue, -1);
+                if (lockReason >= 0)
+                {
+                    whereCond = SqlHelper.AddWhereCondition(whereCond, "ISNULL(UserAccountLockReason, 0) = " + lockReason.ToString());
+                }
+            }
         }
 
         return whereCond;

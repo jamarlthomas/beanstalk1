@@ -178,14 +178,9 @@ public partial class CMSModules_Ecommerce_Controls_UI_ProductFilter : CMSAbstrac
         var nameOrNumber = txtNameOrNumber.Text.Trim().Truncate(txtNameOrNumber.MaxLength);
         if (!string.IsNullOrEmpty(nameOrNumber))
         {
-            // condition to get also products with variants that contains 
             where.Where(k => k.Where(w => w.WhereContains(productNameColumnName, nameOrNumber)
                                            .Or()
-                                           .WhereContains("SKUNumber", nameOrNumber))
-                              .Or()
-                              .Where(v => v.WhereIn("SKUID", new IDQuery<SKUInfo>("SKUParentSKUID").WhereContains("SKUName", nameOrNumber)
-                                                                                                   .Or()
-                                                                                                   .WhereContains("SKUNumber", nameOrNumber))));
+                                           .WhereContains("SKUNumber", nameOrNumber)));
         }
 
         // Append site condition

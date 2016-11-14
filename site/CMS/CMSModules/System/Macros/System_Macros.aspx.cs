@@ -197,6 +197,13 @@ public partial class CMSModules_System_Macros_System_Macros : GlobalAdminPage
                 try
                 {
                     var infos = new InfoObjectCollection(objectType);
+                    var idColumn = infos.TypeInfo.IDColumn;
+                    if (!String.IsNullOrEmpty(idColumn) && idColumn != ObjectTypeInfo.COLUMN_NAME_UNKNOWN)
+                    {
+                        infos.OrderByColumns = idColumn;
+                    }
+
+                    infos.PageSize = 1000;
 
                     // Skip object types derived from general data class object type to avoid duplicities
                     if ((infos.TypeInfo.OriginalObjectType == DataClassInfo.OBJECT_TYPE) && (infos.TypeInfo.ObjectType != DataClassInfo.OBJECT_TYPE))

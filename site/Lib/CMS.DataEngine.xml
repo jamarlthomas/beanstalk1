@@ -3748,6 +3748,11 @@
             </summary>
             <param name="infoObj">Target object instance</param>
         </member>
+        <member name="M:CMS.DataEngine.AbstractInfoBase`1.CloneCore">
+            <summary>
+            Creates a clone of object's data class and properties.
+            </summary>
+        </member>
         <member name="M:CMS.DataEngine.AbstractInfoBase`1.Clone">
             <summary>
             Creates a clone of the object
@@ -3848,6 +3853,9 @@
             <param name="forceNew">If true, new data class is created</param>
             <param name="loadDefault">If true, the process loads the default data</param>
             <param name="applyTypeCondition">If true, type condition is applied to the object</param>
+            <remarks>
+            The value of <paramref name="forceNew"/> parameter is ignored since version 9.0.46.
+            </remarks>
         </member>
         <member name="M:CMS.DataEngine.AbstractInfoBase`1.ExecuteWithoutExternalColumnData(System.Action)">
             <summary>
@@ -4123,9 +4131,23 @@
         </member>
         <member name="M:CMS.DataEngine.AbstractInfoBase`1.ExecuteWithOriginalData(System.Action)">
             <summary>
-            Executes the given action using original data of the object
+            Executes the given <paramref name="action"/> using original data of the object
             </summary>
             <param name="action">Action to execute</param>
+            <remarks>
+            This operation temporarily modifies the object's state and is inherently not thread-safe
+            even when <paramref name="action"/> is a read-only operation.
+            </remarks>
+        </member>
+        <member name="M:CMS.DataEngine.AbstractInfoBase`1.ExecuteWithOriginalDataCore(System.Action)">
+            <summary>
+            Executes the given <paramref name="action"/> using original data of the object.
+            </summary>
+        </member>
+        <member name="M:CMS.DataEngine.AbstractInfoBase`1.LogExecuteWithOriginalDataConcurrency">
+            <summary>
+            Logs warning to event log regarding multiple threads executing action with original data on one object's instance.
+            </summary>
         </member>
         <member name="M:CMS.DataEngine.AbstractInfoBase`1.GetExternalColumns">
             <summary>
@@ -5678,6 +5700,16 @@
         <member name="P:CMS.DataEngine.InfoObjectCollection`1.AllowPaging">
             <summary>
             If true, the paging of the data is allowed (data is loaded in batches).
+            </summary>
+        </member>
+        <member name="P:CMS.DataEngine.InfoObjectCollection`1.PageSize">
+            <summary>
+            <para>
+            Page size for loading of the items.
+            </para>
+            <para>
+            This member was added in hotfix 37 (version 9.0.37). Do not use this member when writing hotfix independent code.
+            </para>
             </summary>
         </member>
         <member name="P:CMS.DataEngine.InfoObjectCollection`1.SourceData">
@@ -14941,14 +14973,39 @@
             Total items expression
             </summary>
         </member>
+        <member name="T:CMS.DataEngine.QueryScopeEnum">
+            <summary>
+            Defines scope where part of a query is used.
+            </summary>
+        </member>
+        <member name="F:CMS.DataEngine.QueryScopeEnum.None">
+            <summary>
+            Not specified.
+            </summary>
+        </member>
+        <member name="F:CMS.DataEngine.QueryScopeEnum.Columns">
+            <summary>
+            Part of a query is used to select columns.
+            </summary>
+        </member>
+        <member name="F:CMS.DataEngine.QueryScopeEnum.Where">
+            <summary>
+            Part of a query is used as WHERE clause.
+            </summary>
+        </member>
+        <member name="F:CMS.DataEngine.QueryScopeEnum.OrderBy">
+            <summary>
+            Part of a query is used as ORDER BY clause.
+            </summary>
+        </member>
+        <member name="F:CMS.DataEngine.QueryScopeEnum.Query">
+            <summary>
+            Query is regular query.
+            </summary>
+        </member>
         <member name="T:CMS.DataEngine.SqlSecurityHelper">
             <summary>
             Security methods for SQL queries
-            </summary>
-        </member>
-        <member name="F:CMS.DataEngine.SqlSecurityHelper.mWhereRegex">
-            <summary>
-            SQL security regular expressions.
             </summary>
         </member>
         <member name="F:CMS.DataEngine.SqlSecurityHelper.SQLIdentifier">
@@ -14980,6 +15037,13 @@
             <summary>
             Gets the regular expression for the safe value of COLUMNS clause.
             </summary>
+        </member>
+        <member name="M:CMS.DataEngine.SqlSecurityHelper.CheckQuery(System.String,CMS.DataEngine.QueryScopeEnum)">
+            <summary>
+            Checks part of a query (or whole query) for malicious code. Returns TRUE if query contains just a SELECT statement.
+            </summary>
+            <param name="query">Part of a query or query.</param>
+            <param name="scope">Defines scope where the specified part of a query is used.</param>
         </member>
         <member name="P:CMS.DataEngine.SqlSecurityHelper.WhereRegex">
             <summary>
@@ -39598,7 +39662,7 @@
         </member>
         <member name="M:CMS.DataEngine.SimpleDataClass.CopyOriginalDataTo(CMS.DataEngine.IDataClass)">
             <summary>
-            Copies the data of the DataClass object to another.
+            Copies the original data of the DataClass object to another.
             </summary>
             <param name="target">Destination object.</param>
             <remarks>Copying is allowed only for objects of the same type and class name.</remarks>

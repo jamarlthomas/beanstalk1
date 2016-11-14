@@ -1987,15 +1987,50 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
                         XmlNode item = document.SelectSingleNode((SelectedItemType == FieldEditorSelectedItemEnum.Field ? "//field[@column='" : "//category[@name='") + SelectedItemName + "']");
                         if (item != null)
                         {
-                            // Item is modified if there are any child nodes or if there are any other attributes other than 'column' and 'order'
-                            var attrs = item.Attributes;
-
-                            btnReset.Enabled = ((item.ChildNodes.Count > 0) || ((attrs["order"] == null) && (attrs.Count > 1) || (attrs.Count > 2))) && Enabled;
+                            // Display Reset button if item can be reset
+                            btnReset.Enabled = Enabled && IsInheritedItemModified(item);
                         }
                     }
                 }
             }
         }
+    }
+
+
+    /// <summary>
+    /// Returns true if the item contains any changes.
+    /// Item is modified if there are any child nodes or if there are any attributes besides field name, order and guid.
+    /// </summary>
+    private bool IsInheritedItemModified(XmlNode item)
+    {
+        if (item.ChildNodes.Count > 0)
+        {
+            return true;
+        }
+
+        var attrs = item.Attributes;
+        if (attrs == null)
+        {
+            return false;
+        }
+
+        var notRelevantAttributes = new[]
+        {
+            "column",
+            "guid",
+            "name",
+            "order"
+        };
+
+        foreach (XmlAttribute attribute in attrs)
+        {
+            if (!notRelevantAttributes.Contains(attribute.Name, StringComparer.InvariantCultureIgnoreCase))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
@@ -3821,8 +3856,8 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
                 errorMessage += ResHelper.GetString("TemplateDesigner.ErrorPKAllowsNulls") + " ";
             }
 
-            // Check that the field type is label
-            if (!IsLabelControlSelected(updatedFieldInfo))
+            // Check that the field type is label or nothing (does not apply for alt.forms)
+            if (!IsAlternativeForm && !IsLabelControlSelected(updatedFieldInfo))
             {
                 errorMessage += ResHelper.GetString("TemplateDesigner.ErrorPKisNotLabel") + " ";
             }
@@ -3845,9 +3880,9 @@ public partial class CMSModules_AdminControls_Controls_Class_FieldEditor_FieldEd
             case FormFieldControlTypeEnum.LabelControl:
             case FormFieldControlTypeEnum.CustomUserControl:
                 string labelControlName = Enum.GetName(typeof(FormFieldControlTypeEnum), FormFieldControlTypeEnum.LabelControl);
-                string selectedControlName = fieldInfo.Settings["controlname"].ToString();
+                string selectedControlName = fieldInfo.Settings["controlname"] as String;
 
-                return selectedControlName.EqualsCSafe(labelControlName, StringComparison.InvariantCultureIgnoreCase);
+                return string.IsNullOrEmpty(selectedControlName) || selectedControlName.Equals(labelControlName, StringComparison.InvariantCultureIgnoreCase);
 
             default:
                 return false;

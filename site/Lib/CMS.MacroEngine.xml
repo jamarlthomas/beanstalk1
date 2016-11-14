@@ -722,12 +722,13 @@
             <param name="index">Index of the parameter within the array</param>
             <param name="defaultValue">Default value which will be used if the parameter is not present</param>
         </member>
-        <member name="M:CMS.MacroEngine.MacroMethodContainer.GetLazyParamValue(System.Object,CMS.MacroEngine.EvaluationContext)">
+        <member name="M:CMS.MacroEngine.MacroMethodContainer.GetLazyParamValue(System.Object,CMS.MacroEngine.EvaluationContext,System.Boolean@)">
             <summary>
             Gets the lazy parameter value by evaluating it
             </summary>
             <param name="parameter">Parameter to evaluate</param>
             <param name="evalContext">Evaluation context</param>
+            <param name="securityPassed">Indicates whether the security check passed</param>
         </member>
         <member name="M:CMS.MacroEngine.MacroMethodContainer.GetBoolParam(System.Object)">
             <summary>

@@ -151,6 +151,22 @@ public partial class CMSWebParts_Maps_Basic_BasicGoogleMaps : CMSAbstractWebPart
     #region "Map properties"
 
     /// <summary>
+    /// Api key for communicating with Google services.
+    /// </summary>
+    public string ApiKey
+    {
+        get
+        {
+            return ValidationHelper.GetString(GetValue("ApiKey"), "");
+        }
+        set
+        {
+            SetValue("ApiKey", value);
+        }
+    }
+
+
+    /// <summary>
     /// Gets or sets the latitude of of the center of the map.
     /// </summary>
     public double? Latitude
@@ -640,6 +656,7 @@ public partial class CMSWebParts_Maps_Basic_BasicGoogleMaps : CMSAbstractWebPart
             #endregion
 
 
+            BasicGoogleMaps.ApiKey = ApiKey;
             BasicGoogleMaps.MapProperties = mp;
             BasicGoogleMaps.HideControlForZeroRows = HideControlForZeroRows;
             BasicGoogleMaps.DataBindByDefault = false;

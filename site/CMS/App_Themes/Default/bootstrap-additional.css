@@ -915,7 +915,6 @@
   border: 2px solid #bdbbbb;
   border-radius: 3px;
   box-sizing: border-box;
-  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   height: 76px;
   width: 100%;
@@ -1099,10 +1098,18 @@
   color: #a3a2a2;
 }
 .cms-bootstrap .ProductSectionNavigation {
-  background: #d6d9d6;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 304px;
+  height: 100%;
 }
 .cms-bootstrap .ProductSectionNavigation .TreeBody {
-  overflow: auto;
+  position: absolute;
+  top: 48px;
+}
+.cms-bootstrap .ProductSectionNavigation .tree-bottom-actions-panel {
+  width: 304px;
 }
 .cms-bootstrap .RTL .ProductEditForms {
   margin: 0 126px 0 0;
@@ -1597,6 +1604,20 @@
 .cms-bootstrap .DialogPageBody .MergeDialog {
   padding-bottom: 32px;
 }
+.cms-bootstrap .ContentMenu {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 304px;
+  height: 100%;
+}
+.cms-bootstrap .ContentMenu .TreeBody {
+  position: absolute;
+  top: 96px;
+}
+.cms-bootstrap .ContentMenu .tree-bottom-actions-panel {
+  width: 304px;
+}
 .cms-bootstrap .document-flag-tooltip {
   width: 330px;
 }
@@ -1699,12 +1720,10 @@
 }
 .cms-bootstrap .mfp-zoom-out-cur,
 .cms-bootstrap .mfp-zoom-out-cur .mfp-image-holder .mfp-close {
-  cursor: -webkit-zoom-out;
   cursor: zoom-out;
 }
 .cms-bootstrap .mfp-zoom {
   cursor: pointer;
-  cursor: -webkit-zoom-in;
   cursor: zoom-in;
 }
 .cms-bootstrap .mfp-auto-cursor .mfp-content {
@@ -2591,6 +2610,11 @@
 .cms-bootstrap .tree-actions {
   display: inline-block;
   margin: 8px 0;
+}
+.cms-bootstrap .tree-bottom-actions-panel {
+  position: absolute;
+  bottom: 0;
+  background: #d6d9d6;
 }
 .cms-bootstrap .tree-buttons {
   padding-top: 16px;
@@ -3964,7 +3988,6 @@
   min-height: 32px;
   display: inline-block;
   box-sizing: border-box;
-  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .cms-bootstrap .CM.code-mirror-focused {
@@ -4398,7 +4421,6 @@
   border: 2px solid #bdbbbb;
   border-radius: 3px;
   box-sizing: border-box;
-  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .cms-bootstrap .form-search-container input:-moz-placeholder {
@@ -4480,7 +4502,6 @@
   border: 2px solid #bdbbbb;
   border-radius: 3px;
   box-sizing: border-box;
-  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   width: 80px;
   position: absolute;
@@ -4542,7 +4563,6 @@
   border: 2px solid #bdbbbb;
   border-radius: 3px;
   box-sizing: border-box;
-  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   width: 80px;
   position: absolute;
