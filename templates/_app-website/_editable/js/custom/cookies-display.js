@@ -1,11 +1,29 @@
 $( document ).ready(function() {
     
-    //disable cookie popup
-    var disableCookiePopup = false;
+    //function to get query string prameters
+    function getParameterByName(name, url) {
+        if (!url) { url = window.location.href; }
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
     
-    //check if cookie display dispable is on the page
-    if($("body").find('[data-disable="cookiePopup"]').length > 0){
+    
+    //init and disable cookie popup
+    var disableCookiePopup = false;
+
+    
+    //check if cookie display dispable is on the page on the body tag
+    if($("body").find('[data-disable="cookiePopup"]').length > 0){ 
         
+        disableCookiePopup = true;
+    }
+    
+    //check if a query string has been set to disable the cookie display
+    if(getParameterByName('disableCookiePopup') == "true"){
         disableCookiePopup = true;
     }
     
