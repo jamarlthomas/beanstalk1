@@ -444,7 +444,7 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
 
         //create ajax request        
         //$scope.ajaxRequest = "http://test.aftonchemical.com/filter/"
-        $scope.ajaxRequest = "http://localhost:9999/product-filter-angular.html#/"
+        $scope.ajaxRequest = "http://localhost:1000/product-filter-angular.html#/"
         $scope.ajaxRequest = $scope.ajaxRequest + "regions/" + $scope.regionStringID
         $scope.ajaxRequest = $scope.ajaxRequest + "/documents/" + $scope.docTypeStringID
         $scope.ajaxRequest = $scope.ajaxRequest + "/SBU/-1"
@@ -453,7 +453,36 @@ app.controller('prodFilterCntl', ["$scope", "$location", "$http", "$timeout", fu
         $scope.ajaxRequest = $scope.ajaxRequest + "/page/" + $scope.pageNumber
         $scope.ajaxRequest = $scope.ajaxRequest + "/search/" + $scope.searchFilter 
         
+        
+        //send GA Event
+        
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
+        ga('create', 'UA-10080511-2', 'auto');
+        ga('send', 'pageview');
+          
+          
+        var gaEventLabel = "REGIONS = " + $scope.regionArrayText
+        gaEventLabel = gaEventLabel + " - DOCUMENTS = " + $scope.docTypeArrayText
+        //gaEventLabel = gaEventLabel + " - SBU = -1"
+        gaEventLabel = gaEventLabel + " - SOLUTIONS = " + $scope.solutionArrayText
+        //gaEventLabel = gaEventLabel + " - SORT = " + $scope.sortItems
+        //gaEventLabel = gaEventLabel + " - PAGE = " + $scope.pageNumber
+        //gaEventLabel = gaEventLabel + " - SEARCH = " + $scope.searchFilter
+        //console.log(gaEventLabel)
+        
+        ga('send', 'event', {
+            eventCategory: 'product filter',
+            eventAction: 'click',
+            eventLabel: gaEventLabel,
+            transport: 'beacon'
+        });
+          
+        
+        
         //reset display
         $scope.dataLoaded = function(){return false};
         $scope.prodfilterResults = "";
