@@ -12,5 +12,7 @@
         <li class="empty-li">&nbsp;</li>
     }
 </ul>
-<a href="@Url.Content("~/"+Model.ViewAllUrl)" class="viewMore">@Model.ViewAllLabel @Model.Title ></a>
+@if ( Model.ViewAllUrl != null ) { 
+    <a href="@Url.Content("~/"+Model.ViewAllUrl)" class="viewMore">@Model.ViewAllLabel @Model.Title ></a>
+}
 <!--<a href="#">View More ></a>-->

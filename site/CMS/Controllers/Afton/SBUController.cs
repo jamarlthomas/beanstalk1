@@ -101,7 +101,10 @@ namespace CMS.Mvc.Controllers.Afton
                             }).Distinct().Take(5).ToList();
                             break;
                     }
-                    item.ViewAllUrl = RouteHelper.GetSBUSelectionFilterViewAllURL(ContentHelper.GetDocByName<DocumentType>(DocumentType.CLASS_NAME,item.Title).NodeID.ToString(), solutionIds);
+                    var documentTypeIDs = ContentHelper.GetDocByName<DocumentType>(DocumentType.CLASS_NAME,item.Title).NodeID;
+                    if(documentTypeIDs != null && solutionIds != null) {
+                        item.ViewAllUrl = RouteHelper.GetSBUSelectionFilterViewAllURL(documentTypeIDs.ToString(), solutionIds);
+                    }
                 //}
                 
             }
