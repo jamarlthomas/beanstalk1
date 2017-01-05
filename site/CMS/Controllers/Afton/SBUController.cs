@@ -109,8 +109,10 @@ namespace CMS.Mvc.Controllers.Afton
                 
             }
 
-            
-            model.Solutions = MapData<Solution, TileViewModel>(solutions).Where(w => !string.IsNullOrEmpty(w.HomeImage)).ToList();
+            if ( solutions != null )
+            {
+                model.Solutions = MapData<Solution, TileViewModel>( solutions ).Where( w => !string.IsNullOrEmpty( w.HomeImage ) ).ToList();
+            }
 
             if ( System.Configuration.ConfigurationManager.AppSettings[ "DateOnCards" ] == "false" )
             {
