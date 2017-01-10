@@ -25,7 +25,7 @@ namespace CMS.Mvc.Providers
         }
         public List<FAQItem> GetFAQItemsBySBU(string guid)
         {
-            return ContentHelper.GetDocs<FAQItem>(FAQItem.CLASS_NAME).Where(x => x.RelatedSBU == guid).ToList();
+            return ContentHelper.GetDocs<FAQItem>(FAQItem.CLASS_NAME).Where(x => x.RelatedSBU.Contains(guid)).ToList();
         }
     }
 }
