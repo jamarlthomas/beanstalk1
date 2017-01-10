@@ -31,6 +31,14 @@ namespace CMS.Mvc.Controllers.Afton
             _treeNodesProvider = new TreeNodesProvider();
         }
 
+        public ActionResult AddSubject( string subject )
+        {
+            if ( !string.IsNullOrEmpty( subject ) )
+            {
+                TempData[ "subject" ] = subject;
+            }
+            return RedirectToRoute( "/Contact" );
+        }
 
         [PageVisitActivity]
         public virtual ActionResult Index(string DocumentName)
@@ -97,7 +105,10 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 sidebarItem = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(document.GetValue("SidebarItems","")));
             }
-             
+            var CampaignVal = false;
+            if ( document.GetValue( "Campaign" ) != null ) { CampaignVal = ( bool )document.GetValue( "Campaign" ); }
+            var SubjectName = "";
+            if ( document.GetValue( "SubjectName" ) != null ) { SubjectName = ( string )document.GetValue( "SubjectName" ); }
             return View("~/Views/Afton/Generic/Index.cshtml", new GenericPageViewModel()
             {
                 Document = genericViewModel,
@@ -108,7 +119,11 @@ namespace CMS.Mvc.Controllers.Afton
                 SideBar = new SidebarViewModel
                 {
                     Items =  MapSidebar(sidebarItem, document)
-                }
+                },
+                Campaign = CampaignVal,
+                SubjectName = SubjectName
+
+                
             });
         }
     }

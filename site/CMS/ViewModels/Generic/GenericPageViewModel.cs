@@ -11,5 +11,7 @@ namespace CMS.Mvc.ViewModels.Generic
         public BreadCrumbViewModel BreadCrumb { get; set; }
         public SidebarViewModel SideBar { get; set; }
         public Guid DocumentGUID { get; set; }
+        public bool Campaign { get; set; }
+        public string SubjectName { get; set; }
     }
 }

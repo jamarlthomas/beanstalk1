@@ -4,6 +4,7 @@
     Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
     ViewBag.Title = Model.Document.Title;
     ViewBag.SelectedMenuItem = Model.Document.NodeGUID;
+    var Url = new UrlHelper(HttpContext.Current.Request.RequestContext);
 }
 @Html.Partial("~/Views/Afton/Solution/_heroImage.cshtml", Model.Document.HeroImage)
 <div id="twoColumnC-sidebar" class="@if (!string.IsNullOrEmpty(Model.Document.HeroImage)) {@UtilsHelper.ToHtmlString("negMargin") }
@@ -19,6 +20,15 @@
                     @Html.Partial("~/Views/Afton/Shared/_map.cshtml")
                 }
                 @UtilsHelper.ToHtmlString(Model.Document.Copy.Replace("~/","/"))
+                @if ( Model.Campaign == true )
+                {
+                    
+                  @* @Html.ActionLink( "Contact Us", "AddSubject", new { subject = Model.SubjectName } );*@
+                    
+                    
+                    <a href="@Url.Action( "AddSubject", new { subject = Model.SubjectName } )" >Contact Us</a>
+                    
+                }
             </div>
             @*<div class="padBtm">
                 <div style="display: none;" class="paginationC"><a href="#" class="prev"></a><span class="pageNumbers"></span><a href="#" class="next"></a></div>

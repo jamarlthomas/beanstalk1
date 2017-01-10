@@ -9,6 +9,7 @@ namespace CMS.Mvc.ViewModels.Contact
     public class ContactPageViewModel
     {
         public string Title { get; set; }
+        public string Subject { get; set; }
         public string FirstNamePlaceholder { get; set; }
         public string LastNamePlaceholder { get; set; }
         public string CompanyNamePlaceholder { get; set; }
