@@ -49,31 +49,38 @@ namespace CMS.Mvc.Controllers.Afton
             IContactProvider contactProvider,
             IRegionConstantsProvider regionConstantsProvider,
             IEmailProvider emailProvider)
-        {
-            _contactPageProvider = contactPageProvider;
-            _regionProvider = regionProvider;
-            _countryProvider = countryProvider;
-            _salesOfficeProvider = salesOfficeProvider;
-            _treeNodesProvider = treeNodesProvider;
-            _genericPageProvider = genericPageProvider;
-            _contactProvider = contactProvider;
-            _regionConstantsProvider = regionConstantsProvider;
-            _emailProvider = emailProvider;
-        }
+            {
+                _contactPageProvider = contactPageProvider;
+                _regionProvider = regionProvider;
+                _countryProvider = countryProvider;
+                _salesOfficeProvider = salesOfficeProvider;
+                _treeNodesProvider = treeNodesProvider;
+                _genericPageProvider = genericPageProvider;
+                _contactProvider = contactProvider;
+                _regionConstantsProvider = regionConstantsProvider;
+                _emailProvider = emailProvider;
+            }
 
         [HttpGet]
         [PageVisitActivity]
         public ActionResult Index(bool showSubmitSuccesied = false)
         {
             var page = _contactPageProvider.GetContactPage();
-
+            
             var viewModel = MapData<ContactPage, ContactPageViewModel>(page);
+            //Extract subject if it exists 
+
+            if ( TempData[ "subject" ] != null )
+            {
+                viewModel.Subject = TempData[ "subject" ].ToString();
+
+            }
 
             var privacyStatement = _genericPageProvider.GetFirstChildGenericPage(page.NodeAlias);
             viewModel.NewsletterPrivacyLabel = privacyStatement.Title;
             viewModel.NewsletterPrivacyLink = privacyStatement.DocumentRoutePath;
             OnlineMarketingContext.GetCurrentContact();
-	    viewModel.EmergencyResponse = MapData<RegionConstants, EmergencyResponseViewModel>(_regionConstantsProvider.GetRegionConstants());
+	        viewModel.EmergencyResponse = MapData<RegionConstants, EmergencyResponseViewModel>(_regionConstantsProvider.GetRegionConstants());
             viewModel.Countries = MapData<CountryInfo, ContactCountryViewModel>(_countryProvider.GetCountries());
 
             viewModel.Regions = _regionProvider.GetRegions().Select(MapRegionToRegionViewModel).ToList();
@@ -85,7 +92,8 @@ namespace CMS.Mvc.Controllers.Afton
             {
                 return View("~/Views/Afton/Contact/Index.cshtml", viewModel);
             }
-            }
+        }
+
 
         [HttpPost]
         public ActionResult Index(UpdateContactRequest request)

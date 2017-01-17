@@ -8,6 +8,9 @@
     {
         <form>
             @Model.PromptLabel
+            @if ( Model.Subject != null ) { 
+                <input placeholder="@Model.Subject" name="Subject" disabled>
+            }
             <input placeholder="@Model.FirstNamePlaceholder" required name="FirstName">
             <input placeholder="@Model.LastNamePlaceholder" required name="LastName">
             <input placeholder="@Model.CompanyNamePlaceholder" required name="CompanyName">

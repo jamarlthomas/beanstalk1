@@ -4,6 +4,7 @@
     Layout = "~/Views/Afton/Shared/MasterWithPersonalizationCards.cshtml";
     ViewBag.Title = Model.Document.Title;
     ViewBag.SelectedMenuItem = Model.Document.NodeGUID;
+    var Url = new UrlHelper(HttpContext.Current.Request.RequestContext);
 }
 @Html.Partial("~/Views/Afton/Solution/_heroImage.cshtml", Model.Document.HeroImage)
 <div id="twoColumnC-sidebar" class="@if (!string.IsNullOrEmpty(Model.Document.HeroImage)) {@UtilsHelper.ToHtmlString("negMargin") }
@@ -14,11 +15,18 @@
         @Html.Partial("~/Views/Afton/Generic/_header.cshtml", Model.Document)
         <div id="contentC">
             <div id="mainContentC" class="documentPagination">
-                @if (@Model.Document.map)
+                @if ( @Model.Document.map )
                 {
-                    @Html.Partial("~/Views/Afton/Shared/_map.cshtml")
+                    @Html.Partial( "~/Views/Afton/Shared/_map.cshtml" )
                 }
-                @UtilsHelper.ToHtmlString(Model.Document.Copy.Replace("~/","/"))
+                @UtilsHelper.ToHtmlString( Model.Document.Copy.Replace( "~/", "/" ) )
+                @if ( Model.Campaign == true )
+                {
+
+                    <a href="@Model.CampaignURL"><div class="contactBtn"> Contact us
+                </div></a>
+
+                }
             </div>
             @*<div class="padBtm">
                 <div style="display: none;" class="paginationC"><a href="#" class="prev"></a><span class="pageNumbers"></span><a href="#" class="next"></a></div>
