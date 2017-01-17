@@ -15,19 +15,17 @@
         @Html.Partial("~/Views/Afton/Generic/_header.cshtml", Model.Document)
         <div id="contentC">
             <div id="mainContentC" class="documentPagination">
-                @if (@Model.Document.map)
+                @if ( @Model.Document.map )
                 {
-                    @Html.Partial("~/Views/Afton/Shared/_map.cshtml")
+                    @Html.Partial( "~/Views/Afton/Shared/_map.cshtml" )
                 }
-                @UtilsHelper.ToHtmlString(Model.Document.Copy.Replace("~/","/"))
+                @UtilsHelper.ToHtmlString( Model.Document.Copy.Replace( "~/", "/" ) )
                 @if ( Model.Campaign == true )
                 {
-                    
-                  @* @Html.ActionLink( "Contact Us", "AddSubject", new { subject = Model.SubjectName } );*@
-                    
-                    
-                    <a href="@Url.Action( "AddSubject", new { subject = Model.SubjectName } )" >Contact Us</a>
-                    
+
+                    <a href="@Model.CampaignURL"><div class="contactBtn"> Contact us
+                </div></a>
+
                 }
             </div>
             @*<div class="padBtm">

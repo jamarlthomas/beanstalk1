@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
-using System.Web.Mvc;
 using System.Web;
+using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
 using CMS.Mvc.ActionFilters;
@@ -14,6 +15,7 @@ using CMS.Mvc.ViewModels.Generic;
 using CMS.Mvc.ViewModels.Shared;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.ViewModels.Shared.SidebarComponents;
+
 
 
 namespace CMS.Mvc.Controllers.Afton
@@ -30,14 +32,14 @@ namespace CMS.Mvc.Controllers.Afton
             _documentConstantProvider = new DocumentConstantProvider();
             _treeNodesProvider = new TreeNodesProvider();
         }
-
+        
         public ActionResult AddSubject( string subject )
         {
             if ( !string.IsNullOrEmpty( subject ) )
             {
                 TempData[ "subject" ] = subject;
             }
-            return RedirectToRoute( "/Contact" );
+            return RedirectToRoute( "ContactPage" );
         }
 
         [PageVisitActivity]
@@ -109,6 +111,7 @@ namespace CMS.Mvc.Controllers.Afton
             if ( document.GetValue( "Campaign" ) != null ) { CampaignVal = ( bool )document.GetValue( "Campaign" ); }
             var SubjectName = "";
             if ( document.GetValue( "SubjectName" ) != null ) { SubjectName = ( string )document.GetValue( "SubjectName" ); }
+            var CampaignURL = "/AddSubject/"+SubjectName;
             return View("~/Views/Afton/Generic/Index.cshtml", new GenericPageViewModel()
             {
                 Document = genericViewModel,
@@ -121,8 +124,8 @@ namespace CMS.Mvc.Controllers.Afton
                     Items =  MapSidebar(sidebarItem, document)
                 },
                 Campaign = CampaignVal,
-                SubjectName = SubjectName
-
+                SubjectName = SubjectName,
+                CampaignURL = CampaignURL
                 
             });
         }

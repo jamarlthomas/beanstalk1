@@ -13,5 +13,6 @@ namespace CMS.Mvc.ViewModels.Generic
         public Guid DocumentGUID { get; set; }
         public bool Campaign { get; set; }
         public string SubjectName { get; set; }
+        public string CampaignURL { get; set; }
     }
 }

@@ -66,7 +66,7 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index(bool showSubmitSuccesied = false)
         {
             var page = _contactPageProvider.GetContactPage();
-            TempData[ "subject" ] = "Test";
+            
             var viewModel = MapData<ContactPage, ContactPageViewModel>(page);
             //Extract subject if it exists 
 
