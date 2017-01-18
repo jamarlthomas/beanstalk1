@@ -11,5 +11,6 @@
         public string CountryName { get; set; }
         public string Note { get; set; }
         public string IsSubscribed { get; set; }
+        public string SubjectName { get; set; }
     }
 }

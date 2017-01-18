@@ -19,7 +19,7 @@ namespace CMS.Mvc.Providers
                 EmailFormat = EmailFormatEnum.Html,
                 From = template.TemplateFrom,
                 Recipients = recipient,
-                Subject = template.TemplateSubject
+                Subject = !string.IsNullOrEmpty(request.SubjectName)?request.SubjectName:template.TemplateSubject
             };
 
             var macroResolver = MacroResolver.GetInstance();
