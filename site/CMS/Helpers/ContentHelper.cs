@@ -193,6 +193,7 @@ namespace CMS.Mvc.Helpers
         {
             return CacheHelper.Cache( cs => {
                 var doc = _treeProvider.SelectSingleDocument( docId ) as TreeNode;
+                //var node = _treeProvider.SelectSingleNode( doc.NodeID, LocalizationContext.PreferredCultureCode );
                 cs.CacheDependency = CacheHelper.GetCacheDependency(string.Format("nodes|afton|{0}|all", doc.ClassName.ToLower()));
                 return doc;
             },
@@ -208,7 +209,7 @@ namespace CMS.Mvc.Helpers
         public static T GetDocByNodeId<T>(int nodeId) where T : class
         {
             return CacheHelper.Cache(cs =>
-                _treeProvider.SelectSingleNode(nodeId) as T,
+                _treeProvider.SelectSingleNode(nodeId,LocalizationContext.PreferredCultureCode) as T,
                 new CacheSettings(CachingTime, string.Format("node_id_{0}", nodeId)));
         }
 

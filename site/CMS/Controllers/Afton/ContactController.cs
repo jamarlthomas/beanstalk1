@@ -9,8 +9,11 @@ using CMS.Mvc.Providers;
 using CMS.Mvc.ViewModels.Contact;
 using CMS.Mvc.ViewModels.Shared;
 using System;
+using System.Net;
 using System.Linq;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq; 
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -98,8 +101,16 @@ namespace CMS.Mvc.Controllers.Afton
         [HttpPost]
         public ActionResult Index(UpdateContactRequest request)
         {
+            /*var Captcha = Request[ "g-recaptcha-response" ];
+            var client = new WebClient();
+            var result = client.DownloadString( string.Format( "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", "6Lf_VRIUAAAAADbx_8-kAYuvv09ZFJO2y8ZVezhO", Captcha) );
+            var obj = JObject.Parse( result );
+            var status = ( bool )obj.SelectToken( "success" );
+            if ( !status ) {
+                return Index( false );
+            }*/
             _contactProvider.UpdateCurrentContact(request);
-
+            
             SendEmail(request);
 
             return Index(true);

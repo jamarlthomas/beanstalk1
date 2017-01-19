@@ -3,6 +3,7 @@ using System.Data;
 using System.Linq;
 using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
+using CMS.Helpers;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Models.Afton.Shared.Personalization;
@@ -71,8 +72,9 @@ namespace CMS.Mvc.Providers
 
         private void GetDefaultItems(PersonalizedContentModel personaDefaults)
         {
-            var defaultItems =
-                ContentHelper.GetDocsByGuids<TreeNode>(UtilsHelper.ParseGuids(personaDefaults.Documents));
+            var contentListItem = ContentHelper.GetDocsByGuids<TreeNode>( UtilsHelper.ParseGuids( personaDefaults.Documents ) );
+            var currentLangItem =  contentListItem.Where(x=>x.DocumentCulture==Localization.LocalizationContext.PreferredCultureCode);                                      
+            var defaultItems = currentLangItem.ToList();
             defaultItems.ForEach(item =>
             {
                 var pt = new PersonalizedTile();
@@ -94,7 +96,12 @@ namespace CMS.Mvc.Providers
 
         private void GetAllContent()
         {
-            ContentList = ContentHelper.GetDocsOfTypes(AftonData.PersonalizationTypes).Select(item => new PersonalizedContent<PersonalizedTile>(item)).ToList();
+            var currLang = Localization.LocalizationContext.PreferredCultureCode;
+            var ContentList2 = ContentHelper.GetDocsOfTypes(AftonData.PersonalizationTypes);
+            var currentLangContent = ContentList2.Where(x=>x.Item.DocumentCulture==currLang);
+            ContentList =   currentLangContent
+                                        .Select(item => new PersonalizedContent<PersonalizedTile>(item))
+                                        .ToList();
         }
 
 

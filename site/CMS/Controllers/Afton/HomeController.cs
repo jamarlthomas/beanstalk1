@@ -51,7 +51,7 @@ namespace CMS.Mvc.Controllers.Afton
             foreach(var item in model.HeroContentList) {
                 var parseGuid = Guid.Parse(item.RelatedDocument);
                 var nodeId = CMS.DocumentEngine.TreePathUtils.GetNodeIdByNodeGUID(parseGuid, SiteProvider.SiteContext.CurrentSiteName);
-                var getDoc = new CMS.DocumentEngine.TreeProvider().SelectSingleNode(nodeId);
+                var getDoc = new CMS.DocumentEngine.TreeProvider().SelectSingleNode( nodeId, Localization.LocalizationContext.PreferredCultureCode );
 
                 item.RelatedDocument = getDoc.GetType().GetProperty("DocumentRoutePath").GetValue(getDoc).ToString();
             }
