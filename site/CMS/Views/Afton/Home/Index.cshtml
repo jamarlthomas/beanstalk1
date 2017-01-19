@@ -1,6 +1,7 @@
 ﻿@using CMS.Mvc.ViewModels.Home
 @using CMS.Mvc.ViewModels.Shared.Personalization
 @using CMS.DocumentEngine.Types
+@using CMS.Mvc.Helpers
 @model HomeViewModel
 @{
     ViewBag.Title = "Home";
@@ -31,10 +32,10 @@
     <div id="learnMoreC">
         <div id="learnMore">
             <div id="learnTxtC">
-                <div id="learnHdr">Learn more about our solutions.</div>
-                <div id="learnTxt">Talk with one of our sales representatives.</div>
+                <div id="learnHdr">@UtilsHelper.GetLocalizedString("home_contact1")</div>
+                <div id="learnTxt">@UtilsHelper.GetLocalizedString( "home_contact2" )</div>
             </div>
-            <div id="leanMoreBtnC"><a href="@Url.Content("~/"+ ContactPage.RoutePath)">Contact Us<span class="icon-arrow"></span></a></div>
+            <div id="leanMoreBtnC"><a href="@Url.Content("~/"+ ContactPage.RoutePath)">@UtilsHelper.GetLocalizedString( "home_contact3" )<span class="icon-arrow"></span></a></div>
         </div>
     </div>
 </div>
