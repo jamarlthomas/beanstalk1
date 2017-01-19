@@ -83,11 +83,16 @@ $( document ).ready(function() {
                 }
                 
             });
+        
+        if(grecaptcha.getResponse().length===0){
+            e.preventDefault();
+            validateFields.push("Please confirm that you are a human");
+        }
 
-            if(validateFields.length >  0){
-                alert( "The following fields didn't validate: " + validateFields.toString() );
-            }
-    
+        if(validateFields.length >  0){
+            alert( "The following fields didn't validate: " + validateFields.toString() );
+        }
+        
     });
     
 });
