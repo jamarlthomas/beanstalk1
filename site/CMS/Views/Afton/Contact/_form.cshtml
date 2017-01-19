@@ -32,7 +32,10 @@
             <label>
                 <input type="checkbox" name="IsSubscribed"><span class="checkboxDisplay"></span><span class="txt">@UtilsHelper.ToHtmlString(@Model.NewsletterCheckboxLabel)</span><a target="_blank" href="@Model.NewsletterPrivacyLink">@Model.NewsletterPrivacyLabel</a>
             </label><br><br>
+            <div class="g-recaptcha" data-sitekey="6Lf_VRIUAAAAAHxfhUmCUdkvPSHxwNdyiD9BDuA-"></div>
+            <br /><br />
             <input type="submit" value="@Model.SubmitLabel" class="subscribe">
         </form>
+    <script src='https://www.google.com/recaptcha/api.js' type="text/javascript"></script>
     }
 </div>
