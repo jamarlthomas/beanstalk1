@@ -210,7 +210,7 @@ namespace CMS.Mvc.Helpers
         {
             return CacheHelper.Cache(cs =>
                 _treeProvider.SelectSingleNode(nodeId,LocalizationContext.PreferredCultureCode) as T,
-                new CacheSettings(CachingTime, string.Format("node_id_{0}", nodeId)));
+                new CacheSettings(CachingTime, string.Format("node_id_{0}_cc_{1}", nodeId,Localization.LocalizationContext.PreferredCultureCode)));
         }
 
         public static List<T> GetDocsByGuids<T>(IEnumerable<Guid> guids, string siteName = null) where T : class
