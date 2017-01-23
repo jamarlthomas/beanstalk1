@@ -73,7 +73,7 @@ namespace CMS.Mvc.Providers
         private void GetDefaultItems(PersonalizedContentModel personaDefaults)
         {
             var contentListItem = ContentHelper.GetDocsByGuids<TreeNode>( UtilsHelper.ParseGuids( personaDefaults.Documents ) );
-            var currentLangItem =  contentListItem.Where(x=>x.DocumentCulture==Localization.LocalizationContext.PreferredCultureCode);                                      
+            var currentLangItem =  contentListItem;                                      
             var defaultItems = currentLangItem.ToList();
             defaultItems.ForEach(item =>
             {
@@ -96,9 +96,8 @@ namespace CMS.Mvc.Providers
 
         private void GetAllContent()
         {
-            var currLang = Localization.LocalizationContext.PreferredCultureCode;
             var ContentList2 = ContentHelper.GetDocsOfTypes(AftonData.PersonalizationTypes);
-            var currentLangContent = ContentList2.Where(x=>x.Item.DocumentCulture==currLang);
+            var currentLangContent = ContentList2;
             ContentList =   currentLangContent
                                         .Select(item => new PersonalizedContent<PersonalizedTile>(item))
                                         .ToList();
