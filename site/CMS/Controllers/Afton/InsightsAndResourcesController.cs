@@ -96,6 +96,7 @@ namespace CMS.Mvc.Controllers.Afton
                 {
                     Title = page.ProductDataSheetsTitle,
                     ViewAllLabel = page.ViewAllLabel,
+                    NodeAlias = page.NodeAlias,
                     ViewAllUrl = RouteHelper.GetSelectionFilterViewAllUrl(ConfigurationManager.AppSettings["DocumentDataSheetDocumentTypeId"]),
                     Links = _solutionBusinessUnitProvider
                     .GetSolutionBusinessUnits()
@@ -108,14 +109,15 @@ namespace CMS.Mvc.Controllers.Afton
                 Title = s.Title,
                 ViewAllLabel = page.ViewAllLabel,
                 ViewAllUrl = RouteHelper.GetSelectionFilterViewAllUrl(s.NodeID.ToString()),
-                Links = _documentProvider.GetHighlightedDocuments(s.Title).Select(document => new LinkViewModel
+                NodeAlias = s.NodeAlias,
+                Links = _documentProvider.GetHighlightedDocuments(s.NodeAlias).Select(document => new LinkViewModel
                 {
                     Title = document.Title,
                     Reference = document.DocumentRoutePath
                 })
                 .ToList()
             }));
-            result.ForEach(x => x.Links.AddRange(_genericPageProvider.GetHighlightedGenericPage(x.Title).Select(document => new LinkViewModel
+            result.ForEach(x => x.Links.AddRange(_genericPageProvider.GetHighlightedGenericPage(x.NodeAlias).Select(document => new LinkViewModel
                 {
                     Title = document.Title,
                     Reference = document.DocumentRoutePath

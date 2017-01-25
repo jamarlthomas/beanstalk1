@@ -9,5 +9,6 @@ namespace CMS.Mvc.ViewModels.InsightsAndResources
         public string ViewAllUrl { get; set; }
         public string ViewAllLabel { get; set; }
         public List<LinkViewModel> Links { get; set; }
+        public string NodeAlias { get; set; }
     }
 }
