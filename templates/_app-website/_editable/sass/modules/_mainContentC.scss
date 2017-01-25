@@ -54,7 +54,7 @@
     
     }
     
-    .contactBtn { padding: 10px 0px; width: 30%; background: #4c9d2f; color: #FFF; border: 0px;text-align: center;margin: 0 auto; 
+    .contactBtn { padding: 10px 0px; width: 30%; background: #4c9d2f; color: #FFF; border: 0px;text-align: center;
         @include breakpoint($bp2a) {
             width:100%;
         }
