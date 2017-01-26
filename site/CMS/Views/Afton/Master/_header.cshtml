@@ -144,7 +144,7 @@
                         if (item.SolutionsLink != null)
                         {
                             <li>
-                                <a href="@Url.Content("~/" + item.Reference)" data-mm="@item.Title.Replace(" ", string.Empty)" class="@(item.Selected ? "active" : "")">@item.Title</a>
+                                <a href="@Url.Content("~/" + item.Reference)" data-mm="@item.Title.Replace(" ", string.Empty).Replace("'",string.Empty)" class="@(item.Selected ? "active" : "")">@item.Title</a>
                             </li>
                         }
                         else
