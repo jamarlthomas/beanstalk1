@@ -20,7 +20,7 @@ namespace CMS.Mvc.App_Start
                 .Include("~/Scripts/library/jquery.columnizer.js")
                 .Include("~/Scripts/library/jquery.actual.min.js")
                 .Include("~/Scripts/library/jquery.placeholder.min.js")
-                .Include("~/Scripts/library/jquery.balancetext.min.js")
+                //.Include("~/Scripts/library/jquery.balancetext.min.js")
                 .Include("~/Scripts/library/angular.js")
                 .Include("~/Scripts/library/dirPagination.min.js")
                 .Include("~/Scripts/custom/prodFilter.min.js")
