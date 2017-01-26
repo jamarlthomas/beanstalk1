@@ -160,7 +160,7 @@
     <div id="megaMenuC" style="opacity: 0;">
         @foreach (var item in Model.MainNavList.Where(w => w.SolutionsLink != null))
         {
-            <div id="@item.Title.Replace(" ", string.Empty)" class="megaMenu">
+            <div id="@item.Title.Replace(" ", string.Empty).Replace("'",string.Empty)" class="megaMenu">
                 <div class="lftCol">
                     @foreach (var thumbnailedItem in item.ThumbnailedMenuItems)
                     {
