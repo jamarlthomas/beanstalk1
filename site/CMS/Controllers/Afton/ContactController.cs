@@ -110,8 +110,10 @@ namespace CMS.Mvc.Controllers.Afton
                 return Index( false );
             }*/
             _contactProvider.UpdateCurrentContact(request);
-            
-            SendEmail(request);
+            if ( request.Body == " " )
+            {
+                SendEmail( request );
+            }
 
             return Index(true);
         }

@@ -12,5 +12,6 @@
         public string Note { get; set; }
         public string IsSubscribed { get; set; }
         public string SubjectName { get; set; }
+        public string Body { get; set; }
     }
 }

@@ -30,6 +30,10 @@ namespace CMS.Mvc.Providers
             macroResolver.SetNamedSourceData("Phone", request.Phone);
             macroResolver.SetNamedSourceData("CountryName", request.CountryName);
             macroResolver.SetNamedSourceData("Note", request.Note);
+            if ( request.SubjectName != null )
+            {
+                macroResolver.SetNamedSourceData( "Subject", request.SubjectName );
+            }
             macroResolver.SetNamedSourceData("IsSubscribed", !string.IsNullOrEmpty(request.IsSubscribed) ? request.IsSubscribed : "off");
 
             EmailSender.SendEmail(siteName, email, templateName, macroResolver, true);
