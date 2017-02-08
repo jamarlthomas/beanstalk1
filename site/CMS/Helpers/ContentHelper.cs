@@ -96,6 +96,14 @@ namespace CMS.Mvc.Helpers
                 "nodeid|{0}"
                 );
         }
+        public static T GetDocByTitleCult<T>( string className, string docName ) where T : TreeNode, new()
+        {
+            //docName = docName.Replace( ' ', '-' );
+            var doc = ( T )DocumentHelper.GetDocuments( className ).Published( false )
+                            .OrderBy( "NodeLevel", "NodeOrder", "NodeName" )
+                            .AllCultures().FirstOrDefault( a => a.GetValue( "Title" ).ToString().Equals( docName, StringComparison.InvariantCultureIgnoreCase ) );
+            return doc;
+        }
         public static List<BreadCrumbLinkItemViewModel> GetBreadcrumb<T>(Guid guid) where T : TreeNode
         {
             return GetBreadcrumb(GetDocByGuid<T>(guid));
@@ -374,7 +382,7 @@ namespace CMS.Mvc.Helpers
                             node = CacheHelper.Cache(cs =>
                             {
                                 TreeProvider tree = new TreeProvider();
-                                var doc = tree.SelectNodes(className) //.Published()
+                                var doc = tree.SelectNodes(className).Published(false)
                                     .Culture(LocalizationContext.PreferredCultureCode)
                                     .OrderBy("NodeLevel", "NodeOrder", "NodeName")
                                     .FirstOrDefault(predicate);

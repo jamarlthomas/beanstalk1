@@ -20,7 +20,7 @@ namespace CMS.Mvc.Providers
         }
         public Region GetRegionByTitle( string name )
         {
-            return ContentHelper.GetDocByTitle<Region>(Region.CLASS_NAME, name);
+            return ContentHelper.GetDocByTitleCult<Region>( Region.CLASS_NAME, name );
         }
     }
 }
