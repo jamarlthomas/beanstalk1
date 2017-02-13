@@ -15,7 +15,11 @@ namespace CMS.DocumentEngine.Types
             }
             else
             {
-                Item = DocumentHelper.GetDocument( item.NodeID, "en-US", item.TreeProvider ); ;
+                Item = DocumentHelper.GetDocument( item.NodeID, "en-US", item.TreeProvider );
+                if(Item==null)
+                {
+                    Item = item;
+                }
             }
             HomeImage = (string)Item.GetValue("HomeImage");
             TileTitle = (string)Item.GetValue("TileTitle");

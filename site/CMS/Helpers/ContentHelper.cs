@@ -593,7 +593,7 @@ namespace CMS.Mvc.Helpers
                     });
                 }
                 return persTiles;
-            }, new CacheSettings(CachingTime, String.Join("", typeList)));
+            }, new CacheSettings(CachingTime, String.Join("", typeList)+CultureHelper.GetPreferredCulture()));
         }
 
         public static T GetDoc<T>(string className) where T : TreeNode, new()
