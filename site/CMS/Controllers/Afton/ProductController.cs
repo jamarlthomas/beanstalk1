@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
+using CMS.Localization;
+using CMS.Membership;
 using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
@@ -29,6 +33,13 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index(string ProductName)
         {
             var product = _productProvider.GetProduct(ProductName);
+            if ( !product.IsPublished )
+            {
+                if ( DocumentSecurityHelper.IsAuthorizedPerDocument( product, NodePermissionsEnum.Read, true, LocalizationContext.CurrentCulture.CultureCode, MembershipContext.AuthenticatedUser ) != AuthorizationResultEnum.Allowed )
+                {
+                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path );
+                }
+            }
             ProductPageViewModel productModel = MapData<Product, ProductPageViewModel>(product);
             var sidebarItems = ContentHelper.GetDocByDocId<Product>(product.DocumentID).Fields.SidebarItems2.ToList();
             //if (sidebarItems.Count() == 0)

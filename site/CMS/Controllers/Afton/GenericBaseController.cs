@@ -6,7 +6,10 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using CMS.DocumentEngine;
+using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
+using CMS.Localization;
+using CMS.Membership;
 using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Interfaces;
 using CMS.Mvc.Providers;
@@ -47,6 +50,13 @@ namespace CMS.Mvc.Controllers.Afton
         {
             
             var document = _genericProvider.GetDocument(DocumentName);
+            if ( !document.IsPublished )
+            {
+                if ( DocumentSecurityHelper.IsAuthorizedPerDocument( document, NodePermissionsEnum.Read, true, LocalizationContext.CurrentCulture.CultureCode, MembershipContext.AuthenticatedUser ) != AuthorizationResultEnum.Allowed )
+                {
+                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path );
+                }
+            }
 
             var genericViewModel = MapData<T, DocumentViewModel>(document);
             

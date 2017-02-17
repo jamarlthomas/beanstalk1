@@ -1,4 +1,8 @@
-﻿using CMS.DocumentEngine.Types;
+﻿using CMS.DataEngine;
+using CMS.DocumentEngine;
+using CMS.DocumentEngine.Types;
+using CMS.Membership;
+using CMS.Localization;
 using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Interfaces;
@@ -39,7 +43,13 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index(string SolutionName, string SBUName)
         {
             var solution = _solutionProvider.GetSolution(SolutionName, SBUName);
-
+            if ( !solution.IsPublished )
+            {
+                if ( DocumentSecurityHelper.IsAuthorizedPerDocument( solution, NodePermissionsEnum.Read, true, LocalizationContext.CurrentCulture.CultureCode, MembershipContext.AuthenticatedUser ) != AuthorizationResultEnum.Allowed )
+                {
+                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path );
+                }
+            }
             var solutionViewModel = MapData<Solution, SolutionViewModel>(solution);
 
             solutionViewModel.Products = GetProductViewModels(solution);

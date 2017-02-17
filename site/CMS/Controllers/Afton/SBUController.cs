@@ -1,5 +1,8 @@
-﻿using CMS.DocumentEngine;
+﻿using CMS.DataEngine;
+using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types;
+using CMS.Membership;
+using CMS.Localization;
 using CMS.Mvc.ActionFilters;
 using CMS.Mvc.Helpers;
 using CMS.Mvc.Infrastructure.Models;
@@ -56,6 +59,13 @@ namespace CMS.Mvc.Controllers.Afton
         {
             var solutions = _solutionProvider.GetSolutions(SBUName);
             var sbu = _solutionBusinessUnitProvider.GetSolutionBusinessUnit(SBUName);
+            if ( !sbu.IsPublished )
+            {
+                if ( DocumentSecurityHelper.IsAuthorizedPerDocument( sbu, NodePermissionsEnum.Read, true, LocalizationContext.CurrentCulture.CultureCode, MembershipContext.AuthenticatedUser ) != AuthorizationResultEnum.Allowed )
+                {
+                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path );
+                }
+            }
             var model = MapData<SolutionBusinessUnit, CMS.Mvc.ViewModels.Shared.SBUViewModel>(sbu);
             var solutionGuidList = solutions.Select(item => item.DocumentGUID).ToList();
             var solutionIds = string.Join(",", solutions.Select(item => item.NodeID));

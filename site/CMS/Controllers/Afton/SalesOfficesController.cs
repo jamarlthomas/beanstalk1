@@ -1,4 +1,8 @@
 ﻿using CMS.Mvc.ActionFilters;
+using CMS.DocumentEngine;
+using CMS.DataEngine;
+using CMS.Membership;
+using CMS.Localization;
 using CMS.DocumentEngine.Types;
 using CMS.Globalization;
 using CMS.Mvc.Helpers;
@@ -42,6 +46,13 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index(string RegionName)
         {
             var region = _regionProvider.GetRegion(RegionName);
+            if ( !region.IsPublished )
+            {
+                if ( DocumentSecurityHelper.IsAuthorizedPerDocument( region, NodePermissionsEnum.Read, true, LocalizationContext.CurrentCulture.CultureCode, MembershipContext.AuthenticatedUser ) != AuthorizationResultEnum.Allowed )
+                {
+                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path );
+                }
+            }
             var model = MapData<Region, ViewModels.SalesOffices.RegionViewModel>(region);
             var regionConstants = _regionConstantsProvider.GetRegionConstants();
             model.EmergencyResponse = MapData<RegionConstants, EmergencyResponseViewModel>(regionConstants);
