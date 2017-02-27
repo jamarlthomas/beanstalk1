@@ -251,7 +251,7 @@ namespace CMS.Mvc.Helpers
                             }) ?? new CMS.DataEngine.InfoDataSet<TreeNode>()).Where(i => i != null).ToList();
                         },
                     new CacheSettings(CachingTime,
-                        string.Format("pth_{0}_mrl_{1}_cn_{2}", aliasPath, maxRelativeLevel, classNames)));
+                        string.Format("pth_{0}_mrl_{1}_cn_{2}_cc_{3}", aliasPath, maxRelativeLevel, classNames,LocalizationContext.GetCurrentCulture().CultureCode)));
                     }
                 default:
                     {
@@ -259,6 +259,7 @@ namespace CMS.Mvc.Helpers
                         {
                             ClassNames = classNames,
                             SiteName = ConfigurationManager.AppSettings["SiteName"],
+                            CultureCode = LocalizationContext.GetCurrentCulture().CultureCode,
                             SelectAllData = true,
                             AliasPath = aliasPath + "/%",
                             MaxRelativeLevel = maxRelativeLevel,
