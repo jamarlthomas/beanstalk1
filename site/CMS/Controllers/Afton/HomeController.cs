@@ -75,6 +75,10 @@ namespace CMS.Mvc.Controllers.Afton
                 {
                     x.Date = (DateTime)x.Item.GetValue( "Date" );
                 }
+                if ( !string.IsNullOrEmpty( x.HomeTitle ) )
+                {
+                    x.TileTitle = x.HomeTitle;
+                }
             } );
             var filteredPersTiles = _personalizationProvider.GetPersonalizedItems()
                 .Where(item => !primaryTilesNodes.Select(pt => pt.NodeID).Contains(item.Item.NodeID))

@@ -3,6 +3,7 @@ namespace CMS.Mvc.ViewModels.Shared.Personalization
 {
     public class PersonalizationCardViewModel : TileViewModel
     {
-        public TreeNode Item { get; set; }   
+        public TreeNode Item { get; set; }
+        public string HomeTitle { get; set; }
     }
 }

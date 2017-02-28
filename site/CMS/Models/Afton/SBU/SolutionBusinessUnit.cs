@@ -18,7 +18,7 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(SolutionBusinessUnit.CLASS_NAME, typeof(SolutionBusinessUnit))]
+[assembly: RegisterDocumentType( SolutionBusinessUnit.CLASS_NAME, typeof( SolutionBusinessUnit ) )]
 
 namespace CMS.DocumentEngine.Types
 {
@@ -53,11 +53,28 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("SolutionBusinessUnitID"), 0);
+                return ValidationHelper.GetInteger( GetValue( "SolutionBusinessUnitID" ), 0 );
             }
             set
             {
-                SetValue("SolutionBusinessUnitID", value);
+                SetValue( "SolutionBusinessUnitID", value );
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
+        public string HomeTitle
+        {
+            get
+            {
+                return ValidationHelper.GetString( GetValue( "HomeTitle" ), "" );
+            }
+            set
+            {
+                SetValue( "HomeTitle", value );
             }
         }
 
@@ -70,11 +87,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("TileTitle"), "");
+                return ValidationHelper.GetString( GetValue( "TileTitle" ), "" );
             }
             set
             {
-                SetValue("TileTitle", value);
+                SetValue( "TileTitle", value );
             }
         }
 
@@ -87,11 +104,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Title"), "");
+                return ValidationHelper.GetString( GetValue( "Title" ), "" );
             }
             set
             {
-                SetValue("Title", value);
+                SetValue( "Title", value );
             }
         }
 
@@ -104,11 +121,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("HomeImage"), "");
+                return ValidationHelper.GetString( GetValue( "HomeImage" ), "" );
             }
             set
             {
-                SetValue("HomeImage", value);
+                SetValue( "HomeImage", value );
             }
         }
 
@@ -121,11 +138,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("HeroImage"), "");
+                return ValidationHelper.GetString( GetValue( "HeroImage" ), "" );
             }
             set
             {
-                SetValue("HeroImage", value);
+                SetValue( "HeroImage", value );
             }
         }
 
@@ -138,11 +155,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("HeroImageTitle"), "");
+                return ValidationHelper.GetString( GetValue( "HeroImageTitle" ), "" );
             }
             set
             {
-                SetValue("HeroImageTitle", value);
+                SetValue( "HeroImageTitle", value );
             }
         }
 
@@ -155,11 +172,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("HeroImageSubtitle"), "");
+                return ValidationHelper.GetString( GetValue( "HeroImageSubtitle" ), "" );
             }
             set
             {
-                SetValue("HeroImageSubtitle", value);
+                SetValue( "HeroImageSubtitle", value );
             }
         }
 
@@ -172,11 +189,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Description"), "");
+                return ValidationHelper.GetString( GetValue( "Description" ), "" );
             }
             set
             {
-                SetValue("Description", value);
+                SetValue( "Description", value );
             }
         }
 
@@ -189,11 +206,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Content"), "");
+                return ValidationHelper.GetString( GetValue( "Content" ), "" );
             }
             set
             {
-                SetValue("Content", value);
+                SetValue( "Content", value );
             }
         }
 
@@ -206,28 +223,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("FAQDescription"), "");
+                return ValidationHelper.GetString( GetValue( "FAQDescription" ), "" );
             }
             set
             {
-                SetValue("FAQDescription", value);
-            }
-        }
-
-
-        /// <summary>
-        /// FAQ Items.
-        /// </summary>
-        [DatabaseField]
-        public string FAQList
-        {
-            get
-            {
-                return ValidationHelper.GetString(GetValue("FAQList"), "");
-            }
-            set
-            {
-                SetValue("FAQList", value);
+                SetValue( "FAQDescription", value );
             }
         }
 
@@ -240,11 +240,28 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("DocumentsDescription"), "");
+                return ValidationHelper.GetString( GetValue( "DocumentsDescription" ), "" );
             }
             set
             {
-                SetValue("DocumentsDescription", value);
+                SetValue( "DocumentsDescription", value );
+            }
+        }
+
+
+        /// <summary>
+        /// FAQ Items.
+        /// </summary>
+        [DatabaseField]
+        public string FAQList
+        {
+            get
+            {
+                return ValidationHelper.GetString( GetValue( "FAQList" ), "" );
+            }
+            set
+            {
+                SetValue( "FAQList", value );
             }
         }
 
@@ -257,11 +274,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Theme"), "");
+                return ValidationHelper.GetString( GetValue( "Theme" ), "" );
             }
             set
             {
-                SetValue("Theme", value);
+                SetValue( "Theme", value );
             }
         }
 
@@ -293,7 +310,7 @@ namespace CMS.DocumentEngine.Types
             /// Initializes a new instance of the <see cref="SolutionBusinessUnitFields" /> class with the specified content item of type SolutionBusinessUnit.
             /// </summary>
             /// <param name="instance">The content item of type SolutionBusinessUnit that is a target of the extended API.</param>
-            public SolutionBusinessUnitFields(SolutionBusinessUnit instance)
+            public SolutionBusinessUnitFields( SolutionBusinessUnit instance )
             {
                 mInstance = instance;
             }
@@ -311,6 +328,22 @@ namespace CMS.DocumentEngine.Types
                 set
                 {
                     mInstance.SolutionBusinessUnitID = value;
+                }
+            }
+
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public string HomeTitle
+            {
+                get
+                {
+                    return mInstance.HomeTitle;
+                }
+                set
+                {
+                    mInstance.HomeTitle = value;
                 }
             }
 
@@ -460,22 +493,6 @@ namespace CMS.DocumentEngine.Types
 
 
             /// <summary>
-            /// FAQ Items.
-            /// </summary>
-            public string FAQList
-            {
-                get
-                {
-                    return mInstance.FAQList;
-                }
-                set
-                {
-                    mInstance.FAQList = value;
-                }
-            }
-
-
-            /// <summary>
             /// Documents Description.
             /// </summary>
             public string DocumentsDescription
@@ -498,7 +515,23 @@ namespace CMS.DocumentEngine.Types
             {
                 get
                 {
-                    return mInstance.GetRelatedDocuments("DocumentList");
+                    return mInstance.GetRelatedDocuments( "DocumentList" );
+                }
+            }
+
+
+            /// <summary>
+            /// FAQ Items.
+            /// </summary>
+            public string FAQList
+            {
+                get
+                {
+                    return mInstance.FAQList;
+                }
+                set
+                {
+                    mInstance.FAQList = value;
                 }
             }
 
@@ -528,9 +561,9 @@ namespace CMS.DocumentEngine.Types
         /// Initializes a new instance of the <see cref="SolutionBusinessUnit" /> class.
         /// </summary>
         public SolutionBusinessUnit()
-            : base(CLASS_NAME)
+            : base( CLASS_NAME )
         {
-            mFields = new SolutionBusinessUnitFields(this);
+            mFields = new SolutionBusinessUnitFields( this );
         }
 
         #endregion

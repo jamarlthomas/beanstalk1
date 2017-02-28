@@ -60,7 +60,21 @@ namespace CMS.DocumentEngine.Types
                 SetValue("CustomNewsID", value);
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
+        public string HomeTitle
+        {
+            get
+            {
+                return ValidationHelper.GetString( GetValue( "HomeTitle" ), "" );
+            }
+            set
+            {
+                SetValue( "HomeTitle", value );
+            }
+        }
 
         /// <summary>
         /// Tile Title.
@@ -262,7 +276,20 @@ namespace CMS.DocumentEngine.Types
                     mInstance.CustomNewsID = value;
                 }
             }
-
+            /// <summary>
+            /// 
+            /// </summary>
+            public string HomeTitle
+            {
+                get
+                {
+                    return mInstance.HomeTitle;
+                }
+                set
+                {
+                    mInstance.HomeTitle = value;
+                }
+            }
 
             /// <summary>
             /// Tile Title.

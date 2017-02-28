@@ -33,7 +33,8 @@ namespace CMS.Mvc.Infrastructure
                 .ForMember( s => s.Title, d => d.Title )
                 .ForMember( s => ( DateTime )s.Item.GetValue( "DocumentModifiedWhen" ), d => d.Date )
                 .ForMember( s => s.Description, d => d.Description )
-                .ForMember( s => s.Item.ClassName, d => d.TypeName )
+                .ForMember( s => s.Item.ClassName , d => d.TypeName )
+                .ForMember(s => s.HomeTitle, d => d.HomeTitle)
                 .ForMember( s => s.Item, d => d.Item );
             CreateMap<Solution, TileViewModel>()
                 .ForMember(s => s.DocumentRoutePath, d => d.Reference);

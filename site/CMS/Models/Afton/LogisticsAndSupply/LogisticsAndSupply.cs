@@ -18,7 +18,7 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(LogisticsAndSupply.CLASS_NAME, typeof(LogisticsAndSupply))]
+[assembly: RegisterDocumentType( LogisticsAndSupply.CLASS_NAME, typeof( LogisticsAndSupply ) )]
 
 namespace CMS.DocumentEngine.Types
 {
@@ -53,11 +53,28 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("LogisticsAndSupplyID"), 0);
+                return ValidationHelper.GetInteger( GetValue( "LogisticsAndSupplyID" ), 0 );
             }
             set
             {
-                SetValue("LogisticsAndSupplyID", value);
+                SetValue( "LogisticsAndSupplyID", value );
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
+        public string HomeTitle
+        {
+            get
+            {
+                return ValidationHelper.GetString( GetValue( "HomeTitle" ), "" );
+            }
+            set
+            {
+                SetValue( "HomeTitle", value );
             }
         }
 
@@ -70,11 +87,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("TileTitle"), "");
+                return ValidationHelper.GetString( GetValue( "TileTitle" ), "" );
             }
             set
             {
-                SetValue("TileTitle", value);
+                SetValue( "TileTitle", value );
             }
         }
 
@@ -87,11 +104,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Title"), "");
+                return ValidationHelper.GetString( GetValue( "Title" ), "" );
             }
             set
             {
-                SetValue("Title", value);
+                SetValue( "Title", value );
             }
         }
 
@@ -104,11 +121,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Description"), "");
+                return ValidationHelper.GetString( GetValue( "Description" ), "" );
             }
             set
             {
-                SetValue("Description", value);
+                SetValue( "Description", value );
             }
         }
 
@@ -121,28 +138,28 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("HomeImage"), "");
+                return ValidationHelper.GetString( GetValue( "HomeImage" ), "" );
             }
             set
             {
-                SetValue("HomeImage", value);
+                SetValue( "HomeImage", value );
             }
         }
 
 
         /// <summary>
-        /// Abstract.
+        /// Is this a Campaign Page?.
         /// </summary>
         [DatabaseField]
-        public string Abstract
+        public bool Campaign
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Abstract"), "");
+                return ValidationHelper.GetBoolean( GetValue( "Campaign" ), false );
             }
             set
             {
-                SetValue("Abstract", value);
+                SetValue( "Campaign", value );
             }
         }
 
@@ -155,11 +172,28 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Copy"), "");
+                return ValidationHelper.GetString( GetValue( "Copy" ), "" );
             }
             set
             {
-                SetValue("Copy", value);
+                SetValue( "Copy", value );
+            }
+        }
+
+
+        /// <summary>
+        /// Campaign Subject Name.
+        /// </summary>
+        [DatabaseField]
+        public string SubjectName
+        {
+            get
+            {
+                return ValidationHelper.GetString( GetValue( "SubjectName" ), "" );
+            }
+            set
+            {
+                SetValue( "SubjectName", value );
             }
         }
 
@@ -172,11 +206,62 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("HeroImage"), "");
+                return ValidationHelper.GetString( GetValue( "HeroImage" ), "" );
             }
             set
             {
-                SetValue("HeroImage", value);
+                SetValue( "HeroImage", value );
+            }
+        }
+
+
+        /// <summary>
+        /// PdfReference.
+        /// </summary>
+        [DatabaseField]
+        public string PdfReference
+        {
+            get
+            {
+                return ValidationHelper.GetString( GetValue( "PdfReference" ), "" );
+            }
+            set
+            {
+                SetValue( "PdfReference", value );
+            }
+        }
+
+
+        /// <summary>
+        /// Is Highlighted On Insights Page.
+        /// </summary>
+        [DatabaseField]
+        public bool IsHighlightedOnInsightsPage
+        {
+            get
+            {
+                return ValidationHelper.GetBoolean( GetValue( "IsHighlightedOnInsightsPage" ), false );
+            }
+            set
+            {
+                SetValue( "IsHighlightedOnInsightsPage", value );
+            }
+        }
+
+
+        /// <summary>
+        /// Related Solutions.
+        /// </summary>
+        [DatabaseField]
+        public string RelatedSolution
+        {
+            get
+            {
+                return ValidationHelper.GetString( GetValue( "RelatedSolution" ), "" );
+            }
+            set
+            {
+                SetValue( "RelatedSolution", value );
             }
         }
 
@@ -189,11 +274,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
+                return ValidationHelper.GetString( GetValue( "SidebarItems" ), "" );
             }
             set
             {
-                SetValue("SidebarItems", value);
+                SetValue( "SidebarItems", value );
             }
         }
 
@@ -225,7 +310,7 @@ namespace CMS.DocumentEngine.Types
             /// Initializes a new instance of the <see cref="LogisticsAndSupplyFields" /> class with the specified content item of type LogisticsAndSupply.
             /// </summary>
             /// <param name="instance">The content item of type LogisticsAndSupply that is a target of the extended API.</param>
-            public LogisticsAndSupplyFields(LogisticsAndSupply instance)
+            public LogisticsAndSupplyFields( LogisticsAndSupply instance )
             {
                 mInstance = instance;
             }
@@ -243,6 +328,22 @@ namespace CMS.DocumentEngine.Types
                 set
                 {
                     mInstance.LogisticsAndSupplyID = value;
+                }
+            }
+
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public string HomeTitle
+            {
+                get
+                {
+                    return mInstance.HomeTitle;
+                }
+                set
+                {
+                    mInstance.HomeTitle = value;
                 }
             }
 
@@ -312,17 +413,17 @@ namespace CMS.DocumentEngine.Types
 
 
             /// <summary>
-            /// Abstract.
+            /// Is this a Campaign Page?.
             /// </summary>
-            public string Abstract
+            public bool Campaign
             {
                 get
                 {
-                    return mInstance.Abstract;
+                    return mInstance.Campaign;
                 }
                 set
                 {
-                    mInstance.Abstract = value;
+                    mInstance.Campaign = value;
                 }
             }
 
@@ -344,6 +445,22 @@ namespace CMS.DocumentEngine.Types
 
 
             /// <summary>
+            /// Campaign Subject Name.
+            /// </summary>
+            public string SubjectName
+            {
+                get
+                {
+                    return mInstance.SubjectName;
+                }
+                set
+                {
+                    mInstance.SubjectName = value;
+                }
+            }
+
+
+            /// <summary>
             /// Hero Image.
             /// </summary>
             public string HeroImage
@@ -355,6 +472,66 @@ namespace CMS.DocumentEngine.Types
                 set
                 {
                     mInstance.HeroImage = value;
+                }
+            }
+
+
+            /// <summary>
+            /// SidebarItems.
+            /// </summary>
+            public IEnumerable<TreeNode> SidebarItems2
+            {
+                get
+                {
+                    return mInstance.GetRelatedDocuments( "SidebarItems2" );
+                }
+            }
+
+
+            /// <summary>
+            /// PdfReference.
+            /// </summary>
+            public string PdfReference
+            {
+                get
+                {
+                    return mInstance.PdfReference;
+                }
+                set
+                {
+                    mInstance.PdfReference = value;
+                }
+            }
+
+
+            /// <summary>
+            /// Is Highlighted On Insights Page.
+            /// </summary>
+            public bool IsHighlightedOnInsightsPage
+            {
+                get
+                {
+                    return mInstance.IsHighlightedOnInsightsPage;
+                }
+                set
+                {
+                    mInstance.IsHighlightedOnInsightsPage = value;
+                }
+            }
+
+
+            /// <summary>
+            /// Related Solutions.
+            /// </summary>
+            public string RelatedSolution
+            {
+                get
+                {
+                    return mInstance.RelatedSolution;
+                }
+                set
+                {
+                    mInstance.RelatedSolution = value;
                 }
             }
 
@@ -373,18 +550,6 @@ namespace CMS.DocumentEngine.Types
                     mInstance.SidebarItems = value;
                 }
             }
-
-
-            /// <summary>
-            /// Sidebar Items.
-            /// </summary>
-            public IEnumerable<TreeNode> SidebarItems2
-            {
-                get
-                {
-                    return mInstance.GetRelatedDocuments("SidebarItems2");
-                }
-            }
         }
 
         #endregion
@@ -396,9 +561,9 @@ namespace CMS.DocumentEngine.Types
         /// Initializes a new instance of the <see cref="LogisticsAndSupply" /> class.
         /// </summary>
         public LogisticsAndSupply()
-            : base(CLASS_NAME)
+            : base( CLASS_NAME )
         {
-            mFields = new LogisticsAndSupplyFields(this);
+            mFields = new LogisticsAndSupplyFields( this );
         }
 
         #endregion

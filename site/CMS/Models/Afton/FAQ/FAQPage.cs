@@ -18,7 +18,7 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType(FAQPage.CLASS_NAME, typeof(FAQPage))]
+[assembly: RegisterDocumentType( FAQPage.CLASS_NAME, typeof( FAQPage ) )]
 
 namespace CMS.DocumentEngine.Types
 {
@@ -53,11 +53,28 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetInteger(GetValue("FAQPageID"), 0);
+                return ValidationHelper.GetInteger( GetValue( "FAQPageID" ), 0 );
             }
             set
             {
-                SetValue("FAQPageID", value);
+                SetValue( "FAQPageID", value );
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
+        public string HomeTitle
+        {
+            get
+            {
+                return ValidationHelper.GetString( GetValue( "HomeTitle" ), "" );
+            }
+            set
+            {
+                SetValue( "HomeTitle", value );
             }
         }
 
@@ -70,11 +87,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("TileTitle"), "");
+                return ValidationHelper.GetString( GetValue( "TileTitle" ), "" );
             }
             set
             {
-                SetValue("TileTitle", value);
+                SetValue( "TileTitle", value );
             }
         }
 
@@ -87,11 +104,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Title"), "");
+                return ValidationHelper.GetString( GetValue( "Title" ), "" );
             }
             set
             {
-                SetValue("Title", value);
+                SetValue( "Title", value );
             }
         }
 
@@ -104,11 +121,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("HomeImage"), "");
+                return ValidationHelper.GetString( GetValue( "HomeImage" ), "" );
             }
             set
             {
-                SetValue("HomeImage", value);
+                SetValue( "HomeImage", value );
             }
         }
 
@@ -121,11 +138,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("Description"), "");
+                return ValidationHelper.GetString( GetValue( "Description" ), "" );
             }
             set
             {
-                SetValue("Description", value);
+                SetValue( "Description", value );
             }
         }
 
@@ -138,11 +155,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("SortByLabel"), "");
+                return ValidationHelper.GetString( GetValue( "SortByLabel" ), "" );
             }
             set
             {
-                SetValue("SortByLabel", value);
+                SetValue( "SortByLabel", value );
             }
         }
 
@@ -155,11 +172,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString(GetValue("ViewAllLabel"), "");
+                return ValidationHelper.GetString( GetValue( "ViewAllLabel" ), "" );
             }
             set
             {
-                SetValue("ViewAllLabel", value);
+                SetValue( "ViewAllLabel", value );
             }
         }
 
@@ -191,7 +208,7 @@ namespace CMS.DocumentEngine.Types
             /// Initializes a new instance of the <see cref="FAQPageFields" /> class with the specified content item of type FAQPage.
             /// </summary>
             /// <param name="instance">The content item of type FAQPage that is a target of the extended API.</param>
-            public FAQPageFields(FAQPage instance)
+            public FAQPageFields( FAQPage instance )
             {
                 mInstance = instance;
             }
@@ -209,6 +226,22 @@ namespace CMS.DocumentEngine.Types
                 set
                 {
                     mInstance.FAQPageID = value;
+                }
+            }
+
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public string HomeTitle
+            {
+                get
+                {
+                    return mInstance.HomeTitle;
+                }
+                set
+                {
+                    mInstance.HomeTitle = value;
                 }
             }
 
@@ -316,7 +349,7 @@ namespace CMS.DocumentEngine.Types
             {
                 get
                 {
-                    return mInstance.GetRelatedDocuments("SidebarItems");
+                    return mInstance.GetRelatedDocuments( "SidebarItems" );
                 }
             }
         }
@@ -330,9 +363,9 @@ namespace CMS.DocumentEngine.Types
         /// Initializes a new instance of the <see cref="FAQPage" /> class.
         /// </summary>
         public FAQPage()
-            : base(CLASS_NAME)
+            : base( CLASS_NAME )
         {
-            mFields = new FAQPageFields(this);
+            mFields = new FAQPageFields( this );
         }
 
         #endregion
