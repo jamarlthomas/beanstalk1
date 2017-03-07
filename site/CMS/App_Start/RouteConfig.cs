@@ -26,6 +26,7 @@ namespace CMS.Mvc
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute( "robots.txt" );
+            routes.Ignore( "bundles/{*catch}" );
             SetUpRoutesFromKentico(routes);
             SetUpConstantRoutes(routes);
             routes.MapMvcAttributeRoutes();
