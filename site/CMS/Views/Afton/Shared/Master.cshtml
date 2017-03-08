@@ -28,13 +28,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="robots" content="index,follow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
+    @Styles.Render( "~/bundles/fonts" )
     @Styles.Render( "~/bundles/css" )
     @Styles.RenderFormat( "<link rel=\"stylesheet\"  href=\"{0}\" media=\"print\" />", "~/bundles/css/print" )
     @Scripts.Render( "~/bundles/js" )
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script type="text/javascript" src="/CMSScripts/WebServiceCall.js"></script>
-    <script>
+    @*<script>
         head.js(
             { home_rotator: "@Url.Content("~/Scripts/custom/homeSlideShow.min.js")" },
             { search_box: "@Url.Content("~/Scripts/custom/search.min.js")" },
@@ -60,7 +61,7 @@
             { stay_informed: "@Url.Content("~/Scripts/custom/stayinformed.js")" },
                 function () { }
             );
-    </script>
+    </script>*@
 
 </head>
 <body>
@@ -90,6 +91,7 @@
         @RenderBody()
     </main>
     @{ Html.RenderAction( "Footer", "Master" ); }
+    @Scripts.Render( "~/bundles/customjs" )
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-56686002384632a9" async="async"></script>
     <script>
         var addthis_config = { services_compact: 'email,linkedin,twitter,facebook,more', services_exclude: 'google,google_plusone_share' }
