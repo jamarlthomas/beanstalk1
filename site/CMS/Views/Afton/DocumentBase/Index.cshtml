@@ -13,6 +13,10 @@
         <div id="contentC">
             <div id="mainContentC" class="documentPagination">
                 @UtilsHelper.ToHtmlString(Model.Document.Copy.Replace("~/", "/"))
+                @if (Model.Document.FAQList.Any()) {
+                    <h2 class="txtPaddingBtm">@UtilsHelper.GetLocalizedString("sbu_FAQs")</h2>
+                    @Html.Partial("~/Views/Afton/SBU/_FAQs.cshtml", Model.Document.FAQList)
+                }
             </div>
             <div class="padBtm">
                 <div style="display: none;" class="paginationC"><a href="#" class="prev"></a><span class="pageNumbers"></span><a href="#" class="next"></a></div>

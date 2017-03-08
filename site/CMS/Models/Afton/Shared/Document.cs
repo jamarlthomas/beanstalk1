@@ -131,6 +131,40 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Is this a Campaign Page?.
+        /// </summary>
+        [DatabaseField]
+        public bool Campaign
+        {
+            get
+            {
+                return ValidationHelper.GetBoolean(GetValue("Campaign"), false);
+            }
+            set
+            {
+                SetValue("Campaign", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Campaign Subject Name.
+        /// </summary>
+        [DatabaseField]
+        public string SubjectName
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("SubjectName"), "");
+            }
+            set
+            {
+                SetValue("SubjectName", value);
+            }
+        }
+
+
+        /// <summary>
         /// Abstract.
         /// </summary>
         [DatabaseField]
@@ -299,6 +333,18 @@ namespace CMS.DocumentEngine.Types
 
 
             /// <summary>
+            /// 
+            /// </summary>
+            public IEnumerable<TreeNode> SidebarItems2
+            {
+                get
+                {
+                    return mInstance.GetRelatedDocuments("SidebarItems2");
+                }
+            }
+
+
+            /// <summary>
             /// Tile Title.
             /// </summary>
             public string TileTitle
@@ -363,6 +409,38 @@ namespace CMS.DocumentEngine.Types
 
 
             /// <summary>
+            /// Is this a Campaign Page?.
+            /// </summary>
+            public bool Campaign
+            {
+                get
+                {
+                    return mInstance.Campaign;
+                }
+                set
+                {
+                    mInstance.Campaign = value;
+                }
+            }
+
+
+            /// <summary>
+            /// Campaign Subject Name.
+            /// </summary>
+            public string SubjectName
+            {
+                get
+                {
+                    return mInstance.SubjectName;
+                }
+                set
+                {
+                    mInstance.SubjectName = value;
+                }
+            }
+
+
+            /// <summary>
             /// Abstract.
             /// </summary>
             public string Abstract
@@ -395,6 +473,18 @@ namespace CMS.DocumentEngine.Types
 
 
             /// <summary>
+            /// FAQ Items.
+            /// </summary>
+            public IEnumerable<TreeNode> FAQItems
+            {
+                get
+                {
+                    return mInstance.GetRelatedDocuments("FAQItems");
+                }
+            }
+
+
+            /// <summary>
             /// Hero Image.
             /// </summary>
             public string HeroImage
@@ -422,18 +512,6 @@ namespace CMS.DocumentEngine.Types
                 set
                 {
                     mInstance.SidebarItems = value;
-                }
-            }
-
-
-            /// <summary>
-            /// Sidebar Items.
-            /// </summary>
-            public IEnumerable<TreeNode> SidebarItems2
-            {
-                get
-                {
-                    return mInstance.GetRelatedDocuments("SidebarItems2");
                 }
             }
 

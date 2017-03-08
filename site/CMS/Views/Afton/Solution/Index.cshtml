@@ -24,6 +24,10 @@
                     </div>
                 </h1>
                 @Html.Partial("~/Views/Afton/Solution/_description.cshtml", Model.Copy)
+                @if (Model.FAQList.Any()) {
+                    <h2 class="txtPaddingBtm">@UtilsHelper.GetLocalizedString("sbu_FAQs")</h2>
+                    @Html.Partial("~/Views/Afton/SBU/_FAQs.cshtml", Model.FAQList)
+                }
 				@{ Html.RenderAction("Widget", "RateContent", new { Request = Model.DocumentGUID }); }
             </div>
 		</div>

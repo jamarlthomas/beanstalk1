@@ -455,6 +455,18 @@ namespace CMS.DocumentEngine.Types
 
 
             /// <summary>
+            /// FAQ Items.
+            /// </summary>
+            public IEnumerable<TreeNode> FAQItems
+            {
+                get
+                {
+                    return mInstance.GetRelatedDocuments("FAQItems");
+                }
+            }
+
+
+            /// <summary>
             /// Featured Product List.
             /// </summary>
             public string FeaturedProductList

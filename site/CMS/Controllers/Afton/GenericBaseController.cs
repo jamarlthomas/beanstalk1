@@ -59,7 +59,7 @@ namespace CMS.Mvc.Controllers.Afton
             }
 
             var genericViewModel = MapData<T, DocumentViewModel>(document);
-            
+
             genericViewModel.Constant = MapData<DocumentConstant, DocumentConstantViewModel>(_documentConstantProvider.GetDocumentConstants());
             
             if (document.NodeClassName == LogisticsAndSupplyFolder.CLASS_NAME)
@@ -76,6 +76,13 @@ namespace CMS.Mvc.Controllers.Afton
                 var newdoc = ContentHelper.GetDocByDocId<GenericPage>(document.DocumentID);
                 sidebarItem = newdoc.Fields.SidebarItems2.ToList();
 
+                var faqItems = newdoc.Fields.FAQItems.ToList();
+                genericViewModel.FAQList = new List<FAQItemViewModel>();
+
+                foreach (var item in faqItems)
+                {
+                    genericViewModel.FAQList.Add(MapData<FAQItem, FAQItemViewModel>((FAQItem)item));
+                }
             }
             else if (document.ClassName == Product.CLASS_NAME)
             {
