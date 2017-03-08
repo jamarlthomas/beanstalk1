@@ -63,6 +63,23 @@ namespace CMS.DocumentEngine.Types
 
 
         /// <summary>
+        /// Home Title.
+        /// </summary>
+        [DatabaseField]
+        public string HomeTitle
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("HomeTitle"), "");
+            }
+            set
+            {
+                SetValue("HomeTitle", value);
+            }
+        }
+
+
+        /// <summary>
         /// Tile Title.
         /// </summary>
         [DatabaseField]
@@ -299,6 +316,22 @@ namespace CMS.DocumentEngine.Types
 
 
             /// <summary>
+            /// Home Title.
+            /// </summary>
+            public string HomeTitle
+            {
+                get
+                {
+                    return mInstance.HomeTitle;
+                }
+                set
+                {
+                    mInstance.HomeTitle = value;
+                }
+            }
+
+
+            /// <summary>
             /// Tile Title.
             /// </summary>
             public string TileTitle
@@ -494,8 +527,7 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Initializes a new instance of the <see cref="Document" /> class.
         /// </summary>
-        public Document()
-            : base(CLASS_NAME)
+        public Document() : base(CLASS_NAME)
         {
             mFields = new DocumentFields(this);
         }
