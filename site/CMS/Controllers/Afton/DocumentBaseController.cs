@@ -43,7 +43,17 @@ namespace CMS.Mvc.Controllers.Afton
             }
             else
             {
-                sidebarItems = ContentHelper.GetDocByDocId<Document>(node.DocumentID).Fields.SidebarItems2.ToList();
+                var document = ContentHelper.GetDocByDocId<Document>(node.DocumentID);
+                sidebarItems = document.Fields.SidebarItems2.ToList();
+
+                var faqItems = document.Fields.FAQItems.ToList();
+                documentViewModel.FAQList = new List<FAQItemViewModel>();
+
+                foreach (var item in faqItems)
+                {
+                    documentViewModel.FAQList.Add(MapData<FAQItem, FAQItemViewModel>((FAQItem)item));
+                }
+
             }
 
             return View("~/Views/Afton/DocumentBase/Index.cshtml", new DocumentBasePageViewModel()

@@ -1,5 +1,6 @@
 ﻿using CMS.Mvc.ViewModels.DocumentBase;
 using System;
+using System.Collections.Generic;
 
 namespace CMS.Mvc.ViewModels.Shared
 {
@@ -14,6 +15,7 @@ namespace CMS.Mvc.ViewModels.Shared
         public DocumentConstantViewModel Constant { get; set; }
         public bool map { get; set; }
         public string DocumentRoutePath { get; set; }
+        public List<FAQItemViewModel> FAQList { get; set; }
         public string NodeGUID { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CMS.Mvc.ViewModels.Shared;
 using CMS.Mvc.ViewModels.Shared.SidebarComponents;
 using System;
+using System.Collections.Generic;
 
 namespace CMS.Mvc.ViewModels.Generic
 {

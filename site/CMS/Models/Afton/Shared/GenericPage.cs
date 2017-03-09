@@ -18,7 +18,7 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType( GenericPage.CLASS_NAME, typeof( GenericPage ) )]
+[assembly: RegisterDocumentType(GenericPage.CLASS_NAME, typeof(GenericPage))]
 
 namespace CMS.DocumentEngine.Types
 {
@@ -53,11 +53,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetInteger( GetValue( "GenericPageID" ), 0 );
+                return ValidationHelper.GetInteger(GetValue("GenericPageID"), 0);
             }
             set
             {
-                SetValue( "GenericPageID", value );
+                SetValue("GenericPageID", value);
             }
         }
 
@@ -70,11 +70,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "HomeTitle" ), "" );
+                return ValidationHelper.GetString(GetValue("HomeTitle"), "");
             }
             set
             {
-                SetValue( "HomeTitle", value );
+                SetValue("HomeTitle", value);
             }
         }
 
@@ -87,11 +87,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "TileTitle" ), "" );
+                return ValidationHelper.GetString(GetValue("TileTitle"), "");
             }
             set
             {
-                SetValue( "TileTitle", value );
+                SetValue("TileTitle", value);
             }
         }
 
@@ -104,11 +104,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "Title" ), "" );
+                return ValidationHelper.GetString(GetValue("Title"), "");
             }
             set
             {
-                SetValue( "Title", value );
+                SetValue("Title", value);
             }
         }
 
@@ -121,11 +121,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "Description" ), "" );
+                return ValidationHelper.GetString(GetValue("Description"), "");
             }
             set
             {
-                SetValue( "Description", value );
+                SetValue("Description", value);
             }
         }
 
@@ -138,11 +138,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "HomeImage" ), "" );
+                return ValidationHelper.GetString(GetValue("HomeImage"), "");
             }
             set
             {
-                SetValue( "HomeImage", value );
+                SetValue("HomeImage", value);
             }
         }
 
@@ -155,11 +155,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "Copy" ), "" );
+                return ValidationHelper.GetString(GetValue("Copy"), "");
             }
             set
             {
-                SetValue( "Copy", value );
+                SetValue("Copy", value);
             }
         }
 
@@ -172,11 +172,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetBoolean( GetValue( "Campaign" ), false );
+                return ValidationHelper.GetBoolean(GetValue("Campaign"), false);
             }
             set
             {
-                SetValue( "Campaign", value );
+                SetValue("Campaign", value);
             }
         }
 
@@ -189,11 +189,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "SubjectName" ), "" );
+                return ValidationHelper.GetString(GetValue("SubjectName"), "");
             }
             set
             {
-                SetValue( "SubjectName", value );
+                SetValue("SubjectName", value);
             }
         }
 
@@ -206,11 +206,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "HeroImage" ), "" );
+                return ValidationHelper.GetString(GetValue("HeroImage"), "");
             }
             set
             {
-                SetValue( "HeroImage", value );
+                SetValue("HeroImage", value);
             }
         }
 
@@ -223,11 +223,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "SidebarItems" ), "" );
+                return ValidationHelper.GetString(GetValue("SidebarItems"), "");
             }
             set
             {
-                SetValue( "SidebarItems", value );
+                SetValue("SidebarItems", value);
             }
         }
 
@@ -240,11 +240,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "PdfReference" ), "" );
+                return ValidationHelper.GetString(GetValue("PdfReference"), "");
             }
             set
             {
-                SetValue( "PdfReference", value );
+                SetValue("PdfReference", value);
             }
         }
 
@@ -257,11 +257,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetBoolean( GetValue( "IsHighlightedOnInsightsPage" ), false );
+                return ValidationHelper.GetBoolean(GetValue("IsHighlightedOnInsightsPage"), false);
             }
             set
             {
-                SetValue( "IsHighlightedOnInsightsPage", value );
+                SetValue("IsHighlightedOnInsightsPage", value);
             }
         }
 
@@ -274,11 +274,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "RelatedSolution" ), "" );
+                return ValidationHelper.GetString(GetValue("RelatedSolution"), "");
             }
             set
             {
-                SetValue( "RelatedSolution", value );
+                SetValue("RelatedSolution", value);
             }
         }
 
@@ -310,7 +310,7 @@ namespace CMS.DocumentEngine.Types
             /// Initializes a new instance of the <see cref="GenericPageFields" /> class with the specified content item of type GenericPage.
             /// </summary>
             /// <param name="instance">The content item of type GenericPage that is a target of the extended API.</param>
-            public GenericPageFields( GenericPage instance )
+            public GenericPageFields(GenericPage instance)
             {
                 mInstance = instance;
             }
@@ -429,6 +429,18 @@ namespace CMS.DocumentEngine.Types
 
 
             /// <summary>
+            /// FAQ Items.
+            /// </summary>
+            public IEnumerable<TreeNode> FAQItems
+            {
+                get
+                {
+                    return mInstance.GetRelatedDocuments("FAQItems");
+                }
+            }
+
+
+            /// <summary>
             /// Is this a Campaign Page?.
             /// </summary>
             public bool Campaign
@@ -499,7 +511,7 @@ namespace CMS.DocumentEngine.Types
             {
                 get
                 {
-                    return mInstance.GetRelatedDocuments( "SidebarItems2" );
+                    return mInstance.GetRelatedDocuments("SidebarItems2");
                 }
             }
 
@@ -561,9 +573,9 @@ namespace CMS.DocumentEngine.Types
         /// Initializes a new instance of the <see cref="GenericPage" /> class.
         /// </summary>
         public GenericPage()
-            : base( CLASS_NAME )
+            : base(CLASS_NAME)
         {
-            mFields = new GenericPageFields( this );
+            mFields = new GenericPageFields(this);
         }
 
         #endregion

@@ -20,6 +20,10 @@
                     @Html.Partial( "~/Views/Afton/Shared/_map.cshtml" )
                 }
                 @UtilsHelper.ToHtmlString( Model.Document.Copy.Replace( "~/", "/" ) )
+                @if (Model.Document.FAQList.Any()) {
+                    <h2 class="txtPaddingBtm">@UtilsHelper.GetLocalizedString("sbu_FAQs")</h2>
+                    @Html.Partial("~/Views/Afton/SBU/_FAQs.cshtml", Model.Document.FAQList)
+                }
                 @if ( Model.Campaign == true )
                 {
 

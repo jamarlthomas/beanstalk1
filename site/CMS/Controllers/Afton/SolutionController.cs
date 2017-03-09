@@ -72,6 +72,13 @@ namespace CMS.Mvc.Controllers.Afton
             solutionViewModel.Constants = MapData<SolutionConstants, SolutionConstantsViewModel>(_solutionConstantsProvider.GetSolutionConstants());
             solutionViewModel.NodeID = solution.NodeID;
 
+            var faqItems = solution.Fields.FAQItems.ToList();
+            solutionViewModel.FAQList = new List<FAQItemViewModel>();
+
+            foreach(var item in faqItems){
+                solutionViewModel.FAQList.Add(MapData<FAQItem, FAQItemViewModel>((FAQItem)item));
+            }
+
             if ( System.Configuration.ConfigurationManager.AppSettings[ "DateOnCards" ] == "false" )
             {
                 solutionViewModel.Products.ForEach( x => x.DocumentCreatedWhen = null );
