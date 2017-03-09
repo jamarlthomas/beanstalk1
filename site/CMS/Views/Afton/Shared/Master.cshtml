@@ -6,13 +6,12 @@
 @using CMS.Helpers
 @{
     var page = DocumentContext.CurrentPageInfo;
-
     if ( page != null )
     {
         ViewBag.PageGuid = ( page.DocumentGUID == Guid.Empty ) ? String.Empty : page.DocumentGUID.ToString();
         ViewBag.SiteId = ( page.NodeSiteID > 0 ) ? page.NodeSiteID.ToString() : String.Empty;
+        ViewBag.PageDescription = page.DocumentPageDescription;
     }
-
     ViewBag.Referrer = ( Request.UrlReferrer != null ) ? Request.UrlReferrer.ToString() : String.Empty;
 }
 <!DOCTYPE html>
@@ -22,7 +21,7 @@
           type="image/png"
           href="~/images/Afton_Bug.png" />
     <title>@UtilsHelper.StripHTML( ViewBag.Title ) - @UtilsHelper.GetLocalizedString( "site_TitlePostfix" )</title>
-    <meta name="description" content="">
+    <meta name="description" content="@UtilsHelper.StripHTML( ViewBag.PageDescription ) ">
     <meta name="keywords" content="">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
