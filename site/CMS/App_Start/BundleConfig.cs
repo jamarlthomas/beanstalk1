@@ -30,7 +30,8 @@ namespace CMS.Mvc.App_Start
                 .Include("~/Scripts/custom/ellipsesText.min.js")
                 .Include("~/Scripts/custom/columnizeText.min.js")
                 //.Include("~/Scripts/custom/balanceText.min.js")
-                .Include("~/Scripts/library/head.min.js"));
+                .Include("~/Scripts/library/head.min.js")
+                .Include("~/Scripts/custom/hubspot.min.js"));
 
             /*Custom Javascript*/
             bundles.Add( new ScriptBundle( "~/bundles/customjs" )
