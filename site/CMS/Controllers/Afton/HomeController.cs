@@ -77,7 +77,7 @@ namespace CMS.Mvc.Controllers.Afton
                 }
                 if ( !string.IsNullOrEmpty( x.HomeTitle ) )
                 {
-                    x.TileTitle = x.HomeTitle;
+                    x.Title = x.HomeTitle;
                 }
             } );
             var filteredPersTiles = _personalizationProvider.GetPersonalizedItems()
@@ -90,6 +90,10 @@ namespace CMS.Mvc.Controllers.Afton
                 if ( x.TypeName == CustomNews.CLASS_NAME || x.TypeName == Event.CLASS_NAME )
                 {
                     x.Date = ( DateTime )x.Item.GetValue( "Date" );
+                }
+                if ( !string.IsNullOrEmpty( x.HomeTitle ) )
+                {
+                    x.Title = x.HomeTitle;
                 }
             } );
 
@@ -107,6 +111,10 @@ namespace CMS.Mvc.Controllers.Afton
                 if ( x.TypeName == CustomNews.CLASS_NAME || x.TypeName == Event.CLASS_NAME )
                 {
                     x.Date = ( DateTime )x.Item.GetValue( "Date" );
+                }
+                if ( !string.IsNullOrEmpty( x.HomeTitle ) )
+                {
+                    x.Title = x.HomeTitle;
                 }
             } );
             if ( System.Configuration.ConfigurationManager.AppSettings[ "DateOnCards" ] == "false" )
