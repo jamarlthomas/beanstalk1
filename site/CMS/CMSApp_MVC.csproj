@@ -23,7 +23,6 @@
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -233,8 +232,9 @@
     <Reference Include="WebActivator">
       <HintPath>..\packages\WebActivator.1.0.0.0\lib\WebActivator.dll</HintPath>
     </Reference>
-    <Reference Include="WebGrease">
-      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -287,6 +287,7 @@
     <Compile Include="Models\Afton\PrivacyTermsCookie\Privacyconstants.cs" />
     <Compile Include="Models\ExtendedModels\DocumentType.cs" />
     <Compile Include="Modules\CultureSwitcherModule.cs" />
+    <Compile Include="Modules\PreviewModeSwitchModule.cs" />
     <Compile Include="Providers\PrivacyTermsCookieProvider.cs" />
     <Compile Include="ViewModels\Master\CultureLinkViewModel.cs" />
     <Compile Include="Providers\LocalizationProvider.cs" />
