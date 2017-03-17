@@ -30,11 +30,11 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index(string NewsName)
         {
             var news = _newsProvider.GetNewsItem(NewsName);
-            if ( !news.IsPublished )
+            if ( !news.IsPublished || Request.QueryString[ "preview" ] != null )
             {
                 if ( DocumentSecurityHelper.IsAuthorizedPerDocument( news, NodePermissionsEnum.Read, true, LocalizationContext.CurrentCulture.CultureCode, MembershipContext.AuthenticatedUser ) != AuthorizationResultEnum.Allowed )
                 {
-                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path );
+                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path + "%3Fpreview%3Dtrue" );
                 }
             }
             var newsViewModel = MapData<CustomNews, DocumentBaseViewModel>(news);

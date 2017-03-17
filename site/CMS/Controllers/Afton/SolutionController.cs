@@ -43,11 +43,11 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index(string SolutionName, string SBUName)
         {
             var solution = _solutionProvider.GetSolution(SolutionName, SBUName);
-            if ( !solution.IsPublished )
+            if ( !solution.IsPublished || Request.QueryString[ "preview" ] != null )
             {
                 if ( DocumentSecurityHelper.IsAuthorizedPerDocument( solution, NodePermissionsEnum.Read, true, LocalizationContext.CurrentCulture.CultureCode, MembershipContext.AuthenticatedUser ) != AuthorizationResultEnum.Allowed )
                 {
-                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path );
+                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path + "%3Fpreview%3Dtrue" );
                 }
             }
             var solutionViewModel = MapData<Solution, SolutionViewModel>(solution);

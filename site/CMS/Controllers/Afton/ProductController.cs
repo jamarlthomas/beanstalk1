@@ -33,11 +33,11 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index(string ProductName)
         {
             var product = _productProvider.GetProduct(ProductName);
-            if ( !product.IsPublished )
+            if ( !product.IsPublished || Request.QueryString[ "preview" ] != null )
             {
                 if ( DocumentSecurityHelper.IsAuthorizedPerDocument( product, NodePermissionsEnum.Read, true, LocalizationContext.CurrentCulture.CultureCode, MembershipContext.AuthenticatedUser ) != AuthorizationResultEnum.Allowed )
                 {
-                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path );
+                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path + "%3Fpreview%3Dtrue" );
                 }
             }
             ProductPageViewModel productModel = MapData<Product, ProductPageViewModel>(product);

@@ -50,11 +50,11 @@ namespace CMS.Mvc.Controllers.Afton
         {
             
             var document = _genericProvider.GetDocument(DocumentName);
-            if ( !document.IsPublished )
+            if ( !document.IsPublished || Request.QueryString["preview"] != null)
             {
                 if ( DocumentSecurityHelper.IsAuthorizedPerDocument( document, NodePermissionsEnum.Read, true, LocalizationContext.CurrentCulture.CultureCode, MembershipContext.AuthenticatedUser ) != AuthorizationResultEnum.Allowed )
                 {
-                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path );
+                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path+"%3Fpreview%3Dtrue" );
                 }
             }
 

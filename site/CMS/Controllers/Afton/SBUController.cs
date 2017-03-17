@@ -59,11 +59,11 @@ namespace CMS.Mvc.Controllers.Afton
         {
             var solutions = _solutionProvider.GetSolutions(SBUName);
             var sbu = _solutionBusinessUnitProvider.GetSolutionBusinessUnit(SBUName);
-            if ( !sbu.IsPublished )
+            if ( !sbu.IsPublished || Request.QueryString[ "preview" ] != null )
             {
                 if ( DocumentSecurityHelper.IsAuthorizedPerDocument( sbu, NodePermissionsEnum.Read, true, LocalizationContext.CurrentCulture.CultureCode, MembershipContext.AuthenticatedUser ) != AuthorizationResultEnum.Allowed )
                 {
-                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path );
+                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path + "%3Fpreview%3Dtrue" );
                 }
             }
             var model = MapData<SolutionBusinessUnit, CMS.Mvc.ViewModels.Shared.SBUViewModel>(sbu);

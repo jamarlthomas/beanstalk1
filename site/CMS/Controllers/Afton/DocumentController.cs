@@ -29,10 +29,11 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index(string DocumentName)
         {
             var document = _documentProvider.GetDocument(DocumentName);
-            if ( !document.IsPublished)  {
+            if ( !document.IsPublished || Request.QueryString[ "preview" ] != null )
+            {
                 if ( DocumentSecurityHelper.IsAuthorizedPerDocument( document, NodePermissionsEnum.Read, true, LocalizationContext.CurrentCulture.CultureCode, MembershipContext.AuthenticatedUser ) != AuthorizationResultEnum.Allowed )
                 {
-                    return Redirect( "~/cmspages/logon.aspx" +"?ReturnUrl="+Request.Path);
+                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path + "%3Fpreview%3Dtrue" );
                 }
             }
             var documentViewModel = MapData<Document, DocumentBaseViewModel>(document);

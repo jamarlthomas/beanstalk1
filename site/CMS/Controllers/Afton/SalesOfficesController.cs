@@ -46,11 +46,11 @@ namespace CMS.Mvc.Controllers.Afton
         public ActionResult Index(string RegionName)
         {
             var region = _regionProvider.GetRegion(RegionName);
-            if ( !region.IsPublished )
+            if ( !region.IsPublished || Request.QueryString[ "preview" ] != null )
             {
                 if ( DocumentSecurityHelper.IsAuthorizedPerDocument( region, NodePermissionsEnum.Read, true, LocalizationContext.CurrentCulture.CultureCode, MembershipContext.AuthenticatedUser ) != AuthorizationResultEnum.Allowed )
                 {
-                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path );
+                    return Redirect( "~/cmspages/logon.aspx" + "?ReturnUrl=" + Request.Path + "%3Fpreview%3Dtrue" );
                 }
             }
             var model = MapData<Region, ViewModels.SalesOffices.RegionViewModel>(region);
