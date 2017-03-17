@@ -32,6 +32,12 @@ h2,h3{padding:0 0 5px}h1,h2,h3{margin:0;color:#0c419a}.pollSurveyC .pollSurvey .
 .hs-form fieldset.form-columns-2 .field + .field {
     padding-left:15px;
 }
+.hs-form .inputs-list {
+    list-style:none;
+}
+.hs-form .inputs-list li {
+    margin:0;
+}
 @media (max-width: 767px) {
     .hs-form fieldset.form-columns-2 .hs-form-field {
         width: 100% !important;
