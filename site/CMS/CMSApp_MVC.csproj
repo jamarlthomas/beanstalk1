@@ -711,6 +711,7 @@
     <Content Include="Scripts\custom\faqDropDown.min.js" />
     <Content Include="Scripts\custom\formPollyfill.min.js" />
     <Content Include="Scripts\custom\homeSlideShow.min.js" />
+    <Content Include="Scripts\custom\hubspot.min.js" />
     <Content Include="Scripts\custom\langDocSel.min.js" />
     <Content Include="Scripts\custom\langSel.min.js" />
     <Content Include="Scripts\custom\megaMenu.min.js" />
