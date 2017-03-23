@@ -13,9 +13,11 @@
         <div id="contentC">
             <div id="mainContentC" class="documentPagination">
                 @UtilsHelper.ToHtmlString(Model.Document.Copy.Replace("~/", "/"))
-                @if (Model.Document.FAQList.Any()) {
-                    <h2 class="txtPaddingBtm">@UtilsHelper.GetLocalizedString("sbu_FAQs")</h2>
-                    @Html.Partial("~/Views/Afton/SBU/_FAQs.cshtml", Model.Document.FAQList)
+                @if ( Model.Document.FAQList != null ) { 
+                    if (Model.Document.FAQList.Any()) {
+                        <h2 class="txtPaddingBtm">@UtilsHelper.GetLocalizedString("sbu_FAQs")</h2>
+                        @Html.Partial("~/Views/Afton/SBU/_FAQs.cshtml", Model.Document.FAQList)
+                    }
                 }
             </div>
             <div class="padBtm">
