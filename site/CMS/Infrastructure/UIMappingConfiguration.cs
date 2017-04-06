@@ -8,6 +8,8 @@ using CMS.Mvc.ViewModels.Shared;
 using CMS.Mvc.ViewModels.Shared.Personalization;
 using Infrastructure.Mapper;
 using ProductViewModel = CMS.Mvc.ViewModels.Product.ProductViewModel;
+using CMS.Mvc.ViewModels.PrivacyTermsCookie;
+//using CMS.Mvc.ViewModels.PrivacyTermsCookie;
 
 namespace CMS.Mvc.Infrastructure
 {
@@ -48,7 +50,17 @@ namespace CMS.Mvc.Infrastructure
                 .ForMember(s => s.CultureID.ToString(System.Globalization.CultureInfo.InvariantCulture), d => d.CultureId)
                 .ForMember(s => (!string.IsNullOrWhiteSpace(s.CultureAlias)) ? s.CultureAlias : s.CultureShortName, d => d.Title)
                 .ForMember(s => string.Format("?lang={0}", s.CultureCode), d => d.Reference);
-
+            /*CreateMap<Privacyconstants, PrivacyTermCookieViewModel>()
+                .ForMember(p => p.CookieContent, p => p.CookieContent )
+                .ForMember(p => p.CookieHeader, p => p.CookieHeader)
+                .ForMember(p => p.PrefCookieHeader, p => p.PerfCookieHeader)
+                .ForMember(p => p.PerfCookieMessage, p => p.PerfCookieMessage)
+                .ForMember(p => p.PrefCookieHeader, p => p.PrefCookieHeader)
+                .ForMember(p => p.PrefCookieMessage, p => p.PrefCookieMessage)
+                .ForMember(p => p.PrivacyContent, p => p.PrivacyContent)
+                .ForMember(p => p.PrivacyHeader, p => p.PrivacyHeader)
+                .ForMember(p => p.Fields.PrivacySidebar, p => p.PrivacySidebar)
+                ;*/
 
         }
         protected override void Collections()

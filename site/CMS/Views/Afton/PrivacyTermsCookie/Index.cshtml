@@ -5,11 +5,11 @@
     ViewBag.Title = "Privacy and Terms";
     Layout = "~/Views/Afton/Shared/Master.cshtml";
 }
-<div id="privacyC" data-disable="cookiePopup" class="fullWidth">
-    <div id="privacy">
+<div id="twoColumnC-sidebar" data-disable="cookiePopup" class="negMargin     padBtm">
+    <div id="rtCol-contentArea">
         <h1>@Model.PrivacyHeader</h1><br>
         @UtilsHelper.ToHtmlString(Model.PrivacyContent)
-<br>
+        <br>
         <hr><br><a id="cookie-policy" name="cookie-policy" class="defAnchorTag"></a>
         <h1>@Model.CookieHeader</h1><br>
         @UtilsHelper.ToHtmlString(Model.CookieContent)
@@ -50,6 +50,6 @@
         </ol><br><br>
     </div>
     <div id="lftCol-sidebar">
-        @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.PrivacySideBar)
+        @Html.Partial("~/Views/Afton/Shared/Sidebar/_sideBar.cshtml", Model.PrivacySidebar)
     </div>
 </div>

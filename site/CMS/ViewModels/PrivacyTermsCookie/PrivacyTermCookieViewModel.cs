@@ -9,7 +9,7 @@ namespace CMS.Mvc.ViewModels.PrivacyTermsCookie
     {
         public string PrivacyHeader { get; set; }
         public string PrivacyContent { get; set; }
-        public SidebarViewModel PrivacySideBar { get; set; }
+        public SidebarViewModel PrivacySidebar { get; set; }
         public string CookieHeader { get; set; }
         public string CookieContent { get; set; }
         public string PrefCookieHeader { get; set; }

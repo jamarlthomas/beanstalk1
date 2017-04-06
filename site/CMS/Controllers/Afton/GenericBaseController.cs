@@ -67,7 +67,7 @@ namespace CMS.Mvc.Controllers.Afton
                 genericViewModel.map = true;
             }
             else {
-                genericViewModel.map = false; 
+                genericViewModel.map = false;
             }
             List<TreeNode> sidebarItem = null;
 
