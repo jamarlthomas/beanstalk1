@@ -101,3 +101,4 @@ templates/bower_components/
 site/CMS/App_Data/CMSModules/SmartSearch/
 site/CMS/App_Data/CMSModules/DeviceProfile/logFiftyOne.txt
 site/CMS/Afton/media/PdfFiles/Product/
+/site/.vs/config/applicationhost.config
