@@ -286,6 +286,7 @@
     <Compile Include="Interfaces\IPrivacyTermsCookieProvider.cs" />
     <Compile Include="Models\Afton\PrivacyTermsCookie\Privacyconstants.cs" />
     <Compile Include="Models\ExtendedModels\DocumentType.cs" />
+    <Compile Include="Models\ExtendedModels\Privacyconstants.cs" />
     <Compile Include="Modules\CultureSwitcherModule.cs" />
     <Compile Include="Modules\PreviewModeSwitchModule.cs" />
     <Compile Include="Providers\PrivacyTermsCookieProvider.cs" />
