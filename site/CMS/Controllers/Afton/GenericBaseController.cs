@@ -120,6 +120,10 @@ namespace CMS.Mvc.Controllers.Afton
                 sidebarItem = newdoc.Fields.SidebarItems2.ToList();
 
             }
+            else if (document.ClassName == TermsPage.CLASS_NAME)
+            {
+                var newdoc = ContentHelper.GetDocByDocId<TermsPage>(document.DocumentID);
+            }
             else
             {
                 sidebarItem = _sidebarProvider.GetSideBarItems(UtilsHelper.ParseGuids(document.GetValue("SidebarItems","")));
