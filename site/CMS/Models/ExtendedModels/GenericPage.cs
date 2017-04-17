@@ -9,9 +9,9 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                if (this.Parent.ClassName == "custom.privacyconstants")
+                if (this.Parent.DocumentName == "Privacy and Terms")
                 {
-                    var rt = string.Format("/Privacy-Terms/{0}", this.NodeAlias);
+                    var rt = string.Format("/Generic/Privacy-Terms/{0}", this.NodeAlias);
                     return rt;
                 }
                 else
