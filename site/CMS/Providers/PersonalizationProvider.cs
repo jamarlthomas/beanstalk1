@@ -198,7 +198,7 @@ namespace CMS.Mvc.Providers
                 {
                     foreach ( DataRow row in info.Tables[ 0 ].Rows )
                     {
-                        if ( ( int )row[ "StatisticsObjectID" ] == item.Item.Item.NodeID )
+                        if ((int)row["StatisticsObjectID"] == item.Item.Item.NodeID && item.Item.Item.Parent.DocumentName != "Privacy and Terms")
                         {
                             count += ( int )row[ "HitsCount" ];
                         }
