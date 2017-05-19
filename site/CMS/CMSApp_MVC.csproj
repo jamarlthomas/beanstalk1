@@ -146,6 +146,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -283,9 +287,11 @@
     <Compile Include="Controllers\Afton\SiteMapController.cs" />
     <Compile Include="Controllers\Afton\SolutionController.cs" />
     <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
+    <Compile Include="Helpers\HubspotAPIHelper.cs" />
     <Compile Include="Interfaces\IPrivacyTermsCookieProvider.cs" />
     <Compile Include="Models\Afton\PrivacyTermsCookie\Privacyconstants.cs" />
     <Compile Include="Models\ExtendedModels\DocumentType.cs" />
+    <Compile Include="Models\HubspotAPI\ContactPost.cs" />
     <Compile Include="Modules\CultureSwitcherModule.cs" />
     <Compile Include="Modules\PreviewModeSwitchModule.cs" />
     <Compile Include="Providers\PrivacyTermsCookieProvider.cs" />
