@@ -242,10 +242,14 @@ namespace CMS.Mvc.Providers
 
         public List<PersonalizedTile> GetTrendingTiles()
         {
+            // Client wants trending tiles removed, so return empty list.
+            /*
             GetAllContent();
             GetNumberOfViewsOfAllTheContent();
             var trendingContent = ContentList.OrderByDescending(item => item.ViewsCount);
             return trendingContent.Select(tile => tile.Item).ToList();
+            */
+            return new List<PersonalizedTile>(0);
         }
     }
 }
