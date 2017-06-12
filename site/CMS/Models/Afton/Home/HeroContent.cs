@@ -106,10 +106,27 @@ namespace CMS.DocumentEngine.Types
 		}
 
 
-		/// <summary>
-		/// RelatedDocument.
+        /// <summary>
+		/// 
 		/// </summary>
 		[DatabaseField]
+        public string Handedness
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Handedness"), "");
+            }
+            set
+            {
+                SetValue("Handedness", "ImageLeft");
+            }
+        }
+
+
+        /// <summary>
+        /// RelatedDocument.
+        /// </summary>
+        [DatabaseField]
 		public string RelatedDocument
 		{
 			get

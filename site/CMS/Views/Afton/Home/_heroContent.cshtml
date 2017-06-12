@@ -2,7 +2,7 @@
 <div id="topSliderC">
 	<div id="slidesC">
 		<div id="slides">
-			<div class="slide rtLayout">
+			<div class="slide @(Model[0].Handedness == "ImageLeft" ? "rtLayout" : "lftLayout")">
 				<div class="slideTxtBoxC">
 					<div class="slideTxtBox">
 					    <div class="slideHdr">@UtilsHelper.ToHtmlString(Model[0].Title) </div>
