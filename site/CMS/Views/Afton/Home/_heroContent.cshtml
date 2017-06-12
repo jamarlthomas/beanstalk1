@@ -1,21 +1,16 @@
 ﻿@using CMS.Mvc.Helpers
 <div id="topSliderC">
-	<div id="topSliderArrowsC"><a href="#" id="lftArrow"><img src="@Url.Content("~/images/lft-slidArrow.png")"></a><a href="#" id="rtArrow"><img src="@Url.Content("~/images/rt-slidArrow.png")"></a></div>
 	<div id="slidesC">
-		<div id="topSliderNavC"></div>
 		<div id="slides">
-			@foreach (var item in Model)
-			{
-				<div style="display: none;" class="slide @(Model.IndexOf(item)%2==0? "rtLayout" : "lftLayout")">
-					<div class="slideTxtBoxC">
-						<div class="slideTxtBox">
-							<div class="slideHdr">@UtilsHelper.ToHtmlString(item.Title) </div>
-							<div class="slideTxt">@UtilsHelper.ToHtmlString(item.Copy)</div><a href="@item.RelatedDocument">Learn More<span class="icon-arrow"></span></a>
-						</div>
+			<div class="slide rtLayout">
+				<div class="slideTxtBoxC">
+					<div class="slideTxtBox">
+					    <div class="slideHdr">@UtilsHelper.ToHtmlString(Model[0].Title) </div>
+						<div class="slideTxt">@UtilsHelper.ToHtmlString(Model[0].Copy)</div><a href="@Model[0].RelatedDocument">Learn More<span class="icon-arrow"></span></a>
 					</div>
-				    <div class="slideImgBoxC"><img src="@Url.Content(item.Image)"/></div>
 				</div>
-			}
+				<div class="slideImgBoxC"><img src="@Url.Content(Model[0].Image)"/></div>
+		    </div>
 		</div>
 	</div>
 </div>
