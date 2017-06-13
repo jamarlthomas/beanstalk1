@@ -1,16 +1,29 @@
 ﻿@using CMS.Mvc.Helpers
 <div id="topSliderC">
+    @if (Model.Count >= 2) {
+        <div id="topSliderArrowsC">
+            <a href="#" id="lftArrow">
+                <img src="@Url.Content("~/images/lft-slidArrow.png")">
+            </a>
+            <a href="#" id="rtArrow">
+                <img src="@Url.Content("~/images/rt-slidArrow.png")">
+            </a>
+        </div>
+    }
 	<div id="slidesC">
+        <div id="topSliderNavC"></div>
 		<div id="slides">
-			<div class="slide @(Model[0].Handedness == "ImageLeft" ? "rtLayout" : "lftLayout")">
-				<div class="slideTxtBoxC">
-					<div class="slideTxtBox">
-					    <div class="slideHdr">@UtilsHelper.ToHtmlString(Model[0].Title) </div>
-						<div class="slideTxt">@UtilsHelper.ToHtmlString(Model[0].Copy)</div><a href="@Model[0].RelatedDocument">Learn More<span class="icon-arrow"></span></a>
-					</div>
-				</div>
-				<div class="slideImgBoxC"><img src="@Url.Content(Model[0].Image)"/></div>
-		    </div>
+            @foreach (var item in Model) {
+			    <div class="slide @(item.Handedness == "ImageLeft" ? "rtLayout" : "lftLayout")" style="@(Model.Count >= 2 ? "display: none;" : "")">
+				    <div class="slideTxtBoxC">
+					    <div class="slideTxtBox">
+					        <div class="slideHdr">@UtilsHelper.ToHtmlString(item.Title) </div>
+						    <div class="slideTxt">@UtilsHelper.ToHtmlString(item.Copy)</div><a href="@item.RelatedDocument">Learn More<span class="icon-arrow"></span></a>
+					    </div>
+				    </div>
+				    <div class="slideImgBoxC"><img src="@Url.Content(item.Image)"/></div>
+		        </div>
+            }
 		</div>
 	</div>
 </div>

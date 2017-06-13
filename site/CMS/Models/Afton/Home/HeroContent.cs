@@ -55,10 +55,27 @@ namespace CMS.DocumentEngine.Types
 		}
 
 
-		/// <summary>
+        /// <summary>
 		/// 
 		/// </summary>
 		[DatabaseField]
+        public bool Active
+        {
+            get
+            {
+                return ValidationHelper.GetBoolean(GetValue("Active"), true);
+            }
+            set
+            {
+                SetValue("Active", value);
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
 		public string Title
 		{
 			get
