@@ -42,6 +42,11 @@
             @Html.Partial("~/Views/Afton/Shared/Sidebar/_leftNavigation.cshtml", component)
             break;
         }
+        case "custom.PrivacyTermsCookies":
+        {
+            @Html.Partial("~/Views/Afton/Shared/Sidebar/_privacySidebar.cshtml", component)
+            break;
+        }
         default:
         {
             break;

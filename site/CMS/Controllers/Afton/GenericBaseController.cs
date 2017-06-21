@@ -67,7 +67,7 @@ namespace CMS.Mvc.Controllers.Afton
                 genericViewModel.map = true;
             }
             else {
-                genericViewModel.map = false; 
+                genericViewModel.map = false;
             }
             List<TreeNode> sidebarItem = null;
 
@@ -119,6 +119,10 @@ namespace CMS.Mvc.Controllers.Afton
                 var newdoc = ContentHelper.GetDocByDocId<TermsAndAcronymsPage>(document.DocumentID);
                 sidebarItem = newdoc.Fields.SidebarItems2.ToList();
 
+            }
+            else if (document.ClassName == TermsPage.CLASS_NAME)
+            {
+                var newdoc = ContentHelper.GetDocByDocId<TermsPage>(document.DocumentID);
             }
             else
             {

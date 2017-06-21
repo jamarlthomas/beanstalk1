@@ -198,7 +198,7 @@ namespace CMS.Mvc.Providers
                 {
                     foreach ( DataRow row in info.Tables[ 0 ].Rows )
                     {
-                        if ( ( int )row[ "StatisticsObjectID" ] == item.Item.Item.NodeID )
+                        if ((int)row["StatisticsObjectID"] == item.Item.Item.NodeID && item.Item.Item.Parent.DocumentName != "Privacy and Terms")
                         {
                             count += ( int )row[ "HitsCount" ];
                         }
@@ -242,10 +242,14 @@ namespace CMS.Mvc.Providers
 
         public List<PersonalizedTile> GetTrendingTiles()
         {
+            // Client wants trending tiles removed, so return empty list.
+            /*
             GetAllContent();
             GetNumberOfViewsOfAllTheContent();
             var trendingContent = ContentList.OrderByDescending(item => item.ViewsCount);
             return trendingContent.Select(tile => tile.Item).ToList();
+            */
+            return new List<PersonalizedTile>(0);
         }
     }
 }

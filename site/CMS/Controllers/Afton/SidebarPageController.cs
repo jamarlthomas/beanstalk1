@@ -75,6 +75,10 @@ namespace CMS.Mvc.Controllers.Afton
                     {
                         return new GenericSidebarBlockViewModel(item);
                     }
+                /*case Privacyconstants.CLASS_NAME:
+                    {
+                        return new GenericSidebarBlockViewModel(item);
+                    }*/
                 case DocumentSidebarComponent.CLASS_NAME:
                     {
                         return new DocumentsWidgetViewModel(item);

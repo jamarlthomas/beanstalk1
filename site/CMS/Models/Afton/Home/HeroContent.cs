@@ -55,10 +55,27 @@ namespace CMS.DocumentEngine.Types
 		}
 
 
-		/// <summary>
+        /// <summary>
 		/// 
 		/// </summary>
 		[DatabaseField]
+        public bool Active
+        {
+            get
+            {
+                return ValidationHelper.GetBoolean(GetValue("Active"), true);
+            }
+            set
+            {
+                SetValue("Active", value);
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [DatabaseField]
 		public string Title
 		{
 			get
@@ -106,10 +123,27 @@ namespace CMS.DocumentEngine.Types
 		}
 
 
-		/// <summary>
-		/// RelatedDocument.
+        /// <summary>
+		/// 
 		/// </summary>
 		[DatabaseField]
+        public string Handedness
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("Handedness"), "");
+            }
+            set
+            {
+                SetValue("Handedness", "ImageLeft");
+            }
+        }
+
+
+        /// <summary>
+        /// RelatedDocument.
+        /// </summary>
+        [DatabaseField]
 		public string RelatedDocument
 		{
 			get

@@ -9,8 +9,16 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                var rt = RouteHelper.GetRoute("Generic");
-                return (rt != null) ? rt.Route.Replace("{DocumentName}", this.NodeAlias) : string.Format("/Generic/{0}", this.NodeAlias);
+                if (this.Parent.DocumentName == "Privacy and Terms")
+                {
+                    var rt = string.Format("/Generic/Privacy-Terms/{0}", this.NodeAlias);
+                    return rt;
+                }
+                else
+                {
+                    var rt = RouteHelper.GetRoute("Generic");
+                    return (rt != null) ? rt.Route.Replace("{DocumentName}", this.NodeAlias) : string.Format("/Generic/{0}", this.NodeAlias);
+                }
             }
         }
     }

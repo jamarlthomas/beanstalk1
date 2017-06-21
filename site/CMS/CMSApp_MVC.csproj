@@ -285,7 +285,9 @@
     <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
     <Compile Include="Interfaces\IPrivacyTermsCookieProvider.cs" />
     <Compile Include="Models\Afton\PrivacyTermsCookie\Privacyconstants.cs" />
+    <Compile Include="Models\Afton\PrivacyTermsCookie\TermsPage.cs" />
     <Compile Include="Models\ExtendedModels\DocumentType.cs" />
+    <Compile Include="Models\ExtendedModels\Privacyconstants.cs" />
     <Compile Include="Modules\CultureSwitcherModule.cs" />
     <Compile Include="Modules\PreviewModeSwitchModule.cs" />
     <Compile Include="Providers\PrivacyTermsCookieProvider.cs" />
@@ -842,6 +844,8 @@
     <Content Include="Views\Afton\Contact\ThankYou.cshtml" />
     <Content Include="Views\Afton\SiteMap\Index.cshtml" />
     <Content Include="Views\Afton\PrivacyTermsCookie\Index.cshtml" />
+    <Content Include="Views\Afton\Shared\Sidebar\_privacySidebar.cshtml" />
+    <Content Include="Views\Afton\Shared\Error.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

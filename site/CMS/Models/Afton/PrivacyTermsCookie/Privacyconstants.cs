@@ -18,7 +18,7 @@ using CMS.DataEngine;
 using CMS.DocumentEngine.Types;
 using CMS.DocumentEngine;
 
-[assembly: RegisterDocumentType( Privacyconstants.CLASS_NAME, typeof( Privacyconstants ) )]
+[assembly: RegisterDocumentType(Privacyconstants.CLASS_NAME, typeof(Privacyconstants))]
 
 namespace CMS.DocumentEngine.Types
 {
@@ -53,11 +53,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetInteger( GetValue( "PrivacyconstantsID" ), 0 );
+                return ValidationHelper.GetInteger(GetValue("PrivacyconstantsID"), 0);
             }
             set
             {
-                SetValue( "PrivacyconstantsID", value );
+                SetValue("PrivacyconstantsID", value);
             }
         }
 
@@ -70,11 +70,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "PrivacyHeader" ), "Privacy Statement" );
+                return ValidationHelper.GetString(GetValue("PrivacyHeader"), "Privacy Statement");
             }
             set
             {
-                SetValue( "PrivacyHeader", value );
+                SetValue("PrivacyHeader", value);
             }
         }
 
@@ -87,13 +87,14 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "PrivacyContent" ), "" );
+                return ValidationHelper.GetString(GetValue("PrivacyContent"), "");
             }
             set
             {
-                SetValue( "PrivacyContent", value );
+                SetValue("PrivacyContent", value);
             }
         }
+
 
 
         /// <summary>
@@ -104,11 +105,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "CookieHeader" ), "Cookie Policy" );
+                return ValidationHelper.GetString(GetValue("CookieHeader"), "Cookie Policy");
             }
             set
             {
-                SetValue( "CookieHeader", value );
+                SetValue("CookieHeader", value);
             }
         }
 
@@ -121,11 +122,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "CookieContent" ), "" );
+                return ValidationHelper.GetString(GetValue("CookieContent"), "");
             }
             set
             {
-                SetValue( "CookieContent", value );
+                SetValue("CookieContent", value);
             }
         }
 
@@ -138,11 +139,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "PrefCookieHeader" ), "Preference Cookies" );
+                return ValidationHelper.GetString(GetValue("PrefCookieHeader"), "Preference Cookies");
             }
             set
             {
-                SetValue( "PrefCookieHeader", value );
+                SetValue("PrefCookieHeader", value);
             }
         }
 
@@ -155,11 +156,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "PrefCookieMessage" ), "" );
+                return ValidationHelper.GetString(GetValue("PrefCookieMessage"), "");
             }
             set
             {
-                SetValue( "PrefCookieMessage", value );
+                SetValue("PrefCookieMessage", value);
             }
         }
 
@@ -172,11 +173,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "PerfCookieHeader" ), "Performance Cookies" );
+                return ValidationHelper.GetString(GetValue("PerfCookieHeader"), "Performance Cookies");
             }
             set
             {
-                SetValue( "PerfCookieHeader", value );
+                SetValue("PerfCookieHeader", value);
             }
         }
 
@@ -189,11 +190,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "PerfCookieMessage" ), "" );
+                return ValidationHelper.GetString(GetValue("PerfCookieMessage"), "");
             }
             set
             {
-                SetValue( "PerfCookieMessage", value );
+                SetValue("PerfCookieMessage", value);
             }
         }
 
@@ -206,11 +207,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "PersonCookieHeader" ), "Personalization Cookies" );
+                return ValidationHelper.GetString(GetValue("PersonCookieHeader"), "Personalization Cookies");
             }
             set
             {
-                SetValue( "PersonCookieHeader", value );
+                SetValue("PersonCookieHeader", value);
             }
         }
 
@@ -223,11 +224,11 @@ namespace CMS.DocumentEngine.Types
         {
             get
             {
-                return ValidationHelper.GetString( GetValue( "PersonCookieMessage" ), "" );
+                return ValidationHelper.GetString(GetValue("PersonCookieMessage"), "");
             }
             set
             {
-                SetValue( "PersonCookieMessage", value );
+                SetValue("PersonCookieMessage", value);
             }
         }
 
@@ -259,7 +260,7 @@ namespace CMS.DocumentEngine.Types
             /// Initializes a new instance of the <see cref="PrivacyconstantsFields" /> class with the specified content item of type Privacyconstants.
             /// </summary>
             /// <param name="instance">The content item of type Privacyconstants that is a target of the extended API.</param>
-            public PrivacyconstantsFields( Privacyconstants instance )
+            public PrivacyconstantsFields(Privacyconstants instance)
             {
                 mInstance = instance;
             }
@@ -309,6 +310,18 @@ namespace CMS.DocumentEngine.Types
                 set
                 {
                     mInstance.PrivacyContent = value;
+                }
+            }
+
+
+            /// <summary>
+            /// Privacy Sidebar.
+            /// </summary>
+            public IEnumerable<TreeNode> PrivacySidebar
+            {
+                get
+                {
+                    return mInstance.GetRelatedDocuments("PrivacySidebar");
                 }
             }
 
@@ -449,10 +462,9 @@ namespace CMS.DocumentEngine.Types
         /// <summary>
         /// Initializes a new instance of the <see cref="Privacyconstants" /> class.
         /// </summary>
-        public Privacyconstants()
-            : base( CLASS_NAME )
+        public Privacyconstants() : base(CLASS_NAME)
         {
-            mFields = new PrivacyconstantsFields( this );
+            mFields = new PrivacyconstantsFields(this);
         }
 
         #endregion
