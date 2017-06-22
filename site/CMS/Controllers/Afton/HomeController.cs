@@ -44,7 +44,7 @@ namespace CMS.Mvc.Controllers.Afton
         {
             var model = new HomeViewModel
             {
-                HeroContentList = MapData<HeroContent, HeroContentViewModel>(_heroContentProvider.GetHeroContentItems()).Where(w => !string.IsNullOrEmpty(w.Image) && w.Active).ToList(),
+                HeroContentList = MapData<HeroContent, HeroContentViewModel>(_heroContentProvider.GetHeroContentItems()).Where(w => !string.IsNullOrEmpty(w.Image)).ToList(),
                 PrimaryTiles = new List<PersonalizationCardViewModel>()
                 
             };

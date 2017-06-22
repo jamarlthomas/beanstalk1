@@ -7,11 +7,9 @@ namespace CMS.Mvc.ViewModels.Home
 {
     public class HeroContentViewModel
     {
-        public bool Active { get; set; }
         public string Title { get; set; }
         public string Copy { get; set; }
         public string Image { get; set; }
-        public string Handedness { get; set; }
         public string RelatedDocument { get; set; }
     }
 }
