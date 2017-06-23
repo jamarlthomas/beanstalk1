@@ -146,10 +146,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -237,8 +233,8 @@
       <HintPath>..\packages\WebActivator.1.0.0.0\lib\WebActivator.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -287,12 +283,11 @@
     <Compile Include="Controllers\Afton\SiteMapController.cs" />
     <Compile Include="Controllers\Afton\SolutionController.cs" />
     <Compile Include="Controllers\Afton\TermsAndAcronymsController.cs" />
-    <Compile Include="Helpers\HubspotAPIHelper.cs" />
     <Compile Include="Interfaces\IPrivacyTermsCookieProvider.cs" />
     <Compile Include="Models\Afton\PrivacyTermsCookie\Privacyconstants.cs" />
     <Compile Include="Models\Afton\PrivacyTermsCookie\TermsPage.cs" />
     <Compile Include="Models\ExtendedModels\DocumentType.cs" />
-    <Compile Include="Models\HubspotAPI\ContactPost.cs" />
+    <Compile Include="Models\ExtendedModels\Privacyconstants.cs" />
     <Compile Include="Modules\CultureSwitcherModule.cs" />
     <Compile Include="Modules\PreviewModeSwitchModule.cs" />
     <Compile Include="Providers\PrivacyTermsCookieProvider.cs" />
@@ -849,6 +844,8 @@
     <Content Include="Views\Afton\Contact\ThankYou.cshtml" />
     <Content Include="Views\Afton\SiteMap\Index.cshtml" />
     <Content Include="Views\Afton\PrivacyTermsCookie\Index.cshtml" />
+    <Content Include="Views\Afton\Shared\Sidebar\_privacySidebar.cshtml" />
+    <Content Include="Views\Afton\Shared\Error.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
