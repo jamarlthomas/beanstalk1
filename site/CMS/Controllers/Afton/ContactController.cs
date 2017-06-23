@@ -13,7 +13,8 @@ using System.Net;
 using System.Linq;
 using System.Web.Mvc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq; 
+using Newtonsoft.Json.Linq;
+using CMS.Mvc.Helpers;
 
 namespace CMS.Mvc.Controllers.Afton
 {
@@ -109,6 +110,7 @@ namespace CMS.Mvc.Controllers.Afton
             if ( !status ) {
                 return Index( false );
             }*/
+            HubspotAPIHelper.PostContact(request);
             _contactProvider.UpdateCurrentContact(request);
             if ( request.Body == " " )
             {
