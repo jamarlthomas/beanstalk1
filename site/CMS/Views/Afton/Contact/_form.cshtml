@@ -32,7 +32,7 @@
             <textarea placeholder="@Model.MessagePlaceholder" required name="Note"></textarea>
             <strong>@Model.NewsletterTitle</strong><br><br>
             <label>
-                <input type="checkbox" name="IsSubscribed"><span class="checkboxDisplay"></span><span class="txt">@UtilsHelper.ToHtmlString(@Model.NewsletterCheckboxLabel)</span><a target="_blank" href="@Model.NewsletterPrivacyLink">@Model.NewsletterPrivacyLabel</a>
+                <input type="checkbox" name="IsSubscribed" checked><span class="checkboxDisplay"></span><span class="txt">@UtilsHelper.ToHtmlString(@Model.NewsletterCheckboxLabel)</span><a target="_blank" href="@Model.NewsletterPrivacyLink">@Model.NewsletterPrivacyLabel</a>
             </label><br><br>
             <div class="g-recaptcha" data-sitekey="6Lf_VRIUAAAAAHxfhUmCUdkvPSHxwNdyiD9BDuA-"></div>
             <br /><br />

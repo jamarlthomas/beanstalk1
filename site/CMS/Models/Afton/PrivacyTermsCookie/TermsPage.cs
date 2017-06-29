@@ -20,143 +20,140 @@ using CMS.DocumentEngine;
 
 [assembly: RegisterDocumentType(TermsPage.CLASS_NAME, typeof(TermsPage))]
 
-namespace CMS.DocumentEngine.Types
-{
-	/// <summary>
-	/// Represents a content item of type TermsPage.
-	/// </summary>
-	public partial class TermsPage : TreeNode
-	{
-		#region "Constants and variables"
+namespace CMS.DocumentEngine.Types {
+    /// <summary>
+    /// Represents a content item of type TermsPage.
+    /// </summary>
+    public partial class TermsPage : TreeNode {
+        #region "Constants and variables"
 
-		/// <summary>
-		/// The name of the data class.
-		/// </summary>
-		public const string CLASS_NAME = "custom.TermsPage";
+        /// <summary>
+        /// The name of the data class.
+        /// </summary>
+        public const string CLASS_NAME = "custom.TermsPage";
 
 
-		/// <summary>
-		/// The instance of the class that provides extended API for working with TermsPage fields.
-		/// </summary>
-		private readonly TermsPageFields mFields;
+        /// <summary>
+        /// The instance of the class that provides extended API for working with TermsPage fields.
+        /// </summary>
+        private readonly TermsPageFields mFields;
 
-		#endregion
-
-
-		#region "Properties"
-
-		/// <summary>
-		/// TermsPageID.
-		/// </summary>
-		[DatabaseIDField]
-		public int TermsPageID
-		{
-			get
-			{
-				return ValidationHelper.GetInteger(GetValue("TermsPageID"), 0);
-			}
-			set
-			{
-				SetValue("TermsPageID", value);
-			}
-		}
+        #endregion
 
 
-		/// <summary>
-		/// Terms Content.
-		/// </summary>
-		[DatabaseField]
-		public string TermsContent
-		{
-			get
-			{
-				return ValidationHelper.GetString(GetValue("TermsContent"), "");
-			}
-			set
-			{
-				SetValue("TermsContent", value);
-			}
-		}
+        #region "Properties"
+
+        /// <summary>
+        /// TermsPageID.
+        /// </summary>
+        [DatabaseIDField]
+        public int TermsPageID
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("TermsPageID"), 0);
+            }
+            set
+            {
+                SetValue("TermsPageID", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Gets an object that provides extended API for working with TermsPage fields.
-		/// </summary>
-		public TermsPageFields Fields
-		{
-			get
-			{
-				return mFields;
-			}
-		}
+        /// <summary>
+        /// Terms Content.
+        /// </summary>
+        [DatabaseField]
+        public string TermsContent
+        {
+            get
+            {
+                return ValidationHelper.GetString(GetValue("TermsContent"), "");
+            }
+            set
+            {
+                SetValue("TermsContent", value);
+            }
+        }
 
 
-		/// <summary>
-		/// Provides extended API for working with TermsPage fields.
-		/// </summary>
-		public partial class TermsPageFields
-		{
-			/// <summary>
-			/// The content item of type TermsPage that is a target of the extended API.
-			/// </summary>
-			private readonly TermsPage mInstance;
+        /// <summary>
+        /// Gets an object that provides extended API for working with TermsPage fields.
+        /// </summary>
+        public TermsPageFields Fields
+        {
+            get
+            {
+                return mFields;
+            }
+        }
 
 
-			/// <summary>
-			/// Initializes a new instance of the <see cref="TermsPageFields" /> class with the specified content item of type TermsPage.
-			/// </summary>
-			/// <param name="instance">The content item of type TermsPage that is a target of the extended API.</param>
-			public TermsPageFields(TermsPage instance)
-			{
-				mInstance = instance;
-			}
+        /// <summary>
+        /// Provides extended API for working with TermsPage fields.
+        /// </summary>
+        public partial class TermsPageFields {
+            /// <summary>
+            /// The content item of type TermsPage that is a target of the extended API.
+            /// </summary>
+            private readonly TermsPage mInstance;
 
 
-			/// <summary>
-			/// TermsPageID.
-			/// </summary>
-			public int ID
-			{
-				get
-				{
-					return mInstance.TermsPageID;
-				}
-				set
-				{
-					mInstance.TermsPageID = value;
-				}
-			}
+            /// <summary>
+            /// Initializes a new instance of the <see cref="TermsPageFields" /> class with the specified content item of type TermsPage.
+            /// </summary>
+            /// <param name="instance">The content item of type TermsPage that is a target of the extended API.</param>
+            public TermsPageFields(TermsPage instance)
+            {
+                mInstance = instance;
+            }
 
 
-			/// <summary>
-			/// Terms Content.
-			/// </summary>
-			public string TermsContent
-			{
-				get
-				{
-					return mInstance.TermsContent;
-				}
-				set
-				{
-					mInstance.TermsContent = value;
-				}
-			}
-		}
-
-		#endregion
+            /// <summary>
+            /// TermsPageID.
+            /// </summary>
+            public int ID
+            {
+                get
+                {
+                    return mInstance.TermsPageID;
+                }
+                set
+                {
+                    mInstance.TermsPageID = value;
+                }
+            }
 
 
-		#region "Constructors"
+            /// <summary>
+            /// Terms Content.
+            /// </summary>
+            public string TermsContent
+            {
+                get
+                {
+                    return mInstance.TermsContent;
+                }
+                set
+                {
+                    mInstance.TermsContent = value;
+                }
+            }
+        }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="TermsPage" /> class.
-		/// </summary>
-		public TermsPage() : base(CLASS_NAME)
-		{
-			mFields = new TermsPageFields(this);
-		}
+        #endregion
 
-		#endregion
-	}
+
+        #region "Constructors"
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TermsPage" /> class.
+        /// </summary>
+        public TermsPage() : base(CLASS_NAME)
+        {
+            mFields = new TermsPageFields(this);
+        }
+
+        #endregion
+    }
 }

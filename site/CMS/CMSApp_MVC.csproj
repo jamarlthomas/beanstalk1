@@ -146,6 +146,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -646,6 +650,7 @@
     <Content Include="fonts\HelveticaNeueLTStd-Roman\2F7DEF_0_0.woff2" />
     <Content Include="css\maps\normalize.min.css.map" />
     <Content Include="css\maps\styles.min.css.map" />
+    <Compile Include="Helpers\HubspotAPIHelper.cs" />
     <Content Include="images\Afton_Bug.png" />
     <Content Include="images\AFTON_NEWSEVENTS.jpg" />
     <Content Include="images\header-gradient.jpg" />
@@ -672,6 +677,7 @@
     <Content Include="map\sauget.jpg" />
     <Content Include="map\singapore.jpg" />
     <Content Include="map\suzhou.jpg" />
+    <Compile Include="Models\HubspotAPI\ContactPost.cs" />
     <Content Include="Pdf\fake.html" />
     <Content Include="images\accordMinus.png" />
     <Content Include="images\accordPlus.png" />

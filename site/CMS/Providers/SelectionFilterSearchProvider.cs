@@ -94,7 +94,7 @@ namespace CMS.Mvc.Providers
                         }
                     }
                     // Start a new 'SHOULD' clause - sort of like an OR - for the children of the solution nodes. This will OR in all the products.
-                    query.Append(" NodeParentID:(");
+                    query.Append(" +NodeParentID:(");
                     var idsArray = request.SolutionsIds.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
                     for (int i = 0; i < idsArray.Length - 1; i++)
                     {
