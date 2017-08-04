@@ -37,11 +37,18 @@
 
   },{
         "id":  106,
-        "title": "Rio de Janeiro, Brazil",
+        "title": "Caxias, Rio de Janeiro, Brazil",
         "latitude": -22.8965592,
         "longitude": -43.2950058,
         "image": "/map/rio.jpg",
-    "content": "<ul><li>ISO 9001:2008</li><li>Key regional blending and distribution location for lubricants and fuels components and packages</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+    "content": "<ul><li>ISO 9001:2008</li><li>Viscosity index improver manufacturing and storage and distribution location for lubricant components and packages</li><li>No waiver policy for raw materials and finished goods</li></ul>"
+  },{
+        "id":  112,
+        "title": "San Jaun del Rio, Mexico",
+        "latitude": 20.383333,
+        "longitude": -99.983333,
+        "image": "/map/san-juan-del-rio.jpg",
+    "content": "<ul><li>ISO 9001 Certified</li><li>Component manufacturing, package blending and distribution</li><li>No waiver policy for raw materials and finished goods</li></ul>"
   },{
         "id":  107,
         "title": "Manchester, United Kingdom",
